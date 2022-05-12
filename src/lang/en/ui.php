@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'dashboard' => 'Dashboard',
+    'create' => 'Create',
+    'save' => 'Save',
+    'saved' => 'Saved',
+    'filters' => 'Filters',
+    'search' => 'Search',
+    'reset' => 'Reset',
+    'total' => 'Total',
+    'deleted' => 'Deleted',
+    'delete' => 'Delete',
+    'deleting' => 'Deleting',
+    'download' => 'Download',
+    'export' => 'Export',
+    'cancel' => 'Cancel',
+    'confirm' => 'Confirm',
+    'deleteareyousure' => 'Are you sure?',
+    'back' => 'Back',
+    'more' => 'More',
+    'allsections' => 'All sections',
+    'login' => [
+        'authorization' => 'Authorization',
+        'rememberme' => 'Remember me',
+        'login' => 'Log in',
+        'logout' => 'Log out',
+        'notfound' => 'User not found',
+        'notattempt' => 'User not found',
+        'email' => 'E-mail',
+        'password' => 'Password',
+    ],
+];
