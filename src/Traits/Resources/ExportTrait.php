@@ -65,9 +65,8 @@ trait ExportTrait
         }
 
         $writer = new Xlsx($spreadsheet);
-
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$this->resource->title.'.xlsx"');
+        header('Content-Disposition: attachment;filename="'.$this->resource->title().'.xlsx"');
         header('Cache-Control: max-age=0');
 
         return response($writer->save('php://output'));
