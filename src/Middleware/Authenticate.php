@@ -10,9 +10,9 @@ class Authenticate
 {
     public function handle($request, Closure $next)
     {
-        $redirectTo = config('moonshine.auth.redirect_to', 'moonshine/login');
+        $redirectTo = config('moonshine.auth.redirect_to');
 
-        if (auth('moonshine')->guest() && !$this->except($request)) {
+        if (auth(config('moonshine.auth.guard'))->guest() && !$this->except($request)) {
             return redirect()->guest($redirectTo);
         }
 
@@ -29,8 +29,8 @@ class Authenticate
     protected function except(Request $request): bool
     {
         return $request->is([
-            'moonshine/login',
-            'moonshine/logout',
+            config('moonshine.route.prefix') . '/login',
+            config('moonshine.route.prefix') . '/logout',
         ]);
     }
 }

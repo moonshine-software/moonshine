@@ -7,7 +7,7 @@
 >
     <div class="flex items-center justify-center mt-8">
         <div class="flex items-center">
-            <a href="{{ route("moonshine.index") }}">
+            <a href="{{ route(config('moonshine.route.prefix') . '.index') }}">
 				@if(config("moonshine.logo"))
 					<img class="rounded-full h-10 mb-3 mx-auto" src="{{ config("moonshine.logo") }}" alt="{{ config("moonshine.title") }}">
 				@else

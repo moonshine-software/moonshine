@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
+use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Resources\BaseResource;
 use Leeto\MoonShine\Traits\Resources\ExportTrait;
 
@@ -178,7 +179,14 @@ class BaseMoonShineController extends BaseController
         if($request->isMethod('post') || $request->isMethod('put')) {
             $this->resource->validate($item);
 
-            $item = $this->resource->save($item);
+            try {
+                $item = $this->resource->save($item);
+            } catch (ResourceException $e) {
+                throw_if(!app()->isProduction(), $e);
+
+                return redirect($this->resource->route('edit', $item->id))
+                    ->with('alert', trans('moonshine::ui.saved_error'));
+            }
 
             return redirect($this->resource->route('index'))
                 ->with('alert', trans('moonshine::ui.saved'));

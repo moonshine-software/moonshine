@@ -57,19 +57,19 @@ class MoonShine
 
     protected function addRoutes(): void
     {
-        Route::prefix('moonshine')
-            ->middleware(config("moonshine.route.middleware"))
-            ->name("moonshine.")->group(function () {
+        Route::prefix(config('moonshine.route.prefix'))
+            ->middleware(config('moonshine.route.middleware'))
+            ->name(config('moonshine.route.prefix') . '.')->group(function () {
 
-            Route::get("/", [IndexController::class, 'index'])->name("index");
+            Route::get('/', [IndexController::class, 'index'])->name('index');
 
-            Route::any("/login", [IndexController::class, 'login'])->name("login");
-            Route::get("/logout", [IndexController::class, 'logout'])->name("logout");
+            Route::any('/login', [IndexController::class, 'login'])->name('login');
+            Route::get('/logout', [IndexController::class, 'logout'])->name('logout');
 
-            Route::post("/attachments", [IndexController::class, 'attachments'])->name("attachments");
+            Route::post('/attachments', [IndexController::class, 'attachments'])->name('attachments');
 
-            Route::resource("moonshineusers", MoonShineUserController::class);
-            Route::resource("moonshineuserroles", MoonShineUserRoleController::class);
+            Route::resource('moonshineusers', MoonShineUserController::class);
+            Route::resource('moonshineuserroles', MoonShineUserRoleController::class);
 
             $this->resources->each(function ($resource) {
                 /* @var BaseResource $resource */

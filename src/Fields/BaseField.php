@@ -195,7 +195,9 @@ abstract class BaseField implements ViewComponentContract
 
     public function save(Model $item): Model
     {
-        $item->{$this->field()} = $this->requestValue();
+        $item->{$this->field()} = $this->requestValue() !== false
+            ? $this->requestValue()
+            : '';
 
         return $item;
     }

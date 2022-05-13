@@ -22,15 +22,15 @@ class IndexController extends Controller
 
     public function login(Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if (auth('moonshine')->check()) {
-            return redirect(route('moonshine.index'));
+        if (auth(config('moonshine.auth.guard'))->check()) {
+            return redirect(route(config("moonshine.route.prefix") . '.index'));
         }
 
         if ($request->isMethod('post')) {
             $credentials = $request->only(['email', 'password']);
             $remember = $request->get('remember', false);
 
-            if (auth('moonshine')->attempt($credentials, $remember)) {
+            if (auth(config('moonshine.auth.guard'))->attempt($credentials, $remember)) {
                 return redirect(url()->previous());
             } else {
                 $request->session()->flash('alert', trans('moonshine::ui.login.notfound'));
@@ -46,9 +46,9 @@ class IndexController extends Controller
 
     public function logout(): Redirector|Application|RedirectResponse
     {
-        auth('moonshine')->logout();
+        auth(config('moonshine.auth.guard'))->logout();
 
-        return redirect(route('moonshine.login'));
+        return redirect(route(config("moonshine.route.prefix") . '.login'));
     }
 
     #[ArrayShape(['attachment' => "string"])]

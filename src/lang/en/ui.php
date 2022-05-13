@@ -5,6 +5,7 @@ return [
     'create' => 'Create',
     'save' => 'Save',
     'saved' => 'Saved',
+    'saved_error' => 'Error',
     'filters' => 'Filters',
     'search' => 'Search',
     'reset' => 'Reset',

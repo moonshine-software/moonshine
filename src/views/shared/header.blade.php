@@ -31,8 +31,8 @@
             <button @click="dropdownOpen = ! dropdownOpen"
                     class="relative block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none">
                 <img class="h-full w-full object-cover"
-                     src="{{ auth("moonshine")->user()->avatar ? ('/storage/' . auth("moonshine")->user()->avatar) : ("https://ui-avatars.com/api/?name=" . auth("moonshine")->user()->name) }}"
-                     alt="{{ auth("moonshine")->user()->name }}">
+                     src="{{ auth(config('moonshine.auth.guard'))->user()->avatar ? ('/storage/' . auth(config('moonshine.auth.guard'))->user()->avatar) : ("https://ui-avatars.com/api/?name=" . auth(config('moonshine.auth.guard'))->user()->name) }}"
+                     alt="{{ auth(config('moonshine.auth.guard'))->user()->name }}">
             </button>
 
             <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10"></div>
@@ -40,7 +40,7 @@
             <div x-show="dropdownOpen"
                  class="absolute right-0 mt-2 w-48 bg-white dark:bg-black rounded-md overflow-hidden shadow-xl z-10"
              >
-                <a href="{{ route("moonshine.logout") }}" class="block px-4 py-2 text-sm text-black dark:text-white  hover:bg-purple hover:text-white">{{ trans('moonshine::ui.login.logout') }}</a>
+                <a href="{{ route(config('moonshine.route.prefix') . '.logout') }}" class="block px-4 py-2 text-sm text-black dark:text-white  hover:bg-purple hover:text-white">{{ trans('moonshine::ui.login.logout') }}</a>
             </div>
         </div>
     </div>

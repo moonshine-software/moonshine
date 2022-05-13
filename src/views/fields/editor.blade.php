@@ -9,7 +9,7 @@
 
 <script>
     (function() {
-        var HOST = "{{ route("moonshine.attachments") }}"
+        var HOST = "{{ route(config('moonshine.route.prefix') . '.attachments') }}"
 
         addEventListener("trix-attachment-add", function(event) {
             if (event.attachment.file) {

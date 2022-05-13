@@ -8,12 +8,14 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 
 use Leeto\MoonShine\Contracts\Components\ViewComponentContract;
 use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 
 use Leeto\MoonShine\Decorations\Tab;
+use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Extensions\BaseExtension;
 use Leeto\MoonShine\Fields\BaseField;
 
@@ -289,21 +291,25 @@ abstract class BaseResource implements ResourceContract
 
     public function save(Model $item): Model
     {
-        foreach ($this->formFields() as $field) {
-            if(!$field instanceof FieldHasRelationContract
-                || (!$field->isRelationHasOne() && $field->isRelationToOne())) {
-                $item = $field->save($item);
-            }
-        }
-
-        if($item->save()) {
+        try {
             foreach ($this->formFields() as $field) {
-                if($field instanceof FieldHasRelationContract && (!$field->isRelationToOne() || $field->isRelationHasOne())) {
+                if(!$field instanceof FieldHasRelationContract
+                    || (!$field->isRelationHasOne() && $field->isRelationToOne())) {
                     $item = $field->save($item);
                 }
             }
 
-            $item->save();
+            if($item->save()) {
+                foreach ($this->formFields() as $field) {
+                    if($field instanceof FieldHasRelationContract && (!$field->isRelationToOne() || $field->isRelationHasOne())) {
+                        $item = $field->save($item);
+                    }
+                }
+
+                $item->save();
+            }
+        } catch (QueryException $queryException) {
+            throw new ResourceException($queryException->getMessage());
         }
 
         return $item;

@@ -9,7 +9,7 @@ trait RouteTrait
         $route = str(request()->route()->getName())->beforeLast('.');
 
         if($id) {
-            $parameter = $route->afterLast('moonshine.')->singular();
+            $parameter = $route->afterLast(config('moonshine.route.prefix') . '.')->singular();
 
             return route(
                 "$route.$action",
