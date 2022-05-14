@@ -1,7 +1,7 @@
 <div x-data="{ open: {{ $item->isActive() ? 'true' : 'false' }} }">
     <button @click="open = !open"
             class="w-full flex justify-between items-center py-3 px-6 text-black dark:text-white
-            cursor-pointer hover:bg-gray-700 hover:text-gray-100 focus:outline-none"
+            cursor-pointer hover:bg-darkblue focus:outline-none"
     >
         <span class="flex items-center">
             {!! $item->getIcon(6, 'purple') !!}
@@ -18,7 +18,7 @@
     </button>
 
     @if($item->items())
-        <div x-show="open" class="bg-gray-700">
+        <div x-show="open" class="bg-darkblue">
             @foreach($item->items() as $child)
                 <a href="{{ route($child->resource()->routeName('index')) }}"
                    class="py-2 px-16 block text-sm text-gray-100 {{ $child->isActive() ? 'bg-purple text-white' : 'hover:bg-purple hover:text-white' }}">

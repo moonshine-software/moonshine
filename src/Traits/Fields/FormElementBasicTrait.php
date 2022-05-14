@@ -262,7 +262,7 @@ trait FormElementBasicTrait
 
     public function getDefault(): string|null
     {
-        return $this->default;
+        return old($this->nameDot(), $this->default);
     }
 
     public function disabled(): static
