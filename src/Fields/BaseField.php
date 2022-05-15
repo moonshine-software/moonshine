@@ -168,7 +168,7 @@ abstract class BaseField implements ViewComponentContract
     {
         if($this instanceof FieldHasRelationContract) {
             if(!$item->{$this->relation()}) {
-                return '-';
+                return '';
             }
 
             return $container ? view('moonshine::shared.badge', [
@@ -177,20 +177,20 @@ abstract class BaseField implements ViewComponentContract
             ]) : $item->{$this->relation()}->{$this->resourceTitleField()};
         }
 
-        return $item->{$this->field()};
+        return $item->{$this->field()} ?? '';
     }
 
     public function exportViewValue(Model $item): string
     {
         if($this instanceof FieldHasRelationContract) {
             if(!$item->{$this->relation()}) {
-                return '-';
+                return '';
             }
 
-            return $item->{$this->relation()}->{$this->resourceTitleField()};
+            return $item->{$this->relation()}->{$this->resourceTitleField()} ?? '';
         }
 
-        return $item->{$this->field()};
+        return $item->{$this->field()} ?? '';
     }
 
     public function save(Model $item): Model

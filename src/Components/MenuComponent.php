@@ -14,7 +14,7 @@ class MenuComponent extends Component
 {
     public function render(): View|Factory|Htmlable|Closure|string|Application
     {
-        $data = app(Menu::class)->get();
+        $data = app(Menu::class)->all();
 
         return view('moonshine::components.menu', [
             "data" => $data,

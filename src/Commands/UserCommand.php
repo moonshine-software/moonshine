@@ -7,22 +7,11 @@ use Leeto\MoonShine\Models\MoonshineUser;
 
 class UserCommand extends BaseMoonShineCommand
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
     protected $signature = 'moonshine:user';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Create user';
 
-
-    public function handle()
+    public function handle(): void
     {
         $email = $this->ask('Email');
         $name = $this->ask('Name');

@@ -16,7 +16,7 @@ interface ResourceContract
 
     public function getItem(): Model;
 
-    public function getActions(): array;
+    public function getActions(): Collection;
 
     public function isWithPolicy(): bool;
 

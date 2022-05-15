@@ -6,9 +6,9 @@ interface ViewComponentContract
 {
     public static function make(...$arguments): static;
 
-    public function id($index = null): string;
+    public function id(string $index = null): string;
 
-    public function name($index = null): string;
+    public function name(string $index = null): string;
 
     public function label(): string;
 

@@ -2,51 +2,27 @@
 
 namespace Leeto\MoonShine\Commands;
 
-use Illuminate\Console\Command;
-
 class InstallCommand extends BaseMoonShineCommand
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
     protected $signature = 'moonshine:install';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Install the moonshine package';
 
-    /**
-     * Execute the console command.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
-        $this->initDirectory();
+        $this->initDirectories();
     }
 
-    /**
-     * Initialize the admAin directory.
-     *
-     * @return void
-     */
-    protected function initDirectory()
+    protected function initDirectories(): void
     {
         $this->directory = config('moonshine.dir', $this->directory);
 
-        if (is_dir($this->directory)) {
-            $this->error("$this->directory directory already exists!");
-
-            return;
+        if (is_dir($this->getDirectory())) {
+            $this->error("{$this->getDirectory()} directory already exists!");
         }
 
         $this->makeDir('/');
-        $this->info('Directory was created:' . str_replace(base_path(), '', $this->directory));
+        $this->info('Directory was created:' . str_replace(base_path(), '', $this->getDirectory()));
 
         $this->makeDir('Controllers');
         $this->makeDir('Resources');

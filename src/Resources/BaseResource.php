@@ -3,13 +3,17 @@
 namespace Leeto\MoonShine\Resources;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\QueryException;
 
+use Leeto\MoonShine\Actions\BaseAction;
+use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\Components\ViewComponentContract;
 use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
@@ -20,14 +24,9 @@ use Leeto\MoonShine\Extensions\BaseExtension;
 use Leeto\MoonShine\Fields\BaseField;
 
 use Leeto\MoonShine\Filters\BaseFilter;
-use Leeto\MoonShine\Traits\Resources\ExportTrait;
-use Leeto\MoonShine\Traits\Resources\RouteTrait;
-use Leeto\MoonShine\Traits\Resources\QueryTrait;
 
 abstract class BaseResource implements ResourceContract
 {
-    use QueryTrait, RouteTrait, ExportTrait;
-
     public static string $model;
 
     public Model $item;
@@ -38,11 +37,17 @@ abstract class BaseResource implements ResourceContract
 
     public static string $subtitle = '';
 
-    public static array $actions = ['create', 'show', 'edit', 'delete'];
+    public static array $activeActions = ['create', 'show', 'edit', 'delete'];
 
     public static array $with = [];
 
     public static bool $withPolicy = false;
+
+    public static string $orderField = 'id';
+
+    public static string $orderType = 'DESC';
+
+    public static int $itemsPerPage = 25;
 
     public static string $baseIndexView = 'moonshine::base.index';
 
@@ -52,11 +57,22 @@ abstract class BaseResource implements ResourceContract
 
     abstract function rules(Model $item): array;
 
+    /**
+     * @return BaseField[]
+     */
     abstract function fields(): array;
 
-    abstract function search(): array;
-
+    /**
+     * @return BaseFilter[]
+     */
     abstract function filters(): array;
+
+    /**
+     * @return BaseAction[]
+     */
+    abstract function actions(): array;
+
+    abstract function search(): array;
 
     public function baseIndexView(): string
     {
@@ -98,9 +114,9 @@ abstract class BaseResource implements ResourceContract
         return new static::$model();
     }
 
-    public function getActions(): array
+    public function getActiveActions(): array
     {
-        return static::$actions;
+        return static::$activeActions;
     }
 
     public function isWithPolicy(): bool
@@ -125,6 +141,23 @@ abstract class BaseResource implements ResourceContract
             ->when($action, fn($str) => $str->append('.')->append($action));
     }
 
+    public function route(string $action, int $id = null, array $query = []): string
+    {
+        $route = str(request()->route()->getName())->beforeLast('.');
+
+        if($id) {
+            $parameter = $route->afterLast(config('moonshine.route.prefix') . '.')
+                ->singular();
+
+            return route(
+                "$route.$action",
+                array_merge([(string) $parameter => $id], $query)
+            );
+        } else {
+            return route("$route.$action", $query);
+        }
+    }
+
     public function controllerName(): string
     {
         return (string) str(static::class)
@@ -138,7 +171,24 @@ abstract class BaseResource implements ResourceContract
             );
     }
 
-    /* @return BaseField[] */
+    /**
+     * @return ActionContract[]
+     */
+    public function getActions(): Collection
+    {
+        $actions = collect();
+
+        foreach ($this->actions() as $action) {
+            $actions->add($action->setResource($this));
+        }
+
+        return $actions;
+    }
+
+
+    /**
+     * @return BaseField[]
+     */
     public function getFields(): Collection
     {
         $fields = [];
@@ -158,6 +208,14 @@ abstract class BaseResource implements ResourceContract
         return collect($fields);
     }
 
+    /**
+     * @return BaseFilter\[]
+     */
+    public function getFilters(): Collection
+    {
+        return collect($this->filters());
+    }
+
     /* @return Tab[] */
     public function tabs(): Collection
     {
@@ -169,7 +227,7 @@ abstract class BaseResource implements ResourceContract
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn (ViewComponentContract $field) => $field->showWhenState);
+            ->filter(fn (ViewComponentContract $field) => $field instanceof BaseField && $field->showWhenState);
     }
 
     public function whenFieldNames(): Collection
@@ -252,7 +310,7 @@ abstract class BaseResource implements ResourceContract
 
     public function getFilter(string $filterName): BaseFilter|null
     {
-        return collect($this->filters())->filter(function (BaseFilter $filter) use($filterName) {
+        return collect($this->getFilters())->filter(function (BaseFilter $filter) use($filterName) {
             return $filter->field() == $filterName;
         })->first();
     }
@@ -277,6 +335,52 @@ abstract class BaseResource implements ResourceContract
         }
 
         return (string) $views;
+    }
+
+    public function all(): Collection
+    {
+        return $this->query()->get();
+    }
+
+    public function paginate(): LengthAwarePaginator
+    {
+        return $this->query()->paginate(static::$itemsPerPage);
+    }
+
+    public function query(): Builder
+    {
+        $query = $this->getModel()->query();
+
+        if(static::$with) {
+            $query = $query->with(static::$with);
+        }
+
+        if(request()->has('search') && count($this->search())) {
+            foreach($this->search() as $field) {
+                $query = $query->orWhere(
+                    $field,
+                    'LIKE',
+                    '%' .request('search') . '%'
+                );
+            }
+        }
+
+        if(request()->has('filters') && count($this->filters())) {
+            foreach ($this->filters() as $filter) {
+                $query = $filter->getQuery($query);
+            }
+        }
+
+        if(request()->has('order')) {
+            $query = $query->orderBy(
+                request('order.field'),
+                request('order.type')
+            );
+        } else {
+            $query = $query->orderBy(static::$orderField, static::$orderType);
+        }
+
+        return $query;
     }
 
     public function validate(Model $item): array

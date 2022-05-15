@@ -44,4 +44,9 @@ class MoonShineUserRoleResource extends BaseResource
             TextFilter::make('Название', 'name'),
         ];
     }
+
+    public function actions(): array
+    {
+        return [];
+    }
 }

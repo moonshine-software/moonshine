@@ -1,12 +1,15 @@
 <?php
 
+use Leeto\MoonShine\Controllers\MoonShineDashboardController;
+use Leeto\MoonShine\Models\MoonshineUser;
+
 return [
     'dir' => 'app/MoonShine',
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
 	'logo' => env('MOONSHINE_LOGO', ''),
 
     'auth' => [
-        'controller' => Leeto\MoonShine\Controllers\IndexController::class,
+        'controller' => MoonShineDashboardController::class,
         'guard' => 'moonshine',
         'guards' => [
             'moonshine' => [
@@ -19,7 +22,7 @@ return [
         'providers' => [
             'moonshine' => [
                 'driver' => 'eloquent',
-                'model'  => \Leeto\MoonShine\Models\MoonshineUser::class,
+                'model'  => MoonshineUser::class,
             ],
         ],
     ],

@@ -33,7 +33,7 @@ class BelongsToMany extends BaseField implements FieldHasRelationContract, Field
 
     public function treeHtml(): string
     {
-        return (string) $this->treeHtml;
+        return $this->treeHtml;
     }
 
     public function tree(string $treeParentColumn): static

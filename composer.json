@@ -23,7 +23,8 @@
   "require-dev": {
     "fakerphp/faker": "^1.9.2",
     "phpunit/phpunit": "^9.5.8",
-    "mockery/mockery": "^1.4.4"
+    "mockery/mockery": "^1.4.4",
+    "phpstan/phpstan": "^1.4.7"
   },
   "autoload": {
     "psr-4": {

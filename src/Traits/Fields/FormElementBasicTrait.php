@@ -53,7 +53,7 @@ trait FormElementBasicTrait
         return new static(...$arguments);
     }
 
-    public function __construct($label = null, $field = null, ResourceContract|string|null $resource = null)
+    final public function __construct(string $label = null, string $field = null, ResourceContract|string|null $resource = null)
     {
         $this->setLabel($label ?? str($this->label)->ucfirst());
         $this->setField($field ?? str($this->label)->lower()->snake());
@@ -91,7 +91,7 @@ trait FormElementBasicTrait
         }
     }
 
-    public function id($index = null): string
+    public function id(string $index = null): string
     {
         if($this->id) {
             return $this->id;
@@ -103,7 +103,7 @@ trait FormElementBasicTrait
             ->when(!is_null($index), fn(Stringable $str) => $str->append("_$index"));
     }
 
-    public function name($index = null): string
+    public function name(string $index = null): string
     {
         return $this->prepareName($index);
     }

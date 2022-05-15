@@ -11,7 +11,7 @@
         @endforeach
 
         <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-            @include("moonshine::base.index.shared.actions", ["item" => $item, "resource" => $resource])
+            @include("moonshine::base.index.shared.item_actions", ["item" => $item, "resource" => $resource])
         </td>
     </tr>
 @endforeach

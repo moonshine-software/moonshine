@@ -4,15 +4,17 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use JetBrains\PhpStorm\Pure;
 use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
 use Leeto\MoonShine\Contracts\Fields\FieldWithPivotContract;
 use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Fields\HasMany;
+use Leeto\MoonShine\Fields\Text;
 use Throwable;
 
 trait FieldWithFieldsTrait
 {
+    protected bool $keyValue = false;
+
     protected array $fields = [];
 
     public function getFields(): array
@@ -20,7 +22,6 @@ trait FieldWithFieldsTrait
         return $this->fields;
     }
 
-    #[Pure]
     public function hasFields(): bool
     {
         return isset($this->fields) && count($this->getFields());
@@ -68,6 +69,26 @@ trait FieldWithFieldsTrait
 
         return $this;
 
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function keyValue(string $key = 'Key', string $value = 'Value'): static
+    {
+        $this->keyValue = true;
+
+        $this->fields([
+            Text::make($key, 'key'),
+            Text::make($value, 'value'),
+        ]);
+
+        return $this;
+    }
+
+    public function isKeyValue(): bool
+    {
+        return $this->keyValue;
     }
 
     public function jsonValues(Model $item = null): array

@@ -3,7 +3,6 @@
 
 namespace Leeto\MoonShine\Decorations;
 
-use JetBrains\PhpStorm\Pure;
 use Leeto\MoonShine\Contracts\Components\ViewComponentContract;
 
 class BaseDecoration implements ViewComponentContract
@@ -19,7 +18,7 @@ class BaseDecoration implements ViewComponentContract
         return new static(...$arguments);
     }
 
-    public function __construct($label, array $fields = [])
+    final public function __construct(string $label, array $fields = [])
     {
         $this->setLabel($label);
         $this->setFields($fields);
@@ -37,20 +36,19 @@ class BaseDecoration implements ViewComponentContract
         return $this;
     }
 
-    #[Pure]
     public function hasFields(): bool
     {
         return !empty($this->fields());
     }
 
-    public function id($index = null): string
+    public function id(string $index = null): string
     {
         return str($this->label())->slug();
     }
 
-    public function name($index = null): string
+    public function name(string $index = null): string
     {
-        return $this->id($index = null);
+        return $this->id($index);
     }
 
     public function label(): string

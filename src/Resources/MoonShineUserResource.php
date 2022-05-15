@@ -3,6 +3,7 @@
 namespace Leeto\MoonShine\Resources;
 
 
+use Leeto\MoonShine\Actions\ExportAction;
 use Leeto\MoonShine\Fields\BelongsTo;
 use Leeto\MoonShine\Fields\Email;
 use Leeto\MoonShine\Fields\ID;
@@ -81,6 +82,13 @@ class MoonShineUserResource extends BaseResource
     {
         return [
             TextFilter::make('Имя', 'name'),
+        ];
+    }
+
+    public function actions(): array
+    {
+        return [
+            ExportAction::make('Экспорт'),
         ];
     }
 }

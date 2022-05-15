@@ -34,4 +34,9 @@ class DummyResource extends BaseResource
     {
         return [];
     }
+
+    public function actions(): array
+    {
+        return [];
+    }
 }

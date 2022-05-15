@@ -2,24 +2,17 @@
 
 namespace Leeto\MoonShine\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use JetBrains\PhpStorm\ArrayShape;
 
-class IndexController extends Controller
+class MoonShineAuthController extends BaseController
 {
-    public function index(): Factory|View|Application
-    {
-        return view('moonshine::index.index');
-    }
-
     public function login(Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
         if (auth(config('moonshine.auth.guard'))->check()) {
@@ -51,7 +44,6 @@ class IndexController extends Controller
         return redirect(route(config("moonshine.route.prefix") . '.login'));
     }
 
-    #[ArrayShape(['attachment' => "string"])]
     public function attachments(Request $request): array
     {
         if ($request->hasFile('file')) {

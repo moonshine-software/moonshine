@@ -8,9 +8,12 @@ use Leeto\MoonShine\Resources\BaseResource;
 
 class MenuGroup extends BaseMenuSection
 {
-    protected Collection $items;
+    public static function make(...$arguments): static
+    {
+        return new static(...$arguments);
+    }
 
-    public function __construct(string $title, array $items, string $icon = null)
+    final public function __construct(string $title, array $items, string $icon = null)
     {
         $this->title = $title;
         $this->items = collect($items)->map(function($item) {
@@ -31,10 +34,5 @@ class MenuGroup extends BaseMenuSection
         if($icon) {
             $this->icon($icon);
         }
-    }
-
-    public function items(): Collection
-    {
-        return $this->items;
     }
 }

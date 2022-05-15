@@ -3,13 +3,17 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use Leeto\MoonShine\Controllers\MoonShineAuthController;
 use Leeto\MoonShine\Controllers\MoonShineUserRoleController;
 use Leeto\MoonShine\Controllers\MoonShineUserController;
-use Leeto\MoonShine\Controllers\IndexController;
+use Leeto\MoonShine\Controllers\MoonShineDashboardController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
+use Leeto\MoonShine\Models\MoonshineUserRole;
 use Leeto\MoonShine\Resources\BaseResource;
+use Leeto\MoonShine\Resources\MoonShineUserResource;
+use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
 
 class MoonShine
 {
@@ -61,15 +65,14 @@ class MoonShine
             ->middleware(config('moonshine.route.middleware'))
             ->name(config('moonshine.route.prefix') . '.')->group(function () {
 
-            Route::get('/', [IndexController::class, 'index'])->name('index');
+            Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
+            Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
 
-            Route::any('/login', [IndexController::class, 'login'])->name('login');
-            Route::get('/logout', [IndexController::class, 'logout'])->name('logout');
+            Route::any('/login', [MoonShineAuthController::class, 'login'])->name('login');
+            Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
 
-            Route::post('/attachments', [IndexController::class, 'attachments'])->name('attachments');
-
-            Route::resource('moonshineusers', MoonShineUserController::class);
-            Route::resource('moonshineuserroles', MoonShineUserRoleController::class);
+            Route::resource((new MoonShineUserResource())->routeAlias(), MoonShineUserController::class);
+            Route::resource((new MoonshineUserRoleResource())->routeAlias(), MoonShineUserRoleController::class);
 
             $this->resources->each(function ($resource) {
                 /* @var BaseResource $resource */

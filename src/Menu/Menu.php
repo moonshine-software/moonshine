@@ -2,7 +2,6 @@
 
 namespace Leeto\MoonShine\Menu;
 
-
 use Illuminate\Support\Collection;
 
 class Menu
@@ -14,7 +13,7 @@ class Menu
         $this->menu = $data;
     }
 
-    public function get(): Collection|null
+    public function all(): Collection|null
     {
         return $this->menu;
     }

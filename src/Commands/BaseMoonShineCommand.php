@@ -6,32 +6,22 @@ use Illuminate\Console\Command;
 
 class BaseMoonShineCommand extends Command
 {
-    /**
-     * Install directory.
-     *
-     * @var string
-     */
     protected string $directory = 'app/MoonShine';
 
-    /**
-     * Get stub contents.
-     *
-     * @param $name
-     *
-     * @return string
-     */
-    protected function getStub($name): string
+    protected function getStub(string $name): string
     {
-        return $this->laravel['files']->get(__DIR__."/stubs/$name.stub");
+        return $this->laravel['files']->get(__DIR__."/../stubs/$name.stub");
     }
 
-    /**
-     * Make new directory.
-     *
-     * @param string $path
-     */
-    protected function makeDir(string $path = '')
+    protected function getDirectory(): string
     {
-        $this->laravel['files']->makeDirectory("$this->directory/$path", 0755, true, true);
+        return config('moonshine.dir', $this->directory);
+    }
+
+    protected function makeDir(string $path = ''): void
+    {
+        if(isset($this->laravel['files'])) {
+            $this->laravel['files']->makeDirectory("$this->directory/$path", 0755, true, true);
+        }
     }
 }

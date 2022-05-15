@@ -3,7 +3,7 @@
 @section('sidebar-inner')
     @parent
 
-    @if(in_array("create", $resource->getActions()))
+    @if(in_array("create", $resource->getActiveActions()))
         <div class="text-center mt-8">
             @include('moonshine::shared.btn', [
                 'title' => trans('moonshine::ui.create'),
@@ -39,13 +39,10 @@
 
         @endif
 
-        @if($resource->exportFields()->count())
+        @if($resource->actions())
             <div class="flex items-center select-none mt-5">
-                @include('moonshine::shared.btn', [
-                    'title' => trans('moonshine::ui.export'),
-                    'href' => $resource->exportRoute(),
-                    'icon' => 'export',
-                    'filled' => true,
+                @include("moonshine::base.index.shared.actions", [
+                    'actions' => $resource->getActions()
                 ])
             </div>
         @endif
@@ -59,7 +56,7 @@
 
     <div class="mt-8"></div>
 
-    @if(in_array("create", $resource->getActions()))
+    @if(in_array("create", $resource->getActiveActions()))
         @include('moonshine::shared.btn', [
             'title' => trans('moonshine::ui.create'),
             'href' => $resource->route("create"),

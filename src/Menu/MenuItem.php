@@ -6,9 +6,12 @@ use Leeto\MoonShine\Resources\BaseResource;
 
 class MenuItem extends BaseMenuSection
 {
-    protected BaseResource $resource;
+    public static function make(...$arguments): static
+    {
+        return new static(...$arguments);
+    }
 
-    public function __construct(string $title, BaseResource|string $resource, string $icon = null)
+    final public function __construct(string $title, BaseResource|string $resource, string $icon = null)
     {
         $this->title = $title;
         $this->resource = is_string($resource) ? new $resource() : $resource;
@@ -16,10 +19,5 @@ class MenuItem extends BaseMenuSection
         if($icon) {
             $this->icon($icon);
         }
-    }
-
-    public function resource(): BaseResource
-    {
-       return $this->resource;
     }
 }

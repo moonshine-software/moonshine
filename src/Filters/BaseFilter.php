@@ -14,7 +14,7 @@ abstract class BaseFilter implements ViewComponentContract
 {
     use FormElementBasicTrait, ShowWhenTrait, XModelTrait;
 
-    public function name($index = null): string
+    public function name(string $index = null): string
     {
         return $this->prepareName($index, 'filters');
     }
@@ -26,7 +26,7 @@ abstract class BaseFilter implements ViewComponentContract
 
             return $this->requestValue()
                 ? $query->whereHas($this->relation(), function (Builder $q) use($table) {
-                    return $q->whereIn("{$table}.id", $this->requestValue());
+                    return $q->whereIn("$table.id", $this->requestValue());
                 })
                 : $query;
         }

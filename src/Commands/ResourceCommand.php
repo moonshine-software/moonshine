@@ -7,34 +7,17 @@ use Illuminate\Support\Str;
 
 class ResourceCommand extends BaseMoonShineCommand
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
     protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Create resource';
 
-    /**
-     * Execute the console command.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         $this->createResource();
     }
 
-    public function createResource()
+    public function createResource(): void
     {
-        $this->directory = config('moonshine.dir', $this->directory);
-
         $name = str($this->argument('name'));
 
         if(!$name) {
@@ -47,7 +30,7 @@ class ResourceCommand extends BaseMoonShineCommand
         $model = $this->option('model') ?? $name;
         $title = $this->option('title') ?? $name;
 
-        $resource = $this->directory."/Resources/{$name}Resource.php";
+        $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
         $contents = $this->getStub('Resource');
         $contents = str_replace('DummyModel', $model, $contents);
         $contents = str_replace('DummyTitle', $title, $contents);
@@ -59,7 +42,7 @@ class ResourceCommand extends BaseMoonShineCommand
 
         $this->info("{$name}Resource file was created: " . str_replace(base_path(), '', $resource));
 
-        $controller = $this->directory."/Controllers/{$name}Controller.php";
+        $controller = $this->getDirectory()."/Controllers/{$name}Controller.php";
         $contents = $this->getStub('ResourceController');
 
         $this->laravel['files']->put(

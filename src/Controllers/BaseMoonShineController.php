@@ -18,12 +18,10 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Resources\BaseResource;
-use Leeto\MoonShine\Traits\Resources\ExportTrait;
 
 class BaseMoonShineController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use ExportTrait;
 
     protected BaseResource $resource;
 
@@ -36,8 +34,12 @@ class BaseMoonShineController extends BaseController
             $this->authorize('viewAny', $this->resource->getModel());
         }
 
-        if(request()->has('exportCsv')) {
-            return $this->exportCsv();
+        if($this->resource->getActions()) {
+            foreach ($this->resource->getActions() as $action) {
+                if($action->isTriggered()) {
+                    return $action->handle();
+                }
+            }
         }
 
         return view($this->resource->baseIndexView(), [
@@ -54,7 +56,7 @@ class BaseMoonShineController extends BaseController
             $this->authorize('create', $this->resource->getModel());
         }
 
-        if(!in_array('create', $this->resource->getActions())) {
+        if(!in_array('create', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -66,11 +68,12 @@ class BaseMoonShineController extends BaseController
      */
     public function edit($id): View|Factory|Redirector|RedirectResponse|Application
     {
-        if(!in_array('edit', $this->resource->getActions())) {
+        if(!in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
         $item = $this->resource->getModel()
+            ->query()
             ->where(['id' => $id])
             ->firstOrFail();
 
@@ -89,6 +92,7 @@ class BaseMoonShineController extends BaseController
     public function show($id): Redirector|Application|RedirectResponse
     {
         $item = $this->resource->getModel()
+            ->query()
             ->where(['id' => $id])
             ->firstOrFail();
 
@@ -104,11 +108,12 @@ class BaseMoonShineController extends BaseController
      */
     public function update($id, Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if(!in_array('edit', $this->resource->getActions())) {
+        if(!in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
         $item = $this->resource->getModel()
+            ->query()
             ->where(['id' => $id])
             ->firstOrFail();
 
@@ -124,7 +129,7 @@ class BaseMoonShineController extends BaseController
      */
     public function store(Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if(!in_array('edit', $this->resource->getActions()) && !in_array("create", $this->resource->getActions())) {
+        if(!in_array('edit', $this->resource->getActiveActions()) && !in_array("create", $this->resource->getActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -142,24 +147,21 @@ class BaseMoonShineController extends BaseController
      */
     public function destroy($id): Redirector|Application|RedirectResponse
     {
-        if(!in_array('delete', $this->resource->getActions())) {
+        if(!in_array('delete', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
+        }
+
+        if($this->resource->isWithPolicy()) {
+            $this->authorize('delete', $this->resource->getModel());
         }
 
         if(request()->has('ids')) {
             $this->resource->getModel()
+                ->query()
                 ->whereIn('id', explode(';', request('ids')))
                 ->delete();
-
-            if($this->resource->isWithPolicy()) {
-                $this->authorize('delete', $this->resource->getModel());
-            }
         } else {
             $this->resource->getModel()->destroy($id);
-
-            if($this->resource->isWithPolicy()) {
-                $this->authorize('delete', $this->resource->getModel());
-            }
         }
 
         return redirect($this->resource->route('index'))
@@ -184,7 +186,7 @@ class BaseMoonShineController extends BaseController
             } catch (ResourceException $e) {
                 throw_if(!app()->isProduction(), $e);
 
-                return redirect($this->resource->route('edit', $item->id))
+                return redirect($this->resource->route('edit', $item->getKey()))
                     ->with('alert', trans('moonshine::ui.saved_error'));
             }
 

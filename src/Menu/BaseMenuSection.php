@@ -2,20 +2,27 @@
 
 namespace Leeto\MoonShine\Menu;
 
-class BaseMenuSection
+use Illuminate\Support\Collection;
+use Leeto\MoonShine\Resources\BaseResource;
+
+abstract class BaseMenuSection
 {
     protected string $title;
 
     protected string|null $icon = null;
 
-    public static function make(...$arguments): static
-    {
-        return new static(...$arguments);
-    }
+    protected Collection $items;
+
+    protected BaseResource $resource;
 
     public function title(): String
     {
         return $this->title;
+    }
+
+    public function items(): Collection
+    {
+        return $this->items;
     }
 
     public function icon(string $icon): static
@@ -23,6 +30,11 @@ class BaseMenuSection
         $this->icon = $icon;
 
         return $this;
+    }
+
+    public function resource(): BaseResource
+    {
+        return $this->resource;
     }
 
     public function getIcon(string $size = '8', string $color = '', string $class = ''): string

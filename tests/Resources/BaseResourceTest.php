@@ -1,6 +1,6 @@
 <?php
 
-namespace Leeto\MoonShine\Tests\Decorations;
+namespace Leeto\MoonShine\Tests\Resources;
 
 use Leeto\MoonShine\Resources\MoonShineUserResource;
 use PHPUnit\Framework\TestCase;
@@ -12,5 +12,9 @@ class BaseResourceTest extends TestCase
         $resource = new MoonShineUserResource();
 
         $this->assertEquals('moonshineusers', $resource->routeAlias());
+
+        $this->assertNotEmpty($resource->getFields());
+        $this->assertNotEmpty($resource->getFilters());
+        $this->assertNotEmpty($resource->getActions());
     }
 }
