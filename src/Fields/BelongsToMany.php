@@ -8,15 +8,18 @@ use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Fields\FieldHasFieldsContract;
 use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
 use Leeto\MoonShine\Contracts\Fields\FieldWithPivotContract;
+use Leeto\MoonShine\Traits\Fields\FieldSelectTransformer;
 use Leeto\MoonShine\Traits\Fields\FieldWithFieldsTrait;
 use Leeto\MoonShine\Traits\Fields\FieldWithPivotTrait;
 use Leeto\MoonShine\Traits\Fields\FieldWithRelationshipsTrait;
+use Leeto\MoonShine\Traits\Fields\SearchableSelectFieldTrait;
 
 class BelongsToMany extends BaseField implements FieldHasRelationContract, FieldWithPivotContract, FieldHasFieldsContract
 {
-    use FieldWithRelationshipsTrait, FieldWithFieldsTrait, FieldWithPivotTrait;
+    use FieldSelectTransformer, FieldWithRelationshipsTrait, FieldWithFieldsTrait, FieldWithPivotTrait;
+    use SearchableSelectFieldTrait;
 
-    public static string $view = 'multi-checkbox';
+    public static string $view = 'belongs-to-many';
 
     protected bool $tree = false;
 

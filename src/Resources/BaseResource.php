@@ -29,15 +29,7 @@ abstract class BaseResource implements ResourceContract
 {
     public static string $model;
 
-    public Model $item;
-
-    public string $titleField = '';
-
     public static string $title = '';
-
-    public static string $subtitle = '';
-
-    public static array $activeActions = ['create', 'show', 'edit', 'delete'];
 
     public static array $with = [];
 
@@ -49,11 +41,17 @@ abstract class BaseResource implements ResourceContract
 
     public static int $itemsPerPage = 25;
 
+    public static array $activeActions = ['create', 'show', 'edit', 'delete'];
+
     public static string $baseIndexView = 'moonshine::base.index';
 
     public static string $baseEditView = 'moonshine::base.form';
 
+    public string $titleField = '';
+
     protected static bool $system = false;
+
+    protected Model $item;
 
     abstract function rules(Model $item): array;
 
@@ -133,6 +131,11 @@ abstract class BaseResource implements ResourceContract
             ->lower();
     }
 
+    public function routeParam(): string
+    {
+        return (string) str($this->routeAlias())->singular();
+    }
+
     public function routeName(string|null $action = null): string
     {
         return (string) str(config('moonshine.route.prefix'))
@@ -143,19 +146,10 @@ abstract class BaseResource implements ResourceContract
 
     public function route(string $action, int $id = null, array $query = []): string
     {
-        $route = str(request()->route()->getName())->beforeLast('.');
-
-        if($id) {
-            $parameter = $route->afterLast(config('moonshine.route.prefix') . '.')
-                ->singular();
-
-            return route(
-                "$route.$action",
-                array_merge([(string) $parameter => $id], $query)
-            );
-        } else {
-            return route("$route.$action", $query);
-        }
+        return route(
+            $this->routeName($action),
+            $id ? array_merge([$this->routeParam() => $id], $query) : $query
+        );
     }
 
     public function controllerName(): string
@@ -166,8 +160,8 @@ abstract class BaseResource implements ResourceContract
             ->append('Controller')
             ->when(
                 static::$system,
-                fn($str) => $str->prepend('\Leeto\MoonShine\Controllers\\'),
-                fn($str) => $str->prepend('\\' . config('moonshine.route.namespace') . '\\')
+                fn($str) => $str->prepend('Leeto\MoonShine\Controllers\\'),
+                fn($str) => $str->prepend('\\' . config('moonshine.namespace') . '\\Controllers\\')
             );
     }
 
@@ -393,6 +387,9 @@ abstract class BaseResource implements ResourceContract
         );
     }
 
+    /**
+     * @throws ResourceException
+     */
     public function save(Model $item): Model
     {
         try {

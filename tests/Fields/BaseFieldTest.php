@@ -9,7 +9,7 @@ use Leeto\MoonShine\Fields\HasOne;
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Fields\Json;
 use Leeto\MoonShine\Fields\Text;
-use PHPUnit\Framework\TestCase;
+use Leeto\MoonShine\Tests\TestCase;
 
 class BaseFieldTest extends TestCase
 {

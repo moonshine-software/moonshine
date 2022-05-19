@@ -2,6 +2,7 @@
 
 namespace Leeto\MoonShine\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Leeto\MoonShine\Traits\HasMoonShineChangeLog;
@@ -9,6 +10,7 @@ use Leeto\MoonShine\Traits\HasMoonShineChangeLog;
 class MoonshineUser extends Authenticatable
 {
     use HasMoonShineChangeLog;
+    use HasFactory;
 
     protected $fillable = [
         'email',

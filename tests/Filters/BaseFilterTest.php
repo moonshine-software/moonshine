@@ -5,7 +5,7 @@ namespace Leeto\MoonShine\Tests\Filters;
 use Leeto\MoonShine\Filters\BelongsToFilter;
 use Leeto\MoonShine\Filters\BelongsToManyFilter;
 use Leeto\MoonShine\Filters\TextFilter;
-use PHPUnit\Framework\TestCase;
+use Leeto\MoonShine\Tests\TestCase;
 
 class BaseFilterTest extends TestCase
 {

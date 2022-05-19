@@ -1,88 +1,163 @@
-<div class="relative"
-     x-data="initMultiSelect_{{ $field->id() }}()"
-     x-init="$refs.dropdown.classList.remove('hidden')"
->
+<div x-data="multiSelect_{{ $field->id() }}()" x-init="loadOptions()" class="w-full md:w-1/2 flex flex-col items-center h-64 mx-auto">
+    <select
+            x-model="{{ $field->isMultiple() ? 'selectValues' : 'selectValue' }}"
+            x-ref="multi_select_{{ $field->id() }}"
+            {!! $field->meta() ?? '' !!}
+            id="{{ $field->id() }}"
+            name="{{ $field->name() }}"
+            {{ $field->isRequired() ? "required" : "" }}
+            {{ $field->isMultiple() ? "multiple" : "" }}
+            style="display: none;"
+    >
+        @if(!$field->isMultiple() && $field->isNullable())
+            <option @selected(!$field->formViewValue($item)) value="">-</option>
+        @endif
 
-    <span class="inline-block w-full rounded-md shadow-sm">
-      <button @click.stop="open=!open" type="button" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" class="cursor-pointer relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-purple focus:border-purple transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-        <div class="flex items-center space-x-3">
-            <input type="hidden" name="{{ $field->name()}}" :value="currentId" value="{{ $field->formViewValue($item) }}" />
+        @foreach($field->values() as $optionValue => $optionName)
+            <option @selected($field->isSelected($item, $optionValue)) value="{{ $optionValue }}">
+                {{ $optionName }}
+            </option>
+        @endforeach
+    </select>
 
-            <img v-show="currentImage" :src="currentImage" src="" :alt="currentName" alt="" :class="currentImage == '' ? 'hidden' : ''" class="flex-shrink-0 h-6 w-6 rounded-full">
-
-            <span class="block truncate" x-text="currentName"></span>
-        </div>
-        <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-          <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
-            <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </span>
-      </button>
-    </span>
-
-    <div @click.outside="open = false" :class="open ? '' : 'hidden'" x-ref="dropdown" class="absolute mt-1 w-full rounded-md bg-white shadow-lg hidden z-10">
-        <input placeholder="Поиск" type="text" x-on:keydown="filterOptions()" x-model="search" value="" class="bg-white focus:outline-none focus:shadow-outline rounded-lg py-2 px-4 block w-full appearance-none leading-norma" />
-
-        <ul x-ref="ul" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-item-3" class="max-h-56 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5">
-            @foreach($field->values() as $optionValue => $optionName)
-                <li x-ref="item"
-                    @click="selectOption();search='';open=!open;currentName = '{{ str_replace("'", '', $optionName) }}';currentId = '{{ $optionValue }}';currentImage = '{{ $field->searchableImageField() ? '' : '' }}';"
-                    data-value="{{ $optionName }}"
-                    role="option"
-                    :class="currentId != {{$optionValue}} ? 'text-gray-900' : 'text-white bg-pink'"
-                    class="cursor-default select-none relative py-2 pl-3 pr-9"
-                >
-                    <div class="flex items-center space-x-3">
-                        <span :class="currentId != '{{$optionValue}}' ? 'font-normal' : 'font-semibold'"  class="block truncate">
-                            {{ $optionName }}
-                        </span>
+    <div class="inline-block relative w-full">
+        <div class="flex flex-col items-center relative">
+            <div x-on:click="open" class="w-full">
+                <div class="p-1 flex items-center justify-between border border-gray-200 bg-white rounded">
+                    <div class="flex flex-auto flex-wrap">
+                        <template x-for="(option,index) in selectedOptions()" :key="index">
+                            <div class="flex justify-center items-center m-2 p-2 font-medium bg-purple rounded text-white border">
+                                <div class="text-xs font-normal leading-none max-w-full flex-initial" x-text="option.text"></div>
+                                <div class="flex flex-auto flex-row-reverse">
+                                    @if($field->isMultiple())
+                                        <div x-on:click.stop="remove(index)">
+                                            <svg class="fill-current h-4 w-4 " viewBox="0 0 20 20">
+                                                <path d="M14.348,14.849c-0.469,0.469-1.229,0.469-1.697,0L10,11.819l-2.651,3.029c-0.469,0.469-1.229,0.469-1.697,0
+                                               c-0.469-0.469-0.469-1.229,0-1.697l2.758-3.15L5.651,6.849c-0.469-0.469-0.469-1.228,0-1.697s1.228-0.469,1.697,0L10,8.183
+                                               l2.651-3.031c0.469-0.469,1.228-0.469,1.697,0s0.469,1.229,0,1.697l-2.758,3.152l2.758,3.15
+                                               C14.817,13.62,14.817,14.38,14.348,14.849z" />
+                                            </svg>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </template>
                     </div>
 
+                    <div class="text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200">
+                        <button type="button" x-show="isOpen() === true" x-on:click="open" class="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
+                            <svg version="1.1" class="fill-current h-4 w-4" viewBox="0 0 20 20">
+                                <path d="M17.418,6.109c0.272-0.268,0.709-0.268,0.979,0s0.271,0.701,0,0.969l-7.908,7.83
+                                    c-0.27,0.268-0.707,0.268-0.979,0l-7.908-7.83c-0.27-0.268-0.27-0.701,0-0.969c0.271-0.268,0.709-0.268,0.979,0L10,13.25
+                                    L17.418,6.109z" />
+                            </svg>
+                        </button>
 
-                    <span :class="currentId != '{{$optionValue}}' ? 'hidden' : ''" class="absolute inset-y-0 right-0 flex items-center pr-4">
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </li>
-            @endforeach
-        </ul>
+                        <button type="button" x-show="isOpen() === false" @click="close" class="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
+                            <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
+                                <path d="M2.582,13.891c-0.272,0.268-0.709,0.268-0.979,0s-0.271-0.701,0-0.969l7.908-7.83
+	c0.27-0.268,0.707-0.268,0.979,0l7.908,7.83c0.27,0.268,0.27,0.701,0,0.969c-0.271,0.268-0.709,0.268-0.978,0L10,6.75L2.582,13.891z
+	" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full px-4">
+                <div x-show.transition.origin.top="isOpen()" class="absolute shadow top-100 bg-white z-40 w-full left-0 rounded max-h-select" x-on:click.outside="close">
+                    <input placeholder="Поиск"
+                           type="text"
+                           x-on:keydown="filterOptions()"
+                           x-model="search"
+                           value=""
+                           class="bg-white focus:outline-none focus:shadow-outline rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-black"
+                    />
+
+                    <div class="flex flex-col w-full overflow-y-auto h-64">
+                        <template x-for="(option,index) in options" :key="index" class="overflow-auto">
+                            <div x-show="!option.hidden" class="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-gray-100" @click="select(index)">
+                                <div class="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative">
+                                    <div class="w-full items-center flex justify-between">
+                                        <div class="mx-2 leading-6 text-black" x-model="option" x-text="option.text"></div>
+                                        <div x-show="option.selected">
+                                            <svg class="text-purple w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <script>
-      function initMultiSelect_{{ $field->id() }}() {
-        return {
-          search: '',
-          open: false,
-          currentImage: '',
-          @if(!$field->values())
-          currentId: '',
-          currentName: '',
-          @else
-          currentId: '{{ $field->formViewValue($item) ?? array_key_first($field->values()) }}',
-          currentName: '{{ $field->formViewValue($item)
-                            ? str_replace("'", '', $field->values()[$field->formViewValue($item)])
-                            : str_replace("'", '', array_values($field->values())[0]) }}',
-          @endif
-          selectOption() {
-            Array.prototype.slice.call(this.$refs.ul.getElementsByTagName("li")).forEach(function (li) {
-              li.hidden = false;
-            });
-          },
-          filterOptions() {
-            var searchValue = this.search.toLowerCase();
-
-            Array.prototype.slice.call(this.$refs.ul.getElementsByTagName("li")).forEach(function (li) {
-              var value = li.getAttribute("data-value").toLowerCase();
-
-              if(value.includes(searchValue)) {
-                li.hidden = false;
-              } else {
-                li.hidden = true;
-              }
-            });
-          }
-        };
-      }
-    </script>
 </div>
+
+<script>
+  function multiSelect_{{ $field->id() }}() {
+    return {
+      search: '',
+      options: [],
+      selectValues: [],
+      selectValue: '',
+      show: false,
+      open() { this.show = true },
+      close() { this.show = false },
+      isOpen() { return this.show === true },
+      select(index) {
+          @if(!$field->isMultiple())
+              this.options = this.options.map(function(option, i) {
+            if(index === i) {
+              option.selected = true;
+            } else {
+              option.selected = false;
+            }
+
+            return option;
+          });
+
+        this.close()
+          @else
+          if (!this.options[index].selected) {
+            this.add(index);
+          } else {
+            this.remove(index);
+          }
+          @endif
+      },
+      add(index) {
+        this.options[index].selected = true;
+      },
+      remove(index) {
+        this.options[index].selected = false;
+      },
+      loadOptions() {
+        const options = this.$refs.multi_select_{{ $field->id() }}.options;
+
+        for (let i = 0; i < options.length; i++) {
+          this.options.push({
+            value: options[i].value,
+            text: options[i].innerText,
+            selected: options[i].hasAttribute('selected'),
+            hidden: false,
+          });
+        }
+      },
+      selectedOptions(){
+        const selected = this.options.filter((option) => option.selected);
+        this.selectValues = Object.keys(selected).map((key) => [selected[key].value]);
+        this.selectValue = selected.length ? selected[0].value : ''
+        return selected;
+      },
+      filterOptions() {
+        const searchValue = this.search.toLowerCase();
+
+        for (let i = 0; i < this.options.length; i++) {
+          const optionText = this.options[i].text.toLowerCase();
+
+          this.options[i].hidden = !optionText.includes(searchValue);
+        }
+      }
+    }
+  }
+</script>

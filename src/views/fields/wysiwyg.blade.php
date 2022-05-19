@@ -1,5 +1,5 @@
 <div class="hidden">
-    @include("moonshine::fields.input", [
+    @include("moonshine::fields.textarea", [
         'field' => $field,
         'item' => $item,
     ])

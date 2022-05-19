@@ -3,9 +3,9 @@
 namespace Leeto\MoonShine\Fields;
 
 
-class Editor extends BaseField
+class WYSIWYG extends BaseField
 {
-    protected static string $view = 'editor';
+    protected static string $view = 'wysiwyg';
 
     protected array $assets = [
         'js' => ['vendor/moonshine/js/trix/trix.js'],

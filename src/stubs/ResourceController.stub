@@ -2,14 +2,12 @@
 
 namespace App\MoonShine\Controllers;
 
-use JetBrains\PhpStorm\Pure;
 use App\MoonShine\Resources\DummyResource;
 
 use Leeto\MoonShine\Controllers\BaseMoonShineController;
 
 class DummyController extends BaseMoonShineController
 {
-    #[Pure]
     public function __construct()
     {
         $this->resource = new DummyResource();

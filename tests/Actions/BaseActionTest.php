@@ -3,7 +3,7 @@
 namespace Leeto\MoonShine\Tests\Actions;
 
 use Leeto\MoonShine\Actions\ExportAction;
-use PHPUnit\Framework\TestCase;
+use Leeto\MoonShine\Tests\TestCase;
 
 class BaseActionTest extends TestCase
 {

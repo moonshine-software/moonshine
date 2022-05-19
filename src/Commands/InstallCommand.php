@@ -22,7 +22,7 @@ class InstallCommand extends BaseMoonShineCommand
         }
 
         $this->makeDir('/');
-        $this->info('Directory was created:' . str_replace(base_path(), '', $this->getDirectory()));
+        $this->info('Directory was created: ' . str_replace(base_path(), '', $this->getDirectory()));
 
         $this->makeDir('Controllers');
         $this->makeDir('Resources');

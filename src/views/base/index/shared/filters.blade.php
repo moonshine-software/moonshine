@@ -25,7 +25,7 @@
                 <div class="px-4 flex items-center justify-between">
                     <h2 class="text-lg font-medium">Фильтры</h2>
 
-                    <button @click="filtersOpen = false" type="button" class="-mr-2 w-10 h-10 bg-white dark:bg-purple p-2 rounded-md flex items-center justify-center text-gray-400">
+                    <button @click="filtersOpen = false" type="button" class="-mr-2 w-10 h-10 bg-white text-black dark:bg-purple dark:text-white p-2 rounded-md flex items-center justify-center">
                         <span class="sr-only">Закрыть</span>
 
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -58,9 +58,9 @@
                     @if(request('filters'))
                         <div class="mt-5">
                             <a href="{{ $resource->route("index") }}"
-                               class="bg-transparent text-pink
-                               font-semibold py-2 px-4 border
-                               border-pink rounded">
+                               class="bg-transparent hover:bg-purple text-purple
+                        font-semibold hover:text-white py-2 px-4 border border-purple
+                        hover:border-transparent rounded">
                                 {{ trans('moonshine::ui.reset') }}
                             </a>
                         </div>

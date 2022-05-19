@@ -5,8 +5,15 @@ use Leeto\MoonShine\Models\MoonshineUser;
 
 return [
     'dir' => 'app/MoonShine',
+    'namespace' => 'App\\MoonShine',
+
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
 	'logo' => env('MOONSHINE_LOGO', ''),
+
+    'route' => [
+        'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
+        'middleware' => ['web', 'moonshine'],
+    ],
 
     'auth' => [
         'controller' => MoonShineDashboardController::class,
@@ -17,8 +24,6 @@ return [
                 'provider' => 'moonshine',
             ],
         ],
-        'remember' => true,
-        'redirect_to' => 'moonshine/login',
         'providers' => [
             'moonshine' => [
                 'driver' => 'eloquent',
@@ -26,11 +31,7 @@ return [
             ],
         ],
     ],
-    'route' => [
-        'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
-        'namespace' => 'App\\MoonShine\\Controllers',
-        'middleware' => ['web', 'moonshine'],
-    ],
+    //
     'extensions' => [
         //
     ],
