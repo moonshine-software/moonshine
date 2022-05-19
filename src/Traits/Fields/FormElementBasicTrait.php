@@ -366,11 +366,18 @@ trait FormElementBasicTrait
 
     public function isSelected(Model $item, string $value): bool
     {
+        if(!$this->formViewValue($item)) {
+            return false;
+        }
+
         if($this instanceof FieldHasRelationContract
             && !$this->isRelationToOne() && !$this->isRelationHasOne()) {
             $related = $item->{$this->relation()}()->getRelated();
 
-            return $this->formViewValue($item)->contains($related->getKeyName(), '=', $value);
+
+            return $this->formViewValue($item) instanceof Collection
+                ? $this->formViewValue($item)->contains($related->getKeyName(), '=', $value)
+                : in_array($value, $this->formViewValue($item));
         }
 
         return (string) $this->formViewValue($item) === $value
