@@ -1,6 +1,7 @@
 <div x-data="{ open: {{ $item->isActive() ? 'true' : 'false' }} }">
     <button @click="open = !open"
             class="w-full flex justify-between items-center py-3 px-6 text-black dark:text-white
+            hover:text-white
             cursor-pointer hover:bg-darkblue focus:outline-none"
     >
         <span class="flex items-center">

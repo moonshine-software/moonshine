@@ -186,7 +186,7 @@ class BaseMoonShineController extends BaseController
             } catch (ResourceException $e) {
                 throw_if(!app()->isProduction(), $e);
 
-                return redirect($this->resource->route('edit', $item->getKey()))
+                return redirect($this->resource->route($item->exists ? 'edit' : 'create', $item->getKey()))
                     ->with('alert', trans('moonshine::ui.saved_error'));
             }
 

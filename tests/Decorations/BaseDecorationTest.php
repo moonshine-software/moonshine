@@ -5,7 +5,7 @@ namespace Leeto\MoonShine\Tests\Decorations;
 use Leeto\MoonShine\Decorations\Heading;
 use Leeto\MoonShine\Decorations\Tab;
 use Leeto\MoonShine\Fields\Text;
-use PHPUnit\Framework\TestCase;
+use Leeto\MoonShine\Tests\TestCase;
 
 class BaseDecorationTest extends TestCase
 {

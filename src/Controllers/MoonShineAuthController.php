@@ -26,11 +26,11 @@ class MoonShineAuthController extends BaseController
             if (auth(config('moonshine.auth.guard'))->attempt($credentials, $remember)) {
                 return redirect(url()->previous());
             } else {
-                $request->session()->flash('alert', trans('moonshine::ui.login.notfound'));
+                $request->session()->flash('alert', trans('moonshine::auth.failed'));
 
                 return back()
                     ->withInput()
-                    ->withErrors(['login' => trans('moonshine::ui.login.notattempt')]);
+                    ->withErrors(['login' => trans('moonshine::auth.failed')]);
             }
         }
 

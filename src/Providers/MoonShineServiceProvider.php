@@ -53,13 +53,17 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__. '/../migrations');
+        $this->loadMigrationsFrom(__DIR__. '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__. '/../lang', 'moonshine');
         $this->loadViewsFrom(__DIR__. '/../views', 'moonshine');
 
         $this->publishes([
             __DIR__ . '/../config/moonshine.php' => config_path('moonshine.php'),
         ]);
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/moonshine.php', 'moonshine'
+        );
 
         $this->publishes([
             __DIR__. '/../assets' => public_path('vendor/moonshine'),

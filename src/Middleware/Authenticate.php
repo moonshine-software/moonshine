@@ -4,16 +4,13 @@ namespace Leeto\MoonShine\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class Authenticate
 {
     public function handle($request, Closure $next)
     {
-        $redirectTo = config('moonshine.auth.redirect_to');
-
         if (auth(config('moonshine.auth.guard'))->guest() && !$this->except($request)) {
-            return redirect()->guest($redirectTo);
+            return redirect()->guest(route(config('moonshine.route.prefix') . '.' . 'login'));
         }
 
         return $next($request);

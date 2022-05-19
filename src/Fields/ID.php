@@ -24,4 +24,12 @@ class ID extends BaseField
         ]);
     }
 
+    public function save(Model $item): Model
+    {
+        if($this->requestValue()) {
+            $item->{$this->field()} = $this->requestValue();
+        }
+
+        return $item;
+    }
 }

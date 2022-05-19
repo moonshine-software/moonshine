@@ -43,7 +43,7 @@
                     <div class="flex items-center">
                         <input id="remember_me" type="checkbox" class="form-checkbox h-4 w-4 text-pink transition duration-150 ease-in-out">
                         <label for="remember_me" class="ml-2 block text-sm leading-5 text-gray-900">
-                            {{ trans('moonshine::ui.login.rememberme') }}
+                            {{ trans('moonshine::ui.login.remember_me') }}
                         </label>
                     </div>
                 </div>
