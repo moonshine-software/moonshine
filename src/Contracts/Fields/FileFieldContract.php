@@ -4,17 +4,17 @@ namespace Leeto\MoonShine\Contracts\Fields;
 
 interface FileFieldContract
 {
-    public function disc(string $disc): static;
+    public function disk(string $disk): static;
 
-    public function getDisc(): string;
+    public function getDisk(): string;
 
     public function dir(string $dir): static;
 
     public function getDir(): string;
 
-    public function allowedExtension(array $allowedExtension): static;
+    public function allowedExtensions(array $allowedExtensions): static;
 
-    public function getAllowedExtension(): array;
+    public function getAllowedExtensions(): array;
 
     public function isAllowedExtension(string $extension): bool;
 

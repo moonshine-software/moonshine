@@ -43,9 +43,9 @@ class MoonShineUserResource extends BaseResource
             Image::make('Аватар', 'avatar')
                 ->removable()
                 ->showOnExport()
-                ->disc('public')
+                ->disk('public')
                 ->dir('images')
-                ->allowedExtension(['jpg', 'png', 'jpeg', 'gif']),
+                ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
             Date::make('Дата создания', 'created_at')
                 ->format("d.m.Y")

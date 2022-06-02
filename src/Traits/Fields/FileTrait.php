@@ -9,24 +9,24 @@ use Throwable;
 
 trait FileTrait
 {
-    protected string $disc = 'public';
+    protected string $disk = 'public';
 
     protected string $dir = '/';
 
-    protected array $allowedExtension = [];
+    protected array $allowedExtensions = [];
 
     protected bool $disableDownload = false;
 
-    public function disc(string $disc): static
+    public function disk(string $disk): static
     {
-        $this->disc = $disc;
+        $this->disk = $disk;
 
         return $this;
     }
 
-    public function getDisc(): string
+    public function getDisk(): string
     {
-        return $this->disc;
+        return $this->disk;
     }
 
     public function dir(string $dir): static
@@ -41,21 +41,21 @@ trait FileTrait
         return $this->dir;
     }
 
-    public function allowedExtension(array $allowedExtension): static
+    public function allowedExtensions(array $allowedExtensions): static
     {
-        $this->allowedExtension = $allowedExtension;
+        $this->allowedExtensions = $allowedExtensions;
 
         return $this;
     }
 
-    public function getAllowedExtension(): array
+    public function getAllowedExtensions(): array
     {
-        return $this->allowedExtension;
+        return $this->allowedExtensions;
     }
 
     public function isAllowedExtension(string $extension): bool
     {
-        return in_array($extension, $this->getAllowedExtension());
+        return in_array($extension, $this->getAllowedExtensions());
     }
 
     public function disableDownload(): static
@@ -82,7 +82,7 @@ trait FileTrait
             new FieldException("$extension not allowed")
         );
 
-        return $file->store($this->getDir(), $this->getDisc());
+        return $file->store($this->getDir(), $this->getDisk());
     }
 
     public function save(Model $item): Model
