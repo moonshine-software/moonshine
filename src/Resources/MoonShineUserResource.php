@@ -49,6 +49,7 @@ class MoonShineUserResource extends BaseResource
 
             Date::make('Дата создания', 'created_at')
                 ->format("d.m.Y")
+                ->default(now())
                 ->sortable()
                 ->hideOnForm()
                 ->showOnExport(),
@@ -68,8 +69,10 @@ class MoonShineUserResource extends BaseResource
         return [
             'name' => 'required|min:5',
             'moonshine_user_role_id' => 'required',
-            'email' => 'sometimes|bail|required|email|unique:moonshine_users,email,'.$item->id,
-            'password' => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
+            'email' => 'sometimes|bail|required|email|unique:moonshine_users,email' . ($item->exists ? ",$item->id" : ''),
+            'password' => !$item->exists
+                ? 'required|min:6|required_with:password_repeat|same:password_repeat'
+                : 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
         ];
     }
 
