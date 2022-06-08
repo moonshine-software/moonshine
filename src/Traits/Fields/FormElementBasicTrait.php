@@ -9,6 +9,7 @@ use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Closure;
 
 trait FormElementBasicTrait
 {
@@ -25,6 +26,8 @@ trait FormElementBasicTrait
     protected ResourceContract|null $resource;
 
     protected string $resourceTitleField = '';
+
+    protected Closure|null $resourceTitleCallback = null;
 
     protected static string $type = '';
 
@@ -53,7 +56,7 @@ trait FormElementBasicTrait
         return new static(...$arguments);
     }
 
-    final public function __construct(string $label = null, string $field = null, ResourceContract|string|null $resource = null)
+    final public function __construct(string $label = null, string $field = null, Closure|ResourceContract|string|null $resource = null)
     {
         $this->setLabel($label ?? str($this->label)->ucfirst());
         $this->setField($field ?? str($this->label)->lower()->snake());
@@ -85,6 +88,8 @@ trait FormElementBasicTrait
 
             if($resource instanceof ResourceContract) {
                 $this->setResource($resource);
+            } elseif(is_callable($resource)) {
+                $this->setResourceTitleCallback($resource);
             } elseif(is_string($resource)) {
                 $this->setResourceTitleField($resource);
             }
@@ -241,6 +246,16 @@ trait FormElementBasicTrait
         return $this;
     }
 
+    public function resourceTitleCallback(): Closure|null
+    {
+        return $this->resourceTitleCallback;
+    }
+
+    protected function setResourceTitleCallback(Closure $resourceTitleCallback): void
+    {
+        $this->resourceTitleCallback = $resourceTitleCallback;
+    }
+
     public function required(): static
     {
         $this->required = true;
@@ -330,6 +345,22 @@ trait FormElementBasicTrait
         $this->options = $data;
 
         return $this;
+    }
+
+    public function relatedOptions(Model $item): array
+    {
+        $related = $item->{$this->relation()}()->getRelated();
+
+        if(is_callable($this->resourceTitleCallback())) {
+            $values = $related->all()
+                ->mapWithKeys(function ($relatedItem) {
+                    return [$relatedItem->getKey() => ($this->resourceTitleCallback())($relatedItem)];
+                });
+        } else {
+            $values = $related->pluck($this->resourceTitleField(), $related->getKeyName());
+        }
+
+        return $values->toArray();
     }
 
     public function autocomplete(string $value): static

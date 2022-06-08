@@ -323,7 +323,7 @@ abstract class BaseResource implements ResourceContract
         if(app(BaseExtension::class)) {
             foreach (app(BaseExtension::class) as $extension) {
                 if(method_exists($extension, $name)) {
-                    $views->append($extension->{$name}($item));
+                    $views = $views->append($extension->{$name}($item));
                 }
             }
         }
@@ -438,12 +438,7 @@ abstract class BaseResource implements ResourceContract
     protected function _render(ViewComponentContract $field, Model $item): Factory|View|Application
     {
         if ($field instanceof FieldHasRelationContract) {
-            $related = $item->{$field->relation()}()->getRelated();
-
-            $field->options(
-                $related->pluck($field->resourceTitleField(), $related->getKeyName())
-                    ->toArray()
-            );
+            $field->options($field->relatedOptions($item));
         }
 
         return view($field->getView(), [
