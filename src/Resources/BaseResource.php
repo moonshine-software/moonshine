@@ -283,7 +283,7 @@ abstract class BaseResource implements ResourceContract
         $labels = [];
 
         foreach ($this->formFields() as $field) {
-            $labels[$field->label()] = $field->label();
+            $labels[$field->field()] = $field->label();
         }
 
         return $labels;
