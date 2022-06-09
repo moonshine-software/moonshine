@@ -34,6 +34,8 @@ interface ResourceContract
 
     public function extensions($name, Model $item): string;
 
+    public function can(string $ability, Model $item = null): bool;
+
     public function renderDecoration(ViewComponentContract $decoration, Model $item);
 
     public function renderField(ViewComponentContract $field, Model $item);

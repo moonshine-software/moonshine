@@ -1,10 +1,10 @@
-@if(in_array("edit", $resource->getActiveActions()))
+@if($resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))
     <a href="{{ $resource->route("edit", $item->id) }}" class="text-purple inline-block">
         @include("moonshine::shared.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "purple"])
     </a>
 @endif
 
-@if(in_array("delete", $resource->getActiveActions()))
+@if($resource->can('delete', $item) && in_array('delete', $resource->getActiveActions()))
     <x-moonshine::modal>
         {{ trans('moonshine::ui.confirm_delete') }}
 

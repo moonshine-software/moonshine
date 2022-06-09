@@ -8,7 +8,7 @@
 
             <input name="ids" type="hidden" value="" class="actionBarIds">
 
-            @if(in_array("delete", $resource->getActiveActions()))
+            @if($resource->can('massDelete') && in_array('delete', $resource->getActiveActions()))
                 <button class="text-pink inline-block">
                     @include("moonshine::shared.icons.delete", ["size" => 6, "class" => "mr-2", "color" => "pink"])
                 </button>

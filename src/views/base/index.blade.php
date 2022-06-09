@@ -3,7 +3,7 @@
 @section('sidebar-inner')
     @parent
 
-    @if(in_array("create", $resource->getActiveActions()))
+    @if($resource->can('create') && in_array('create', $resource->getActiveActions()))
         <div class="text-center mt-8">
             @include('moonshine::shared.btn', [
                 'title' => trans('moonshine::ui.create'),
@@ -56,7 +56,7 @@
 
     <div class="mt-8"></div>
 
-    @if(in_array("create", $resource->getActiveActions()))
+    @if($resource->can('create') && in_array('create', $resource->getActiveActions()))
         @include('moonshine::shared.btn', [
             'title' => trans('moonshine::ui.create'),
             'href' => $resource->route("create"),

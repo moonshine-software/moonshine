@@ -31,7 +31,11 @@ class BaseMoonShineController extends BaseController
     public function index(): Factory|View|Response|Application|ResponseFactory
     {
         if($this->resource->isWithPolicy()) {
-            $this->authorize('viewAny', $this->resource->getModel());
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'viewAny',
+                $this->resource->getModel()
+            );
         }
 
         if($this->resource->getActions()) {
@@ -53,7 +57,11 @@ class BaseMoonShineController extends BaseController
     public function create(): View|Factory|Redirector|RedirectResponse|Application
     {
         if($this->resource->isWithPolicy()) {
-            $this->authorize('create', $this->resource->getModel());
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'create',
+                $this->resource->getModel()
+            );
         }
 
         if(!in_array('create', $this->resource->getActiveActions())) {
@@ -78,7 +86,11 @@ class BaseMoonShineController extends BaseController
             ->firstOrFail();
 
         if($this->resource->isWithPolicy()) {
-            $this->authorize('update', $item);
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'update',
+                $item
+            );
         }
 
         $this->resource->setItem($item);
@@ -97,7 +109,11 @@ class BaseMoonShineController extends BaseController
             ->firstOrFail();
 
         if($this->resource->isWithPolicy()) {
-            $this->authorize('view', $item);
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'view',
+                $item
+            );
         }
 
         return redirect($this->resource->route('index'));
@@ -118,7 +134,11 @@ class BaseMoonShineController extends BaseController
             ->firstOrFail();
 
         if($this->resource->isWithPolicy()) {
-            $this->authorize('update', $item);
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'update',
+                $item
+            );
         }
 
         return $this->save($request, $item);
@@ -136,7 +156,11 @@ class BaseMoonShineController extends BaseController
         $item = $this->resource->getModel();
 
         if($this->resource->isWithPolicy()) {
-            $this->authorize('create', $item);
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'create',
+                $item
+            );
         }
 
         return $this->save($request, $item);
@@ -151,17 +175,30 @@ class BaseMoonShineController extends BaseController
             return redirect($this->resource->route('index'));
         }
 
-        if($this->resource->isWithPolicy()) {
-            $this->authorize('delete', $this->resource->getModel());
-        }
-
         if(request()->has('ids')) {
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'massDelete',
+                $this->resource->getModel()
+            );
+
             $this->resource->getModel()
                 ->query()
                 ->whereIn('id', explode(';', request('ids')))
                 ->delete();
         } else {
-            $this->resource->getModel()->destroy($id);
+            $item = $this->resource->getModel()
+                ->query()
+                ->where(['id' => $id])
+                ->firstOrFail();
+
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'delete',
+                $item
+            );
+
+            $item->destroy($id);
         }
 
         return redirect($this->resource->route('index'))

@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\QueryException;
 
@@ -385,6 +386,16 @@ abstract class BaseResource implements ResourceContract
             trans('moonshine::validation'),
             $this->fieldsLabels()
         );
+    }
+
+    public function can(string $ability, Model $item = null): bool
+    {
+        if(!$this->isWithPolicy()) {
+            return true;
+        }
+
+        return Gate::forUser(auth(config('moonshine.auth.guard'))->user())
+            ->allows($ability, $item ?? $this->getModel());
     }
 
     /**
