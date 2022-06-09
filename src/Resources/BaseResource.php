@@ -73,6 +73,11 @@ abstract class BaseResource implements ResourceContract
 
     abstract function search(): array;
 
+    public function scopes(): array
+    {
+        return [];
+    }
+
     public function baseIndexView(): string
     {
         return static::$baseIndexView;
@@ -345,6 +350,12 @@ abstract class BaseResource implements ResourceContract
     public function query(): Builder
     {
         $query = $this->getModel()->query();
+
+        if($this->scopes()) {
+            foreach ($this->scopes() as $scope) {
+                $query = $query->withGlobalScope($scope::class, $scope);
+            }
+        }
 
         if(static::$with) {
             $query = $query->with(static::$with);
