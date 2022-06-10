@@ -2,25 +2,19 @@
 
 namespace Leeto\MoonShine\Fields;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Components\ViewComponentContract;
 use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
 
-use Leeto\MoonShine\Traits\Fields\FormElementBasicTrait;
+use Leeto\MoonShine\Traits\Fields\FormElementTrait;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
+use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModelTrait;
 
 abstract class BaseField implements ViewComponentContract
 {
-    use FormElementBasicTrait, ShowWhenTrait, XModelTrait, LinkTrait;
-
-    protected string $hint = '';
-
-    protected bool $sortable = false;
-
-    protected bool $removable = false;
+    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait, LinkTrait;
 
     public bool $showOnIndex = true;
 
@@ -30,77 +24,13 @@ abstract class BaseField implements ViewComponentContract
 
     protected BaseField|null $parent = null;
 
+    protected string $hint = '';
+
+    protected bool $sortable = false;
+
+    protected bool $removable = false;
+
     protected array $assets = [];
-
-    public function parent(): BaseField|null
-    {
-        return $this->parent;
-    }
-
-    public function hasParent(): bool
-    {
-        return $this->parent instanceof BaseField;
-    }
-
-    protected function setParent(BaseField $field): static
-    {
-        $this->parent = $field;
-
-        return $this;
-    }
-
-    public function getView(): string
-    {
-        return 'moonshine::fields.' . static::$view;
-    }
-
-    public function hidden(): static
-    {
-        static::$type = 'hidden';
-
-        return $this;
-    }
-
-    public function isHidden(): bool
-    {
-        return static::$type === 'hidden';
-    }
-
-    public function hint(string $hint): static
-    {
-        $this->hint = $hint;
-
-        return $this;
-    }
-
-    public function getHint(): string
-    {
-        return $this->hint;
-    }
-
-    public function removable(): static
-    {
-        $this->removable = true;
-
-        return $this;
-    }
-
-    public function isRemovable(): bool
-    {
-        return $this->removable;
-    }
-
-    public function sortable(): static
-    {
-        $this->sortable = true;
-
-        return $this;
-    }
-
-    public function isSortable(): bool
-    {
-        return $this->sortable;
-    }
 
     public function showOnIndex(): static
     {
@@ -144,9 +74,67 @@ abstract class BaseField implements ViewComponentContract
         return $this;
     }
 
+    public function parent(): BaseField|null
+    {
+        return $this->parent;
+    }
+
+    public function hasParent(): bool
+    {
+        return $this->parent instanceof BaseField;
+    }
+
+    protected function setParent(BaseField $field): static
+    {
+        $this->parent = $field;
+
+        return $this;
+    }
+
+    public function hint(string $hint): static
+    {
+        $this->hint = $hint;
+
+        return $this;
+    }
+
+    public function getHint(): string
+    {
+        return $this->hint;
+    }
+
+    public function removable(): static
+    {
+        $this->removable = true;
+
+        return $this;
+    }
+
+    public function isRemovable(): bool
+    {
+        return $this->removable;
+    }
+
+    public function sortable(): static
+    {
+        $this->sortable = true;
+
+        return $this;
+    }
+
+    public function isSortable(): bool
+    {
+        return $this->sortable;
+    }
+
     public function getAssets(): array
     {
         return $this->assets;
+    }
+
+    public function getView(): string
+    {
+        return 'moonshine::fields.' . static::$view;
     }
 
     public function formViewValue(Model $item): mixed

@@ -20,4 +20,17 @@ trait XModelTrait
             ->whenNotEmpty(fn($f) => $f->append('.'))
             ->append($this->field());
     }
+
+    public function meta(): string
+    {
+        $meta = str('');
+
+        if($this->xModel) {
+            $meta = $meta->append(" x-model='{$this->xModelField()}' ");
+            $meta = $meta->append(" x-bind:name=`{$this->name()}` ");
+            $meta = $meta->append(" x-bind:id=`{$this->id()}` ");
+        }
+
+        return (string) $meta;
+    }
 }

@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
 use Leeto\MoonShine\Contracts\Components\ViewComponentContract;
-use Leeto\MoonShine\Traits\Fields\FormElementBasicTrait;
+use Leeto\MoonShine\Traits\Fields\FormElementTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
+use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModelTrait;
 
 abstract class BaseFilter implements ViewComponentContract
 {
-    use FormElementBasicTrait, ShowWhenTrait, XModelTrait;
+    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait;
 
     public function name(string $index = null): string
     {
