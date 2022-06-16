@@ -185,7 +185,7 @@ abstract class Field implements RenderableContract
     {
         $item->{$this->field()} = $this->requestValue() !== false
             ? $this->requestValue()
-            : '';
+            : ($this->isNullable() ? null : '');
 
         return $item;
     }

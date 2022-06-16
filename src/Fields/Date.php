@@ -18,11 +18,17 @@ class Date extends Field
 
     public function formViewValue(Model $item): string
     {
+        if(!$this->getDefault() && $this->isNullable()) {
+            return '';
+        }
+
         return date('Y-m-d', strtotime($item->{$this->name()} ?? $this->getDefault()));
     }
 
     public function indexViewValue(Model $item, bool $container = false): string
     {
-        return date($this->format, strtotime($item->{$this->name()}));
+        return $item->{$this->name()}
+            ? date($this->format, strtotime($item->{$this->name()}))
+            : '';
     }
 }
