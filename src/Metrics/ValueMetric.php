@@ -23,6 +23,10 @@ class ValueMetric extends Metric
 
     public function valueResult(): string
     {
+        if($this->isProgress()) {
+            return round(($this->value / $this->target) * 100);
+        }
+
         return str_replace('{value}', $this->value, $this->valueFormat);
     }
 
