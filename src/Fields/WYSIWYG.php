@@ -3,7 +3,7 @@
 namespace Leeto\MoonShine\Fields;
 
 
-class WYSIWYG extends BaseField
+class WYSIWYG extends Field
 {
     protected static string $view = 'wysiwyg';
 

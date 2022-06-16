@@ -2,10 +2,8 @@
 
 namespace Leeto\MoonShine\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 
-class ResourceCommand extends BaseMoonShineCommand
+class ResourceCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=}';
 
@@ -30,7 +28,7 @@ class ResourceCommand extends BaseMoonShineCommand
         $model = $this->option('model') ?? $name;
         $title = $this->option('title') ?? $name;
 
-        $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
+        $resource = $this->getDirectory() . "/Resources/{$name}Resource.php";
         $contents = $this->getStub('Resource');
         $contents = str_replace('DummyModel', $model, $contents);
         $contents = str_replace('DummyTitle', $title, $contents);
@@ -42,14 +40,6 @@ class ResourceCommand extends BaseMoonShineCommand
 
         $this->info("{$name}Resource file was created: " . str_replace(base_path(), '', $resource));
 
-        $controller = $this->getDirectory()."/Controllers/{$name}Controller.php";
-        $contents = $this->getStub('ResourceController');
-
-        $this->laravel['files']->put(
-            $controller,
-            str_replace('Dummy', $name, $contents)
-        );
-
-        $this->info("{$name}Controller file was created: " . str_replace(base_path(), '', $controller));
+        $this->comment('Now register resource');
     }
 }

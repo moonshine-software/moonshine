@@ -4,11 +4,11 @@ namespace Leeto\MoonShine\Fields;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\Fields\DateFieldTrait;
+use Leeto\MoonShine\Traits\Fields\DateTrait;
 
-class Date extends BaseField
+class Date extends Field
 {
-    use DateFieldTrait;
+    use DateTrait;
 
     protected static string $view = 'input';
 

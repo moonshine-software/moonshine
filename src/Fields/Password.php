@@ -4,7 +4,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Password extends BaseField
+class Password extends Field
 {
     public static string $view = 'input';
 

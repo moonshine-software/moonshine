@@ -3,11 +3,11 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\Fields\SearchableSelectFieldTrait;
+use Leeto\MoonShine\Traits\Fields\SearchableTrait;
 
-class Select extends BaseField
+class Select extends Field
 {
-    use SearchableSelectFieldTrait;
+    use SearchableTrait;
 
     protected static string $view = 'select';
 

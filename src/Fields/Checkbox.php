@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Fields;
 
-class Checkbox extends BaseField
+class Checkbox extends Field
 {
     protected static string $view = 'checkbox';
 

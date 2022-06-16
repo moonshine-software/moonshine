@@ -1,0 +1,42 @@
+<?php
+
+namespace App\MoonShine\Resources;
+
+use Illuminate\Database\Eloquent\Model;
+
+use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Fields\ID;
+
+class DummyResource extends Resource
+{
+	public static string $model = 'DummyModel';
+
+	public static string $title = 'DummyTitle';
+
+	public function fields(): array
+	{
+		return [
+            ID::make()->sortable(),
+        ];
+	}
+
+	public function rules(Model $item): array
+	{
+	    return [];
+    }
+
+    public function search(): array
+    {
+        return ['id'];
+    }
+
+    public function filters(): array
+    {
+        return [];
+    }
+
+    public function actions(): array
+    {
+        return [];
+    }
+}

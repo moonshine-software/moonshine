@@ -7,9 +7,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
+use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Closure;
+use Leeto\MoonShine\MoonShine;
 
 trait FormElementTrait
 {
@@ -37,7 +38,7 @@ trait FormElementTrait
         $this->setLabel($label ?? str($this->label)->ucfirst());
         $this->setField($field ?? str($this->label)->lower()->snake());
 
-        if($this instanceof FieldHasRelationContract) {
+        if($this instanceof HasRelationshipContract) {
             if(!$this->isRelationToOne() && !$this->isRelationHasOne()) {
                 $this->multiple();
             }
@@ -64,7 +65,7 @@ trait FormElementTrait
 
             if($resource instanceof ResourceContract) {
                 $this->setResource($resource);
-            } elseif(is_callable($resource)) {
+            } elseif($resource instanceof Closure) {
                 $this->setResourceTitleCallback($resource);
             } elseif(is_string($resource)) {
                 $this->setResourceTitleField($resource);
@@ -115,7 +116,7 @@ trait FormElementTrait
 
     protected function findResource(): ResourceContract|null
     {
-        $resourceClass = (string) str('App\MoonShine\Resources\\')
+        $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
             ->append(str($this->relation() ?? $this->field())->studly()->singular())
             ->append('Resource');
 

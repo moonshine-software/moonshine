@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
+use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Closure;
 
@@ -44,7 +44,8 @@ trait WithHtmlAttributes
         }
 
         return (string) str($this->name ?? $this->name())
-            ->remove(['[', ']'])
+            ->replace(['[', ']'], '_')
+            ->trim('_')
             ->snake()
             ->when(!is_null($index), fn(Stringable $str) => $str->append("_$index"));
     }
@@ -254,7 +255,7 @@ trait WithHtmlAttributes
             return false;
         }
 
-        if($this instanceof FieldHasRelationContract
+        if($this instanceof HasRelationshipContract
             && !$this->isRelationToOne() && !$this->isRelationHasOne()) {
             $related = $item->{$this->relation()}()->getRelated();
 

@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Fields;
 
-class Textarea extends BaseField
+class Textarea extends Field
 {
     protected static string $view = 'textarea';
 }

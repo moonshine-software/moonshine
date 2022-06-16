@@ -5,7 +5,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Code extends BaseField
+class Code extends Field
 {
     protected static string $view = 'code';
 

@@ -4,9 +4,9 @@ namespace Leeto\MoonShine\Menu;
 
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Exceptions\MenuException;
-use Leeto\MoonShine\Resources\BaseResource;
+use Leeto\MoonShine\Resources\Resource;
 
-class MenuGroup extends BaseMenuSection
+class MenuGroup extends MenuSection
 {
     public static function make(...$arguments): static
     {
@@ -20,11 +20,11 @@ class MenuGroup extends BaseMenuSection
             $item = is_string($item) ? new $item() : $item;
 
             throw_if(
-                !$item instanceof MenuItem && !$item instanceof BaseResource,
+                !$item instanceof MenuItem && !$item instanceof Resource,
                 new MenuException('An object of the MenuItem|BaseResource class is required')
             );
 
-            if($item instanceof BaseResource) {
+            if($item instanceof Resource) {
                 return new MenuItem($item->title(), $item);
             }
 

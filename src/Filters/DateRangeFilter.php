@@ -4,11 +4,11 @@ namespace Leeto\MoonShine\Filters;
 
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Traits\Fields\DateFieldTrait;
+use Leeto\MoonShine\Traits\Fields\DateTrait;
 
-class DateRangeFilter extends BaseFilter
+class DateRangeFilter extends Filter
 {
-    use DateFieldTrait;
+    use DateTrait;
 
     public static string $view = 'date-range';
 

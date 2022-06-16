@@ -3,11 +3,11 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\FileFieldContract;
+use Leeto\MoonShine\Contracts\Fields\FileContract;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
 use Illuminate\Support\Facades\Storage;
 
-class Image extends BaseField implements FileFieldContract
+class Image extends Field implements FileContract
 {
     use FileTrait;
 

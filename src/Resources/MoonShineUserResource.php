@@ -16,7 +16,7 @@ use Leeto\MoonShine\Filters\TextFilter;
 
 use Leeto\MoonShine\Models\MoonshineUser;
 
-class MoonShineUserResource extends BaseResource
+class MoonShineUserResource extends Resource
 {
 	public static string $model = MoonshineUser::class;
 
@@ -24,7 +24,7 @@ class MoonShineUserResource extends BaseResource
 
     public string $titleField = 'name';
 
-    public static bool $system = true;
+    protected static bool $system = true;
 
     public function fields(): array
     {

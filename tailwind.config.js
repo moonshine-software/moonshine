@@ -1,7 +1,7 @@
 module.exports = {
   darkMode: 'class',
   content: [
-    './src/views/**/*.blade.php',
+    './resources/views/**/*.blade.php',
   ],
   theme: {
     extend: {
@@ -9,10 +9,12 @@ module.exports = {
         '[auto,auto,1fr]': 'auto auto 1fr',
       },
       colors: {
-        purple: "#7843E9",
-        pink: "#EC4176",
-        dark: "#222",
-        darkblue: "#1E1F43",
+        black: "#3f3960",
+        purple: "#7665FF",
+        pink: "#E065EF",
+        dark: "#130d52",
+        darkblue: "#302c79",
+        whiteblue: "#f6f4fe"
       },
     },
   },

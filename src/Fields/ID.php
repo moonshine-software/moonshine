@@ -5,7 +5,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ID extends BaseField
+class ID extends Field
 {
     public string $field = 'id';
 
@@ -20,7 +20,7 @@ class ID extends BaseField
     {
         return view('moonshine::shared.badge', [
             'value' => parent::indexViewValue($item, $container),
-            'color' => 'pink'
+            'color' => 'purple'
         ]);
     }
 

@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Fields;
 
-class Color extends BaseField
+class Color extends Field
 {
     protected static string $view = 'input';
 

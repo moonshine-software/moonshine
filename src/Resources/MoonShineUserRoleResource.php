@@ -8,7 +8,7 @@ use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Filters\TextFilter;
 use Leeto\MoonShine\Models\MoonshineUserRole;
 
-class MoonShineUserRoleResource extends BaseResource
+class MoonShineUserRoleResource extends Resource
 {
 	public static string $model = MoonshineUserRole::class;
 
@@ -16,7 +16,7 @@ class MoonShineUserRoleResource extends BaseResource
 
     public string $titleField = 'name';
 
-    public static bool $system = true;
+    protected static bool $system = true;
 
     public function fields(): array
     {

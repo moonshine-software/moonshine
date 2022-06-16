@@ -35,7 +35,7 @@
   "autoload-dev": {
     "psr-4": {
       "Leeto\\MoonShine\\Tests\\": "tests/",
-      "Leeto\\MoonShine\\Database\\Factories\\": "src/database/factories/"
+      "Leeto\\MoonShine\\Database\\Factories\\": "database/factories/"
     }
   },
   "extra": {

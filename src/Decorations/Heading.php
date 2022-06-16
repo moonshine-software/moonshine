@@ -3,7 +3,7 @@
 
 namespace Leeto\MoonShine\Decorations;
 
-class Heading extends BaseDecoration
+class Heading extends Decoration
 {
     public static string $view = 'heading';
 }

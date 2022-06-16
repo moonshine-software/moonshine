@@ -2,17 +2,18 @@
 
 namespace Leeto\MoonShine\Providers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
-use Leeto\MoonShine\Commands\UserCommand;
+use Illuminate\Support\ServiceProvider;
 use Leeto\MoonShine\Commands\InstallCommand;
 use Leeto\MoonShine\Commands\ResourceCommand;
+use Leeto\MoonShine\Commands\UserCommand;
 use Leeto\MoonShine\Components\MenuComponent;
-use Leeto\MoonShine\Extensions\BaseExtension;
+use Leeto\MoonShine\Dashboard\Dashboard;
+use Leeto\MoonShine\Extensions\Extension;
+use Leeto\MoonShine\Http\Middleware\Authenticate;
+use Leeto\MoonShine\Http\Middleware\Session;
 use Leeto\MoonShine\Menu\Menu;
-use Leeto\MoonShine\Middleware\Authenticate;
-use Leeto\MoonShine\Middleware\Session;
-use Illuminate\Support\Arr;
-use Illuminate\Support\ServiceProvider;
 use Leeto\MoonShine\MoonShine;
 
 class MoonShineServiceProvider extends ServiceProvider
@@ -53,24 +54,24 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__. '/../database/migrations');
-        $this->loadTranslationsFrom(__DIR__. '/../lang', 'moonshine');
-        $this->loadViewsFrom(__DIR__. '/../views', 'moonshine');
+        $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
+        $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
+        $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
 
         $this->publishes([
-            __DIR__ . '/../config/moonshine.php' => config_path('moonshine.php'),
+            MoonShine::path('/config/moonshine.php') => config_path('moonshine.php'),
         ]);
 
         $this->mergeConfigFrom(
-            __DIR__.'/../config/moonshine.php', 'moonshine'
+            MoonShine::path('/config/moonshine.php'), 'moonshine'
         );
 
         $this->publishes([
-            __DIR__. '/../assets' => public_path('vendor/moonshine'),
-        ], 'public');
+            MoonShine::path('/public') => public_path('vendor/moonshine'),
+        ], ['moonshine-assets', 'laravel-assets']);
 
         $this->publishes([
-            __DIR__. '/../lang' => $this->app->langPath('vendor/moonshine'),
+            MoonShine::path('/lang') => $this->app->langPath('vendor/moonshine'),
         ]);
 
         if ($this->app->runningInConsole()) {
@@ -78,7 +79,7 @@ class MoonShineServiceProvider extends ServiceProvider
         }
 
         Blade::withoutDoubleEncoding();
-        Blade::componentNamespace('Leeto\\MoonShine\\Components', 'moonshine');
+        Blade::componentNamespace('Leeto\MoonShine\Components', 'moonshine');
         Blade::component('menu-component', MenuComponent::class);
 
         $this->app->singleton(MoonShine::class, function ($app) {
@@ -89,15 +90,19 @@ class MoonShineServiceProvider extends ServiceProvider
             return new Menu();
         });
 
+        $this->app->singleton(Dashboard::class, function ($app) {
+            return new Dashboard();
+        });
+
         $extensions = [];
 
-        if(config("moonshine.extensions")) {
-            foreach (config("moonshine.extensions") as $class) {
+        if(config('moonshine.extensions')) {
+            foreach (config('moonshine.extensions') as $class) {
                 $extensions[] = new $class();
             }
         }
 
-        $this->app->bind(BaseExtension::class, function ($app) use ($extensions) {
+        $this->app->bind(Extension::class, function ($app) use ($extensions) {
            return $extensions;
         });
     }

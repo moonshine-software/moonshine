@@ -3,7 +3,7 @@
 namespace Leeto\MoonShine\Fields;
 
 
-class Text extends BaseField
+class Text extends Field
 {
     public static string $view = 'input';
 

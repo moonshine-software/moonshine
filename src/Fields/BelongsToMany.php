@@ -5,19 +5,19 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use Leeto\MoonShine\Contracts\Fields\FieldHasFieldsContract;
-use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
-use Leeto\MoonShine\Contracts\Fields\FieldWithPivotContract;
-use Leeto\MoonShine\Traits\Fields\FieldSelectTransformer;
-use Leeto\MoonShine\Traits\Fields\FieldWithFieldsTrait;
-use Leeto\MoonShine\Traits\Fields\FieldWithPivotTrait;
-use Leeto\MoonShine\Traits\Fields\FieldWithRelationshipsTrait;
-use Leeto\MoonShine\Traits\Fields\SearchableSelectFieldTrait;
+use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
+use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\HasPivotContract;
+use Leeto\MoonShine\Traits\Fields\SelectTransformerTrait;
+use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
+use Leeto\MoonShine\Traits\Fields\WithPivotTrait;
+use Leeto\MoonShine\Traits\Fields\WithRelationshipsTrait;
+use Leeto\MoonShine\Traits\Fields\SearchableTrait;
 
-class BelongsToMany extends BaseField implements FieldHasRelationContract, FieldWithPivotContract, FieldHasFieldsContract
+class BelongsToMany extends Field implements HasRelationshipContract, HasPivotContract, HasFieldsContract
 {
-    use FieldSelectTransformer, FieldWithRelationshipsTrait, FieldWithFieldsTrait, FieldWithPivotTrait;
-    use SearchableSelectFieldTrait;
+    use SelectTransformerTrait, WithRelationshipsTrait, WithFieldsTrait, WithPivotTrait;
+    use SearchableTrait;
 
     public static string $view = 'belongs-to-many';
 

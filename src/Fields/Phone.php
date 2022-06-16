@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Fields;
 
-class Phone extends BaseField
+class Phone extends Field
 {
     protected static string $view = 'input';
 

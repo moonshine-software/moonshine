@@ -3,11 +3,11 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\Fields\NumberFieldTrait;
+use Leeto\MoonShine\Traits\Fields\NumberTrait;
 
-class Number extends BaseField
+class Number extends Field
 {
-    use NumberFieldTrait;
+    use NumberTrait;
 
     protected static string $view = 'input';
 

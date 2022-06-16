@@ -11,7 +11,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class ExportAction extends BaseAction implements ActionContract
+class ExportAction extends Action implements ActionContract
 {
     /**
      * @throws Exception|ActionException

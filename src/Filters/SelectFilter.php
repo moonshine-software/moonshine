@@ -2,11 +2,11 @@
 
 namespace Leeto\MoonShine\Filters;
 
-use Leeto\MoonShine\Traits\Fields\SearchableSelectFieldTrait;
+use Leeto\MoonShine\Traits\Fields\SearchableTrait;
 
-class SelectFilter extends BaseFilter
+class SelectFilter extends Filter
 {
-    use SearchableSelectFieldTrait;
+    use SearchableTrait;
 
     public static string $view = 'select';
 }

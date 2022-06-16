@@ -4,11 +4,11 @@ namespace Leeto\MoonShine\Filters;
 
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Traits\Fields\NumberFieldTrait;
+use Leeto\MoonShine\Traits\Fields\NumberTrait;
 
-class SlideFilter extends BaseFilter
+class SlideFilter extends Filter
 {
-    use NumberFieldTrait;
+    use NumberTrait;
 
     public static string $view = 'slide';
 

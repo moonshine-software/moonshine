@@ -3,23 +3,35 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Controllers\MoonShineAuthController;
-use Leeto\MoonShine\Controllers\MoonShineUserRoleController;
-use Leeto\MoonShine\Controllers\MoonShineUserController;
-use Leeto\MoonShine\Controllers\MoonShineDashboardController;
+use Leeto\MoonShine\Http\Controllers\MoonShineAuthController;
+use Leeto\MoonShine\Http\Controllers\MoonShineDashboardController;
+use Leeto\MoonShine\Http\Controllers\MoonShineResourceController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
-use Leeto\MoonShine\Models\MoonshineUserRole;
-use Leeto\MoonShine\Resources\BaseResource;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
-use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
+use Leeto\MoonShine\Resources\Resource;
 
 class MoonShine
 {
+    public const DIR = 'app/MoonShine';
+
+    public const NAMESPACE = 'App\MoonShine';
+
     protected Collection|null $resources = null;
 
     protected Collection|null $menus = null;
+
+    public static function path(string $path = ''): string
+    {
+        return realpath(
+            dirname(__DIR__) . ($path ? DIRECTORY_SEPARATOR . $path : $path)
+        );
+    }
+
+    public static function namespace(string $path = ''): string
+    {
+        return static::NAMESPACE . $path;
+    }
 
     public function registerResources(array $data): void
     {
@@ -29,7 +41,7 @@ class MoonShine
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
-            if($item instanceof BaseResource) {
+            if($item instanceof Resource) {
 
                 $this->resources->add($item);
                 $this->menus->add(new MenuItem($item->title(), $item));
@@ -53,7 +65,9 @@ class MoonShine
         $this->addRoutes();
     }
 
-    /* @return BaseResource[] */
+    /**
+     * @return Resource[]
+     */
     public function getResources(): Collection
     {
         return $this->resources;
@@ -71,12 +85,13 @@ class MoonShine
             Route::any('/login', [MoonShineAuthController::class, 'login'])->name('login');
             Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
 
-            Route::resource((new MoonShineUserResource())->routeAlias(), MoonShineUserController::class);
-            Route::resource((new MoonshineUserRoleResource())->routeAlias(), MoonShineUserRoleController::class);
-
             $this->resources->each(function ($resource) {
-                /* @var BaseResource $resource */
-                Route::resource($resource->routeAlias(), $resource->controllerName());
+                /* @var Resource $resource */
+                if($resource->isSystem()) {
+                    Route::resource($resource->routeAlias(), $resource->controllerName());
+                } else {
+                    Route::resource($resource->routeAlias(), MoonShineResourceController::class);
+                }
             });
         });
     }

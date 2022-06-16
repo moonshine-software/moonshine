@@ -2,16 +2,16 @@
 
 namespace Leeto\MoonShine\Fields;
 
-use Leeto\MoonShine\Contracts\Fields\FieldHasFieldsContract;
-use Leeto\MoonShine\Contracts\Fields\FieldHasRelationContract;
-use Leeto\MoonShine\Traits\Fields\FieldWithFieldsTrait;
-use Leeto\MoonShine\Traits\Fields\FieldWithRelationshipsTrait;
+use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
+use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
+use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
+use Leeto\MoonShine\Traits\Fields\WithRelationshipsTrait;
 use Leeto\MoonShine\Traits\Fields\HasManyRelationConceptTrait;
 
-class HasMany extends BaseField implements FieldHasRelationContract, FieldHasFieldsContract
+class HasMany extends Field implements HasRelationshipContract, HasFieldsContract
 {
     use HasManyRelationConceptTrait;
-    use FieldWithRelationshipsTrait, FieldWithFieldsTrait;
+    use WithRelationshipsTrait, WithFieldsTrait;
 
     protected static string $view = 'has-many';
 }

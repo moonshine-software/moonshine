@@ -4,10 +4,10 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Leeto\MoonShine\Contracts\Fields\FileFieldContract;
+use Leeto\MoonShine\Contracts\Fields\FileContract;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
 
-class File extends BaseField implements FileFieldContract
+class File extends Field implements FileContract
 {
     use FileTrait;
 

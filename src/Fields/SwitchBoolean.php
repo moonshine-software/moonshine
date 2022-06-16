@@ -4,11 +4,11 @@ namespace Leeto\MoonShine\Fields;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\Fields\BooleanFieldTrait;
+use Leeto\MoonShine\Traits\Fields\BooleanTrait;
 
-class SwitchBoolean extends BaseField
+class SwitchBoolean extends Field
 {
-    use BooleanFieldTrait;
+    use BooleanTrait;
 
     protected static string $view = 'switch';
 
