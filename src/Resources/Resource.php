@@ -7,6 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
@@ -25,6 +26,7 @@ use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
 
 use Leeto\MoonShine\Filters\Filter;
+use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
 
 abstract class Resource implements ResourceContract
@@ -55,30 +57,61 @@ abstract class Resource implements ResourceContract
 
     protected Model $item;
 
+    /**
+     * Get an array of validation rules for resource related model
+     *
+     * @see https://laravel.com/docs/validation#available-validation-rules
+     *
+     * @param Model $item
+     * @return array
+     */
     abstract function rules(Model $item): array;
 
     /**
+     * Get an array of visible fields on resource page
+     *
      * @return Field[]
      */
     abstract function fields(): array;
 
     /**
+     * Get an array of filters displayed on resource index page
+     *
      * @return Filter[]
      */
     abstract function filters(): array;
 
     /**
+     * Get an array of additional actions performed on resource page
+     *
      * @return Action[]
      */
     abstract function actions(): array;
 
+    /**
+     * Get an array of fields which will be used for search on resource index page
+     *
+     * @return array
+     */
     abstract function search(): array;
 
+    /**
+     * Get an array of filter scopes, which will be applied on resource index page
+     *
+     * @see https://laravel.com/docs/eloquent#writing-global-scopes
+     *
+     * @return Scope[]
+     */
     public function scopes(): array
     {
         return [];
     }
 
+    /**
+     * Get an array of metrics which will be displayed on resource index page
+     *
+     * @return Metric[]
+     */
     public function metrics(): array
     {
         return [];
@@ -220,21 +253,25 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return BaseFilter\[]
+     * @return Filter[]
      */
     public function getFilters(): Collection
     {
         return collect($this->filters());
     }
 
-    /* @return Tab[] */
+    /**
+     * @return Tab[]
+     */
     public function tabs(): Collection
     {
         return collect($this->fields())
             ->filter(fn ($item) => $item instanceof Tab);
     }
 
-    /* @return Field[] */
+    /**
+     * @return Field[]
+     */
     public function whenFields(): Collection
     {
         return collect($this->getFields())
@@ -257,14 +294,18 @@ abstract class Resource implements ResourceContract
         return $this->whenFieldNames()->has($name);
     }
 
-    /* @return Field[] */
+    /**
+     * @return Field[]
+     */
     public function indexFields(): Collection
     {
         return $this->getFields()
             ->filter(fn (RenderableContract $field) => $field instanceof Field && $field->showOnIndex);
     }
 
-    /* @return Field[] */
+    /**
+     * @return Field[]
+     */
     public function formFields(): Collection
     {
         $fields = $this->extensionsFields();
@@ -273,7 +314,9 @@ abstract class Resource implements ResourceContract
             ->filter(fn (RenderableContract $field) => $field instanceof Field && $field->showOnForm));
     }
 
-    /* @return Field[] */
+    /**
+     * @return Field[]
+     */
     public function extensionsFields(): Collection
     {
         $fields = collect();
@@ -288,7 +331,9 @@ abstract class Resource implements ResourceContract
         return $fields;
     }
 
-    /* @return Field[] */
+    /**
+     * @return Field[]
+     */
     public function exportFields(): Collection
     {
         return $this->getFields()

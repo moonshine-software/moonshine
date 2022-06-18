@@ -28,6 +28,14 @@ trait FormElementTrait
 
     protected static string $view = '';
 
+    /**
+     * Creates a form element class: Field,Filter
+     *
+     * @param ...$arguments $label Form element label, will be displayed in moonshine admin panel,
+     *                      $field Field name from database, which will be used for this form element
+     *                      $resource Instance of related resource class, if form element is a relation
+     * @return static
+     */
     public static function make(...$arguments): static
     {
         return new static(...$arguments);

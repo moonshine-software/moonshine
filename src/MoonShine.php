@@ -33,6 +33,12 @@ class MoonShine
         return static::NAMESPACE . $path;
     }
 
+    /**
+     * Register resource classes in the system
+     *
+     * @param array $data Array of resource classes that is registering
+     * @return void
+     */
     public function registerResources(array $data): void
     {
         $this->resources = collect();
@@ -66,6 +72,8 @@ class MoonShine
     }
 
     /**
+     * Get collection of registered resources
+     *
      * @return Resource[]
      */
     public function getResources(): Collection
@@ -73,6 +81,11 @@ class MoonShine
         return $this->resources;
     }
 
+    /**
+     * Register moonshine routes and resources routes in the system
+     *
+     * @return void
+     */
     protected function addRoutes(): void
     {
         Route::prefix(config('moonshine.route.prefix'))
