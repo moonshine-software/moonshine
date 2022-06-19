@@ -55,7 +55,7 @@ abstract class Field implements RenderableContract
 
     public function hideOnForm(): static
     {
-        $this->showOnForm = true;
+        $this->showOnForm = false;
 
         return $this;
     }
