@@ -6,9 +6,13 @@
 
         <title>{{ config("moonshine.title") }}</title>
 
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('vendor/moonshine/apple-touch-icon.png') }}"/>
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('vendor/moonshine/favicon-32x32.png') }}"/>
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('vendor/moonshine/favicon-16x16.png') }}"/>
+        <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('vendor/moonshine/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('vendor/moonshine/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('vendor/moonshine/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('vendor/moonshine/site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ asset('vendor/moonshine/safari-pinned-tab.svg') }}" color="#7665FF">
+        <meta name="msapplication-TileColor" content="#7665FF">
+        <meta name="theme-color" content="#7665FF">
 
         <link rel="stylesheet" type="text/css" href="{{  mix('/css/moonshine.css', 'vendor/moonshine') }}">
         <script src="{{ mix('/js/moonshine.js', 'vendor/moonshine') }}" defer></script>

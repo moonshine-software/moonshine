@@ -17,6 +17,10 @@ class File extends Field implements FileContract
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
+        if($item->{$this->field()} == '') {
+            return '';
+        }
+
         if($this->isMultiple()) {
             return collect($item->{$this->field()})
                 ->map(fn ($value, $index) => view('moonshine::fields.shared.file', [

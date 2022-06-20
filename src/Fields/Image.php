@@ -17,6 +17,10 @@ class Image extends Field implements FileContract
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
+        if($item->{$this->field()} == '') {
+            return '';
+        }
+
         if($this->isMultiple()) {
             $values = collect($item->{$this->field()})
                 ->map(fn ($value) => "'".Storage::url($value)."'")->implode(',');
