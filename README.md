@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://laravel.com" target="_blank">
-<img src="https://moonshine.cutcode.ru/logo.jpeg" width="400">
+<img src="https://moonshine.cutcode.ru/logo.png" width="400">
 </a>
 </p>
 
