@@ -22,23 +22,23 @@
                     </thead>
 
                     <tbody class="bg-white dark:bg-darkblue text-black dark:text-white">
-                    <template x-for="(item, index) in items" :key="index"
+                    <template x-for="(item, index{{ $level }}) in items" :key="index{{ $level }}"
                     >
                         <tr :data-id="item.id" class="table_fields_{{ $field->id() }}">
                             @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
-                                <td class="px-6 py-4 whitespace-no-wrap" x-text="index + 1"></td>
+                                <td class="px-6 py-4 whitespace-no-wrap" x-text="index{{ $level }} + 1"></td>
                             @endif
 
                             @foreach($field->getFields() as $subField)
                                 <td class="px-6 py-4 whitespace-no-wrap">
-                                    {{ $resource->renderField($subField, $model) }}
+                                    {{ $resource->renderField($subField, $model, $level+1) }}
                                 </td>
                             @endforeach
 
                             @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
                                 <td class="px-6 py-4 whitespace-no-wrap">
                                     @if($field->isRemovable())
-                                        <button @click="removeField(index)" type="button" class="text-pink hover:text-pink inline-block">
+                                        <button @click="removeField(index{{ $level }})" type="button" class="text-pink hover:text-pink inline-block">
                                             @include("moonshine::shared.icons.delete", ["size" => 6, "color" => "pink", "class" => "mr-2"])
                                         </button>
                                     @endif

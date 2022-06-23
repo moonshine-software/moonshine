@@ -45,6 +45,8 @@ trait WithHtmlAttributes
 
         return (string) str($this->name ?? $this->name())
             ->replace(['[', ']'], '_')
+            ->replaceMatches('/\${index\d+}/', '')
+            ->replaceMatches('/_{2,}/', '_')
             ->trim('_')
             ->snake()
             ->when(!is_null($index), fn(Stringable $str) => $str->append("_$index"));

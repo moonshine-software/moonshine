@@ -109,7 +109,7 @@ interface ResourceContract
 
     public function renderDecoration(RenderableContract $decoration, Model $item);
 
-    public function renderField(RenderableContract $field, Model $item);
+    public function renderField(RenderableContract $field, Model $item, int $level = 0);
 
     public function renderFilter(RenderableContract $field, Model $item);
 

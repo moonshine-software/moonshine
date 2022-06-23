@@ -14,7 +14,7 @@ class JsonTest extends TestCase
         $field = Json::make('Names');
 
         $this->assertEquals('names', $field->field());
-        $this->assertEquals('names', $field->name());
+        $this->assertEquals('names[]', $field->name());
         $this->assertEquals('names', $field->id());
         $this->assertNull($field->relation());
         $this->assertEquals('Names', $field->label());
@@ -31,12 +31,9 @@ class JsonTest extends TestCase
         foreach ($field->getFields() as $inner) {
             $this->assertInstanceOf(Text::class, $inner);
 
-            $this->assertTrue($inner->hasParent());
-            $this->assertEquals($field, $inner->parent());
-
             $this->assertEquals('name', $inner->field());
-            $this->assertEquals('names[${index}][name]', $inner->name());
-            $this->assertEquals('names_name', $inner->id());
+            $this->assertEquals('names[${index0}][name]', $inner->name());
+            //$this->assertEquals('names_name', $inner->id());
             $this->assertNull($inner->relation());
             $this->assertEquals('Name', $inner->label());
         }
@@ -63,12 +60,9 @@ class JsonTest extends TestCase
 
         $this->assertInstanceOf(Text::class, $keyField);
 
-        $this->assertTrue($keyField->hasParent());
-        $this->assertEquals($field, $keyField->parent());
-
         $this->assertEquals('key', $keyField->field());
-        $this->assertEquals('names[${index}][key]', $keyField->name());
-        $this->assertEquals('names_key', $keyField->id());
+        $this->assertEquals('names[${index0}][key]', $keyField->name());
+        //$this->assertEquals('names_key', $keyField->id());
         $this->assertEquals('Key', $keyField->label());
     }
 

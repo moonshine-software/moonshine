@@ -30,9 +30,6 @@ class HasOneTest extends TestCase
         foreach ($field->getFields() as $inner) {
             $this->assertInstanceOf(Text::class, $inner);
 
-            $this->assertTrue($inner->hasParent());
-            $this->assertEquals($field, $inner->parent());
-
             $this->assertEquals('name', $inner->field());
             $this->assertEquals('role[name]', $inner->name());
             $this->assertEquals('role_name', $inner->id());

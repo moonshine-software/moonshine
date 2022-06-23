@@ -31,7 +31,7 @@
                 </div>
             @endif
 
-            @foreach($resource->fields() as $field)
+            @foreach($resource->formComponents() as $field)
                 @if($field instanceof \Leeto\MoonShine\Decorations\Decoration)
                     {{ $resource->renderDecoration($field, $item) }}
                 @elseif($field instanceof \Leeto\MoonShine\Fields\Field && $field->showOnForm)

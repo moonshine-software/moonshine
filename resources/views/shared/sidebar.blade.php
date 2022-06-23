@@ -6,7 +6,7 @@
      transform bg-darkblue overflow-y-auto lg:translate-x-0 lg:static lg:inset-0 shadow-md"
 >
     <div class="m-6">
-        <a href="{{ route(config('moonshine.route.prefix') . '.index') }}" class="text-pink">
+        <a href="{{ route(config('moonshine.route.prefix') . '.index') }}" class="text-white">
             @if(config("moonshine.logo"))
                 <img class="rounded-full h-10 mb-3 mx-auto" src="{{ config("moonshine.logo") }}" alt="{{ config("moonshine.title") }}">
             @else
