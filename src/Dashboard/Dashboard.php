@@ -33,8 +33,8 @@ class Dashboard
     {
         $assets = ['js' => [], 'css' => []];
 
-        if($this->blocks) {
-            foreach ($this->blocks as $block) {
+        if($this->getBlocks()) {
+            foreach ($this->getBlocks() as $block) {
                 foreach ($block->items() as $item) {
                     $assets = array_merge_recursive($item->getAssets(), $assets);
                 }

@@ -9,6 +9,7 @@ use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
 use Leeto\MoonShine\Traits\Fields\FormElementTrait;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
+use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModelTrait;
 
@@ -89,6 +90,28 @@ abstract class Field implements RenderableContract
         $this->parent = $field;
 
         return $this;
+    }
+
+    public function setParents(): static
+    {
+        if($this->hasFields()) {
+            $fields = [];
+
+            foreach ($this->fields as $field) {
+                $field = $field->setParents();
+
+                $fields[] = $field->setParent($this);
+            }
+
+            $this->fields($fields);
+        }
+
+        return $this;
+    }
+
+    public function hasFields(): bool
+    {
+        return in_array(WithFieldsTrait::class, class_uses_recursive($this));
     }
 
     public function hint(string $hint): static

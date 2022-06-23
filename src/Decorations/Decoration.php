@@ -4,6 +4,7 @@
 namespace Leeto\MoonShine\Decorations;
 
 use Leeto\MoonShine\Contracts\RenderableContract;
+use Leeto\MoonShine\Fields\Field;
 
 class Decoration implements RenderableContract
 {
@@ -31,7 +32,13 @@ class Decoration implements RenderableContract
 
     public function setFields(array $fields): static
     {
-        $this->fields = $fields;
+        $this->fields = [];
+
+        foreach ($fields as $field) {
+            if($field instanceof Field) {
+                $this->fields[] = $field->setParents();
+            }
+        }
 
         return $this;
     }

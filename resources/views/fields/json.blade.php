@@ -2,5 +2,6 @@
     'field' => $field,
     'resource' => $resource,
     'item' => $item,
-    'model' => $resource->getModel()
+    'model' => $resource->getModel(),
+    'level' => $level ?? 0
 ])

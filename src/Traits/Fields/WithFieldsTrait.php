@@ -4,10 +4,11 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
 use Leeto\MoonShine\Contracts\Fields\HasPivotContract;
 use Leeto\MoonShine\Exceptions\FieldException;
-use Leeto\MoonShine\Fields\HasMany;
+use Leeto\MoonShine\Fields\Json;
 use Leeto\MoonShine\Fields\Text;
 use Throwable;
 
@@ -19,56 +20,44 @@ trait WithFieldsTrait
 
     public function getFields(): array
     {
-        return $this->fields;
+        return collect($this->fields)->map(function ($field) {
+            throw_if(
+                $this instanceof Json && $field instanceof HasRelationshipContract,
+                new FieldException('Relationship fields in JSON field unavailable now. Coming soon')
+            );
+
+            throw_if(
+                $field->hasFields(),
+                new FieldException('Field with fields unavailable now. Coming soon')
+            );
+
+            if($this instanceof HasPivotContract) {
+                return $field->setName("{$this->relation()}_{$field->field()}[]");
+            }
+
+            return $field->xModel()->setName(
+                str($this->name())
+                    ->when(
+                    $this->isMultiple() && $this->hasFields(),
+                        fn(Stringable $s) => $s->append('[${index'. $s->substrCount('$') .'}]')
+                    )
+                    ->append("[{$field->field()}]")
+                    ->replace('[]', '')
+            );
+
+        })->toArray();
     }
 
     public function hasFields(): bool
     {
-        return isset($this->fields) && count($this->getFields());
+        return count($this->fields);
     }
 
-    /**
-     * @throws Throwable
-     */
     public function fields(array $fields): static
     {
         $this->fields = $fields;
 
-        foreach ($fields as $field) {
-            throw_if(
-                $field instanceof HasMany,
-                new FieldException('HasMany in fields unavailable now')
-            );
-
-            $field = $field->setParent($this)
-                ->setId("{$this->relation()}_{$field->name()}");
-
-            if($this instanceof HasRelationshipContract) {
-                if(!$this->isRelationHasOne() && !$this->isRelationToOne()) {
-                    $field = $field->multiple();
-                }
-
-                if(!$this instanceof HasPivotContract) {
-                    $field = $field->xModel();
-                }
-
-                if($this->isRelationHasOne()) {
-                    $field->setName("{$this->relation()}[{$field->field()}]");
-                } elseif(!$this->isRelationToOne() && !$this instanceof HasPivotContract) {
-                    $field->setName("{$this->relation()}[\${index}][{$field->field()}]");
-                } else {
-                   $field->setName($this->relation() ? "{$this->relation()}_{$field->name()}" : $field->name());
-                }
-            } else {
-                $field->xModel()
-                    ->multiple()
-                    ->setId("{$this->field()}_{$field->name()}")
-                    ->setName("{$this->field()}[\${index}][{$field->field()}]");
-            }
-        }
-
         return $this;
-
     }
 
     /**

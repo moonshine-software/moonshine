@@ -304,6 +304,20 @@ abstract class Resource implements ResourceContract
     }
 
     /**
+     * @return Collection
+     */
+    public function formComponents(): Collection
+    {
+        return collect($this->fields())->map(function ($component) {
+            if($component instanceof Field) {
+                return $component->setParents();
+            }
+
+            return $component;
+        });
+    }
+
+    /**
      * @return Field[]
      */
     public function formFields(): Collection
@@ -503,9 +517,9 @@ abstract class Resource implements ResourceContract
         return $item;
     }
 
-    public function renderField(RenderableContract $field, Model $item): Factory|View|Application
+    public function renderField(RenderableContract $field, Model $item, int $level = 0): Factory|View|Application
     {
-        return $this->_render($field, $item);
+        return $this->_render($field, $item, $level);
     }
 
     public function renderFilter(RenderableContract $field, Model $item): Factory|View|Application
@@ -530,7 +544,7 @@ abstract class Resource implements ResourceContract
         ]);
     }
 
-    protected function _render(RenderableContract $field, Model $item): Factory|View|Application
+    protected function _render(RenderableContract $field, Model $item, int $level = 0): Factory|View|Application
     {
         if ($field instanceof HasRelationshipContract) {
             $field->options($field->relatedOptions($item));
@@ -540,6 +554,7 @@ abstract class Resource implements ResourceContract
             'resource' => $this,
             'item' => $item,
             'field' => $field,
+            'level' => $level,
         ]);
     }
 

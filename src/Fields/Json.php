@@ -5,11 +5,12 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
 use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
-use Throwable;
 
 class Json extends Field implements HasFieldsContract
 {
     use WithFieldsTrait;
+
+    protected bool $multiple = true;
 
     protected static string $view = 'json';
 
