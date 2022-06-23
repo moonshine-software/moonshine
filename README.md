@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://laravel.com" target="_blank">
-<img src="https://moonshine.cutcode.ru/logo.png" width="400">
+<img src="https://moonshine.cutcode.ru/logo.png?v=1.6.0">
 </a>
 </p>
 
@@ -21,7 +21,11 @@
 #### Все подробности в [официальной документации](https://moonshine.cutcode.ru)
 
 <p align="center">
-<img src="https://moonshine.cutcode.ru/screenshots/main.png" alt="">
+<img src="https://moonshine.cutcode.ru/screenshots/main.png?v=1.6.0" alt="Main">
+</p>
+
+<p align="center">
+<img src="https://moonshine.cutcode.ru/screenshots/login.png?v=1.6.0" alt="Login">
 </p>
 
 ## Contributing
