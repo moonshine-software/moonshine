@@ -32,6 +32,7 @@ class Authenticate
     {
         return $request->is([
             config('moonshine.route.prefix') . '/login',
+            config('moonshine.route.prefix') . '/authenticate',
             config('moonshine.route.prefix') . '/logout',
         ]);
     }

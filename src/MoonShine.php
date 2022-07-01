@@ -95,7 +95,8 @@ class MoonShine
             Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
             Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
 
-            Route::any('/login', [MoonShineAuthController::class, 'login'])->name('login');
+            Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
+            Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
             Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
 
             $this->resources->each(function ($resource) {

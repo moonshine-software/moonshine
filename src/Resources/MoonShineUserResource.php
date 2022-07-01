@@ -43,8 +43,8 @@ class MoonShineUserResource extends Resource
             Image::make('Аватар', 'avatar')
                 ->removable()
                 ->showOnExport()
-                ->disk('public')
-                ->dir('images')
+                ->disk(config('filesystems.default'))
+                ->dir('moonshine_users')
                 ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
             Date::make('Дата создания', 'created_at')
@@ -67,7 +67,7 @@ class MoonShineUserResource extends Resource
     public function rules($item): array
     {
         return [
-            'name' => 'required|min:5',
+            'name' => 'required',
             'moonshine_user_role_id' => 'required',
             'email' => 'sometimes|bail|required|email|unique:moonshine_users,email' . ($item->exists ? ",$item->id" : ''),
             'password' => !$item->exists
@@ -78,7 +78,7 @@ class MoonShineUserResource extends Resource
 
     public function search(): array
     {
-        return ["id", "name"];
+        return ['id', 'name'];
     }
 
     public function filters(): array

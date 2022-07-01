@@ -35,10 +35,8 @@
                 @endif
             </div>
 
-            <form class="mt-8" action="#" method="POST">
-                {{ csrf_field() }}
-
-                <input type="hidden" name="remember" value="true">
+            <form class="mt-8" action="{{ route(config('moonshine.route.prefix') . '.authenticate') }}" method="POST">
+                @csrf
 
                 <div class="rounded-md shadow-sm">
                     <div>
@@ -61,7 +59,8 @@
 
                 <div class="mt-6 flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember_me" type="checkbox" class="form-checkbox h-4 w-4 text-pink transition duration-150 ease-in-out">
+                        <input type="hidden" name="remember" value="0">
+                        <input id="remember_me" name="remember" value="1" type="checkbox" class="form-checkbox h-4 w-4 text-pink transition duration-150 ease-in-out">
                         <label for="remember_me" class="ml-2 block text-sm leading-5">
                             {{ trans('moonshine::ui.login.remember_me') }}
                         </label>

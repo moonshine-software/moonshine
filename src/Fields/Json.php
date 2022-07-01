@@ -19,6 +19,10 @@ class Json extends Field implements HasFieldsContract
         $columns = [];
         $values = $item->{$this->field()};
 
+        if(!$this->hasFields()) {
+            return json_encode($values);
+        }
+
         if($this->isKeyValue()) {
             $values = collect($item->{$this->field()})
                 ->map(fn($value, $key) => ['key' => $key, 'value' => $value]);
