@@ -8,7 +8,7 @@
     <div class="m-6">
         <a href="{{ route(config('moonshine.route.prefix') . '.index') }}" class="text-white">
             @if(config("moonshine.logo"))
-                <img class="rounded-full h-10 mb-3 mx-auto" src="{{ config("moonshine.logo") }}" alt="{{ config("moonshine.title") }}">
+                <img class="h-10 mb-3 mx-auto" src="{{ config("moonshine.logo") }}" alt="{{ config("moonshine.title") }}">
             @else
                 <svg class="h-12 fill-current mx-auto" viewBox="0 0 435.71 350.71" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="253.58" cy="100.75" r="27.62" transform="matrix(.16022575 -.9870804 .9870804 .16022575 -14.01 334.92)"/>
