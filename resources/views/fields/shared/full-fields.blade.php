@@ -23,25 +23,25 @@
         </div>
     </template>
 
+    <div class="my-4">
     @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
-        <div class="my-4">
             <button type="button"
-                    class="bg-gradient-to-r from-purple to-pink text-white
-    text-white font-semibold py-2 px-4 rounded"
+                class="bg-gradient-to-r from-purple to-pink text-white
+                            text-white font-semibold py-2 px-4 rounded"
                     @click="addNewField()"
             >
                 Добавить
             </button>
-            @else
-                <button x-show="items.length == 0" type="button"
-                        class="bg-gradient-to-r from-purple to-pink text-white
-    text-white font-semibold py-2 px-4 rounded"
-                        @click="addNewField()"
-                >
-                    Создать
-                </button>
-        </div>
+        @else
+            <button x-show="items.length == 0" type="button"
+                class="bg-gradient-to-r from-purple to-pink text-white
+                        text-white font-semibold py-2 px-4 rounded"
+                    @click="addNewField()"
+            >
+                Создать
+            </button>
     @endif
+    </div>
 </div>
 
 <script>
