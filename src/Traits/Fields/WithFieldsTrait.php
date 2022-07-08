@@ -18,6 +18,20 @@ trait WithFieldsTrait
 
     protected array $fields = [];
 
+    protected bool $fullPage = false;
+
+    public function fullPage(): static
+    {
+        $this->fullPage = true;
+
+        return $this;
+    }
+
+    public function isFullPage(): bool
+    {
+        return $this->fullPage;
+    }
+
     public function getFields(): array
     {
         return collect($this->fields)->map(function ($field) {

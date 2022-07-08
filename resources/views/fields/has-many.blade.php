@@ -1,4 +1,4 @@
-@include('moonshine::fields.shared.table-fields', [
+@include('moonshine::fields.shared.'.($field->isFullPage() ? 'full' : 'table').'-fields', [
     'field' => $field,
     'resource' => $resource,
     'item' => $item,
