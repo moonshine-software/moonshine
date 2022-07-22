@@ -15,8 +15,10 @@
    {{ $field->isDisabled() ? "disabled" : "" }}
    {{ $field->isReadonly() ? "readonly" : "" }}
 
+   @if($field->isFile() && $field->getAttribute('accept')) accept="{{ $field->getAttribute('accept') }}" @endif
    @if($field->getAutocomplete()) autocomplete="{{ $field->getAutocomplete() }}" @endif
-   @if($field->type() !== 'file')
+
+   @if(!$field->isFile())
         @if(isset($valueKey))
             value="{!! is_array($field->formViewValue($item)) ? ($field->formViewValue($item)[$valueKey] ?? '') : ''  !!}"
         @else

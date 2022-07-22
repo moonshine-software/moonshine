@@ -33,6 +33,8 @@ trait WithHtmlAttributes
 
     protected string $autocomplete = 'off';
 
+    protected string $accept = '*/*';
+
     protected string $mask = '';
 
     protected array $options = [];
@@ -219,6 +221,13 @@ trait WithHtmlAttributes
         return $values->toArray();
     }
 
+    public function accept(string $value): static
+    {
+        $this->accept = $value;
+
+        return $this;
+    }
+
     public function autocomplete(string $value): static
     {
         $this->autocomplete = $value;
@@ -249,6 +258,11 @@ trait WithHtmlAttributes
         }
 
         return false;
+    }
+
+    public function isFile(): bool
+    {
+        return $this->type() === 'file';
     }
 
     public function isSelected(Model $item, string $value): bool
