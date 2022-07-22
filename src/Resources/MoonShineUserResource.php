@@ -1,7 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
-
 
 use Leeto\MoonShine\Actions\ExportAction;
 use Leeto\MoonShine\Fields\BelongsTo;

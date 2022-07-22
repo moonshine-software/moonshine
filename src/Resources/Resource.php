@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
@@ -216,7 +217,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return ActionContract[]
+     * @return Collection<ActionContract>
      */
     public function getActions(): Collection
     {
@@ -231,7 +232,7 @@ abstract class Resource implements ResourceContract
 
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function getFields(): Collection
     {
@@ -253,7 +254,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Filter[]
+     * @return Collection<Filter>
      */
     public function getFilters(): Collection
     {
@@ -261,7 +262,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Tab[]
+     * @return Collection<Tab>
      */
     public function tabs(): Collection
     {
@@ -270,7 +271,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function whenFields(): Collection
     {
@@ -295,7 +296,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function indexFields(): Collection
     {
@@ -318,7 +319,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function formFields(): Collection
     {
@@ -329,7 +330,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function extensionsFields(): Collection
     {
@@ -346,7 +347,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function exportFields(): Collection
     {
@@ -428,19 +429,19 @@ abstract class Resource implements ResourceContract
 
     public function query(): Builder
     {
-        $query = $this->getModel()->query();
+        $query = $this->getModel()->newModelQuery();
 
-        if($this->scopes()) {
+        if ($this->scopes()) {
             foreach ($this->scopes() as $scope) {
                 $query = $query->withGlobalScope($scope::class, $scope);
             }
         }
 
-        if(static::$with) {
+        if (static::$with) {
             $query = $query->with(static::$with);
         }
 
-        if(request()->has('search') && count($this->search())) {
+        if (request()->has('search') && count($this->search())) {
             foreach($this->search() as $field) {
                 $query = $query->orWhere(
                     $field,
@@ -450,13 +451,13 @@ abstract class Resource implements ResourceContract
             }
         }
 
-        if(request()->has('filters') && count($this->filters())) {
+        if (request()->has('filters') && count($this->filters())) {
             foreach ($this->filters() as $filter) {
                 $query = $filter->getQuery($query);
             }
         }
 
-        if(request()->has('order')) {
+        if (request()->has('order')) {
             $query = $query->orderBy(
                 request('order.field'),
                 request('order.type')
@@ -480,7 +481,7 @@ abstract class Resource implements ResourceContract
 
     public function can(string $ability, Model $item = null): bool
     {
-        if(!$this->isWithPolicy()) {
+        if (!$this->isWithPolicy()) {
             return true;
         }
 
@@ -501,7 +502,7 @@ abstract class Resource implements ResourceContract
                 }
             }
 
-            if($item->save()) {
+            if ($item->save()) {
                 foreach ($this->formFields() as $field) {
                     if($field instanceof HasRelationshipContract && (!$field->isRelationToOne() || $field->isRelationHasOne())) {
                         $item = $field->save($item);
@@ -557,5 +558,4 @@ abstract class Resource implements ResourceContract
             'level' => $level,
         ]);
     }
-
 }
