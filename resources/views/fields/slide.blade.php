@@ -34,7 +34,7 @@
 
         </div>
 
-        <div class="flex justify-between items-center py-5">
+        <div class="flex justify-between items-center py-5 text-black">
             <div>
                 <input name="{{ $field->name() }}[{{ $field->fromField }}]" type="text" maxlength="5" x-on:input="mintrigger" x-model="minValue" class="px-3 py-2 border border-gray-200 rounded w-24 text-center">
             </div>
@@ -42,7 +42,6 @@
                 <input name="{{ $field->name() }}[{{ $field->toField }}]" type="text" maxlength="5" x-on:input="maxtrigger" x-model="maxValue" class="px-3 py-2 border border-gray-200 rounded w-24 text-center">
             </div>
         </div>
-
     </div>
 
     <script>
