@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Leeto\MoonShine;
 
 use Illuminate\Support\Collection;
@@ -47,22 +49,21 @@ class MoonShine
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
-            if($item instanceof Resource) {
+            if ($item instanceof Resource) {
 
                 $this->resources->add($item);
                 $this->menus->add(new MenuItem($item->title(), $item));
 
-            } elseif($item instanceof MenuItem) {
+            } elseif ($item instanceof MenuItem) {
                 $this->resources->add($item->resource());
                 $this->menus->add($item);
 
-            } elseif($item instanceof MenuGroup) {
+            } elseif ($item instanceof MenuGroup) {
                 $this->menus->add($item);
 
                 $item->items()->each(function($subItem) {
                     $this->resources->add($subItem->resource());
                 });
-
             }
         });
 
@@ -71,12 +72,12 @@ class MoonShine
         $this->addRoutes();
     }
 
-    /**
-     * Get collection of registered resources
-     *
-     * @return Resource[]
-     */
-    public function getResources(): Collection
+	/**
+	 * Get collection of registered resources
+	 *
+	 * @return Collection|null
+	 */
+    public function getResources(): ?Collection
     {
         return $this->resources;
     }
@@ -99,9 +100,8 @@ class MoonShine
             Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
             Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
 
-            $this->resources->each(function ($resource) {
-                /* @var Resource $resource */
-                if($resource->isSystem()) {
+            $this->resources->each(function (Resource $resource) {
+                if ($resource->isSystem()) {
                     Route::resource($resource->routeAlias(), $resource->controllerName());
                 } else {
                     Route::resource($resource->routeAlias(), MoonShineResourceController::class);

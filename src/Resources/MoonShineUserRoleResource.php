@@ -1,7 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
-
 
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Fields\Text;
