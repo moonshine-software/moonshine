@@ -33,46 +33,63 @@ abstract class Field implements RenderableContract
 
     protected array $assets = [];
 
-    public function showOnIndex(): static
+    public function showOnIndex($condition = null): static
     {
-        $this->showOnIndex = true;
+        $this->showOnIndex = $this->executeBooleanCondition($condition, true);
 
         return $this;
     }
 
-    public function hideOnIndex(): static
+    public function hideOnIndex($condition = null): static
     {
-        $this->showOnIndex = false;
+        $this->showOnIndex = $this->executeBooleanCondition($condition, false);
 
         return $this;
     }
 
-    public function showOnForm(): static
+    public function showOnForm($condition = null): static
     {
-        $this->showOnForm = true;
+        $this->showOnForm = $this->executeBooleanCondition($condition, true);
 
         return $this;
     }
 
-    public function hideOnForm(): static
+    public function hideOnForm($condition = null): static
     {
-        $this->showOnForm = false;
+        $this->showOnForm = $this->executeBooleanCondition($condition, false);
 
         return $this;
     }
 
-    public function showOnExport(): static
+    public function showOnExport($condition = null): static
     {
-        $this->showOnExport = true;
+        $this->showOnExport = $this->executeBooleanCondition($condition, true);
 
         return $this;
     }
 
-    public function hideOnExport(): static
+    public function hideOnExport($condition = null): static
     {
-        $this->showOnExport = false;
+        $this->showOnExport = $this->executeBooleanCondition($condition, false);
 
         return $this;
+    }
+
+    /**
+     * Returns the Boolean value of the condition
+     *
+     * @param  mixed  $condition
+     * @param  bool  $default Default value. Return if condition not isset
+     *
+     * @return bool
+     */
+    protected function executeBooleanCondition(mixed $condition, bool $default): bool
+    {
+        if (isset($condition)) {
+            $conditionResult = is_callable($condition) ? $condition() : $condition;
+            return filter_var($conditionResult, FILTER_VALIDATE_BOOLEAN);
+        }
+        return $default;
     }
 
     public function parent(): Field|null
