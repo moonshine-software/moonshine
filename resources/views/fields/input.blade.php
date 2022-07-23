@@ -7,7 +7,7 @@
    type="{{ $field->type() }}"
    min="{{ $field->getAttribute('min') ?? 0 }}"
    max="{{ $field->getAttribute('max') ?? 100000 }}"
-    max="{{ $field->getAttribute('step') ?? 1 }}"
+   step="{{ $field->getAttribute('step') ?? 1 }}"
    class="{{ $field->getAttribute('class') ?? "text-black dark:text-white bg-white dark:bg-darkblue focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" }}"
 
    {{ $field->isRequired() ? "required" : "" }}
