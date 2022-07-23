@@ -57,7 +57,7 @@
     text-white font-semibold py-2 px-4 rounded"
                                         @click="addNewField()"
                                 >
-                                    Добавить
+                                    @lang('moonshine::ui.add')
                                 </button>
                             @else
                                 <button x-show="items.length == 0" type="button"
@@ -65,7 +65,7 @@
     text-white font-semibold py-2 px-4 rounded"
                                         @click="addNewField()"
                                 >
-                                    Создать
+                                    @lang('moonshine::ui.create')
                                 </button>
                             @endif
                         </td>

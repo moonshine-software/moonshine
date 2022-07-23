@@ -20,11 +20,14 @@ class MoonShineUserResource extends Resource
 {
 	public static string $model = MoonshineUser::class;
 
-    public static string $title = 'Администраторы';
-
     public string $titleField = 'name';
 
     protected static bool $system = true;
+
+    public function title(): string
+    {
+        return trans('moonshine::ui.base_resource.admins_title');
+    }
 
     public function fields(): array
     {
@@ -33,34 +36,34 @@ class MoonShineUserResource extends Resource
                 ->sortable()
                 ->showOnExport(),
 
-            BelongsTo::make('Роль', 'moonshine_user_role_id', new MoonShineUserRoleResource())
+            BelongsTo::make(trans('moonshine::ui.base_resource.role'), 'moonshine_user_role_id', new MoonShineUserRoleResource())
                 ->showOnExport(),
 
-            Text::make('Имя', 'name')
+            Text::make(trans('moonshine::ui.base_resource.name'), 'name')
                 ->required()
                 ->showOnExport(),
 
-            Image::make('Аватар', 'avatar')
+            Image::make(trans('moonshine::ui.base_resource.avatar'), 'avatar')
                 ->removable()
                 ->showOnExport()
                 ->disk(config('filesystems.default'))
                 ->dir('moonshine_users')
                 ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
-            Date::make('Дата создания', 'created_at')
+            Date::make(trans('moonshine::ui.base_resource.created_at'), 'created_at')
                 ->format("d.m.Y")
                 ->default(now())
                 ->sortable()
                 ->hideOnForm()
                 ->showOnExport(),
 
-            Email::make('E-mail', 'email')
+            Email::make(trans('moonshine::ui.base_resource.email'), 'email')
                 ->sortable()
                 ->showOnExport()
                 ->required(),
 
-            Password::make('Пароль', 'password')->hideOnIndex(),
-            PasswordRepeat::make('Повторите пароль', 'password_repeat')->hideOnIndex(),
+            Password::make(trans('moonshine::ui.base_resource.password'), 'password')->hideOnIndex(),
+            PasswordRepeat::make(trans('moonshine::ui.base_resource.repeat_password'), 'password_repeat')->hideOnIndex(),
         ];
     }
 
@@ -84,14 +87,14 @@ class MoonShineUserResource extends Resource
     public function filters(): array
     {
         return [
-            TextFilter::make('Имя', 'name'),
+            TextFilter::make(trans('moonshine::ui.base_resource.name'), 'name'),
         ];
     }
 
     public function actions(): array
     {
         return [
-            ExportAction::make('Экспорт'),
+            ExportAction::make(trans('moonshine::ui.export')),
         ];
     }
 }

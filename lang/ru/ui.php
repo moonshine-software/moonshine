@@ -2,7 +2,8 @@
 
 return [
     'dashboard' => 'Панель',
-    'create' => 'Добавить',
+    'add' => 'Добавить',
+    'create' => 'Создать',
     'save' => 'Сохранить',
     'saved' => 'Сохранено',
     'saved_error' => 'Произошла ошибка',
@@ -17,10 +18,19 @@ return [
     'export' => 'Экспорт',
     'cancel' => 'Отмена',
     'confirm' => 'Подтвердить',
+    'close' => 'Закрыть',
     'confirm_delete' => 'Вы уверены, что хотите удалить запись?',
     'back' => 'Вернуться назад',
     'more' => 'Перейти',
     'all_sections' => 'Все разделы',
+    'file' => 'Файл',
+    'user' => 'Пользователь',
+    'changes' => 'Изменения',
+    'last_changes' => 'Последние 5 изменений',
+    'date' => 'Дата',
+    'field' => 'Поле',
+    'before' => 'До',
+    'after' => 'После',
     'login' => [
         'authorization' => 'Авторизация',
         'remember_me' => 'Запомнить',
@@ -29,4 +39,15 @@ return [
         'email' => 'E-mail',
         'password' => 'Пароль',
     ],
+    'resource' => [
+        'role' => 'Роль',
+        'name' => 'Имя',
+        'email' => 'E-mail',
+        'password' => 'Пароль',
+        'repeat_password' => 'Повторите пароль',
+        'avatar' => 'Аватар',
+        'created_at' => 'Дата создания',
+        'admins_title' => 'Администраторы',
+        'role_name' => 'Название',
+    ]
 ];

@@ -5,7 +5,7 @@
         </svg>
 
         <span class="ml-2 flex-1 truncate">
-            Файл {{ $index ?? '' }}
+            @lang('moonshine::file') {{ $index ?? '' }}
         </span>
 
         @if($canDownload)
