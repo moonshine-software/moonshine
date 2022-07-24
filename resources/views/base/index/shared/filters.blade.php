@@ -23,10 +23,10 @@
                  flex flex-col overflow-y-auto"
             >
                 <div class="px-4 flex items-center justify-between">
-                    <h2 class="text-lg font-medium">Фильтры</h2>
+                    <h2 class="text-lg font-medium">@lang('moonshine::ui.filters')</h2>
 
                     <button @click="filtersOpen = false" type="button" class="-mr-2 w-10 h-10 bg-white text-black dark:bg-purple dark:text-white p-2 rounded-md flex items-center justify-center">
-                        <span class="sr-only">Закрыть</span>
+                        <span class="sr-only">@lang('moonshine::ui.close')</span>
 
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

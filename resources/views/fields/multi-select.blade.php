@@ -65,7 +65,7 @@
             </div>
             <div class="w-full px-4">
                 <div x-show.transition.origin.top="isOpen()" class="absolute shadow-lg top-100 bg-white dark:bg-darkblue z-40 w-full left-0 rounded max-h-select" x-on:click.outside="close">
-                    <input placeholder="Поиск"
+                    <input placeholder="@lang('moonshine::ui.search')"
                            type="text"
                            x-on:keydown="filterOptions()"
                            x-model="search"

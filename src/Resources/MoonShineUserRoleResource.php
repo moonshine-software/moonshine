@@ -12,17 +12,21 @@ class MoonShineUserRoleResource extends Resource
 {
 	public static string $model = MoonshineUserRole::class;
 
-    public static string $title = 'Роли';
-
     public string $titleField = 'name';
 
     protected static bool $system = true;
+
+    public function title(): string
+    {
+        return trans('moonshine::ui.base_resource.role');
+    }
 
     public function fields(): array
     {
         return [
             ID::make()->sortable()->showOnExport(),
-            Text::make('Название', 'name')->required()->showOnExport(),
+            Text::make(trans('moonshine::ui.base_resource.role_name'), 'name')
+                ->required()->showOnExport(),
         ];
     }
 
@@ -41,7 +45,7 @@ class MoonShineUserRoleResource extends Resource
     public function filters(): array
     {
         return [
-            TextFilter::make('Название', 'name'),
+            TextFilter::make(trans('moonshine::ui.base_resource.role_name'), 'name'),
         ];
     }
 
