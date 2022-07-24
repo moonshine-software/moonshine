@@ -1,5 +1,5 @@
 @if($item->changeLogs && $item->changeLogs->isNotEmpty())
-    <div class="my-6 text-lg">Последнии 5 изменений</div>
+    <div class="my-6 text-lg">@lang('moonshine::ui.last_changes')</div>
 
     <div class="flex flex-col mt-8">
         <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -8,13 +8,13 @@
                     <thead class="bg-whiteblue dark:bg-purple">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium  uppercase tracking-wider">
-                                Пользователь
+                                @lang('moonshine::ui.user')
                             </th>
                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                                Изменения
+                                @lang('moonshine::ui.changes')
                             </th>
                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                                Дата
+                                @lang('moonshine::ui.date')
                             </th>
                         </tr>
                     </thead>
@@ -33,13 +33,13 @@
                                     <thead class="bg-whiteblue dark:bg-purple">
                                         <tr>
                                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                                                Поле
+                                                @lang('moonshine::ui.field')
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                                                До
+                                                @lang('moonshine::ui.before')
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                                                После
+                                                @lang('moonshine::ui.after')
                                             </th>
                                         </tr>
                                     </thead>

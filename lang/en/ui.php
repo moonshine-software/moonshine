@@ -2,6 +2,7 @@
 
 return [
     'dashboard' => 'Dashboard',
+    'add' => 'Add',
     'create' => 'Create',
     'save' => 'Save',
     'saved' => 'Saved',
@@ -17,10 +18,19 @@ return [
     'export' => 'Export',
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
+    'close' => 'Close',
     'confirm_delete' => 'Are you sure?',
     'back' => 'Back',
     'more' => 'More',
     'all_sections' => 'All sections',
+    'file' => 'File',
+    'user' => 'User',
+    'changes' => 'Changes',
+    'last_changes' => 'Last 5 changes',
+    'date' => 'Date',
+    'field' => 'Field',
+    'before' => 'Before',
+    'after' => 'After',
     'login' => [
         'authorization' => 'Authorization',
         'remember_me' => 'Remember me',
@@ -29,4 +39,16 @@ return [
         'email' => 'E-mail',
         'password' => 'Password',
     ],
+    'base_resource' => [
+        'role' => 'Role',
+        'name' => 'Name',
+        'email' => 'E-mail',
+        'password' => 'Password',
+        'repeat_password' => 'Repeat password',
+        'avatar' => 'Avatar',
+        'created_at' => 'Created At',
+        'admins_title' => 'Admins',
+        'role_title' => 'Roles',
+        'role_name' => 'Title',
+    ]
 ];
