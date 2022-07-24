@@ -13,6 +13,8 @@ use Closure;
 
 trait WithHtmlAttributes
 {
+    use HasBooleanCondition;
+
     protected string|null $name = null;
 
     protected string|null $id = null;
@@ -100,9 +102,9 @@ trait WithHtmlAttributes
         return collect($this->attributes())->get($name);
     }
 
-    public function required(): static
+    public function required($closure = null): static
     {
-        $this->required = true;
+        $this->required = $this->executeBooleanCondition($closure, true);
 
         return $this;
     }
@@ -124,9 +126,9 @@ trait WithHtmlAttributes
         return old($this->nameDot(), $this->default);
     }
 
-    public function disabled(): static
+    public function disabled($closure = null): static
     {
-        $this->disabled = true;
+        $this->disabled = $this->executeBooleanCondition($closure, true);
 
         return $this;
     }
@@ -148,9 +150,11 @@ trait WithHtmlAttributes
         return $this;
     }
 
-    public function hidden(): static
+    public function hidden($closure = null): static
     {
-        static::$type = 'hidden';
+        if($this->executeBooleanCondition($closure, true)) {
+            static::$type = 'hidden';
+        }
 
         return $this;
     }
@@ -160,9 +164,9 @@ trait WithHtmlAttributes
         return static::$type === 'hidden';
     }
 
-    public function readonly(): static
+    public function readonly($closure = null): static
     {
-        $this->readonly = true;
+        $this->readonly = $this->executeBooleanCondition($closure, true);
 
         return $this;
     }
@@ -172,9 +176,9 @@ trait WithHtmlAttributes
         return $this->readonly;
     }
 
-    public function nullable(): static
+    public function nullable($closure = null): static
     {
-        $this->nullable = true;
+        $this->nullable = $this->executeBooleanCondition($closure, true);
 
         return $this;
     }
@@ -184,9 +188,9 @@ trait WithHtmlAttributes
         return $this->nullable;
     }
 
-    public function multiple(): static
+    public function multiple($closure = null): static
     {
-        $this->multiple = true;
+        $this->multiple = $this->executeBooleanCondition($closure, true);
 
         return $this;
     }

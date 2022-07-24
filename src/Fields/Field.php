@@ -7,6 +7,7 @@ use Leeto\MoonShine\Contracts\RenderableContract;
 use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
 
 use Leeto\MoonShine\Traits\Fields\FormElementTrait;
+use Leeto\MoonShine\Traits\Fields\HasBooleanCondition;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
 use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
@@ -15,7 +16,7 @@ use Leeto\MoonShine\Traits\Fields\XModelTrait;
 
 abstract class Field implements RenderableContract
 {
-    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait, LinkTrait;
+    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait, LinkTrait, HasBooleanCondition;
 
     public bool $showOnIndex = true;
 
@@ -73,23 +74,6 @@ abstract class Field implements RenderableContract
         $this->showOnExport = $this->executeBooleanCondition($condition, false);
 
         return $this;
-    }
-
-    /**
-     * Returns the Boolean value of the condition
-     *
-     * @param  mixed  $condition
-     * @param  bool  $default Default value. Return if condition not isset
-     *
-     * @return bool
-     */
-    protected function executeBooleanCondition(mixed $condition, bool $default): bool
-    {
-        if (isset($condition)) {
-            $conditionResult = is_callable($condition) ? $condition() : $condition;
-            return filter_var($conditionResult, FILTER_VALIDATE_BOOLEAN);
-        }
-        return $default;
     }
 
     public function parent(): Field|null
