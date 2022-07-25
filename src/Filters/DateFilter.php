@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Filters;
 
@@ -7,16 +8,16 @@ use Leeto\MoonShine\Traits\Fields\DateTrait;
 
 class DateFilter extends Filter
 {
-    use DateTrait;
+	use DateTrait;
 
-    public static string $view = 'date';
+	public static string $view = 'date';
 
-    public static string $type = 'date';
+	public static string $type = 'date';
 
-    public function getQuery(Builder $query): Builder
-    {
-        return $this->requestValue()
-            ? $query->whereDate($this->field(), '=', $this->requestValue())
-            : $query;
-    }
+	public function getQuery(Builder $query): Builder
+	{
+		return $this->requestValue()
+			? $query->whereDate($this->field(), '=', $this->requestValue())
+			: $query;
+	}
 }

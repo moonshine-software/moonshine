@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
@@ -15,23 +16,23 @@ use function view;
 
 class MoonShineDashboardController extends BaseController
 {
-    public function index(): Factory|View|Application
-    {
-        return view('moonshine::dashboard', [
-            'blocks' => app(Dashboard::class)->getBlocks()
-        ]);
-    }
+	public function index(): Factory|View|Application
+	{
+		return view('moonshine::dashboard', [
+			'blocks' => app(Dashboard::class)->getBlocks(),
+		]);
+	}
 
-    public function attachments(Request $request): array
-    {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+	public function attachments(Request $request): array
+	{
+		if ($request->hasFile('file')) {
+			$file = $request->file('file');
 
-            return [
-                'attachment' => Storage::url($file->store('attachments', 'public'))
-            ];
-        }
+			return [
+				'attachment' => Storage::url($file->store('attachments', 'public')),
+			];
+		}
 
-        return [];
-    }
+		return [];
+	}
 }

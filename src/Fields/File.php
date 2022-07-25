@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
@@ -9,31 +10,31 @@ use Leeto\MoonShine\Traits\Fields\FileTrait;
 
 class File extends Field implements FileContract
 {
-    use FileTrait;
+	use FileTrait;
 
-    protected static string $view = 'file';
+	protected static string $view = 'file';
 
-    protected static string $type = 'file';
+	protected static string $type = 'file';
 
-    public function indexViewValue(Model $item, bool $container = true): string
-    {
-        if($item->{$this->field()} == '') {
-            return '';
-        }
+	public function indexViewValue(Model $item, bool $container = true): string|\Illuminate\Contracts\View\View
+	{
+		if ($item->{$this->field()} == '') {
+			return '';
+		}
 
-        if($this->isMultiple()) {
-            return collect($item->{$this->field()})
-                ->map(fn ($value, $index) => view('moonshine::fields.shared.file', [
-                    'value' => Storage::url($value),
-                    'index' => $index+1,
-                    'canDownload' => $this->canDownload(),
-                ])->render())->implode('');
-        }
+		if ($this->isMultiple()) {
+			return collect($item->{$this->field()})
+				->map(fn($value, $index) => view('moonshine::fields.shared.file', [
+					'value' => Storage::url($value),
+					'index' => $index + 1,
+					'canDownload' => $this->canDownload(),
+				])->render())->implode('');
+		}
 
-        return view(
-            'moonshine::fields.shared.file', [
-                'value' => parent::indexViewValue($item),
-                'canDownload' => $this->canDownload(),
-        ]);
-    }
+		return view(
+			'moonshine::fields.shared.file', [
+			'value' => parent::indexViewValue($item),
+			'canDownload' => $this->canDownload(),
+		]);
+	}
 }

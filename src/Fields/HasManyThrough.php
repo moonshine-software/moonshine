@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
@@ -11,21 +12,21 @@ use Leeto\MoonShine\Traits\Fields\HasManyRelationConceptTrait;
 
 class HasManyThrough extends Field implements HasRelationshipContract, HasFieldsContract
 {
-    use HasManyRelationConceptTrait;
-    use WithRelationshipsTrait, WithFieldsTrait;
+	use HasManyRelationConceptTrait;
+	use WithRelationshipsTrait, WithFieldsTrait;
 
-    protected static string $view = 'has-many';
+	protected static string $view = 'has-many';
 
-    public function save(Model $item): Model
-    {
-        $item->{$this->relation()}()->delete();
+	public function save(Model $item): Model
+	{
+		$item->{$this->relation()}()->delete();
 
-        if($this->requestValue() !== false) {
-            foreach ($this->requestValue() as $values) {
-                $item->{$this->relation()}()->create($values);
-            }
-        }
+		if ($this->requestValue() !== false) {
+			foreach ($this->requestValue() as $values) {
+				$item->{$this->relation()}()->create($values);
+			}
+		}
 
-        return $item;
-    }
+		return $item;
+	}
 }

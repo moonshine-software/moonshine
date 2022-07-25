@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
@@ -16,148 +17,148 @@ use Leeto\MoonShine\Traits\Fields\SearchableTrait;
 
 class BelongsToMany extends Field implements HasRelationshipContract, HasPivotContract, HasFieldsContract
 {
-    use SelectTransformerTrait, WithRelationshipsTrait, WithFieldsTrait, WithPivotTrait;
-    use SearchableTrait;
+	use SelectTransformerTrait, WithRelationshipsTrait, WithFieldsTrait, WithPivotTrait;
+	use SearchableTrait;
 
-    public static string $view = 'belongs-to-many';
+	public static string $view = 'belongs-to-many';
 
-    protected bool $tree = false;
+	protected bool $tree = false;
 
-    protected string $treeHtml = '';
+	protected string $treeHtml = '';
 
-    protected string $treeParentColumn = '';
+	protected string $treeParentColumn = '';
 
-    protected array $ids = [];
+	protected array $ids = [];
 
-    public function ids(): array
-    {
-        return $this->ids;
-    }
+	public function ids(): array
+	{
+		return $this->ids;
+	}
 
-    public function treeHtml(): string
-    {
-        return $this->treeHtml;
-    }
+	public function treeHtml(): string
+	{
+		return $this->treeHtml;
+	}
 
-    public function tree(string $treeParentColumn): static
-    {
-        $this->treeParentColumn = $treeParentColumn;
-        $this->tree = true;
+	public function tree(string $treeParentColumn): static
+	{
+		$this->treeParentColumn = $treeParentColumn;
+		$this->tree = true;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function treeParentColumn(): string
-    {
-        return $this->treeParentColumn;
-    }
+	public function treeParentColumn(): string
+	{
+		return $this->treeParentColumn;
+	}
 
-    public function isTree(): bool
-    {
-        return $this->tree;
-    }
+	public function isTree(): bool
+	{
+		return $this->tree;
+	}
 
-    private function treePerformData(Collection $data): array
-    {
-        $performData = [];
+	private function treePerformData(Collection $data): array
+	{
+		$performData = [];
 
-        foreach ($data as $item) {
-            $parent = is_null($item->{$this->treeParentColumn()})
-                ? 0
-                : $item->{$this->treeParentColumn()};
+		foreach ($data as $item) {
+			$parent = is_null($item->{$this->treeParentColumn()})
+				? 0
+				: $item->{$this->treeParentColumn()};
 
-            $performData[$parent][$item->getKey()] = $item;
-        }
+			$performData[$parent][$item->getKey()] = $item;
+		}
 
-        return $performData;
-    }
+		return $performData;
+	}
 
-    private function treePerformHtml(Collection $data): void
-    {
-        $this->makeTree($this->treePerformData($data));
+	private function treePerformHtml(Collection $data): void
+	{
+		$this->makeTree($this->treePerformData($data));
 
-        $this->treeHtml = str($this->treeHtml())->wrap("<ul>", "</ul>");
-    }
+		$this->treeHtml = str($this->treeHtml())->wrap("<ul>", "</ul>");
+	}
 
-    public function buildTreeHtml(Model $item): string
-    {
-        $data = $item->{$this->relation()}()->getRelated()->all();
+	public function buildTreeHtml(Model $item): string
+	{
+		$data = $item->{$this->relation()}()->getRelated()->all();
 
-        $this->treePerformHtml($data);
+		$this->treePerformHtml($data);
 
-        return $this->treeHtml();
-    }
+		return $this->treeHtml();
+	}
 
-    private function makeTree(array $performedData, int $parent_id = 0, int $offset = 0): void
-    {
-        if(isset($performedData[$parent_id])) {
-            foreach($performedData[$parent_id] as $item)
-            {
-                $this->ids[] = $item->getKey();
+	private function makeTree(array $performedData, int $parent_id = 0, int $offset = 0): void
+	{
+		if (isset($performedData[$parent_id])) {
+			foreach ($performedData[$parent_id] as $item) {
+				$this->ids[] = $item->getKey();
 
-                $element = view('moonshine::fields.shared.checkbox', [
-                    'meta' => $this->meta(),
-                    'id' => $this->id(),
-                    'name' => $this->name(),
-                    'value' => $item->getKey(),
-                    'label' => $item->{$this->resourceTitleField()}
-                ]);
+				$element = view('moonshine::fields.shared.checkbox', [
+					'meta' => $this->meta(),
+					'id' => $this->id(),
+					'name' => $this->name(),
+					'value' => $item->getKey(),
+					'label' => $item->{$this->resourceTitleField()},
+				]);
 
-                $this->treeHtml .= str($element)->wrap(
-                    "<li x-ref='item_{$item->getKey()}' style='margin-left: ".($offset*50)."px' class='mb-3 bg-purple py-4 px-4 rounded-md'>",
-                    "</li>"
-                );
+				$this->treeHtml .= str($element)->wrap(
+					"<li x-ref='item_{$item->getKey()}' style='margin-left: " . ($offset * 50) . "px' class='mb-3 bg-purple py-4 px-4 rounded-md'>",
+					"</li>"
+				);
 
-                $this->makeTree($performedData, $item->getKey(), $offset + 1);
-            }
-        }
-    }
+				$this->makeTree($performedData, $item->getKey(), $offset + 1);
+			}
+		}
+	}
 
-    public function indexViewValue(Model $item, bool $container = false): string
-    {
-        $result = str('');
+	public function indexViewValue(Model $item, bool $container = false): string
+	{
+		$result = str('');
 
-        return $item->{$this->relation()}->map(function ($item) use($result) {
-            $pivotAs = $this->getPivotAs($item);
+		return $item->{$this->relation()}->map(function ($item) use ($result) {
+			$pivotAs = $this->getPivotAs($item);
 
 
-            $result = $result->append($item->{$this->resourceTitleField()})
-                ->when($this->hasFields(), fn(Stringable $str) => $str->append(' - '));
+			$result = $result->append($item->{$this->resourceTitleField()})
+				->when($this->hasFields(), fn(Stringable $str) => $str->append(' - '));
 
-            foreach ($this->getFields() as $field) {
-                $result = $result->when($field->formViewValue($item->{$pivotAs}), function (Stringable $str) use($pivotAs, $field, $item) {
-                    return $str->append($field->formViewValue($item->{$pivotAs}));
-                });
-            }
+			foreach ($this->getFields() as $field) {
+				$result = $result->when($field->formViewValue($item->{$pivotAs}),
+					function (Stringable $str) use ($pivotAs, $field, $item) {
+						return $str->append($field->formViewValue($item->{$pivotAs}));
+					});
+			}
 
-            return (string) $result;
-        })->implode(',');
-    }
+			return (string) $result;
+		})->implode(',');
+	}
 
-    public function save(Model $item): Model
-    {
-        $values = $this->requestValue() ? $this->requestValue() : [];
-        $sync = [];
+	public function save(Model $item): Model
+	{
+		$values = $this->requestValue() ? $this->requestValue() : [];
+		$sync = [];
 
-        if($this->hasFields()) {
-            foreach ($values as $index => $value) {
-                foreach ($this->getFields() as $field) {
-                    $sync[$value][$field->field()] = $field->requestValue()[$index] ?? '';
-                }
-            }
-        } else {
-            $sync = $values;
-        }
+		if ($this->hasFields()) {
+			foreach ($values as $index => $value) {
+				foreach ($this->getFields() as $field) {
+					$sync[$value][$field->field()] = $field->requestValue()[$index] ?? '';
+				}
+			}
+		} else {
+			$sync = $values;
+		}
 
-        $item->{$this->relation()}()->sync($sync);
+		$item->{$this->relation()}()->sync($sync);
 
-        return $item;
-    }
+		return $item;
+	}
 
-    public function exportViewValue(Model $item): string
-    {
-        return collect($item->{$this->relation()})
-            ->map(fn ($item) => $item->{$this->resourceTitleField()})
-            ->implode(';');
-    }
+	public function exportViewValue(Model $item): string
+	{
+		return collect($item->{$this->relation()})
+			->map(fn($item) => $item->{$this->resourceTitleField()})
+			->implode(';');
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
@@ -95,7 +96,7 @@ abstract class Field implements RenderableContract
 
     public function setParents(): static
     {
-        if($this->hasFields()) {
+        if ($this->hasFields()) {
             $fields = [];
 
             foreach ($this->fields as $field) {
@@ -163,13 +164,13 @@ abstract class Field implements RenderableContract
 
     public function formViewValue(Model $item): mixed
     {
-        if($this instanceof HasRelationshipContract
+        if ($this instanceof HasRelationshipContract
             && $this->isRelationToOne()
             && !$this->isRelationHasOne()) {
             return $item->{$this->relation()}?->getKey() ?? $this->getDefault();
         }
 
-        if($this instanceof HasRelationshipContract) {
+        if ($this instanceof HasRelationshipContract) {
             return $item->{$this->relation()} ?? $this->getDefault();
         }
 
@@ -178,8 +179,8 @@ abstract class Field implements RenderableContract
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        if($this instanceof HasRelationshipContract) {
-            if(!$item->{$this->relation()}) {
+        if ($this instanceof HasRelationshipContract) {
+            if (!$item->{$this->relation()}) {
                 return '';
             }
 
@@ -194,8 +195,8 @@ abstract class Field implements RenderableContract
 
     public function exportViewValue(Model $item): string
     {
-        if($this instanceof HasRelationshipContract) {
-            if(!$item->{$this->relation()}) {
+        if ($this instanceof HasRelationshipContract) {
+            if (!$item->{$this->relation()}) {
                 return '';
             }
 

@@ -1,41 +1,41 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
-
 
 use Illuminate\Database\Eloquent\Model;
 
 class Code extends Field
 {
-    protected static string $view = 'code';
+	protected static string $view = 'code';
 
-    public string $language = 'php';
+	public string $language = 'php';
 
-    public bool $lineNumbers = false;
+	public bool $lineNumbers = false;
 
-    protected array $assets = [
-        'js' => ['https://unpkg.com/codeflask/build/codeflask.min.js'],
-    ];
+	protected array $assets = [
+		'js' => ['https://unpkg.com/codeflask/build/codeflask.min.js'],
+	];
 
-    public function language(string $language): static
-    {
-        $this->language = $language;
+	public function language(string $language): static
+	{
+		$this->language = $language;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function lineNumbers(): static
-    {
-        $this->lineNumbers = true;
+	public function lineNumbers(): static
+	{
+		$this->lineNumbers = true;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function indexViewValue(Model $item, bool $container = true): string
-    {
-        return str($item->{$this->field()})
-            ->before('<pre>')
-            ->after('</pre>')
-            ->stripTags();
-    }
+	public function indexViewValue(Model $item, bool $container = true): string
+	{
+		return str($item->{$this->field()})
+			->before('<pre>')
+			->after('</pre>')
+			->stripTags();
+	}
 }

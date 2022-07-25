@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MoonshineUserRole extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    public const DEFAULT_ROLE_ID = 1;
+	public const DEFAULT_ROLE_ID = 1;
 
-    protected $fillable = ['name'];
+	protected $fillable = ['name'];
 
-    public function moonshineUsers(): HasMany
-    {
-        return $this->hasMany(MoonshineUser::class);
-    }
+	public function moonshineUsers(): HasMany
+	{
+		return $this->hasMany(MoonshineUser::class);
+	}
 }

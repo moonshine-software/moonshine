@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
@@ -7,16 +8,16 @@ use Leeto\MoonShine\Traits\Fields\SearchableTrait;
 
 class Select extends Field
 {
-    use SearchableTrait;
+	use SearchableTrait;
 
-    protected static string $view = 'select';
+	protected static string $view = 'select';
 
-    public function indexViewValue(Model $item, bool $container = true): string
-    {
-        if(isset($this->values()[$item->{$this->field()}])) {
-            return $this->values()[$item->{$this->field()}];
-        }
+	public function indexViewValue(Model $item, bool $container = true): string
+	{
+		if (isset($this->values()[$item->{$this->field()}])) {
+			return $this->values()[$item->{$this->field()}];
+		}
 
-        return parent::indexViewValue($item, $container);
-    }
+		return parent::indexViewValue($item, $container);
+	}
 }
