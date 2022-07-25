@@ -53,9 +53,14 @@ trait FileTrait
         return $this->allowedExtensions;
     }
 
+    /**
+     * @param  string  $extension
+     * @return bool
+     */
     public function isAllowedExtension(string $extension): bool
     {
-        return in_array($extension, $this->getAllowedExtensions());
+        return empty($this->getAllowedExtensions())
+            || in_array($extension, $this->getAllowedExtensions());
     }
 
     public function disableDownload(): static
@@ -92,7 +97,7 @@ trait FileTrait
         $saveValue = $this->isMultiple() ? $oldValues : null;
 
         if ($requestValue !== false) {
-            if($this->isMultiple()) {
+            if ($this->isMultiple()) {
                 $paths = [];
 
                 foreach ($requestValue as $file) {
@@ -105,7 +110,7 @@ trait FileTrait
             }
         }
 
-        if($saveValue) {
+        if ($saveValue) {
             $item->{$this->field()} = $saveValue;
         }
 
@@ -114,7 +119,7 @@ trait FileTrait
 
     public function exportViewValue(Model $item): string
     {
-        if($this->isMultiple()) {
+        if ($this->isMultiple()) {
             return collect($item->{$this->field()})->implode(';');
         }
 
