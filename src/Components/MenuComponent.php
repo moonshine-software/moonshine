@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Components;
 
@@ -12,12 +13,12 @@ use Leeto\MoonShine\Menu\Menu;
 
 class MenuComponent extends Component
 {
-    public function render(): View|Factory|Htmlable|Closure|string|Application
-    {
-        $data = app(Menu::class)->all();
+	public function render(): View|Factory|Htmlable|Closure|string|Application
+	{
+		$data = app(Menu::class)->all();
 
-        return view('moonshine::components.menu', [
-            "data" => $data,
-        ]);
-    }
+		return view('moonshine::components.menu', [
+			"data" => $data,
+		]);
+	}
 }

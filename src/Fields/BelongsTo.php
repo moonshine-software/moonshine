@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
@@ -9,15 +10,15 @@ use Leeto\MoonShine\Traits\Fields\SearchableTrait;
 
 class BelongsTo extends Field implements HasRelationshipContract
 {
-    use WithRelationshipsTrait, SearchableTrait;
+	use WithRelationshipsTrait, SearchableTrait;
 
-    protected static bool $toOne = true;
+	protected static bool $toOne = true;
 
-    protected static string $view = 'select';
+	protected static string $view = 'select';
 
-    public function save(Model $item): Model
-    {
-        return $item->{$this->relation()}()
-            ->associate($this->requestValue());
-    }
+	public function save(Model $item): Model
+	{
+		return $item->{$this->relation()}()
+			->associate($this->requestValue());
+	}
 }

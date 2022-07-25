@@ -1,52 +1,53 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Metrics;
 
 class ValueMetric extends Metric
 {
-    protected static string $view = 'value';
+	protected static string $view = 'value';
 
-    public int|float $value = 0;
+	public int|float $value = 0;
 
-    protected string $valueFormat = '{value}';
+	protected string $valueFormat = '{value}';
 
-    protected bool $progress = false;
+	protected bool $progress = false;
 
-    public int|float $target = 0;
+	public int|float $target = 0;
 
-    public function valueFormat(string $value): static
-    {
-        $this->valueFormat = $value;
+	public function valueFormat(string $value): static
+	{
+		$this->valueFormat = $value;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function valueResult(): string
-    {
-        if($this->isProgress()) {
-            return round(($this->value / $this->target) * 100);
-        }
+	public function valueResult(): string|float|int|array
+	{
+		if ($this->isProgress()) {
+			return round(($this->value / $this->target) * 100);
+		}
 
-        return str_replace('{value}', $this->value, $this->valueFormat);
-    }
+		return str_replace('{value}', $this->value, $this->valueFormat);
+	}
 
-    public function value(int|float $value): static
-    {
-        $this->value = $value;
+	public function value(int|float $value): static
+	{
+		$this->value = $value;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function progress(int|float $target): static
-    {
-        $this->progress = true;
-        $this->target = $target;
+	public function progress(int|float $target): static
+	{
+		$this->progress = true;
+		$this->target = $target;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function isProgress(): bool
-    {
-        return $this->progress;
-    }
+	public function isProgress(): bool
+	{
+		return $this->progress;
+	}
 }
