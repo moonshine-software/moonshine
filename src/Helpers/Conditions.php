@@ -1,8 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Utilities;
+namespace Leeto\MoonShine\Helpers;
 
-final class Helpers
+final class Conditions
 {
     /**
      * Returns the Boolean value of the condition
@@ -12,7 +12,7 @@ final class Helpers
      *
      * @return bool
      */
-    public static function executeBooleanCondition(mixed $condition, bool $default): bool
+    public static function boolean(mixed $condition, bool $default): bool
     {
         return is_null($condition)
             ? $default

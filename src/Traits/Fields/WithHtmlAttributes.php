@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Utilities\Helpers;
+use Leeto\MoonShine\Helpers\Conditions;
 
 trait WithHtmlAttributes
 {
@@ -101,7 +101,7 @@ trait WithHtmlAttributes
 
     public function required($condition = null): static
     {
-        $this->required = Helpers::executeBooleanCondition($condition, true);
+        $this->required = Conditions::boolean($condition, true);
 
         return $this;
     }
@@ -125,7 +125,7 @@ trait WithHtmlAttributes
 
     public function disabled($condition = null): static
     {
-        $this->disabled = Helpers::executeBooleanCondition($condition, true);
+        $this->disabled = Conditions::boolean($condition, true);
 
         return $this;
     }
@@ -149,7 +149,7 @@ trait WithHtmlAttributes
 
     public function hidden($condition = null): static
     {
-        if(Helpers::executeBooleanCondition($condition, true)) {
+        if(Conditions::boolean($condition, true)) {
             static::$type = 'hidden';
         }
 
@@ -163,7 +163,7 @@ trait WithHtmlAttributes
 
     public function readonly($condition = null): static
     {
-        $this->readonly = Helpers::executeBooleanCondition($condition, true);
+        $this->readonly = Conditions::boolean($condition, true);
 
         return $this;
     }
@@ -175,7 +175,7 @@ trait WithHtmlAttributes
 
     public function nullable($condition = null): static
     {
-        $this->nullable = Helpers::executeBooleanCondition($condition, true);
+        $this->nullable = Conditions::boolean($condition, true);
 
         return $this;
     }
@@ -187,7 +187,7 @@ trait WithHtmlAttributes
 
     public function multiple($condition = null): static
     {
-        $this->multiple = Helpers::executeBooleanCondition($condition, true);
+        $this->multiple = Conditions::boolean($condition, true);
 
         return $this;
     }

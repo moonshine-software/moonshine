@@ -13,7 +13,7 @@ use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
 use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModelTrait;
-use Leeto\MoonShine\Utilities\Helpers;
+use Leeto\MoonShine\Helpers\Conditions;
 
 abstract class Field implements RenderableContract
 {
@@ -37,42 +37,42 @@ abstract class Field implements RenderableContract
 
     public function showOnIndex($condition = null): static
     {
-        $this->showOnIndex = Helpers::executeBooleanCondition($condition, true);
+        $this->showOnIndex = Conditions::boolean($condition, true);
 
         return $this;
     }
 
     public function hideOnIndex($condition = null): static
     {
-        $this->showOnIndex = Helpers::executeBooleanCondition($condition, false);
+        $this->showOnIndex = Conditions::boolean($condition, false);
 
         return $this;
     }
 
     public function showOnForm($condition = null): static
     {
-        $this->showOnForm = Helpers::executeBooleanCondition($condition, true);
+        $this->showOnForm = Conditions::boolean($condition, true);
 
         return $this;
     }
 
     public function hideOnForm($condition = null): static
     {
-        $this->showOnForm = Helpers::executeBooleanCondition($condition, false);
+        $this->showOnForm = Conditions::boolean($condition, false);
 
         return $this;
     }
 
     public function showOnExport($condition = null): static
     {
-        $this->showOnExport = Helpers::executeBooleanCondition($condition, true);
+        $this->showOnExport = Conditions::boolean($condition, true);
 
         return $this;
     }
 
     public function hideOnExport($condition = null): static
     {
-        $this->showOnExport = Helpers::executeBooleanCondition($condition, false);
+        $this->showOnExport = Conditions::boolean($condition, false);
 
         return $this;
     }
