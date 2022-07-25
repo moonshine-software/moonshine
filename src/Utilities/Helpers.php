@@ -1,8 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace Leeto\MoonShine\Utilities;
 
-trait HasBooleanCondition
+final class Helpers
 {
     /**
      * Returns the Boolean value of the condition
@@ -12,7 +12,7 @@ trait HasBooleanCondition
      *
      * @return bool
      */
-    public function executeBooleanCondition(mixed $condition, bool $default): bool
+    public static function executeBooleanCondition(mixed $condition, bool $default): bool
     {
         return is_null($condition)
             ? $default

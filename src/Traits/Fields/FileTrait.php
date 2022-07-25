@@ -5,6 +5,7 @@ namespace Leeto\MoonShine\Traits\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Leeto\MoonShine\Exceptions\FieldException;
+use Leeto\MoonShine\Utilities\Helpers;
 use Throwable;
 
 trait FileTrait
@@ -58,9 +59,9 @@ trait FileTrait
         return in_array($extension, $this->getAllowedExtensions());
     }
 
-    public function disableDownload(): static
+    public function disableDownload($condition = null): static
     {
-        $this->disableDownload = true;
+        $this->disableDownload = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }

@@ -1,23 +1,14 @@
 <?php
 
-namespace Leeto\MoonShine\Tests\Traits;
+namespace Leeto\MoonShine\Tests\Utilities;
 
 use Leeto\MoonShine\Tests\TestCase;
-use Leeto\MoonShine\Traits\Fields\HasBooleanCondition;
+use Leeto\MoonShine\Utilities\Helpers;
 
 class HasBooleanConditionTraitTest extends TestCase
 {
     public function test_execute_boolean_condition()
     {
-        $testClass = new class {
-            use HasBooleanCondition;
-
-            public function test($condition, bool $default): bool
-            {
-                return $this->executeBooleanCondition($condition, $default);
-            }
-        };
-
         $tests = [
             ['args' => [true, false], 'exp' => true],
             ['args' => [false, true], 'exp' => false],
@@ -28,7 +19,7 @@ class HasBooleanConditionTraitTest extends TestCase
         ];
 
         foreach ($tests as $test) {
-            $this->assertEquals($test['exp'], $testClass->test(...$test['args']));
+            $this->assertEquals($test['exp'], Helpers::executeBooleanCondition(...$test['args']));
         }
     }
 }

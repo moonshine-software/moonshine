@@ -13,10 +13,11 @@ use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
 use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModelTrait;
+use Leeto\MoonShine\Utilities\Helpers;
 
 abstract class Field implements RenderableContract
 {
-    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait, LinkTrait, HasBooleanCondition;
+    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait, LinkTrait;
 
     public bool $showOnIndex = true;
 
@@ -36,42 +37,42 @@ abstract class Field implements RenderableContract
 
     public function showOnIndex($condition = null): static
     {
-        $this->showOnIndex = $this->executeBooleanCondition($condition, true);
+        $this->showOnIndex = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
 
     public function hideOnIndex($condition = null): static
     {
-        $this->showOnIndex = $this->executeBooleanCondition($condition, false);
+        $this->showOnIndex = Helpers::executeBooleanCondition($condition, false);
 
         return $this;
     }
 
     public function showOnForm($condition = null): static
     {
-        $this->showOnForm = $this->executeBooleanCondition($condition, true);
+        $this->showOnForm = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
 
     public function hideOnForm($condition = null): static
     {
-        $this->showOnForm = $this->executeBooleanCondition($condition, false);
+        $this->showOnForm = Helpers::executeBooleanCondition($condition, false);
 
         return $this;
     }
 
     public function showOnExport($condition = null): static
     {
-        $this->showOnExport = $this->executeBooleanCondition($condition, true);
+        $this->showOnExport = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
 
     public function hideOnExport($condition = null): static
     {
-        $this->showOnExport = $this->executeBooleanCondition($condition, false);
+        $this->showOnExport = Helpers::executeBooleanCondition($condition, false);
 
         return $this;
     }

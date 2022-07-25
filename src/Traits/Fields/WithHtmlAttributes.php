@@ -8,13 +8,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Closure;
+use Leeto\MoonShine\Utilities\Helpers;
 
 trait WithHtmlAttributes
 {
-    use HasBooleanCondition;
-
     protected string|null $name = null;
 
     protected string|null $id = null;
@@ -104,7 +101,7 @@ trait WithHtmlAttributes
 
     public function required($condition = null): static
     {
-        $this->required = $this->executeBooleanCondition($condition, true);
+        $this->required = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
@@ -128,7 +125,7 @@ trait WithHtmlAttributes
 
     public function disabled($condition = null): static
     {
-        $this->disabled = $this->executeBooleanCondition($condition, true);
+        $this->disabled = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
@@ -152,7 +149,7 @@ trait WithHtmlAttributes
 
     public function hidden($condition = null): static
     {
-        if($this->executeBooleanCondition($condition, true)) {
+        if(Helpers::executeBooleanCondition($condition, true)) {
             static::$type = 'hidden';
         }
 
@@ -166,7 +163,7 @@ trait WithHtmlAttributes
 
     public function readonly($condition = null): static
     {
-        $this->readonly = $this->executeBooleanCondition($condition, true);
+        $this->readonly = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
@@ -178,7 +175,7 @@ trait WithHtmlAttributes
 
     public function nullable($condition = null): static
     {
-        $this->nullable = $this->executeBooleanCondition($condition, true);
+        $this->nullable = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
@@ -190,7 +187,7 @@ trait WithHtmlAttributes
 
     public function multiple($condition = null): static
     {
-        $this->multiple = $this->executeBooleanCondition($condition, true);
+        $this->multiple = Helpers::executeBooleanCondition($condition, true);
 
         return $this;
     }
