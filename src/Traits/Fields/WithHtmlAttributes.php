@@ -8,8 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Closure;
+use Leeto\MoonShine\Helpers\ConditionHelpers;
 
 trait WithHtmlAttributes
 {
@@ -100,9 +99,9 @@ trait WithHtmlAttributes
         return collect($this->attributes())->get($name);
     }
 
-    public function required(): static
+    public function required($condition = null): static
     {
-        $this->required = true;
+        $this->required = ConditionHelpers::boolean($condition, true);
 
         return $this;
     }
@@ -124,9 +123,9 @@ trait WithHtmlAttributes
         return old($this->nameDot(), $this->default);
     }
 
-    public function disabled(): static
+    public function disabled($condition = null): static
     {
-        $this->disabled = true;
+        $this->disabled = ConditionHelpers::boolean($condition, true);
 
         return $this;
     }
@@ -148,9 +147,11 @@ trait WithHtmlAttributes
         return $this;
     }
 
-    public function hidden(): static
+    public function hidden($condition = null): static
     {
-        static::$type = 'hidden';
+        if(ConditionHelpers::boolean($condition, true)) {
+            static::$type = 'hidden';
+        }
 
         return $this;
     }
@@ -160,9 +161,9 @@ trait WithHtmlAttributes
         return static::$type === 'hidden';
     }
 
-    public function readonly(): static
+    public function readonly($condition = null): static
     {
-        $this->readonly = true;
+        $this->readonly = ConditionHelpers::boolean($condition, true);
 
         return $this;
     }
@@ -172,9 +173,9 @@ trait WithHtmlAttributes
         return $this->readonly;
     }
 
-    public function nullable(): static
+    public function nullable($condition = null): static
     {
-        $this->nullable = true;
+        $this->nullable = ConditionHelpers::boolean($condition, true);
 
         return $this;
     }
@@ -184,9 +185,9 @@ trait WithHtmlAttributes
         return $this->nullable;
     }
 
-    public function multiple(): static
+    public function multiple($condition = null): static
     {
-        $this->multiple = true;
+        $this->multiple = ConditionHelpers::boolean($condition, true);
 
         return $this;
     }
