@@ -7,7 +7,6 @@ use Leeto\MoonShine\Contracts\RenderableContract;
 use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
 
 use Leeto\MoonShine\Traits\Fields\FormElementTrait;
-use Leeto\MoonShine\Traits\Fields\HasBooleanCondition;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
 use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
