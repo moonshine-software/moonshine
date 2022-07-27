@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 declare(strict_types=1);
 
@@ -11,16 +12,16 @@ use function config;
 
 class Session
 {
-    public function handle(Request $request, Closure $next)
-    {
-        $path = '/'.trim(config('moonshine.route.prefix'), '/');
+	public function handle(Request $request, Closure $next)
+	{
+		$path = '/' . trim(config('moonshine.route.prefix'), '/');
 
-        config(['session.path' => $path]);
+		config(['session.path' => $path]);
 
-        if ($domain = config('moonshine.route.domain')) {
-            config(['session.domain' => $domain]);
-        }
+		if ($domain = config('moonshine.route.domain')) {
+			config(['session.domain' => $domain]);
+		}
 
-        return $next($request);
-    }
+		return $next($request);
+	}
 }
