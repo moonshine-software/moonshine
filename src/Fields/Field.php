@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
@@ -159,7 +160,7 @@ abstract class Field implements RenderableContract
 
     public function getView(): string
     {
-        return 'moonshine::fields.' . static::$view;
+        return 'moonshine::fields.'.static::$view;
     }
 
     public function formViewValue(Model $item): mixed
@@ -177,7 +178,7 @@ abstract class Field implements RenderableContract
         return $item->{$this->field()} ?? $this->getDefault();
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         if ($this instanceof HasRelationshipContract) {
             if (!$item->{$this->relation()}) {

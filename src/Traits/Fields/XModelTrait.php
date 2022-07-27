@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
@@ -16,7 +17,7 @@ trait XModelTrait
 
     public function xModelField(string $variable = 'item'): string
     {
-        return (string) str($variable)
+        return (string)str($variable)
             ->whenNotEmpty(fn($f) => $f->append('.'))
             ->append($this->field());
     }
@@ -25,12 +26,12 @@ trait XModelTrait
     {
         $meta = str('');
 
-        if($this->xModel) {
+        if ($this->xModel) {
             $meta = $meta->append(" x-model='{$this->xModelField()}' ");
             $meta = $meta->append(" x-bind:name=`{$this->name()}` ");
             $meta = $meta->append(" x-bind:id=`{$this->id()}` ");
         }
 
-        return (string) $meta;
+        return (string)$meta;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
@@ -11,8 +12,8 @@ use Leeto\MoonShine\Traits\Fields\HasManyRelationConceptTrait;
 
 class HasMany extends Field implements HasRelationshipContract, HasFieldsContract
 {
-	use HasManyRelationConceptTrait;
-	use WithRelationshipsTrait, WithFieldsTrait;
+    use HasManyRelationConceptTrait;
+    use WithRelationshipsTrait, WithFieldsTrait;
 
-	protected static string $view = 'has-many';
+    protected static string $view = 'has-many';
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Filters;
@@ -8,14 +9,14 @@ use Leeto\MoonShine\Traits\Fields\NumberTrait;
 
 class SlideFilter extends Filter
 {
-	use NumberTrait;
+    use NumberTrait;
 
-	public static string $view = 'slide';
+    public static string $view = 'slide';
 
-	public function getQuery(Builder $query): Builder
-	{
-		return $this->requestValue()
-			? $query->whereBetween('phone', array_values($this->requestValue()))
-			: $query;
-	}
+    public function getQuery(Builder $query): Builder
+    {
+        return $this->requestValue()
+            ? $query->whereBetween('phone', array_values($this->requestValue()))
+            : $query;
+    }
 }

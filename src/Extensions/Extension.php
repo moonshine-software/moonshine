@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Extensions;
@@ -10,15 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Extension
 {
-	public array $tabs = [];
+    public array $tabs = [];
 
-	public function fields(): array
-	{
-		return [];
-	}
+    public function fields(): array
+    {
+        return [];
+    }
 
-	public function tabs(Model $item): Factory|View|Application
-	{
-		return view('moonshine::shared.tabs', ['tabs' => $this->tabs]);
-	}
+    public function tabs(Model $item): Factory|View|Application
+    {
+        return view('moonshine::shared.tabs', ['tabs' => $this->tabs]);
+    }
 }

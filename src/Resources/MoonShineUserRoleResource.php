@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
@@ -10,7 +11,7 @@ use Leeto\MoonShine\Models\MoonshineUserRole;
 
 class MoonShineUserRoleResource extends Resource
 {
-	public static string $model = MoonshineUserRole::class;
+    public static string $model = MoonshineUserRole::class;
 
     public string $titleField = 'name';
 

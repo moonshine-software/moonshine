@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
 trait HasManyRelationConceptTrait
 {
-    public function indexViewValue(Model $item, bool $container = false): string
+    public function indexViewValue(Model $item, bool $container = false): \Illuminate\Contracts\View\View
     {
         $columns = [];
         $values = [];
@@ -36,7 +38,7 @@ trait HasManyRelationConceptTrait
     {
         $item->{$this->relation()}()->delete();
 
-        if($this->requestValue() !== false) {
+        if ($this->requestValue() !== false) {
             $item->{$this->relation()}()->createMany($this->requestValue());
         }
 

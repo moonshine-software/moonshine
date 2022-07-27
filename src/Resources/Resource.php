@@ -64,7 +64,7 @@ abstract class Resource implements ResourceContract
      *
      * @see https://laravel.com/docs/validation#available-validation-rules
      *
-     * @param Model $item
+     * @param  Model  $item
      *
      * @return array
      */
@@ -269,7 +269,7 @@ abstract class Resource implements ResourceContract
     public function tabs(): Collection
     {
         return collect($this->fields())
-            ->filter(fn ($item) => $item instanceof Tab);
+            ->filter(fn($item) => $item instanceof Tab);
     }
 
     /**
@@ -278,7 +278,7 @@ abstract class Resource implements ResourceContract
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn (RenderableContract $field) => $field instanceof Field && $field->showWhenState);
+            ->filter(fn(RenderableContract $field) => $field instanceof Field && $field->showWhenState);
     }
 
     public function whenFieldNames(): Collection
@@ -327,8 +327,10 @@ abstract class Resource implements ResourceContract
     {
         $fields = $this->extensionsFields();
 
-        return $fields->merge($this->getFields()
-            ->filter(fn(RenderableContract $field) => $field instanceof Field && $field->showOnForm));
+        return $fields->merge(
+            $this->getFields()
+                ->filter(fn(RenderableContract $field) => $field instanceof Field && $field->showOnForm)
+        );
     }
 
     /**
@@ -392,14 +394,14 @@ abstract class Resource implements ResourceContract
 
     public function getFilter(string $filterName): Filter|null
     {
-        return collect($this->getFilters())->filter(function (Filter $filter) use($filterName) {
+        return collect($this->getFilters())->filter(function (Filter $filter) use ($filterName) {
             return $filter->field() == $filterName;
         })->first();
     }
 
     public function getField(string $fieldName): Field|null
     {
-        return collect($this->getFields())->filter(function (Field $field) use($fieldName) {
+        return collect($this->getFields())->filter(function (Field $field) use ($fieldName) {
             return $field->field() == $fieldName;
         })->first();
     }
@@ -416,7 +418,7 @@ abstract class Resource implements ResourceContract
             }
         }
 
-        return (string) $views;
+        return (string)$views;
     }
 
     public function all(): Collection
@@ -444,11 +446,11 @@ abstract class Resource implements ResourceContract
         }
 
         if (request()->has('search') && count($this->search())) {
-            foreach($this->search() as $field) {
+            foreach ($this->search() as $field) {
                 $query = $query->orWhere(
                     $field,
                     'LIKE',
-                    '%'.request('search') . '%'
+                    '%'.request('search').'%'
                 );
             }
         }

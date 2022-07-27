@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Filters;
@@ -10,16 +11,16 @@ use Leeto\MoonShine\Traits\Fields\SearchableTrait;
 
 class HasOneFilter extends Filter implements HasRelationshipContract
 {
-	use SearchableTrait, WithRelationshipsTrait;
+    use SearchableTrait, WithRelationshipsTrait;
 
-	public static bool $toOne = true;
+    public static bool $toOne = true;
 
-	public static string $view = 'select';
+    public static string $view = 'select';
 
-	public function getQuery(Builder $query): Builder
-	{
-		return $this->requestValue()
-			? $query->whereRelation($this->relation(), 'id', '=', $this->requestValue())
-			: $query;
-	}
+    public function getQuery(Builder $query): Builder
+    {
+        return $this->requestValue()
+            ? $query->whereRelation($this->relation(), 'id', '=', $this->requestValue())
+            : $query;
+    }
 }

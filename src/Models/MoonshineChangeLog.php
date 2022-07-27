@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Models;
@@ -9,28 +10,28 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class MoonshineChangeLog extends Model
 {
-	protected $with = ['moonshineUser'];
+    protected $with = ['moonshineUser'];
 
-	protected $fillable = [
-		'moonshine_user_id',
-		'changelogable_id',
-		'changelogable_type',
-		'states_before',
-		'states_after',
-	];
+    protected $fillable = [
+        'moonshine_user_id',
+        'changelogable_id',
+        'changelogable_type',
+        'states_before',
+        'states_after',
+    ];
 
-	protected $casts = [
-		'states_before' => 'array',
-		'states_after' => 'array',
-	];
+    protected $casts = [
+        'states_before' => 'array',
+        'states_after' => 'array',
+    ];
 
-	public function moonshineUser(): BelongsTo
-	{
-		return $this->belongsTo(MoonshineUser::class);
-	}
+    public function moonshineUser(): BelongsTo
+    {
+        return $this->belongsTo(MoonshineUser::class);
+    }
 
-	public function changelogable(): MorphTo
-	{
-		return $this->morphTo();
-	}
+    public function changelogable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

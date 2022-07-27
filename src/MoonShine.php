@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine;
@@ -26,19 +27,19 @@ class MoonShine
     public static function path(string $path = ''): string
     {
         return realpath(
-            dirname(__DIR__) . ($path ? DIRECTORY_SEPARATOR . $path : $path)
+            dirname(__DIR__).($path ? DIRECTORY_SEPARATOR.$path : $path)
         );
     }
 
     public static function namespace(string $path = ''): string
     {
-        return static::NAMESPACE . $path;
+        return static::NAMESPACE.$path;
     }
 
     /**
      * Register resource classes in the system
      *
-     * @param array $data Array of resource classes that is registering
+     * @param  array  $data  Array of resource classes that is registering
      * @return void
      */
     public function registerResources(array $data): void
@@ -50,18 +51,15 @@ class MoonShine
             $item = is_string($item) ? new $item() : $item;
 
             if ($item instanceof Resource) {
-
                 $this->resources->add($item);
                 $this->menus->add(new MenuItem($item->title(), $item));
-
             } elseif ($item instanceof MenuItem) {
                 $this->resources->add($item->resource());
                 $this->menus->add($item);
-
             } elseif ($item instanceof MenuGroup) {
                 $this->menus->add($item);
 
-                $item->items()->each(function($subItem) {
+                $item->items()->each(function ($subItem) {
                     $this->resources->add($subItem->resource());
                 });
             }
@@ -72,11 +70,11 @@ class MoonShine
         $this->addRoutes();
     }
 
-	/**
-	 * Get collection of registered resources
-	 *
-	 * @return Collection|null
-	 */
+    /**
+     * Get collection of registered resources
+     *
+     * @return Collection|null
+     */
     public function getResources(): ?Collection
     {
         return $this->resources;
@@ -91,22 +89,21 @@ class MoonShine
     {
         Route::prefix(config('moonshine.route.prefix'))
             ->middleware(config('moonshine.route.middleware'))
-            ->name(config('moonshine.route.prefix') . '.')->group(function () {
+            ->name(config('moonshine.route.prefix').'.')->group(function () {
+                Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
+                Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
 
-            Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
-            Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
+                Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
+                Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
+                Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
 
-            Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
-            Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
-            Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
-
-            $this->resources->each(function (Resource $resource) {
-                if ($resource->isSystem()) {
-                    Route::resource($resource->routeAlias(), $resource->controllerName());
-                } else {
-                    Route::resource($resource->routeAlias(), MoonShineResourceController::class);
-                }
+                $this->resources->each(function (Resource $resource) {
+                    if ($resource->isSystem()) {
+                        Route::resource($resource->routeAlias(), $resource->controllerName());
+                    } else {
+                        Route::resource($resource->routeAlias(), MoonShineResourceController::class);
+                    }
+                });
             });
-        });
     }
 }

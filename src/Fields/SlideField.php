@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
@@ -8,39 +9,39 @@ use Leeto\MoonShine\Traits\Fields\NumberTrait;
 
 class SlideField extends Field
 {
-	use NumberTrait;
+    use NumberTrait;
 
-	protected static string $view = 'slide';
+    protected static string $view = 'slide';
 
-	public function indexViewValue(Model $item, bool $container = true): string
-	{
-		return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
-	}
+    public function indexViewValue(Model $item, bool $container = true): string
+    {
+        return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
+    }
 
-	public function exportViewValue(Model $item): string
-	{
-		return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
-	}
+    public function exportViewValue(Model $item): string
+    {
+        return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
+    }
 
-	public function formViewValue(Model $item): array
-	{
-		return [
-			$this->fromField => $item->{$this->fromField},
-			$this->toField => $item->{$this->toField},
-		];
-	}
+    public function formViewValue(Model $item): array
+    {
+        return [
+            $this->fromField => $item->{$this->fromField},
+            $this->toField => $item->{$this->toField},
+        ];
+    }
 
-	public function save(Model $item): Model
-	{
-		$values = $this->requestValue();
+    public function save(Model $item): Model
+    {
+        $values = $this->requestValue();
 
-		if ($values === false) {
-			return $item;
-		}
+        if ($values === false) {
+            return $item;
+        }
 
-		$item->{$this->fromField} = $values[$this->fromField] ?? '';
-		$item->{$this->toField} = $values[$this->toField] ?? '';
+        $item->{$this->fromField} = $values[$this->fromField] ?? '';
+        $item->{$this->toField} = $values[$this->toField] ?? '';
 
-		return $item;
-	}
+        return $item;
+    }
 }

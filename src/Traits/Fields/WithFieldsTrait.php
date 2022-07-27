@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -45,26 +47,25 @@ trait WithFieldsTrait
                 new FieldException('Field with fields unavailable now. Coming soon')
             );
 
-            if($this instanceof HasPivotContract) {
+            if ($this instanceof HasPivotContract) {
                 return $field->setName("{$this->relation()}_{$field->field()}[]");
             }
 
             return $field->xModel()->setName(
                 str($this->name())
                     ->when(
-                    $this->isMultiple() && $this->hasFields(),
-                        fn(Stringable $s) => $s->append('[${index'. $s->substrCount('$') .'}]')
+                        $this->isMultiple() && $this->hasFields(),
+                        fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
                     )
                     ->append("[{$field->field()}]")
                     ->replace('[]', '')
             );
-
         })->toArray();
     }
 
     public function hasFields(): bool
     {
-        return count($this->fields);
+        return !empty($this->fields);
     }
 
     public function fields(array $fields): static
@@ -96,7 +97,7 @@ trait WithFieldsTrait
 
     public function jsonValues(Model $item = null): array
     {
-        if(is_null($item)) {
+        if (is_null($item)) {
             $data = ['id' => ''];
 
             foreach ($this->getFields() as $field) {
@@ -106,18 +107,18 @@ trait WithFieldsTrait
             return $data;
         }
 
-        if(isset($this->keyValue) && $this->isKeyValue()) {
+        if (isset($this->keyValue) && $this->isKeyValue()) {
             return collect($this->formViewValue($item))
                 ->map(fn($value, $key) => ['key' => $key, 'value' => $value])
                 ->values()
                 ->toArray();
         }
 
-        if($this->formViewValue($item) instanceof Collection) {
+        if ($this->formViewValue($item) instanceof Collection) {
             return $this->formViewValue($item)->toArray();
         }
 
-        if($this->formViewValue($item) instanceof Model) {
+        if ($this->formViewValue($item) instanceof Model) {
             return [$this->formViewValue($item)->toArray()];
         }
 

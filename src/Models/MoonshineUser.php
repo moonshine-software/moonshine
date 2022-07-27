@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Models;
@@ -10,21 +11,21 @@ use Leeto\MoonShine\Traits\Models\HasMoonShineChangeLog;
 
 class MoonshineUser extends Authenticatable
 {
-	use HasMoonShineChangeLog;
-	use HasFactory;
+    use HasMoonShineChangeLog;
+    use HasFactory;
 
-	protected $fillable = [
-		'email',
-		'moonshine_user_role_id',
-		'password',
-		'name',
-		'avatar',
-	];
+    protected $fillable = [
+        'email',
+        'moonshine_user_role_id',
+        'password',
+        'name',
+        'avatar',
+    ];
 
-	protected $with = ['moonshineUserRole'];
+    protected $with = ['moonshineUserRole'];
 
-	public function moonshineUserRole(): BelongsTo
-	{
-		return $this->belongsTo(MoonshineUserRole::class);
-	}
+    public function moonshineUserRole(): BelongsTo
+    {
+        return $this->belongsTo(MoonshineUserRole::class);
+    }
 }

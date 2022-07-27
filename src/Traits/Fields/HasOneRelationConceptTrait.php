@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +16,7 @@ trait HasOneRelationConceptTrait
     {
         $values = $this->requestValue();
 
-        if($values === false) {
+        if ($values === false) {
             return $item;
         }
 

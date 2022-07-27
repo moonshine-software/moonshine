@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
@@ -31,7 +32,7 @@ trait FormElementTrait
     /**
      * Creates a form element class: Field,Filter
      *
-     * @param ...$arguments $label Form element label, will be displayed in moonshine admin panel,
+     * @param ...$arguments  $label Form element label, will be displayed in moonshine admin panel,
      *                      $field Field name from database, which will be used for this form element
      *                      $resource Instance of related resource class, if form element is a relation
      * @return static
@@ -41,19 +42,22 @@ trait FormElementTrait
         return new static(...$arguments);
     }
 
-    final public function __construct(string $label = null, string $field = null, Closure|ResourceContract|string|null $resource = null)
-    {
+    final public function __construct(
+        string $label = null,
+        string $field = null,
+        Closure|ResourceContract|string|null $resource = null
+    ) {
         $this->setLabel($label ?? str($this->label)->ucfirst());
         $this->setField($field ?? str($this->label)->lower()->snake());
 
-        if($this instanceof HasRelationshipContract) {
-            if(!$this->isRelationToOne() && !$this->isRelationHasOne()) {
+        if ($this instanceof HasRelationshipContract) {
+            if (!$this->isRelationToOne() && !$this->isRelationHasOne()) {
                 $this->multiple();
             }
 
             $this->setField($field ?? str($this->label)->camel());
 
-            if(($this->isRelationToOne() && !$this->isRelationHasOne()) && !str($this->field())->contains('_id')) {
+            if (($this->isRelationToOne() && !$this->isRelationHasOne()) && !str($this->field())->contains('_id')) {
                 $this->setField(
                     str($this->field())
                         ->append('_id')
@@ -63,7 +67,7 @@ trait FormElementTrait
 
             $this->setRelation($field ?? str($this->label)->camel());
 
-            if(str($this->relation())->contains('_id')) {
+            if (str($this->relation())->contains('_id')) {
                 $this->setRelation(
                     str($this->relation())
                         ->remove('_id')
@@ -71,11 +75,11 @@ trait FormElementTrait
                 );
             }
 
-            if($resource instanceof ResourceContract) {
+            if ($resource instanceof ResourceContract) {
                 $this->setResource($resource);
-            } elseif($resource instanceof Closure) {
+            } elseif ($resource instanceof Closure) {
                 $this->setResourceTitleCallback($resource);
-            } elseif(is_string($resource)) {
+            } elseif (is_string($resource)) {
                 $this->setResourceTitleField($resource);
             }
         }
@@ -124,7 +128,7 @@ trait FormElementTrait
 
     protected function findResource(): ResourceContract|null
     {
-        $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
+        $resourceClass = (string)str(MoonShine::namespace('\Resources\\'))
             ->append(str($this->relation() ?? $this->field())->studly()->singular())
             ->append('Resource');
 
@@ -138,7 +142,7 @@ trait FormElementTrait
 
     public function resourceTitleField(): string
     {
-        if($this->resourceTitleField) {
+        if ($this->resourceTitleField) {
             return $this->resourceTitleField;
         }
         return $this->resource() && $this->resource()->titleField()
@@ -175,5 +179,4 @@ trait FormElementTrait
             $this->getDefault() ?? old($this->nameDot(), false)
         );
     }
-
 }

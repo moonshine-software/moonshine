@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
@@ -38,11 +39,11 @@ trait WithHtmlAttributes
 
     public function id(string $index = null): string
     {
-        if($this->id) {
+        if ($this->id) {
             return $this->id;
         }
 
-        return (string) str($this->name ?? $this->name())
+        return (string)str($this->name ?? $this->name())
             ->replace(['[', ']'], '_')
             ->replaceMatches('/\${index\d+}/', '')
             ->replaceMatches('/_{2,}/', '_')
@@ -58,11 +59,11 @@ trait WithHtmlAttributes
 
     protected function prepareName($index = null, $wrap = null): string
     {
-        if($this->name) {
+        if ($this->name) {
             return $this->name;
         }
 
-        return (string) str($this->field())
+        return (string)str($this->field())
             ->when(!is_null($wrap), fn(Stringable $str) => $str->wrap("{$wrap}[", "]"))
             ->when(
                 $this->isMultiple(),
@@ -149,7 +150,7 @@ trait WithHtmlAttributes
 
     public function hidden($condition = null): static
     {
-        if(ConditionHelpers::boolean($condition, true)) {
+        if (ConditionHelpers::boolean($condition, true)) {
             static::$type = 'hidden';
         }
 
@@ -208,7 +209,7 @@ trait WithHtmlAttributes
     {
         $related = $item->{$this->relation()}()->getRelated();
 
-        if(is_callable($this->resourceTitleCallback())) {
+        if (is_callable($this->resourceTitleCallback())) {
             $values = $related->all()
                 ->mapWithKeys(function ($relatedItem) {
                     return [$relatedItem->getKey() => ($this->resourceTitleCallback())($relatedItem)];
@@ -241,11 +242,11 @@ trait WithHtmlAttributes
     {
         $formValue = $this->formViewValue($item);
 
-        if($formValue instanceof Collection) {
+        if ($formValue instanceof Collection) {
             return $this->formViewValue($item)->contains("id", "=", $value);
         }
 
-        if(is_array($formValue)) {
+        if (is_array($formValue)) {
             return in_array($value, $formValue);
         }
 
@@ -254,11 +255,11 @@ trait WithHtmlAttributes
 
     public function isSelected(Model $item, string $value): bool
     {
-        if(!$this->formViewValue($item)) {
+        if (!$this->formViewValue($item)) {
             return false;
         }
 
-        if($this instanceof HasRelationshipContract
+        if ($this instanceof HasRelationshipContract
             && !$this->isRelationToOne() && !$this->isRelationHasOne()) {
             $related = $item->{$this->relation()}()->getRelated();
 
@@ -268,13 +269,13 @@ trait WithHtmlAttributes
                 : in_array($value, $this->formViewValue($item));
         }
 
-        return (string) $this->formViewValue($item) === $value
-            || (!$this->formViewValue($item) && (string) $this->getDefault() === $value);
+        return (string)$this->formViewValue($item) === $value
+            || (!$this->formViewValue($item) && (string)$this->getDefault() === $value);
     }
 
     protected function nameDot(): string
     {
-        $name = (string) str($this->name())->replace('[]', '');
+        $name = (string)str($this->name())->replace('[]', '');
 
         parse_str($name, $array);
 
@@ -283,6 +284,6 @@ trait WithHtmlAttributes
 
         return $result->isEmpty()
             ? $name
-            : (string) str($result->keys()->first());
+            : (string)str($result->keys()->first());
     }
 }
