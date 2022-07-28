@@ -12,7 +12,6 @@
         "autoprefixer": "^10.4.7",
         "axios": "^0.25",
         "install": "^0.13.0",
-        "laravel-vite-plugin": "^0.5.2",
         "lodash": "^4.17.19",
         "npm": "^8.9.0",
         "postcss": "^8.1.14",
