@@ -1,0 +1,12 @@
+{
+  "resources/js/app.js": {
+    "file": "js/moonshine.js",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "css/moonshine.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  }
+}
