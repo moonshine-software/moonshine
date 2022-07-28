@@ -18,7 +18,7 @@
     "ext-json": "*",
     "laravel/framework": "^9",
     "symfony/var-dumper": "^6.0",
-    "phpoffice/phpspreadsheet": "*"
+    "phpoffice/phpspreadsheet": "1.24.1"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9.2",
