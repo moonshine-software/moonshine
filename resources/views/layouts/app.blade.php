@@ -19,8 +19,7 @@
         <meta name="msapplication-TileColor" content="#7665FF">
         <meta name="theme-color" content="#7665FF">
 
-        <link rel="stylesheet" type="text/css" href="{{  mix('/css/moonshine.css', 'vendor/moonshine') }}">
-        <script src="{{ mix('/js/moonshine.js', 'vendor/moonshine') }}" defer></script>
+        @vite(['resources/css/app.css', 'resources/js/app.js'], 'vendor/moonshine')
 
         @if(isset($resource) && $resource->getAssets('css'))
             @foreach($resource->getAssets('css') as $css)
