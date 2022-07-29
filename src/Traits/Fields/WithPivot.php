@@ -4,9 +4,9 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-trait WithPivotTrait
+trait WithPivot
 {
-    public function getPivotAs(Model $item)
+    public function getPivotAs(Model $item): int|string|null
     {
         return array_key_first($item->getRelations());
     }

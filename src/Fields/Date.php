@@ -5,10 +5,11 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
+use Leeto\MoonShine\Traits\Fields\WithMask;
 
 class Date extends Field
 {
-    use DateTrait;
+    use DateTrait, WithMask;
 
     protected static string $view = 'input';
 

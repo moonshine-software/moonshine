@@ -4,12 +4,13 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\FileContract;
+use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
 use Illuminate\Support\Facades\Storage;
 
 class Image extends Field implements FileContract
 {
-    use FileTrait;
+    use FileTrait, CanBeMultiple;
 
     public static string $view = 'image';
 
@@ -17,22 +18,21 @@ class Image extends Field implements FileContract
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        if($item->{$this->field()} == '') {
+        if ($item->{$this->field()} == '') {
             return '';
         }
 
-        if($this->isMultiple()) {
+        if ($this->isMultiple()) {
             $values = collect($item->{$this->field()})
-                ->map(fn ($value) => "'".Storage::url($value)."'")->implode(',');
+                ->map(fn($value) => "'".Storage::url($value)."'")->implode(',');
 
             return view('moonshine::shared.carousel', [
                 'values' => $values
             ]);
         }
 
-        return view(
-            'moonshine::fields.shared.thumbnail', [
-                'value' => $item->{$this->field()},
+        return view('moonshine::fields.shared.thumbnail', [
+            'value' => $item->{$this->field()},
         ]);
     }
 }

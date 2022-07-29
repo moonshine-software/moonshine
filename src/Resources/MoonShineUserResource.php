@@ -62,8 +62,13 @@ class MoonShineUserResource extends Resource
                 ->showOnExport()
                 ->required(),
 
-            Password::make(trans('moonshine::ui.base_resource.password'), 'password')->hideOnIndex(),
-            PasswordRepeat::make(trans('moonshine::ui.base_resource.repeat_password'), 'password_repeat')->hideOnIndex(),
+            Password::make(trans('moonshine::ui.base_resource.password'), 'password')
+                ->customAttributes(['autocomplete' => 'new-password'])
+                ->hideOnIndex(),
+
+            PasswordRepeat::make(trans('moonshine::ui.base_resource.repeat_password'), 'password_repeat')
+                ->customAttributes(['autocomplete' => 'confirm-password'])
+                ->hideOnIndex(),
         ];
     }
 

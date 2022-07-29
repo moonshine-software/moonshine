@@ -3,15 +3,14 @@
 namespace Leeto\MoonShine\Filters;
 
 
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Traits\Fields\WithRelationshipsTrait;
-use Leeto\MoonShine\Traits\Fields\SearchableTrait;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelationshipContract;
+use Leeto\MoonShine\Traits\Fields\Searchable;
+use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class BelongsToFilter extends Filter implements HasRelationshipContract
+class BelongsToFilter extends Filter implements HasRelationshipContract, BelongsToRelationshipContract
 {
-    use SearchableTrait, WithRelationshipsTrait;
-
-    public static bool $toOne = true;
+    use Searchable, WithRelationship;
 
     public static string $view = 'select';
 }

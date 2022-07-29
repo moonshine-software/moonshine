@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-trait SelectTransformerTrait
+trait SelectTransform
 {
     protected bool $select = false;
 

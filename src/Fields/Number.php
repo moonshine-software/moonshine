@@ -13,6 +13,8 @@ class Number extends Field
 
     protected static string $type = 'number';
 
+    protected array $attributes = ['min', 'max', 'step'];
+
     protected bool $stars = false;
 
     public function stars(): static

@@ -2,7 +2,9 @@
 
 namespace Leeto\MoonShine\Helpers;
 
-final class ConditionHelpers
+use Closure;
+
+final class Condition
 {
     /**
      * Returns the Boolean value of the condition
@@ -16,6 +18,6 @@ final class ConditionHelpers
     {
         return is_null($condition)
             ? $default
-            : ($condition instanceof \Closure ? $condition() : $condition);
+            : ($condition instanceof Closure ? $condition() : $condition);
     }
 }

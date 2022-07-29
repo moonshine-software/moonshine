@@ -1,5 +1,5 @@
 <div>
-    @if($field->isMultiple())
+    @if($field->isGroup())
         @include('moonshine::fields.multi-checkbox', [
             'field' => $field,
             'item' => $item,
@@ -7,7 +7,7 @@
         ])
     @else
         @include('moonshine::fields.shared.checkbox', [
-            'meta' => $field->meta(),
+            'attributes' => $field->attributes(),
             'id' => $field->id(),
             'name' => $field->name(),
             'value' => $field->formViewValue($item),

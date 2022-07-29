@@ -7,12 +7,16 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelationshipContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Closure;
 use Leeto\MoonShine\MoonShine;
 
-trait FormElementTrait
+trait FormElement
 {
     protected string $label = '';
 
@@ -22,16 +26,18 @@ trait FormElementTrait
 
     protected ResourceContract|null $resource;
 
+    protected bool $group = false;
+
     protected string $resourceTitleField = '';
 
-    protected Closure|null $resourceTitleCallback = null;
+    protected Closure|null $valueCallback = null;
 
     protected static string $view = '';
 
     /**
      * Creates a form element class: Field,Filter
      *
-     * @param ...$arguments $label Form element label, will be displayed in moonshine admin panel,
+     * @param ...$arguments  $label Form element label, will be displayed in moonshine admin panel,
      *                      $field Field name from database, which will be used for this form element
      *                      $resource Instance of related resource class, if form element is a relation
      * @return static
@@ -41,19 +47,18 @@ trait FormElementTrait
         return new static(...$arguments);
     }
 
-    final public function __construct(string $label = null, string $field = null, Closure|ResourceContract|string|null $resource = null)
-    {
+    final public function __construct(
+        string $label = null,
+        string $field = null,
+        Closure|ResourceContract|string|null $resource = null
+    ) {
         $this->setLabel($label ?? str($this->label)->ucfirst());
         $this->setField($field ?? str($this->label)->lower()->snake());
 
-        if($this instanceof HasRelationshipContract) {
-            if(!$this->isRelationToOne() && !$this->isRelationHasOne()) {
-                $this->multiple();
-            }
-
+        if ($this->hasRelationship()) {
             $this->setField($field ?? str($this->label)->camel());
 
-            if(($this->isRelationToOne() && !$this->isRelationHasOne()) && !str($this->field())->contains('_id')) {
+            if ($this->belongToOne() && !str($this->field())->contains('_id')) {
                 $this->setField(
                     str($this->field())
                         ->append('_id')
@@ -63,7 +68,7 @@ trait FormElementTrait
 
             $this->setRelation($field ?? str($this->label)->camel());
 
-            if(str($this->relation())->contains('_id')) {
+            if (str($this->relation())->contains('_id')) {
                 $this->setRelation(
                     str($this->relation())
                         ->remove('_id')
@@ -71,13 +76,15 @@ trait FormElementTrait
                 );
             }
 
-            if($resource instanceof ResourceContract) {
+            if ($resource instanceof ResourceContract) {
                 $this->setResource($resource);
-            } elseif($resource instanceof Closure) {
-                $this->setResourceTitleCallback($resource);
-            } elseif(is_string($resource)) {
+            } elseif (is_string($resource)) {
                 $this->setResourceTitleField($resource);
             }
+        }
+
+        if ($resource instanceof Closure) {
+            $this->setValueCallback($resource);
         }
     }
 
@@ -138,7 +145,7 @@ trait FormElementTrait
 
     public function resourceTitleField(): string
     {
-        if($this->resourceTitleField) {
+        if ($this->resourceTitleField) {
             return $this->resourceTitleField;
         }
         return $this->resource() && $this->resource()->titleField()
@@ -153,14 +160,56 @@ trait FormElementTrait
         return $this;
     }
 
-    public function resourceTitleCallback(): Closure|null
+    public function valueCallback(): Closure|null
     {
-        return $this->resourceTitleCallback;
+        return $this->valueCallback;
     }
 
-    protected function setResourceTitleCallback(Closure $resourceTitleCallback): void
+    protected function setValueCallback(Closure $valueCallback): void
     {
-        $this->resourceTitleCallback = $resourceTitleCallback;
+        $this->valueCallback = $valueCallback;
+    }
+
+    protected function group(): static
+    {
+        $this->group = true;
+
+        return $this;
+    }
+
+    protected function isGroup(): bool
+    {
+        return $this->group;
+    }
+
+    public function hasRelationship(): bool
+    {
+        return $this instanceof HasRelationshipContract;
+    }
+
+    public function belongToOne(): bool
+    {
+        return $this->hasRelationship() && $this instanceof BelongsToRelationshipContract;
+    }
+
+    public function toOne(): bool
+    {
+        return $this->hasRelationship() && $this instanceof OneToOneRelationshipContract;
+    }
+
+    public function toMany(): bool
+    {
+        return $this->hasRelationship() && $this instanceof OneToManyRelationshipContract;
+    }
+
+    public function manyToMany(): bool
+    {
+        return $this->hasRelationship() && $this instanceof ManyToManyRelationshipContract;
+    }
+
+    public function getRelated(Model $model): Model
+    {
+        return $model->{$this->relation()}()->getRelated();
     }
 
     public function getView(): string
