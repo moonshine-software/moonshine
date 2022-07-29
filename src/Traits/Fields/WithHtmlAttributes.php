@@ -7,8 +7,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Helpers\ConditionHelpers;
+use Illuminate\View\ComponentAttributeBag;
+use Leeto\MoonShine\Helpers\Condition;
 
 trait WithHtmlAttributes
 {
@@ -26,19 +26,17 @@ trait WithHtmlAttributes
 
     protected bool $nullable = false;
 
-    protected bool $multiple = false;
-
     protected bool $readonly = false;
 
-    protected string $autocomplete = 'off';
+    protected array $attributes = [];
 
-    protected string $mask = '';
+    protected array $customAttributes = [];
 
-    protected array $options = [];
+    protected array $customClasses = [];
 
     public function id(string $index = null): string
     {
-        if($this->id) {
+        if ($this->id) {
             return $this->id;
         }
 
@@ -58,16 +56,30 @@ trait WithHtmlAttributes
 
     protected function prepareName($index = null, $wrap = null): string
     {
-        if($this->name) {
+        if ($this->name) {
             return $this->name;
         }
 
         return (string) str($this->field())
             ->when(!is_null($wrap), fn(Stringable $str) => $str->wrap("{$wrap}[", "]"))
             ->when(
-                $this->isMultiple(),
+                $this->isGroup() || $this->getAttribute('multiple'),
                 fn(Stringable $str) => $str->append("[".($index ?? '')."]")
             );
+    }
+
+    protected function nameDot(): string
+    {
+        $name = (string) str($this->name())->replace('[]', '');
+
+        parse_str($name, $array);
+
+        $result = collect(Arr::dot(array_filter($array)));
+
+
+        return $result->isEmpty()
+            ? $name
+            : (string) str($result->keys()->first());
     }
 
     public function setName(string $name): static
@@ -89,19 +101,49 @@ trait WithHtmlAttributes
         return static::$type;
     }
 
-    public function attributes(): array
-    {
-        return get_object_vars($this);
-    }
-
     public function getAttribute(string $name): mixed
     {
-        return collect($this->attributes())->get($name);
+        return $this->attributes()->get($name);
+    }
+
+    public function setAttribute(string $name, string $value): static
+    {
+        $this->attributes[] = $name;
+        $this->customAttributes[$name] = $value;
+
+        return $this;
+    }
+
+    public function attributes(): ComponentAttributeBag
+    {
+        $resolveAttributes = collect($this->attributes)->mapWithKeys(function ($attr) {
+            $property = (string) str($attr)->camel();
+
+            return isset($this->{$property}) ? [$attr => $this->{$property}] : [];
+        });
+
+        return (new ComponentAttributeBag($resolveAttributes->toArray()))
+            ->class($this->customClasses)
+            ->merge($this->customAttributes);
+    }
+
+    public function customAttributes(array $attributes): static
+    {
+        $this->customAttributes = $attributes;
+
+        return $this;
+    }
+
+    public function customClasses(array $classes): static
+    {
+        $this->customClasses = $classes;
+
+        return $this;
     }
 
     public function required($condition = null): static
     {
-        $this->required = ConditionHelpers::boolean($condition, true);
+        $this->required = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -125,7 +167,7 @@ trait WithHtmlAttributes
 
     public function disabled($condition = null): static
     {
-        $this->disabled = ConditionHelpers::boolean($condition, true);
+        $this->disabled = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -135,21 +177,9 @@ trait WithHtmlAttributes
         return $this->disabled;
     }
 
-    public function getMask(): string
-    {
-        return $this->mask;
-    }
-
-    public function mask(string $mask): static
-    {
-        $this->mask = $mask;
-
-        return $this;
-    }
-
     public function hidden($condition = null): static
     {
-        if(ConditionHelpers::boolean($condition, true)) {
+        if (Condition::boolean($condition, true)) {
             static::$type = 'hidden';
         }
 
@@ -163,7 +193,7 @@ trait WithHtmlAttributes
 
     public function readonly($condition = null): static
     {
-        $this->readonly = ConditionHelpers::boolean($condition, true);
+        $this->readonly = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -175,7 +205,7 @@ trait WithHtmlAttributes
 
     public function nullable($condition = null): static
     {
-        $this->nullable = ConditionHelpers::boolean($condition, true);
+        $this->nullable = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -185,104 +215,8 @@ trait WithHtmlAttributes
         return $this->nullable;
     }
 
-    public function multiple($condition = null): static
+    public function isFile(): bool
     {
-        $this->multiple = ConditionHelpers::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function isMultiple(): bool
-    {
-        return $this->multiple;
-    }
-
-    public function options(array $data): static
-    {
-        $this->options = $data;
-
-        return $this;
-    }
-
-    public function relatedOptions(Model $item): array
-    {
-        $related = $item->{$this->relation()}()->getRelated();
-
-        if(is_callable($this->resourceTitleCallback())) {
-            $values = $related->all()
-                ->mapWithKeys(function ($relatedItem) {
-                    return [$relatedItem->getKey() => ($this->resourceTitleCallback())($relatedItem)];
-                });
-        } else {
-            $values = $related->pluck($this->resourceTitleField(), $related->getKeyName());
-        }
-
-        return $values->toArray();
-    }
-
-    public function autocomplete(string $value): static
-    {
-        $this->autocomplete = $value;
-
-        return $this;
-    }
-
-    public function getAutocomplete(): string
-    {
-        return $this->autocomplete;
-    }
-
-    public function values(): array
-    {
-        return $this->options;
-    }
-
-    public function isChecked(Model $item, string $value): bool
-    {
-        $formValue = $this->formViewValue($item);
-
-        if($formValue instanceof Collection) {
-            return $this->formViewValue($item)->contains("id", "=", $value);
-        }
-
-        if(is_array($formValue)) {
-            return in_array($value, $formValue);
-        }
-
-        return false;
-    }
-
-    public function isSelected(Model $item, string $value): bool
-    {
-        if(!$this->formViewValue($item)) {
-            return false;
-        }
-
-        if($this instanceof HasRelationshipContract
-            && !$this->isRelationToOne() && !$this->isRelationHasOne()) {
-            $related = $item->{$this->relation()}()->getRelated();
-
-
-            return $this->formViewValue($item) instanceof Collection
-                ? $this->formViewValue($item)->contains($related->getKeyName(), '=', $value)
-                : in_array($value, $this->formViewValue($item));
-        }
-
-        return (string) $this->formViewValue($item) === $value
-            || (!$this->formViewValue($item) && (string) $this->getDefault() === $value);
-    }
-
-    protected function nameDot(): string
-    {
-        $name = (string) str($this->name())->replace('[]', '');
-
-        parse_str($name, $array);
-
-        $result = collect(Arr::dot(array_filter($array)));
-
-
-        return $result->isEmpty()
-            ? $name
-            : (string) str($result->keys()->first());
+        return $this->type() === 'file';
     }
 }

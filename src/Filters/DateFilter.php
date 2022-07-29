@@ -4,10 +4,11 @@ namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
+use Leeto\MoonShine\Traits\Fields\WithMask;
 
 class DateFilter extends Filter
 {
-    use DateTrait;
+    use DateTrait, WithMask;
 
     public static string $view = 'date';
 

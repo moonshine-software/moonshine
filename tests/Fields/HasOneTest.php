@@ -13,7 +13,7 @@ class HasOneTest extends TestCase
         $field = HasOne::make('Role');
 
         $this->assertEquals('role', $field->field());
-        $this->assertEquals('role', $field->name());
+        $this->assertEquals('role[]', $field->name());
         $this->assertEquals('role', $field->id());
         $this->assertEquals('role', $field->relation());
         $this->assertEquals('Role', $field->label());

@@ -1,5 +1,5 @@
 <div>
-    <input {!! $meta ?? '' !!}
+    <input {{ $attributes }}
            id="{{ $id }}"
            type="checkbox"
            name="{{ $name }}"

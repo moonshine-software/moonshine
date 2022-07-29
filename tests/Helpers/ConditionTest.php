@@ -3,9 +3,9 @@
 namespace Leeto\MoonShine\Tests\Helpers;
 
 use Leeto\MoonShine\Tests\TestCase;
-use Leeto\MoonShine\Helpers\ConditionHelpers;
+use Leeto\MoonShine\Helpers\Condition;
 
-class ConditionHelpersTest extends TestCase
+class ConditionTest extends TestCase
 {
     public function test_boolean()
     {
@@ -19,7 +19,7 @@ class ConditionHelpersTest extends TestCase
         ];
 
         foreach ($tests as $test) {
-            $this->assertEquals($test['exp'], ConditionHelpers::boolean(...$test['args']));
+            $this->assertEquals($test['exp'], Condition::boolean(...$test['args']));
         }
     }
 }

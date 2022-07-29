@@ -3,7 +3,7 @@
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-trait ShowWhenTrait
+trait ShowWhen
 {
     public bool $showWhenState = false;
 

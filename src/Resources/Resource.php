@@ -17,7 +17,6 @@ use Illuminate\Database\QueryException;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\RenderableContract;
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 
 use Leeto\MoonShine\Decorations\Tab;
@@ -319,7 +318,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function formFields(): Collection
     {
@@ -474,15 +473,14 @@ abstract class Resource implements ResourceContract
     {
         try {
             foreach ($this->formFields() as $field) {
-                if(!$field instanceof HasRelationshipContract
-                    || (!$field->isRelationHasOne() && $field->isRelationToOne())) {
+                if(!$field->hasRelationship() || $field->belongToOne()) {
                     $item = $field->save($item);
                 }
             }
 
             if($item->save()) {
                 foreach ($this->formFields() as $field) {
-                    if($field instanceof HasRelationshipContract && (!$field->isRelationToOne() || $field->isRelationHasOne())) {
+                    if($field->hasRelationship() && !$field->belongToOne()) {
                         $item = $field->save($item);
                     }
                 }
@@ -525,8 +523,8 @@ abstract class Resource implements ResourceContract
 
     protected function _render(RenderableContract $field, Model $item, int $level = 0): Factory|View|Application
     {
-        if ($field instanceof HasRelationshipContract) {
-            $field->options($field->relatedOptions($item));
+        if ($field->hasRelationship()) {
+            $field->setValues($field->relatedValues($item));
         }
 
         return view($field->getView(), [

@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Traits;
 
-trait WithViewTrait
+trait WithView
 {
     protected static string $view = '';
 

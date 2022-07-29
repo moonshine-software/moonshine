@@ -2,16 +2,6 @@
 
 namespace Leeto\MoonShine\Fields;
 
-use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
-use Leeto\MoonShine\Traits\Fields\WithRelationshipsTrait;
-use Leeto\MoonShine\Traits\Fields\HasManyRelationConceptTrait;
-
-class MorphMany extends Field implements HasRelationshipContract, HasFieldsContract
+class MorphMany extends HasMany
 {
-    use HasManyRelationConceptTrait;
-    use WithRelationshipsTrait, WithFieldsTrait;
-
-    protected static string $view = 'has-many';
 }

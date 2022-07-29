@@ -10,7 +10,7 @@ class Password extends Field
 
     public static string $type = 'password';
 
-    protected string $autocomplete = 'new-password';
+    protected array $attributes = ['autocomplete'];
 
     public function exportViewValue(Model $item): string
     {

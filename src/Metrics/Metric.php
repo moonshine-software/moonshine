@@ -3,12 +3,12 @@
 namespace Leeto\MoonShine\Metrics;
 
 use Leeto\MoonShine\Contracts\RenderableContract;
-use Leeto\MoonShine\Traits\WithAssetsTrait;
-use Leeto\MoonShine\Traits\WithViewTrait;
+use Leeto\MoonShine\Traits\WithAssets;
+use Leeto\MoonShine\Traits\WithView;
 
 abstract class Metric implements RenderableContract
 {
-    use WithAssetsTrait, WithViewTrait;
+    use WithAssets, WithView;
 
     protected string $label;
 

@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-trait SearchableTrait
+trait Searchable
 {
     protected bool $searchable = false;
 

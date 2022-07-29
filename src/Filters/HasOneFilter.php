@@ -4,15 +4,15 @@ namespace Leeto\MoonShine\Filters;
 
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Traits\Fields\WithRelationshipsTrait;
-use Leeto\MoonShine\Traits\Fields\SearchableTrait;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelationshipContract;
+use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
+use Leeto\MoonShine\Traits\Fields\Searchable;
+use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class HasOneFilter extends Filter implements HasRelationshipContract
+class HasOneFilter extends Filter implements HasRelationshipContract, OneToOneRelationshipContract
 {
-    use SearchableTrait, WithRelationshipsTrait;
-
-    public static bool $toOne = true;
+    use Searchable, WithRelationship, CanBeMultiple;
 
     public static string $view = 'select';
 

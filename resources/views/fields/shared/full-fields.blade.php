@@ -1,7 +1,7 @@
 <div x-data="handler_{{ $field->id() }}()" x-init="handler_init_{{ $field->id() }}">
     <template x-for="(item, index{{ $level }}) in items" :key="index{{ $level }}">
         <div :data-id="item.id" class="full_fields_{{ $field->id() }}">
-            @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+            @if(!$field->toOne())
                 <div class="font-bold text-purple my-4" x-text="index{{ $level }} + 1"></div>
             @endif
 
@@ -11,7 +11,7 @@
                 </x-moonshine::field-container>
             @endforeach
 
-            @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+            @if(!$field->toOne())
                 <div class="my-4">
                     @if($field->isRemovable())
                         <button @click="removeField(index{{ $level }})" type="button" class="text-pink hover:text-pink inline-block">
@@ -24,7 +24,7 @@
     </template>
 
     <div class="my-4">
-    @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+        @if(!$field->toOne())
             <button type="button"
                 class="bg-gradient-to-r from-purple to-pink text-white
                             text-white font-semibold py-2 px-4 rounded"

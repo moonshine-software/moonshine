@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Traits;
 
-trait WithAssetsTrait
+trait WithAssets
 {
     protected array $assets = [];
 

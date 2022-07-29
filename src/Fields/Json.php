@@ -4,15 +4,38 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
-use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
+use Leeto\MoonShine\Traits\Fields\WithFields;
+use Throwable;
 
 class Json extends Field implements HasFieldsContract
 {
-    use WithFieldsTrait;
-
-    protected bool $multiple = true;
+    use WithFields;
 
     protected static string $view = 'json';
+
+    protected bool $keyValue = false;
+
+    protected bool $group = true;
+
+    /**
+     * @throws Throwable
+     */
+    public function keyValue(string $key = 'Key', string $value = 'Value'): static
+    {
+        $this->keyValue = true;
+
+        $this->fields([
+            Text::make($key, 'key'),
+            Text::make($value, 'value'),
+        ]);
+
+        return $this;
+    }
+
+    public function isKeyValue(): bool
+    {
+        return $this->keyValue;
+    }
 
     public function indexViewValue(Model $item, bool $container = false): string
     {
