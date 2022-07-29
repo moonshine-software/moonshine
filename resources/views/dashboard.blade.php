@@ -3,14 +3,6 @@
 @section('title', config("moonshine.title"))
 
 @section('content')
-    @foreach(app(\Leeto\MoonShine\Dashboard\Dashboard::class)->getAssets('css') as $css)
-        <link rel="stylesheet" href="{{ asset($css) }}">
-    @endforeach
-
-    @foreach(app(\Leeto\MoonShine\Dashboard\Dashboard::class)->getAssets('js') as $js)
-        <script src="{{ asset($js) }}"></script>
-    @endforeach
-
     @if(config("moonshine.logo"))
         <img class="mx-auto h-12 w-auto" src="{{ config("moonshine.logo") }}" alt="{{ config("moonshine.title") }}">
     @else

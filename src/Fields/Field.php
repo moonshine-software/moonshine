@@ -3,6 +3,7 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
 use Leeto\MoonShine\Contracts\RenderableContract;
 
 use Leeto\MoonShine\Traits\Fields\FormElement;
@@ -11,10 +12,11 @@ use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModel;
 use Leeto\MoonShine\Helpers\Condition;
+use Leeto\MoonShine\Traits\WithAssets;
 
 abstract class Field implements RenderableContract
 {
-    use FormElement, WithHtmlAttributes, ShowWhen, XModel, LinkTrait;
+    use FormElement, WithHtmlAttributes, WithAssets, ShowWhen, XModel, LinkTrait;
 
     public bool $showOnIndex = true;
 
@@ -29,10 +31,6 @@ abstract class Field implements RenderableContract
     protected bool $sortable = false;
 
     protected bool $removable = false;
-
-    protected array $assets = [];
-
-    protected array $fields = [];
 
     public function showOnIndex($condition = null): static
     {
@@ -95,10 +93,10 @@ abstract class Field implements RenderableContract
 
     public function setParents(): static
     {
-        if ($this->hasFields()) {
+        if ($this instanceof HasFieldsContract) {
             $fields = [];
 
-            foreach ($this->fields as $field) {
+            foreach ($this->getFields() as $field) {
                 $field = $field->setParents();
 
                 $fields[] = $field->setParent($this);
@@ -106,18 +104,6 @@ abstract class Field implements RenderableContract
 
             $this->fields($fields);
         }
-
-        return $this;
-    }
-
-    public function hasFields(): bool
-    {
-        return count($this->fields);
-    }
-
-    public function fields(array $fields): static
-    {
-        $this->fields = $fields;
 
         return $this;
     }
@@ -156,11 +142,6 @@ abstract class Field implements RenderableContract
     public function isSortable(): bool
     {
         return $this->sortable;
-    }
-
-    public function getAssets(): array
-    {
-        return $this->assets;
     }
 
     public function getView(): string

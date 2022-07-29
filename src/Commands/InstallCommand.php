@@ -13,31 +13,40 @@ class InstallCommand extends MoonShineCommand
 
     public function handle(): void
     {
-        $this->comment('MoonShine installation ...');
+        $this->components->info('MoonShine installation ...');
 
         $this->initDirectories();
         $this->initDashboard();
 
-        $this->info('Installation completed');
+        $this->components->info('Installation completed');
 
-        $this->comment("Now run 'php artisan moonshine:user'");
+        $this->components->info("Now run 'php artisan moonshine:user'");
     }
 
     protected function initDirectories(): void
     {
         if (is_dir($this->getDirectory())) {
-            $this->error("{$this->getDirectory()} directory already exists!");
+            $this->components->warn("{$this->getDirectory()} directory already exists!");
         }
 
         $this->makeDir('Resources');
+
+        $this->components->task('Resources directory created');
 
         Artisan::call('vendor:publish', [
             '--provider' => MoonShineServiceProvider::class,
             '--force' => true,
         ]);
 
+        $this->components->task('Vendor published');
+
         Artisan::call('migrate');
+
+        $this->components->task('Tables migrated');
+
         Artisan::call('storage:link');
+
+        $this->components->task('Storage link created');
     }
 
     protected function initDashboard(): void
@@ -46,5 +55,7 @@ class InstallCommand extends MoonShineCommand
         $contents = $this->getStub('Dashboard');
 
         $this->laravel['files']->put($dashboard, $contents);
+
+        $this->components->task('Dashboard created');
     }
 }

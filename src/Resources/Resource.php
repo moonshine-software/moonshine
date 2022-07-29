@@ -24,6 +24,7 @@ use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
 
+
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
@@ -362,28 +363,6 @@ abstract class Resource implements ResourceContract
         }
 
         return $labels;
-    }
-
-    public function getAssets(string $type): array
-    {
-        $assets = ['js' => [], 'css' => []];
-
-        foreach ($this->getFields() as $field) {
-            if($field->getAssets()) {
-                $assets = array_merge_recursive($field->getAssets(), $assets);
-            }
-        }
-
-        foreach ($this->metrics() as $metric) {
-            if($metric->getAssets()) {
-                $assets = array_merge_recursive($metric->getAssets(), $assets);
-            }
-        }
-
-        $assets['js'] = array_unique($assets['js']);
-        $assets['css'] = array_unique($assets['css']);
-
-        return $assets[$type] ?? [];
     }
 
     public function getFilter(string $filterName): Filter|null

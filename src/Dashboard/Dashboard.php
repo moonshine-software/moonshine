@@ -28,22 +28,4 @@ class Dashboard
 
         return $blocks->isNotEmpty() ? $blocks : $this->blocks;
     }
-
-    public function getAssets(string $type): array
-    {
-        $assets = ['js' => [], 'css' => []];
-
-        if($this->getBlocks()) {
-            foreach ($this->getBlocks() as $block) {
-                foreach ($block->items() as $item) {
-                    $assets = array_merge_recursive($item->getAssets(), $assets);
-                }
-            }
-
-            $assets['js'] = array_unique($assets['js']);
-            $assets['css'] = array_unique($assets['css']);
-        }
-
-        return $assets[$type] ?? [];
-    }
 }

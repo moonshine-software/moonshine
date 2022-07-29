@@ -10,9 +10,7 @@ class LineChartMetric extends Metric
 
     protected array $colors = [];
 
-    protected array $assets = [
-        'js' => ['https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js']
-    ];
+    protected array $assets = ['https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js'];
 
     public function lines(): array
     {

@@ -18,7 +18,7 @@ class ResourceCommand extends MoonShineCommand
     {
         $name = str($this->argument('name'));
 
-        if(!$name) {
+        if($name->isEmpty()) {
             $name = str($this->ask('Resource name'));
         }
 
@@ -38,8 +38,8 @@ class ResourceCommand extends MoonShineCommand
             str_replace('Dummy', $name, $contents)
         );
 
-        $this->info("{$name}Resource file was created: " . str_replace(base_path(), '', $resource));
+        $this->components->info("{$name}Resource file was created: " . str_replace(base_path(), '', $resource));
 
-        $this->comment('Now register resource');
+        $this->components->info('Now register resource in menu');
     }
 }

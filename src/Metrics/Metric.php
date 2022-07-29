@@ -5,6 +5,7 @@ namespace Leeto\MoonShine\Metrics;
 use Leeto\MoonShine\Contracts\RenderableContract;
 use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithView;
+use Leeto\MoonShine\Utilities\AssetManager;
 
 abstract class Metric implements RenderableContract
 {
@@ -14,7 +15,11 @@ abstract class Metric implements RenderableContract
 
     public static function make(...$arguments): static
     {
-        return new static(...$arguments);
+        $static = new static(...$arguments);
+
+        app(AssetManager::class)->add($static->getAssets());
+
+        return $static;
     }
 
     final public function __construct(string $label)
