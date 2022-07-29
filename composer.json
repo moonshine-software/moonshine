@@ -16,7 +16,7 @@
     "php": "^8.0|^8.1",
     "ext-curl": "*",
     "ext-json": "*",
-    "laravel/framework": "^9",
+    "laravel/framework": "^9.21",
     "symfony/var-dumper": "^6.0",
     "phpoffice/phpspreadsheet": "1.24.1"
   },
