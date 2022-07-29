@@ -37,7 +37,7 @@ class DecorationTest extends TestCase
             Text::make('Last name'),
         ]);
 
-        $this->assertEquals(str('label')->slug(), $decoration->id());
+        $this->assertEquals(str('Label')->slug(), $decoration->id());
     }
 
     public function test_decoration_name(): void

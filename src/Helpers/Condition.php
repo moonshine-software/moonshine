@@ -18,6 +18,6 @@ final class Condition
     {
         return is_null($condition)
             ? $default
-            : ($condition instanceof Closure ? $condition() : $condition);
+            : ($condition instanceof Closure ? $condition() : (bool)$condition);
     }
 }

@@ -8,7 +8,7 @@ use Leeto\MoonShine\Tests\TestCase;
 
 class TabTest extends TestCase
 {
-    public function test_tab_get_view()
+    public function test_tab_get_view(): void
     {
         $decoration = Tab::make('Tab');
 

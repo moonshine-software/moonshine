@@ -18,7 +18,7 @@ abstract class Decoration implements RenderableContract
      * Create a decoration class: Heading, Tab ...
      *
      * @param ...$arguments $label Decoration label, will be displayed in moonshine admin panel,
-     *                      $fields Array of fields will be displayed in tab
+     *                      $fields Array of fields, displayed in decoration (optional)
      * @return static
      */
     public static function make(...$arguments): static
