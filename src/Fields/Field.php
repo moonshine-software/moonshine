@@ -13,10 +13,11 @@ use Leeto\MoonShine\Traits\Fields\WithFieldsTrait;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModelTrait;
 use Leeto\MoonShine\Helpers\ConditionHelpers;
+use Leeto\MoonShine\Traits\WithAssetsTrait;
 
 abstract class Field implements RenderableContract
 {
-    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait, LinkTrait;
+    use FormElementTrait, WithHtmlAttributes, WithAssetsTrait, ShowWhenTrait, XModelTrait, LinkTrait;
 
     public bool $showOnIndex = true;
 
@@ -31,8 +32,6 @@ abstract class Field implements RenderableContract
     protected bool $sortable = false;
 
     protected bool $removable = false;
-
-    protected array $assets = [];
 
     public function showOnIndex($condition = null): static
     {
@@ -149,11 +148,6 @@ abstract class Field implements RenderableContract
     public function isSortable(): bool
     {
         return $this->sortable;
-    }
-
-    public function getAssets(): array
-    {
-        return $this->assets;
     }
 
     public function getView(): string

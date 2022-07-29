@@ -15,6 +15,7 @@ use Leeto\MoonShine\Http\Middleware\Authenticate;
 use Leeto\MoonShine\Http\Middleware\Session;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\MoonShine;
+use Leeto\MoonShine\Utilities\AssetManager;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -92,6 +93,10 @@ class MoonShineServiceProvider extends ServiceProvider
 
         $this->app->singleton(Dashboard::class, function ($app) {
             return new Dashboard();
+        });
+
+        $this->app->singleton(AssetManager::class, function ($app) {
+            return new AssetManager();
         });
 
         $extensions = [];

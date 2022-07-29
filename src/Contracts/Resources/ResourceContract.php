@@ -88,14 +88,6 @@ interface ResourceContract
      */
     public function formFields(): Collection;
 
-    /**
-     * Get additional assets, which will be loaded on resource page
-     *
-     * @param string $type CSS or JS type
-     * @return array
-     */
-    public function getAssets(string $type): array;
-
     public function extensions($name, Model $item): string;
 
     /**

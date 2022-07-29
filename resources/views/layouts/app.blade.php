@@ -21,19 +21,11 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'], 'vendor/moonshine')
 
-        @if(isset($resource) && $resource->getAssets('css'))
-            @foreach($resource->getAssets('css') as $css)
-                <link rel="stylesheet" href="{{ asset($css) }}">
-            @endforeach
-        @endif
+        {{ app(\Leeto\MoonShine\Utilities\AssetManager::class)->css() }}
 
 		@yield('after-styles')
 
-        @if(isset($resource) && $resource->getAssets('js'))
-            @foreach($resource->getAssets('js') as $js)
-                <script src="{{ asset($js) }}"></script>
-            @endforeach
-        @endif
+        {{ app(\Leeto\MoonShine\Utilities\AssetManager::class)->js() }}
 
         @yield('after-scripts')
 
