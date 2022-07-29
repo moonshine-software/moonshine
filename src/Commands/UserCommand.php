@@ -23,9 +23,9 @@ class UserCommand extends MoonShineCommand
                 'password' => bcrypt($password)
             ]);
 
-            $this->info('User is created');
+            $this->components->info('User is created');
         } else {
-            $this->error('All params is required');
+            $this->components->error('All params is required');
         }
     }
 }

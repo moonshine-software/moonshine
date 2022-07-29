@@ -21,11 +21,11 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'], 'vendor/moonshine')
 
-        {{ app(\Leeto\MoonShine\Utilities\AssetManager::class)->css() }}
+        {!! app(\Leeto\MoonShine\Utilities\AssetManager::class)->css() !!}
 
 		@yield('after-styles')
 
-        {{ app(\Leeto\MoonShine\Utilities\AssetManager::class)->js() }}
+        {!! app(\Leeto\MoonShine\Utilities\AssetManager::class)->js() !!}
 
         @yield('after-scripts')
 

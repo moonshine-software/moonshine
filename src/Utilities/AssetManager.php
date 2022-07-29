@@ -4,30 +4,34 @@ namespace Leeto\MoonShine\Utilities;
 
 class AssetManager
 {
-    protected array $js = [];
-
-    protected array $css = [];
+    protected array $assets = [];
 
     public function add(string|array $assets): void
     {
-        if(is_array($assets)) {
-            foreach ($assets as $asset) {
-                $this->js[] = $asset;
-                $this->css[] = $asset;
-            }
-        } else {
-            $this->js[] = $assets;
-            $this->css[] = $assets;
-        }
+        $this->assets = array_unique(
+            array_merge(
+                $this->assets,
+                is_array($assets) ? $assets : [$assets]
+            )
+        );
     }
 
-    public function js(): array
+    public function getAssets(): array
     {
-        return $this->js;
+        return $this->assets;
+    }
+
+    public function js(): string
+    {
+        return collect($this->assets)
+            ->filter(fn($asset) => preg_match('/\.js$/', $asset))
+            ->map(fn($asset) => "<script src='".asset($asset)."'></script>")->implode(PHP_EOL);
     }
 
     public function css(): string
     {
-        return '';
+        return collect($this->assets)
+            ->filter(fn($asset) => preg_match('/\.css$/', $asset))
+            ->map(fn($asset) => "<link href='".asset($asset)."' rel='stylesheet'>")->implode(PHP_EOL);
     }
 }

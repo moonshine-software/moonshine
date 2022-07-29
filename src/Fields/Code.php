@@ -13,9 +13,7 @@ class Code extends Field
 
     public bool $lineNumbers = false;
 
-    protected array $assets = [
-        'js' => ['https://unpkg.com/codeflask/build/codeflask.min.js'],
-    ];
+    protected array $assets = ['https://unpkg.com/codeflask/build/codeflask.min.js'];
 
     public function language(string $language): static
     {

@@ -15,6 +15,7 @@ use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelationshipContract
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Closure;
 use Leeto\MoonShine\MoonShine;
+use Leeto\MoonShine\Utilities\AssetManager;
 
 trait FormElement
 {
@@ -44,7 +45,11 @@ trait FormElement
      */
     public static function make(...$arguments): static
     {
-        return new static(...$arguments);
+        $static = new static(...$arguments);
+
+        app(AssetManager::class)->add($static->getAssets());
+
+        return $static;
     }
 
     final public function __construct(

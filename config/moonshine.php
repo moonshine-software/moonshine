@@ -7,7 +7,7 @@ return [
 	'logo' => env('MOONSHINE_LOGO', ''),
 
     'route' => [
-        'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
+        'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
         'middleware' => ['web', 'moonshine'],
     ],
 

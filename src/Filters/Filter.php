@@ -4,18 +4,16 @@ namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\OneToOneRelationshipContract;
 use Leeto\MoonShine\Contracts\RenderableContract;
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
-use Leeto\MoonShine\Traits\Fields\WithFields;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModel;
+use Leeto\MoonShine\Traits\WithAssets;
 
 abstract class Filter implements RenderableContract
 {
-    use FormElement, WithHtmlAttributes, ShowWhen, XModel;
+    use FormElement, WithHtmlAttributes, WithAssets, ShowWhen, XModel;
 
     public function name(string $index = null): string
     {
