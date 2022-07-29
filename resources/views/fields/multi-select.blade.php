@@ -2,11 +2,10 @@
     <select
             x-model="{{ $field->isMultiple() ? 'selectValues' : 'selectValue' }}"
             x-ref="multi_select_{{ $field->id() }}"
-            {!! $field->meta() ?? '' !!}
+            {{ $field->attributes()  }}
             id="{{ $field->id() }}"
             name="{{ $field->name() }}"
             {{ $field->isRequired() ? "required" : "" }}
-            {{ $field->isMultiple() ? "multiple" : "" }}
             style="display: none;"
     >
         @if(!$field->isMultiple() && $field->isNullable())

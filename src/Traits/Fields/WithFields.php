@@ -12,10 +12,8 @@ use Leeto\MoonShine\Fields\Json;
 use Leeto\MoonShine\Fields\Text;
 use Throwable;
 
-trait WithFieldsTrait
+trait WithFields
 {
-    protected bool $keyValue = false;
-
     protected array $fields = [];
 
     protected bool $fullPage = false;
@@ -36,7 +34,7 @@ trait WithFieldsTrait
     {
         return collect($this->fields)->map(function ($field) {
             throw_if(
-                $this instanceof Json && $field instanceof HasRelationshipContract,
+                $this instanceof Json && $field->hasRelationship(),
                 new FieldException('Relationship fields in JSON field unavailable now. Coming soon')
             );
 
@@ -45,20 +43,19 @@ trait WithFieldsTrait
                 new FieldException('Field with fields unavailable now. Coming soon')
             );
 
-            if($this instanceof HasPivotContract) {
+            if ($this instanceof HasPivotContract) {
                 return $field->setName("{$this->relation()}_{$field->field()}[]");
             }
 
-            return $field->xModel()->setName(
+            return $field->setName(
                 str($this->name())
                     ->when(
-                    $this->isMultiple() && $this->hasFields(),
-                        fn(Stringable $s) => $s->append('[${index'. $s->substrCount('$') .'}]')
+                        $this->hasFields() && !$this->toOne(),
+                        fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
                     )
                     ->append("[{$field->field()}]")
                     ->replace('[]', '')
-            );
-
+            )->xModel();
         })->toArray();
     }
 
@@ -74,29 +71,9 @@ trait WithFieldsTrait
         return $this;
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function keyValue(string $key = 'Key', string $value = 'Value'): static
-    {
-        $this->keyValue = true;
-
-        $this->fields([
-            Text::make($key, 'key'),
-            Text::make($value, 'value'),
-        ]);
-
-        return $this;
-    }
-
-    public function isKeyValue(): bool
-    {
-        return $this->keyValue;
-    }
-
     public function jsonValues(Model $item = null): array
     {
-        if(is_null($item)) {
+        if (is_null($item)) {
             $data = ['id' => ''];
 
             foreach ($this->getFields() as $field) {
@@ -106,18 +83,18 @@ trait WithFieldsTrait
             return $data;
         }
 
-        if(isset($this->keyValue) && $this->isKeyValue()) {
+        if ($this instanceof Json && $this->isKeyValue()) {
             return collect($this->formViewValue($item))
                 ->map(fn($value, $key) => ['key' => $key, 'value' => $value])
                 ->values()
                 ->toArray();
         }
 
-        if($this->formViewValue($item) instanceof Collection) {
+        if ($this->formViewValue($item) instanceof Collection) {
             return $this->formViewValue($item)->toArray();
         }
 
-        if($this->formViewValue($item) instanceof Model) {
+        if ($this->formViewValue($item) instanceof Model) {
             return [$this->formViewValue($item)->toArray()];
         }
 

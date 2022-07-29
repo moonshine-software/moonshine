@@ -10,7 +10,7 @@ class PasswordRepeat extends Field
 
     public static string $type = 'password';
 
-    protected string $autocomplete = 'confirm-password';
+    protected array $attributes = ['autocomplete'];
 
     public function exportViewValue(Model $item): string
     {

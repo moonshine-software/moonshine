@@ -5,7 +5,7 @@
                 <table class="min-w-full">
                     <thead class="bg-whiteblue dark:bg-purple">
                     <tr>
-                        @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+                        @if(!$field->toOne())
                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">#</th>
                         @endif
 
@@ -15,7 +15,7 @@
                             </th>
                         @endforeach
 
-                        @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+                        @if(!$field->toOne())
                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider"></th>
                         @endif
                     </tr>
@@ -25,7 +25,7 @@
                     <template x-for="(item, index{{ $level }}) in items" :key="index{{ $level }}"
                     >
                         <tr :data-id="item.id" class="table_fields_{{ $field->id() }}">
-                            @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+                            @if(!$field->toOne())
                                 <td class="px-6 py-4 whitespace-no-wrap" x-text="index{{ $level }} + 1"></td>
                             @endif
 
@@ -35,7 +35,7 @@
                                 </td>
                             @endforeach
 
-                            @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+                            @if(!$field->toOne())
                                 <td class="px-6 py-4 whitespace-no-wrap">
                                     @if($field->isRemovable())
                                         <button @click="removeField(index{{ $level }})" type="button" class="text-pink hover:text-pink inline-block">
@@ -51,7 +51,7 @@
                     <tfoot class="bg-whiteblue dark:bg-purple">
                     <tr>
                         <td colspan="{{ count($field->getFields())+2 }}" class="px-6 py-4 whitespace-no-wrap">
-                            @if(!method_exists($field, 'isRelationToOne') || !$field->isRelationToOne())
+                            @if(!$field->toOne())
                                 <button type="button"
                                         class="bg-gradient-to-r from-purple to-pink text-white
     text-white font-semibold py-2 px-4 rounded"
@@ -80,7 +80,7 @@
 <script>
   function handler_{{ $field->id() }}() {
     return {
-      handler_init_{{ $field->id() }} () {
+      handler_init_{{ $field->id() }}() {
         this.items = @json($field->jsonValues($item));
       },
       items: [],

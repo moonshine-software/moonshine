@@ -5,15 +5,17 @@ namespace Leeto\MoonShine\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\OneToOneRelationshipContract;
 use Leeto\MoonShine\Contracts\RenderableContract;
-use Leeto\MoonShine\Traits\Fields\FormElementTrait;
-use Leeto\MoonShine\Traits\Fields\ShowWhenTrait;
+use Leeto\MoonShine\Traits\Fields\FormElement;
+use Leeto\MoonShine\Traits\Fields\ShowWhen;
+use Leeto\MoonShine\Traits\Fields\WithFields;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
-use Leeto\MoonShine\Traits\Fields\XModelTrait;
+use Leeto\MoonShine\Traits\Fields\XModel;
 
 abstract class Filter implements RenderableContract
 {
-    use FormElementTrait, WithHtmlAttributes, ShowWhenTrait, XModelTrait;
+    use FormElement, WithHtmlAttributes, ShowWhen, XModel;
 
     public function name(string $index = null): string
     {
@@ -22,8 +24,8 @@ abstract class Filter implements RenderableContract
 
     public function getQuery(Builder $query): Builder
     {
-        if($this instanceof HasRelationshipContract && !$this->isRelationToOne()) {
-            $table = $query->getModel()->{$this->relation()}()->getRelated()->getTable();
+        if($this->hasRelationship() && !$this->belongToOne()) {
+            $table = $this->getRelated($query->getModel())->getTable();
 
             return $this->requestValue()
                 ? $query->whereHas($this->relation(), function (Builder $q) use($table) {
@@ -32,7 +34,7 @@ abstract class Filter implements RenderableContract
                 : $query;
         }
 
-        return $this->requestValue()
+        return $this->requestValue() !== false
             ? $query->where($this->field(), $this->requestValue())
             : $query;
     }

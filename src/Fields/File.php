@@ -5,15 +5,29 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Contracts\Fields\FileContract;
+use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
 
 class File extends Field implements FileContract
 {
-    use FileTrait;
+    use FileTrait, CanBeMultiple;
 
     protected static string $view = 'file';
 
     protected static string $type = 'file';
+
+    protected string $accept = '*/*';
+
+    protected array $attributes = [
+        'accept'
+    ];
+
+    public function accept(string $value): static
+    {
+        $this->accept = $value;
+
+        return $this;
+    }
 
     public function indexViewValue(Model $item, bool $container = true): string
     {

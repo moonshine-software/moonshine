@@ -3,15 +3,14 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasRelationshipContract;
-use Leeto\MoonShine\Traits\Fields\WithRelationshipsTrait;
-use Leeto\MoonShine\Traits\Fields\SearchableTrait;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelationshipContract;
+use Leeto\MoonShine\Traits\Fields\WithRelationship;
+use Leeto\MoonShine\Traits\Fields\Searchable;
 
-class BelongsTo extends Field implements HasRelationshipContract
+class BelongsTo extends Field implements HasRelationshipContract, BelongsToRelationshipContract
 {
-    use WithRelationshipsTrait, SearchableTrait;
-
-    protected static bool $toOne = true;
+    use Searchable, WithRelationship;
 
     protected static string $view = 'select';
 
