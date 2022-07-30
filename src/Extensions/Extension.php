@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Extensions;
 
 use Illuminate\Contracts\Foundation\Application;

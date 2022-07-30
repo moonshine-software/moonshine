@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -49,7 +51,7 @@ trait WithRelationship
                 : in_array($value, $this->formViewValue($item));
         }
 
-        return (string) $this->formViewValue($item) === $value
-            || (!$this->formViewValue($item) && (string) $this->getDefault() === $value);
+        return (string)$this->formViewValue($item) === $value
+            || (!$this->formViewValue($item) && (string)$this->getDefault() === $value);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Fields;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -69,6 +71,5 @@ class DateTest extends TestCase
         $item = $field->save($user);
 
         $this->assertNull($item->created_at);
-
     }
 }

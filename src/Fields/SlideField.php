@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Fields;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\NumberTrait;
@@ -15,17 +16,17 @@ class SlideField extends Field
 
     protected static string $view = 'slide';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
     }
 
-    public function formViewValue(Model $item): array
+    public function formViewValue(Model $item): mixed
     {
         return [
             $this->fromField => $item->{$this->fromField},
@@ -37,7 +38,7 @@ class SlideField extends Field
     {
         $values = $this->requestValue();
 
-        if($values === false) {
+        if ($values === false) {
             return $item;
         }
 

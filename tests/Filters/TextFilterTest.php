@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Filters;
 
 use Leeto\MoonShine\Filters\TextFilter;

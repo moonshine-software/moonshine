@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -38,7 +40,7 @@ abstract class Field implements HtmlViewable, HasAssets
 
     protected function afterMake(): void
     {
-        if($this->getAssets()) {
+        if ($this->getAssets()) {
             app(AssetManager::class)->add($this->getAssets());
         }
     }
@@ -46,7 +48,7 @@ abstract class Field implements HtmlViewable, HasAssets
     /**
      * Set field as visible on index page, based on condition
      *
-     * @param mixed $condition
+     * @param  mixed  $condition
      * @return $this
      */
     public function showOnIndex(mixed $condition = null): static
@@ -59,7 +61,7 @@ abstract class Field implements HtmlViewable, HasAssets
     /**
      * Set field as hidden on index page, based on condition
      *
-     * @param mixed $condition
+     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnIndex(mixed $condition = null): static
@@ -72,7 +74,7 @@ abstract class Field implements HtmlViewable, HasAssets
     /**
      * Set field as visible on create/edit page, based on condition
      *
-     * @param mixed $condition
+     * @param  mixed  $condition
      * @return $this
      */
     public function showOnForm(mixed $condition = null): static
@@ -85,7 +87,7 @@ abstract class Field implements HtmlViewable, HasAssets
     /**
      * Set field as hidden on create/edit page, based on condition
      *
-     * @param mixed $condition
+     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnForm(mixed $condition = null): static
@@ -98,7 +100,7 @@ abstract class Field implements HtmlViewable, HasAssets
     /**
      * Set field as visible in export report, based on condition
      *
-     * @param mixed $condition
+     * @param  mixed  $condition
      * @return $this
      */
     public function showOnExport(mixed $condition = null): static
@@ -111,7 +113,7 @@ abstract class Field implements HtmlViewable, HasAssets
     /**
      * Set field as hidden in export report, based on condition
      *
-     * @param mixed $condition
+     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnExport(mixed $condition = null): static
@@ -158,7 +160,7 @@ abstract class Field implements HtmlViewable, HasAssets
     /**
      * Define a field description(hint), which will be displayed on create/edit page
      *
-     * @param string $hint
+     * @param  string  $hint
      * @return $this
      */
     public function hint(string $hint): static
@@ -225,13 +227,13 @@ abstract class Field implements HtmlViewable, HasAssets
         return $item->{$this->field()} ?? $this->getDefault();
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        if($this->hasRelationship()) {
+        if ($this->hasRelationship()) {
             $item = $item->{$this->relation()};
         }
 
-        if(is_callable($this->valueCallback())) {
+        if (is_callable($this->valueCallback())) {
             return $this->valueCallback()($item);
         }
 
@@ -245,7 +247,7 @@ abstract class Field implements HtmlViewable, HasAssets
         return $item->{$this->field()} ?? '';
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return $this->indexViewValue($item, false);
     }

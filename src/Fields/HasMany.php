@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +20,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
     protected bool $group = true;
 
-    public function indexViewValue(Model $item, bool $container = false): string
+    public function indexViewValue(Model $item, bool $container = false): \Illuminate\Contracts\View\View
     {
         $columns = [];
         $values = [];
@@ -39,7 +41,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
         ]);
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return '';
     }

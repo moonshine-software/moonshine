@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Commands;
 
 use Illuminate\Support\Facades\Artisan;
@@ -51,7 +53,7 @@ class InstallCommand extends MoonShineCommand
 
     protected function initDashboard(): void
     {
-        $dashboard = $this->getDirectory() . "/Dashboard.php";
+        $dashboard = $this->getDirectory()."/Dashboard.php";
         $contents = $this->getStub('Dashboard');
 
         $this->laravel['files']->put($dashboard, $contents);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Providers;
 
 use Illuminate\Support\Arr;
@@ -41,7 +43,7 @@ class MoonShineServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->loadAuthConfig();
 
@@ -53,7 +55,7 @@ class MoonShineServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
@@ -64,7 +66,8 @@ class MoonShineServiceProvider extends ServiceProvider
         ]);
 
         $this->mergeConfigFrom(
-            MoonShine::path('/config/moonshine.php'), 'moonshine'
+            MoonShine::path('/config/moonshine.php'),
+            'moonshine'
         );
 
         $this->publishes([
@@ -83,33 +86,23 @@ class MoonShineServiceProvider extends ServiceProvider
         Blade::componentNamespace('Leeto\MoonShine\Components', 'moonshine');
         Blade::component('menu-component', MenuComponent::class);
 
-        $this->app->singleton(MoonShine::class, function ($app) {
-            return new MoonShine();
-        });
+        $this->app->singleton(MoonShine::class, fn() => new MoonShine());
 
-        $this->app->singleton(Menu::class, function ($app) {
-            return new Menu();
-        });
+        $this->app->singleton(Menu::class, fn() => new Menu());
 
-        $this->app->singleton(Dashboard::class, function ($app) {
-            return new Dashboard();
-        });
+        $this->app->singleton(Dashboard::class, fn() => new Dashboard());
 
-        $this->app->singleton(AssetManager::class, function ($app) {
-            return new AssetManager();
-        });
+        $this->app->singleton(AssetManager::class, fn() => new AssetManager());
 
         $extensions = [];
 
-        if(config('moonshine.extensions')) {
+        if (config('moonshine.extensions')) {
             foreach (config('moonshine.extensions') as $class) {
                 $extensions[] = new $class();
             }
         }
 
-        $this->app->bind(Extension::class, function ($app) use ($extensions) {
-           return $extensions;
-        });
+        $this->app->bind(Extension::class, fn() => $extensions);
     }
 
     /**
@@ -117,7 +110,7 @@ class MoonShineServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function loadAuthConfig()
+    protected function loadAuthConfig(): void
     {
         config(Arr::dot(config('moonshine.auth', []), 'auth.'));
     }
@@ -127,7 +120,7 @@ class MoonShineServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerRouteMiddleware()
+    protected function registerRouteMiddleware(): void
     {
         // register route middleware.
         foreach ($this->routeMiddleware as $key => $middleware) {

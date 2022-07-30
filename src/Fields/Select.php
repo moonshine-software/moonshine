@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +15,7 @@ class Select extends Field
 
     protected static string $view = 'select';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         if (isset($this->values()[$item->{$this->field()}])) {
             return $this->values()[$item->{$this->field()}];

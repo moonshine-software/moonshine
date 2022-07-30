@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Menu;
 
 use Illuminate\Support\Collection;
@@ -15,7 +17,7 @@ abstract class MenuSection
 
     protected Resource $resource;
 
-    public function title(): String
+    public function title(): string
     {
         return $this->title;
     }
@@ -37,7 +39,11 @@ abstract class MenuSection
         return $this->resource;
     }
 
-    public function getIcon(string $size = '8', string $color = '', string $class = ''): string
+    public function getIcon(
+        string $size = '8',
+        string $color = '',
+        string $class = ''
+    ): \Illuminate\Contracts\View\View
     {
         $icon = $this->icon ?? 'app';
 
@@ -51,9 +57,9 @@ abstract class MenuSection
 
     public function isActive(): bool
     {
-        if($this->isGroup()) {
+        if ($this->isGroup()) {
             foreach ($this->items() as $item) {
-                if($item->isActive()) {
+                if ($item->isActive()) {
                     return true;
                 }
             }

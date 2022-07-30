@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Fields;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,9 +30,9 @@ class Code extends Field
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        return (string) str($item->{$this->field()})
+        return (string)str($item->{$this->field()})
             ->before('<pre>')
             ->after('</pre>')
             ->stripTags();

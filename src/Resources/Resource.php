@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Resources;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -62,7 +64,7 @@ abstract class Resource implements ResourceContract
      *
      * @see https://laravel.com/docs/validation#available-validation-rules
      *
-     * @param Model $item
+     * @param  Model  $item
      * @return array
      */
     abstract function rules(Model $item): array;
@@ -174,7 +176,7 @@ abstract class Resource implements ResourceContract
 
     public function routeAlias(): string
     {
-        return (string) str(static::class)
+        return (string)str(static::class)
             ->classBasename()
             ->replace(['Resource'], '')
             ->plural()
@@ -183,12 +185,12 @@ abstract class Resource implements ResourceContract
 
     public function routeParam(): string
     {
-        return (string) str($this->routeAlias())->singular();
+        return (string)str($this->routeAlias())->singular();
     }
 
     public function routeName(string|null $action = null): string
     {
-        return (string) str(config('moonshine.route.prefix'))
+        return (string)str(config('moonshine.route.prefix'))
             ->append('.')
             ->append($this->routeAlias())
             ->when($action, fn($str) => $str->append('.')->append($action));
@@ -204,7 +206,7 @@ abstract class Resource implements ResourceContract
 
     public function controllerName(): string
     {
-        return (string) str(static::class)
+        return (string)str(static::class)
             ->classBasename()
             ->replace(['Resource'], '')
             ->append('Controller')
@@ -216,7 +218,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return ActionContract[]
+     * @return Collection<ActionContract>
      */
     public function getActions(): Collection
     {
@@ -231,18 +233,18 @@ abstract class Resource implements ResourceContract
 
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function getFields(): Collection
     {
         $fields = [];
 
         foreach ($this->fields() as $item) {
-            if($item instanceof Field) {
+            if ($item instanceof Field) {
                 $fields[] = $item;
-            } elseif($item instanceof Tab) {
+            } elseif ($item instanceof Tab) {
                 foreach ($item->fields() as $field) {
-                    if($field instanceof Field) {
+                    if ($field instanceof Field) {
                         $fields[] = $field;
                     }
                 }
@@ -253,7 +255,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Filter[]
+     * @return Collection<Filter>
      */
     public function getFilters(): Collection
     {
@@ -261,21 +263,21 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Tab[]
+     * @return Collection<Tab>
      */
     public function tabs(): Collection
     {
         return collect($this->fields())
-            ->filter(fn ($item) => $item instanceof Tab);
+            ->filter(fn($item) => $item instanceof Tab);
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showWhenState);
+            ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showWhenState);
     }
 
     public function whenFieldNames(): Collection
@@ -295,12 +297,12 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function indexFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnIndex);
+            ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnIndex);
     }
 
     /**
@@ -309,7 +311,7 @@ abstract class Resource implements ResourceContract
     public function formComponents(): Collection
     {
         return collect($this->fields())->map(function ($component) {
-            if($component instanceof Field) {
+            if ($component instanceof Field) {
                 return $component->setParents();
             }
 
@@ -324,12 +326,14 @@ abstract class Resource implements ResourceContract
     {
         $fields = $this->extensionsFields();
 
-        return $fields->merge($this->getFields()
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnForm));
+        return $fields->merge(
+            $this->getFields()
+                ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnForm)
+        );
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function extensionsFields(): Collection
     {
@@ -346,12 +350,12 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function exportFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnExport);
+            ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnExport);
     }
 
     public function fieldsLabels(): array
@@ -367,14 +371,14 @@ abstract class Resource implements ResourceContract
 
     public function getFilter(string $filterName): Filter|null
     {
-        return collect($this->getFilters())->filter(function (Filter $filter) use($filterName) {
+        return collect($this->getFilters())->filter(function (Filter $filter) use ($filterName) {
             return $filter->field() == $filterName;
         })->first();
     }
 
     public function getField(string $fieldName): Field|null
     {
-        return collect($this->getFields())->filter(function (Field $field) use($fieldName) {
+        return collect($this->getFields())->filter(function (Field $field) use ($fieldName) {
             return $field->field() == $fieldName;
         })->first();
     }
@@ -383,15 +387,15 @@ abstract class Resource implements ResourceContract
     {
         $views = str('');
 
-        if(app(Extension::class)) {
+        if (app(Extension::class)) {
             foreach (app(Extension::class) as $extension) {
-                if(method_exists($extension, $name)) {
+                if (method_exists($extension, $name)) {
                     $views = $views->append($extension->{$name}($item));
                 }
             }
         }
 
-        return (string) $views;
+        return (string)$views;
     }
 
     public function all(): Collection
@@ -408,33 +412,33 @@ abstract class Resource implements ResourceContract
     {
         $query = $this->getModel()->query();
 
-        if($this->scopes()) {
+        if ($this->scopes()) {
             foreach ($this->scopes() as $scope) {
                 $query = $query->withGlobalScope($scope::class, $scope);
             }
         }
 
-        if(static::$with) {
+        if (static::$with) {
             $query = $query->with(static::$with);
         }
 
-        if(request()->has('search') && count($this->search())) {
-            foreach($this->search() as $field) {
+        if (request()->has('search') && count($this->search())) {
+            foreach ($this->search() as $field) {
                 $query = $query->orWhere(
                     $field,
                     'LIKE',
-                    '%' .request('search') . '%'
+                    '%'.request('search').'%'
                 );
             }
         }
 
-        if(request()->has('filters') && count($this->filters())) {
+        if (request()->has('filters') && count($this->filters())) {
             foreach ($this->filters() as $filter) {
                 $query = $filter->getQuery($query);
             }
         }
 
-        if(request()->has('order')) {
+        if (request()->has('order')) {
             $query = $query->orderBy(
                 request('order.field'),
                 request('order.type')
@@ -458,7 +462,7 @@ abstract class Resource implements ResourceContract
 
     public function can(string $ability, Model $item = null): bool
     {
-        if(!$this->isWithPolicy()) {
+        if (!$this->isWithPolicy()) {
             return true;
         }
 
@@ -473,14 +477,14 @@ abstract class Resource implements ResourceContract
     {
         try {
             foreach ($this->formFields() as $field) {
-                if(!$field->hasRelationship() || $field->belongToOne()) {
+                if (!$field->hasRelationship() || $field->belongToOne()) {
                     $item = $field->save($item);
                 }
             }
 
-            if($item->save()) {
+            if ($item->save()) {
                 foreach ($this->formFields() as $field) {
-                    if($field->hasRelationship() && !$field->belongToOne()) {
+                    if ($field->hasRelationship() && !$field->belongToOne()) {
                         $item = $field->save($item);
                     }
                 }
@@ -534,5 +538,4 @@ abstract class Resource implements ResourceContract
             'level' => $level,
         ]);
     }
-
 }

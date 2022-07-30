@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Filters;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;

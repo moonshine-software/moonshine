@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +16,7 @@ class MoonShineAuthControllerTest extends TestCase
 
     public function test_login_page()
     {
-        $response = $this->get(route(config('moonshine.route.prefix') . '.login'));
+        $response = $this->get(route(config('moonshine.route.prefix').'.login'));
 
         $response->assertOk();
         $response->assertViewIs('moonshine::auth.login');
@@ -23,22 +25,22 @@ class MoonShineAuthControllerTest extends TestCase
     public function test_login_redirect_to_dashboard()
     {
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
-            ->get(route(config('moonshine.route.prefix') . '.login'));
+            ->get(route(config('moonshine.route.prefix').'.login'));
 
-        $response->assertRedirect(route(config('moonshine.route.prefix') . '.index'));
+        $response->assertRedirect(route(config('moonshine.route.prefix').'.index'));
     }
 
     public function test_authenticate()
     {
         $response = $this->post(
-            route(config('moonshine.route.prefix') . '.authenticate'),
+            route(config('moonshine.route.prefix').'.authenticate'),
             ['email' => $this->user->email, 'password' => 'invalid']
         );
 
         $response->assertInvalid(['login']);
 
         $response = $this->post(
-            route(config('moonshine.route.prefix') . '.authenticate'),
+            route(config('moonshine.route.prefix').'.authenticate'),
             ['email' => $this->user->email, 'password' => 'test']
         );
 
@@ -48,9 +50,9 @@ class MoonShineAuthControllerTest extends TestCase
     public function test_logout()
     {
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
-            ->get(route(config('moonshine.route.prefix') . '.logout'));
+            ->get(route(config('moonshine.route.prefix').'.logout'));
 
-        $response->assertRedirect(route(config('moonshine.route.prefix') . '.login'));
+        $response->assertRedirect(route(config('moonshine.route.prefix').'.login'));
     }
 
 }

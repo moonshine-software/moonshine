@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -48,7 +50,7 @@ trait WithFields
             }
 
             return $field->setName(
-                (string) str($this->name())
+                (string)str($this->name())
                     ->when(
                         $this->hasFields() && !$this->toOne(),
                         fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
@@ -61,7 +63,7 @@ trait WithFields
 
     public function hasFields(): bool
     {
-        return count($this->fields);
+        return !empty($this->fields);
     }
 
     public function fields(array $fields): static

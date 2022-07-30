@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Tests\Examples;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Tests\Examples;
 
 use Leeto\MoonShine\Fields\HasMany;
 use Leeto\MoonShine\Fields\Json;
@@ -11,7 +12,7 @@ use Leeto\MoonShine\Resources\Resource;
 
 class ResourceHasMany extends Resource
 {
-	public static string $model = MoonshineUser::class;
+    public static string $model = MoonshineUser::class;
 
     public static string $title = 'ResourceHasMany';
 

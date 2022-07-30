@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\ComponentAttributeBag;
 use Leeto\MoonShine\Helpers\Condition;
 
@@ -40,7 +39,7 @@ trait WithHtmlAttributes
             return $this->id;
         }
 
-        return (string) str($this->name ?? $this->name())
+        return (string)str($this->name ?? $this->name())
             ->replace(['[', ']'], '_')
             ->replaceMatches('/\${index\d+}/', '')
             ->replaceMatches('/_{2,}/', '_')
@@ -60,7 +59,7 @@ trait WithHtmlAttributes
             return $this->name;
         }
 
-        return (string) str($this->field())
+        return (string)str($this->field())
             ->when(!is_null($wrap), fn(Stringable $str) => $str->wrap("{$wrap}[", "]"))
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
@@ -70,7 +69,7 @@ trait WithHtmlAttributes
 
     protected function nameDot(): string
     {
-        $name = (string) str($this->name())->replace('[]', '');
+        $name = (string)str($this->name())->replace('[]', '');
 
         parse_str($name, $array);
 
@@ -79,7 +78,7 @@ trait WithHtmlAttributes
 
         return $result->isEmpty()
             ? $name
-            : (string) str($result->keys()->first());
+            : (string)str($result->keys()->first());
     }
 
     public function setName(string $name): static
@@ -91,7 +90,7 @@ trait WithHtmlAttributes
 
     public function setId(string $id): static
     {
-        $this->id = (string) str($id)->remove(['[', ']'])->snake();
+        $this->id = (string)str($id)->remove(['[', ']'])->snake();
 
         return $this;
     }
@@ -106,7 +105,12 @@ trait WithHtmlAttributes
         return $this->attributes()->get($name);
     }
 
-    public function setAttribute(string $name, string $value): static
+    /**
+     * check bool $value
+     * @see CanBeMultiple::multiple()
+     * @see SelectTest::test_multiple()
+     */
+    public function setAttribute(string $name, string|bool $value): static
     {
         $this->attributes[] = $name;
         $this->customAttributes[$name] = $value;
@@ -117,7 +121,7 @@ trait WithHtmlAttributes
     public function attributes(): ComponentAttributeBag
     {
         $resolveAttributes = collect($this->attributes)->mapWithKeys(function ($attr) {
-            $property = (string) str($attr)->camel();
+            $property = (string)str($attr)->camel();
 
             return isset($this->{$property}) ? [$attr => $this->{$property}] : [];
         });

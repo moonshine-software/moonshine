@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
@@ -14,7 +15,7 @@ trait XModel
 
     public function xModelField(string $variable = 'item'): string
     {
-        return (string) str($variable)
+        return (string)str($variable)
             ->whenNotEmpty(fn($f) => $f->append('.'))
             ->append($this->field());
     }

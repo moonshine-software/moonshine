@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Metrics;
 
 class LineChartMetric extends Metric
@@ -34,9 +36,7 @@ class LineChartMetric extends Metric
     {
         return collect($this->lines())
             ->collapse()
-            ->mapWithKeys(function ($item, $key) {
-                return $item;
-            })
+            ->mapWithKeys(fn($item) => $item)
             ->sortKeys()
             ->keys()
             ->toArray();

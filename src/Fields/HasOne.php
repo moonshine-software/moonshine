@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +24,7 @@ class HasOne extends Field implements HasRelationship, HasFields, OneToOneRelati
     {
         $values = $this->requestValue();
 
-        if($values === false) {
+        if ($values === false) {
             return $item;
         }
 

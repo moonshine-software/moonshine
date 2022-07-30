@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +28,7 @@ trait SelectTrait
             return false;
         }
 
-        return (string) $this->formViewValue($item) === $value
-            || (!$this->formViewValue($item) && (string) $this->getDefault() === $value);
+        return (string)$this->formViewValue($item) === $value
+            || (!$this->formViewValue($item) && (string)$this->getDefault() === $value);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Tests\Resources;
+declare(strict_types=1);
+
+namespace Leeto\MoonShine\Tests\Utilities;
 
 use Leeto\MoonShine\Fields\Code;
 use Leeto\MoonShine\Tests\TestCase;

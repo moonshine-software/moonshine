@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Filters;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
@@ -20,7 +21,7 @@ class DateRangeFilter extends Filter
     {
         $values = $this->requestValue();
 
-        if($values !== false && collect($values)->filter()->isNotEmpty()) {
+        if ($values !== false && collect($values)->filter()->isNotEmpty()) {
             return $query->whereBetween(
                 $this->field(),
                 collect($values)->map(fn($date) => date('Y-m-d', strtotime($date)))

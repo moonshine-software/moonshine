@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -21,7 +23,7 @@ abstract class Filter implements HtmlViewable, HasAssets
 
     protected function afterMake(): void
     {
-        if($this->getAssets()) {
+        if ($this->getAssets()) {
             app(AssetManager::class)->add($this->getAssets());
         }
     }
@@ -33,11 +35,11 @@ abstract class Filter implements HtmlViewable, HasAssets
 
     public function getQuery(Builder $query): Builder
     {
-        if($this->hasRelationship() && !$this->belongToOne()) {
+        if ($this->hasRelationship() && !$this->belongToOne()) {
             $table = $this->getRelated($query->getModel())->getTable();
 
             return $this->requestValue()
-                ? $query->whereHas($this->relation(), function (Builder $q) use($table) {
+                ? $query->whereHas($this->relation(), function (Builder $q) use ($table) {
                     return $q->whereIn("$table.id", $this->requestValue());
                 })
                 : $query;
@@ -50,7 +52,7 @@ abstract class Filter implements HtmlViewable, HasAssets
 
     public function getView(): string
     {
-        return 'moonshine::filters.' . static::$view;
+        return 'moonshine::filters.'.static::$view;
     }
 
     public function formViewValue(Model $item): mixed

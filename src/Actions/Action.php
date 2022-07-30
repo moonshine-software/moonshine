@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Actions;
 
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;

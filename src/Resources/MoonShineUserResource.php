@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Resources;
 
 use Leeto\MoonShine\Actions\ExportAction;
@@ -17,7 +19,7 @@ use Leeto\MoonShine\Models\MoonshineUser;
 
 class MoonShineUserResource extends Resource
 {
-	public static string $model = MoonshineUser::class;
+    public static string $model = MoonshineUser::class;
 
     public string $titleField = 'name';
 
@@ -35,7 +37,11 @@ class MoonShineUserResource extends Resource
                 ->sortable()
                 ->showOnExport(),
 
-            BelongsTo::make(trans('moonshine::ui.base_resource.role'), 'moonshine_user_role_id', new MoonShineUserRoleResource())
+            BelongsTo::make(
+                trans('moonshine::ui.base_resource.role'),
+                'moonshine_user_role_id',
+                new MoonShineUserRoleResource()
+            )
                 ->showOnExport(),
 
             Text::make(trans('moonshine::ui.base_resource.name'), 'name')
@@ -51,7 +57,7 @@ class MoonShineUserResource extends Resource
 
             Date::make(trans('moonshine::ui.base_resource.created_at'), 'created_at')
                 ->format("d.m.Y")
-                ->default(now())
+                ->default(now()->toDateTimeString())
                 ->sortable()
                 ->hideOnForm()
                 ->showOnExport(),
@@ -76,7 +82,7 @@ class MoonShineUserResource extends Resource
         return [
             'name' => 'required',
             'moonshine_user_role_id' => 'required',
-            'email' => 'sometimes|bail|required|email|unique:moonshine_users,email' . ($item->exists ? ",$item->id" : ''),
+            'email' => 'sometimes|bail|required|email|unique:moonshine_users,email'.($item->exists ? ",$item->id" : ''),
             'password' => !$item->exists
                 ? 'required|min:6|required_with:password_repeat|same:password_repeat'
                 : 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
