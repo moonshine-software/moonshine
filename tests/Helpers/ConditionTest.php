@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Helpers;
 
@@ -7,19 +8,23 @@ use Leeto\MoonShine\Helpers\Condition;
 
 class ConditionTest extends TestCase
 {
-    public function test_boolean()
+    /**
+     * @dataProvider parametersProvider
+     */
+    public function test_boolean(array $arguments, bool $expected): void
     {
-        $tests = [
-            ['args' => [true, false], 'exp' => true],
-            ['args' => [false, true], 'exp' => false],
-            ['args' => [null, true], 'exp' => true],
-            ['args' => [null, false], 'exp' => false],
-            ['args' => [fn() => true, false], 'exp' => true],
-            ['args' => [fn() => false, true], 'exp' => false],
-        ];
+        $this->assertEquals($expected, Condition::boolean(...$arguments));
+    }
 
-        foreach ($tests as $test) {
-            $this->assertEquals($test['exp'], Condition::boolean(...$test['args']));
-        }
+    public function parametersProvider(): array
+    {
+        return [
+            [[true, false], true],
+            [[false, true], false],
+            [[null, true], true],
+            [[null, false], false],
+            [[fn() => true, false], true],
+            [[fn() => false, true], false],
+        ];
     }
 }

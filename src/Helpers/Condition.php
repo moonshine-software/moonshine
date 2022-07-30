@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Helpers;
 
@@ -9,12 +10,12 @@ final class Condition
     /**
      * Returns the Boolean value of the condition
      *
-     * @param  mixed  $condition
+     * @param Closure|bool|null $condition
      * @param  bool  $default  Default value. Return if condition not isset
      *
      * @return bool
      */
-    public static function boolean(mixed $condition, bool $default): bool
+    public static function boolean(Closure|bool|null $condition, bool $default): bool
     {
         return is_null($condition)
             ? $default

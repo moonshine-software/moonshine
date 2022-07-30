@@ -29,4 +29,9 @@
         <env name="REDIS_PORT" value="6379" />
         -->
     </php>
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
 </phpunit>

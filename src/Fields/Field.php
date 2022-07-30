@@ -32,42 +32,78 @@ abstract class Field implements RenderableContract
 
     protected bool $removable = false;
 
-    public function showOnIndex($condition = null): static
+    /**
+     * Set field as visible on index page, based on condition
+     *
+     * @param mixed $condition
+     * @return $this
+     */
+    public function showOnIndex(mixed $condition = null): static
     {
         $this->showOnIndex = Condition::boolean($condition, true);
 
         return $this;
     }
 
-    public function hideOnIndex($condition = null): static
+    /**
+     * Set field as hidden on index page, based on condition
+     *
+     * @param mixed $condition
+     * @return $this
+     */
+    public function hideOnIndex(mixed $condition = null): static
     {
         $this->showOnIndex = Condition::boolean($condition, false);
 
         return $this;
     }
 
-    public function showOnForm($condition = null): static
+    /**
+     * Set field as visible on create/edit page, based on condition
+     *
+     * @param mixed $condition
+     * @return $this
+     */
+    public function showOnForm(mixed $condition = null): static
     {
         $this->showOnForm = Condition::boolean($condition, true);
 
         return $this;
     }
 
-    public function hideOnForm($condition = null): static
+    /**
+     * Set field as hidden on create/edit page, based on condition
+     *
+     * @param mixed $condition
+     * @return $this
+     */
+    public function hideOnForm(mixed $condition = null): static
     {
         $this->showOnForm = Condition::boolean($condition, false);
 
         return $this;
     }
 
-    public function showOnExport($condition = null): static
+    /**
+     * Set field as visible in export report, based on condition
+     *
+     * @param mixed $condition
+     * @return $this
+     */
+    public function showOnExport(mixed $condition = null): static
     {
         $this->showOnExport = Condition::boolean($condition, true);
 
         return $this;
     }
 
-    public function hideOnExport($condition = null): static
+    /**
+     * Set field as hidden in export report, based on condition
+     *
+     * @param mixed $condition
+     * @return $this
+     */
+    public function hideOnExport(mixed $condition = null): static
     {
         $this->showOnExport = Condition::boolean($condition, false);
 
@@ -108,6 +144,12 @@ abstract class Field implements RenderableContract
         return $this;
     }
 
+    /**
+     * Define a field description(hint), which will be displayed on create/edit page
+     *
+     * @param string $hint
+     * @return $this
+     */
     public function hint(string $hint): static
     {
         $this->hint = $hint;
@@ -120,6 +162,11 @@ abstract class Field implements RenderableContract
         return $this->hint;
     }
 
+    /**
+     * Set field as removable
+     *
+     * @return $this
+     */
     public function removable(): static
     {
         $this->removable = true;
@@ -132,6 +179,11 @@ abstract class Field implements RenderableContract
         return $this->removable;
     }
 
+    /**
+     * Define whether if index page can be sorted by this field
+     *
+     * @return $this
+     */
     public function sortable(): static
     {
         $this->sortable = true;
