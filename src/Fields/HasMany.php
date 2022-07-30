@@ -20,7 +20,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
     protected bool $group = true;
 
-    public function indexViewValue(Model $item, bool $container = false): \Illuminate\Contracts\View\View
+    public function indexViewValue(Model $item, bool $container = false): mixed
     {
         $columns = [];
         $values = [];
