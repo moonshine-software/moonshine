@@ -176,7 +176,7 @@ abstract class Resource implements ResourceContract
 
     public function routeAlias(): string
     {
-        return (string)str(static::class)
+        return (string) str(static::class)
             ->classBasename()
             ->replace(['Resource'], '')
             ->plural()
@@ -185,12 +185,12 @@ abstract class Resource implements ResourceContract
 
     public function routeParam(): string
     {
-        return (string)str($this->routeAlias())->singular();
+        return (string) str($this->routeAlias())->singular();
     }
 
     public function routeName(string|null $action = null): string
     {
-        return (string)str(config('moonshine.route.prefix'))
+        return (string) str(config('moonshine.route.prefix'))
             ->append('.')
             ->append($this->routeAlias())
             ->when($action, fn($str) => $str->append('.')->append($action));
@@ -206,7 +206,7 @@ abstract class Resource implements ResourceContract
 
     public function controllerName(): string
     {
-        return (string)str(static::class)
+        return (string) str(static::class)
             ->classBasename()
             ->replace(['Resource'], '')
             ->append('Controller')
@@ -395,7 +395,7 @@ abstract class Resource implements ResourceContract
             }
         }
 
-        return (string)$views;
+        return (string) $views;
     }
 
     public function all(): Collection
