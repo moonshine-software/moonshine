@@ -54,7 +54,6 @@ class ExportAction extends Action implements ActionContract
         header('Content-Disposition: attachment;filename="'.$this->resource()->title().'.xlsx"');
         header('Cache-Control: max-age=0');
 
-        // fixme: save method return void. check response() param
         return response($writer->save('php://output'));
     }
 

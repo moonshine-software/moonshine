@@ -39,12 +39,11 @@ abstract class MenuSection
         return $this->resource;
     }
 
-    // todo: return only \Illuminate\Contracts\View\View ?
     public function getIcon(
         string $size = '8',
         string $color = '',
         string $class = ''
-    ): string|\Illuminate\Contracts\View\View
+    ): \Illuminate\Contracts\View\View
     {
         $icon = $this->icon ?? 'app';
 

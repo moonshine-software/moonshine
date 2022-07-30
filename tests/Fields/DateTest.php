@@ -23,9 +23,6 @@ class DateTest extends TestCase
         $field = Date::make('Created at')
             ->format('d.m.Y');
 
-        /**
-         * fixme: fails on @see Date::formViewValue() strtotime($yser->name(), ...)
-         */
         $this->assertEquals('2022-01-01', $field->formViewValue($user));
         $this->assertEquals('01.01.2022', $field->indexViewValue($user));
     }

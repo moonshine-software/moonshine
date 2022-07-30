@@ -10,9 +10,6 @@ use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Resources\Resource;
 
-/**
- * todo: просто ресурс
- */
 class ResourceHasMany extends Resource
 {
     public static string $model = MoonshineUser::class;

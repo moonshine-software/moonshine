@@ -55,8 +55,7 @@ abstract class Filter implements HtmlViewable, HasAssets
         return 'moonshine::filters.'.static::$view;
     }
 
-    // todo: check argument
-    public function formViewValue(Model $item = null): mixed
+    public function formViewValue(Model $item): mixed
     {
         return $this->requestValue();
     }

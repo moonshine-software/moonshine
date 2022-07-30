@@ -57,10 +57,6 @@ class MoonShineUserResource extends Resource
 
             Date::make(trans('moonshine::ui.base_resource.created_at'), 'created_at')
                 ->format("d.m.Y")
-                /**
-                 * todo: check this;
-                 * @see ResourceTest::test_basic()
-                 */
                 ->default(now()->toDateTimeString())
                 ->sortable()
                 ->hideOnForm()

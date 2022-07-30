@@ -18,8 +18,7 @@ class Extension
         return [];
     }
 
-    // todo: check param
-    public function tabs(Model $item = null): Factory|View|Application
+    public function tabs(Model $item): Factory|View|Application
     {
         return view('moonshine::shared.tabs', ['tabs' => $this->tabs]);
     }
