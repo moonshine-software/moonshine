@@ -57,25 +57,25 @@ trait FormElement
         string $field = null,
         Closure|ResourceContract|string|null $resource = null
     ) {
-        $this->setLabel($label ?? str($this->label)->ucfirst());
-        $this->setField($field ?? str($this->label)->lower()->snake());
+        $this->setLabel($label ?? (string) str($this->label)->ucfirst());
+        $this->setField($field ?? (string) str($this->label)->lower()->snake());
 
         if ($this->hasRelationship()) {
-            $this->setField($field ?? str($this->label)->camel());
+            $this->setField($field ?? (string) str($this->label)->camel());
 
             if ($this->belongToOne() && !str($this->field())->contains('_id')) {
                 $this->setField(
-                    str($this->field())
+                    (string) str($this->field())
                         ->append('_id')
                         ->snake()
                 );
             }
 
-            $this->setRelation($field ?? str($this->label)->camel());
+            $this->setRelation($field ?? (string) str($this->label)->camel());
 
             if (str($this->relation())->contains('_id')) {
                 $this->setRelation(
-                    str($this->relation())
+                    (string) str($this->relation())
                         ->remove('_id')
                         ->camel()
                 );

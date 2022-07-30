@@ -84,7 +84,7 @@ class BelongsToMany extends Field implements HasRelationshipContract, HasPivotCo
     {
         $this->makeTree($this->treePerformData($data));
 
-        $this->treeHtml = str($this->treeHtml())->wrap("<ul>", "</ul>");
+        $this->treeHtml = (string) str($this->treeHtml())->wrap("<ul>", "</ul>");
     }
 
     public function buildTreeHtml(Model $item): string
@@ -124,7 +124,7 @@ class BelongsToMany extends Field implements HasRelationshipContract, HasPivotCo
     {
         $result = str('');
 
-        return $item->{$this->relation()}->map(function ($item) use ($result) {
+        return (string) $item->{$this->relation()}->map(function ($item) use ($result) {
             $pivotAs = $this->getPivotAs($item);
 
 

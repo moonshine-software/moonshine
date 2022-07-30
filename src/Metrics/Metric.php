@@ -29,7 +29,7 @@ abstract class Metric implements RenderableContract
 
     public function id(string $index = null): string
     {
-        return str($this->label())
+        return (string) str($this->label())
             ->slug('_')
             ->when(!is_null($index), fn($str) => $str->append('_' . $index));
     }

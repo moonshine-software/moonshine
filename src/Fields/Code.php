@@ -31,7 +31,7 @@ class Code extends Field
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        return str($item->{$this->field()})
+        return (string) str($item->{$this->field()})
             ->before('<pre>')
             ->after('</pre>')
             ->stripTags();

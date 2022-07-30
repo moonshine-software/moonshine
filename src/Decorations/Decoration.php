@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Decorations;
 use Leeto\MoonShine\Contracts\RenderableContract;
 use Leeto\MoonShine\Fields\Field;
 
-class Decoration implements RenderableContract
+abstract class Decoration implements RenderableContract
 {
     protected string $label;
 
@@ -50,7 +50,7 @@ class Decoration implements RenderableContract
 
     public function id(string $index = null): string
     {
-        return str($this->label())->slug();
+        return (string) str($this->label())->slug();
     }
 
     public function name(string $index = null): string

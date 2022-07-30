@@ -91,7 +91,7 @@ trait WithHtmlAttributes
 
     public function setId(string $id): static
     {
-        $this->id = str($id)->remove(['[', ']'])->snake();
+        $this->id = (string) str($id)->remove(['[', ']'])->snake();
 
         return $this;
     }

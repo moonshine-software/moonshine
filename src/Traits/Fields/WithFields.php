@@ -48,7 +48,7 @@ trait WithFields
             }
 
             return $field->setName(
-                str($this->name())
+                (string) str($this->name())
                     ->when(
                         $this->hasFields() && !$this->toOne(),
                         fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')

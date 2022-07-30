@@ -4,7 +4,7 @@ namespace Leeto\MoonShine\Actions;
 
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 
-class Action
+abstract class Action
 {
     protected string $label;
 
