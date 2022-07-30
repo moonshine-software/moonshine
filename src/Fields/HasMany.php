@@ -41,7 +41,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
         ]);
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return '';
     }

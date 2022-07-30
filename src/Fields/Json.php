@@ -63,7 +63,7 @@ class Json extends Field implements HasFields
         ]);
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return '';
     }

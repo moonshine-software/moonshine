@@ -13,7 +13,7 @@ class SwitchBoolean extends Field
 
     protected static string $view = 'switch';
 
-    public function indexViewValue(Model $item, bool $container = true): \Illuminate\Contracts\View\View
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         return view('moonshine::fields.switch', [
             'field' => $this->disabled(),

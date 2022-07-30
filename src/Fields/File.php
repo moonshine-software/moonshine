@@ -31,7 +31,7 @@ class File extends Field implements Fileable
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string|\Illuminate\Contracts\View\View
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         if ($item->{$this->field()} == '') {
             return '';

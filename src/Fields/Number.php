@@ -31,7 +31,7 @@ class Number extends Field
         return $this->stars;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string|\Illuminate\Contracts\View\View
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         if ($this->withStars()) {
             return view('moonshine::shared.stars', [

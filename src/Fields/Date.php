@@ -19,7 +19,7 @@ class Date extends Field
 
     protected string $format = 'Y-m-d H:i:s';
 
-    public function formViewValue(Model $item): string
+    public function formViewValue(Model $item): mixed
     {
         if (!$this->getDefault() && $this->isNullable()) {
             return '';

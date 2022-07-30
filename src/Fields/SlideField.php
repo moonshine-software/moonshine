@@ -16,17 +16,17 @@ class SlideField extends Field
 
     protected static string $view = 'slide';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
     }
 
-    public function formViewValue(Model $item): array
+    public function formViewValue(Model $item): mixed
     {
         return [
             $this->fromField => $item->{$this->fromField},

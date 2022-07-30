@@ -18,7 +18,7 @@ class Image extends Field implements Fileable
 
     public static string $type = 'file';
 
-    public function indexViewValue(Model $item, bool $container = true): string|\Illuminate\Contracts\View\View
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         if ($item->{$this->field()} == '') {
             return '';

@@ -166,7 +166,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         return $item;
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return collect($item->{$this->relation()})
             ->map(fn($item) => $item->{$this->resourceTitleField()})

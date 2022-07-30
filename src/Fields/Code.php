@@ -30,7 +30,7 @@ class Code extends Field
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): mixed
     {
         return (string)str($item->{$this->field()})
             ->before('<pre>')

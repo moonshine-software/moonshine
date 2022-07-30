@@ -247,7 +247,7 @@ abstract class Field implements HtmlViewable, HasAssets
         return $item->{$this->field()} ?? '';
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(Model $item): mixed
     {
         return $this->indexViewValue($item, false);
     }
