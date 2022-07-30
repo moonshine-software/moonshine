@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Helpers;
 
@@ -10,7 +11,7 @@ class ConditionTest extends TestCase
     /**
      * @dataProvider parametersProvider
      */
-    public function test_boolean(array $arguments, bool $expected)
+    public function test_boolean(array $arguments, bool $expected): void
     {
         $this->assertEquals($expected, Condition::boolean(...$arguments));
     }
@@ -24,12 +25,6 @@ class ConditionTest extends TestCase
             [[null, false], false],
             [[fn() => true, false], true],
             [[fn() => false, true], false],
-            [[[], true], false],
-            [[0, true], false],
-            [[new \stdClass(), false], true],
-            [['', true], false],
-            [['qwerty', false], true],
-            [[2, false], true],
         ];
     }
 }
