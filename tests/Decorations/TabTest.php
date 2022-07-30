@@ -15,3 +15,4 @@ class TabTest extends TestCase
         $this->assertEquals('moonshine::decorations.tab', $decoration->getView());
     }
 }
+
