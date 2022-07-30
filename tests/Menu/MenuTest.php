@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Menu;
 
 use Leeto\MoonShine\Menu\Menu;

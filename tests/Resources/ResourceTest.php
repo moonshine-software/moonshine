@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Resources;
 
 use Leeto\MoonShine\Http\Controllers\MoonShineUserController;

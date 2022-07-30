@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
@@ -37,7 +39,7 @@ class MoonShineController extends BaseController
      */
     public function index(): Factory|View|Response|Application|ResponseFactory
     {
-        if($this->resource->isWithPolicy()) {
+        if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
                 auth(config('moonshine.auth.guard'))->user(),
                 'viewAny',
@@ -45,9 +47,9 @@ class MoonShineController extends BaseController
             );
         }
 
-        if($this->resource->getActions()) {
+        if ($this->resource->getActions()) {
             foreach ($this->resource->getActions() as $action) {
-                if($action->isTriggered()) {
+                if ($action->isTriggered()) {
                     return $action->handle();
                 }
             }
@@ -63,7 +65,7 @@ class MoonShineController extends BaseController
      */
     public function create(): View|Factory|Redirector|RedirectResponse|Application
     {
-        if($this->resource->isWithPolicy()) {
+        if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
                 auth(config('moonshine.auth.guard'))->user(),
                 'create',
@@ -71,7 +73,7 @@ class MoonShineController extends BaseController
             );
         }
 
-        if(!in_array('create', $this->resource->getActiveActions())) {
+        if (!in_array('create', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -83,16 +85,16 @@ class MoonShineController extends BaseController
      */
     public function edit($id): View|Factory|Redirector|RedirectResponse|Application
     {
-        if(!in_array('edit', $this->resource->getActiveActions())) {
+        if (!in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
         $item = $this->resource->getModel()
-            ->query()
+            ->newModelQuery()
             ->where(['id' => $id])
             ->firstOrFail();
 
-        if($this->resource->isWithPolicy()) {
+        if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
                 auth(config('moonshine.auth.guard'))->user(),
                 'update',
@@ -111,11 +113,11 @@ class MoonShineController extends BaseController
     public function show($id): Redirector|Application|RedirectResponse
     {
         $item = $this->resource->getModel()
-            ->query()
+            ->newModelQuery()
             ->where(['id' => $id])
             ->firstOrFail();
 
-        if($this->resource->isWithPolicy()) {
+        if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
                 auth(config('moonshine.auth.guard'))->user(),
                 'view',
@@ -131,16 +133,16 @@ class MoonShineController extends BaseController
      */
     public function update($id, Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if(!in_array('edit', $this->resource->getActiveActions())) {
+        if (!in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
         $item = $this->resource->getModel()
-            ->query()
+            ->newModelQuery()
             ->where(['id' => $id])
             ->firstOrFail();
 
-        if($this->resource->isWithPolicy()) {
+        if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
                 auth(config('moonshine.auth.guard'))->user(),
                 'update',
@@ -156,13 +158,16 @@ class MoonShineController extends BaseController
      */
     public function store(Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if(!in_array('edit', $this->resource->getActiveActions()) && !in_array("create", $this->resource->getActions())) {
+        if (!in_array('edit', $this->resource->getActiveActions()) && !in_array(
+                "create",
+                $this->resource->getActions()
+            )) {
             return redirect($this->resource->route('index'));
         }
 
         $item = $this->resource->getModel();
 
-        if($this->resource->isWithPolicy()) {
+        if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
                 auth(config('moonshine.auth.guard'))->user(),
                 'create',
@@ -178,12 +183,12 @@ class MoonShineController extends BaseController
      */
     public function destroy($id): Redirector|Application|RedirectResponse
     {
-        if(!in_array('delete', $this->resource->getActiveActions())) {
+        if (!in_array('delete', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
-        if(request()->has('ids')) {
-            if($this->resource->isWithPolicy()) {
+        if (request()->has('ids')) {
+            if ($this->resource->isWithPolicy()) {
                 $this->authorizeForUser(
                     auth(config('moonshine.auth.guard'))->user(),
                     'massDelete',
@@ -192,16 +197,16 @@ class MoonShineController extends BaseController
             }
 
             $this->resource->getModel()
-                ->query()
+                ->newModelQuery()
                 ->whereIn('id', explode(';', request('ids')))
                 ->delete();
         } else {
             $item = $this->resource->getModel()
-                ->query()
+                ->newModelQuery()
                 ->where(['id' => $id])
                 ->firstOrFail();
 
-            if($this->resource->isWithPolicy()) {
+            if ($this->resource->isWithPolicy()) {
                 $this->authorizeForUser(
                     auth(config('moonshine.auth.guard'))->user(),
                     'delete',
@@ -219,14 +224,14 @@ class MoonShineController extends BaseController
     protected function editView(Model $item = null): Factory|View|Application
     {
         return view($this->resource->baseEditView(), [
-            'resource' =>  $this->resource,
-            'item' => $item ? $item : $this->resource->getModel(),
+            'resource' => $this->resource,
+            'item' => $item ?? $this->resource->getModel(),
         ]);
     }
 
     protected function save(Request $request, Model $item): Factory|View|Redirector|Application|RedirectResponse
     {
-        if($request->isMethod('post') || $request->isMethod('put')) {
+        if ($request->isMethod('post') || $request->isMethod('put')) {
             $this->resource->validate($item);
 
             try {

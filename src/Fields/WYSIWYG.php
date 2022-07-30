@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Fields;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Fields;
 
 class WYSIWYG extends Field
 {

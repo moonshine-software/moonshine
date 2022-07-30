@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Leeto\MoonShine\MoonShine;
@@ -10,8 +12,8 @@ class MoonShineResourceController extends MoonShineController
 {
     public function __construct()
     {
-        if(!app()->runningInConsole()) {
-            $class = (string) str(request()->route()->getName())->betweenFirst('.', '.')
+        if (!app()->runningInConsole()) {
+            $class = (string)str(request()->route()->getName())->betweenFirst('.', '.')
                 ->singular()
                 ->ucfirst()
                 ->append('Resource')

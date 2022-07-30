@@ -2,7 +2,6 @@
 
 namespace Leeto\MoonShine\Filters;
 
-
 use Illuminate\Database\Eloquent\Builder;
 use Leeto\MoonShine\Traits\Fields\NumberTrait;
 use Leeto\MoonShine\Traits\Fields\SlideTrait;
@@ -17,7 +16,7 @@ class SlideFilter extends Filter
 
     public function getQuery(Builder $query): Builder
     {
-        if($this->requestValue() === false) {
+        if ($this->requestValue() === false) {
             $values = [];
         } else {
             $values = array_filter($this->requestValue());

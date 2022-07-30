@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Extensions;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -16,7 +18,8 @@ class Extension
         return [];
     }
 
-    public function tabs(Model $item): Factory|View|Application
+    // todo: check param
+    public function tabs(Model $item = null): Factory|View|Application
     {
         return view('moonshine::shared.tabs', ['tabs' => $this->tabs]);
     }

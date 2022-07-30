@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Fields;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
@@ -19,7 +20,7 @@ class Date extends Field
 
     public function formViewValue(Model $item): string
     {
-        if(!$this->getDefault() && $this->isNullable()) {
+        if (!$this->getDefault() && $this->isNullable()) {
             return '';
         }
 

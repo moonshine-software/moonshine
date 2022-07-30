@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -29,25 +31,27 @@ class File extends Field implements Fileable
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): string|\Illuminate\Contracts\View\View
     {
-        if($item->{$this->field()} == '') {
+        if ($item->{$this->field()} == '') {
             return '';
         }
 
-        if($this->isMultiple()) {
+        if ($this->isMultiple()) {
             return collect($item->{$this->field()})
-                ->map(fn ($value, $index) => view('moonshine::fields.shared.file', [
+                ->map(fn($value, $index) => view('moonshine::fields.shared.file', [
                     'value' => Storage::url($value),
-                    'index' => $index+1,
+                    'index' => $index + 1,
                     'canDownload' => $this->canDownload(),
                 ])->render())->implode('');
         }
 
         return view(
-            'moonshine::fields.shared.file', [
+            'moonshine::fields.shared.file',
+            [
                 'value' => parent::indexViewValue($item),
                 'canDownload' => $this->canDownload(),
-        ]);
+            ]
+        );
     }
 }

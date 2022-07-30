@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Contracts\Resources;
 
 use Illuminate\Database\Eloquent\Model;
@@ -42,7 +44,7 @@ interface ResourceContract
     /**
      * Get a collection of additional actions performed on resource page
      *
-     * @return Action[]
+     * @return Collection<Action>
      */
     public function getActions(): Collection;
 
@@ -56,35 +58,35 @@ interface ResourceContract
     /**
      * Get a collection of fields of related model
      *
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function getFields(): Collection;
 
     /**
      * Get a collection of tabs, which will be displayed on create/update resource form
      *
-     * @return Tab[]
+     * @return Collection<Tab>
      */
     public function tabs(): Collection;
 
     /**
      * Get a collection of fields of related model, which will be displayed on resource index page
      *
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function indexFields(): Collection;
 
     /**
      * Get a collection of fields of related model, which will be exported
      *
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function exportFields(): Collection;
 
     /**
      * Get an array of fields, which will be displayed on create/edit resource page
      *
-     * @return Field[]
+     * @return Collection<Field>
      */
     public function formFields(): Collection;
 
@@ -93,8 +95,8 @@ interface ResourceContract
     /**
      * Check whether user can perform action on model
      *
-     * @param string $ability view, viewAny, restore, forceDelete
-     * @param Model|null $item Model on which the action is performed
+     * @param  string  $ability  view, viewAny, restore, forceDelete
+     * @param  Model|null  $item  Model on which the action is performed
      * @return bool
      */
     public function can(string $ability, Model $item = null): bool;

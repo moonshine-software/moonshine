@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Actions;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -18,7 +20,7 @@ class ExportAction extends Action implements ActionContract
      */
     public function handle(): Response|Application|ResponseFactory
     {
-        if(is_null($this->resource())) {
+        if (is_null($this->resource())) {
             throw new ActionException('Resource is required for action');
         }
 
@@ -40,7 +42,7 @@ class ExportAction extends Action implements ActionContract
         foreach ($this->resource()->all() as $item) {
             $letter = 'A';
             foreach ($this->resource()->exportFields() as $index => $field) {
-                $sheet->setCellValue($letter . $line, $field->exportViewValue($item));
+                $sheet->setCellValue($letter.$line, $field->exportViewValue($item));
                 $letter++;
             }
 
@@ -52,6 +54,7 @@ class ExportAction extends Action implements ActionContract
         header('Content-Disposition: attachment;filename="'.$this->resource()->title().'.xlsx"');
         header('Cache-Control: max-age=0');
 
+        // fixme: save method return void. check response() param
         return response($writer->save('php://output'));
     }
 
@@ -65,17 +68,17 @@ class ExportAction extends Action implements ActionContract
      */
     public function url(): string
     {
-        if(is_null($this->resource())) {
+        if (is_null($this->resource())) {
             throw new ActionException('Resource is required for action');
         }
 
         $query = ['exportCsv' => true];
 
-        if(request()->has('filters')) {
+        if (request()->has('filters')) {
             foreach (request()->query('filters') as $filterField => $filterQuery) {
-                if(is_array($filterQuery)) {
+                if (is_array($filterQuery)) {
                     foreach ($filterQuery as $filterInnerField => $filterValue) {
-                        if(is_numeric($filterInnerField) && !is_array($filterValue)) {
+                        if (is_numeric($filterInnerField) && !is_array($filterValue)) {
                             $query['filters'][$filterField][] = $filterValue;
                         } else {
                             $query['filters'][$filterInnerField] = $filterValue;
@@ -87,7 +90,7 @@ class ExportAction extends Action implements ActionContract
             }
         }
 
-        if(request()->has('search')) {
+        if (request()->has('search')) {
             $query['search'] = request('search');
         }
 

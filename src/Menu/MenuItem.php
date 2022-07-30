@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Menu;
 
 use Leeto\MoonShine\Resources\Resource;
@@ -14,7 +16,7 @@ class MenuItem extends MenuSection
         $this->title = $title;
         $this->resource = is_string($resource) ? new $resource() : $resource;
 
-        if($icon) {
+        if ($icon) {
             $this->icon($icon);
         }
     }

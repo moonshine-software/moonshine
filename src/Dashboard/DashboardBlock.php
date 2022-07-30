@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Dashboard;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -27,7 +30,7 @@ class DashboardBlock
     }
 
     /**
-     * @param array $items
+     * @param  array  $items
      */
     public function setItems(array $items): void
     {

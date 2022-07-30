@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Dashboard;
 
 use Illuminate\Support\Collection;
@@ -15,7 +18,7 @@ class Dashboard
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
-            if($item instanceof DashboardBlock) {
+            if ($item instanceof DashboardBlock) {
                 $this->blocks->add($item);
             }
         });

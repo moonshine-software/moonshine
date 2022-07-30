@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Menu;
 
 use Illuminate\Support\Collection;
@@ -14,7 +16,7 @@ class MenuGroup extends MenuSection
     final public function __construct(string $title, array $items, string $icon = null)
     {
         $this->title = $title;
-        $this->items = collect($items)->map(function($item) {
+        $this->items = collect($items)->map(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
             throw_if(
@@ -22,14 +24,14 @@ class MenuGroup extends MenuSection
                 new MenuException('An object of the MenuItem|BaseResource class is required')
             );
 
-            if($item instanceof Resource) {
+            if ($item instanceof Resource) {
                 return new MenuItem($item->title(), $item);
             }
 
             return $item;
         });
 
-        if($icon) {
+        if ($icon) {
             $this->icon($icon);
         }
     }

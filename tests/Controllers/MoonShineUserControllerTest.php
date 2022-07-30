@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,6 +21,9 @@ class MoonShineUserControllerTest extends TestCase
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
             ->get($resource->route('index'));
 
+        /**
+         * fixme: fails on @see Date::indexViewValue() strtotime($yser->name(), ...)
+         */
         $response->assertOk();
         $response->assertViewIs('moonshine::base.index');
         $response->assertViewHas('resource', $resource);

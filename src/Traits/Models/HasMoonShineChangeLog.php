@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -13,18 +15,18 @@ trait HasMoonShineChangeLog
     {
         parent::boot();
 
-        static::created(function($row){
+        static::created(function ($row) {
             $row->createLog();
         });
 
-        static::updated(function($row){
+        static::updated(function ($row) {
             $row->createLog();
         });
     }
 
     public function createLog()
     {
-        if(auth(config('moonshine.auth.guard'))->check()) {
+        if (auth(config('moonshine.auth.guard'))->check()) {
             $this->changeLogs()
                 ->create([
                     'moonshine_user_id' => auth(config('moonshine.auth.guard'))->id(),

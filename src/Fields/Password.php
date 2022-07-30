@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +31,7 @@ class Password extends Field
 
     public function save(Model $item): Model
     {
-        if($this->requestValue()) {
+        if ($this->requestValue()) {
             $item->{$this->field()} = bcrypt($this->requestValue());
         }
 

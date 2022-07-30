@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Traits\Fields;
 
 trait BooleanTrait
@@ -17,7 +19,7 @@ trait BooleanTrait
 
     public function getOnValue(): int|string
     {
-        return (string) $this->onValue;
+        return (string)$this->onValue;
     }
 
     public function offValue($offValue): static
@@ -29,6 +31,6 @@ trait BooleanTrait
 
     public function getOffValue(): int|string
     {
-        return (string) $this->offValue;
+        return (string)$this->offValue;
     }
 }

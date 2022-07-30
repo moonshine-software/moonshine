@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Metrics;
 
 class ValueMetric extends Metric
@@ -21,13 +23,13 @@ class ValueMetric extends Metric
         return $this;
     }
 
-    public function valueResult(): string
+    public function valueResult(): string|float
     {
-        if($this->isProgress()) {
+        if ($this->isProgress()) {
             return round(($this->value / $this->target) * 100);
         }
 
-        return str_replace('{value}', (string) $this->value, $this->valueFormat);
+        return str_replace('{value}', (string)$this->value, $this->valueFormat);
     }
 
     public function value(int|float $value): static

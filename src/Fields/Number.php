@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -29,9 +31,9 @@ class Number extends Field
         return $this->stars;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): string|\Illuminate\Contracts\View\View
     {
-        if($this->withStars()) {
+        if ($this->withStars()) {
             return view('moonshine::shared.stars', [
                 'value' => $item->{$this->field()}
             ]);

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Leeto\MoonShine\Helpers;
@@ -10,7 +11,7 @@ final class Condition
     /**
      * Returns the Boolean value of the condition
      *
-     * @param Closure|bool|null $condition
+     * @param  Closure|bool|null  $condition
      * @param  bool  $default  Default value. Return if condition not isset
      *
      * @return bool

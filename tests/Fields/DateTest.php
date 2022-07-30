@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Fields;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,6 +23,9 @@ class DateTest extends TestCase
         $field = Date::make('Created at')
             ->format('d.m.Y');
 
+        /**
+         * fixme: fails on @see Date::formViewValue() strtotime($yser->name(), ...)
+         */
         $this->assertEquals('2022-01-01', $field->formViewValue($user));
         $this->assertEquals('01.01.2022', $field->indexViewValue($user));
     }
@@ -69,6 +74,5 @@ class DateTest extends TestCase
         $item = $field->save($user);
 
         $this->assertNull($item->created_at);
-
     }
 }

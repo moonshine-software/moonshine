@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -21,7 +23,7 @@ class MoonShineAuthController extends BaseController
     public function login(): Factory|View|Redirector|Application|RedirectResponse
     {
         if (auth(config('moonshine.auth.guard'))->check()) {
-            return redirect(route(config('moonshine.route.prefix') . '.index'));
+            return redirect(route(config('moonshine.route.prefix').'.index'));
         }
 
         return view('moonshine::auth.login');
@@ -47,6 +49,6 @@ class MoonShineAuthController extends BaseController
     {
         auth(config('moonshine.auth.guard'))->logout();
 
-        return redirect(route(config('moonshine.route.prefix') . '.login'));
+        return redirect(route(config('moonshine.route.prefix').'.login'));
     }
 }

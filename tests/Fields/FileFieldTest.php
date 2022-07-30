@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Fields;
 
 use Leeto\MoonShine\Fields\File;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -37,16 +39,16 @@ class Json extends Field implements HasFields
         return $this->keyValue;
     }
 
-    public function indexViewValue(Model $item, bool $container = false): string
+    public function indexViewValue(Model $item, bool $container = false): string|\Illuminate\Contracts\View\View
     {
         $columns = [];
         $values = $item->{$this->field()};
 
-        if(!$this->hasFields()) {
+        if (!$this->hasFields()) {
             return json_encode($values);
         }
 
-        if($this->isKeyValue()) {
+        if ($this->isKeyValue()) {
             $values = collect($item->{$this->field()})
                 ->map(fn($value, $key) => ['key' => $key, 'value' => $value]);
         }
@@ -68,8 +70,8 @@ class Json extends Field implements HasFields
 
     public function save(Model $item): Model
     {
-        if($this->isKeyValue()) {
-            if($this->requestValue() !== false) {
+        if ($this->isKeyValue()) {
+            if ($this->requestValue() !== false) {
                 $item->{$this->field()} = collect($this->requestValue())
                     ->mapWithKeys(fn($data) => [$data['key'] => $data['value']]);
             }

@@ -1,7 +1,8 @@
 <?php
 
-namespace Leeto\MoonShine\Fields;
+declare(strict_types=1);
 
+namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\NumberTrait;
@@ -37,7 +38,7 @@ class SlideField extends Field
     {
         $values = $this->requestValue();
 
-        if($values === false) {
+        if ($values === false) {
             return $item;
         }
 

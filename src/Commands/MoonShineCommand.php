@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Commands;
 
 use Illuminate\Console\Command;
@@ -19,7 +21,7 @@ class MoonShineCommand extends Command
 
     protected function makeDir(string $path = ''): void
     {
-        if(isset($this->laravel['files'])) {
+        if (isset($this->laravel['files'])) {
             $this->laravel['files']->makeDirectory("{$this->getDirectory()}/$path", 0755, true, true);
         }
     }

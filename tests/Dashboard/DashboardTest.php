@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Tests\Dashboard;
 
 use Leeto\MoonShine\Dashboard\Dashboard;
@@ -38,6 +40,5 @@ class DashboardTest extends TestCase
         $response->assertSee('Now 100 orders');
 
         $this->assertCount(1, app(Dashboard::class)->getBlocks());
-
     }
 }

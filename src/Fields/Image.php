@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +18,7 @@ class Image extends Field implements Fileable
 
     public static string $type = 'file';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function indexViewValue(Model $item, bool $container = true): string|\Illuminate\Contracts\View\View
     {
         if ($item->{$this->field()} == '') {
             return '';

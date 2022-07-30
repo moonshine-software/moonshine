@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Leeto\MoonShine\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -32,7 +34,7 @@ class LoginFormRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'email' => (string) str(request('email'))
+            'email' => (string)str(request('email'))
                 ->lower()
                 ->trim(),
         ]);
