@@ -2,10 +2,9 @@
 
 namespace Leeto\MoonShine\Contracts\Fields;
 
-
 use Illuminate\Database\Eloquent\Model;
 
-interface HasPivotContract
+interface HasPivot
 {
     public function pivotItem(Model $item, $id): Model|null;
 

@@ -3,12 +3,12 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 
-class BelongsTo extends Field implements HasRelationshipContract, BelongsToRelationshipContract
+class BelongsTo extends Field implements HasRelationship, BelongsToRelation
 {
     use Searchable, WithRelationship;
 

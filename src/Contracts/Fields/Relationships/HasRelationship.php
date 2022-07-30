@@ -4,7 +4,7 @@ namespace Leeto\MoonShine\Contracts\Fields\Relationships;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface HasRelationshipContract
+interface HasRelationship
 {
     public function relatedValues(Model $item): array;
 

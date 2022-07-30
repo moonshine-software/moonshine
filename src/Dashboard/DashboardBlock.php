@@ -4,16 +4,14 @@ namespace Leeto\MoonShine\Dashboard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Leeto\MoonShine\Contracts\RenderableContract;
+use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Traits\Makeable;
 
 class DashboardBlock
 {
-    protected array $items = [];
+    use Makeable;
 
-    public static function make(...$arguments): static
-    {
-        return new static(...$arguments);
-    }
+    protected array $items = [];
 
     final public function __construct(array $items = [])
     {
@@ -36,7 +34,7 @@ class DashboardBlock
         $this->items = $items;
     }
 
-    public function render(RenderableContract $item): Factory|View|Application
+    public function render(HtmlViewable $item): Factory|View|Application
     {
         return view($item->getView(), [
             'block' => $this,

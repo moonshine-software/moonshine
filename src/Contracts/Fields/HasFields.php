@@ -2,10 +2,9 @@
 
 namespace Leeto\MoonShine\Contracts\Fields;
 
-
 use Illuminate\Database\Eloquent\Model;
 
-interface HasFieldsContract
+interface HasFields
 {
     public function fields(array $fields): static;
 

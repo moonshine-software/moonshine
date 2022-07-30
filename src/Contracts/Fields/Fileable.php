@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Contracts\Fields;
 
-interface FileContract
+interface Fileable
 {
     public function disk(string $disk): static;
 

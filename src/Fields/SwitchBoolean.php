@@ -14,7 +14,6 @@ class SwitchBoolean extends Field
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-
         return view('moonshine::fields.switch', [
             'field' => $this->disabled(),
             'item' => $item

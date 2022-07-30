@@ -3,28 +3,18 @@
 
 namespace Leeto\MoonShine\Decorations;
 
-use Leeto\MoonShine\Contracts\RenderableContract;
+use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Fields\Field;
+use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithView;
 
-abstract class Decoration implements RenderableContract
+abstract class Decoration implements HtmlViewable
 {
+    use Makeable, WithView;
+
     protected string $label;
 
     protected array $fields;
-
-    public static string $view;
-
-    /**
-     * Create a decoration class: Heading, Tab ...
-     *
-     * @param ...$arguments $label Decoration label, will be displayed in moonshine admin panel,
-     *                      $fields Array of fields, displayed in decoration (optional)
-     * @return static
-     */
-    public static function make(...$arguments): static
-    {
-        return new static(...$arguments);
-    }
 
     final public function __construct(string $label, array $fields = [])
     {
@@ -45,7 +35,7 @@ abstract class Decoration implements RenderableContract
     /**
      * Define fields for decoration
      *
-     * @param array $fields
+     * @param  array  $fields
      * @return $this
      */
     public function setFields(array $fields): static
@@ -53,7 +43,7 @@ abstract class Decoration implements RenderableContract
         $this->fields = [];
 
         foreach ($fields as $field) {
-            if($field instanceof Field) {
+            if ($field instanceof Field) {
                 $this->fields[] = $field->setParents();
             }
         }
@@ -74,7 +64,7 @@ abstract class Decoration implements RenderableContract
     /**
      * Get id of decoration
      *
-     * @param string|null $index
+     * @param  string|null  $index
      * @return string
      */
     public function id(string $index = null): string
@@ -85,7 +75,7 @@ abstract class Decoration implements RenderableContract
     /**
      * Get name of decoration
      *
-     * @param string|null $index
+     * @param  string|null  $index
      * @return string
      */
     public function name(string $index = null): string
@@ -106,7 +96,7 @@ abstract class Decoration implements RenderableContract
     /**
      * Define label for decoration
      *
-     * @param string $label
+     * @param  string  $label
      * @return $this
      */
     public function setLabel(string $label): static
@@ -123,6 +113,6 @@ abstract class Decoration implements RenderableContract
      */
     public function getView(): string
     {
-        return 'moonshine::decorations.' . static::$view;
+        return 'moonshine::decorations.'.static::$view;
     }
 }

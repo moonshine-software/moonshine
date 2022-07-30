@@ -3,17 +3,15 @@
 namespace Leeto\MoonShine\Actions;
 
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Traits\Makeable;
 
 abstract class Action
 {
+    use Makeable;
+
     protected string $label;
 
     protected ResourceContract|null $resource;
-
-    public static function make(...$arguments): static
-    {
-        return new static(...$arguments);
-    }
 
     final public function __construct(string $label)
     {

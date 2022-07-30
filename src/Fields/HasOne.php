@@ -4,13 +4,13 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
 use Leeto\MoonShine\Traits\Fields\WithFields;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class HasOne extends Field implements HasRelationshipContract, HasFieldsContract, OneToOneRelationshipContract
+class HasOne extends Field implements HasRelationship, HasFields, OneToOneRelation
 {
     use WithFields, WithRelationship;
 

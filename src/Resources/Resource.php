@@ -16,7 +16,7 @@ use Illuminate\Database\QueryException;
 
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
-use Leeto\MoonShine\Contracts\RenderableContract;
+use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 
 use Leeto\MoonShine\Decorations\Tab;
@@ -275,7 +275,7 @@ abstract class Resource implements ResourceContract
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn (RenderableContract $field) => $field instanceof Field && $field->showWhenState);
+            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showWhenState);
     }
 
     public function whenFieldNames(): Collection
@@ -300,7 +300,7 @@ abstract class Resource implements ResourceContract
     public function indexFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (RenderableContract $field) => $field instanceof Field && $field->showOnIndex);
+            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnIndex);
     }
 
     /**
@@ -325,7 +325,7 @@ abstract class Resource implements ResourceContract
         $fields = $this->extensionsFields();
 
         return $fields->merge($this->getFields()
-            ->filter(fn (RenderableContract $field) => $field instanceof Field && $field->showOnForm));
+            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnForm));
     }
 
     /**
@@ -338,7 +338,7 @@ abstract class Resource implements ResourceContract
         foreach (app(Extension::class) as $extension) {
             $fields = $fields->merge(
                 collect($extension->fields())
-                    ->filter(fn(RenderableContract $field) => $field instanceof Field && $field->showOnForm)
+                    ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnForm)
             );
         }
 
@@ -351,7 +351,7 @@ abstract class Resource implements ResourceContract
     public function exportFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (RenderableContract $field) => $field instanceof Field && $field->showOnExport);
+            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnExport);
     }
 
     public function fieldsLabels(): array
@@ -494,17 +494,17 @@ abstract class Resource implements ResourceContract
         return $item;
     }
 
-    public function renderField(RenderableContract $field, Model $item, int $level = 0): Factory|View|Application
+    public function renderField(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
     {
         return $this->_render($field, $item, $level);
     }
 
-    public function renderFilter(RenderableContract $field, Model $item): Factory|View|Application
+    public function renderFilter(HtmlViewable $field, Model $item): Factory|View|Application
     {
         return $this->_render($field, $item);
     }
 
-    public function renderDecoration(RenderableContract $decoration, Model $item): Factory|View|Application
+    public function renderDecoration(HtmlViewable $decoration, Model $item): Factory|View|Application
     {
         return view($decoration->getView(), [
             'resource' => $this,
@@ -513,7 +513,7 @@ abstract class Resource implements ResourceContract
         ]);
     }
 
-    public function renderMetric(RenderableContract $metric): Factory|View|Application
+    public function renderMetric(HtmlViewable $metric): Factory|View|Application
     {
         return view($metric->getView(), [
             'resource' => $this,
@@ -521,7 +521,7 @@ abstract class Resource implements ResourceContract
         ]);
     }
 
-    protected function _render(RenderableContract $field, Model $item, int $level = 0): Factory|View|Application
+    protected function _render(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
     {
         if ($field->hasRelationship()) {
             $field->setValues($field->relatedValues($item));

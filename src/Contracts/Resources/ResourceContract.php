@@ -5,7 +5,7 @@ namespace Leeto\MoonShine\Contracts\Resources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Actions\Action;
-use Leeto\MoonShine\Contracts\RenderableContract;
+use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Decorations\Tab;
 use Leeto\MoonShine\Fields\Field;
 
@@ -99,11 +99,11 @@ interface ResourceContract
      */
     public function can(string $ability, Model $item = null): bool;
 
-    public function renderDecoration(RenderableContract $decoration, Model $item);
+    public function renderDecoration(HtmlViewable $decoration, Model $item);
 
-    public function renderField(RenderableContract $field, Model $item, int $level = 0);
+    public function renderField(HtmlViewable $field, Model $item, int $level = 0);
 
-    public function renderFilter(RenderableContract $field, Model $item);
+    public function renderFilter(HtmlViewable $field, Model $item);
 
-    public function renderMetric(RenderableContract $metric);
+    public function renderMetric(HtmlViewable $metric);
 }

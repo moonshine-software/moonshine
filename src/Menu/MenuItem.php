@@ -3,13 +3,11 @@
 namespace Leeto\MoonShine\Menu;
 
 use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Traits\Makeable;
 
 class MenuItem extends MenuSection
 {
-    public static function make(...$arguments): static
-    {
-        return new static(...$arguments);
-    }
+    use Makeable;
 
     final public function __construct(string $title, Resource|string $resource, string $icon = null)
     {

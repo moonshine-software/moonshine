@@ -2,7 +2,7 @@
 
 namespace Leeto\MoonShine\Contracts;
 
-interface RenderableContract
+interface HtmlViewable
 {
     public static function make(...$arguments): static;
 

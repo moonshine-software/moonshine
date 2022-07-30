@@ -5,8 +5,8 @@ namespace Leeto\MoonShine\Traits\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
-use Leeto\MoonShine\Contracts\Fields\HasPivotContract;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\Fields\HasPivot;
 use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Fields\Json;
 use Leeto\MoonShine\Fields\Text;
@@ -39,11 +39,11 @@ trait WithFields
             );
 
             throw_if(
-                $field instanceof HasFieldsContract && $field->hasFields(),
+                $field instanceof HasFields && $field->hasFields(),
                 new FieldException('Field with fields unavailable now. Coming soon')
             );
 
-            if ($this instanceof HasPivotContract) {
+            if ($this instanceof HasPivot) {
                 return $field->setName("{$this->relation()}_{$field->field()}[]");
             }
 

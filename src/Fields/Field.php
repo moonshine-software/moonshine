@@ -3,8 +3,9 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
-use Leeto\MoonShine\Contracts\RenderableContract;
+use Leeto\MoonShine\Contracts\Fields\HasAssets;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\HtmlViewable;
 
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
@@ -12,11 +13,14 @@ use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModel;
 use Leeto\MoonShine\Helpers\Condition;
+use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
+use Leeto\MoonShine\Traits\WithView;
+use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Field implements RenderableContract
+abstract class Field implements HtmlViewable, HasAssets
 {
-    use FormElement, WithHtmlAttributes, WithAssets, ShowWhen, XModel, LinkTrait;
+    use Makeable, FormElement, WithHtmlAttributes, WithAssets, WithView, ShowWhen, XModel, LinkTrait;
 
     public bool $showOnIndex = true;
 
@@ -31,6 +35,13 @@ abstract class Field implements RenderableContract
     protected bool $sortable = false;
 
     protected bool $removable = false;
+
+    protected function afterMake(): void
+    {
+        if($this->getAssets()) {
+            app(AssetManager::class)->add($this->getAssets());
+        }
+    }
 
     /**
      * Set field as visible on index page, based on condition
@@ -129,7 +140,7 @@ abstract class Field implements RenderableContract
 
     public function setParents(): static
     {
-        if ($this instanceof HasFieldsContract) {
+        if ($this instanceof HasFields) {
             $fields = [];
 
             foreach ($this->getFields() as $field) {
@@ -225,10 +236,6 @@ abstract class Field implements RenderableContract
         }
 
         if ($this->hasRelationship()) {
-            if (!$item) {
-                return '';
-            }
-
             return $container ? view('moonshine::shared.badge', [
                 'color' => 'purple',
                 'value' => $item->{$this->resourceTitleField()}

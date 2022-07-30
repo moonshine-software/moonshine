@@ -3,11 +3,11 @@
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Traits\Fields\WithFields;
 use Throwable;
 
-class Json extends Field implements HasFieldsContract
+class Json extends Field implements HasFields
 {
     use WithFields;
 

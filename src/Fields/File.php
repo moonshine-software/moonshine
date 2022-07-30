@@ -4,11 +4,11 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Leeto\MoonShine\Contracts\Fields\FileContract;
+use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
 
-class File extends Field implements FileContract
+class File extends Field implements Fileable
 {
     use FileTrait, CanBeMultiple;
 

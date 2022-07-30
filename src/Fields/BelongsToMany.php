@@ -5,10 +5,10 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use Leeto\MoonShine\Contracts\Fields\HasFieldsContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\HasPivotContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use Leeto\MoonShine\Contracts\Fields\HasPivot;
+use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
 use Leeto\MoonShine\Traits\Fields\SelectTransform;
 use Leeto\MoonShine\Traits\Fields\WithFields;
@@ -16,7 +16,7 @@ use Leeto\MoonShine\Traits\Fields\WithRelationship;
 use Leeto\MoonShine\Traits\Fields\WithPivot;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 
-class BelongsToMany extends Field implements HasRelationshipContract, HasPivotContract, HasFieldsContract, ManyToManyRelationshipContract
+class BelongsToMany extends Field implements HasRelationship, HasPivot, HasFields, ManyToManyRelation
 {
     use WithFields;
     use WithPivot;

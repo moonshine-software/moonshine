@@ -2,29 +2,29 @@
 
 namespace Leeto\MoonShine\Metrics;
 
-use Leeto\MoonShine\Contracts\RenderableContract;
+use Leeto\MoonShine\Contracts\Fields\HasAssets;
+use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Metric implements RenderableContract
+abstract class Metric implements HtmlViewable, HasAssets
 {
-    use WithAssets, WithView;
+    use Makeable, WithAssets, WithView;
 
     protected string $label;
-
-    public static function make(...$arguments): static
-    {
-        $static = new static(...$arguments);
-
-        app(AssetManager::class)->add($static->getAssets());
-
-        return $static;
-    }
 
     final public function __construct(string $label)
     {
         $this->setLabel($label);
+    }
+
+    protected function afterMake(): void
+    {
+        if($this->getAssets()) {
+            app(AssetManager::class)->add($this->getAssets());
+        }
     }
 
     public function id(string $index = null): string

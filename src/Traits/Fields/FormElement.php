@@ -7,11 +7,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelationshipContract;
-use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelationshipContract;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
+use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
+use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Closure;
 use Leeto\MoonShine\MoonShine;
@@ -34,23 +34,6 @@ trait FormElement
     protected Closure|null $valueCallback = null;
 
     protected static string $view = '';
-
-    /**
-     * Creates a form element class: Field,Filter
-     *
-     * @param ...$arguments  $label Form element label, will be displayed in moonshine admin panel,
-     *                      $field Field name from database, which will be used for this form element
-     *                      $resource Instance of related resource class, if form element is a relation
-     * @return static
-     */
-    public static function make(...$arguments): static
-    {
-        $static = new static(...$arguments);
-
-        app(AssetManager::class)->add($static->getAssets());
-
-        return $static;
-    }
 
     final public function __construct(
         string $label = null,
@@ -189,37 +172,32 @@ trait FormElement
 
     public function hasRelationship(): bool
     {
-        return $this instanceof HasRelationshipContract;
+        return $this instanceof HasRelationship;
     }
 
     public function belongToOne(): bool
     {
-        return $this->hasRelationship() && $this instanceof BelongsToRelationshipContract;
+        return $this->hasRelationship() && $this instanceof BelongsToRelation;
     }
 
     public function toOne(): bool
     {
-        return $this->hasRelationship() && $this instanceof OneToOneRelationshipContract;
+        return $this->hasRelationship() && $this instanceof OneToOneRelation;
     }
 
     public function toMany(): bool
     {
-        return $this->hasRelationship() && $this instanceof OneToManyRelationshipContract;
+        return $this->hasRelationship() && $this instanceof OneToManyRelation;
     }
 
     public function manyToMany(): bool
     {
-        return $this->hasRelationship() && $this instanceof ManyToManyRelationshipContract;
+        return $this->hasRelationship() && $this instanceof ManyToManyRelation;
     }
 
     public function getRelated(Model $model): Model
     {
         return $model->{$this->relation()}()->getRelated();
-    }
-
-    public function getView(): string
-    {
-        return static::$view;
     }
 
     public function requestValue(): mixed
