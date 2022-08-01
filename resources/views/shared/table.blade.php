@@ -18,7 +18,7 @@
                             @foreach($values as $index => $data)
                                 <tr>
                                     @foreach($columns as $name => $label)
-                                        <td class="px-6 py-4 whitespace-no-wrap">
+                                        <td class="px-6 py-4 whitespace-nowrap">
                                             {!! $data[$name] ?? '' !!}
                                         </td>
                                     @endforeach
