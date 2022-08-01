@@ -22,13 +22,13 @@
                     <tbody class="bg-white dark:bg-darkblue text-black dark:text-white">
                     @foreach($item->changeLogs->take(5) as $log)
                         <tr>
-                            <td class="px-6 py-4 whitespace-no-wrap">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 @include('moonshine::shared.badge', [
                                     'color' => 'purple',
                                     'value' => $log->moonshineUser->name
                                 ])
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap text-black">
+                            <td class="px-6 py-4 whitespace-nowrap text-black">
                                 <table>
                                     <thead class="bg-whiteblue dark:bg-purple">
                                         <tr>
@@ -48,14 +48,14 @@
                                         @foreach($log->states_after as $changedField => $changedValue)
                                             @if($resource->getField($changedField) && !$resource->getField($changedField) instanceof \Leeto\MoonShine\Fields\Json)
                                                 <tr>
-                                                    <td class="px-6 py-4 whitespace-no-wrap">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
                                                         {{ $resource->getField($changedField) ? $resource->getField($changedField)->label() : $changedField }}
                                                     </td>
 
-                                                    <td class="px-6 py-4 whitespace-no-wrap">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
                                                         {{ is_array($log->states_before[$changedField]) ? json_encode($log->states_before[$changedField]) : $log->states_before[$changedField] }}
                                                     </td>
-                                                    <td class="px-6 py-4 whitespace-no-wrap">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
                                                         {{ is_array($changedValue) ? json_encode($changedValue) : $changedValue }}
                                                     </td>
                                                 </tr>
@@ -64,7 +64,7 @@
                                     </tbody>
                                 </table>
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap">{{ $log->created_at->format('d.m.Y H:i') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $log->created_at->format('d.m.Y H:i') }}</td>
                         </tr>
                     @endforeach
                     </tbody>

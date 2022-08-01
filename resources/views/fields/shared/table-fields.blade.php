@@ -26,17 +26,17 @@
                     >
                         <tr :data-id="item.id" class="table_fields_{{ $field->id() }}">
                             @if(!$field->toOne())
-                                <td class="px-6 py-4 whitespace-no-wrap" x-text="index{{ $level }} + 1"></td>
+                                <td class="px-6 py-4 whitespace-nowrap" x-text="index{{ $level }} + 1"></td>
                             @endif
 
                             @foreach($field->getFields() as $subField)
-                                <td class="px-6 py-4 whitespace-no-wrap">
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     {{ $resource->renderField($subField, $model, $level+1) }}
                                 </td>
                             @endforeach
 
                             @if(!$field->toOne())
-                                <td class="px-6 py-4 whitespace-no-wrap">
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     @if($field->isRemovable())
                                         <button @click="removeField(index{{ $level }})" type="button" class="text-pink hover:text-pink inline-block">
                                             @include("moonshine::shared.icons.delete", ["size" => 6, "color" => "pink", "class" => "mr-2"])
@@ -50,7 +50,7 @@
 
                     <tfoot class="bg-whiteblue dark:bg-purple">
                     <tr>
-                        <td colspan="{{ count($field->getFields())+2 }}" class="px-6 py-4 whitespace-no-wrap">
+                        <td colspan="{{ count($field->getFields())+2 }}" class="px-6 py-4 whitespace-nowrap">
                             @if(!$field->toOne())
                                 <button type="button"
                                         class="bg-gradient-to-r from-purple to-pink text-white
