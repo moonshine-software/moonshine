@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\Fields\HasExportViewValue;
+use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
+use Leeto\MoonShine\Contracts\Fields\HasIndexViewValue;
 
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
@@ -20,7 +23,7 @@ use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Field implements HtmlViewable, HasAssets
+abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, HasIndexViewValue, HasFormViewValue
 {
     use Makeable, FormElement, WithHtmlAttributes, WithAssets, WithView, ShowWhen, XModel, LinkTrait;
 

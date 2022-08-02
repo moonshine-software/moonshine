@@ -6,8 +6,11 @@ namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
+use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
 use Leeto\MoonShine\Contracts\HtmlViewable;
+
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
@@ -17,7 +20,7 @@ use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Filter implements HtmlViewable, HasAssets
+abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
 {
     use Makeable, FormElement, WithHtmlAttributes, WithAssets, WithView, ShowWhen, XModel;
 

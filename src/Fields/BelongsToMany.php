@@ -86,7 +86,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     {
         $this->makeTree($this->treePerformData($data));
 
-        $this->treeHtml = (string)str($this->treeHtml())->wrap("<ul>", "</ul>");
+        $this->treeHtml = (string) str($this->treeHtml())->wrap("<ul>", "</ul>");
     }
 
     public function buildTreeHtml(Model $item): string
@@ -126,7 +126,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     {
         $result = str('');
 
-        return (string)$item->{$this->relation()}->map(function ($item) use ($result) {
+        return (string) $item->{$this->relation()}->map(function ($item) use ($result) {
             $pivotAs = $this->getPivotAs($item);
 
 
@@ -142,7 +142,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
                 );
             }
 
-            return (string)$result;
+            return (string) $result;
         })->implode(',');
     }
 
