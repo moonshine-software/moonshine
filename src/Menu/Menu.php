@@ -8,14 +8,14 @@ use Illuminate\Support\Collection;
 
 class Menu
 {
-    protected Collection|null $menu = null;
+    protected ?Collection $menu = null;
 
     public function register(Collection $data): void
     {
         $this->menu = $data;
     }
 
-    public function all(): Collection|null
+    public function all(): ?Collection
     {
         return $this->menu;
     }

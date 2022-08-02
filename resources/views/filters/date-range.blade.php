@@ -3,17 +3,13 @@
         <div class="flex justify-between items-center py-5">
             <div>
                 @include("moonshine::fields.input", [
-                    "field" => $field,
-                    "resource" => $resource,
-                    "item" => $resource->getModel(),
+                    'element' => $element,
                     "valueKey" => 0,
                 ])
             </div>
             <div>
                 @include("moonshine::fields.input", [
-                    "field" => $field,
-                    "resource" => $resource,
-                    "item" => $resource->getModel(),
+                    'element' => $element,
                     "valueKey" => 1,
                 ])
             </div>

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\NumberTrait;
 
 class Number extends Field
 {
     use NumberTrait;
 
-    protected static string $view = 'input';
+    protected static string $view = 'moonshine::fields.input';
 
     protected static string $type = 'number';
 
@@ -29,16 +28,5 @@ class Number extends Field
     public function withStars(): bool
     {
         return $this->stars;
-    }
-
-    public function indexViewValue(Model $item, bool $container = true): mixed
-    {
-        if ($this->withStars()) {
-            return view('moonshine::shared.stars', [
-                'value' => $item->{$this->field()}
-            ]);
-        } else {
-            return parent::indexViewValue($item, $container);
-        }
     }
 }

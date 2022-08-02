@@ -2,70 +2,78 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace Leeto\MoonShine;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
+use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use JsonSerializable;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
-use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Closure;
-use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Utilities\AssetManager;
+use Leeto\MoonShine\Contracts\Renderable;
+use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
+use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithComponentAttributes;
+use Leeto\MoonShine\Traits\WithView;
+use Stringable;
 
-trait FormElement
+abstract class FormElement implements Renderable, JsonSerializable, Stringable
 {
+    use Makeable, WithHtmlAttributes, WithComponentAttributes, WithView;
+
     protected string $label = '';
 
     protected string $field;
 
-    protected string|null $relation = null;
+    protected ?string $relation = null;
 
-    protected ResourceContract|null $resource;
+    protected ?Resource $resource;
 
     protected bool $group = false;
 
     protected string $resourceTitleField = '';
 
-    protected Closure|null $valueCallback = null;
+    protected ?Closure $valueCallback = null;
+
+    protected mixed $value = null;
 
     protected static string $view = '';
 
     final public function __construct(
         string $label = null,
         string $field = null,
-        Closure|ResourceContract|string|null $resource = null
+        Closure|Resource|string|null $resource = null
     ) {
-        $this->setLabel($label ?? (string)str($this->label)->ucfirst());
-        $this->setField($field ?? (string)str($this->label)->lower()->snake());
+        $this->setLabel($label ?? (string) str($this->label)->ucfirst());
+        $this->setField($field ?? (string) str($this->label)->lower()->snake());
 
         if ($this->hasRelationship()) {
-            $this->setField($field ?? (string)str($this->label)->camel());
+            $this->setField($field ?? (string) str($this->label)->camel());
 
             if ($this->belongToOne() && !str($this->field())->contains('_id')) {
                 $this->setField(
-                    (string)str($this->field())
+                    (string) str($this->field())
                         ->append('_id')
                         ->snake()
                 );
             }
 
-            $this->setRelation($field ?? (string)str($this->label)->camel());
+            $this->setRelation($field ?? (string) str($this->label)->camel());
 
             if (str($this->relation())->contains('_id')) {
                 $this->setRelation(
-                    (string)str($this->relation())
+                    (string) str($this->relation())
                         ->remove('_id')
                         ->camel()
                 );
             }
 
-            if ($resource instanceof ResourceContract) {
+            if ($resource instanceof Resource) {
                 $this->setResource($resource);
             } elseif (is_string($resource)) {
                 $this->setResourceTitleField($resource);
@@ -101,7 +109,7 @@ trait FormElement
         return $this;
     }
 
-    public function relation(): string|null
+    public function relation(): ?string
     {
         return $this->relation;
     }
@@ -113,21 +121,21 @@ trait FormElement
         return $this;
     }
 
-    public function resource(): ResourceContract|null
+    public function resource(): ?Resource
     {
         return $this->resource ?? $this->findResource();
     }
 
-    protected function findResource(): ResourceContract|null
+    protected function findResource(): ?Resource
     {
-        $resourceClass = (string)str(MoonShine::namespace('\Resources\\'))
+        $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
             ->append(str($this->relation() ?? $this->field())->studly()->singular())
             ->append('Resource');
 
         return class_exists($resourceClass) ? new $resourceClass() : null;
     }
 
-    public function setResource(ResourceContract|null $resource): void
+    public function setResource(?Resource $resource): void
     {
         $this->resource = $resource;
     }
@@ -149,7 +157,7 @@ trait FormElement
         return $this;
     }
 
-    public function valueCallback(): Closure|null
+    public function valueCallback(): ?Closure
     {
         return $this->valueCallback;
     }
@@ -157,6 +165,11 @@ trait FormElement
     protected function setValueCallback(Closure $valueCallback): void
     {
         $this->valueCallback = $valueCallback;
+    }
+
+    public function getRelated(Model $model): Model
+    {
+        return $model->{$this->relation()}()->getRelated();
     }
 
     protected function group(): static
@@ -196,9 +209,16 @@ trait FormElement
         return $this->hasRelationship() && $this instanceof ManyToManyRelation;
     }
 
-    public function getRelated(Model $model): Model
+    public function setValue(mixed $value): static
     {
-        return $model->{$this->relation()}()->getRelated();
+        $this->value = $value;
+
+        return $this;
+    }
+
+    public function value(): mixed
+    {
+        return $this->value;
     }
 
     public function requestValue(): mixed
@@ -209,4 +229,24 @@ trait FormElement
         );
     }
 
+    public function jsonSerialize(): array
+    {
+        return [
+            'attributes' => $this->attributes(),
+            'element' => $this,
+            'fields' => $this instanceof HasFields ? $this->getFields() : []
+        ];
+    }
+
+    public function render(): View
+    {
+        return view($this->getView(), [
+            'element' => $this,
+        ]);
+    }
+
+    public function __toString()
+    {
+        return (string) $this->render();
+    }
 }

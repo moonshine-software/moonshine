@@ -12,18 +12,9 @@ class ID extends Field
 
     public string $label = 'ID';
 
-    protected static string $view = 'input';
+    protected static string $view = 'moonshine::fields.input';
 
     protected static string $type = 'hidden';
-
-
-    public function indexViewValue(Model $item, bool $container = true): mixed
-    {
-        return view('moonshine::shared.badge', [
-            'value' => parent::indexViewValue($item, $container),
-            'color' => 'purple'
-        ]);
-    }
 
     public function save(Model $item): Model
     {

@@ -14,25 +14,7 @@ class SlideField extends Field
 
     protected array $attributes = ['min', 'max', 'step'];
 
-    protected static string $view = 'slide';
-
-    public function indexViewValue(Model $item, bool $container = true): mixed
-    {
-        return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
-    }
-
-    public function exportViewValue(Model $item): mixed
-    {
-        return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
-    }
-
-    public function formViewValue(Model $item): mixed
-    {
-        return [
-            $this->fromField => $item->{$this->fromField},
-            $this->toField => $item->{$this->toField}
-        ];
-    }
+    protected static string $view = 'moonshine::fields.slide';
 
     public function save(Model $item): Model
     {
@@ -42,8 +24,8 @@ class SlideField extends Field
             return $item;
         }
 
-        $item->{$this->fromField} = $values[$this->fromField] ?? '';
-        $item->{$this->toField} = $values[$this->toField] ?? '';
+        $item[$this->fromField] = $values[$this->fromField] ?? '';
+        $item[$this->toField] = $values[$this->toField] ?? '';
 
         return $item;
     }

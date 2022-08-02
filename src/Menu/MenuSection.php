@@ -11,7 +11,7 @@ abstract class MenuSection
 {
     protected string $title;
 
-    protected string|null $icon = null;
+    protected ?string $icon = null;
 
     protected Collection $items;
 
@@ -43,8 +43,7 @@ abstract class MenuSection
         string $size = '8',
         string $color = '',
         string $class = ''
-    ): \Illuminate\Contracts\View\View
-    {
+    ): \Illuminate\Contracts\View\View {
         $icon = $this->icon ?? 'app';
 
         return view("moonshine::shared.icons.$icon", compact('size', 'color', 'class'));

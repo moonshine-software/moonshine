@@ -12,7 +12,7 @@ class DateFilter extends Filter
 {
     use DateTrait, WithMask;
 
-    public static string $view = 'date';
+    public static string $view = 'moonshine::filters.date';
 
     public static string $type = 'date';
 

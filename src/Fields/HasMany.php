@@ -5,45 +5,21 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
 use Leeto\MoonShine\Traits\Fields\WithFields;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class HasMany extends Field implements HasRelationship, HasFields, OneToManyRelation
+class HasMany extends Field implements \JsonSerializable, HasRelationship, HasFields, OneToManyRelation
 {
     use WithFields, WithRelationship;
 
-    protected static string $view = 'has-many';
-
     protected bool $group = true;
 
-    public function indexViewValue(Model $item, bool $container = false): \Illuminate\Contracts\View\View
+    public function getView(): string
     {
-        $columns = [];
-        $values = [];
-
-        foreach ($this->getFields() as $field) {
-            $columns[$field->field()] = $field->label();
-        }
-
-        foreach ($item->{$this->field()} as $index => $item) {
-            foreach ($this->getFields() as $field) {
-                $values[$index][$field->field()] = $field->indexViewValue($item, false);
-            }
-        }
-
-        return view('moonshine::shared.table', [
-            'columns' => $columns,
-            'values' => $values
-        ]);
-    }
-
-    public function exportViewValue(Model $item): mixed
-    {
-        return '';
+        return $this->isFullPage() ? 'moonshine::fields.full-fields' : 'moonshine::fields.table-fields';
     }
 
     public function save(Model $item): Model

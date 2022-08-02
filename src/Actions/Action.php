@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Actions;
 
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
 
 abstract class Action
@@ -13,7 +13,7 @@ abstract class Action
 
     protected string $label;
 
-    protected ResourceContract|null $resource;
+    protected ?Resource $resource;
 
     final public function __construct(string $label)
     {
@@ -32,12 +32,12 @@ abstract class Action
         return $this;
     }
 
-    public function resource(): ResourceContract|null
+    public function resource(): ?Resource
     {
         return $this->resource;
     }
 
-    public function setResource(ResourceContract $resource): static
+    public function setResource(Resource $resource): static
     {
         $this->resource = $resource;
 

@@ -39,7 +39,7 @@ class ExportAction extends Action implements ActionContract
 
 
         $line = 2;
-        foreach ($this->resource()->all() as $item) {
+        foreach ($this->resource()->query()->get() as $item) {
             $letter = 'A';
             foreach ($this->resource()->exportFields() as $index => $field) {
                 $sheet->setCellValue($letter.$line, $field->exportViewValue($item));

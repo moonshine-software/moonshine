@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Dashboard;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\Renderable;
 use Leeto\MoonShine\Traits\Makeable;
 
-class DashboardBlock
+class DashboardBlock implements Renderable, \Stringable, \JsonSerializable
 {
     use Makeable;
 
@@ -22,7 +20,7 @@ class DashboardBlock
     }
 
     /**
-     * @return array
+     * @return array<Renderable>
      */
     public function items(): array
     {
@@ -30,18 +28,33 @@ class DashboardBlock
     }
 
     /**
-     * @param  array  $items
+     * @param  array<Renderable>  $items
      */
     public function setItems(array $items): void
     {
         $this->items = $items;
     }
 
-    public function render(HtmlViewable $item): Factory|View|Application
+    public function render(): string|View
     {
-        return view($item->getView(), [
-            'block' => $this,
-            'item' => $item,
-        ]);
+        $renderer = '';
+
+        foreach ($this->items() as $item) {
+            $renderer .= $item;
+        }
+
+        return $renderer;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->render();
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'dashboard-block' => $this,
+        ];
     }
 }

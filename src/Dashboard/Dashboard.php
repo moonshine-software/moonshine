@@ -9,7 +9,7 @@ use Leeto\MoonShine\MoonShine;
 
 class Dashboard
 {
-    protected Collection|null $blocks = null;
+    protected ?Collection $blocks = null;
 
     public function registerBlocks(array $data): void
     {
@@ -24,7 +24,7 @@ class Dashboard
         });
     }
 
-    public function getBlocks(): Collection|null
+    public function getBlocks(): ?Collection
     {
         $class = MoonShine::namespace('\Dashboard');
         $blocks = class_exists($class) ? (new $class())->getBlocks() : collect();

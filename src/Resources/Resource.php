@@ -4,34 +4,34 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
-
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
-use Leeto\MoonShine\Contracts\HtmlViewable;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-
+use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
+use Leeto\MoonShine\Contracts\Renderable;
+use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Decorations\Tab;
 use Leeto\MoonShine\Exceptions\ResourceException;
-use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
-
-
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
 
-abstract class Resource implements ResourceContract
+
+abstract class Resource
 {
     public static string $model;
 
@@ -47,17 +47,11 @@ abstract class Resource implements ResourceContract
 
     public static int $itemsPerPage = 25;
 
-    public static array $activeActions = ['create', 'show', 'edit', 'delete'];
+    public static string $indexView = 'moonshine::index';
 
-    public static string $baseIndexView = 'moonshine::base.index';
-
-    public static string $baseEditView = 'moonshine::base.form';
+    public static string $createEditView = 'moonshine::create-edit';
 
     public string $titleField = '';
-
-    protected static bool $system = false;
-
-    protected Model $item;
 
     /**
      * Get an array of validation rules for resource related model
@@ -72,7 +66,7 @@ abstract class Resource implements ResourceContract
     /**
      * Get an array of visible fields on resource page
      *
-     * @return Field[]
+     * @return Field[]|Decoration[]
      */
     abstract function fields(): array;
 
@@ -119,14 +113,14 @@ abstract class Resource implements ResourceContract
         return [];
     }
 
-    public function baseIndexView(): string
+    public function indexView(): string
     {
-        return static::$baseIndexView;
+        return static::$indexView;
     }
 
-    public function baseEditView(): string
+    public function createEditView(): string
     {
-        return static::$baseEditView;
+        return static::$createEditView;
     }
 
     public function title(): string
@@ -144,24 +138,74 @@ abstract class Resource implements ResourceContract
         $this->titleField = $titleField;
     }
 
-    public function getItem(): Model
-    {
-        return $this->item;
-    }
-
-    public function setItem(Model $item): void
-    {
-        $this->item = $item;
-    }
-
     public function getModel(): Model
     {
         return new static::$model();
     }
 
-    public function getActiveActions(): array
+    public function getRelationsValues(array $relations = null): array
     {
-        return static::$activeActions;
+        return $this->fieldsRelationsValues(
+            $this->getModel(),
+            collect($relations ?? $this->getAllRelations())->flip()->undot()->toArray(),
+            only: [BelongsTo::class, BelongsToMany::class]
+        );
+    }
+
+    private function fieldsRelationsValues(
+        Model $model,
+        array $relations,
+        array $values = null,
+        array $only = [],
+        string $prevKey = null
+    ): array {
+        $values = $values ?? [];
+        foreach ($relations as $relation => $value) {
+            $relatedModel = $model->{$relation}()->getRelated();
+
+            $key = (string) str($prevKey ?? $relation)
+                ->when($prevKey, fn(Stringable $str) => $str->append(".$relation"));
+
+            if (empty($only) || in_array(get_class($model->{$relation}()), $only)) {
+                $values[$key] = $relatedModel->all()->toArray();
+            }
+
+            if (is_array($value)) {
+                $values = $this->fieldsRelationsValues($relatedModel, $value, $values, $only, $key ?? $relation);
+            }
+        }
+
+        return $values;
+    }
+
+    public function getAllRelations(): array
+    {
+        return $this->fieldsRelations($this->fields());
+    }
+
+    private function fieldsRelations(array $fields, array $relations = null, string $prevKey = null): array
+    {
+        $relations = $relations ?? [];
+
+        foreach ($fields as $field) {
+            if ($field instanceof HasRelationship) {
+                $key = (string) str($prevKey ?? $field->relation())
+                    ->when($prevKey, fn(Stringable $str) => $str->append(".{$field->relation()}"));
+
+
+                $relations[$key] = $key;
+
+                if ($field instanceof HasFields && $field->getFields()) {
+                    $relations = $this->fieldsRelations(
+                        $field->getFields(),
+                        $relations,
+                        $key ?? $field->relation()
+                    );
+                }
+            }
+        }
+
+        return $relations;
     }
 
     public function isWithPolicy(): bool
@@ -169,14 +213,19 @@ abstract class Resource implements ResourceContract
         return static::$withPolicy;
     }
 
-    public function isSystem(): bool
+    /**
+     * Determine if this resource uses soft deletes.
+     *
+     * @return bool
+     */
+    public function softDeletes(): bool
     {
-        return static::$system;
+        return in_array(SoftDeletes::class, class_uses_recursive(static::$model), true);
     }
 
     public function routeAlias(): string
     {
-        return (string)str(static::class)
+        return (string) str(static::class)
             ->classBasename()
             ->replace(['Resource'], '')
             ->plural()
@@ -185,12 +234,12 @@ abstract class Resource implements ResourceContract
 
     public function routeParam(): string
     {
-        return (string)str($this->routeAlias())->singular();
+        return (string) str($this->routeAlias())->singular();
     }
 
-    public function routeName(string|null $action = null): string
+    public function routeName(?string $action = null): string
     {
-        return (string)str(config('moonshine.route.prefix'))
+        return (string) str(config('moonshine.route.prefix'))
             ->append('.')
             ->append($this->routeAlias())
             ->when($action, fn($str) => $str->append('.')->append($action));
@@ -206,14 +255,14 @@ abstract class Resource implements ResourceContract
 
     public function controllerName(): string
     {
-        return (string)str(static::class)
+        return (string) str(static::class)
             ->classBasename()
             ->replace(['Resource'], '')
             ->append('Controller')
-            ->when(
-                $this->isSystem(),
-                fn($str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
-                fn($str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
+            ->whenContains(
+                ['MoonShine'],
+                fn(Stringable $str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
+                fn(Stringable $str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
             );
     }
 
@@ -231,37 +280,6 @@ abstract class Resource implements ResourceContract
         return $actions;
     }
 
-
-    /**
-     * @return Collection<Field>
-     */
-    public function getFields(): Collection
-    {
-        $fields = [];
-
-        foreach ($this->fields() as $item) {
-            if ($item instanceof Field) {
-                $fields[] = $item;
-            } elseif ($item instanceof Tab) {
-                foreach ($item->fields() as $field) {
-                    if ($field instanceof Field) {
-                        $fields[] = $field;
-                    }
-                }
-            }
-        }
-
-        return collect($fields);
-    }
-
-    /**
-     * @return Collection<Filter>
-     */
-    public function getFilters(): Collection
-    {
-        return collect($this->filters());
-    }
-
     /**
      * @return Collection<Tab>
      */
@@ -274,10 +292,112 @@ abstract class Resource implements ResourceContract
     /**
      * @return Collection<Field>
      */
+    public function formFields(): Collection
+    {
+        return $this->getFields()
+            ->filter(fn(Field $field) => $field->showOnForm);
+    }
+
+    /**
+     * @return Collection<Renderable>
+     */
+    public function formElements(): Collection
+    {
+        # TODO Не все поля попадают
+
+        $elements = [];
+
+        foreach ($this->fields() as $element) {
+            $elements = $this->resolveFormElements($element);
+        }
+
+        dd($elements);
+
+        return collect($elements);
+    }
+
+    private function resolveFormElements($element)
+    {
+        $elements = [];
+
+        if ($element instanceof BelongsToRelation || $element instanceof ManyToManyRelation) {
+            # TODO вычилсять getRelated
+            /*$element->setValues(
+                $element->resolveRelatedValues($this->getRelationsValues()[$element->relation()] ?? [])
+            );*/
+        }
+
+        $elements[] = $element->setParents();
+
+        if (($element instanceof Tab || $element instanceof HasFields) && $element->hasFields()) {
+            foreach ($element->getFields() as $child) {
+                $elements[] = $this->resolveFormElements($child);
+            }
+        }
+
+        return $elements;
+    }
+
+    /**
+     * @return Collection<Field>
+     */
+    public function getFields(): Collection
+    {
+        $fields = [];
+
+        foreach ($this->fields() as $item) {
+            if ($item instanceof Field) {
+                $fields[] = $item;
+            } elseif ($item instanceof Tab) {
+                foreach ($item->getFields() as $field) {
+                    if ($field instanceof Field) {
+                        $fields[] = $field;
+                    }
+                }
+            }
+        }
+
+        return collect($fields);
+    }
+
+    /**
+     * @return Collection<Field>
+     */
+    public function indexFields(): Collection
+    {
+        return $this->getFields()
+            ->filter(fn(Field $field) => $field->showOnIndex);
+    }
+
+    /**
+     * @return Collection<Field>
+     */
+    public function exportFields(): Collection
+    {
+        return $this->getFields()
+            ->filter(fn(Field $field) => $field->showOnExport);
+    }
+
+    public function fieldsLabels(): array
+    {
+        # TODO Рекурсивно по всем полям
+
+        $labels = [];
+
+        foreach ($this->getFields() as $field) {
+            $labels[$field->field()] = $field->label();
+        }
+
+        return $labels;
+    }
+
+    /**
+     * @return Collection<Field>
+     */
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showWhenState);
+            ->filter(fn(Field $field) => $field->showWhenState);
     }
 
     public function whenFieldNames(): Collection
@@ -294,113 +414,6 @@ abstract class Resource implements ResourceContract
     public function isWhenConditionField(string $name): bool
     {
         return $this->whenFieldNames()->has($name);
-    }
-
-    /**
-     * @return Collection<Field>
-     */
-    public function indexFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnIndex);
-    }
-
-    /**
-     * @return Collection
-     */
-    public function formComponents(): Collection
-    {
-        return collect($this->fields())->map(function ($component) {
-            if ($component instanceof Field) {
-                return $component->setParents();
-            }
-
-            return $component;
-        });
-    }
-
-    /**
-     * @return Collection<Field>
-     */
-    public function formFields(): Collection
-    {
-        $fields = $this->extensionsFields();
-
-        return $fields->merge(
-            $this->getFields()
-                ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnForm)
-        );
-    }
-
-    /**
-     * @return Collection<Field>
-     */
-    public function extensionsFields(): Collection
-    {
-        $fields = collect();
-
-        foreach (app(Extension::class) as $extension) {
-            $fields = $fields->merge(
-                collect($extension->fields())
-                    ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnForm)
-            );
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return Collection<Field>
-     */
-    public function exportFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnExport);
-    }
-
-    public function fieldsLabels(): array
-    {
-        $labels = [];
-
-        foreach ($this->formFields() as $field) {
-            $labels[$field->field()] = $field->label();
-        }
-
-        return $labels;
-    }
-
-    public function getFilter(string $filterName): Filter|null
-    {
-        return collect($this->getFilters())->filter(function (Filter $filter) use ($filterName) {
-            return $filter->field() == $filterName;
-        })->first();
-    }
-
-    public function getField(string $fieldName): Field|null
-    {
-        return collect($this->getFields())->filter(function (Field $field) use ($fieldName) {
-            return $field->field() == $fieldName;
-        })->first();
-    }
-
-    public function extensions($name, Model $item): string
-    {
-        $views = str('');
-
-        if (app(Extension::class)) {
-            foreach (app(Extension::class) as $extension) {
-                if (method_exists($extension, $name)) {
-                    $views = $views->append($extension->{$name}($item));
-                }
-            }
-        }
-
-        return (string)$views;
-    }
-
-    public function all(): Collection
-    {
-        return $this->query()->get();
     }
 
     public function paginate(): LengthAwarePaginator
@@ -450,16 +463,6 @@ abstract class Resource implements ResourceContract
         return $query;
     }
 
-    public function validate(Model $item): array
-    {
-        return Validator::validate(
-            request()->all(),
-            $this->rules($item),
-            trans('moonshine::validation'),
-            $this->fieldsLabels()
-        );
-    }
-
     public function can(string $ability, Model $item = null): bool
     {
         if (!$this->isWithPolicy()) {
@@ -473,24 +476,10 @@ abstract class Resource implements ResourceContract
     /**
      * @throws ResourceException
      */
-    public function save(Model $item): Model
+    public function save(Model $item, array $values): Model
     {
         try {
-            foreach ($this->formFields() as $field) {
-                if (!$field->hasRelationship() || $field->belongToOne()) {
-                    $item = $field->save($item);
-                }
-            }
-
-            if ($item->save()) {
-                foreach ($this->formFields() as $field) {
-                    if ($field->hasRelationship() && !$field->belongToOne()) {
-                        $item = $field->save($item);
-                    }
-                }
-
-                $item->save();
-            }
+            $item->forceFill($values);
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }
@@ -498,44 +487,19 @@ abstract class Resource implements ResourceContract
         return $item;
     }
 
-    public function renderField(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
+    public function delete(Model $item)
     {
-        return $this->_render($field, $item, $level);
     }
 
-    public function renderFilter(HtmlViewable $field, Model $item): Factory|View|Application
+    public function forceDelete(Model $item)
     {
-        return $this->_render($field, $item);
     }
 
-    public function renderDecoration(HtmlViewable $decoration, Model $item): Factory|View|Application
+    public function massDelete(Model $item)
     {
-        return view($decoration->getView(), [
-            'resource' => $this,
-            'item' => $item,
-            'decoration' => $decoration,
-        ]);
     }
 
-    public function renderMetric(HtmlViewable $metric): Factory|View|Application
+    public function restore(Model $item)
     {
-        return view($metric->getView(), [
-            'resource' => $this,
-            'item' => $metric
-        ]);
-    }
-
-    protected function _render(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
-    {
-        if ($field->hasRelationship()) {
-            $field->setValues($field->relatedValues($item));
-        }
-
-        return view($field->getView(), [
-            'resource' => $this,
-            'item' => $item,
-            'field' => $field,
-            'level' => $level,
-        ]);
     }
 }

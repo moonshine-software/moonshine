@@ -7,12 +7,8 @@ namespace Leeto\MoonShine\Traits\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
-use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Fields\Json;
-use Leeto\MoonShine\Fields\Text;
-use Throwable;
 
 trait WithFields
 {
@@ -35,29 +31,20 @@ trait WithFields
     public function getFields(): array
     {
         return collect($this->fields)->map(function ($field) {
-            throw_if(
-                $this instanceof Json && $field->hasRelationship(),
-                new FieldException('Relationship fields in JSON field unavailable now. Coming soon')
-            );
-
-            throw_if(
-                $field instanceof HasFields && $field->hasFields(),
-                new FieldException('Field with fields unavailable now. Coming soon')
-            );
-
             if ($this instanceof HasPivot) {
                 return $field->setName("{$this->relation()}_{$field->field()}[]");
             }
 
-            return $field->setName(
-                (string)str($this->name())
-                    ->when(
-                        $this->hasFields() && !$this->toOne(),
-                        fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
-                    )
-                    ->append("[{$field->field()}]")
-                    ->replace('[]', '')
-            )->xModel();
+            return $field
+                ->setName(
+                    (string) str($this->name())
+                        ->when(
+                            $this->hasFields() && !$this->toOne(),
+                            fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
+                        )
+                        ->append("[{$field->field()}]")
+                        ->replace('[]', '')
+                );
         })->toArray();
     }
 
@@ -66,6 +53,10 @@ trait WithFields
         return !empty($this->fields);
     }
 
+    /**
+     * @param  array  $fields
+     * @return $this
+     */
     public function fields(array $fields): static
     {
         $this->fields = $fields;
@@ -73,9 +64,9 @@ trait WithFields
         return $this;
     }
 
-    public function jsonValues(Model $item = null): array
+    public function jsonSerialize(): array
     {
-        if (is_null($item)) {
+        if (!$this->value()) {
             $data = ['id' => ''];
 
             foreach ($this->getFields() as $field) {
@@ -86,20 +77,20 @@ trait WithFields
         }
 
         if ($this instanceof Json && $this->isKeyValue()) {
-            return collect($this->formViewValue($item))
+            return collect($this->value())
                 ->map(fn($value, $key) => ['key' => $key, 'value' => $value])
                 ->values()
                 ->toArray();
         }
 
-        if ($this->formViewValue($item) instanceof Collection) {
-            return $this->formViewValue($item)->toArray();
+        if ($this->value() instanceof Collection) {
+            return $this->value()->toArray();
         }
 
-        if ($this->formViewValue($item) instanceof Model) {
-            return [$this->formViewValue($item)->toArray()];
+        if ($this->value() instanceof Model) {
+            return [$this->value()->toArray()];
         }
 
-        return $this->formViewValue($item) ?? [];
+        return $this->value() ?? [];
     }
 }

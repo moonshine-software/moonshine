@@ -13,11 +13,14 @@ class Json extends Field implements HasFields
 {
     use WithFields;
 
-    protected static string $view = 'json';
-
     protected bool $keyValue = false;
 
     protected bool $group = true;
+
+    public function getView(): string
+    {
+        return $this->isFullPage() ? 'moonshine::fields.full-fields' : 'moonshine::fields.table-fields';
+    }
 
     /**
      * @throws Throwable
@@ -37,35 +40,6 @@ class Json extends Field implements HasFields
     public function isKeyValue(): bool
     {
         return $this->keyValue;
-    }
-
-    public function indexViewValue(Model $item, bool $container = false): string|\Illuminate\Contracts\View\View
-    {
-        $columns = [];
-        $values = $item->{$this->field()};
-
-        if (!$this->hasFields()) {
-            return json_encode($values);
-        }
-
-        if ($this->isKeyValue()) {
-            $values = collect($item->{$this->field()})
-                ->map(fn($value, $key) => ['key' => $key, 'value' => $value]);
-        }
-
-        foreach ($this->getFields() as $field) {
-            $columns[$field->field()] = $field->label();
-        }
-
-        return view('moonshine::shared.table', [
-            'columns' => $columns,
-            'values' => $values
-        ]);
-    }
-
-    public function exportViewValue(Model $item): mixed
-    {
-        return '';
     }
 
     public function save(Model $item): Model

@@ -1,28 +1,28 @@
-<div id="flask_{{ $field->id() }}" class="w-100 relative border" style="min-height: 300px"></div>
+<div id="flask_{{ $element->id() }}" class="w-100 relative border" style="min-height: 300px"></div>
 
 <input type="hidden"
-       id="{{ $field->id() }}"
-       name="{{ $field->name() }}"
-       value="{{ $field->formViewValue($item) ?? '' }}"
+       id="{{ $element->id() }}"
+       name="{{ $element->name() }}"
+       value="{{ $element->value() ?? '' }}"
 />
 
 <script>
-  (function() {
-    document.addEventListener("DOMContentLoaded", function(event) {
-      const input = document.getElementById('{{ $field->id() }}');
+    (function () {
+        document.addEventListener("DOMContentLoaded", function (event) {
+            const input = document.getElementById('{{ $element->id() }}');
 
-      const flask = new CodeFlask('#flask_{{ $field->id() }}', {
-        lineNumbers: {{ $field->lineNumbers ? 'true' : 'false' }},
-        language: '{{ $field->language }}',
-        readonly: {{ $field->isReadonly() ? 'true' : 'false' }},
-      });
+            const flask = new CodeFlask('#flask_{{ $element->id() }}', {
+                lineNumbers: {{ $element->lineNumbers ? 'true' : 'false' }},
+                language: '{{ $element->language }}',
+                readonly: {{ $element->isReadonly() ? 'true' : 'false' }},
+            });
 
-      flask.onUpdate((code) => {
-        input.value = code;
-      });
+            flask.onUpdate((code) => {
+                input.value = code;
+            });
 
-      flask.updateCode(input.value);
-    });
-  })();
+            flask.updateCode(input.value);
+        });
+    })();
 </script>
 

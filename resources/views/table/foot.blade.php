@@ -8,7 +8,7 @@
 
             <input name="ids" type="hidden" value="" class="actionBarIds">
 
-            @if($resource->can('massDelete') && in_array('delete', $resource->getActiveActions()))
+            @if($resource->can('massDelete'))
                 <button class="text-pink inline-block">
                     @include("moonshine::shared.icons.delete", ["size" => 6, "class" => "mr-2", "color" => "pink"])
                 </button>
@@ -19,10 +19,10 @@
         <script>
             function actionBarHandler() {
                 return {
-                    actionBarOpen : false,
-                    actionBarCheckboxMain : false,
+                    actionBarOpen: false,
+                    actionBarCheckboxMain: false,
                     actionBar(type) {
-                        if(document.querySelector('.actionBarCheckboxMain:checked') != null) {
+                        if (document.querySelector('.actionBarCheckboxMain:checked') != null) {
                             this.actionBarCheckboxMain = true;
                         } else {
                             this.actionBarCheckboxMain = false;
@@ -31,23 +31,23 @@
                         var checkboxes = document.querySelectorAll('.actionBarCheckboxRow');
                         var values = [];
 
-                        for(var i=0, n=checkboxes.length;i<n;i++) {
-                            if(type == 'main') {
+                        for (var i = 0, n = checkboxes.length; i < n; i++) {
+                            if (type == 'main') {
                                 checkboxes[i].checked = this.actionBarCheckboxMain;
                             }
 
-                            if(checkboxes[i].checked && checkboxes[i].value) {
+                            if (checkboxes[i].checked && checkboxes[i].value) {
                                 values.push(checkboxes[i].value);
                             }
                         }
 
-                        if(document.querySelector('.actionBarCheckboxRow:checked') != null) {
+                        if (document.querySelector('.actionBarCheckboxRow:checked') != null) {
                             this.actionBarOpen = true;
                         } else {
                             this.actionBarOpen = false;
                         }
 
-                        document.querySelector(".actionBarIds").value = values.join (";");
+                        document.querySelector(".actionBarIds").value = values.join(";");
                     }
                 };
             }

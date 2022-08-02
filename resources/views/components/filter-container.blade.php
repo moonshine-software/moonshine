@@ -1,4 +1,4 @@
-@include("moonshine::fields.shared.label", ["field" => $filter])
+@include("moonshine::fields.shared.label", ["element" => $filter])
 
 <div class="mt-5">
     {{ $slot }}

@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Decorations;
 
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Illuminate\Contracts\View\View;
+use JsonSerializable;
+use Leeto\MoonShine\Contracts\Renderable;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithView;
+use Stringable;
 
-abstract class Decoration implements HtmlViewable
+abstract class Decoration implements Renderable, Stringable, JsonSerializable
 {
     use Makeable, WithView;
 
@@ -28,7 +31,7 @@ abstract class Decoration implements HtmlViewable
      *
      * @return array
      */
-    public function fields(): array
+    public function getFields(): array
     {
         return $this->fields;
     }
@@ -59,7 +62,7 @@ abstract class Decoration implements HtmlViewable
      */
     public function hasFields(): bool
     {
-        return !empty($this->fields());
+        return !empty($this->getFields());
     }
 
     /**
@@ -107,13 +110,22 @@ abstract class Decoration implements HtmlViewable
         return $this;
     }
 
-    /**
-     * Get view of decoration
-     *
-     * @return string
-     */
-    public function getView(): string
+    public function render(): View
     {
-        return 'moonshine::decorations.'.static::$view;
+        return view($this->getView(), [
+            'decoration' => $this,
+        ]);
+    }
+
+    public function __toString()
+    {
+        return (string) $this->render();
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'decoration' => $this,
+        ];
     }
 }

@@ -18,7 +18,7 @@ use function redirect;
 use function trans;
 use function view;
 
-class MoonShineAuthController extends BaseController
+class AuthController extends BaseController
 {
     public function login(): Factory|View|Redirector|Application|RedirectResponse
     {
@@ -32,7 +32,7 @@ class MoonShineAuthController extends BaseController
     public function authenticate(LoginFormRequest $request): RedirectResponse
     {
         $credentials = $request->only(['email', 'password']);
-        $remember = $request->boolean('remember', false);
+        $remember = $request->boolean('remember');
 
         if (auth(config('moonshine.auth.guard'))->attempt($credentials, $remember)) {
             return redirect(url()->previous());

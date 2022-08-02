@@ -10,7 +10,7 @@ class Checkbox extends Field
 {
     use CheckboxTrait;
 
-    protected static string $view = 'checkbox';
+    protected static string $view = 'moonshine::fields.checkbox';
 
     protected static string $type = 'checkbox';
 }

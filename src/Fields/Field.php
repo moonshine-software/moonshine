@@ -4,25 +4,21 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Macroable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\HtmlViewable;
-
-use Leeto\MoonShine\Traits\Fields\FormElement;
+use Leeto\MoonShine\FormElement;
+use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
-use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
-use Leeto\MoonShine\Traits\Fields\XModel;
-use Leeto\MoonShine\Helpers\Condition;
-use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
-use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Field implements HtmlViewable, HasAssets
+abstract class Field extends FormElement implements HasAssets
 {
-    use Makeable, FormElement, WithHtmlAttributes, WithAssets, WithView, ShowWhen, XModel, LinkTrait;
+    use Macroable, WithAssets, ShowWhen, LinkTrait;
 
     public bool $showOnIndex = true;
 
@@ -30,7 +26,7 @@ abstract class Field implements HtmlViewable, HasAssets
 
     public bool $showOnForm = true;
 
-    protected Field|null $parent = null;
+    protected ?Field $parent = null;
 
     protected string $hint = '';
 
@@ -123,7 +119,7 @@ abstract class Field implements HtmlViewable, HasAssets
         return $this;
     }
 
-    public function parent(): Field|null
+    public function parent(): ?Field
     {
         return $this->parent;
     }
@@ -207,49 +203,6 @@ abstract class Field implements HtmlViewable, HasAssets
     public function isSortable(): bool
     {
         return $this->sortable;
-    }
-
-    public function getView(): string
-    {
-        return 'moonshine::fields.'.static::$view;
-    }
-
-    public function formViewValue(Model $item): mixed
-    {
-        if ($this->belongToOne()) {
-            return $item->{$this->relation()}?->getKey() ?? $this->getDefault();
-        }
-
-        if ($this->hasRelationship()) {
-            return $item->{$this->relation()} ?? $this->getDefault();
-        }
-
-        return $item->{$this->field()} ?? $this->getDefault();
-    }
-
-    public function indexViewValue(Model $item, bool $container = true): mixed
-    {
-        if ($this->hasRelationship()) {
-            $item = $item->{$this->relation()};
-        }
-
-        if (is_callable($this->valueCallback())) {
-            return $this->valueCallback()($item);
-        }
-
-        if ($this->hasRelationship()) {
-            return $container ? view('moonshine::shared.badge', [
-                'color' => 'purple',
-                'value' => $item->{$this->resourceTitleField()}
-            ]) : $item->{$this->resourceTitleField()};
-        }
-
-        return $item->{$this->field()} ?? '';
-    }
-
-    public function exportViewValue(Model $item): mixed
-    {
-        return $this->indexViewValue($item, false);
     }
 
     public function save(Model $item): Model

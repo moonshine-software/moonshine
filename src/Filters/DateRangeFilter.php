@@ -11,7 +11,7 @@ class DateRangeFilter extends Filter
 {
     use DateTrait;
 
-    public static string $view = 'date-range';
+    public static string $view = 'moonshine::filters.date-range';
 
     public static string $type = 'date';
 

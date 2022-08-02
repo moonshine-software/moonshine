@@ -6,9 +6,9 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Http\Controllers\MoonShineAuthController;
-use Leeto\MoonShine\Http\Controllers\MoonShineDashboardController;
-use Leeto\MoonShine\Http\Controllers\MoonShineResourceController;
+use Leeto\MoonShine\Http\Controllers\AuthController;
+use Leeto\MoonShine\Http\Controllers\DashboardController;
+use Leeto\MoonShine\Http\Controllers\ResourceController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
@@ -20,9 +20,9 @@ class MoonShine
 
     public const NAMESPACE = 'App\MoonShine';
 
-    protected Collection|null $resources = null;
+    protected ?Collection $resources = null;
 
-    protected Collection|null $menus = null;
+    protected ?Collection $menus = null;
 
     public static function path(string $path = ''): string
     {
@@ -90,20 +90,19 @@ class MoonShine
         Route::prefix(config('moonshine.route.prefix'))
             ->middleware(config('moonshine.route.middleware'))
             ->name(config('moonshine.route.prefix').'.')->group(function () {
-                Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
-                Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
+                Route::controller(DashboardController::class)->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::post('/attachments', 'attachments')->name('attachments');
+                });
 
-                Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
-                Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
-                Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
+                Route::controller(AuthController::class)->group(function () {
+                    Route::get('/login', 'login')->name('login');
+                    Route::post('/authenticate', 'authenticate')->name('authenticate');
+                    Route::get('/logout', 'logout')->name('logout');
+                });
 
-                $this->resources->each(function ($resource) {
-                    /* @var Resource $resource */
-                    if ($resource->isSystem()) {
-                        Route::resource($resource->routeAlias(), $resource->controllerName());
-                    } else {
-                        Route::resource($resource->routeAlias(), MoonShineResourceController::class);
-                    }
+                $this->getResources()->each(function (Resource $resource) {
+                    Route::resource($resource->routeAlias(), ResourceController::class);
                 });
             });
     }

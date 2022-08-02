@@ -22,14 +22,14 @@ class MoonShineUserControllerTest extends TestCase
             ->get($resource->route('index'));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.index');
+        $response->assertViewIs('moonshine::index');
         $response->assertViewHas('resource', $resource);
 
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
             ->get($resource->route('create'));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.form');
+        $response->assertViewIs('moonshine::create-edit');
         $response->assertViewHas('resource', $resource);
     }
 
@@ -41,7 +41,7 @@ class MoonShineUserControllerTest extends TestCase
             ->get($resource->route('create'));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.form');
+        $response->assertViewIs('moonshine::create-edit');
     }
 
     public function test_edit()
@@ -52,14 +52,14 @@ class MoonShineUserControllerTest extends TestCase
             ->get($resource->route('edit', $this->user->id));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.form');
+        $response->assertViewIs('moonshine::create-edit');
         $response->assertViewHas('item', $this->user);
     }
 
     public function test_store()
     {
         $resource = new MoonShineUserResource();
-        $email = uniqid() . '@example.com';
+        $email = uniqid().'@example.com';
 
         $this->assertDatabaseMissing('moonshine_users', [
             'email' => $email

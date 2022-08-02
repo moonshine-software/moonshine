@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Metrics;
 
 class LineChartMetric extends Metric
 {
-    protected static string $view = 'line-chart';
+    protected static string $view = 'moonshine::metrics.line-chart';
 
     protected array $lines = [];
 

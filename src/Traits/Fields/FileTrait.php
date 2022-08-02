@@ -119,13 +119,4 @@ trait FileTrait
 
         return $item;
     }
-
-    public function exportViewValue(Model $item): string
-    {
-        if ($this->isMultiple()) {
-            return collect($item->{$this->field()})->implode(';');
-        }
-
-        return parent::exportViewValue($item);
-    }
 }

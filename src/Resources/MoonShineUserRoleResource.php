@@ -15,8 +15,6 @@ class MoonShineUserRoleResource extends Resource
 
     public string $titleField = 'name';
 
-    protected static bool $system = true;
-
     public function title(): string
     {
         return trans('moonshine::ui.base_resource.role');

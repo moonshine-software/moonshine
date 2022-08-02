@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Metrics;
 
 class ValueMetric extends Metric
 {
-    protected static string $view = 'value';
+    protected static string $view = 'moonshine::metrics.value';
 
     public int|float $value = 0;
 
@@ -29,7 +29,7 @@ class ValueMetric extends Metric
             return round(($this->value / $this->target) * 100);
         }
 
-        return str_replace('{value}', (string)$this->value, $this->valueFormat);
+        return str_replace('{value}', (string) $this->value, $this->valueFormat);
     }
 
     public function value(int|float $value): static

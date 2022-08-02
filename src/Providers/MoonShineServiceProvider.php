@@ -12,7 +12,6 @@ use Leeto\MoonShine\Commands\ResourceCommand;
 use Leeto\MoonShine\Commands\UserCommand;
 use Leeto\MoonShine\Components\MenuComponent;
 use Leeto\MoonShine\Dashboard\Dashboard;
-use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Http\Middleware\Authenticate;
 use Leeto\MoonShine\Http\Middleware\Session;
 use Leeto\MoonShine\Menu\Menu;
@@ -93,16 +92,6 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(Dashboard::class, fn() => new Dashboard());
 
         $this->app->singleton(AssetManager::class, fn() => new AssetManager());
-
-        $extensions = [];
-
-        if (config('moonshine.extensions')) {
-            foreach (config('moonshine.extensions') as $class) {
-                $extensions[] = new $class();
-            }
-        }
-
-        $this->app->bind(Extension::class, fn() => $extensions);
     }
 
     /**

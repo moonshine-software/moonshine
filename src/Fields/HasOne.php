@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
@@ -16,9 +15,12 @@ class HasOne extends Field implements HasRelationship, HasFields, OneToOneRelati
 {
     use WithFields, WithRelationship;
 
-    protected static string $view = 'has-one';
-
     protected bool $group = true;
+
+    public function getView(): string
+    {
+        return $this->isFullPage() ? 'moonshine::fields.full-fields' : 'moonshine::fields.table-fields';
+    }
 
     public function save(Model $item): Model
     {

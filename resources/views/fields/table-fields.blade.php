@@ -1,44 +1,46 @@
 <div class="flex flex-col mt-8">
     <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg">
-            <div x-data="handler_{{ $field->id() }}()" x-init="handler_init_{{ $field->id() }}">
+            <div x-data="handler_{{ $element->id() }}()" x-init="handler_init_{{ $element->id() }}">
                 <table class="min-w-full">
                     <thead class="bg-whiteblue dark:bg-purple">
                     <tr>
-                        @if(!$field->toOne())
-                            <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">#</th>
+                        @if(!$element->toOne())
+                            <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">#
+                            </th>
                         @endif
 
-                        @foreach($field->getFields() as $subField)
+                        @foreach($element->getFields() as $child)
                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                                {{ $subField->label() }}
+                                {{ $child->label() }}
                             </th>
                         @endforeach
 
-                        @if(!$field->toOne())
+                        @if(!$element->toOne())
                             <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider"></th>
                         @endif
                     </tr>
                     </thead>
 
                     <tbody class="bg-white dark:bg-darkblue text-black dark:text-white">
-                    <template x-for="(item, index{{ $level }}) in items" :key="index{{ $level }}"
+                    <template x-for="(item, index{{ $level ?? 0 }}) in items" :key="index{{ $level ?? 0 }}"
                     >
-                        <tr :data-id="item.id" class="table_fields_{{ $field->id() }}">
-                            @if(!$field->toOne())
-                                <td class="px-6 py-4 whitespace-no-wrap" x-text="index{{ $level }} + 1"></td>
+                        <tr :data-id="item.id" class="table_fields_{{ $element->id() }}">
+                            @if(!$element->toOne())
+                                <td class="px-6 py-4 whitespace-no-wrap" x-text="index{{ $level ?? 0 }} + 1"></td>
                             @endif
 
-                            @foreach($field->getFields() as $subField)
+                            @foreach($element->getFields() as $child)
                                 <td class="px-6 py-4 whitespace-no-wrap">
-                                    {{ $resource->renderField($subField, $model, $level+1) }}
+                                    {!! $child !!}
                                 </td>
                             @endforeach
 
-                            @if(!$field->toOne())
+                            @if(!$element->toOne())
                                 <td class="px-6 py-4 whitespace-no-wrap">
-                                    @if($field->isRemovable())
-                                        <button @click="removeField(index{{ $level }})" type="button" class="text-pink hover:text-pink inline-block">
+                                    @if($element->isRemovable())
+                                        <button @click="removeField(index{{ $level ?? 0 }})" type="button"
+                                                class="text-pink hover:text-pink inline-block">
                                             @include("moonshine::shared.icons.delete", ["size" => 6, "color" => "pink", "class" => "mr-2"])
                                         </button>
                                     @endif
@@ -50,8 +52,8 @@
 
                     <tfoot class="bg-whiteblue dark:bg-purple">
                     <tr>
-                        <td colspan="{{ count($field->getFields())+2 }}" class="px-6 py-4 whitespace-no-wrap">
-                            @if(!$field->toOne())
+                        <td colspan="{{ count($element->getFields())+2 }}" class="px-6 py-4 whitespace-no-wrap">
+                            @if(!$element->toOne())
                                 <button type="button"
                                         class="bg-gradient-to-r from-purple to-pink text-white
     text-white font-semibold py-2 px-4 rounded"
@@ -78,22 +80,22 @@
 </div>
 
 <script>
-  function handler_{{ $field->id() }}() {
-    return {
-      handler_init_{{ $field->id() }}() {
-        this.items = @json($field->jsonValues($item));
-      },
-      items: [],
-      addNewField() {
-        if(Array.isArray(this.items)) {
-          this.items.push(@json($field->jsonValues()));
-        } else {
-          this.items = [@json($field->jsonValues())];
+    function handler_{{ $element->id() }}() {
+        return {
+            handler_init_{{ $element->id() }}() {
+                this.items = @json($element);
+            },
+            items: [],
+            addNewField() {
+                if (Array.isArray(this.items)) {
+                    this.items.push(@json($element));
+                } else {
+                    this.items = [@json($element)];
+                }
+            },
+            removeField(index) {
+                this.items.splice(index, 1);
+            },
         }
-      },
-      removeField(index) {
-        this.items.splice(index, 1);
-      },
     }
-  }
 </script>

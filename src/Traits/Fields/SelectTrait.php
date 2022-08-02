@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-
 trait SelectTrait
 {
     protected array $options = [];
@@ -22,13 +20,13 @@ trait SelectTrait
         return $this->options;
     }
 
-    public function isSelected(Model $item, string $value): bool
+    public function isSelected(string $value): bool
     {
-        if (!$this->formViewValue($item)) {
+        if (!$this->value()) {
             return false;
         }
 
-        return (string)$this->formViewValue($item) === $value
-            || (!$this->formViewValue($item) && (string)$this->getDefault() === $value);
+        return (string) $this->value() === $value
+            || (!$this->value() && (string) $this->getDefault() === $value);
     }
 }

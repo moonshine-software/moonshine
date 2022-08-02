@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 trait CheckboxTrait
 {
-    public function isChecked(Model $item, string $value): bool
+    public function isChecked(string $value): bool
     {
-        $formValue = $this->formViewValue($item);
-
-        if ($formValue instanceof Collection) {
-            return $this->formViewValue($item)->contains("id", "=", $value);
+        if ($this->value() instanceof Collection) {
+            return $this->value()->contains("id", "=", $value);
         }
 
-        if (is_array($formValue)) {
-            return in_array($value, $formValue);
+        if (is_array($this->value())) {
+            return in_array($value, $this->value());
         }
 
         return false;

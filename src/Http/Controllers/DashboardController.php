@@ -10,12 +10,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Storage;
-
 use Leeto\MoonShine\Dashboard\Dashboard;
 
 use function view;
 
-class MoonShineDashboardController extends BaseController
+class DashboardController extends BaseController
 {
     public function index(): Factory|View|Application
     {

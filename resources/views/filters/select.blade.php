@@ -1,13 +1,9 @@
-@if($field->isSearchable())
+@if($element->isSearchable())
     @include('moonshine::fields.multi-select', [
-        'field' => $field,
-        'resource' => $resource,
-        'item' => $resource->getModel()
+        'element' => $element
     ])
 @else
     @include('moonshine::fields.select', [
-        'field' => $field,
-        'resource' => $resource,
-        'item' => $resource->getModel()
+        'element' => $element
     ])
 @endif

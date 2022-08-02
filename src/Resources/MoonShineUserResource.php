@@ -6,15 +6,14 @@ namespace Leeto\MoonShine\Resources;
 
 use Leeto\MoonShine\Actions\ExportAction;
 use Leeto\MoonShine\Fields\BelongsTo;
+use Leeto\MoonShine\Fields\Date;
 use Leeto\MoonShine\Fields\Email;
 use Leeto\MoonShine\Fields\ID;
+use Leeto\MoonShine\Fields\Image;
+use Leeto\MoonShine\Fields\Password;
 use Leeto\MoonShine\Fields\PasswordRepeat;
 use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Fields\Image;
-use Leeto\MoonShine\Fields\Date;
-use Leeto\MoonShine\Fields\Password;
 use Leeto\MoonShine\Filters\TextFilter;
-
 use Leeto\MoonShine\Models\MoonshineUser;
 
 class MoonShineUserResource extends Resource
@@ -22,8 +21,6 @@ class MoonShineUserResource extends Resource
     public static string $model = MoonshineUser::class;
 
     public string $titleField = 'name';
-
-    protected static bool $system = true;
 
     public function title(): string
     {

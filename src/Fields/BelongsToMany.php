@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
+use Leeto\MoonShine\Traits\Fields\CanBeSelect;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
-use Leeto\MoonShine\Traits\Fields\SelectTransform;
-use Leeto\MoonShine\Traits\Fields\WithFields;
-use Leeto\MoonShine\Traits\Fields\WithRelationship;
-use Leeto\MoonShine\Traits\Fields\WithPivot;
 use Leeto\MoonShine\Traits\Fields\Searchable;
+use Leeto\MoonShine\Traits\Fields\WithFields;
+use Leeto\MoonShine\Traits\Fields\WithPivot;
+use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
 class BelongsToMany extends Field implements HasRelationship, HasPivot, HasFields, ManyToManyRelation
 {
@@ -25,9 +23,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     use WithRelationship;
     use CheckboxTrait;
     use Searchable;
-    use SelectTransform;
-
-    public static string $view = 'belongs-to-many';
+    use CanBeSelect;
 
     protected bool $group = true;
 
@@ -38,6 +34,13 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     protected string $treeParentColumn = '';
 
     protected array $ids = [];
+
+    public function getView(): string
+    {
+        return $this->isSelect()
+            ? 'moonshine::fields.select'
+            : ($this->isTree() ? 'moonshine::fields.tree' : 'moonshine::fields.multi-checkbox');
+    }
 
     public function ids(): array
     {
@@ -67,7 +70,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         return $this->tree;
     }
 
-    private function treePerformData(Collection $data): array
+    private function treePerformData(array $data): array
     {
         $performData = [];
 
@@ -82,16 +85,16 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         return $performData;
     }
 
-    private function treePerformHtml(Collection $data): void
+    private function treePerformHtml(array $data): void
     {
         $this->makeTree($this->treePerformData($data));
 
-        $this->treeHtml = (string)str($this->treeHtml())->wrap("<ul>", "</ul>");
+        $this->treeHtml = (string) str($this->treeHtml())->wrap("<ul>", "</ul>");
     }
 
     public function buildTreeHtml(Model $item): string
     {
-        $data = $this->getRelated($item)->all();
+        $data = $this->values();
 
         $this->treePerformHtml($data);
 
@@ -122,30 +125,6 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         }
     }
 
-    public function indexViewValue(Model $item, bool $container = false): string
-    {
-        $result = str('');
-
-        return (string)$item->{$this->relation()}->map(function ($item) use ($result) {
-            $pivotAs = $this->getPivotAs($item);
-
-
-            $result = $result->append($item->{$this->resourceTitleField()})
-                ->when($this->hasFields(), fn(Stringable $str) => $str->append(' - '));
-
-            foreach ($this->getFields() as $field) {
-                $result = $result->when(
-                    $field->formViewValue($item->{$pivotAs}),
-                    function (Stringable $str) use ($pivotAs, $field, $item) {
-                        return $str->append($field->formViewValue($item->{$pivotAs}));
-                    }
-                );
-            }
-
-            return (string)$result;
-        })->implode(',');
-    }
-
     public function save(Model $item): Model
     {
         $values = $this->requestValue() ? $this->requestValue() : [];
@@ -164,12 +143,5 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         $item->{$this->relation()}()->sync($sync);
 
         return $item;
-    }
-
-    public function exportViewValue(Model $item): mixed
-    {
-        return collect($item->{$this->relation()})
-            ->map(fn($item) => $item->{$this->resourceTitleField()})
-            ->implode(';');
     }
 }

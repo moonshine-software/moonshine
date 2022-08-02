@@ -1,17 +1,16 @@
 <div class="hidden">
     @include("moonshine::fields.textarea", [
-        'field' => $field,
-        'item' => $item,
+        'element' => $element,
     ])
 </div>
 
-<trix-editor input="{{ $field->id() }}"></trix-editor>
+<trix-editor input="{{ $element->id() }}"></trix-editor>
 
 <script>
-    (function() {
+    (function () {
         var HOST = "{{ route(config('moonshine.route.prefix') . '.attachments') }}"
 
-        addEventListener("trix-attachment-add", function(event) {
+        addEventListener("trix-attachment-add", function (event) {
             if (event.attachment.file) {
                 uploadFileAttachment(event.attachment)
             }
@@ -38,12 +37,12 @@
 
             xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'))
 
-            xhr.upload.addEventListener("progress", function(event) {
+            xhr.upload.addEventListener("progress", function (event) {
                 var progress = event.loaded / event.total * 100
                 progressCallback(progress)
             })
 
-            xhr.addEventListener("load", function(event) {
+            xhr.addEventListener("load", function (event) {
                 if (xhr.status == 200) {
                     var response = JSON.parse(xhr.response);
 
@@ -60,9 +59,9 @@
 
         function createStorageKey(file) {
             var date = new Date()
-            var day = date.toISOString().slice(0,10)
+            var day = date.toISOString().slice(0, 10)
             var name = date.getTime() + "-" + file.name
-            return [ "tmp", day, name ].join("/")
+            return ["tmp", day, name].join("/")
         }
 
         function createFormData(key, file) {
