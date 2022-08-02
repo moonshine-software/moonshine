@@ -91,8 +91,7 @@ class MoonShineController extends BaseController
 
         $item = $this->resource->getModel()
             ->newModelQuery()
-            ->where(['id' => $id])
-            ->firstOrFail();
+            ->findOrFail($id);
 
         if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
@@ -114,8 +113,7 @@ class MoonShineController extends BaseController
     {
         $item = $this->resource->getModel()
             ->newModelQuery()
-            ->where(['id' => $id])
-            ->firstOrFail();
+            ->findOrFail($id);
 
         if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
@@ -139,8 +137,7 @@ class MoonShineController extends BaseController
 
         $item = $this->resource->getModel()
             ->newModelQuery()
-            ->where(['id' => $id])
-            ->firstOrFail();
+            ->findOrFail($id);
 
         if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
@@ -198,13 +195,12 @@ class MoonShineController extends BaseController
 
             $this->resource->getModel()
                 ->newModelQuery()
-                ->whereIn('id', explode(';', request('ids')))
+                ->whereIn($this->resource->getModel()->getKeyName(), explode(';', request('ids')))
                 ->delete();
         } else {
             $item = $this->resource->getModel()
                 ->newModelQuery()
-                ->where(['id' => $id])
-                ->firstOrFail();
+                ->findOrFail($id);
 
             if ($this->resource->isWithPolicy()) {
                 $this->authorizeForUser(
