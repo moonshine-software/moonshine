@@ -125,7 +125,7 @@ class ResourceController extends BaseController
         if ($request->has('ids')) {
             $request->getModel()
                 ->newModelQuery()
-                ->whereIn('id', explode(';', $request->get('ids')))
+                ->whereIn($request->getModel()->getKeyName(), explode(';', $request->get('ids')))
                 ->delete();
         } else {
             $request->findModel()->delete();
