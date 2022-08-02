@@ -1,8 +1,8 @@
 @foreach($resource->paginate() as $item)
     <tr>
         <td class="px-6 py-4 whitespace-no-wrap">
-            <input class="actionBarCheckboxRow" @change='actionBar("item")' name="items[{{ $item->id }}]"
-                   type="checkbox" value="{{ $item->id }}"/>
+            <input class="actionBarCheckboxRow" @change='actionBar("item")' name="items[{{ $item->getKey() }}]"
+                   type="checkbox" value="{{ $item->getKey() }}"/>
         </td>
 
         @foreach($resource->indexFields() as $field)

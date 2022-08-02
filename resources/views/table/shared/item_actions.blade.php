@@ -1,5 +1,5 @@
 @if($resource->can('update', $item))
-    <a href="{{ $resource->route("edit", $item->id) }}" class="text-purple inline-block">
+    <a href="{{ $resource->route("edit", $item->getKey()) }}" class="text-purple inline-block">
         @include("moonshine::shared.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "purple"])
     </a>
 @endif
@@ -20,7 +20,7 @@
 
         <x-slot name="buttons">
             <div class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
-                <form method="POST" action="{{ $resource->route("destroy", $item->id) }}">
+                <form method="POST" action="{{ $resource->route("destroy", $item->getKey()) }}">
                     {{ csrf_field() }}
 
                     @method("delete")
