@@ -4,7 +4,7 @@
     @include('moonshine::base.form.shared.errors', ['errors' => $errors])
 
     <form x-data="editForm()"
-          action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->id) }}"
+          action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
           class="bg-white dark:bg-darkblue shadow-md rounded-lg mb-4 text-white"
           method="POST"
           enctype="multipart/form-data"
@@ -21,9 +21,10 @@
                 <div>
                     <nav class="flex flex-col sm:flex-row">
                         @foreach($resource->tabs() as $tab)
-                            <button :class="{ 'border-b-2 font-medium border-purple': activeTab === '{{ $tab->id() }}' }"
-                                    @click.prevent="activeTab = '{{ $tab->id() }}'"
-                                    class="py-4 px-6 block focus:outline-none text-purple">
+                            <button
+                                :class="{ 'border-b-2 font-medium border-purple': activeTab === '{{ $tab->id() }}' }"
+                                @click.prevent="activeTab = '{{ $tab->id() }}'"
+                                class="py-4 px-6 block focus:outline-none text-purple">
                                 {{ $tab->label() }}
                             </button>
                         @endforeach
@@ -57,8 +58,8 @@
             return {
                 @if($resource->whenFieldNames())
                     @foreach($resource->whenFieldNames() as $name)
-                        {{ $name }}: '{{ $item->{$name} }}',
-                    @endforeach
+                    {{ $name }}: '{{ $item->{$name} }}',
+                @endforeach
                 @endif
             };
         }
