@@ -47,8 +47,10 @@ class MoonShineController extends BaseController
             );
         }
 
-        if ($this->resource->getActions()) {
-            foreach ($this->resource->getActions() as $action) {
+        $actions = $this->resource->getActions();
+
+        if ($actions->isNotEmpty()) {
+            foreach ($actions as $action) {
                 if ($action->isTriggered()) {
                     return $action->handle();
                 }
@@ -57,6 +59,10 @@ class MoonShineController extends BaseController
 
         return view($this->resource->baseIndexView(), [
             'resource' => $this->resource,
+            'filters' => $this->resource->filters(),
+            'actions' => $actions,
+            'metrics' => $this->resource->metrics(),
+            'items' => $this->resource->paginate(),
         ]);
     }
 

@@ -9,27 +9,24 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\QueryException;
-
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-
 use Leeto\MoonShine\Decorations\Tab;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
-
-
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
+
 
 abstract class Resource implements ResourceContract
 {

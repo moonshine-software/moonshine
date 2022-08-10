@@ -1,4 +1,4 @@
-@foreach($resource->paginate() as $item)
+@foreach($items as $item)
     <tr>
         <td class="px-6 py-4 whitespace-nowrap">
             <input class="actionBarCheckboxRow" @change='actionBar("item")' name="items[{{ $item->getKey() }}]"
