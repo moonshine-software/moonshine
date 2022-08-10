@@ -1,9 +1,9 @@
-<div class="flex items-center select-none">
-    <span class="hover:text-purple cursor-pointer mr-3">
+<div class="flex items-center select-none" x-data="{}">
+    <span @click="$refs.searchForm.submit()" class="hover:text-purple cursor-pointer mr-3">
         @include('moonshine::shared.icons.search', ['size' => 5, 'color' => 'purple'])
     </span>
 
-    <form action="{{ $resource->route("index") }}" method="get">
+    <form action="{{ $resource->route("index") }}" method="get" x-ref="searchForm">
         {{ csrf_field() }}
 
         <input value="{{ request("search") }}"
