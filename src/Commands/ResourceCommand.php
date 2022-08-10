@@ -24,9 +24,10 @@ class ResourceCommand extends MoonShineCommand
         }
 
         $name = $name->ucfirst()
-            ->replace(['resource', 'Resource'], '');
+            ->replace(['resource', 'Resource'], '')
+            ->value();
 
-        $model = $this->option('model') ?? $name;
+        $model = $this->qualifyModel($this->option('model') ?? $name);
         $title = $this->option('title') ?? $name;
 
         $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
