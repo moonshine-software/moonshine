@@ -14,7 +14,9 @@ trait CheckboxTrait
         $formValue = $this->formViewValue($item);
 
         if ($formValue instanceof Collection) {
-            return $this->formViewValue($item)->contains("id", "=", $value);
+            return $formValue->isNotEmpty()
+                ? $formValue->contains($formValue->first()->getKeyName(), "=", $value)
+                : false;
         }
 
         if (is_array($formValue)) {
