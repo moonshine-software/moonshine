@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+
 trait WithRelationship
 {
     protected array $values = [];
@@ -20,16 +23,16 @@ trait WithRelationship
         return $this->values;
     }
 
-    public function resolveRelatedValues(array $values): array
+    public function resolveRelatedValues(Collection $values): array
     {
         if (is_callable($this->valueCallback())) {
-            $values = collect($values)
-                ->mapWithKeys(function ($relatedItem) {
-                    return [$relatedItem->getKey() => ($this->valueCallback())($relatedItem)];
-                });
+            $values = $values->mapWithKeys(function (Model $relatedItem) {
+                return [$relatedItem->getKey() => ($this->valueCallback())($relatedItem)];
+            });
         } else {
-            # TODO $related->getKeyName()
-            $values = collect($values)->pluck($this->resourceTitleField(), $related->getKeyName());
+            $values = $values->isEmpty()
+                ? $values
+                : $values->pluck($this->resourceTitleField(), $values->first()->getKeyName());
         }
 
         return $values->toArray();

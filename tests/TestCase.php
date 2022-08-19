@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Support\Arr;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\MoonShine;
@@ -18,7 +17,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 {
     use InteractsWithViews;
 
-    protected Builder|Model $user;
+    protected Authenticatable $user;
 
     protected function setUp(): void
     {

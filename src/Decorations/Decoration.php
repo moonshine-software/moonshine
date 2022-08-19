@@ -6,15 +6,15 @@ namespace Leeto\MoonShine\Decorations;
 
 use Illuminate\Contracts\View\View;
 use JsonSerializable;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Renderable;
-use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithView;
+use Leeto\MoonShine\Traits\WithComponent;
 use Stringable;
 
-abstract class Decoration implements Renderable, Stringable, JsonSerializable
+abstract class Decoration implements HasFields, Renderable, Stringable, JsonSerializable
 {
-    use Makeable, WithView;
+    use Makeable, WithComponent;
 
     protected string $label;
 
@@ -23,7 +23,7 @@ abstract class Decoration implements Renderable, Stringable, JsonSerializable
     final public function __construct(string $label, array $fields = [])
     {
         $this->setLabel($label);
-        $this->setFields($fields);
+        $this->fields($fields);
     }
 
     /**
@@ -42,15 +42,9 @@ abstract class Decoration implements Renderable, Stringable, JsonSerializable
      * @param  array  $fields
      * @return $this
      */
-    public function setFields(array $fields): static
+    public function fields(array $fields): static
     {
-        $this->fields = [];
-
-        foreach ($fields as $field) {
-            if ($field instanceof Field) {
-                $this->fields[] = $field->setParents();
-            }
-        }
+        $this->fields = $fields;
 
         return $this;
     }
@@ -112,7 +106,7 @@ abstract class Decoration implements Renderable, Stringable, JsonSerializable
 
     public function render(): View
     {
-        return view($this->getView(), [
+        return view($this->getComponent(), [
             'decoration' => $this,
         ]);
     }
@@ -122,7 +116,7 @@ abstract class Decoration implements Renderable, Stringable, JsonSerializable
         return (string) $this->render();
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'decoration' => $this,

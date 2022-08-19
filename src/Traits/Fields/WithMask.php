@@ -17,6 +17,6 @@ trait WithMask
     {
         $this->mask = $mask;
 
-        return $this->setAttribute('x-mask', $mask);
+        return $this->setAttribute('mask', $mask);
     }
 }

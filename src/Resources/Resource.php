@@ -15,6 +15,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Stringable;
+use JsonSerializable;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
@@ -31,7 +32,7 @@ use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
 
 
-abstract class Resource
+abstract class Resource implements JsonSerializable
 {
     public static string $model;
 
@@ -52,6 +53,8 @@ abstract class Resource
     public static string $createEditView = 'moonshine::create-edit';
 
     public string $titleField = '';
+
+    protected array $relationsValues = [];
 
     /**
      * Get an array of validation rules for resource related model
@@ -143,13 +146,18 @@ abstract class Resource
         return new static::$model();
     }
 
-    public function getRelationsValues(array $relations = null): array
+    public function setRelationsValues(array $relations = null): void
     {
-        return $this->fieldsRelationsValues(
+        $this->relationsValues = $this->fieldsRelationsValues(
             $this->getModel(),
             collect($relations ?? $this->getAllRelations())->flip()->undot()->toArray(),
             only: [BelongsTo::class, BelongsToMany::class]
         );
+    }
+
+    public function getRelationsValues(string $key): Collection
+    {
+        return $this->relationsValues[$key] ?? collect();
     }
 
     private function fieldsRelationsValues(
@@ -160,6 +168,7 @@ abstract class Resource
         string $prevKey = null
     ): array {
         $values = $values ?? [];
+
         foreach ($relations as $relation => $value) {
             $relatedModel = $model->{$relation}()->getRelated();
 
@@ -167,7 +176,7 @@ abstract class Resource
                 ->when($prevKey, fn(Stringable $str) => $str->append(".$relation"));
 
             if (empty($only) || in_array(get_class($model->{$relation}()), $only)) {
-                $values[$key] = $relatedModel->all()->toArray();
+                $values[$key] = $relatedModel->all();
             }
 
             if (is_array($value)) {
@@ -292,56 +301,79 @@ abstract class Resource
     /**
      * @return Collection<Field>
      */
-    public function formFields(): Collection
+    public function indexFields(): Collection
     {
-        return $this->getFields()
-            ->filter(fn(Field $field) => $field->showOnForm);
-    }
-
-    /**
-     * @return Collection<Renderable>
-     */
-    public function formElements(): Collection
-    {
-        # TODO Не все поля попадают
-
-        $elements = [];
-
-        foreach ($this->fields() as $element) {
-            $elements = $this->resolveFormElements($element);
-        }
-
-        dd($elements);
-
-        return collect($elements);
-    }
-
-    private function resolveFormElements($element)
-    {
-        $elements = [];
-
-        if ($element instanceof BelongsToRelation || $element instanceof ManyToManyRelation) {
-            # TODO вычилсять getRelated
-            /*$element->setValues(
-                $element->resolveRelatedValues($this->getRelationsValues()[$element->relation()] ?? [])
-            );*/
-        }
-
-        $elements[] = $element->setParents();
-
-        if (($element instanceof Tab || $element instanceof HasFields) && $element->hasFields()) {
-            foreach ($element->getFields() as $child) {
-                $elements[] = $this->resolveFormElements($child);
-            }
-        }
-
-        return $elements;
+        return $this->onlyFields()
+            ->filter(fn(Field $field) => $field->showOnIndex);
     }
 
     /**
      * @return Collection<Field>
      */
-    public function getFields(): Collection
+    public function formFields(): Collection
+    {
+        return $this->formElements()
+            ->filter(fn($field) => $field->showOnForm);
+    }
+
+    /**
+     * @return Collection<Field>
+     */
+    public function exportFields(): Collection
+    {
+        return $this->onlyFields()
+            ->filter(fn(Field $field) => $field->showOnExport);
+    }
+
+    /**
+     * @return Collection<Renderable>
+     */
+    private function formElements(): Collection
+    {
+        return collect($this->fields())
+            ->map(fn($element) => $this->resolveFormElement($element));
+    }
+
+    private function resolveFormElement(Field|Decoration $element, string $prevRelation = null)
+    {
+        $key = $prevRelation;
+
+        if ($element instanceof HasRelationship) {
+            $key = str($element->relation())
+                ->when($prevRelation, fn(Stringable $str) => $str->prepend("$prevRelation."))
+                ->value();
+        }
+
+        if ($element instanceof BelongsToRelation || $element instanceof ManyToManyRelation) {
+            $element->setValues(
+                $element->resolveRelatedValues($this->getRelationsValues($key))
+            );
+        }
+
+        if ($element instanceof HasFields) {
+            $fields = [];
+
+            foreach ($element->getFields() as $field) {
+                if ($element instanceof Field) {
+                    $field->setParent($element);
+                }
+
+                $fields[] = $this->resolveFormElement(
+                    $field,
+                    $key
+                );
+            }
+
+            $element->fields($fields);
+        }
+
+        return $element;
+    }
+
+    /**
+     * @return Collection<Field>
+     */
+    public function onlyFields(): Collection
     {
         $fields = [];
 
@@ -360,31 +392,11 @@ abstract class Resource
         return collect($fields);
     }
 
-    /**
-     * @return Collection<Field>
-     */
-    public function indexFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn(Field $field) => $field->showOnIndex);
-    }
-
-    /**
-     * @return Collection<Field>
-     */
-    public function exportFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn(Field $field) => $field->showOnExport);
-    }
-
     public function fieldsLabels(): array
     {
-        # TODO Рекурсивно по всем полям
-
         $labels = [];
 
-        foreach ($this->getFields() as $field) {
+        foreach ($this->onlyFields() as $field) {
             $labels[$field->field()] = $field->label();
         }
 
@@ -396,7 +408,7 @@ abstract class Resource
      */
     public function whenFields(): Collection
     {
-        return collect($this->getFields())
+        return collect($this->onlyFields())
             ->filter(fn(Field $field) => $field->showWhenState);
     }
 
@@ -473,6 +485,14 @@ abstract class Resource
             ->allows($ability, $item ?? $this->getModel());
     }
 
+    public function uriKey(): string
+    {
+        return str(class_basename(get_called_class()))
+            ->kebab()
+            ->plural()
+            ->value();
+    }
+
     /**
      * @throws ResourceException
      */
@@ -487,19 +507,34 @@ abstract class Resource
         return $item;
     }
 
-    public function delete(Model $item)
+    public function delete(Model $item): bool
     {
+        return $item->delete();
     }
 
-    public function forceDelete(Model $item)
+    public function forceDelete(Model $item): bool
     {
+        return $item->forceDelete();
     }
 
-    public function massDelete(Model $item)
+    public function massDelete(array $ids): bool
     {
+        return $this->getModel()
+            ->newModelQuery()
+            ->whereIn($this->getModel()->getKeyName(), $ids)
+            ->delete();
     }
 
-    public function restore(Model $item)
+    public function restore(Model $item): bool
     {
+        return $item->restore();
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'title' => $this->title(),
+            'softDeletes' => $this->softDeletes(),
+        ];
     }
 }

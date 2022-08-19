@@ -16,6 +16,9 @@ trait FileTrait
 
     protected string $dir = '/';
 
+    /**
+     * @var array<string>
+     */
     protected array $allowedExtensions = [];
 
     protected bool $disableDownload = false;
@@ -44,6 +47,10 @@ trait FileTrait
         return $this->dir;
     }
 
+    /**
+     * @param  array<string>  $allowedExtensions
+     * @return $this
+     */
     public function allowedExtensions(array $allowedExtensions): static
     {
         $this->allowedExtensions = $allowedExtensions;
@@ -51,6 +58,9 @@ trait FileTrait
         return $this;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getAllowedExtensions(): array
     {
         return $this->allowedExtensions;

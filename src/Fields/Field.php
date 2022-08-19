@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
-use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\FormElement;
 use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
@@ -26,10 +24,10 @@ abstract class Field extends FormElement implements HasAssets
 
     public bool $showOnForm = true;
 
-    protected ?Field $parent = null;
-
     protected string $hint = '';
 
+    protected bool $nullable = false;
+    
     protected bool $sortable = false;
 
     protected bool $removable = false;
@@ -119,38 +117,17 @@ abstract class Field extends FormElement implements HasAssets
         return $this;
     }
 
-    public function parent(): ?Field
-    {
-        return $this->parent;
-    }
 
-    public function hasParent(): bool
+    public function nullable($condition = null): static
     {
-        return $this->parent instanceof Field;
-    }
-
-    protected function setParent(Field $field): static
-    {
-        $this->parent = $field;
+        $this->nullable = Condition::boolean($condition, true);
 
         return $this;
     }
 
-    public function setParents(): static
+    public function isNullable(): bool
     {
-        if ($this instanceof HasFields) {
-            $fields = [];
-
-            foreach ($this->getFields() as $field) {
-                $field = $field->setParents();
-
-                $fields[] = $field->setParent($this);
-            }
-
-            $this->fields($fields);
-        }
-
-        return $this;
+        return $this->nullable;
     }
 
     /**

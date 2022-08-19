@@ -86,11 +86,8 @@ class MoonShineServiceProvider extends ServiceProvider
         Blade::component('menu-component', MenuComponent::class);
 
         $this->app->singleton(MoonShine::class, fn() => new MoonShine());
-
         $this->app->singleton(Menu::class, fn() => new Menu());
-
         $this->app->singleton(Dashboard::class, fn() => new Dashboard());
-
         $this->app->singleton(AssetManager::class, fn() => new AssetManager());
     }
 

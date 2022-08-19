@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
-use Leeto\MoonShine\Fields\Json;
 
 trait WithFields
 {
@@ -62,35 +59,5 @@ trait WithFields
         $this->fields = $fields;
 
         return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        if (!$this->value()) {
-            $data = ['id' => ''];
-
-            foreach ($this->getFields() as $field) {
-                $data[$field->field()] = '';
-            }
-
-            return $data;
-        }
-
-        if ($this instanceof Json && $this->isKeyValue()) {
-            return collect($this->value())
-                ->map(fn($value, $key) => ['key' => $key, 'value' => $value])
-                ->values()
-                ->toArray();
-        }
-
-        if ($this->value() instanceof Collection) {
-            return $this->value()->toArray();
-        }
-
-        if ($this->value() instanceof Model) {
-            return [$this->value()->toArray()];
-        }
-
-        return $this->value() ?? [];
     }
 }

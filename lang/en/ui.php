@@ -13,6 +13,7 @@ return [
     'total' => 'Total',
     'deleted' => 'Deleted',
     'delete' => 'Delete',
+    'deleted_error' => 'Error',
     'deleting' => 'Deleting',
     'download' => 'Download',
     'export' => 'Export',

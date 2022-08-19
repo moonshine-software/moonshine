@@ -22,8 +22,6 @@ trait WithHtmlAttributes
 
     protected bool $disabled = false;
 
-    protected bool $nullable = false;
-
     protected bool $readonly = false;
 
     public function id(string $index = null): string
@@ -153,18 +151,6 @@ trait WithHtmlAttributes
     public function isReadonly(): bool
     {
         return $this->readonly;
-    }
-
-    public function nullable($condition = null): static
-    {
-        $this->nullable = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function isNullable(): bool
-    {
-        return $this->nullable;
     }
 
     public function isFile(): bool

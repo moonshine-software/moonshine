@@ -8,7 +8,7 @@ trait DateTrait
 {
     protected string $format = 'Y-m-d H:i:s';
 
-    public function format($format): static
+    public function format(string $format): static
     {
         $this->format = $format;
 

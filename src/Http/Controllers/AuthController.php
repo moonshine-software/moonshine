@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
-use Leeto\MoonShine\Http\Requests\LoginFormRequest;
+use Leeto\MoonShine\Http\Requests\Auth\LoginFormRequest;
 
 use function auth;
 use function back;

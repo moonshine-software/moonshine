@@ -6,27 +6,27 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 trait NumberTrait
 {
-    public int $min = 1;
+    public int|float $min = 1;
 
-    public int $max = 1000;
+    public int|float $max = 1000;
 
-    public int $step = 1;
+    public int|float $step = 1;
 
-    public function min(int $min): static
+    public function min(int|float $min): static
     {
         $this->min = $min;
 
         return $this;
     }
 
-    public function max(int $max): static
+    public function max(int|float $max): static
     {
         $this->max = $max;
 
         return $this;
     }
 
-    public function step(int $step): static
+    public function step(int|float $step): static
     {
         $this->step = $step;
 

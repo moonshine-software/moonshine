@@ -10,7 +10,5 @@ class Text extends Field
 {
     use WithMask;
 
-    public static string $view = 'moonshine::fields.input';
-
-    public static string $type = 'text';
+    public static string $component = 'TextField';
 }

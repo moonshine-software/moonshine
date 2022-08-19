@@ -18,13 +18,13 @@ use Leeto\MoonShine\Contracts\Renderable;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithComponent;
 use Leeto\MoonShine\Traits\WithComponentAttributes;
-use Leeto\MoonShine\Traits\WithView;
 use Stringable;
 
 abstract class FormElement implements Renderable, JsonSerializable, Stringable
 {
-    use Makeable, WithHtmlAttributes, WithComponentAttributes, WithView;
+    use Makeable, WithHtmlAttributes, WithComponentAttributes, WithComponent;
 
     protected string $label = '';
 
@@ -167,6 +167,7 @@ abstract class FormElement implements Renderable, JsonSerializable, Stringable
         $this->valueCallback = $valueCallback;
     }
 
+    # TODO Ощущение что здесь этому не место
     public function getRelated(Model $model): Model
     {
         return $model->{$this->relation()}()->getRelated();
@@ -232,15 +233,22 @@ abstract class FormElement implements Renderable, JsonSerializable, Stringable
     public function jsonSerialize(): array
     {
         return [
-            'attributes' => $this->attributes(),
-            'element' => $this,
+            'component' => $this->getComponent(),
+            'id' => $this->id(),
+            'name' => $this->name(),
+            'label' => $this->label(),
+            'field' => $this->field(),
+            'relation' => $this->relation(),
+            'value' => $this->value(),
+            'isGroup' => $this->isGroup(),
+            'attributes' => $this->attributes()->getAttributes(),
             'fields' => $this instanceof HasFields ? $this->getFields() : []
         ];
     }
 
     public function render(): View
     {
-        return view($this->getView(), [
+        return view($this->getComponent(), [
             'element' => $this,
         ]);
     }

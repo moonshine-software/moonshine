@@ -12,7 +12,7 @@ trait LinkTrait
 
     public function hasLink(): bool
     {
-        return $this->getLinkValue() != '';
+        return !empty($this->getLinkValue());
     }
 
     public function getLinkName(): string

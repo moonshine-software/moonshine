@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Actions;
 
+use JsonSerializable;
+use Leeto\MoonShine\Exceptions\ActionException;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
 
-abstract class Action
+abstract class Action implements JsonSerializable
 {
     use Makeable;
 
@@ -42,5 +44,16 @@ abstract class Action
         $this->resource = $resource;
 
         return $this;
+    }
+
+    /**
+     * @throws ActionException
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'label' => $this->label(),
+            'url' => $this->url(),
+        ];
     }
 }

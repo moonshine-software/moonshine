@@ -102,6 +102,11 @@ class MoonShine
                 });
 
                 $this->getResources()->each(function (Resource $resource) {
+                    Route::delete(
+                        "{$resource->routeAlias()}/massDelete",
+                        [ResourceController::class, 'massDelete']
+                    )->name("{$resource->routeAlias()}.massDelete");
+
                     Route::resource($resource->routeAlias(), ResourceController::class);
                 });
             });

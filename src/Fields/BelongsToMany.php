@@ -12,6 +12,7 @@ use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
 use Leeto\MoonShine\Traits\Fields\CanBeSelect;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
 use Leeto\MoonShine\Traits\Fields\Searchable;
+use Leeto\MoonShine\Traits\Fields\SelectTrait;
 use Leeto\MoonShine\Traits\Fields\WithFields;
 use Leeto\MoonShine\Traits\Fields\WithPivot;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
@@ -24,6 +25,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     use CheckboxTrait;
     use Searchable;
     use CanBeSelect;
+    use SelectTrait;
 
     protected bool $group = true;
 

@@ -8,14 +8,13 @@ use Illuminate\Contracts\View\View;
 use Iterator;
 use JsonSerializable;
 use Leeto\MoonShine\Fields\Field;
-use Leeto\MoonShine\Traits\FieldFillValue;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithComponentAttributes;
 use Stringable;
 
-class Form implements Stringable, Iterator, JsonSerializable
+class DetailCard implements Stringable, Iterator, JsonSerializable
 {
-    use Makeable, WithComponentAttributes, FieldFillValue;
+    use Makeable, WithComponentAttributes;
 
     /**
      * @var array<Field>
@@ -24,12 +23,6 @@ class Form implements Stringable, Iterator, JsonSerializable
 
     protected array $values = [];
 
-    protected string $action = '';
-
-    protected string $method = 'POST';
-
-    protected string $enctype = 'multipart/form-data';
-
     protected int $position = 0;
 
     /**
@@ -37,30 +30,7 @@ class Form implements Stringable, Iterator, JsonSerializable
      */
     public function __construct(array $fields)
     {
-        $this->attributes = ['action', 'method', 'enctype'];
         $this->fields = $fields;
-    }
-
-    public function action(string $action): static
-    {
-        $this->action = $action;
-
-        return $this;
-    }
-
-    public function method(string $method): static
-    {
-        $this->method = $method;
-
-        return $this;
-    }
-
-    public function fill(array $values): static
-    {
-        $this->values = $values;
-        $this->fields = static::fillFields($this->fields(), $values);
-
-        return $this;
     }
 
     public function fields(): array

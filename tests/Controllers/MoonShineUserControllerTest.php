@@ -20,7 +20,7 @@ class MoonShineUserControllerTest extends TestCase
 
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
             ->get($resource->route('index'));
-
+        
         $response->assertOk();
         $response->assertViewIs('moonshine::index');
         $response->assertViewHas('resource', $resource);

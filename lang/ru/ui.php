@@ -12,6 +12,7 @@ return [
     'reset' => 'Сбросить',
     'total' => 'Всего',
     'deleted' => 'Удалено',
+    'deleted_error' => 'Произошла ошибка',
     'delete' => 'Удалить',
     'deleting' => 'Удаление',
     'download' => 'Скачать',
