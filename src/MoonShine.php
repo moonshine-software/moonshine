@@ -6,9 +6,6 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Http\Controllers\AuthController;
-use Leeto\MoonShine\Http\Controllers\DashboardController;
-use Leeto\MoonShine\Http\Controllers\ResourceController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
@@ -67,7 +64,7 @@ class MoonShine
 
         app(Menu::class)->register($this->menus);
 
-        $this->addRoutes();
+        $this->resolveResourcesRoutes();
     }
 
     /**
@@ -85,29 +82,13 @@ class MoonShine
      *
      * @return void
      */
-    protected function addRoutes(): void
+    protected function resolveResourcesRoutes(): void
     {
-        Route::prefix(config('moonshine.route.prefix'))
-            ->middleware(config('moonshine.route.middleware'))
-            ->name(config('moonshine.route.prefix').'.')->group(function () {
-                Route::controller(DashboardController::class)->group(function () {
-                    Route::get('/', 'index')->name('index');
-                    Route::post('/attachments', 'attachments')->name('attachments');
-                });
-
-                Route::controller(AuthController::class)->group(function () {
-                    Route::get('/login', 'login')->name('login');
-                    Route::post('/authenticate', 'authenticate')->name('authenticate');
-                    Route::get('/logout', 'logout')->name('logout');
-                });
-
+        Route::prefix(config('moonshine.prefix'))
+            ->middleware(['moonshine', 'auth:sanctum'])
+            ->name(config('moonshine.prefix').'.')->group(function () {
                 $this->getResources()->each(function (Resource $resource) {
-                    Route::delete(
-                        "{$resource->routeAlias()}/massDelete",
-                        [ResourceController::class, 'massDelete']
-                    )->name("{$resource->routeAlias()}.massDelete");
-
-                    Route::resource($resource->routeAlias(), ResourceController::class);
+                    $resource->resolveRoutes();
                 });
             });
     }

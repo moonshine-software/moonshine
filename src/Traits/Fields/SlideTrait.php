@@ -23,4 +23,14 @@ trait SlideTrait
 
         return $this;
     }
+
+    public function from(): string
+    {
+        return $this->fromField;
+    }
+
+    public function to(): string
+    {
+        return $this->toField;
+    }
 }

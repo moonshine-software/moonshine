@@ -15,6 +15,6 @@ class CreateFormRequest extends MoonShineRequest
 
     public function rules(): array
     {
-        return !$this->getId() ? [] : $this->getResource()->rules($this->findModel());
+        return [];
     }
 }

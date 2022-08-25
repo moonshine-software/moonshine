@@ -6,13 +6,11 @@ namespace Leeto\MoonShine\Fields;
 
 class Code extends Field
 {
-    protected static string $view = 'moonshine::fields.code';
+    protected static string $component = 'Code';
 
     public string $language = 'php';
 
     public bool $lineNumbers = false;
-
-    protected array $assets = ['https://unpkg.com/codeflask/build/codeflask.min.js'];
 
     public function language(string $language): static
     {

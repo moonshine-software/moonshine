@@ -14,10 +14,6 @@ trait WithHtmlAttributes
 
     protected ?string $id = null;
 
-    protected static string $type = '';
-
-    protected ?string $default = null;
-
     protected bool $required = false;
 
     protected bool $disabled = false;
@@ -50,10 +46,10 @@ trait WithHtmlAttributes
             return $this->name;
         }
 
-        return (string) str($this->field())
+        return (string) str($this->column())
             ->when(!is_null($wrap), fn(Stringable $str) => $str->wrap("{$wrap}[", "]"))
             ->when(
-                $this->isGroup() || $this->getAttribute('multiple'),
+                $this->getAttribute('multiple'),
                 fn(Stringable $str) => $str->append("[".($index ?? '')."]")
             );
     }
@@ -86,11 +82,6 @@ trait WithHtmlAttributes
         return $this;
     }
 
-    public function type(): string
-    {
-        return static::$type;
-    }
-
     public function required($condition = null): static
     {
         $this->required = Condition::boolean($condition, true);
@@ -101,18 +92,6 @@ trait WithHtmlAttributes
     public function isRequired(): bool
     {
         return $this->required;
-    }
-
-    public function default(string $default): static
-    {
-        $this->default = $default;
-
-        return $this;
-    }
-
-    public function getDefault(): ?string
-    {
-        return old($this->nameDot(), $this->default);
     }
 
     public function disabled($condition = null): static
@@ -127,20 +106,6 @@ trait WithHtmlAttributes
         return $this->disabled;
     }
 
-    public function hidden($condition = null): static
-    {
-        if (Condition::boolean($condition, true)) {
-            static::$type = 'hidden';
-        }
-
-        return $this;
-    }
-
-    public function isHidden(): bool
-    {
-        return static::$type === 'hidden';
-    }
-
     public function readonly($condition = null): static
     {
         $this->readonly = Condition::boolean($condition, true);
@@ -151,10 +116,5 @@ trait WithHtmlAttributes
     public function isReadonly(): bool
     {
         return $this->readonly;
-    }
-
-    public function isFile(): bool
-    {
-        return $this->type() === 'file';
     }
 }

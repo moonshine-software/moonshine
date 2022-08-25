@@ -6,12 +6,13 @@ namespace Leeto\MoonShine\Fields;
 
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\Searchable;
-use Leeto\MoonShine\Traits\Fields\SelectTrait;
 use Leeto\MoonShine\Traits\Fields\WithOptions;
 
 class Select extends Field
 {
-    use Searchable, CanBeMultiple, SelectTrait, WithOptions;
+    use CanBeMultiple;
+    use Searchable;
+    use WithOptions;
 
-    protected static string $view = 'moonshine::fields.select';
+    protected static string $component = 'Select';
 }

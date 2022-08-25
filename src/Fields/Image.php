@@ -7,12 +7,14 @@ namespace Leeto\MoonShine\Fields;
 use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
+use Leeto\MoonShine\Traits\Fields\Removable;
+use Leeto\MoonShine\Contracts\Fields\Removable as RemovableContract;
 
-class Image extends Field implements Fileable
+class Image extends Field implements Fileable, RemovableContract
 {
-    use FileTrait, CanBeMultiple;
+    use CanBeMultiple;
+    use FileTrait;
+    use Removable;
 
-    public static string $view = 'moonshine::fields.image';
-
-    public static string $type = 'file';
+    public static string $component = 'Image';
 }

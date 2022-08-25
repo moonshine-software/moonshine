@@ -7,17 +7,12 @@ namespace Leeto\MoonShine\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-use function auth;
-use function config;
-use function redirect;
-use function route;
-
 class Authenticate
 {
     public function handle($request, Closure $next)
     {
-        if (auth(config('moonshine.auth.guard'))->guest() && !$this->except($request)) {
-            return redirect()->guest(route(config('moonshine.route.prefix').'.'.'login'));
+        if (auth('moonshine')->guest() && !$this->except($request)) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
         return $next($request);
@@ -33,9 +28,8 @@ class Authenticate
     protected function except(Request $request): bool
     {
         return $request->is([
-            config('moonshine.route.prefix').'/login',
-            config('moonshine.route.prefix').'/authenticate',
-            config('moonshine.route.prefix').'/logout',
+            config('moonshine.prefix').'/authenticate',
+            config('moonshine.prefix').'/logout',
         ]);
     }
 }

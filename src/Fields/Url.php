@@ -10,7 +10,5 @@ class Url extends Field
 {
     use WithMask;
 
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'url';
+    protected static string $component = 'UrlField';
 }

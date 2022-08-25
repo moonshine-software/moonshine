@@ -4,29 +4,24 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\NumberTrait;
 use Leeto\MoonShine\Traits\Fields\SlideTrait;
 
 class SlideField extends Field
 {
-    use NumberTrait, SlideTrait;
+    use NumberTrait;
+    use SlideTrait;
 
     protected array $attributes = ['min', 'max', 'step'];
 
-    protected static string $view = 'moonshine::fields.slide';
+    protected static string $component = 'SlideField';
 
-    public function save(Model $item): Model
+    public function resolveFill($values): static
     {
-        $values = $this->requestValue();
-
-        if ($values === false) {
-            return $item;
+        if (isset($values[$this->from()], $values[$this->to()])) {
+            $this->setValue([$values[$this->from()], $values[$this->to()]]);
         }
 
-        $item[$this->fromField] = $values[$this->fromField] ?? '';
-        $item[$this->toField] = $values[$this->toField] ?? '';
-
-        return $item;
+        return $this;
     }
 }

@@ -7,16 +7,16 @@ namespace Leeto\MoonShine\Metrics;
 use Illuminate\Contracts\View\View;
 use JsonSerializable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
-use Leeto\MoonShine\Contracts\Renderable;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithComponent;
 use Leeto\MoonShine\Utilities\AssetManager;
-use Stringable;
 
-abstract class Metric implements Renderable, HasAssets, Stringable, JsonSerializable
+abstract class Metric implements HasAssets, JsonSerializable
 {
-    use Makeable, WithAssets, WithComponent;
+    use Makeable;
+    use WithAssets;
+    use WithComponent;
 
     protected string $label;
 
@@ -63,19 +63,7 @@ abstract class Metric implements Renderable, HasAssets, Stringable, JsonSerializ
         return $this;
     }
 
-    public function render(): View
-    {
-        return view($this->getComponent(), [
-            'metric' => $this,
-        ]);
-    }
-
-    public function __toString()
-    {
-        return (string) $this->render();
-    }
-
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id(),

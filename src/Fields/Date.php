@@ -9,11 +9,10 @@ use Leeto\MoonShine\Traits\Fields\WithMask;
 
 class Date extends Field
 {
-    use DateTrait, WithMask;
+    use DateTrait;
+    use WithMask;
 
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'date';
+    protected static string $component = 'DateField';
 
     protected string $format = 'Y-m-d H:i:s';
 }

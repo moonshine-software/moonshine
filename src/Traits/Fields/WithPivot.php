@@ -8,23 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 
 trait WithPivot
 {
-    public function getPivotAs(Model $item): int|string|null
+    public function getPivotAs(): int|string|null
     {
-        return array_key_first($item->getRelations());
+        return array_key_first($this->value()->getRelations());
     }
 
-    public function pivotItem(Model $item, $id): ?Model
+    public function pivotItem($id): ?Model
     {
-        return $this->formViewValue($item)
-            ->firstWhere('id', '=', $id);
+        return $this->value()->firstWhere($this->value()->getKeyName(), '=', $id);
     }
 
-    public function pivotValue(Model $item, $id): Model
+    public function pivotValue($id): Model
     {
-        $pivotItem = $this->pivotItem($item, $id);
+        $pivotItem = $this->pivotItem($id);
 
         return $pivotItem
-            ? $pivotItem->{$this->getPivotAs($pivotItem)} ?? $pivotItem
-            : $item;
+            ? $pivotItem->{$this->getPivotAs()} ?? $pivotItem
+            : $this->value();
     }
 }

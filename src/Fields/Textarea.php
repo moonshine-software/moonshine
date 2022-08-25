@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Fields;
 
 class Textarea extends Field
 {
-    protected static string $view = 'moonshine::fields.textarea';
+    protected static string $component = 'Textarea';
 
     protected array $attributes = ['rows', 'cols'];
 }

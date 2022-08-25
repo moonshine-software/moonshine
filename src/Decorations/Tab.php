@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\Decorations;
 
 class Tab extends Decoration
 {
-    public static string $view = 'moonshine::decorations.tab';
+    public static string $component = 'Tab';
 }

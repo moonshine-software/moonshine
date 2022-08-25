@@ -5,20 +5,16 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
-use Leeto\MoonShine\Traits\Fields\WithRelationship;
+use Leeto\MoonShine\Contracts\Fields\HasRelationship;
 
-class HasOneFilter extends Filter implements HasRelationship, OneToOneRelation
+class HasOneFilter extends Filter implements HasRelationship
 {
-    use WithRelationship;
-
-    public static string $view = 'moonshine::filters.text';
+    public static string $component = 'HasOneFilter';
 
     public function getQuery(Builder $query): Builder
     {
         return $this->requestValue()
-            ? $query->whereRelation($this->relation(), $this->resourceTitleField(), '=', $this->requestValue())
+            ? $query->whereRelation($this->relation(), $this->resourceColumn(), '=', $this->requestValue())
             : $query;
     }
 }

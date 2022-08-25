@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\FormElement;
-use Leeto\MoonShine\Traits\Fields\ShowWhen;
-use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Fields\Field;
 
-abstract class Filter extends FormElement
+abstract class Filter extends Field
 {
-    use Makeable, ShowWhen;
-
     public function name(string $index = null): string
     {
         return $this->prepareName($index, 'filters');
@@ -20,18 +16,18 @@ abstract class Filter extends FormElement
 
     public function getQuery(Builder $query): Builder
     {
-        if ($this->hasRelationship() && !$this->belongToOne()) {
-            $table = $this->getRelated($query->getModel())->getTable();
+        if ($this->hasRelationship()) {
+            $related = $query->getModel()->{$this->relation()}->getRelated();
 
             return $this->requestValue()
-                ? $query->whereHas($this->relation(), function (Builder $q) use ($table) {
-                    return $q->whereIn("$table.id", $this->requestValue());
+                ? $query->whereHas($this->relation(), function (Builder $q) use ($related) {
+                    return $q->whereIn("{$related->getTable()}.{$related->getKeyName()}", $this->requestValue());
                 })
                 : $query;
         }
 
         return $this->requestValue() !== false
-            ? $query->where($this->field(), $this->requestValue())
+            ? $query->where($this->column(), $this->requestValue())
             : $query;
     }
 

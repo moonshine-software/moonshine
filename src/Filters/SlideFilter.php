@@ -8,9 +8,10 @@ use Leeto\MoonShine\Traits\Fields\SlideTrait;
 
 class SlideFilter extends Filter
 {
-    use NumberTrait, SlideTrait;
+    use NumberTrait;
+    use SlideTrait;
 
-    public static string $view = 'moonshine::filters.slide';
+    public static string $component = 'SlideFilter';
 
     protected array $attributes = ['min', 'max', 'step'];
 
@@ -23,8 +24,8 @@ class SlideFilter extends Filter
         }
 
         return $values
-            ? $query->where($this->fromField, '<=', $values[$this->fromField])
-                ->where($this->toField, '>=', $values[$this->toField])
+            ? $query->where($this->from(), '<=', $values[$this->from()])
+                ->where($this->to(), '>=', $values[$this->to()])
             : $query;
     }
 }

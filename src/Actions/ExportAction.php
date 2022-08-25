@@ -29,7 +29,7 @@ class ExportAction extends Action implements ActionContract
 
         $letter = 'A';
 
-        foreach ($this->resource()->exportFields() as $field) {
+        foreach ($this->resource()->fieldsCollection()->exportFields() as $field) {
             $sheet->setCellValue("{$letter}1", $field->label());
 
             $letter++;
@@ -41,7 +41,7 @@ class ExportAction extends Action implements ActionContract
         $line = 2;
         foreach ($this->resource()->query()->get() as $item) {
             $letter = 'A';
-            foreach ($this->resource()->exportFields() as $index => $field) {
+            foreach ($this->resource()->fieldsCollection()->exportFields() as $index => $field) {
                 $sheet->setCellValue($letter.$line, $field->exportViewValue($item));
                 $letter++;
             }
@@ -93,6 +93,6 @@ class ExportAction extends Action implements ActionContract
             $query['search'] = request('search');
         }
 
-        return $this->resource()->route('index', null, $query);
+        return $this->resource()->route('index', query: $query);
     }
 }

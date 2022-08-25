@@ -4,33 +4,72 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Traits\Macroable;
+use Closure;
+use JsonSerializable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
-use Leeto\MoonShine\FormElement;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\Fields\HasRelatedValues;
+use Leeto\MoonShine\Contracts\Fields\HasRelationship;
 use Leeto\MoonShine\Helpers\Condition;
+use Leeto\MoonShine\MoonShine;
+use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Traits\Fields\HintTrait;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
+use Leeto\MoonShine\Traits\Fields\ShowOrHide;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
+use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
+use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
+use Leeto\MoonShine\Traits\WithComponent;
+use Leeto\MoonShine\Traits\WithComponentAttributes;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Field extends FormElement implements HasAssets
+abstract class Field implements JsonSerializable, HasAssets
 {
-    use Macroable, WithAssets, ShowWhen, LinkTrait;
+    use Makeable;
+    use WithHtmlAttributes;
+    use WithComponentAttributes;
+    use WithComponent;
+    use ShowOrHide;
+    use ShowWhen;
+    use LinkTrait;
+    use HintTrait;
+    use WithAssets;
 
-    public bool $showOnIndex = true;
+    /**
+     * table column/model attribute
+     */
+    protected string $column;
 
-    public bool $showOnExport = false;
+    protected string $label;
 
-    public bool $showOnForm = true;
+    protected ?string $relation = null;
 
-    protected string $hint = '';
+    protected ?Resource $resource;
+
+    protected string $resourceColumn = 'id';
+
+    protected mixed $value = null;
+
+    protected ?Closure $valueCallback = null;
+
+    protected ?string $default = null;
 
     protected bool $nullable = false;
-    
+
     protected bool $sortable = false;
 
-    protected bool $removable = false;
+    final public function __construct(
+        string $label = null,
+        string $column = null,
+        Closure|Resource|string|null $resource = null
+    ) {
+        $this->resolveLabel($label);
+        $this->resolveColumn($column);
+        $this->resolveRelation();
+        $this->resolveResource($resource);
+        $this->resolveValueCallback($resource);
+    }
 
     protected function afterMake(): void
     {
@@ -39,84 +78,150 @@ abstract class Field extends FormElement implements HasAssets
         }
     }
 
-    /**
-     * Set field as visible on index page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnIndex(mixed $condition = null): static
+    protected function resolveLabel(string $label = null): void
     {
-        $this->showOnIndex = Condition::boolean($condition, true);
+        $this->label = $label ?? (string) str($this->label)->ucfirst();
+    }
+
+    protected function resolveColumn(string $column = null): void
+    {
+        $this->column = $column ?? (string) str($this->label)->lower()->snake();
+
+        if ($this->hasRelationship()) {
+            $this->column = $column ?? (string) str($this->label)->camel();
+
+            if ($this instanceof BelongsTo && !str($this->column)->contains('_id')) {
+                $this->column = (string) str($this->column)
+                    ->append('_id')
+                    ->snake();
+            }
+        }
+    }
+
+    protected function resolveRelation(): void
+    {
+        if ($this->hasRelationship()) {
+            $this->relation = $this->column ?? (string) str($this->label)->camel();
+
+            if (str($this->relation)->contains('_id')) {
+                $this->relation = (string) str($this->relation)
+                    ->remove('_id')
+                    ->camel();
+            }
+        }
+    }
+
+    protected function resolveResource(Closure|Resource|string|null $argument): void
+    {
+        if ($argument instanceof Resource) {
+            $this->resource = $argument;
+        } elseif (is_string($argument)) {
+            $this->resourceColumn = $argument;
+        } elseif ($this->hasRelationship()) {
+            $this->resource = $this->findResource();
+        }
+    }
+
+    protected function resolveValueCallback(Closure|Resource|string|null $argument): void
+    {
+        if ($argument instanceof Closure) {
+            $this->valueCallback = $argument;
+        }
+    }
+
+    public function label(): string
+    {
+        return $this->label;
+    }
+
+    public function column(): string
+    {
+        return $this->column;
+    }
+
+    public function relation(): ?string
+    {
+        return $this->relation;
+    }
+
+    public function resource(): ?Resource
+    {
+        return $this->resource ?? $this->findResource();
+    }
+
+    protected function findResource(): ?Resource
+    {
+        $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
+            ->append(str($this->relation() ?? $this->column())->studly()->singular())
+            ->append('Resource');
+
+        return class_exists($resourceClass) ? new $resourceClass() : null;
+    }
+
+    public function resourceColumn(): string
+    {
+        return $this->resource()
+            ? $this->resource()->column()
+            : $this->resourceColumn;
+    }
+
+    public function valueCallback(): ?Closure
+    {
+        return $this->valueCallback;
+    }
+
+    public function hasRelationship(): bool
+    {
+        return $this instanceof HasRelationship;
+    }
+
+    public function default(string $default): static
+    {
+        $this->default = $default;
 
         return $this;
     }
 
-    /**
-     * Set field as hidden on index page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnIndex(mixed $condition = null): static
+    public function getDefault(): ?string
     {
-        $this->showOnIndex = Condition::boolean($condition, false);
+        return old($this->nameDot(), $this->default);
+    }
+
+    public function setValue(mixed $value): static
+    {
+        $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * Set field as visible on create/edit page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnForm(mixed $condition = null): static
+    public function performValue($values): static
     {
-        $this->showOnForm = Condition::boolean($condition, true);
+        return $this;
+    }
+
+    public function resolveFill($values): static
+    {
+        $this->setValue($values[$this->relation() ?? $this->column()] ?? null);
 
         return $this;
     }
 
-    /**
-     * Set field as hidden on create/edit page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnForm(mixed $condition = null): static
+    public function value(): mixed
     {
-        $this->showOnForm = Condition::boolean($condition, false);
+        if (is_callable($this->valueCallback())) {
+            return $this->valueCallback()($this->value);
+        }
 
-        return $this;
+        return $this->value;
     }
 
-    /**
-     * Set field as visible in export report, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnExport(mixed $condition = null): static
+    public function requestValue(): mixed
     {
-        $this->showOnExport = Condition::boolean($condition, true);
-
-        return $this;
+        return request(
+            $this->nameDot(),
+            $this->getDefault() ?? old($this->nameDot(), false)
+        );
     }
-
-    /**
-     * Set field as hidden in export report, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnExport(mixed $condition = null): static
-    {
-        $this->showOnExport = Condition::boolean($condition, false);
-
-        return $this;
-    }
-
 
     public function nullable($condition = null): static
     {
@@ -128,41 +233,6 @@ abstract class Field extends FormElement implements HasAssets
     public function isNullable(): bool
     {
         return $this->nullable;
-    }
-
-    /**
-     * Define a field description(hint), which will be displayed on create/edit page
-     *
-     * @param  string  $hint
-     * @return $this
-     */
-    public function hint(string $hint): static
-    {
-        $this->hint = $hint;
-
-        return $this;
-    }
-
-    public function getHint(): string
-    {
-        return $this->hint;
-    }
-
-    /**
-     * Set field as removable
-     *
-     * @return $this
-     */
-    public function removable(): static
-    {
-        $this->removable = true;
-
-        return $this;
-    }
-
-    public function isRemovable(): bool
-    {
-        return $this->removable;
     }
 
     /**
@@ -182,12 +252,19 @@ abstract class Field extends FormElement implements HasAssets
         return $this->sortable;
     }
 
-    public function save(Model $item): Model
+    public function jsonSerialize(): array
     {
-        $item->{$this->field()} = $this->requestValue() !== false
-            ? $this->requestValue()
-            : ($this->isNullable() ? null : '');
-
-        return $item;
+        return [
+            'component' => $this->getComponent(),
+            'id' => $this->id(),
+            'name' => $this->name(),
+            'label' => $this->label(),
+            'key' => $this->column(),
+            'relation' => $this->relation(),
+            'value' => $this->value(),
+            'relatedValues' => $this instanceof HasRelatedValues ? $this->relatedValues() : [],
+            'attributes' => $this->attributes()->getAttributes(),
+            'fields' => $this instanceof HasFields ? $this->getFields() : []
+        ];
     }
 }

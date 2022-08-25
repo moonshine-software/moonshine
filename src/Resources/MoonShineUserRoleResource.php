@@ -13,7 +13,7 @@ class MoonShineUserRoleResource extends Resource
 {
     public static string $model = MoonshineUserRole::class;
 
-    public string $titleField = 'name';
+    public string $column = 'name';
 
     public function title(): string
     {

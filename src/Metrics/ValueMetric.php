@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Metrics;
 
 class ValueMetric extends Metric
 {
-    protected static string $view = 'moonshine::metrics.value';
+    protected static string $component = 'ValueMetric';
 
     public int|float $value = 0;
 

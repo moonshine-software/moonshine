@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\Decorations;
 
 class Heading extends Decoration
 {
-    public static string $view = 'moonshine::decorations.heading';
+    public static string $component = 'Heading';
 }

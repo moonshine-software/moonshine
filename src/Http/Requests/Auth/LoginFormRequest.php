@@ -15,7 +15,7 @@ class LoginFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth(config('moonshine.auth.guard'))->guest();
+        return auth('moonshine')->guest();
     }
 
     /**

@@ -39,14 +39,9 @@ abstract class MenuSection
         return $this->resource;
     }
 
-    public function getIcon(
-        string $size = '8',
-        string $color = '',
-        string $class = ''
-    ): \Illuminate\Contracts\View\View {
-        $icon = $this->icon ?? 'app';
-
-        return view("moonshine::shared.icons.$icon", compact('size', 'color', 'class'));
+    public function getIcon()
+    {
+        return $this->icon ?? 'app';
     }
 
     public function isGroup(): bool

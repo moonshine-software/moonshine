@@ -10,5 +10,5 @@ class SwitchBoolean extends Field
 {
     use BooleanTrait;
 
-    protected static string $view = 'moonshine::fields.switch';
+    protected static string $component = 'SwitchField';
 }

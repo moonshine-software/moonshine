@@ -11,9 +11,7 @@ class DateRangeFilter extends Filter
 {
     use DateTrait;
 
-    public static string $view = 'moonshine::filters.date-range';
-
-    public static string $type = 'date';
+    public static string $component = 'DateRange';
 
     protected bool $multiple = true;
 
@@ -23,7 +21,7 @@ class DateRangeFilter extends Filter
 
         if ($values !== false && collect($values)->filter()->isNotEmpty()) {
             return $query->whereBetween(
-                $this->field(),
+                $this->column(),
                 collect($values)->map(fn($date) => date('Y-m-d', strtotime($date)))
             );
         }

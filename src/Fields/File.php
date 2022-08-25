@@ -7,14 +7,16 @@ namespace Leeto\MoonShine\Fields;
 use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
+use Leeto\MoonShine\Traits\Fields\Removable;
+use Leeto\MoonShine\Contracts\Fields\Removable as RemovableContact;
 
-class File extends Field implements Fileable
+class File extends Field implements Fileable, RemovableContact
 {
-    use FileTrait, CanBeMultiple;
+    use CanBeMultiple;
+    use FileTrait;
+    use Removable;
 
-    protected static string $view = 'moonshine::fields.file';
-
-    protected static string $type = 'file';
+    protected static string $component = 'File';
 
     protected string $accept = '*/*';
 

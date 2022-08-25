@@ -27,7 +27,9 @@ class MoonShineRequest extends FormRequest
 
     public function attributes(): array
     {
-        return $this->getResource()->fieldsLabels();
+        return $this->getResource()
+            ->fieldsCollection()
+            ->extractLabels();
     }
 
     public function getResource(): Resource
@@ -35,7 +37,7 @@ class MoonShineRequest extends FormRequest
         if ($this->resource) {
             return $this->resource;
         }
-        
+
         $class = (string) str(request()->route()->getName())->betweenFirst('.', '.')
             ->singular()
             ->ucfirst()
@@ -47,7 +49,6 @@ class MoonShineRequest extends FormRequest
             );
 
         $this->resource = new $class;
-        $this->resource->setRelationsValues();
 
         return $this->resource;
     }
@@ -69,7 +70,7 @@ class MoonShineRequest extends FormRequest
         }
 
         $this->model = $this->getModel()
-            ->with(array_values($this->getResource()->getAllRelations()))
+            ->newQuery()
             ->findOrFail($this->getId());
 
         return $this->model;

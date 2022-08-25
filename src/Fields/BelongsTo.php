@@ -5,21 +5,42 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use Illuminate\Support\Collection;
+use Leeto\MoonShine\Contracts\Fields\HasRelatedValues;
+use Leeto\MoonShine\Contracts\Fields\HasRelationship;
 use Leeto\MoonShine\Traits\Fields\Searchable;
-use Leeto\MoonShine\Traits\Fields\SelectTrait;
-use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class BelongsTo extends Field implements HasRelationship, BelongsToRelation
+class BelongsTo extends Field implements HasRelationship, HasRelatedValues
 {
-    use Searchable, WithRelationship, SelectTrait;
+    use Searchable;
 
-    protected static string $view = 'moonshine::fields.select';
+    protected static string $component = 'BelongsTo';
 
-    public function save(Model $item): Model
+    public function value(): array
     {
-        return $item->{$this->relation()}()
-            ->associate($this->requestValue());
+        return [
+            'value' => $this->value?->getKey(),
+            'key' => $this->value?->getKeyName(),
+            'foreign_key' => $this->value?->getForeignKey(),
+        ];
+    }
+
+    public function relatedValues(): Collection
+    {
+        if (!$this->value instanceof Model) {
+            return Collection::make([]);
+        }
+
+        $values = $this->value->all();
+
+        if (is_callable($this->valueCallback())) {
+            return $values->mapWithKeys(function (Model $value) {
+                return [$value->getKey() => ($this->valueCallback())($value)];
+            });
+        }
+
+        return $values->isNotEmpty()
+            ? $values->pluck($this->resourceColumn(), $this->value->getKeyName())
+            : $values;
     }
 }

@@ -7,7 +7,6 @@ namespace Leeto\MoonShine\Tests;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
-use Illuminate\Support\Arr;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
@@ -24,6 +23,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
         parent::setUp();
 
         $this->artisan('moonshine:install');
+        $this->artisan('config:clear');
+        $this->artisan('cache:clear');
 
         $this->refreshApplication();
         $this->loadLaravelMigrations();
@@ -35,9 +36,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
             return "Leeto\MoonShine\Database\Factories\\$factoryBasename".'Factory';
         });
 
-        config(Arr::dot(config('moonshine.auth', []), 'auth.'));
-
         $this->user = MoonshineUser::query()->create([
+            'moonshine_user_role_id' => 1,
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('test')
@@ -51,7 +51,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app): array
     {
         return [
-            MoonShineServiceProvider::class,
+            MoonShineServiceProvider::class
         ];
     }
 }

@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Providers;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Laravel\Sanctum\SanctumServiceProvider;
 use Leeto\MoonShine\Commands\InstallCommand;
 use Leeto\MoonShine\Commands\ResourceCommand;
 use Leeto\MoonShine\Commands\UserCommand;
-use Leeto\MoonShine\Components\MenuComponent;
 use Leeto\MoonShine\Dashboard\Dashboard;
-use Leeto\MoonShine\Http\Middleware\Authenticate;
-use Leeto\MoonShine\Http\Middleware\Session;
 use Leeto\MoonShine\Menu\Menu;
+use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Utilities\AssetManager;
 
@@ -26,14 +25,12 @@ class MoonShineServiceProvider extends ServiceProvider
         UserCommand::class,
     ];
 
-    protected array $routeMiddleware = [
-        'moonshine.auth' => Authenticate::class,
-        'moonshine.session' => Session::class,
-    ];
-
     protected array $middlewareGroups = [
         'moonshine' => [
-            'moonshine.auth',
+            //Authenticate::class,
+            EnsureFrontendRequestsAreStateful::class,
+            'throttle:60,1',
+            SubstituteBindings::class,
         ],
     ];
 
@@ -44,7 +41,7 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->loadAuthConfig();
+        $this->resolveAuth();
 
         $this->registerRouteMiddleware();
     }
@@ -58,7 +55,6 @@ class MoonShineServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
-        $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
 
         $this->publishes([
             MoonShine::path('/config/moonshine.php') => config_path('moonshine.php'),
@@ -69,9 +65,7 @@ class MoonShineServiceProvider extends ServiceProvider
             'moonshine'
         );
 
-        $this->publishes([
-            MoonShine::path('/public') => public_path('vendor/moonshine'),
-        ], ['moonshine-assets', 'laravel-assets']);
+        $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
 
         $this->publishes([
             MoonShine::path('/lang') => $this->app->langPath('vendor/moonshine'),
@@ -81,24 +75,32 @@ class MoonShineServiceProvider extends ServiceProvider
             $this->commands($this->commands);
         }
 
-        Blade::withoutDoubleEncoding();
-        Blade::componentNamespace('Leeto\MoonShine\Components', 'moonshine');
-        Blade::component('menu-component', MenuComponent::class);
-
         $this->app->singleton(MoonShine::class, fn() => new MoonShine());
         $this->app->singleton(Menu::class, fn() => new Menu());
         $this->app->singleton(Dashboard::class, fn() => new Dashboard());
         $this->app->singleton(AssetManager::class, fn() => new AssetManager());
+
+        $this->app->register(SanctumServiceProvider::class);
     }
 
-    /**
-     * Setup auth configuration.
-     *
-     * @return void
-     */
-    protected function loadAuthConfig(): void
+    protected function resolveAuth(): void
     {
-        config(Arr::dot(config('moonshine.auth', []), 'auth.'));
+        config()->set('auth.guards.moonshine_login', [
+            'driver' => 'session',
+            'provider' => 'moonshine',
+        ]);
+
+        config()->set('auth.guards.moonshine', [
+            'driver' => 'token',
+            'provider' => 'moonshine',
+        ]);
+
+        config()->set('auth.providers.moonshine', [
+            'driver' => 'eloquent',
+            'model' => MoonshineUser::class,
+        ]);
+
+        config()->set('sanctum.guard', ['moonshine']);
     }
 
     /**
@@ -108,12 +110,6 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     protected function registerRouteMiddleware(): void
     {
-        // register route middleware.
-        foreach ($this->routeMiddleware as $key => $middleware) {
-            app('router')->aliasMiddleware($key, $middleware);
-        }
-
-        // register middleware group.
         foreach ($this->middlewareGroups as $key => $middleware) {
             app('router')->middlewareGroup($key, $middleware);
         }

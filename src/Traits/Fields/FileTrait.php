@@ -106,7 +106,7 @@ trait FileTrait
     public function save(Model $item): Model
     {
         $requestValue = $this->requestValue();
-        $oldValues = collect(request("hidden_{$this->field()}", []));
+        $oldValues = collect(request("hidden_{$this->column()}", []));
         $saveValue = $this->isMultiple() ? $oldValues : null;
 
         if ($requestValue !== false) {
@@ -124,7 +124,7 @@ trait FileTrait
         }
 
         if ($saveValue) {
-            $item->{$this->field()} = $saveValue;
+            $item->{$this->column()} = $saveValue;
         }
 
         return $item;

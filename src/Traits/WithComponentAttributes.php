@@ -14,12 +14,12 @@ trait WithComponentAttributes
 
     protected array $customClasses = [];
 
-    public function getAttribute(string $name): mixed
+    protected function getAttribute(string $name): mixed
     {
         return $this->attributes()->get($name);
     }
 
-    public function setAttribute(string $name, string|bool $value): static
+    protected function setAttribute(string $name, string|bool $value): static
     {
         $this->attributes[] = $name;
         $this->customAttributes[$name] = $value;

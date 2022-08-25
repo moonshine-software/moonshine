@@ -4,51 +4,42 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Leeto\MoonShine\Http\Requests\Auth\LoginFormRequest;
-
-use function auth;
-use function back;
-use function redirect;
-use function trans;
-use function view;
+use Leeto\MoonShine\Models\MoonshineUser;
+use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
 class AuthController extends BaseController
 {
-    public function login(): Factory|View|Redirector|Application|RedirectResponse
+    use ApiResponder;
+
+    /**
+     * @throws ValidationException
+     */
+    public function authenticate(LoginFormRequest $request)
     {
-        if (auth(config('moonshine.auth.guard'))->check()) {
-            return redirect(route(config('moonshine.route.prefix').'.index'));
+        $user = MoonshineUser::where('email', $request->get('email'))->first();
+
+        if (!$user || !Hash::check($request->get('password'), $user->password)) {
+            throw ValidationException::withMessages([
+                'login' => trans('moonshine::auth.failed')
+            ]);
         }
 
-        return view('moonshine::auth.login');
+        return response()->json([
+            'token' => $user->createToken('moonshine')->plainTextToken
+        ]);
     }
 
-    public function authenticate(LoginFormRequest $request): RedirectResponse
+    public function logout(): Response
     {
-        $credentials = $request->only(['email', 'password']);
-        $remember = $request->boolean('remember');
+        auth('moonshine')->user()
+            ->currentAccessToken()
+            ->delete();
 
-        if (auth(config('moonshine.auth.guard'))->attempt($credentials, $remember)) {
-            return redirect(url()->previous());
-        } else {
-            $request->session()->flash('alert', trans('moonshine::auth.failed'));
-
-            return back()
-                ->withInput()
-                ->withErrors(['login' => trans('moonshine::auth.failed')]);
-        }
-    }
-
-    public function logout(): Redirector|Application|RedirectResponse
-    {
-        auth(config('moonshine.auth.guard'))->logout();
-
-        return redirect(route(config('moonshine.route.prefix').'.login'));
+        return response()->noContent();
     }
 }

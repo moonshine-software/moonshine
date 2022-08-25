@@ -10,16 +10,17 @@ use Leeto\MoonShine\Traits\Fields\WithMask;
 
 class DateFilter extends Filter
 {
-    use DateTrait, WithMask;
+    use DateTrait;
+    use WithMask;
 
-    public static string $view = 'moonshine::filters.date';
+    public static string $component = 'DateFilter';
 
     public static string $type = 'date';
 
     public function getQuery(Builder $query): Builder
     {
         return $this->requestValue()
-            ? $query->whereDate($this->field(), '=', $this->requestValue())
+            ? $query->whereDate($this->column(), '=', $this->requestValue())
             : $query;
     }
 }

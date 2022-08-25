@@ -10,9 +10,7 @@ class Number extends Field
 {
     use NumberTrait;
 
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'number';
+    protected static string $component = 'NumberField';
 
     protected array $attributes = ['min', 'max', 'step'];
 

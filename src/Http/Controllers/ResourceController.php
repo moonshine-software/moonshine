@@ -5,180 +5,138 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Routing\Redirector;
-use Leeto\MoonShine\Builders\ModelValuesBuilder;
 use Leeto\MoonShine\Exceptions\ResourceException;
-use Leeto\MoonShine\Form;
+use Leeto\MoonShine\Form\Form;
 use Leeto\MoonShine\Http\Requests\Resources\CreateFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\EditFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
+use Leeto\MoonShine\Http\Requests\Resources\StoreFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\UpdateFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\ViewFormRequest;
-use Leeto\MoonShine\ModelArrayAdapter;
-use Leeto\MoonShine\Resources\Resource;
-use Leeto\MoonShine\Table;
+use Leeto\MoonShine\Http\Responses\ResourceForm;
+use Leeto\MoonShine\Http\Responses\ResourceIndex;
+use Leeto\MoonShine\Table\Table;
+use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
 class ResourceController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use ApiResponder;
 
     /**
      * @throws AuthorizationException
      */
-    public function index(ViewAnyFormRequest $request): Factory|View|Response|Application|ResponseFactory|JsonResponse
+    public function index(ViewAnyFormRequest $request): JsonResponse
     {
         $table = Table::make(
+            $request->getResource(),
             $request->getResource()->paginate(),
-            $request->getResource()->indexFields()->toArray()
+            $request->getResource()->fieldsCollection()->tableFields(),
         );
 
-        return response()->json([
-            'title' => $request->getResource()->title(),
-            'resource' => [
-                'title' => $request->getResource()->title(),
-                'uriKey' => $request->getResource()->uriKey(),
-                'table' => $table
-            ]
-        ]);
+        return response()->json(
+            ResourceIndex::make(
+                $request->getResource(),
+                $table
+            )
+        );
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function create(CreateFormRequest $request
-    ): View|Factory|Redirector|RedirectResponse|Application|JsonResponse {
-        $form = Form::make($request->getResource()->formFields()->toArray())
+    public function create(CreateFormRequest $request): JsonResponse
+    {
+        $form = Form::make($request->getResource()->fieldsCollection()->formFields())
             ->action($request->getResource()->route('store'))
             ->method('post');
 
-        return view($request->getResource()->createEditView(), [
-            'resource' => $request->getResource(),
-            'form' => $form,
-            'item' => $request->getModel(),
-        ]);
+        return $this->jsonResponse(ResourceForm::make($request->getResource(), $form));
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function edit(EditFormRequest $request): View|Factory|Redirector|RedirectResponse|Application|JsonResponse
+    public function edit(EditFormRequest $request): JsonResponse
     {
         $item = $request->findModel();
 
-
-        # TODO Сделать собственный toArray
-        # который также по всем relations будет включать keyName
-        dd((new ModelValuesBuilder($item))->build());
-
-        $form = Form::make($request->getResource()->formFields()->toArray())
+        $form = Form::make($request->getResource()->fieldsCollection()->formFields())
             ->action($request->getResource()->route('update', $item->getKey()))
             ->method('put')
-            ->fill($item->toArray());
+            ->fill($item);
 
-        /*return response()->json([
-            'resource' => $request->getResource(),
-            'form' => $form,
-            'item' => $request->findModel(),
-        ]);*/
-
-        return view($request->getResource()->createEditView(), [
-            'resource' => $request->getResource(),
-            'form' => $form,
-            'item' => $item,
-        ]);
+        return $this->jsonResponse(ResourceForm::make($request->getResource(), $form));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
-    public function show(ViewFormRequest $request): Redirector|Application|RedirectResponse
+    public function show(ViewFormRequest $request)
     {
-        return redirect($request->getResource()->route('index'));
+        //
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function update(UpdateFormRequest $request): Factory|View|Redirector|Application|RedirectResponse
+    public function update(UpdateFormRequest $request): JsonResponse
     {
-        return $this->save(
-            $request->findModel(),
-            $request->getResource(),
-            $request->all()
-        );
+        try {
+            # TODO $request->all()/Fields columns
+            $request->getResource()->update($request->findModel(), $request->validated());
+        } catch (ResourceException $e) {
+            return $this->jsonErrorMessage(
+                !app()->isProduction() ? $e->getMessage() : trans('moonshine::ui.saved_error')
+            );
+        }
+
+        return $this->jsonSuccessMessage(trans('moonshine::ui.saved'));
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function store(CreateFormRequest $request): Factory|View|Redirector|Application|RedirectResponse
+    public function store(StoreFormRequest $request): JsonResponse
     {
-        return $this->save(
-            $request->findModel(),
-            $request->getResource(),
-            $request->all()
-        );
+        try {
+            # TODO $request->all()/Fields columns
+            $request->getResource()->create($request->getModel(), $request->validated());
+        } catch (ResourceException $e) {
+            return $this->jsonErrorMessage(
+                !app()->isProduction() ? $e->getMessage() : trans('moonshine::ui.saved_error')
+            );
+        }
+
+        return $this->jsonSuccessMessage(trans('moonshine::ui.saved'));
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function destroy(DeleteFormRequest $request): Redirector|Application|RedirectResponse
+    public function destroy(DeleteFormRequest $request): JsonResponse
     {
         try {
             $request->getResource()->delete($request->findModel());
         } catch (ResourceException $e) {
-            throw_if(!app()->isProduction(), $e);
-
-            return redirect($request->getResource()->route('index'))
-                ->with('alert', trans('moonshine::ui.deleted_error'));
+            return $this->jsonErrorMessage(
+                !app()->isProduction() ? $e->getMessage() : trans('moonshine::ui.deleted_error')
+            );
         }
 
-        return redirect($request->getResource()->route('index'))
-            ->with('alert', trans('moonshine::ui.deleted'));
+        return $this->jsonSuccessMessage(trans('moonshine::ui.deleted'));
     }
 
-    public function massDelete(MassDeleteFormRequest $request): Redirector|Application|RedirectResponse
+    public function massDelete(MassDeleteFormRequest $request): JsonResponse
     {
         try {
             $request->getResource()->massDelete($request->get('ids'));
         } catch (ResourceException $e) {
-            throw_if(!app()->isProduction(), $e);
-
-            return redirect($request->getResource()->route('index'))
-                ->with('alert', trans('moonshine::ui.deleted_error'));
+            return $this->jsonErrorMessage(
+                !app()->isProduction() ? $e->getMessage() : trans('moonshine::ui.deleted_error')
+            );
         }
 
-        return redirect($request->getResource()->route('index'))
-            ->with('alert', trans('moonshine::ui.deleted'));
-    }
-
-    private function save(Model $item, Resource $resource, array $values): Redirector|RedirectResponse|Application
-    {
-        try {
-            $resource->save($item, $values);
-        } catch (ResourceException $e) {
-            throw_if(!app()->isProduction(), $e);
-
-            return redirect($resource->route($item->exists ? 'edit' : 'create', $item->getKey()))
-                ->with('alert', trans('moonshine::ui.saved_error'));
-        }
-
-        return redirect($resource->route('index'))
-            ->with('alert', trans('moonshine::ui.saved'));
+        return $this->jsonSuccessMessage(trans('moonshine::ui.deleted'));
     }
 }

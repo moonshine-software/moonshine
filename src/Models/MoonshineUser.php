@@ -7,12 +7,14 @@ namespace Leeto\MoonShine\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 use Leeto\MoonShine\Traits\Models\HasMoonShineChangeLog;
 
 class MoonshineUser extends Authenticatable
 {
     use HasMoonShineChangeLog;
     use HasFactory;
+    use HasApiTokens;
 
     protected $fillable = [
         'email',
