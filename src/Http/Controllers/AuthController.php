@@ -19,11 +19,7 @@ class AuthController extends BaseController
      */
     public function authenticate(LoginFormRequest $request)
     {
-        if (!auth('moonshine')->attempt($request->only(['email', 'password']))) {
-            throw ValidationException::withMessages([
-                'login' => trans('moonshine::auth.failed')
-            ]);
-        }
+        $request->authenticate();
 
         $request->session()->regenerate();
 

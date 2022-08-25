@@ -13,13 +13,17 @@ class ConfigureSanctum
     {
         if ($request->routeIs(config('moonshine.prefix').'.*')) {
             config()->set('sanctum.guard', ['moonshine']);
-            //config()->set('sanctum.stateful', $request->host());
+            //todo: возможно стоит сдлеать как в breeze frontend_url и stub который меняет sanctum конфиг
+            //config()->set('sanctum.stateful', .......);
 
-            config()->set('session.driver', 'cookie');
+            // Этого не нужно. Иначе при каждом коннекте он устанавливает новую куку. Для авторизации они не нужны
+            //config()->set('session.driver', 'cookie');
             //config()->set('session.domain', $request->host());
 
             config()->set('cors.path', [config('moonshine.prefix').'/*']);
             config()->set('cors.cors.supports_credentials', true);
+            //
+            config()->set('cors.allowed_origins', config('moonshine.frontend_url'));
         }
 
         return $next($request);
