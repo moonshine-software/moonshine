@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Providers;
 
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\SanctumServiceProvider;
@@ -12,6 +13,7 @@ use Leeto\MoonShine\Commands\InstallCommand;
 use Leeto\MoonShine\Commands\ResourceCommand;
 use Leeto\MoonShine\Commands\UserCommand;
 use Leeto\MoonShine\Dashboard\Dashboard;
+use Leeto\MoonShine\Http\Middleware\ConfigureSanctum;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\MoonShine;
@@ -27,7 +29,8 @@ class MoonShineServiceProvider extends ServiceProvider
 
     protected array $middlewareGroups = [
         'moonshine' => [
-            //Authenticate::class,
+            StartSession::class,
+            ConfigureSanctum::class,
             EnsureFrontendRequestsAreStateful::class,
             'throttle:60,1',
             SubstituteBindings::class,
@@ -85,13 +88,8 @@ class MoonShineServiceProvider extends ServiceProvider
 
     protected function resolveAuth(): void
     {
-        config()->set('auth.guards.moonshine_login', [
-            'driver' => 'session',
-            'provider' => 'moonshine',
-        ]);
-
         config()->set('auth.guards.moonshine', [
-            'driver' => 'token',
+            'driver' => 'session',
             'provider' => 'moonshine',
         ]);
 
@@ -99,8 +97,6 @@ class MoonShineServiceProvider extends ServiceProvider
             'driver' => 'eloquent',
             'model' => MoonshineUser::class,
         ]);
-
-        config()->set('sanctum.guard', ['moonshine']);
     }
 
     /**

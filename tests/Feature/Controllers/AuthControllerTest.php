@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Tests\Feature\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
 use Leeto\MoonShine\Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -26,18 +25,12 @@ class AuthControllerTest extends TestCase
             ['email' => $this->user->email, 'password' => 'test']
         );
 
-        $this->assertArrayHasKey('token', $response->json());
+        $response->assertOk();
     }
 
     public function test_logout()
     {
-        Sanctum::actingAs(
-            $this->user,
-            ['*'],
-            'moonshine'
-        );
-
-        $response = $this->deleteJson(route(config('moonshine.prefix').'.logout'));
+        $response = $this->actingAs($this->user, 'moonshine')->deleteJson(route(config('moonshine.prefix').'.logout'));
 
         $response->assertNoContent();
     }

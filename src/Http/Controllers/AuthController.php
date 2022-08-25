@@ -6,10 +6,8 @@ namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Leeto\MoonShine\Http\Requests\Auth\LoginFormRequest;
-use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
 class AuthController extends BaseController
@@ -21,24 +19,26 @@ class AuthController extends BaseController
      */
     public function authenticate(LoginFormRequest $request)
     {
-        $user = MoonshineUser::where('email', $request->get('email'))->first();
-
-        if (!$user || !Hash::check($request->get('password'), $user->password)) {
+        if (!auth('moonshine')->attempt($request->only(['email', 'password']))) {
             throw ValidationException::withMessages([
                 'login' => trans('moonshine::auth.failed')
             ]);
         }
 
+        $request->session()->regenerate();
+
         return response()->json([
-            'token' => $user->createToken('moonshine')->plainTextToken
+            'user' => auth('moonshine')->user()
         ]);
     }
 
     public function logout(): Response
     {
-        auth('moonshine')->user()
-            ->currentAccessToken()
-            ->delete();
+        auth('moonshine')->logout();
+
+        request()->session()->invalidate();
+
+        request()->session()->regenerateToken();
 
         return response()->noContent();
     }

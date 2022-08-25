@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Decorations\Tab;
 
-class Fields extends Collection
+final class Fields extends Collection
 {
     /**
      * @return Fields<Field>
