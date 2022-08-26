@@ -9,7 +9,7 @@ use JsonSerializable;
 
 trait ApiResponder
 {
-    public function jsonResponse(JsonSerializable $data): JsonResponse
+    public function jsonResponse(JsonSerializable|array $data): JsonResponse
     {
         return response()->json($data);
     }
@@ -22,11 +22,11 @@ trait ApiResponder
         ]);
     }
 
-    public function jsonErrorMessage(string $message): JsonResponse
+    public function jsonErrorMessage(string $message, int $code = 500): JsonResponse
     {
         return response()->json([
             'success' => false,
             'error' => $message
-        ], 500);
+        ], $code);
     }
 }

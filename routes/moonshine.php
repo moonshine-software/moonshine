@@ -15,6 +15,7 @@ Route::prefix(config('moonshine.prefix'))
 
         Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/', DashboardController::class)->name('dashboard');
+            Route::get('/authenticate', [AuthController::class, 'check'])->name('user_check');
 
             Route::get('/initial', InitialController::class)->name('initial');
         });

@@ -9,6 +9,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Validation\ValidationException;
 use Leeto\MoonShine\Http\Requests\Auth\LoginFormRequest;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
+use Leeto\MoonShine\Http\Resources\MoonShineUserJsonResource;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends BaseController
 {
@@ -17,13 +19,15 @@ class AuthController extends BaseController
     /**
      * @throws ValidationException
      */
-    public function authenticate(LoginFormRequest $request): Response
+    public function authenticate(LoginFormRequest $request): JsonResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return response()->noContent();
+        return $this->jsonResponse([
+            'user' => new MoonShineUserJsonResource(auth('moonshine')->user())
+        ]);
     }
 
     public function logout(): Response
@@ -35,5 +39,12 @@ class AuthController extends BaseController
         request()->session()->regenerateToken();
 
         return response()->noContent();
+    }
+
+    public function check(): Response
+    {
+        return response([
+            'user' => new MoonShineUserJsonResource(auth('moonshine')->user())
+        ]);
     }
 }
