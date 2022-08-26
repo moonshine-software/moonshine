@@ -41,9 +41,9 @@ class AuthController extends BaseController
         return response()->noContent();
     }
 
-    public function check(): Response
+    public function check(): JsonResponse
     {
-        return response([
+        return $this->jsonResponse([
             'user' => new MoonShineUserJsonResource(auth('moonshine')->user())
         ]);
     }
