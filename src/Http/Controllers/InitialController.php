@@ -16,12 +16,18 @@ class InitialController extends BaseController
 
     public function __invoke(): JsonResponse
     {
-        return response()->json([
-            'menu' => [
-                'items' => app(Menu::class)->all()
+        $data = [
+            'app' => [
+                'name' => config('app.name')
             ],
             'settings' => [],
-            'user' => new MoonShineUserJsonResource(auth('moonshine')->user()),
-        ]);
+            'theme' => []
+        ];
+
+        if(! is_null(auth('moonshine')->user())) {
+            $data['menu'] = ['items' => app(Menu::class)->all()];
+        }
+
+        return $this->jsonResponse($data);
     }
 }
