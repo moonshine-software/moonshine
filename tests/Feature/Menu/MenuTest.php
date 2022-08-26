@@ -13,7 +13,11 @@ use Leeto\MoonShine\Tests\TestCase;
 
 class MenuTest extends TestCase
 {
-    public function test_register_menu_item()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_register_menu_item(): void
     {
         $this->assertNotEmpty(app(Menu::class)->all());
         $this->assertCount(1, app(Menu::class)->all());
@@ -23,7 +27,11 @@ class MenuTest extends TestCase
         }
     }
 
-    public function test_register_menu_group()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_register_menu_group(): void
     {
         app(MoonShine::class)->registerResources([
             MenuGroup::make('Section 1', [

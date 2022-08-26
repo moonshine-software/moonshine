@@ -10,13 +10,21 @@ use Leeto\MoonShine\Utilities\AssetManager;
 
 class AssetManagerTest extends TestCase
 {
-    public function test_empty()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_empty(): void
     {
         $this->assertEmpty(app(AssetManager::class)->css());
         $this->assertEmpty(app(AssetManager::class)->js());
     }
 
-    public function test_add()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_add(): void
     {
         app(AssetManager::class)->add('link1');
         app(AssetManager::class)->add('link4');
@@ -25,21 +33,33 @@ class AssetManagerTest extends TestCase
         $this->assertCount(4, app(AssetManager::class)->getAssets());
     }
 
-    public function test_js()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_js(): void
     {
         app(AssetManager::class)->add('link1.js');
 
         $this->assertStringContainsString(asset('link1.js'), app(AssetManager::class)->js());
     }
 
-    public function test_css()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_css(): void
     {
         app(AssetManager::class)->add('link1.css');
 
         $this->assertStringContainsString(asset('link1.css'), app(AssetManager::class)->css());
     }
 
-    public function test_field_assets()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_assets(): void
     {
         $field = Code::make('Test');
 

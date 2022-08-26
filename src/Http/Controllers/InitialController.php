@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Leeto\MoonShine\Http\Resources\MoonShineUserJsonResource;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
@@ -20,7 +21,7 @@ class InitialController extends BaseController
                 'items' => app(Menu::class)->all()
             ],
             'settings' => [],
-            'user' => auth('moonshine')->user(),
+            'user' => new MoonShineUserJsonResource(auth('moonshine')->user()),
         ]);
     }
 }

@@ -13,13 +13,11 @@ class ConfigureSanctum
     {
         if ($request->routeIs(config('moonshine.prefix').'.*')) {
             config()->set('sanctum.guard', ['moonshine']);
-            //config()->set('sanctum.stateful', $request->host());
-
-            config()->set('session.driver', 'cookie');
-            //config()->set('session.domain', $request->host());
+            config()->set('sanctum.stateful', config('moonshine.stateful'));
 
             config()->set('cors.path', [config('moonshine.prefix').'/*']);
-            config()->set('cors.cors.supports_credentials', true);
+            config()->set('cors.supports_credentials', true);
+            config()->set('cors.allowed_origins', config('moonshine.frontend_url'));
         }
 
         return $next($request);

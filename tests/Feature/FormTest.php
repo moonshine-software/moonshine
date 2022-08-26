@@ -9,34 +9,31 @@ use Leeto\MoonShine\Contracts\Fields\HasRelatedValues;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Form\Form;
 use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
-use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Tests\TestCase;
 
 class FormTest extends TestCase
 {
-    protected Resource $resource;
-
-    protected function setUp(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function it_makeable(): void
     {
-        parent::setUp();
-
-        $this->resource = new MoonShineUserResource();
-    }
-
-    public function test_makeable()
-    {
-        $form = Form::make($this->resource->fieldsCollection()->formFields());
+        $form = Form::make($this->testResource()->fieldsCollection()->formFields());
 
         $this->assertInstanceOf(Form::class, $form);
         $this->assertInstanceOf(Fields::class, $form->fields());
     }
 
-    public function test_fill()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_fill(): void
     {
         $model = MoonshineUser::query()->first();
 
-        $form = Form::make($this->resource->fieldsCollection()->formFields())
+        $form = Form::make($this->testResource()->fieldsCollection()->formFields())
             ->fill($model);
 
         $this->assertInstanceOf(MoonshineUser::class, $form->values());

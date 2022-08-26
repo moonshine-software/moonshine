@@ -29,8 +29,8 @@ class MoonShineServiceProvider extends ServiceProvider
 
     protected array $middlewareGroups = [
         'moonshine' => [
-            StartSession::class,
             ConfigureSanctum::class,
+            StartSession::class,
             EnsureFrontendRequestsAreStateful::class,
             'throttle:60,1',
             SubstituteBindings::class,

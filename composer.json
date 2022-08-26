@@ -1,49 +1,53 @@
 {
-  "name": "lee-to/moonshine",
-  "description": "Laravel dashboard",
-  "keywords": ["laravel", "admin", "dashboard", "moonshine"],
-  "type": "library",
-  "homepage": "https://github.com/lee-to/moonshine",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Danil Shutsky",
-      "email": "info@cutcode.ru",
-      "homepage": "https://github.com/lee-to"
+    "name": "lee-to/moonshine",
+    "description": "Laravel dashboard",
+    "keywords": [
+        "laravel",
+        "admin",
+        "dashboard",
+        "moonshine"
+    ],
+    "type": "library",
+    "homepage": "https://github.com/lee-to/moonshine",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Danil Shutsky",
+            "email": "info@cutcode.ru",
+            "homepage": "https://github.com/lee-to"
+        }
+    ],
+    "require": {
+        "php": "^8.0|^8.1",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "laravel/framework": "^9.21",
+        "laravel/sanctum": "^3.0",
+        "phpoffice/phpspreadsheet": "1.24.1"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9.2",
+        "phpunit/phpunit": "^9.5.8",
+        "mockery/mockery": "^1.4.4",
+        "phpstan/phpstan": "^1.4.7",
+        "orchestra/testbench": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Leeto\\MoonShine\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Leeto\\MoonShine\\Tests\\": "tests/",
+            "Leeto\\MoonShine\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Leeto\\MoonShine\\Providers\\MoonShineServiceProvider"
+            ]
+        }
     }
-  ],
-  "require": {
-    "php": "^8.0|^8.1",
-    "ext-curl": "*",
-    "ext-json": "*",
-    "laravel/framework": "^9.21",
-    "symfony/var-dumper": "^6.0",
-    "phpoffice/phpspreadsheet": "1.24.1",
-    "laravel/sanctum": "^3.0"
-  },
-  "require-dev": {
-    "fakerphp/faker": "^1.9.2",
-    "phpunit/phpunit": "^9.5.8",
-    "mockery/mockery": "^1.4.4",
-    "phpstan/phpstan": "^1.4.7",
-    "orchestra/testbench": "^7.5"
-  },
-  "autoload": {
-    "psr-4": {
-      "Leeto\\MoonShine\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Leeto\\MoonShine\\Tests\\": "tests/",
-      "Leeto\\MoonShine\\Database\\Factories\\": "database/factories/"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Leeto\\MoonShine\\Providers\\MoonShineServiceProvider"
-      ]
-    }
-  }
 }

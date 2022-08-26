@@ -4,33 +4,50 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Feature\Controllers;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Leeto\MoonShine\Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function test_authenticate()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_sanctum_csrf_cookie(): void
     {
-        $response = $this->postJson(
-            route(config('moonshine.prefix').'.authenticate'),
-            ['email' => $this->user->email, 'password' => 'invalid']
-        );
+        $response = $this->get(route('sanctum.csrf-cookie'));
 
-        $response->assertInvalid(['login']);
-
-        $response = $this->postJson(
-            route(config('moonshine.prefix').'.authenticate'),
-            ['email' => $this->user->email, 'password' => 'test']
-        );
-
-        $response->assertOk();
+        $response->assertCookie('XSRF-TOKEN');
     }
 
-    public function test_logout()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_authenticate(): void
     {
-        $response = $this->actingAs($this->user, 'moonshine')->deleteJson(route(config('moonshine.prefix').'.logout'));
+        $response = $this->postJson(
+            route(config('moonshine.prefix').'.authenticate'),
+            ['email' => $this->adminUser()->email, 'password' => 'invalid']
+        );
+
+        $response->assertInvalid(['email']);
+
+        $response = $this->postJson(
+            route(config('moonshine.prefix').'.authenticate'),
+            ['email' => $this->adminUser()->email, 'password' => 'test']
+        );
+
+        $response->assertNoContent();
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_logout(): void
+    {
+        $response = $this->actingAs($this->adminUser(), 'moonshine')
+            ->deleteJson(route(config('moonshine.prefix').'.logout'));
 
         $response->assertNoContent();
     }

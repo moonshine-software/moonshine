@@ -5,52 +5,61 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Tests\Feature;
 
 use Leeto\MoonShine\Decorations\Decoration;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
-use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Tests\TestCase;
 
 class FieldsTest extends TestCase
 {
-    protected Resource $resource;
-
-    protected function setUp(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function it_only_fields(): void
     {
-        parent::setUp();
-
-        $this->resource = new MoonShineUserResource();
-    }
-
-    public function test_only_fields()
-    {
-        foreach ($this->resource->fieldsCollection()->onlyFields() as $field) {
+        foreach ($this->testResource()->fieldsCollection()->onlyFields() as $field) {
             $this->assertNotInstanceOf(Decoration::class, $field);
         }
     }
 
-    public function test_table_fields()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_table_fields(): void
     {
-        foreach ($this->resource->fieldsCollection()->tableFields() as $field) {
+        foreach ($this->testResource()->fieldsCollection()->tableFields() as $field) {
             $this->assertIsBool($field->isOnIndex());
         }
     }
 
-    public function test_form_fields()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_form_fields(): void
     {
-        foreach ($this->resource->fieldsCollection()->formFields()->onlyFields() as $field) {
+        foreach ($this->testResource()->fieldsCollection()->formFields()->onlyFields() as $field) {
             $this->assertIsBool($field->isOnForm());
         }
     }
 
-    public function test_export_fields()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_export_fields(): void
     {
-        foreach ($this->resource->fieldsCollection()->exportFields() as $field) {
+        foreach ($this->testResource()->fieldsCollection()->exportFields() as $field) {
             $this->assertIsBool($field->isOnExport());
         }
     }
 
-    public function test_extract_labels()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_extract_labels(): void
     {
-        $labels = $this->resource->fieldsCollection()->extractLabels();
+        $labels = $this->testResource()->fieldsCollection()->extractLabels();
 
         $this->assertArrayHasKey('id', $labels);
         $this->assertArrayHasKey('name', $labels);

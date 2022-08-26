@@ -8,7 +8,6 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Table\Table;
 use Leeto\MoonShine\Table\TableHead;
@@ -17,21 +16,16 @@ use Leeto\MoonShine\Tests\TestCase;
 
 class TableTest extends TestCase
 {
-    protected Resource $resource;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->resource = new MoonShineUserResource();
-    }
-
-    public function test_properties()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_properties(): void
     {
         $table = Table::make(
-            $this->resource,
-            $this->resource->paginate(),
-            $this->resource->fieldsCollection()->tableFields()
+            $this->testResource(),
+            $this->testResource()->paginate(),
+            $this->testResource()->fieldsCollection()->tableFields()
         );
 
         $rows = $table->resolveFieldsPaginator();

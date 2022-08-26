@@ -12,21 +12,33 @@ use Leeto\MoonShine\Tests\TestCase;
 
 class FieldTest extends TestCase
 {
-    public function test_makeable()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_makeable(): void
     {
         $field = Text::make('Label');
 
         $this->assertInstanceOf(Field::class, $field);
     }
 
-    public function test_field_label()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_label(): void
     {
         $field = Text::make('Name of field');
 
         $this->assertEquals('Name of field', $field->label());
     }
 
-    public function test_field_column()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_column(): void
     {
         $field = Text::make('Name of field');
 
@@ -37,7 +49,11 @@ class FieldTest extends TestCase
         $this->assertEquals('column', $field->column());
     }
 
-    public function test_field_relation()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_relation(): void
     {
         $field = HasMany::make('Many Relations');
 
@@ -48,21 +64,33 @@ class FieldTest extends TestCase
         $this->assertEquals('rel', $field->relation());
     }
 
-    public function test_field_resource()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_resource(): void
     {
         $field = HasMany::make('Many Relations', resource: new RelationResource());
 
         $this->assertInstanceOf(RelationResource::class, $field->resource());
     }
 
-    public function test_field_resource_column()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_resource_column(): void
     {
         $field = HasMany::make('Many Relations', resource: 'column');
 
         $this->assertEquals('column', $field->resourceColumn());
     }
 
-    public function test_field_html_attributes()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_html_attributes(): void
     {
         $field = Text::make('Name of field', 'column')
             ->customAttributes([
@@ -77,14 +105,22 @@ class FieldTest extends TestCase
         $this->assertEquals('value', $field->attributes()->get('data-attr'));
     }
 
-    public function test_field_default_value()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_default_value(): void
     {
         $field = Text::make('Name of field')->default('Test');
 
         $this->assertEquals('Test', $field->getDefault());
     }
 
-    public function test_field_show_or_hide_index()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_show_or_hide_index(): void
     {
         $field = Text::make('Name of field');
 
@@ -92,7 +128,11 @@ class FieldTest extends TestCase
         $this->assertFalse($field->hideOnIndex()->isOnIndex());
     }
 
-    public function test_field_show_or_hide_form()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_show_or_hide_form(): void
     {
         $field = Text::make('Name of field');
 
@@ -100,7 +140,11 @@ class FieldTest extends TestCase
         $this->assertFalse($field->hideOnForm()->isOnForm());
     }
 
-    public function test_field_show_or_hide_export()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_show_or_hide_export(): void
     {
         $field = Text::make('Name of field');
 
@@ -108,7 +152,11 @@ class FieldTest extends TestCase
         $this->assertFalse($field->hideOnExport()->isOnExport());
     }
 
-    public function test_field_required()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_required(): void
     {
         $field = Text::make('Name of field');
 
@@ -116,7 +164,11 @@ class FieldTest extends TestCase
         $this->assertTrue($field->required()->isRequired());
     }
 
-    public function test_field_sortable()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_sortable(): void
     {
         $field = Text::make('Name of field');
 
@@ -124,7 +176,11 @@ class FieldTest extends TestCase
         $this->assertTrue($field->sortable()->isSortable());
     }
 
-    public function test_field_nullable()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_nullable(): void
     {
         $field = Text::make('Name of field');
 
@@ -132,7 +188,11 @@ class FieldTest extends TestCase
         $this->assertTrue($field->nullable()->isNullable());
     }
 
-    public function test_field_readonly()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_readonly(): void
     {
         $field = Text::make('Name of field');
 
@@ -140,7 +200,11 @@ class FieldTest extends TestCase
         $this->assertTrue($field->readonly()->isReadonly());
     }
 
-    public function test_field_disabled()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_disabled(): void
     {
         $field = Text::make('Name of field');
 
@@ -148,7 +212,11 @@ class FieldTest extends TestCase
         $this->assertTrue($field->disabled()->isDisabled());
     }
 
-    public function test_field_component()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_field_component(): void
     {
         $field = Text::make('Name of field');
 

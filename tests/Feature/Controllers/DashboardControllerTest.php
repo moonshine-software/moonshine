@@ -11,14 +11,22 @@ use Leeto\MoonShine\Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
 {
-    public function test_unauthorized()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_unauthorized(): void
     {
         $response = $this->getJson(route(config('moonshine.prefix').'.dashboard'));
 
         $response->assertStatus(401);
     }
 
-    public function test_success()
+    /**
+     * @test
+     * @return void
+     */
+    public function it_success_response(): void
     {
         app(Dashboard::class)->registerBlocks([
             DashboardBlock::make([
@@ -26,7 +34,8 @@ class DashboardControllerTest extends TestCase
             ]),
         ]);
 
-        $response = $this->actingAs($this->user, 'moonshine')->getJson(route(config('moonshine.prefix').'.dashboard'));
+        $response = $this->actingAs($this->adminUser(), 'moonshine')
+            ->getJson(route(config('moonshine.prefix').'.dashboard'));
 
         $this->assertArrayHasKey('blocks', $response->json());
     }
