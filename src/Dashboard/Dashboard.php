@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Dashboard;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\MoonShine;
 
-class Dashboard
+final class Dashboard
 {
     protected ?Collection $blocks = null;
 

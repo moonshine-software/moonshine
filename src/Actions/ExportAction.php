@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class ExportAction extends Action implements ActionContract
+final class ExportAction extends Action implements ActionContract
 {
     /**
      * @throws Exception|ActionException
@@ -41,7 +41,7 @@ class ExportAction extends Action implements ActionContract
         $line = 2;
         foreach ($this->resource()->query()->get() as $item) {
             $letter = 'A';
-            foreach ($this->resource()->fieldsCollection()->exportFields() as $index => $field) {
+            foreach ($this->resource()->fieldsCollection()->exportFields() as $field) {
                 $sheet->setCellValue($letter.$line, $field->exportViewValue($item));
                 $letter++;
             }

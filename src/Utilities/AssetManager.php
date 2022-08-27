@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Utilities;
 
-class AssetManager
+final class AssetManager
 {
     protected array $assets = [];
 

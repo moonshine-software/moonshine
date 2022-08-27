@@ -9,13 +9,13 @@ use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\Dashboard\Dashboard;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
-class DashboardController extends BaseController
+final class DashboardController extends BaseController
 {
     use ApiResponder;
 
     public function __invoke(): JsonResponse
     {
-        return response()->json([
+        return $this->jsonResponse([
             'blocks' => app(Dashboard::class)->getBlocks()
         ]);
     }

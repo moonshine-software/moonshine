@@ -18,7 +18,7 @@ use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Filters\TextFilter;
 use Leeto\MoonShine\Models\MoonshineUser;
 
-class MoonShineUserResource extends Resource
+final class MoonShineUserResource extends Resource
 {
     public static string $model = MoonshineUser::class;
 

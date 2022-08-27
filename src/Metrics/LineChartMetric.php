@@ -39,4 +39,16 @@ class LineChartMetric extends Metric
             ->keys()
             ->toArray();
     }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'component' => $this->getComponent(),
+            'id' => $this->id(),
+            'name' => $this->name(),
+            'label' => $this->label(),
+            'labels' => $this->labels(),
+            'lines' => $this->lines()
+        ];
+    }
 }

@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Exceptions;
 
 use Exception;
 
-class FilterException extends Exception
+final class FilterException extends Exception
 {
-
 }

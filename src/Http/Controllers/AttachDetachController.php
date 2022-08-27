@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
-class AttachDetachController extends BaseController
+final class AttachDetachController extends BaseController
 {
     use ApiResponder;
 

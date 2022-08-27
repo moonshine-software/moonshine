@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Metrics;
 
-use Illuminate\Contracts\View\View;
 use JsonSerializable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Traits\Makeable;
@@ -66,6 +65,7 @@ abstract class Metric implements HasAssets, JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            'component' => $this->getComponent(),
             'id' => $this->id(),
             'name' => $this->name(),
             'label' => $this->label(),

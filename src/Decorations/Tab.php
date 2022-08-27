@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Decorations;
 
-class Tab extends Decoration
+final class Tab extends Decoration
 {
     public static string $component = 'Tab';
 }

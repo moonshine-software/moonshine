@@ -6,6 +6,6 @@ namespace Leeto\MoonShine\Exceptions;
 
 use Exception;
 
-class ActionException extends Exception
+final class ActionException extends Exception
 {
 }

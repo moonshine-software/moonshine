@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Menu;
 
+use JsonSerializable;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
 
-class MenuItem extends MenuSection
+final class MenuItem extends MenuSection implements JsonSerializable
 {
     use Makeable;
 
@@ -19,5 +20,14 @@ class MenuItem extends MenuSection
         if ($icon) {
             $this->icon($icon);
         }
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'title' => $this->title(),
+            'icon' => $this->getIcon(),
+            'resource' => $this->resource()->uriKey(),
+        ];
     }
 }

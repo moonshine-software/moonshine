@@ -12,7 +12,7 @@ use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithComponentAttributes;
 
-class Table implements JsonSerializable
+final class Table implements JsonSerializable
 {
     use Makeable;
     use WithComponentAttributes;

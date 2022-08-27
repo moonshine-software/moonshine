@@ -6,7 +6,13 @@ namespace Leeto\MoonShine\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MoonShineUserJsonResource extends JsonResource
+/**
+ * @property int $id
+ * @property int $avatar
+ * @property int $name
+ * @property int $email
+ */
+final class MoonShineUserJsonResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

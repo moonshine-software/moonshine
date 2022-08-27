@@ -9,7 +9,7 @@ use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Table\Table;
 use Leeto\MoonShine\Traits\Makeable;
 
-class ResourceIndex implements JsonSerializable
+final class ResourceIndex implements JsonSerializable
 {
     use Makeable;
 

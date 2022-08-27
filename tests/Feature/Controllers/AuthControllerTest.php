@@ -37,7 +37,28 @@ class AuthControllerTest extends TestCase
             ['email' => $this->adminUser()->email, 'password' => 'test']
         );
 
-        $response->assertNoContent();
+        $response->assertOk();
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_check(): void
+    {
+        $response = $this->getJson(
+            route(config('moonshine.prefix').'.authenticate.me'),
+        );
+
+        $response->assertStatus(401);
+
+        $response = $this->actingAs($this->adminUser(), 'moonshine')
+            ->getJson(
+                route(config('moonshine.prefix').'.authenticate.me'),
+            );
+
+        $response->assertOk()
+            ->assertJsonPath('id', $this->adminUser()->id);
     }
 
     /**

@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Exceptions;
 
 use Exception;
 
-class DecorationException extends Exception
+final class DecorationException extends Exception
 {
-
 }

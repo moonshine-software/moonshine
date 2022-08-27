@@ -6,22 +6,29 @@ namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
-use Leeto\MoonShine\Http\Resources\MoonShineUserJsonResource;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
-class InitialController extends BaseController
+final class InitialController extends BaseController
 {
     use ApiResponder;
 
     public function __invoke(): JsonResponse
     {
-        return response()->json([
-            'menu' => [
-                'items' => app(Menu::class)->all()
+        $response = [
+            'app' => [
+                'name' => config('app.name')
             ],
+            'theme' => [],
             'settings' => [],
-            'user' => new MoonShineUserJsonResource(auth('moonshine')->user()),
-        ]);
+        ];
+
+        if (auth('moonshine')->check()) {
+            $response['menu'] = [
+                'items' => app(Menu::class)->all()
+            ];
+        }
+
+        return $this->jsonResponse($response);
     }
 }

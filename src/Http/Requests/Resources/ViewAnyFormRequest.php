@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Http\Requests\Resources;
 
 use Leeto\MoonShine\MoonShineRequest;
 
-class ViewAnyFormRequest extends MoonShineRequest
+final class ViewAnyFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {

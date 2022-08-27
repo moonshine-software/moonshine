@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Menu;
 
 use Illuminate\Support\Collection;
 
-class Menu
+final class Menu
 {
     protected ?Collection $menu = null;
 

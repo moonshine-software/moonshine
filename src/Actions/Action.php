@@ -22,6 +22,12 @@ abstract class Action implements JsonSerializable
         $this->setLabel($label);
     }
 
+    abstract public function handle(): mixed;
+
+    abstract public function url(): string;
+
+    abstract public function isTriggered(): bool;
+
     public function label(): string
     {
         return $this->label;

@@ -13,14 +13,16 @@ trait ResourceRouter
 {
     public function resolveRoutes(): void
     {
-        Route::delete(
-            "{$this->uriKey()}/massDelete",
-            [ResourceController::class, 'massDelete']
-        )->name("{$this->routeAlias()}.massDelete");
+        Route::prefix('resource')->group(function () {
+            Route::delete(
+                "{$this->uriKey()}/massDelete",
+                [ResourceController::class, 'massDelete']
+            )->name("{$this->routeAlias()}.massDelete");
 
-        Route::resource($this->uriKey(), ResourceController::class)
-            ->parameters([$this->uriKey() => $this->routeParam()])
-            ->names($this->routeAlias());
+            Route::resource($this->uriKey(), ResourceController::class)
+                ->parameters([$this->uriKey() => $this->routeParam()])
+                ->names($this->routeAlias());
+        });
     }
 
     public function routeAlias(): string

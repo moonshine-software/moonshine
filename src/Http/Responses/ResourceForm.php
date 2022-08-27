@@ -9,7 +9,7 @@ use Leeto\MoonShine\Form\Form;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
 
-class ResourceForm implements JsonSerializable
+final class ResourceForm implements JsonSerializable
 {
     use Makeable;
 

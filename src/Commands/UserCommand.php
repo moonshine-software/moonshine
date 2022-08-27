@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Commands;
 
 use Leeto\MoonShine\Models\MoonshineUser;
 
-class UserCommand extends MoonShineCommand
+final class UserCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:user';
 

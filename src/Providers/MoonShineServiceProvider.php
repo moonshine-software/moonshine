@@ -19,7 +19,7 @@ use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-class MoonShineServiceProvider extends ServiceProvider
+final class MoonShineServiceProvider extends ServiceProvider
 {
     protected array $commands = [
         InstallCommand::class,

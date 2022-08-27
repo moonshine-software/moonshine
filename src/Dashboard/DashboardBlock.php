@@ -8,7 +8,7 @@ use JsonSerializable;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\Traits\Makeable;
 
-class DashboardBlock implements JsonSerializable
+final class DashboardBlock implements JsonSerializable
 {
     use Makeable;
 

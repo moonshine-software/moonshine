@@ -51,4 +51,15 @@ class ValueMetric extends Metric
     {
         return $this->progress;
     }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'component' => $this->getComponent(),
+            'id' => $this->id(),
+            'name' => $this->name(),
+            'label' => $this->label(),
+            'value' => $this->valueResult()
+        ];
+    }
 }

@@ -9,7 +9,7 @@ use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Traits\Makeable;
 
-class TableHead implements JsonSerializable
+final class TableHead implements JsonSerializable
 {
     use Makeable;
 

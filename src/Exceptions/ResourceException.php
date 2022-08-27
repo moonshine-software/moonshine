@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Exceptions;
 
 use Exception;
 
-class ResourceException extends Exception
+final class ResourceException extends Exception
 {
-
 }

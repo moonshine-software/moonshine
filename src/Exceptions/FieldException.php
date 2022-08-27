@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Exceptions;
 
 use Exception;
 
-class FieldException extends Exception
+final class FieldException extends Exception
 {
-
 }

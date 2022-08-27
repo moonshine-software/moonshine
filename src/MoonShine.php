@@ -11,7 +11,7 @@ use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
 use Leeto\MoonShine\Resources\Resource;
 
-class MoonShine
+final class MoonShine
 {
     public const DIR = 'app/MoonShine';
 
@@ -85,7 +85,7 @@ class MoonShine
     protected function resolveResourcesRoutes(): void
     {
         Route::prefix(config('moonshine.prefix'))
-            ->middleware(['moonshine', 'auth:sanctum'])
+            ->middleware(['moonshine', 'auth:moonshine'])
             ->name(config('moonshine.prefix').'.')->group(function () {
                 $this->getResources()->each(function (Resource $resource) {
                     $resource->resolveRoutes();

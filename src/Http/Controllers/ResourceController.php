@@ -22,7 +22,7 @@ use Leeto\MoonShine\Http\Responses\ResourceIndex;
 use Leeto\MoonShine\Table\Table;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 
-class ResourceController extends BaseController
+final class ResourceController extends BaseController
 {
     use ApiResponder;
 
@@ -83,8 +83,7 @@ class ResourceController extends BaseController
     public function update(UpdateFormRequest $request): JsonResponse
     {
         try {
-            # TODO $request->all()/Fields columns
-            $request->getResource()->update($request->findModel(), $request->validated());
+            $request->getResource()->update($request->findModel(), $request->values());
         } catch (ResourceException $e) {
             return $this->jsonErrorMessage(
                 !app()->isProduction() ? $e->getMessage() : trans('moonshine::ui.saved_error')
@@ -100,8 +99,7 @@ class ResourceController extends BaseController
     public function store(StoreFormRequest $request): JsonResponse
     {
         try {
-            # TODO $request->all()/Fields columns
-            $request->getResource()->create($request->getModel(), $request->validated());
+            $request->getResource()->create($request->getModel(), $request->values());
         } catch (ResourceException $e) {
             return $this->jsonErrorMessage(
                 !app()->isProduction() ? $e->getMessage() : trans('moonshine::ui.saved_error')

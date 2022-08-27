@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Http\Requests\Resources;
 
 use Leeto\MoonShine\MoonShineRequest;
 
-class MassDeleteFormRequest extends MoonShineRequest
+final class MassDeleteFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {

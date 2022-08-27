@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MoonshineUserRole extends Model
+final class MoonshineUserRole extends Model
 {
     use HasFactory;
 

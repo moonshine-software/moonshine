@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Leeto\MoonShine\Traits\Models\HasMoonShineChangeLog;
 
-class MoonshineUser extends Authenticatable
+final class MoonshineUser extends Authenticatable
 {
     use HasMoonShineChangeLog;
     use HasFactory;

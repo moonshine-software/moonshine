@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-class HasManyThrough extends HasMany
+final class HasManyThrough extends HasMany
 {
 }

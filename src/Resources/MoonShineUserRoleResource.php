@@ -9,7 +9,7 @@ use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Filters\TextFilter;
 use Leeto\MoonShine\Models\MoonshineUserRole;
 
-class MoonShineUserRoleResource extends Resource
+final class MoonShineUserRoleResource extends Resource
 {
     public static string $model = MoonshineUserRole::class;
 

@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Commands;
 use Illuminate\Support\Facades\Artisan;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
 
-class InstallCommand extends MoonShineCommand
+final class InstallCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:install';
 

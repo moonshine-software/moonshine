@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Fields\ID;
 
-class DummyResource extends Resource
+final class DummyResource extends Resource
 {
 	public static string $model = 'DummyModel';
 

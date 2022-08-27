@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Exceptions;
 
 use Exception;
 
-class MenuException extends Exception
+final class MenuException extends Exception
 {
-
 }

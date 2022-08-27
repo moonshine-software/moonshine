@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Builders;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class ModelAttributesBuilder
+final class ModelAttributesBuilder
 {
     public function __construct(protected Model $model)
     {
