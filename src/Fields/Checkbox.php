@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\Fields;
 
 class Checkbox extends Field
 {
-    protected static string $component = 'Checkbox';
+    protected static string $component = 'CheckboxField';
 }

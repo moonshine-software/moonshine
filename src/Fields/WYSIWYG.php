@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\Fields;
 
 class WYSIWYG extends Field
 {
-    protected static string $component = 'WYSIWYG';
+    protected static string $component = 'WYSIWYGField';
 }

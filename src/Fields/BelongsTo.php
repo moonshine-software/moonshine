@@ -14,7 +14,7 @@ class BelongsTo extends Field implements HasRelationship, HasRelatedValues
 {
     use Searchable;
 
-    protected static string $component = 'BelongsTo';
+    protected static string $component = 'BelongsToField';
 
     public function value(): array
     {

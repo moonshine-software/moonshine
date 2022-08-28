@@ -7,6 +7,7 @@ namespace Leeto\MoonShine\Resources;
 use Leeto\MoonShine\Actions\ExportAction;
 use Leeto\MoonShine\Decorations\Heading;
 use Leeto\MoonShine\Decorations\Tab;
+use Leeto\MoonShine\Fields\Avatar;
 use Leeto\MoonShine\Fields\BelongsTo;
 use Leeto\MoonShine\Fields\Date;
 use Leeto\MoonShine\Fields\Email;
@@ -51,7 +52,7 @@ final class MoonShineUserResource extends Resource
                     ->required()
                     ->showOnExport(),
 
-                Image::make(trans('moonshine::ui.base_resource.avatar'), 'avatar')
+                Avatar::make(trans('moonshine::ui.base_resource.avatar'), 'avatar')
                     ->removable()
                     ->showOnExport()
                     ->disk(config('filesystems.default'))

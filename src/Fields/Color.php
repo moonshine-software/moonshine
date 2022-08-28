@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\Fields;
 
 class Color extends Field
 {
-    protected static string $component = 'Color';
+    protected static string $component = 'ColorField';
 }

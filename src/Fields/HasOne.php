@@ -13,5 +13,5 @@ class HasOne extends Field implements HasRelationship, HasFields, HasResource
 {
     use WithFields;
 
-    protected static string $component = 'HasOne';
+    protected static string $component = 'HasOneField';
 }
