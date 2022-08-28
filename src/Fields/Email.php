@@ -10,5 +10,5 @@ class Email extends Field
 {
     use WithMask;
 
-    protected static string $component = 'Email';
+    protected static string $component = 'EmailField';
 }

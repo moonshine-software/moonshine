@@ -10,5 +10,5 @@ use Leeto\MoonShine\Contracts\Fields\Tableable;
 
 class HasMany extends Field implements HasRelationship, Tableable, HasResource
 {
-    protected static string $component = 'HasMany';
+    protected static string $component = 'HasManyField';
 }

@@ -15,7 +15,7 @@ class Json extends Field implements HasFields, RemovableContract
     use WithFields;
     use Removable;
 
-    protected static string $component = 'Json';
+    protected static string $component = 'JsonField';
 
     protected bool $keyValue = false;
 

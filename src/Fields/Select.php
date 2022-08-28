@@ -14,5 +14,5 @@ class Select extends Field
     use Searchable;
     use WithOptions;
 
-    protected static string $component = 'Select';
+    protected static string $component = 'SelectField';
 }

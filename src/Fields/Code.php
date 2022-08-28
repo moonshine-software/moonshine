@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Fields;
 
 class Code extends Field
 {
-    protected static string $component = 'Code';
+    protected static string $component = 'CodeField';
 
     public string $language = 'php';
 

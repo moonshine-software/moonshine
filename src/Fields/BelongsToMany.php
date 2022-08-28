@@ -17,5 +17,5 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     use WithPivot;
     use Searchable;
 
-    protected static string $component = 'BelongsToMany';
+    protected static string $component = 'BelongsToManyField';
 }

@@ -16,7 +16,7 @@ class File extends Field implements Fileable, RemovableContact
     use FileTrait;
     use Removable;
 
-    protected static string $component = 'File';
+    protected static string $component = 'FileField';
 
     protected string $accept = '*/*';
 

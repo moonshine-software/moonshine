@@ -10,5 +10,5 @@ class ID extends Field
 
     public string $label = 'ID';
 
-    protected static string $component = 'ID';
+    protected static string $component = 'IDField';
 }
