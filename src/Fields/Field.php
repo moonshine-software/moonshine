@@ -263,6 +263,7 @@ abstract class Field implements JsonSerializable, HasAssets
             'relation' => $this->relation(),
             'value' => $this->value(),
             'relatedValues' => $this instanceof HasRelatedValues ? $this->relatedValues() : [],
+            'resource' => $this->resource(),
             'attributes' => $this->attributes()->getAttributes(),
             'fields' => $this instanceof HasFields ? $this->getFields() : []
         ];

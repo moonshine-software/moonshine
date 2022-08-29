@@ -179,6 +179,7 @@ abstract class Resource implements JsonSerializable
     {
         return [
             'title' => $this->title(),
+            'uri' => $this->uriKey(),
             'softDeletes' => $this->softDeletes(),
         ];
     }

@@ -46,20 +46,16 @@ trait ResourceQuery
             });
         }
 
-        if (request()->has('filters') && !empty($this->filters())) {
+        if (request()->has('filters')) {
             foreach ($this->filters() as $filter) {
                 $query = $filter->getQuery($query);
             }
         }
 
-        if (request()->has('sort')) {
-            $query = $query->orderBy(
-                request('sort.column'),
-                request('sort.direction')
-            );
-        } else {
-            $query = $query->orderBy(static::$sortColumn, static::$sortDirection);
-        }
+        $query = $query->orderBy(
+            request('sort.column', static::$sortColumn),
+            request('sort.direction', static::$sortDirection)
+        );
 
         return $query;
     }
