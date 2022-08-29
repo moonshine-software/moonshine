@@ -56,7 +56,14 @@ final class Table implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'paginator' => collect($this->paginator())->except(['data']),
+            'paginator' => collect($this->paginator())->only([
+                'current_page',
+                'from',
+                'last_page',
+                'per_page',
+                'to',
+                'total'
+            ]),
             'rows' => $this->resolveFieldsPaginator()->items(),
             'columns' => $this->columns(),
         ];
