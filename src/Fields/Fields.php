@@ -89,6 +89,24 @@ final class Fields extends Collection
     }
 
     /**
+     * @return Fields<Field|Decoration>
+     */
+    public function detailFields(): Fields
+    {
+        return $this->flatMap(function ($field) {
+            if ($field instanceof Tab) {
+                $field->fields($field->getFields()->detailFields()->toArray());
+
+                return [$field];
+            }
+
+            return !method_exists($field, 'isOnDetail') || $field->isOnDetail()
+                ? [$field]
+                : null;
+        });
+    }
+
+    /**
      * @return Fields<Field>
      */
     public function exportFields(): Fields

@@ -35,6 +35,23 @@ class ResourceControllerTest extends TestCase
      * @test
      * @return void
      */
+    public function it_show_response(): void
+    {
+        $response = $this->actingAs($this->adminUser(), 'moonshine')
+            ->getJson(
+                $this->testResource()->route(
+                    'show',
+                    $this->adminUser()->getKey()
+                )
+            );
+
+        $response->assertJsonPath('title', $this->testResource()->title());
+    }
+
+    /**
+     * @test
+     * @return void
+     */
     public function it_create_response(): void
     {
         $response = $this->actingAs($this->adminUser(), 'moonshine')

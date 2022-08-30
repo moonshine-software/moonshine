@@ -30,8 +30,6 @@ final class Form implements JsonSerializable
 
     protected string $enctype = 'multipart/form-data';
 
-    protected int $position = 0;
-
     /**
      * @param  Fields<Field|Decoration>  $fields
      */

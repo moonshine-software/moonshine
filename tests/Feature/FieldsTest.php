@@ -91,6 +91,17 @@ class FieldsTest extends TestCase
      * @test
      * @return void
      */
+    public function it_detail_fields(): void
+    {
+        foreach ($this->testResource()->fieldsCollection()->detailFields()->onlyFields() as $field) {
+            $this->assertIsBool($field->isOnDetail());
+        }
+    }
+
+    /**
+     * @test
+     * @return void
+     */
     public function it_export_fields(): void
     {
         foreach ($this->testResource()->fieldsCollection()->exportFields() as $field) {

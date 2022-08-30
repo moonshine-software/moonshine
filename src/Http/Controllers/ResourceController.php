@@ -7,6 +7,7 @@ namespace Leeto\MoonShine\Http\Controllers;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Leeto\MoonShine\DetailCard\DetailCard;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Form\Form;
 use Leeto\MoonShine\Http\Requests\Resources\CreateFormRequest;
@@ -17,6 +18,7 @@ use Leeto\MoonShine\Http\Requests\Resources\StoreFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\UpdateFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\ViewFormRequest;
+use Leeto\MoonShine\Http\Responses\ResourceDetailCard;
 use Leeto\MoonShine\Http\Responses\ResourceForm;
 use Leeto\MoonShine\Http\Responses\ResourceIndex;
 use Leeto\MoonShine\Table\Table;
@@ -72,9 +74,14 @@ final class ResourceController extends BaseController
         return $this->jsonResponse(ResourceForm::make($request->getResource(), $form));
     }
 
-    public function show(ViewFormRequest $request)
+    public function show(ViewFormRequest $request): JsonResponse
     {
-        //
+        $card = DetailCard::make(
+            $request->getResource()->fieldsCollection()->detailFields(),
+            $request->findModel()
+        );
+
+        return $this->jsonResponse(ResourceDetailCard::make($request->getResource(), $card));
     }
 
     /**

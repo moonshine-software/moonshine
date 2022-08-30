@@ -14,6 +14,8 @@ trait ShowOrHide
 
     protected bool $showOnForm = true;
 
+    protected bool $showOnDetail = true;
+
     /**
      * Set field as visible on index page, based on condition
      *
@@ -67,6 +69,32 @@ trait ShowOrHide
     }
 
     /**
+     * Set field as visible on show page, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function showOnDetail(mixed $condition = null): static
+    {
+        $this->showOnDetail = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    /**
+     * Set field as hidden on show page, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function hideOnDetail(mixed $condition = null): static
+    {
+        $this->showOnDetail = Condition::boolean($condition, false);
+
+        return $this;
+    }
+
+    /**
      * Set field as visible in export report, based on condition
      *
      * @param  mixed  $condition
@@ -105,5 +133,10 @@ trait ShowOrHide
     public function isOnExport(): bool
     {
         return $this->showOnExport;
+    }
+
+    public function isOnDetail(): bool
+    {
+        return $this->showOnDetail;
     }
 }
