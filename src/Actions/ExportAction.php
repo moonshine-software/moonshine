@@ -42,7 +42,7 @@ final class ExportAction extends Action implements ActionContract
         foreach ($this->resource()->query()->get() as $item) {
             $letter = 'A';
             foreach ($this->resource()->fieldsCollection()->exportFields() as $field) {
-                $sheet->setCellValue($letter.$line, $field->exportViewValue($item));
+                $sheet->setCellValue($letter.$line, $field->value());
                 $letter++;
             }
 

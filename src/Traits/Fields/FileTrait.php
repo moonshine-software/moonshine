@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Helpers\Condition;
@@ -101,32 +100,5 @@ trait FileTrait
         );
 
         return $file->store($this->getDir(), $this->getDisk());
-    }
-
-    public function save(Model $item): Model
-    {
-        $requestValue = $this->requestValue();
-        $oldValues = collect(request("hidden_{$this->column()}", []));
-        $saveValue = $this->isMultiple() ? $oldValues : null;
-
-        if ($requestValue !== false) {
-            if ($this->isMultiple()) {
-                $paths = [];
-
-                foreach ($requestValue as $file) {
-                    $paths[] = $this->store($file);
-                }
-
-                $saveValue = $saveValue->merge($paths)->unique()->toArray();
-            } else {
-                $saveValue = $this->store($requestValue);
-            }
-        }
-
-        if ($saveValue) {
-            $item->{$this->column()} = $saveValue;
-        }
-
-        return $item;
     }
 }

@@ -52,11 +52,9 @@ trait ResourceQuery
             }
         }
 
-        $query = $query->orderBy(
+        return $query->orderBy(
             request('sort.column', static::$sortColumn),
             request('sort.direction', static::$sortDirection)
         );
-
-        return $query;
     }
 }

@@ -194,11 +194,6 @@ abstract class Field implements JsonSerializable, HasAssets
         return $this;
     }
 
-    public function performValue($values): static
-    {
-        return $this;
-    }
-
     public function resolveFill($values): static
     {
         $this->setValue($values[$this->relation() ?? $this->column()] ?? null);
@@ -212,7 +207,7 @@ abstract class Field implements JsonSerializable, HasAssets
             return $this->valueCallback()($this->value);
         }
 
-        return $this->value;
+        return $this->value ?? $this->getDefault();
     }
 
     public function requestValue(): mixed

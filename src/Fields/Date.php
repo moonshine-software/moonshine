@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Carbon\Carbon;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
 use Leeto\MoonShine\Traits\Fields\WithMask;
 
@@ -15,4 +16,15 @@ class Date extends Field
     protected static string $component = 'DateField';
 
     protected string $format = 'Y-m-d H:i:s';
+
+    public function value(): string
+    {
+        return Carbon::parse(parent::value())
+            ->format($this->getFormat());
+    }
+
+    public function requestValue(): Carbon
+    {
+        return Carbon::parse(parent::requestValue());
+    }
 }

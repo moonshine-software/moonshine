@@ -78,7 +78,9 @@ class MoonShineRequest extends FormRequest
 
     public function values(): array
     {
-        # TODO Temp implementation! Get values by Fields
-        return $this->validated();
+        return $this->getResource()
+            ->fieldsCollection()
+            ->requestValues()
+            ->toArray();
     }
 }
