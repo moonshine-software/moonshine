@@ -12,7 +12,6 @@ use Leeto\MoonShine\Fields\BelongsTo;
 use Leeto\MoonShine\Fields\Date;
 use Leeto\MoonShine\Fields\Email;
 use Leeto\MoonShine\Fields\ID;
-use Leeto\MoonShine\Fields\Image;
 use Leeto\MoonShine\Fields\Password;
 use Leeto\MoonShine\Fields\PasswordRepeat;
 use Leeto\MoonShine\Fields\Text;

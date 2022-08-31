@@ -6,6 +6,7 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
@@ -31,6 +32,26 @@ final class MoonShine
     public static function namespace(string $path = ''): string
     {
         return static::NAMESPACE.$path;
+    }
+
+    public static function getResourceFromUri(string $uri): Resource
+    {
+        $resource = app(MoonShine::class)->getResources()
+            ->first(fn(Resource $resource) => $resource->uriKey() === $uri);
+
+        if ($resource) {
+            return $resource;
+        }
+
+        $class = (string) str($uri)
+            ->studly()
+            ->whenStartsWith(
+                'MoonShine',
+                fn(Stringable $str) => $str->prepend('Leeto\MoonShine\Resources\\'),
+                fn(Stringable $str) => $str->prepend(MoonShine::namespace('\Resources\\')),
+            );
+
+        return new $class;
     }
 
     /**

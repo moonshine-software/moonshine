@@ -128,8 +128,16 @@ abstract class Resource implements JsonSerializable
     public function create(Model $item, array $values): Model
     {
         try {
+            if (method_exists($this, 'beforeCreating')) {
+                call_user_func([$this, 'beforeCreating'], $item, $values);
+            }
+
             $item->forceFill($values);
             $item->save();
+
+            if (method_exists($this, 'afterCreated')) {
+                call_user_func([$this, 'afterCreated'], $item);
+            }
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }

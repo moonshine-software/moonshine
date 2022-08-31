@@ -6,7 +6,6 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Resources\Resource;
 
 class MoonShineRequest extends FormRequest
@@ -38,17 +37,7 @@ class MoonShineRequest extends FormRequest
             return $this->resource;
         }
 
-        $class = (string) str(request()->route()->getName())->betweenFirst('.', '.')
-            ->singular()
-            ->ucfirst()
-            ->append('Resource')
-            ->whenContains(
-                ['MoonShine'],
-                fn(Stringable $str) => $str->prepend('Leeto\MoonShine\Resources\\'),
-                fn(Stringable $str) => $str->prepend(MoonShine::namespace('\Resources\\')),
-            );
-
-        $this->resource = new $class;
+        $this->resource = MoonShine::getResourceFromUri($this->segment(3));
 
         return $this->resource;
     }
