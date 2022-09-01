@@ -135,4 +135,17 @@ class ResourceControllerTest extends TestCase
 
         $this->assertModelMissing($this->adminUser());
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_action_export(): void
+    {
+        $response = $this->actingAs($this->adminUser(), 'moonshine')
+            ->get($this->testResource()->route('action', query: ['uri' => 'export-action']));
+
+        $response->assertOk()
+            ->assertDownload("export-{$this->testResource()->uriKey()}.xlsx");
+    }
 }

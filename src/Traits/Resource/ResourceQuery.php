@@ -28,12 +28,12 @@ trait ResourceQuery
 
         if ($this->scopes()) {
             foreach ($this->scopes() as $scope) {
-                $query = $query->withGlobalScope($scope::class, $scope);
+                $query->withGlobalScope($scope::class, $scope);
             }
         }
 
         if (static::$with) {
-            $query = $query->with(static::$with);
+            $query->with(static::$with);
         }
 
         if (request()->has('search') && !empty($this->search())) {

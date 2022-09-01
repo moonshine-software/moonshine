@@ -5,56 +5,33 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Actions;
 
 use JsonSerializable;
-use Leeto\MoonShine\Exceptions\ActionException;
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Http\Requests\Resources\ActionFormRequest;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithUriKey;
 
 abstract class Action implements JsonSerializable
 {
     use Makeable;
+    use WithUriKey;
 
-    protected string $label;
-
-    protected ?Resource $resource;
-
-    final public function __construct(string $label)
+    final public function __construct(protected string $label)
     {
-        $this->setLabel($label);
     }
 
-    abstract public function handle(): mixed;
+    abstract public function handle(ActionFormRequest $request): mixed;
 
-    abstract public function url(): string;
-
-    abstract public function isTriggered(): bool;
+    public function url(): string
+    {
+        return route(
+            config('moonshine.prefix').'.action', [$this->uriKey(), ...request()->query()]
+        );
+    }
 
     public function label(): string
     {
         return $this->label;
     }
 
-    public function setLabel(string $label): static
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    public function resource(): ?Resource
-    {
-        return $this->resource;
-    }
-
-    public function setResource(Resource $resource): static
-    {
-        $this->resource = $resource;
-
-        return $this;
-    }
-
-    /**
-     * @throws ActionException
-     */
     public function jsonSerialize(): array
     {
         return [

@@ -19,6 +19,11 @@ trait ResourceRouter
                 [ResourceController::class, 'massDelete']
             )->name("{$this->routeAlias()}.massDelete");
 
+            Route::get(
+                "{$this->uriKey()}/action/{uri}",
+                [ResourceController::class, 'action']
+            )->name("{$this->routeAlias()}.action");
+
             Route::resource($this->uriKey(), ResourceController::class)
                 ->parameters([$this->uriKey() => $this->routeParam()])
                 ->names($this->routeAlias());
@@ -66,12 +71,5 @@ trait ResourceRouter
                 fn(Stringable $str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
                 fn(Stringable $str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
             );
-    }
-
-    public function uriKey(): string
-    {
-        return str(class_basename(get_called_class()))
-            ->kebab()
-            ->value();
     }
 }

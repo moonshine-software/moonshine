@@ -19,12 +19,14 @@ use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\Traits\Resource\ResourcePolicy;
 use Leeto\MoonShine\Traits\Resource\ResourceQuery;
 use Leeto\MoonShine\Traits\Resource\ResourceRouter;
+use Leeto\MoonShine\Traits\WithUriKey;
 
 abstract class Resource implements JsonSerializable
 {
     use ResourceQuery;
     use ResourcePolicy;
     use ResourceRouter;
+    use WithUriKey;
 
     public static string $model;
 

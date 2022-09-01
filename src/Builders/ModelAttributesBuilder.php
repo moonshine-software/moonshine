@@ -12,7 +12,7 @@ final class ModelAttributesBuilder
     public function __construct(protected Model $model)
     {
     }
-
+    
     public function build(): array
     {
         return array_merge(

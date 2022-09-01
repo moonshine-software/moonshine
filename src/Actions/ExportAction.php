@@ -4,95 +4,81 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Actions;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Response;
-use Leeto\MoonShine\Contracts\Actions\ActionContract;
-use Leeto\MoonShine\Exceptions\ActionException;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Exception;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\Storage;
+use Leeto\MoonShine\Http\Requests\Resources\ActionFormRequest;
+use OpenSpout\Common\Exception\InvalidArgumentException;
+use OpenSpout\Common\Exception\IOException;
+use OpenSpout\Common\Exception\UnsupportedTypeException;
+use OpenSpout\Writer\Exception\WriterNotOpenedException;
+use Rap2hpoutre\FastExcel\FastExcel;
 
-final class ExportAction extends Action implements ActionContract
+/**
+ * @see https://github.com/rap2hpoutre/fast-excel
+ */
+final class ExportAction extends Action
 {
-    /**
-     * @throws Exception|ActionException
-     */
-    public function handle(): Response|Application|ResponseFactory
-    {
-        if (is_null($this->resource())) {
-            throw new ActionException('Resource is required for action');
-        }
+    protected string $disk = 'local';
 
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        $letter = 'A';
-
-        foreach ($this->resource()->fieldsCollection()->exportFields() as $field) {
-            $sheet->setCellValue("{$letter}1", $field->label());
-
-            $letter++;
-        }
-
-        $sheet->getStyle("A1:{$letter}1")->getFont()->setBold(true);
-
-
-        $line = 2;
-        foreach ($this->resource()->query()->get() as $item) {
-            $letter = 'A';
-            foreach ($this->resource()->fieldsCollection()->exportFields() as $field) {
-                $sheet->setCellValue($letter.$line, $field->value());
-                $letter++;
-            }
-
-            $line++;
-        }
-
-        $writer = new Xlsx($spreadsheet);
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$this->resource()->title().'.xlsx"');
-        header('Cache-Control: max-age=0');
-
-        return response($writer->save('php://output'));
-    }
-
-    public function isTriggered(): bool
-    {
-        return request()->has('exportCsv');
-    }
+    protected string $dir = 'moonshine/exports';
 
     /**
-     * @throws ActionException
+     * @throws WriterNotOpenedException
+     * @throws IOException
+     * @throws UnsupportedTypeException
+     * @throws InvalidArgumentException
      */
-    public function url(): string
+    public function handle(ActionFormRequest $request): mixed
     {
-        if (is_null($this->resource())) {
-            throw new ActionException('Resource is required for action');
+        $this->resolveStorage();
+
+        $columns = $request->getResource()
+            ->fieldsCollection()
+            ->exportFields()
+            ->onlyFieldsColumns()
+            ->toArray();
+
+        $items = $request->getResource()
+            ->query()
+            ->select($columns)
+            ->get();
+
+        $path = Storage::disk($this->getDisk())
+            ->path("{$this->getDir()}/export-{$request->getResource()->uriKey()}.xlsx");
+
+        return response()->download(
+            (new FastExcel($items))
+                ->export($path)
+        );
+    }
+
+    protected function resolveStorage()
+    {
+        if (!Storage::disk($this->getDisk())->exists($this->getDir())) {
+            Storage::disk($this->getDisk())->makeDirectory($this->getDir());
         }
+    }
 
-        $query = ['exportCsv' => true];
+    public function getDisk(): string
+    {
+        return $this->disk;
+    }
 
-        if (request()->has('filters')) {
-            foreach (request()->query('filters') as $filterField => $filterQuery) {
-                if (is_array($filterQuery)) {
-                    foreach ($filterQuery as $filterInnerField => $filterValue) {
-                        if (is_numeric($filterInnerField) && !is_array($filterValue)) {
-                            $query['filters'][$filterField][] = $filterValue;
-                        } else {
-                            $query['filters'][$filterInnerField] = $filterValue;
-                        }
-                    }
-                } else {
-                    $query['filters'][$filterField] = $filterQuery;
-                }
-            }
-        }
+    public function disk(string $disk): ExportAction
+    {
+        $this->disk = $disk;
 
-        if (request()->has('search')) {
-            $query['search'] = request('search');
-        }
+        return $this;
+    }
 
-        return $this->resource()->route('index', query: $query);
+    public function getDir(): string
+    {
+        return $this->dir;
+    }
+
+    public function dir(string $dir): ExportAction
+    {
+        $this->dir = $dir;
+
+        return $this;
     }
 }

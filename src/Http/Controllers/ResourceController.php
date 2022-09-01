@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\DetailCard\DetailCard;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Form\Form;
+use Leeto\MoonShine\Http\Requests\Resources\ActionFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\CreateFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\EditFormRequest;
@@ -28,9 +29,14 @@ final class ResourceController extends BaseController
 {
     use ApiResponder;
 
-    /**
-     * @throws AuthorizationException
-     */
+    public function action(ActionFormRequest $request, string $uri): mixed
+    {
+        $action = collect($request->getResource()->actions())
+            ->firstOrFail(fn(Action $action) => $action->uriKey() === $uri);
+
+        return $action->handle($request);
+    }
+
     public function index(ViewAnyFormRequest $request): JsonResponse
     {
         $table = Table::make(
@@ -47,9 +53,6 @@ final class ResourceController extends BaseController
         );
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function create(CreateFormRequest $request): JsonResponse
     {
         $form = Form::make($request->getResource()->fieldsCollection()->formFields())
@@ -59,9 +62,6 @@ final class ResourceController extends BaseController
         return $this->jsonResponse(ResourceForm::make($request->getResource(), $form));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function edit(EditFormRequest $request): JsonResponse
     {
         $item = $request->findModel();
@@ -84,9 +84,6 @@ final class ResourceController extends BaseController
         return $this->jsonResponse(ResourceDetailCard::make($request->getResource(), $card));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function update(UpdateFormRequest $request): JsonResponse
     {
         try {
@@ -100,9 +97,6 @@ final class ResourceController extends BaseController
         return $this->jsonSuccessMessage(trans('moonshine::ui.saved'));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function store(StoreFormRequest $request): JsonResponse
     {
         try {
@@ -116,9 +110,6 @@ final class ResourceController extends BaseController
         return $this->jsonSuccessMessage(trans('moonshine::ui.saved'));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function destroy(DeleteFormRequest $request): JsonResponse
     {
         try {
