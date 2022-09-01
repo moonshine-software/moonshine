@@ -23,7 +23,6 @@
         "ext-json": "*",
         "laravel/framework": "^9.21",
         "laravel/sanctum": "^3.0",
-        "phpoffice/phpspreadsheet": "1.24.1",
         "rap2hpoutre/fast-excel": "^4.1"
     },
     "require-dev": {
