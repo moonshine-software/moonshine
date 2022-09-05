@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Traits\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
-trait ResourcePolicy
+trait ResourceModelPolicy
 {
     public static bool $withPolicy = false;
 

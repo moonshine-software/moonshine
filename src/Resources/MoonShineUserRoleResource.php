@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
+use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Filters\TextFilter;
 use Leeto\MoonShine\Models\MoonshineUserRole;
 
-final class MoonShineUserRoleResource extends Resource
+final class MoonShineUserRoleResource extends ModelResource
 {
     public static string $model = MoonshineUserRole::class;
 
@@ -27,6 +28,11 @@ final class MoonShineUserRoleResource extends Resource
             Text::make(trans('moonshine::ui.base_resource.role_name'), 'name')
                 ->required()->showOnExport(),
         ];
+    }
+
+    public function rowActions(Model $item): array
+    {
+        return [];
     }
 
     public function rules($item): array

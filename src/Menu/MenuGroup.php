@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Menu;
 
 use JsonSerializable;
+use Leeto\MoonShine\Contracts\ResourceContract;
 use Leeto\MoonShine\Exceptions\MenuException;
-use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
 
 final class MenuGroup extends MenuSection implements JsonSerializable
@@ -20,11 +20,11 @@ final class MenuGroup extends MenuSection implements JsonSerializable
             $item = is_string($item) ? new $item() : $item;
 
             throw_if(
-                !$item instanceof MenuItem && !$item instanceof Resource,
-                new MenuException('An object of the MenuItem|BaseResource class is required')
+                !$item instanceof MenuItem && !$item instanceof ResourceContract,
+                new MenuException('An object of the MenuItem|Resource class is required')
             );
 
-            if ($item instanceof Resource) {
+            if ($item instanceof ResourceContract) {
                 return new MenuItem($item->title(), $item);
             }
 

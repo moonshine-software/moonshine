@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Traits\Resource;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-trait ResourceQuery
+trait ResourceModelQuery
 {
     public static array $with = [];
 

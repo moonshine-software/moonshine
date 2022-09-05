@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Actions;
 
 use JsonSerializable;
 use Leeto\MoonShine\Http\Requests\Resources\ActionFormRequest;
+use Leeto\MoonShine\MoonShineRouter;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithUriKey;
 
@@ -22,8 +23,9 @@ abstract class Action implements JsonSerializable
 
     public function url(): string
     {
-        return route(
-            config('moonshine.prefix').'.action', [$this->uriKey(), ...request()->query()]
+        return MoonShineRouter::to(
+            'action',
+            [$this->uriKey(), ...request()->query()]
         );
     }
 

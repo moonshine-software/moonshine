@@ -13,8 +13,8 @@ use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Models\MoonshineUserRole;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
+use Leeto\MoonShine\Resources\ModelResource;
 use Leeto\MoonShine\Resources\MoonShineUserResource;
-use Leeto\MoonShine\Resources\Resource;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -22,7 +22,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected Authenticatable|MoonshineUser $adminUser;
 
-    protected Resource $testResource;
+    protected ModelResource $testResource;
 
     protected function setUp(): void
     {
@@ -90,7 +90,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         return $this;
     }
 
-    protected function testResource(): Resource
+    protected function testResource(): ModelResource
     {
         return $this->testResource;
     }

@@ -6,13 +6,13 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Contracts\ResourceContract;
 
 class MoonShineRequest extends FormRequest
 {
     protected ?Model $model = null;
 
-    protected ?Resource $resource = null;
+    protected ?ResourceContract $resource = null;
 
     public function rules(): array
     {
@@ -31,7 +31,7 @@ class MoonShineRequest extends FormRequest
             ->extractLabels();
     }
 
-    public function getResource(): Resource
+    public function getResource(): ResourceContract
     {
         if ($this->resource) {
             return $this->resource;

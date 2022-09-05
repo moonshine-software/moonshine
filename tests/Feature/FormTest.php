@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Feature;
 
-use Illuminate\Support\Collection;
-use Leeto\MoonShine\Contracts\Fields\HasRelatedValues;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Form\Form;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Tests\TestCase;
+use Leeto\MoonShine\ValueEntities\ModelValueEntity;
+use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
 
 class FormTest extends TestCase
 {
@@ -32,16 +32,11 @@ class FormTest extends TestCase
     public function it_fill(): void
     {
         $model = MoonshineUser::query()->first();
+        $valueEntity = (new ModelValueEntityBuilder($model))->build();
 
         $form = Form::make($this->testResource()->fieldsCollection()->formFields())
-            ->fill($model);
+            ->fill($valueEntity);
 
-        $this->assertInstanceOf(MoonshineUser::class, $form->values());
-
-        foreach ($form->fields()->onlyFields() as $field) {
-            if ($field instanceof HasRelatedValues) {
-                $this->assertInstanceOf(Collection::class, $field->relatedValues());
-            }
-        }
+        $this->assertInstanceOf(ModelValueEntity::class, $form->values());
     }
 }

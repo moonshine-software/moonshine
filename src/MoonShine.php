@@ -7,10 +7,10 @@ namespace Leeto\MoonShine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Stringable;
+use Leeto\MoonShine\Contracts\ResourceContract;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
-use Leeto\MoonShine\Resources\Resource;
 
 final class MoonShine
 {
@@ -34,10 +34,10 @@ final class MoonShine
         return static::NAMESPACE.$path;
     }
 
-    public static function getResourceFromUri(string $uri): Resource
+    public static function getResourceFromUri(string $uri): ResourceContract
     {
         $resource = app(MoonShine::class)->getResources()
-            ->first(fn(Resource $resource) => $resource->uriKey() === $uri);
+            ->first(fn(ResourceContract $resource) => $resource->uriKey() === $uri);
 
         if ($resource) {
             return $resource;
@@ -68,7 +68,7 @@ final class MoonShine
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
-            if ($item instanceof Resource) {
+            if ($item instanceof ResourceContract) {
                 $this->resources->add($item);
                 $this->menus->add(new MenuItem($item->title(), $item));
             } elseif ($item instanceof MenuItem) {
@@ -91,7 +91,7 @@ final class MoonShine
     /**
      * Get collection of registered resources
      *
-     * @return Collection<Resource>
+     * @return Collection<ResourceContract>
      */
     public function getResources(): Collection
     {
@@ -108,7 +108,7 @@ final class MoonShine
         Route::prefix(config('moonshine.prefix'))
             ->middleware(['moonshine', 'auth:moonshine'])
             ->name(config('moonshine.prefix').'.')->group(function () {
-                $this->getResources()->each(function (Resource $resource) {
+                $this->getResources()->each(function (ResourceContract $resource) {
                     $resource->resolveRoutes();
                 });
             });

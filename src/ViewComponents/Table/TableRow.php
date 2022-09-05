@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Table;
+namespace Leeto\MoonShine\ViewComponents\Table;
 
-use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
+use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
 
 final class TableRow implements JsonSerializable
@@ -15,18 +14,12 @@ final class TableRow implements JsonSerializable
     use Makeable;
 
     public function __construct(
-        protected Resource $resource,
-        protected Model $values,
+        protected ValueEntityContract $values,
         protected Fields $fields
     ) {
     }
 
-    public function resource(): Resource
-    {
-        return $this->resource;
-    }
-
-    public function values(): Model
+    public function values(): ValueEntityContract
     {
         return $this->values;
     }
@@ -38,12 +31,7 @@ final class TableRow implements JsonSerializable
 
     public function id(): int
     {
-        return $this->values()->getKey();
-    }
-
-    public function policies(): array
-    {
-        return $this->resource()->policies($this->values());
+        return $this->values()->id();
     }
 
     public function jsonSerialize(): array
@@ -51,7 +39,7 @@ final class TableRow implements JsonSerializable
         return [
             'id' => $this->id(),
             'fields' => $this->fields(),
-            'policies' => $this->policies(),
+            'actions' => $this->values()->actions(),
         ];
     }
 }

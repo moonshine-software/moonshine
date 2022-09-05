@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\Actions\Action;
+use Leeto\MoonShine\ActionsLayer\MakeTableAction;
 use Leeto\MoonShine\DetailCard\DetailCard;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Form\Form;
@@ -19,11 +21,12 @@ use Leeto\MoonShine\Http\Requests\Resources\StoreFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\UpdateFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use Leeto\MoonShine\Http\Requests\Resources\ViewFormRequest;
-use Leeto\MoonShine\Http\Responses\ResourceDetailCard;
-use Leeto\MoonShine\Http\Responses\ResourceForm;
-use Leeto\MoonShine\Http\Responses\ResourceIndex;
-use Leeto\MoonShine\Table\Table;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
+use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\ViewComponents\ViewComponents;
+use Leeto\MoonShine\Views\DetailView;
+use Leeto\MoonShine\Views\FormView;
+use Leeto\MoonShine\Views\IndexView;
 
 final class ResourceController extends BaseController
 {
@@ -37,20 +40,17 @@ final class ResourceController extends BaseController
         return $action->handle($request);
     }
 
-    public function index(ViewAnyFormRequest $request): JsonResponse
+    public function index(ViewAnyFormRequest $request, MakeTableAction $tableAction): JsonResponse
     {
-        $table = Table::make(
-            $request->getResource(),
-            $request->getResource()->paginate(),
-            $request->getResource()->fieldsCollection()->tableFields(),
-        );
-
-        return response()->json(
-            ResourceIndex::make(
-                $request->getResource(),
-                $table
+        return response()->json([
+            'resource' => $request->getResource(),
+            'view' => IndexView::make(
+                //endpoint: 'views/'.$request->getResource()->uriKey(),
+                ViewComponents::make([
+                    $tableAction($request->getResource())
+                ]),
             )
-        );
+        ]);
     }
 
     public function create(CreateFormRequest $request): JsonResponse
@@ -59,7 +59,10 @@ final class ResourceController extends BaseController
             ->action($request->getResource()->route('store'))
             ->method('post');
 
-        return $this->jsonResponse(ResourceForm::make($request->getResource(), $form));
+        return $this->jsonResponse(
+            FormView::make($request->getResource(), $form),
+            Response::HTTP_CREATED
+        );
     }
 
     public function edit(EditFormRequest $request): JsonResponse
@@ -69,19 +72,23 @@ final class ResourceController extends BaseController
         $form = Form::make($request->getResource()->fieldsCollection()->formFields())
             ->action($request->getResource()->route('update', $item->getKey()))
             ->method('put')
-            ->fill($item);
+            ->fill((new ModelValueEntityBuilder($item))->build());
 
-        return $this->jsonResponse(ResourceForm::make($request->getResource(), $form));
+        return $this->jsonResponse(
+            FormView::make($request->getResource(), $form)
+        );
     }
 
     public function show(ViewFormRequest $request): JsonResponse
     {
         $card = DetailCard::make(
             $request->getResource()->fieldsCollection()->detailFields(),
-            $request->findModel()
+            (new ModelValueEntityBuilder($request->findModel()))->build()
         );
 
-        return $this->jsonResponse(ResourceDetailCard::make($request->getResource(), $card));
+        return $this->jsonResponse(
+            DetailView::make($request->getResource(), $card)
+        );
     }
 
     public function update(UpdateFormRequest $request): JsonResponse

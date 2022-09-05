@@ -8,11 +8,11 @@ use Closure;
 use JsonSerializable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\Fields\HasRelatedValues;
 use Leeto\MoonShine\Contracts\Fields\HasRelationship;
+use Leeto\MoonShine\Contracts\ResourceContract;
+use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Fields\HintTrait;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowOrHide;
@@ -45,7 +45,7 @@ abstract class Field implements JsonSerializable, HasAssets
 
     protected ?string $relation = null;
 
-    protected ?Resource $resource;
+    protected ?ResourceContract $resource;
 
     protected string $resourceColumn = 'id';
 
@@ -62,7 +62,7 @@ abstract class Field implements JsonSerializable, HasAssets
     final public function __construct(
         string $label = null,
         string $column = null,
-        Closure|Resource|string|null $resource = null
+        Closure|ResourceContract|string|null $resource = null
     ) {
         $this->resolveLabel($label);
         $this->resolveColumn($column);
@@ -111,9 +111,9 @@ abstract class Field implements JsonSerializable, HasAssets
         }
     }
 
-    protected function resolveResource(Closure|Resource|string|null $argument): void
+    protected function resolveResource(Closure|ResourceContract|string|null $argument): void
     {
-        if ($argument instanceof Resource) {
+        if ($argument instanceof ResourceContract) {
             $this->resource = $argument;
         } elseif (is_string($argument)) {
             $this->resourceColumn = $argument;
@@ -122,7 +122,7 @@ abstract class Field implements JsonSerializable, HasAssets
         }
     }
 
-    protected function resolveValueCallback(Closure|Resource|string|null $argument): void
+    protected function resolveValueCallback(Closure|ResourceContract|string|null $argument): void
     {
         if ($argument instanceof Closure) {
             $this->valueCallback = $argument;
@@ -144,12 +144,12 @@ abstract class Field implements JsonSerializable, HasAssets
         return $this->relation;
     }
 
-    public function resource(): ?Resource
+    public function resource(): ?ResourceContract
     {
         return $this->resource ?? $this->findResource();
     }
 
-    protected function findResource(): ?Resource
+    protected function findResource(): ?ResourceContract
     {
         $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
             ->append(str($this->relation() ?? $this->column())->studly()->singular())
@@ -194,9 +194,11 @@ abstract class Field implements JsonSerializable, HasAssets
         return $this;
     }
 
-    public function resolveFill($values): static
+    public function resolveFill(ValueEntityContract $values): static
     {
-        $this->setValue($values[$this->relation() ?? $this->column()] ?? null);
+        $this->setValue(
+            $values->attributes($this->relation() ?? $this->column()) ?? null
+        );
 
         return $this;
     }
@@ -257,7 +259,6 @@ abstract class Field implements JsonSerializable, HasAssets
             'key' => $this->column(),
             'relation' => $this->relation(),
             'value' => $this->value(),
-            'relatedValues' => $this instanceof HasRelatedValues ? $this->relatedValues() : [],
             'resource' => $this->resource(),
             'attributes' => $this->attributes()->getAttributes(),
             'fields' => $this instanceof HasFields ? $this->getFields() : []

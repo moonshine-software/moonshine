@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Menu;
 
 use JsonSerializable;
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Contracts\ResourceContract;
 use Leeto\MoonShine\Traits\Makeable;
 
 final class MenuItem extends MenuSection implements JsonSerializable
 {
     use Makeable;
 
-    final public function __construct(string $title, Resource|string $resource, string $icon = null)
+    final public function __construct(string $title, ResourceContract|string $resource, string $icon = null)
     {
         $this->title = $title;
         $this->resource = is_string($resource) ? new $resource() : $resource;

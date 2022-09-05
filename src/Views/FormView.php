@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Responses;
+namespace Leeto\MoonShine\Views;
 
 use JsonSerializable;
-use Leeto\MoonShine\Form\Form;
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\ViewComponents\Form\Form;
+use Leeto\MoonShine\Contracts\ResourceContract;
 use Leeto\MoonShine\Traits\Makeable;
 
-final class ResourceForm implements JsonSerializable
+final class FormView implements JsonSerializable
 {
     use Makeable;
 
     public function __construct(
-        protected Resource $resource,
+        protected ResourceContract $resource,
         protected Form $form
     ) {
     }
 
     /**
-     * @return Resource
+     * @return ResourceContract
      */
-    public function resource(): Resource
+    public function resource(): ResourceContract
     {
         return $this->resource;
     }
@@ -42,8 +42,7 @@ final class ResourceForm implements JsonSerializable
             'title' => $this->resource()->title(),
             'resource' => [
                 'uriKey' => $this->resource()->uriKey(),
-                'id' => $this->form()->values()?->getKey(),
-                'policies' => $this->resource()->policies($this->form()->values()),
+                'id' => $this->form()->values()?->id(),
                 'form' => $this->form()
             ]
         ];

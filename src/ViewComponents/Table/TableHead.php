@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Table;
+namespace Leeto\MoonShine\ViewComponents\Table;
 
 use JsonSerializable;
 use Leeto\MoonShine\Fields\Field;

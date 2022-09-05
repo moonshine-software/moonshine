@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
+use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Actions\ExportAction;
 use Leeto\MoonShine\Decorations\Heading;
 use Leeto\MoonShine\Decorations\Tab;
@@ -17,8 +18,9 @@ use Leeto\MoonShine\Fields\PasswordRepeat;
 use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Filters\TextFilter;
 use Leeto\MoonShine\Models\MoonshineUser;
+use Leeto\MoonShine\RowActions\EditRowAction;
 
-final class MoonShineUserResource extends Resource
+final class MoonShineUserResource extends ModelResource
 {
     public static string $model = MoonshineUser::class;
 
@@ -81,6 +83,17 @@ final class MoonShineUserResource extends Resource
                     ->hideOnIndex(),
             ])
         ];
+    }
+
+    public function rowActions(Model $item): array
+    {
+        return array_filter([
+            $this->can('edit', $item)
+                ? EditRowAction::make('Edit')
+                ->icon('pencil')
+                ->customAttributes(['style' => 'background: gray'])
+                : false
+        ]);
     }
 
     public function rules($item): array

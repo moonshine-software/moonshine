@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Menu;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Contracts\ResourceContract;
+use Leeto\MoonShine\Traits\WithIcon;
 
 abstract class MenuSection
 {
-    protected string $title;
+    use WithIcon;
 
-    protected ?string $icon = null;
+    protected string $title;
 
     protected Collection $items;
 
-    protected Resource $resource;
+    protected ResourceContract $resource;
 
     public function title(): string
     {
@@ -27,21 +28,9 @@ abstract class MenuSection
         return $this->items;
     }
 
-    public function icon(string $icon): static
-    {
-        $this->icon = $icon;
-
-        return $this;
-    }
-
-    public function resource(): Resource
+    public function resource(): ResourceContract
     {
         return $this->resource;
-    }
-
-    public function getIcon()
-    {
-        return $this->icon ?? 'app';
     }
 
     public function isGroup(): bool

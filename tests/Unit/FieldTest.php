@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Tests\Unit;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\HasMany;
 use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Tests\Fixtures\RelationResource;
+use Leeto\MoonShine\Tests\Fixtures\RelationModelResource;
 use Leeto\MoonShine\Tests\TestCase;
 
 class FieldTest extends TestCase
@@ -70,9 +70,9 @@ class FieldTest extends TestCase
      */
     public function it_field_resource(): void
     {
-        $field = HasMany::make('Many Relations', resource: new RelationResource());
+        $field = HasMany::make('Many Relations', resource: new RelationModelResource());
 
-        $this->assertInstanceOf(RelationResource::class, $field->resource());
+        $this->assertInstanceOf(RelationModelResource::class, $field->resource());
     }
 
     /**

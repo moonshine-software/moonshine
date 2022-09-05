@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Responses;
+namespace Leeto\MoonShine\Views;
 
 use JsonSerializable;
 use Leeto\MoonShine\DetailCard\DetailCard;
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Contracts\ResourceContract;
 use Leeto\MoonShine\Traits\Makeable;
 
-final class ResourceDetailCard implements JsonSerializable
+final class DetailView implements JsonSerializable
 {
     use Makeable;
 
     public function __construct(
-        protected Resource $resource,
+        protected ResourceContract $resource,
         protected DetailCard $card
     ) {
     }
 
     /**
-     * @return Resource
+     * @return ResourceContract
      */
-    public function resource(): Resource
+    public function resource(): ResourceContract
     {
         return $this->resource;
     }
@@ -38,12 +38,12 @@ final class ResourceDetailCard implements JsonSerializable
 
     public function jsonSerialize(): array
     {
+        # TODO
         return [
             'title' => $this->resource()->title(),
             'resource' => [
                 'uriKey' => $this->resource()->uriKey(),
-                'id' => $this->card()->values()->getKey(),
-                'policies' => $this->resource()->policies($this->card()->values()),
+                'id' => $this->card()->values()->id(),
                 'card' => $this->card()
             ]
         ];

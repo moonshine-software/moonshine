@@ -10,21 +10,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use JsonSerializable;
 use Leeto\MoonShine\Actions\Action;
+use Leeto\MoonShine\Contracts\ResourceContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\Metrics\Metric;
-use Leeto\MoonShine\Traits\Resource\ResourcePolicy;
-use Leeto\MoonShine\Traits\Resource\ResourceQuery;
+use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
+use Leeto\MoonShine\Traits\Resource\ResourceModelQuery;
 use Leeto\MoonShine\Traits\Resource\ResourceRouter;
 use Leeto\MoonShine\Traits\WithUriKey;
 
-abstract class Resource implements JsonSerializable
+abstract class ModelResource implements ResourceContract, JsonSerializable
 {
-    use ResourceQuery;
-    use ResourcePolicy;
+    use ResourceModelQuery;
+    use ResourceModelPolicy;
     use ResourceRouter;
     use WithUriKey;
 
@@ -64,6 +65,8 @@ abstract class Resource implements JsonSerializable
      * @return Action[]
      */
     abstract public function actions(): array;
+
+    abstract public function rowActions(Model $item): array;
 
     /**
      * Get an array of fields which will be used for search on resource index page
@@ -190,6 +193,7 @@ abstract class Resource implements JsonSerializable
         return [
             'title' => $this->title(),
             'uri' => $this->uriKey(),
+            'policies' => $this->policies(),
             'softDeletes' => $this->softDeletes(),
         ];
     }

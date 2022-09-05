@@ -8,11 +8,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Table\Table;
 use Leeto\MoonShine\Table\TableHead;
 use Leeto\MoonShine\Table\TableRow;
 use Leeto\MoonShine\Tests\TestCase;
+use Leeto\MoonShine\ValueEntities\ModelValueEntity;
+use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
 
 class TableTest extends TestCase
 {
@@ -22,9 +23,14 @@ class TableTest extends TestCase
      */
     public function it_properties(): void
     {
+        $paginator = $this->testResource()->paginate();
+
+        $paginator->getCollection()->transform(function (Model $values) {
+            return (new ModelValueEntityBuilder($values))->build();
+        });
+
         $table = Table::make(
-            $this->testResource(),
-            $this->testResource()->paginate(),
+            $paginator,
             $this->testResource()->fieldsCollection()->tableFields()
         );
 
@@ -37,8 +43,7 @@ class TableTest extends TestCase
         foreach ($rows as $row) {
             $this->assertInstanceOf(TableRow::class, $row);
             $this->assertInstanceOf(Fields::class, $row->fields());
-            $this->assertInstanceOf(Model::class, $row->values());
-            $this->assertInstanceOf(Resource::class, $row->resource());
+            $this->assertInstanceOf(ModelValueEntity::class, $row->values());
             $this->assertNotNull($row->id());
 
             $row->fields()->every(function (Field $field) {

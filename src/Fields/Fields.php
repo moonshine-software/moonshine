@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Decorations\Tab;
 
@@ -124,7 +124,7 @@ final class Fields extends Collection
         })->toArray();
     }
 
-    public function fillValues(Model|array $values): Fields
+    public function fillValues(ValueEntityContract $values): Fields
     {
         return $this->map(function ($field) use ($values) {
             if ($field instanceof Tab) {

@@ -5,9 +5,9 @@ namespace Leeto\MoonShine\Tests\Fixtures;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Resources\ModelResource;
 
-class RelationResource extends Resource
+class RelationModelResource extends ModelResource
 {
     public static string $model = MoonshineUser::class;
 
@@ -43,6 +43,11 @@ class RelationResource extends Resource
     }
 
     public function actions(): array
+    {
+        return [];
+    }
+
+    public function rowActions(Model $item): array
     {
         return [];
     }
