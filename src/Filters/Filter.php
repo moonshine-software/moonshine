@@ -6,11 +6,9 @@ namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
 use Leeto\MoonShine\Contracts\HtmlViewable;
-
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
@@ -38,12 +36,20 @@ abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
 
     public function getQuery(Builder $query): Builder
     {
-        if ($this->hasRelationship() && !$this->belongToOne()) {
-            $table = $this->getRelated($query->getModel())->getTable();
+        if ($this->hasRelationship()) {
+            $related = $this->getRelated($query->getModel());
 
             return $this->requestValue()
-                ? $query->whereHas($this->relation(), function (Builder $q) use ($table) {
-                    return $q->whereIn("$table.id", $this->requestValue());
+                ? $query->whereHas($this->relation(), function (Builder $q) use ($related) {
+                    $table = $related->getTable();
+                    $id = $related->getKeyName();
+
+                    return $q->whereIn(
+                        "$table.$id",
+                        is_array($this->requestValue())
+                            ? $this->requestValue()
+                            : [$this->requestValue()]
+                    );
                 })
                 : $query;
         }

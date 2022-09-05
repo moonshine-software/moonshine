@@ -51,6 +51,10 @@ trait WithRelationship
                 : in_array($value, $this->formViewValue($item));
         }
 
+        if ($this->belongToOne() && is_array($this->formViewValue($item))) {
+            return in_array($value, $this->formViewValue($item));
+        }
+
         return (string) $this->formViewValue($item) === $value
             || (!$this->formViewValue($item) && (string) $this->getDefault() === $value);
     }
