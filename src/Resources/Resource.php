@@ -193,7 +193,7 @@ abstract class Resource implements ResourceContract
             ->when($action, fn($str) => $str->append('.')->append($action));
     }
 
-    public function route(string $action, int $id = null, array $query = []): string
+    public function route(string $action = null, int|string $id = null, array $query = []): string
     {
         return route(
             $this->routeName($action),
