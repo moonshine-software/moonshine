@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Fields\ID;
+use Leeto\MoonShine\RowActions\EditRowAction;
+use Leeto\MoonShine\RowActions\DeleteRowAction;
+use Leeto\MoonShine\RowActions\ShowRowAction;
 
 final class DummyResource extends Resource
 {
@@ -38,5 +41,14 @@ final class DummyResource extends Resource
     public function actions(): array
     {
         return [];
+    }
+
+    public function rowActions(Model $item): array
+    {
+        return [
+            ShowRowAction::make(__('moonshine::ui.show')),
+            EditRowAction::make(__('moonshine::ui.edit'))
+            DeleteRowAction::make(__('moonshine::ui.delete'))
+        ];
     }
 }

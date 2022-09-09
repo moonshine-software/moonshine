@@ -94,10 +94,9 @@ trait FileTrait
     {
         $extension = $file->extension();
 
-        throw_if(
-            !$this->isAllowedExtension($extension),
-            new FieldException("$extension not allowed")
-        );
+        if (!$this->isAllowedExtension($extension)) {
+            throw FieldException::notAllowedFileExtension($extension);
+        }
 
         return $file->store($this->getDir(), $this->getDisk());
     }

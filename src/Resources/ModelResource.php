@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
-use JsonSerializable;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\Resources\CrudContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
@@ -30,7 +29,7 @@ use Leeto\MoonShine\Views\CrudFormView;
 use Leeto\MoonShine\Views\CrudIndexView;
 use Leeto\MoonShine\Views\Views;
 
-abstract class ModelResource implements ResourceContract, CrudContract, JsonSerializable
+abstract class ModelResource implements ResourceContract, CrudContract
 {
     use ResourceModelQuery;
     use ResourceModelPolicy;
@@ -181,7 +180,7 @@ abstract class ModelResource implements ResourceContract, CrudContract, JsonSeri
                 call_user_func([$this, 'afterCreated'], $item);
             }
         } catch (QueryException $queryException) {
-            throw new ResourceException($queryException->getMessage());
+            throw ResourceException::queryError($queryException->getMessage());
         }
 
         return $item;
@@ -196,7 +195,7 @@ abstract class ModelResource implements ResourceContract, CrudContract, JsonSeri
             $item->forceFill($values);
             $item->save();
         } catch (QueryException $queryException) {
-            throw new ResourceException($queryException->getMessage());
+            throw ResourceException::queryError($queryException->getMessage());
         }
 
         return $item;

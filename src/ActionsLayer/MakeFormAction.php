@@ -24,7 +24,6 @@ final class MakeFormAction
                 ->method('put');
         }
 
-        # TODO set endpoint
         return $form;
     }
 }

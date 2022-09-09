@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Exceptions\MenuException;
-use Leeto\MoonShine\Exceptions\ResourceException;
+use Leeto\MoonShine\Exceptions\MoonShineException;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuSection;
 use Throwable;
@@ -70,10 +70,9 @@ final class MoonShine
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
-            throw_if(
-                !$item instanceof ResourceContract,
-                new ResourceException('Only Resources allowed')
-            );
+            if (!$item instanceof ResourceContract) {
+                throw MoonShineException::onlyResourceAllowed();
+            }
 
             $this->resources->add($item);
         });
@@ -88,10 +87,9 @@ final class MoonShine
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
-            throw_if(
-                !$item instanceof MenuSection,
-                new MenuException('Only MenuItem|MenuGroup allowed')
-            );
+            if (!$item instanceof MenuSection) {
+                throw MenuException::onlyMenuItemAllowed();
+            }
 
             $this->menu->add($item);
         });

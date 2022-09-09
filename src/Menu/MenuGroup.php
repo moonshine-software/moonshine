@@ -18,10 +18,9 @@ final class MenuGroup extends MenuSection implements JsonSerializable
     ) {
         $this->title = $title;
         $this->items = collect($items)->map(function ($item) {
-            throw_if(
-                !$item instanceof MenuItem,
-                new MenuException('An object of the MenuItem class is required')
-            );
+            if (!$item instanceof MenuSection) {
+                throw MenuException::onlyMenuItemAllowed();
+            }
 
             return $item;
         });

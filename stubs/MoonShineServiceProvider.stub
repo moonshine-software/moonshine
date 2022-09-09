@@ -4,20 +4,28 @@ namespace App\Providers;
 
 use Leeto\MoonShine\Providers\MoonShineApplicationServiceProvider;
 use Leeto\MoonShine\MoonShine;
+use Leeto\MoonShine\Menu\MenuGroup;
+use Leeto\MoonShine\Menu\MenuItem;
+use Leeto\MoonShine\Resources\MoonShineUserResource;
+use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
     protected function resources(): void
     {
         app(MoonShine::class)->resources([
-
+            MoonShineUserRoleResource::class,
+            MoonShineUserResource::class,
         ]);
     }
 
     protected function menu(): void
     {
         app(MoonShine::class)->menu([
-
+            MenuGroup::make(__('moonshine::ui.system_settings'), [
+                MenuItem::make(new MoonShineUserResource()),
+                MenuItem::make(new MoonShineUserRoleResource())
+            ])
         ]);
     }
 }

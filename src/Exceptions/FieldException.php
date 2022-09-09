@@ -8,4 +8,8 @@ use Exception;
 
 final class FieldException extends Exception
 {
+    public static function notAllowedFileExtension(string $extension): self
+    {
+        return new static("$extension not allowed");
+    }
 }

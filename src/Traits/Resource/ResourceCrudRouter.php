@@ -35,7 +35,7 @@ trait ResourceCrudRouter
         });
     }
 
-    public function route(string $action = null, int $id = null, array $query = []): string
+    public function route(string $action = null, string|int $id = null, array $query = []): string
     {
         return route(
             $this->routeName($action),

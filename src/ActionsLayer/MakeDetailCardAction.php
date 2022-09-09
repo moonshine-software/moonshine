@@ -14,7 +14,6 @@ final class MakeDetailCardAction
         ResourceContract $resource,
         ValueEntityContract $value
     ): DetailCard {
-        # TODO set endpoint
         return DetailCard::make(
             $resource->fieldsCollection()->detailFields(),
             $value

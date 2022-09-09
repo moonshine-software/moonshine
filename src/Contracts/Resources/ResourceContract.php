@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Contracts\Resources;
 
+use JsonSerializable;
 use Leeto\MoonShine\Views\Views;
 
-interface ResourceContract
+interface ResourceContract extends JsonSerializable
 {
     public function title(): string;
 

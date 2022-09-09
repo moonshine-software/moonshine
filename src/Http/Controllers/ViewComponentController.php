@@ -6,6 +6,8 @@ namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Leeto\MoonShine\Exceptions\ViewComponentException;
+use Leeto\MoonShine\Exceptions\ViewException;
 use Leeto\MoonShine\Http\Requests\Resources\ViewComponentsFormRequest;
 use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 use Leeto\MoonShine\Views\MoonShineView;
@@ -14,11 +16,19 @@ final class ViewComponentController extends BaseController
 {
     use ApiResponder;
 
+    /**
+     * @throws ViewComponentException
+     * @throws ViewException
+     */
     public function __invoke(ViewComponentsFormRequest $request): JsonResponse
     {
-        /* @var MoonShineView $viewClass */
         $viewClass = $request->getViewClass();
 
+        if (!class_exists($viewClass)) {
+            throw ViewException::notFound();
+        }
+
+        /* @var MoonShineView $viewClass */
         $view = $viewClass::make($request->getResource());
 
         return $this->jsonResponse(

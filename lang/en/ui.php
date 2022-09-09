@@ -2,8 +2,11 @@
 
 return [
     'dashboard' => 'Dashboard',
+    'system_settings' => 'System settings',
     'add' => 'Add',
     'create' => 'Create',
+    'edit' => 'Edit',
+    'show' => 'Show',
     'save' => 'Save',
     'saved' => 'Saved',
     'saved_error' => 'Error',

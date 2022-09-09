@@ -19,7 +19,6 @@ final class MakeTableAction
             return $resource->valueEntity($values);
         });
 
-        # TODO set endpoint
         return Table::make(
             $entitiesPaginator,
             $resource->fieldsCollection()->tableFields(),

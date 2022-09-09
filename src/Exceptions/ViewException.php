@@ -8,4 +8,8 @@ use Exception;
 
 final class ViewException extends Exception
 {
+    public static function notFound(): self
+    {
+        return new static('View not found');
+    }
 }
