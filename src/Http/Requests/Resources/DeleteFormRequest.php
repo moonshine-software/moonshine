@@ -10,6 +10,6 @@ final class DeleteFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('delete', $this->findModel());
+        return $this->getResource()->can('delete', $this->getDataOrFail());
     }
 }

@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\ActionsLayer;
 
-use Leeto\MoonShine\Contracts\ResourceContract;
-use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\ViewComponents\Table\Table;
 
 final class MakeTableAction
 {
     public function __invoke(ResourceContract $resource): Table
     {
-        $entitiesPaginator = $resource->paginate()
-            ->getCollection()
-            ->transform(function ($values) use ($resource) {
-                # TODO switch ValueEntityBuilder by resource
-                return (new ModelValueEntityBuilder($values))
-                    ->build()
-                    ->withActions($resource->rowActions($values));
-            });
+        $entitiesPaginator = $resource->paginate()->through(function ($values) use ($resource) {
+            if (!method_exists($resource, 'valueEntity')) {
+                return $values;
+            }
 
+            return $resource->valueEntity($values);
+        });
+
+        # TODO set endpoint
         return Table::make(
             $entitiesPaginator,
             $resource->fieldsCollection()->tableFields(),

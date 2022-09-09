@@ -49,9 +49,11 @@ final class ModelValueEntity implements ValueEntityContract
         return $key ? $this->attributes[$key] : $this->attributes;
     }
 
-    public function withActions(array $actions): ModelValueEntity
+    public function withActions(array $actions, string $routeParam): ModelValueEntity
     {
-        $this->actions = $actions;
+        $this->actions = collect($actions)->each(function (RowAction $action) use ($routeParam) {
+            return $action->resolveRoute($routeParam, $this->primaryKey());
+        })->toArray();
 
         return $this;
     }

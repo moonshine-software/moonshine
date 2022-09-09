@@ -5,22 +5,29 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Menu;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\Contracts\ResourceContract;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Traits\WithIcon;
 
 abstract class MenuSection
 {
     use WithIcon;
 
-    protected string $title;
+    protected ?string $title = null;
+
+    protected string $url;
 
     protected Collection $items;
 
-    protected ResourceContract $resource;
+    protected ?ResourceContract $resource = null;
 
     public function title(): string
     {
-        return $this->title;
+        return $this->title ?? '';
+    }
+
+    public function url(): string
+    {
+        return $this->url;
     }
 
     public function items(): Collection
@@ -28,7 +35,7 @@ abstract class MenuSection
         return $this->items;
     }
 
-    public function resource(): ResourceContract
+    public function resource(): ?ResourceContract
     {
         return $this->resource;
     }
@@ -48,8 +55,12 @@ abstract class MenuSection
             }
 
             return false;
-        } else {
+        }
+
+        if ($this->resource()) {
             return request()->routeIs($this->resource()->routeName('*'));
         }
+
+        return false;
     }
 }

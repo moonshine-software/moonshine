@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\ViewComponents\Form;
 
-use JsonSerializable;
-use Leeto\MoonShine\Contracts\ViewComponentContract;
+use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithComponentAttributes;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\ViewComponents\MoonShineViewComponent;
 
-final class Form implements ViewComponentContract, JsonSerializable
+final class Form extends MoonShineViewComponent
 {
-    use Makeable;
-    use WithComponentAttributes;
+    protected static string $component = 'FormComponent';
 
     /**
      * @var Fields<Field|Decoration>
@@ -75,7 +71,8 @@ final class Form implements ViewComponentContract, JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'attributes' => $this->attributes()->getAttributes(),
+            ...parent::jsonSerialize(),
+
             'fields' => $this->fields(),
         ];
     }

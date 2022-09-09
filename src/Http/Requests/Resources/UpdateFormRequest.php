@@ -10,11 +10,11 @@ final class UpdateFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('update', $this->findModel());
+        return $this->getResource()->can('update', $this->getDataOrFail());
     }
 
     public function rules(): array
     {
-        return $this->getResource()->rules($this->findModel());
+        return $this->getResource()->rules($this->getDataOrFail());
     }
 }

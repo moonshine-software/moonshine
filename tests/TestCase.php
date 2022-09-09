@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
+use Leeto\MoonShine\Menu\MenuItem;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Models\MoonshineUserRole;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
+use Leeto\MoonShine\Resources\FileLogViewerResource;
 use Leeto\MoonShine\Resources\ModelResource;
 use Leeto\MoonShine\Resources\MoonShineUserResource;
 
@@ -97,8 +99,12 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function registerTestResource(): static
     {
-        app(MoonShine::class)->registerResources([
-            $this->testResource()
+        app(MoonShine::class)->resources([
+            $this->testResource(),
+        ]);
+
+        app(MoonShine::class)->menu([
+            MenuItem::make($this->testResource())
         ]);
 
         return $this;

@@ -6,11 +6,11 @@ namespace Leeto\MoonShine\Http\Requests\Resources;
 
 use Leeto\MoonShine\MoonShineRequest;
 
-final class EditFormRequest extends MoonShineRequest
+final class ViewsFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('update', $this->getDataOrFail());
+        return true;
     }
 
     public function rules(): array

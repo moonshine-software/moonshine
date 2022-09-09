@@ -15,44 +15,40 @@ abstract class RowAction implements JsonSerializable
     use WithIcon;
     use WithComponentAttributes;
 
-    protected bool $withConfirm = false;
+    protected string $route;
 
     public function __construct(
         protected string $title,
     ) {
     }
 
-    # TODO
-    abstract public function route(array $params = []): string;
+    abstract public function resolveRoute(string $routeParam, string|int $primaryKey): static;
+
+    public function route(): string
+    {
+        return $this->route;
+    }
 
     public function title(): string
     {
         return $this->title;
     }
 
-    # TODO
-    public function confirm(
-        string $title,
-        string $successButton,
-        string $cancelButton,
-        string $icon = null
-    ): static {
-        $this->withConfirm = true;
-
-        return $this;
+    public function type(): string
+    {
+        return str(static::class)
+            ->snake()
+            ->value();
     }
 
     public function jsonSerialize(): array
     {
         return [
+            'type' => $this->type(),
             'title' => $this->title(),
             'icon' => $this->getIcon(),
             'route' => $this->route(),
             'attributes' => $this->attributes()->getAttributes(),
-            # TODO
-            'confirm' => [
-                ''
-            ]
         ];
     }
 }

@@ -5,21 +5,17 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\ViewComponents\Table;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use JsonSerializable;
 use Leeto\MoonShine\Contracts\ValueEntityContract;
-use Leeto\MoonShine\Contracts\ViewComponentContract;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithComponentAttributes;
+use Leeto\MoonShine\ViewComponents\MoonShineViewComponent;
 
-final class Table implements ViewComponentContract, JsonSerializable
+final class Table extends MoonShineViewComponent
 {
-    use Makeable;
-    use WithComponentAttributes;
+    protected static string $component = 'TableComponent';
 
     public function __construct(
         protected LengthAwarePaginator $paginator,
-        protected Fields $fields
+        protected $fields
     ) {
     }
 
@@ -50,6 +46,8 @@ final class Table implements ViewComponentContract, JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            ...parent::jsonSerialize(),
+
             'paginator' => collect($this->paginator())->only([
                 'current_page',
                 'from',

@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Contracts;
+namespace Leeto\MoonShine\Contracts\Resources;
 
 use Leeto\MoonShine\Fields\Fields;
 
-interface ResourceContract
+interface CrudContract
 {
-    public function title(): string;
-
     public function fields(): array;
 
     public function fieldsCollection(): Fields;
@@ -19,8 +17,4 @@ interface ResourceContract
     public function actions(): array;
 
     public function search(): array;
-
-    public function resolveRoutes(): void;
-
-    public function uriKey(): string;
 }

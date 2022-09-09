@@ -4,33 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Resource;
 
-use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Http\Controllers\ResourceController;
-use Leeto\MoonShine\MoonShine;
-use Stringable;
-
 trait ResourceRouter
 {
-    public function resolveRoutes(): void
-    {
-        Route::prefix('resource')->group(function () {
-            Route::delete(
-                "{$this->uriKey()}/massDelete",
-                [ResourceController::class, 'massDelete']
-            )->name("{$this->routeAlias()}.massDelete");
-
-            Route::get(
-                "{$this->uriKey()}/action/{uri}",
-                [ResourceController::class, 'action']
-            )->name("{$this->routeAlias()}.action");
-
-            Route::resource($this->uriKey(), ResourceController::class)
-                ->parameters([$this->uriKey() => $this->routeParam()])
-                ->names($this->routeAlias());
-        });
-    }
-
-    public function routeAlias(): string
+    public function routeNameAlias(): string
     {
         return (string) str(static::class)
             ->classBasename()
@@ -41,35 +17,14 @@ trait ResourceRouter
 
     public function routeParam(): string
     {
-        return (string) str($this->routeAlias())->singular();
+        return (string) str($this->routeNameAlias())->singular();
     }
 
     public function routeName(?string $action = null): string
     {
         return (string) str(config('moonshine.prefix'))
             ->append('.')
-            ->append($this->routeAlias())
+            ->append($this->routeNameAlias())
             ->when($action, fn($str) => $str->append('.')->append($action));
-    }
-
-    public function route(string $action, int $id = null, array $query = []): string
-    {
-        return route(
-            $this->routeName($action),
-            $id ? array_merge([$this->routeParam() => $id], $query) : $query
-        );
-    }
-
-    public function controllerName(): string
-    {
-        return (string) str(static::class)
-            ->classBasename()
-            ->replace(['Resource'], '')
-            ->append('Controller')
-            ->whenContains(
-                ['MoonShine'],
-                fn(Stringable $str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
-                fn(Stringable $str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
-            );
     }
 }

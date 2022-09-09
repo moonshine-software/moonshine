@@ -9,7 +9,7 @@ use JsonSerializable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasRelationship;
-use Leeto\MoonShine\Contracts\ResourceContract;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\MoonShine;
@@ -259,7 +259,7 @@ abstract class Field implements JsonSerializable, HasAssets
             'key' => $this->column(),
             'relation' => $this->relation(),
             'value' => $this->value(),
-            'resource' => $this->resource(),
+            'resource' => $this->resource()?->uriKey(),
             'attributes' => $this->attributes()->getAttributes(),
             'fields' => $this instanceof HasFields ? $this->getFields() : []
         ];

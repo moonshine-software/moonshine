@@ -10,7 +10,7 @@ final class CreateFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('create', $this->getModel());
+        return $this->getResource()->can('create', $this->getDataInstance());
     }
 
     public function rules(): array

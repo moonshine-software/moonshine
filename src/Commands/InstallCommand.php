@@ -19,6 +19,7 @@ final class InstallCommand extends MoonShineCommand
 
         $this->initDirectories();
         $this->initDashboard();
+        $this->initServiceProvider();
 
         $this->components->info('Installation completed');
 
@@ -59,5 +60,18 @@ final class InstallCommand extends MoonShineCommand
         $this->laravel['files']->put($dashboard, $contents);
 
         $this->components->task('Dashboard created');
+    }
+
+    protected function initServiceProvider(): void
+    {
+        $this->comment('Publishing MoonShine Service Provider...');
+        Artisan::call('vendor:publish', ['--tag' => 'moonshine-provider']);
+
+        $this->laravel['files']->put(
+            app_path('Providers/MoonShineServiceProvider.php'),
+            $this->getStub('MoonShineServiceProvider')
+        );
+
+        $this->components->task('Service Provider created');
     }
 }

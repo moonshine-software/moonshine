@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\ViewComponents\DetailCard;
 
-use JsonSerializable;
-use Leeto\MoonShine\Contracts\ViewComponentContract;
+use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\ViewComponents\MoonShineViewComponent;
 
-final class DetailCard implements ViewComponentContract, JsonSerializable
+final class DetailCard extends MoonShineViewComponent
 {
-    use Makeable;
+    protected static string $component = 'DetailCardComponent';
 
     /**
      * @param  Fields<Field|Decoration>  $fields
@@ -39,6 +37,8 @@ final class DetailCard implements ViewComponentContract, JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            ...parent::jsonSerialize(),
+
             'fields' => $this->fields()->fillValues($this->values()),
         ];
     }

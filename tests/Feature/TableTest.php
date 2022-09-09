@@ -8,12 +8,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Table\Table;
-use Leeto\MoonShine\Table\TableHead;
-use Leeto\MoonShine\Table\TableRow;
 use Leeto\MoonShine\Tests\TestCase;
 use Leeto\MoonShine\ValueEntities\ModelValueEntity;
 use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\ViewComponents\Table\Table;
+use Leeto\MoonShine\ViewComponents\Table\TableHead;
+use Leeto\MoonShine\ViewComponents\Table\TableRow;
 
 class TableTest extends TestCase
 {

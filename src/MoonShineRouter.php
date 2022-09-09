@@ -13,4 +13,11 @@ class MoonShineRouter
             $params
         );
     }
+
+    public static function uriKey(string $class): string
+    {
+        return str(class_basename($class))
+            ->kebab()
+            ->value();
+    }
 }

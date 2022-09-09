@@ -10,23 +10,32 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use JsonSerializable;
 use Leeto\MoonShine\Actions\Action;
-use Leeto\MoonShine\Contracts\ResourceContract;
+use Leeto\MoonShine\Contracts\Resources\CrudContract;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\Metrics\Metric;
+use Leeto\MoonShine\Traits\Resource\ResourceCrudRouter;
 use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
 use Leeto\MoonShine\Traits\Resource\ResourceModelQuery;
 use Leeto\MoonShine\Traits\Resource\ResourceRouter;
 use Leeto\MoonShine\Traits\WithUriKey;
+use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\Views\CrudDetailView;
+use Leeto\MoonShine\Views\CrudFormView;
+use Leeto\MoonShine\Views\CrudIndexView;
+use Leeto\MoonShine\Views\Views;
 
-abstract class ModelResource implements ResourceContract, JsonSerializable
+abstract class ModelResource implements ResourceContract, CrudContract, JsonSerializable
 {
     use ResourceModelQuery;
     use ResourceModelPolicy;
     use ResourceRouter;
+    use ResourceCrudRouter;
     use WithUriKey;
 
     public static string $model;
@@ -102,6 +111,18 @@ abstract class ModelResource implements ResourceContract, JsonSerializable
         return new static::$model();
     }
 
+    public function getDataInstance(): Model
+    {
+        return $this->getModel();
+    }
+
+    public function getData($id): ?Model
+    {
+        return $this->getDataInstance()
+            ->newQuery()
+            ->find($id);
+    }
+
     public function title(): string
     {
         return static::$title;
@@ -110,6 +131,13 @@ abstract class ModelResource implements ResourceContract, JsonSerializable
     public function column(): string
     {
         return $this->column;
+    }
+
+    public function valueEntity(Model $values): ValueEntityContract
+    {
+        return (new ModelValueEntityBuilder($values))
+            ->build()
+            ->withActions($this->rowActions($values), $this->routeParam());
     }
 
     /**
@@ -125,6 +153,15 @@ abstract class ModelResource implements ResourceContract, JsonSerializable
     public function fieldsCollection(): Fields
     {
         return Fields::make($this->fields());
+    }
+
+    public function views(): Views
+    {
+        return Views::make([
+            CrudIndexView::class,
+            CrudFormView::class,
+            CrudDetailView::class,
+        ]);
     }
 
     /**
@@ -193,6 +230,7 @@ abstract class ModelResource implements ResourceContract, JsonSerializable
         return [
             'title' => $this->title(),
             'uri' => $this->uriKey(),
+            'endpoint' => $this->route('index'),
             'policies' => $this->policies(),
             'softDeletes' => $this->softDeletes(),
         ];

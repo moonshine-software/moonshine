@@ -10,6 +10,6 @@ final class ViewFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('view', $this->findModel());
+        return $this->getResource()->can('view', $this->getDataOrFail());
     }
 }

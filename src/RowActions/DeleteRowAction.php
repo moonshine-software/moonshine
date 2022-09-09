@@ -8,8 +8,12 @@ use Leeto\MoonShine\MoonShineRouter;
 
 final class DeleteRowAction extends RowAction
 {
-    public function route(array $params = []): string
+    public function resolveRoute(string $routeParam, string|int $primaryKey): static
     {
-        return MoonShineRouter::to('{uri}.delete', $params);
+        $this->route = MoonShineRouter::to(
+            str($routeParam)->plural().".delete",
+            [$routeParam => $primaryKey]
+        );
+        return $this;
     }
 }

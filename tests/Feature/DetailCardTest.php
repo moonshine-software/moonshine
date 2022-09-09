@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Feature;
 
-use Leeto\MoonShine\DetailCard\DetailCard;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Tests\TestCase;
 use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\ViewComponents\DetailCard\DetailCard;
 
 class DetailCardTest extends TestCase
 {

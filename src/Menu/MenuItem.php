@@ -5,20 +5,23 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Menu;
 
 use JsonSerializable;
-use Leeto\MoonShine\Contracts\ResourceContract;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Traits\Makeable;
 
 final class MenuItem extends MenuSection implements JsonSerializable
 {
     use Makeable;
 
-    final public function __construct(string $title, ResourceContract|string $resource, string $icon = null)
-    {
-        $this->title = $title;
-        $this->resource = is_string($resource) ? new $resource() : $resource;
-
-        if ($icon) {
-            $this->icon($icon);
+    final public function __construct(
+        ResourceContract|string $data,
+        string $title = null,
+        protected ?string $routeName = null
+    ) {
+        if (is_string($data)) {
+            $this->url = $data;
+        } else {
+            $this->resource = $data;
+            $this->title = $title ?? $this->resource->title();
         }
     }
 
@@ -27,7 +30,9 @@ final class MenuItem extends MenuSection implements JsonSerializable
         return [
             'title' => $this->title(),
             'icon' => $this->getIcon(),
-            'resource' => $this->resource()->uriKey(),
+            'url' => $this->resource()
+                ? $this->resource()->route($this->routeName ?? 'index')
+                : $this->url(),
         ];
     }
 }

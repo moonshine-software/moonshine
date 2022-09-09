@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Contracts;
 
 use Leeto\MoonShine\ViewComponents\ViewComponents;
 
-interface ViewContract
+interface ViewContract extends \JsonSerializable
 {
     public function components(): ViewComponents;
 }

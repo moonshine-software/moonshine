@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Tests\Feature\Controllers;
 
 use Leeto\MoonShine\Tests\TestCase;
 
-class ResourceControllerTest extends TestCase
+class CrudControllerTest extends TestCase
 {
     /**
      * @test
@@ -28,7 +28,7 @@ class ResourceControllerTest extends TestCase
         $response = $this->actingAs($this->adminUser(), 'moonshine')
             ->getJson($this->testResource()->route('index'));
 
-        $response->assertJsonPath('title', $this->testResource()->title());
+        $response->assertJsonPath('resource.title', $this->testResource()->title());
     }
 
     /**
@@ -45,7 +45,7 @@ class ResourceControllerTest extends TestCase
                 )
             );
 
-        $response->assertJsonPath('title', $this->testResource()->title());
+        $response->assertJsonPath('resource.title', $this->testResource()->title());
     }
 
     /**
@@ -57,7 +57,7 @@ class ResourceControllerTest extends TestCase
         $response = $this->actingAs($this->adminUser(), 'moonshine')
             ->getJson($this->testResource()->route('create'));
 
-        $response->assertJsonPath('title', $this->testResource()->title());
+        $response->assertJsonPath('resource.title', $this->testResource()->title());
     }
 
     /**
@@ -69,7 +69,7 @@ class ResourceControllerTest extends TestCase
         $response = $this->actingAs($this->adminUser(), 'moonshine')
             ->getJson($this->testResource()->route('edit', $this->adminUser()->id));
 
-        $response->assertJsonPath('title', $this->testResource()->title());
+        $response->assertJsonPath('resource.title', $this->testResource()->title());
     }
 
     /**
@@ -92,7 +92,7 @@ class ResourceControllerTest extends TestCase
                 ]
             );
 
-        $response->assertOk();
+        $response->assertCreated();
 
         $this->assertDatabaseHas('moonshine_users', ['name' => 'Created']);
     }
@@ -134,18 +134,5 @@ class ResourceControllerTest extends TestCase
         $response->assertOk();
 
         $this->assertModelMissing($this->adminUser());
-    }
-
-    /**
-     * @test
-     * @return void
-     */
-    public function it_action_export(): void
-    {
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->get($this->testResource()->route('action', query: ['uri' => 'export-action']));
-
-        $response->assertOk()
-            ->assertDownload("export-{$this->testResource()->uriKey()}.xlsx");
     }
 }

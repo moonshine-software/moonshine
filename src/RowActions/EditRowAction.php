@@ -8,8 +8,13 @@ use Leeto\MoonShine\MoonShineRouter;
 
 final class EditRowAction extends RowAction
 {
-    public function route(array $params = []): string
+    public function resolveRoute(string $routeParam, string|int $primaryKey): static
     {
-        return MoonShineRouter::to('{uri}.edit', $params);
+        $this->route = MoonShineRouter::to(
+            str($routeParam)->plural().".edit",
+            [$routeParam => $primaryKey]
+        );
+
+        return $this;
     }
 }

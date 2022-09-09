@@ -19,6 +19,10 @@ class MenuTest extends TestCase
      */
     public function it_register_menu_item(): void
     {
+        app(MoonShine::class)->menu([
+            MenuItem::make($this->testResource())
+        ]);
+
         $this->assertNotEmpty(app(Menu::class)->all());
         $this->assertCount(1, app(Menu::class)->all());
 
@@ -33,9 +37,9 @@ class MenuTest extends TestCase
      */
     public function it_register_menu_group(): void
     {
-        app(MoonShine::class)->registerResources([
+        app(MoonShine::class)->menu([
             MenuGroup::make('Section 1', [
-                MenuItem::make('Section inner', MoonShineUserRoleResource::class)
+                MenuItem::make(new MoonShineUserRoleResource(), 'Section inner')
             ])
         ]);
 

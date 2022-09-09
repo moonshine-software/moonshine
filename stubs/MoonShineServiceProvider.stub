@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Providers;
+
+use Leeto\MoonShine\Providers\MoonShineApplicationServiceProvider;
+use Leeto\MoonShine\MoonShine;
+
+class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
+{
+    protected function resources(): void
+    {
+        app(MoonShine::class)->resources([
+
+        ]);
+    }
+
+    protected function menu(): void
+    {
+        app(MoonShine::class)->menu([
+
+        ]);
+    }
+}

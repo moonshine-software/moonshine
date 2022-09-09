@@ -10,6 +10,6 @@ final class ViewAnyFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('viewAny', $this->getModel());
+        return $this->getResource()->can('viewAny', $this->getDataInstance());
     }
 }

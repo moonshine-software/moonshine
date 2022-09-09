@@ -7,10 +7,12 @@ namespace Leeto\MoonShine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Stringable;
-use Leeto\MoonShine\Contracts\ResourceContract;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Exceptions\MenuException;
+use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Menu\Menu;
-use Leeto\MoonShine\Menu\MenuGroup;
-use Leeto\MoonShine\Menu\MenuItem;
+use Leeto\MoonShine\Menu\MenuSection;
+use Throwable;
 
 final class MoonShine
 {
@@ -20,7 +22,7 @@ final class MoonShine
 
     protected ?Collection $resources = null;
 
-    protected ?Collection $menus = null;
+    protected ?Collection $menu = null;
 
     public static function path(string $path = ''): string
     {
@@ -34,7 +36,7 @@ final class MoonShine
         return static::NAMESPACE.$path;
     }
 
-    public static function getResourceFromUri(string $uri): ResourceContract
+    public static function getResourceFromUriKey(string $uri): ResourceContract
     {
         $resource = app(MoonShine::class)->getResources()
             ->first(fn(ResourceContract $resource) => $resource->uriKey() === $uri);
@@ -59,33 +61,42 @@ final class MoonShine
      *
      * @param  array  $data  Array of resource classes that is registering
      * @return void
+     * @throws Throwable
      */
-    public function registerResources(array $data): void
+    public function resources(array $data): void
     {
         $this->resources = collect();
-        $this->menus = collect();
 
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
-            if ($item instanceof ResourceContract) {
-                $this->resources->add($item);
-                $this->menus->add(new MenuItem($item->title(), $item));
-            } elseif ($item instanceof MenuItem) {
-                $this->resources->add($item->resource());
-                $this->menus->add($item);
-            } elseif ($item instanceof MenuGroup) {
-                $this->menus->add($item);
+            throw_if(
+                !$item instanceof ResourceContract,
+                new ResourceException('Only Resources allowed')
+            );
 
-                $item->items()->each(function ($subItem) {
-                    $this->resources->add($subItem->resource());
-                });
-            }
+            $this->resources->add($item);
         });
 
-        app(Menu::class)->register($this->menus);
-
         $this->resolveResourcesRoutes();
+    }
+
+    public function menu(array $data): void
+    {
+        $this->menu = collect();
+
+        collect($data)->each(function ($item) {
+            $item = is_string($item) ? new $item() : $item;
+
+            throw_if(
+                !$item instanceof MenuSection,
+                new MenuException('Only MenuItem|MenuGroup allowed')
+            );
+
+            $this->menu->add($item);
+        });
+
+        app(Menu::class)->register($this->menu);
     }
 
     /**
