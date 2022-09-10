@@ -141,10 +141,10 @@ final class Fields extends Collection
         });
     }
 
-    public function requestValues(): Fields
+    public function requestValues(string $prefix = null): Fields
     {
-        return $this->onlyFields()->mapWithKeys(function (Field $field) {
-            return [$field->column() => $field->requestValue()];
+        return $this->onlyFields()->mapWithKeys(function (Field $field) use($prefix) {
+            return [$field->column() => $field->requestValue($prefix)];
         })->filter();
     }
 

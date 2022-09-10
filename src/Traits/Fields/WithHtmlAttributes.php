@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Helpers\Condition;
 
@@ -54,18 +55,24 @@ trait WithHtmlAttributes
             );
     }
 
-    protected function nameDot(): string
+    protected function nameDot(string $prefix = null): string
     {
-        $name = (string) str($this->name())->replace('[]', '');
+        $name = (string) str($this->name())
+            ->replace('[]', '');
 
         parse_str($name, $array);
 
         $result = collect(Arr::dot(array_filter($array)));
 
-
-        return $result->isEmpty()
+        $result = $result->isEmpty()
             ? $name
             : (string) str($result->keys()->first());
+
+        if($prefix) {
+            $result = "$prefix.$result";
+        }
+
+        return $result;
     }
 
     public function setName(string $name): static

@@ -11,7 +11,7 @@ final class DeleteRowAction extends RowAction
     public function resolveRoute(string $routeParam, string|int $primaryKey): static
     {
         $this->route = MoonShineRouter::to(
-            str($routeParam)->plural().".delete",
+            str($routeParam)->plural().".destroy",
             [$routeParam => $primaryKey]
         );
         return $this;

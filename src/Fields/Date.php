@@ -23,8 +23,8 @@ class Date extends Field
             ->format($this->getFormat());
     }
 
-    public function requestValue(): Carbon
+    public function requestValue(string $prefix = null): Carbon
     {
-        return Carbon::parse(parent::requestValue());
+        return Carbon::parse(parent::requestValue($prefix));
     }
 }

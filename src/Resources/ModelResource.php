@@ -16,7 +16,8 @@ use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Filters\Filter;
+use Leeto\MoonShine\Filters\FilterContract;
+use Leeto\MoonShine\Filters\ModelFilter;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\Traits\Resource\ResourceCrudRouter;
 use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
@@ -63,7 +64,7 @@ abstract class ModelResource implements ResourceContract, CrudContract
     /**
      * Get an array of filters displayed on resource index page
      *
-     * @return Filter[]
+     * @return array<ModelFilter>
      */
     abstract public function filters(): array;
 

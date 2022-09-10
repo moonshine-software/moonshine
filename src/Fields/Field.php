@@ -212,11 +212,11 @@ abstract class Field implements JsonSerializable, HasAssets
         return $this->value ?? $this->getDefault();
     }
 
-    public function requestValue(): mixed
+    public function requestValue(string $prefix = null): mixed
     {
         return request(
-            $this->nameDot(),
-            $this->getDefault() ?? old($this->nameDot(), false)
+            $this->nameDot($prefix),
+            $this->getDefault() ?? old($this->nameDot($prefix), false)
         );
     }
 

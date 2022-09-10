@@ -48,7 +48,7 @@ trait ResourceModelQuery
 
         if (request()->has('filters')) {
             foreach ($this->filters() as $filter) {
-                $query = $filter->getQuery($query);
+                $query = $filter->apply($query);
             }
         }
 

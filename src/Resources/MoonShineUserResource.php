@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Actions\ExportAction;
 use Leeto\MoonShine\Decorations\Heading;
@@ -16,9 +17,11 @@ use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Fields\Password;
 use Leeto\MoonShine\Fields\PasswordRepeat;
 use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Filters\TextFilter;
+use Leeto\MoonShine\Filters\ModelFilter;
 use Leeto\MoonShine\Models\MoonshineUser;
+use Leeto\MoonShine\RowActions\DeleteRowAction;
 use Leeto\MoonShine\RowActions\EditRowAction;
+use Leeto\MoonShine\RowActions\ShowRowAction;
 
 final class MoonShineUserResource extends ModelResource
 {
@@ -87,13 +90,11 @@ final class MoonShineUserResource extends ModelResource
 
     public function rowActions(Model $item): array
     {
-        return array_filter([
-            $this->can('edit', $item)
-                ? EditRowAction::make('Edit')
-                ->icon('pencil')
-                ->customAttributes(['style' => 'background: gray'])
-                : false
-        ]);
+        return [
+            ShowRowAction::make(__('moonshine::ui.show')),
+            EditRowAction::make(__('moonshine::ui.edit')),
+            DeleteRowAction::make(__('moonshine::ui.delete'))
+        ];
     }
 
     public function rules($item): array
@@ -116,7 +117,15 @@ final class MoonShineUserResource extends ModelResource
     public function filters(): array
     {
         return [
-            TextFilter::make(trans('moonshine::ui.base_resource.name'), 'name'),
+            ModelFilter::make(
+                trans('moonshine::ui.base_resource.name'),
+                [
+                    Text::make(trans('moonshine::ui.base_resource.name'), 'name')
+                ],
+                function (Builder $query, $value) {
+                    return $query->where('name', $value['name']);
+                }
+            )
         ];
     }
 

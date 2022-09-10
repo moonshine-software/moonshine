@@ -24,7 +24,7 @@ class PasswordRepeat extends Field
         return $this;
     }
 
-    public function requestValue(): bool
+    public function requestValue(string $prefix = null): bool
     {
         return false;
     }

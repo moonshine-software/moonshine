@@ -47,8 +47,8 @@ final class DummyResource extends Resource
     {
         return [
             ShowRowAction::make(__('moonshine::ui.show')),
-            EditRowAction::make(__('moonshine::ui.edit'))
-            DeleteRowAction::make(__('moonshine::ui.delete'))
+            EditRowAction::make(__('moonshine::ui.edit')),
+            DeleteRowAction::make(__('moonshine::ui.delete')),
         ];
     }
 }

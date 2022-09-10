@@ -27,15 +27,6 @@ final class CrudController extends BaseController
 
     public function index(ViewAnyFormRequest $request): JsonResponse
     {
-        try {
-            $this->jsonResponse([
-                'resource' => $request->getResource(),
-                'view' => CrudIndexView::make($request->getResource())
-            ]);
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-        }
-
         return $this->jsonResponse([
             'resource' => $request->getResource(),
             'view' => CrudIndexView::make($request->getResource())

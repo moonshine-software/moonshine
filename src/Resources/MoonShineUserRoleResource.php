@@ -7,8 +7,10 @@ namespace Leeto\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Filters\TextFilter;
 use Leeto\MoonShine\Models\MoonshineUserRole;
+use Leeto\MoonShine\RowActions\DeleteRowAction;
+use Leeto\MoonShine\RowActions\EditRowAction;
+use Leeto\MoonShine\RowActions\ShowRowAction;
 
 final class MoonShineUserRoleResource extends ModelResource
 {
@@ -32,7 +34,11 @@ final class MoonShineUserRoleResource extends ModelResource
 
     public function rowActions(Model $item): array
     {
-        return [];
+        return [
+            ShowRowAction::make(__('moonshine::ui.show')),
+            EditRowAction::make(__('moonshine::ui.edit')),
+            DeleteRowAction::make(__('moonshine::ui.delete'))
+        ];
     }
 
     public function rules($item): array
@@ -49,9 +55,7 @@ final class MoonShineUserRoleResource extends ModelResource
 
     public function filters(): array
     {
-        return [
-            TextFilter::make(trans('moonshine::ui.base_resource.role_name'), 'name'),
-        ];
+        return [];
     }
 
     public function actions(): array
