@@ -13,7 +13,7 @@ final class Table extends MoonShineViewComponent
 {
     protected static string $component = 'TableComponent';
 
-    public function __construct(
+    final public function __construct(
         protected LengthAwarePaginator $paginator,
         protected $fields
     ) {

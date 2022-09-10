@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Views;
 
 use Leeto\MoonShine\Contracts\HasEndpoint;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Contracts\ViewComponentContract;
 use Leeto\MoonShine\Contracts\ViewContract;
 use Leeto\MoonShine\Exceptions\ViewComponentException;
 use Leeto\MoonShine\MoonShineRouter;
@@ -53,15 +54,18 @@ class MoonShineView implements HasEndpoint, ViewContract
     /**
      * @throws ViewComponentException
      */
-    public function resolveComponent($componentClass): ViewContract
+    public function resolveComponent($componentClass): ViewComponentContract
     {
-        $method = "resolve$componentClass";
+        $method = str($componentClass)
+            ->classBasename()
+            ->prepend('resolve')
+            ->value();
 
         if (!method_exists($this, $method)) {
             throw ViewComponentException::notFoundInView(static::class);
         }
 
-        return $this->{$method};
+        return $this->{$method}();
     }
 
     public function jsonSerialize(): array

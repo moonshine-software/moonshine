@@ -21,6 +21,7 @@ use Leeto\MoonShine\Resources\MoonShineUserResource;
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     use InteractsWithViews;
+    use WithAuthTesting;
 
     protected Authenticatable|MoonshineUser $adminUser;
 

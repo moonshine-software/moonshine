@@ -18,7 +18,7 @@ final class DetailCard extends MoonShineViewComponent
      * @param  Fields<Field|Decoration>  $fields
      * @param  ValueEntityContract  $values
      */
-    public function __construct(
+    final public function __construct(
         protected Fields $fields,
         protected ValueEntityContract $values
     ) {

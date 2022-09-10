@@ -25,7 +25,7 @@ abstract class Action implements JsonSerializable
     {
         return MoonShineRouter::to(
             'action',
-            [$this->uriKey(), ...request()->query()]
+            ['uri' => $this->uriKey(), ...request()->query()]
         );
     }
 

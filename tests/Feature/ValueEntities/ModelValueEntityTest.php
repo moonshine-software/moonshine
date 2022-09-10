@@ -22,7 +22,6 @@ class ModelValueEntityTest extends TestCase
 
         $this->assertEquals($this->adminUser()->getKeyName(), $data->primaryKeyName());
         $this->assertEquals($this->adminUser()->getKey(), $data->primaryKey());
-        $this->assertEquals($this->adminUser()->id, $data->id);
 
         $this->assertEquals(
             $this->adminUser()->moonshineUserRole->getKeyName(),
@@ -34,6 +33,6 @@ class ModelValueEntityTest extends TestCase
             $data->attributes('moonshineUserRole')->primaryKey()
         );
 
-        $this->assertEquals($this->adminUser()->moonshineUserRole->id, $data->moonshineUserRole->id);
+        $this->assertEquals($this->adminUser()->moonshineUserRole->getKey(), $data->moonshineUserRole->primaryKey());
     }
 }

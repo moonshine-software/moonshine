@@ -16,7 +16,7 @@ class CrudControllerTest extends TestCase
     {
         $response = $this->getJson($this->testResource()->route('index'));
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
     }
 
     /**
@@ -25,7 +25,7 @@ class CrudControllerTest extends TestCase
      */
     public function it_index_response(): void
     {
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
+        $response = $this->authorized()
             ->getJson($this->testResource()->route('index'));
 
         $response->assertJsonPath('resource.title', $this->testResource()->title());
@@ -37,7 +37,7 @@ class CrudControllerTest extends TestCase
      */
     public function it_show_response(): void
     {
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
+        $response = $this->authorized()
             ->getJson(
                 $this->testResource()->route(
                     'show',
@@ -54,7 +54,7 @@ class CrudControllerTest extends TestCase
      */
     public function it_create_response(): void
     {
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
+        $response = $this->authorized()
             ->getJson($this->testResource()->route('create'));
 
         $response->assertJsonPath('resource.title', $this->testResource()->title());
@@ -66,8 +66,8 @@ class CrudControllerTest extends TestCase
      */
     public function it_edit_response(): void
     {
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->getJson($this->testResource()->route('edit', $this->adminUser()->id));
+        $response = $this->authorized()
+            ->getJson($this->testResource()->route('edit', $this->adminUser()->getKey()));
 
         $response->assertJsonPath('resource.title', $this->testResource()->title());
     }
@@ -80,9 +80,9 @@ class CrudControllerTest extends TestCase
     {
         $this->assertDatabaseMissing('moonshine_users', ['name' => 'Created']);
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
+        $response = $this->authorized()
             ->postJson(
-                $this->testResource->route('store', $this->adminUser()->id),
+                $this->testResource->route('store', $this->adminUser()->getKey()),
                 [
                     'moonshine_user_role_id' => $this->adminUser()->moonshine_user_role_id,
                     'name' => 'Created',
@@ -106,9 +106,9 @@ class CrudControllerTest extends TestCase
         $this->assertModelExists($this->adminUser());
         $this->assertDatabaseHas('moonshine_users', ['name' => 'Admin']);
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
+        $response = $this->authorized()
             ->putJson(
-                $this->testResource()->route('update', $this->adminUser()->id),
+                $this->testResource()->route('update', $this->adminUser()->getKey()),
                 [
                     'moonshine_user_role_id' => $this->adminUser()->moonshine_user_role_id,
                     'name' => 'Updated'
@@ -128,8 +128,8 @@ class CrudControllerTest extends TestCase
     {
         $this->assertModelExists($this->adminUser());
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->deleteJson($this->testResource()->route('destroy', $this->adminUser()->id));
+        $response = $this->authorized()
+            ->deleteJson($this->testResource()->route('destroy', $this->adminUser()->getKey()));
 
         $response->assertOk();
 

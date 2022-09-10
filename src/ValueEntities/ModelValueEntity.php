@@ -46,7 +46,7 @@ final class ModelValueEntity implements ValueEntityContract
      */
     public function attributes(string $key = null): mixed
     {
-        return $key ? $this->attributes[$key] : $this->attributes;
+        return $key ? $this->attributes[$key] ?? null : $this->attributes;
     }
 
     public function withActions(array $actions, string $routeParam): ModelValueEntity

@@ -17,7 +17,7 @@ abstract class RowAction implements JsonSerializable
 
     protected string $route;
 
-    public function __construct(
+    final public function __construct(
         protected string $title,
     ) {
     }

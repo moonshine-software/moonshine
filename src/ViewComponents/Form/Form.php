@@ -30,7 +30,7 @@ final class Form extends MoonShineViewComponent
     /**
      * @param  Fields<Field|Decoration>  $fields
      */
-    public function __construct(Fields $fields)
+    final public function __construct(Fields $fields)
     {
         $this->attributes = ['action', 'method', 'enctype'];
         $this->fields = $fields;

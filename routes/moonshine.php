@@ -27,7 +27,7 @@ Route::prefix(config('moonshine.prefix'))
 
         Route::controller(AuthController::class)->group(function () {
             Route::post('/authenticate', 'authenticate')->name('authenticate');
-            Route::delete('/logout', 'logout')->name('logout');
+            Route::delete('/logout', 'logout')->name('authenticate.logout');
             Route::get('/authenticate', 'me')
                 ->middleware(['auth:sanctum'])
                 ->name('authenticate.me');

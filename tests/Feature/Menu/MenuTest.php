@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Feature\Menu;
 
+use Leeto\MoonShine\Exceptions\MenuException;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
@@ -16,6 +17,7 @@ class MenuTest extends TestCase
     /**
      * @test
      * @return void
+     * @throws MenuException
      */
     public function it_register_menu_item(): void
     {
@@ -34,6 +36,7 @@ class MenuTest extends TestCase
     /**
      * @test
      * @return void
+     * @throws MenuException
      */
     public function it_register_menu_group(): void
     {
@@ -58,4 +61,19 @@ class MenuTest extends TestCase
             }
         }
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_not_allowed_menu_type(): void
+    {
+        $this->expectException(MenuException::class);
+        $this->expectDeprecationMessage(MenuException::onlyMenuItemAllowed()->getMessage());
+
+        app(MoonShine::class)->menu([
+            new MoonShineUserRoleResource()
+        ]);
+    }
+
 }

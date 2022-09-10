@@ -7,6 +7,7 @@ namespace Leeto\MoonShine\Tests\Feature\Controllers;
 use Leeto\MoonShine\Dashboard\Dashboard;
 use Leeto\MoonShine\Dashboard\DashboardBlock;
 use Leeto\MoonShine\Metrics\ValueMetric;
+use Leeto\MoonShine\MoonShineRouter;
 use Leeto\MoonShine\Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
@@ -17,9 +18,9 @@ class DashboardControllerTest extends TestCase
      */
     public function it_unauthorized(): void
     {
-        $response = $this->getJson(route(config('moonshine.prefix').'.dashboard'));
+        $response = $this->getJson(MoonShineRouter::to('dashboard'));
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
     }
 
     /**
@@ -34,8 +35,8 @@ class DashboardControllerTest extends TestCase
             ]),
         ]);
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->getJson(route(config('moonshine.prefix').'.dashboard'));
+        $response = $this->authorized()
+            ->getJson(MoonShineRouter::to('dashboard'));
 
         $this->assertArrayHasKey('blocks', $response->json());
     }

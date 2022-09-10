@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Feature;
+namespace Leeto\MoonShine\Tests\Feature\ViewComponents;
 
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Models\MoonshineUser;

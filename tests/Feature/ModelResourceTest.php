@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Tests\Feature;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Tests\TestCase;
 
-class ResourceTest extends TestCase
+class ModelResourceTest extends TestCase
 {
     /**
      * @test

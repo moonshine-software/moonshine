@@ -4,35 +4,20 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Fields\Field;
+use Leeto\MoonShine\Traits\Makeable;
 
-abstract class Filter extends Field
+final class Filter
 {
-    public function name(string $index = null): string
-    {
-        return $this->prepareName($index, 'filters');
+    use Makeable;
+
+    public function __construct(
+        protected string $label,
+        protected array $fields
+    ) {
     }
 
-    public function getQuery(Builder $query): Builder
+    public function fields(): array
     {
-        if ($this->hasRelationship()) {
-            $related = $query->getModel()->{$this->relation()}->getRelated();
-
-            return $this->requestValue()
-                ? $query->whereHas($this->relation(), function (Builder $q) use ($related) {
-                    return $q->whereIn("{$related->getTable()}.{$related->getKeyName()}", $this->requestValue());
-                })
-                : $query;
-        }
-
-        return $this->requestValue() !== false
-            ? $query->where($this->column(), $this->requestValue())
-            : $query;
-    }
-
-    public function value(): mixed
-    {
-        return $this->requestValue();
+        return $this->fields;
     }
 }

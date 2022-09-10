@@ -13,7 +13,7 @@ final class TableRow implements JsonSerializable
 {
     use Makeable;
 
-    public function __construct(
+    final public function __construct(
         protected ValueEntityContract $values,
         protected Fields $fields
     ) {

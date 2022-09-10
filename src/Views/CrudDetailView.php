@@ -15,7 +15,7 @@ final class CrudDetailView extends MoonShineView
 {
     protected static string $component = 'CrudDetailView';
 
-    public function __construct(ResourceContract $resource, protected ValueEntityContract $value)
+    final public function __construct(ResourceContract $resource, protected ValueEntityContract $value)
     {
         parent::__construct($resource);
 

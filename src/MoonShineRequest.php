@@ -10,7 +10,7 @@ use Leeto\MoonShine\Contracts\ValueEntityContract;
 
 class MoonShineRequest extends FormRequest
 {
-    protected $data = null;
+    protected mixed $data = null;
 
     protected ?ValueEntityContract $valueEntity = null;
 

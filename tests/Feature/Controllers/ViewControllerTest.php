@@ -22,8 +22,7 @@ class ViewControllerTest extends TestCase
             'viewUri' => MoonShineRouter::uriKey(CrudIndexView::class)
         ]);
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->get($endpoint);
+        $response = $this->authorized()->get($endpoint);
 
         $response->assertOk();
 
@@ -41,8 +40,7 @@ class ViewControllerTest extends TestCase
             'viewUri' => MoonShineRouter::uriKey(CrudFormView::class),
         ]);
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->get($endpoint);
+        $response = $this->authorized()->get($endpoint);
 
         $response->assertOk();
 
@@ -61,8 +59,7 @@ class ViewControllerTest extends TestCase
             'id' => $this->adminUser()->getKey()
         ]);
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->get($endpoint);
+        $response = $this->authorized()->get($endpoint);
 
         $response->assertOk();
 

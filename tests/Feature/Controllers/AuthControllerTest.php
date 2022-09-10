@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Feature\Controllers;
 
+use Leeto\MoonShine\MoonShineRouter;
 use Leeto\MoonShine\Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -26,14 +27,14 @@ class AuthControllerTest extends TestCase
     public function it_authenticate(): void
     {
         $response = $this->postJson(
-            route(config('moonshine.prefix').'.authenticate'),
+            MoonShineRouter::to('authenticate'),
             ['email' => $this->adminUser()->email, 'password' => 'invalid']
         );
 
         $response->assertInvalid(['email']);
 
         $response = $this->postJson(
-            route(config('moonshine.prefix').'.authenticate'),
+            MoonShineRouter::to('authenticate'),
             ['email' => $this->adminUser()->email, 'password' => 'test']
         );
 
@@ -46,19 +47,15 @@ class AuthControllerTest extends TestCase
      */
     public function it_check(): void
     {
-        $response = $this->getJson(
-            route(config('moonshine.prefix').'.authenticate.me'),
-        );
+        $response = $this->getJson(MoonShineRouter::to('authenticate.me'));
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
 
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->getJson(
-                route(config('moonshine.prefix').'.authenticate.me'),
-            );
+        $response = $this->authorized()
+            ->getJson(MoonShineRouter::to('authenticate.me'));
 
         $response->assertOk()
-            ->assertJsonPath('id', $this->adminUser()->id);
+            ->assertJsonPath($this->adminUser()->getKeyName(), $this->adminUser()->getKey());
     }
 
     /**
@@ -67,8 +64,8 @@ class AuthControllerTest extends TestCase
      */
     public function it_logout(): void
     {
-        $response = $this->actingAs($this->adminUser(), 'moonshine')
-            ->deleteJson(route(config('moonshine.prefix').'.logout'));
+        $response = $this->authorized()
+            ->deleteJson(MoonShineRouter::to('authenticate.logout'));
 
         $response->assertNoContent();
     }

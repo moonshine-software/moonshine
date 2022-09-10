@@ -15,7 +15,7 @@ final class CrudFormView extends MoonShineView
 {
     protected static string $component = 'CrudFormView';
 
-    public function __construct(ResourceContract $resource, protected ?ValueEntityContract $value = null)
+    final public function __construct(ResourceContract $resource, protected ?ValueEntityContract $value = null)
     {
         parent::__construct($resource);
 
