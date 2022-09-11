@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Decorations;
 
 use Leeto\MoonShine\Contracts\Decorations\FieldsDecoration;
 
-final class Tab extends Decoration implements FieldsDecoration
+final class InlineBlock extends Decoration implements FieldsDecoration
 {
-    public static string $component = 'TabDecoration';
+    public static string $component = 'InlineBlockDecoration';
 }

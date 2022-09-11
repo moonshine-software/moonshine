@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Support\Collection;
+use Leeto\MoonShine\Contracts\Decorations\FieldsDecoration;
 use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
-use Leeto\MoonShine\Decorations\Tab;
 
 final class Fields extends Collection
 {
@@ -54,7 +54,7 @@ final class Fields extends Collection
     public function onlyFields(): Fields
     {
         return $this->flatMap(function ($field) {
-            if ($field instanceof Tab) {
+            if ($field instanceof FieldsDecoration) {
                 return collect($field->getFields())->filter(fn($f) => $f instanceof Field);
             }
 
@@ -76,7 +76,7 @@ final class Fields extends Collection
     public function formFields(): Fields
     {
         return $this->flatMap(function ($field) {
-            if ($field instanceof Tab) {
+            if ($field instanceof FieldsDecoration) {
                 $field->fields($field->getFields()->formFields()->toArray());
 
                 return [$field];
@@ -94,7 +94,7 @@ final class Fields extends Collection
     public function detailFields(): Fields
     {
         return $this->flatMap(function ($field) {
-            if ($field instanceof Tab) {
+            if ($field instanceof FieldsDecoration) {
                 $field->fields($field->getFields()->detailFields()->toArray());
 
                 return [$field];
@@ -127,7 +127,7 @@ final class Fields extends Collection
     public function fillValues(ValueEntityContract $values): Fields
     {
         return $this->map(function ($field) use ($values) {
-            if ($field instanceof Tab) {
+            if ($field instanceof FieldsDecoration) {
                 $field->getFields()->each(function ($f) use ($values) {
                     return $f instanceof Field ? $f->resolveFill($values) : $f;
                 });
