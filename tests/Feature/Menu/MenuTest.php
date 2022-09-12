@@ -69,7 +69,7 @@ class MenuTest extends TestCase
     public function it_not_allowed_menu_type(): void
     {
         $this->expectException(MenuException::class);
-        $this->expectDeprecationMessage(MenuException::onlyMenuItemAllowed()->getMessage());
+        $this->expectExceptionMessage(MenuException::onlyMenuItemAllowed()->getMessage());
 
         app(MoonShine::class)->menu([
             new MoonShineUserRoleResource()

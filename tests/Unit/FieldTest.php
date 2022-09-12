@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Unit;
 
+use Leeto\MoonShine\Decorations\InlineBlock;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\HasMany;
 use Leeto\MoonShine\Fields\Text;

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Contracts\Decorations\FieldsDecoration;
 use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
+use Leeto\MoonShine\Exceptions\FieldsException;
+use ReflectionClass;
+use ReflectionException;
 
 final class Fields extends Collection
 {
@@ -153,5 +157,19 @@ final class Fields extends Collection
         return $this->onlyFields()->transform(function (Field $field) {
             return $field->column();
         });
+    }
+
+    /**
+     * @throws ReflectionException|FieldsException
+     */
+    public function wrapIntoDecoration(string $class, string $label): Fields
+    {
+        $reflectionClass = new ReflectionClass($class);
+
+        if (!$reflectionClass->implementsInterface(FieldsDecoration::class)) {
+            throw FieldsException::wrapError();
+        }
+
+        return Fields::make([new $class($label, $this->toArray())]);
     }
 }

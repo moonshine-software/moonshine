@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Tests\Feature;
 
 use Leeto\MoonShine\Decorations\Decoration;
+use Leeto\MoonShine\Decorations\InlineBlock;
+use Leeto\MoonShine\Exceptions\FieldsException;
 use Leeto\MoonShine\Fields\BelongsTo;
+use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
 use Leeto\MoonShine\Tests\TestCase;
+use ReflectionException;
 
 class FieldsTest extends TestCase
 {
@@ -151,5 +155,42 @@ class FieldsTest extends TestCase
 
         $this->assertEquals(1, $values['id']);
         $this->assertEquals('Test', $values['name']);
+    }
+
+    /**
+     * @test
+     * @return void
+     * @throws ReflectionException
+     * @throws FieldsException
+     */
+    public function it_wrap_into_decoration_success(): void
+    {
+        $fields = Fields::make([
+            Text::make('1'),
+            Text::make('2')
+        ]);
+
+        $fields = $fields->wrapIntoDecoration(InlineBlock::class, 'Label');
+
+        $this->assertInstanceOf(InlineBlock::class, $fields->first());
+    }
+
+    /**
+     * @test
+     * @return void
+     * @throws ReflectionException
+     * @throws FieldsException
+     */
+    public function it_wrap_into_decoration_throw(): void
+    {
+        $this->expectException(FieldsException::class);
+        $this->expectExceptionMessage(FieldsException::wrapError()->getMessage());
+
+        $fields = Fields::make([
+            Text::make('1'),
+            Text::make('2')
+        ]);
+
+        $fields->wrapIntoDecoration(Fields::class, 'Label');
     }
 }

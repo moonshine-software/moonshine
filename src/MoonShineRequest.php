@@ -136,11 +136,11 @@ class MoonShineRequest extends FormRequest
         return $this->valueEntity;
     }
 
-    public function values(): array
+    public function values(string $prefix = null): array
     {
         return $this->getResource()
             ->fieldsCollection()
-            ->requestValues()
+            ->requestValues($prefix)
             ->toArray();
     }
 }
