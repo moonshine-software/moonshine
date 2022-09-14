@@ -27,7 +27,7 @@ trait WithPivot
         $pivotItem = $this->pivotItem($item, $id);
 
         return $pivotItem
-            ? $pivotItem->{$this->getPivotAs($pivotItem)} ?? $pivotItem
-            : $item;
+            ? $pivotItem->{$this->getPivotAs($pivotItem)}
+            : $item->newInstance();
     }
 }
