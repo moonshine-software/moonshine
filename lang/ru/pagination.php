@@ -12,6 +12,10 @@
 */
 
 return [
-    'next'     => 'Вперёд &raquo;',
+    'showing' => 'Показано от',
+    'of' => 'из',
+    'to' => 'до',
+    'results' => '',
     'previous' => '&laquo; Назад',
+    'next' => 'Вперёд &raquo;',
 ];

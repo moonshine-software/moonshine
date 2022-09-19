@@ -101,6 +101,6 @@
     </div>
 
     <div class="mt-5">
-        {{ $items->links() }}
+        {{ $items->links('moonshine::shared.pagination') }}
     </div>
 @endsection

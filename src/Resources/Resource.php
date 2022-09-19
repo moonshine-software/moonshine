@@ -402,7 +402,9 @@ abstract class Resource implements ResourceContract
 
     public function paginate(): LengthAwarePaginator
     {
-        return $this->query()->paginate(static::$itemsPerPage);
+        return $this->query()
+            ->paginate(static::$itemsPerPage)
+            ->appends(request()->except('page'));
     }
 
     public function query(): Builder
