@@ -126,6 +126,6 @@ trait FileTrait
             return collect($item->{$this->field()})->implode(';');
         }
 
-        return parent::exportViewValue($item);
+        return $item->{$this->field()} ?? '';
     }
 }

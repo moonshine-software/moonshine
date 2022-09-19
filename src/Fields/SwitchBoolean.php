@@ -20,4 +20,9 @@ class SwitchBoolean extends Field
             'item' => $item
         ]);
     }
+
+    public function exportViewValue(Model $item): mixed
+    {
+        return $item->{$this->field()};
+    }
 }

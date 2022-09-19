@@ -25,6 +25,11 @@ class ID extends Field
         ]);
     }
 
+    public function exportViewValue(Model $item): mixed
+    {
+        return $item->{$this->field()};
+    }
+
     public function save(Model $item): Model
     {
         if ($this->requestValue()) {

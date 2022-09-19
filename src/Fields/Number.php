@@ -41,4 +41,9 @@ class Number extends Field
             return parent::indexViewValue($item, $container);
         }
     }
+
+    public function exportViewValue(Model $item): mixed
+    {
+        return $item->{$this->field()};
+    }
 }

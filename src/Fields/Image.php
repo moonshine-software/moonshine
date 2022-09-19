@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
-use Illuminate\Support\Facades\Storage;
 
 class Image extends Field implements Fileable
 {
-    use FileTrait, CanBeMultiple;
+    use CanBeMultiple;
+    use FileTrait;
 
     public static string $view = 'image';
 
