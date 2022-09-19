@@ -16,5 +16,5 @@ class BelongsToFilter extends Filter implements HasRelationship, BelongsToRelati
     use Searchable;
     use WithRelationship;
 
-    public static string $view = 'select';
+    public static string $view = 'moonshine::filters.select';
 }

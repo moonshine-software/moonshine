@@ -14,9 +14,10 @@ use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
 class HasOne extends Field implements HasRelationship, HasFields, OneToOneRelation
 {
-    use WithFields, WithRelationship;
+    use WithFields;
+    use WithRelationship;
 
-    protected static string $view = 'has-one';
+    protected static string $view = 'moonshine::fields.has-one';
 
     protected bool $group = true;
 

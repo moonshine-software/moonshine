@@ -15,7 +15,7 @@ class Image extends Field implements Fileable
     use CanBeMultiple;
     use FileTrait;
 
-    public static string $view = 'image';
+    public static string $view = 'moonshine::fields.image';
 
     public static string $type = 'file';
 

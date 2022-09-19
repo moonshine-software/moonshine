@@ -15,9 +15,14 @@ use Leeto\MoonShine\Traits\Fields\Searchable;
 
 class BelongsToManyFilter extends Filter implements HasRelationship, ManyToManyRelation
 {
-    use Searchable, SelectTransform, WithFields, WithPivot, WithRelationship, CheckboxTrait;
+    use CheckboxTrait;
+    use Searchable;
+    use SelectTransform;
+    use WithFields;
+    use WithPivot;
+    use WithRelationship;
 
-    public static string $view = 'belongs-to-many';
+    public static string $view = 'moonshine::filters.belongs-to-many';
 
     protected bool $group = true;
 }

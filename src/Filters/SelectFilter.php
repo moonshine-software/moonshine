@@ -10,7 +10,9 @@ use Leeto\MoonShine\Traits\Fields\SelectTrait;
 
 class SelectFilter extends Filter
 {
-    use Searchable, SelectTrait, CanBeMultiple;
+    use CanBeMultiple;
+    use Searchable;
+    use SelectTrait;
 
-    public static string $view = 'select';
+    public static string $view = 'moonshine::filters.select';
 }

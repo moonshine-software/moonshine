@@ -14,9 +14,10 @@ use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
 class HasMany extends Field implements HasRelationship, HasFields, OneToManyRelation
 {
-    use WithFields, WithRelationship;
+    use WithFields;
+    use WithRelationship;
 
-    protected static string $view = 'has-many';
+    protected static string $view = 'moonshine::fields.has-many';
 
     protected bool $group = true;
 

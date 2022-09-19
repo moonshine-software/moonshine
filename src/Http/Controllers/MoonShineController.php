@@ -30,7 +30,9 @@ use function view;
 
 class MoonShineController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     protected Resource $resource;
 
@@ -161,10 +163,8 @@ class MoonShineController extends BaseController
      */
     public function store(Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if (!in_array('edit', $this->resource->getActiveActions()) && !in_array(
-                "create",
-                $this->resource->getActions()
-            )) {
+        if (!in_array('edit', $this->resource->getActiveActions())
+            && !in_array('create', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -199,10 +199,9 @@ class MoonShineController extends BaseController
                 );
             }
 
-            $this->resource->getModel()
-                ->newModelQuery()
-                ->whereIn($this->resource->getModel()->getKeyName(), explode(';', request('ids')))
-                ->delete();
+            $this->resource->massDelete(
+                explode(';', request('ids'))
+            );
         } else {
             $item = $this->resource->getModel()
                 ->newModelQuery()
@@ -216,7 +215,7 @@ class MoonShineController extends BaseController
                 );
             }
 
-            $item->destroy($id);
+            $this->resource->delete($item);
         }
 
         return redirect($this->resource->route('index'))

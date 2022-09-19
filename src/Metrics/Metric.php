@@ -13,7 +13,9 @@ use Leeto\MoonShine\Utilities\AssetManager;
 
 abstract class Metric implements HtmlViewable, HasAssets
 {
-    use Makeable, WithAssets, WithView;
+    use Makeable;
+    use WithAssets;
+    use WithView;
 
     protected string $label;
 
@@ -62,6 +64,6 @@ abstract class Metric implements HtmlViewable, HasAssets
 
     public function getView(): string
     {
-        return 'moonshine::metrics.'.static::$view;
+        return static::$view;
     }
 }

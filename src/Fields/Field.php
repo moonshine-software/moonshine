@@ -25,7 +25,14 @@ use Leeto\MoonShine\Utilities\AssetManager;
 
 abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, HasIndexViewValue, HasFormViewValue
 {
-    use Makeable, FormElement, WithHtmlAttributes, WithAssets, WithView, ShowWhen, XModel, LinkTrait;
+    use FormElement;
+    use LinkTrait;
+    use Makeable;
+    use ShowWhen;
+    use WithAssets;
+    use WithHtmlAttributes;
+    use WithView;
+    use XModel;
 
     public bool $showOnIndex = true;
 
@@ -214,7 +221,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public function getView(): string
     {
-        return 'moonshine::fields.'.static::$view;
+        return static::$view;
     }
 
     public function formViewValue(Model $item): mixed

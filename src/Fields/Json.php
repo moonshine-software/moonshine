@@ -13,7 +13,7 @@ class Json extends Field implements HasFields
 {
     use WithFields;
 
-    protected static string $view = 'json';
+    protected static string $view = 'moonshine::fields.json';
 
     protected bool $keyValue = false;
 

@@ -27,7 +27,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     use Searchable;
     use SelectTransform;
 
-    public static string $view = 'belongs-to-many';
+    public static string $view = 'moonshine::fields.belongs-to-many';
 
     protected bool $group = true;
 

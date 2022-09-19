@@ -467,12 +467,53 @@ abstract class Resource implements ResourceContract
             ->allows($ability, $item ?? $this->getModel());
     }
 
+    public function massDelete(array $ids): void
+    {
+        if (method_exists($this, 'beforeMassDeleting')) {
+            call_user_func([$this, 'beforeMassDeleting'], $ids);
+        }
+
+        $this->getModel()
+            ->newModelQuery()
+            ->whereIn($this->getModel()->getKeyName(), $ids)
+            ->delete();
+
+        if (method_exists($this, 'afterMassDeleted')) {
+            call_user_func([$this, 'afterMassDeleted'], $ids);
+        }
+    }
+
+    public function delete(Model $item): void
+    {
+        if (method_exists($this, 'beforeDeleting')) {
+            call_user_func([$this, 'beforeDeleting'], $item);
+        }
+
+        $item->delete();
+
+        if (method_exists($this, 'afterDeleted')) {
+            call_user_func([$this, 'afterDeleted'], $item);
+        }
+    }
+
     /**
      * @throws ResourceException
      */
     public function save(Model $item): Model
     {
         try {
+            if (!$item->exists) {
+                if (method_exists($this, 'beforeCreating')) {
+                    call_user_func([$this, 'beforeCreating'], $item);
+                }
+            }
+
+            if ($item->exists) {
+                if (method_exists($this, 'beforeUpdating')) {
+                    call_user_func([$this, 'beforeUpdating'], $item);
+                }
+            }
+
             foreach ($this->formFields() as $field) {
                 if (!$field->hasRelationship() || $field->belongToOne()) {
                     $item = $field->save($item);
@@ -480,6 +521,8 @@ abstract class Resource implements ResourceContract
             }
 
             if ($item->save()) {
+                $wasRecentlyCreated = $item->wasRecentlyCreated;
+
                 foreach ($this->formFields() as $field) {
                     if ($field->hasRelationship() && !$field->belongToOne()) {
                         $item = $field->save($item);
@@ -487,6 +530,18 @@ abstract class Resource implements ResourceContract
                 }
 
                 $item->save();
+
+                if ($wasRecentlyCreated) {
+                    if (method_exists($this, 'afterCreated')) {
+                        call_user_func([$this, 'afterCreated'], $item);
+                    }
+                }
+
+                if (!$wasRecentlyCreated) {
+                    if (method_exists($this, 'afterUpdated')) {
+                        call_user_func([$this, 'afterUpdated'], $item);
+                    }
+                }
             }
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());

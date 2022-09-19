@@ -11,7 +11,7 @@ class Number extends Field
 {
     use NumberTrait;
 
-    protected static string $view = 'input';
+    protected static string $view = 'moonshine::fields.input';
 
     protected static string $type = 'number';
 

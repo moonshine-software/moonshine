@@ -15,7 +15,7 @@ class BelongsTo extends Field implements HasRelationship, BelongsToRelation
     use Searchable;
     use WithRelationship;
 
-    protected static string $view = 'select';
+    protected static string $view = 'moonshine::fields.select';
 
     public function isMultiple(): bool
     {

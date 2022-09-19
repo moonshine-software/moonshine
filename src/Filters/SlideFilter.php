@@ -8,9 +8,10 @@ use Leeto\MoonShine\Traits\Fields\SlideTrait;
 
 class SlideFilter extends Filter
 {
-    use NumberTrait, SlideTrait;
+    use NumberTrait;
+    use SlideTrait;
 
-    public static string $view = 'slide';
+    public static string $view = 'moonshine::filters.slide';
 
     protected array $attributes = ['min', 'max', 'step'];
 

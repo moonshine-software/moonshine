@@ -10,11 +10,12 @@ use Leeto\MoonShine\Traits\Fields\SlideTrait;
 
 class SlideField extends Field
 {
-    use NumberTrait, SlideTrait;
+    use NumberTrait;
+    use SlideTrait;
+
+    protected static string $view = 'moonshine::fields.slide';
 
     protected array $attributes = ['min', 'max', 'step'];
-
-    protected static string $view = 'slide';
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {

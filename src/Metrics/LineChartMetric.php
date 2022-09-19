@@ -6,13 +6,15 @@ namespace Leeto\MoonShine\Metrics;
 
 class LineChartMetric extends Metric
 {
-    protected static string $view = 'line-chart';
+    protected static string $view = 'moonshine::metrics.line-chart';
 
     protected array $lines = [];
 
     protected array $colors = [];
 
-    protected array $assets = ['https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js'];
+    protected array $assets = [
+        'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js'
+    ];
 
     public function lines(): array
     {

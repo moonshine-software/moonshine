@@ -12,7 +12,7 @@ class ID extends Field
 
     public string $label = 'ID';
 
-    protected static string $view = 'input';
+    protected static string $view = 'moonshine::fields.input';
 
     protected static string $type = 'hidden';
 

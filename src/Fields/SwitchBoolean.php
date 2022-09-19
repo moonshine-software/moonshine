@@ -11,7 +11,7 @@ class SwitchBoolean extends Field
 {
     use BooleanTrait;
 
-    protected static string $view = 'switch';
+    protected static string $view = 'moonshine::fields.switch';
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {

@@ -11,7 +11,8 @@ use Leeto\MoonShine\Traits\WithView;
 
 abstract class Decoration implements HtmlViewable
 {
-    use Makeable, WithView;
+    use Makeable;
+    use WithView;
 
     protected string $label;
 
@@ -114,6 +115,6 @@ abstract class Decoration implements HtmlViewable
      */
     public function getView(): string
     {
-        return 'moonshine::decorations.'.static::$view;
+        return static::$view;
     }
 }

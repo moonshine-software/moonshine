@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Code extends Field
 {
-    protected static string $view = 'code';
+    protected static string $view = 'moonshine::fields.code';
 
     public string $language = 'php';
 

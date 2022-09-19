@@ -20,7 +20,13 @@ use Leeto\MoonShine\Utilities\AssetManager;
 
 abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
 {
-    use Makeable, FormElement, WithHtmlAttributes, WithAssets, WithView, ShowWhen, XModel;
+    use FormElement;
+    use Makeable;
+    use ShowWhen;
+    use WithAssets;
+    use WithHtmlAttributes;
+    use WithView;
+    use XModel;
 
     protected function afterMake(): void
     {
@@ -61,7 +67,7 @@ abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
 
     public function getView(): string
     {
-        return 'moonshine::filters.'.static::$view;
+        return static::$view;
     }
 
     public function formViewValue(Model $item): mixed

@@ -12,9 +12,10 @@ use Leeto\MoonShine\Traits\Fields\FileTrait;
 
 class File extends Field implements Fileable
 {
-    use FileTrait, CanBeMultiple;
+    use CanBeMultiple;
+    use FileTrait;
 
-    protected static string $view = 'file';
+    protected static string $view = 'moonshine::fields.file';
 
     protected static string $type = 'file';
 
