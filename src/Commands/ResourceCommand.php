@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Commands;
 
+use Leeto\MoonShine\MoonShine;
+
 class ResourceCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=}';
@@ -32,6 +34,7 @@ class ResourceCommand extends MoonShineCommand
 
         $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
         $contents = $this->getStub('Resource');
+        $contents = str_replace('{namespace}', MoonShine::namespace('\Resources'), $contents);
         $contents = str_replace('DummyModel', $model, $contents);
         $contents = str_replace('DummyTitle', $title, $contents);
 

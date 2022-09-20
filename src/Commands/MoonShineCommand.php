@@ -17,7 +17,7 @@ class MoonShineCommand extends Command
 
     protected function getDirectory(): string
     {
-        return MoonShine::DIR;
+        return MoonShine::dir();
     }
 
     protected function makeDir(string $path = ''): void

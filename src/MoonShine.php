@@ -31,9 +31,14 @@ class MoonShine
         );
     }
 
+    public static function dir(string $path = ''): string
+    {
+        return (config('moonshine.dir') ?? static::DIR).$path;
+    }
+
     public static function namespace(string $path = ''): string
     {
-        return static::NAMESPACE.$path;
+        return (config('moonshine.namespace') ?? static::NAMESPACE).$path;
     }
 
     /**

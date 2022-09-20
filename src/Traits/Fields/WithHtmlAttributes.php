@@ -27,7 +27,7 @@ trait WithHtmlAttributes
 
     protected bool $readonly = false;
 
-    protected array $attributes = [];
+    protected array $attributes = ['disabled', 'required', 'readonly'];
 
     protected array $customAttributes = [];
 
