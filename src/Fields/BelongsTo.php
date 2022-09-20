@@ -24,6 +24,10 @@ class BelongsTo extends Field implements HasRelationship, BelongsToRelation
 
     public function save(Model $item): Model
     {
+        if ($this->requestValue() === false) {
+            return $item;
+        }
+
         return $item->{$this->relation()}()
             ->associate($this->requestValue());
     }
