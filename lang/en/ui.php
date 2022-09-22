@@ -39,7 +39,7 @@ return [
         'email' => 'E-mail',
         'password' => 'Password',
     ],
-    'base_resource' => [
+    'resource' => [
         'role' => 'Role',
         'name' => 'Name',
         'email' => 'E-mail',

@@ -19,14 +19,14 @@ class MoonShineUserRoleResource extends Resource
 
     public function title(): string
     {
-        return trans('moonshine::ui.base_resource.role');
+        return trans('moonshine::ui.resource.role');
     }
 
     public function fields(): array
     {
         return [
             ID::make()->sortable()->showOnExport(),
-            Text::make(trans('moonshine::ui.base_resource.role_name'), 'name')
+            Text::make(trans('moonshine::ui.resource.role_name'), 'name')
                 ->required()->showOnExport(),
         ];
     }
@@ -46,7 +46,7 @@ class MoonShineUserRoleResource extends Resource
     public function filters(): array
     {
         return [
-            TextFilter::make(trans('moonshine::ui.base_resource.role_name'), 'name'),
+            TextFilter::make(trans('moonshine::ui.resource.role_name'), 'name'),
         ];
     }
 
