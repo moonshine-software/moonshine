@@ -29,6 +29,7 @@ return [
             ],
         ],
     ],
+    'middlewares' => [],
     'extensions' => [
         //
     ],

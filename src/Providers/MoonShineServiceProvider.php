@@ -128,6 +128,11 @@ class MoonShineServiceProvider extends ServiceProvider
         }
 
         // register middleware group.
+        $this->middlewareGroups['moonshine'] = array_merge(
+            $this->middlewareGroups['moonshine'],
+            config('moonshine.middlewares', [])
+        );
+
         foreach ($this->middlewareGroups as $key => $middleware) {
             app('router')->middlewareGroup($key, $middleware);
         }
