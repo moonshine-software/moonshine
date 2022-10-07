@@ -36,6 +36,20 @@ class MoonShineController extends BaseController
 
     protected Resource $resource;
 
+    public function action($id, $index): RedirectResponse
+    {
+        $item = $this->resource->getModel()
+            ->newModelQuery()
+            ->findOrFail($id);
+
+        abort_if(!$action = $this->resource->itemActions()[$index] ?? false, 404);
+
+        $action->callback($item);
+
+        return back()
+            ->with('alert', $action->message());
+    }
+
     /**
      * @throws AuthorizationException
      */

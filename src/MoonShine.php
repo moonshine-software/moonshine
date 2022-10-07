@@ -103,6 +103,12 @@ class MoonShine
                 Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
 
                 $this->resources->each(function ($resource) {
+                    Route::get(
+                        $resource->routeAlias().'/action/{'.$resource->routeParam().'}/{index}',
+                        [MoonShineResourceController::class, 'action']
+                    )
+                        ->name($resource->routeAlias().'.action');
+
                     /* @var Resource $resource */
                     if ($resource->isSystem()) {
                         Route::resource($resource->routeAlias(), $resource->controllerName());

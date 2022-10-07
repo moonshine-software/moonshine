@@ -24,6 +24,7 @@ use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Filters\Filter;
+use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
 
@@ -112,6 +113,16 @@ abstract class Resource implements ResourceContract
      * @return Metric[]
      */
     public function metrics(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get an array of custom item actions
+     *
+     * @return array<int, ItemAction>
+     */
+    public function itemActions(): array
     {
         return [];
     }

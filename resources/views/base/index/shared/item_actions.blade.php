@@ -1,3 +1,9 @@
+@foreach($resource->itemActions() as $index => $action)
+    <a href="{{ $resource->route("action", $item->getKey(), ['index' => $index]) }}" class="text-purple inline-block">
+        {{ $action->label() }}
+    </a>
+@endforeach
+
 @if($resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))
     <a href="{{ $resource->route("edit", $item->getKey()) }}" class="text-purple inline-block">
         @include("moonshine::shared.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "purple"])
