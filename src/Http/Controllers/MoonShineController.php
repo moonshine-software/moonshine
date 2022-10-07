@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -44,7 +45,14 @@ class MoonShineController extends BaseController
 
         abort_if(!$action = $this->resource->itemActions()[$index] ?? false, 404);
 
-        $action->callback($item);
+        try {
+            $action->callback($item);
+        } catch (Exception $e) {
+            throw_if(!app()->isProduction(), $e);
+
+            return back()
+                ->with('alert', trans('moonshine::ui.saved_error'));
+        }
 
         return back()
             ->with('alert', $action->message());
