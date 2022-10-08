@@ -38,7 +38,7 @@ final class ExportAction extends Action
             ->toArray();
 
         $items = $request->getResource()
-            ->query()
+            ->resolveQuery()
             ->select($columns)
             ->get();
 

@@ -25,7 +25,7 @@ final class InitialController extends BaseController
 
         if (auth('moonshine')->check()) {
             $response['menu'] = [
-                'items' => app(Menu::class)->all()
+                'items' => Menu::all()
             ];
         }
 

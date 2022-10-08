@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Menu\MenuSection;
+use Leeto\MoonShine\MoonShine;
+use Throwable;
 
 class MoonShineApplicationServiceProvider extends ServiceProvider
 {
@@ -12,11 +16,12 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      *
      * @return void
+     * @throws Throwable
      */
-    public function boot()
+    public function boot(): void
     {
-        $this->resources();
-        $this->menu();
+        MoonShine::resources($this->resources());
+        MoonShine::menu($this->menu());
     }
 
     /**
@@ -24,18 +29,24 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
-    protected function resources(): void
+    /**
+     * @return array<ResourceContract|string>
+     */
+    protected function resources(): array
     {
-        //
+        return [];
     }
 
-    protected function menu(): void
+    /**
+     * @return array<MenuSection>
+     */
+    protected function menu(): array
     {
-        //
+        return [];
     }
 }

@@ -21,8 +21,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->integer('changelogable_id');
-            $table->string('changelogable_type');
+            $table->morphs('changelogable');
 
             $table->longText('states_before');
             $table->longText('states_after');

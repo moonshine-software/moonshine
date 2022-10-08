@@ -27,7 +27,7 @@ abstract class Metric implements HasAssets, JsonSerializable
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
-            app(AssetManager::class)->add($this->getAssets());
+            AssetManager::add($this->getAssets());
         }
     }
 

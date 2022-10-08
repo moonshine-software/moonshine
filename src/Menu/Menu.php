@@ -8,15 +8,15 @@ use Illuminate\Support\Collection;
 
 final class Menu
 {
-    protected ?Collection $menu = null;
+    protected static ?Collection $menu = null;
 
-    public function register(Collection $data): void
+    public static function register(Collection $data): void
     {
-        $this->menu = $data;
+        self::$menu = $data;
     }
 
-    public function all(): ?Collection
+    public static function all(): ?Collection
     {
-        return $this->menu;
+        return self::$menu;
     }
 }

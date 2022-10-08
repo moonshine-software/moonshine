@@ -20,9 +20,9 @@ final class MoonShine
 
     public const NAMESPACE = 'App\MoonShine';
 
-    protected ?Collection $resources = null;
+    protected static ?Collection $resources = null;
 
-    protected ?Collection $menu = null;
+    protected static ?Collection $menu = null;
 
     public static function path(string $path = ''): string
     {
@@ -31,14 +31,19 @@ final class MoonShine
         );
     }
 
+    public static function dir(string $path = ''): string
+    {
+        return (config('moonshine.dir') ?? self::DIR).$path;
+    }
+
     public static function namespace(string $path = ''): string
     {
-        return static::NAMESPACE.$path;
+        return (config('moonshine.namespace') ?? self::NAMESPACE).$path;
     }
 
     public static function getResourceFromUriKey(string $uri): ResourceContract
     {
-        $resource = app(MoonShine::class)->getResources()
+        $resource = MoonShine::getResources()
             ->first(fn(ResourceContract $resource) => $resource->uriKey() === $uri);
 
         if ($resource) {
@@ -63,9 +68,9 @@ final class MoonShine
      * @return void
      * @throws Throwable
      */
-    public function resources(array $data): void
+    public static function resources(array $data): void
     {
-        $this->resources = collect();
+        self::$resources = collect();
 
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
@@ -74,27 +79,32 @@ final class MoonShine
                 throw MoonShineException::onlyResourceAllowed();
             }
 
-            $this->resources->add($item);
+            self::$resources->add($item);
         });
 
-        $this->resolveResourcesRoutes();
+        self::resolveResourcesRoutes();
     }
 
-    public function menu(array $data): void
+    /**
+     * @throws MenuException
+     */
+    public static function menu(array $data): void
     {
-        $this->menu = collect();
+        self::$menu = collect();
 
-        collect($data)->each(function ($item) {
-            $item = is_string($item) ? new $item() : $item;
+        collect($data)->each(
+            function ($item) {
+                $item = is_string($item) ? new $item() : $item;
 
-            if (!$item instanceof MenuSection) {
-                throw MenuException::onlyMenuItemAllowed();
+                if (!$item instanceof MenuSection) {
+                    throw MenuException::onlyMenuItemAllowed();
+                }
+
+                self::$menu->add($item);
             }
+        );
 
-            $this->menu->add($item);
-        });
-
-        app(Menu::class)->register($this->menu);
+        Menu::register(self::$menu);
     }
 
     /**
@@ -102,9 +112,9 @@ final class MoonShine
      *
      * @return Collection<ResourceContract>
      */
-    public function getResources(): Collection
+    public static function getResources(): Collection
     {
-        return $this->resources;
+        return self::$resources;
     }
 
     /**
@@ -112,12 +122,12 @@ final class MoonShine
      *
      * @return void
      */
-    protected function resolveResourcesRoutes(): void
+    protected static function resolveResourcesRoutes(): void
     {
         Route::prefix(config('moonshine.prefix'))
             ->middleware(['moonshine', 'auth:moonshine'])
             ->name(config('moonshine.prefix').'.')->group(function () {
-                $this->getResources()->each(function (ResourceContract $resource) {
+                self::getResources()->each(function (ResourceContract $resource) {
                     $resource->resolveRoutes();
                 });
             });

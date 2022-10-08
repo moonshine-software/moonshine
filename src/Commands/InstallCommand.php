@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Commands;
 
 use Illuminate\Support\Facades\Artisan;
+use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
 
 final class InstallCommand extends MoonShineCommand
@@ -56,6 +57,7 @@ final class InstallCommand extends MoonShineCommand
     {
         $dashboard = $this->getDirectory()."/Dashboard.php";
         $contents = $this->getStub('Dashboard');
+        $contents = str_replace('{namespace}', MoonShine::namespace(), $contents);
 
         $this->laravel['files']->put($dashboard, $contents);
 

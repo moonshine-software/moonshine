@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Leeto\MoonShine\Actions\Action;
-use Leeto\MoonShine\Contracts\Resources\CrudContract;
+use Leeto\MoonShine\Contracts\Resources\WithFields;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Contracts\ValueEntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Filters\FilterContract;
 use Leeto\MoonShine\Filters\ModelFilter;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\Traits\Resource\ResourceCrudRouter;
+use Leeto\MoonShine\Traits\Resource\ResourceModelEvents;
 use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
 use Leeto\MoonShine\Traits\Resource\ResourceModelQuery;
 use Leeto\MoonShine\Traits\Resource\ResourceRouter;
@@ -30,10 +30,11 @@ use Leeto\MoonShine\Views\CrudFormView;
 use Leeto\MoonShine\Views\CrudIndexView;
 use Leeto\MoonShine\Views\Views;
 
-abstract class ModelResource implements ResourceContract, CrudContract
+abstract class ModelResource implements ResourceContract, WithFields
 {
     use ResourceModelQuery;
     use ResourceModelPolicy;
+    use ResourceModelEvents;
     use ResourceRouter;
     use ResourceCrudRouter;
     use WithUriKey;
@@ -170,15 +171,12 @@ abstract class ModelResource implements ResourceContract, CrudContract
     public function create(Model $item, array $values): Model
     {
         try {
-            if (method_exists($this, 'beforeCreating')) {
-                call_user_func([$this, 'beforeCreating'], $item, $values);
-            }
+            static::beforeCreating($item);
 
             $item->forceFill($values);
-            $item->save();
 
-            if (method_exists($this, 'afterCreated')) {
-                call_user_func([$this, 'afterCreated'], $item);
+            if ($item->save()) {
+                static::afterCreated($item);
             }
         } catch (QueryException $queryException) {
             throw ResourceException::queryError($queryException->getMessage());
@@ -193,8 +191,13 @@ abstract class ModelResource implements ResourceContract, CrudContract
     public function update(Model $item, array $values): Model
     {
         try {
+            static::beforeUpdating($item);
+
             $item->forceFill($values);
-            $item->save();
+
+            if ($item->save()) {
+                static::afterUpdated($item);
+            }
         } catch (QueryException $queryException) {
             throw ResourceException::queryError($queryException->getMessage());
         }
@@ -204,25 +207,50 @@ abstract class ModelResource implements ResourceContract, CrudContract
 
     public function delete(Model $item): bool
     {
-        return $item->delete();
+        static::beforeDeleting($item);
+
+        return tap($item->delete(), fn() => static::afterDeleted($item));
     }
 
     public function massDelete(array $ids): bool
     {
-        return $this->getModel()
-            ->newModelQuery()
-            ->whereIn($this->getModel()->getKeyName(), $ids)
-            ->delete();
+        static::beforeMassDeleting($ids);
+
+        return tap(
+            $this->getModel()
+                ->newModelQuery()
+                ->whereIn($this->getModel()->getKeyName(), $ids)
+                ->delete(),
+            fn() => static::afterMassDeleted($ids)
+        );
     }
 
+    /**
+     * @throws ResourceException
+     */
     public function forceDelete(Model $item): bool
     {
-        return $item->forceDelete();
+        if(!$this->softDeletes()) {
+            throw ResourceException::withoutSoftDeletes();
+        }
+
+        static::beforeForceDeleting($item);
+
+        return tap($item->forceDelete(), fn() => static::afterForceDeleted($item));
     }
 
+    /**
+     * @throws ResourceException
+     */
     public function restore(Model $item): bool
     {
-        return $item->restore();
+        if(!$this->softDeletes()) {
+            throw ResourceException::withoutSoftDeletes();
+        }
+
+        static::beforeRestoring($item);
+
+        return tap($item->restore(), fn() => static::afterRestored($item));
     }
 
     public function jsonSerialize(): array

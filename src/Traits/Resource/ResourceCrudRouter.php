@@ -7,13 +7,18 @@ namespace Leeto\MoonShine\Traits\Resource;
 use Illuminate\Support\Facades\Route;
 use Leeto\MoonShine\Http\Controllers\ActionController;
 use Leeto\MoonShine\Http\Controllers\CrudController;
+use ReflectionClass;
+use ReflectionException;
 
 trait ResourceCrudRouter
 {
+    /**
+     * @throws ReflectionException
+     */
     public function resolveRoutes(): void
     {
         $this->views()->each(function ($class) {
-            if ((new \ReflectionClass($class))->hasMethod('resolveRoutes')) {
+            if ((new ReflectionClass($class))->hasMethod('resolveRoutes')) {
                 $class::resolveRoutes();
             }
         });

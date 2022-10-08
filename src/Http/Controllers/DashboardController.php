@@ -16,7 +16,7 @@ final class DashboardController extends BaseController
     public function __invoke(): JsonResponse
     {
         return $this->jsonResponse([
-            'blocks' => app(Dashboard::class)->getBlocks()
+            'blocks' => Dashboard::getBlocks()
         ]);
     }
 }

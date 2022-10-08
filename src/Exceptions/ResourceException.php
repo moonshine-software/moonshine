@@ -12,4 +12,9 @@ final class ResourceException extends Exception
     {
         return new static("Query error: $message");
     }
+
+    public static function withoutSoftDeletes(): self
+    {
+        return new static("Resource model does not have soft deletes");
+    }
 }

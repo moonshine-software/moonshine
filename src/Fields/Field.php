@@ -74,7 +74,7 @@ abstract class Field implements JsonSerializable, HasAssets
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
-            app(AssetManager::class)->add($this->getAssets());
+            AssetManager::add($this->getAssets());
         }
     }
 

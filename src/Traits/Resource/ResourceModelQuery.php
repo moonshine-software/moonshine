@@ -19,10 +19,23 @@ trait ResourceModelQuery
 
     public function paginate(): LengthAwarePaginator
     {
-        return $this->query()->paginate(static::$itemsPerPage);
+        return $this->resolveQuery()
+            ->paginate(static::$itemsPerPage)
+            ->appends(request()->except('page'));
     }
 
     public function query(): Builder
+    {
+        $query = $this->getModel()->query();
+
+        if (static::$with) {
+            $query->with(static::$with);
+        }
+
+        return $query;
+    }
+
+    public function resolveQuery(): Builder
     {
         $query = $this->getModel()->query();
 
@@ -30,10 +43,6 @@ trait ResourceModelQuery
             foreach ($this->scopes() as $scope) {
                 $query->withGlobalScope($scope::class, $scope);
             }
-        }
-
-        if (static::$with) {
-            $query->with(static::$with);
         }
 
         if (request()->has('search') && !empty($this->search())) {

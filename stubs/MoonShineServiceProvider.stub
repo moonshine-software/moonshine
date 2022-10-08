@@ -11,21 +11,21 @@ use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
-    protected function resources(): void
+    protected function resources(): array
     {
-        app(MoonShine::class)->resources([
+        return [
             MoonShineUserRoleResource::class,
             MoonShineUserResource::class,
-        ]);
+        ];
     }
 
-    protected function menu(): void
+    protected function menu(): array
     {
-        app(MoonShine::class)->menu([
-            MenuGroup::make(__('moonshine::ui.system_settings'), [
-                MenuItem::make(new MoonShineUserResource()),
-                MenuItem::make(new MoonShineUserRoleResource())
-            ])
-        ]);
+        return [
+           MenuGroup::make(__('moonshine::ui.system_settings'), [
+               MenuItem::make(new MoonShineUserResource()),
+               MenuItem::make(new MoonShineUserRoleResource())
+           ])
+        ];
     }
 }

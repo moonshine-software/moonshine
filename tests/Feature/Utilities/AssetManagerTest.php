@@ -16,8 +16,8 @@ class AssetManagerTest extends TestCase
      */
     public function it_empty(): void
     {
-        $this->assertEmpty(app(AssetManager::class)->css());
-        $this->assertEmpty(app(AssetManager::class)->js());
+        $this->assertEmpty(AssetManager::css());
+        $this->assertEmpty(AssetManager::js());
     }
 
     /**
@@ -26,11 +26,13 @@ class AssetManagerTest extends TestCase
      */
     public function it_add(): void
     {
-        app(AssetManager::class)->add('link1');
-        app(AssetManager::class)->add('link4');
-        app(AssetManager::class)->add(['link1', 'link2', 'link3']);
+        AssetManager::clear();
 
-        $this->assertCount(4, app(AssetManager::class)->getAssets());
+        AssetManager::add('link1');
+        AssetManager::add('link4');
+        AssetManager::add(['link1', 'link2', 'link3']);
+
+        $this->assertCount(4, AssetManager::getAssets());
     }
 
     /**
@@ -39,9 +41,13 @@ class AssetManagerTest extends TestCase
      */
     public function it_js(): void
     {
-        app(AssetManager::class)->add('link1.js');
+        AssetManager::clear();
+        AssetManager::add('link1.js');
 
-        $this->assertStringContainsString(asset('link1.js'), app(AssetManager::class)->js());
+        $this->assertStringContainsString(
+            asset('link1.js'),
+            AssetManager::js()
+        );
     }
 
     /**
@@ -50,9 +56,13 @@ class AssetManagerTest extends TestCase
      */
     public function it_css(): void
     {
-        app(AssetManager::class)->add('link1.css');
+        AssetManager::clear();
+        AssetManager::add('link1.css');
 
-        $this->assertStringContainsString(asset('link1.css'), app(AssetManager::class)->css());
+        $this->assertStringContainsString(
+            asset('link1.css'),
+            AssetManager::css()
+        );
     }
 
     /**
@@ -61,8 +71,13 @@ class AssetManagerTest extends TestCase
      */
     public function it_field_assets(): void
     {
+        AssetManager::clear();
+
         $field = Code::make('Test');
 
-        $this->assertEquals($field->getAssets(), app(AssetManager::class)->getAssets());
+        $this->assertEquals(
+            $field->getAssets(),
+            AssetManager::getAssets()
+        );
     }
 }

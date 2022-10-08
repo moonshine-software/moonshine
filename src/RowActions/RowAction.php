@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\RowActions;
 
+use Closure;
 use JsonSerializable;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithComponentAttributes;
@@ -19,6 +20,7 @@ abstract class RowAction implements JsonSerializable
 
     final public function __construct(
         protected string $title,
+        protected ?Closure $callback = null
     ) {
     }
 
@@ -32,6 +34,13 @@ abstract class RowAction implements JsonSerializable
     public function title(): string
     {
         return $this->title;
+    }
+
+    public function callback(...$arguments): mixed
+    {
+        return is_callable($this->callback)
+            ? call_user_func($this->callback, ...$arguments)
+            : null;
     }
 
     public function type(): string

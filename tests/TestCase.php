@@ -100,11 +100,11 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function registerTestResource(): static
     {
-        app(MoonShine::class)->resources([
+        MoonShine::resources([
             $this->testResource(),
         ]);
 
-        app(MoonShine::class)->menu([
+        MoonShine::menu([
             MenuItem::make($this->testResource())
         ]);
 

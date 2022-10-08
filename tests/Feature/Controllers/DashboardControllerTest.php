@@ -29,7 +29,7 @@ class DashboardControllerTest extends TestCase
      */
     public function it_success_response(): void
     {
-        app(Dashboard::class)->registerBlocks([
+        Dashboard::blocks([
             DashboardBlock::make([
                 ValueMetric::make('Test', 1)
             ]),

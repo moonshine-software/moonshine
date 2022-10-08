@@ -17,14 +17,27 @@ class Date extends Field
 
     protected string $format = 'Y-m-d H:i:s';
 
-    public function value(): string
+    public function value(): ?string
     {
-        return Carbon::parse(parent::value())
-            ->format($this->getFormat());
+        if($this->isNullable() && is_null(parent::value())) {
+            return null;
+        }
+
+        $value = Carbon::parse($this->value);
+
+        if (is_callable($this->valueCallback())) {
+            return $this->valueCallback()($value);
+        }
+
+        return $value->format($this->getFormat());
     }
 
-    public function requestValue(string $prefix = null): Carbon
+    public function requestValue(string $prefix = null): ?Carbon
     {
+        if($this->isNullable() && parent::requestValue($prefix) === false) {
+            return null;
+        }
+
         return Carbon::parse(parent::requestValue($prefix));
     }
 }

@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'dir' => 'app/MoonShine',
+    'namespace' => 'App\MoonShine',
+
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
     'logo' => env('MOONSHINE_LOGO', ''),
     'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
@@ -17,4 +20,5 @@ return [
             )
         )
     ),
+    'middlewares' => [],
 ];

@@ -6,33 +6,38 @@ namespace Leeto\MoonShine\Utilities;
 
 final class AssetManager
 {
-    protected array $assets = [];
+    protected static array $assets = [];
 
-    public function add(string|array $assets): void
+    public static function clear(): void
     {
-        $this->assets = array_unique(
+        self::$assets = [];
+    }
+
+    public static function add(string|array $assets): void
+    {
+        self::$assets = array_unique(
             array_merge(
-                $this->assets,
+                self::$assets,
                 is_array($assets) ? $assets : [$assets]
             )
         );
     }
 
-    public function getAssets(): array
+    public static function getAssets(): array
     {
-        return $this->assets;
+        return self::$assets;
     }
 
-    public function js(): string
+    public static function js(): string
     {
-        return collect($this->assets)
+        return collect(self::$assets)
             ->filter(fn($asset) => preg_match('/\.js$/', $asset))
             ->map(fn($asset) => "<script src='".asset($asset)."'></script>")->implode(PHP_EOL);
     }
 
-    public function css(): string
+    public static function css(): string
     {
-        return collect($this->assets)
+        return collect(self::$assets)
             ->filter(fn($asset) => preg_match('/\.css$/', $asset))
             ->map(fn($asset) => "<link href='".asset($asset)."' rel='stylesheet'>")->implode(PHP_EOL);
     }

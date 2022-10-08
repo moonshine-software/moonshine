@@ -9,26 +9,27 @@ use Leeto\MoonShine\MoonShine;
 
 final class Dashboard
 {
-    protected ?Collection $blocks = null;
+    protected static ?Collection $blocks = null;
 
-    public function registerBlocks(array $data): void
+    public static function blocks(array $data): void
     {
-        $this->blocks = collect();
+        self::$blocks = collect();
 
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
             if ($item instanceof DashboardBlock) {
-                $this->blocks->add($item);
+                self::$blocks->add($item);
             }
         });
     }
 
-    public function getBlocks(): ?Collection
+    public static function getBlocks(): ?Collection
     {
         $class = MoonShine::namespace('\Dashboard');
+
         $blocks = class_exists($class) ? (new $class())->getBlocks() : collect();
 
-        return $blocks->isNotEmpty() ? $blocks : $this->blocks;
+        return $blocks->isNotEmpty() ? $blocks : self::$blocks;
     }
 }

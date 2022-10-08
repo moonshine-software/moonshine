@@ -84,11 +84,6 @@ final class MoonShineServiceProvider extends ServiceProvider
             $this->commands($this->commands);
         }
 
-        $this->app->singleton(MoonShine::class, fn() => new MoonShine());
-        $this->app->singleton(Menu::class, fn() => new Menu());
-        $this->app->singleton(Dashboard::class, fn() => new Dashboard());
-        $this->app->singleton(AssetManager::class, fn() => new AssetManager());
-
         $this->app->register(SanctumServiceProvider::class);
     }
 
@@ -112,6 +107,11 @@ final class MoonShineServiceProvider extends ServiceProvider
      */
     protected function registerRouteMiddleware(): void
     {
+        $this->middlewareGroups['moonshine'] = array_merge(
+            $this->middlewareGroups['moonshine'],
+            config('moonshine.middlewares', [])
+        );
+
         foreach ($this->middlewareGroups as $key => $middleware) {
             app('router')->middlewareGroup($key, $middleware);
         }
