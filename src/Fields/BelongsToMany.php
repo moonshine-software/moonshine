@@ -113,7 +113,9 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
                 ]);
 
                 $this->treeHtml .= str($element)->wrap(
-                    "<li x-ref='item_{$item->getKey()}' style='margin-left: ".($offset * 50)."px' class='mb-3 bg-purple py-4 px-4 rounded-md'>",
+                    "<li x-ref='item_{$item->getKey()}'
+                            style='margin-left: ".($offset * 50)."px'
+                            class='mb-3 bg-whiteblue dark:bg-purple py-4 px-4 rounded-md'>",
                     "</li>"
                 );
 

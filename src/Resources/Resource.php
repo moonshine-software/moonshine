@@ -515,6 +515,9 @@ abstract class Resource implements ResourceContract
     public function save(Model $item): Model
     {
         try {
+            $this->formFields()
+                ->each(fn($field) => $field->beforeSave($item));
+
             if (!$item->exists) {
                 if (method_exists($this, 'beforeCreating')) {
                     call_user_func([$this, 'beforeCreating'], $item);
@@ -543,6 +546,9 @@ abstract class Resource implements ResourceContract
                 }
 
                 $item->save();
+
+                $this->formFields()
+                    ->each(fn($field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated) {
                     if (method_exists($this, 'afterCreated')) {

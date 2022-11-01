@@ -250,8 +250,8 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         if ($this->hasRelationship()) {
             return $container ? view('moonshine::shared.badge', [
                 'color' => 'purple',
-                'value' => $item->{$this->resourceTitleField()}
-            ]) : $item->{$this->resourceTitleField()};
+                'value' => $item->{$this->resourceTitleField()} ?? '-'
+            ]) : $item->{$this->resourceTitleField()} ?? '-';
         }
 
         return $item->{$this->field()} ?? '';
@@ -269,5 +269,15 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
             : ($this->isNullable() ? null : '');
 
         return $item;
+    }
+
+    public function beforeSave(Model $item): void
+    {
+        //
+    }
+
+    public function afterSave(Model $item): void
+    {
+        //
     }
 }

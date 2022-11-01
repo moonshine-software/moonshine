@@ -36,6 +36,10 @@ class Enum extends Select
             return false;
         }
 
+        if (is_string($formValue)) {
+            return $formValue === $value || (string) $this->getDefault() === $value;
+        }
+
         return (string) $formValue->value === $value
             || (!$formValue->value && (string) $this->getDefault() === $value);
     }

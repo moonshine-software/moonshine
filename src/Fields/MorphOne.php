@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-class MorphOne extends BelongsTo
+class MorphOne extends HasOne
 {
 }
