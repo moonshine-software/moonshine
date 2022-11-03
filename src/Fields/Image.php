@@ -35,7 +35,7 @@ class Image extends Field implements Fileable
         }
 
         return view('moonshine::fields.shared.thumbnail', [
-            'value' => $item->{$this->field()},
+            'value' => $item->{$this->field()} ? Storage::url($item->{$this->field()}) : '' ,
         ]);
     }
 }
