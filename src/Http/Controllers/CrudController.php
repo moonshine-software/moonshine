@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Http\Requests\Resources\CreateFormRequest;
@@ -20,6 +19,7 @@ use Leeto\MoonShine\Traits\Controllers\ApiResponder;
 use Leeto\MoonShine\Views\CrudDetailView;
 use Leeto\MoonShine\Views\CrudFormView;
 use Leeto\MoonShine\Views\CrudIndexView;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 final class CrudController extends BaseController
 {
@@ -88,7 +88,7 @@ final class CrudController extends BaseController
 
         return $this->jsonSuccessMessage(
             trans('moonshine::ui.saved'),
-            Response::HTTP_CREATED
+            ResponseAlias::HTTP_CREATED
         );
     }
 

@@ -14,7 +14,6 @@ use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Models\MoonshineUserRole;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
-use Leeto\MoonShine\Resources\FileLogViewerResource;
 use Leeto\MoonShine\Resources\ModelResource;
 use Leeto\MoonShine\Resources\MoonShineUserResource;
 

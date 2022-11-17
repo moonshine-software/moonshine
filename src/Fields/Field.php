@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Closure;
+use Illuminate\Support\Traits\Macroable;
 use JsonSerializable;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
@@ -27,6 +28,7 @@ use Leeto\MoonShine\Utilities\AssetManager;
 abstract class Field implements JsonSerializable, HasAssets
 {
     use Makeable;
+    use Macroable;
     use WithHtmlAttributes;
     use WithComponentAttributes;
     use WithComponent;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Commands;
 
+use Illuminate\Support\Facades\Hash;
 use Leeto\MoonShine\Models\MoonshineUser;
 
 final class UserCommand extends MoonShineCommand
@@ -22,7 +23,7 @@ final class UserCommand extends MoonShineCommand
             MoonshineUser::query()->create([
                 'email' => $email,
                 'name' => $name,
-                'password' => bcrypt($password)
+                'password' => Hash::make($password)
             ]);
 
             $this->components->info('User is created');
