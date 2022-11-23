@@ -50,11 +50,11 @@ class MoonShineController extends BaseController
         } catch (Exception $e) {
             throw_if(!app()->isProduction(), $e);
 
-            return back()
+            return redirect($this->resource->route('index'))
                 ->with('alert', trans('moonshine::ui.saved_error'));
         }
 
-        return back()
+        return redirect($this->resource->route('index'))
             ->with('alert', $action->message());
     }
 

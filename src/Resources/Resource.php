@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Leeto\MoonShine\Actions\Action;
@@ -206,6 +207,13 @@ abstract class Resource implements ResourceContract
 
     public function route(string $action = null, int|string $id = null, array $query = []): string
     {
+        if (empty($query) && Cache::has("moonshine_query_{$this->routeAlias()}")) {
+            parse_str(
+                Cache::get("moonshine_query_{$this->routeAlias()}", ''),
+                $query
+            );
+        }
+
         return route(
             $this->routeName($action),
             $id ? array_merge([$this->routeParam() => $id], $query) : $query
@@ -456,6 +464,10 @@ abstract class Resource implements ResourceContract
         } else {
             $query = $query->orderBy(static::$orderField, static::$orderType);
         }
+
+        Cache::remember("moonshine_query_{$this->routeAlias()}", now()->addHours(2), function () {
+            return request()->getQueryString();
+        });
 
         return $query;
     }
