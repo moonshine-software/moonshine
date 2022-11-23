@@ -27,6 +27,8 @@ trait WithHtmlAttributes
 
     protected bool $readonly = false;
 
+    protected bool $hidden = false;
+
     protected array $attributes = ['disabled', 'required', 'readonly'];
 
     protected array $customAttributes = [];
@@ -184,7 +186,7 @@ trait WithHtmlAttributes
     public function hidden($condition = null): static
     {
         if (Condition::boolean($condition, true)) {
-            static::$type = 'hidden';
+            $this->hidden = true;
         }
 
         return $this;
@@ -192,7 +194,7 @@ trait WithHtmlAttributes
 
     public function isHidden(): bool
     {
-        return static::$type === 'hidden';
+        return static::$type === 'hidden' || $this->hidden;
     }
 
     public function readonly($condition = null): static
