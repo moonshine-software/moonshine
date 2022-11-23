@@ -40,7 +40,7 @@ return [
         'password' => 'Пароль',
     ],
     'resource' => [
-        'role' => 'Роль',
+        'role' => 'Роли',
         'name' => 'Имя',
         'email' => 'E-mail',
         'password' => 'Пароль',
