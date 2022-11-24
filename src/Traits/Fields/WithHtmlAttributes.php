@@ -99,7 +99,7 @@ trait WithHtmlAttributes
 
     public function type(): string
     {
-        return static::$type;
+        return $this->hidden ? 'hidden' : static::$type;
     }
 
     public function getAttribute(string $name): mixed
@@ -185,9 +185,7 @@ trait WithHtmlAttributes
 
     public function hidden($condition = null): static
     {
-        if (Condition::boolean($condition, true)) {
-            $this->hidden = true;
-        }
+        $this->hidden = Condition::boolean($condition, true);
 
         return $this;
     }

@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
@@ -32,6 +33,12 @@ class HasOne extends Field implements HasRelationship, HasFields, OneToOneRelati
         $related = $this->getRelated($item);
         $primaryKey = $related->getKeyName();
         $table = $related->getTable();
+
+        foreach ($this->getFields() as $field) {
+            if ($field instanceof Fileable && isset($values[$field->field()])) {
+                $values[$field->field()] = $field->store($values[$field->field()]);
+            }
+        }
 
         $item->{$this->relation()}()
             ->updateOrCreate(["$table.$primaryKey" => $values[$primaryKey] ?? null], $values);

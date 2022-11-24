@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
@@ -49,17 +50,38 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
     public function save(Model $item): Model
     {
-        $item->{$this->relation()}()->delete();
+        $related = $this->getRelated($item);
+        $primaryKey = $related->getKeyName();
+
+        $currentIdentities = [];
+        $prevIdentities = $item->{$this->relation()}
+            ->pluck($primaryKey)
+            ->toArray();
 
         if ($this->requestValue() !== false) {
-            if ($this instanceof HasManyThrough) {
-                foreach ($this->requestValue() as $values) {
-                    $item->{$this->relation()}()->create($values);
+            foreach ($this->requestValue() as $values) {
+                $identity = null;
+
+                foreach ($this->getFields() as $field) {
+                    if ($field instanceof ID) {
+                        $identity = $values[$field->field()] ?? null;
+                        $currentIdentities[$identity] = $identity;
+                    }
+
+                    if ($field instanceof Fileable && isset($values[$field->field()])) {
+                        $values[$field->field()] = $field->store($values[$field->field()]);
+                    }
                 }
-            } else {
-                $item->{$this->relation()}()->createMany($this->requestValue());
+
+                $item->{$this->relation()}()->updateOrCreate([
+                    $primaryKey => $identity
+                ], $values);
             }
         }
+
+        $item->{$this->relation()}()
+            ->whereIn($primaryKey, collect($prevIdentities)->diff($currentIdentities)->toArray())
+            ->delete();
 
         return $item;
     }

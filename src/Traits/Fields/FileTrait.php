@@ -81,7 +81,7 @@ trait FileTrait
     /**
      * @throws Throwable
      */
-    private function store(UploadedFile $file): string
+    public function store(UploadedFile $file): string
     {
         $extension = $file->extension();
 
