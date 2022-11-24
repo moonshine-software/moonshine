@@ -13,7 +13,12 @@
 
         @if($canDownload)
             <div class="ml-4 flex-shrink-0">
-                <a href="{{ Storage::url($value) }}" download
+                <a @if(isset($field) && $field->attributes()->has('x-model'))
+                       :href="({{ $field->attributes()->get('x-model') }}) ? ('{{ Storage::url('') }}' + {{ $field->attributes()->get('x-model') }}) : ''"
+                   @else
+                       href="{{ Storage::url($value) }}"
+                   @endif
+                   download
                    class="font-medium text-pink hover:text-pink transition duration-150 ease-in-out">
                     {{ trans('moonshine::ui.download') }}
                 </a>

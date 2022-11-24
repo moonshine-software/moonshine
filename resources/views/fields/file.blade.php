@@ -10,7 +10,8 @@
                             @include('moonshine::fields.shared.file', [
                                 'index' => $index+1,
                                 'canDownload' => $field->canDownload(),
-                                'value' => $file
+                                'value' => $file,
+                                'field' => $field,
                             ])
 
                             @if($field->isRemovable())
@@ -27,7 +28,8 @@
         @else
             @include('moonshine::fields.shared.file', [
                 'canDownload' => $field->canDownload(),
-                'value' => $field->formViewValue($item)
+                'value' => $field->formViewValue($item),
+                'field' => $field,
             ])
         @endif
     @endif
