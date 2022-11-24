@@ -36,12 +36,6 @@
                 ])
             </div>
         @endif
-
-        @if($filters)
-            <div class="flex items-center select-none mt-5">
-                @include("moonshine::base.index.shared.filters", [$resource, $filters])
-            </div>
-        @endif
     </div>
 
 

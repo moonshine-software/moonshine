@@ -15,6 +15,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExportAction extends Action implements ActionContract
 {
+    protected static string $view = 'moonshine::actions.export';
+
     /**
      * @throws Exception|ActionException
      */

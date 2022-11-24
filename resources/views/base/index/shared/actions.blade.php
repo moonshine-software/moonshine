@@ -1,10 +1,5 @@
-<div class="flex items-center select-none mt-5">
+<div class="flex items-center select-none mt-5 space-x-4">
     @foreach($actions as $action)
-        @include('moonshine::shared.btn', [
-            'title' => $action->label(),
-            'href' => $action->url(),
-            'filled' => true,
-            'icon' => 'app'
-        ])
+        {!! $action->render() !!}
     @endforeach
 </div>

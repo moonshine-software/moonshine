@@ -6,10 +6,12 @@ namespace Leeto\MoonShine\Actions;
 
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithView;
 
 abstract class Action
 {
     use Makeable;
+    use WithView;
 
     protected string $label;
 
@@ -42,5 +44,12 @@ abstract class Action
         $this->resource = $resource;
 
         return $this;
+    }
+
+    public function render(): string
+    {
+        return view($this->getView(), [
+            'action' => $this,
+        ])->render();
     }
 }
