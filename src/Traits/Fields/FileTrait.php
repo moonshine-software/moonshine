@@ -143,9 +143,9 @@ trait FileTrait
         return $this->prefixedValue($item->{$this->field()});
     }
 
-    protected function prefixedValue(string $value): string
+    protected function prefixedValue(?string $value): string
     {
-        return ltrim($value, $this->withPrefix);
+        return $value ? ltrim($value, $this->withPrefix) : '';
     }
 
     public function exportViewValue(Model $item): string

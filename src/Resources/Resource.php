@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Leeto\MoonShine\Actions\Action;
+use Leeto\MoonShine\Actions\FiltersAction;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
@@ -240,8 +241,21 @@ abstract class Resource implements ResourceContract
     {
         $actions = collect();
 
+        $hasFilters = false;
+
         foreach ($this->actions() as $action) {
+            if($action instanceof FiltersAction) {
+                $hasFilters = true;
+            }
+
             $actions->add($action->setResource($this));
+        }
+
+        if(!$hasFilters && !empty($this->filters())) {
+            $actions->add(
+                FiltersAction::make(trans('moonshine::ui.filters'))
+                    ->setResource($this)
+            );
         }
 
         return $actions;
