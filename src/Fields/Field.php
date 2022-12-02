@@ -234,6 +234,10 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
             return $item->{$this->relation()} ?? $this->getDefault();
         }
 
+        if (is_callable($this->valueCallback())) {
+            return $this->valueCallback()($item) ?? $this->getDefault();
+        }
+
         return $item->{$this->field()} ?? $this->getDefault();
     }
 

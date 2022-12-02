@@ -1,4 +1,4 @@
-@if($item->changeLogs && $item->changeLogs->isNotEmpty())
+@if(isset($item->changeLogs) && $item->changeLogs && $item->changeLogs->isNotEmpty())
     <div class="my-6 text-lg">@lang('moonshine::ui.last_changes')</div>
 
     <div class="flex flex-col mt-8">

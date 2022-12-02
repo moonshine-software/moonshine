@@ -41,7 +41,7 @@ class File extends Field implements Fileable
         if ($this->isMultiple()) {
             return collect($item->{$this->field()})
                 ->map(fn($value, $index) => view('moonshine::fields.shared.file', [
-                    'value' => Storage::url($value),
+                    'value' => Storage::url($this->prefixedValue($value)),
                     'index' => $index + 1,
                     'canDownload' => $this->canDownload(),
                 ])->render())->implode('');
@@ -50,7 +50,7 @@ class File extends Field implements Fileable
         return view(
             'moonshine::fields.shared.file',
             [
-                'value' => parent::indexViewValue($item),
+                'value' => Storage::url($this->prefixedValue($item->{$this->field()})),
                 'canDownload' => $this->canDownload(),
             ]
         );

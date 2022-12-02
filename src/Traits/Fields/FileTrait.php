@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Helpers\Condition;
 use Throwable;
@@ -16,9 +17,18 @@ trait FileTrait
 
     protected string $dir = '/';
 
+    protected string $withPrefix = '';
+
     protected array $allowedExtensions = [];
 
     protected bool $disableDownload = false;
+
+    public function withPrefix(string $withPrefix): static
+    {
+        $this->withPrefix = $withPrefix;
+
+        return $this;
+    }
 
     public function disk(string $disk): static
     {
@@ -93,6 +103,9 @@ trait FileTrait
         return $file->store($this->getDir(), $this->getDisk());
     }
 
+    /**
+     * @throws Throwable
+     */
     public function save(Model $item): Model
     {
         $requestValue = $this->requestValue();
@@ -104,12 +117,12 @@ trait FileTrait
                 $paths = [];
 
                 foreach ($requestValue as $file) {
-                    $paths[] = $this->store($file);
+                    $paths[] = $this->prefixedValue($this->store($file));
                 }
 
                 $saveValue = $saveValue->merge($paths)->unique()->toArray();
             } else {
-                $saveValue = $this->store($requestValue);
+                $saveValue = $this->prefixedValue($this->store($requestValue));
             }
         }
 
@@ -118,6 +131,21 @@ trait FileTrait
         }
 
         return $item;
+    }
+
+    public function formViewValue(Model $item): mixed
+    {
+        if ($this->isMultiple()) {
+            return collect($item->{$this->field()})
+                ->map(fn($value) => $this->prefixedValue($value));
+        }
+
+        return $this->prefixedValue($item->{$this->field()});
+    }
+
+    protected function prefixedValue(string $value): string
+    {
+        return ltrim($value, $this->withPrefix);
     }
 
     public function exportViewValue(Model $item): string

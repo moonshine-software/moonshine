@@ -61,7 +61,7 @@
 
                     @if(request('filters'))
                         <div class="mt-5">
-                            <a href="{{ $resource->route("index") }}"
+                            <a href="{{ $resource->route('index', query: ['reset' => true]) }}"
                                class="bg-transparent hover:bg-purple text-purple
                         font-semibold hover:text-white py-2 px-4 border border-purple
                         hover:border-transparent rounded">

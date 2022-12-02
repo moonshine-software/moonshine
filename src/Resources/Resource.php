@@ -465,6 +465,7 @@ abstract class Resource implements ResourceContract
             $query = $query->orderBy(static::$orderField, static::$orderType);
         }
 
+        Cache::forget("moonshine_query_{$this->routeAlias()}");
         Cache::remember("moonshine_query_{$this->routeAlias()}", now()->addHours(2), function () {
             return request()->getQueryString();
         });
