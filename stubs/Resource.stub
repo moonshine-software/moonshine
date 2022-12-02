@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Fields\ID;
+use Leeto\MoonShine\Actions\FiltersAction;
 
 class DummyResource extends Resource
 {
@@ -37,6 +38,8 @@ class DummyResource extends Resource
 
     public function actions(): array
     {
-        return [];
+        return [
+            FiltersAction::make(trans('moonshine::ui.filters')),
+        ];
     }
 }
