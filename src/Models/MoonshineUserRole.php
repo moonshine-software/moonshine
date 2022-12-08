@@ -14,7 +14,7 @@ class MoonshineUserRole extends Model
 
     public const DEFAULT_ROLE_ID = 1;
 
-    protected $fillable = ['id', 'name'];
+    protected $fillable = ['name'];
 
     public function moonshineUsers(): HasMany
     {
