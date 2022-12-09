@@ -36,4 +36,17 @@ class MoonShineDashboardController extends BaseController
 
         return [];
     }
+
+    public function autoUpdate(Request $request): array
+    {
+        $class = $request->get('model');
+        $model = new $class();
+        $item = $model->findOrFail($request->get('key'));
+
+        $item->update([
+            $request->get('field') => $request->boolean('value')
+        ]);
+
+        return $item->toArray();
+    }
 }

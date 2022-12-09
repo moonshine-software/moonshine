@@ -97,6 +97,7 @@ class MoonShine
             ->name(config('moonshine.route.prefix').'.')->group(function () {
                 Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
                 Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
+                Route::get('/auto-update', [MoonShineDashboardController::class, 'autoUpdate'])->name('auto-update');
 
                 Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
                 Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
