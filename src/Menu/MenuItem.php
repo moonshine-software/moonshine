@@ -14,7 +14,18 @@ class MenuItem extends MenuSection
     final public function __construct(string $title, Resource|string $resource, string $icon = null)
     {
         $this->title = $title;
-        $this->resource = is_string($resource) ? new $resource() : $resource;
+
+        if($resource instanceof Resource) {
+            $this->resource = $resource;
+        }
+
+        if(is_string($resource) && class_exists($resource)) {
+            $this->resource = new $resource;
+        }
+
+        if(is_string($resource) && is_null($this->resource)) {
+            $this->link = $resource;
+        }
 
         if ($icon) {
             $this->icon($icon);

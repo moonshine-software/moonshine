@@ -26,7 +26,7 @@
     @if($item->items())
         <div x-show="open" class="bg-darkblue">
             @foreach($item->items() as $child)
-                <a href="{{ route($child->resource()->routeName('index')) }}"
+                <a href="{{ $child->url() }}"
                    class="py-2 px-10 block text-sm text-white {{ $child->isActive() ? 'font-bold' : '' }}">
                     <span class="flex items-center">
                         {!! $child->getIcon(4, 'white') !!}

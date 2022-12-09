@@ -1,5 +1,5 @@
 <div>
-    <a href="{{ route($item->resource()->routeName('index')) }}"
+    <a href="{{ $item->url() }}"
        class="w-full flex justify-between items-center py-2 px-6 focus:outline-none
 {{ $item->isActive() ? 'bg-gradient-to-r from-purple to-pink ' : '' }}
        text-white "

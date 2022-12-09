@@ -59,13 +59,13 @@ class MoonShine
                 $this->resources->add($item);
                 $this->menus->add(new MenuItem($item->title(), $item));
             } elseif ($item instanceof MenuItem) {
-                $this->resources->add($item->resource());
+                $this->resources->when($item->resource(), fn($r) => $r->add($item->resource()));
                 $this->menus->add($item);
             } elseif ($item instanceof MenuGroup) {
                 $this->menus->add($item);
 
                 $item->items()->each(function ($subItem) {
-                    $this->resources->add($subItem->resource());
+                    $this->resources->when($subItem->resource(), fn($r) => $r->add($subItem->resource()));
                 });
             }
         });

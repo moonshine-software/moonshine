@@ -16,9 +16,11 @@ abstract class MenuSection
 
     protected string $title;
 
+    protected string|null $link = null;
+
     protected Collection $items;
 
-    protected Resource $resource;
+    protected ?Resource $resource = null;
 
     protected ?Closure $canSeeCallback = null;
 
@@ -51,7 +53,7 @@ abstract class MenuSection
         return call_user_func($this->badge);
     }
 
-    public function resource(): Resource
+    public function resource(): ?Resource
     {
         return $this->resource;
     }
@@ -82,6 +84,15 @@ abstract class MenuSection
         return $this instanceof MenuGroup;
     }
 
+    public function url(): string
+    {
+        if($this->link) {
+            return $this->link;
+        }
+
+        return route($this->resource()->routeName('index'));
+    }
+
     public function isActive(): bool
     {
         if ($this->isGroup()) {
@@ -93,7 +104,8 @@ abstract class MenuSection
 
             return false;
         } else {
-            return request()->routeIs($this->resource()->routeName('*'));
+            return $this->resource()
+                && request()->routeIs($this->resource()->routeName('*'));
         }
     }
 }
