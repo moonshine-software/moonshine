@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'profile' => 'Профиль',
     'dashboard' => 'Панель',
     'add' => 'Добавить',
     'create' => 'Создать',

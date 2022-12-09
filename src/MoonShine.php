@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Leeto\MoonShine\Http\Controllers\MoonShineAuthController;
 use Leeto\MoonShine\Http\Controllers\MoonShineCustomPageController;
 use Leeto\MoonShine\Http\Controllers\MoonShineDashboardController;
+use Leeto\MoonShine\Http\Controllers\MoonShineProfileController;
 use Leeto\MoonShine\Http\Controllers\MoonShineResourceController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
@@ -80,6 +81,10 @@ class MoonShine
             }
         });
 
+        $this->pages->add(
+            CustomPage::make(__('moonshine::ui.profile'), 'profile', 'moonshine::profile')
+        );
+
         app(Menu::class)->register($this->menus);
 
         $this->addRoutes();
@@ -121,6 +126,7 @@ class MoonShine
 
                 Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
                 Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
+                Route::post('/profile', [MoonShineProfileController::class, 'store'])->name('profile.store');
                 Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
                 Route::get('/custom_page/{alias}', MoonShineCustomPageController::class)
                     ->name('custom_page');
