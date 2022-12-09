@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Actions\FiltersAction;
+use Leeto\MoonShine\BulkActions\BulkAction;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
@@ -115,6 +116,16 @@ abstract class Resource implements ResourceContract
      * @return Metric[]
      */
     public function metrics(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get an array of custom bulk actions
+     *
+     * @return array<int, BulkAction>
+     */
+    public function bulkActions(): array
     {
         return [];
     }

@@ -110,6 +110,12 @@ class MoonShine
                     )
                         ->name($resource->routeAlias().'.action');
 
+                    Route::post(
+                        $resource->routeAlias().'/bulk/{index}',
+                        [MoonShineResourceController::class, 'bulk']
+                    )
+                        ->name($resource->routeAlias().'.bulk');
+
                     /* @var Resource $resource */
                     if ($resource->isSystem()) {
                         Route::resource($resource->routeAlias(), $resource->controllerName());

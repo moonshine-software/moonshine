@@ -58,6 +58,31 @@ class MoonShineController extends BaseController
             ->with('alert', $action->message());
     }
 
+    public function bulk($index): RedirectResponse
+    {
+        if(!request('ids')) {
+            return redirect($this->resource->route('index'));
+        }
+
+        abort_if(!$action = $this->resource->bulkActions()[$index] ?? false, 404);
+
+        try {
+            $items = $this->resource->getModel()
+                ->newModelQuery()
+                ->findMany(explode(';', request('ids')));
+
+            $items->each(fn($item) => $action->callback($item));
+        } catch (Exception $e) {
+            throw_if(!app()->isProduction(), $e);
+
+            return redirect($this->resource->route('index'))
+                ->with('alert', trans('moonshine::ui.saved_error'));
+        }
+
+        return redirect($this->resource->route('index'))
+            ->with('alert', $action->message());
+    }
+
     /**
      * @throws AuthorizationException
      */
