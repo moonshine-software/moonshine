@@ -9,8 +9,8 @@
 
             <span class="mx-4 font-medium">{{ $item->title() }}</span>
 
-            @if($child->hasBadge())
-                @include('moonshine::shared.badge', ['color' => 'purple', 'value' => $child->getBadge()])
+            @if($item->hasBadge())
+                @include('moonshine::shared.badge', ['color' => 'purple', 'value' => $item->getBadge()])
             @endif
         </span>
     </a>
