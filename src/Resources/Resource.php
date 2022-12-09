@@ -129,6 +129,31 @@ abstract class Resource implements ResourceContract
         return [];
     }
 
+    /**
+     * Customize table row style
+     *
+     * @param  Model  $item
+     * @param  int  $index
+     * @return string
+     */
+    public function trStyles(Model $item, int $index): string
+    {
+        return '';
+    }
+
+    /**
+     * Customize table td style
+     *
+     * @param  Model  $item
+     * @param  int  $index
+     * @param  int  $cell
+     * @return string
+     */
+    public function tdStyles(Model $item, int $index, int $cell): string
+    {
+        return '';
+    }
+
     public function baseIndexView(): string
     {
         return static::$baseIndexView;
