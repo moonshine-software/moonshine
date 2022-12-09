@@ -57,7 +57,7 @@ abstract class Resource implements ResourceContract
 
     protected static bool $system = false;
 
-    protected Model $item;
+    protected ?Model $item = null;
 
     /**
      * Get an array of validation rules for resource related model
@@ -154,7 +154,7 @@ abstract class Resource implements ResourceContract
         $this->titleField = $titleField;
     }
 
-    public function getItem(): Model
+    public function getItem(): ?Model
     {
         return $this->item;
     }

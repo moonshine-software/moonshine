@@ -8,12 +8,13 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Traits\WithIcon;
 
 abstract class MenuSection
 {
-    protected string $title;
+    use WithIcon;
 
-    protected string|null $icon = null;
+    protected string $title;
 
     protected Collection $items;
 
@@ -31,13 +32,6 @@ abstract class MenuSection
     public function items(): Collection
     {
         return $this->items;
-    }
-
-    public function icon(string $icon): static
-    {
-        $this->icon = $icon;
-
-        return $this;
     }
 
     public function badge(Closure $callback): static
@@ -81,16 +75,6 @@ abstract class MenuSection
         return is_callable($this->canSeeCallback)
             ? call_user_func($this->canSeeCallback, $request)
             : true;
-    }
-
-    public function getIcon(
-        string $size = '8',
-        string $color = '',
-        string $class = ''
-    ): \Illuminate\Contracts\View\View {
-        $icon = $this->icon ?? 'app';
-
-        return view("moonshine::shared.icons.$icon", compact('size', 'color', 'class'));
     }
 
     public function isGroup(): bool

@@ -37,9 +37,9 @@ interface ResourceContract
     /**
      * Get current eloquent instance
      *
-     * @return Model
+     * @return ?Model
      */
-    public function getItem(): Model;
+    public function getItem(): ?Model;
 
     /**
      * Get a collection of additional actions performed on resource page

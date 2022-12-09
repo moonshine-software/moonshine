@@ -1,6 +1,9 @@
 @foreach($resource->itemActions() as $index => $action)
-    <a href="{{ $resource->route("action", $item->getKey(), ['index' => $index]) }}" class="text-purple inline-block">
-        {{ $action->label() }}
+    <a href="{{ $resource->route("action", $item->getKey(), ['index' => $index]) }}"
+       class="text-purple inline-block"
+       title="{{ $action->label() }}"
+    >
+        {{ $action->getIcon(6, 'purple', 'mr-2') }}
     </a>
 @endforeach
 

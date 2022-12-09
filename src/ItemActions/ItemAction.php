@@ -7,10 +7,12 @@ namespace Leeto\MoonShine\ItemActions;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Makeable;
 use Closure;
+use Leeto\MoonShine\Traits\WithIcon;
 
 final class ItemAction
 {
     use Makeable;
+    use WithIcon;
 
     public function __construct(
         protected string $label,
