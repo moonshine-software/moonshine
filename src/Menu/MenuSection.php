@@ -7,6 +7,7 @@ namespace Leeto\MoonShine\Menu;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\WithIcon;
 
@@ -21,6 +22,8 @@ abstract class MenuSection
     protected Collection $items;
 
     protected ?Resource $resource = null;
+
+    protected ?CustomPage $page = null;
 
     protected ?Closure $canSeeCallback = null;
 
@@ -58,6 +61,11 @@ abstract class MenuSection
         return $this->resource;
     }
 
+    public function page(): ?CustomPage
+    {
+        return $this->page;
+    }
+
     public function setItems(Collection $items): static
     {
         $this->items = $items;
@@ -90,6 +98,10 @@ abstract class MenuSection
             return $this->link;
         }
 
+        if($this->page()) {
+            return $this->page()->url();
+        }
+
         return route($this->resource()->routeName('index'));
     }
 
@@ -103,9 +115,16 @@ abstract class MenuSection
             }
 
             return false;
-        } else {
-            return $this->resource()
-                && request()->routeIs($this->resource()->routeName('*'));
         }
+
+        if($this->resource()) {
+            return request()->routeIs($this->resource()->routeName('*'));
+        }
+
+        if($this->page()) {
+            return request()->url() === $this->page()->url();
+        }
+
+        return false;
     }
 }
