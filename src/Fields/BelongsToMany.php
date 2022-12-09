@@ -39,9 +39,18 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
 
     protected array $ids = [];
 
+    protected bool $onlyCount = false;
+
     public function ids(): array
     {
         return $this->ids;
+    }
+
+    public function onlyCount(): static
+    {
+        $this->onlyCount = true;
+
+        return $this;
     }
 
     public function treeHtml(): string
@@ -127,6 +136,10 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     public function indexViewValue(Model $item, bool $container = false): string
     {
         $result = str('');
+
+        if($this->onlyCount) {
+            return (string) $item->{$this->relation()}->count();
+        }
 
         return (string) $item->{$this->relation()}->map(function ($item) use ($result) {
             $pivotAs = $this->getPivotAs($item);
