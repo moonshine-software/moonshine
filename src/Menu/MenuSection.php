@@ -21,6 +21,8 @@ abstract class MenuSection
 
     protected ?Closure $canSeeCallback = null;
 
+    protected ?Closure $badge = null;
+
     public function title(): string
     {
         return $this->title;
@@ -36,6 +38,23 @@ abstract class MenuSection
         $this->icon = $icon;
 
         return $this;
+    }
+
+    public function badge(Closure $callback): static
+    {
+        $this->badge = $callback;
+
+        return $this;
+    }
+
+    public function hasBadge(): bool
+    {
+        return is_callable($this->badge);
+    }
+
+    public function getBadge()
+    {
+        return call_user_func($this->badge);
     }
 
     public function resource(): Resource

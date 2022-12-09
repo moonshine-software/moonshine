@@ -9,6 +9,10 @@
             {!! $item->getIcon(6, 'white') !!}
 
             <span class="mx-4">{{ $item->title() }}</span>
+
+            @if($item->hasBadge())
+                @include('moonshine::shared.badge', ['color' => 'purple', 'value' => $item->getBadge()])
+            @endif
         </span>
 
         <span>
@@ -23,8 +27,16 @@
         <div x-show="open" class="bg-darkblue">
             @foreach($item->items() as $child)
                 <a href="{{ route($child->resource()->routeName('index')) }}"
-                   class="py-2 px-16 block text-sm text-white {{ $child->isActive() ? 'font-bold' : '' }}">
-                    {{ $child->title() }}
+                   class="py-2 px-10 block text-sm text-white {{ $child->isActive() ? 'font-bold' : '' }}">
+                    <span class="flex items-center">
+                        {!! $child->getIcon(4, 'white') !!}
+
+                        <span class="mx-4">{{ $child->title() }}</span>
+
+                        @if($child->hasBadge())
+                            @include('moonshine::shared.badge', ['color' => 'purple', 'value' => $child->getBadge()])
+                        @endif
+                    </span>
                 </a>
             @endforeach
         </div>

@@ -8,6 +8,10 @@
             {!! $item->getIcon(6, 'white') !!}
 
             <span class="mx-4 font-medium">{{ $item->title() }}</span>
+
+            @if($child->hasBadge())
+                @include('moonshine::shared.badge', ['color' => 'purple', 'value' => $child->getBadge()])
+            @endif
         </span>
     </a>
 </div>
