@@ -8,6 +8,6 @@
 @endsection
 
 @section('content')
-    @includeIf($page->getView())
+    @includeIf($page->getView(), $page->getViewData())
 @endsection
 

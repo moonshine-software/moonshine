@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
+use Closure;
 use Leeto\MoonShine\Traits\Makeable;
 
 final class CustomPage
@@ -14,6 +15,7 @@ final class CustomPage
         protected string $label,
         protected string $alias,
         protected string $view,
+        protected ?Closure $viewData = null,
     )
     {
     }
@@ -32,7 +34,12 @@ final class CustomPage
     {
         return $this->view;
     }
-    
+
+    public function getViewData(): array
+    {
+        return is_callable($this->viewData) ? call_user_func($this->viewData) : [];
+    }
+
     public function url(): string
     {
         return route((string) str(config('moonshine.route.prefix'))
