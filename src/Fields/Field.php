@@ -40,6 +40,10 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public bool $showOnForm = true;
 
+    public bool $showOnCreateForm = true;
+
+    public bool $showOnUpdateForm = true;
+
     protected Field|null $parent = null;
 
     protected string $hint = '';
@@ -103,6 +107,58 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     public function hideOnForm(mixed $condition = null): static
     {
         $this->showOnForm = Condition::boolean($condition, false);
+
+        return $this;
+    }
+
+    /**
+     * Set field as show on create page, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function showOnCreate(mixed $condition = null): static
+    {
+        $this->showOnCreateForm = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    /**
+     * Set field as hidden on create page, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function hideOnCreate(mixed $condition = null): static
+    {
+        $this->showOnCreateForm = Condition::boolean($condition, false);
+
+        return $this;
+    }
+
+    /**
+     * Set field as show on update page, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function showOnUpdate(mixed $condition = null): static
+    {
+        $this->showOnUpdateForm = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    /**
+     * Set field as hidden on update page, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function hideOnUpdate(mixed $condition = null): static
+    {
+        $this->showOnUpdateForm = Condition::boolean($condition, false);
 
         return $this;
     }
