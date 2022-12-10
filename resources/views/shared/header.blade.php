@@ -45,6 +45,9 @@
             <div x-show="dropdownOpen"
                  class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark rounded-md overflow-hidden shadow-xl z-10"
             >
+                <a href="{{ route(config('moonshine.route.prefix') . '.custom_page', 'profile') }}"
+                   class="block px-4 py-2 text-sm text-black dark:text-white dark:bg-purple hover:bg-purple hover:text-white">{{ trans('moonshine::ui.profile') }}</a>
+
                 <a href="{{ route(config('moonshine.route.prefix') . '.logout') }}"
                    class="block px-4 py-2 text-sm text-black dark:text-white dark:bg-purple hover:bg-purple hover:text-white">{{ trans('moonshine::ui.login.logout') }}</a>
             </div>
