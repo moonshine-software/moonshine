@@ -52,6 +52,8 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     protected bool $removable = false;
 
+    protected bool $canSave = true;
+
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
@@ -185,6 +187,13 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     public function hideOnExport(mixed $condition = null): static
     {
         $this->showOnExport = Condition::boolean($condition, false);
+
+        return $this;
+    }
+
+    public function canSave(mixed $condition = null): static
+    {
+        $this->canSave = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -324,6 +333,10 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public function save(Model $item): Model
     {
+        if(!$this->canSave) {
+            return $item;
+        }
+
         $item->{$this->field()} = $this->requestValue() !== false
             ? $this->requestValue()
             : ($this->isNullable() ? null : '');

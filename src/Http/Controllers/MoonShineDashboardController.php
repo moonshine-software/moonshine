@@ -42,9 +42,11 @@ class MoonShineDashboardController extends BaseController
     {
         $class = $request->get('model');
         $model = new $class();
+
         if (in_array(SoftDeletes::class, class_uses_recursive($model), true)) {
             $model = $model->withTrashed();
         }
+
         $item = $model->findOrFail($request->get('key'));
 
         $item->{$request->get('field')} = $request->boolean('value');
