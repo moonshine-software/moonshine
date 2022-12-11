@@ -7,6 +7,7 @@ namespace Leeto\MoonShine\Http\Controllers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Storage;
@@ -41,11 +42,13 @@ class MoonShineDashboardController extends BaseController
     {
         $class = $request->get('model');
         $model = new $class();
+        if (in_array(SoftDeletes::class, class_uses_recursive($model), true)) {
+            $model = $model->withTrashed();
+        }
         $item = $model->findOrFail($request->get('key'));
 
-        $item->update([
-            $request->get('field') => $request->boolean('value')
-        ]);
+        $item->{$request->get('field')} = $request->boolean('value');
+        $item->save();
 
         return $item->toArray();
     }
