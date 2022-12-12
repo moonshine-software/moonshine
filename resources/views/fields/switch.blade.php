@@ -27,11 +27,11 @@
            value="{{ $field->getOnValue() }}"
            type="checkbox"
            name="fake_{{ $field->name() }}"
-           id="{{ $field->id() }}"
+           id="{{ $field->id($uniqueId) }}"
            class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
     />
 
-    <label for="{{ $field->id() }}" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer">
+    <label for="{{ $field->id($uniqueId) }}" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer">
 
     </label>
 
