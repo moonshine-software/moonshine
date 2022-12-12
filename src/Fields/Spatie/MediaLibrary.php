@@ -53,8 +53,14 @@ class MediaLibrary extends Field
             ]);
         }
 
+        $url = $item->getFirstMediaUrl($this->field());
+
+        if (empty($url)) {
+            return null;
+        }
+
         return view('moonshine::fields.shared.thumbnail', [
-            'value' => $item->getFirstMediaUrl($this->field()),
+            'value' => $url,
         ]);
     }
 
