@@ -1,4 +1,4 @@
-<div id="quill_{{ $field->id() }}">
+<div id="quill_{{ $field->id() }}" style="height: auto;">
     {!! $field->formViewValue($item) ?? '' !!}
 </div>
 
@@ -7,3 +7,10 @@
         theme: 'snow'
     });
 </script>
+
+<style>
+    .ql-container, .ql-toolbar {
+        background-color: white!important;
+        color: black!important;
+    }
+</style>

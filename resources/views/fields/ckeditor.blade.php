@@ -119,7 +119,7 @@
         },
         simpleUpload: {
             // The URL that the images are uploaded to.
-            uploadUrl: '{{ route('admin.attachments') }}',
+            uploadUrl: '{{ route(config('moonshine.route.prefix') . '.attachments') }}',
         },
         // The "super-build" contains more premium features that require additional configuration, disable them below.
         // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
@@ -156,5 +156,7 @@
 <style>
     .ck-editor__editable {
         max-height: 400px;
+        background-color: white!important;
+        color: black!important;
     }
 </style>
