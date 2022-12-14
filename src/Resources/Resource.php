@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -447,6 +448,16 @@ abstract class Resource implements ResourceContract
         return collect($this->getFields())->filter(function (Field $field) use ($fieldName) {
             return $field->field() == $fieldName;
         })->first();
+    }
+
+    /**
+     * Determine if this resource uses soft deletes.
+     *
+     * @return bool
+     */
+    public function softDeletes(): bool
+    {
+        return in_array(SoftDeletes::class, class_uses_recursive(static::$model), true);
     }
 
     public function extensions($name, Model $item): string
