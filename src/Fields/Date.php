@@ -22,11 +22,13 @@ class Date extends Field
 
     public function formViewValue(Model $item): mixed
     {
-        if (!$this->getDefault() && $this->isNullable()) {
-            return '';
-        }
 
         if (!$item->{$this->name()}) {
+
+            if (!$this->getDefault() && $this->isNullable()) {
+                return '';
+            }
+
             return $this->getDefault();
         }
 
