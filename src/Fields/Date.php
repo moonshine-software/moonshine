@@ -22,25 +22,27 @@ class Date extends Field
 
     public function formViewValue(Model $item): mixed
     {
-        if (!$this->getDefault() && $this->isNullable()) {
+        $value = parent::formViewValue($item);
+
+        if (!$value && !$this->getDefault() && $this->isNullable()) {
             return '';
         }
 
-        if (!$item->{$this->name()}) {
+        if (!$value) {
             return $this->getDefault();
         }
 
-        if ($item->{$this->name()} instanceof Carbon) {
-            return $item->{$this->name()}->format('Y-m-d');
+        if ($value instanceof Carbon) {
+            return $value->format('Y-m-d');
         }
 
-        return date('Y-m-d', strtotime((string) $item->{$this->name()}));
+        return date('Y-m-d', strtotime((string) $value));
     }
 
     public function indexViewValue(Model $item, bool $container = false): string
     {
-        return $item->{$this->name()}
-            ? date($this->format, strtotime((string) $item->{$this->name()}))
-            : '';
+        $value = parent::indexViewValue($item, $container);
+
+        return $value ? date($this->format, strtotime((string) $value)) : '';
     }
 }
