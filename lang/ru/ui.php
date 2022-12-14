@@ -41,6 +41,7 @@ return [
         'password' => 'Пароль',
     ],
     'resource' => [
+        'system' => 'Система',
         'role' => 'Роли',
         'name' => 'Имя',
         'email' => 'E-mail',

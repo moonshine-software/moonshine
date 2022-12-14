@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Commands;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
 
@@ -20,6 +21,7 @@ class InstallCommand extends MoonShineCommand
 
         $this->initDirectories();
         $this->initDashboard();
+        $this->initServiceProvider();
 
         $this->components->info('Installation completed');
 
@@ -61,5 +63,51 @@ class InstallCommand extends MoonShineCommand
         $this->laravel['files']->put($dashboard, $contents);
 
         $this->components->task('Dashboard created');
+    }
+
+    protected function initServiceProvider(): void
+    {
+        $this->comment('Publishing MoonShine Service Provider...');
+        Artisan::call('vendor:publish', ['--tag' => 'moonshine-provider']);
+
+        $this->laravel['files']->put(
+            app_path('Providers/MoonShineServiceProvider.php'),
+            $this->getStub('MoonShineServiceProvider')
+        );
+
+        $this->registerServiceProvider();
+
+        $this->components->task('Service Provider created');
+    }
+
+    protected function registerServiceProvider()
+    {
+        $namespace = Str::replaceLast('\\', '', $this->laravel->getNamespace());
+
+        $appConfig = file_get_contents(config_path('app.php'));
+
+        if (Str::contains($appConfig, $namespace.'\\Providers\\MoonShineServiceProvider::class')) {
+            return;
+        }
+
+        $lineEndingCount = [
+            "\r\n" => substr_count($appConfig, "\r\n"),
+            "\r" => substr_count($appConfig, "\r"),
+            "\n" => substr_count($appConfig, "\n"),
+        ];
+
+        $eol = array_keys($lineEndingCount, max($lineEndingCount))[0];
+
+        file_put_contents(config_path('app.php'), str_replace(
+            "$namespace\\Providers\RouteServiceProvider::class,".$eol,
+            "$namespace\\Providers\RouteServiceProvider::class,".$eol."        $namespace\Providers\MoonShineServiceProvider::class,".$eol,
+            $appConfig
+        ));
+
+        file_put_contents(app_path('Providers/MoonShineServiceProvider.php'), str_replace(
+            "namespace App\Providers;",
+            "namespace $namespace\Providers;",
+            file_get_contents(app_path('Providers/MoonShineServiceProvider.php'))
+        ));
     }
 }

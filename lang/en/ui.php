@@ -41,6 +41,7 @@ return [
         'password' => 'Password',
     ],
     'resource' => [
+        'system' => 'System',
         'role' => 'Roles',
         'name' => 'Name',
         'email' => 'E-mail',
