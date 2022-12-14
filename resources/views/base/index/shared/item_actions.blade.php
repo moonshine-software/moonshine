@@ -1,10 +1,12 @@
 @foreach($resource->itemActions() as $index => $action)
-    <a href="{{ $resource->route("action", $item->getKey(), ['index' => $index]) }}"
-       class="text-purple inline-block"
-       title="{{ $action->label() }}"
-    >
-        {{ $action->getIcon(6, 'purple', 'mr-2') }}
-    </a>
+    @if($action->isSee($item))
+        <a href="{{ $resource->route("action", $item->getKey(), ['index' => $index]) }}"
+           class="text-purple inline-block"
+           title="{{ $action->label() }}"
+        >
+            {{ $action->getIcon(6, 'purple', 'mr-2') }}
+        </a>
+    @endif
 @endforeach
 
 @if($resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))

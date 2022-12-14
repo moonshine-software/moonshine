@@ -9,11 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\WithIcon;
 
 abstract class MenuSection
 {
     use WithIcon;
+    use HasCanSee;
 
     protected string $title;
 
@@ -24,8 +26,6 @@ abstract class MenuSection
     protected ?Resource $resource = null;
 
     protected ?CustomPage $page = null;
-
-    protected ?Closure $canSeeCallback = null;
 
     protected ?Closure $badge = null;
 
@@ -71,20 +71,6 @@ abstract class MenuSection
         $this->items = $items;
 
         return $this;
-    }
-
-    public function canSee(Closure $callback): static
-    {
-        $this->canSeeCallback = $callback;
-
-        return $this;
-    }
-
-    public function isSee(Request $request)
-    {
-        return is_callable($this->canSeeCallback)
-            ? call_user_func($this->canSeeCallback, $request)
-            : true;
     }
 
     public function isGroup(): bool
