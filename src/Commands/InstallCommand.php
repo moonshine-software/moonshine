@@ -75,7 +75,9 @@ class InstallCommand extends MoonShineCommand
             $this->getStub('MoonShineServiceProvider')
         );
 
-        $this->registerServiceProvider();
+        if(!app()->runningUnitTests()) {
+            $this->registerServiceProvider();
+        }
 
         $this->components->task('Service Provider created');
     }

@@ -25,6 +25,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
         parent::setUp();
 
         $this->artisan('moonshine:install');
+        $this->artisan('cache:clear');
+        $this->artisan('view:clear');
 
         $this->refreshApplication();
         $this->loadLaravelMigrations();
