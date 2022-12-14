@@ -119,7 +119,7 @@ class Translatable extends Json
                          sprintf('Для поля %s не заданы значения переводов на языки: %s', $this->label(), implode(', ', $notSetLanguages))]);
             }
 
-            $item->{$this->field()} = $array();
+            $item->{$this->field()} = $array;
         }
 
         return $item;
