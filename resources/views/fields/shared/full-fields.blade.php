@@ -1,5 +1,5 @@
 <div x-data="handler_{{ $field->id() }}()" x-init="handler_init_{{ $field->id() }}">
-    <template x-for="(item, index{{ $level }}) in items" :key="index{{ $level }}">
+    <template x-for="(item, index{{ $level }}) in items" :key="Object.values(item)[0] ? Object.values(item)[0] : index{{ $level }}">
         <div :data-id="item.id" class="full_fields_{{ $field->id() }}">
             @if(!$field->toOne())
                 <div class="font-bold text-purple my-4" x-text="index{{ $level }} + 1"></div>
@@ -26,7 +26,7 @@
     <div class="my-4">
         @if(!$field->toOne())
             <button type="button"
-                class="bg-gradient-to-r from-purple to-pink text-white
+                    class="bg-gradient-to-r from-purple to-pink text-white
                             text-white font-semibold py-2 px-4 rounded"
                     @click="addNewField()"
             >
@@ -34,33 +34,33 @@
             </button>
         @else
             <button x-show="items.length == 0" type="button"
-                class="bg-gradient-to-r from-purple to-pink text-white
+                    class="bg-gradient-to-r from-purple to-pink text-white
                         text-white font-semibold py-2 px-4 rounded"
                     @click="addNewField()"
             >
                 @lang('moonshine::ui.create')
             </button>
-    @endif
+        @endif
     </div>
 </div>
 
 <script>
-  function handler_{{ $field->id() }}() {
-    return {
-      handler_init_{{ $field->id() }} () {
-        this.items = @json($field->jsonValues($item));
-      },
-      items: [],
-      addNewField() {
-        if(Array.isArray(this.items)) {
-          this.items.push(@json($field->jsonValues()));
-        } else {
-          this.items = [@json($field->jsonValues())];
+    function handler_{{ $field->id() }}() {
+        return {
+            handler_init_{{ $field->id() }} () {
+                this.items = @json($field->jsonValues($item));
+            },
+            items: [],
+            addNewField() {
+                if(Array.isArray(this.items)) {
+                    this.items.push(@json($field->jsonValues()));
+                } else {
+                    this.items = [@json($field->jsonValues())];
+                }
+            },
+            removeField(index) {
+                this.items.splice(index, 1);
+            },
         }
-      },
-      removeField(index) {
-        this.items.splice(index, 1);
-      },
     }
-  }
 </script>

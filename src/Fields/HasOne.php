@@ -35,8 +35,8 @@ class HasOne extends Field implements HasRelationship, HasFields, OneToOneRelati
         $table = $related->getTable();
 
         foreach ($this->getFields() as $field) {
-            if ($field instanceof Fileable && isset($values[$field->field()])) {
-                $values[$field->field()] = $field->store($values[$field->field()]);
+            if ($field instanceof Fileable) {
+                $values = $field->hasManyOrOneSave("hidden_{$this->field()}.{$field->field()}", $values);
             }
         }
 

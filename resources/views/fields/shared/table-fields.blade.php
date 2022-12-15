@@ -22,7 +22,7 @@
                     </thead>
 
                     <tbody class="bg-white dark:bg-darkblue text-black dark:text-white">
-                    <template x-for="(item, index{{ $level }}) in items" :key="index{{ $level }}"
+                    <template x-for="(item, index{{ $level }}) in items" :key="Object.values(item)[0] ? Object.values(item)[0] : index{{ $level }}"
                     >
                         <tr :data-id="item.id" class="table_fields_{{ $field->id() }}">
                             @if(!$field->toOne())
@@ -78,22 +78,22 @@
 </div>
 
 <script>
-  function handler_{{ $field->id() }}() {
-    return {
-      handler_init_{{ $field->id() }}() {
-        this.items = @json($field->jsonValues($item));
-      },
-      items: [],
-      addNewField() {
-        if(Array.isArray(this.items)) {
-          this.items.push(@json($field->jsonValues()));
-        } else {
-          this.items = [@json($field->jsonValues())];
+    function handler_{{ $field->id() }}() {
+        return {
+            handler_init_{{ $field->id() }}() {
+                this.items = @json($field->jsonValues($item));
+            },
+            items: [],
+            addNewField() {
+                if(Array.isArray(this.items)) {
+                    this.items.push(@json($field->jsonValues()));
+                } else {
+                    this.items = [@json($field->jsonValues())];
+                }
+            },
+            removeField(index) {
+                this.items.splice(index, 1);
+            },
         }
-      },
-      removeField(index) {
-        this.items.splice(index, 1);
-      },
     }
-  }
 </script>

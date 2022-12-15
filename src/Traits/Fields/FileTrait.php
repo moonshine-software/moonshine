@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Helpers\Condition;
@@ -28,6 +29,11 @@ trait FileTrait
         $this->withPrefix = $withPrefix;
 
         return $this;
+    }
+
+    public function prefix(): string
+    {
+        return $this->withPrefix;
     }
 
     public function disk(string $disk): static
@@ -100,7 +106,36 @@ trait FileTrait
             new FieldException("$extension not allowed")
         );
 
-        return $file->store($this->getDir(), $this->getDisk());
+        return $this->prefixedValue(
+            $file->store($this->getDir(), $this->getDisk())
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function hasManyOrOneSave($hiddenKey, array $values = []): array
+    {
+        if ($this->isMultiple()) {
+            $saveValues = collect(request($hiddenKey, []))
+                ->map(fn($file) => $this->prefixedValue($file));
+
+            if(isset($values[$this->field()])) {
+                $saveValues = $saveValues->merge([
+                    $this->store($values[$this->field()])
+                ]);
+            }
+
+            $values[$this->field()] = $saveValues->values()
+                ->unique()
+                ->map(fn($file) => $this->prefixedValue($file))
+                ->toArray();
+
+        } elseif(isset($values[$this->field()])) {
+            $values[$this->field()] = $this->store($values[$this->field()]);
+        }
+
+        return $values;
     }
 
     /**
@@ -109,7 +144,9 @@ trait FileTrait
     public function save(Model $item): Model
     {
         $requestValue = $this->requestValue();
-        $oldValues = collect(request("hidden_{$this->field()}", []));
+        $oldValues = collect(request("hidden_{$this->field()}", []))
+            ->map(fn($file) => $this->prefixedValue($file));
+
         $saveValue = $this->isMultiple() ? $oldValues : null;
 
         if ($requestValue !== false) {
@@ -117,12 +154,16 @@ trait FileTrait
                 $paths = [];
 
                 foreach ($requestValue as $file) {
-                    $paths[] = $this->prefixedValue($this->store($file));
+                    $paths[] = $this->store($file);
                 }
 
-                $saveValue = $saveValue->merge($paths)->unique()->toArray();
+                $saveValue = $saveValue->merge($paths)
+                    ->values()
+                    ->map(fn($file) => $this->prefixedValue($file))
+                    ->unique()
+                    ->toArray();
             } else {
-                $saveValue = $this->prefixedValue($this->store($requestValue));
+                $saveValue = $this->store($requestValue);
             }
         }
 
@@ -133,19 +174,24 @@ trait FileTrait
         return $item;
     }
 
-    public function formViewValue(Model $item): mixed
+    public function formViewValue(Model $item): Collection|string
     {
         if ($this->isMultiple()) {
             return collect($item->{$this->field()})
-                ->map(fn($value) => $this->prefixedValue($value));
+                ->map(fn($value) => $this->unPrefixedValue($value));
         }
 
-        return $this->prefixedValue($item->{$this->field()});
+        return $this->unPrefixedValue($item->{$this->field()});
+    }
+
+    protected function unPrefixedValue(?string $value): string
+    {
+        return $value ? ltrim($value, $this->prefix()) : '';
     }
 
     protected function prefixedValue(?string $value): string
     {
-        return $value ? ltrim($value, $this->withPrefix) : '';
+        return $value ? ($this->prefix() . ltrim($value, $this->prefix())) : '';
     }
 
     public function exportViewValue(Model $item): string

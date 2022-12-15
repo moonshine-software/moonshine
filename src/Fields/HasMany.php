@@ -43,7 +43,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
         ]);
     }
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
         return '';
     }
@@ -59,7 +59,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
             ->toArray();
 
         if ($this->requestValue() !== false) {
-            foreach ($this->requestValue() as $values) {
+            foreach ($this->requestValue() as $index => $values) {
                 $identity = null;
 
                 foreach ($this->getFields() as $field) {
@@ -68,8 +68,8 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
                         $currentIdentities[$identity] = $identity;
                     }
 
-                    if ($field instanceof Fileable && isset($values[$field->field()])) {
-                        $values[$field->field()] = $field->store($values[$field->field()]);
+                    if ($field instanceof Fileable) {
+                        $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
                     }
                 }
 
