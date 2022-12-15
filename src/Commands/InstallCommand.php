@@ -22,6 +22,7 @@ class InstallCommand extends MoonShineCommand
         $this->initDirectories();
         $this->initDashboard();
         $this->initServiceProvider();
+        $this->initLfm();
 
         $this->components->info('Installation completed');
 
@@ -82,7 +83,7 @@ class InstallCommand extends MoonShineCommand
         $this->components->task('Service Provider created');
     }
 
-    protected function registerServiceProvider()
+    protected function registerServiceProvider(): void
     {
         $namespace = Str::replaceLast('\\', '', $this->laravel->getNamespace());
 
@@ -111,5 +112,11 @@ class InstallCommand extends MoonShineCommand
             "namespace $namespace\Providers;",
             file_get_contents(app_path('Providers/MoonShineServiceProvider.php'))
         ));
+    }
+
+    protected function initLfm(): void
+    {
+        Artisan::call('vendor:publish', ['--tag' => 'lfm_config']);
+        Artisan::call('vendor:publish', ['--tag' => 'lfm_public']);
     }
 }

@@ -30,6 +30,10 @@ return [
         ],
     ],
     'middlewares' => [],
+    'tinymce' => [
+        'token' => env('MOONSHINE_TINYMCE_TOKEN', ''),
+        'version' => env('MOONSHINE_TINYMCE_VERSION', '6')
+    ],
     'extensions' => [
         //
     ],

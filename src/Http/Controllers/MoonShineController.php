@@ -22,6 +22,8 @@ use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Resources\Resource;
 
+use Throwable;
+
 use function auth;
 use function redirect;
 use function request;
@@ -47,7 +49,7 @@ class MoonShineController extends BaseController
 
         try {
             $action->callback($item);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw_if(!app()->isProduction(), $e);
 
             return redirect($this->resource->route('index'))
@@ -72,7 +74,7 @@ class MoonShineController extends BaseController
                 ->findMany(explode(';', request('ids')));
 
             $items->each(fn($item) => $action->callback($item));
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw_if(!app()->isProduction(), $e);
 
             return redirect($this->resource->route('index'))

@@ -18,7 +18,8 @@
     "ext-json": "*",
     "laravel/framework": "^9.21",
     "symfony/var-dumper": "^6.0",
-    "phpoffice/phpspreadsheet": "1.24.1"
+    "phpoffice/phpspreadsheet": "1.24.1",
+    "unisharp/laravel-filemanager": "^2.5"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9.2",

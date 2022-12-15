@@ -16,6 +16,7 @@ use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
 use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
+use UniSharp\LaravelFilemanager\Lfm;
 
 class MoonShine
 {
@@ -117,6 +118,12 @@ class MoonShine
      */
     protected function addRoutes(): void
     {
+        Route::prefix('laravel-filemanager')
+            ->middleware(config('moonshine.route.middleware'))
+            ->group(function () {
+                Lfm::routes();
+            });
+
         Route::prefix(config('moonshine.route.prefix'))
             ->middleware(config('moonshine.route.middleware'))
             ->name(config('moonshine.route.prefix').'.')->group(function () {
