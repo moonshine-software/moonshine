@@ -38,4 +38,11 @@ class SwitchBoolean extends Field
     {
         return $item->{$this->field()};
     }
+
+    public function readonly($condition = null): static
+    {
+        $this->autoUpdate(false);
+
+        return parent::readonly($condition);
+    }
 }

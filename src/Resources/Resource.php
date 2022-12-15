@@ -39,6 +39,8 @@ abstract class Resource implements ResourceContract
 
     public static string $title = '';
 
+    public static string $subTitle = '';
+
     public static array $with = [];
 
     public static bool $withPolicy = false;
@@ -179,6 +181,11 @@ abstract class Resource implements ResourceContract
     public function title(): string
     {
         return static::$title;
+    }
+
+    public function subTitle(): string
+    {
+        return static::$subTitle;
     }
 
     public function titleField(): string

@@ -15,11 +15,8 @@
 
 @section('header-inner')
     @parent
-@endsection
-
-@section('header-inner')
-    @parent
     @include("moonshine::shared.title", ["title" => $resource->title()])
+    @include("moonshine::shared.sub-title", ["subTitle" => $resource->subTitle()])
 @endsection
 
 @section('content')

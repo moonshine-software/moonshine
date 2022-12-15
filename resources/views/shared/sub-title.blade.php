@@ -1,0 +1,3 @@
+@if($subTitle)
+    {!! $subTitle !!}
+@endif
