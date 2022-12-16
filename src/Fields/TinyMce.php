@@ -10,7 +10,11 @@ final class TinyMce extends Field
 
     public string $plugins = 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss';
 
+    public string $addedPlugins = '';
+
     public string $toolbar = 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat';
+
+    public string $addedToolbar = '';
 
     public array $mergeTags = [];
 
@@ -47,6 +51,20 @@ final class TinyMce extends Field
     public function toolbar(string $toolbar): self
     {
         $this->toolbar = $toolbar;
+
+        return $this;
+    }
+
+    public function addPlugins(string $plugins): self
+    {
+        $this->addedPlugins = $plugins;
+
+        return $this;
+    }
+
+    public function addToolbar(string $toolbar): self
+    {
+        $this->addedToolbar = $toolbar;
 
         return $this;
     }
