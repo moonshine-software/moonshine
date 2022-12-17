@@ -10,6 +10,7 @@ use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Traits\Fields\FormElement;
+use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModel;
@@ -27,6 +28,7 @@ abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
     use WithHtmlAttributes;
     use WithView;
     use XModel;
+    use HasCanSee;
 
     protected function afterMake(): void
     {

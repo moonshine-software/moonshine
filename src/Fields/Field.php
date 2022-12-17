@@ -13,6 +13,7 @@ use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
 use Leeto\MoonShine\Contracts\Fields\HasIndexViewValue;
 
 use Leeto\MoonShine\Traits\Fields\FormElement;
+use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
@@ -33,6 +34,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     use WithHtmlAttributes;
     use WithView;
     use XModel;
+    use HasCanSee;
 
     public bool $showOnIndex = true;
 

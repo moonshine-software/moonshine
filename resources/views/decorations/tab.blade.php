@@ -3,6 +3,7 @@
         @if($field instanceof \Leeto\MoonShine\Decorations\Decoration)
             {{ $resource->renderDecoration($field, $item) }}
         @elseif($field instanceof \Leeto\MoonShine\Fields\Field
+            && $field->isSee($item)
             && $field->showOnForm
             && ($item->exists ? $field->showOnUpdateForm : $field->showOnCreateForm)
         )

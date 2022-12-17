@@ -42,13 +42,15 @@
                     @csrf
 
                     @foreach($filters as $filter)
-                        <div class="mb-4">
-                            <div>
-                                <x-moonshine::filter-container :filter="$filter" :resource="$resource">
-                                    {{ $resource->renderFilter($filter, $resource->getModel()) }}
-                                </x-moonshine::filter-container>
+                        @if($filter->isSee($resource->getModel()))
+                            <div class="mb-4">
+                                <div>
+                                    <x-moonshine::filter-container :filter="$filter" :resource="$resource">
+                                        {{ $resource->renderFilter($filter, $resource->getModel()) }}
+                                    </x-moonshine::filter-container>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
 
                     <div class="mt-5">
