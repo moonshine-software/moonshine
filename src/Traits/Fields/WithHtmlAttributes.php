@@ -128,9 +128,9 @@ trait WithHtmlAttributes
             return isset($this->{$property}) ? [$attr => $this->{$property}] : [];
         });
 
-        return (new ComponentAttributeBag($resolveAttributes->toArray()))
-            ->class($this->customClasses)
-            ->merge($this->customAttributes);
+        return (new ComponentAttributeBag(
+            $this->customAttributes + $resolveAttributes->toArray())
+        )->class($this->customClasses);
     }
 
     public function customAttributes(array $attributes): static

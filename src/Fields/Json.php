@@ -27,8 +27,11 @@ class Json extends Field implements HasFields
         $this->keyValue = true;
 
         $this->fields([
-            Text::make($key, 'key'),
-            Text::make($value, 'value'),
+            Text::make($key, 'key')
+                ->customAttributes($this->attributes()->getAttributes()),
+
+            Text::make($value, 'value')
+                ->customAttributes($this->attributes()->getAttributes()),
         ]);
 
         return $this;
