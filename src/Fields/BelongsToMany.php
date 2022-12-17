@@ -100,7 +100,14 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
 
     public function buildTreeHtml(Model $item): string
     {
-        $data = $this->getRelated($item)->all();
+        $related = $this->getRelated($item);
+        $query = $related->newModelQuery();
+
+        if(is_callable($this->valuesQuery)) {
+            $query = call_user_func($this->valuesQuery, $query);
+        }
+
+        $data = $query->get();
 
         $this->treePerformHtml($data);
 
