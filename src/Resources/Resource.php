@@ -13,12 +13,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Actions\FiltersAction;
+use Leeto\MoonShine\Attributes\SearchUsingFullText;
 use Leeto\MoonShine\BulkActions\BulkAction;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\HtmlViewable;
@@ -31,6 +33,8 @@ use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
+use ReflectionException;
+use ReflectionMethod;
 
 
 abstract class Resource implements ResourceContract
@@ -494,6 +498,9 @@ abstract class Resource implements ResourceContract
             ->appends(request()->except('page'));
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function query(): Builder
     {
         $query = $this->getModel()->query();
@@ -508,14 +515,38 @@ abstract class Resource implements ResourceContract
             $query = $query->with(static::$with);
         }
 
-        if (request()->has('search') && count($this->search())) {
-            foreach ($this->search() as $field) {
-                $query = $query->orWhere(
-                    $field,
-                    'LIKE',
-                    '%'.request('search').'%'
-                );
+
+        if (request()->has('search') && !empty($this->search())) {
+            $columns = [
+                'like' => $this->search(),
+                'fullText' => []
+            ];
+
+            foreach ((new ReflectionMethod($this, 'search'))->getAttributes() as $attribute) {
+                if ($attribute->getName() !== SearchUsingFullText::class) {
+                    continue;
+                }
+
+                $columns['fullText'] = Arr::wrap($attribute->getArguments()[0]);
+
+                collect($columns['fullText'])->every(static function (string $column) use(&$columns): void {
+                    if($key = array_search($column, $columns['like'])) {
+                        unset($columns['like'][$key]);
+                    }
+                });
             }
+
+            $query->where(static function ($q) use ($columns): void {
+                if(!empty($columns['like'])) {
+                    foreach ($columns['like'] as $column) {
+                        $q->orWhere($column, 'LIKE', '%'.request('search').'%');
+                    }
+                }
+
+                if(!empty($columns['fullText'])) {
+                    $q->orWhereFullText($columns['fullText'], request('search'));
+                }
+            });
         }
 
         if (request()->has('filters') && count($this->filters())) {
