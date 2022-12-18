@@ -24,7 +24,7 @@
 
                                         @if($field->canDownload())
                                             <div class="ml-4 flex-shrink-0">
-                                                <a :href="file ? ('{{ Storage::url('') }}') + file : ''"
+                                                <a :href="file ? ('{{ $field->path('') }}') + file : ''"
                                                    download
                                                    class="font-medium text-pink hover:text-pink transition duration-150 ease-in-out">
                                                     {{ trans('moonshine::ui.download') }}
@@ -62,7 +62,7 @@
                                 @include('moonshine::fields.shared.file', [
                                     'index' => $index+1,
                                     'canDownload' => $field->canDownload(),
-                                    'value' => $file,
+                                    'value' => $field->path($file),
                                     'field' => $field,
                                 ])
 
@@ -82,7 +82,7 @@
         @else
             @include('moonshine::fields.shared.file', [
                 'canDownload' => $field->canDownload(),
-                'value' => $field->formViewValue($item),
+                'value' => $field->path($field->formViewValue($item)),
                 'field' => $field,
             ])
         @endif

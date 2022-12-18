@@ -94,6 +94,12 @@ trait FileTrait
         return !$this->disableDownload;
     }
 
+    public function path(string $value): string
+    {
+        return Storage::disk($this->getDisk())
+            ->url($this->unPrefixedValue($value));
+    }
+
     /**
      * @throws Throwable
      */

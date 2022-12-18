@@ -27,7 +27,7 @@ class Image extends Field implements Fileable
 
         if ($this->isMultiple()) {
             $values = collect($item->{$this->field()})
-                ->map(fn($value) => "'".Storage::url($this->unPrefixedValue($value))."'")->implode(',');
+                ->map(fn($value) => "'".$this->path($value)."'")->implode(',');
 
             return view('moonshine::shared.carousel', [
                 'values' => $values
@@ -35,7 +35,7 @@ class Image extends Field implements Fileable
         }
 
         return view('moonshine::fields.shared.thumbnail', [
-            'value' => Storage::url($this->unPrefixedValue($item->{$this->field()})),
+            'value' => $this->path($item->{$this->field()})
         ]);
     }
 }

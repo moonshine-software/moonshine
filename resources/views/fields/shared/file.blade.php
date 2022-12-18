@@ -17,9 +17,9 @@
         @if($canDownload)
             <div class="ml-4 flex-shrink-0">
                 <a @if(isset($field) && $field->attributes()->has('x-model'))
-                       :href="fileValue ? ('{{ Storage::url('') }}') + fileValue : ''"
+                       :href="fileValue ? ('{{ $field->path('') }}') + fileValue : ''"
                    @else
-                       href="{{ Storage::url($value) }}"
+                       href="{{ $value }}"
                    @endif
                    download
                    class="font-medium text-pink hover:text-pink transition duration-150 ease-in-out">

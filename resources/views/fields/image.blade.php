@@ -13,7 +13,7 @@
                                 />
 
                                 <img class="w-full"
-                                     :src="image ? ('{{ Storage::url('') }}') + image : ''"
+                                     :src="image ? ('{{ $field->path('') }}') + image : ''"
                                 />
 
                                 @if($field->isRemovable())
@@ -44,8 +44,8 @@
                                 />
 
                                 <img class="w-full"
-                                     @click.stop="$dispatch('img-modal', {imgModal: true, imgModalSrc: '{{ Storage::url($file) }}' })"
-                                     src="{{ Storage::url($file) }}"
+                                     @click.stop="$dispatch('img-modal', {imgModal: true, imgModalSrc: '{{ $field->path($file) }}' })"
+                                     src="{{ $field->path($file) }}"
                                 />
 
                                 @if($field->isRemovable())
@@ -75,10 +75,10 @@
             >
                 <img class="w-full"
                      @if($field->attributes()->has('x-model'))
-                         :src="imageValue ? ('{{ Storage::url('') }}') + imageValue : ''"
+                         :src="imageValue ? ('{{ $field->path('') }}') + imageValue : ''"
                      @else
-                         @click.stop="$dispatch('img-modal', {imgModal: true, imgModalSrc: '{{ Storage::url($field->formViewValue($item)) }}' })"
-                     src="{{ Storage::url($field->formViewValue($item)) }}"
+                         @click.stop="$dispatch('img-modal', {imgModal: true, imgModalSrc: '{{ $field->path($field->formViewValue($item)) }}' })"
+                     src="{{ $field->path($field->formViewValue($item)) }}"
                     @endif
                 />
             </div>
