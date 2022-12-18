@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Leeto\MoonShine\Models\MoonshineChangeLog;
 
@@ -11,28 +12,25 @@ use function auth;
 
 trait HasMoonShineChangeLog
 {
-    public static function boot()
+    public static function bootHasMoonShineChangeLog(): void
     {
-        parent::boot();
-
-        static::created(function ($row) {
+        static::created(static function (Model $row) {
             $row->createLog();
         });
 
-        static::updated(function ($row) {
+        static::updated(static function (Model $row) {
             $row->createLog();
         });
     }
 
-    public function createLog()
+    public function createLog(): void
     {
         if (auth(config('moonshine.auth.guard'))->check()) {
-            $this->changeLogs()
-                ->create([
-                    'moonshine_user_id' => auth(config('moonshine.auth.guard'))->id(),
-                    'states_before' => $this->getOriginal(),
-                    'states_after' => $this->getChanges(),
-                ]);
+            $this->changeLogs()->create([
+                'moonshine_user_id' => auth(config('moonshine.auth.guard'))->id(),
+                'states_before' => $this->getOriginal(),
+                'states_after' => $this->getChanges(),
+            ]);
         }
     }
 
