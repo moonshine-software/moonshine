@@ -19,6 +19,7 @@ class Date extends Field
     protected static string $type = 'date';
 
     protected string $format = 'Y-m-d H:i:s';
+    protected string $inputFormat = 'Y-m-d';
 
     public function formViewValue(Model $item): mixed
     {
@@ -33,10 +34,10 @@ class Date extends Field
         }
 
         if ($value instanceof Carbon) {
-            return $value->format('Y-m-d');
+            return $value->format($this->inputFormat);
         }
 
-        return date('Y-m-d', strtotime((string) $value));
+        return date($this->inputFormat, strtotime((string) $value));
     }
 
     public function indexViewValue(Model $item, bool $container = false): string
@@ -44,5 +45,13 @@ class Date extends Field
         $value = parent::indexViewValue($item, $container);
 
         return $value ? date($this->format, strtotime((string) $value)) : '';
+    }
+
+    public function withTime(): static
+    {
+        self::$type = "datetime-local";
+        $this->inputFormat = "Y-m-d\TH:i";
+
+        return $this;
     }
 }
