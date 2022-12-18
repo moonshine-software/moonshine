@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Leeto\MoonShine\Http\Controllers\MoonShineAuthController;
@@ -159,5 +160,21 @@ class MoonShine
                     }
                 });
             });
+    }
+
+    public static function changeLogs(Model $item): ?Collection
+    {
+        if(!$item->changeLogs instanceof Collection) {
+            return Collection::make([]);
+        }
+
+        if($item->changeLogs->isNotEmpty()) {
+
+            return $item->changeLogs->filter(static function ($log) {
+                return $log->states_after;
+            });
+        }
+
+        return null;
     }
 }
