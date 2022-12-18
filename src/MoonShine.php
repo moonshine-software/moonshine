@@ -165,7 +165,7 @@ class MoonShine
     public static function changeLogs(Model $item): ?Collection
     {
         if(!$item->changeLogs instanceof Collection) {
-            return Collection::make([]);
+            return null;
         }
 
         if($item->changeLogs->isNotEmpty()) {
