@@ -51,5 +51,8 @@ return [
         'created_at' => 'Дата создания',
         'admins_title' => 'Администраторы',
         'role_name' => 'Название',
+
+        'link_socialite' => 'Привязать аккаунты',
+        'linked_socialite' => 'Привязанные аккаунты'
     ]
 ];

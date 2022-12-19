@@ -17,4 +17,8 @@ return [
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
+    'socialite' => [
+        'link_exists' => 'Account already exists',
+        'link_success' => 'Account linked',
+    ]
 ];

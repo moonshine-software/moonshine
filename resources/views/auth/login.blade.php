@@ -75,6 +75,16 @@
                    ])
                 </div>
             </form>
+
+            @if(config('moonshine.socialite'))
+                <div class="my-8 flex items-center justify-center space-x-4 space-y-2">
+                    @foreach(config('moonshine.socialite') as $driver => $src)
+                        <a href="{{ route(config('moonshine.route.prefix') . '.socialite.redirect', $driver) }}">
+                            <img class="mx-auto h-12 w-auto" src="{{ $src }}" alt="{{ $driver }}">
+                        </a>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 

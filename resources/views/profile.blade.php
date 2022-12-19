@@ -145,6 +145,42 @@
 
         </div>
 
+
+        @if(config('moonshine.socialite'))
+            <div class="border-b border-whiteblue dark:border-dark px-10 py-5">
+                <div>
+                    <div class="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-2 sm:px-2">
+                        <dt class="text-sm leading-5 font-medium text-gray-500 dark:text-white">
+                            <label>
+                                @lang('moonshine::ui.resource.bind_socialite')
+                            </label>
+                        </dt>
+
+                        <dd class="mt-1 text-sm leading-5 text-gray-900 dark:text-white sm:mt-0 sm:col-span-3">
+                            <div class="my-8 flex items-center justify-start space-x-4 space-y-2">
+                                @foreach(config('moonshine.socialite') as $driver => $src)
+                                    <a href="{{ route(config('moonshine.route.prefix') . '.socialite.redirect', $driver) }}">
+                                        <img class="mx-auto h-12 w-auto" src="{{ $src }}" alt="{{ $driver }}">
+                                    </a>
+                                @endforeach
+                            </div>
+
+                            <div>
+                                <div class="my-4">@lang('moonshine::ui.resource.binded_socialite')</div>
+
+                                @foreach(auth(config('moonshine.auth.guard'))->user()->moonshineSocialites as $socials)
+                                    <div class="my-4">{{ $socials->driver }} - {{ $socials->identity }}</div>
+                                @endforeach
+                            </div>
+                        </dd>
+                    </div>
+                </div>
+
+            </div>
+
+
+        @endif
+
         <div class="px-10 py-10">
             @include('moonshine::base.form.shared.btn', [
                 'type' => 'submit',

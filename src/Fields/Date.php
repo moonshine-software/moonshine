@@ -50,6 +50,7 @@ class Date extends Field
     public function withTime(): static
     {
         self::$type = "datetime-local";
+
         $this->inputFormat = "Y-m-d\TH:i";
 
         return $this;

@@ -52,5 +52,8 @@ return [
         'admins_title' => 'Admins',
         'role_title' => 'Roles',
         'role_name' => 'Title',
+
+        'link_socialite' => 'Link account',
+        'linked_socialite' => 'Account linked'
     ]
 ];

@@ -39,6 +39,9 @@
       "Leeto\\MoonShine\\Database\\Factories\\": "database/factories/"
     }
   },
+  "suggest": {
+    "laravel/socialite": "Required to use the Socialite"
+  },
   "extra": {
     "laravel": {
       "providers": [

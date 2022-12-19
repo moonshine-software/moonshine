@@ -36,6 +36,7 @@ class Authenticate
             config('moonshine.route.prefix').'/login',
             config('moonshine.route.prefix').'/authenticate',
             config('moonshine.route.prefix').'/logout',
+            config('moonshine.route.prefix').'/socialite/*',
         ]);
     }
 }

@@ -12,6 +12,7 @@ use Leeto\MoonShine\Http\Controllers\MoonShineCustomPageController;
 use Leeto\MoonShine\Http\Controllers\MoonShineDashboardController;
 use Leeto\MoonShine\Http\Controllers\MoonShineProfileController;
 use Leeto\MoonShine\Http\Controllers\MoonShineResourceController;
+use Leeto\MoonShine\Http\Controllers\MoonShineSocialiteController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
@@ -134,8 +135,14 @@ class MoonShine
 
                 Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
                 Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
-                Route::post('/profile', [MoonShineProfileController::class, 'store'])->name('profile.store');
                 Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
+
+                Route::get('/socialite/{driver}/redirect', [MoonShineSocialiteController::class, 'redirect'])->name('socialite.redirect');
+                Route::get('/socialite/{driver}/callback', [MoonShineSocialiteController::class, 'callback'])->name('socialite.callback');
+
+                Route::post('/profile', [MoonShineProfileController::class, 'store'])->name('profile.store');
+
+
                 Route::get('/custom_page/{alias}', MoonShineCustomPageController::class)
                     ->name('custom_page');
 
