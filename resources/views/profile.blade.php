@@ -152,7 +152,7 @@
                     <div class="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-2 sm:px-2">
                         <dt class="text-sm leading-5 font-medium text-gray-500 dark:text-white">
                             <label>
-                                @lang('moonshine::ui.resource.bind_socialite')
+                                @lang('moonshine::ui.resource.link_socialite')
                             </label>
                         </dt>
 
@@ -166,7 +166,7 @@
                             </div>
 
                             <div>
-                                <div class="my-4">@lang('moonshine::ui.resource.binded_socialite')</div>
+                                <div class="my-4">@lang('moonshine::ui.resource.linked_socialite')</div>
 
                                 @foreach(auth(config('moonshine.auth.guard'))->user()->moonshineSocialites as $socials)
                                     <div class="my-4">{{ $socials->driver }} - {{ $socials->identity }}</div>
