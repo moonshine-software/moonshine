@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
@@ -16,20 +14,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Resources\Resource;
-
 use Throwable;
-
-use function auth;
-use function redirect;
-use function request;
-use function throw_if;
-use function trans;
-use function view;
 
 class MoonShineController extends BaseController
 {
@@ -88,7 +77,7 @@ class MoonShineController extends BaseController
     /**
      * @throws AuthorizationException
      */
-    public function index(): Factory|View|Response|Application|ResponseFactory
+    public function actions(): mixed
     {
         if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
@@ -108,10 +97,26 @@ class MoonShineController extends BaseController
             }
         }
 
+        return redirect($this->resource->route('index'));
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function index(): View
+    {
+        if ($this->resource->isWithPolicy()) {
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'viewAny',
+                $this->resource->getModel()
+            );
+        }
+
         return view($this->resource->baseIndexView(), [
             'resource' => $this->resource,
             'filters' => $this->resource->filters(),
-            'actions' => $actions,
+            'actions' => $this->resource->getActions(),
             'metrics' => $this->resource->metrics(),
             'items' => $this->resource->paginate(),
         ]);

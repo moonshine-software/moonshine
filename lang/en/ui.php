@@ -54,6 +54,14 @@ return [
         'role_name' => 'Title',
 
         'link_socialite' => 'Link account',
-        'linked_socialite' => 'Account linked'
+        'linked_socialite' => 'Account linked',
+
+        'queued' => 'Queued',
+
+        'import' => [
+            'imported' => 'Imported',
+            'file_required' => 'File is required',
+            'extension_not_supported' => 'File extension not supported'
+        ]
     ]
 ];

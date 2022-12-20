@@ -40,6 +40,8 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public bool $showOnExport = false;
 
+    public bool $useOnImport = false;
+
     public bool $showOnForm = true;
 
     public bool $showOnCreateForm = true;
@@ -189,6 +191,19 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     public function hideOnExport(mixed $condition = null): static
     {
         $this->showOnExport = Condition::boolean($condition, false);
+
+        return $this;
+    }
+
+    /**
+     * Set field as used on import, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function useOnImport(mixed $condition = null): static
+    {
+        $this->useOnImport = Condition::boolean($condition, true);
 
         return $this;
     }

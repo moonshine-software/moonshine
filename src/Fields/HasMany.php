@@ -22,8 +22,21 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
     protected bool $group = true;
 
+    protected bool $onlyCount = false;
+
+    public function onlyCount(): static
+    {
+        $this->onlyCount = true;
+
+        return $this;
+    }
+
     public function indexViewValue(Model $item, bool $container = false): mixed
     {
+        if($this->onlyCount) {
+            return (string) $item->{$this->relation()}->count();
+        }
+
         $columns = [];
         $values = [];
 

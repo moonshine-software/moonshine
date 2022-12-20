@@ -1,7 +1,5 @@
 @if(count($filters))
-    <div x-data="{ filtersOpen: false }" class="flex items-center select-none">
-        <span>{{ trans('moonshine::ui.filters') }}</span>
-
+    <div x-data="{ filtersOpen: false }">
         <button @click.stop="filtersOpen = ! filtersOpen"
                 class="ml-3 bg-purple rounded-full p-2 focus:outline-none
                     transition

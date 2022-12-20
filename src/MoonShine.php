@@ -129,6 +129,7 @@ class MoonShine
         Route::prefix(config('moonshine.route.prefix'))
             ->middleware(config('moonshine.route.middleware'))
             ->name(config('moonshine.route.prefix').'.')->group(function () {
+
                 Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
                 Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
                 Route::get('/auto-update', [MoonShineDashboardController::class, 'autoUpdate'])->name('auto-update');
@@ -147,17 +148,20 @@ class MoonShine
                     ->name('custom_page');
 
                 $this->resources->each(function ($resource) {
+                    Route::any(
+                        $resource->routeAlias().'/actions',
+                        [MoonShineResourceController::class, 'actions']
+                    )->name($resource->routeAlias().'.actions');
+
                     Route::get(
                         $resource->routeAlias().'/action/{'.$resource->routeParam().'}/{index}',
                         [MoonShineResourceController::class, 'action']
-                    )
-                        ->name($resource->routeAlias().'.action');
+                    )->name($resource->routeAlias().'.action');
 
                     Route::post(
                         $resource->routeAlias().'/bulk/{index}',
                         [MoonShineResourceController::class, 'bulk']
-                    )
-                        ->name($resource->routeAlias().'.bulk');
+                    )->name($resource->routeAlias().'.bulk');
 
                     /* @var Resource $resource */
                     if ($resource->isSystem()) {

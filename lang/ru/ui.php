@@ -53,6 +53,14 @@ return [
         'role_name' => 'Название',
 
         'link_socialite' => 'Привязать аккаунты',
-        'linked_socialite' => 'Привязанные аккаунты'
+        'linked_socialite' => 'Привязанные аккаунты',
+
+        'queued' => 'Поставлен в очередь',
+
+        'import' => [
+            'imported' => 'Импортирован',
+            'file_required' => 'Файл обязателен',
+            'extension_not_supported' => 'Расширения не поддерживается'
+        ]
     ]
 ];

@@ -10,13 +10,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Helpers\Condition;
+use Leeto\MoonShine\Traits\WithStorage;
 use Throwable;
 
 trait FileTrait
 {
-    protected string $disk = 'public';
-
-    protected string $dir = '/';
+    use WithStorage;
 
     protected string $withPrefix = '';
 
@@ -34,30 +33,6 @@ trait FileTrait
     public function prefix(): string
     {
         return $this->withPrefix;
-    }
-
-    public function disk(string $disk): static
-    {
-        $this->disk = $disk;
-
-        return $this;
-    }
-
-    public function getDisk(): string
-    {
-        return $this->disk;
-    }
-
-    public function dir(string $dir): static
-    {
-        $this->dir = $dir;
-
-        return $this;
-    }
-
-    public function getDir(): string
-    {
-        return $this->dir;
     }
 
     public function allowedExtensions(array $allowedExtensions): static

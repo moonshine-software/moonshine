@@ -13,14 +13,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Actions\FiltersAction;
-use Leeto\MoonShine\Attributes\SearchUsingFullText;
 use Leeto\MoonShine\BulkActions\BulkAction;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\HtmlViewable;
@@ -33,8 +31,6 @@ use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
-use ReflectionException;
-use ReflectionMethod;
 
 
 abstract class Resource implements ResourceContract
@@ -436,6 +432,15 @@ abstract class Resource implements ResourceContract
             ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->showOnExport);
     }
 
+    /**
+     * @return Collection<Field>
+     */
+    public function importFields(): Collection
+    {
+        return $this->getFields()
+            ->filter(fn(HtmlViewable $field) => $field instanceof Field && $field->useOnImport);
+    }
+
     public function fieldsLabels(): array
     {
         $labels = [];
@@ -498,9 +503,6 @@ abstract class Resource implements ResourceContract
             ->appends(request()->except('page'));
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function query(): Builder
     {
         $query = $this->getModel()->query();
@@ -515,38 +517,14 @@ abstract class Resource implements ResourceContract
             $query = $query->with(static::$with);
         }
 
-
-        if (request()->has('search') && !empty($this->search())) {
-            $columns = [
-                'like' => $this->search(),
-                'fullText' => []
-            ];
-
-            foreach ((new ReflectionMethod($this, 'search'))->getAttributes() as $attribute) {
-                if ($attribute->getName() !== SearchUsingFullText::class) {
-                    continue;
-                }
-
-                $columns['fullText'] = Arr::wrap($attribute->getArguments()[0]);
-
-                collect($columns['fullText'])->every(static function (string $column) use(&$columns): void {
-                    if($key = array_search($column, $columns['like'])) {
-                        unset($columns['like'][$key]);
-                    }
-                });
+        if (request()->has('search') && count($this->search())) {
+            foreach ($this->search() as $field) {
+                $query = $query->orWhere(
+                    $field,
+                    'LIKE',
+                    '%'.request('search').'%'
+                );
             }
-
-            $query->where(static function ($q) use ($columns): void {
-                if(!empty($columns['like'])) {
-                    foreach ($columns['like'] as $column) {
-                        $q->orWhere($column, 'LIKE', '%'.request('search').'%');
-                    }
-                }
-
-                if(!empty($columns['fullText'])) {
-                    $q->orWhereFullText($columns['fullText'], request('search'));
-                }
-            });
         }
 
         if (request()->has('filters') && count($this->filters())) {
@@ -624,11 +602,12 @@ abstract class Resource implements ResourceContract
     /**
      * @throws ResourceException
      */
-    public function save(Model $item): Model
+    public function save(Model $item, ?Collection $fields = null, ?array $saveData = null): Model
     {
+        $fields = $fields ?? $this->formFields();
+
         try {
-            $this->formFields()
-                ->each(fn($field) => $field->beforeSave($item));
+            $fields->each(fn($field) => $field->beforeSave($item));
 
             if (!$item->exists) {
                 if (method_exists($this, 'beforeCreating')) {
@@ -642,25 +621,24 @@ abstract class Resource implements ResourceContract
                 }
             }
 
-            foreach ($this->formFields() as $field) {
+            foreach ($fields as $field) {
                 if (!$field->hasRelationship() || $field->belongToOne()) {
-                    $item = $field->save($item);
+                    $item = $this->saveItem($item, $field, $saveData);
                 }
             }
 
             if ($item->save()) {
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-                foreach ($this->formFields() as $field) {
+                foreach ($fields as $field) {
                     if ($field->hasRelationship() && !$field->belongToOne()) {
-                        $item = $field->save($item);
+                        $item = $this->saveItem($item, $field, $saveData);
                     }
                 }
 
                 $item->save();
 
-                $this->formFields()
-                    ->each(fn($field) => $field->afterSave($item));
+                $fields->each(fn($field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated) {
                     if (method_exists($this, 'afterCreated')) {
@@ -676,6 +654,19 @@ abstract class Resource implements ResourceContract
             }
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
+        }
+
+        return $item;
+    }
+
+    protected function saveItem(Model $item, Field $field, ?array $saveData = null)
+    {
+        if(is_null($saveData)) {
+            return $field->save($item);
+        }
+
+        if(isset($saveData[$field->field()])) {
+            $item->{$field->field()} = $saveData[$field->field()];
         }
 
         return $item;
