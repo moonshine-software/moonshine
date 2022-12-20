@@ -183,4 +183,15 @@ trait FileTrait
 
         return $item->{$this->field()} ?? '';
     }
+
+    public function acceptExtension() : string
+    {
+        if (empty($this->allowedExtensions)) {
+            return '';
+        }
+        $extensions = array_map(function ($val) {
+            return "." . $val;
+        }, $this->allowedExtensions);
+        return implode(",", $extensions);
+    }
 }

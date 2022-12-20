@@ -14,5 +14,7 @@
         @else
             value="{!! (string) $field->formViewValue($item) ?? '' !!}"
         @endif
+   @else
+        accept="{{$field->acceptExtension()}}"
    @endif
 />
