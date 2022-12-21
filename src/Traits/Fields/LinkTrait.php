@@ -12,6 +12,8 @@ trait LinkTrait
 
     protected string $linkName = '';
 
+    protected bool $linkBlank = false;
+
     public function hasLink(): bool
     {
         return $this->getLinkValue() != '';
@@ -27,7 +29,12 @@ trait LinkTrait
         return $this->linkValue;
     }
 
-    public function addLink(string $name, string|Closure $link): static
+    public function isLinkBlank(): bool
+    {
+        return $this->linkBlank;
+    }
+
+    public function addLink(string $name, string|Closure $link, bool $blank = false): static
     {
         if (is_callable($link)) {
             $link = call_user_func($link);
@@ -35,6 +42,7 @@ trait LinkTrait
 
         $this->linkValue = $link;
         $this->linkName = $name;
+        $this->linkBlank = $blank;
 
         return $this;
     }
