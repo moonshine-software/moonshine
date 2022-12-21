@@ -38,8 +38,10 @@ trait FileTrait
     public function allowedExtensions(array $allowedExtensions): static
     {
         $this->allowedExtensions = $allowedExtensions;
-        if (!empty($allowedExtensions))
-            $this->setAttribute("accept",$this->acceptExtension());
+        if (! empty($allowedExtensions)) {
+            $this->setAttribute("accept", $this->acceptExtension());
+        }
+
         return $this;
     }
 
@@ -184,11 +186,12 @@ trait FileTrait
         return $item->{$this->field()} ?? '';
     }
 
-    public function acceptExtension() : string
+    public function acceptExtension(): string
     {
         $extensions = array_map(function ($val) {
             return "." . $val;
         }, $this->allowedExtensions);
+
         return implode(",", $extensions);
     }
 }
