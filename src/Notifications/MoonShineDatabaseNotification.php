@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Leeto\MoonShine\Traits\Makeable;
 
@@ -17,8 +16,7 @@ final class MoonShineDatabaseNotification extends Notification
     public function __construct(
         protected string $message,
         protected array $button = []
-    )
-    {
+    ) {
         //
     }
 
@@ -32,7 +30,7 @@ final class MoonShineDatabaseNotification extends Notification
     {
         return [
             'message' => $this->message,
-            'button' => $this->button
+            'button' => $this->button,
         ];
     }
 }

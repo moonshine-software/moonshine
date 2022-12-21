@@ -19,7 +19,7 @@ final class MoonShineNotification
     {
         Notification::sendNow(
             MoonshineUser::query()
-                ->when($ids, fn($query) => $query->whereIn('id', $ids))
+                ->when($ids, fn ($query) => $query->whereIn('id', $ids))
                 ->get(),
             MoonShineDatabaseNotification::make(
                 $message,
