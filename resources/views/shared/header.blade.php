@@ -32,6 +32,52 @@
             </svg>
         </button>
 
+        @if(auth(config('moonshine.auth.guard'))->user()->unreadNotifications->isNotEmpty())
+            <div x-data="{ dropdownOpen: false }" class="relative">
+                <button @click="dropdownOpen = ! dropdownOpen"
+                        class="relative block h-8 w-8 rounded-full overflow-hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </button>
+
+                <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10"></div>
+
+                <div x-show="dropdownOpen"
+                     class="absolute right-0 w-96 mt-2 bg-white dark:bg-dark rounded-md overflow-hidden shadow-xl z-10"
+                >
+                    <div class="flex items-center justify-between p-5">
+                        <span class="text-md font-bold">@lang('moonshine::ui.notifications.title')</span>
+                        <a class="text-xs" href="{{ route(config('moonshine.route.prefix') . '.notifications.readAll') }}">@lang('moonshine::ui.notifications.mark_as_read_all')</a>
+                    </div>
+
+                    @foreach(auth(config('moonshine.auth.guard'))->user()->unreadNotifications as $notification)
+                        <div class="flex flex-col p-8 shadow-md hover:shadow-lg rounded-2xl">
+                            <div class="flex items-center justify-between space-x-4">
+                                <p class="text-sm leading-none mt-1">
+                                    {{ $notification->data['message'] }}
+                                </p>
+
+                                @if(isset($notification->data['button']['link']))
+                                    @include('moonshine::shared.btn', [
+                                        'href' => $notification->data['button']['link'],
+                                        'title' => $notification->data['button']['label'],
+                                        'filled' => true,
+                                        'icon' => false
+                                    ])
+                                @endif
+
+                                <a href="{{ route(config('moonshine.route.prefix') . '.notifications.read', $notification) }}"
+                                   class="text-xs"
+                                   title="@lang('moonshine::ui.notifications.mark_as_read')"
+                                >
+                                    x
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         <div x-data="{ dropdownOpen: false }" class="relative">
             <button @click="dropdownOpen = ! dropdownOpen"
                     class="relative block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none">

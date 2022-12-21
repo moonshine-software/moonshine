@@ -32,6 +32,11 @@ return [
     'field' => 'Field',
     'before' => 'Before',
     'after' => 'After',
+    'notifications' => [
+        'title' => 'Notifications',
+        'mark_as_read_all' => 'Mark all as read',
+        'mark_as_read' => 'Mark as read',
+    ],
     'login' => [
         'authorization' => 'Authorization',
         'remember_me' => 'Remember me',
@@ -57,6 +62,10 @@ return [
         'linked_socialite' => 'Account linked',
 
         'queued' => 'Queued',
+
+        'export' => [
+            'exported' => 'File exported',
+        ],
 
         'import' => [
             'imported' => 'Imported',

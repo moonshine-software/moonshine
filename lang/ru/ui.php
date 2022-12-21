@@ -32,6 +32,11 @@ return [
     'field' => 'Поле',
     'before' => 'До',
     'after' => 'После',
+    'notifications' => [
+        'title' => 'Уведомления',
+        'mark_as_read_all' => 'Все прочитано',
+        'mark_as_read' => 'Прочитано',
+    ],
     'login' => [
         'authorization' => 'Авторизация',
         'remember_me' => 'Запомнить',
@@ -56,6 +61,10 @@ return [
         'linked_socialite' => 'Привязанные аккаунты',
 
         'queued' => 'Поставлен в очередь',
+
+        'export' => [
+            'exported' => 'File exported',
+        ],
 
         'import' => [
             'imported' => 'Импортирован',

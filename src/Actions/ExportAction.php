@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Actions;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Exceptions\ActionException;
 use Leeto\MoonShine\Jobs\ExportActionJob;
+use Leeto\MoonShine\Models\MoonshineUser;
+use Leeto\MoonShine\Notifications\MoonShineDatabaseNotification;
+use Leeto\MoonShine\Notifications\MoonShineNotification;
 use Leeto\MoonShine\Traits\WithQueue;
 use Leeto\MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
@@ -47,7 +51,7 @@ class ExportAction extends Action implements ActionContract
             ->path("{$this->getDir()}/{$this->resource()->routeAlias()}.xlsx");
 
         if ($this->isQueue()) {
-            ExportActionJob::dispatch(get_class($this->resource()), $path);
+            ExportActionJob::dispatch(get_class($this->resource()), $path, $this->getDisk(), $this->getDir());
 
             return redirect()
                 ->back()
@@ -55,7 +59,7 @@ class ExportAction extends Action implements ActionContract
         }
 
         return response()->download(
-            self::process($path, $this->resource())
+            self::process($path, $this->resource(), $this->getDisk(), $this->getDir())
         );
     }
 
@@ -65,8 +69,12 @@ class ExportAction extends Action implements ActionContract
      * @throws UnsupportedTypeException
      * @throws InvalidArgumentException
      */
-    public static function process(string $path, ResourceContract $resource): string
-    {
+    public static function process(
+        string $path,
+        ResourceContract $resource,
+        string $disk = 'public',
+        string $dir = '/'
+    ): string {
         $fields = $resource->exportFields();
 
         $items = $resource->query()->get();
@@ -83,8 +91,19 @@ class ExportAction extends Action implements ActionContract
             $data->add($row);
         }
 
-        return (new FastExcel($data))
+        $result = (new FastExcel($data))
             ->export($path);
+
+        $url = str($path)
+            ->remove(Storage::disk($disk)->path($dir))
+            ->value();
+
+        MoonShineNotification::send(
+            trans('moonshine::ui.resource.export.exported'),
+            ['link' => Storage::disk($disk)->url($url), 'label' => trans('moonshine::ui.download')]
+        );
+
+        return $result;
     }
 
     public function isTriggered(): bool
@@ -107,7 +126,7 @@ class ExportAction extends Action implements ActionContract
             foreach (request()->query('filters') as $filterField => $filterQuery) {
                 if (is_array($filterQuery)) {
                     foreach ($filterQuery as $filterInnerField => $filterValue) {
-                        if (is_numeric($filterInnerField) && ! is_array($filterValue)) {
+                        if (is_numeric($filterInnerField) && !is_array($filterValue)) {
                             $query['filters'][$filterField][] = $filterValue;
                         } else {
                             $query['filters'][$filterInnerField] = $filterValue;
@@ -128,7 +147,7 @@ class ExportAction extends Action implements ActionContract
 
     protected function resolveStorage()
     {
-        if (! Storage::disk($this->getDisk())->exists($this->getDir())) {
+        if (!Storage::disk($this->getDisk())->exists($this->getDir())) {
             Storage::disk($this->getDisk())->makeDirectory($this->getDir());
         }
     }

@@ -24,7 +24,9 @@ class ExportActionJob implements ShouldQueue
 
     public function __construct(
         protected string $resource,
-        protected string $path
+        protected string $path,
+        protected string $disk,
+        protected string $dir
     ) {
     }
 
@@ -36,6 +38,6 @@ class ExportActionJob implements ShouldQueue
      */
     public function handle(): void
     {
-        ExportAction::process($this->path, new $this->resource());
+        ExportAction::process($this->path, new $this->resource(), $this->disk, $this->dir);
     }
 }

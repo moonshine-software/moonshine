@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Leeto\MoonShine\Http\Controllers\MoonShineAuthController;
 use Leeto\MoonShine\Http\Controllers\MoonShineCustomPageController;
 use Leeto\MoonShine\Http\Controllers\MoonShineDashboardController;
+use Leeto\MoonShine\Http\Controllers\MoonShineNotificationController;
 use Leeto\MoonShine\Http\Controllers\MoonShineProfileController;
 use Leeto\MoonShine\Http\Controllers\MoonShineResourceController;
 use Leeto\MoonShine\Http\Controllers\MoonShineSocialiteController;
@@ -132,6 +133,9 @@ class MoonShine
                 Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
                 Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
                 Route::get('/auto-update', [MoonShineDashboardController::class, 'autoUpdate'])->name('auto-update');
+
+                Route::get('/notifications', [MoonShineNotificationController::class, 'readAll'])->name('notifications.readAll');
+                Route::get('/notifications/{notification}', [MoonShineNotificationController::class, 'read'])->name('notifications.read');
 
                 Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
                 Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');

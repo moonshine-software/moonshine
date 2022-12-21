@@ -12,6 +12,7 @@ use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Exceptions\ActionException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Jobs\ImportActionJob;
+use Leeto\MoonShine\Notifications\MoonShineNotification;
 use Leeto\MoonShine\Traits\WithQueue;
 use Leeto\MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\IOException;
@@ -40,13 +41,13 @@ class ImportAction extends Action implements ActionContract
      */
     public function handle(): RedirectResponse
     {
-        if (! request()->hasFile($this->inputName)) {
+        if (!request()->hasFile($this->inputName)) {
             return redirect()
                 ->back()
                 ->with('alert', trans('moonshine::ui.resource.import.file_required'));
         }
 
-        if (! in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
+        if (!in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
             return redirect()
                 ->back()
                 ->with('alert', trans('moonshine::ui.resource.import.extension_not_supported'));
@@ -86,15 +87,18 @@ class ImportAction extends Action implements ActionContract
      * @throws UnsupportedTypeException
      * @throws ReaderNotOpenedException
      */
-    public static function process(string $path, ResourceContract $resource, bool $deleteAfter = false): Collection
-    {
+    public static function process(
+        string $path,
+        ResourceContract $resource,
+        bool $deleteAfter = false
+    ): Collection {
         $result = (new FastExcel())->import($path, function ($line) use ($resource) {
             $data = collect($line)->mapWithKeys(function ($value, $key) use ($resource) {
                 $field = $resource->importFields()->first(function ($field) use ($key) {
                     return $field->field() === $key || $field->label() === $key;
                 });
 
-                if (! $field instanceof Field) {
+                if (!$field instanceof Field) {
                     return [];
                 }
 
@@ -105,8 +109,7 @@ class ImportAction extends Action implements ActionContract
                 ? $resource->getModel()
                     ->newModelQuery()
                     ->find($data[$resource->getModel()->getKeyName()])
-                : $resource->getModel()
-            ;
+                : $resource->getModel();
 
             return $resource->save(
                 $item,
@@ -118,6 +121,10 @@ class ImportAction extends Action implements ActionContract
         if ($deleteAfter) {
             unlink($path);
         }
+
+        MoonShineNotification::send(
+            trans('moonshine::ui.resource.import.imported')
+        );
 
         return $result;
     }
