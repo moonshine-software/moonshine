@@ -11,8 +11,6 @@ use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
 use Leeto\MoonShine\Exceptions\FieldException;
 use Leeto\MoonShine\Fields\Json;
-use Leeto\MoonShine\Fields\Text;
-use Throwable;
 
 trait WithFields
 {
@@ -52,8 +50,8 @@ trait WithFields
             return $field->setName(
                 (string) str($this->name())
                     ->when(
-                        $this->hasFields() && !$this->toOne(),
-                        fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
+                        $this->hasFields() && ! $this->toOne(),
+                        fn (Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
                     )
                     ->append("[{$field->field()}]")
                     ->replace('[]', '')
@@ -63,7 +61,7 @@ trait WithFields
 
     public function hasFields(): bool
     {
-        return !empty($this->fields);
+        return ! empty($this->fields);
     }
 
     public function fields(array $fields): static
@@ -87,7 +85,7 @@ trait WithFields
 
         if ($this instanceof Json && $this->isKeyValue()) {
             return collect($this->formViewValue($item))
-                ->map(fn($value, $key) => ['key' => $key, 'value' => $value])
+                ->map(fn ($value, $key) => ['key' => $key, 'value' => $value])
                 ->values()
                 ->toArray();
         }

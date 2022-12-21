@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Helpers;
 
-use Leeto\MoonShine\Tests\TestCase;
 use Leeto\MoonShine\Helpers\Condition;
+use Leeto\MoonShine\Tests\TestCase;
 
 class ConditionTest extends TestCase
 {
@@ -24,8 +24,8 @@ class ConditionTest extends TestCase
             [[false, true], false],
             [[null, true], true],
             [[null, false], false],
-            [[fn() => true, false], true],
-            [[fn() => false, true], false],
+            [[fn () => true, false], true],
+            [[fn () => false, true], false],
         ];
     }
 }

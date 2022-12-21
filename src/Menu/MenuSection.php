@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Menu;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
@@ -80,11 +79,11 @@ abstract class MenuSection
 
     public function url(): string
     {
-        if($this->link) {
+        if ($this->link) {
             return $this->link;
         }
 
-        if($this->page()) {
+        if ($this->page()) {
             return $this->page()->url();
         }
 
@@ -103,11 +102,11 @@ abstract class MenuSection
             return false;
         }
 
-        if($this->resource()) {
+        if ($this->resource()) {
             return request()->routeIs($this->resource()->routeName('*'));
         }
 
-        if($this->page()) {
+        if ($this->page()) {
             return request()->url() === $this->page()->url();
         }
 

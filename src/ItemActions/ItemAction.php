@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\ItemActions;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
-use Closure;
 use Leeto\MoonShine\Traits\WithIcon;
 
 final class ItemAction
@@ -21,8 +20,7 @@ final class ItemAction
         protected string $label,
         protected Closure $callback,
         protected string $message = 'Done',
-    )
-    {
+    ) {
     }
 
     public function label(): string

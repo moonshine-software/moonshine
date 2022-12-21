@@ -47,13 +47,13 @@ class Json extends Field implements HasFields
         $columns = [];
         $values = $item->{$this->field()};
 
-        if (!$this->hasFields()) {
+        if (! $this->hasFields()) {
             return json_encode($values);
         }
 
         if ($this->isKeyValue()) {
             $values = collect($item->{$this->field()})
-                ->map(fn($value, $key) => ['key' => $key, 'value' => $value]);
+                ->map(fn ($value, $key) => ['key' => $key, 'value' => $value]);
         }
 
         foreach ($this->getFields() as $field) {
@@ -62,7 +62,7 @@ class Json extends Field implements HasFields
 
         return view('moonshine::shared.table', [
             'columns' => $columns,
-            'values' => $values
+            'values' => $values,
         ]);
     }
 
@@ -76,7 +76,7 @@ class Json extends Field implements HasFields
         if ($this->isKeyValue()) {
             if ($this->requestValue() !== false) {
                 $item->{$this->field()} = collect($this->requestValue())
-                    ->mapWithKeys(fn($data) => [$data['key'] => $data['value']]);
+                    ->mapWithKeys(fn ($data) => [$data['key'] => $data['value']]);
             }
 
             return $item;

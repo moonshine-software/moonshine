@@ -23,7 +23,7 @@ class UserCommand extends MoonShineCommand
             MoonshineUser::query()->create([
                 'email' => $email,
                 'name' => $name,
-                'password' => Hash::make($password)
+                'password' => Hash::make($password),
             ]);
 
             $this->components->info('User is created');

@@ -21,7 +21,7 @@ class ID extends Field
     {
         return view('moonshine::shared.badge', [
             'value' => parent::indexViewValue($item, $container),
-            'color' => 'purple'
+            'color' => 'purple',
         ]);
     }
 

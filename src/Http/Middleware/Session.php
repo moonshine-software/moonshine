@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 
 use function config;
+
+use Illuminate\Http\Request;
 
 class Session
 {

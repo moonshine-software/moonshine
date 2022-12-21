@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
-use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Closure;
 use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Utilities\AssetManager;
 
 trait FormElement
 {
@@ -47,7 +43,7 @@ trait FormElement
         if ($this->hasRelationship()) {
             $this->setField($field ?? (string) str($this->label)->camel());
 
-            if ($this->belongToOne() && !str($this->field())->contains('_id')) {
+            if ($this->belongToOne() && ! str($this->field())->contains('_id')) {
                 $this->setField(
                     (string) str($this->field())
                         ->append('_id')
@@ -137,6 +133,7 @@ trait FormElement
         if ($this->resourceTitleField) {
             return $this->resourceTitleField;
         }
+
         return $this->resource() && $this->resource()->titleField()
             ? $this->resource()->titleField()
             : 'id';
@@ -208,5 +205,4 @@ trait FormElement
             $this->getDefault() ?? old($this->nameDot(), false)
         );
     }
-
 }

@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
+use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\SelectTransform;
 use Leeto\MoonShine\Traits\Fields\WithFields;
-use Leeto\MoonShine\Traits\Fields\WithRelationship;
 use Leeto\MoonShine\Traits\Fields\WithPivot;
-use Leeto\MoonShine\Traits\Fields\Searchable;
+use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
 class BelongsToMany extends Field implements HasRelationship, HasPivot, HasFields, ManyToManyRelation
 {
@@ -103,7 +103,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         $related = $this->getRelated($item);
         $query = $related->newModelQuery();
 
-        if(is_callable($this->valuesQuery)) {
+        if (is_callable($this->valuesQuery)) {
             $query = call_user_func($this->valuesQuery, $query);
         }
 
@@ -125,7 +125,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
                     'id' => $this->id(),
                     'name' => $this->name(),
                     'value' => $item->getKey(),
-                    'label' => $item->{$this->resourceTitleField()}
+                    'label' => $item->{$this->resourceTitleField()},
                 ]);
 
                 $this->treeHtml .= str($element)->wrap(
@@ -144,7 +144,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     {
         $result = str('');
 
-        if($this->onlyCount) {
+        if ($this->onlyCount) {
             return (string) $item->{$this->relation()}->count();
         }
 
@@ -153,7 +153,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
 
 
             $result = $result->append($item->{$this->resourceTitleField()})
-                ->when($this->hasFields(), fn(Stringable $str) => $str->append(' - '));
+                ->when($this->hasFields(), fn (Stringable $str) => $str->append(' - '));
 
             foreach ($this->getFields() as $field) {
                 $result = $result->when(
@@ -191,7 +191,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     public function exportViewValue(Model $item): mixed
     {
         return collect($item->{$this->relation()})
-            ->map(fn($item) => $item->{$this->resourceTitleField()})
+            ->map(fn ($item) => $item->{$this->resourceTitleField()})
             ->implode(';');
     }
 }

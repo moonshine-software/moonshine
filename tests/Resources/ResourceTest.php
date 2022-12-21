@@ -23,7 +23,7 @@ class ResourceTest extends TestCase
     public function test_route()
     {
         app(MoonShine::class)->registerResources([
-            MoonShineUserResource::class
+            MoonShineUserResource::class,
         ]);
 
         $resource = new MoonShineUserResource();

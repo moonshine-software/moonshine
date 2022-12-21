@@ -25,7 +25,7 @@ class JsonTest extends TestCase
     public function test_fields()
     {
         $field = Json::make('Names')->fields([
-            Text::make('Name')
+            Text::make('Name'),
         ]);
 
         $this->assertTrue($field->hasFields());
@@ -44,7 +44,7 @@ class JsonTest extends TestCase
     public function test_removable()
     {
         $field = Json::make('Names')->fields([
-            Text::make('Name')
+            Text::make('Name'),
         ])->removable();
 
         $this->assertTrue($field->isRemovable());

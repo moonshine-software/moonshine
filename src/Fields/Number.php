@@ -35,7 +35,7 @@ class Number extends Field
     {
         if ($this->withStars()) {
             return view('moonshine::shared.stars', [
-                'value' => $item->{$this->field()}
+                'value' => $item->{$this->field()},
             ]);
         } else {
             return parent::indexViewValue($item, $container);

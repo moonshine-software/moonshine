@@ -35,7 +35,7 @@ abstract class Metric implements HtmlViewable, HasAssets
     {
         return (string) str($this->label())
             ->slug('_')
-            ->when(!is_null($index), fn($str) => $str->append('_'.$index));
+            ->when(! is_null($index), fn ($str) => $str->append('_'.$index));
     }
 
     public function name(string $index = null): string

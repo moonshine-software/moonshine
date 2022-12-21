@@ -12,7 +12,7 @@ class MoonShineResourceController extends MoonShineController
 {
     public function __construct()
     {
-        if (!app()->runningInConsole()) {
+        if (! app()->runningInConsole()) {
             $class = (string) str(request()->route()->getName())->betweenFirst('.', '.')
                 ->singular()
                 ->ucfirst()

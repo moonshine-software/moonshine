@@ -25,11 +25,11 @@ class Date extends Field
     {
         $value = parent::formViewValue($item);
 
-        if (!$value && !$this->getDefault() && $this->isNullable()) {
+        if (! $value && ! $this->getDefault() && $this->isNullable()) {
             return '';
         }
 
-        if (!$value) {
+        if (! $value) {
             return $this->getDefault();
         }
 

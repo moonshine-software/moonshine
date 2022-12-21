@@ -29,7 +29,6 @@ class MediaLibrary extends Field
                         ->preservingOriginal()
                         ->toMediaCollection($this->field());
                 }
-
             } else {
                 if ($media = $item->getFirstMedia($this->field())) {
                     $media->delete();
@@ -43,10 +42,9 @@ class MediaLibrary extends Field
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
-
         if ($this->isMultiple()) {
             $values = $item->getMedia($this->field())
-                ->map(fn($value) => "'" . $value->getUrl() . "'")->implode(',');
+                ->map(fn ($value) => "'" . $value->getUrl() . "'")->implode(',');
 
             return view('moonshine::shared.carousel', [
                 'values' => $values,
@@ -68,8 +66,9 @@ class MediaLibrary extends Field
     {
         if ($this->isMultiple()) {
             return $item->getMedia($this->field())
-                ->map(fn($value) => $value->getUrl())->toArray();
+                ->map(fn ($value) => $value->getUrl())->toArray();
         }
+
         return $item->getFirstMediaUrl($this->field());
     }
 }

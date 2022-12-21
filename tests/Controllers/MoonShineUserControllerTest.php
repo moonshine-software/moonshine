@@ -62,7 +62,7 @@ class MoonShineUserControllerTest extends TestCase
         $email = uniqid() . '@example.com';
 
         $this->assertDatabaseMissing('moonshine_users', [
-            'email' => $email
+            'email' => $email,
         ]);
 
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
@@ -71,7 +71,7 @@ class MoonShineUserControllerTest extends TestCase
                 'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
                 'email' => $email,
                 'password' => 123456,
-                'password_repeat' => 123456
+                'password_repeat' => 123456,
             ]);
 
         $response->assertValid();
@@ -79,7 +79,7 @@ class MoonShineUserControllerTest extends TestCase
         $response->assertRedirect($resource->route('index'));
 
         $this->assertDatabaseHas('moonshine_users', [
-            'email' => $email
+            'email' => $email,
         ]);
     }
 
@@ -88,7 +88,7 @@ class MoonShineUserControllerTest extends TestCase
         $resource = new MoonShineUserResource();
 
         $this->assertDatabaseMissing('moonshine_users', [
-            'name' => 'Admin updated'
+            'name' => 'Admin updated',
         ]);
 
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
@@ -103,7 +103,7 @@ class MoonShineUserControllerTest extends TestCase
         $response->assertRedirect($resource->route('index'));
 
         $this->assertDatabaseHas('moonshine_users', [
-            'name' => 'Admin updated'
+            'name' => 'Admin updated',
         ]);
     }
 

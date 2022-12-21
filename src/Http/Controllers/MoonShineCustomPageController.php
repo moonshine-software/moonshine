@@ -21,12 +21,12 @@ class MoonShineCustomPageController extends BaseController
         }
 
         $page = app(MoonShine::class)->getPages()
-            ->first(fn(CustomPage $page) => $page->alias() === $alias);
+            ->first(fn (CustomPage $page) => $page->alias() === $alias);
 
-        abort_if(!$page, 404);
+        abort_if(! $page, 404);
 
         return view('moonshine::custom_page', [
-            'page' => $page
+            'page' => $page,
         ]);
     }
 }

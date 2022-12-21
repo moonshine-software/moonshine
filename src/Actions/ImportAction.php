@@ -40,13 +40,13 @@ class ImportAction extends Action implements ActionContract
      */
     public function handle(): RedirectResponse
     {
-        if (!request()->hasFile($this->inputName)) {
+        if (! request()->hasFile($this->inputName)) {
             return redirect()
                 ->back()
                 ->with('alert', trans('moonshine::ui.resource.import.file_required'));
         }
 
-        if (!in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
+        if (! in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
             return redirect()
                 ->back()
                 ->with('alert', trans('moonshine::ui.resource.import.extension_not_supported'));
@@ -66,7 +66,7 @@ class ImportAction extends Action implements ActionContract
         $path = Storage::disk($this->getDisk())
             ->path($path);
 
-        if($this->isQueue()) {
+        if ($this->isQueue()) {
             ImportActionJob::dispatch(get_class($this->resource()), $path, $this->deleteAfter);
 
             return redirect()
@@ -88,13 +88,13 @@ class ImportAction extends Action implements ActionContract
      */
     public static function process(string $path, ResourceContract $resource, bool $deleteAfter = false): Collection
     {
-        $result = (new FastExcel)->import($path, function ($line) use($resource) {
-            $data = collect($line)->mapWithKeys(function ($value, $key) use($resource) {
-                $field = $resource->importFields()->first(function ($field) use($key) {
+        $result = (new FastExcel())->import($path, function ($line) use ($resource) {
+            $data = collect($line)->mapWithKeys(function ($value, $key) use ($resource) {
+                $field = $resource->importFields()->first(function ($field) use ($key) {
                     return $field->field() === $key || $field->label() === $key;
                 });
 
-                if(!$field instanceof Field) {
+                if (! $field instanceof Field) {
                     return [];
                 }
 
@@ -115,7 +115,7 @@ class ImportAction extends Action implements ActionContract
             );
         });
 
-        if($deleteAfter) {
+        if ($deleteAfter) {
             unlink($path);
         }
 

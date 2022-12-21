@@ -82,7 +82,7 @@ class MoonShineUserResource extends Resource
             'name' => 'required',
             'moonshine_user_role_id' => 'required',
             'email' => 'sometimes|bail|required|email|unique:moonshine_users,email'.($item->exists ? ",$item->id" : ''),
-            'password' => !$item->exists
+            'password' => ! $item->exists
                 ? 'required|min:6|required_with:password_repeat|same:password_repeat'
                 : 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
         ];

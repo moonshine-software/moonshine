@@ -25,12 +25,12 @@ class SwitchBoolean extends Field
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        $this->disabled(!$this->autoUpdate);
+        $this->disabled(! $this->autoUpdate);
 
         return view('moonshine::fields.switch', [
             'field' => $this,
             'autoUpdate' => $this->autoUpdate,
-            'item' => $item
+            'item' => $item,
         ]);
     }
 

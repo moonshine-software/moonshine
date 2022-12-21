@@ -66,7 +66,7 @@ trait FileTrait
 
     public function canDownload(): bool
     {
-        return !$this->disableDownload;
+        return ! $this->disableDownload;
     }
 
     public function path(string $value): string
@@ -83,7 +83,7 @@ trait FileTrait
         $extension = $file->extension();
 
         throw_if(
-            !$this->isAllowedExtension($extension),
+            ! $this->isAllowedExtension($extension),
             new FieldException("$extension not allowed")
         );
 
@@ -99,20 +99,19 @@ trait FileTrait
     {
         if ($this->isMultiple()) {
             $saveValues = collect(request($hiddenKey, []))
-                ->map(fn($file) => $this->prefixedValue($file));
+                ->map(fn ($file) => $this->prefixedValue($file));
 
-            if(isset($values[$this->field()])) {
+            if (isset($values[$this->field()])) {
                 $saveValues = $saveValues->merge([
-                    $this->store($values[$this->field()])
+                    $this->store($values[$this->field()]),
                 ]);
             }
 
             $values[$this->field()] = $saveValues->values()
                 ->unique()
-                ->map(fn($file) => $this->prefixedValue($file))
+                ->map(fn ($file) => $this->prefixedValue($file))
                 ->toArray();
-
-        } elseif(isset($values[$this->field()])) {
+        } elseif (isset($values[$this->field()])) {
             $values[$this->field()] = $this->store($values[$this->field()]);
         }
 
@@ -126,7 +125,7 @@ trait FileTrait
     {
         $requestValue = $this->requestValue();
         $oldValues = collect(request("hidden_{$this->field()}", []))
-            ->map(fn($file) => $this->prefixedValue($file));
+            ->map(fn ($file) => $this->prefixedValue($file));
 
         $saveValue = $this->isMultiple() ? $oldValues : null;
 
@@ -140,7 +139,7 @@ trait FileTrait
 
                 $saveValue = $saveValue->merge($paths)
                     ->values()
-                    ->map(fn($file) => $this->prefixedValue($file))
+                    ->map(fn ($file) => $this->prefixedValue($file))
                     ->unique()
                     ->toArray();
             } else {
@@ -159,7 +158,7 @@ trait FileTrait
     {
         if ($this->isMultiple()) {
             return collect($item->{$this->field()})
-                ->map(fn($value) => $this->unPrefixedValue($value));
+                ->map(fn ($value) => $this->unPrefixedValue($value));
         }
 
         return $this->unPrefixedValue($item->{$this->field()});

@@ -11,7 +11,6 @@ use Leeto\MoonShine\Fields\Text;
 
 class Translatable extends Json
 {
-
     protected array $languagesCodes = [
         "af", "sq", "am", "ar", "an", "hy", "ast", "az", "eu", "be", "bn", "bs", "br", "bg", "ca", "ckb", "zh", "zh-HK", "zh-CN", "zh-TW", "co", "hr", "cs", "da", "nl", "en", "en-AU", "en-CA", "en-IN", "en-NZ", "en-ZA", "en-GB", "en-US", "eo", "et", "fo", "fil", "fi", "fr", "fr-CA", "fr-FR", "fr-CH", "gl", "ka", "de", "de-AT", "de-DE", "de-LI", "de-CH", "el", "gn", "gu", "ha", "haw", "he", "hi", "hu", "is", "id", "ia", "ga", "it", "it-IT", "it-CH", "ja", "kn", "kk", "km", "ko", "ku", "ky", "lo", "la", "lv", "ln", "lt", "mk", "ms", "ml", "mt", "mr", "mn", "ne", "no", "nb", "nn", "oc", "or", "om", "ps", "fa", "pl", "pt", "pt-BR", "pt-PT", "pa", "qu", "ro", "mo", "rm", "ru", "gd", "sr", "sh", "sn", "sd", "si", "sk", "sl", "so", "st", "es", "es-AR", "es-419", "es-MX", "es-ES", "es-US", "su", "sw", "sv", "tg", "ta", "tt", "te", "th", "ti", "to", "tr", "tk", "tw", "uk", "ur", "ug", "uz", "vi", "wa", "cy", "fy", "xh", "yi", "yo", "zu",
     ];
@@ -70,11 +69,10 @@ class Translatable extends Json
 
     public function getFields(): array
     {
-
         if (empty($this->fields)) {
             $this->fields([
                 Select::make('Language', 'key')
-                    ->options(array_combine($this->getLanguagesCodes(), array_map(fn($code) => Str::upper($code), $this->getLanguagesCodes())))
+                    ->options(array_combine($this->getLanguagesCodes(), array_map(fn ($code) => Str::upper($code), $this->getLanguagesCodes())))
                     ->nullable(),
                 Text::make('Value', 'value'),
             ]);
@@ -107,16 +105,17 @@ class Translatable extends Json
     {
         if ($this->requestValue() !== false) {
             $array = collect($this->requestValue())
-                ->filter(fn($data) => !empty($data['key']) && !empty($data['value']))
-                ->mapWithKeys(fn($data) => [$data['key'] => $data['value']])
+                ->filter(fn ($data) => ! empty($data['key']) && ! empty($data['value']))
+                ->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])
                 ->toArray();
 
             $notSetLanguages = array_diff($this->requiredLanguagesCodes, array_keys($array));
 
-            if (!empty($notSetLanguages)) {
+            if (! empty($notSetLanguages)) {
                 throw ValidationException::withMessages(
                     [$this->field() =>
-                         sprintf('Для поля %s не заданы значения переводов на языки: %s', $this->label(), implode(', ', $notSetLanguages))]);
+                         sprintf('Для поля %s не заданы значения переводов на языки: %s', $this->label(), implode(', ', $notSetLanguages)), ]
+                );
             }
 
             $item->{$this->field()} = $array;
@@ -124,5 +123,4 @@ class Translatable extends Json
 
         return $item;
     }
-
 }

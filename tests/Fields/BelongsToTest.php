@@ -28,7 +28,7 @@ class BelongsToTest extends TestCase
     {
         $user = MoonshineUserFactory::new()->makeOne();
 
-        $field = BelongsTo::make('Role', 'moonshine_user_role_id', fn($item) => "$item->id.) $item->name");
+        $field = BelongsTo::make('Role', 'moonshine_user_role_id', fn ($item) => "$item->id.) $item->name");
 
         $this->assertEquals([1 => '1.) Admin'], $field->relatedValues($user));
     }

@@ -24,11 +24,11 @@ trait SelectTrait
 
     public function isSelected(Model $item, string $value): bool
     {
-        if (!$this->formViewValue($item)) {
+        if (! $this->formViewValue($item)) {
             return false;
         }
 
         return (string) $this->formViewValue($item) === $value
-            || (!$this->formViewValue($item) && (string) $this->getDefault() === $value);
+            || (! $this->formViewValue($item) && (string) $this->getDefault() === $value);
     }
 }

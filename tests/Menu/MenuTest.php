@@ -27,8 +27,8 @@ class MenuTest extends TestCase
     {
         app(MoonShine::class)->registerResources([
             MenuGroup::make('Section 1', [
-                MenuItem::make('Section inner', MoonShineUserRoleResource::class)
-            ])
+                MenuItem::make('Section inner', MoonShineUserRoleResource::class),
+            ]),
         ]);
 
         $this->assertNotEmpty(app(Menu::class)->all());
@@ -40,7 +40,7 @@ class MenuTest extends TestCase
             $this->assertNotEmpty($item->items());
 
             foreach ($item->items() as $inner) {
-                $this->assertTrue(!$inner->isGroup());
+                $this->assertTrue(! $inner->isGroup());
                 $this->assertEquals('Section inner', $inner->title());
                 $this->assertInstanceOf(MoonShineUserRoleResource::class, $inner->resource());
             }

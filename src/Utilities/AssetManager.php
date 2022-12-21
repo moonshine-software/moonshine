@@ -26,14 +26,14 @@ class AssetManager
     public function js(): string
     {
         return collect($this->assets)
-            ->filter(fn($asset) => preg_match('/\.js$/', $asset))
-            ->map(fn($asset) => "<script src='".asset($asset)."'></script>")->implode(PHP_EOL);
+            ->filter(fn ($asset) => preg_match('/\.js$/', $asset))
+            ->map(fn ($asset) => "<script src='".asset($asset)."'></script>")->implode(PHP_EOL);
     }
 
     public function css(): string
     {
         return collect($this->assets)
-            ->filter(fn($asset) => preg_match('/\.css$/', $asset))
-            ->map(fn($asset) => "<link href='".asset($asset)."' rel='stylesheet'>")->implode(PHP_EOL);
+            ->filter(fn ($asset) => preg_match('/\.css$/', $asset))
+            ->map(fn ($asset) => "<link href='".asset($asset)."' rel='stylesheet'>")->implode(PHP_EOL);
     }
 }

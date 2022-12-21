@@ -21,7 +21,7 @@ class MoonShineDashboardController extends BaseController
     public function index(): Factory|View|Application
     {
         return view('moonshine::dashboard', [
-            'blocks' => app(Dashboard::class)->getBlocks()
+            'blocks' => app(Dashboard::class)->getBlocks(),
         ]);
     }
 
@@ -31,7 +31,7 @@ class MoonShineDashboardController extends BaseController
             $file = $request->file('file');
 
             return [
-                'attachment' => Storage::url($file->store('attachments', 'public'))
+                'attachment' => Storage::url($file->store('attachments', 'public')),
             ];
         }
 

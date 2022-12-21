@@ -16,8 +16,7 @@ final class CustomPage
         protected string $alias,
         protected string $view,
         protected ?Closure $viewData = null,
-    )
-    {
+    ) {
     }
 
     public function label(): string

@@ -92,13 +92,13 @@ class MoonShineServiceProvider extends ServiceProvider
         Blade::componentNamespace('Leeto\MoonShine\Components', 'moonshine');
         Blade::component('menu-component', MenuComponent::class);
 
-        $this->app->singleton(MoonShine::class, fn() => new MoonShine());
+        $this->app->singleton(MoonShine::class, fn () => new MoonShine());
 
-        $this->app->singleton(Menu::class, fn() => new Menu());
+        $this->app->singleton(Menu::class, fn () => new Menu());
 
-        $this->app->singleton(Dashboard::class, fn() => new Dashboard());
+        $this->app->singleton(Dashboard::class, fn () => new Dashboard());
 
-        $this->app->singleton(AssetManager::class, fn() => new AssetManager());
+        $this->app->singleton(AssetManager::class, fn () => new AssetManager());
 
         $extensions = [];
 
@@ -108,7 +108,7 @@ class MoonShineServiceProvider extends ServiceProvider
             }
         }
 
-        $this->app->bind(Extension::class, fn() => $extensions);
+        $this->app->bind(Extension::class, fn () => $extensions);
     }
 
     /**

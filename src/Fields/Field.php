@@ -6,19 +6,19 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
-use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Contracts\Fields\HasExportViewValue;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
 use Leeto\MoonShine\Contracts\Fields\HasIndexViewValue;
+use Leeto\MoonShine\Contracts\HtmlViewable;
 
+use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModel;
-use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithView;
@@ -336,7 +336,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         if ($this->hasRelationship()) {
             return $container ? view('moonshine::shared.badge', [
                 'color' => 'purple',
-                'value' => $item->{$this->resourceTitleField()} ?? '-'
+                'value' => $item->{$this->resourceTitleField()} ?? '-',
             ]) : $item->{$this->resourceTitleField()} ?? '-';
         }
 
@@ -350,7 +350,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public function save(Model $item): Model
     {
-        if(!$this->canSave) {
+        if (! $this->canSave) {
             return $item;
         }
 

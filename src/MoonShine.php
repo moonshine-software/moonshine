@@ -71,15 +71,15 @@ class MoonShine
                 $this->pages->add($item);
                 $this->menus->add(new MenuItem($item->label(), $item));
             } elseif ($item instanceof MenuItem) {
-                $this->resources->when($item->resource(), fn($r) => $r->add($item->resource()));
-                $this->pages->when($item->page(), fn($r) => $r->add($item->page()));
+                $this->resources->when($item->resource(), fn ($r) => $r->add($item->resource()));
+                $this->pages->when($item->page(), fn ($r) => $r->add($item->page()));
                 $this->menus->add($item);
             } elseif ($item instanceof MenuGroup) {
                 $this->menus->add($item);
 
                 $item->items()->each(function ($subItem) {
-                    $this->pages->when($subItem->page(), fn($r) => $r->add($subItem->page()));
-                    $this->resources->when($subItem->resource(), fn($r) => $r->add($subItem->resource()));
+                    $this->pages->when($subItem->page(), fn ($r) => $r->add($subItem->page()));
+                    $this->resources->when($subItem->resource(), fn ($r) => $r->add($subItem->resource()));
                 });
             }
         });
@@ -129,7 +129,6 @@ class MoonShine
         Route::prefix(config('moonshine.route.prefix'))
             ->middleware(config('moonshine.route.middleware'))
             ->name(config('moonshine.route.prefix').'.')->group(function () {
-
                 Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
                 Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
                 Route::get('/auto-update', [MoonShineDashboardController::class, 'autoUpdate'])->name('auto-update');
@@ -175,12 +174,11 @@ class MoonShine
 
     public static function changeLogs(Model $item): ?Collection
     {
-        if(!$item->changeLogs instanceof Collection) {
+        if (! $item->changeLogs instanceof Collection) {
             return null;
         }
 
-        if($item->changeLogs->isNotEmpty()) {
-
+        if ($item->changeLogs->isNotEmpty()) {
             return $item->changeLogs->filter(static function ($log) {
                 return $log->states_after;
             });

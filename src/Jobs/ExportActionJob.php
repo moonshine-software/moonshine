@@ -17,7 +17,10 @@ use OpenSpout\Writer\Exception\WriterNotOpenedException;
 
 class ExportActionJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
         protected string $resource,

@@ -33,7 +33,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
     public function indexViewValue(Model $item, bool $container = false): mixed
     {
-        if($this->onlyCount) {
+        if ($this->onlyCount) {
             return (string) $item->{$this->relation()}->count();
         }
 
@@ -52,7 +52,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
         return view('moonshine::shared.table', [
             'columns' => $columns,
-            'values' => $values
+            'values' => $values,
         ]);
     }
 
@@ -87,7 +87,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
                 }
 
                 $item->{$this->relation()}()->updateOrCreate([
-                    $primaryKey => $identity
+                    $primaryKey => $identity,
                 ], $values);
             }
         }

@@ -60,7 +60,7 @@ abstract class Decoration implements HtmlViewable
      */
     public function hasFields(): bool
     {
-        return !empty($this->fields());
+        return ! empty($this->fields());
     }
 
     /**

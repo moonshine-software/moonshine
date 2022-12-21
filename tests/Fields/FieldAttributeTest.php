@@ -30,7 +30,7 @@ class FieldAttributeTest extends TestCase
         $field = Text::make('Name')
             ->customAttributes([
                 'accept' => 'accept',
-                'data-value' => 'test'
+                'data-value' => 'test',
             ])
             ->customClasses(['one', 'two']);
 

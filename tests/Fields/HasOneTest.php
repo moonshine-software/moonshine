@@ -24,7 +24,7 @@ class HasOneTest extends TestCase
     public function test_fields()
     {
         $field = HasOne::make('Role')->fields([
-            Text::make('Name')
+            Text::make('Name'),
         ]);
 
         $this->assertTrue($field->hasFields());

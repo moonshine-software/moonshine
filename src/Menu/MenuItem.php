@@ -16,19 +16,19 @@ class MenuItem extends MenuSection
     {
         $this->title = $title;
 
-        if($resource instanceof Resource) {
+        if ($resource instanceof Resource) {
             $this->resource = $resource;
         }
 
-        if($resource instanceof CustomPage) {
+        if ($resource instanceof CustomPage) {
             $this->page = $resource;
         }
 
-        if(is_string($resource) && class_exists($resource)) {
-            $this->resource = new $resource;
+        if (is_string($resource) && class_exists($resource)) {
+            $this->resource = new $resource();
         }
 
-        if(is_string($resource) && is_null($this->resource)) {
+        if (is_string($resource) && is_null($this->resource)) {
             $this->link = $resource;
         }
 

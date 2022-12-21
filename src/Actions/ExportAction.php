@@ -46,7 +46,7 @@ class ExportAction extends Action implements ActionContract
         $path = Storage::disk($this->getDisk())
             ->path("{$this->getDir()}/{$this->resource()->routeAlias()}.xlsx");
 
-        if($this->isQueue()) {
+        if ($this->isQueue()) {
             ExportActionJob::dispatch(get_class($this->resource()), $path);
 
             return redirect()
@@ -107,7 +107,7 @@ class ExportAction extends Action implements ActionContract
             foreach (request()->query('filters') as $filterField => $filterQuery) {
                 if (is_array($filterQuery)) {
                     foreach ($filterQuery as $filterInnerField => $filterValue) {
-                        if (is_numeric($filterInnerField) && !is_array($filterValue)) {
+                        if (is_numeric($filterInnerField) && ! is_array($filterValue)) {
                             $query['filters'][$filterField][] = $filterValue;
                         } else {
                             $query['filters'][$filterInnerField] = $filterValue;
@@ -128,7 +128,7 @@ class ExportAction extends Action implements ActionContract
 
     protected function resolveStorage()
     {
-        if (!Storage::disk($this->getDisk())->exists($this->getDir())) {
+        if (! Storage::disk($this->getDisk())->exists($this->getDir())) {
             Storage::disk($this->getDisk())->makeDirectory($this->getDir());
         }
     }

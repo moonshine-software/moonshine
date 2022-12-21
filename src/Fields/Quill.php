@@ -10,6 +10,6 @@ final class Quill extends Field
 
     protected array $assets = [
         'https://cdn.quilljs.com/1.3.6/quill.snow.css',
-        'https://cdn.quilljs.com/1.3.6/quill.js'
+        'https://cdn.quilljs.com/1.3.6/quill.js',
     ];
 }

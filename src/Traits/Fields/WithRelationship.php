@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
-
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Closure;
 
 trait WithRelationship
 {
@@ -37,7 +36,7 @@ trait WithRelationship
         $related = $this->getRelated($item);
         $query = $related->newModelQuery();
 
-        if(is_callable($this->valuesQuery)) {
+        if (is_callable($this->valuesQuery)) {
             $query = call_user_func($this->valuesQuery, $query);
         }
 
@@ -55,11 +54,11 @@ trait WithRelationship
 
     public function isSelected(Model $item, string $value): bool
     {
-        if (!$this->formViewValue($item)) {
+        if (! $this->formViewValue($item)) {
             return false;
         }
 
-        if (!$this->belongToOne() && !$this->toOne()) {
+        if (! $this->belongToOne() && ! $this->toOne()) {
             $related = $this->getRelated($item);
 
             return $this->formViewValue($item) instanceof Collection
@@ -72,6 +71,6 @@ trait WithRelationship
         }
 
         return (string) $this->formViewValue($item) === $value
-            || (!$this->formViewValue($item) && (string) $this->getDefault() === $value);
+            || (! $this->formViewValue($item) && (string) $this->getDefault() === $value);
     }
 }

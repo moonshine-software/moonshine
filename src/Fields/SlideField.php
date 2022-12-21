@@ -31,13 +31,13 @@ class SlideField extends Field
     {
         return [
             $this->fromField => $item->{$this->fromField},
-            $this->toField => $item->{$this->toField}
+            $this->toField => $item->{$this->toField},
         ];
     }
 
     public function save(Model $item): Model
     {
-        if(!$this->canSave) {
+        if (! $this->canSave) {
             return $item;
         }
 

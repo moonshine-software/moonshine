@@ -47,7 +47,7 @@ trait WithHtmlAttributes
             ->replaceMatches('/_{2,}/', '_')
             ->trim('_')
             ->snake()
-            ->when(!is_null($index), fn(Stringable $str) => $str->append("_$index"));
+            ->when(! is_null($index), fn (Stringable $str) => $str->append("_$index"));
     }
 
     public function name(string $index = null): string
@@ -62,10 +62,10 @@ trait WithHtmlAttributes
         }
 
         return (string) str($this->field())
-            ->when(!is_null($wrap), fn(Stringable $str) => $str->wrap("{$wrap}[", "]"))
+            ->when(! is_null($wrap), fn (Stringable $str) => $str->wrap("{$wrap}[", "]"))
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
-                fn(Stringable $str) => $str->append("[".($index ?? '')."]")
+                fn (Stringable $str) => $str->append("[".($index ?? '')."]")
             );
     }
 
@@ -129,7 +129,8 @@ trait WithHtmlAttributes
         });
 
         return (new ComponentAttributeBag(
-            $this->customAttributes + $resolveAttributes->toArray())
+            $this->customAttributes + $resolveAttributes->toArray()
+        )
         )->class($this->customClasses);
     }
 

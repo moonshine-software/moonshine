@@ -27,7 +27,7 @@ class BelongsToManyTest extends TestCase
     public function test_fields()
     {
         $field = BelongsToMany::make('Role', 'roles')->fields([
-            Text::make('Pivot')
+            Text::make('Pivot'),
         ]);
 
         $this->assertTrue($field->hasFields());
@@ -46,7 +46,7 @@ class BelongsToManyTest extends TestCase
     public function test_removable()
     {
         $field = BelongsToMany::make('Names')->fields([
-            Text::make('Name')
+            Text::make('Name'),
         ])->removable();
 
         $this->assertTrue($field->isRemovable());

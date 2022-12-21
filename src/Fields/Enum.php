@@ -32,7 +32,7 @@ class Enum extends Select
     {
         $formValue = $this->formViewValue($item);
 
-        if (!$formValue) {
+        if (! $formValue) {
             return false;
         }
 
@@ -41,6 +41,6 @@ class Enum extends Select
         }
 
         return (string) $formValue->value === $value
-            || (!$formValue->value && (string) $this->getDefault() === $value);
+            || (! $formValue->value && (string) $this->getDefault() === $value);
     }
 }

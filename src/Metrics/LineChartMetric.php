@@ -13,7 +13,7 @@ class LineChartMetric extends Metric
     protected array $colors = [];
 
     protected array $assets = [
-        'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js'
+        'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js',
     ];
 
     public function lines(): array
@@ -38,7 +38,7 @@ class LineChartMetric extends Metric
     {
         return collect($this->lines())
             ->collapse()
-            ->mapWithKeys(fn($item) => $item)
+            ->mapWithKeys(fn ($item) => $item)
             ->sortKeys()
             ->keys()
             ->toArray();

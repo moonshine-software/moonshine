@@ -31,7 +31,7 @@ class ProfileFormRequest extends FormRequest
             'email' => [
                 'required',
                 Rule::unique('moonshine_users', 'email')
-                    ->ignore(auth(config('moonshine.auth.guard'))->id())
+                    ->ignore(auth(config('moonshine.auth.guard'))->id()),
             ],
             'password' => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
         ];

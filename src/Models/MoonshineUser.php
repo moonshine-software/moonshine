@@ -22,7 +22,7 @@ class MoonshineUser extends Authenticatable
         'moonshine_user_role_id',
         'password',
         'name',
-        'avatar'
+        'avatar',
     ];
 
     protected $with = ['moonshineUserRole'];

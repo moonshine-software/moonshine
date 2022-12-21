@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
+use function auth;
+use function back;
+
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
+
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Http\Requests\LoginFormRequest;
 
-use function auth;
-use function back;
 use function redirect;
 use function trans;
 use function view;

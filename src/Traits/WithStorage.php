@@ -14,7 +14,7 @@ trait WithStorage
 
     protected function resolveStorage(): void
     {
-        if (!Storage::disk($this->getDisk())->exists($this->getDir())) {
+        if (! Storage::disk($this->getDisk())->exists($this->getDir())) {
             Storage::disk($this->getDisk())->makeDirectory($this->getDir());
         }
     }

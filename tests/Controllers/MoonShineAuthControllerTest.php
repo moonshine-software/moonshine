@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Tests\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Models\MoonshineUserRole;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
 use Leeto\MoonShine\Tests\TestCase;
 
 class MoonShineAuthControllerTest extends TestCase
@@ -54,5 +51,4 @@ class MoonShineAuthControllerTest extends TestCase
 
         $response->assertRedirect(route(config('moonshine.route.prefix').'.login'));
     }
-
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Tests;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\MoonShine;
@@ -43,11 +43,11 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->user = MoonshineUser::query()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => bcrypt('test')
+            'password' => bcrypt('test'),
         ]);
 
         app(MoonShine::class)->registerResources([
-            MoonShineUserResource::class
+            MoonShineUserResource::class,
         ]);
     }
 

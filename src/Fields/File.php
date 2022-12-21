@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
@@ -22,7 +21,7 @@ class File extends Field implements Fileable
     protected string $accept = '*/*';
 
     protected array $attributes = [
-        'accept'
+        'accept',
     ];
 
     public function accept(string $value): static
@@ -40,7 +39,7 @@ class File extends Field implements Fileable
 
         if ($this->isMultiple()) {
             return collect($item->{$this->field()})
-                ->map(fn($value, $index) => view('moonshine::fields.shared.file', [
+                ->map(fn ($value, $index) => view('moonshine::fields.shared.file', [
                     'value' => $this->path($value),
                     'index' => $index + 1,
                     'canDownload' => $this->canDownload(),

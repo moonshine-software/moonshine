@@ -10,6 +10,6 @@ class WYSIWYG extends Field
 
     protected array $assets = [
         'vendor/moonshine/js/trix/trix.js',
-        'vendor/moonshine/css/trix/trix.css'
+        'vendor/moonshine/css/trix/trix.css',
     ];
 }

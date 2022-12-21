@@ -7,7 +7,6 @@ namespace Leeto\MoonShine\Tests\Fields;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Leeto\MoonShine\Fields\Date;
 use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
 use Leeto\MoonShine\Tests\TestCase;
 
 class DateTest extends TestCase
@@ -17,7 +16,7 @@ class DateTest extends TestCase
     public function test_values()
     {
         $user = MoonshineUser::factory()->make([
-            'created_at' => '2022-01-01 00:00:00'
+            'created_at' => '2022-01-01 00:00:00',
         ]);
 
         $field = Date::make('Created at')

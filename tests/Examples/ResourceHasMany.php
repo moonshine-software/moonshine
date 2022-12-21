@@ -21,15 +21,15 @@ class ResourceHasMany extends Resource
         return [
             HasMany::make('Roles')->fields([
                 Json::make('Roles 2')->fields([
-                    Text::make('Name')
+                    Text::make('Name'),
                 ]),
 
                 HasMany::make('Roles 2')->fields([
                     HasMany::make('Roles 3')->fields([
                         Text::make('Name'),
-                    ])
-                ])
-            ])
+                    ]),
+                ]),
+            ]),
         ];
     }
 

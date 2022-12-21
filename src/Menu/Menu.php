@@ -20,7 +20,7 @@ class Menu
         return $this->menu->filter(function ($item) {
             if ($item->isGroup()) {
                 $item->setItems(
-                    $item->items()->filter(fn($subItem) => $subItem->isSee(request()))
+                    $item->items()->filter(fn ($subItem) => $subItem->isSee(request()))
                 );
             }
 

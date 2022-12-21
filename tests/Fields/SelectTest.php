@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Fields\HasOne;
 use Leeto\MoonShine\Fields\Select;
-use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Tests\TestCase;
 
 class SelectTest extends TestCase

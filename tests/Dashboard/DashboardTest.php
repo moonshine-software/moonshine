@@ -27,7 +27,7 @@ class DashboardTest extends TestCase
                 ValueMetric::make('Orders')
                     ->value(100)
                     ->valueFormat('Now {value} orders'),
-            ])
+            ]),
         ]);
 
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))

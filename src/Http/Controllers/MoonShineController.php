@@ -34,12 +34,12 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(!$action = $this->resource->itemActions()[$index] ?? false, 404);
+        abort_if(! $action = $this->resource->itemActions()[$index] ?? false, 404);
 
         try {
             $action->callback($item);
         } catch (Throwable $e) {
-            throw_if(!app()->isProduction(), $e);
+            throw_if(! app()->isProduction(), $e);
 
             return redirect($this->resource->route('index'))
                 ->with('alert', trans('moonshine::ui.saved_error'));
@@ -51,20 +51,20 @@ class MoonShineController extends BaseController
 
     public function bulk($index): RedirectResponse
     {
-        if(!request('ids')) {
+        if (! request('ids')) {
             return redirect($this->resource->route('index'));
         }
 
-        abort_if(!$action = $this->resource->bulkActions()[$index] ?? false, 404);
+        abort_if(! $action = $this->resource->bulkActions()[$index] ?? false, 404);
 
         try {
             $items = $this->resource->getModel()
                 ->newModelQuery()
                 ->findMany(explode(';', request('ids')));
 
-            $items->each(fn($item) => $action->callback($item));
+            $items->each(fn ($item) => $action->callback($item));
         } catch (Throwable $e) {
-            throw_if(!app()->isProduction(), $e);
+            throw_if(! app()->isProduction(), $e);
 
             return redirect($this->resource->route('index'))
                 ->with('alert', trans('moonshine::ui.saved_error'));
@@ -135,7 +135,7 @@ class MoonShineController extends BaseController
             );
         }
 
-        if (!in_array('create', $this->resource->getActiveActions())) {
+        if (! in_array('create', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -147,7 +147,7 @@ class MoonShineController extends BaseController
      */
     public function edit($id): View|Factory|Redirector|RedirectResponse|Application
     {
-        if (!in_array('edit', $this->resource->getActiveActions())) {
+        if (! in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -193,7 +193,7 @@ class MoonShineController extends BaseController
      */
     public function update($id, Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if (!in_array('edit', $this->resource->getActiveActions())) {
+        if (! in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -217,8 +217,8 @@ class MoonShineController extends BaseController
      */
     public function store(Request $request): Factory|View|Redirector|Application|RedirectResponse
     {
-        if (!in_array('edit', $this->resource->getActiveActions())
-            && !in_array('create', $this->resource->getActiveActions())) {
+        if (! in_array('edit', $this->resource->getActiveActions())
+            && ! in_array('create', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -240,7 +240,7 @@ class MoonShineController extends BaseController
      */
     public function destroy($id): Redirector|Application|RedirectResponse
     {
-        if (!in_array('delete', $this->resource->getActiveActions())) {
+        if (! in_array('delete', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
 
@@ -292,7 +292,7 @@ class MoonShineController extends BaseController
             try {
                 $this->resource->save($item);
             } catch (ResourceException $e) {
-                throw_if(!app()->isProduction(), $e);
+                throw_if(! app()->isProduction(), $e);
 
                 return redirect($this->resource->route($item->exists ? 'edit' : 'create', $item->getKey()))
                     ->with('alert', trans('moonshine::ui.saved_error'));

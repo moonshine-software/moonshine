@@ -7,11 +7,11 @@ namespace Leeto\MoonShine\Http\Controllers;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
-use Leeto\MoonShine\Exceptions\AuthException;
-use Leeto\MoonShine\Models\MoonshineSocialite;
-
 use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\Facades\Socialite;
+
+use Leeto\MoonShine\Exceptions\AuthException;
+use Leeto\MoonShine\Models\MoonshineSocialite;
 
 class MoonShineSocialiteController extends BaseController
 {
@@ -23,7 +23,7 @@ class MoonShineSocialiteController extends BaseController
     {
         $this->ensureSocialiteIsInstalled();
 
-        if(!$this->hasDriver($driver)) {
+        if (! $this->hasDriver($driver)) {
             throw new AuthException('Driver not found in config file');
         }
 
@@ -39,7 +39,7 @@ class MoonShineSocialiteController extends BaseController
     {
         $this->ensureSocialiteIsInstalled();
 
-        if(!$this->hasDriver($driver)) {
+        if (! $this->hasDriver($driver)) {
             throw new AuthException('Driver not found in config file');
         }
 
@@ -50,11 +50,11 @@ class MoonShineSocialiteController extends BaseController
             ->where('identity', $socialiteUser->getId())
             ->first();
 
-        if(auth(config('moonshine.auth.guard'))->check()) {
+        if (auth(config('moonshine.auth.guard'))->check()) {
             return $this->bindAccount($socialiteUser, $driver, $account);
         }
 
-        if(!$account) {
+        if (! $account) {
             request()->session()->flash('alert', trans('moonshine::auth.failed'));
 
             return redirect()
@@ -70,14 +70,13 @@ class MoonShineSocialiteController extends BaseController
 
     private function bindAccount(User $socialiteUser, string $driver, ?MoonshineSocialite $account): RedirectResponse
     {
-        if($account) {
+        if ($account) {
             request()->session()->flash('alert', trans('moonshine::auth.socialite.link_exists'));
         } else {
-
             MoonshineSocialite::query()->create([
                 'moonshine_user_id' => auth(config('moonshine.auth.guard'))->id(),
                 'driver' => $driver,
-                'identity' => $socialiteUser->getId()
+                'identity' => $socialiteUser->getId(),
             ]);
 
             request()->session()->flash('success', trans('moonshine::auth.socialite.link_success'));

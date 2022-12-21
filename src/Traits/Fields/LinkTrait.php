@@ -29,7 +29,7 @@ trait LinkTrait
 
     public function addLink(string $name, string|Closure $link): static
     {
-        if(is_callable($link)) {
+        if (is_callable($link)) {
             $link = call_user_func($link);
         }
 

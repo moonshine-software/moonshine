@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
@@ -27,15 +26,15 @@ class Image extends Field implements Fileable
 
         if ($this->isMultiple()) {
             $values = collect($item->{$this->field()})
-                ->map(fn($value) => "'".$this->path($value)."'")->implode(',');
+                ->map(fn ($value) => "'".$this->path($value)."'")->implode(',');
 
             return view('moonshine::shared.carousel', [
-                'values' => $values
+                'values' => $values,
             ]);
         }
 
         return view('moonshine::fields.shared.thumbnail', [
-            'value' => $this->path($item->{$this->field()})
+            'value' => $this->path($item->{$this->field()}),
         ]);
     }
 }

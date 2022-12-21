@@ -24,7 +24,7 @@ class DateRangeFilter extends Filter
         if ($values !== false && collect($values)->filter()->isNotEmpty()) {
             return $query->whereBetween(
                 $this->field(),
-                collect($values)->map(fn($date) => date('Y-m-d', strtotime($date)))
+                collect($values)->map(fn ($date) => date('Y-m-d', strtotime($date)))
             );
         }
 

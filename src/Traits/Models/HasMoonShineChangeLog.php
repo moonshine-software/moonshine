@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Models;
 
+use function auth;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Leeto\MoonShine\Models\MoonshineChangeLog;
 
-use function auth;
+use Leeto\MoonShine\Models\MoonshineChangeLog;
 
 trait HasMoonShineChangeLog
 {
