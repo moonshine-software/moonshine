@@ -178,7 +178,7 @@ class MoonShine
 
     public static function changeLogs(Model $item): ?Collection
     {
-        if (! $item->changeLogs instanceof Collection) {
+        if (! isset($item->changeLogs) || ! $item->changeLogs instanceof Collection) {
             return null;
         }
 
