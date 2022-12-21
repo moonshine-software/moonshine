@@ -301,11 +301,6 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         return $this->sortable;
     }
 
-    public function getView(): string
-    {
-        return static::$view;
-    }
-
     public function formViewValue(Model $item): mixed
     {
         if ($this->belongToOne()) {

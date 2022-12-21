@@ -53,17 +53,12 @@ abstract class Metric implements HtmlViewable, HasAssets
 
     /**
      * @param  string  $label
-     * @return Metric
+     * @return static
      */
     public function setLabel(string $label): static
     {
         $this->label = $label;
 
         return $this;
-    }
-
-    public function getView(): string
-    {
-        return static::$view;
     }
 }

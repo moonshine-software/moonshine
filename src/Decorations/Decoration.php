@@ -107,14 +107,4 @@ abstract class Decoration implements HtmlViewable
 
         return $this;
     }
-
-    /**
-     * Get view of decoration
-     *
-     * @return string
-     */
-    public function getView(): string
-    {
-        return static::$view;
-    }
 }

@@ -67,11 +67,6 @@ abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
             : $query;
     }
 
-    public function getView(): string
-    {
-        return static::$view;
-    }
-
     public function formViewValue(Model $item): mixed
     {
         return $this->requestValue();
