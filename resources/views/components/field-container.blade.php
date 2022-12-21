@@ -10,7 +10,7 @@
                 @include("moonshine::fields.shared.label", ["field" => $field])
 
                 @if($field->hasLink())
-                    <a class="block mt-5 text-purple underline" href="{{ $field->getLinkValue() }}">
+                    <a class="block mt-5 text-purple underline" href="{{ $field->getLinkValue() }}" @if($field->isLinkBlank()) target="_blank" @endif>
                         {{ $field->getLinkName() }}
                     </a>
                 @endif
