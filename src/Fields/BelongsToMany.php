@@ -114,7 +114,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         return $this->treeHtml();
     }
 
-    private function makeTree(array $performedData, int $parent_id = 0, int $offset = 0): void
+    private function makeTree(array $performedData, int|string $parent_id = 0, int $offset = 0): void
     {
         if (isset($performedData[$parent_id])) {
             foreach ($performedData[$parent_id] as $item) {
