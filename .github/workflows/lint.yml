@@ -11,9 +11,17 @@ jobs:
             - name: PHP-CS-Fixer
               uses: docker://oskarstark/php-cs-fixer-ga
               with:
-                args: --config=.php-cs-fixer.dist.php --allow-risky=yes
+                  args: --config=.php-cs-fixer.dist.php --allow-risky=yes
 
-            - name: Commit Changes
-              uses: stefanzweifel/git-auto-commit-action@v4
+            - name: Extract branch name
+              shell: bash
+              run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+              id: extract_branch
+
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v2.3.0
               with:
-                commit_message: Fix styling changes
+                  commit_message: Fix styling
+                  branch: ${{ steps.extract_branch.outputs.branch }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
