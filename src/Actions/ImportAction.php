@@ -41,13 +41,13 @@ class ImportAction extends Action implements ActionContract
      */
     public function handle(): RedirectResponse
     {
-        if (!request()->hasFile($this->inputName)) {
+        if (! request()->hasFile($this->inputName)) {
             return redirect()
                 ->back()
                 ->with('alert', trans('moonshine::ui.resource.import.file_required'));
         }
 
-        if (!in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
+        if (! in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
             return redirect()
                 ->back()
                 ->with('alert', trans('moonshine::ui.resource.import.extension_not_supported'));
@@ -98,7 +98,7 @@ class ImportAction extends Action implements ActionContract
                     return $field->field() === $key || $field->label() === $key;
                 });
 
-                if (!$field instanceof Field) {
+                if (! $field instanceof Field) {
                     return [];
                 }
 

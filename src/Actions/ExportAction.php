@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Actions;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Exceptions\ActionException;
 use Leeto\MoonShine\Jobs\ExportActionJob;
-use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Notifications\MoonShineDatabaseNotification;
 use Leeto\MoonShine\Notifications\MoonShineNotification;
 use Leeto\MoonShine\Traits\WithQueue;
 use Leeto\MoonShine\Traits\WithStorage;
@@ -126,7 +123,7 @@ class ExportAction extends Action implements ActionContract
             foreach (request()->query('filters') as $filterField => $filterQuery) {
                 if (is_array($filterQuery)) {
                     foreach ($filterQuery as $filterInnerField => $filterValue) {
-                        if (is_numeric($filterInnerField) && !is_array($filterValue)) {
+                        if (is_numeric($filterInnerField) && ! is_array($filterValue)) {
                             $query['filters'][$filterField][] = $filterValue;
                         } else {
                             $query['filters'][$filterInnerField] = $filterValue;
@@ -147,7 +144,7 @@ class ExportAction extends Action implements ActionContract
 
     protected function resolveStorage()
     {
-        if (!Storage::disk($this->getDisk())->exists($this->getDir())) {
+        if (! Storage::disk($this->getDisk())->exists($this->getDir())) {
             Storage::disk($this->getDisk())->makeDirectory($this->getDir());
         }
     }
