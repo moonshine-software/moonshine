@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Feature\Views;
 
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Exceptions\ViewComponentException;
 use Leeto\MoonShine\MoonShineRouter;
 use Leeto\MoonShine\Tests\TestCase;
@@ -14,14 +14,14 @@ use Leeto\MoonShine\Views\CrudFormView;
 
 final class CrudFormViewTest extends TestCase
 {
-    protected ValueEntityContract $value;
+    protected EntityContract $value;
     protected CrudFormView $view;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->value = $this->testResource()->valueEntity($this->adminUser());
+        $this->value = $this->testResource()->entity($this->adminUser());
         $this->view = CrudFormView::make($this->testResource(), $this->value);
     }
 

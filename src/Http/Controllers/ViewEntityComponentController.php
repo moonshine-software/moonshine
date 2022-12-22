@@ -31,7 +31,7 @@ final class ViewEntityComponentController extends BaseController
         /* @var MoonShineView $viewClass */
         $view = $viewClass::make(
             $request->getResource(),
-            $request->getValueEntity()
+            $request->entity()
         );
 
         return $this->jsonResponse(

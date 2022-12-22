@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\ViewComponents\Table;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\ViewComponents\MoonShineViewComponent;
 
@@ -36,7 +36,7 @@ final class Table extends MoonShineViewComponent
 
     public function resolveFieldsPaginator(): LengthAwarePaginator
     {
-        $this->paginator->getCollection()->transform(function (ValueEntityContract $values) {
+        $this->paginator->getCollection()->transform(function (EntityContract $values) {
             return TableRow::make($values, $this->fields());
         });
 

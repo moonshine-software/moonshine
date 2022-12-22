@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Contracts;
 
-interface ValueEntityContract
+interface EntityContract
 {
     public function id(): int;
 

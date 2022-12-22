@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\ViewComponents\Table;
 
 use JsonSerializable;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Traits\Makeable;
 
@@ -14,12 +14,12 @@ final class TableRow implements JsonSerializable
     use Makeable;
 
     final public function __construct(
-        protected ValueEntityContract $values,
+        protected EntityContract $values,
         protected Fields $fields
     ) {
     }
 
-    public function values(): ValueEntityContract
+    public function values(): EntityContract
     {
         return $this->values;
     }

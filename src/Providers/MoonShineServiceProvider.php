@@ -5,19 +5,15 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Providers;
 
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\SanctumServiceProvider;
 use Leeto\MoonShine\Commands\InstallCommand;
 use Leeto\MoonShine\Commands\ResourceCommand;
 use Leeto\MoonShine\Commands\UserCommand;
-use Leeto\MoonShine\Dashboard\Dashboard;
 use Leeto\MoonShine\Http\Middleware\ConfigureSanctum;
-use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Utilities\AssetManager;
 
 final class MoonShineServiceProvider extends ServiceProvider
 {
@@ -30,7 +26,6 @@ final class MoonShineServiceProvider extends ServiceProvider
     protected array $middlewareGroups = [
         'moonshine' => [
             ConfigureSanctum::class,
-            StartSession::class,
             EnsureFrontendRequestsAreStateful::class,
             'throttle:60,1',
             SubstituteBindings::class,

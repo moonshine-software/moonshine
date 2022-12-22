@@ -28,7 +28,7 @@ final class ViewEntityController extends BaseController
 
         return $this->jsonResponse(
         /* @var MoonShineView $viewClass */
-            $viewClass::make($request->getResource(), $request->getValueEntity())
+            $viewClass::make($request->getResource(), $request->entity())
         );
     }
 }

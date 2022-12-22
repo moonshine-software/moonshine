@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Tests\Feature\ViewComponents;
 
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Tests\TestCase;
-use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\Entities\ModelEntityBuilder;
 use Leeto\MoonShine\ViewComponents\DetailCard\DetailCard;
 
 class DetailCardTest extends TestCase
@@ -19,7 +19,7 @@ class DetailCardTest extends TestCase
     {
         $card = DetailCard::make(
             $this->testResource()->fieldsCollection()->detailFields(),
-            (new ModelValueEntityBuilder($this->adminUser()))->build()
+            (new ModelEntityBuilder($this->adminUser()))->build()
         );
 
         $this->assertInstanceOf(Fields::class, $card->fields());

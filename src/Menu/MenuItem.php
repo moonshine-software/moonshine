@@ -30,8 +30,10 @@ final class MenuItem extends MenuSection implements JsonSerializable
         return [
             'title' => $this->title(),
             'icon' => $this->getIcon(),
-            'url' => $this->resource()
-                ? $this->resource()->route($this->routeName ?? 'index')
+            $this->resource()
+                ? 'resource'
+                : 'url' => $this->resource()
+                ? $this->resource()->uriKey()
                 : $this->url(),
         ];
     }

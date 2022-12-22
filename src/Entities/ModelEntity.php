@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\ValueEntities;
+namespace Leeto\MoonShine\Entities;
 
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\RowActions\RowAction;
 use Leeto\MoonShine\Traits\Makeable;
 
-final class ModelValueEntity implements ValueEntityContract
+final class ModelEntity implements EntityContract
 {
     use Makeable;
 
@@ -49,7 +49,7 @@ final class ModelValueEntity implements ValueEntityContract
         return $key ? $this->attributes[$key] ?? null : $this->attributes;
     }
 
-    public function withActions(array $actions, string $routeParam): ModelValueEntity
+    public function withActions(array $actions, string $routeParam): ModelEntity
     {
         $this->actions = collect($actions)->each(function (RowAction $action) use ($routeParam) {
             return $action->resolveRoute($routeParam, $this->primaryKey());

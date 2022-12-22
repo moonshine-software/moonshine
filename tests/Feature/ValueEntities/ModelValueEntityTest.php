@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Feature\ValueEntities;
 
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Tests\TestCase;
-use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\Entities\ModelEntityBuilder;
 
 class ModelValueEntityTest extends TestCase
 {
@@ -16,9 +16,9 @@ class ModelValueEntityTest extends TestCase
      */
     public function it_build(): void
     {
-        $data = (new ModelValueEntityBuilder($this->adminUser()))->build();
+        $data = (new ModelEntityBuilder($this->adminUser()))->build();
 
-        $this->assertInstanceOf(ValueEntityContract::class, $data);
+        $this->assertInstanceOf(EntityContract::class, $data);
 
         $this->assertEquals($this->adminUser()->getKeyName(), $data->primaryKeyName());
         $this->assertEquals($this->adminUser()->getKey(), $data->primaryKey());

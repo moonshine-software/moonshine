@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\ViewComponents\Form;
 
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
@@ -19,7 +19,7 @@ final class Form extends MoonShineViewComponent
      */
     protected Fields $fields;
 
-    protected ?ValueEntityContract $values = null;
+    protected ?EntityContract $values = null;
 
     protected string $action = '';
 
@@ -50,7 +50,7 @@ final class Form extends MoonShineViewComponent
         return $this;
     }
 
-    public function fill(ValueEntityContract $values): static
+    public function fill(EntityContract $values): static
     {
         $this->values = $values;
         $this->fields = $this->fields()->fillValues($values);
@@ -63,7 +63,7 @@ final class Form extends MoonShineViewComponent
         return $this->fields;
     }
 
-    public function values(): ?ValueEntityContract
+    public function values(): ?EntityContract
     {
         return $this->values;
     }

@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Contracts\Decorations\FieldsDecoration;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Exceptions\FieldsException;
 use ReflectionClass;
@@ -128,7 +128,7 @@ final class Fields extends Collection
         })->toArray();
     }
 
-    public function fillValues(ValueEntityContract $values): Fields
+    public function fillValues(EntityContract $values): Fields
     {
         return $this->map(function ($field) use ($values) {
             if ($field instanceof FieldsDecoration) {

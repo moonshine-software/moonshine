@@ -11,7 +11,7 @@ use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasRelationship;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Traits\Fields\HintTrait;
@@ -196,7 +196,7 @@ abstract class Field implements JsonSerializable, HasAssets
         return $this;
     }
 
-    public function resolveFill(ValueEntityContract $values): static
+    public function resolveFill(EntityContract $values): static
     {
         $this->setValue(
             $values->attributes($this->relation() ?? $this->column()) ?? null

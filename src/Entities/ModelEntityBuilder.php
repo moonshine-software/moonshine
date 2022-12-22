@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\ValueEntities;
+namespace Leeto\MoonShine\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\Contracts\ValueEntityBuilderContract;
+use Leeto\MoonShine\Contracts\EntityBuilderContract;
 
-final class ModelValueEntityBuilder implements ValueEntityBuilderContract
+final class ModelEntityBuilder implements EntityBuilderContract
 {
     public function __construct(protected Model $model)
     {
     }
 
-    public function build(): ModelValueEntity
+    public function build(): ModelEntity
     {
         return $this->resolveModel($this->model);
     }
 
-    protected function resolveModel(Model $model): ModelValueEntity
+    protected function resolveModel(Model $model): ModelEntity
     {
-        return ModelValueEntity::make(
+        return ModelEntity::make(
             $model->getKeyName(),
             $model->getForeignKey(),
             $model->attributesToArray() + $this->resolveRelations($model)

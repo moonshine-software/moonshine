@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Views;
 
 use Leeto\MoonShine\ActionsLayer\MakeDetailCardAction;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Contracts\ViewComponentContract;
 use Leeto\MoonShine\MoonShineRouter;
 use Leeto\MoonShine\ViewComponents\ViewComponents;
@@ -15,7 +15,7 @@ final class CrudDetailView extends MoonShineView
 {
     protected static string $component = 'CrudDetailView';
 
-    final public function __construct(ResourceContract $resource, protected ValueEntityContract $value)
+    final public function __construct(ResourceContract $resource, protected EntityContract $value)
     {
         parent::__construct($resource);
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 
 class PasswordRepeat extends Field
 {
@@ -17,7 +17,7 @@ class PasswordRepeat extends Field
         return '';
     }
 
-    public function resolveFill(ValueEntityContract $values): static
+    public function resolveFill(EntityContract $values): static
     {
         $this->setValue('');
 

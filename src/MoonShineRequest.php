@@ -6,13 +6,13 @@ namespace Leeto\MoonShine;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 
 class MoonShineRequest extends FormRequest
 {
     protected mixed $data = null;
 
-    protected ?ValueEntityContract $valueEntity = null;
+    protected ?EntityContract $entity = null;
 
     protected ?ResourceContract $resource = null;
 
@@ -123,17 +123,17 @@ class MoonShineRequest extends FormRequest
         return $this->data;
     }
 
-    public function getValueEntity(): ValueEntityContract
+    public function entity(): EntityContract
     {
-        if ($this->valueEntity) {
-            return $this->valueEntity;
+        if ($this->entity) {
+            return $this->entity;
         }
 
-        $this->valueEntity = $this->getResource()->valueEntity(
+        $this->entity = $this->getResource()->entity(
             $this->getDataOrFail()
         );
 
-        return $this->valueEntity;
+        return $this->entity;
     }
 
     public function values(string $prefix = null): array

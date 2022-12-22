@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\ViewComponents\DetailCard;
 
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
@@ -16,11 +16,11 @@ final class DetailCard extends MoonShineViewComponent
 
     /**
      * @param  Fields<Field|Decoration>  $fields
-     * @param  ValueEntityContract  $values
+     * @param  EntityContract  $values
      */
     final public function __construct(
         protected Fields $fields,
-        protected ValueEntityContract $values
+        protected EntityContract $values
     ) {
     }
 
@@ -29,7 +29,7 @@ final class DetailCard extends MoonShineViewComponent
         return $this->fields;
     }
 
-    public function values(): ValueEntityContract
+    public function values(): EntityContract
     {
         return $this->values;
     }

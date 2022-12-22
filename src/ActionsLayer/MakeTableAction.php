@@ -12,11 +12,11 @@ final class MakeTableAction
     public function __invoke(ResourceContract $resource): Table
     {
         $entitiesPaginator = $resource->paginate()->through(function ($values) use ($resource) {
-            if (!method_exists($resource, 'valueEntity')) {
+            if (!method_exists($resource, 'entity')) {
                 return $values;
             }
 
-            return $resource->valueEntity($values);
+            return $resource->entity($values);
         });
 
         return Table::make(

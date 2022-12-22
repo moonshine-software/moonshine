@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Tests\TestCase;
-use Leeto\MoonShine\ValueEntities\ModelValueEntity;
-use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\Entities\ModelEntity;
+use Leeto\MoonShine\Entities\ModelEntityBuilder;
 use Leeto\MoonShine\ViewComponents\Table\Table;
 use Leeto\MoonShine\ViewComponents\Table\TableHead;
 use Leeto\MoonShine\ViewComponents\Table\TableRow;
@@ -26,7 +26,7 @@ class TableTest extends TestCase
         $paginator = $this->testResource()->paginate();
 
         $paginator->getCollection()->transform(function (Model $values) {
-            return (new ModelValueEntityBuilder($values))->build();
+            return (new ModelEntityBuilder($values))->build();
         });
 
         $table = Table::make(
@@ -43,7 +43,7 @@ class TableTest extends TestCase
         foreach ($rows as $row) {
             $this->assertInstanceOf(TableRow::class, $row);
             $this->assertInstanceOf(Fields::class, $row->fields());
-            $this->assertInstanceOf(ModelValueEntity::class, $row->values());
+            $this->assertInstanceOf(ModelEntity::class, $row->values());
             $this->assertNotNull($row->id());
 
             $row->fields()->every(function (Field $field) {

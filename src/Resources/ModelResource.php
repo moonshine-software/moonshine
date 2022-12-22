@@ -11,7 +11,7 @@ use Illuminate\Database\QueryException;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\Resources\WithFields;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Contracts\ValueEntityContract;
+use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
@@ -24,7 +24,7 @@ use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
 use Leeto\MoonShine\Traits\Resource\ResourceModelQuery;
 use Leeto\MoonShine\Traits\Resource\ResourceRouter;
 use Leeto\MoonShine\Traits\WithUriKey;
-use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\Entities\ModelEntityBuilder;
 use Leeto\MoonShine\Views\CrudDetailView;
 use Leeto\MoonShine\Views\CrudFormView;
 use Leeto\MoonShine\Views\CrudIndexView;
@@ -134,9 +134,9 @@ abstract class ModelResource implements ResourceContract, WithFields
         return $this->column;
     }
 
-    public function valueEntity(Model $values): ValueEntityContract
+    public function entity(Model $values): EntityContract
     {
-        return (new ModelValueEntityBuilder($values))
+        return (new ModelEntityBuilder($values))
             ->build()
             ->withActions($this->rowActions($values), $this->routeParam());
     }

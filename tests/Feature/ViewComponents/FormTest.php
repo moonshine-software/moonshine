@@ -7,8 +7,8 @@ namespace Leeto\MoonShine\Tests\Feature\ViewComponents;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Tests\TestCase;
-use Leeto\MoonShine\ValueEntities\ModelValueEntity;
-use Leeto\MoonShine\ValueEntities\ModelValueEntityBuilder;
+use Leeto\MoonShine\Entities\ModelEntity;
+use Leeto\MoonShine\Entities\ModelEntityBuilder;
 use Leeto\MoonShine\ViewComponents\Form\Form;
 
 class FormTest extends TestCase
@@ -32,11 +32,11 @@ class FormTest extends TestCase
     public function it_fill(): void
     {
         $model = MoonshineUser::query()->first();
-        $valueEntity = (new ModelValueEntityBuilder($model))->build();
+        $valueEntity = (new ModelEntityBuilder($model))->build();
 
         $form = Form::make($this->testResource()->fieldsCollection()->formFields())
             ->fill($valueEntity);
 
-        $this->assertInstanceOf(ModelValueEntity::class, $form->values());
+        $this->assertInstanceOf(ModelEntity::class, $form->values());
     }
 }

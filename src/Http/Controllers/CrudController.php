@@ -47,7 +47,7 @@ final class CrudController extends BaseController
             'resource' => $request->getResource(),
             'view' => CrudFormView::make(
                 $request->getResource(),
-                $request->getValueEntity()
+                $request->entity()
             )
         ]);
     }
@@ -58,7 +58,7 @@ final class CrudController extends BaseController
             'resource' => $request->getResource(),
             'view' => CrudDetailView::make(
                 $request->getResource(),
-                $request->getValueEntity()
+                $request->entity()
             )
         ]);
     }
