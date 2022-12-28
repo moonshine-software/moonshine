@@ -8,11 +8,11 @@ final class TinyMce extends Field
 {
     protected static string $view = 'moonshine::fields.tinymce';
 
-    public string $plugins = 'anchor autolink autoresize bbcode charmap codesample code emoticons image link lists advlist media searchreplace table visualblocks wordcount directionality fullpage fullscreen help hr nonbreaking pagebreak preview print spellchecker tabfocus textpattern toc visualblocks visualchars';
+    public string $plugins = 'anchor autolink autoresize charmap codesample code emoticons image link lists advlist media searchreplace table visualblocks wordcount directionality fullscreen help nonbreaking pagebreak preview visualblocks visualchars';
 
     public string $addedPlugins = '';
 
-    public string $toolbar = 'undo redo spellchecker | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table tabledelete toc hr nonbreaking pagebreak | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | codesample | ltr rtl | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | fullpage fullscreen preview print visualblocks visualchars code | help';
+    public string $toolbar = 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table tabledelete hr nonbreaking pagebreak | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | codesample | ltr rtl | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | fullscreen preview print visualblocks visualchars code | help';
 
     public string $addedToolbar = '';
 
