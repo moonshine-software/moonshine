@@ -16,11 +16,29 @@ final class TinyMce extends Field
 
     public string $addedToolbar = '';
 
+    public array $mergeTags = [];
+
+    public string $commentAuthor = '';
+
     public function getAssets(): array
     {
         return [
             "https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/tinymce.min.js",
         ];
+    }
+
+    public function mergeTags(array $mergeTags): self
+    {
+        $this->mergeTags = $mergeTags;
+
+        return $this;
+    }
+
+    public function commentAuthor(string $commentAuthor): self
+    {
+        $this->commentAuthor = $commentAuthor;
+
+        return $this;
     }
 
     public function plugins(string $plugins): self
