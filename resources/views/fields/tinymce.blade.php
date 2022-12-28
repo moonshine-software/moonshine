@@ -1,17 +1,14 @@
-<textarea id='ckeditor_{{ $field->id() }}' name="{{ $field->name() }}">
+<textarea id='tinyeditor_{{ $field->id() }}' name="{{ $field->name() }}">
     {!! $field->formViewValue($item) ?? '' !!}
 </textarea>
 
 <script>
     var editor_config = {
         path_absolute : "/",
-        selector: 'textarea#ckeditor_{{ $field->id() }}',
+        selector: 'textarea#tinyeditor_{{ $field->id() }}',
         relative_urls: false,
         plugins: '{{ trim($field->plugins . ' ' . $field->addedPlugins) }}',
         toolbar: '{{ trim($field->toolbar . ' ' . $field->addedToolbar) }}',
-        tinycomments_mode: 'embedded',
-        tinycomments_author: '{{ $field->commentAuthor }}',
-        mergetags_list: @json($field->mergeTags),
         file_picker_callback : function(callback, value, meta) {
             var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
             var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
