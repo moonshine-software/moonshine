@@ -63,6 +63,10 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
     public function save(Model $item): Model
     {
+        if ($this->isResourceMode()) {
+            return $item;
+        }
+
         $related = $this->getRelated($item);
         $primaryKey = $related->getKeyName();
 

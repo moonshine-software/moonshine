@@ -24,6 +24,10 @@ class HasOne extends Field implements HasRelationship, HasFields, OneToOneRelati
 
     public function save(Model $item): Model
     {
+        if ($this->isResourceMode()) {
+            return $item;
+        }
+
         $values = $this->requestValue();
 
         if ($values === false) {

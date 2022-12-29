@@ -168,6 +168,28 @@ trait FormElement
         return $this->group;
     }
 
+    public function isResourceModeField(): bool
+    {
+        return ($this->toOne() || $this->toMany()) && $this->isResourceMode();
+    }
+
+    public function canDisplayOnForm(Model $item): bool
+    {
+        return $this->isSee($item)
+            && $this->showOnForm
+            && ($item->exists ? $this->showOnUpdateForm : $this->showOnCreateForm);
+    }
+
+    public function canDisplayFormPrimitiveField(Model $item): bool
+    {
+        return $this->canDisplayOnForm($item) && ! $this->isResourceModeField();
+    }
+
+    public function canDisplayFormRelationField(Model $item): bool
+    {
+        return $this->canDisplayOnForm($item) && $this->isResourceModeField();
+    }
+
     public function hasRelationship(): bool
     {
         return $this instanceof HasRelationship;

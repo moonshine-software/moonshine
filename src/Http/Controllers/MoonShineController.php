@@ -11,7 +11,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -26,6 +28,12 @@ class MoonShineController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
+    public function __construct()
+    {
+        $this->middleware(HandlePrecognitiveRequests::class)
+            ->only(['store', 'update']);
+    }
+
     protected Resource $resource;
 
     public function action($id, $index): RedirectResponse
@@ -36,23 +44,35 @@ class MoonShineController extends BaseController
 
         abort_if(! $action = $this->resource->itemActions()[$index] ?? false, 404);
 
+        $redirectRoute = redirect($this->resource->route('index'));
+
+        if (request()->has('relatable_mode')) {
+            $redirectRoute = back();
+        }
+
         try {
             $action->callback($item);
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
 
-            return redirect($this->resource->route('index'))
+            return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));
         }
 
-        return redirect($this->resource->route('index'))
+        return $redirectRoute
             ->with('alert', $action->message());
     }
 
     public function bulk($index): RedirectResponse
     {
+        $redirectRoute = redirect($this->resource->route('index'));
+
+        if (request()->has('relatable_mode')) {
+            $redirectRoute = back();
+        }
+
         if (! request('ids')) {
-            return redirect($this->resource->route('index'));
+            return $redirectRoute;
         }
 
         abort_if(! $action = $this->resource->bulkActions()[$index] ?? false, 404);
@@ -66,11 +86,11 @@ class MoonShineController extends BaseController
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
 
-            return redirect($this->resource->route('index'))
+            return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));
         }
 
-        return redirect($this->resource->route('index'))
+        return $redirectRoute
             ->with('alert', $action->message());
     }
 
@@ -97,13 +117,19 @@ class MoonShineController extends BaseController
             }
         }
 
-        return redirect($this->resource->route('index'));
+        $redirectRoute = redirect($this->resource->route('index'));
+
+        if (request()->has('relatable_mode')) {
+            $redirectRoute = back();
+        }
+
+        return $redirectRoute;
     }
 
     /**
-     * @throws AuthorizationException
+     * @throws AuthorizationException|Throwable
      */
-    public function index(): View
+    public function index(): string|View
     {
         if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
@@ -113,19 +139,38 @@ class MoonShineController extends BaseController
             );
         }
 
-        return view($this->resource->baseIndexView(), [
+
+        if (request()->ajax()) {
+            abort_if(! request()->hasAny(['related_column', 'related_key']), 404);
+
+            $this->resource->relatable(
+                request('related_column'),
+                request('related_key')
+            );
+        }
+
+        $view = view($this->resource->baseIndexView(), [
             'resource' => $this->resource,
             'filters' => $this->resource->filters(),
             'actions' => $this->resource->getActions(),
             'metrics' => $this->resource->metrics(),
             'items' => $this->resource->paginate(),
         ]);
+
+        if (request()->ajax()) {
+            $sections = $view->renderSections();
+
+            return $sections['content'] ?? '';
+        }
+
+        return $view;
     }
 
     /**
      * @throws AuthorizationException
+     * @throws Throwable
      */
-    public function create(): View|Factory|Redirector|RedirectResponse|Application
+    public function create(): string|View|Factory|Redirector|RedirectResponse|Application
     {
         if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
@@ -144,8 +189,9 @@ class MoonShineController extends BaseController
 
     /**
      * @throws AuthorizationException
+     * @throws Throwable
      */
-    public function edit($id): View|Factory|Redirector|RedirectResponse|Application
+    public function edit($id): string|View|Factory|Redirector|RedirectResponse|Application
     {
         if (! in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
@@ -190,8 +236,9 @@ class MoonShineController extends BaseController
 
     /**
      * @throws AuthorizationException
+     * @throws Throwable
      */
-    public function update($id, Request $request): Factory|View|Redirector|Application|RedirectResponse
+    public function update($id, Request $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
     {
         if (! in_array('edit', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
@@ -214,8 +261,9 @@ class MoonShineController extends BaseController
 
     /**
      * @throws AuthorizationException
+     * @throws Throwable
      */
-    public function store(Request $request): Factory|View|Redirector|Application|RedirectResponse
+    public function store(Request $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
     {
         if (! in_array('edit', $this->resource->getActiveActions())
             && ! in_array('create', $this->resource->getActiveActions())) {
@@ -243,6 +291,8 @@ class MoonShineController extends BaseController
         if (! in_array('delete', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
         }
+
+        $redirectRoute = redirect($this->resource->route('index'));
 
         if (request()->has('ids')) {
             if ($this->resource->isWithPolicy()) {
@@ -272,33 +322,80 @@ class MoonShineController extends BaseController
             $this->resource->delete($item);
         }
 
-        return redirect($this->resource->route('index'))
+        if (request()->has('relatable_mode')) {
+            $redirectRoute = back();
+        }
+
+        return $redirectRoute
             ->with('alert', trans('moonshine::ui.deleted'));
     }
 
-    protected function editView(Model $item = null): Factory|View|Application
+    /**
+     * @throws Throwable
+     */
+    protected function editView(Model $item = null): View|string
     {
-        return view($this->resource->baseEditView(), [
+        if (is_null($item) && request('relatable_mode') && request('related_column')) {
+            $item = $this->resource->getModel();
+            $item->{request('related_column')} = request('related_key');
+        }
+
+        $view = view($this->resource->baseEditView(), [
             'resource' => $this->resource,
             'item' => $item ?? $this->resource->getModel(),
         ]);
+
+        if (request()->ajax()) {
+            $sections = $view->renderSections();
+
+            return $sections['content'] ?? '';
+        }
+
+        return $view;
     }
 
-    protected function save(Request $request, Model $item): Factory|View|Redirector|Application|RedirectResponse
+    /**
+     * @throws Throwable
+     */
+    protected function save(Request $request, Model $item): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
     {
         if ($request->isMethod('post') || $request->isMethod('put')) {
-            $this->resource->validate($item);
+            $redirectRoute = redirect($this->resource->route($item->exists ? 'edit' : 'create', $item->getKey()));
+
+            $validator = $this->resource->validate($item);
+
+            if (request()->has('relatable_mode')) {
+                $redirectRoute = back();
+            }
+
+            if ($request->hasHeader('Precognition')) {
+                return response()->json(
+                    $validator->errors()
+                );
+            }
+
+            if ($validator->fails()) {
+                return $redirectRoute
+                    ->withErrors($validator)
+                    ->withInput();
+            }
 
             try {
                 $this->resource->save($item);
             } catch (ResourceException $e) {
                 throw_if(! app()->isProduction(), $e);
 
-                return redirect($this->resource->route($item->exists ? 'edit' : 'create', $item->getKey()))
+                return $redirectRoute
                     ->with('alert', trans('moonshine::ui.saved_error'));
             }
 
-            return redirect($this->resource->route('index'))
+            $redirectRoute = redirect($this->resource->route('index'));
+
+            if (request()->has('relatable_mode')) {
+                $redirectRoute = back();
+            }
+
+            return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved'));
         }
 

@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.moonshine-loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #302c79;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
