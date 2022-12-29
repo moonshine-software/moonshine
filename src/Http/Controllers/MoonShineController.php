@@ -46,7 +46,7 @@ class MoonShineController extends BaseController
 
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if(request()->has('relatable_mode')) {
+        if (request()->has('relatable_mode')) {
             $redirectRoute = back();
         }
 
@@ -67,7 +67,7 @@ class MoonShineController extends BaseController
     {
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if(request()->has('relatable_mode')) {
+        if (request()->has('relatable_mode')) {
             $redirectRoute = back();
         }
 
@@ -119,7 +119,7 @@ class MoonShineController extends BaseController
 
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if(request()->has('relatable_mode')) {
+        if (request()->has('relatable_mode')) {
             $redirectRoute = back();
         }
 
@@ -140,8 +140,8 @@ class MoonShineController extends BaseController
         }
 
 
-        if(request()->ajax()) {
-            abort_if(!request()->hasAny(['related_column', 'related_key']), 404);
+        if (request()->ajax()) {
+            abort_if(! request()->hasAny(['related_column', 'related_key']), 404);
 
             $this->resource->relatable(
                 request('related_column'),
@@ -157,7 +157,7 @@ class MoonShineController extends BaseController
             'items' => $this->resource->paginate(),
         ]);
 
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             $sections = $view->renderSections();
 
             return $sections['content'] ?? '';
@@ -322,7 +322,7 @@ class MoonShineController extends BaseController
             $this->resource->delete($item);
         }
 
-        if(request()->has('relatable_mode')) {
+        if (request()->has('relatable_mode')) {
             $redirectRoute = back();
         }
 
@@ -335,7 +335,7 @@ class MoonShineController extends BaseController
      */
     protected function editView(Model $item = null): View|string
     {
-        if(is_null($item) && request('relatable_mode') && request('related_column')) {
+        if (is_null($item) && request('relatable_mode') && request('related_column')) {
             $item = $this->resource->getModel();
             $item->{request('related_column')} = request('related_key');
         }
@@ -345,7 +345,7 @@ class MoonShineController extends BaseController
             'item' => $item ?? $this->resource->getModel(),
         ]);
 
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             $sections = $view->renderSections();
 
             return $sections['content'] ?? '';
@@ -364,11 +364,11 @@ class MoonShineController extends BaseController
 
             $validator = $this->resource->validate($item);
 
-            if(request()->has('relatable_mode')) {
+            if (request()->has('relatable_mode')) {
                 $redirectRoute = back();
             }
 
-            if($request->hasHeader('Precognition')) {
+            if ($request->hasHeader('Precognition')) {
                 return response()->json(
                     $validator->errors()
                 );
@@ -391,7 +391,7 @@ class MoonShineController extends BaseController
 
             $redirectRoute = redirect($this->resource->route('index'));
 
-            if(request()->has('relatable_mode')) {
+            if (request()->has('relatable_mode')) {
                 $redirectRoute = back();
             }
 

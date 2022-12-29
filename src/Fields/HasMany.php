@@ -63,7 +63,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
 
     public function save(Model $item): Model
     {
-        if($this->isResourceMode()) {
+        if ($this->isResourceMode()) {
             return $item;
         }
 

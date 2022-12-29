@@ -182,7 +182,7 @@ trait FormElement
 
     public function canDisplayFormPrimitiveField(Model $item): bool
     {
-        return $this->canDisplayOnForm($item) && !$this->isResourceModeField();
+        return $this->canDisplayOnForm($item) && ! $this->isResourceModeField();
     }
 
     public function canDisplayFormRelationField(Model $item): bool

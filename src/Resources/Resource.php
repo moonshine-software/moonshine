@@ -276,7 +276,7 @@ abstract class Resource implements ResourceContract
             );
         }
 
-        if($this->isRelatable()) {
+        if ($this->isRelatable()) {
             $query['relatable_mode'] = 1;
         }
 
@@ -557,7 +557,7 @@ abstract class Resource implements ResourceContract
             $query = $query->with(static::$with);
         }
 
-        if($this->isRelatable()) {
+        if ($this->isRelatable()) {
             return $query
                 ->where($this->relatedColumn(), $this->relatedKey())
                 ->orderBy(static::$orderField, static::$orderType);

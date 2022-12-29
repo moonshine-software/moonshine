@@ -22,10 +22,10 @@ trait WithFields
 
     public function resourceMode(): static
     {
-        $this->resourceMode  = true;
+        $this->resourceMode = true;
 
         abort_if(
-            !$this->resource(),
+            ! $this->resource(),
             500,
             'Resource required for resourceMode'
         );
@@ -33,7 +33,7 @@ trait WithFields
         return $this;
     }
 
-    public function isResourceMode (): bool
+    public function isResourceMode(): bool
     {
         return $this->resourceMode;
     }
