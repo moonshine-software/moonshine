@@ -5,6 +5,7 @@ return [
     'dashboard' => 'Панель',
     'add' => 'Добавить',
     'create' => 'Создать',
+    'edit' => 'Редактировать',
     'save' => 'Сохранить',
     'saved' => 'Сохранено',
     'saved_error' => 'Произошла ошибка',
@@ -32,6 +33,7 @@ return [
     'field' => 'Поле',
     'before' => 'До',
     'after' => 'После',
+    'loading' => 'Загрузка ...',
     'notifications' => [
         'title' => 'Уведомления',
         'mark_as_read_all' => 'Все прочитано',

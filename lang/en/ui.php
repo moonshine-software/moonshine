@@ -5,6 +5,7 @@ return [
     'dashboard' => 'Dashboard',
     'add' => 'Add',
     'create' => 'Create',
+    'edit' => 'Edit',
     'save' => 'Save',
     'saved' => 'Saved',
     'saved_error' => 'Error',
@@ -32,6 +33,7 @@ return [
     'field' => 'Field',
     'before' => 'Before',
     'after' => 'After',
+    'loading' => 'Loading ...',
     'notifications' => [
         'title' => 'Notifications',
         'mark_as_read_all' => 'Mark all as read',

@@ -16,7 +16,7 @@
     "php": "^8.0|^8.1",
     "ext-curl": "*",
     "ext-json": "*",
-    "laravel/framework": "^9.21",
+    "laravel/framework": "^9.34",
     "symfony/var-dumper": "^6.0",
     "unisharp/laravel-filemanager": "^2.5",
     "rap2hpoutre/fast-excel": "^5.0"

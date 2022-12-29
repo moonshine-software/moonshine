@@ -7,8 +7,12 @@
           action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
           class="bg-white dark:bg-darkblue shadow-md rounded-lg mb-4 text-white"
           method="POST"
+          x-on:submit.prevent="precognition($event.target)"
           enctype="multipart/form-data"
     >
+        @if(request('relatable_mode'))
+            <input type="hidden" name="relatable_mode" value="1">
+        @endif
 
         @csrf
 
@@ -35,11 +39,7 @@
             @foreach($resource->formComponents() as $field)
                 @if($field instanceof \Leeto\MoonShine\Decorations\Decoration)
                     {{ $resource->renderDecoration($field, $item) }}
-                @elseif($field instanceof \Leeto\MoonShine\Fields\Field
-                        && $field->isSee($item)
-                        && $field->showOnForm
-                        && ($item->exists ? $field->showOnUpdateForm : $field->showOnCreateForm)
-                    )
+                @elseif($field instanceof \Leeto\MoonShine\Fields\Field && $field->canDisplayFormPrimitiveField($item))
                     <x-moonshine::field-container :field="$field" :item="$item" :resource="$resource">
                         {{ $resource->renderField($field, $item) }}
                     </x-moonshine::field-container>
@@ -51,13 +51,59 @@
         <div class="px-10 py-10">
             @include('moonshine::base.form.shared.btn', [
                 'type' => 'submit',
-                'class' => '',
+                'class' => 'form_submit_button',
                 'name' => trans('moonshine::ui.save')
             ])
+
+            <div class="precognition_errors mt-4"></div>
         </div>
     </form>
 
+    @if($item->exists)
+        @foreach($resource->formComponents() as $field)
+            @if($field instanceof \Leeto\MoonShine\Decorations\Decoration)
+                {{ $resource->renderDecoration($field, $item) }}
+            @elseif($field instanceof \Leeto\MoonShine\Fields\Field && $field->canDisplayFormRelationField($item))
+                <div class="mt-4"></div>
+                <h2 class="text-lg">{{ $field->label() }}</h2>
+                <div class="mt-4"></div>
+                {{ $resource->renderField($field, $item) }}
+            @endif
+        @endforeach
+    @endif
+
     <script>
+        function precognition(form) {
+            form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.loading') }}';
+            form.querySelector('.precognition_errors').innerHTML = '';
+
+            fetch(form.getAttribute('action'), {
+                method: 'POST',
+                headers: {
+                    'Precognition': 'true',
+                },
+                body: new URLSearchParams(new FormData(form))
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                if(Object.keys(json).length) {
+                    form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.saved_error') }}';
+                    let errors  = '';
+
+                    for(const key in json) {
+                        errors = errors + '<div class="mt-2 text-pink">' + json[key] + '</div>';
+                    }
+
+                    form.querySelector('.precognition_errors').innerHTML = errors;
+                } else {
+                    form.submit()
+                }
+            })
+
+
+            return false;
+        }
+
         function editForm() {
             return {
                 @if($resource->whenFieldNames())

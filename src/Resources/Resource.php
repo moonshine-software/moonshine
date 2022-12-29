@@ -62,6 +62,14 @@ abstract class Resource implements ResourceContract
 
     protected ?Model $item = null;
 
+    protected bool $createInModal = false;
+
+    protected bool $editInModal = false;
+
+    protected string $relatedColumn = '';
+
+    protected string|int $relatedKey = '';
+
     /**
      * Get an array of validation rules for resource related model
      *
@@ -227,6 +235,16 @@ abstract class Resource implements ResourceContract
         return static::$system;
     }
 
+    public function isCreateInModal(): bool
+    {
+        return $this->createInModal;
+    }
+
+    public function isEditInModal(): bool
+    {
+        return $this->editInModal;
+    }
+
     public function routeAlias(): string
     {
         return (string) str(static::class)
@@ -256,6 +274,10 @@ abstract class Resource implements ResourceContract
                 Cache::get("moonshine_query_{$this->routeAlias()}", ''),
                 $query
             );
+        }
+
+        if($this->isRelatable()) {
+            $query['relatable_mode'] = 1;
         }
 
         return route(
@@ -490,6 +512,31 @@ abstract class Resource implements ResourceContract
         return (string) $views;
     }
 
+    public function relatable(string $column, string|int $key): self
+    {
+        $this->relatedColumn = $column;
+        $this->relatedKey = $key;
+        $this->createInModal = true;
+        $this->editInModal = true;
+
+        return $this;
+    }
+
+    public function isRelatable(): bool
+    {
+        return $this->relatedColumn && $this->relatedKey;
+    }
+
+    public function relatedColumn(): string
+    {
+        return $this->relatedColumn;
+    }
+
+    public function relatedKey(): string|int
+    {
+        return $this->relatedKey;
+    }
+
     public function all(): Collection
     {
         return $this->query()->get();
@@ -506,14 +553,20 @@ abstract class Resource implements ResourceContract
     {
         $query = $this->getModel()->query();
 
+        if (static::$with) {
+            $query = $query->with(static::$with);
+        }
+
+        if($this->isRelatable()) {
+            return $query
+                ->where($this->relatedColumn(), $this->relatedKey())
+                ->orderBy(static::$orderField, static::$orderType);
+        }
+
         if ($this->scopes()) {
             foreach ($this->scopes() as $scope) {
                 $query = $query->withGlobalScope($scope::class, $scope);
             }
-        }
-
-        if (static::$with) {
-            $query = $query->with(static::$with);
         }
 
         if (request()->has('search') && count($this->search())) {
@@ -549,9 +602,9 @@ abstract class Resource implements ResourceContract
         return $query;
     }
 
-    public function validate(Model $item): array
+    public function validate(Model $item): \Illuminate\Validation\Validator
     {
-        return Validator::validate(
+        return Validator::make(
             request()->all(),
             $this->rules($item),
             trans('moonshine::validation'),

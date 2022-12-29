@@ -8,6 +8,10 @@
                 <form action="{{ $resource->route("bulk", query: ['index' => $index]) }}" method="POST">
                     @csrf
 
+                    @if($resource->isRelatable())
+                        <input type="hidden" name="relatable_mode" value="1">
+                    @endif
+
                     <input name="ids" type="hidden" value="" class="actionBarIds">
 
                     <button type="submit" class="text-pink inline-block" title="{{ $action->label() }}">
@@ -18,6 +22,11 @@
 
             <form action="{{ $resource->route("destroy", 1) }}" method="POST">
                 @csrf
+
+                @if($resource->isRelatable())
+                    <input type="hidden" name="relatable_mode" value="1">
+                @endif
+
                 @method("delete")
 
                 <input name="ids" type="hidden" value="" class="actionBarIds">

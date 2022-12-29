@@ -7,7 +7,7 @@
         <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
             <div class="flex items-center justify-start space-x-2">
                 <span>{{ $field->label() }}</span>
-                @if($field->isSortable())
+                @if(!$resource->isRelatable() && $field->isSortable())
                     <a
                             href="{{ request()->fullUrlWithQuery([
                         'order[field]' => $field->name(),

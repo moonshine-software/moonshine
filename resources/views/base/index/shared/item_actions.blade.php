@@ -10,9 +10,15 @@
 @endforeach
 
 @if($resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))
-    <a href="{{ $resource->route("edit", $item->getKey()) }}" class="text-purple inline-block">
-        @include("moonshine::shared.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "purple"])
-    </a>
+    @if($resource->isEditInModal())
+        <x-moonshine::async-modal id="edit_modal_{{ $item->getKey() }}" route="{{ $resource->route('edit', $item->getKey()) }}">
+            @include("moonshine::shared.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "purple"])
+        </x-moonshine::async-modal>
+    @else
+        <a href="{{ $resource->route("edit", $item->getKey()) }}" class="text-purple inline-block">
+            @include("moonshine::shared.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "purple"])
+        </a>
+    @endif
 @endif
 
 @if($resource->can('delete', $item) && in_array('delete', $resource->getActiveActions()))
@@ -32,7 +38,11 @@
         <x-slot name="buttons">
             <div class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
                 <form method="POST" action="{{ $resource->route("destroy", $item->getKey()) }}">
-                    {{ csrf_field() }}
+                    @csrf
+
+                    @if($resource->isRelatable())
+                        <input type="hidden" name="relatable_mode" value="1">
+                    @endif
 
                     @method("delete")
 
