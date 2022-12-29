@@ -99,7 +99,7 @@ trait FileTrait
             new FieldException("$extension not allowed")
         );
 
-        if($this->keepOriginalFileName) {
+        if ($this->keepOriginalFileName) {
             return $this->prefixedValue(
                 $file->storeAs(
                     $this->getDir(),
