@@ -23,6 +23,15 @@ trait FileTrait
 
     protected bool $disableDownload = false;
 
+    protected bool $keepOriginalFileName = false;
+
+    public function keepOriginalFileName(): static
+    {
+        $this->keepOriginalFileName = true;
+
+        return $this;
+    }
+
     public function withPrefix(string $withPrefix): static
     {
         $this->withPrefix = $withPrefix;
@@ -89,6 +98,16 @@ trait FileTrait
             ! $this->isAllowedExtension($extension),
             new FieldException("$extension not allowed")
         );
+
+        if($this->keepOriginalFileName) {
+            return $this->prefixedValue(
+                $file->storeAs(
+                    $this->getDir(),
+                    $file->getClientOriginalName(),
+                    $this->getDisk()
+                )
+            );
+        }
 
         return $this->prefixedValue(
             $file->store($this->getDir(), $this->getDisk())
