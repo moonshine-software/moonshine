@@ -61,9 +61,7 @@
 
     @if($item->exists)
         @foreach($resource->formComponents() as $field)
-            @if($field instanceof \Leeto\MoonShine\Decorations\Decoration)
-                {{ $resource->renderDecoration($field, $item) }}
-            @elseif($field instanceof \Leeto\MoonShine\Fields\Field && $field->canDisplayFormRelationField($item))
+            @if($field instanceof \Leeto\MoonShine\Fields\Field && $field->canDisplayFormRelationField($item))
                 <div class="mt-4"></div>
                 <h2 class="text-lg">{{ $field->label() }}</h2>
                 <div class="mt-4"></div>
