@@ -47,7 +47,7 @@ abstract class Decoration implements HtmlViewable
         foreach ($fields as $field) {
             if ($field instanceof Field) {
                 $this->fields[] = $field->setParents();
-            } elseif(!$field instanceof Tab) {
+            } elseif (! $field instanceof Tab) {
                 $this->fields[] = $field;
             }
         }
