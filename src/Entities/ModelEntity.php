@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Entities;
 
+use JsonSerializable;
 use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\RowActions\RowAction;
 use Leeto\MoonShine\Traits\Makeable;
 
-final class ModelEntity implements EntityContract
+final class ModelEntity implements EntityContract, JsonSerializable
 {
     use Makeable;
 
@@ -76,8 +77,18 @@ final class ModelEntity implements EntityContract
         return $this->attributes($name);
     }
 
-    public function id(): int
+    public function id(): int|string
     {
         return $this->primaryKey();
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'foreign_key' => $this->foreignKeyName(),
+            'key' => $this->primaryKeyName(),
+            'value' => $this->id(),
+            'attributes' => $this->attributes()
+        ];
     }
 }

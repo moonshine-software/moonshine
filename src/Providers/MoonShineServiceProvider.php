@@ -53,6 +53,7 @@ final class MoonShineServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
+        $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
 
         $this->publishes([
             MoonShine::path('/config/moonshine.php') => config_path('moonshine.php'),
@@ -68,6 +69,10 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->publishes([
             MoonShine::path('/lang') => $this->app->langPath('vendor/moonshine'),
         ]);
+
+        $this->publishes([
+            MoonShine::path('/public') => public_path('vendor/moonshine'),
+        ], ['moonshine-assets', 'laravel-assets']);
 
         $this->publishes([
             MoonShine::path('/stubs/MoonShineServiceProvider.stub') => app_path(

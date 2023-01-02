@@ -17,7 +17,7 @@ interface ResourceContract extends JsonSerializable
 
     public function resolveRoutes(): void;
 
-    public function getDataInstance();
+    public function getDataInstance(): mixed;
 
-    public function getData($id);
+    public function getData(int|string $id);
 }

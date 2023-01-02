@@ -1,0 +1,18 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap');
+@import "variables";
+
+html {
+  font-family: $font-family-sans-serif;
+}
+
+.divide-inherit {
+  @apply divide-secondary-400;
+}
+
+body {
+  @apply w-screen h-screen overflow-hidden;
+  @apply bg-white dark:bg-secondary-800/[0.98];
+
+  @include textColors;
+}

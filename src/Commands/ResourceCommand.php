@@ -36,7 +36,7 @@ final class ResourceCommand extends MoonShineCommand
         $contents = $this->getStub('Resource');
         $contents = str_replace('{namespace}', MoonShine::namespace('\Resources'), $contents);
         $contents = str_replace('DummyModel', $model, $contents);
-        $contents = str_replace('DummyTitle', $title, $contents);
+        $contents = str_replace('DummyTitle', (string) str($title)->plural(), $contents);
 
         $this->laravel['files']->put(
             $resource,

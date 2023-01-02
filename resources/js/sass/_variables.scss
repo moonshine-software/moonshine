@@ -1,0 +1,13 @@
+// Typography
+$font-family-sans-serif: 'Rubik', monospace;
+
+// Colors
+$colors: 'brand', 'secondary', 'warning', 'danger', 'success';
+$base: 500;
+$light: 50;
+$dark: 800;
+$lightness: $base - 100;
+$lighter: $base - 200;
+$darkness: $base + 100;
+$darken: $base + 200;
+$text: 50;

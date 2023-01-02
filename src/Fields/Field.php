@@ -53,6 +53,8 @@ abstract class Field implements JsonSerializable, HasAssets
 
     protected mixed $value = null;
 
+    protected mixed $formattedValue = null;
+
     protected ?Closure $valueCallback = null;
 
     protected ?string $default = null;
@@ -207,11 +209,20 @@ abstract class Field implements JsonSerializable, HasAssets
 
     public function value(): mixed
     {
-        if (is_callable($this->valueCallback())) {
-            return $this->valueCallback()($this->value);
+        if($this->hasRelationship()) {
+            $this->formattedValue = $this->value->{$this->resourceColumn()} ?? null;
         }
 
         return $this->value ?? $this->getDefault();
+    }
+
+    public function formattedValue(): mixed
+    {
+        if (is_callable($this->valueCallback())) {
+            $this->formattedValue = $this->valueCallback()($this->value());
+        }
+
+        return $this->formattedValue;
     }
 
     public function requestValue(string $prefix = null): mixed
@@ -261,6 +272,7 @@ abstract class Field implements JsonSerializable, HasAssets
             'key' => $this->column(),
             'relation' => $this->relation(),
             'value' => $this->value(),
+            'formatted_value' => $this->formattedValue(),
             'resource' => $this->resource()?->uriKey(),
             'attributes' => $this->attributes()->getAttributes(),
             'fields' => $this instanceof HasFields ? $this->getFields() : []

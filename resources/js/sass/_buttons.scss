@@ -1,0 +1,40 @@
+/*
+@layer components {
+  //buttons
+  .ms-button {
+    @apply inline-flex gap-1 items-center;
+    @apply px-4 py-2 rounded-xl cursor-pointer;
+
+    @apply text-secondary-50;
+    @apply hover:shadow-xl transition-all;
+
+    &--square {
+      @apply p-2;
+    }
+
+    &--red {
+      @apply hover:bg-danger-600;
+      @apply text-danger-600 dark:text-danger-500 hover:text-secondary-50;
+
+      &--fill {
+        @apply hover:bg-danger-800 bg-danger-500;
+        @apply text-secondary-50;
+      }
+    }
+
+    &--primary {
+      @apply text-brand-600 dark:text-brand-500;
+      @apply hover:bg-brand-600 hover:text-secondary-50;
+    }
+
+    &--brand-fill {
+      @apply bg-brand-600 dark:bg-brand-500;
+      @apply text-secondary-50;
+    }
+
+    &__icon {
+      @apply w-5 h-5;
+    }
+  }
+}
+*/

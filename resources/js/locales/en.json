@@ -1,0 +1,25 @@
+{
+  "ui": {
+    "logout": "Logout",
+    "actions": "Actions",
+    "edit": "Edit",
+    "pagination": {
+      "shown": "Showing %{per_page} of %{total}",
+      "shown_detailed": "Showing %{per_page} (%{from}-%{to}) of %{total}"
+    },
+    "yes": "Yes",
+    "no": "No",
+    "extra-small": "Extra small",
+    "small": "Small",
+    "normal": "Normal",
+    "big": "Big",
+    "select_placeholder": "Not selected...",
+    "drag_drop_file": "Drop file here or click",
+    "search": "Search ...",
+    "columns": "Columns",
+    "validation": {
+      "file_size": "File size exceeds the %{maxSize}kb limit",
+      "unsupported_file_type": "Unsupported file format"
+    }
+  }
+}

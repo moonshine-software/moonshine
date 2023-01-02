@@ -1,0 +1,158 @@
+//COLORS
+$base: 500;
+$light: 50;
+$dark: 800;
+$lightness: $base - 100;
+$lighter: $base - 200;
+$darkness: $base + 100;
+$darken: $base + 200;
+$text: 50;
+$colors: 'brand', 'secondary', 'warning', 'danger', 'success';
+
+@mixin stateFillColors($color) {
+  $normal: #{$color}-#{$base};
+  $lightness: #{$color}-#{$lightness};
+  $lighter: #{$color}-#{$lighter};
+  $darkness: #{$color}-#{$darkness};
+  $darken: #{$color}-#{$darken};
+  $text: #{$color}-#{$text};
+
+  @apply bg-#{$normal} hover:bg-#{$darkness} text-#{$text}
+  focus:ring-#{$lightness} hover:shadow-#{$darkness}/30 hover:shadow-#{$darkness}/30
+  active:bg-#{$darkness} focus:border-#{$normal};
+
+  @apply disabled:bg-#{$normal} disabled:text-#{$text}
+}
+
+@mixin outline($color, $parent) {
+  $normal: #{$color}-#{$base};
+  $lightness: #{$color}-#{$lightness};
+  $lighter: #{$color}-#{$lighter};
+  $darkness: #{$color}-#{$darkness};
+  $darken: #{$color}-#{$darken};
+  $text: $normal;
+
+  &#{$parent}-outlined {
+    @apply bg-transparent text-#{$text} border-2 border-#{$normal}
+    hover:text-#{$darken} hover:border-#{$darken} hover:shadow-none
+    focus:ring-2 focus:ring-#{$lighter}
+    active:text-#{$darkness} active:border-#{$darkness};
+
+    @apply disabled:border-#{$normal} disabled:text-#{$normal};
+    //@apply disabled:hover:border-#{$lighter} disabled:hover:text-#{$lighter};
+    //@apply disabled:active:border-#{$lighter} disabled:active:text-#{$lighter};
+  }
+}
+
+@mixin text($color, $parent, $add: 0, $text: 500) {
+  $normal: #{$color}-#{$base};
+  $lightness: #{$color}-#{$lightness};
+  $lighter: #{$color}-#{$lighter};
+  $darkness: #{$color}-#{$darkness};
+  $darken: #{$color}-#{$darken};
+  $text: $normal;
+
+  &#{$parent}-text {
+    @apply bg-transparent border-transparent text-#{$text} ring-0
+    hover:text-#{$darken} hover:border-#{$darken} hover:shadow-none
+    focus:ring-2 focus:ring-#{$normal} active:text-#{$darkness} active:border-transparent
+    focus:border-transparent hover:border-transparent;
+  }
+}
+
+@mixin inputBase($formType: 'form-input') {
+  @apply #{$formType} h-max w-max
+  rounded-2xl border-2 py-3 px-5 border-2 border-transparent
+  text-base tracking-wider focus:outline-0
+  focus:ring-2 disabled:cursor-not-allowed disabled:ring-0;
+  @apply disabled:opacity-60 disabled:saturate-50;
+
+  //animation
+  @apply transition-all ease-in duration-150;
+}
+
+@mixin baseSizes() {
+  @apply rounded-2xl px-4 py-3 text-base;
+
+  &-xs {
+    @apply px-2 py-1 text-xs;
+  }
+
+  &-sm {
+    @apply px-3 py-2 text-sm;
+  }
+
+  &-md {
+    @apply px-6 py-4;
+  }
+
+  &-lg {
+    @apply px-6 py-4 text-lg;
+  }
+
+  &-xl {
+    @apply px-7 py-4 text-xl;
+  }
+
+  &-inset {
+    @apply p-0 rounded-none #{!important};
+  }
+}
+
+//buttons
+$btn: '.m-btn';
+
+#{$btn} {
+  $square: #{$btn}-square;
+
+  @include inputBase;
+  @include baseSizes;
+  @include stateFillColors('brand');
+  @include outline('brand', $btn);
+  @include text('brand', $btn);
+  @apply flex gap-2 items-center;
+  @apply select-none hover:shadow-lg disabled:shadow-none;
+
+  &#{$square} {
+    @apply p-3;
+  }
+
+  &-xs#{$square} {
+    @apply p-2;
+  }
+
+  &-sm#{$square} {
+    @apply p-3;
+  }
+
+  &-md#{$square} {
+    @apply p-4;
+  }
+
+  &-lg#{$square} {
+    @apply p-5;
+  }
+
+  &-xl#{$square} {
+    @apply p-6;
+  }
+
+  //colors
+  @each $color in $colors {
+    &-#{$color} {
+      @include stateFillColors($color);
+      @include outline($color, $btn);
+      @include text($color, $btn)
+    }
+  }
+
+  //them color
+  &-theme {
+    @include stateFillColors('secondary');
+    @apply dark:bg-secondary-#{$lighter} dark:text-secondary-#{$darken}
+    dark:border-secondary-#{$lighter} dark:ring-secondary-#{$lightness}
+    dark:hover:bg-secondary-#{$lightness} dark:hover:border-secondary-#{$lightness}
+  }
+}
+
+

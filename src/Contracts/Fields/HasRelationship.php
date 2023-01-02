@@ -6,5 +6,4 @@ namespace Leeto\MoonShine\Contracts\Fields;
 
 interface HasRelationship
 {
-
 }

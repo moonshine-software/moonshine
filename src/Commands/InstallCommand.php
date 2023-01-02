@@ -37,18 +37,18 @@ final class InstallCommand extends MoonShineCommand
 
         $this->components->task('Resources directory created');
 
-        Artisan::call('vendor:publish', [
+        $this->call('vendor:publish', [
             '--provider' => MoonShineServiceProvider::class,
             '--force' => true,
         ]);
 
         $this->components->task('Vendor published');
 
-        Artisan::call('migrate');
+        $this->call('migrate');
 
         $this->components->task('Tables migrated');
 
-        Artisan::call('storage:link');
+        $this->call('storage:link');
 
         $this->components->task('Storage link created');
     }
@@ -67,7 +67,8 @@ final class InstallCommand extends MoonShineCommand
     protected function initServiceProvider(): void
     {
         $this->comment('Publishing MoonShine Service Provider...');
-        Artisan::call('vendor:publish', ['--tag' => 'moonshine-provider']);
+
+        $this->call('vendor:publish', ['--tag' => 'moonshine-provider']);
 
         $this->laravel['files']->put(
             app_path('Providers/MoonShineServiceProvider.php'),

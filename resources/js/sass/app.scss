@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind screens;
+@tailwind utilities;
+
+@import "vue-tippy";
+@import "mixins";
+
+//todo: написать команду для классов в extends Field,
+// которая добавляет tailwind стили в app.css
+// todo: разбить на файлы
+// todo: разбить на layers
+
+
+@import "base";
+@import "view";
+@import "form";
+@import "fields";
+@import "inputs";
+@import "buttons";
+@import "paginator";
+@import "new-mixins";
+
+
+//icons
+.ms-icon {
+  @apply w-6 h-6;
+
+  &--red {
+    @apply text-danger-500;
+  }
+
+  &--green {
+    @apply text-success-500;
+  }
+
+  &--lg {
+    @apply w-12 h-12;
+  }
+}

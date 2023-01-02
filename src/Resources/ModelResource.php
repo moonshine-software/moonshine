@@ -45,6 +45,8 @@ abstract class ModelResource implements ResourceContract, WithFields
 
     public string $column = 'id';
 
+    protected int|string|null $entityId = null;
+
     /**
      * Get an array of validation rules for resource related model
      *
@@ -110,6 +112,16 @@ abstract class ModelResource implements ResourceContract, WithFields
     public function getModel(): Model
     {
         return new static::$model();
+    }
+
+    public function setEntityId(string|int $entityId): void
+    {
+        $this->entityId = $entityId;
+    }
+
+    public function getEntityId(): string|int|null
+    {
+        return $this->entityId;
     }
 
     public function getDataInstance(): Model
@@ -256,6 +268,7 @@ abstract class ModelResource implements ResourceContract, WithFields
     public function jsonSerialize(): array
     {
         return [
+            'id' => $this->getEntityId(),
             'title' => $this->title(),
             'uri' => $this->uriKey(),
             'endpoint' => $this->route('index'),

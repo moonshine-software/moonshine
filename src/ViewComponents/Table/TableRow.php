@@ -29,7 +29,7 @@ final class TableRow implements JsonSerializable
         return $this->fields->fillValues($this->values());
     }
 
-    public function id(): int
+    public function id(): int|string
     {
         return $this->values()->id();
     }

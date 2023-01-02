@@ -1,0 +1,21 @@
+{
+  "ui": {
+    "logout": "Выйти",
+    "actions": "Действия",
+    "edit": "Редактировать",
+    "pagination": {
+      "shown": "Показано %{per_page} из %{total}",
+      "shown_detailed": "Показано %{per_page} (%{from}-%{to}) из %{total}"
+    },
+    "yes": "Да",
+    "no": "Нет",
+    "select_placeholder": "Не выбрано...",
+    "drag_drop_file": "Перетащите файл сюда или нажмите для выбора с устройства",
+    "search": "Поиск...",
+    "columns": "Колонки",
+    "validation": {
+      "file_size": "Размер файла превышает %{maxSize} кб",
+      "unsupported_file_type": "Неподдерживаемый формат файла"
+    }
+  }
+}

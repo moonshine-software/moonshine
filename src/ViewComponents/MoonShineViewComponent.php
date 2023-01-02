@@ -28,6 +28,7 @@ class MoonShineViewComponent implements ViewComponentContract, HasEndpoint, Json
     {
         return [
             'component' => $this->getComponent(),
+            'uri' => $this->uriKey(),
             'attributes' => $this->attributes()->getAttributes(),
             'endpoint' => $this->endpoint()
         ];

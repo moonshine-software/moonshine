@@ -9,6 +9,11 @@ use Leeto\MoonShine\Http\Controllers\ViewController;
 use Leeto\MoonShine\Http\Controllers\ViewEntityComponentController;
 use Leeto\MoonShine\Http\Controllers\ViewEntityController;
 
+Route::prefix(config('moonshine.prefix'))->group(function () {
+    Route::view('/', 'moonshine::app');
+    Route::view('/login', 'moonshine::app')->name('login');
+});
+
 Route::prefix(config('moonshine.prefix'))
     ->middleware(['moonshine'])
     ->name(config('moonshine.prefix').'.')->group(function () {
@@ -19,9 +24,9 @@ Route::prefix(config('moonshine.prefix'))
         Route::get('/view/{resourceUri}/{viewUri}/{id?}', ViewEntityController::class)
             ->name('view.entity');
 
-        Route::get('/view/{resourceUri}/{viewUri}/{componentUri}', ViewComponentController::class)
+        Route::get('/view-component/{resourceUri}/{viewUri}/{componentUri}', ViewComponentController::class)
             ->name('view-component');
-        Route::get('/view/{resourceUri}/{viewUri}/{componentUri}/{id?}', ViewEntityComponentController::class)->name(
+        Route::get('/view-component/{resourceUri}/{viewUri}/{componentUri}/{id?}', ViewEntityComponentController::class)->name(
             'view-component.entity'
         );
 

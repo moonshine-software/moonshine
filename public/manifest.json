@@ -1,0 +1,565 @@
+{
+  "resources/js/assets/moonshine-full-big.svg": {
+    "file": "assets/moonshine-full-big.c2a080a8.svg",
+    "src": "resources/js/assets/moonshine-full-big.svg"
+  },
+  "resources/js/main.ts": {
+    "file": "assets/main.8cbcc017.js",
+    "src": "resources/js/main.ts",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/components/ViewComponents/DetailCardComponent.vue",
+      "resources/js/components/ViewComponents/FormComponent.vue",
+      "resources/js/components/ViewComponents/TableComponent.vue",
+      "resources/js/views/CrudDetailView.vue",
+      "resources/js/views/CrudFormView.vue",
+      "resources/js/views/CrudIndexView.vue"
+    ],
+    "css": [
+      "assets/main.e7d37093.css"
+    ],
+    "assets": [
+      "assets/moonshine-full-big.c2a080a8.svg"
+    ]
+  },
+  "resources/js/components/ViewComponents/DetailCardComponent.vue": {
+    "file": "assets/DetailCardComponent.075e9f1a.js",
+    "src": "resources/js/components/ViewComponents/DetailCardComponent.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_DetailCardComponent.vue_vue_type_script_setup_true_lang.3749e74d.js",
+      "_form_component.7ee52d89.js",
+      "resources/js/main.ts",
+      "_view.e196d1fd.js"
+    ]
+  },
+  "_DetailCardComponent.vue_vue_type_script_setup_true_lang.3749e74d.js": {
+    "file": "assets/DetailCardComponent.vue_vue_type_script_setup_true_lang.3749e74d.js",
+    "imports": [
+      "_form_component.7ee52d89.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "_form_component.7ee52d89.js": {
+    "file": "assets/form_component.7ee52d89.js",
+    "imports": [
+      "resources/js/main.ts",
+      "_view.e196d1fd.js"
+    ]
+  },
+  "_view.e196d1fd.js": {
+    "file": "assets/view.e196d1fd.js",
+    "imports": [
+      "resources/js/main.ts"
+    ],
+    "dynamicImports": [
+      "resources/js/components/Field/Form/BooleanField.vue",
+      "resources/js/components/Field/Form/CheckboxField.vue",
+      "resources/js/components/Field/Form/ColorField.vue",
+      "resources/js/components/Field/Form/HasManyField.vue",
+      "resources/js/components/Field/Form/HasOneField.vue",
+      "resources/js/components/Field/Form/IDField.vue",
+      "resources/js/components/Field/Form/ImageField.vue",
+      "resources/js/components/Field/Form/PasswordField.vue",
+      "resources/js/components/Field/Form/RangeField.vue",
+      "resources/js/components/Field/Form/SelectField.vue",
+      "resources/js/components/Field/Form/TextField.vue",
+      "resources/js/components/Field/Form/TextareaField.vue",
+      "resources/js/components/Field/Index/AvatarField.vue",
+      "resources/js/components/Field/Index/BelongsToField.vue",
+      "resources/js/components/Field/Index/BooleanField.vue",
+      "resources/js/components/Field/Index/CheckboxField.vue",
+      "resources/js/components/Field/Index/ColorField.vue",
+      "resources/js/components/Field/Index/DateField.vue",
+      "resources/js/components/Field/Index/EmailField.vue",
+      "resources/js/components/Field/Index/IDField.vue",
+      "resources/js/components/Field/Index/ImageField.vue",
+      "resources/js/components/Field/Index/NumberField.vue",
+      "resources/js/components/Field/Index/PasswordField.vue",
+      "resources/js/components/Field/Index/RangeField.vue",
+      "resources/js/components/Field/Index/SelectField.vue",
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/components/Field/Index/TextareaField.vue",
+      "resources/js/components/Field/Show/BooleanField.vue",
+      "resources/js/components/Field/Show/CheckboxField.vue",
+      "resources/js/components/Field/Show/ColorField.vue",
+      "resources/js/components/Field/Show/HasManyField.vue",
+      "resources/js/components/Field/Show/HasOneField.vue",
+      "resources/js/components/Field/Show/IDField.vue",
+      "resources/js/components/Field/Show/ImageField.vue",
+      "resources/js/components/Field/Show/PasswordField.vue",
+      "resources/js/components/Field/Show/RangeField.vue",
+      "resources/js/components/Field/Show/SelectField.vue",
+      "resources/js/components/Field/Show/TextField.vue",
+      "resources/js/components/Field/Show/TextareaField.vue"
+    ],
+    "css": [
+      "assets/view.52d36b6d.css"
+    ]
+  },
+  "resources/js/components/ViewComponents/FormComponent.vue": {
+    "file": "assets/FormComponent.eda72496.js",
+    "src": "resources/js/components/ViewComponents/FormComponent.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FormComponent.vue_vue_type_script_setup_true_lang.4b5925a2.js",
+      "_form_component.7ee52d89.js",
+      "resources/js/main.ts",
+      "_view.e196d1fd.js"
+    ]
+  },
+  "_FormComponent.vue_vue_type_script_setup_true_lang.4b5925a2.js": {
+    "file": "assets/FormComponent.vue_vue_type_script_setup_true_lang.4b5925a2.js",
+    "imports": [
+      "_form_component.7ee52d89.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/ViewComponents/TableComponent.vue": {
+    "file": "assets/TableComponent.fbd5ca9a.js",
+    "src": "resources/js/components/ViewComponents/TableComponent.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts",
+      "_view.e196d1fd.js"
+    ],
+    "css": [
+      "assets/TableComponent.a554daff.css"
+    ]
+  },
+  "resources/js/views/CrudDetailView.vue": {
+    "file": "assets/CrudDetailView.a61aa3f3.js",
+    "src": "resources/js/views/CrudDetailView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/views/CrudFormView.vue": {
+    "file": "assets/CrudFormView.e035619e.js",
+    "src": "resources/js/views/CrudFormView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/views/CrudIndexView.vue": {
+    "file": "assets/CrudIndexView.ebe06942.js",
+    "src": "resources/js/views/CrudIndexView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/BooleanField.vue": {
+    "file": "assets/BooleanField.5c565829.js",
+    "src": "resources/js/components/Field/Form/BooleanField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts",
+      "_handlesChanges.cafce427.js"
+    ]
+  },
+  "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js": {
+    "file": "assets/FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "_handlesChanges.cafce427.js": {
+    "file": "assets/handlesChanges.cafce427.js",
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/CheckboxField.vue": {
+    "file": "assets/CheckboxField.34a3c066.js",
+    "src": "resources/js/components/Field/Form/CheckboxField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "_handlesChanges.cafce427.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/ColorField.vue": {
+    "file": "assets/ColorField.a8c9df08.js",
+    "src": "resources/js/components/Field/Form/ColorField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "_handlesChanges.cafce427.js",
+      "resources/js/main.ts"
+    ],
+    "css": [
+      "assets/ColorField.adb54e15.css"
+    ]
+  },
+  "resources/js/components/Field/Form/HasManyField.vue": {
+    "file": "assets/HasManyField.269f8646.js",
+    "src": "resources/js/components/Field/Form/HasManyField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/ViewComponents/TableComponent.vue",
+      "resources/js/main.ts",
+      "_view.e196d1fd.js"
+    ]
+  },
+  "resources/js/components/Field/Form/HasOneField.vue": {
+    "file": "assets/HasOneField.ceeedf73.js",
+    "src": "resources/js/components/Field/Form/HasOneField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FormComponent.vue_vue_type_script_setup_true_lang.4b5925a2.js",
+      "resources/js/main.ts",
+      "_form_component.7ee52d89.js",
+      "_view.e196d1fd.js"
+    ]
+  },
+  "resources/js/components/Field/Form/IDField.vue": {
+    "file": "assets/IDField.4336cff9.js",
+    "src": "resources/js/components/Field/Form/IDField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/ImageField.vue": {
+    "file": "assets/ImageField.0646b9fd.js",
+    "src": "resources/js/components/Field/Form/ImageField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "_handlesChanges.cafce427.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/PasswordField.vue": {
+    "file": "assets/PasswordField.f330af34.js",
+    "src": "resources/js/components/Field/Form/PasswordField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "_handlesChanges.cafce427.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/RangeField.vue": {
+    "file": "assets/RangeField.64a664fb.js",
+    "src": "resources/js/components/Field/Form/RangeField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "_handlesChanges.cafce427.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/SelectField.vue": {
+    "file": "assets/SelectField.51da9998.js",
+    "src": "resources/js/components/Field/Form/SelectField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "_handlesChanges.cafce427.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/TextField.vue": {
+    "file": "assets/TextField.207a42ec.js",
+    "src": "resources/js/components/Field/Form/TextField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Form/TextareaField.vue": {
+    "file": "assets/TextareaField.d7bf8612.js",
+    "src": "resources/js/components/Field/Form/TextareaField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/AvatarField.vue": {
+    "file": "assets/AvatarField.3c0b80bc.js",
+    "src": "resources/js/components/Field/Index/AvatarField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/BelongsToField.vue": {
+    "file": "assets/BelongsToField.9c1da21c.js",
+    "src": "resources/js/components/Field/Index/BelongsToField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/BooleanField.vue": {
+    "file": "assets/BooleanField.a6e96fd2.js",
+    "src": "resources/js/components/Field/Index/BooleanField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_BooleanField.vue_vue_type_script_setup_true_lang.93109460.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "_BooleanField.vue_vue_type_script_setup_true_lang.93109460.js": {
+    "file": "assets/BooleanField.vue_vue_type_script_setup_true_lang.93109460.js",
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/CheckboxField.vue": {
+    "file": "assets/CheckboxField.74943e2d.js",
+    "src": "resources/js/components/Field/Index/CheckboxField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_BooleanField.vue_vue_type_script_setup_true_lang.93109460.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/ColorField.vue": {
+    "file": "assets/ColorField.1e8c5bd1.js",
+    "src": "resources/js/components/Field/Index/ColorField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/DateField.vue": {
+    "file": "assets/DateField.15266c8c.js",
+    "src": "resources/js/components/Field/Index/DateField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Index/TextField.vue": {
+    "file": "assets/TextField.4bf13fdd.js",
+    "src": "resources/js/components/Field/Index/TextField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/EmailField.vue": {
+    "file": "assets/EmailField.169c4c53.js",
+    "src": "resources/js/components/Field/Index/EmailField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Index/IDField.vue": {
+    "file": "assets/IDField.c47326ff.js",
+    "src": "resources/js/components/Field/Index/IDField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Index/ImageField.vue": {
+    "file": "assets/ImageField.4c8cebb5.js",
+    "src": "resources/js/components/Field/Index/ImageField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Index/NumberField.vue": {
+    "file": "assets/NumberField.d57c7e47.js",
+    "src": "resources/js/components/Field/Index/NumberField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Index/PasswordField.vue": {
+    "file": "assets/PasswordField.8a996191.js",
+    "src": "resources/js/components/Field/Index/PasswordField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Index/RangeField.vue": {
+    "file": "assets/RangeField.76dd854c.js",
+    "src": "resources/js/components/Field/Index/RangeField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Index/SelectField.vue": {
+    "file": "assets/SelectField.5d7d7f04.js",
+    "src": "resources/js/components/Field/Index/SelectField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Index/TextareaField.vue": {
+    "file": "assets/TextareaField.9da92a5d.js",
+    "src": "resources/js/components/Field/Index/TextareaField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Index/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Show/BooleanField.vue": {
+    "file": "assets/BooleanField.52d5a442.js",
+    "src": "resources/js/components/Field/Show/BooleanField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Show/CheckboxField.vue": {
+    "file": "assets/CheckboxField.cb4db6bb.js",
+    "src": "resources/js/components/Field/Show/CheckboxField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Show/BooleanField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Show/ColorField.vue": {
+    "file": "assets/ColorField.26def0af.js",
+    "src": "resources/js/components/Field/Show/ColorField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Show/HasManyField.vue": {
+    "file": "assets/HasManyField.07860c38.js",
+    "src": "resources/js/components/Field/Show/HasManyField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/ViewComponents/TableComponent.vue",
+      "resources/js/main.ts",
+      "_view.e196d1fd.js"
+    ]
+  },
+  "resources/js/components/Field/Show/HasOneField.vue": {
+    "file": "assets/HasOneField.52433536.js",
+    "src": "resources/js/components/Field/Show/HasOneField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_DetailCardComponent.vue_vue_type_script_setup_true_lang.3749e74d.js",
+      "resources/js/main.ts",
+      "_form_component.7ee52d89.js",
+      "_view.e196d1fd.js"
+    ]
+  },
+  "resources/js/components/Field/Show/IDField.vue": {
+    "file": "assets/IDField.4d69cad8.js",
+    "src": "resources/js/components/Field/Show/IDField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Show/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Show/TextField.vue": {
+    "file": "assets/TextField.8f11a95c.js",
+    "src": "resources/js/components/Field/Show/TextField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Show/ImageField.vue": {
+    "file": "assets/ImageField.f1898d3e.js",
+    "src": "resources/js/components/Field/Show/ImageField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js",
+      "resources/js/main.ts"
+    ]
+  },
+  "resources/js/components/Field/Show/PasswordField.vue": {
+    "file": "assets/PasswordField.33ae7982.js",
+    "src": "resources/js/components/Field/Show/PasswordField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Show/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Show/RangeField.vue": {
+    "file": "assets/RangeField.599715f2.js",
+    "src": "resources/js/components/Field/Show/RangeField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Show/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Show/SelectField.vue": {
+    "file": "assets/SelectField.20c5d79e.js",
+    "src": "resources/js/components/Field/Show/SelectField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Show/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "resources/js/components/Field/Show/TextareaField.vue": {
+    "file": "assets/TextareaField.2b11b8fb.js",
+    "src": "resources/js/components/Field/Show/TextareaField.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/components/Field/Show/TextField.vue",
+      "resources/js/main.ts",
+      "_FieldWrapper.vue_vue_type_script_setup_true_lang.ac064b32.js"
+    ]
+  },
+  "view.css": {
+    "file": "assets/view.52d36b6d.css",
+    "src": "view.css"
+  },
+  "resources/js/components/Field/Form/ColorField.css": {
+    "file": "assets/ColorField.adb54e15.css",
+    "src": "resources/js/components/Field/Form/ColorField.css"
+  },
+  "resources/js/components/ViewComponents/TableComponent.css": {
+    "file": "assets/TableComponent.a554daff.css",
+    "src": "resources/js/components/ViewComponents/TableComponent.css"
+  },
+  "resources/js/main.css": {
+    "file": "assets/main.e7d37093.css",
+    "src": "resources/js/main.css"
+  }
+}

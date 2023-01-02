@@ -10,6 +10,6 @@ final class ViewException extends Exception
 {
     public static function notFound(): self
     {
-        return new static('View not found');
+        return new self('View not found');
     }
 }

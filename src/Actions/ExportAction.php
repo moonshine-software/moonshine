@@ -11,6 +11,7 @@ use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Writer\Exception\WriterNotOpenedException;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * @see https://github.com/rap2hpoutre/fast-excel
@@ -27,7 +28,7 @@ final class ExportAction extends Action
      * @throws UnsupportedTypeException
      * @throws InvalidArgumentException
      */
-    public function handle(ActionFormRequest $request): mixed
+    public function handle(ActionFormRequest $request): BinaryFileResponse
     {
         $this->resolveStorage();
 
@@ -51,7 +52,7 @@ final class ExportAction extends Action
         );
     }
 
-    protected function resolveStorage()
+    protected function resolveStorage(): void
     {
         if (!Storage::disk($this->getDisk())->exists($this->getDir())) {
             Storage::disk($this->getDisk())->makeDirectory($this->getDir());
@@ -63,7 +64,7 @@ final class ExportAction extends Action
         return $this->disk;
     }
 
-    public function disk(string $disk): ExportAction
+    public function disk(string $disk): self
     {
         $this->disk = $disk;
 
@@ -75,7 +76,7 @@ final class ExportAction extends Action
         return $this->dir;
     }
 
-    public function dir(string $dir): ExportAction
+    public function dir(string $dir): self
     {
         $this->dir = $dir;
 

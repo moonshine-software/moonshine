@@ -27,7 +27,7 @@ class MoonShineCommand extends Command
         }
     }
 
-    protected function qualifyModel(string $model)
+    protected function qualifyModel(string $model): array|string
     {
         $model = ltrim($model, '\\/');
 

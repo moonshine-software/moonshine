@@ -10,6 +10,6 @@ final class MenuException extends Exception
 {
     public static function onlyMenuItemAllowed(): self
     {
-        return new static("Only MenuSection allowed");
+        return new self("Only MenuSection allowed");
     }
 }

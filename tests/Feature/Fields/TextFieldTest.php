@@ -34,6 +34,6 @@ final class TextFieldTest extends TestCase
             'last_name' => 'Last'
         ]);
 
-        $this->assertEquals('Last First', $field->value());
+        $this->assertEquals('Last First', $field->formattedValue());
     }
 }

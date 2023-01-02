@@ -38,6 +38,7 @@ abstract class Action implements JsonSerializable
     {
         return [
             'label' => $this->label(),
+            'uri' => $this->uriKey(),
             'url' => $this->url(),
         ];
     }

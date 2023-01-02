@@ -10,6 +10,6 @@ final class FieldsException extends Exception
 {
     public static function wrapError(): self
     {
-        return new static("Only FieldsDecoration allowed");
+        return new self("Only FieldsDecoration allowed");
     }
 }

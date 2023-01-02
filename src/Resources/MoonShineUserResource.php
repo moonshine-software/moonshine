@@ -31,7 +31,7 @@ final class MoonShineUserResource extends ModelResource
 
     public function title(): string
     {
-        return trans('moonshine::ui.base_resource.admins_title');
+        return trans('moonshine::ui.resource.admins_title');
     }
 
     public function fields(): array
@@ -46,42 +46,42 @@ final class MoonShineUserResource extends ModelResource
                     ->showOnExport(),
 
                 BelongsTo::make(
-                    trans('moonshine::ui.base_resource.role'),
+                    trans('moonshine::ui.resource.role'),
                     'moonshine_user_role_id',
                     new MoonShineUserRoleResource()
                 )
                     ->showOnExport(),
 
-                Text::make(trans('moonshine::ui.base_resource.name'), 'name')
+                Text::make(trans('moonshine::ui.resource.name'), 'name')
                     ->required()
                     ->showOnExport(),
 
-                Avatar::make(trans('moonshine::ui.base_resource.avatar'), 'avatar')
+                Avatar::make(trans('moonshine::ui.resource.avatar'), 'avatar')
                     ->removable()
                     ->showOnExport()
                     ->disk(config('filesystems.default'))
                     ->dir('moonshine_users')
                     ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
-                Date::make(trans('moonshine::ui.base_resource.created_at'), 'created_at')
+                Date::make(trans('moonshine::ui.resource.created_at'), 'created_at')
                     ->format("d.m.Y")
                     ->default(now()->toDateTimeString())
                     ->sortable()
                     ->hideOnForm()
                     ->showOnExport(),
 
-                Email::make(trans('moonshine::ui.base_resource.email'), 'email')
+                Email::make(trans('moonshine::ui.resource.email'), 'email')
                     ->sortable()
                     ->showOnExport()
                     ->required(),
 
                 Heading::make('Доступы'),
 
-                Password::make(trans('moonshine::ui.base_resource.password'), 'password')
+                Password::make(trans('moonshine::ui.resource.password'), 'password')
                     ->customAttributes(['autocomplete' => 'new-password'])
                     ->hideOnIndex(),
 
-                PasswordRepeat::make(trans('moonshine::ui.base_resource.repeat_password'), 'password_repeat')
+                PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
                     ->customAttributes(['autocomplete' => 'confirm-password'])
                     ->hideOnIndex(),
             ])
@@ -118,9 +118,9 @@ final class MoonShineUserResource extends ModelResource
     {
         return [
             ModelFilter::make(
-                trans('moonshine::ui.base_resource.name'),
+                trans('moonshine::ui.resource.name'),
                 [
-                    Text::make(trans('moonshine::ui.base_resource.name'), 'name')
+                    Text::make(trans('moonshine::ui.resource.name'), 'name')
                 ],
                 function (Builder $query, $value) {
                     return $query->where('name', $value['name']);

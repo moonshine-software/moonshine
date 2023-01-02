@@ -8,7 +8,7 @@ use Leeto\MoonShine\Contracts\EntityContract;
 use Leeto\MoonShine\Tests\TestCase;
 use Leeto\MoonShine\Entities\ModelEntityBuilder;
 
-class ModelValueEntityTest extends TestCase
+class ModelEntityTest extends TestCase
 {
     /**
      * @test

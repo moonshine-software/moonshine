@@ -72,6 +72,7 @@ class MoonShineView implements HasEndpoint, ViewContract
     {
         return [
             'endpoint' => $this->endpoint(),
+            'uri' => $this->uriKey(),
             'component' => $this->getComponent(),
             'components' => $this->components(),
         ];

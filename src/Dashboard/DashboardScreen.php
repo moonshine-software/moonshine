@@ -12,16 +12,12 @@ abstract class DashboardScreen
 
     public function getBlocks(): Collection
     {
-        $blocks = collect();
-
-        collect($this->blocks() ?? [])->each(function ($item) use ($blocks) {
+        return collect($this->blocks() ?? [])->each(function ($item): void {
             $item = is_string($item) ? new $item() : $item;
 
             if ($item instanceof DashboardBlock) {
-                $blocks->add($item);
+                $item->add($item);
             }
         });
-
-        return $blocks;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Contracts\EntityContract;
@@ -44,6 +45,10 @@ class MoonShineRequest extends FormRequest
         }
 
         $this->resource = MoonShine::getResourceFromUriKey($this->segment(3));
+
+        if($this->getId()) {
+            $this->resource->setEntityId($this->getId());
+        }
 
         return $this->resource;
     }
@@ -119,6 +124,10 @@ class MoonShineRequest extends FormRequest
         $this->data = $this->getData();
 
         abort_if(is_null($this->data), 404);
+
+        if($this->data instanceof Model) {
+            $this->data->load($this->resource::$with);
+        }
 
         return $this->data;
     }

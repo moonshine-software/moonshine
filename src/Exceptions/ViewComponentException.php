@@ -10,6 +10,6 @@ final class ViewComponentException extends Exception
 {
     public static function notFoundInView(string $viewClass): self
     {
-        return new static("ViewComponent not found in $viewClass");
+        return new self("ViewComponent not found in $viewClass");
     }
 }

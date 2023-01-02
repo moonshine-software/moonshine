@@ -12,11 +12,8 @@ final class DashboardBlock implements JsonSerializable
 {
     use Makeable;
 
-    protected array $items = [];
-
-    final public function __construct(array $items = [])
+    final public function __construct(protected array $items = [])
     {
-        $this->setItems($items);
     }
 
     /**
@@ -25,14 +22,6 @@ final class DashboardBlock implements JsonSerializable
     public function items(): array
     {
         return $this->items;
-    }
-
-    /**
-     * @param  array<Metric>  $items
-     */
-    public function setItems(array $items): void
-    {
-        $this->items = $items;
     }
 
     public function jsonSerialize(): array

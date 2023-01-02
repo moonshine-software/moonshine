@@ -10,6 +10,6 @@ final class MoonShineException extends Exception
 {
     public static function onlyResourceAllowed(): self
     {
-        return new static('Only Resource allowed');
+        return new self('Only Resource allowed');
     }
 }

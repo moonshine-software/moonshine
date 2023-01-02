@@ -10,11 +10,11 @@ final class ResourceException extends Exception
 {
     public static function queryError(string $message): self
     {
-        return new static("Query error: $message");
+        return new self("Query error: $message");
     }
 
     public static function withoutSoftDeletes(): self
     {
-        return new static("Resource model does not have soft deletes");
+        return new self("Resource model does not have soft deletes");
     }
 }

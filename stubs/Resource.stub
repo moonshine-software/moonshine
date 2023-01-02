@@ -4,13 +4,13 @@ namespace {namespace};
 
 use Illuminate\Database\Eloquent\Model;
 
-use Leeto\MoonShine\Resources\Resource;
+use Leeto\MoonShine\Resources\ModelResource;
 use Leeto\MoonShine\Fields\ID;
 use Leeto\MoonShine\RowActions\EditRowAction;
 use Leeto\MoonShine\RowActions\DeleteRowAction;
 use Leeto\MoonShine\RowActions\ShowRowAction;
 
-final class DummyResource extends Resource
+final class DummyResource extends ModelResource
 {
 	public static string $model = 'DummyModel';
 

@@ -1,0 +1,12 @@
+@layer components {
+
+  //Form
+  .ms-form {
+
+
+    &__header {
+      @apply text-secondary-900 dark:text-secondary-200 text-2xl;
+    }
+
+  }
+}

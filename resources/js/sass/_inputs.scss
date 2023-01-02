@@ -1,0 +1,133 @@
+@import "mixins";
+
+@layer components {
+
+  // Base
+  .ms-input {
+    @apply form-input p-3 w-full;
+
+    // Wrapper
+    &__wrapper {
+      @apply col-span-5 m-0;
+    }
+
+    // Text input
+    &__text {
+      @include textInput
+    }
+
+    // Color Input
+    &__color {
+      @apply pl-14;
+
+      &__wrapper {
+        @apply flex items-center relative;
+      }
+
+      &__selector {
+        @apply h-10 w-10 absolute rounded-lg left-1.5 cursor-pointer;
+      }
+    }
+
+    // Password
+    &__password {
+      @include textInput;
+      @apply pr-12;
+
+      &__icon {
+        @apply absolute h-6 w-6 right-4 text-secondary-400 cursor-pointer transition-colors;
+      }
+    }
+
+    // Range
+    &__range {
+      @include textInput;
+      @apply col-span-11;
+
+      &__wrapper {
+        @apply grid grid-cols-12 gap-4 items-center;
+
+        input[type="range"] {
+          @apply p-0 overflow-hidden;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+          input[type="range"].ms-input::-webkit-slider-thumb {
+            @apply appearance-none;
+            @apply w-4 h-4 cursor-ew-resize;
+            @apply bg-brand-500 rounded-full;
+            box-shadow: -1008px 0 0 1000px theme("colors.brand.400");
+          }
+        }
+      }
+    }
+
+    // Checkbox
+    &__checkbox {
+      @apply block form-checkbox text-brand-500 rounded-md cursor-pointer
+        p-3 transition-colors transition-all focus:ring-brand-500;
+
+      &--small {
+        @apply p-0;
+      }
+    }
+
+    // Radio group. ex. BooleanField
+    &__radio-group{
+      @apply flex block my-2;
+
+      & > li:first-child > label {
+        @apply rounded-r-none;
+      }
+
+      & > li:last-child > label {
+        @apply rounded-l-none;
+      }
+
+      & > li > input {
+        @apply hidden;
+      }
+
+      & > li > label {
+        @apply bg-secondary-100 dark:bg-secondary-600 text-secondary-400 p-3 px-6 cursor-pointer
+        rounded-md transition-colors hover:bg-secondary-200 hover:text-secondary-500;
+
+        &.checked {
+          @apply bg-brand-500 text-secondary-50
+        }
+      }
+    }
+
+    // File uploader
+    &__file-uploader {
+      @apply flex flex-col transition-colors p-2 text-center;
+      @apply rounded-xl border-dashed border-2;
+      @include borderColors;
+      @include backgroundColors;
+
+      &__preview {
+        &__wrapper {
+          @apply mx-auto mt-2 w-full max-w-xl rounded-lg p-0 text-sm font-normal;
+        }
+
+        @apply w-full rounded-md block mb-4;
+      }
+
+      &__text-wrapper {
+        @apply flex items-center justify-between text-left;
+      }
+
+      &__spinner, &__delete {
+        @apply text-brand-500 w-8 h-8;
+      }
+
+      &__spinner {
+        @apply animate-spin;
+      }
+
+      &__delete {
+        @apply cursor-pointer transition-opacity hover:opacity-75 text-danger-500;
+      }
+    }
+  }
+}

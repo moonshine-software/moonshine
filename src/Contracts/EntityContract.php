@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Contracts;
 
 interface EntityContract
 {
-    public function id(): int;
+    public function id(): int|string;
 
     public function attributes(string $key = null): mixed;
 

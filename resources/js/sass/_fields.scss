@@ -1,0 +1,40 @@
+@layer components {
+
+  .ms-field {
+    &__wrapper {
+      @apply md:grid md:grid-cols-6 md:gap-8 items-start;
+      &--compact {
+        @apply block;
+      }
+    }
+
+    &__label {
+      @apply flex items-start gap-1 text-secondary-400 mb-2;
+
+      .ms-icon {
+        @apply h-4 w-4 text-secondary-300
+        cursor-pointer hover:text-brand-500
+        transition-colors outline-0;
+      }
+    }
+
+    &__hint {
+      @apply text-secondary-400;
+    }
+
+    &__color {
+      &__wrapper {
+        @apply flex gap-2 items-center;
+      }
+
+      &__color-box--index {
+        @apply w-4 h-4 rounded;
+      }
+
+      &__color-box--view {
+        @apply w-8 h-8 rounded-md;
+      }
+    }
+
+  }
+}

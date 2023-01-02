@@ -1,0 +1,10 @@
+@layer components {
+
+  .ms-view {
+    @apply p-4;
+    @apply space-y-4;
+    &__header {
+      @apply text-brand-500 text-2xl;
+    }
+  }
+}

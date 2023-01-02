@@ -46,6 +46,7 @@ abstract class RowAction implements JsonSerializable
     public function type(): string
     {
         return str(static::class)
+            ->classBasename()
             ->snake()
             ->value();
     }

@@ -15,7 +15,7 @@ final class Dashboard
     {
         self::$blocks = collect();
 
-        collect($data)->each(function ($item) {
+        collect($data)->each(function ($item): void {
             $item = is_string($item) ? new $item() : $item;
 
             if ($item instanceof DashboardBlock) {
