@@ -7,7 +7,9 @@
           action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
           class="bg-white dark:bg-darkblue shadow-md rounded-lg mb-4 text-white"
           method="POST"
-          x-on:submit.prevent="precognition($event.target)"
+          @if($resource->isPrecognition())
+              x-on:submit.prevent="precognition($event.target)"
+          @endif
           enctype="multipart/form-data"
     >
         @if(request('relatable_mode'))
@@ -75,12 +77,20 @@
             form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.loading') }}';
             form.querySelector('.precognition_errors').innerHTML = '';
 
+            let formData = new FormData(form);
+
+            for (var data of formData.entries()) {
+                if(data[1] !== undefined && data[1] instanceof File) {
+                    formData.delete(data[0]);
+                }
+            }
+
             fetch(form.getAttribute('action'), {
                 method: 'POST',
                 headers: {
                     'Precognition': 'true',
                 },
-                body: new URLSearchParams(new FormData(form))
+                body: new URLSearchParams(formData)
             }).then(function (response) {
                 return response.json();
             }).then(function (json) {

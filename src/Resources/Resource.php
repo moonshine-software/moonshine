@@ -66,6 +66,8 @@ abstract class Resource implements ResourceContract
 
     protected bool $editInModal = false;
 
+    protected bool $precognition = true;
+
     protected string $relatedColumn = '';
 
     protected string|int $relatedKey = '';
@@ -297,6 +299,18 @@ abstract class Resource implements ResourceContract
                 fn ($str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
                 fn ($str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
             );
+    }
+
+    public function isPrecognition(): bool
+    {
+        return $this->precognition;
+    }
+
+    public function precognitionMode(): self
+    {
+        $this->precognition = true;
+
+        return $this;
     }
 
     /**
