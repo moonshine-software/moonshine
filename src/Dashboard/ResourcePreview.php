@@ -33,7 +33,7 @@ final class ResourcePreview implements HtmlViewable
     {
         return $this->resource()
             ->query()
-            ->when($this->query, fn() => $this->query)
+            ->when($this->query, fn () => $this->query)
             ->get();
     }
 
