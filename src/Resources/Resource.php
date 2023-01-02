@@ -72,6 +72,8 @@ abstract class Resource implements ResourceContract
 
     protected string|int $relatedKey = '';
 
+    protected bool $previewMode = false;
+
     /**
      * Get an array of validation rules for resource related model
      *
@@ -539,6 +541,18 @@ abstract class Resource implements ResourceContract
     public function isRelatable(): bool
     {
         return $this->relatedColumn && $this->relatedKey;
+    }
+
+    public function previewMode(): self
+    {
+        $this->previewMode = true;
+
+        return $this;
+    }
+
+    public function isPreviewMode(): bool
+    {
+        return $this->previewMode;
     }
 
     public function relatedColumn(): string

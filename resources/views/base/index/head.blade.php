@@ -1,13 +1,15 @@
 <tr>
-    <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-        <input type="checkbox" @change="actionBar('main')" class="actionBarCheckboxMain" value="1" />
-    </th>
+    @if(!$resource->isPreviewMode())
+        <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+            <input type="checkbox" @change="actionBar('main')" class="actionBarCheckboxMain" value="1" />
+        </th>
+    @endif
 
     @foreach($resource->indexFields() as $field)
         <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
             <div class="flex items-center justify-start space-x-2">
                 <span>{{ $field->label() }}</span>
-                @if(!$resource->isRelatable() && $field->isSortable())
+                @if($resource->isPreviewMode() && !$resource->isRelatable() && $field->isSortable())
                     <a
                             href="{{ request()->fullUrlWithQuery([
                         'order[field]' => $field->name(),
@@ -24,5 +26,7 @@
         </th>
     @endforeach
 
-    <th class="px-6 py-3"></th>
+    @if(!$resource->isPreviewMode())
+        <th class="px-6 py-3"></th>
+    @endif
 </tr>
