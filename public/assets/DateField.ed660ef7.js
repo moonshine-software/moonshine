@@ -1,0 +1,1 @@
+import o from"./TextField.0094868a.js";import{d as t,o as l,e as r}from"./main.59b16f1c.js";import"./FieldWrapper.vue_vue_type_script_setup_true_lang.6e0ac546.js";const p=t({__name:"DateField",props:{field:null},setup(e){return(i,n)=>(l(),r(o,{field:e.field},null,8,["field"]))}});export{p as default};

@@ -1,5 +1,6 @@
 import { http } from './http'
 import { PrimaryKey } from '../entites/primary_key'
+import qs from 'qs'
 
 export const fetchView = async (
     resourceUriKey: string,
@@ -15,10 +16,19 @@ export const fetchViewComponent = async (
     resourceUriKey: string,
     viewUriKey: string,
     viewComponentUriKey: string,
-    id?: PrimaryKey
+    id?: PrimaryKey,
+    query?: Object
 ) => {
+    console.log(query)
+
     return await http.get(
         `view-component/${resourceUriKey}/${viewUriKey}/${viewComponentUriKey}` +
-            (id ? `/${id}` : '')
+            (id ? `/${id}` : ''),
+        {
+            params: query,
+            paramsSerializer: params => {
+                return qs.stringify(params)
+            }
+        }
     )
 }

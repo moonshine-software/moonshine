@@ -1,0 +1,1 @@
+import o from"./TextField.d8f3b704.js";import{d as l,o as r,e as t}from"./main.62bca638.js";import"./FieldWrapper.vue_vue_type_script_setup_true_lang.2133fa57.js";const m=l({__name:"NumberField",props:{field:null},setup(e){return(i,n)=>(r(),t(o,{field:e.field},null,8,["field"]))}});export{m as default};

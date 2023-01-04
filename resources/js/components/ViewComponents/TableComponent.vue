@@ -46,7 +46,7 @@ const
       },
     ],
     showAsCards = ref(false),
-    fetch = (page: number = 1) => table.fetch(props.resourceKey, props.viewKey, props.viewComponentKey),
+    fetch = (page: number = 1) => table.fetch(props.resourceKey, props.viewKey, props.viewComponentKey, page),
     sort = (columnKey: string) => {
       table.switchSort(columnKey)
       fetch(table.currentPage)

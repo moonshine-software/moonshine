@@ -78,10 +78,17 @@ const storeDefinition = (key: string) =>
             fetch(
                 resourceKey: string,
                 viewKey: string,
-                viewComponentKey: string
+                viewComponentKey: string,
+                page: number
             ) {
                 this.fetching = true
-                fetchViewComponent(resourceKey, viewKey, viewComponentKey).then(
+                fetchViewComponent(
+                    resourceKey,
+                    viewKey,
+                    viewComponentKey,
+                    null,
+                    {page: page, search: this.search, sort: this.sort}
+                ).then(
                     (r) => {
                         this.setTable(r.data)
                         this.fetching = false

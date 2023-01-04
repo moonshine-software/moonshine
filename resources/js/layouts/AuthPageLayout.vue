@@ -41,14 +41,14 @@ import Navbar from "../components/UI/Menu/Navbar.vue";
 import Menu from "../components/UI/Menu/Menu.vue";
 import {computed} from "vue";
 import Loader from "../components/UI/Loader.vue";
-import {useViewStore} from "../store/view";
 import {useAppStore} from "../store/app";
 import AbsoluteCenterLayout from "./AbsoluteCenterLayout.vue";
+import { usePageStore } from '../store/page'
 
 const
-    viewStore = useViewStore(),
+    pageStore = usePageStore(),
     appStore = useAppStore(),
-    loaded = computed(() => viewStore.loaded),
+    loaded = computed(() => pageStore.loaded),
     isSmallDevice = computed(() => appStore.isSmallDevice),
     showMenu = computed(() => !isSmallDevice.value ? true : appStore.theme.showMenu)
 </script>

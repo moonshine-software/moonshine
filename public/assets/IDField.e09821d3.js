@@ -1,0 +1,1 @@
+import o from"./TextField.cc8fb1a3.js";import{d as l,o as t,e as n}from"./main.0fabad41.js";import"./FieldWrapper.vue_vue_type_script_setup_true_lang.47e4f225.js";const s=l({__name:"IDField",props:{field:null},setup(e){return(r,i)=>(t(),n(o,{field:e.field,class:"font-bold"},null,8,["field"]))}});export{s as default};

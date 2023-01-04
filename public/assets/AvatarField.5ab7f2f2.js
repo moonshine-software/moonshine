@@ -1,0 +1,1 @@
+import{d as e,o as t,e as r,a5 as l}from"./main.77551e39.js";const c=e({__name:"AvatarField",props:{field:null},setup(a){return(n,o)=>(t(),r(l,{avatar:a.field.value},null,8,["avatar"]))}});export{c as default};

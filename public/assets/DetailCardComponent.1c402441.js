@@ -1,0 +1,1 @@
+import"./DetailCardComponent.vue_vue_type_script_setup_true_lang.1df037e4.js";import{_ as f}from"./DetailCardComponent.vue_vue_type_script_setup_true_lang.1df037e4.js";import"./form_component.45b22c8d.js";import"./main.a30f9de0.js";import"./view.d6eed33a.js";export{f as default};

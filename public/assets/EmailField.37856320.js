@@ -1,0 +1,1 @@
+import l from"./TextField.9ded5e5b.js";import{d as o,o as t,e as i}from"./main.a30f9de0.js";import"./FieldWrapper.vue_vue_type_script_setup_true_lang.1bb75c99.js";const m=o({__name:"EmailField",props:{field:null},setup(e){return(r,n)=>(t(),i(l,{field:e.field},null,8,["field"]))}});export{m as default};

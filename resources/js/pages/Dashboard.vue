@@ -29,12 +29,13 @@ import Loader from "../components/UI/Loader.vue";
 import AuthPageLayout from "../layouts/AuthPageLayout.vue";
 import {useViewStore} from "../store/view";
 import TableComponent from '../components/ViewComponents/TableComponent.vue'
+import { usePageStore } from '../store/page'
 
 const
     dashboard = useDashboardStore(),
     loaded = computed(() => dashboard.loaded),
     appName = useAppStore().app?.name
 
-dashboard.fetch().then(() => useViewStore().loaded = true)
+dashboard.fetch().then(() => usePageStore().loaded = true)
 
 </script>

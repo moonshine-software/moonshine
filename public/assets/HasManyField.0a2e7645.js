@@ -1,0 +1,1 @@
+import r from"./TableComponent.018c7b1d.js";import{d as o,o as t,e as n}from"./main.43a7554b.js";import"./view.eeab682b.js";const u=o({__name:"HasManyField",props:{field:{type:Object,required:!0}},setup(e){return(c,a)=>(t(),n(r,{"resource-key":e.field.resource,"view-key":"crud-index-view","view-component-key":"table"},null,8,["resource-key"]))}});export{u as default};
