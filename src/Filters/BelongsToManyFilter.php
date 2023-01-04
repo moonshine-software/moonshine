@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Filters;
 
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
+use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\SelectTransform;
@@ -21,6 +22,7 @@ class BelongsToManyFilter extends Filter implements HasRelationship, ManyToManyR
     use WithFields;
     use WithPivot;
     use WithRelationship;
+    use CanBeMultiple;
 
     public static string $view = 'moonshine::filters.belongs-to-many';
 
