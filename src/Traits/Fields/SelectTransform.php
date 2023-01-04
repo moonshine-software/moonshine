@@ -12,7 +12,7 @@ trait SelectTransform
     {
         $this->select = true;
 
-        return $this;
+        return $this->multiple()->searchable();
     }
 
     public function isSelect(): bool

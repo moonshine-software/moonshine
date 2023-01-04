@@ -29,7 +29,7 @@
                                 <div class="text-xs font-normal leading-none max-w-full flex-initial" x-text="option.text"></div>
                                 <div class="flex flex-auto flex-row-reverse">
                                     @if($field->isMultiple())
-                                        <div x-on:click.stop="remove(index)">
+                                        <div x-on:click.stop="remove(option.index)">
                                             <svg class="fill-current h-4 w-4 " viewBox="0 0 20 20">
                                                 <path d="M14.348,14.849c-0.469,0.469-1.229,0.469-1.697,0L10,11.819l-2.651,3.029c-0.469,0.469-1.229,0.469-1.697,0
                                                c-0.469-0.469-0.469-1.229,0-1.697l2.758-3.15L5.651,6.849c-0.469-0.469-0.469-1.228,0-1.697s1.228-0.469,1.697,0L10,8.183
@@ -135,6 +135,7 @@
 
         for (let i = 0; i < options.length; i++) {
           this.options.push({
+            index: i,
             value: options[i].value,
             text: options[i].innerText,
             selected: options[i].hasAttribute('selected'),

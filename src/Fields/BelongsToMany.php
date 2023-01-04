@@ -11,6 +11,7 @@ use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
+use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\SelectTransform;
@@ -26,6 +27,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     use CheckboxTrait;
     use Searchable;
     use SelectTransform;
+    use CanBeMultiple;
 
     public static string $view = 'moonshine::fields.belongs-to-many';
 
