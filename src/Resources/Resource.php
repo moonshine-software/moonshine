@@ -444,8 +444,8 @@ abstract class Resource implements ResourceContract
     public function relatableFormComponents(): Collection
     {
         return $this->getFields()
-            ->filter(fn(Field $field) => $field->isResourceModeField())
-            ->map(fn(Field $field) => $field->setParents())
+            ->filter(fn (Field $field) => $field->isResourceModeField())
+            ->map(fn (Field $field) => $field->setParents())
         ;
     }
 

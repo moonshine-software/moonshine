@@ -34,7 +34,7 @@ class MoonShineUserRoleResource extends Resource
                 ID::make()->sortable()->showOnExport(),
                 Text::make(trans('moonshine::ui.resource.role_name'), 'name')
                     ->required()->showOnExport(),
-            ])
+            ]),
         ];
     }
 
