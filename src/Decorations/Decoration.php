@@ -16,9 +16,9 @@ abstract class Decoration implements HtmlViewable
 
     protected string $label;
 
-    protected array $fields;
+    protected array $fields = [];
 
-    final public function __construct(string $label, array $fields = [])
+    public function __construct(string $label, array $fields = [])
     {
         $this->setLabel($label);
         $this->setFields($fields);
@@ -47,7 +47,7 @@ abstract class Decoration implements HtmlViewable
         foreach ($fields as $field) {
             if ($field instanceof Field) {
                 $this->fields[] = $field->setParents();
-            } elseif (! $field instanceof Tab) {
+            } else {
                 $this->fields[] = $field;
             }
         }

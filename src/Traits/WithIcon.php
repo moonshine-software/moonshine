@@ -17,13 +17,16 @@ trait WithIcon
         return $this;
     }
 
+    public function iconValue(): string
+    {
+        return $this->icon ?? 'app';
+    }
+
     public function getIcon(
         string $size = '8',
         string $color = '',
         string $class = ''
     ): View {
-        $icon = $this->icon ?? 'app';
-
-        return view("moonshine::shared.icons.$icon", compact('size', 'color', 'class'));
+        return view("moonshine::shared.icons.{$this->iconValue()}", compact('size', 'color', 'class'));
     }
 }

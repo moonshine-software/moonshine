@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +23,8 @@ use Leeto\MoonShine\BulkActions\BulkAction;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Decorations\Tab;
+use Leeto\MoonShine\Decorations\Decoration;
+use Leeto\MoonShine\Decorations\Tabs;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
@@ -31,6 +32,7 @@ use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
+use Throwable;
 
 abstract class Resource implements ResourceContract
 {
@@ -87,7 +89,7 @@ abstract class Resource implements ResourceContract
     /**
      * Get an array of visible fields on resource page
      *
-     * @return Field[]
+     * @return Field[]|Decoration[]
      */
     abstract public function fields(): array;
 
@@ -345,24 +347,33 @@ abstract class Resource implements ResourceContract
 
     /**
      * @return Collection<Field>
+     * @throws Throwable
      */
     public function getFields(): Collection
     {
         $fields = [];
 
-        foreach ($this->fields() as $item) {
-            if ($item instanceof Field) {
-                $fields[] = $item;
-            } elseif ($item instanceof Tab) {
-                foreach ($item->fields() as $field) {
-                    if ($field instanceof Field) {
-                        $fields[] = $field;
-                    }
-                }
-            }
-        }
+        $this->withdrawFields($this->fields(), $fields);
 
         return collect($fields);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function withdrawFields($fieldsOrDecorations, array &$fields)
+    {
+        foreach ($fieldsOrDecorations as $fieldOrDecoration) {
+            if ($fieldOrDecoration instanceof Field) {
+                $fields[] = $fieldOrDecoration;
+            } elseif ($fieldOrDecoration instanceof Tabs) {
+                foreach ($fieldOrDecoration->tabs() as $tab) {
+                    $this->withdrawFields($tab->fields(), $fields);
+                }
+            } elseif ($fieldOrDecoration instanceof Decoration) {
+                $this->withdrawFields($fieldOrDecoration->fields(), $fields);
+            }
+        }
     }
 
     /**
@@ -374,23 +385,18 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Collection<Tab>
-     */
-    public function tabs(): Collection
-    {
-        return collect($this->fields())
-            ->filter(fn ($item) => $item instanceof Tab);
-    }
-
-    /**
      * @return Collection<Field>
+     * @throws Throwable
      */
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showWhenState);
+            ->filter(fn (Field $field) => $field->showWhenState);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function whenFieldNames(): Collection
     {
         $names = [];
@@ -409,11 +415,12 @@ abstract class Resource implements ResourceContract
 
     /**
      * @return Collection<Field>
+     * @throws Throwable
      */
     public function indexFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnIndex);
+            ->filter(fn (Field $field) => $field->showOnIndex);
     }
 
     /**
@@ -431,7 +438,20 @@ abstract class Resource implements ResourceContract
     }
 
     /**
+     * @return Collection
+     * @throws Throwable
+     */
+    public function relatableFormComponents(): Collection
+    {
+        return $this->getFields()
+            ->filter(fn(Field $field) => $field->isResourceModeField())
+            ->map(fn(Field $field) => $field->setParents())
+        ;
+    }
+
+    /**
      * @return Collection<Field>
+     * @throws Throwable
      */
     public function formFields(): Collection
     {
@@ -439,7 +459,7 @@ abstract class Resource implements ResourceContract
 
         return $fields->merge(
             $this->getFields()
-                ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnForm)
+                ->filter(fn (Field $field) => $field->showOnForm)
         );
     }
 
@@ -453,7 +473,7 @@ abstract class Resource implements ResourceContract
         foreach (app(Extension::class) as $extension) {
             $fields = $fields->merge(
                 collect($extension->fields())
-                    ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnForm)
+                    ->filter(fn (Field $field) => $field->showOnForm)
             );
         }
 
@@ -462,22 +482,27 @@ abstract class Resource implements ResourceContract
 
     /**
      * @return Collection<Field>
+     * @throws Throwable
      */
     public function exportFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->showOnExport);
+            ->filter(fn (Field $field) => $field->showOnExport);
     }
 
     /**
      * @return Collection<Field>
+     * @throws Throwable
      */
     public function importFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (HtmlViewable $field) => $field instanceof Field && $field->useOnImport);
+            ->filter(fn (Field $field) => $field->useOnImport);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function fieldsLabels(): array
     {
         $labels = [];
@@ -496,6 +521,9 @@ abstract class Resource implements ResourceContract
         })->first();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getField(string $fieldName): Field|null
     {
         return collect($this->getFields())->filter(function (Field $field) use ($fieldName) {
@@ -630,7 +658,7 @@ abstract class Resource implements ResourceContract
         return $query;
     }
 
-    public function validate(Model $item): \Illuminate\Validation\Validator
+    public function validate(Model $item): \Illuminate\Contracts\Validation\Validator|\Illuminate\Validation\Validator
     {
         return Validator::make(
             request()->all(),
@@ -680,7 +708,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @throws ResourceException
+     * @throws ResourceException|Throwable
      */
     public function save(Model $item, ?Collection $fields = null, ?array $saveData = null): Model
     {
@@ -739,7 +767,7 @@ abstract class Resource implements ResourceContract
         return $item;
     }
 
-    protected function saveItem(Model $item, Field $field, ?array $saveData = null)
+    protected function saveItem(Model $item, Field $field, ?array $saveData = null): Model
     {
         if (is_null($saveData)) {
             return $field->save($item);

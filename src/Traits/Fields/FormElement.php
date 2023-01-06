@@ -180,16 +180,6 @@ trait FormElement
             && ($item->exists ? $this->showOnUpdateForm : $this->showOnCreateForm);
     }
 
-    public function canDisplayFormPrimitiveField(Model $item): bool
-    {
-        return $this->canDisplayOnForm($item) && ! $this->isResourceModeField();
-    }
-
-    public function canDisplayFormRelationField(Model $item): bool
-    {
-        return $this->canDisplayOnForm($item) && $this->isResourceModeField();
-    }
-
     public function hasRelationship(): bool
     {
         return $this instanceof HasRelationship;

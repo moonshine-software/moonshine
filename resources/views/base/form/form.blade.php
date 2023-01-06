@@ -5,7 +5,7 @@
 
     <form x-data="editForm()"
           action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
-          class="bg-white dark:bg-darkblue shadow-md rounded-lg mb-4 text-white"
+          class="mb-4"
           method="POST"
           @if($resource->isPrecognition())
               x-on:submit.prevent="precognition($event.target)"
@@ -22,33 +22,11 @@
             @method('PUT')
         @endif
 
-        <div x-data="{activeTab: '{{ $resource->tabs()->first()?->id() }}'}">
-            @if($resource->tabs()->isNotEmpty())
-                <div>
-                    <nav class="flex flex-col sm:flex-row">
-                        @foreach($resource->tabs() as $tab)
-                            <button
-                                :class="{ 'border-b-2 font-medium border-purple': activeTab === '{{ $tab->id() }}' }"
-                                @click.prevent="activeTab = '{{ $tab->id() }}'"
-                                class="py-4 px-6 block focus:outline-none text-purple">
-                                {{ $tab->label() }}
-                            </button>
-                        @endforeach
-                    </nav>
-                </div>
-            @endif
-
-            @foreach($resource->formComponents() as $field)
-                @if($field instanceof \Leeto\MoonShine\Decorations\Decoration)
-                    {{ $resource->renderDecoration($field, $item) }}
-                @elseif($field instanceof \Leeto\MoonShine\Fields\Field && $field->canDisplayFormPrimitiveField($item))
-                    <x-moonshine::field-container :field="$field" :item="$item" :resource="$resource">
-                        {{ $resource->renderField($field, $item) }}
-                    </x-moonshine::field-container>
-                @endif
-            @endforeach
-        </div>
-
+        <x-moonshine::resource-renderable
+            :components="$resource->formComponents()"
+            :item="$item"
+            :resource="$resource"
+        />
 
         <div class="px-10 py-10">
             @include('moonshine::base.form.shared.btn', [
@@ -62,8 +40,8 @@
     </form>
 
     @if($item->exists)
-        @foreach($resource->formComponents() as $field)
-            @if($field instanceof \Leeto\MoonShine\Fields\Field && $field->canDisplayFormRelationField($item))
+        @foreach($resource->relatableFormComponents() as $field)
+            @if($field->canDisplayOnForm($item))
                 <div class="mt-4"></div>
                 <h2 class="text-lg">{{ $field->label() }}</h2>
                 <div class="mt-4"></div>
@@ -79,7 +57,7 @@
 
             let formData = new FormData(form);
 
-            for (var data of formData.entries()) {
+            for (const data of formData.entries()) {
                 if(data[1] !== undefined && data[1] instanceof File) {
                     formData.delete(data[0]);
                 }

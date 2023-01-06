@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\HtmlViewable;
-use Leeto\MoonShine\Decorations\Tab;
 use Leeto\MoonShine\Fields\Field;
 
 interface ResourceContract
@@ -61,13 +60,6 @@ interface ResourceContract
      * @return Collection<Field>
      */
     public function getFields(): Collection;
-
-    /**
-     * Get a collection of tabs, which will be displayed on create/update resource form
-     *
-     * @return Collection<Tab>
-     */
-    public function tabs(): Collection;
 
     /**
      * Get a collection of fields of related model, which will be displayed on resource index page

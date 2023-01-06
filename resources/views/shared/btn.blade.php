@@ -1,4 +1,4 @@
-<a href="{{ $href }}"
+<a href="{{ $href }}" target="{{ $target ?? '_self' }}"
    class="inline-flex  items-center
    @if(!$filled)
        bg-transparent hover:bg-purple text-purple border border-purple hover:text-white hover:border-transparent

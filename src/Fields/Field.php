@@ -58,6 +58,8 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     protected bool $canSave = true;
 
+    protected bool $fieldContainer = true;
+
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
@@ -206,6 +208,18 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         $this->useOnImport = Condition::boolean($condition, true);
 
         return $this;
+    }
+
+    public function fieldContainer(mixed $condition = null): static
+    {
+        $this->fieldContainer = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function hasFieldContainer(): bool
+    {
+        return $this->fieldContainer;
     }
 
     public function canSave(mixed $condition = null): static

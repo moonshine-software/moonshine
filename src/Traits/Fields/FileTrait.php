@@ -186,12 +186,12 @@ trait FileTrait
         return $this->unPrefixedValue($item->{$this->field()});
     }
 
-    protected function unPrefixedValue(?string $value): string
+    protected function unPrefixedValue(string|bool|null $value): string
     {
         return $value ? ltrim($value, $this->prefix()) : '';
     }
 
-    protected function prefixedValue(?string $value): string
+    protected function prefixedValue(string|bool|null $value): string
     {
         return $value ? ($this->prefix() . ltrim($value, $this->prefix())) : '';
     }
