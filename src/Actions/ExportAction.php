@@ -97,7 +97,7 @@ class ExportAction extends Action implements ActionContract
 
         MoonShineNotification::send(
             trans('moonshine::ui.resource.export.exported'),
-            ['link' => Storage::disk($disk)->url($url), 'label' => trans('moonshine::ui.download')]
+            ['link' => Storage::disk($disk)->url(trim($dir, '/') . $url), 'label' => trans('moonshine::ui.download')]
         );
 
         return $result;
