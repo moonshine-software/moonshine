@@ -25,7 +25,7 @@ class Tabs extends Decoration
     {
         return tap(Collection::make($this->tabs), function (Collection $tabs) {
             throw_if(
-                $tabs->every(fn($tab) => !$tab instanceof Tab),
+                $tabs->every(fn ($tab) => ! $tab instanceof Tab),
                 new DecorationException('Tabs must be a class of '.Tab::class)
             );
         });

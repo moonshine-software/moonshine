@@ -78,8 +78,8 @@ class MoonShineUserResource extends Resource
                     PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
                         ->customAttributes(['autocomplete' => 'confirm-password'])
                         ->hideOnIndex(),
-                ])
-            ])
+                ]),
+            ]),
         ];
     }
 
