@@ -10,7 +10,6 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Leeto\MoonShine\Menu\Menu;
 
 class AsyncModal extends Component
 {
