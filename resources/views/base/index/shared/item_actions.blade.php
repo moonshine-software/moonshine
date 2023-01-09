@@ -11,7 +11,7 @@
 
 @if($resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))
     @if($resource->isEditInModal())
-        <x-moonshine::async-modal id="edit_modal_{{ $item->getKey() }}" route="{{ $resource->route('edit', $item->getKey()) }}">
+        <x-moonshine::async-modal id="edit_modal_{{ str_replace(['-', '.'], '_', $item->getKey()) }}" route="{{ $resource->route('edit', $item->getKey()) }}">
             @include("moonshine::shared.icons.edit", ["size" => 6, "class" => "mr-2", "color" => "purple"])
         </x-moonshine::async-modal>
     @else
