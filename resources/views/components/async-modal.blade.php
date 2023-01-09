@@ -1,11 +1,17 @@
+@props([
+    'id',
+    'route',
+])
 <x-moonshine::modal>
     <div x-data="{}" id="{{ $id }}">
         <div class="moonshine-loader" style="height: 50px; width: 50px;"></div>
     </div>
 
     <x-slot name="outerHtml">
-        <button x-on:click="isOpen = !isOpen; getData_{{ $id }}();" type="button"
-                class="{{ $class ?? 'text-pink inline-block' }}">
+        <button x-on:click="isOpen = !isOpen; getData_{{ $id }}();"
+                type="button"
+            {{ $attributes }}
+        >
             {{ $slot ?? '' }}
         </button>
 

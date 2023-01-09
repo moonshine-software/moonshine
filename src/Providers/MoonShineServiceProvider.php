@@ -10,7 +10,6 @@ use Illuminate\Support\ServiceProvider;
 use Leeto\MoonShine\Commands\InstallCommand;
 use Leeto\MoonShine\Commands\ResourceCommand;
 use Leeto\MoonShine\Commands\UserCommand;
-use Leeto\MoonShine\Components\MenuComponent;
 use Leeto\MoonShine\Dashboard\Dashboard;
 use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Http\Middleware\Authenticate;
@@ -90,7 +89,6 @@ class MoonShineServiceProvider extends ServiceProvider
 
         Blade::withoutDoubleEncoding();
         Blade::componentNamespace('Leeto\MoonShine\Components', 'moonshine');
-        Blade::component('menu-component', MenuComponent::class);
 
         $this->app->singleton(MoonShine::class, fn () => new MoonShine());
 
