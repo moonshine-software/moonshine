@@ -13,6 +13,6 @@ class Tab extends Decoration
      */
     public function getView(): string
     {
-        throw new DecorationException('You need to use '.get_class(Tabs::class).' class');
+        throw new DecorationException('You need to use '.Tabs::class.' class');
     }
 }
