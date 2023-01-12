@@ -35,11 +35,13 @@ class Authenticate
      */
     protected function except(Request $request): bool
     {
+         $prefix = config('moonshine.route.prefix') ? config('moonshine.route.prefix') . '/' : '';
+
         return $request->is([
-            config('moonshine.route.prefix').'/login',
-            config('moonshine.route.prefix').'/authenticate',
-            config('moonshine.route.prefix').'/logout',
-            config('moonshine.route.prefix').'/socialite/*',
+            "{$prefix}login",
+            "{$prefix}authenticate",
+            "{$prefix}logout",
+            "{$prefix}socialite/*",
         ]);
     }
 }
