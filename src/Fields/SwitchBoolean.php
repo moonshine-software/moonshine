@@ -10,5 +10,5 @@ class SwitchBoolean extends Field
 {
     use BooleanTrait;
 
-    protected static string $component = 'SwitchField';
+    protected static string $component = 'BooleanField';
 }

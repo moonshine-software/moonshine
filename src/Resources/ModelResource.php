@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Leeto\MoonShine\Actions\Action;
+use Leeto\MoonShine\Contracts\Resources\HasEntity;
 use Leeto\MoonShine\Contracts\Resources\WithFields;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Contracts\EntityContract;
@@ -30,7 +31,7 @@ use Leeto\MoonShine\Views\CrudFormView;
 use Leeto\MoonShine\Views\CrudIndexView;
 use Leeto\MoonShine\Views\Views;
 
-abstract class ModelResource implements ResourceContract, WithFields
+abstract class ModelResource implements ResourceContract, WithFields, HasEntity
 {
     use ResourceModelQuery;
     use ResourceModelPolicy;
@@ -114,9 +115,11 @@ abstract class ModelResource implements ResourceContract, WithFields
         return new static::$model();
     }
 
-    public function setEntityId(string|int $entityId): void
+    public function setEntityId(string|int $entityId): self
     {
         $this->entityId = $entityId;
+
+        return $this;
     }
 
     public function getEntityId(): string|int|null
@@ -146,7 +149,7 @@ abstract class ModelResource implements ResourceContract, WithFields
         return $this->column;
     }
 
-    public function entity(Model $values): EntityContract
+    public function entity(mixed $values): EntityContract
     {
         return (new ModelEntityBuilder($values))
             ->build()

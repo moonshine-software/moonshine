@@ -23,8 +23,6 @@ final class AuthController extends BaseController
     {
         $request->authenticate();
 
-        //$request->session()->regenerate();
-
         return $this->jsonResponse(
             new MoonShineUserJsonResource(auth('moonshine')->user())
         );
@@ -40,10 +38,6 @@ final class AuthController extends BaseController
     public function logout(): Response
     {
         auth('moonshine')->logout();
-
-        //request()->session()->invalidate();
-
-        //request()->session()->regenerateToken();
 
         return response()->noContent();
     }

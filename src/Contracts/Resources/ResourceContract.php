@@ -20,4 +20,6 @@ interface ResourceContract extends JsonSerializable
     public function getDataInstance(): mixed;
 
     public function getData(int|string $id);
+
+    public function can(string $ability, mixed $item = null): bool;
 }

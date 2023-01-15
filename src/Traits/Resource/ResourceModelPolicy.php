@@ -30,7 +30,7 @@ trait ResourceModelPolicy
         return static::$withPolicy;
     }
 
-    public function can(string $ability, Model $item = null): bool
+    public function can(string $ability, mixed $item = null): bool
     {
         if (!$this->isWithPolicy()) {
             return true;
