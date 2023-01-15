@@ -44,7 +44,7 @@ class MoonShineController extends BaseController
 
         abort_if(! $action = $this->resource->formActions()[$index] ?? false, 404);
 
-        if(!$redirectRoute = $action->getRedirectTo()) {
+        if (! $redirectRoute = $action->getRedirectTo()) {
             $redirectRoute = redirect($this->resource->route('index'));
 
             if (request()->has('relatable_mode')) {
