@@ -13,7 +13,7 @@
     }
   ],
   "require": {
-    "php": "^8.0|^8.1",
+    "php": "^8.0|^8.1|^8.2",
     "ext-curl": "*",
     "ext-json": "*",
     "laravel/framework": "^9.34",

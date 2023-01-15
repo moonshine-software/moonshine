@@ -28,12 +28,27 @@
             :resource="$resource"
         />
 
-        <div class="px-10 py-10">
-            @include('moonshine::base.form.shared.btn', [
-                'type' => 'submit',
-                'class' => 'form_submit_button',
-                'name' => trans('moonshine::ui.save')
-            ])
+        <div class="py-10">
+            <div class="flex items-center justify-start space-x-2">
+                @include('moonshine::base.form.shared.btn', [
+                    'type' => 'submit',
+                    'class' => 'form_submit_button',
+                    'name' => trans('moonshine::ui.save')
+                ])
+
+                @if($item->exists && !request('relatable_mode'))
+                    @foreach($resource->formActions() as $index => $action)
+                        @if($action->isSee($item))
+                            @include('moonshine::shared.btn', [
+                                'href' => $resource->route("form-action", $item->getKey(), ['index' => $index]),
+                                'filled' => false,
+                                'title' => $action->label(),
+                                'icon' => $action->iconValue()
+                            ])
+                        @endif
+                    @endforeach
+                @endif
+            </div>
 
             <div class="precognition_errors mt-4"></div>
         </div>

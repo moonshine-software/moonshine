@@ -36,6 +36,35 @@ class MoonShineController extends BaseController
 
     protected Resource $resource;
 
+    public function formAction($id, $index): RedirectResponse
+    {
+        $item = $this->resource->getModel()
+            ->newModelQuery()
+            ->findOrFail($id);
+
+        abort_if(! $action = $this->resource->formActions()[$index] ?? false, 404);
+
+        if(!$redirectRoute = $action->getRedirectTo()) {
+            $redirectRoute = redirect($this->resource->route('index'));
+
+            if (request()->has('relatable_mode')) {
+                $redirectRoute = back();
+            }
+        }
+
+        try {
+            $action->callback($item);
+        } catch (Throwable $e) {
+            throw_if(! app()->isProduction(), $e);
+
+            return $redirectRoute
+                ->with('alert', trans('moonshine::ui.saved_error'));
+        }
+
+        return $redirectRoute
+            ->with('alert', $action->message());
+    }
+
     public function action($id, $index): RedirectResponse
     {
         $item = $this->resource->getModel()

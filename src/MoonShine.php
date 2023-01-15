@@ -157,6 +157,11 @@ class MoonShine
                     )->name($resource->routeAlias().'.actions');
 
                     Route::get(
+                        $resource->routeAlias().'/form-action/{'.$resource->routeParam().'}/{index}',
+                        [MoonShineResourceController::class, 'formAction']
+                    )->name($resource->routeAlias().'.form-action');
+
+                    Route::get(
                         $resource->routeAlias().'/action/{'.$resource->routeParam().'}/{index}',
                         [MoonShineResourceController::class, 'action']
                     )->name($resource->routeAlias().'.action');
