@@ -162,7 +162,7 @@ class MoonShineController extends BaseController
     public function index(string $uri = null): string|View
     {
         if ($uri && $this->resource->queryTags()) {
-            $queryTag = collect($this->resource->queryTags())->first(fn(QueryTag $tag) => $tag->uri() === $uri);
+            $queryTag = collect($this->resource->queryTags())->first(fn (QueryTag $tag) => $tag->uri() === $uri);
 
             $this->resource->customBuilder($queryTag->builder());
         }

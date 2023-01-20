@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\QueryTags;
 
-use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithIcon;
