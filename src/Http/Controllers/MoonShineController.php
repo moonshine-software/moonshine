@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
+use Leeto\MoonShine\QueryTags\QueryTag;
 use Leeto\MoonShine\Resources\Resource;
 use Throwable;
 
@@ -75,7 +76,7 @@ class MoonShineController extends BaseController
 
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 
@@ -96,7 +97,7 @@ class MoonShineController extends BaseController
     {
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 
@@ -148,7 +149,7 @@ class MoonShineController extends BaseController
 
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 
@@ -158,8 +159,14 @@ class MoonShineController extends BaseController
     /**
      * @throws AuthorizationException|Throwable
      */
-    public function index(): string|View
+    public function index(string $uri = null): string|View
     {
+        if ($uri && $this->resource->queryTags()) {
+            $queryTag = collect($this->resource->queryTags())->first(fn(QueryTag $tag) => $tag->uri() === $uri);
+
+            $this->resource->customBuilder($queryTag->builder());
+        }
+
         if ($this->resource->isWithPolicy()) {
             $this->authorizeForUser(
                 auth(config('moonshine.auth.guard'))->user(),
@@ -351,7 +358,7 @@ class MoonShineController extends BaseController
             $this->resource->delete($item);
         }
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 

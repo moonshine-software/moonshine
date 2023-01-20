@@ -3,7 +3,7 @@
         @include('moonshine::shared.icons.search', ['size' => 5, 'color' => 'purple'])
     </span>
 
-    <form action="{{ $resource->route("index") }}" method="get" x-ref="searchForm">
+    <form action="{{ $resource->currentRoute() }}" method="get" x-ref="searchForm">
         {{ csrf_field() }}
 
         <input value="{{ request("search") }}"

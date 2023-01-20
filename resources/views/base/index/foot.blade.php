@@ -13,6 +13,10 @@
                         <input type="hidden" name="relatable_mode" value="1">
                     @endif
 
+                    @if(request()->routeIs('*.query-tag'))
+                        <input type="hidden" name="redirect_back" value="1">
+                    @endif
+
                     <input name="ids" type="hidden" value="" class="actionBarIds">
 
                     <button type="submit" class="text-pink inline-block" title="{{ $action->label() }}">
@@ -26,6 +30,10 @@
 
                 @if($resource->isRelatable())
                     <input type="hidden" name="relatable_mode" value="1">
+                @endif
+
+                @if(request()->routeIs('*.query-tag'))
+                    <input type="hidden" name="redirect_back" value="1">
                 @endif
 
                 @method("delete")

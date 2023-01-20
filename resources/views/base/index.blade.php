@@ -61,6 +61,21 @@
         @endif
     @endif
 
+    @if(!empty($resource->queryTags()))
+        <div class="mt-8"></div>
+
+        <div class="flex items-center justify-start space-x-2">
+            @foreach($resource->queryTags() as $queryTag)
+                @include('moonshine::shared.btn', [
+                    'href' => $resource->route("query-tag", query: ['uri' => $queryTag->uri()]),
+                    'filled' => request()->routeIs('*.query-tag') && request()->route('uri') === $queryTag->uri(),
+                    'title' => $queryTag->label(),
+                    'icon' => $queryTag->iconValue()
+                ])
+            @endforeach
+        </div>
+    @endif
+
     @if(!$resource->isRelatable())
         <div class="mt-8"></div>
 

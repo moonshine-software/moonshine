@@ -30,6 +30,7 @@ use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\FormActions\FormAction;
+use Leeto\MoonShine\FormActions\QueryTag;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
@@ -76,6 +77,8 @@ abstract class Resource implements ResourceContract
     protected string|int $relatedKey = '';
 
     protected bool $previewMode = false;
+
+    protected ?Builder $customBuilder = null;
 
     /**
      * Alias for route of resource.
@@ -169,6 +172,16 @@ abstract class Resource implements ResourceContract
      * @return array<int, FormAction>
      */
     public function formActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get an array of custom form actions
+     *
+     * @return array<int, QueryTag>
+     */
+    public function queryTags(): array
     {
         return [];
     }
@@ -296,6 +309,12 @@ abstract class Resource implements ResourceContract
             ->append('.')
             ->append($this->routeAlias())
             ->when($action, fn ($str) => $str->append('.')->append($action));
+    }
+
+    public function currentRoute(array $query = []): string
+    {
+        return request()->url()
+            . ($query ? '?' . http_build_query($query) : '');
     }
 
     public function route(string $action = null, int|string $id = null, array $query = []): string
@@ -471,7 +490,7 @@ abstract class Resource implements ResourceContract
         return $this->getFields()
             ->filter(fn (Field $field) => $field->isResourceModeField())
             ->map(fn (Field $field) => $field->setParents())
-        ;
+            ;
     }
 
     /**
@@ -630,9 +649,14 @@ abstract class Resource implements ResourceContract
             ->appends(request()->except('page'));
     }
 
+    public function customBuilder(Builder $builder)
+    {
+        $this->customBuilder = $builder;
+    }
+
     public function query(): Builder
     {
-        $query = $this->getModel()->query();
+        $query = $this->customBuilder ?? $this->getModel()->query();
 
         if (static::$with) {
             $query = $query->with(static::$with);

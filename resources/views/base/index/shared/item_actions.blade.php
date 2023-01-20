@@ -1,6 +1,6 @@
 @foreach($resource->itemActions() as $index => $action)
     @if($action->isSee($item))
-        <a href="{{ $resource->route("action", $item->getKey(), ['index' => $index]) }}"
+        <a href="{{ $resource->route("action", $item->getKey(), request()->routeIs('*.query-tag') ? ['index' => $index, 'redirect_back' => 1] : ['index' => $index]) }}"
            class="text-purple inline-block"
            title="{{ $action->label() }}"
         >
@@ -42,6 +42,10 @@
 
                     @if($resource->isRelatable())
                         <input type="hidden" name="relatable_mode" value="1">
+                    @endif
+
+                    @if(request()->routeIs('*.query-tag'))
+                        <input type="hidden" name="redirect_back" value="1">
                     @endif
 
                     @method("delete")

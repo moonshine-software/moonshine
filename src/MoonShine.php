@@ -171,6 +171,13 @@ class MoonShine
                         [MoonShineResourceController::class, 'bulk']
                     )->name($resource->routeAlias().'.bulk');
 
+                    if(!empty($resource->queryTags())) {
+                        Route::get(
+                            $resource->routeAlias().'/query-tag/{uri}',
+                            [MoonShineResourceController::class, 'index']
+                        )->name($resource->routeAlias().'.query-tag');
+                    }
+
                     /* @var Resource $resource */
                     if ($resource->isSystem()) {
                         Route::resource($resource->routeAlias(), $resource->controllerName());
