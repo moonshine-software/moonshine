@@ -274,17 +274,15 @@ abstract class Resource implements ResourceContract
      */
     public function routeAlias(): string
     {
-        return $this->routAlias ?
+        return (string) ($this->routAlias ?
             str($this->routAlias)
                 ->lcfirst()
-                ->trim(' \n\r\t\v\x00')
-                ->toString() :
+                ->squish() :
             str(static::class)
                 ->classBasename()
                 ->replace(['Resource'], '')
                 ->plural()
-                ->lcfirst()
-                ->toString();
+                ->lcfirst());
     }
 
     public function routeParam(): string
