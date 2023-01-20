@@ -490,7 +490,7 @@ abstract class Resource implements ResourceContract
         return $this->getFields()
             ->filter(fn (Field $field) => $field->isResourceModeField())
             ->map(fn (Field $field) => $field->setParents())
-            ;
+        ;
     }
 
     /**
