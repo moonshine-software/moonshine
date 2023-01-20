@@ -78,6 +78,12 @@ abstract class Resource implements ResourceContract
     protected bool $previewMode = false;
 
     /**
+     * Alias for route of resource.
+     * @var string
+     */
+    protected string $routAlias = '';
+
+    /**
      * Get an array of validation rules for resource related model
      *
      * @see https://laravel.com/docs/validation#available-validation-rules
@@ -262,13 +268,21 @@ abstract class Resource implements ResourceContract
         return $this->editInModal;
     }
 
+    /**
+     * Take route of resource from alias or composite from resource and table names.
+     * @return string
+     */
     public function routeAlias(): string
     {
-        return (string) str(static::class)
-            ->classBasename()
-            ->replace(['Resource'], '')
-            ->plural()
-            ->lcfirst();
+        return (string) ($this->routAlias ?
+            str($this->routAlias)
+                ->lcfirst()
+                ->squish() :
+            str(static::class)
+                ->classBasename()
+                ->replace(['Resource'], '')
+                ->plural()
+                ->lcfirst());
     }
 
     public function routeParam(): string
