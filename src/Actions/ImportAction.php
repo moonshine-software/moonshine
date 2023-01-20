@@ -105,7 +105,7 @@ class ImportAction extends Action implements ActionContract
                 return [$field->field() => $value];
             })->toArray();
 
-            if(($data[$resource->getModel()->getKeyName()] ?? '') === '') {
+            if (($data[$resource->getModel()->getKeyName()] ?? '') === '') {
                 unset($data[$resource->getModel()->getKeyName()]);
             }
 
