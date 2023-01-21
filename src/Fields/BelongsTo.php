@@ -26,7 +26,7 @@ class BelongsTo extends Field implements HasRelationship, BelongsToRelation
     {
         if ($this->requestValue() === false) {
             
-            if ($this->nullable) {
+            if ($this->isNullable()) {
                 return $item->{$this->relation()}()
                     ->dissociate();
             }
