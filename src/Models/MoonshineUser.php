@@ -7,9 +7,11 @@ namespace Leeto\MoonShine\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Leeto\MoonShine\Traits\Models\HasMoonShineChangeLog;
+use Leeto\MoonShine\Models\MoonshineUserPermission;
 
 class MoonshineUser extends Authenticatable
 {
@@ -36,5 +38,10 @@ class MoonshineUser extends Authenticatable
     public function moonshineSocialites(): HasMany
     {
         return $this->hasMany(MoonshineSocialite::class);
+    }
+
+    public function moonshineUserPermission(): HasOne
+    {
+        return $this->hasOne(MoonshineUserPermission::class);
     }
 }

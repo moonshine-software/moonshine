@@ -184,6 +184,11 @@ class MoonShine
                     } else {
                         Route::resource($resource->routeAlias(), MoonShineResourceController::class);
                     }
+
+                    if($resource->routeAlias() === 'moonShineUsers') {
+                        Route::post($resource->routeAlias(). "/permissions/{{$resource->routeParam()}}", [$resource->controllerName(), 'permissions'])
+                            ->name($resource->routeAlias().'.permissions');
+                    }
                 });
             });
     }

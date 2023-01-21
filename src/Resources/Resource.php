@@ -31,6 +31,7 @@ use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\FormActions\FormAction;
 use Leeto\MoonShine\FormActions\QueryTag;
+use Leeto\MoonShine\FormComponents\FormComponent;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
@@ -172,6 +173,16 @@ abstract class Resource implements ResourceContract
      * @return array<int, FormAction>
      */
     public function formActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get an array of custom form actions
+     *
+     * @return array<int, FormComponent>
+     */
+    public function components(): array
     {
         return [];
     }
@@ -490,7 +501,7 @@ abstract class Resource implements ResourceContract
         return $this->getFields()
             ->filter(fn (Field $field) => $field->isResourceModeField())
             ->map(fn (Field $field) => $field->setParents())
-        ;
+            ;
     }
 
     /**
@@ -717,13 +728,28 @@ abstract class Resource implements ResourceContract
         );
     }
 
+    public function gateAbilities(): array
+    {
+        return [
+            'viewAny', 'view', 'create', 'update', 'delete', 'massDelete', 'restore', 'forceDelete'
+        ];
+    }
+
     public function can(string $ability, Model $item = null): bool
     {
+        $user = auth(config('moonshine.auth.guard'))->user();
+
+        if($user->moonshineUserPermission
+            && (!$user->moonshineUserPermission->permissions->has(get_class($this))
+                || !isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
+            return false;
+        }
+
         if (! $this->isWithPolicy()) {
             return true;
         }
 
-        return Gate::forUser(auth(config('moonshine.auth.guard'))->user())
+        return Gate::forUser($user)
             ->allows($ability, $item ?? $this->getModel());
     }
 
@@ -853,6 +879,15 @@ abstract class Resource implements ResourceContract
         return view($metric->getView(), [
             'resource' => $this,
             'item' => $metric,
+        ]);
+    }
+
+    public function renderFormComponent(HtmlViewable $formComponent, Model $item): Factory|View|Application
+    {
+        return view($formComponent->getView(), [
+            'resource' => $this,
+            'item' => $item,
+            'component' => $formComponent,
         ]);
     }
 
