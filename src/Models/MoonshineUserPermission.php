@@ -14,11 +14,11 @@ class MoonshineUserPermission extends Model
 
     protected $fillable = [
         'moonshine_user_id',
-        'permissions'
+        'permissions',
     ];
 
     protected $casts = [
-        'permissions' => 'collection'
+        'permissions' => 'collection',
     ];
 
     public function moonshineUser(): BelongsTo

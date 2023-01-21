@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Leeto\MoonShine\Traits\Models\HasMoonShineChangeLog;
-use Leeto\MoonShine\Models\MoonshineUserPermission;
 
 class MoonshineUser extends Authenticatable
 {

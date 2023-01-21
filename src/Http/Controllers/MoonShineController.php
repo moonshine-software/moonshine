@@ -44,7 +44,7 @@ class MoonShineController extends BaseController
             ->findOrFail($id);
 
         abort_if(! $action = $this->resource->formActions()[$index] ?? false, 404);
-        abort_if(!$this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         if (! $redirectRoute = $action->getRedirectTo()) {
             $redirectRoute = redirect($this->resource->route('index'));
@@ -74,7 +74,7 @@ class MoonShineController extends BaseController
             ->findOrFail($id);
 
         abort_if(! $action = $this->resource->itemActions()[$index] ?? false, 404);
-        abort_if(!$this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         $redirectRoute = redirect($this->resource->route('index'));
 
@@ -108,7 +108,7 @@ class MoonShineController extends BaseController
         }
 
         abort_if(! $action = $this->resource->bulkActions()[$index] ?? false, 404);
-        abort_if(!$this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         try {
             $items = $this->resource->getModel()
@@ -132,7 +132,7 @@ class MoonShineController extends BaseController
      */
     public function actions(): mixed
     {
-        abort_if(!$this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         $actions = $this->resource->getActions();
 
@@ -164,7 +164,7 @@ class MoonShineController extends BaseController
             $this->resource->customBuilder($queryTag->builder());
         }
 
-        abort_if(!$this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
 
         if (request()->ajax()) {
@@ -199,7 +199,7 @@ class MoonShineController extends BaseController
      */
     public function create(): string|View|Factory|Redirector|RedirectResponse|Application
     {
-        abort_if(!$this->resource->can('create', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('create', $this->resource->getModel()), 403);
 
 
         if (! in_array('create', $this->resource->getActiveActions())) {
@@ -223,7 +223,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(!$this->resource->can('update', $item), 403);
+        abort_if(! $this->resource->can('update', $item), 403);
 
         $this->resource->setItem($item);
 
@@ -239,7 +239,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(!$this->resource->can('view', $item), 403);
+        abort_if(! $this->resource->can('view', $item), 403);
 
         return redirect($this->resource->route('index'));
     }
@@ -258,7 +258,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(!$this->resource->can('update', $item), 403);
+        abort_if(! $this->resource->can('update', $item), 403);
 
         return $this->save($request, $item);
     }
@@ -276,7 +276,7 @@ class MoonShineController extends BaseController
 
         $item = $this->resource->getModel();
 
-        abort_if(!$this->resource->can('create', $item), 403);
+        abort_if(! $this->resource->can('create', $item), 403);
 
         return $this->save($request, $item);
     }
@@ -293,7 +293,7 @@ class MoonShineController extends BaseController
         $redirectRoute = redirect($this->resource->route('index'));
 
         if (request()->has('ids')) {
-            abort_if(!$this->resource->can('massDelete', $this->resource->getModel()), 403);
+            abort_if(! $this->resource->can('massDelete', $this->resource->getModel()), 403);
 
             $this->resource->massDelete(
                 explode(';', request('ids'))
@@ -303,7 +303,7 @@ class MoonShineController extends BaseController
                 ->newModelQuery()
                 ->findOrFail($id);
 
-            abort_if(!$this->resource->can('delete', $item), 403);
+            abort_if(! $this->resource->can('delete', $item), 403);
 
             $this->resource->delete($item);
         }

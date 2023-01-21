@@ -89,7 +89,7 @@ class MoonShineUserResource extends Resource
     {
         return [
             PermissionFormComponent::make('Permissions')
-                ->canSee(fn($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID)
+                ->canSee(fn ($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
         ];
     }
 

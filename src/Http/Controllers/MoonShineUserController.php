@@ -18,9 +18,9 @@ class MoonShineUserController extends MoonShineController
 
     public function permissions(MoonshineUser $moonShineUser): RedirectResponse
     {
-        abort_if(!$this->resource->can('update', $moonShineUser), 403);
+        abort_if(! $this->resource->can('update', $moonShineUser), 403);
 
-        if(!request()->has('permissions')) {
+        if (! request()->has('permissions')) {
             $moonShineUser->moonshineUserPermission()->delete();
         } else {
             MoonshineUserPermission::query()->updateOrCreate(

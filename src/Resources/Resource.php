@@ -501,7 +501,7 @@ abstract class Resource implements ResourceContract
         return $this->getFields()
             ->filter(fn (Field $field) => $field->isResourceModeField())
             ->map(fn (Field $field) => $field->setParents())
-            ;
+        ;
     }
 
     /**
@@ -731,7 +731,7 @@ abstract class Resource implements ResourceContract
     public function gateAbilities(): array
     {
         return [
-            'viewAny', 'view', 'create', 'update', 'delete', 'massDelete', 'restore', 'forceDelete'
+            'viewAny', 'view', 'create', 'update', 'delete', 'massDelete', 'restore', 'forceDelete',
         ];
     }
 
@@ -739,9 +739,9 @@ abstract class Resource implements ResourceContract
     {
         $user = auth(config('moonshine.auth.guard'))->user();
 
-        if($user->moonshineUserPermission
-            && (!$user->moonshineUserPermission->permissions->has(get_class($this))
-                || !isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
+        if ($user->moonshineUserPermission
+            && (! $user->moonshineUserPermission->permissions->has(get_class($this))
+                || ! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
             return false;
         }
 
