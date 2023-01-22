@@ -20,12 +20,11 @@ class SlideFilter extends Filter
         if ($this->requestValue() === false) {
             $values = [];
         } else {
-            $values = array_filter($this->requestValue());
+            $values = array_filter($this->requestValue(), 'is_numeric');
         }
 
         return $values
-            ? $query->where($this->fromField, '<=', $values[$this->fromField])
-                ->where($this->toField, '>=', $values[$this->toField])
+            ? $query->whereBetween($this->field, [$values[$this->fromField], $values[$this->toField]])
             : $query;
     }
 }
