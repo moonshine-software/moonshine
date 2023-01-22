@@ -57,6 +57,7 @@ return [
         'avatar' => 'Аватар',
         'created_at' => 'Дата создания',
         'admins_title' => 'Администраторы',
+        'role_title' => 'Роли',
         'role_name' => 'Название',
 
         'link_socialite' => 'Привязать аккаунты',

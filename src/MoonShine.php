@@ -171,11 +171,23 @@ class MoonShine
                         [MoonShineResourceController::class, 'bulk']
                     )->name($resource->routeAlias().'.bulk');
 
+                    if (! empty($resource->queryTags())) {
+                        Route::get(
+                            $resource->routeAlias().'/query-tag/{uri}',
+                            [MoonShineResourceController::class, 'index']
+                        )->name($resource->routeAlias().'.query-tag');
+                    }
+
                     /* @var Resource $resource */
                     if ($resource->isSystem()) {
                         Route::resource($resource->routeAlias(), $resource->controllerName());
                     } else {
                         Route::resource($resource->routeAlias(), MoonShineResourceController::class);
+                    }
+
+                    if ($resource->routeAlias() === 'moonShineUsers') {
+                        Route::post($resource->routeAlias(). "/permissions/{{$resource->routeParam()}}", [$resource->controllerName(), 'permissions'])
+                            ->name($resource->routeAlias().'.permissions');
                     }
                 });
             });

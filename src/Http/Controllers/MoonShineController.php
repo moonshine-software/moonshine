@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
+use Leeto\MoonShine\QueryTags\QueryTag;
 use Leeto\MoonShine\Resources\Resource;
 use Throwable;
 
@@ -43,6 +44,7 @@ class MoonShineController extends BaseController
             ->findOrFail($id);
 
         abort_if(! $action = $this->resource->formActions()[$index] ?? false, 404);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         if (! $redirectRoute = $action->getRedirectTo()) {
             $redirectRoute = redirect($this->resource->route('index'));
@@ -72,10 +74,11 @@ class MoonShineController extends BaseController
             ->findOrFail($id);
 
         abort_if(! $action = $this->resource->itemActions()[$index] ?? false, 404);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 
@@ -96,7 +99,7 @@ class MoonShineController extends BaseController
     {
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 
@@ -105,6 +108,7 @@ class MoonShineController extends BaseController
         }
 
         abort_if(! $action = $this->resource->bulkActions()[$index] ?? false, 404);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         try {
             $items = $this->resource->getModel()
@@ -128,13 +132,7 @@ class MoonShineController extends BaseController
      */
     public function actions(): mixed
     {
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'viewAny',
-                $this->resource->getModel()
-            );
-        }
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
         $actions = $this->resource->getActions();
 
@@ -148,7 +146,7 @@ class MoonShineController extends BaseController
 
         $redirectRoute = redirect($this->resource->route('index'));
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 
@@ -158,15 +156,15 @@ class MoonShineController extends BaseController
     /**
      * @throws AuthorizationException|Throwable
      */
-    public function index(): string|View
+    public function index(string $uri = null): string|View
     {
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'viewAny',
-                $this->resource->getModel()
-            );
+        if ($uri && $this->resource->queryTags()) {
+            $queryTag = collect($this->resource->queryTags())->first(fn (QueryTag $tag) => $tag->uri() === $uri);
+
+            $this->resource->customBuilder($queryTag->builder());
         }
+
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
 
 
         if (request()->ajax()) {
@@ -201,13 +199,8 @@ class MoonShineController extends BaseController
      */
     public function create(): string|View|Factory|Redirector|RedirectResponse|Application
     {
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'create',
-                $this->resource->getModel()
-            );
-        }
+        abort_if(! $this->resource->can('create', $this->resource->getModel()), 403);
+
 
         if (! in_array('create', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
@@ -230,13 +223,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'update',
-                $item
-            );
-        }
+        abort_if(! $this->resource->can('update', $item), 403);
 
         $this->resource->setItem($item);
 
@@ -260,13 +247,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'view',
-                $item
-            );
-        }
+        abort_if(! $this->resource->can('view', $item), 403);
 
         $this->resource->setItem($item);
 
@@ -303,13 +284,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'update',
-                $item
-            );
-        }
+        abort_if(! $this->resource->can('update', $item), 403);
 
         return $this->save($request, $item);
     }
@@ -327,13 +302,7 @@ class MoonShineController extends BaseController
 
         $item = $this->resource->getModel();
 
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'create',
-                $item
-            );
-        }
+        abort_if(! $this->resource->can('create', $item), 403);
 
         return $this->save($request, $item);
     }
@@ -350,13 +319,7 @@ class MoonShineController extends BaseController
         $redirectRoute = redirect($this->resource->route('index'));
 
         if (request()->has('ids')) {
-            if ($this->resource->isWithPolicy()) {
-                $this->authorizeForUser(
-                    auth(config('moonshine.auth.guard'))->user(),
-                    'massDelete',
-                    $this->resource->getModel()
-                );
-            }
+            abort_if(! $this->resource->can('massDelete', $this->resource->getModel()), 403);
 
             $this->resource->massDelete(
                 explode(';', request('ids'))
@@ -366,18 +329,12 @@ class MoonShineController extends BaseController
                 ->newModelQuery()
                 ->findOrFail($id);
 
-            if ($this->resource->isWithPolicy()) {
-                $this->authorizeForUser(
-                    auth(config('moonshine.auth.guard'))->user(),
-                    'delete',
-                    $item
-                );
-            }
+            abort_if(! $this->resource->can('delete', $item), 403);
 
             $this->resource->delete($item);
         }
 
-        if (request()->has('relatable_mode')) {
+        if (request()->hasAny(['relatable_mode', 'redirect_back'])) {
             $redirectRoute = back();
         }
 

@@ -65,6 +65,14 @@
         @endforeach
     @endif
 
+    @if(!empty($resource->components()))
+        @foreach($resource->components() as $formComponent)
+            @if($formComponent->isSee($item))
+                {{ $resource->renderFormComponent($formComponent, $item) }}
+            @endif
+        @endforeach
+    @endif
+
     <script>
         function precognition(form) {
             form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.loading') }}';
