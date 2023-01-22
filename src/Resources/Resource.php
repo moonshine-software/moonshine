@@ -59,6 +59,7 @@ abstract class Resource implements ResourceContract
 
     public static string $baseEditView = 'moonshine::base.form';
 
+    /** @var string Переменная для хранения шаблона детайльной страницы. */
     public static string $baseShowView = 'moonshine::base.show';
 
     public string $titleField = '';
@@ -195,7 +196,7 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * todo: detailRender
+     * Получить название шаблона для детальной страницы.
      * @return string
      */
     public function baseShowView(): string
@@ -295,6 +296,13 @@ abstract class Resource implements ResourceContract
             ->when($action, fn ($str) => $str->append('.')->append($action));
     }
 
+    /**
+     * Метод генерации адреса для страницы ресурса из переданных параметров запроса.
+     * @param string|null $action
+     * @param int|string|null $id
+     * @param array $query
+     * @return string
+     */
     public function route(string $action = null, int|string $id = null, array $query = []): string
     {
         $cacheKey = "moonshine_query_{$this->routeAlias()}".($id ? "_{$id}" : '');
@@ -444,6 +452,11 @@ abstract class Resource implements ResourceContract
             ->filter(fn (Field $field) => $field->showOnIndex);
     }
 
+    /**
+     * Получить коллекцию полей настроенных для детальной страницы.
+     * @return Collection
+     * @throws Throwable
+     */
     public function showFields(): Collection
     {
         return $this->getFields()

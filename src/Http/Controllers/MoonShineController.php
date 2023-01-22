@@ -156,32 +156,6 @@ class MoonShineController extends BaseController
     }
 
     /**
-     * todo: detailRender
-     * @return string|View
-     * @throws AuthorizationException
-     */
-    public function detail(): string|View
-    {
-        if ($this->resource->isWithPolicy()) {
-            $this->authorizeForUser(
-                auth(config('moonshine.auth.guard'))->user(),
-                'viewAny',
-                $this->resource->getModel()
-            );
-        }
-
-        $view = view($this->resource->baseDetailView(), [
-            'resource' => $this->resource,
-            'filters' => $this->resource->filters(),
-            'actions' => $this->resource->getActions(),
-            'metrics' => $this->resource->metrics(),
-            'items' => $this->resource->paginate(),
-        ]);
-
-        return $view;
-    }
-
-    /**
      * @throws AuthorizationException|Throwable
      */
     public function index(): string|View
@@ -270,6 +244,7 @@ class MoonShineController extends BaseController
     }
 
     /**
+     * Метод обработки для детальной страницы элемента.
      * @param $id
      * @return Application|Factory|View|RedirectResponse|Redirector|mixed|string
      * @throws AuthorizationException
@@ -299,12 +274,12 @@ class MoonShineController extends BaseController
     }
 
     /**
-     * @todo: Описать
+     * Метод сборки данных для вызова и передачи их в шаблон детальной страницы.
      * @param Model|null $item
      * @return Application|Factory|View|mixed|string
      * @throws Throwable
      */
-    public function showView(Model $item = null)
+    public function showView(Model $item = null): mixed
     {
         $view = view($this->resource->baseShowView(), [
             'resource' => $this->resource,

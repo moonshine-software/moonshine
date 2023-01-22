@@ -37,6 +37,5 @@ class ResourceTest extends TestCase
         $this->assertStringContainsString('/moonshine/moonShineUsers/1', $resource->route('show', 1));
         $this->assertStringContainsString('/moonshine/moonShineUsers/1/edit', $resource->route('edit', 1));
         $this->assertStringContainsString('/moonshine/moonShineUsers/1', $resource->route('destroy', 1));
-
     }
 }
