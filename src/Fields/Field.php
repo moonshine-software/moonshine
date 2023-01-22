@@ -48,6 +48,8 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public bool $showOnUpdateForm = true;
 
+    public bool $showOnDetail = true;
+
     protected Field|null $parent = null;
 
     protected string $hint = '';
@@ -115,6 +117,28 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     public function hideOnForm(mixed $condition = null): static
     {
         $this->showOnForm = Condition::boolean($condition, false);
+
+        return $this;
+    }
+
+    /**
+     * @param mixed|null $conditon
+     * @return $this
+     */
+    public function showOnDetail(mixed $conditon = null): static
+    {
+        $this->showOnDetail = Condition::boolean($conditon, true);
+
+        return $this;
+    }
+
+    /**
+     * @param mixed|null $condition
+     * @return $this
+     */
+    public function hideOnDetail(mixed $condition = null): static
+    {
+        $this->showOnDetail = Condition::boolean($condition, false);
 
         return $this;
     }
