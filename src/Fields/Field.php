@@ -124,6 +124,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     }
 
     /**
+     * Показать поле на детальной странице.
      * @param mixed|null $conditon
      * @return $this
      */
@@ -135,6 +136,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     }
 
     /**
+     * Скрыть поле на детальной странице.
      * @param mixed|null $condition
      * @return $this
      */
