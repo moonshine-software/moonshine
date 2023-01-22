@@ -61,6 +61,8 @@ abstract class Resource implements ResourceContract
 
     public static string $baseEditView = 'moonshine::base.form';
 
+    public static string $baseShowView = 'moonshine::base.show';
+
     public string $titleField = '';
 
     protected static bool $system = false;
@@ -222,6 +224,15 @@ abstract class Resource implements ResourceContract
         return '';
     }
 
+    /**
+     * todo: detailRender
+     * @return string
+     */
+    public function baseShowView(): string
+    {
+        return static::$baseShowView;
+    }
+
     public function baseIndexView(): string
     {
         return static::$baseIndexView;
@@ -330,11 +341,10 @@ abstract class Resource implements ResourceContract
 
     public function route(string $action = null, int|string $id = null, array $query = []): string
     {
-        if (empty($query) && Cache::has("moonshine_query_{$this->routeAlias()}")) {
-            parse_str(
-                Cache::get("moonshine_query_{$this->routeAlias()}", ''),
-                $query
-            );
+        $cacheKey = "moonshine_query_{$this->routeAlias()}".($id ? "_{$id}" : '');
+
+        if (empty($query) && Cache::has($cacheKey)) {
+            parse_str(Cache::get($cacheKey, ''), $query);
         }
 
         if ($this->isRelatable()) {
@@ -478,6 +488,12 @@ abstract class Resource implements ResourceContract
         return $this->getFields()
             ->filter(fn (Field $field) => $field->showOnIndex)
             ->values();
+    }
+
+    public function showFields(): Collection
+    {
+        return $this->getFields()
+            ->filter(fn (Field $field) => $field->showOnDetail);
     }
 
     /**

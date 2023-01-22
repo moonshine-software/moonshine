@@ -158,6 +158,32 @@ class MoonShineController extends BaseController
     }
 
     /**
+     * todo: detailRender
+     * @return string|View
+     * @throws AuthorizationException
+     */
+    public function detail(): string|View
+    {
+        if ($this->resource->isWithPolicy()) {
+            $this->authorizeForUser(
+                auth(config('moonshine.auth.guard'))->user(),
+                'viewAny',
+                $this->resource->getModel()
+            );
+        }
+
+        $view = view($this->resource->baseDetailView(), [
+            'resource' => $this->resource,
+            'filters' => $this->resource->filters(),
+            'actions' => $this->resource->getActions(),
+            'metrics' => $this->resource->metrics(),
+            'items' => $this->resource->paginate(),
+        ]);
+
+        return $view;
+    }
+
+    /**
      * @throws AuthorizationException|Throwable
      */
     public function index(string $uri = null): string|View
@@ -235,17 +261,42 @@ class MoonShineController extends BaseController
     }
 
     /**
+     * @param $id
+     * @return Application|Factory|View|RedirectResponse|Redirector|mixed|string
      * @throws AuthorizationException
+     * @throws Throwable
      */
-    public function show($id): Redirector|Application|RedirectResponse
+    public function show($id): mixed
     {
+        if (! in_array('show', $this->resource->getActiveActions())) {
+            return redirect($this->resource->route('index'));
+        }
+
         $item = $this->resource->getModel()
             ->newModelQuery()
             ->findOrFail($id);
 
         abort_if(! $this->resource->can('view', $item), 403);
 
-        return redirect($this->resource->route('index'));
+        $this->resource->setItem($item);
+
+        return $this->showView($item);
+    }
+
+    /**
+     * @todo: Описать
+     * @param Model|null $item
+     * @return Application|Factory|View|mixed|string
+     * @throws Throwable
+     */
+    public function showView(Model $item = null)
+    {
+        $view = view($this->resource->baseShowView(), [
+            'resource' => $this->resource,
+            'item' => $item ?? $this->resource->getModel(),
+        ]);
+
+        return $view;
     }
 
     /**
