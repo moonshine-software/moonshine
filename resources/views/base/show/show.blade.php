@@ -1,10 +1,11 @@
-<div class="w-full">
+<div>
     {!! $resource->extensions('tabs', $item) !!}
 
     @if($item->exists)
         @foreach($resource->showFields() as $index => $field)
-            <div class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm leading-5">{!! $field->indexViewValue($item) !!}</div>
+            <div class="flex items-center space-x-2 px-3 py-3 whitespace-nowrap">
+                <span class="text-sm">{{ $field->label() }}</span>:
+                <div class="leading-5">{!! $field->indexViewValue($item) !!}</div>
             </div>
         @endforeach
 

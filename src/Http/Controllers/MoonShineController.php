@@ -235,13 +235,10 @@ class MoonShineController extends BaseController
     }
 
     /**
-     * Метод обработки для детальной страницы элемента.
-     * @param $id
-     * @return Application|Factory|View|RedirectResponse|Redirector|mixed|string
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function show($id): mixed
+    public function show($id): string|View|Factory|Redirector|RedirectResponse|Application
     {
         if (! in_array('show', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));

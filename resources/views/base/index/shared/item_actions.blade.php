@@ -9,6 +9,12 @@
     @endif
 @endforeach
 
+@if($resource->can('view', $item) && in_array('show', $resource->getActiveActions()))
+    <a href="{{ $resource->route("show", $item->getKey()) }}" class="text-purple inline-block">
+        @include("moonshine::shared.icons.show", ["size" => 6, "class" => "mr-2", "color" => "purple"])
+    </a>
+@endif
+
 @if($resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))
     @if($resource->isEditInModal())
         <x-moonshine::async-modal id="edit_{{ $item->getTable() }}_modal_{{ $item->getKey() }}" route="{{ $resource->route('edit', $item->getKey()) }}" class="text-purple inline-block">
