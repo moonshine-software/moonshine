@@ -9,7 +9,7 @@
     @endif
 @endforeach
 
-@if($resource->can('show', $item) && in_array('show', $resource->getActiveActions()))
+@if($resource->can('show', $item) && in_array('show', $resource->getActiveActions()) && !isset($show))
     <a href="{{ $resource->route("show", $item->getKey()) }}" class="text-purple inline-block">
         @include("moonshine::shared.icons.show", ["size" => 6, "class" => "mr-2", "color" => "purple"])
     </a>

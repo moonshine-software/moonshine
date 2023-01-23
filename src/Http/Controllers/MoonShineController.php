@@ -265,6 +265,7 @@ class MoonShineController extends BaseController
         $view = view($this->resource->baseShowView(), [
             'resource' => $this->resource,
             'item' => $item ?? $this->resource->getModel(),
+            'show' => true
         ]);
 
         return $view;
