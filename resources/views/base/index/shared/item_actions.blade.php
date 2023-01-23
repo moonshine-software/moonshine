@@ -1,6 +1,6 @@
 @foreach($resource->itemActions() as $index => $action)
     @if($action->isSee($item))
-        <a href="{{ $resource->route("action", $item->getKey(), request()->routeIs('*.query-tag') ? ['index' => $index, 'redirect_back' => 1] : ['index' => $index]) }}"
+        <a href="{{ $resource->route("action", $item->getKey(), ['index' => $index]) }}"
            class="text-purple inline-block"
            title="{{ $action->label() }}"
         >
@@ -8,6 +8,12 @@
         </a>
     @endif
 @endforeach
+
+@if($resource->can('show', $item) && in_array('show', $resource->getActiveActions()))
+    <a href="{{ $resource->route("show", $item->getKey()) }}" class="text-purple inline-block">
+        @include("moonshine::shared.icons.show", ["size" => 6, "class" => "mr-2", "color" => "purple"])
+    </a>
+@endif
 
 @if($resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))
     @if($resource->isEditInModal())
@@ -42,10 +48,6 @@
 
                     @if($resource->isRelatable())
                         <input type="hidden" name="relatable_mode" value="1">
-                    @endif
-
-                    @if(request()->routeIs('*.query-tag'))
-                        <input type="hidden" name="redirect_back" value="1">
                     @endif
 
                     @method("delete")
