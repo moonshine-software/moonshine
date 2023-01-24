@@ -3,8 +3,12 @@
   "description": "Laravel dashboard",
   "keywords": ["laravel", "admin", "dashboard", "moonshine"],
   "type": "library",
-  "homepage": "https://github.com/lee-to/moonshine",
+  "homepage": "https://moonshine.cutcode.ru",
   "license": "MIT",
+  "support": {
+    "issues": "https://github.com/lee-to/moonshine/issues",
+    "source": "https://github.com/lee-to/moonshine"
+  },
   "authors": [
     {
       "name": "Danil Shutsky",
@@ -16,13 +20,10 @@
     "php": "^8.0|^8.1|^8.2",
     "ext-curl": "*",
     "ext-json": "*",
-    "laravel/framework": "^9.34",
-    "symfony/var-dumper": "^6.0",
     "unisharp/laravel-filemanager": "^2.5",
     "rap2hpoutre/fast-excel": "^5.0"
   },
   "require-dev": {
-    "fakerphp/faker": "^1.9.2",
     "phpunit/phpunit": "^9.5.8",
     "mockery/mockery": "^1.4.4",
     "phpstan/phpstan": "^1.4.7",
@@ -41,6 +42,9 @@
   },
   "suggest": {
     "laravel/socialite": "Required to use the Socialite"
+  },
+  "conflict": {
+    "laravel/framework": "<9.37.0"
   },
   "scripts": {
     "test": "vendor/bin/phpunit",
