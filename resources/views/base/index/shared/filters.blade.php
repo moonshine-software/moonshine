@@ -1,11 +1,18 @@
 @if(count($filters))
     <div x-data="{ filtersOpen: false }">
         <button @click.stop="filtersOpen = ! filtersOpen"
-                class="ml-3 bg-purple rounded-full p-2 focus:outline-none
+                class="ml-3 relative bg-purple rounded-full p-2 focus:outline-none
                     transition
                     duration-500 ease-in-out">
 
             @include('moonshine::shared.icons.filter', ['size' => 5, 'color' => 'white'])
+
+            @if(request('filters'))
+                <div class="absolute inline-block top-0 right-0 bottom-auto left-auto -mr-2 -mt-2
+                    rounded-full text-white bg-red-600 px-2 py-1 text-xs font-bold text-center">
+                    {{ count(array_filter(request('filters'))) }}
+                </div>
+            @endif
         </button>
 
         <div x-show="filtersOpen" class="fixed inset-0 flex z-40" role="dialog" aria-modal="true">
