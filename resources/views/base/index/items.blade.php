@@ -17,7 +17,7 @@
 
         @if(!$resource->isPreviewMode())
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm leading-5 font-medium"
-                style="{{ $resource->tdStyles($item, $loop->index, count($resource->indexFields()) + 1) }}"
+                style="{{ $resource->tdStyles($item, $loop->index, count($resource->indexFields()) + 2) }}"
             >
                 @include("moonshine::base.index.shared.item_actions", ["item" => $item, "resource" => $resource])
             </td>
