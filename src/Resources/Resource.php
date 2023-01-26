@@ -893,7 +893,7 @@ abstract class Resource implements ResourceContract
 
     protected function _render(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
     {
-        if ($field->hasRelationship()) {
+        if ($field->hasRelationship() && ($field->belongToOne() || $field->manyToMany())) {
             $field->setValues($field->relatedValues($item));
         }
 
