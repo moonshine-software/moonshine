@@ -60,6 +60,8 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     protected bool $fieldContainer = true;
 
+    protected bool $fullWidth = false;
+
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
@@ -195,6 +197,24 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         $this->showOnExport = Condition::boolean($condition, false);
 
         return $this;
+    }
+
+    /**
+     * Set field label block view on forms, based on condition
+     *
+     * @param  mixed  $condition
+     * @return $this
+     */
+    public function fullWidth(mixed $condition = null): static
+    {
+        $this->fullWidth = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isFullWidth(): bool
+    {
+        return $this->fullWidth;
     }
 
     /**
