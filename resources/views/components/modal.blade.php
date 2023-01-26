@@ -1,5 +1,5 @@
 <span x-data="{isOpen: false}" x-cloak x-init="$refs.cover.classList.remove('hidden')">
-    <div x-ref="cover" :class="isOpen == false ? 'hidden' : ''" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div x-ref="cover" :class="isOpen == false ? 'hidden' : ''" class="fixed z-30 inset-0 overflow-y-auto hidden">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
             <div class="fixed inset-0 transition-opacity">
@@ -11,7 +11,7 @@
 
             <div class="inline-block align-bottom rounded-lg
             text-left overflow-hidden shadow-xl transform transition-all
-            sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+            sm:my-8 sm:align-middle sm:w-full sm:max-w-xl md:max-w-2xl lg:max-w-4xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl"
                  role="dialog" aria-modal="true" aria-labelledby="modal-headline"
                  x-show="isOpen" @click.outside="isOpen = false" x-transition:enter="ease-out transition-slow"
                  x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
