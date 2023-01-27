@@ -78,25 +78,17 @@
             form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.loading') }}';
             form.querySelector('.precognition_errors').innerHTML = '';
 
-            let formData = new FormData(form);
-
-            for (const data of formData.entries()) {
-                if(data[1] !== undefined && data[1] instanceof File) {
-                    formData.delete(data[0]);
-                }
-            }
-
             fetch(form.getAttribute('action'), {
                 method: 'POST',
                 headers: {
                     'Precognition': 'true',
                 },
-                body: new URLSearchParams(formData)
+                body: new FormData(form)
             }).then(function (response) {
                 if (response.status === 200) {
                     form.submit()
                 }
-                
+
                 return response.json();
             }).then(function (json) {
                 if(Object.keys(json).length) {
