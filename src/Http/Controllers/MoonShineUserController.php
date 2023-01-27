@@ -7,13 +7,19 @@ namespace Leeto\MoonShine\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Models\MoonshineUserPermission;
+use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Resources\MoonShineUserResource;
 
 class MoonShineUserController extends MoonShineController
 {
     public function __construct()
     {
-        $this->resource = new MoonShineUserResource();
+        $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
+            ->append('MoonShineUserResource');
+
+        $this->resource = class_exists($resourceClass)
+            ? new $resourceClass()
+            : new MoonShineUserResource();
     }
 
     public function permissions(MoonshineUser $moonShineUser): RedirectResponse

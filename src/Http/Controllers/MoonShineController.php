@@ -16,6 +16,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
@@ -354,9 +355,12 @@ class MoonShineController extends BaseController
                 $redirectRoute = back();
             }
 
-            if ($request->hasHeader('Precognition')) {
+            if ($request->isAttemptingPrecognition()) {
                 return response()->json(
-                    $validator->errors()
+                    $validator->errors(),
+                    $validator->fails()
+                        ? Response::HTTP_UNPROCESSABLE_ENTITY
+                        : Response::HTTP_OK
                 );
             }
 

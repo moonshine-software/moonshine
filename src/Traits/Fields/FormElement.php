@@ -37,8 +37,8 @@ trait FormElement
         string $field = null,
         Closure|ResourceContract|string|null $resource = null
     ) {
-        $this->setLabel($label ?? (string) str($this->label)->ucfirst());
-        $this->setField($field ?? (string) str($this->label)->lower()->snake());
+        $this->setLabel(trim($label ?? (string) str($this->label)->ucfirst()));
+        $this->setField(trim($field ?? (string) str($this->label)->lower()->snake()));
 
         if ($this->hasRelationship()) {
             $this->setField($field ?? (string) str($this->label)->camel());
@@ -141,7 +141,7 @@ trait FormElement
 
     public function setResourceTitleField(string $resourceTitleField): static
     {
-        $this->resourceTitleField = $resourceTitleField;
+        $this->resourceTitleField = trim($resourceTitleField);
 
         return $this;
     }

@@ -93,6 +93,10 @@
                 },
                 body: new URLSearchParams(formData)
             }).then(function (response) {
+                if (response.status === 200) {
+                    form.submit()
+                }
+                
                 return response.json();
             }).then(function (json) {
                 if(Object.keys(json).length) {
