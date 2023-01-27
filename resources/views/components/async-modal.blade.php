@@ -2,7 +2,7 @@
     'id',
     'route',
 ])
-<x-moonshine::modal :wide="true">
+<x-moonshine::modal wide>
     <div x-data="{}" id="{{ $id }}">
         <div class="moonshine-loader" style="height: 50px; width: 50px;"></div>
     </div>
