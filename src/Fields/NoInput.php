@@ -14,5 +14,4 @@ class NoInput extends Field
     {
         return $item;
     }
-
 }
