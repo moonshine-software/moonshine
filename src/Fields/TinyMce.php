@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Illuminate\Database\Eloquent\Model;
+
 final class TinyMce extends Field
 {
     protected static string $view = 'moonshine::fields.tinymce';
@@ -77,5 +79,13 @@ final class TinyMce extends Field
     protected function version(): string
     {
         return (string) config('moonshine.tinymce.version', 6);
+    }
+
+    public function formViewValue(Model $item): string
+    {
+        return str(parent::formViewValue($item))->replace(
+            ['&amp;', '&lt;', '&gt;', '&nbsp;', '&quot;'],
+            ['&amp;amp;', '&amp;lt;', '&amp;gt;', '&amp;nbsp;', '&amp;quot;']
+        )->value();
     }
 }

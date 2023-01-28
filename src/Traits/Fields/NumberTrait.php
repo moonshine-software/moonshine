@@ -6,9 +6,9 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 trait NumberTrait
 {
-    public int|float $min = 1;
+    public int|float $min = 0;
 
-    public int|float $max = 1000;
+    public int|float $max = 1e10;
 
     public int|float $step = 1;
 
