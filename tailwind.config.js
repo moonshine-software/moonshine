@@ -3,6 +3,11 @@ module.exports = {
     content: [
         './resources/views/**/*.blade.php',
     ],
+    safelist: [
+        {
+            pattern: /./,
+        },
+    ],
     theme: {
         extend: {
             gridTemplateRows: {
