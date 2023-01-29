@@ -52,10 +52,10 @@
                                                     {{ $resource->getField($changedField) ? $resource->getField($changedField)->label() : $changedField }}
                                                 </td>
 
-                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                <td class="px-6 py-4 whitespace-normal" style="min-width: 300px;">
                                                     {{ is_array($log->states_before[$changedField]) ? json_encode($log->states_before[$changedField]) : $log->states_before[$changedField] }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                <td class="px-6 py-4 whitespace-normal" style="min-width: 300px;">
                                                     {{ is_array($changedValue) ? json_encode($changedValue) : $changedValue }}
                                                 </td>
                                             </tr>
