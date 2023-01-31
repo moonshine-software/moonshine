@@ -57,11 +57,9 @@ class InstallCommand extends MoonShineCommand
 
     protected function initDashboard(): void
     {
-        $dashboard = $this->getDirectory()."/Dashboard.php";
-        $contents = $this->getStub('Dashboard');
-        $contents = str_replace('{namespace}', MoonShine::namespace(), $contents);
-
-        $this->laravel['files']->put($dashboard, $contents);
+        $this->copyStub('Dashboard', $this->getDirectory()."/Dashboard.php", [
+            '{namespace}' => MoonShine::namespace()
+        ]);
 
         $this->components->task('Dashboard created');
     }
@@ -71,10 +69,7 @@ class InstallCommand extends MoonShineCommand
         $this->comment('Publishing MoonShine Service Provider...');
         Artisan::call('vendor:publish', ['--tag' => 'moonshine-provider']);
 
-        $this->laravel['files']->put(
-            app_path('Providers/MoonShineServiceProvider.php'),
-            $this->getStub('MoonShineServiceProvider')
-        );
+        $this->copyStub('MoonShineServiceProvider', app_path('Providers/MoonShineServiceProvider.php'));
 
         if (! app()->runningUnitTests()) {
             $this->registerServiceProvider();
@@ -85,33 +80,10 @@ class InstallCommand extends MoonShineCommand
 
     protected function registerServiceProvider(): void
     {
-        $namespace = Str::replaceLast('\\', '', $this->laravel->getNamespace());
-
-        $appConfig = file_get_contents(config_path('app.php'));
-
-        if (Str::contains($appConfig, $namespace.'\\Providers\\MoonShineServiceProvider::class')) {
-            return;
-        }
-
-        $lineEndingCount = [
-            "\r\n" => substr_count($appConfig, "\r\n"),
-            "\r" => substr_count($appConfig, "\r"),
-            "\n" => substr_count($appConfig, "\n"),
-        ];
-
-        $eol = array_keys($lineEndingCount, max($lineEndingCount))[0];
-
-        file_put_contents(config_path('app.php'), str_replace(
-            "$namespace\\Providers\RouteServiceProvider::class,".$eol,
-            "$namespace\\Providers\RouteServiceProvider::class,".$eol."        $namespace\Providers\MoonShineServiceProvider::class,".$eol,
-            $appConfig
-        ));
-
-        file_put_contents(app_path('Providers/MoonShineServiceProvider.php'), str_replace(
-            "namespace App\Providers;",
-            "namespace $namespace\Providers;",
-            file_get_contents(app_path('Providers/MoonShineServiceProvider.php'))
-        ));
+        $this->installServiceProviderAfter(
+            'RouteServiceProvider', 
+            'MoonShineServiceProvider'
+        );
     }
 
     protected function initLfm(): void
