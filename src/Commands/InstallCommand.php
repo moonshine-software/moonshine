@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Commands;
 
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Str;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
 
@@ -58,7 +57,7 @@ class InstallCommand extends MoonShineCommand
     protected function initDashboard(): void
     {
         $this->copyStub('Dashboard', $this->getDirectory()."/Dashboard.php", [
-            '{namespace}' => MoonShine::namespace()
+            '{namespace}' => MoonShine::namespace(),
         ]);
 
         $this->components->task('Dashboard created');
@@ -81,7 +80,7 @@ class InstallCommand extends MoonShineCommand
     protected function registerServiceProvider(): void
     {
         $this->installServiceProviderAfter(
-            'RouteServiceProvider', 
+            'RouteServiceProvider',
             'MoonShineServiceProvider'
         );
     }
