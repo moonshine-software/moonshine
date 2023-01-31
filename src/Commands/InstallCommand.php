@@ -57,7 +57,7 @@ class InstallCommand extends MoonShineCommand
     protected function initDashboard(): void
     {
         $this->copyStub('Dashboard', $this->getDirectory()."/Dashboard.php", [
-            '{namespace}' => MoonShine::namespace()
+            '{namespace}' => MoonShine::namespace(),
         ]);
 
         $this->components->task('Dashboard created');
