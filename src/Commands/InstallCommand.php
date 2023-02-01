@@ -34,7 +34,7 @@ class InstallCommand extends MoonShineCommand
             $this->components->warn("{$this->getDirectory()} directory already exists!");
         }
 
-        $this->makeDir('Resources');
+        $this->makeDir($this->getDirectory() . '/Resources');
 
         $this->components->task('Resources directory created');
 
