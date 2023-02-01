@@ -1,5 +1,5 @@
 @if($field->isHidden())
-    {{ $slot }}
+    <div class="hidden">{{ $slot }}</div>
 @else
 <div {!! $field->showWhenState ? "x-show='".$field->showWhenField." == `".$field->showWhenValue ."`'" : ''!!}
      class="border-b border-whiteblue dark:border-dark px-10 py-5"
