@@ -75,6 +75,7 @@
 
     <script>
         function precognition(form) {
+            form.querySelector('.form_submit_button').setAttribute('disabled', 'true');
             form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.loading') }}';
             form.querySelector('.precognition_errors').innerHTML = '';
 
@@ -93,6 +94,8 @@
             }).then(function (json) {
                 if(Object.keys(json).length) {
                     form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.saved_error') }}';
+                    form.querySelector('.form_submit_button').setAttribute('disabled', 'false');
+
                     let errors  = '';
 
                     for(const key in json) {
