@@ -446,7 +446,8 @@ abstract class Resource implements ResourceContract
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn (Field $field) => $field->showWhenState);
+            ->filter(fn (Field $field) => $field->showWhenState)
+            ->values();
     }
 
     /**
@@ -475,7 +476,8 @@ abstract class Resource implements ResourceContract
     public function indexFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnIndex);
+            ->filter(fn (Field $field) => $field->showOnIndex)
+            ->values();
     }
 
     /**
@@ -500,6 +502,7 @@ abstract class Resource implements ResourceContract
     {
         return $this->getFields()
             ->filter(fn (Field $field) => $field->isResourceModeField())
+            ->values()
             ->map(fn (Field $field) => $field->setParents())
         ;
     }
@@ -515,6 +518,7 @@ abstract class Resource implements ResourceContract
         return $fields->merge(
             $this->getFields()
                 ->filter(fn (Field $field) => $field->showOnForm)
+                ->values()
         );
     }
 
@@ -529,6 +533,7 @@ abstract class Resource implements ResourceContract
             $fields = $fields->merge(
                 collect($extension->fields())
                     ->filter(fn (Field $field) => $field->showOnForm)
+                    ->values()
             );
         }
 
@@ -542,7 +547,8 @@ abstract class Resource implements ResourceContract
     public function exportFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnExport);
+            ->filter(fn (Field $field) => $field->showOnExport)
+            ->values();
     }
 
     /**
@@ -552,7 +558,8 @@ abstract class Resource implements ResourceContract
     public function importFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->useOnImport);
+            ->filter(fn (Field $field) => $field->useOnImport)
+            ->values();
     }
 
     /**

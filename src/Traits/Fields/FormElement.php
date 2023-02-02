@@ -163,7 +163,7 @@ trait FormElement
         return $this;
     }
 
-    protected function isGroup(): bool
+    public function isGroup(): bool
     {
         return $this->group;
     }
