@@ -94,7 +94,7 @@
             }).then(function (json) {
                 if(Object.keys(json).length) {
                     form.querySelector('.form_submit_button').innerHTML = '{{ trans('moonshine::ui.saved_error') }}';
-                    form.querySelector('.form_submit_button').setAttribute('disabled', 'false');
+                    form.querySelector('.form_submit_button').removeAttribute('disabled');
 
                     let errors  = '';
 
@@ -103,8 +103,6 @@
                     }
 
                     form.querySelector('.precognition_errors').innerHTML = errors;
-                } else {
-                    form.submit()
                 }
             })
 
