@@ -1,11 +1,11 @@
-<textarea id='tinyeditor_{{ $field->id() }}' name="{{ $field->name() }}">
+<textarea id='tinyeditor_{{ $item->getKey() }}_{{ $field->id() }}' name="{{ $field->name() }}">
     {!! $field->formViewValue($item) ?? '' !!}
 </textarea>
 
 <script>
     var editor_config = {
         path_absolute: "/",
-        selector: 'textarea#tinyeditor_{{ $field->id() }}',
+        selector: 'textarea#tinyeditor_{{ $item->getKey() }}_{{ $field->id() }}',
         relative_urls: false,
         plugins: '{{ trim($field->plugins . ' ' . $field->addedPlugins) }}',
         toolbar: '{{ trim($field->toolbar . ' ' . $field->addedToolbar) }}',

@@ -1,9 +1,9 @@
-<textarea id='ckeditor_{{ $field->id() }}' name="{{ $field->name() }}">
+<textarea id='ckeditor_{{ $item->getKey() }}_{{ $field->id() }}' name="{{ $field->name() }}">
     {!! $field->formViewValue($item) ?? '' !!}
 </textarea>
 
 <script>
-    CKEDITOR.ClassicEditor.create(document.getElementById("ckeditor_{{ $field->id() }}"), {
+    CKEDITOR.ClassicEditor.create(document.getElementById("ckeditor_{{ $item->getKey() }}_{{ $field->id() }}"), {
         // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
         toolbar: {
             items: [
