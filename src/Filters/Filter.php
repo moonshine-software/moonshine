@@ -49,7 +49,7 @@ abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
 
             return $this->requestValue()
                 ? $query->whereHas($this->relation(), function (Builder $q) use ($related) {
-                    $table = $related->getTable();
+                    $table = $q->getModel()->getTable();
                     $id = $related->getKeyName();
 
                     return $q->whereIn(
