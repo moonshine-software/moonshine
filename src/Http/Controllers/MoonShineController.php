@@ -59,6 +59,7 @@ class MoonShineController extends BaseController
             $action->callback($item);
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
+            report($e);
 
             return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));
@@ -87,6 +88,7 @@ class MoonShineController extends BaseController
             $action->callback($item);
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
+            report($e);
 
             return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));
@@ -119,6 +121,7 @@ class MoonShineController extends BaseController
             $items->each(fn ($item) => $action->callback($item));
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
+            report($e);
 
             return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));
@@ -374,6 +377,7 @@ class MoonShineController extends BaseController
                 $this->resource->save($item);
             } catch (ResourceException $e) {
                 throw_if(! app()->isProduction(), $e);
+                report($e);
 
                 return $redirectRoute
                     ->with('alert', trans('moonshine::ui.saved_error'));
