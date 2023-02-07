@@ -1,5 +1,5 @@
-<div class="flex
-    @if(!$decoration->isWithoutSpace()) space-x-4 @endif
+<div class="md:flex
+    @if(!$decoration->isWithoutSpace()) gap-4 @endif
     items-{{ $decoration->getItemsAlign() }}
     justify-{{ $decoration->getJustifyAlign() }}"
 >
