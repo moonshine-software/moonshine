@@ -73,7 +73,7 @@ abstract class Decoration implements HtmlViewable
      */
     public function id(string $index = null): string
     {
-        return (string) str($this->label())->slug();
+        return (string) str($this->label())->slug('_');
     }
 
     /**
