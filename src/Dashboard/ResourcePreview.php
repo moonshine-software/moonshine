@@ -39,7 +39,9 @@ final class ResourcePreview implements HtmlViewable
 
     public function id(string $index = null): string
     {
-        return 'resource-preview-' . $this->resource()->routeAlias();
+        return str($this->resource()->routeAlias())
+            ->prepend('resource_preview_')
+            ->slug('_');
     }
 
     public function name(string $index = null): string

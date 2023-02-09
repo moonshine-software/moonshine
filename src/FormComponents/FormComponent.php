@@ -22,7 +22,7 @@ abstract class FormComponent implements HtmlViewable
 
     public function id(string $index = null): string
     {
-        return (string) str($this->label())->slug();
+        return (string) str($this->label())->slug('_');
     }
 
     public function name(string $index = null): string
