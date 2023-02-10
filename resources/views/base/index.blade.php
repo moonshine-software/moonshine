@@ -47,7 +47,7 @@
 
     @if($resource->can('create') && in_array('create', $resource->getActiveActions()))
         @if($resource->isCreateInModal())
-            <x-moonshine::async-modal id="create_modal" route="{{ $resource->route('create', query: request('related_column') ? ['related_column' => request('related_column'), 'related_key' => request('related_key')] : []) }}" class="inline-flex  items-center bg-transparent hover:bg-purple text-purple border border-purple hover:text-white hover:border-transparent font-semibold  py-2 px-4 rounded">
+            <x-moonshine::async-modal id="create_{{$resource->getModel()->getTable()}}_modal" route="{{ $resource->route('create', query: request('related_column') ? ['related_column' => request('related_column'), 'related_key' => request('related_key')] : []) }}" class="inline-flex  items-center bg-transparent hover:bg-purple text-purple border border-purple hover:text-white hover:border-transparent font-semibold  py-2 px-4 rounded">
                 @include("moonshine::shared.icons.add", ["size" => 4, "class" => "mr-2"])
                 <span>{{ trans('moonshine::ui.create') }}</span>
             </x-moonshine::async-modal>
