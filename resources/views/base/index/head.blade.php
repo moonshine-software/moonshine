@@ -1,5 +1,5 @@
 <tr>
-    @if(!$resource->isPreviewMode())
+    @if($resource->isMassAction())
         <th class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
             <input type="checkbox" @change="actionBar('main')" class="actionBarCheckboxMain" value="1" />
         </th>

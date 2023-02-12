@@ -1,4 +1,4 @@
-@if(!$resource->isPreviewMode())
+@if($resource->isMassAction())
 <tr>
     <td class="px-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider"
         colspan="{{ count($resource->indexFields())+2 }}"
@@ -72,6 +72,12 @@
                             if(checkboxes[i].checked && checkboxes[i].value) {
                                 values.push(checkboxes[i].value);
                             }
+                        }
+
+                        if(document.querySelector('.actionBarCheckboxRow:not(:checked)') != null) {
+                            document.querySelector('.actionBarCheckboxMain').checked = false;
+                        } else {
+                            document.querySelector('.actionBarCheckboxMain').checked = true;
                         }
 
                         if(document.querySelector('.actionBarCheckboxRow:checked') != null) {

@@ -898,6 +898,15 @@ abstract class Resource implements ResourceContract
         ]);
     }
 
+    public function isMassAction(): bool
+    {
+        return ! $this->isPreviewMode() && (
+            count($this->bulkActions()) || (
+                $this->can('massDelete') && in_array('delete', $this->getActiveActions())
+            )
+        );
+    }
+
     protected function _render(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
     {
         if ($field->hasRelationship() && ($field->belongToOne() || $field->manyToMany())) {
