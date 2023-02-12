@@ -1,6 +1,6 @@
 @foreach($items as $item)
     <tr style="{{ $resource->trStyles($item, $loop->index) }}">
-        @if(!$resource->isPreviewMode())
+        @if($resource->isMassAction())
             <td class="px-6 py-4 whitespace-nowrap" style="{{ $resource->tdStyles($item, $loop->index, 0) }}">
                 <input class="actionBarCheckboxRow" @change='actionBar("item")' name="items[{{ $item->getKey() }}]"
                        type="checkbox" value="{{ $item->getKey() }}"/>
