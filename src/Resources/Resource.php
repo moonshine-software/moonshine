@@ -900,7 +900,7 @@ abstract class Resource implements ResourceContract
 
     public function isMassAction(): bool
     {
-        return !$this->isPreviewMode() && (
+        return ! $this->isPreviewMode() && (
             count($this->bulkActions()) || (
                 $this->can('massDelete') && in_array('delete', $this->getActiveActions())
             )
