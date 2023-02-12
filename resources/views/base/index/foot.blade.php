@@ -74,6 +74,12 @@
                             }
                         }
 
+                        if(document.querySelector('.actionBarCheckboxRow:not(:checked)') != null) {
+                            document.querySelector('.actionBarCheckboxMain').checked = false;
+                        } else {
+                            document.querySelector('.actionBarCheckboxMain').checked = true;
+                        }
+
                         if(document.querySelector('.actionBarCheckboxRow:checked') != null) {
                             this.actionBarOpen = true;
                         } else {
