@@ -18,8 +18,8 @@
                 @if(!$resource->isPreviewMode())
                     <tfoot x-ref="foot"
                            class="hidden bg-whiteblue dark:bg-purple"
-                           :class="actionBarOpen ? 'translate-y-0 ease-out' : '-translate-y-full ease-in hidden'">
-
+                           :class="actionBarOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
+                    >
                         @include("moonshine::base.index.foot", [$resource])
                     </tfoot>
                 @endif
