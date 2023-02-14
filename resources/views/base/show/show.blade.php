@@ -1,18 +1,24 @@
-<div>
+<div class="overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
     {!! $resource->extensions('tabs', $item) !!}
 
     @if($item->exists)
-        @foreach($resource->showFields() as $index => $field)
-            <div class="flex items-center space-x-2 px-3 py-3 whitespace-nowrap">
-                <span class="text-sm">{{ $field->label() }}</span>:
-                <div class="leading-5">{!! $field->indexViewValue($item) !!}</div>
-            </div>
-        @endforeach
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg">
+            <table class="min-w-full">
+                <tbody class="bg-white dark:bg-darkblue text-black dark:text-white">
+                    @foreach($resource->showFields() as $index => $field)
+                        <tr class="border-b last:border-0 border-whiteblue dark:border-dark">
+                            <td class="px-6 py-4 leading-5 whitespace-nowrap">{{ $field->label() }}:</td>
+                            <td class="px-6 w-full py-4">{!! $field->indexViewValue($item) !!}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         @if(!$resource->isPreviewMode())
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm leading-5 font-medium">
-                @include("moonshine::base.index.shared.item_actions", ["item" => $item, "resource" => $resource])
-            </td>
+            <div class="px-6 py-4">
+                @include("moonshine::base.show.shared.actions", ["item" => $item, "resource" => $resource])
+            </div>
         @endif
     @endif
 </div>
