@@ -238,7 +238,7 @@ class MoonShineController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function show($id): string|View|Factory|Redirector|RedirectResponse|Application
+    public function show($id): View|Factory|Redirector|Application|RedirectResponse
     {
         if (! in_array('show', $this->resource->getActiveActions())) {
             return redirect($this->resource->route('index'));
@@ -252,23 +252,10 @@ class MoonShineController extends BaseController
 
         $this->resource->setItem($item);
 
-        return $this->showView($item);
-    }
-
-    /**
-     * Метод сборки данных для вызова и передачи их в шаблон детальной страницы.
-     * @param Model|null $item
-     * @return Application|Factory|View|mixed|string
-     * @throws Throwable
-     */
-    public function showView(Model $item = null): mixed
-    {
-        $view = view($this->resource->baseShowView(), [
+        return view($this->resource->baseShowView(), [
             'resource' => $this->resource,
             'item' => $item ?? $this->resource->getModel(),
         ]);
-
-        return $view;
     }
 
     /**

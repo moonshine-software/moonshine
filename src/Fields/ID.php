@@ -16,6 +16,7 @@ class ID extends Field
 
     protected static string $type = 'hidden';
 
+
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
         return view('moonshine::shared.badge', [

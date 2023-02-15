@@ -124,20 +124,22 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     }
 
     /**
-     * Показать поле на детальной странице.
-     * @param mixed|null $conditon
+     * Set field as visible on detail page, based on condition
+     *
+     * @param mixed $condition
      * @return $this
      */
-    public function showOnDetail(mixed $conditon = null): static
+    public function showOnDetail(mixed $condition = null): static
     {
-        $this->showOnDetail = Condition::boolean($conditon, true);
+        $this->showOnDetail = Condition::boolean($condition, true);
 
         return $this;
     }
 
     /**
-     * Скрыть поле на детальной странице.
-     * @param mixed|null $condition
+     * Set field as hidden on detail page, based on condition
+     *
+     * @param mixed $condition
      * @return $this
      */
     public function hideOnDetail(mixed $condition = null): static

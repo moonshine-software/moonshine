@@ -61,7 +61,6 @@ abstract class Resource implements ResourceContract
 
     public static string $baseEditView = 'moonshine::base.form';
 
-    /** @var string Переменная для хранения шаблона детайльной страницы. */
     public static string $baseShowView = 'moonshine::base.show';
 
     public string $titleField = '';
@@ -225,10 +224,6 @@ abstract class Resource implements ResourceContract
         return '';
     }
 
-    /**
-     * Получить название шаблона для детальной страницы.
-     * @return string
-     */
     public function baseShowView(): string
     {
         return static::$baseShowView;
@@ -340,19 +335,13 @@ abstract class Resource implements ResourceContract
             . ($query ? '?' . http_build_query($query) : '');
     }
 
-    /**
-     * Метод генерации адреса для страницы ресурса из переданных параметров запроса.
-     * @param string|null $action
-     * @param int|string|null $id
-     * @param array $query
-     * @return string
-     */
     public function route(string $action = null, int|string $id = null, array $query = []): string
     {
-        $cacheKey = "moonshine_query_{$this->routeAlias()}".($id ? "_{$id}" : '');
-
-        if (empty($query) && Cache::has($cacheKey)) {
-            parse_str(Cache::get($cacheKey, ''), $query);
+        if (empty($query) && Cache::has("moonshine_query_{$this->routeAlias()}")) {
+            parse_str(
+                Cache::get("moonshine_query_{$this->routeAlias()}", ''),
+                $query
+            );
         }
 
         if ($this->isRelatable()) {
@@ -499,14 +488,14 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * Получить коллекцию полей настроенных для детальной страницы.
-     * @return Collection
+     * @return Collection<Field>
      * @throws Throwable
      */
     public function showFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnDetail);
+            ->filter(fn (Field $field) => $field->showOnDetail)
+            ->values();
     }
 
     /**
