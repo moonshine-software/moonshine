@@ -167,7 +167,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
             }
 
             return (string) $result;
-        })->implode(',');
+        })->implode(', ');
     }
 
     public function save(Model $item): Model
