@@ -6,6 +6,7 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
@@ -65,6 +66,10 @@ trait FormElement
                 $this->setResource($resource);
             } elseif (is_string($resource)) {
                 $this->setResourceTitleField($resource);
+            }
+
+            if (!$this->manyToMany() && $this instanceof HasFields && !$this->hasFields()) {
+                $this->fields($this->resource()?->formFields()?->toArray() ?? []);
             }
         }
 

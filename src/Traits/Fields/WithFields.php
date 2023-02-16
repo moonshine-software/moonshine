@@ -59,7 +59,7 @@ trait WithFields
             );
 
             throw_if(
-                $field instanceof HasFields && $field->hasFields(),
+                !$field instanceof Json && $field instanceof HasFields,
                 new FieldException('Field with fields unavailable now. Coming soon')
             );
 

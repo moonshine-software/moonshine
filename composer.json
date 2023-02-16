@@ -28,7 +28,8 @@
     "phpunit/phpunit": "^9.5.8",
     "mockery/mockery": "^1.4.4",
     "phpstan/phpstan": "^1.4.7",
-    "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0"
+    "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0",
+    "brianium/paratest": "^6.8"
   },
   "autoload": {
     "psr-4": {
