@@ -68,7 +68,7 @@ trait FormElement
                 $this->setResourceTitleField($resource);
             }
 
-            if (!$this->manyToMany() && $this instanceof HasFields && !$this->hasFields()) {
+            if (! $this->manyToMany() && $this instanceof HasFields && ! $this->hasFields()) {
                 $this->fields($this->resource()?->formFields()?->toArray() ?? []);
             }
         }
