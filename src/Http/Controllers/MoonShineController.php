@@ -236,16 +236,26 @@ class MoonShineController extends BaseController
 
     /**
      * @throws AuthorizationException
+     * @throws Throwable
      */
-    public function show($id): Redirector|Application|RedirectResponse
+    public function show($id): View|Factory|Redirector|Application|RedirectResponse
     {
+        if (! in_array('show', $this->resource->getActiveActions())) {
+            return redirect($this->resource->route('index'));
+        }
+
         $item = $this->resource->getModel()
             ->newModelQuery()
             ->findOrFail($id);
 
         abort_if(! $this->resource->can('view', $item), 403);
 
-        return redirect($this->resource->route('index'));
+        $this->resource->setItem($item);
+
+        return view($this->resource->baseShowView(), [
+            'resource' => $this->resource,
+            'item' => $item ?? $this->resource->getModel(),
+        ]);
     }
 
     /**

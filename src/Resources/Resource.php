@@ -61,6 +61,8 @@ abstract class Resource implements ResourceContract
 
     public static string $baseEditView = 'moonshine::base.form';
 
+    public static string $baseShowView = 'moonshine::base.show';
+
     public string $titleField = '';
 
     protected static bool $system = false;
@@ -220,6 +222,11 @@ abstract class Resource implements ResourceContract
     public function tdStyles(Model $item, int $index, int $cell): string
     {
         return '';
+    }
+
+    public function baseShowView(): string
+    {
+        return static::$baseShowView;
     }
 
     public function baseIndexView(): string
@@ -477,6 +484,17 @@ abstract class Resource implements ResourceContract
     {
         return $this->getFields()
             ->filter(fn (Field $field) => $field->showOnIndex)
+            ->values();
+    }
+
+    /**
+     * @return Collection<Field>
+     * @throws Throwable
+     */
+    public function showFields(): Collection
+    {
+        return $this->getFields()
+            ->filter(fn (Field $field) => $field->showOnDetail)
             ->values();
     }
 
