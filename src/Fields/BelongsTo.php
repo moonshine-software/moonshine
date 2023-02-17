@@ -33,7 +33,11 @@ class BelongsTo extends Field implements HasRelationship, BelongsToRelation
             return $item;
         }
 
+        $value = $item->{$this->relation()}()
+            ->getRelated()
+            ->findOrFail($this->requestValue());
+
         return $item->{$this->relation()}()
-            ->associate($this->requestValue());
+            ->associate($value);
     }
 }
