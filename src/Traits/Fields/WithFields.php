@@ -55,12 +55,12 @@ trait WithFields
         return collect($this->fields)->map(function ($field) {
             throw_if(
                 $this instanceof Json && $field->hasRelationship(),
-                new FieldException('Relationship fields in JSON field unavailable now. Coming soon')
+                new FieldException('Relationship fields in JSON field unavailable. Use resourceMode')
             );
 
             throw_if(
                 ! $field instanceof Json && $field instanceof HasFields,
-                new FieldException('Field with fields unavailable now. Coming soon')
+                new FieldException('Field with fields unavailable. Use resourceMode')
             );
 
             if ($this instanceof HasPivot) {
