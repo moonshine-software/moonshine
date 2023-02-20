@@ -75,11 +75,13 @@ class MoonShineUserResource extends Resource
                 Block::make('right-side', [
                     Password::make(trans('moonshine::ui.resource.password'), 'password')
                         ->customAttributes(['autocomplete' => 'new-password'])
-                        ->hideOnIndex(),
+                        ->hideOnIndex()
+                        ->hideOnDetail(),
 
                     PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
                         ->customAttributes(['autocomplete' => 'confirm-password'])
-                        ->hideOnIndex(),
+                        ->hideOnIndex()
+                        ->hideOnDetail(),
                 ]),
             ]),
         ];
