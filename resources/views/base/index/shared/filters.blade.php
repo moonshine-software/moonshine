@@ -10,7 +10,7 @@
             @if(request('filters'))
                 <div class="absolute inline-block top-0 right-0 bottom-auto left-auto -mr-2 -mt-2
                     rounded-full text-white bg-red-600 px-2 py-1 text-xs font-bold text-center">
-                    {{ count(array_filter(request('filters'))) }}
+                    {{ count(array_filter(Arr::map(request('filters'), fn($filter) => is_array($filter) ? Arr::whereNotNull($filter) : $filter))) }}
                 </div>
             @endif
         </button>
