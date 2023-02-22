@@ -13,7 +13,7 @@ class Enum extends Select
     {
         $value = $item->{$this->field()};
 
-        if (isset($this->values()[$value->value])) {
+        if (isset($this->values()[$value?->value])) {
             return $this->values()[$value->value];
         }
 
