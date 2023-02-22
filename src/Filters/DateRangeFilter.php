@@ -15,7 +15,7 @@ class DateRangeFilter extends Filter
 
     public static string $type = 'date';
 
-    protected bool $multiple = true;
+    protected bool $group = true;
 
     public function getQuery(Builder $query): Builder
     {
