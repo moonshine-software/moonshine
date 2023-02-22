@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Tests\Filters;
 
 use Leeto\MoonShine\Filters\DateRangeFilter;
-use Leeto\MoonShine\Filters\TextFilter;
 use Leeto\MoonShine\Tests\TestCase;
 
 class DateRangeFilterTest extends TestCase
