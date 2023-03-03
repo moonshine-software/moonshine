@@ -20,7 +20,7 @@
     "php": "^8.0|^8.1|^8.2",
     "ext-curl": "*",
     "ext-json": "*",
-    "unisharp/laravel-filemanager": "^2.5",
+    "unisharp/laravel-filemanager": "^2.6",
     "rap2hpoutre/fast-excel": "^5.0",
     "lee-to/laravel-package-command": "^0.9.1"
   },
