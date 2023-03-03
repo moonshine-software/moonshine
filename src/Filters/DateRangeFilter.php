@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
 
 class DateRangeFilter extends Filter
@@ -21,13 +22,12 @@ class DateRangeFilter extends Filter
     {
         $values = $this->requestValue();
 
-        if ($values !== false && collect($values)->filter()->isNotEmpty()) {
-            return $query->whereBetween(
-                $this->field(),
-                collect($values)->map(fn ($date) => date('Y-m-d', strtotime($date)))
-            );
-        }
-
-        return $query;
+        return $query
+            ->when($values['from'] ?? null, function ($query, $fromDate) {
+                $query->whereDate($this->field, '>=', Carbon::parse($fromDate));
+            })
+            ->when($values['to'] ?? null, function ($query, $toDate) {
+                $query->whereDate($this->field, '<=', Carbon::parse($toDate));
+            });
     }
 }
