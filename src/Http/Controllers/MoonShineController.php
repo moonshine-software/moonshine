@@ -185,8 +185,8 @@ class MoonShineController extends BaseController
         $view = view($this->resource->baseIndexView(), [
             'resource' => $this->resource,
             'filters' => $this->resource->filters(),
-            'dropdownActions' => $actions->filter(fn($action) => $action->inDropdown()),
-            'lineActions' => $actions->filter(fn($action) => !$action->inDropdown()),
+            'dropdownActions' => $actions->filter(fn ($action) => $action->inDropdown()),
+            'lineActions' => $actions->filter(fn ($action) => ! $action->inDropdown()),
             'metrics' => $this->resource->metrics(),
             'items' => $this->resource->paginate(),
         ]);

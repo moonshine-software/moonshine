@@ -20,7 +20,7 @@ class Image extends Field implements Fileable
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        if (!$item->{$this->field()}) {
+        if (! $item->{$this->field()}) {
             return '';
         }
 

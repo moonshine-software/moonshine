@@ -18,7 +18,7 @@ class Url extends Field
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
         return view('moonshine::ui.url', [
-            'value' => parent::indexViewValue($item, $container)
+            'value' => parent::indexViewValue($item, $container),
         ]);
     }
 }

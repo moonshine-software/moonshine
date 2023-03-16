@@ -29,11 +29,11 @@ use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\FormActions\FormAction;
-use Leeto\MoonShine\QueryTags\QueryTag;
 use Leeto\MoonShine\FormComponents\FormComponent;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
 use Leeto\MoonShine\MoonShine;
+use Leeto\MoonShine\QueryTags\QueryTag;
 use Throwable;
 
 abstract class Resource implements ResourceContract
@@ -325,7 +325,7 @@ abstract class Resource implements ResourceContract
         return (string)str('moonshine')
             ->append('.')
             ->append($this->routeAlias())
-            ->when($action, fn($str) => $str->append('.')->append($action));
+            ->when($action, fn ($str) => $str->append('.')->append($action));
     }
 
     public function currentRoute(array $query = []): string
@@ -361,8 +361,8 @@ abstract class Resource implements ResourceContract
             ->append('Controller')
             ->when(
                 $this->isSystem(),
-                fn($str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
-                fn($str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
+                fn ($str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
+                fn ($str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
             );
     }
 
@@ -395,7 +395,7 @@ abstract class Resource implements ResourceContract
             $actions->add($action->setResource($this));
         }
 
-        if (!$hasFilters && !empty($this->filters())) {
+        if (! $hasFilters && ! empty($this->filters())) {
             $actions->add(
                 FiltersAction::make(trans('moonshine::ui.filters'))
                     ->setResource($this)
@@ -452,7 +452,7 @@ abstract class Resource implements ResourceContract
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn(Field $field) => $field->showWhenState)
+            ->filter(fn (Field $field) => $field->showWhenState)
             ->values();
     }
 
@@ -482,7 +482,7 @@ abstract class Resource implements ResourceContract
     public function indexFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn(Field $field) => $field->showOnIndex)
+            ->filter(fn (Field $field) => $field->showOnIndex)
             ->values();
     }
 
@@ -493,7 +493,7 @@ abstract class Resource implements ResourceContract
     public function showFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn(Field $field) => $field->showOnDetail)
+            ->filter(fn (Field $field) => $field->showOnDetail)
             ->values();
     }
 
@@ -518,9 +518,9 @@ abstract class Resource implements ResourceContract
     public function relatableFormComponents(): Collection
     {
         return $this->getFields()
-            ->filter(fn(Field $field) => $field->isResourceModeField())
+            ->filter(fn (Field $field) => $field->isResourceModeField())
             ->values()
-            ->map(fn(Field $field) => $field->setParents());
+            ->map(fn (Field $field) => $field->setParents());
     }
 
     /**
@@ -530,7 +530,7 @@ abstract class Resource implements ResourceContract
     public function formFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn(Field $field) => $field->showOnForm)
+            ->filter(fn (Field $field) => $field->showOnForm)
             ->values();
     }
 
@@ -541,7 +541,7 @@ abstract class Resource implements ResourceContract
     public function exportFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn(Field $field) => $field->showOnExport)
+            ->filter(fn (Field $field) => $field->showOnExport)
             ->values();
     }
 
@@ -552,7 +552,7 @@ abstract class Resource implements ResourceContract
     public function importFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn(Field $field) => $field->useOnImport)
+            ->filter(fn (Field $field) => $field->useOnImport)
             ->values();
     }
 
@@ -734,12 +734,12 @@ abstract class Resource implements ResourceContract
         $user = auth(config('moonshine.auth.guard'))->user();
 
         if ($user->moonshineUserPermission
-            && (!$user->moonshineUserPermission->permissions->has(get_class($this))
-                || !isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
+            && (! $user->moonshineUserPermission->permissions->has(get_class($this))
+                || ! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
             return false;
         }
 
-        if (!$this->isWithPolicy()) {
+        if (! $this->isWithPolicy()) {
             return true;
         }
 
@@ -787,9 +787,9 @@ abstract class Resource implements ResourceContract
         $fields = $fields ?? $this->formFields();
 
         try {
-            $fields->each(fn($field) => $field->beforeSave($item));
+            $fields->each(fn ($field) => $field->beforeSave($item));
 
-            if (!$item->exists && method_exists($this, 'beforeCreating')) {
+            if (! $item->exists && method_exists($this, 'beforeCreating')) {
                 $this->beforeCreating($item);
             }
 
@@ -798,7 +798,7 @@ abstract class Resource implements ResourceContract
             }
 
             foreach ($fields as $field) {
-                if (!$field->hasRelationship() || $field->belongToOne()) {
+                if (! $field->hasRelationship() || $field->belongToOne()) {
                     $item = $this->saveItem($item, $field, $saveData);
                 }
             }
@@ -807,20 +807,20 @@ abstract class Resource implements ResourceContract
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 foreach ($fields as $field) {
-                    if ($field->hasRelationship() && !$field->belongToOne()) {
+                    if ($field->hasRelationship() && ! $field->belongToOne()) {
                         $item = $this->saveItem($item, $field, $saveData);
                     }
                 }
 
                 $item->save();
 
-                $fields->each(fn($field) => $field->afterSave($item));
+                $fields->each(fn ($field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated && method_exists($this, 'afterCreated')) {
                     $this->afterCreated($item);
                 }
 
-                if (!$wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
+                if (! $wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
                     $this->afterUpdated($item);
                 }
             }
@@ -882,11 +882,11 @@ abstract class Resource implements ResourceContract
 
     public function isMassAction(): bool
     {
-        return !$this->isPreviewMode() && (
-                count($this->bulkActions()) || (
-                    $this->can('massDelete') && in_array('delete', $this->getActiveActions())
-                )
-            );
+        return ! $this->isPreviewMode() && (
+            count($this->bulkActions()) || (
+                $this->can('massDelete') && in_array('delete', $this->getActiveActions())
+            )
+        );
     }
 
     protected function _render(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application

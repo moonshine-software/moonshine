@@ -31,7 +31,7 @@ class ValueMetric extends Metric
 
         return $this->simpleValue();
     }
-    
+
     public function simpleValue(): string|float
     {
         return str_replace('{value}', (string) $this->value, $this->valueFormat);

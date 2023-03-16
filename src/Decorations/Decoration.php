@@ -15,7 +15,7 @@ abstract class Decoration implements HtmlViewable
     use Makeable;
     use WithView;
     use WithLabel;
-    
+
     protected array $fields = [];
 
     public function __construct(string $label, array $fields = [])

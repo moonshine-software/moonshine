@@ -130,7 +130,7 @@ class MoonShine
                 Route::get('/notifications', [MoonShineNotificationController::class, 'readAll'])->name('notifications.readAll');
                 Route::get('/notifications/{notification}', [MoonShineNotificationController::class, 'read'])->name('notifications.read');
 
-                if(config('moonshine.auth.enable', true)) {
+                if (config('moonshine.auth.enable', true)) {
                     Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
                     Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
                     Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
