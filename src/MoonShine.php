@@ -19,7 +19,6 @@ use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
 use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
-use UniSharp\LaravelFilemanager\Lfm;
 
 class MoonShine
 {
@@ -121,15 +120,9 @@ class MoonShine
      */
     protected function addRoutes(): void
     {
-        Route::prefix('laravel-filemanager')
+        Route::prefix(config('moonshine.route.prefix', ''))
             ->middleware(config('moonshine.route.middleware'))
-            ->group(function () {
-                Lfm::routes();
-            });
-
-        Route::prefix(config('moonshine.route.prefix'))
-            ->middleware(config('moonshine.route.middleware'))
-            ->name(config('moonshine.route.prefix').'.')->group(function () {
+            ->name('moonshine.')->group(function () {
                 Route::get('/', [MoonShineDashboardController::class, 'index'])->name('index');
                 Route::post('/attachments', [MoonShineDashboardController::class, 'attachments'])->name('attachments');
                 Route::get('/auto-update', [MoonShineDashboardController::class, 'autoUpdate'])->name('auto-update');
@@ -137,17 +130,20 @@ class MoonShine
                 Route::get('/notifications', [MoonShineNotificationController::class, 'readAll'])->name('notifications.readAll');
                 Route::get('/notifications/{notification}', [MoonShineNotificationController::class, 'read'])->name('notifications.read');
 
-                Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
-                Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
-                Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
+                if(config('moonshine.auth.enable', true)) {
+                    Route::get('/login', [MoonShineAuthController::class, 'login'])->name('login');
+                    Route::post('/authenticate', [MoonShineAuthController::class, 'authenticate'])->name('authenticate');
+                    Route::get('/logout', [MoonShineAuthController::class, 'logout'])->name('logout');
 
-                Route::get('/socialite/{driver}/redirect', [MoonShineSocialiteController::class, 'redirect'])->name('socialite.redirect');
-                Route::get('/socialite/{driver}/callback', [MoonShineSocialiteController::class, 'callback'])->name('socialite.callback');
+                    Route::get('/socialite/{driver}/redirect', [MoonShineSocialiteController::class, 'redirect'])->name('socialite.redirect');
+                    Route::get('/socialite/{driver}/callback', [MoonShineSocialiteController::class, 'callback'])->name('socialite.callback');
 
-                Route::post('/profile', [MoonShineProfileController::class, 'store'])->name('profile.store');
+                    Route::post('/profile', [MoonShineProfileController::class, 'store'])->name('profile.store');
+                }
 
+                $customPageSlug = config('moonshine.route.custom_page_slug', 'custom_page');
 
-                Route::get('/custom_page/{alias}', MoonShineCustomPageController::class)
+                Route::get("/$customPageSlug/{alias}", MoonShineCustomPageController::class)
                     ->name('custom_page');
 
                 $this->resources->each(function ($resource) {

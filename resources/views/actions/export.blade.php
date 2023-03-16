@@ -1,6 +1,8 @@
-@include('moonshine::shared.btn', [
-    'title' => $action->label(),
-    'href' => $action->url(),
-    'filled' => true,
-    'icon' => 'app'
-])
+<x-moonshine::link
+    :href="$action->url()"
+    :filled="true"
+    class="dropdown-menu-link"
+    icon="heroicons.squares-2x2"
+>
+    {{ $action->label() }}
+</x-moonshine::link>

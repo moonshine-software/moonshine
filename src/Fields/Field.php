@@ -50,7 +50,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public bool $showOnDetail = true;
 
-    protected Field|null $parent = null;
+    protected ?Field $parent = null;
 
     protected string $hint = '';
 
@@ -63,6 +63,8 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     protected bool $fieldContainer = true;
 
     protected bool $fullWidth = false;
+
+    protected ?string $ext = null;
 
     protected function afterMake(): void
     {
@@ -277,14 +279,14 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         return $this;
     }
 
-    public function parent(): Field|null
+    public function parent(): ?Field
     {
         return $this->parent;
     }
 
     public function hasParent(): bool
     {
-        return $this->parent instanceof Field;
+        return $this->parent instanceof self;
     }
 
     protected function setParent(Field $field): static
@@ -363,6 +365,23 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         return $this->sortable;
     }
 
+    public function expansion(string $expansion): static
+    {
+        $this->ext = $expansion;
+
+        return $this;
+    }
+
+    public function hasExt(): bool
+    {
+        return !is_null($this->ext);
+    }
+
+    public function ext(): ?string
+    {
+        return $this->ext;
+    }
+
     public function formViewValue(Model $item): mixed
     {
         if ($this->belongToOne()) {
@@ -391,7 +410,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         }
 
         if ($this->hasRelationship()) {
-            return $container ? view('moonshine::shared.badge', [
+            return $container ? view('moonshine::ui.badge', [
                 'color' => 'purple',
                 'value' => $item->{$this->resourceTitleField()} ?? false,
             ]) : $item->{$this->resourceTitleField()} ?? false;

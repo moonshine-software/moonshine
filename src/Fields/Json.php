@@ -60,7 +60,7 @@ class Json extends Field implements HasFields
             $columns[$field->field()] = $field->label();
         }
 
-        return view('moonshine::shared.table', [
+        return view('moonshine::ui.table', [
             'columns' => $columns,
             'values' => $values,
         ]);

@@ -40,12 +40,15 @@ return [
         'mark_as_read' => 'Mark as read',
     ],
     'login' => [
+        'title' => 'Welcome to MoonShine!',
+        'description' => 'Please sign-in to your account and start the adventure',
         'authorization' => 'Authorization',
         'remember_me' => 'Remember me',
         'login' => 'Log in',
         'logout' => 'Log out',
         'email' => 'E-mail',
         'password' => 'Password',
+        'or_socials' => 'or',
     ],
     'resource' => [
         'system' => 'System',

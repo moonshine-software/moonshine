@@ -1,26 +1,39 @@
 @if($decoration->tabs()->isNotEmpty())
-    <div x-data="{activeTab_{{ $decoration->id() }}: '{{ $decoration->tabs()->first()?->id() }}'}">
-        <div>
-            <nav class="flex flex-col sm:flex-row">
-                @foreach($decoration->tabs() as $tab)
+    <!-- Tabs -->
+    <div class="tabs" x-data="{activeTab_{{ $decoration->id() }}: '{{ $decoration->tabs()->first()?->id() }}'}">
+        <!-- Tabs Buttons -->
+        <ul class="tabs-list">
+            @foreach($decoration->tabs() as $tab)
+                <li class="tabs-item">
                     <button
-                        :class="{ 'border-b-2 font-medium border-purple': activeTab_{{ $decoration->id() }} === '{{ $tab->id() }}' }"
                         @click.prevent="activeTab_{{ $decoration->id() }} = '{{ $tab->id() }}'"
-                        class="py-4 px-6 block focus:outline-none text-purple">
+                        :class="{ '_is-active': activeTab_{{ $decoration->id() }} === '{{ $tab->id() }}' }"
+                        class="tabs-button"
+                        type="button"
+                    >
+                        {!! $tab->getIcon(6, 'pink') !!}
                         {{ $tab->label() }}
                     </button>
-                @endforeach
-            </nav>
-        </div>
+                </li>
+            @endforeach
+        </ul>
+        <!-- END: Tabs Buttons -->
 
-        @foreach($decoration->tabs() as $tab)
-            <div x-show="activeTab_{{ $decoration->id() }} === '{{ $tab->id() }}'">
-                <x-moonshine::resource-renderable
-                    :components="$tab->fields()"
-                    :item="$item"
-                    :resource="$resource"
-                />
-            </div>
-        @endforeach
+        <!-- Tabs content -->
+        <div class="tabs-content">
+            @foreach($decoration->tabs() as $tab)
+                <div x-show="activeTab_{{ $decoration->id() }} === '{{ $tab->id() }}'" class="tab-panel" style="display: none">
+                    <div class="tabs-body">
+                    <x-moonshine::resource-renderable
+                        :components="$tab->fields()"
+                        :item="$item"
+                        :resource="$resource"
+                    />
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <!-- END: Tabs content -->
     </div>
+    <!-- END: Tabs -->
 @endif

@@ -34,7 +34,7 @@ class Number extends Field
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
         if ($this->withStars()) {
-            return view('moonshine::shared.stars', [
+            return view('moonshine::ui.rating', [
                 'value' => $item->{$this->field()},
             ]);
         } else {

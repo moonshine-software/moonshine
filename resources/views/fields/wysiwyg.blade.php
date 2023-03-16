@@ -2,6 +2,7 @@
     @include("moonshine::fields.textarea", [
         'field' => $field,
         'item' => $item,
+        'resource' => $resource,
     ])
 </div>
 
@@ -9,7 +10,7 @@
 
 <script>
     (function () {
-        var HOST = "{{ route(config('moonshine.route.prefix') . '.attachments') }}"
+        var HOST = "{{ route('moonshine.attachments') }}"
 
         addEventListener("trix-attachment-add", function (event) {
             if (event.attachment.file) {

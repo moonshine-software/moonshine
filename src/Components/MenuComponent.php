@@ -18,8 +18,8 @@ class MenuComponent extends Component
     {
         $data = app(Menu::class)->all();
 
-        return view('moonshine::components.menu', [
-            "data" => $data,
+        return view('moonshine::components.menu.index', [
+            'data' => $data,
         ]);
     }
 }

@@ -29,6 +29,11 @@ class ValueMetric extends Metric
             return round(($this->value / $this->target) * 100);
         }
 
+        return $this->simpleValue();
+    }
+    
+    public function simpleValue(): string|float
+    {
         return str_replace('{value}', (string) $this->value, $this->valueFormat);
     }
 

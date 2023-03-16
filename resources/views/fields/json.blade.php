@@ -1,4 +1,4 @@
-@include('moonshine::fields.shared.table-fields', [
+@include('moonshine::fields.table-fields', [
     'field' => $field,
     'resource' => $resource,
     'item' => $item,

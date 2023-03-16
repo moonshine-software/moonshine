@@ -19,8 +19,8 @@ class Authenticate
 {
     public function handle($request, Closure $next)
     {
-        if (auth(config('moonshine.auth.guard'))->guest() && ! $this->except($request)) {
-            return redirect()->guest(route(config('moonshine.route.prefix').'.'.'login'));
+        if (! $this->except($request) && auth(config('moonshine.auth.guard'))->guest()) {
+            return redirect()->guest(route('moonshine.login'));
         }
 
         return $next($request);
@@ -35,7 +35,13 @@ class Authenticate
      */
     protected function except(Request $request): bool
     {
-        $prefix = config('moonshine.route.prefix') ? config('moonshine.route.prefix').'/' : '';
+        if (!config('moonshine.auth.enable', true)) {
+            return true;
+        }
+
+        $prefix = config('moonshine.route.prefix')
+            ? config('moonshine.route.prefix').'/'
+            : '';
 
         return $request->is([
             "{$prefix}login",

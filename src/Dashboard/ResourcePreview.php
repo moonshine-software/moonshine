@@ -9,18 +9,21 @@ use Illuminate\Support\Collection;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithLabel;
 use Leeto\MoonShine\Traits\WithView;
 
-final class ResourcePreview implements HtmlViewable
+final class ResourcePreview extends DashboardItem
 {
     use Makeable;
     use WithView;
+    use WithLabel;
 
     public function __construct(
         protected Resource $resource,
-        protected ?string $label = null,
+        string $label = '',
         protected ?Builder $query = null,
     ) {
+        $this->setLabel($label);
     }
 
     public function resource(): Resource
@@ -52,13 +55,6 @@ final class ResourcePreview implements HtmlViewable
     public function label(): string
     {
         return $this->label ?? $this->resource->title();
-    }
-
-    public function setLabel(string $label): static
-    {
-        $this->label = $label;
-
-        return $this;
     }
 
     public function getView(): string

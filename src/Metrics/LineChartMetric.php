@@ -13,7 +13,8 @@ class LineChartMetric extends Metric
     protected array $colors = [];
 
     protected array $assets = [
-        'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.37.1/apexcharts.min.js',
+        '/vendor/moonshine/apexchart-config.js',
     ];
 
     public function lines(): array
@@ -32,6 +33,11 @@ class LineChartMetric extends Metric
     public function color(int $index): string
     {
         return $this->colors[$index];
+    }
+
+    public function colors(): array
+    {
+        return $this->colors;
     }
 
     public function labels(): array

@@ -14,10 +14,11 @@ use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\MoonShine;
+use Leeto\MoonShine\Traits\WithLabel;
 
 trait FormElement
 {
-    protected string $label = '';
+    use WithLabel;
 
     protected string $field;
 
@@ -76,18 +77,6 @@ trait FormElement
         if ($resource instanceof Closure) {
             $this->setValueCallback($resource);
         }
-    }
-
-    public function label(): string
-    {
-        return $this->label;
-    }
-
-    public function setLabel(string $label): static
-    {
-        $this->label = $label;
-
-        return $this;
     }
 
     public function field(): string

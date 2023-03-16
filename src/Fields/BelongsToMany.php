@@ -97,7 +97,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     {
         $this->makeTree($this->treePerformData($data));
 
-        $this->treeHtml = (string) str($this->treeHtml())->wrap("<ul>", "</ul>");
+        $this->treeHtml = (string) str($this->treeHtml())->wrap("<ul class='tree-list'>", "</ul>");
     }
 
     public function buildTreeHtml(Model $item): string
@@ -122,8 +122,9 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
             foreach ($performedData[$parent_id] as $item) {
                 $this->ids[] = $item->getKey();
 
-                $element = view('moonshine::fields.shared.checkbox', [
+                $element = view('moonshine::components.form.input', [
                     'attributes' => $this->attributes(),
+                    'type' => 'checkbox',
                     'id' => $this->id(),
                     'name' => $this->name(),
                     'value' => $item->getKey(),
@@ -132,8 +133,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
 
                 $this->treeHtml .= str($element)->wrap(
                     "<li x-ref='item_{$item->getKey()}'
-                            style='margin-left: ".($offset * 50)."px'
-                            class='mb-3 bg-whiteblue dark:bg-purple py-4 px-4 rounded-md'>",
+                            style='margin-left: ".($offset * 50)."px'>",
                     "</li>"
                 );
 

@@ -8,7 +8,11 @@ use Leeto\MoonShine\Contracts\Actions\ActionContract;
 
 final class FiltersAction extends Action implements ActionContract
 {
-    protected static string $view = 'moonshine::base.index.shared.filters';
+    protected static string $view = 'moonshine::crud.shared.filters';
+
+    protected array $filters = [];
+
+    protected bool $inDropdown = false;
 
     public function isTriggered(): bool
     {
@@ -25,12 +29,21 @@ final class FiltersAction extends Action implements ActionContract
         return '';
     }
 
+    public function filters(array $filters): self
+    {
+        $this->filters = $filters;
+
+        return $this;
+    }
+
     public function render(): string
     {
         return view($this->getView(), [
             'action' => $this,
-            'filters' => $this->resource->filters(),
-            'resource' => $this->resource,
+            'filters' => count($this->filters)
+                ? $this->filters
+                : $this->resource()->getFilters()->toArray(),
+            'resource' => $this->resource(),
         ])->render();
     }
 }

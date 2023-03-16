@@ -1,18 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind Base */
+@import "tailwindcss/base";
+@import "base/common";
+@import "base/layout";
 
-.moonshine-loader {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #302c79;
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    animation: spin 2s linear infinite;
-}
+/* Tailwind Components */
+@import "tailwindcss/components";
+@import "components/box";
+@import "components/menu";
+@import "components/navigation";
+@import "components/dropdowns";
+@import "components/buttons";
+@import "components/social";
+@import "components/forms";
+@import "components/tables";
+@import "components/pagination";
+@import "components/badges";
+@import "components/modals";
+@import "components/offcanvas";
+@import "components/tabs";
+@import "components/accordions";
+@import "components/alerts";
+@import "components/loader";
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+/* Tailwind Utilities */
+@import "tailwindcss/utilities";
+@import "base/animation";
+
+/* Pages */
+@import "pages/dashboard";
+@import "pages/authentication";

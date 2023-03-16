@@ -3,7 +3,7 @@
   "description": "Laravel dashboard",
   "keywords": ["laravel", "admin", "dashboard", "moonshine"],
   "type": "library",
-  "homepage": "https://moonshine.cutcode.ru",
+  "homepage": "https://moonshine.cutcode.dev",
   "license": "MIT",
   "support": {
     "issues": "https://github.com/lee-to/moonshine/issues",
@@ -13,14 +13,13 @@
     {
       "name": "Danil Shutsky",
       "email": "info@cutcode.ru",
-      "homepage": "https://github.com/lee-to"
+      "homepage": "https://cutcode.dev"
     }
   ],
   "require": {
     "php": "^8.0|^8.1|^8.2",
     "ext-curl": "*",
     "ext-json": "*",
-    "unisharp/laravel-filemanager": "^2.6",
     "rap2hpoutre/fast-excel": "^5.0",
     "lee-to/laravel-package-command": "^0.9.1"
   },
@@ -43,7 +42,8 @@
     }
   },
   "suggest": {
-    "laravel/socialite": "Required to use the Socialite"
+    "laravel/socialite": "Required to use the Socialite",
+    "unisharp/laravel-filemanager": "Required if you want tinymce file manager"
   },
   "conflict": {
     "laravel/framework": "<9.37.0"

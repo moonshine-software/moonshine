@@ -14,7 +14,7 @@ class Tabs extends Decoration
 
     public function __construct(protected array $tabs = [])
     {
-        $this->setLabel(uniqid());
+        $this->setLabel(uniqid('', true));
     }
 
     /**

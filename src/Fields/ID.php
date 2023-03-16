@@ -19,7 +19,7 @@ class ID extends Field
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        return view('moonshine::shared.badge', [
+        return view('moonshine::ui.badge', [
             'value' => parent::indexViewValue($item, $container),
             'color' => 'purple',
         ]);

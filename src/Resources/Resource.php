@@ -26,11 +26,10 @@ use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Decorations\Tabs;
 use Leeto\MoonShine\Exceptions\ResourceException;
-use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\FormActions\FormAction;
-use Leeto\MoonShine\FormActions\QueryTag;
+use Leeto\MoonShine\QueryTags\QueryTag;
 use Leeto\MoonShine\FormComponents\FormComponent;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
@@ -57,11 +56,11 @@ abstract class Resource implements ResourceContract
 
     public static array $activeActions = ['create', 'show', 'edit', 'delete'];
 
-    public static string $baseIndexView = 'moonshine::base.index';
+    public static string $baseIndexView = 'moonshine::crud.index';
 
-    public static string $baseEditView = 'moonshine::base.form';
+    public static string $baseEditView = 'moonshine::crud.form';
 
-    public static string $baseShowView = 'moonshine::base.show';
+    public static string $baseShowView = 'moonshine::crud.show';
 
     public string $titleField = '';
 
@@ -305,7 +304,7 @@ abstract class Resource implements ResourceContract
      */
     public function routeAlias(): string
     {
-        return (string) ($this->routAlias ?
+        return (string)($this->routAlias ?
             str($this->routAlias)
                 ->lcfirst()
                 ->squish() :
@@ -318,21 +317,21 @@ abstract class Resource implements ResourceContract
 
     public function routeParam(): string
     {
-        return (string) str($this->routeAlias())->singular();
+        return (string)str($this->routeAlias())->singular();
     }
 
     public function routeName(string|null $action = null): string
     {
-        return (string) str(config('moonshine.route.prefix'))
+        return (string)str('moonshine')
             ->append('.')
             ->append($this->routeAlias())
-            ->when($action, fn ($str) => $str->append('.')->append($action));
+            ->when($action, fn($str) => $str->append('.')->append($action));
     }
 
     public function currentRoute(array $query = []): string
     {
         return request()->url()
-            . ($query ? '?' . http_build_query($query) : '');
+            .($query ? '?'.http_build_query($query) : '');
     }
 
     public function route(string $action = null, int|string $id = null, array $query = []): string
@@ -356,14 +355,14 @@ abstract class Resource implements ResourceContract
 
     public function controllerName(): string
     {
-        return (string) str(static::class)
+        return (string)str(static::class)
             ->classBasename()
             ->replace(['Resource'], '')
             ->append('Controller')
             ->when(
                 $this->isSystem(),
-                fn ($str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
-                fn ($str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
+                fn($str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
+                fn($str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
             );
     }
 
@@ -396,7 +395,7 @@ abstract class Resource implements ResourceContract
             $actions->add($action->setResource($this));
         }
 
-        if (! $hasFilters && ! empty($this->filters())) {
+        if (!$hasFilters && !empty($this->filters())) {
             $actions->add(
                 FiltersAction::make(trans('moonshine::ui.filters'))
                     ->setResource($this)
@@ -453,7 +452,7 @@ abstract class Resource implements ResourceContract
     public function whenFields(): Collection
     {
         return collect($this->getFields())
-            ->filter(fn (Field $field) => $field->showWhenState)
+            ->filter(fn(Field $field) => $field->showWhenState)
             ->values();
     }
 
@@ -483,7 +482,7 @@ abstract class Resource implements ResourceContract
     public function indexFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnIndex)
+            ->filter(fn(Field $field) => $field->showOnIndex)
             ->values();
     }
 
@@ -494,12 +493,12 @@ abstract class Resource implements ResourceContract
     public function showFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnDetail)
+            ->filter(fn(Field $field) => $field->showOnDetail)
             ->values();
     }
 
     /**
-     * @return Collection
+     * @return Collection<Field|Decoration>
      */
     public function formComponents(): Collection
     {
@@ -513,16 +512,15 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Collection
+     * @return Collection<Field>
      * @throws Throwable
      */
     public function relatableFormComponents(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->isResourceModeField())
+            ->filter(fn(Field $field) => $field->isResourceModeField())
             ->values()
-            ->map(fn (Field $field) => $field->setParents())
-        ;
+            ->map(fn(Field $field) => $field->setParents());
     }
 
     /**
@@ -531,31 +529,9 @@ abstract class Resource implements ResourceContract
      */
     public function formFields(): Collection
     {
-        $fields = $this->extensionsFields();
-
-        return $fields->merge(
-            $this->getFields()
-                ->filter(fn (Field $field) => $field->showOnForm)
-                ->values()
-        );
-    }
-
-    /**
-     * @return Collection<Field>
-     */
-    public function extensionsFields(): Collection
-    {
-        $fields = collect();
-
-        foreach (app(Extension::class) as $extension) {
-            $fields = $fields->merge(
-                collect($extension->fields())
-                    ->filter(fn (Field $field) => $field->showOnForm)
-                    ->values()
-            );
-        }
-
-        return $fields;
+        return $this->getFields()
+            ->filter(fn(Field $field) => $field->showOnForm)
+            ->values();
     }
 
     /**
@@ -565,7 +541,7 @@ abstract class Resource implements ResourceContract
     public function exportFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnExport)
+            ->filter(fn(Field $field) => $field->showOnExport)
             ->values();
     }
 
@@ -576,11 +552,12 @@ abstract class Resource implements ResourceContract
     public function importFields(): Collection
     {
         return $this->getFields()
-            ->filter(fn (Field $field) => $field->useOnImport)
+            ->filter(fn(Field $field) => $field->useOnImport)
             ->values();
     }
 
     /**
+     * @return array<string, string>
      * @throws Throwable
      */
     public function fieldsLabels(): array
@@ -594,20 +571,20 @@ abstract class Resource implements ResourceContract
         return $labels;
     }
 
-    public function getFilter(string $filterName): Filter|null
+    public function getFilter(string $filterName): ?Filter
     {
         return collect($this->getFilters())->filter(function (Filter $filter) use ($filterName) {
-            return $filter->field() == $filterName;
+            return $filter->field() === $filterName;
         })->first();
     }
 
     /**
      * @throws Throwable
      */
-    public function getField(string $fieldName): Field|null
+    public function getField(string $fieldName): ?Field
     {
         return collect($this->getFields())->filter(function (Field $field) use ($fieldName) {
-            return $field->field() == $fieldName;
+            return $field->field() === $fieldName;
         })->first();
     }
 
@@ -619,21 +596,6 @@ abstract class Resource implements ResourceContract
     public function softDeletes(): bool
     {
         return in_array(SoftDeletes::class, class_uses_recursive(static::$model), true);
-    }
-
-    public function extensions($name, Model $item): string
-    {
-        $views = str('');
-
-        if (app(Extension::class)) {
-            foreach (app(Extension::class) as $extension) {
-                if (method_exists($extension, $name)) {
-                    $views = $views->append($extension->{$name}($item));
-                }
-            }
-        }
-
-        return (string) $views;
     }
 
     public function relatable(string $column, string|int $key): self
@@ -685,7 +647,7 @@ abstract class Resource implements ResourceContract
             ->appends(request()->except('page'));
     }
 
-    public function customBuilder(Builder $builder)
+    public function customBuilder(Builder $builder): void
     {
         $this->customBuilder = $builder;
     }
@@ -756,7 +718,14 @@ abstract class Resource implements ResourceContract
     public function gateAbilities(): array
     {
         return [
-            'viewAny', 'view', 'create', 'update', 'delete', 'massDelete', 'restore', 'forceDelete',
+            'viewAny',
+            'view',
+            'create',
+            'update',
+            'delete',
+            'massDelete',
+            'restore',
+            'forceDelete',
         ];
     }
 
@@ -765,12 +734,12 @@ abstract class Resource implements ResourceContract
         $user = auth(config('moonshine.auth.guard'))->user();
 
         if ($user->moonshineUserPermission
-            && (! $user->moonshineUserPermission->permissions->has(get_class($this))
-                || ! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
+            && (!$user->moonshineUserPermission->permissions->has(get_class($this))
+                || !isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
             return false;
         }
 
-        if (! $this->isWithPolicy()) {
+        if (!$this->isWithPolicy()) {
             return true;
         }
 
@@ -781,7 +750,7 @@ abstract class Resource implements ResourceContract
     public function massDelete(array $ids): void
     {
         if (method_exists($this, 'beforeMassDeleting')) {
-            call_user_func([$this, 'beforeMassDeleting'], $ids);
+            $this->beforeMassDeleting($ids);
         }
 
         $this->getModel()
@@ -790,47 +759,46 @@ abstract class Resource implements ResourceContract
             ->delete();
 
         if (method_exists($this, 'afterMassDeleted')) {
-            call_user_func([$this, 'afterMassDeleted'], $ids);
+            $this->afterMassDeleted($ids);
         }
     }
 
     public function delete(Model $item): void
     {
         if (method_exists($this, 'beforeDeleting')) {
-            call_user_func([$this, 'beforeDeleting'], $item);
+            $this->beforeDeleting($item);
         }
 
         $item->delete();
 
         if (method_exists($this, 'afterDeleted')) {
-            call_user_func([$this, 'afterDeleted'], $item);
+            $this->afterDeleted($item);
         }
     }
 
     /**
      * @throws ResourceException|Throwable
      */
-    public function save(Model $item, ?Collection $fields = null, ?array $saveData = null): Model
-    {
+    public function save(
+        Model $item,
+        ?Collection $fields = null,
+        ?array $saveData = null
+    ): Model {
         $fields = $fields ?? $this->formFields();
 
         try {
-            $fields->each(fn ($field) => $field->beforeSave($item));
+            $fields->each(fn($field) => $field->beforeSave($item));
 
-            if (! $item->exists) {
-                if (method_exists($this, 'beforeCreating')) {
-                    call_user_func([$this, 'beforeCreating'], $item);
-                }
+            if (!$item->exists && method_exists($this, 'beforeCreating')) {
+                $this->beforeCreating($item);
             }
 
-            if ($item->exists) {
-                if (method_exists($this, 'beforeUpdating')) {
-                    call_user_func([$this, 'beforeUpdating'], $item);
-                }
+            if ($item->exists && method_exists($this, 'beforeUpdating')) {
+                $this->beforeUpdating($item);
             }
 
             foreach ($fields as $field) {
-                if (! $field->hasRelationship() || $field->belongToOne()) {
+                if (!$field->hasRelationship() || $field->belongToOne()) {
                     $item = $this->saveItem($item, $field, $saveData);
                 }
             }
@@ -839,25 +807,21 @@ abstract class Resource implements ResourceContract
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 foreach ($fields as $field) {
-                    if ($field->hasRelationship() && ! $field->belongToOne()) {
+                    if ($field->hasRelationship() && !$field->belongToOne()) {
                         $item = $this->saveItem($item, $field, $saveData);
                     }
                 }
 
                 $item->save();
 
-                $fields->each(fn ($field) => $field->afterSave($item));
+                $fields->each(fn($field) => $field->afterSave($item));
 
-                if ($wasRecentlyCreated) {
-                    if (method_exists($this, 'afterCreated')) {
-                        call_user_func([$this, 'afterCreated'], $item);
-                    }
+                if ($wasRecentlyCreated && method_exists($this, 'afterCreated')) {
+                    $this->afterCreated($item);
                 }
 
-                if (! $wasRecentlyCreated) {
-                    if (method_exists($this, 'afterUpdated')) {
-                        call_user_func([$this, 'afterUpdated'], $item);
-                    }
+                if (!$wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
+                    $this->afterUpdated($item);
                 }
             }
         } catch (QueryException $queryException) {
@@ -918,11 +882,11 @@ abstract class Resource implements ResourceContract
 
     public function isMassAction(): bool
     {
-        return ! $this->isPreviewMode() && (
-            count($this->bulkActions()) || (
-                $this->can('massDelete') && in_array('delete', $this->getActiveActions())
-            )
-        );
+        return !$this->isPreviewMode() && (
+                count($this->bulkActions()) || (
+                    $this->can('massDelete') && in_array('delete', $this->getActiveActions())
+                )
+            );
     }
 
     protected function _render(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application

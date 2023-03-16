@@ -1,18 +1,22 @@
-<x-moonshine::block title="{{ $item->label() }}">
-    @if($item->isProgress())
-        <div class="flex items-center">
-            <div class="flex items-center place-content-center w-14 h-14">
-                <svg class="transform -rotate-90 w-14 h-14">
-                    <circle class="text-gray opacity-25" cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" fill="transparent"></circle>
-                    <circle class="text-purple" cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" fill="transparent" stroke-dasharray="138.28571428571428" stroke-dashoffset="0"></circle>
-                </svg>
-                <span class="absolute text-md font-bold text-purple">{{ $item->valueResult() }}</span>
-            </div>
-            <span class="text-white text-md ml-3">%</span>
+<x-moonshine::box
+    :adaptiveColSpan="$item->adaptiveColumnSpanValue()"
+    :colSpan="$item->columnSpanValue()"
+    class="box-shadow zoom-in h-full p-0"
+>
+    <div class="report-card">
+        <div class="report-card-heading">
+            {!! $item->getIcon(6, 'pink') !!}
+
+            @if($item->isProgress())
+                <div class="report-card-indicator bg-green-500">
+                    {{ $item->valueResult() }}%
+                </div>
+            @endif
         </div>
-    @else
-        <div class="text-2xl font-bold">
-            {{ $item->valueResult() }}
+
+        <div class="report-card-body">
+            <div class="report-card-value">{{ $item->simpleValue() }}</div>
+            <h5 class="report-card-title">{{ $item->label() }}</h5>
         </div>
-    @endif
-</x-moonshine::block>
+    </div>
+</x-moonshine::box>

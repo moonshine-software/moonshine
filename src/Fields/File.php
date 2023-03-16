@@ -33,25 +33,21 @@ class File extends Field implements Fileable
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        if ($item->{$this->field()} == '') {
+        if (!$item->{$this->field()}) {
             return '';
         }
 
         if ($this->isMultiple()) {
             return collect($item->{$this->field()})
-                ->map(fn ($value, $index) => view('moonshine::fields.shared.file', [
+                ->map(fn ($value, $index) => view('moonshine::ui.file', [
                     'value' => $this->path($value),
-                    'index' => $index + 1,
-                    'canDownload' => $this->canDownload(),
+                    'download' => $this->canDownload(),
                 ])->render())->implode('');
         }
 
-        return view(
-            'moonshine::fields.shared.file',
-            [
-                'value' => $this->path($item->{$this->field()}),
-                'canDownload' => $this->canDownload(),
-            ]
-        );
+        return view('moonshine::ui.file', [
+            'value' => $this->path($item->{$this->field()}),
+            'download' => $this->canDownload(),
+        ]);
     }
 }

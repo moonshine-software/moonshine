@@ -50,7 +50,7 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
             }
         }
 
-        return view('moonshine::shared.table', [
+        return view('moonshine::ui.table', [
             'columns' => $columns,
             'values' => $values,
         ]);

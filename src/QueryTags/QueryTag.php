@@ -8,22 +8,20 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithIcon;
+use Leeto\MoonShine\Traits\WithLabel;
 
 final class QueryTag
 {
     use Makeable;
     use WithIcon;
     use HasCanSee;
+    use WithLabel;
 
     public function __construct(
-        protected string $label,
+        string $label,
         protected Builder $builder,
     ) {
-    }
-
-    public function label(): string
-    {
-        return $this->label;
+        $this->setLabel($label);
     }
 
     public function uri(): string

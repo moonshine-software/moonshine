@@ -4,19 +4,25 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Providers;
 
+use Exception;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Leeto\MoonShine\Commands\InstallCommand;
 use Leeto\MoonShine\Commands\ResourceCommand;
 use Leeto\MoonShine\Commands\UserCommand;
 use Leeto\MoonShine\Dashboard\Dashboard;
-use Leeto\MoonShine\Extensions\Extension;
 use Leeto\MoonShine\Http\Middleware\Authenticate;
 use Leeto\MoonShine\Http\Middleware\Session;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Utilities\AssetManager;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -47,6 +53,8 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->loadAuthConfig();
 
         $this->registerRouteMiddleware();
+
+
     }
 
     /**
@@ -56,7 +64,25 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
+        $this->app->bind(ExceptionHandler::class, function ($app) {
+            $handler = new Handler($app[Container::class]);
+
+            if(preg_match('/^' . config('moonshine.route.prefix', '\/') . '/', $app['request']->path())) {
+                $handler->renderable(function (NotFoundHttpException $e) {
+                    return response()->view('moonshine::errors.404', [
+                        'code' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
+                    ])->withHeaders($e->getHeaders());
+                });
+            }
+
+            return $handler;
+        });
+
+        if (config('moonshine.auth.enable', true)) {
+            $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
+        }
+
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
         $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
 
@@ -97,16 +123,6 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(Dashboard::class, fn () => new Dashboard());
 
         $this->app->singleton(AssetManager::class, fn () => new AssetManager());
-
-        $extensions = [];
-
-        if (config('moonshine.extensions')) {
-            foreach (config('moonshine.extensions') as $class) {
-                $extensions[] = new $class();
-            }
-        }
-
-        $this->app->bind(Extension::class, fn () => $extensions);
     }
 
     /**

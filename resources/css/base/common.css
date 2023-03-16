@@ -1,0 +1,132 @@
+/* Custom Fonts */
+@font-face {
+	font-family: "Gilroy";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/fonts/Gilroy-Regular.woff2") format("woff2");
+}
+@font-face {
+	font-family: "Gilroy";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
+}
+@font-face {
+	font-family: "Gilroy";
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url("/fonts/Gilroy-SemiBold.woff2") format("woff2");
+}
+@font-face {
+	font-family: "Gilroy";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/fonts/Gilroy-Bold.woff2") format("woff2");
+}
+@font-face {
+	font-family: "Gilroy";
+	font-style: normal;
+	font-weight: 900;
+	font-display: swap;
+	src: url("/fonts/Gilroy-Black.woff2") format("woff2");
+}
+
+/* Custom Scrollbar */
+:root {
+	--scrollbar-color: theme(colors.gray.300);
+	--scrollbar-hover-color: theme(colors.gray.200);
+}
+:root[class="dark"] {
+	--scrollbar-color: theme(colors.dark.100);
+	--scrollbar-hover-color: theme(colors.dark.50);
+
+	input,
+	textarea {
+		color-scheme: dark;
+	}
+}
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--scrollbar-color) transparent;
+}
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 20px;
+	border: 3px solid transparent;
+	background-clip: padding-box;
+	background-color: var(--scrollbar-color);
+	&:hover {
+		background-color: var(--scrollbar-hover-color);
+	}
+}
+
+/* General CSS */
+::selection {
+	@apply bg-purple text-white;
+}
+
+body {
+	@apply relative overflow-x-hidden bg-body text-gray-800 dark:bg-body dark:text-slate-300 lg:bg-darkblue;
+	min-width: 320px;
+}
+
+a {
+	@apply inline-block transition-all hover:text-purple dark:hover:text-white;
+}
+.link {
+	@apply font-medium text-purple hover:text-pink dark:text-pink dark:hover:text-slate-200;
+}
+
+p + p {
+	@apply mt-2;
+}
+
+b,
+strong {
+	@apply font-semibold;
+}
+
+button {
+	@apply transition-all;
+}
+
+svg {
+	@apply flex-shrink-0;
+}
+
+.chart {
+	@apply w-full;
+	> * {
+		@apply mx-auto;
+	}
+}
+
+ul.tree-list {
+	@apply -m-1 space-y-1.5 overflow-x-auto p-1;
+	li {
+		@apply space-y-1.5;
+		ul {
+			@apply ml-6 space-y-1.5;
+		}
+	}
+}
+
+.images-row {
+	@apply flex;
+	& > * {
+		@apply h-10 w-10 overflow-hidden rounded-full border-3 border-white dark:border-dark-200;
+		&:not(:first-child) {
+			@apply -ml-5;
+		}
+	}
+}

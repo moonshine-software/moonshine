@@ -33,6 +33,8 @@ class ImportAction extends Action implements ActionContract
 
     protected bool $deleteAfter = false;
 
+    protected bool $inDropdown = false;
+
     /**
      * @throws IOException
      * @throws ActionException

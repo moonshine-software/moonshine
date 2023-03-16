@@ -1,0 +1,302 @@
+/* Base customizes */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+	display: none;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type="number"] {
+	-moz-appearance: textfield;
+}
+
+.form-flex-col {
+	@apply flex flex-col gap-y-5;
+}
+
+.form-group {
+	@apply flex w-full flex-col items-start gap-2;
+	&-inline {
+		@apply w-auto flex-row justify-items-center;
+	}
+	&-buttons {
+		@apply mt-3 flex-row flex-wrap justify-end;
+	}
+	&-range {
+		@apply gap-4;
+		input[type="range"]::-webkit-slider-thumb {
+			pointer-events: all;
+			width: 24px;
+			height: 24px;
+			-webkit-appearance: none;
+		}
+		&-wrapper {
+			@apply relative w-full;
+		}
+		&-fields {
+			@apply mt-4 flex w-full items-center justify-between gap-3;
+			> .form-input {
+				max-width: 180px;
+				&:last-child {
+					@apply text-right;
+				}
+			}
+		}
+	}
+	&-expansion {
+		@apply flex-row items-stretch gap-0;
+		.form-input {
+			@apply rounded-r-none;
+		}
+		.expansion {
+			@apply rounded-none border border-gray-300 bg-slate-100 py-2 px-3 text-2xs text-slate-600 shadow-sm first:rounded-l-md last:rounded-r-md dark:border-dark-900/20 dark:bg-dark-900/20 dark:text-slate-400 [&:not(:first-child)]:border-l-transparent [&:not(:last-child)]:border-r-transparent;
+			~ .form-input {
+				@apply rounded-l-none rounded-r-md;
+			}
+		}
+	}
+}
+
+/* Form Label */
+.form-label {
+	@apply cursor-pointer text-3xs font-medium;
+	> .required {
+		@apply text-red-500;
+	}
+}
+
+/* Form Hint */
+.form-hint {
+	@apply text-3xs text-slate-500 dark:text-slate-400;
+}
+
+/* Form Error */
+.form-error {
+	@apply text-3xs text-red-600 dark:text-red-500;
+}
+
+/* Form Switcher */
+.form-switcher {
+	@apply relative flex cursor-pointer items-center;
+	&-toggler {
+		@apply h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-purple peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring peer-focus:ring-slate-100 dark:border-dark-200 dark:bg-dark-800 dark:peer-focus:ring-dark-100 dark:peer-focus:ring-opacity-30;
+	}
+}
+
+/* Form Range */
+.form-range {
+	@apply h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 focus:outline-gray-200 dark:bg-dark-800;
+	&-slider {
+		@apply relative z-3 h-2;
+	}
+	&-tracker {
+		@apply absolute left-0 right-0 bottom-0 top-0 z-3 rounded-md bg-gray-200 dark:bg-dark-200;
+	}
+	&-connect {
+		@apply absolute top-0 bottom-0 z-4 rounded-md bg-purple;
+	}
+	&-input {
+		@apply pointer-events-none absolute z-4 h-2 w-full cursor-pointer appearance-none opacity-0;
+	}
+	&-thumb {
+		@apply absolute top-0 z-5 -mt-1.5 h-5 w-5 rounded-full bg-purple;
+		&-left {
+			@apply left-0 -mt-2;
+		}
+		&-right {
+			@apply right-0 -mr-3;
+		}
+	}
+}
+
+.form-input,
+.form-textarea,
+.form-select,
+.form-multiselect {
+	@apply block w-full rounded-md border-gray-300 text-2xs outline-none transition-colors duration-200 placeholder:text-2xs placeholder:text-gray-400 focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-70 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-2xs disabled:text-gray-400 dark:border-dark-200 dark:bg-dark-800 dark:placeholder:text-gray-500 dark:focus:ring-dark-100 dark:focus:ring-opacity-30 dark:disabled:bg-dark-700 dark:disabled:text-gray-500 dark:[&:not(.form-invalid)]:border-none;
+
+	/* Invalid field */
+	&.form-invalid {
+		@apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
+	}
+}
+
+.form-textarea {
+	@apply min-h-[120px];
+}
+
+.form-checkbox {
+	@apply cursor-pointer rounded border-gray-300 text-purple transition-colors duration-200 focus:border-purple-400 focus:ring focus:ring-purple focus:ring-opacity-20 focus:ring-offset-0 dark:border-dark-200 dark:bg-dark-800 dark:checked:bg-purple dark:focus:border-purple dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
+}
+
+.form-radio {
+	@apply cursor-pointer border-gray-300 text-purple transition-colors duration-200 focus:border-purple-400 focus:ring focus:ring-purple focus:ring-opacity-20 focus:ring-offset-0 dark:border-dark-200 dark:bg-dark-800 dark:checked:bg-purple dark:focus:border-purple dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
+}
+
+.form-radio,
+.form-checkbox {
+	~ span,
+	~ label {
+		@apply cursor-pointer text-2xs;
+	}
+}
+
+/* Dropzone */
+.dropzone {
+	@apply relative w-full rounded-lg border-2 border-dashed border-gray-200 p-4 dark:border-dark-200;
+
+	&:hover {
+		.dropzone-button {
+			@apply opacity-75;
+		}
+	}
+
+	&-message {
+		@apply flex items-center justify-center p-10 text-center;
+	}
+
+	&-button {
+		@apply flex flex-col items-center justify-center gap-y-2;
+		> svg {
+			@apply h-8 w-8 stroke-purple dark:stroke-pink;
+		}
+	}
+
+	&-items {
+		@apply flex flex-wrap gap-4;
+	}
+
+	&-item {
+		@apply relative h-28 w-28;
+		> img {
+			@apply h-full w-full rounded-md object-cover;
+		}
+	}
+
+	&-remove {
+		@apply absolute -top-2 -right-2 z-5 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 leading-none text-white hover:opacity-80;
+		> svg {
+			@apply h-4 w-4;
+		}
+	}
+}
+
+/* Choises (Single/Multiple Select) */
+.choices {
+	@apply mb-0 w-full text-2xs dark:after:!border-t-dark-50;
+
+	&.is-open {
+		@apply dark:after:!border-t-transparent dark:after:!border-b-dark-50;
+		.choices__inner {
+			@apply rounded-t-md rounded-b-none;
+		}
+	}
+
+	.choices__input {
+		@apply bg-white dark:bg-dark-800 dark:placeholder:text-gray-500;
+	}
+
+	.choices__inner {
+		@apply rounded-md border-gray-300 bg-white transition-colors duration-200 dark:border-transparent dark:bg-dark-800;
+	}
+
+	.choices__placeholder {
+		@apply text-gray-400 opacity-100 dark:text-gray-500;
+	}
+
+	.choices__list--dropdown,
+	.choices__list[aria-expanded] {
+		@apply z-10 rounded-b-md border-gray-300 bg-white shadow-lg shadow-slate-400/20 dark:border-transparent dark:bg-dark-800 dark:shadow-xl dark:shadow-purple/15;
+
+		.choices__input {
+			@apply dark:border-b-dark-200 dark:bg-dark-700;
+		}
+
+		.choices__item--selectable {
+			&.is-highlighted {
+				@apply bg-slate-100 dark:bg-dark-400;
+			}
+		}
+	}
+
+	.choices__list--single {
+		.choices__button {
+			@apply dark:invert;
+		}
+	}
+
+	.choices__list--multiple {
+		.choices__button {
+			@apply !border-l-white/50;
+		}
+		.choices__item {
+			@apply rounded-md border-purple bg-purple;
+		}
+		.choices__item.is-highlighted {
+			@apply border-pink bg-pink;
+		}
+	}
+}
+
+/* CKEditor */
+.ck {
+	&.ck-editor {
+		@apply w-full;
+	}
+	.ck-content {
+		min-height: 250px;
+		max-height: 70vh;
+	}
+}
+
+:root {
+	--ck-color-toolbar-background: theme(colors.slate.100);
+	--ck-color-base-border: theme(colors.gray.200);
+	--ck-color-list-button-hover-background: theme(colors.slate.100);
+	--ck-color-list-button-on-background: theme(colors.purple.DEFAULT);
+	--ck-color-list-button-on-background-focus: theme(colors.purple.DEFAULT);
+	--ck-color-list-button-on-text: theme(colors.white);
+	--ck-color-focus-border: theme(colors.purple.DEFAULT);
+	--ck-color-focus-outer-shadow: rgba(0, 0, 0, 0.15);
+	--ck-focus-disabled-outer-shadow: rgba(0, 0, 0, 0.15);
+	--ck-color-button-on-hover-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-on-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-on-active-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-on-color: theme(colors.white);
+}
+
+:root[class="dark"] {
+	--ck-color-toolbar-background: theme(colors.dark.700);
+	--ck-color-base-background: theme(colors.dark.800);
+	--ck-color-base-foreground: theme(colors.dark.800);
+	--ck-color-base-border: theme(colors.dark.800);
+	--ck-color-base-active: theme(colors.purple.DEFAULT);
+	--ck-color-base-focus: theme(colors.purple.DEFAULT);
+	--ck-color-text: theme(colors.gray.200);
+	--ck-color-button-default-hover-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-default-active-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-on-hover-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-on-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-on-active-background: theme(colors.purple.DEFAULT);
+	--ck-color-button-on-color: theme(colors.white);
+	--ck-color-color-grid-check-icon: theme(colors.purple.DEFAULT);
+	--ck-color-input-disabled-background: theme(colors.dark.200);
+	--ck-color-input-disabled-border: theme(colors.dark.200);
+	--ck-color-input-disabled-text: theme(colors.slate.400);
+	--ck-color-focus-outer-shadow: theme(colors.purple.DEFAULT);
+	--ck-focus-disabled-outer-shadow: rgba(255, 255, 255, 0.15);
+	--ck-color-focus-border: theme(colors.purple.DEFAULT);
+	--ck-color-list-button-hover-background: theme(colors.slate.100);
+	--ck-color-list-button-hover-background: theme(colors.dark.400);
+	--ck-color-list-button-on-background: theme(colors.purple.DEFAULT);
+	--ck-color-list-button-on-background-focus: theme(colors.purple.DEFAULT);
+	--ck-color-list-button-on-text: theme(colors.white);
+	--ck-color-tooltip-background: theme(colors.dark.900);
+	--ck-color-tooltip-text: theme(colors.white);
+	--ck-color-resizer-tooltip-background: theme(colors.dark.900);
+	--ck-color-resizer-tooltip-text: theme(colors.white);
+}

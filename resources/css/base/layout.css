@@ -1,0 +1,26 @@
+/* Theme layout */
+.layout {
+	&-wrapper {
+		@apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-12 pb-3 md:px-5 lg:flex-row lg:py-6 xl:px-8;
+	}
+
+	&-menu {
+		@apply box-content flex shrink-0 flex-col justify-between lg:pb-2 lg:pr-3;
+	}
+
+	&-page {
+		@apply relative z-2 flex grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
+	}
+
+	&-navigation {
+		@apply relative flex items-center gap-x-4 border-b border-gray-200 pb-4 dark:border-dark-200;
+	}
+
+	&-content {
+		@apply flex-auto py-6 lg:py-8;
+	}
+
+	&-footer {
+		@apply pt-6;
+	}
+}

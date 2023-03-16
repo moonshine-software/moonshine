@@ -5,36 +5,35 @@
             this.{{ $decoration->id() }}_open = !this.{{ $decoration->id() }}_open
         },
     }"
-    class="border-b border-whiteblue dark:border-dark"
+    class="accordion"
 >
     <div
         x-on:click="{{ $decoration->id() }}_toggle()"
-        class="cursor-pointer flex items-center justify-between ml-5 mr-5 font-bold text-md text-black dark:text-white"
+        class="accordion-item"
         :class="{{ $decoration->id() }}_open ? 'mt-5' : 'my-5'"
     >
-        {{ $decoration->label() }}
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill-opacity=".5"
-            class="h-5 w-5"
-            :class="{{ $decoration->id() }}_open ? 'rotate-180' : ''"
-            viewBox="0 0 20 20" fill="currentColor"
-        >
-            <path fill-rule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clip-rule="evenodd"/>
-        </svg>
-    </div>
-    <div
-        x-show="{{ $decoration->id() }}_open"
-        x-transition.origin.top.left
-        style="display: none;"
-    >
-        <x-moonshine::resource-renderable
-            :components="$decoration->fields()"
-            :item="$item"
-            :resource="$resource"
-            :container="true"
-        />
+
+        <h2 class="accordion-header">
+            <button @click.prevent="{{ $decoration->id() }}_toggle()" :class="{ '_is-active': {{ $decoration->id() }}_open }"
+                    class="accordion-btn btn"
+                    type="button"
+            >
+                {{ $decoration->label() }}
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+            </button>
+        </h2>
+        <div x-show="{{ $decoration->id() }}_open" class="accordion-body" style="display: none">
+            <div class="accordion-content">
+                <x-moonshine::resource-renderable
+                    :components="$decoration->fields()"
+                    :item="$item"
+                    :resource="$resource"
+                    :container="true"
+                />
+            </div>
+        </div>
     </div>
 </div>

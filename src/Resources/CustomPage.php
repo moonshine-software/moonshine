@@ -6,22 +6,20 @@ namespace Leeto\MoonShine\Resources;
 
 use Closure;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithLabel;
 
 final class CustomPage
 {
     use Makeable;
+    use WithLabel;
 
     public function __construct(
-        protected string $label,
+        string $label,
         protected string $alias,
         protected string $view,
         protected ?Closure $viewData = null,
     ) {
-    }
-
-    public function label(): string
-    {
-        return $this->label;
+        $this->setLabel($label);
     }
 
     public function alias(): string
@@ -41,7 +39,7 @@ final class CustomPage
 
     public function url(): string
     {
-        return route((string) str(config('moonshine.route.prefix'))
+        return route((string) str('moonshine')
             ->append('.')
             ->append('custom_page'), str($this->alias)->slug()->value());
     }

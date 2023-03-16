@@ -1,5 +1,11 @@
-@include("moonshine::fields.shared.label", ["field" => $filter])
-
-<div class="mt-5">
+@props([
+    'resource',
+    'filter',
+])
+<x-moonshine::form.input-wrapper
+    :attributes="$attributes"
+    :label="$filter->label()"
+    :name="$filter->name()"
+>
     {{ $slot }}
-</div>
+</x-moonshine::form.input-wrapper>

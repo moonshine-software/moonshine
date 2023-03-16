@@ -1,0 +1,101 @@
+.layout-navigation {
+	/* Breadcrumbs */
+	.breadcrumbs {
+		&-list {
+			@apply flex flex-wrap gap-y-1 gap-x-1.5;
+		}
+		&-item {
+			@apply flex items-center gap-x-1.5 text-3xs md:text-2xs;
+			&:not(:first-child) {
+				&::before {
+					@apply h-3.5 w-3.5 bg-gray-600 dark:bg-gray-400;
+					content: "";
+					mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232e2e2e' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+					mask-size: cover;
+				}
+			}
+			&:first-child > a {
+				@apply text-pink hover:text-purple dark:text-pink dark:hover:text-white;
+			}
+			& > a {
+				@apply dark:text-slate-500 dark:hover:text-pink;
+				& > svg {
+					@apply h-5 w-5;
+				}
+			}
+			& > span {
+				@apply dark:text-slate-500;
+			}
+		}
+	}
+
+	/* Search form */
+	.search {
+		@apply flex items-center;
+
+		&-form {
+			@apply relative h-12;
+			&._is-toggled {
+				@apply absolute inset-0 z-5 -mt-1 !block h-14 w-full;
+				.search-form-field {
+					@apply w-full rounded-xl bg-white shadow-md dark:bg-dark-500 dark:placeholder:text-slate-500 focus:dark:border-dark-200;
+				}
+				.search-form-icon {
+					@apply hidden;
+				}
+			}
+			&-field {
+				@apply h-full w-60 rounded-full border-transparent bg-gray-200/50 pr-10 ring-0 transition-all placeholder:text-3xs placeholder:font-normal placeholder:text-slate-600 focus:w-80 focus:border-gray-300 focus:bg-white dark:bg-dark-600 dark:placeholder:text-slate-500 focus:dark:border-dark-200;
+			}
+			&-icon {
+				@apply pointer-events-none absolute top-0 bottom-0 right-3 z-2 my-auto h-6 w-6 stroke-slate-600 dark:stroke-dark-50;
+			}
+			&-close {
+				@apply absolute top-0 bottom-0 right-2 z-2 my-auto h-6 w-6 stroke-slate-600 hover:text-pink;
+			}
+		}
+	}
+
+	/* Notifications */
+	.notifications {
+		&-icon {
+			@apply relative block text-slate-600 hover:text-pink dark:text-dark-50 dark:hover:text-white;
+		}
+		&-item {
+			@apply relative flex gap-x-3 p-3;
+		}
+		&-remove {
+			@apply absolute top-1/2 right-3 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
+			> svg {
+				@apply h-4 w-4;
+			}
+		}
+		&-category {
+			@apply inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full;
+			& > svg {
+				@apply h-5 w-5;
+			}
+		}
+		&-content {
+			@apply flex grow flex-col gap-y-0.5 pr-4;
+		}
+		&-title {
+			@apply text-2xs font-medium;
+		}
+		&-text {
+			@apply text-3xs text-gray-500 dark:text-gray-400;
+		}
+		&-more {
+			@apply text-3xs font-medium;
+			> a {
+				@apply text-pink hover:text-purple dark:hover:text-slate-200;
+			}
+		}
+		&-time {
+			@apply text-[13px] text-gray-400 dark:text-gray-500;
+		}
+		&-read {
+			@apply block text-center text-2xs font-medium text-purple hover:text-pink dark:text-pink dark:hover:text-slate-200;
+		}
+	}
+}

@@ -10,25 +10,23 @@ use Illuminate\Http\RedirectResponse;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithIcon;
+use Leeto\MoonShine\Traits\WithLabel;
 
 final class FormAction
 {
     use Makeable;
     use WithIcon;
     use HasCanSee;
+    use WithLabel;
 
     protected ?string $redirectTo = null;
 
     public function __construct(
-        protected string $label,
+        string $label,
         protected Closure $callback,
         protected string $message = 'Done',
     ) {
-    }
-
-    public function label(): string
-    {
-        return $this->label;
+        $this->setLabel($label);
     }
 
     public function message(): string

@@ -40,12 +40,15 @@ return [
         'mark_as_read' => 'Прочитано',
     ],
     'login' => [
+        'title' => 'Добро пожаловать в MoonShine!',
+        'description' => 'Пожалуйста, войдите в свою учетную запись и начните приключение',
         'authorization' => 'Авторизация',
         'remember_me' => 'Запомнить',
         'login' => 'Войти',
         'logout' => 'Выйти',
         'email' => 'E-mail',
         'password' => 'Пароль',
+        'or_socials' => 'или',
     ],
     'resource' => [
         'system' => 'Система',
@@ -66,7 +69,7 @@ return [
         'queued' => 'Поставлен в очередь',
 
         'export' => [
-            'exported' => 'File exported',
+            'exported' => 'Экспортирован',
         ],
 
         'import' => [

@@ -1,6 +1,11 @@
-<textarea id='ckeditor_{{ $item->getKey() }}_{{ $field->id() }}' name="{{ $field->name() }}">
+<x-moonshine::form.textarea
+    :attributes="$field->attributes()->merge([
+        'id' => 'ckeditor_' . $item->getKey() . '_' . $field->id(),
+        'name' => $field->name()
+    ])"
+>
     {!! $field->formViewValue($item) ?? '' !!}
-</textarea>
+</x-moonshine::form.textarea>
 
 <script>
     CKEDITOR.ClassicEditor.create(document.getElementById("ckeditor_{{ $item->getKey() }}_{{ $field->id() }}"), {
@@ -119,7 +124,7 @@
         },
         simpleUpload: {
             // The URL that the images are uploaded to.
-            uploadUrl: '{{ route(config('moonshine.route.prefix') . '.attachments') }}',
+            uploadUrl: '{{ route('moonshine.attachments') }}',
         },
         // The "super-build" contains more premium features that require additional configuration, disable them below.
         // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.

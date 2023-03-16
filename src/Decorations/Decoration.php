@@ -7,15 +7,15 @@ namespace Leeto\MoonShine\Decorations;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithLabel;
 use Leeto\MoonShine\Traits\WithView;
 
 abstract class Decoration implements HtmlViewable
 {
     use Makeable;
     use WithView;
-
-    protected string $label;
-
+    use WithLabel;
+    
     protected array $fields = [];
 
     public function __construct(string $label, array $fields = [])
@@ -85,28 +85,5 @@ abstract class Decoration implements HtmlViewable
     public function name(string $index = null): string
     {
         return $this->id($index);
-    }
-
-    /**
-     * Get label of decoration
-     *
-     * @return string
-     */
-    public function label(): string
-    {
-        return $this->label;
-    }
-
-    /**
-     * Define label for decoration
-     *
-     * @param  string  $label
-     * @return $this
-     */
-    public function setLabel(string $label): static
-    {
-        $this->label = $label;
-
-        return $this;
     }
 }

@@ -8,6 +8,9 @@ use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
+use Leeto\MoonShine\Traits\WithColumnSpan;
+use Leeto\MoonShine\Traits\WithIcon;
+use Leeto\MoonShine\Traits\WithLabel;
 use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
@@ -16,8 +19,9 @@ abstract class Metric implements HtmlViewable, HasAssets
     use Makeable;
     use WithAssets;
     use WithView;
-
-    protected string $label;
+    use WithColumnSpan;
+    use WithLabel;
+    use WithIcon;
 
     final public function __construct(string $label)
     {
@@ -41,24 +45,5 @@ abstract class Metric implements HtmlViewable, HasAssets
     public function name(string $index = null): string
     {
         return $this->id($index);
-    }
-
-    /**
-     * @return string
-     */
-    public function label(): string
-    {
-        return $this->label;
-    }
-
-    /**
-     * @param  string  $label
-     * @return static
-     */
-    public function setLabel(string $label): static
-    {
-        $this->label = $label;
-
-        return $this;
     }
 }

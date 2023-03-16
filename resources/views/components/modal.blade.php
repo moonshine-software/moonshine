@@ -1,58 +1,41 @@
-@props(['wide'=>false])
-<span x-data="{isOpen: false}" x-cloak x-init="$refs.cover.classList.remove('hidden')">
-    <div x-ref="cover" :class="isOpen == false ? 'hidden' : ''" class="fixed z-30 inset-0 overflow-y-auto hidden">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-
-            <div class="fixed inset-0 transition-opacity">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-
-
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
-
-            <div class="inline-block align-bottom rounded-lg
-            text-left overflow-hidden shadow-xl transform transition-all
-            sm:my-8 sm:align-middle sm:w-full sm:max-w-xl {{ $wide ? 'md:max-w-2xl lg:max-w-4xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl' : '' }}"
-                 role="dialog" aria-modal="true" aria-labelledby="modal-headline"
-                 x-show="isOpen" @click.outside="isOpen = false" x-transition:enter="ease-out transition-slow"
-                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                 x-transition:leave="ease-in transition-slow" x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-            >
-                <div class="bg-white dark:bg-dark px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div @if(isset($icon)) class="sm:flex sm:items-start" @endif>
-                        @if(isset($icon))
-                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                {{ $icon }}
-                            </div>
-                        @endif
-
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            @if(isset($title))
-                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-headline">
-                                    {{ $title }}
-                                </h3>
-                            @endif
-
-                            @if(isset($slot))
-                                <div class="mt-2">
-                                    <p class="text-sm leading-5">
-                                        {{ $slot }}
-                                    </p>
-                                </div>
-                            @endif
-                        </div>
+@props([
+    'wide' => false,
+    'title' => '',
+    'outerHtml' => ''
+])
+<div x-data="modal">
+    <div class="modal-template">
+        <div
+            x-show="open"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 -translate-y-10"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-10"
+            class="modal"
+            aria-modal="true"
+            role="dialog"
+        >
+            <div class="modal-dialog @if($wide) modal-dialog-xl @endif" x-bind="dismissModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ $title ?? '' }}</h5>
+                        <button type="button" class="btn btn-close" @click.prevent="toggleModal" aria-label="Close">
+                            <x-moonshine::icon
+                                icon="heroicons.x-mark"
+                                size="6"
+                            />
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ $slot ?? '' }}
                     </div>
                 </div>
-
-                @if(isset($buttons))
-                    <div class="bg-gray-50 dark:bg-purple px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        {{ $buttons }}
-                    </div>
-                @endif
             </div>
         </div>
+        <div x-show="open" x-transition.opacity class="modal-backdrop"></div>
     </div>
 
     {{ $outerHtml ?? '' }}
-</span>
+</div>

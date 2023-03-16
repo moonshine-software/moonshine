@@ -58,14 +58,14 @@ class MoonShineSocialiteController extends BaseController
             request()->session()->flash('alert', trans('moonshine::auth.failed'));
 
             return redirect()
-                ->route(config('moonshine.route.prefix').'.login');
+                ->route('moonshine.login');
         }
 
         auth(config('moonshine.auth.guard'))
             ->loginUsingId($account->moonshine_user_id);
 
         return redirect()
-            ->route(config('moonshine.route.prefix').'.index');
+            ->route('moonshine.index');
     }
 
     private function bindAccount(User $socialiteUser, string $driver, ?MoonshineSocialite $account): RedirectResponse
@@ -83,7 +83,7 @@ class MoonShineSocialiteController extends BaseController
         }
 
         return redirect()
-            ->route(config('moonshine.route.prefix').'.custom_page', 'profile');
+            ->route('moonshine.custom_page', 'profile');
     }
 
     protected function drivers(): array

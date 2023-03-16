@@ -180,10 +180,13 @@ class MoonShineController extends BaseController
             );
         }
 
+        $actions = $this->resource->getActions();
+
         $view = view($this->resource->baseIndexView(), [
             'resource' => $this->resource,
             'filters' => $this->resource->filters(),
-            'actions' => $this->resource->getActions(),
+            'dropdownActions' => $actions->filter(fn($action) => $action->inDropdown()),
+            'lineActions' => $actions->filter(fn($action) => !$action->inDropdown()),
             'metrics' => $this->resource->metrics(),
             'items' => $this->resource->paginate(),
         ]);

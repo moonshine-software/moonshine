@@ -1,0 +1,66 @@
+/* Tables */
+table {
+	@apply w-full border-collapse text-left;
+}
+
+.table {
+	@apply text-xs;
+
+	thead {
+		@apply bg-slate-100 text-3xs uppercase dark:bg-dark-700;
+		td,
+		th {
+			@apply border border-gray-200 p-3 font-semibold dark:border-x-0 dark:border-b dark:border-t-0 dark:border-dark-400;
+		}
+	}
+
+	tbody {
+		tr {
+			@apply odd:bg-white even:bg-gray-50 dark:odd:bg-dark-700/70 dark:even:bg-dark-700;
+		}
+		td,
+		th {
+			@apply border border-gray-200 p-3 dark:border-x-0 dark:border-t dark:border-b-0 dark:border-dark-400;
+		}
+		th {
+			@apply font-semibold;
+		}
+	}
+
+	tfoot {
+		tr:first-child {
+			td,
+			th {
+				@apply pt-3;
+			}
+		}
+	}
+}
+
+.table-list {
+	@apply border-separate border-spacing-y-2.5;
+
+	thead {
+		td,
+		th {
+			@apply whitespace-nowrap px-5 py-3 text-2xs font-semibold dark:border-dark-300;
+		}
+	}
+
+	tbody {
+		td,
+		th {
+			@apply whitespace-nowrap bg-white px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 dark:bg-dark-600 lg:whitespace-normal;
+		}
+	}
+}
+
+.table-responsive {
+	@apply w-full overflow-auto 2xl:overflow-visible;
+}
+
+.table-zoom-in {
+	tbody > tr {
+		@apply transition-all will-change-transform hover:scale-[1.015] hover:shadow-md hover:shadow-gray-200;
+	}
+}

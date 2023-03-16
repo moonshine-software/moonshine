@@ -1,33 +1,39 @@
-<div>
-    <x-moonshine::modal>
-        <x-slot name="title">{{ $action->label() }}</x-slot>
+<x-moonshine::offcanvas
+    title="{{ $action->label() }}"
+    :left="true"
+>
+    <x-slot:toggler class="btn-pink">
+        <x-moonshine::icon icon="heroicons.paper-clip" :size="6" />
+        {{ $action->label()  }}
+    </x-slot:toggler>
 
-        <x-slot name="buttons">
-            <form action="{{ $action->url() }}" enctype="multipart/form-data" method="POST">
-                @csrf
+    <x-moonshine::form
+        action="{{ $action->url() }}"
+        enctype="multipart/form-data"
+        method="POST"
+    >
+        <div class="form-flex-col">
+            <x-moonshine::form.input
+                type="hidden"
+                name="{{ $action->triggerKey }}"
+                value="1"
+            />
 
-                <input type="hidden" name="{{ $action->triggerKey }}" value="1">
-                <input type="file"
-                       required
-                       name="{{ $action->inputName }}"
-                       class="text-black">
+            <x-moonshine::form.input-wrapper
+                name="{{ $action->inputName }}"
+                label=""
+                required
+            >
+                <x-moonshine::form.input
+                    type="file"
+                    name="{{ $action->inputName }}"
+                    required
+                />
+            </x-moonshine::form.input-wrapper>
+        </div>
 
-                <button type="submit"
-                        class="mt-4 inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                    {{ trans('moonshine::ui.confirm') }}
-                </button>
-            </form>
-        </x-slot>
-
-        <x-slot name="outerHtml">
-            <div x-on:click="isOpen = !isOpen">
-                @include('moonshine::shared.btn', [
-                    'title' => $action->label(),
-                    'href' => '#',
-                    'filled' => true,
-                    'icon' => 'clip'
-                ])
-            </div>
-        </x-slot>
-    </x-moonshine::modal>
-</div>
+        <x-slot:button type="submit">
+            {{ trans('moonshine::ui.confirm') }}
+        </x-slot:button>
+    </x-moonshine::form>
+</x-moonshine::offcanvas>

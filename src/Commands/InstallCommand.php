@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Commands;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
 
@@ -21,7 +22,6 @@ class InstallCommand extends MoonShineCommand
         $this->initDirectories();
         $this->initDashboard();
         $this->initServiceProvider();
-        $this->initLfm();
 
         $this->components->info('Installation completed');
 
@@ -45,13 +45,17 @@ class InstallCommand extends MoonShineCommand
 
         $this->components->task('Vendor published');
 
-        Artisan::call('migrate');
-
-        $this->components->task('Tables migrated');
-
         Artisan::call('storage:link');
 
         $this->components->task('Storage link created');
+
+        if (config('moonshine.auth.enable', true)) {
+            Artisan::call('migrate');
+
+            $this->components->task('Tables migrated');
+        } else {
+            $this->components->task('Auth disabled, installed without database');
+        }
     }
 
     protected function initDashboard(): void
@@ -83,11 +87,5 @@ class InstallCommand extends MoonShineCommand
             'RouteServiceProvider',
             'MoonShineServiceProvider'
         );
-    }
-
-    protected function initLfm(): void
-    {
-        Artisan::call('vendor:publish', ['--tag' => 'lfm_config']);
-        Artisan::call('vendor:publish', ['--tag' => 'lfm_public']);
     }
 }

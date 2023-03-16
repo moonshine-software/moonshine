@@ -1,11 +1,10 @@
 import {defineConfig} from 'vite';
-
 export default defineConfig({
     build: {
         emptyOutDir: false,
         manifest: true,
         rollupOptions: {
-            input: ['resources/js/app.js', 'resources/css/app.css'],
+            input: ['resources/js/app.js'],
             output: {
                 entryFileNames: `js/moonshine.js`,
                 assetFileNames: file => {
@@ -13,6 +12,11 @@ export default defineConfig({
                     if (ext === 'css') {
                         return 'css/moonshine.css'
                     }
+
+                    if (ext === 'woff2') {
+                        return 'fonts/[name].[ext]'
+                    }
+
                     return 'assets/[name].[ext]'
                 }
             }

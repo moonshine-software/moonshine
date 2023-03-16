@@ -12,9 +12,11 @@ return [
     'route' => [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
         'middleware' => ['web', 'moonshine'],
+        'custom_page_slug' => 'custom_page',
     ],
 
     'auth' => [
+        'enable' => true,
         'guard' => 'moonshine',
         'guards' => [
             'moonshine' => [
@@ -28,14 +30,13 @@ return [
                 'model' => MoonshineUser::class,
             ],
         ],
+        'footer' => ''
     ],
     'middlewares' => [],
     'tinymce' => [
+        'file_manager' => false, // or 'laravel-filemanager' prefix for lfm
         'token' => env('MOONSHINE_TINYMCE_TOKEN', ''),
         'version' => env('MOONSHINE_TINYMCE_VERSION', '6')
-    ],
-    'extensions' => [
-        //
     ],
     'socialite' => [
         // 'driver' => 'path_to_image_for_button'

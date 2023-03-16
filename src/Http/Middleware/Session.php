@@ -14,7 +14,9 @@ class Session
 {
     public function handle(Request $request, Closure $next)
     {
-        $path = '/'.trim(config('moonshine.route.prefix'), '/');
+        $path = config('moonshine.route.prefix')
+            ? '/'.config('moonshine.route.prefix')
+            : '/';
 
         config(['session.path' => $path]);
 

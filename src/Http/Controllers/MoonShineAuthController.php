@@ -25,7 +25,7 @@ class MoonShineAuthController extends BaseController
     public function login(): Factory|View|Redirector|Application|RedirectResponse
     {
         if (auth(config('moonshine.auth.guard'))->check()) {
-            return redirect(route(config('moonshine.route.prefix').'.index'));
+            return redirect(route('moonshine.index'));
         }
 
         return view('moonshine::auth.login');
@@ -51,6 +51,6 @@ class MoonShineAuthController extends BaseController
     {
         auth(config('moonshine.auth.guard'))->logout();
 
-        return redirect(route(config('moonshine.route.prefix').'.login'));
+        return redirect(route('moonshine.login'));
     }
 }

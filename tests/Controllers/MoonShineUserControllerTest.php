@@ -14,7 +14,7 @@ class MoonShineUserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_index()
+    public function test_index(): void
     {
         $resource = new MoonShineUserResource();
 
@@ -22,18 +22,18 @@ class MoonShineUserControllerTest extends TestCase
             ->get($resource->route('index'));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.index');
+        $response->assertViewIs('moonshine::crud.index');
         $response->assertViewHas('resource', $resource);
 
         $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
             ->get($resource->route('create'));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.form');
+        $response->assertViewIs('moonshine::crud.form');
         $response->assertViewHas('resource', $resource);
     }
 
-    public function test_create()
+    public function test_create(): void
     {
         $resource = new MoonShineUserResource();
 
@@ -41,10 +41,10 @@ class MoonShineUserControllerTest extends TestCase
             ->get($resource->route('create'));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.form');
+        $response->assertViewIs('moonshine::crud.form');
     }
 
-    public function test_edit()
+    public function test_edit(): void
     {
         $resource = new MoonShineUserResource();
 
@@ -52,14 +52,14 @@ class MoonShineUserControllerTest extends TestCase
             ->get($resource->route('edit', $this->user->id));
 
         $response->assertOk();
-        $response->assertViewIs('moonshine::base.form');
+        $response->assertViewIs('moonshine::crud.form');
         $response->assertViewHas('item', $this->user);
     }
 
-    public function test_store()
+    public function test_store(): void
     {
         $resource = new MoonShineUserResource();
-        $email = uniqid() . '@example.com';
+        $email = uniqid('', true) . '@example.com';
 
         $this->assertDatabaseMissing('moonshine_users', [
             'email' => $email,
@@ -83,7 +83,16 @@ class MoonShineUserControllerTest extends TestCase
         ]);
     }
 
-    public function test_update()
+    public function test_show(): void
+    {
+        $resource = new MoonShineUserResource();
+
+        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+            ->get($resource->route('show', $this->user->id));
+
+        $response->assertValid();
+    }
+    public function test_update(): void
     {
         $resource = new MoonShineUserResource();
 
@@ -107,7 +116,7 @@ class MoonShineUserControllerTest extends TestCase
         ]);
     }
 
-    public function test_destroy()
+    public function test_destroy(): void
     {
         $resource = new MoonShineUserResource();
 

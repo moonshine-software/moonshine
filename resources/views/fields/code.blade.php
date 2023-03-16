@@ -1,4 +1,7 @@
-<div id="flask_{{ $field->id() }}" class="w-100 relative border" style="min-height: 300px"></div>
+<div id="flask_{{ $field->id() }}"
+     class="w-100 relative border"
+     style="min-height: 300px">
+</div>
 
 <input type="hidden"
        id="{{ $field->id() }}"

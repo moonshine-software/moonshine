@@ -5,22 +5,24 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "@tailwindcss/aspect-ratio": "^0.4.0",
-        "@tailwindcss/forms": "^0.5.0",
-        "@tailwindcss/typography": "^0.5.2",
-        "alpinejs": "^3.10.2",
-        "autoprefixer": "^10.4.7",
-        "axios": "^0.25",
-        "install": "^0.13.0",
-        "lodash": "^4.17.19",
-        "npm": "^8.9.0",
-        "postcss": "^8.1.14",
-        "tailwindcss": "^3.0.24",
-        "vite": "^3.0.2"
+        "alpinejs": "^3.12.0",
+        "lodash": "^4.17.21",
+        "vite": "^4.1.4"
     },
     "dependencies": {
-        "@alpinejs/mask": "^3.10.2",
-        "@alpinejs/persist": "^3.10.2",
-        "@vitejs/plugin-legacy": "^2.0.0"
+        "@alpinejs/mask": "^3.12.0",
+        "@alpinejs/persist": "^3.12.0",
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/forms": "^0.5.3",
+        "@tailwindcss/typography": "^0.5.9",
+        "@vitejs/plugin-legacy": "^4.0.1",
+        "autoprefixer": "^10.4.14",
+        "concurrently": "^7.6.0",
+        "postcss": "^8.4.21",
+        "postcss-import": "^15.1.0",
+        "postcss-nested": "^6.0.0",
+        "prettier": "^2.8.4",
+        "prettier-plugin-tailwindcss": "^0.2.4",
+        "tailwindcss": "^3.2.7"
     }
 }

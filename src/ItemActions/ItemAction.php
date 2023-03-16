@@ -9,23 +9,21 @@ use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithIcon;
+use Leeto\MoonShine\Traits\WithLabel;
 
 final class ItemAction
 {
     use Makeable;
     use WithIcon;
     use HasCanSee;
+    use WithLabel;
 
     public function __construct(
-        protected string $label,
+        string $label,
         protected Closure $callback,
         protected string $message = 'Done',
     ) {
-    }
-
-    public function label(): string
-    {
-        return $this->label;
+        $this->setLabel($label);
     }
 
     public function message(): string

@@ -20,7 +20,7 @@ trait CheckboxTrait
         }
 
         if (is_array($formValue)) {
-            return in_array($value, $formValue);
+            return in_array($value, $formValue, true);
         }
 
         return false;

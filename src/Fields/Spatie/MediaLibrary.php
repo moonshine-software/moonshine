@@ -10,7 +10,7 @@ class MediaLibrary extends Field
 {
     use CanBeMultiple;
 
-    public static string $view = 'moonshine::fields.spatie.media-library';
+    public static string $view = 'moonshine::fields.image';
 
     public static string $type = 'file';
 
@@ -43,11 +43,10 @@ class MediaLibrary extends Field
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
         if ($this->isMultiple()) {
-            $values = $item->getMedia($this->field())
-                ->map(fn ($value) => "'" . $value->getUrl() . "'")->implode(',');
-
-            return view('moonshine::shared.carousel', [
-                'values' => $values,
+            return view('moonshine::ui.image', [
+                'values' => $item->getMedia($this->field())
+                    ->map(fn ($value) => $value->getUrl())
+                    ->toArray(),
             ]);
         }
 
@@ -57,7 +56,7 @@ class MediaLibrary extends Field
             return null;
         }
 
-        return view('moonshine::fields.shared.thumbnail', [
+        return view('moonshine::ui.image', [
             'value' => $url,
         ]);
     }

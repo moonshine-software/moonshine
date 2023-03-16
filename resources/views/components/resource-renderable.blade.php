@@ -12,9 +12,7 @@
                     {{ $resource->renderField($fieldOrDecoration, $item) }}
                 </x-moonshine::field-container>
             @else
-                <div class="p-8">
-                    {{ $resource->renderField($fieldOrDecoration, $item) }}
-                </div>
+                {{ $resource->renderField($fieldOrDecoration, $item) }}
             @endif
         @endif
 

@@ -20,20 +20,19 @@ class Image extends Field implements Fileable
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        if ($item->{$this->field()} == '') {
+        if (!$item->{$this->field()}) {
             return '';
         }
 
         if ($this->isMultiple()) {
-            $values = collect($item->{$this->field()})
-                ->map(fn ($value) => "'".$this->path($value)."'")->implode(',');
-
-            return view('moonshine::shared.carousel', [
-                'values' => $values,
+            return view('moonshine::ui.image', [
+                'values' => collect($item->{$this->field()})
+                    ->map(fn ($value) => $this->path($value ?? ''))
+                    ->toArray(),
             ]);
         }
 
-        return view('moonshine::fields.shared.thumbnail', [
+        return view('moonshine::ui.image', [
             'value' => $this->path($item->{$this->field()}),
         ]);
     }

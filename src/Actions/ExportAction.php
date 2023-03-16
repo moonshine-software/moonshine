@@ -29,6 +29,8 @@ class ExportAction extends Action implements ActionContract
 
     protected string $triggerKey = 'exportAction';
 
+    protected bool $inDropdown = true;
+
     /**
      * @throws ActionException
      * @throws IOException
@@ -139,7 +141,8 @@ class ExportAction extends Action implements ActionContract
             $query['search'] = request('search');
         }
 
-        return $this->resource()->route('actions', query: $query);
+        return $this->resource()
+            ->route('actions', query: $query);
     }
 
     protected function resolveStorage()

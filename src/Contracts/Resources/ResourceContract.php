@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Contracts\HtmlViewable;
 use Leeto\MoonShine\Fields\Field;
+use Leeto\MoonShine\Filters\Filter;
 
 interface ResourceContract
 {
@@ -62,6 +63,13 @@ interface ResourceContract
     public function getFields(): Collection;
 
     /**
+     * Get a collection of filters
+     *
+     * @return Collection<Filter>
+     */
+    public function getFilters(): Collection;
+
+    /**
      * Get a collection of fields of related model, which will be displayed on resource index page
      *
      * @return Collection<Field>
@@ -81,8 +89,6 @@ interface ResourceContract
      * @return Collection<Field>
      */
     public function formFields(): Collection;
-
-    public function extensions($name, Model $item): string;
 
     /**
      * Check whether user can perform action on model
