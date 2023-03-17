@@ -17,7 +17,7 @@
         </x-moonshine::async-modal>
     @endif
 @else
-    @include('moonshine::fields.'.($field->isFullPage() ? 'full' : 'table').'-fields', [
+    @include('moonshine::fields.table-fields', [
         'field' => $field,
         'resource' => $resource,
         'item' => $item,

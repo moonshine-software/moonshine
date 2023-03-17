@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Actions;
 
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithLabel;
 use Leeto\MoonShine\Traits\WithView;
@@ -14,6 +15,7 @@ abstract class Action
     use Makeable;
     use WithView;
     use WithLabel;
+    use HasCanSee;
 
     protected bool $inDropdown = true;
 

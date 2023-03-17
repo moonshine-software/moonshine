@@ -41,6 +41,6 @@ final class CustomPage
     {
         return route((string) str('moonshine')
             ->append('.')
-            ->append('custom_page'), str($this->alias)->slug()->value());
+            ->append('custom_page'), $this->alias);
     }
 }

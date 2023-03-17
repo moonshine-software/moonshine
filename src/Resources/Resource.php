@@ -402,7 +402,7 @@ abstract class Resource implements ResourceContract
             );
         }
 
-        return $actions;
+        return $actions->filter(fn (Action $action) => $action->isSee(request()));
     }
 
 
