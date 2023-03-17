@@ -35,7 +35,7 @@ class Authenticate
      */
     protected function except(Request $request): bool
     {
-        if (!config('moonshine.auth.enable', true)) {
+        if (! config('moonshine.auth.enable', true)) {
             return true;
         }
 

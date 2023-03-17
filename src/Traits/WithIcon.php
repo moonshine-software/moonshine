@@ -27,7 +27,7 @@ trait WithIcon
         string $color = '',
         string $class = ''
     ): View|string {
-        if($this->iconValue() === '') {
+        if ($this->iconValue() === '') {
             return '';
         }
 

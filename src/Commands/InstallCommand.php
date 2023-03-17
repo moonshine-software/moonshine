@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Commands;
 
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Providers\MoonShineServiceProvider;
 

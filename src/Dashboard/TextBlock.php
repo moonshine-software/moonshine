@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Dashboard;
 
-use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Support\Collection;
-use Leeto\MoonShine\Contracts\HtmlViewable;
-use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithLabel;
-use Leeto\MoonShine\Traits\WithView;
 
 final class TextBlock extends DashboardItem
 {
