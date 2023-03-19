@@ -1,3 +1,3 @@
-<div class="my-5 font-bold">
+<div class="mb-4">
     {{ $decoration->label() }}
 </div>
