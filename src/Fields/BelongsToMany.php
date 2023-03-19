@@ -128,7 +128,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
                         'id' => $this->id(),
                         'name' => $this->name(),
                         'value' => $item->getKey(),
-                        'class' => 'form-group-inline'
+                        'class' => 'form-group-inline',
                     ]),
                     'beforeLabel' => true,
                     'label' => $item->{$this->resourceTitleField()},
