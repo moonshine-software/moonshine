@@ -1,4 +1,5 @@
 @props([
+    'crudMode' => false,
     'values' => false,
     'columns' => false,
     'notfound' => false,
@@ -9,7 +10,7 @@
 @if(isset($thead, $tbody))
 <!-- Table -->
 <div class="table-responsive">
-    <table {{ $attributes->merge(['class' => 'table-list']) }}>
+    <table {{ $attributes->merge(['class' => 'table' . ($crudMode ? '-list' : '')]) }}>
         <thead {{ $thead?->attributes }}>
             <tr>
                 @if(is_array($columns))

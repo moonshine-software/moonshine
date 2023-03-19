@@ -1,6 +1,6 @@
 <x-moonshine::column
-    :colSpan="$item->adaptiveColumnSpanValue()"
-    :adaptiveColSpan="$item->columnSpanValue()"
+    :colSpan="$item->columnSpanValue()"
+    :adaptiveColSpan="$item->adaptiveColumnSpanValue()"
 >
     <x-moonshine::box
         class="box-shadow zoom-in h-full p-0"

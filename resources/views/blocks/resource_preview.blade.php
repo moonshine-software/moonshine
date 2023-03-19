@@ -1,6 +1,6 @@
 <x-moonshine::column
-    :colSpan="$item->adaptiveColumnSpanValue()"
-    :adaptiveColSpan="$item->columnSpanValue()"
+    :colSpan="$item->columnSpanValue()"
+    :adaptiveColSpan="$item->adaptiveColumnSpanValue()"
 >
     @if($item->label())
         <h5 class="text-md font-medium">

@@ -37,16 +37,12 @@ class File extends Field implements Fileable
             return '';
         }
 
-        if ($this->isMultiple()) {
-            return collect($item->{$this->field()})
-                ->map(fn ($value, $index) => view('moonshine::ui.file', [
-                    'value' => $this->path($value),
-                    'download' => $this->canDownload(),
-                ])->render())->implode('');
-        }
+        $files = $this->isMultiple()
+            ? collect($item->{$this->field()})->map(fn ($value) => $this->path($value))
+            : $this->path($item->{$this->field()});
 
-        return view('moonshine::ui.file', [
-            'value' => $this->path($item->{$this->field()}),
+        return view('moonshine::components.files', [
+            'files' => $files,
             'download' => $this->canDownload(),
         ]);
     }
