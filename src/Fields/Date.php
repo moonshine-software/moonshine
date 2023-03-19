@@ -17,8 +17,6 @@ class Date extends Field
     protected static string $view = 'moonshine::fields.input';
 
     protected static string $type = 'date';
-
-    protected string $format = 'Y-m-d H:i:s';
     protected string $inputFormat = 'Y-m-d';
 
     public function formViewValue(Model $item): mixed

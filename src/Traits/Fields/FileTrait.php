@@ -66,7 +66,7 @@ trait FileTrait
     public function isAllowedExtension(string $extension): bool
     {
         return empty($this->getAllowedExtensions())
-            || in_array($extension, $this->getAllowedExtensions());
+            || in_array($extension, $this->getAllowedExtensions(), true);
     }
 
     public function disableDownload($condition = null): static

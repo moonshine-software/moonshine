@@ -14,7 +14,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
 use Leeto\MoonShine\Http\Requests\ProfileFormRequest;
 
-class MoonShineProfileController extends BaseController
+class ProfileController extends BaseController
 {
     public function store(ProfileFormRequest $request): RedirectResponse
     {

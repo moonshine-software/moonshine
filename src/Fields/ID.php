@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 
 class ID extends Field
@@ -17,7 +18,7 @@ class ID extends Field
     protected static string $type = 'hidden';
 
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): View
     {
         return view('moonshine::ui.badge', [
             'value' => parent::indexViewValue($item, $container),

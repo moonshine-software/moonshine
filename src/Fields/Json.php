@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use JsonException;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Traits\Fields\WithFields;
 use Throwable;
@@ -42,13 +44,16 @@ class Json extends Field implements HasFields
         return $this->keyValue;
     }
 
-    public function indexViewValue(Model $item, bool $container = false): string|\Illuminate\Contracts\View\View
+    /**
+     * @throws JsonException
+     */
+    public function indexViewValue(Model $item, bool $container = false): string|View
     {
         $columns = [];
         $values = $item->{$this->field()};
 
         if (! $this->hasFields()) {
-            return json_encode($values);
+            return json_encode($values, JSON_THROW_ON_ERROR);
         }
 
         if ($this->isKeyValue()) {
@@ -66,7 +71,7 @@ class Json extends Field implements HasFields
         ]);
     }
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
         return '';
     }

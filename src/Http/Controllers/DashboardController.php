@@ -16,7 +16,7 @@ use Leeto\MoonShine\Dashboard\Dashboard;
 
 use function view;
 
-class MoonShineDashboardController extends BaseController
+class DashboardController extends BaseController
 {
     public function index(): Factory|View|Application
     {

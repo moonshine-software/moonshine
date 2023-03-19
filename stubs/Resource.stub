@@ -18,9 +18,7 @@ class DummyResource extends Resource
 	public function fields(): array
 	{
 		return [
-		    Block::make('form-container', [
-		        ID::make()->sortable(),
-		    ])
+		    ID::make()->sortable(),
         ];
 	}
 

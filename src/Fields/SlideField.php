@@ -17,17 +17,17 @@ class SlideField extends Field
 
     protected array $attributes = ['min', 'max', 'step'];
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
     }
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
         return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
     }
 
-    public function formViewValue(Model $item): mixed
+    public function formViewValue(Model $item): array
     {
         return [
             $this->fromField => $item->{$this->fromField},

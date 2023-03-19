@@ -11,19 +11,20 @@ use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\MoonShine;
 
 use Leeto\MoonShine\Resources\CustomPage;
+use Symfony\Component\HttpFoundation\Response;
 
-class MoonShineCustomPageController extends BaseController
+class CustomPageController extends BaseController
 {
     public function __invoke(string $alias): Factory|View|Application
     {
         if (app()->runningInConsole()) {
-            abort(404);
+            abort(Response::HTTP_NOT_FOUND);
         }
 
         $page = app(MoonShine::class)->getPages()
             ->first(fn (CustomPage $page) => $page->alias() === $alias);
 
-        abort_if(! $page, 404);
+        abort_if(! $page, Response::HTTP_NOT_FOUND);
 
         return view('moonshine::custom_page', [
             'page' => $page,

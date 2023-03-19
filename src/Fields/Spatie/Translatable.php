@@ -22,7 +22,7 @@ class Translatable extends Json
     protected bool $keyValue = true;
 
     /**
-     * @param array $languages Массив кодов языков, которые обязательно надо ввести при редактировании
+     * @param array $languages
      * @return $this
      */
     public function requiredLanguages(array $languages): static
@@ -34,7 +34,7 @@ class Translatable extends Json
     }
 
     /**
-     * @param array $languages Массив кодов языков, которые которые будут вверху select языков
+     * @param array $languages
      * @return $this
      */
     public function priorityLanguages(array $languages): static
@@ -72,7 +72,7 @@ class Translatable extends Json
         if (empty($this->fields)) {
             $this->fields([
                 Select::make('Language', 'key')
-                    ->options(array_combine($this->getLanguagesCodes(), array_map(fn ($code) => Str::upper($code), $this->getLanguagesCodes())))
+                    ->options(array_combine($this->getLanguagesCodes(), array_map(static fn ($code) => Str::upper($code), $this->getLanguagesCodes())))
                     ->nullable(),
                 Text::make('Value', 'value'),
             ]);
@@ -101,6 +101,9 @@ class Translatable extends Json
         return $item->getTranslations($this->field());
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function save(Model $item): Model
     {
         if ($this->requestValue() !== false) {
@@ -114,7 +117,7 @@ class Translatable extends Json
             if (! empty($notSetLanguages)) {
                 throw ValidationException::withMessages(
                     [$this->field() =>
-                         sprintf('Для поля %s не заданы значения переводов на языки: %s', $this->label(), implode(', ', $notSetLanguages)), ]
+                         sprintf('The field %s does not have translation values set for the following languages: %s', $this->label(), implode(', ', $notSetLanguages)), ]
                 );
             }
 

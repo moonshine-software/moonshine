@@ -22,9 +22,10 @@ use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\QueryTags\QueryTag;
 use Leeto\MoonShine\Resources\Resource;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
-class MoonShineController extends BaseController
+class MoonShineCrudController extends BaseController
 {
     use AuthorizesRequests;
     use DispatchesJobs;
@@ -44,8 +45,8 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(! $action = $this->resource->formActions()[$index] ?? false, 404);
-        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $action = $this->resource->formActions()[$index] ?? false, ResponseAlias::HTTP_NOT_FOUND);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
         if (! $redirectRoute = $action->getRedirectTo()) {
             $redirectRoute = redirect($this->resource->route('index'));
@@ -75,8 +76,8 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(! $action = $this->resource->itemActions()[$index] ?? false, 404);
-        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $action = $this->resource->itemActions()[$index] ?? false, ResponseAlias::HTTP_NOT_FOUND);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
         $redirectRoute = redirect($this->resource->route('index'));
 
@@ -110,8 +111,8 @@ class MoonShineController extends BaseController
             return $redirectRoute;
         }
 
-        abort_if(! $action = $this->resource->bulkActions()[$index] ?? false, 404);
-        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $action = $this->resource->bulkActions()[$index] ?? false, ResponseAlias::HTTP_NOT_FOUND);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
         try {
             $items = $this->resource->getModel()
@@ -136,7 +137,7 @@ class MoonShineController extends BaseController
      */
     public function actions(): mixed
     {
-        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
         $actions = $this->resource->getActions();
 
@@ -168,11 +169,11 @@ class MoonShineController extends BaseController
             $this->resource->customBuilder($queryTag->builder());
         }
 
-        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('viewAny', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
 
         if (request()->ajax()) {
-            abort_if(! request()->hasAny(['related_column', 'related_key']), 404);
+            abort_if(! request()->hasAny(['related_column', 'related_key']), ResponseAlias::HTTP_NOT_FOUND);
 
             $this->resource->relatable(
                 request('related_column'),
@@ -206,10 +207,10 @@ class MoonShineController extends BaseController
      */
     public function create(): string|View|Factory|Redirector|RedirectResponse|Application
     {
-        abort_if(! $this->resource->can('create', $this->resource->getModel()), 403);
+        abort_if(! $this->resource->can('create', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
 
-        if (! in_array('create', $this->resource->getActiveActions())) {
+        if (!in_array('create', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -222,7 +223,7 @@ class MoonShineController extends BaseController
      */
     public function edit($id): string|View|Factory|Redirector|RedirectResponse|Application
     {
-        if (! in_array('edit', $this->resource->getActiveActions())) {
+        if (!in_array('edit', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -230,7 +231,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(! $this->resource->can('update', $item), 403);
+        abort_if(! $this->resource->can('update', $item), ResponseAlias::HTTP_FORBIDDEN);
 
         $this->resource->setItem($item);
 
@@ -243,7 +244,7 @@ class MoonShineController extends BaseController
      */
     public function show($id): View|Factory|Redirector|Application|RedirectResponse
     {
-        if (! in_array('show', $this->resource->getActiveActions())) {
+        if (!in_array('show', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -251,7 +252,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(! $this->resource->can('view', $item), 403);
+        abort_if(! $this->resource->can('view', $item), ResponseAlias::HTTP_FORBIDDEN);
 
         $this->resource->setItem($item);
 
@@ -267,7 +268,7 @@ class MoonShineController extends BaseController
      */
     public function update($id, Request $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
     {
-        if (! in_array('edit', $this->resource->getActiveActions())) {
+        if (!in_array('edit', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -275,7 +276,7 @@ class MoonShineController extends BaseController
             ->newModelQuery()
             ->findOrFail($id);
 
-        abort_if(! $this->resource->can('update', $item), 403);
+        abort_if(! $this->resource->can('update', $item), ResponseAlias::HTTP_FORBIDDEN);
 
         return $this->save($request, $item);
     }
@@ -286,14 +287,14 @@ class MoonShineController extends BaseController
      */
     public function store(Request $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
     {
-        if (! in_array('edit', $this->resource->getActiveActions())
-            && ! in_array('create', $this->resource->getActiveActions())) {
+        if (!in_array('edit', $this->resource->getActiveActions(), true)
+            && !in_array('create', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
         $item = $this->resource->getModel();
 
-        abort_if(! $this->resource->can('create', $item), 403);
+        abort_if(! $this->resource->can('create', $item), ResponseAlias::HTTP_FORBIDDEN);
 
         return $this->save($request, $item);
     }
@@ -303,14 +304,14 @@ class MoonShineController extends BaseController
      */
     public function destroy($id): Redirector|Application|RedirectResponse
     {
-        if (! in_array('delete', $this->resource->getActiveActions())) {
+        if (!in_array('delete', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
         $redirectRoute = redirect($this->resource->route('index'));
 
         if (request()->has('ids')) {
-            abort_if(! $this->resource->can('massDelete', $this->resource->getModel()), 403);
+            abort_if(! $this->resource->can('massDelete', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
             $this->resource->massDelete(
                 explode(';', request('ids'))
@@ -320,7 +321,7 @@ class MoonShineController extends BaseController
                 ->newModelQuery()
                 ->findOrFail($id);
 
-            abort_if(! $this->resource->can('delete', $item), 403);
+            abort_if(! $this->resource->can('delete', $item), ResponseAlias::HTTP_FORBIDDEN);
 
             $this->resource->delete($item);
         }
@@ -375,8 +376,8 @@ class MoonShineController extends BaseController
                 return response()->json(
                     $validator->errors(),
                     $validator->fails()
-                        ? Response::HTTP_UNPROCESSABLE_ENTITY
-                        : Response::HTTP_OK
+                        ? ResponseAlias::HTTP_UNPROCESSABLE_ENTITY
+                        : ResponseAlias::HTTP_OK
                 );
             }
 

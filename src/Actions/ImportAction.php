@@ -70,7 +70,11 @@ class ImportAction extends Action implements ActionContract
             ->path($path);
 
         if ($this->isQueue()) {
-            ImportActionJob::dispatch(get_class($this->resource()), $path, $this->deleteAfter);
+            ImportActionJob::dispatch(
+                get_class($this->resource()),
+                $path,
+                $this->deleteAfter
+            );
 
             return redirect()
                 ->back()

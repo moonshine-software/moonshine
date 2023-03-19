@@ -63,6 +63,9 @@ return [
         'role_title' => 'Роли',
         'role_name' => 'Название',
 
+        'main_information' => 'Основная информация',
+        'change_password' => 'Изменить пароль',
+
         'link_socialite' => 'Привязать аккаунты',
         'linked_socialite' => 'Привязанные аккаунты',
 

@@ -44,9 +44,9 @@ class HasMany extends Field implements HasRelationship, HasFields, OneToManyRela
             $columns[$field->field()] = $field->label();
         }
 
-        foreach ($item->{$this->field()} as $index => $item) {
+        foreach ($item->{$this->field()} as $index => $data) {
             foreach ($this->getFields() as $field) {
-                $values[$index][$field->field()] = $field->indexViewValue($item, false);
+                $values[$index][$field->field()] = $field->indexViewValue($data, false);
             }
         }
 

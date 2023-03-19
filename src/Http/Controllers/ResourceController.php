@@ -8,10 +8,12 @@ use Leeto\MoonShine\MoonShine;
 
 use function str;
 
-class MoonShineResourceController extends MoonShineController
+class ResourceController extends MoonShineCrudController
 {
     public function __construct()
     {
+        parent::__construct();
+
         if (! app()->runningInConsole()) {
             $class = (string) str(request()->route()->getName())->betweenFirst('.', '.')
                 ->singular()

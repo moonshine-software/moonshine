@@ -31,7 +31,7 @@ class LoginFormRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'email' => (string) str(request('email'))

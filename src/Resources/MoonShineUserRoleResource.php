@@ -30,7 +30,7 @@ class MoonShineUserRoleResource extends Resource
     public function fields(): array
     {
         return [
-            Block::make('form-container', [
+            Block::make(trans('moonshine::ui.resource.main_information'), [
                 ID::make()->sortable()->showOnExport(),
                 Text::make(trans('moonshine::ui.resource.role_name'), 'name')
                     ->required()->showOnExport(),

@@ -63,11 +63,11 @@ trait WithRelationship
 
             return $this->formViewValue($item) instanceof Collection
                 ? $this->formViewValue($item)->contains($related->getKeyName(), '=', $value)
-                : in_array($value, $this->formViewValue($item));
+                : in_array($value, $this->formViewValue($item), true);
         }
 
         if ($this->belongToOne() && is_array($this->formViewValue($item))) {
-            return in_array($value, $this->formViewValue($item));
+            return in_array($value, $this->formViewValue($item), true);
         }
 
         return (string) $this->formViewValue($item) === $value

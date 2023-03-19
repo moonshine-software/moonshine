@@ -1,6 +1,6 @@
 <?php
 
-spl_autoload_register(function ($class) {
+spl_autoload_register(static function ($class) {
     $prefix = 'Leeto\\MoonShine\\';
 
     $length = strlen($prefix);
@@ -11,9 +11,9 @@ spl_autoload_register(function ($class) {
     $relativeClass = substr($class, $length);
 
 
-    $file = rtrim(dirname(__FILE__), '/') . '/' . str_replace('\\', '/', $relativeClass) . '.php';
+    $file = rtrim(__DIR__, '/') . '/' . str_replace('\\', '/', $relativeClass) . '.php';
 
     if (file_exists($file)) {
-        require $file;
+        require_once $file;
     }
 });

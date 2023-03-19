@@ -38,6 +38,11 @@ class ExportActionJob implements ShouldQueue
      */
     public function handle(): void
     {
-        ExportAction::process($this->path, new $this->resource(), $this->disk, $this->dir);
+        ExportAction::process(
+            $this->path,
+            new $this->resource(),
+            $this->disk,
+            $this->dir
+        );
     }
 }

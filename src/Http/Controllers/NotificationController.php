@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Routing\Controller as BaseController;
 
-class MoonShineNotificationController extends BaseController
+class NotificationController extends BaseController
 {
     public function readAll(): RedirectResponse
     {

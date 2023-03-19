@@ -172,7 +172,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
 
     public function save(Model $item): Model
     {
-        $values = $this->requestValue() ? $this->requestValue() : [];
+        $values = $this->requestValue() ?: [];
         $sync = [];
 
         if ($this->hasFields()) {

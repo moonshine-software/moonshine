@@ -422,7 +422,7 @@ abstract class Resource implements ResourceContract
     /**
      * @throws Throwable
      */
-    private function withdrawFields($fieldsOrDecorations, array &$fields)
+    private function withdrawFields($fieldsOrDecorations, array &$fields): void
     {
         foreach ($fieldsOrDecorations as $fieldOrDecoration) {
             if ($fieldOrDecoration instanceof Field) {
@@ -470,6 +470,9 @@ abstract class Resource implements ResourceContract
         return collect($names);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function isWhenConditionField(string $name): bool
     {
         return $this->whenFieldNames()->has($name);
@@ -884,7 +887,7 @@ abstract class Resource implements ResourceContract
     {
         return ! $this->isPreviewMode() && (
             count($this->bulkActions()) || (
-                $this->can('massDelete') && in_array('delete', $this->getActiveActions())
+                $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
             )
         );
     }

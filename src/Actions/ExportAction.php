@@ -29,8 +29,6 @@ class ExportAction extends Action implements ActionContract
 
     protected string $triggerKey = 'exportAction';
 
-    protected bool $inDropdown = true;
-
     /**
      * @throws ActionException
      * @throws IOException
@@ -50,7 +48,12 @@ class ExportAction extends Action implements ActionContract
             ->path("{$this->getDir()}/{$this->resource()->routeAlias()}.xlsx");
 
         if ($this->isQueue()) {
-            ExportActionJob::dispatch(get_class($this->resource()), $path, $this->getDisk(), $this->getDir());
+            ExportActionJob::dispatch(
+                get_class($this->resource()),
+                $path,
+                $this->getDisk(),
+                $this->getDir()
+            );
 
             return redirect()
                 ->back()
@@ -78,7 +81,7 @@ class ExportAction extends Action implements ActionContract
 
         $items = $resource->query()->get();
 
-        $data = collect([]);
+        $data = collect();
 
         foreach ($items as $item) {
             $row = [];
@@ -141,11 +144,10 @@ class ExportAction extends Action implements ActionContract
             $query['search'] = request('search');
         }
 
-        return $this->resource()
-            ->route('actions', query: $query);
+        return $this->resource()->route('actions', query: $query);
     }
 
-    protected function resolveStorage()
+    protected function resolveStorage(): void
     {
         if (! Storage::disk($this->getDisk())->exists($this->getDir())) {
             Storage::disk($this->getDisk())->makeDirectory($this->getDir());

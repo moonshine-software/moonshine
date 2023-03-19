@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\WithMask;
 
@@ -15,7 +16,7 @@ class Url extends Field
 
     protected static string $type = 'url';
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): View
     {
         return view('moonshine::ui.url', [
             'value' => parent::indexViewValue($item, $container),

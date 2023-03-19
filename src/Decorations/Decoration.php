@@ -18,10 +18,16 @@ abstract class Decoration implements HtmlViewable
 
     protected array $fields = [];
 
-    public function __construct(string $label, array $fields = [])
+    public function __construct(string|array $labelOrFields, array $fields = [])
     {
-        $this->setLabel($label);
+        if (is_array($labelOrFields)) {
+            $fields = $labelOrFields;
+            $labelOrFields = '';
+        }
+
+        $this->setLabel($labelOrFields);
         $this->setFields($fields);
+
     }
 
     /**

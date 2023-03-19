@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Commands;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Leeto\MoonShine\MoonShine;
 
 class ResourceCommand extends MoonShineCommand
@@ -17,6 +18,9 @@ class ResourceCommand extends MoonShineCommand
         $this->createResource();
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     public function createResource(): void
     {
         $name = str($this->argument('name'));

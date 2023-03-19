@@ -19,10 +19,7 @@ class Select extends Field
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
-        if (isset($this->values()[$item->{$this->field()}])) {
-            return $this->values()[$item->{$this->field()}];
-        }
-
-        return parent::indexViewValue($item, $container);
+        return $this->values()[$item->{$this->field()}]
+            ?? parent::indexViewValue($item, $container);
     }
 }

@@ -14,17 +14,17 @@ class Password extends Field
 
     protected array $attributes = ['autocomplete'];
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
         return '***';
     }
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         return '***';
     }
 
-    public function formViewValue(Model $item): mixed
+    public function formViewValue(Model $item): string
     {
         return '';
     }

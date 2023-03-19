@@ -37,9 +37,9 @@ class Number extends Field
             return view('moonshine::ui.rating', [
                 'value' => $item->{$this->field()},
             ]);
-        } else {
-            return parent::indexViewValue($item, $container);
         }
+
+        return parent::indexViewValue($item, $container);
     }
 
     public function exportViewValue(Model $item): mixed

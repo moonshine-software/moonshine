@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\FormComponents;
 
 final class PermissionFormComponent extends FormComponent
 {
-    protected static string $view = 'moonshine::form_components.permission';
+    protected static string $view = 'moonshine::form-components.permission';
 }

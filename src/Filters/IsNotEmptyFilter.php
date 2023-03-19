@@ -22,6 +22,6 @@ class IsNotEmptyFilter extends Filter
 
     public function name(string $index = null): string
     {
-        return "filters[is_not_empty__{$this->field()}]";
+        return "filters[is_not_empty_{$this->field()}]";
     }
 }

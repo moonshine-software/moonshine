@@ -7,10 +7,12 @@ namespace Leeto\MoonShine\Http\Controllers;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
 
-class MoonShineUserRoleController extends MoonShineController
+class UserRoleController extends MoonShineCrudController
 {
     public function __construct()
     {
+        parent::__construct();
+
         $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
             ->append('MoonShineUserRoleResource');
 

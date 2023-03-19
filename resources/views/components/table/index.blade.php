@@ -5,6 +5,7 @@
     'tbody',
     'tfoot'
 ])
+@if(isset($thead, $tbody))
 <!-- Table -->
 <div class="table-responsive">
     <table {{ $attributes->merge(['class' => 'table-list']) }}>
@@ -45,3 +46,4 @@
         @endif
     </table>
 </div>
+@endif

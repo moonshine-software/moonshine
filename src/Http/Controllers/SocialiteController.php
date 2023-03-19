@@ -13,7 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Leeto\MoonShine\Exceptions\AuthException;
 use Leeto\MoonShine\Models\MoonshineSocialite;
 
-class MoonShineSocialiteController extends BaseController
+class SocialiteController extends BaseController
 {
     /**
      * @throws AuthException
@@ -99,7 +99,7 @@ class MoonShineSocialiteController extends BaseController
     /**
      * @throws Exception
      */
-    protected function ensureSocialiteIsInstalled()
+    protected function ensureSocialiteIsInstalled(): void
     {
         if (class_exists(Socialite::class)) {
             return;

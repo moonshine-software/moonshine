@@ -13,9 +13,14 @@ use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
+use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Traits\WithLabel;
 
+
+/**
+ * @mixin Field|WithFields
+ */
 trait FormElement
 {
     use WithLabel;
@@ -69,7 +74,7 @@ trait FormElement
                 $this->setResourceTitleField($resource);
             }
 
-            if (! $this->manyToMany() && $this instanceof HasFields && ! $this->hasFields()) {
+            if ($this instanceof HasFields && ! $this->manyToMany() && ! $this->hasFields()) {
                 $this->fields($this->resource()?->formFields()?->toArray() ?? []);
             }
         }

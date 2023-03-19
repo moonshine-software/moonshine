@@ -36,54 +36,53 @@ class MoonShineUserResource extends Resource
     public function fields(): array
     {
         return [
-            Flex::make('flex-block', [
-                Block::make('left-side', [
-                    ID::make()
-                        ->sortable()
-                        ->showOnExport(),
+            Block::make(trans('moonshine::ui.resource.main_information'), [
+                ID::make()
+                    ->sortable()
+                    ->showOnExport(),
 
-                    BelongsTo::make(
-                        trans('moonshine::ui.resource.role'),
-                        'moonshine_user_role_id',
-                        new MoonShineUserRoleResource()
-                    )
-                        ->showOnExport(),
+                BelongsTo::make(
+                    trans('moonshine::ui.resource.role'),
+                    'moonshine_user_role_id',
+                    new MoonShineUserRoleResource()
+                )
+                    ->showOnExport(),
 
-                    Text::make(trans('moonshine::ui.resource.name'), 'name')
-                        ->required()
-                        ->showOnExport(),
+                Text::make(trans('moonshine::ui.resource.name'), 'name')
+                    ->required()
+                    ->showOnExport(),
 
-                    Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
-                        ->removable()
-                        ->showOnExport()
-                        ->disk(config('filesystems.default'))
-                        ->dir('moonshine_users')
-                        ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
+                Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
+                    ->removable()
+                    ->showOnExport()
+                    ->disk(config('filesystems.default'))
+                    ->dir('moonshine_users')
+                    ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
-                    Date::make(trans('moonshine::ui.resource.created_at'), 'created_at')
-                        ->format("d.m.Y")
-                        ->default(now()->toDateTimeString())
-                        ->sortable()
-                        ->hideOnForm()
-                        ->showOnExport(),
+                Date::make(trans('moonshine::ui.resource.created_at'), 'created_at')
+                    ->format("d.m.Y")
+                    ->default(now()->toDateTimeString())
+                    ->sortable()
+                    ->hideOnForm()
+                    ->showOnExport(),
 
-                    Email::make(trans('moonshine::ui.resource.email'), 'email')
-                        ->sortable()
-                        ->showOnExport()
-                        ->required(),
-                ]),
-                Block::make('right-side', [
-                    Password::make(trans('moonshine::ui.resource.password'), 'password')
-                        ->customAttributes(['autocomplete' => 'new-password'])
-                        ->hideOnIndex()
-                        ->hideOnDetail(),
+                Email::make(trans('moonshine::ui.resource.email'), 'email')
+                    ->sortable()
+                    ->showOnExport()
+                    ->required(),
+            ])->columnSpan(6),
 
-                    PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
-                        ->customAttributes(['autocomplete' => 'confirm-password'])
-                        ->hideOnIndex()
-                        ->hideOnDetail(),
-                ]),
-            ]),
+            Block::make(trans('moonshine::ui.resource.change_password'), [
+                Password::make(trans('moonshine::ui.resource.password'), 'password')
+                    ->customAttributes(['autocomplete' => 'new-password'])
+                    ->hideOnIndex()
+                    ->hideOnDetail(),
+
+                PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
+                    ->customAttributes(['autocomplete' => 'confirm-password'])
+                    ->hideOnIndex()
+                    ->hideOnDetail(),
+            ])->columnSpan(6),
         ];
     }
 

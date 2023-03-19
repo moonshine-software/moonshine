@@ -14,7 +14,7 @@ class Tabs extends Decoration
 
     public function __construct(protected array $tabs = [])
     {
-        $this->setLabel(uniqid('', true));
+        parent::__construct(uniqid('', true));
     }
 
     /**
@@ -23,7 +23,7 @@ class Tabs extends Decoration
      */
     public function tabs(): Collection
     {
-        return tap(Collection::make($this->tabs), function (Collection $tabs) {
+        return tap(Collection::make($this->tabs), static function (Collection $tabs) {
             throw_if(
                 $tabs->every(fn ($tab) => ! $tab instanceof Tab),
                 new DecorationException('Tabs must be a class of '.Tab::class)

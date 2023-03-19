@@ -16,7 +16,8 @@ class Button extends Decoration
 
     public function __construct(string $label, string $link, bool $blank = false)
     {
-        $this->setLabel($label);
+        parent::__construct($label);
+
         $this->addLink($label, $link, $blank);
     }
 }
