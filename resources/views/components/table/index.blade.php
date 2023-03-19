@@ -1,4 +1,5 @@
 @props([
+    'crudMode' => false,
     'values' => false,
     'columns' => false,
     'notfound' => false,
