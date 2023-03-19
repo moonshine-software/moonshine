@@ -69,7 +69,7 @@ class MoonShineUserResource extends Resource
                     ->sortable()
                     ->showOnExport()
                     ->required(),
-            ])->columnSpan(6),
+            ]),
 
             Block::make(trans('moonshine::ui.resource.change_password'), [
                 Password::make(trans('moonshine::ui.resource.password'), 'password')
@@ -81,7 +81,7 @@ class MoonShineUserResource extends Resource
                     ->customAttributes(['autocomplete' => 'confirm-password'])
                     ->hideOnIndex()
                     ->hideOnDetail(),
-            ])->columnSpan(6),
+            ]),
         ];
     }
 
