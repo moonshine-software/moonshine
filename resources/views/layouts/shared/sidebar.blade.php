@@ -1,5 +1,5 @@
 <!-- Menu -->
-<aside class="layout-menu w-full overflow-hidden lg:w-14 xl:w-56 2xl:w-64" :class="minimizedMenu && '_is-minimized !w-14'" x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }">
+<aside class="layout-menu" :class="minimizedMenu && '_is-minimized'">
     <div class="menu-heading">
         <div class="menu-heading-logo">
             @include('moonshine::layouts.shared.logo')

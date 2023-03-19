@@ -8,7 +8,6 @@
     class="accordion"
 >
     <div
-        x-on:click="{{ $decoration->id() }}_toggle()"
         class="accordion-item"
         :class="{{ $decoration->id() }}_open ? 'mt-5' : 'my-5'"
     >
@@ -25,7 +24,7 @@
                 </svg>
             </button>
         </h2>
-        <div x-show="{{ $decoration->id() }}_open" class="accordion-body" style="display: none">
+        <div x-show="{{ $decoration->id() }}_open" class="accordion-body">
             <div class="accordion-content">
                 <x-moonshine::resource-renderable
                     :components="$decoration->fields()"

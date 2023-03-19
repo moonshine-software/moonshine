@@ -58,6 +58,9 @@
 
 	/* Notifications */
 	.notifications {
+		.dropdown-content {
+			@apply w-full;
+		}
 		&-icon {
 			@apply relative block text-slate-600 hover:text-pink dark:text-dark-50 dark:hover:text-white;
 		}

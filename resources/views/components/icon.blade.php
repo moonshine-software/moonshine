@@ -1,12 +1,11 @@
 @props([
     'icon' => '',
     'size' => 5,
-    'color' => 'white',
+    'color',
     'class' => ''
 ])
 
-@includeWhen($icon, "moonshine::ui.icons.$icon", [
+@includeWhen($icon, "moonshine::ui.icons.$icon", array_merge([
     'size' => $size,
-    'color' => $color,
     'class' => $class
-])
+], isset($color) ? ['color' => $color] : []))

@@ -5,6 +5,10 @@ module.exports = {
         './resources/views/**/*.blade.php',
     ],
     safelist: [
+        'visible',
+        'pointer-events-auto',
+        'opacity-0',
+        'opacity-100',
         {
             pattern: /text-(pink|purple)/,
             variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
@@ -113,9 +117,7 @@ module.exports = {
         extend: {},
     },
     plugins: [
-        require('@tailwindcss/forms')({
-            strategy: 'class',
-        }),
+        require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
         plugin(function ({ addVariant }) {

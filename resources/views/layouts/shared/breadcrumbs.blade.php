@@ -6,7 +6,6 @@
                 <x-moonshine::icon
                     icon="heroicons.home"
                     size="6"
-                    color="pink"
                 />
             </a>
         </li>
