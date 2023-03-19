@@ -73,7 +73,7 @@
                 id="avatar"
                 @class(['form-invalid' => $errors->has('avatar')])
                 placeholder="{{ trans('moonshine::ui.resource.avatar') }}"
-                :files="[Storage::url(auth(config('moonshine.auth.guard'))->user()->avatar)]"
+                :files="[auth(config('moonshine.auth.guard'))->user()->avatar ? Storage::url(auth(config('moonshine.auth.guard'))->user()->avatar) : null]"
                 :removable="false"
                 :imageable="true"
             />
