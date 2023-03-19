@@ -1,3 +1,3 @@
-<div class="my-5 font-bold text-md text-black dark:text-white">
+<div class="my-5 font-bold">
     {{ $decoration->label() }}
 </div>

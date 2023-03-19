@@ -3,7 +3,7 @@
         'id' => $field->id(),
         'name' => $field->name(),
     ])"
-    :files="is_array($field->formViewValue($item)) ? $field->formViewValue($item) : [$field->formViewValue($item)]"
+    :files="is_iterable($field->formViewValue($item)) ? $field->formViewValue($item) : [$field->formViewValue($item)]"
     :removable="$field->isRemovable()"
     :imageable="false"
     :download="$field->canDownload()"

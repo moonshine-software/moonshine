@@ -112,6 +112,10 @@
                 @if(!$resource->isRelatable())
                     {{ $items->links('moonshine::ui.pagination') }}
                 @endif
+            @else
+                <x-moonshine::alert>
+                    {{ trans('moonshine::ui.notfound') }}
+                </x-moonshine::alert>
             @endif
         </div>
     </x-moonshine::grid>
