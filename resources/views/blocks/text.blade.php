@@ -1,7 +1,10 @@
-<div class="sm:col-span-{{ $item->adaptiveColumnSpanValue() }} xl:col-span-{{ $item->columnSpanValue() }}">
+<x-moonshine::column
+    :colSpan="$item->adaptiveColumnSpanValue()"
+    :adaptiveColSpan="$item->columnSpanValue()"
+>
     @includeWhen($item->label(), 'moonshine::layouts.shared.title', [
         'title' => $item->label()
     ])
 
     {!! $item->text() !!}
-</div>
+</x-moonshine::column>

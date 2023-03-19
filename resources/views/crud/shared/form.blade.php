@@ -3,7 +3,6 @@
     :x-init="'init('.json_encode($resource->whenFieldNames()->map(fn($value) => $item[$value] ?? '')).')'"
     action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
     enctype="multipart/form-data"
-    class="grid grid-cols-12 gap-6"
     method="POST"
     x-on:submit.prevent="{{ $resource->isPrecognition() ? 'precognition($event.target)' : true }}"
 >

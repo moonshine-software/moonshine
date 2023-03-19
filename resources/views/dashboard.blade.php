@@ -14,7 +14,10 @@
     @if($blocks)
         <div class="flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10">
             @foreach($blocks as $block)
-                <div class="sm:col-span-{{ $block->adaptiveColumnSpanValue() }} xl:col-span-{{ $block->columnSpanValue() }}">
+                <x-moonshine::column
+                    :colSpan="$block->adaptiveColumnSpanValue()"
+                    :adaptiveColSpan="$block->columnSpanValue()"
+                >
                     @if($block->label())
                         <h2 class="mb-4 truncate text-md font-medium">
                             {{ $block->label() }}
@@ -26,7 +29,7 @@
                             {!! $block->render($item) !!}
                         @endforeach
                     </div>
-                </div>
+                </x-moonshine::column>
             @endforeach
         </div>
     @endif

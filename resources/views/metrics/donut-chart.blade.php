@@ -1,10 +1,13 @@
-<x-moonshine::box
-    :adaptiveColSpan="$item->adaptiveColumnSpanValue()"
-    :colSpan="$item->columnSpanValue()"
-    class="grow"
+<x-moonshine::column
+    :colSpan="$item->adaptiveColumnSpanValue()"
+    :adaptiveColSpan="$item->columnSpanValue()"
 >
-    <div id="{{ $item->id() }}" class="chart"></div>
-</x-moonshine::box>
+    <x-moonshine::box
+        class="grow"
+    >
+        <div id="{{ $item->id() }}" class="chart"></div>
+    </x-moonshine::box>
+</x-moonshine::column>
 
 @push('scripts')
     <script>

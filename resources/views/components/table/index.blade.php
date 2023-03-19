@@ -1,9 +1,10 @@
 @props([
     'values' => false,
     'columns' => false,
+    'notfound' => false,
     'thead',
     'tbody',
-    'tfoot'
+    'tfoot',
 ])
 @if(isset($thead, $tbody))
 <!-- Table -->
@@ -46,4 +47,8 @@
         @endif
     </table>
 </div>
+@elseif($notfound)
+    <x-moonshine::alert>
+        {{ trans('moonshine::ui.notfound') }}
+    </x-moonshine::alert>
 @endif

@@ -25,8 +25,7 @@
         'subTitle' => $resource->subTitle()
     ])
 
-    <div class="grid grid-cols-12 gap-6">
-
+    <x-moonshine::grid>
         @if(!$resource->isRelatable())
             @if(count($metrics))
                 <div class="col-span-12 pb-10">
@@ -60,7 +59,7 @@
                         <x-moonshine::link
                             :href="$resource->route('create')"
                             icon="heroicons.squares-plus"
-                           :filled="true"
+                            :filled="true"
                         >
                             {{ trans('moonshine::ui.create') }}
                         </x-moonshine::link>
@@ -68,15 +67,15 @@
                 @endif
 
                 @if(!$resource->isRelatable() && $dropdownActions && $items->isNotEmpty())
-                <x-moonshine::dropdown>
-                    <x-slot:toggler class="btn">
-                        <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
-                    </x-slot:toggler>
+                    <x-moonshine::dropdown>
+                        <x-slot:toggler class="btn">
+                            <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
+                        </x-slot:toggler>
 
-                    @include('moonshine::crud.shared.dropdown-actions', [
-                        'actions' => $dropdownActions
-                    ])
-                </x-moonshine::dropdown>
+                        @include('moonshine::crud.shared.dropdown-actions', [
+                            'actions' => $dropdownActions
+                        ])
+                    </x-moonshine::dropdown>
                 @endif
             </div>
 
@@ -115,5 +114,5 @@
                 @endif
             @endif
         </div>
-    </div>
+    </x-moonshine::grid>
 @endsection

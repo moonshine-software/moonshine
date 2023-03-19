@@ -80,7 +80,7 @@
                     </x-moonshine::form.input-wrapper>
                 </div>
 
-                <x-slot:button type="submit" class="w-full">
+                <x-slot:button type="submit" class="btn-lg w-full">
                     {{ trans('moonshine::ui.login.login') }}
                 </x-slot:button>
             </x-moonshine::form>

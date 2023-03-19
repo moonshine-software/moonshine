@@ -34,6 +34,7 @@ return [
     'before' => 'До',
     'after' => 'После',
     'loading' => 'Загрузка ...',
+    'notfound' => 'Пока записей нет',
     'notifications' => [
         'title' => 'Уведомления',
         'mark_as_read_all' => 'Все прочитано',

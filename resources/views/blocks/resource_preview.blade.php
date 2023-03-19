@@ -1,4 +1,7 @@
-<div class="sm:col-span-{{ $item->adaptiveColumnSpanValue() }} xl:col-span-{{ $item->columnSpanValue() }}">
+<x-moonshine::column
+    :colSpan="$item->adaptiveColumnSpanValue()"
+    :adaptiveColSpan="$item->columnSpanValue()"
+>
     @if($item->label())
         <h5 class="text-md font-medium">
             <a href="{{ $item->resource()->route('index') }}">{{ $item->label() }}</a>
@@ -9,4 +12,5 @@
         'resource' => $item->resource(),
         'items' => $item->items(),
     ])
-</div>
+</x-moonshine::column>
+

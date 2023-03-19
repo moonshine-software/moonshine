@@ -34,6 +34,7 @@ return [
     'before' => 'Before',
     'after' => 'After',
     'loading' => 'Loading ...',
+    'notfound' => 'Records not found',
     'notifications' => [
         'title' => 'Notifications',
         'mark_as_read_all' => 'Mark all as read',
