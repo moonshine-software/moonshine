@@ -4,7 +4,9 @@
     'beforeLabel' => false,
     'expansion' => null
 ])
-<div {{ $attributes->class(['form-group-expansion' => $expansion])->merge(['class' => 'form-group'])->except('required') }}
+<div {{ $attributes->class(['form-group-expansion' => $expansion])
+    ->merge(['class' => 'form-group'])
+    ->only(['class', 'x-show']) }}
 >
     {{ $beforeLabel ? $slot : '' }}
 
@@ -24,8 +26,8 @@
     @endif
 
     @error($name)
-        <x-moonshine::form.input-error>
-            {{ $message }}
-        </x-moonshine::form.input-error>
+    <x-moonshine::form.input-error>
+        {{ $message }}
+    </x-moonshine::form.input-error>
     @enderror
 </div>

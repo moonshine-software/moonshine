@@ -15,15 +15,16 @@
                     <div id="hidden_parent_{{ $attributes->get('id')  }}"
                          class="dropzone-item zoom-in @if(!$imageable) dropzone-item-file @endif"
                     >
-
                         <x-moonshine::form.input
                             type="hidden"
                             x-ref="hidden_{{ $attributes->get('id') }}"
+                            :value="$file"
+                            :name="'hidden_'.$attributes->get('name')"
                         />
 
                         @if(!$imageable)
                             @include('moonshine::ui.file', [
-                                'file' => $file,
+                                'value' => $file,
                                 'download' => $download
                             ])
                         @endif
