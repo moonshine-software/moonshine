@@ -225,14 +225,14 @@ document.addEventListener("alpine:init", () => {
     }))
 
     Alpine.data('crudTable', () => ({
-        actionsOpen : false,
-        actionsAllChecked : false,
+        actionsOpen: false,
+        actionsAllChecked: false,
         actions() {
-            if(document.querySelector('.actionsAllChecked') === null) {
+            if (document.querySelector('.actionsAllChecked') === null) {
                 return;
             }
 
-            if(document.querySelector('.actionsAllChecked:checked') != null) {
+            if (document.querySelector('.actionsAllChecked:checked') != null) {
                 this.actionsAllChecked = true;
             } else {
                 this.actionsAllChecked = false;
@@ -241,21 +241,21 @@ document.addEventListener("alpine:init", () => {
             var checkboxes = document.querySelectorAll('.tableActionRow');
             var values = [];
 
-            for(var i=0, n=checkboxes.length;i<n;i++) {
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
                 checkboxes[i].checked = this.actionsAllChecked;
 
-                if(checkboxes[i].checked && checkboxes[i].value) {
+                if (checkboxes[i].checked && checkboxes[i].value) {
                     values.push(checkboxes[i].value);
                 }
             }
 
-            if(document.querySelector('.tableActionRow:not(:checked)') != null) {
+            if (document.querySelector('.tableActionRow:not(:checked)') != null) {
                 document.querySelector('.actionsAllChecked').checked = false;
             } else {
                 document.querySelector('.actionsAllChecked').checked = true;
             }
 
-            if(document.querySelector('.tableActionRow:checked') != null) {
+            if (document.querySelector('.tableActionRow:checked') != null) {
                 this.actionsOpen = true;
             } else {
                 this.actionsOpen = false;
@@ -263,8 +263,8 @@ document.addEventListener("alpine:init", () => {
 
             var allIds = document.querySelectorAll('.actionsCheckedIds');
 
-            for(var i=0, n=allIds.length;i<n;i++) {
-                allIds[i].value = values.join (";");
+            for (var i = 0, n = allIds.length; i < n; i++) {
+                allIds[i].value = values.join(";");
             }
         }
     }))

@@ -23,10 +23,10 @@ input[type="number"] {
 }
 
 .form-group {
-    @apply flex w-full flex-col items-start gap-2;
+    @apply flex w-full flex-col gap-2;
 
     & + .form-group {
-        @apply mt-5;
+        @apply mt-5 mb-5;
     }
 
     .form-input,
