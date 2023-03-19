@@ -10,6 +10,9 @@ module.exports = {
         'opacity-0',
         'opacity-100',
         {
+            pattern: /(w-|h-)[1-9]/,
+        },
+        {
             pattern: /text-(pink|purple)/,
             variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
         },

@@ -1,13 +1,13 @@
 /* Aside navigation */
 .layout-menu {
-    @apply w-full transition-all lg:w-[4.5rem] xl:w-[16.75rem];
+    @apply pointer-events-none w-full transition-all lg:pointer-events-auto lg:w-[4.5rem] xl:w-[16.75rem];
 
     ::-webkit-scrollbar {
         @apply lg:hidden;
     }
 
     &._is-minimized {
-        @apply lg:!w-[4.75rem];
+        @apply pointer-events-auto lg:!w-[4.75rem];
         .menu-heading {
             @apply lg:flex-col lg:px-0;
         }
@@ -41,7 +41,7 @@
         }
 
         &-heading {
-            @apply fixed top-0 left-0 right-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-dark-400 bg-dark-700/80 py-3 px-6 backdrop-blur-sm md:px-10 lg:static lg:z-auto lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:py-3 lg:px-0 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:py-4 xl:px-4;
+            @apply pointer-events-auto fixed top-0 left-0 right-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-dark-400 bg-dark-700/80 py-3 px-6 backdrop-blur-sm md:px-10 lg:static lg:z-auto lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:py-3 lg:px-0 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:py-4 xl:px-4;
 
             &-logo {
                 @apply grow-0 lg:grow;
