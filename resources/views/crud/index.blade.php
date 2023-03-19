@@ -66,7 +66,7 @@
                     @endif
                 @endif
 
-                @if(!$resource->isRelatable() && $dropdownActions && $items->isNotEmpty())
+                @if(!$resource->isRelatable() && $dropdownActions->isNotEmpty() && $items->isNotEmpty())
                     <x-moonshine::dropdown>
                         <x-slot:toggler class="btn">
                             <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
@@ -80,7 +80,7 @@
             </div>
 
             @includeWhen(
-                !$resource->isRelatable() && $lineActions,
+                !$resource->isRelatable() && $lineActions->isNotEmpty(),
                 'moonshine::crud.shared.line-actions',
                 [
                     'actions' => $lineActions
@@ -113,7 +113,7 @@
                     {{ $items->links('moonshine::ui.pagination') }}
                 @endif
             @else
-                <x-moonshine::alert>
+                <x-moonshine::alert type="default" icon="heroicons.no-symbol">
                     {{ trans('moonshine::ui.notfound') }}
                 </x-moonshine::alert>
             @endif

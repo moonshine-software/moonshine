@@ -51,36 +51,35 @@
                                 {{ $resource->renderField($subField, $model, $level+1) }}
                             </x-moonshine::field-container>
                         @endforeach
-                    </td>
 
-                    @if($field->isRemovable())
-                        <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">
-                            <x-moonshine::icon
-                                icon="heroicons.x-mark"
-                                color="pink"
-                                size="4"
-                            />
-                        </button>
-                    @endif
+                        @if($field->isRemovable() && !$field->toOne())
+                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">
+                                <x-moonshine::icon
+                                    icon="heroicons.x-mark"
+                                    color="pink"
+                                    size="4"
+                                />
+                            </button>
+                        @endif
+                    </td>
                 @endif
             </tr>
         </template>
     </x-slot:tbody>
 
-    @if(!$field->toOne())
-        <x-slot:tfoot>
-            <td colspan="{{ count($field->getFields())+2 }}">
-                <x-moonshine::link
-                    href="#"
-                    class="w-full"
-                    icon="heroicons.plus-circle"
-                    @click.prevent="addNewField()"
-                >
-                    @lang('moonshine::ui.add')
-                </x-moonshine::link>
-            </td>
-        </x-slot:tfoot>
-    @endif
+    <x-slot:tfoot>
+        <td colspan="{{ count($field->getFields())+2 }}">
+            <x-moonshine::link
+                href="#"
+                class="w-full"
+                icon="heroicons.plus-circle"
+                :x-show="$field->toOne() ? 'items.length == 0' : 'true'"
+                @click.prevent="addNewField()"
+            >
+                @lang('moonshine::ui.' . ($field->toOne() ? 'create' : 'add'))
+            </x-moonshine::link>
+        </td>
+    </x-slot:tfoot>
 </x-moonshine::table>
 
 <script>
