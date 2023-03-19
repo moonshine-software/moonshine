@@ -1,7 +1,7 @@
 @props([
     'item'
 ])
-<li class="menu-inner-item {{ $item->isActive() ? '_is-active' : '' }}"
+<li class="menu-inner-item"
     x-data="{ dropdown: {{ $item->isActive() ? 'true' : 'false' }} }"
 >
     <button @click.prevent="dropdown = ! dropdown" class="menu-inner-button" :class="dropdown && '_is-active'" type="button">

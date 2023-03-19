@@ -1,5 +1,5 @@
 @foreach($components as $fieldOrDecoration)
-    @if($container ?? false) <div class="{{ $containerClass ?? 'w-full' }}"> @endif
+    @if($container ?? false) <div class="{{ $containerClass ?? 'col-span-12 w-full' }}"> @endif
 
         @if($fieldOrDecoration instanceof \Leeto\MoonShine\Decorations\Decoration)
             {{ $resource->renderDecoration($fieldOrDecoration, $item) }}

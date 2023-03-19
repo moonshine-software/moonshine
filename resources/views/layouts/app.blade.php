@@ -27,8 +27,8 @@
             const translates = @js(__('moonshine::ui'))
         </script>
     </head>
-    <body x-cloak>
-        <div class="layout-wrapper">
+    <body x-cloak x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }">
+        <div class="layout-wrapper" :class="minimizedMenu && 'layout-wrapper-short'">
             @section('sidebar')
                 @include('moonshine::layouts.shared.sidebar')
             @show

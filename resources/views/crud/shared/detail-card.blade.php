@@ -1,15 +1,16 @@
 <x-moonshine::box
         title="#{{ $item->getKey() }}"
 >
-    @foreach($resource->showFields() as $index => $field)
-        <div class="">
-            @include('moonshine::ui.badge', [
-                'value' => $field->label(),
-                'color' => 'purple'
-            ])
-            <span>{!! $field->indexViewValue($item) !!}</span>
-        </div>
-    @endforeach
+    <table class="table">
+        @foreach($resource->showFields() as $index => $field)
+            <tr>
+                <th width="15%">
+                    {{$field->label()}}
+                </th>
+                <td>{!! $field->indexViewValue($item) !!}</td>
+            </tr>
+        @endforeach
+    </table>
 </x-moonshine::box>
 
 

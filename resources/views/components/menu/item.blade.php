@@ -3,7 +3,7 @@
 ])
 <li class="menu-inner-item {{ $item->isActive() ? '_is-active' : '' }}">
     <a href="{{ $item->url() }}" class="menu-inner-link">
-        {!! $item->getIcon(6, 'white') !!}
+        {!! $item->getIcon(6) !!}
 
         <span class="menu-inner-text">{{ $item->title() }}</span>
 

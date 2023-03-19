@@ -1,26 +1,31 @@
 /* Theme layout */
 .layout {
-	&-wrapper {
-		@apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-12 pb-3 md:px-5 lg:flex-row lg:py-6 xl:px-8;
-	}
+    &-wrapper {
+        @apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-16 pb-3 transition-all md:px-5 lg:flex-row lg:py-6 lg:pl-[5.75rem] xl:pr-6 xl:pl-72;
 
-	&-menu {
-		@apply box-content flex shrink-0 flex-col justify-between lg:pb-2 lg:pr-3;
-	}
+        &-short {
+            @apply lg:pl-[6rem];
+        }
+    }
 
-	&-page {
-		@apply relative z-2 flex grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
-	}
+    &-menu {
+        @apply fixed inset-y-0 left-5 z-3 box-content flex shrink-0 flex-col justify-between lg:z-0 lg:pt-6;
+        height: calc(100vh - 3rem);
+    }
 
-	&-navigation {
-		@apply relative flex items-center gap-x-4 border-b border-gray-200 pb-4 dark:border-dark-200;
-	}
+    &-page {
+        @apply relative z-2 flex grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
+    }
 
-	&-content {
-		@apply flex-auto py-6 lg:py-8;
-	}
+    &-navigation {
+        @apply relative flex items-center gap-x-4 border-b border-gray-200 pb-4 dark:border-dark-200;
+    }
 
-	&-footer {
-		@apply pt-6;
-	}
+    &-content {
+        @apply flex-auto py-6 lg:py-8;
+    }
+
+    &-footer {
+        @apply pt-6;
+    }
 }
