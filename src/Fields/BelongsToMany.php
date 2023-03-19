@@ -122,18 +122,21 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
             foreach ($performedData[$parent_id] as $item) {
                 $this->ids[] = $item->getKey();
 
-                $element = view('moonshine::components.form.input', [
-                    'attributes' => $this->attributes(),
-                    'type' => 'checkbox',
-                    'id' => $this->id(),
-                    'name' => $this->name(),
-                    'value' => $item->getKey(),
+                $element = view('moonshine::components.form.input-composition', [
+                    'attributes' => $this->attributes()->merge([
+                        'type' => 'checkbox',
+                        'id' => $this->id(),
+                        'name' => $this->name(),
+                        'value' => $item->getKey(),
+                        'class' => 'form-group-inline'
+                    ]),
+                    'beforeLabel' => true,
                     'label' => $item->{$this->resourceTitleField()},
                 ]);
 
                 $this->treeHtml .= str($element)->wrap(
                     "<li x-ref='item_{$item->getKey()}'
-                            style='margin-left: ".($offset * 50)."px'>",
+                            style='margin-left: ".($offset * 30)."px'>",
                     "</li>"
                 );
 
@@ -151,6 +154,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         }
 
         return (string) $item->{$this->relation()}->map(function ($item) use ($result) {
+            dd($item);
             $pivotAs = $this->getPivotAs($item);
 
 
