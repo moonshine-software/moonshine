@@ -33,7 +33,7 @@ trait WithIcon
 
         return view("moonshine::ui.icons.{$this->iconValue()}", array_merge([
             'size' => $size,
-            'class' => $class
+            'class' => $class,
         ], $color ? ['color' => $color] : []));
     }
 }

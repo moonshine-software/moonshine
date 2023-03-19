@@ -17,7 +17,6 @@ use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Traits\WithLabel;
 
-
 /**
  * @mixin Field|WithFields
  */

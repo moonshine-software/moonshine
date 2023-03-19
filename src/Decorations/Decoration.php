@@ -27,7 +27,6 @@ abstract class Decoration implements HtmlViewable
 
         $this->setLabel($labelOrFields);
         $this->setFields($fields);
-
     }
 
     /**

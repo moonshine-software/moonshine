@@ -16,7 +16,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Exceptions\ResourceException;
@@ -210,7 +209,7 @@ class MoonShineCrudController extends BaseController
         abort_if(! $this->resource->can('create', $this->resource->getModel()), ResponseAlias::HTTP_FORBIDDEN);
 
 
-        if (!in_array('create', $this->resource->getActiveActions(), true)) {
+        if (! in_array('create', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -223,7 +222,7 @@ class MoonShineCrudController extends BaseController
      */
     public function edit($id): string|View|Factory|Redirector|RedirectResponse|Application
     {
-        if (!in_array('edit', $this->resource->getActiveActions(), true)) {
+        if (! in_array('edit', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -244,7 +243,7 @@ class MoonShineCrudController extends BaseController
      */
     public function show($id): View|Factory|Redirector|Application|RedirectResponse
     {
-        if (!in_array('show', $this->resource->getActiveActions(), true)) {
+        if (! in_array('show', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -268,7 +267,7 @@ class MoonShineCrudController extends BaseController
      */
     public function update($id, Request $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
     {
-        if (!in_array('edit', $this->resource->getActiveActions(), true)) {
+        if (! in_array('edit', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -287,8 +286,8 @@ class MoonShineCrudController extends BaseController
      */
     public function store(Request $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
     {
-        if (!in_array('edit', $this->resource->getActiveActions(), true)
-            && !in_array('create', $this->resource->getActiveActions(), true)) {
+        if (! in_array('edit', $this->resource->getActiveActions(), true)
+            && ! in_array('create', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 
@@ -304,7 +303,7 @@ class MoonShineCrudController extends BaseController
      */
     public function destroy($id): Redirector|Application|RedirectResponse
     {
-        if (!in_array('delete', $this->resource->getActiveActions(), true)) {
+        if (! in_array('delete', $this->resource->getActiveActions(), true)) {
             return redirect($this->resource->route('index'));
         }
 

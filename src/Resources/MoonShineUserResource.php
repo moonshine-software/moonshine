@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Resources;
 
 use Leeto\MoonShine\Actions\ExportAction;
 use Leeto\MoonShine\Decorations\Block;
-use Leeto\MoonShine\Decorations\Flex;
 use Leeto\MoonShine\Fields\BelongsTo;
 use Leeto\MoonShine\Fields\Date;
 use Leeto\MoonShine\Fields\Email;
