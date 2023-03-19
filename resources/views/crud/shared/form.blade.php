@@ -4,7 +4,7 @@
     action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
     enctype="multipart/form-data"
     method="POST"
-    x-on:submit.prevent="{{ $resource->isPrecognition() ? 'precognition($event.target)' : true }}"
+    x-on:submit.prevent="{{ $resource->isPrecognition() ? 'precognition($event.target)' : '$event.target.submit()' }}"
 >
     @if(request('relatable_mode'))
         <x-moonshine::form.input

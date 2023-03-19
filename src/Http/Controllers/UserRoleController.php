@@ -11,8 +11,6 @@ class UserRoleController extends MoonShineCrudController
 {
     public function __construct()
     {
-        parent::__construct();
-
         $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
             ->append('MoonShineUserRoleResource');
 
