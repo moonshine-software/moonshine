@@ -24,19 +24,19 @@
                     <td class="text-center" scope="row" x-text="index{{ $level }} + 1"></td>
 
                     @foreach($field->getFields() as $subField)
-                        <td>
+                        <td class="space-y-3">
                             {{ $resource->renderField($subField, $model, $level+1) }}
                         </td>
                     @endforeach
 
                     @if(!$field->toOne())
-                        <td>
+                        <td class="space-y-3">
                             @if($field->isRemovable())
                                 <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">
                                     <x-moonshine::icon
                                         icon="heroicons.x-mark"
                                         color="pink"
-                                        size="6"
+                                        size="4"
                                     />
                                 </button>
                             @endif
@@ -45,7 +45,7 @@
                 @else
                     <th width="5%" x-text="index{{ $level }} + 1"></th>
 
-                    <td>
+                    <td class="space-y-3">
                         @foreach($field->getFields() as $subField)
                             {{ $resource->renderField($subField, $model, $level+1) }}
                         @endforeach
@@ -56,7 +56,7 @@
                             <x-moonshine::icon
                                 icon="heroicons.x-mark"
                                 color="pink"
-                                size="6"
+                                size="4"
                             />
                         </button>
                     @endif

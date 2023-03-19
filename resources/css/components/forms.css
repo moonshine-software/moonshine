@@ -153,11 +153,11 @@ input[type="number"] {
 }
 
 .form-checkbox {
-    @apply cursor-pointer rounded border-gray-300 text-purple transition-colors duration-200 focus:border-purple-400 focus:ring focus:ring-purple focus:ring-opacity-20 focus:ring-offset-0 dark:border-dark-200 dark:bg-dark-800 dark:checked:bg-purple dark:focus:border-purple dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
+    @apply shrink-0 cursor-pointer rounded border-gray-300 text-purple transition-colors duration-200 focus:border-purple-400 focus:ring focus:ring-purple focus:ring-opacity-20 focus:ring-offset-0 dark:border-dark-200 dark:bg-dark-800 dark:checked:bg-purple dark:focus:border-purple dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
 }
 
 .form-radio {
-    @apply cursor-pointer border-gray-300 text-purple transition-colors duration-200 focus:border-purple-400 focus:ring focus:ring-purple focus:ring-opacity-20 focus:ring-offset-0 dark:border-dark-200 dark:bg-dark-800 dark:checked:bg-purple dark:focus:border-purple dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
+    @apply shrink-0 cursor-pointer border-gray-300 text-purple transition-colors duration-200 focus:border-purple-400 focus:ring focus:ring-purple focus:ring-opacity-20 focus:ring-offset-0 dark:border-dark-200 dark:bg-dark-800 dark:checked:bg-purple dark:focus:border-purple dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
 }
 
 .form-radio,
@@ -199,6 +199,9 @@ input[type="number"] {
             @apply flex h-auto w-full gap-2 rounded-md border border-gray-200 bg-slate-50 p-3 dark:border-dark-200 dark:bg-dark-700 sm:gap-3;
             .dropzone-remove {
                 @apply static;
+            }
+            a {
+                @apply inline;
             }
         }
         > img {

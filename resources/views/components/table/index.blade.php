@@ -9,7 +9,7 @@
 @if(isset($thead, $tbody))
 <!-- Table -->
 <div class="table-responsive">
-    <table {{ $attributes->merge(['class' => 'table-list']) }}>
+    <table {{ $attributes->merge(['class' => 'table']) }}>
         <thead {{ $thead?->attributes }}>
             <tr>
                 @if(is_array($columns))
