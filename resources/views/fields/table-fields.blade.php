@@ -32,18 +32,16 @@
         </div>
         </template>
 
-        <x-moonshine::link
-            href="#"
-            class="w-full"
-            icon="heroicons.plus-circle"
-            @click.prevent="addNewField()"
-        >
-            @if(!$field->toOne())
+        @if(!$field->toOne())
+            <x-moonshine::link
+                href="#"
+                class="w-full"
+                icon="heroicons.plus-circle"
+                @click.prevent="addNewField()"
+            >
                 @lang('moonshine::ui.add')
-            @else
-                @lang('moonshine::ui.create')
-            @endif
-        </x-moonshine::link>
+            </x-moonshine::link>
+        @endif
     @else
         <x-moonshine::table>
             <x-slot:thead>
