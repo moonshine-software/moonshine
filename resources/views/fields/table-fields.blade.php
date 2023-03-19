@@ -47,7 +47,9 @@
 
                     <td>
                         @foreach($field->getFields() as $subField)
-                            {{ $resource->renderField($subField, $model, $level+1) }}
+                            <x-moonshine::field-container :field="$subField" :item="$model" :resource="$resource">
+                                {{ $resource->renderField($subField, $model, $level+1) }}
+                            </x-moonshine::field-container>
                         @endforeach
                     </td>
 
