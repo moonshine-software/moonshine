@@ -15,6 +15,7 @@ use Leeto\MoonShine\Commands\ResourceCommand;
 use Leeto\MoonShine\Commands\UserCommand;
 use Leeto\MoonShine\Dashboard\Dashboard;
 use Leeto\MoonShine\Http\Middleware\Authenticate;
+use Leeto\MoonShine\Http\Middleware\ChangeLocale;
 use Leeto\MoonShine\Http\Middleware\Session;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\MoonShine;
@@ -37,6 +38,7 @@ class MoonShineServiceProvider extends ServiceProvider
     protected array $middlewareGroups = [
         'moonshine' => [
             'moonshine.auth',
+            ChangeLocale::class
         ],
     ];
 

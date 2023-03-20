@@ -35,6 +35,7 @@ return [
     'after' => 'After',
     'loading' => 'Loading ...',
     'notfound' => 'Records not found',
+    'collapse_menu' => 'Collapse menu',
     'notifications' => [
         'title' => 'Notifications',
         'mark_as_read_all' => 'Mark all as read',

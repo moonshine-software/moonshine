@@ -49,7 +49,7 @@
     </table>
 </div>
 @elseif($notfound)
-    <x-moonshine::alert type="default" icon="heroicons.no-symbol">
+    <x-moonshine::alert type="default" class="my-4" icon="heroicons.no-symbol">
         {{ trans('moonshine::ui.notfound') }}
     </x-moonshine::alert>
 @endif

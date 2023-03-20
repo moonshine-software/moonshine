@@ -35,6 +35,7 @@ return [
     'after' => 'После',
     'loading' => 'Загрузка ...',
     'notfound' => 'Пока записей нет',
+    'collapse_menu' => 'Свернуть меню',
     'notifications' => [
         'title' => 'Уведомления',
         'mark_as_read_all' => 'Все прочитано',

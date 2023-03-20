@@ -125,7 +125,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
                 $element = view('moonshine::components.form.input-composition', [
                     'attributes' => $this->attributes()->merge([
                         'type' => 'checkbox',
-                        'id' => $this->id(),
+                        'id' => $this->id((string) $item->getKey()),
                         'name' => $this->name(),
                         'value' => $item->getKey(),
                         'class' => 'form-group-inline',

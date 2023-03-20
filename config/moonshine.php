@@ -32,6 +32,9 @@ return [
         ],
         'footer' => ''
     ],
+    'locales' => [
+        'en', 'ru'
+    ],
     'middlewares' => [],
     'tinymce' => [
         'file_manager' => false, // or 'laravel-filemanager' prefix for lfm

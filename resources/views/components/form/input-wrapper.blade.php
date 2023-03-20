@@ -2,24 +2,27 @@
     'name' => '',
     'label' => '',
     'beforeLabel' => false,
+    'inLabel' => false,
     'expansion' => null
 ])
 <div {{ $attributes->class(['form-group-expansion' => $expansion])
     ->merge(['class' => 'form-group'])
-    ->only(['class', 'x-show']) }}
+    ->only(['class', 'x-show', 'id']) }}
 >
-    {{ $beforeLabel ? $slot : '' }}
+    {{ $beforeLabel && !$inLabel ? $slot : '' }}
 
     @if($label)
         <x-moonshine::form.label
-            for="{{ $name }}"
+            for="{{ $attributes->get('id', $name) }}"
             :attributes="$attributes->only('required')"
         >
+            {{ $beforeLabel && $inLabel ? $slot : '' }}
             {{ $label }}
+            {{ !$beforeLabel && $inLabel ? $slot : '' }}
         </x-moonshine::form.label>
     @endif
 
-    {{ !$beforeLabel ? $slot : '' }}
+    {{ !$beforeLabel && !$inLabel ? $slot : '' }}
 
     @if($expansion)
         <span class="expansion">{{ $expansion }}</span>

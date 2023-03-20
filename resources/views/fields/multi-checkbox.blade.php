@@ -11,6 +11,7 @@
             class="form-group-inline"
             label="{{ $optionName }}"
             :beforeLabel="true"
+            :inLabel="false"
         >
             <x-moonshine::form.input
                 :attributes="$field->attributes()->merge([
@@ -21,18 +22,18 @@
                     'checked' => $field->isChecked($item, $optionValue)
                 ])"
             />
-
-            @if($field->getFields())
-                <x-moonshine::form.input-wrapper
-                    id="{{ $field->id($loop->index) }}_pivots"
-                    class="form-group-inline w-full"
-                >
-                    @foreach($field->getFields() as $pivotField)
-                        {{ $resource->renderField($pivotField, $field->pivotValue($item, $optionValue))}}
-                    @endforeach
-                </x-moonshine::form.input-wrapper>
-            @endif
         </x-moonshine::form.input-wrapper>
+
+        @if($field->getFields())
+            <x-moonshine::form.input-wrapper
+                id="{{ $field->id($loop->index) }}_pivots"
+                class="form-group-inline w-full"
+            >
+                @foreach($field->getFields() as $pivotField)
+                    {{ $resource->renderField($pivotField, $field->pivotValue($item, $optionValue))}}
+                @endforeach
+            </x-moonshine::form.input-wrapper>
+        @endif
 
         @if($field->getFields())
             <script>

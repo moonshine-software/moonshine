@@ -24,7 +24,10 @@ class SlideFilter extends Filter
         }
 
         return $values
-            ? $query->whereBetween($this->field, [$values[$this->fromField], $values[$this->toField]])
+            ? $query->where(function (Builder $q) use($values) {
+                $q->where($this->fromField, '>=', $values[$this->fromField])
+                    ->where($this->toField, '<=', $values[$this->toField]);
+            })
             : $query;
     }
 }

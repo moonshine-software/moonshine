@@ -8,5 +8,10 @@
         config('moonshine.auth.enable', true),
         'moonshine::layouts.shared.notifications'
     )
+
+    @includeWhen(
+        config('moonshine.locales'),
+        'moonshine::layouts.shared.locales'
+    )
 </div>
 <!-- END: Navigation -->
