@@ -25,7 +25,7 @@ class ChangeLocale
 
         if ($local) {
             app()->setLocale($local);
-            cache()->rememberForever($key, fn() => $local);
+            cache()->rememberForever($key, fn () => $local);
         }
 
         return $next($request);

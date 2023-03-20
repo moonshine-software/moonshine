@@ -38,7 +38,7 @@ class MoonShineServiceProvider extends ServiceProvider
     protected array $middlewareGroups = [
         'moonshine' => [
             'moonshine.auth',
-            ChangeLocale::class
+            ChangeLocale::class,
         ],
     ];
 
