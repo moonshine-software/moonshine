@@ -207,7 +207,7 @@ abstract class Resource implements ResourceContract
      */
     public function trStyles(Model $item, int $index): string
     {
-        return '';
+        return 'default';
     }
 
     /**
@@ -220,7 +220,7 @@ abstract class Resource implements ResourceContract
      */
     public function tdStyles(Model $item, int $index, int $cell): string
     {
-        return '';
+        return 'default';
     }
 
     public function baseShowView(): string
