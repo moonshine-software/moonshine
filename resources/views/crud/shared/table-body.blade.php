@@ -3,7 +3,7 @@
         @if($resource->isMassAction())
             <td class="w-10 text-center" style="{{ $resource->tdStyles($item, $loop->index, 0) }}">
                 <x-moonshine::form.input type="checkbox"
-                     @change="actions($event.target)"
+                     @change="actions('row')"
                      name="items[{{ $item->getKey() }}]"
                      class="tableActionRow"
                      value="{{ $item->getKey() }}"

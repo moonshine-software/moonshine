@@ -226,45 +226,37 @@ document.addEventListener("alpine:init", () => {
 
     Alpine.data('crudTable', () => ({
         actionsOpen: false,
-        actionsAllChecked: false,
-        actions() {
-            if (document.querySelector('.actionsAllChecked') === null) {
+        actions(type) {
+            let all = this.$root.querySelector('.actionsAllChecked');
+
+            if (all === null) {
                 return;
             }
 
-            if (document.querySelector('.actionsAllChecked:checked') != null) {
-                this.actionsAllChecked = true;
-            } else {
-                this.actionsAllChecked = false;
-            }
+            let checkboxes = this.$root.querySelectorAll('.tableActionRow');
+            let checked = this.$root.querySelectorAll('.tableActionRow:checked');
+            let ids = this.$root.querySelectorAll('.actionsCheckedIds');
 
-            var checkboxes = document.querySelectorAll('.tableActionRow');
-            var values = [];
+            let values = [];
 
-            for (var i = 0, n = checkboxes.length; i < n; i++) {
-                checkboxes[i].checked = this.actionsAllChecked;
+            for(let i=0, n=checkboxes.length;i<n;i++) {
+                if(type === 'all') {
+                    checkboxes[i].checked = all.checked;
+                }
 
-                if (checkboxes[i].checked && checkboxes[i].value) {
+                if(checkboxes[i].checked && checkboxes[i].value) {
                     values.push(checkboxes[i].value);
                 }
             }
 
-            if (document.querySelector('.tableActionRow:not(:checked)') != null) {
-                document.querySelector('.actionsAllChecked').checked = false;
-            } else {
-                document.querySelector('.actionsAllChecked').checked = true;
+            for(let i=0, n=ids.length;i<n;i++) {
+                ids[i].value = values.join (";");
             }
 
-            if (document.querySelector('.tableActionRow:checked') != null) {
+            if (all.checked || values.length) {
                 this.actionsOpen = true;
             } else {
                 this.actionsOpen = false;
-            }
-
-            var allIds = document.querySelectorAll('.actionsCheckedIds');
-
-            for (var i = 0, n = allIds.length; i < n; i++) {
-                allIds[i].value = values.join(";");
             }
         }
     }))

@@ -1,7 +1,7 @@
 @if($resource->isMassAction())
     <th class="w-10 text-center">
         <x-moonshine::form.input type="checkbox"
-             @change="actions($event.target)"
+             @change="actions('all')"
              class="actionsAllChecked"
              value="1"
         />
