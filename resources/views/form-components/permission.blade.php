@@ -17,8 +17,11 @@
                                 name="permissions[{{ get_class($resource) }}][{{ $ability }}]"
                                 :label="$ability"
                                 :beforeLabel="true"
+                                class="form-group-inline"
+                                :id="str('permissions_' . get_class($resource) . '_' . $ability)->slug('_')"
                             >
                                 <x-moonshine::form.input
+                                    :id="str('permissions_' . get_class($resource) . '_' . $ability)->slug('_')"
                                     type="checkbox"
                                     name="permissions[{{ get_class($resource) }}][{{ $ability }}]"
                                     value="1"
