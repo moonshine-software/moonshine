@@ -18,7 +18,7 @@ input[type="number"] {
     @apply flex flex-col gap-y-5;
 
     .form-group + .form-group {
-        @apply mt-0;
+        @apply mt-0 mb-0;
     }
 }
 

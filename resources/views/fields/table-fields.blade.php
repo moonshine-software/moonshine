@@ -4,13 +4,15 @@
 >
     <x-slot:thead>
         @if(!$field->toOne() && !$field->isFullPage())
-            <th class="w-4 text-center">#</th>
+            <th width="5%" class="text-center">#</th>
 
             @foreach($field->getFields() as $subField)
                 <th>{{ $subField->label() }}</th>
             @endforeach
 
-            <th class="w-4"></th>
+            @if($field->isRemovable() && !$field->toOne())
+              <th width="5%" class="text-center"></th>
+            @endif
         @endif
     </x-slot:thead>
 
@@ -30,20 +32,14 @@
                     @endforeach
 
                     @if(!$field->toOne())
-                        <td class="space-y-3">
+                        <td>
                             @if($field->isRemovable())
-                                <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">
-                                    <x-moonshine::icon
-                                        icon="heroicons.x-mark"
-                                        color="pink"
-                                        size="4"
-                                    />
-                                </button>
+                                <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
                             @endif
                         </td>
                     @endif
                 @else
-                    <th width="5%" x-text="index{{ $level }} + 1"></th>
+                    <th width="5%" class="text-center" x-text="index{{ $level }} + 1"></th>
 
                     <td class="space-y-3">
                         @foreach($field->getFields() as $subField)
@@ -52,16 +48,12 @@
                             </x-moonshine::field-container>
                         @endforeach
 
-                        @if($field->isRemovable() && !$field->toOne())
-                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">
-                                <x-moonshine::icon
-                                    icon="heroicons.x-mark"
-                                    color="pink"
-                                    size="4"
-                                />
-                            </button>
-                        @endif
                     </td>
+                    @if($field->isRemovable() && !$field->toOne())
+                    <td width="5%" class="text-center">
+                        <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                    </td>
+                    @endif
                 @endif
             </tr>
         </template>
