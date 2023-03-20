@@ -1,6 +1,16 @@
 /* Tables */
 table {
     @apply w-full border-collapse text-left;
+
+    .dropzone-items {
+        @apply max-h-[8rem] max-w-xs gap-1.5 overflow-y-auto;
+    }
+    .dropzone-item-file {
+        @apply gap-1 border-0 p-1;
+    }
+    .dropzone-file-icon > svg {
+        @apply h-5 w-5;
+    }
 }
 
 .table {
@@ -10,17 +20,17 @@ table {
         @apply bg-slate-100 text-3xs uppercase dark:bg-dark-700;
         td,
         th {
-            @apply max-w-lg border border-gray-200 p-3 font-semibold dark:border-x-0 dark:border-b dark:border-t-0 dark:border-dark-400;
+            @apply max-w-lg border border-gray-200 p-3 font-semibold dark:border-dark-400;
         }
     }
 
     tbody {
         tr {
-            @apply odd:bg-white even:bg-gray-50 dark:odd:bg-dark-700/70 dark:even:bg-dark-700;
+            @apply odd:bg-gray-50 even:bg-white dark:odd:bg-dark-700 dark:even:bg-dark-700/70;
         }
         td,
         th {
-            @apply max-w-lg break-words border border-gray-200 p-3 dark:border-x-0 dark:border-t dark:border-b-0 dark:border-dark-400;
+            @apply max-w-lg break-words border border-gray-200 p-3 dark:border-dark-400;
         }
         th {
             @apply font-semibold;
@@ -56,7 +66,7 @@ table {
 }
 
 .table-responsive {
-    @apply w-full overflow-auto;
+    @apply -m-1 w-full overflow-auto p-1;
 }
 
 .table-zoom-in {
