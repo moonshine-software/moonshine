@@ -10,7 +10,9 @@
             @foreach(config('moonshine.locales') as $lang)
                 <li class="dropdown-menu-item">
                     <a
-                        href="?change-moonshine-locale={{ $lang }}"
+                        href="{{ request()->fullUrlWithQuery([
+                            'change-moonshine-locale' => $lang,
+                        ]) }}"
                         class="dropdown-menu-link"
                     >
                         {{ $lang }}
