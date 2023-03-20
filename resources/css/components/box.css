@@ -1,5 +1,8 @@
 .box {
     @apply relative rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
+    &-dark {
+        @apply bg-dark-600 text-slate-200 shadow-none dark:bg-dark-800 dark:text-slate-300 dark:shadow-black/5;
+    }
 }
 
 .box-shadow {
