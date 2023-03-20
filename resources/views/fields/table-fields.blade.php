@@ -10,7 +10,7 @@
                 <th>{{ $subField->label() }}</th>
             @endforeach
 
-            @if($field->isRemovable() && !$field->toOne())
+            @if($field->isRemovable())
               <th width="5%" class="text-center"></th>
             @endif
         @endif
@@ -31,13 +31,11 @@
                         </td>
                     @endforeach
 
-                    @if(!$field->toOne())
-                        <td>
-                            @if($field->isRemovable())
-                                <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
-                            @endif
-                        </td>
-                    @endif
+                    <td>
+                        @if($field->isRemovable())
+                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                        @endif
+                    </td>
                 @else
                     <th width="5%" class="text-center" x-text="index{{ $level }} + 1"></th>
 
@@ -47,12 +45,12 @@
                                 {{ $resource->renderField($subField, $model, $level+1) }}
                             </x-moonshine::field-container>
                         @endforeach
+                    </td>
 
-                    </td>
                     @if($field->isRemovable() && !$field->toOne())
-                    <td width="5%" class="text-center">
-                        <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
-                    </td>
+                        <td width="5%" class="text-center">
+                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                        </td>
                     @endif
                 @endif
             </tr>
