@@ -24,8 +24,7 @@
                 label=""
                 required
             >
-                <x-moonshine::form.input
-                    type="file"
+                <x-moonshine::form.file
                     name="{{ $action->inputName }}"
                     required
                 />
