@@ -75,6 +75,7 @@ trait WithFields
                     )
                     ->append("[{$field->field()}]")
                     ->replace('[]', '')
+                    ->when($field->getAttribute('multiple'), fn(Stringable $s) => $s->append('[]'))
             )->xModel();
         })->toArray();
     }

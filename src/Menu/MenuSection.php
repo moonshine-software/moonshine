@@ -47,7 +47,7 @@ abstract class MenuSection
 
     public function hasBadge(): bool
     {
-        return is_callable($this->badge);
+        return is_callable($this->badge) && call_user_func($this->badge);
     }
 
     public function getBadge()

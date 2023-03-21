@@ -124,9 +124,11 @@ trait FileTrait
                 ->map(fn ($file) => $this->prefixedValue($file));
 
             if (isset($values[$this->field()])) {
-                $saveValues = $saveValues->merge([
-                    $this->store($values[$this->field()]),
-                ]);
+                foreach ($values[$this->field()] as $value) {
+                    $saveValues = $saveValues->merge([
+                        $this->store($value),
+                    ]);
+                }
             }
 
             $values[$this->field()] = $saveValues->values()

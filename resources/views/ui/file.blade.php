@@ -5,5 +5,9 @@
     />
 </span>
 <h5 class="dropzone-file-name">
-    <a @if($download ?? false) download href="{{ $value }}" @endif>{{ $value }}</a>
+    @if($xValue ?? false)
+        <a @if($download ?? false) download :href="{{ $xValue }}" @endif x-text="{{ $xValue }}"></a>
+    @else
+        <a @if($download ?? false) download href="{{ $value }}" @endif>{{ $value }}</a>
+    @endif
 </h5>

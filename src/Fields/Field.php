@@ -62,6 +62,9 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     protected bool $fieldContainer = true;
 
+    /**
+     * @deprecated Will be deleted
+     */
     protected bool $fullWidth = false;
 
     protected ?string $ext = null;
@@ -232,6 +235,7 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     /**
      * Set field label block view on forms, based on condition
      *
+     * @deprecated Will be deleted
      * @param  mixed  $condition
      * @return $this
      */
@@ -242,6 +246,9 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
         return $this;
     }
 
+    /**
+     * @deprecated Will be deleted
+     */
     public function isFullWidth(): bool
     {
         return $this->fullWidth;

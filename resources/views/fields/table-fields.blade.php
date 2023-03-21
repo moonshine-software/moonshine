@@ -11,7 +11,7 @@
             @endforeach
 
             @if($field->isRemovable())
-              <th width="5%" class="text-center"></th>
+                <th width="5%" class="text-center"></th>
             @endif
         @endif
     </x-slot:thead>
@@ -85,6 +85,18 @@
                 } else {
                     this.items = [@json($field->jsonValues())];
                 }
+
+                this.$nextTick(() => {
+                    let newRow = this.$root.querySelector('[data-id=""]:last-child');
+                    let removeable = newRow.querySelectorAll('.x-removeable');
+
+                    if(removeable !== null) {
+                        for (let i = 0; i < removeable.length; i++) {
+                            removeable[i].remove();
+                        }
+                    }
+                });
+
             },
             removeField(index) {
                 this.items.splice(index, 1);
@@ -92,4 +104,3 @@
         }
     }
 </script>
-
