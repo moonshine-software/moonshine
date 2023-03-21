@@ -65,15 +65,15 @@ class MoonShine
                 $this->pages->add($item);
                 $this->menus->add(new MenuItem($item->label(), $item));
             } elseif ($item instanceof MenuItem) {
-                $this->resources->when($item->resource(), fn($r) => $r->add($item->resource()));
-                $this->pages->when($item->page(), fn($r) => $r->add($item->page()));
+                $this->resources->when($item->resource(), fn ($r) => $r->add($item->resource()));
+                $this->pages->when($item->page(), fn ($r) => $r->add($item->page()));
                 $this->menus->add($item);
             } elseif ($item instanceof MenuGroup) {
                 $this->menus->add($item);
 
                 $item->items()->each(function ($subItem) {
-                    $this->pages->when($subItem->page(), fn($r) => $r->add($subItem->page()));
-                    $this->resources->when($subItem->resource(), fn($r) => $r->add($subItem->resource()));
+                    $this->pages->when($subItem->page(), fn ($r) => $r->add($subItem->page()));
+                    $this->resources->when($subItem->resource(), fn ($r) => $r->add($subItem->resource()));
                 });
             }
         });
@@ -150,7 +150,7 @@ class MoonShine
 
     public static function changeLogs(Model $item): ?Collection
     {
-        if (!isset($item->changeLogs) || !$item->changeLogs instanceof Collection) {
+        if (! isset($item->changeLogs) || ! $item->changeLogs instanceof Collection) {
             return null;
         }
 

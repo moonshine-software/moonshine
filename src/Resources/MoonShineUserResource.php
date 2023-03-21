@@ -89,7 +89,7 @@ class MoonShineUserResource extends Resource
                            ->hideOnExport()
                            ->hideOnDetail(),
                    ]),
-               ])
+               ]),
             ]),
         ];
     }
@@ -112,7 +112,7 @@ class MoonShineUserResource extends Resource
                 'bail',
                 'required',
                 'email',
-                Rule::unique('moonshine_users')->ignoreModel($item)
+                Rule::unique('moonshine_users')->ignoreModel($item),
             ],
             'password' => ! $item->exists
                 ? 'required|min:6|required_with:password_repeat|same:password_repeat'
