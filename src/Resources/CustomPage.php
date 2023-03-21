@@ -16,7 +16,7 @@ final class CustomPage
     public function __construct(
         string $label,
         protected string $alias,
-        protected string $view,
+        protected string|Closure $view,
         protected ?Closure $viewData = null,
     ) {
         $this->setLabel($label);
@@ -29,6 +29,10 @@ final class CustomPage
 
     public function getView(): string
     {
+        if(is_callable($this->view)) {
+            return call_user_func($this->view);
+        }
+
         return $this->view;
     }
 
