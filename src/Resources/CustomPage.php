@@ -29,7 +29,7 @@ final class CustomPage
 
     public function getView(): string
     {
-        if(is_callable($this->view)) {
+        if (is_callable($this->view)) {
             return call_user_func($this->view);
         }
 
