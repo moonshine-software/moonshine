@@ -170,7 +170,7 @@ input[type="number"] {
 
 /* Dropzone */
 .dropzone {
-    @apply relative w-full rounded-lg border-2 border-dashed border-gray-200 p-3 dark:border-dark-200 sm:p-4;
+    @apply relative w-full rounded-lg border-2 border-dashed border-gray-200 p-3 dark:border-dark-200;
 
     &:hover {
         .dropzone-button {
@@ -190,13 +190,13 @@ input[type="number"] {
     }
 
     &-items {
-        @apply flex flex-wrap gap-3 sm:gap-4;
+        @apply flex flex-wrap gap-2 md:gap-3;
     }
 
     &-item {
-        @apply relative h-16 w-16 sm:h-20 sm:w-20 lg:h-28 lg:w-28;
+        @apply relative h-12 w-12 md:h-16 md:w-16;
         &-file {
-            @apply flex h-auto w-full gap-2 rounded-md border border-gray-200 bg-slate-50 p-3 dark:border-dark-200 dark:bg-dark-700 sm:gap-3;
+            @apply flex h-auto w-full items-center gap-2 rounded-md border border-gray-200 bg-slate-50 p-2 dark:border-dark-200 dark:bg-dark-700;
             .dropzone-remove {
                 @apply static;
             }
@@ -212,7 +212,7 @@ input[type="number"] {
     &-file-icon {
         @apply text-purple dark:text-pink;
         > svg {
-            @apply h-5 w-5 sm:h-6 sm:w-6;
+            @apply h-5 w-5;
         }
     }
 
@@ -221,7 +221,7 @@ input[type="number"] {
     }
 
     &-remove {
-        @apply absolute -top-2 -right-2 z-5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-600 leading-none text-white hover:opacity-80;
+        @apply absolute top-1 right-1 z-5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-600 bg-red-600 leading-none text-white will-change-transform hover:bg-white hover:text-red-600 dark:hover:border-red-700 dark:hover:bg-red-700 dark:hover:text-white;
         > svg {
             @apply h-3 w-3;
         }
@@ -240,7 +240,7 @@ input[type="number"] {
     }
 
     .choices__input {
-        @apply bg-white dark:bg-dark-800 dark:placeholder:text-gray-500;
+        @apply bg-white p-0 dark:bg-dark-800 dark:placeholder:text-gray-500;
     }
 
     .choices__inner {
