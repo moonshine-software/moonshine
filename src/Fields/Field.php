@@ -391,6 +391,10 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public function formViewValue(Model $item): mixed
     {
+        if($this->hasRelationship() && !$item->relationLoaded($this->relation())) {
+            $item->load($this->relation());
+        }
+
         if ($this->belongToOne()) {
             return $item->{$this->relation()}?->getKey() ?? $this->getDefault();
         }
@@ -408,6 +412,10 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
 
     public function indexViewValue(Model $item, bool $container = true): mixed
     {
+        if($this->hasRelationship() && !$item->relationLoaded($this->relation())) {
+            $item->load($this->relation());
+        }
+
         if ($this->hasRelationship()) {
             $item = $item->{$this->relation()};
         }
