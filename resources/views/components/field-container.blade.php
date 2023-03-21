@@ -20,15 +20,16 @@
             </x-moonshine::form.hint>
         @endif
 
-        @if($field->hasLink())
-            <x-moonshine::link
-                :href="$field->getLinkValue()"
-                :_target="$field->isLinkBlank() ? 'blank' : 'self'"
-            >
-                {{ $field->getLinkName() }}
-            </x-moonshine::link>
-        @endif
-
         {{ $slot }}
     </x-moonshine::form.input-wrapper>
+
+    @if($field->hasLink())
+        <x-moonshine::link
+            class="mb-4"
+            :href="$field->getLinkValue()"
+            :_target="$field->isLinkBlank() ? 'blank' : 'self'"
+        >
+            {{ $field->getLinkName() }}
+        </x-moonshine::link>
+    @endif
 @endif

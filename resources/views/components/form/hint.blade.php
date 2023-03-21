@@ -1,1 +1,1 @@
-<div class="form-hint">{{ $hint }}</div>
+<div class="form-hint">{{ $slot ?? '' }}</div>

@@ -138,17 +138,6 @@ document.addEventListener("alpine:init", () => {
         },
     }))
 
-    /* CKEditor */
-    Alpine.data('ckeditor', () => ({
-        ref: null,
-        CKEditorInstance: null,
-
-        init() {
-            this.ref = this.$refs.ckeditor
-            this.choicesInstance = ClassicEditor.create(this.ref)
-        },
-    }))
-
     Alpine.data('asyncData', () => ({
         load(url, id) {
             fetch(url, {
@@ -234,7 +223,6 @@ document.addEventListener("alpine:init", () => {
             }
 
             let checkboxes = this.$root.querySelectorAll('.tableActionRow');
-            let checked = this.$root.querySelectorAll('.tableActionRow:checked');
             let ids = this.$root.querySelectorAll('.actionsCheckedIds');
 
             let values = [];
