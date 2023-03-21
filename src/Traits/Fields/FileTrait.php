@@ -149,7 +149,7 @@ trait FileTrait
         $oldValues = collect(request("hidden_{$this->field()}", []))
             ->map(fn ($file) => $this->prefixedValue($file));
 
-        $saveValue = $this->isMultiple() ? $oldValues : null;
+        $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
 
         if ($requestValue !== false) {
             if ($this->isMultiple()) {
@@ -169,9 +169,7 @@ trait FileTrait
             }
         }
 
-        if ($saveValue) {
-            $item->{$this->field()} = $saveValue;
-        }
+        $item->{$this->field()} = $saveValue;
 
         return $item;
     }
@@ -207,7 +205,7 @@ trait FileTrait
 
     public function acceptExtension(): string
     {
-        $extensions = array_map(function ($val) {
+        $extensions = array_map(static function ($val) {
             return "." . $val;
         }, $this->allowedExtensions);
 

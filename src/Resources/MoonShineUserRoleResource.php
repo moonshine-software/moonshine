@@ -31,9 +31,13 @@ class MoonShineUserRoleResource extends Resource
     {
         return [
             Block::make(trans('moonshine::ui.resource.main_information'), [
-                ID::make()->sortable()->showOnExport(),
+                ID::make()
+                    ->sortable()
+                    ->showOnExport(),
+
                 Text::make(trans('moonshine::ui.resource.role_name'), 'name')
-                    ->required()->showOnExport(),
+                    ->required()
+                    ->showOnExport(),
             ]),
         ];
     }
@@ -41,7 +45,7 @@ class MoonShineUserRoleResource extends Resource
     public function rules($item): array
     {
         return [
-            'name' => 'required|min:5',
+            'name' => ['required', 'min:5'],
         ];
     }
 

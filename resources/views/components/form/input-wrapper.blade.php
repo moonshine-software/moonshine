@@ -6,7 +6,7 @@
     'expansion' => null
 ])
 <div {{ $attributes->merge(['class' => 'form-group'])
-    ->only(['class', 'x-show', 'id']) }}
+    ->only(['class', 'x-show']) }}
 >
     {{ $beforeLabel && !$inLabel ? $slot : '' }}
 

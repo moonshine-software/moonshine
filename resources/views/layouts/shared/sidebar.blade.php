@@ -36,7 +36,7 @@
         )
 
         <!-- Bottom menu -->
-        <div class="border-t border-dark-200">
+        <div @if(config('moonshine.auth.enable', true)) class="border-t border-dark-200" @endif>
             <ul class="menu-inner mt-2">
                 <li class="menu-inner-item hidden xl:block">
                     <button @click.prevent="minimizedMenu = ! minimizedMenu" class="menu-inner-button outline-none">

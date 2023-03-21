@@ -20,12 +20,12 @@ class ChangeLocale
         $key = 'change-moonshine-locale';
         $local = $request->get(
             $key,
-            cache()->get($key)
+            session($key)
         );
 
         if ($local) {
             app()->setLocale($local);
-            cache()->rememberForever($key, fn () => $local);
+            session()->put($key, $local);
         }
 
         return $next($request);

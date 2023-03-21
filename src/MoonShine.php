@@ -7,13 +7,7 @@ namespace Leeto\MoonShine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Http\Controllers\AuthenticateController;
-use Leeto\MoonShine\Http\Controllers\CustomPageController;
-use Leeto\MoonShine\Http\Controllers\DashboardController;
-use Leeto\MoonShine\Http\Controllers\NotificationController;
-use Leeto\MoonShine\Http\Controllers\ProfileController;
 use Leeto\MoonShine\Http\Controllers\ResourceController;
-use Leeto\MoonShine\Http\Controllers\SocialiteController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
@@ -71,15 +65,15 @@ class MoonShine
                 $this->pages->add($item);
                 $this->menus->add(new MenuItem($item->label(), $item));
             } elseif ($item instanceof MenuItem) {
-                $this->resources->when($item->resource(), fn ($r) => $r->add($item->resource()));
-                $this->pages->when($item->page(), fn ($r) => $r->add($item->page()));
+                $this->resources->when($item->resource(), fn($r) => $r->add($item->resource()));
+                $this->pages->when($item->page(), fn($r) => $r->add($item->page()));
                 $this->menus->add($item);
             } elseif ($item instanceof MenuGroup) {
                 $this->menus->add($item);
 
                 $item->items()->each(function ($subItem) {
-                    $this->pages->when($subItem->page(), fn ($r) => $r->add($subItem->page()));
-                    $this->resources->when($subItem->resource(), fn ($r) => $r->add($subItem->resource()));
+                    $this->pages->when($subItem->page(), fn($r) => $r->add($subItem->page()));
+                    $this->resources->when($subItem->resource(), fn($r) => $r->add($subItem->resource()));
                 });
             }
         });
@@ -122,66 +116,33 @@ class MoonShine
     {
         Route::prefix(config('moonshine.route.prefix', ''))
             ->middleware(config('moonshine.route.middleware'))
-            ->name('moonshine.')->group(function () {
-                Route::get('/', [DashboardController::class, 'index'])->name('index');
-                Route::post('/attachments', [DashboardController::class, 'attachments'])->name('attachments');
-                Route::get('/auto-update', [DashboardController::class, 'autoUpdate'])->name('auto-update');
+            ->as('moonshine.')->group(function () {
+                $this->resources->each(static function (Resource $resource): void {
+                    $alias = $resource->routeAlias();
+                    $parameter = $resource->routeParam();
+                    $controllerName = $resource->controllerName();
 
-                Route::get('/notifications', [NotificationController::class, 'readAll'])->name('notifications.readAll');
-                Route::get('/notifications/{notification}', [NotificationController::class, 'read'])->name('notifications.read');
+                    Route::controller(ResourceController::class)
+                        ->prefix($alias)
+                        ->as("$alias.")
+                        ->group(static function () use ($parameter) {
+                            Route::any('actions', 'actions')->name('actions');
+                            Route::get("form-action/$parameter/{index}", 'formAction')->name('form-action');
+                            Route::get("action/$parameter/{index}", 'action')->name('action');
+                            Route::post('bulk/{index}', 'bulk')->name('bulk');
+                            Route::get('query-tag/{uri}', 'index')->name('query-tag');
+                        });
 
-                if (config('moonshine.auth.enable', true)) {
-                    Route::get('/login', [AuthenticateController::class, 'login'])->name('login');
-                    Route::post('/authenticate', [AuthenticateController::class, 'authenticate'])->name('authenticate');
-                    Route::get('/logout', [AuthenticateController::class, 'logout'])->name('logout');
 
-                    Route::get('/socialite/{driver}/redirect', [SocialiteController::class, 'redirect'])->name('socialite.redirect');
-                    Route::get('/socialite/{driver}/callback', [SocialiteController::class, 'callback'])->name('socialite.callback');
-
-                    Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
-                }
-
-                $customPageSlug = config('moonshine.route.custom_page_slug', 'custom_page');
-
-                Route::get("/$customPageSlug/{alias}", CustomPageController::class)
-                    ->name('custom_page');
-
-                $this->resources->each(function ($resource) {
-                    Route::any(
-                        $resource->routeAlias().'/actions',
-                        [ResourceController::class, 'actions']
-                    )->name($resource->routeAlias().'.actions');
-
-                    Route::get(
-                        $resource->routeAlias().'/form-action/{'.$resource->routeParam().'}/{index}',
-                        [ResourceController::class, 'formAction']
-                    )->name($resource->routeAlias().'.form-action');
-
-                    Route::get(
-                        $resource->routeAlias().'/action/{'.$resource->routeParam().'}/{index}',
-                        [ResourceController::class, 'action']
-                    )->name($resource->routeAlias().'.action');
-
-                    Route::post(
-                        $resource->routeAlias().'/bulk/{index}',
-                        [ResourceController::class, 'bulk']
-                    )->name($resource->routeAlias().'.bulk');
-
-                    Route::get(
-                        $resource->routeAlias().'/query-tag/{uri}',
-                        [ResourceController::class, 'index']
-                    )->name($resource->routeAlias().'.query-tag');
-
-                    /* @var Resource $resource */
                     if ($resource->isSystem()) {
-                        Route::resource($resource->routeAlias(), $resource->controllerName());
+                        Route::resource($alias, $controllerName);
                     } else {
-                        Route::resource($resource->routeAlias(), ResourceController::class);
+                        Route::resource($alias, ResourceController::class);
                     }
 
-                    if ($resource->routeAlias() === 'moonShineUsers') {
-                        Route::post($resource->routeAlias(). "/permissions/{{$resource->routeParam()}}", [$resource->controllerName(), 'permissions'])
-                            ->name($resource->routeAlias().'.permissions');
+                    if ($alias === 'moonShineUsers') {
+                        Route::post("$alias/permissions/{".$parameter."}", [$controllerName, 'permissions'])
+                            ->name("$alias.permissions");
                     }
                 });
             });
@@ -189,7 +150,7 @@ class MoonShine
 
     public static function changeLogs(Model $item): ?Collection
     {
-        if (! isset($item->changeLogs) || ! $item->changeLogs instanceof Collection) {
+        if (!isset($item->changeLogs) || !$item->changeLogs instanceof Collection) {
             return null;
         }
 
