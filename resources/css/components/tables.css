@@ -69,7 +69,8 @@ table {
 }
 
 .table-responsive {
-    @apply -m-1 w-full overflow-auto p-1;
+    @apply -m-1 overflow-auto p-1;
+    width: calc(100% + 0.5rem);
 }
 
 .table-zoom-in {
