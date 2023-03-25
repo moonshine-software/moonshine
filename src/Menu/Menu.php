@@ -20,7 +20,7 @@ class Menu
     {
         $request = app(MoonShineRequest::class);
 
-        return self::$menu?->filter(function ($item) use($request) {
+        return self::$menu?->filter(function ($item) use ($request) {
             if ($item->isGroup()) {
                 $item->setItems(
                     $item->items()->filter(fn ($subItem) => $subItem->isSee($request))
