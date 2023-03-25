@@ -7,7 +7,6 @@ namespace Leeto\MoonShine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
 use Leeto\MoonShine\Resources\Resource;
 
 class MoonShineRequest extends FormRequest
@@ -81,7 +80,7 @@ class MoonShineRequest extends FormRequest
             return $this->item;
         }
 
-        if(!$this->getId()) {
+        if (! $this->getId()) {
             return null;
         }
 

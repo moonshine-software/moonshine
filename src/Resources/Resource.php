@@ -20,7 +20,6 @@ use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Decorations\Decoration;
-use Leeto\MoonShine\Decorations\Tabs;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
@@ -352,23 +351,23 @@ abstract class Resource implements ResourceContract
             $actions->add($action->setResource($this));
         }
 
-        if (!$hasFilters && !empty($this->filters())) {
+        if (! $hasFilters && ! empty($this->filters())) {
             $actions->add(
                 FiltersAction::make(trans('moonshine::ui.filters'))
                     ->setResource($this)
             );
         }
 
-        return $actions->filter(fn(Action $action) => $action->isSee(app(MoonShineRequest::class)));
+        return $actions->filter(fn (Action $action) => $action->isSee(app(MoonShineRequest::class)));
     }
 
     public function hasMassAction(): bool
     {
-        return !$this->isPreviewMode() && (
-                count($this->bulkActions()) || (
-                    $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
-                )
-            );
+        return ! $this->isPreviewMode() && (
+            count($this->bulkActions()) || (
+                $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
+            )
+        );
     }
 
     /**
@@ -510,9 +509,9 @@ abstract class Resource implements ResourceContract
         $fields = $fields ?? $this->getFields()->formFields();
 
         try {
-            $fields->each(fn($field) => $field->beforeSave($item));
+            $fields->each(fn ($field) => $field->beforeSave($item));
 
-            if (!$item->exists && method_exists($this, 'beforeCreating')) {
+            if (! $item->exists && method_exists($this, 'beforeCreating')) {
                 $this->beforeCreating($item);
             }
 
@@ -521,7 +520,7 @@ abstract class Resource implements ResourceContract
             }
 
             foreach ($fields as $field) {
-                if (!$field->hasRelationship() || $field->belongToOne()) {
+                if (! $field->hasRelationship() || $field->belongToOne()) {
                     $item = $this->saveItem($item, $field, $saveData);
                 }
             }
@@ -530,20 +529,20 @@ abstract class Resource implements ResourceContract
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 foreach ($fields as $field) {
-                    if ($field->hasRelationship() && !$field->belongToOne()) {
+                    if ($field->hasRelationship() && ! $field->belongToOne()) {
                         $item = $this->saveItem($item, $field, $saveData);
                     }
                 }
 
                 $item->save();
 
-                $fields->each(fn($field) => $field->afterSave($item));
+                $fields->each(fn ($field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated && method_exists($this, 'afterCreated')) {
                     $this->afterCreated($item);
                 }
 
-                if (!$wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
+                if (! $wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
                     $this->afterUpdated($item);
                 }
             }

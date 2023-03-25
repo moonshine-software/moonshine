@@ -145,7 +145,7 @@ class CrudControllerTest extends TestCase
                 'model' => MoonshineUser::class,
                 'key' => $this->adminUser()->getKey(),
                 'field' => 'name',
-                'value' => 'Test update column'
+                'value' => 'Test update column',
             ]);
 
         $response->assertNoContent();
@@ -164,11 +164,13 @@ class CrudControllerTest extends TestCase
         $response = $this->authorized()
             ->put(
                 $this->testResource()
-                    ->route('update', $this->adminUser()->getKey()), [
+                    ->route('update', $this->adminUser()->getKey()),
+                [
                         'name' => 'Admin updated',
                         'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
-                ], [
-                    'Precognition' => 'true'
+                ],
+                [
+                    'Precognition' => 'true',
                 ]
             );
 
@@ -184,9 +186,11 @@ class CrudControllerTest extends TestCase
         $response = $this->authorized()
             ->put(
                 $this->testResource()
-                    ->route('update', $this->adminUser()->getKey()), [
+                    ->route('update', $this->adminUser()->getKey()),
+                [
                     'name' => 'Admin updated',
-            ], [
+            ],
+                [
                     'Precognition' => 'true',
                     'Accept' => 'application/json',
                 ]
@@ -194,5 +198,4 @@ class CrudControllerTest extends TestCase
 
         $response->assertJsonStructure(['errors' => ['moonshine_user_role_id']]);
     }
-
 }

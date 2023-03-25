@@ -39,14 +39,14 @@ final class Fields extends Collection
 
     public function resolveChildFields(Field $parent): Fields
     {
-        return $this->map(function (Field $field) use($parent) {
+        return $this->map(function (Field $field) use ($parent) {
             throw_if(
                 $parent instanceof Json && $field->hasRelationship(),
                 new FieldException('Relationship fields in JSON field unavailable. Use resourceMode')
             );
 
             throw_if(
-                !$field instanceof Json && $field instanceof HasFields,
+                ! $field instanceof Json && $field instanceof HasFields,
                 new FieldException('Field with fields unavailable. Use resourceMode')
             );
 
@@ -57,12 +57,12 @@ final class Fields extends Collection
             return $field->setName(
                 (string)str($parent->name())
                     ->when(
-                        $parent->hasFields() && !$parent->toOne(),
-                        fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
+                        $parent->hasFields() && ! $parent->toOne(),
+                        fn (Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
                     )
                     ->append("[{$field->field()}]")
                     ->replace('[]', '')
-                    ->when($field->getAttribute('multiple'), fn(Stringable $s) => $s->append('[]'))
+                    ->when($field->getAttribute('multiple'), fn (Stringable $s) => $s->append('[]'))
             )->xModel();
         });
     }
@@ -254,7 +254,7 @@ final class Fields extends Collection
     {
         $reflectionClass = new ReflectionClass($class);
 
-        if (!$reflectionClass->implementsInterface(FieldsDecoration::class)) {
+        if (! $reflectionClass->implementsInterface(FieldsDecoration::class)) {
             throw FieldsException::wrapError();
         }
 

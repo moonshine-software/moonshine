@@ -55,11 +55,11 @@ class LoginFormRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (!auth(config('moonshine.auth.guard'))->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! auth(config('moonshine.auth.guard'))->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('moonshine::auth.failed')
+                'email' => __('moonshine::auth.failed'),
             ]);
         }
 
@@ -75,7 +75,7 @@ class LoginFormRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 

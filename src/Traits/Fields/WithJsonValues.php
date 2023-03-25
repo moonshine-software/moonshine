@@ -27,7 +27,7 @@ trait WithJsonValues
             return $data;
         }
 
-        if (!$this instanceof HasFormViewValue) {
+        if (! $this instanceof HasFormViewValue) {
             return [];
         }
 

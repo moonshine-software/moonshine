@@ -48,7 +48,7 @@ trait ResourceRouter
     public function route(string $action = null, int|string $id = null, array $query = []): string
     {
         if (empty($query) && Cache::has($this->queryCacheKey())) {
-            parse_str(Cache::get($this->queryCacheKey(), ''),$query);
+            parse_str(Cache::get($this->queryCacheKey(), ''), $query);
         }
 
         unset($query['change-moonshine-locale']);

@@ -147,7 +147,7 @@ class FieldsTest extends TestCase
     {
         $fields = Fields::make([
             Text::make('1'),
-            Text::make('2')
+            Text::make('2'),
         ]);
 
         $fields = $fields->wrapIntoDecoration(Block::class, 'Label');
@@ -168,7 +168,7 @@ class FieldsTest extends TestCase
 
         $fields = Fields::make([
             Text::make('1'),
-            Text::make('2')
+            Text::make('2'),
         ]);
 
         $fields->wrapIntoDecoration(Fields::class, 'Label');

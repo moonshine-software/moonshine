@@ -47,7 +47,7 @@ abstract class MenuSection
 
     public function hasBadge(): bool
     {
-        return !is_null($this->badge);
+        return ! is_null($this->badge);
     }
 
     public function getBadge()

@@ -8,7 +8,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -167,9 +166,9 @@ class CrudController extends BaseController
 
         $class = $request->get('model');
 
-        if(!class_exists($class)) {
+        if (! class_exists($class)) {
             ValidationException::withMessages([
-                'model' => 'Model not found'
+                'model' => 'Model not found',
             ]);
         }
 
@@ -242,7 +241,7 @@ class CrudController extends BaseController
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
 
-        if (!$item->exists && $request->isRelatableMode()) {
+        if (! $item->exists && $request->isRelatableMode()) {
             $item = $resource->getModel();
             $item->{$request->relatedColumn()} = $request->relatedKey();
         }

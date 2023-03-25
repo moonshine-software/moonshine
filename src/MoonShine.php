@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Http\Controllers\ResourceController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
@@ -49,7 +48,7 @@ class MoonShine
     public static function getResourceFromUriKey(string $uri): ResourceContract
     {
         $resource = self::getResources()
-            ->first(fn(ResourceContract $resource) => $resource->uriKey() === $uri);
+            ->first(fn (ResourceContract $resource) => $resource->uriKey() === $uri);
 
         if ($resource) {
             return $resource;
@@ -59,8 +58,8 @@ class MoonShine
             ->studly()
             ->whenStartsWith(
                 'MoonShine',
-                fn(Stringable $str) => $str->prepend('Leeto\MoonShine\Resources\\'),
-                fn(Stringable $str) => $str->prepend(self::namespace('\Resources\\')),
+                fn (Stringable $str) => $str->prepend('Leeto\MoonShine\Resources\\'),
+                fn (Stringable $str) => $str->prepend(self::namespace('\Resources\\')),
             );
 
         return new $class();
@@ -96,15 +95,15 @@ class MoonShine
                 self::$pages->add($item);
                 self::$menu->add(new MenuItem($item->label(), $item));
             } elseif ($item instanceof MenuItem) {
-                self::$resources->when($item->resource(), fn($r) => $r->add($item->resource()));
-                self::$pages->when($item->page(), fn($r) => $r->add($item->page()));
+                self::$resources->when($item->resource(), fn ($r) => $r->add($item->resource()));
+                self::$pages->when($item->page(), fn ($r) => $r->add($item->page()));
                 self::$menu->add($item);
             } elseif ($item instanceof MenuGroup) {
                 self::$menu->add($item);
 
                 $item->items()->each(function ($subItem) {
-                    self::$pages->when($subItem->page(), fn($r) => $r->add($subItem->page()));
-                    self::$resources->when($subItem->resource(), fn($r) => $r->add($subItem->resource()));
+                    self::$pages->when($subItem->page(), fn ($r) => $r->add($subItem->page()));
+                    self::$resources->when($subItem->resource(), fn ($r) => $r->add($subItem->resource()));
                 });
             }
         });
@@ -177,7 +176,7 @@ class MoonShine
 
     public static function changeLogs(Model $item): ?Collection
     {
-        if (!isset($item->changeLogs) || !$item->changeLogs instanceof Collection) {
+        if (! isset($item->changeLogs) || ! $item->changeLogs instanceof Collection) {
             return null;
         }
 

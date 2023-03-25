@@ -15,7 +15,7 @@ final class ViewAnyFormRequest extends MoonShineRequest
 
     public function hasQueryTag(): bool
     {
-        return !is_null($this->route('queryTag'));
+        return ! is_null($this->route('queryTag'));
     }
 
     public function getQueryTag(): ?string

@@ -21,9 +21,9 @@ final class PermissionControllerTest extends TestCase
                 [
                     'permissions' => [
                         MoonShineUserResource::class => [
-                            'viewAny' => 1
-                        ]
-                    ]
+                            'viewAny' => 1,
+                        ],
+                    ],
                 ]
             )
             ->assertRedirect();
@@ -31,11 +31,11 @@ final class PermissionControllerTest extends TestCase
         $permissions = $this->adminUser()->moonshineUserPermission()->first();
 
         $this->assertTrue(
-            ($permissions
+            (
+                $permissions
                 && $permissions->permissions->has(MoonShineUserResource::class)
                 && isset($permissions->permissions[MoonShineUserResource::class]['viewAny'])
             )
         );
     }
-
 }
