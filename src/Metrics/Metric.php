@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Metrics;
 
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithColumnSpan;
@@ -14,7 +14,7 @@ use Leeto\MoonShine\Traits\WithLabel;
 use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Metric implements HtmlViewable, HasAssets
+abstract class Metric implements ResourceRenderable, HasAssets
 {
     use Makeable;
     use WithAssets;

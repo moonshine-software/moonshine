@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
-use function auth;
-use function back;
-
+use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,10 +13,6 @@ use Illuminate\Routing\Controller as BaseController;
 
 use Illuminate\Routing\Redirector;
 use Leeto\MoonShine\Http\Requests\LoginFormRequest;
-
-use function redirect;
-use function trans;
-use function view;
 
 class AuthenticateController extends BaseController
 {
@@ -31,20 +25,14 @@ class AuthenticateController extends BaseController
         return view('moonshine::auth.login');
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function authenticate(LoginFormRequest $request): RedirectResponse
     {
-        $credentials = $request->only(['email', 'password']);
-        $remember = $request->boolean('remember');
+        $request->authenticate();
 
-        if (auth(config('moonshine.auth.guard'))->attempt($credentials, $remember)) {
-            return redirect(url()->previous());
-        }
-
-        $request->session()->flash('alert', trans('moonshine::auth.failed'));
-
-        return back()
-            ->withInput()
-            ->withErrors(['login' => trans('moonshine::auth.failed')]);
+        return redirect(url()->previous());
     }
 
     public function logout(): Redirector|Application|RedirectResponse

@@ -4,6 +4,7 @@
     'outerHtml' => ''
 ])
 <div x-data="modal">
+    <template x-teleport="body">
     <div class="modal-template">
         <div
             x-show="open"
@@ -36,6 +37,7 @@
         </div>
         <div x-show="open" x-transition.opacity class="modal-backdrop"></div>
     </div>
+    </template>
 
     {{ $outerHtml ?? '' }}
 </div>

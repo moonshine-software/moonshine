@@ -7,10 +7,13 @@ namespace Leeto\MoonShine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Stringable;
+use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Http\Controllers\ResourceController;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
 use Leeto\MoonShine\Menu\MenuItem;
+use Leeto\MoonShine\Menu\MenuSection;
 use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
 
@@ -20,11 +23,11 @@ class MoonShine
 
     public const NAMESPACE = 'App\MoonShine';
 
-    protected Collection|null $resources = null;
+    protected static ?Collection $resources = null;
 
-    protected Collection|null $pages = null;
+    protected static ?Collection $pages = null;
 
-    protected Collection|null $menus = null;
+    protected static ?Collection $menu = null;
 
     public static function path(string $path = ''): string
     {
@@ -43,48 +46,87 @@ class MoonShine
         return (config('moonshine.namespace') ?? static::NAMESPACE).$path;
     }
 
+    public static function getResourceFromUriKey(string $uri): ResourceContract
+    {
+        $resource = self::getResources()
+            ->first(fn(ResourceContract $resource) => $resource->uriKey() === $uri);
+
+        if ($resource) {
+            return $resource;
+        }
+
+        $class = (string)str($uri)
+            ->studly()
+            ->whenStartsWith(
+                'MoonShine',
+                fn(Stringable $str) => $str->prepend('Leeto\MoonShine\Resources\\'),
+                fn(Stringable $str) => $str->prepend(self::namespace('\Resources\\')),
+            );
+
+        return new $class();
+    }
+
     /**
-     * Register resource classes in the system
+     * @deprecated Will be deleted
+     */
+    public static function registerResources(array $data): void
+    {
+        self::menu($data);
+    }
+
+    /**
+     * Register Menu with resources and pages in the system
      *
-     * @param  array  $data  Array of resource classes that is registering
+     * @param  array<string|MenuSection|ResourceContract>  $data
      * @return void
      */
-    public function registerResources(array $data): void
+    public static function menu(array $data): void
     {
-        $this->resources = collect();
-        $this->pages = collect();
-        $this->menus = collect();
+        self::$resources = collect();
+        self::$pages = collect();
+        self::$menu = collect();
 
         collect($data)->each(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
             if ($item instanceof Resource) {
-                $this->resources->add($item);
-                $this->menus->add(new MenuItem($item->title(), $item));
+                self::$resources->add($item);
+                self::$menu->add(new MenuItem($item->title(), $item));
             } elseif ($item instanceof CustomPage) {
-                $this->pages->add($item);
-                $this->menus->add(new MenuItem($item->label(), $item));
+                self::$pages->add($item);
+                self::$menu->add(new MenuItem($item->label(), $item));
             } elseif ($item instanceof MenuItem) {
-                $this->resources->when($item->resource(), fn ($r) => $r->add($item->resource()));
-                $this->pages->when($item->page(), fn ($r) => $r->add($item->page()));
-                $this->menus->add($item);
+                self::$resources->when($item->resource(), fn($r) => $r->add($item->resource()));
+                self::$pages->when($item->page(), fn($r) => $r->add($item->page()));
+                self::$menu->add($item);
             } elseif ($item instanceof MenuGroup) {
-                $this->menus->add($item);
+                self::$menu->add($item);
 
                 $item->items()->each(function ($subItem) {
-                    $this->pages->when($subItem->page(), fn ($r) => $r->add($subItem->page()));
-                    $this->resources->when($subItem->resource(), fn ($r) => $r->add($subItem->resource()));
+                    self::$pages->when($subItem->page(), fn($r) => $r->add($subItem->page()));
+                    self::$resources->when($subItem->resource(), fn($r) => $r->add($subItem->resource()));
                 });
             }
         });
 
-        $this->pages->add(
+        self::$pages->add(
             CustomPage::make(__('moonshine::ui.profile'), 'profile', 'moonshine::profile')
         );
 
-        app(Menu::class)->register($this->menus);
+        app(Menu::class)->register(self::$menu);
 
-        $this->addRoutes();
+        self::resolveResourcesRoutes();
+    }
+
+    /**
+     * Register resources in the system
+     *
+     * @param  array<ResourceContract>  $data
+     * @return void
+     */
+    public static function resources(array $data): void
+    {
+        self::$resources = collect($data);
     }
 
     /**
@@ -92,9 +134,9 @@ class MoonShine
      *
      * @return Collection<Resource>
      */
-    public function getResources(): Collection
+    public static function getResources(): Collection
     {
-        return $this->resources;
+        return self::$resources;
     }
 
     /**
@@ -102,9 +144,19 @@ class MoonShine
      *
      * @return Collection<CustomPage>
      */
-    public function getPages(): Collection
+    public static function getPages(): Collection
     {
-        return $this->pages;
+        return self::$pages;
+    }
+
+    /**
+     * Get collection of registered menu
+     *
+     * @return Collection<MenuSection>
+     */
+    public static function getMenu(): Collection
+    {
+        return self::$menu;
     }
 
     /**
@@ -112,45 +164,20 @@ class MoonShine
      *
      * @return void
      */
-    protected function addRoutes(): void
+    protected static function resolveResourcesRoutes(): void
     {
         Route::prefix(config('moonshine.route.prefix', ''))
             ->middleware(config('moonshine.route.middleware'))
             ->as('moonshine.')->group(function () {
-                $this->resources->each(static function (Resource $resource): void {
-                    $alias = $resource->routeAlias();
-                    $parameter = $resource->routeParam();
-                    $controllerName = $resource->controllerName();
-
-                    Route::controller(ResourceController::class)
-                        ->prefix($alias)
-                        ->as("$alias.")
-                        ->group(static function () use ($parameter) {
-                            Route::any('actions', 'actions')->name('actions');
-                            Route::get("form-action/$parameter/{index}", 'formAction')->name('form-action');
-                            Route::get("action/$parameter/{index}", 'action')->name('action');
-                            Route::post('bulk/{index}', 'bulk')->name('bulk');
-                            Route::get('query-tag/{uri}', 'index')->name('query-tag');
-                        });
-
-
-                    if ($resource->isSystem()) {
-                        Route::resource($alias, $controllerName);
-                    } else {
-                        Route::resource($alias, ResourceController::class);
-                    }
-
-                    if ($alias === 'moonShineUsers') {
-                        Route::post("$alias/permissions/{".$parameter."}", [$controllerName, 'permissions'])
-                            ->name("$alias.permissions");
-                    }
+                self::getResources()->each(function (ResourceContract $resource) {
+                    $resource->resolveRoutes();
                 });
             });
     }
 
     public static function changeLogs(Model $item): ?Collection
     {
-        if (! isset($item->changeLogs) || ! $item->changeLogs instanceof Collection) {
+        if (!isset($item->changeLogs) || !$item->changeLogs instanceof Collection) {
             return null;
         }
 

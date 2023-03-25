@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
@@ -19,7 +19,7 @@ use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Filter implements HtmlViewable, HasAssets, HasFormViewValue
+abstract class Filter implements ResourceRenderable, HasAssets, HasFormViewValue
 {
     use FormElement;
     use Makeable;

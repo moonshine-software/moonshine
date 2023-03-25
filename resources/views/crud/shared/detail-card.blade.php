@@ -2,7 +2,7 @@
         title="#{{ $item->getKey() }}"
 >
     <table class="table">
-        @foreach($resource->showFields() as $index => $field)
+        @foreach($resource->getFields()->detailFields() as $index => $field)
             <tr>
                 <th width="15%">
                     {{$field->label()}}

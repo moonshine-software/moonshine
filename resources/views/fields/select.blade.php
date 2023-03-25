@@ -6,6 +6,8 @@
         'type' => $field->type(),
     ])"
     :nullable="$field->isNullable()"
+    :searchable="$field->isSearchable()"
+    @class(['form-invalid' => $errors->has($field->name())])
 >
     <x-slot:options>
         @if($field->isNullable())

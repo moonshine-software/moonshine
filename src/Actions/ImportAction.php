@@ -100,7 +100,7 @@ class ImportAction extends Action implements ActionContract
     ): Collection {
         $result = (new FastExcel())->import($path, function ($line) use ($resource) {
             $data = collect($line)->mapWithKeys(function ($value, $key) use ($resource) {
-                $field = $resource->importFields()->first(function ($field) use ($key) {
+                $field = $resource->getFields()->importFields()->first(function ($field) use ($key) {
                     return $field->field() === $key || $field->label() === $key;
                 });
 
@@ -123,7 +123,7 @@ class ImportAction extends Action implements ActionContract
 
             return $resource->save(
                 $item,
-                fields: $resource->importFields(),
+                fields: $resource->getFields()->importFields(),
                 saveData: $data
             );
         });
@@ -153,7 +153,7 @@ class ImportAction extends Action implements ActionContract
             throw new ActionException('Resource is required for action');
         }
 
-        return $this->resource()->route('actions');
+        return $this->resource()->route('actions.index');
     }
 
     public function deleteAfter(): self

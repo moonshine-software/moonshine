@@ -45,7 +45,7 @@ class ExportAction extends Action implements ActionContract
         $this->resolveStorage();
 
         $path = Storage::disk($this->getDisk())
-            ->path("{$this->getDir()}/{$this->resource()->routeAlias()}.xlsx");
+            ->path("{$this->getDir()}/{$this->resource()->routeNameAlias()}.xlsx");
 
         if ($this->isQueue()) {
             ExportActionJob::dispatch(
@@ -77,9 +77,9 @@ class ExportAction extends Action implements ActionContract
         string $disk = 'public',
         string $dir = '/'
     ): string {
-        $fields = $resource->exportFields();
+        $fields = $resource->getFields()->exportFields();
 
-        $items = $resource->query()->get();
+        $items = $resource->resolveQuery()->get();
 
         $data = collect();
 
@@ -144,7 +144,8 @@ class ExportAction extends Action implements ActionContract
             $query['search'] = request('search');
         }
 
-        return $this->resource()->route('actions', query: $query);
+        return $this->resource()
+            ->route('actions.index', query: $query);
     }
 
     protected function resolveStorage(): void

@@ -18,40 +18,10 @@ use function view;
 
 class DashboardController extends BaseController
 {
-    public function index(): Factory|View|Application
+    public function __invoke(): Factory|View|Application
     {
         return view('moonshine::dashboard', [
             'blocks' => app(Dashboard::class)->getBlocks(),
         ]);
-    }
-
-    public function attachments(Request $request): array
-    {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-
-            return [
-                'attachment' => Storage::url($file->store('attachments', 'public')),
-            ];
-        }
-
-        return [];
-    }
-
-    public function autoUpdate(Request $request): array
-    {
-        $class = $request->get('model');
-        $model = new $class();
-
-        if (in_array(SoftDeletes::class, class_uses_recursive($model), true)) {
-            $model = $model->withTrashed();
-        }
-
-        $item = $model->findOrFail($request->get('key'));
-
-        $item->{$request->get('field')} = $request->boolean('value');
-        $item->save();
-
-        return $item->toArray();
     }
 }

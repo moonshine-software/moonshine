@@ -1,4 +1,4 @@
-@if($resource->isMassAction())
+@if($resource->hasMassAction())
     <th class="w-10 text-center">
         <x-moonshine::form.input type="checkbox"
              @change="actions('all')"
@@ -8,7 +8,7 @@
     </th>
 @endif
 
-@foreach($resource->indexFields() as $field)
+@foreach($resource->getFields()->indexFields() as $field)
     <th>
         <div class="flex items-baseline gap-x-1">
             {{ $field->label() }}

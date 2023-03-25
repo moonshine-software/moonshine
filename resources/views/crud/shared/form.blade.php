@@ -1,6 +1,6 @@
 <x-moonshine::form :errors="$errors"
     x-data="crudForm()"
-    :x-init="'init('.json_encode($resource->whenFieldNames()->map(fn($value) => $item[$value] ?? '')).')'"
+    :x-init="'init('.json_encode($resource->getFields()->whenFieldNames()->map(fn($value) => $item[$value] ?? '')).')'"
     action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
     enctype="multipart/form-data"
     method="POST"
@@ -19,7 +19,7 @@
     @endif
 
     <x-moonshine::resource-renderable
-        :components="$resource->formComponents()"
+        :components="$resource->getFields()->withParents()"
         :item="$item"
         :resource="$resource"
     />
@@ -33,7 +33,7 @@
             @foreach($resource->formActions() as $index => $action)
                 @if($action->isSee($item))
                     <x-moonshine::link
-                        :href="$resource->route('form-action', $item->getKey(), ['index' => $index])"
+                        :href="$resource->route('actions.form', $item->getKey(), ['index' => $index])"
                         :icon="$action->iconValue()"
                     >
                         {{ $action->label() }}
@@ -45,7 +45,7 @@
 </x-moonshine::form>
 
 @if($item->exists)
-    @foreach($resource->relatableFormComponents() as $field)
+    @foreach($resource->getFields()->relatable() as $field)
         @if($field->canDisplayOnForm($item))
             {{ $resource->renderField($field, $item) }}
         @endif

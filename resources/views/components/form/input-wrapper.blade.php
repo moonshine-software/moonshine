@@ -3,7 +3,9 @@
     'label' => '',
     'beforeLabel' => false,
     'inLabel' => false,
-    'expansion' => null
+    'expansion' => null,
+    'beforeSlot',
+    'afterSlot'
 ])
 <div {{ $attributes->merge(['class' => 'form-group'])
     ->only(['class', 'x-show']) }}
@@ -21,6 +23,8 @@
         </x-moonshine::form.label>
     @endif
 
+    {{ $beforeSlot ?? '' }}
+
     @if($expansion) <div class="form-group form-group-expansion"> @endif
 
     {{ !$beforeLabel && !$inLabel ? $slot : '' }}
@@ -30,6 +34,8 @@
     @endif
 
     @if($expansion) </div> @endif
+
+    {{ $afterSlot ?? '' }}
 
     @error($name)
     <x-moonshine::form.input-error>

@@ -93,8 +93,8 @@
                 <div class="flex flex-wrap items-center gap-2">
                     @foreach($resource->queryTags() as $queryTag)
                         <x-moonshine::link
-                            :href="$resource->route('query-tag', query: ['uri' => $queryTag->uri()])"
-                            :filled="request()->routeIs('*.query-tag') && request()->route('uri') === $queryTag->uri()"
+                            :href="$resource->route('query-tag', query: ['queryTag' => $queryTag->uri()])"
+                            :filled="request()->routeIs('*.query-tag') && request()->route('queryTag') === $queryTag->uri()"
                             :icon="$queryTag->iconValue()"
                         >
                             {{ $queryTag->label() }}

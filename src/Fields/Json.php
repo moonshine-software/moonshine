@@ -8,12 +8,18 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use JsonException;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Traits\Fields\WithFields;
+use Leeto\MoonShine\Contracts\Fields\HasFullPageMode;
+use Leeto\MoonShine\Contracts\Fields\HasJsonValues;
+use Leeto\MoonShine\Traits\Fields\WithFullPageMode;
+use Leeto\MoonShine\Traits\Fields\WithJsonValues;
+use Leeto\MoonShine\Traits\WithFields;
 use Throwable;
 
-class Json extends Field implements HasFields
+class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode
 {
+    use WithJsonValues;
     use WithFields;
+    use WithFullPageMode;
 
     protected static string $view = 'moonshine::fields.json';
 

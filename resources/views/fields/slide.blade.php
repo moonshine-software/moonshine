@@ -5,4 +5,5 @@
     :toValue="$field->formViewValue($item)[$field->toField] ?? $field->max"
     fromName="{{ $field->name() }}[{{ $field->fromField }}]"
     toName="{{ $field->name() }}[{{ $field->toField }}]"
+    @class(['form-invalid' => $errors->has($field->name())])
 />

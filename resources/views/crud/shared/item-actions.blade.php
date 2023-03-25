@@ -1,7 +1,7 @@
 @foreach($resource->itemActions() as $index => $action)
     @if($action->isSee($item))
         <x-moonshine::link
-            :href="$resource->route('action', $item->getKey(), request()->routeIs('*.query-tag') ? ['index' => $index, 'redirect_back' => 1] : ['index' => $index])"
+            :href="$resource->route('actions.item', $item->getKey(), request()->routeIs('*.query-tag') ? ['index' => $index, 'redirect_back' => 1] : ['index' => $index])"
             :icon="$action->iconValue()"
             :title="$action->label()"
         />

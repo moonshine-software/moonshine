@@ -7,25 +7,24 @@ namespace Leeto\MoonShine\Tests\Controllers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Leeto\MoonShine\Models\MoonshineUser;
 use Leeto\MoonShine\Models\MoonshineUserRole;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
 use Leeto\MoonShine\Tests\TestCase;
 
-class MoonShineUserControllerTest extends TestCase
+class CrudControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_index(): void
     {
-        $resource = new MoonShineUserResource();
+        $resource = $this->testResource();
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->get($resource->route('index'));
 
         $response->assertOk();
         $response->assertViewIs('moonshine::crud.index');
         $response->assertViewHas('resource', $resource);
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->get($resource->route('create'));
 
         $response->assertOk();
@@ -35,9 +34,9 @@ class MoonShineUserControllerTest extends TestCase
 
     public function test_create(): void
     {
-        $resource = new MoonShineUserResource();
+        $resource = $this->testResource();
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->get($resource->route('create'));
 
         $response->assertOk();
@@ -46,26 +45,27 @@ class MoonShineUserControllerTest extends TestCase
 
     public function test_edit(): void
     {
-        $resource = new MoonShineUserResource();
+        $resource = $this->testResource();
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
-            ->get($resource->route('edit', $this->user->id));
+        $response = $this->authorized()
+            ->get($resource->route('edit', $this->adminUser()->id));
 
         $response->assertOk();
         $response->assertViewIs('moonshine::crud.form');
-        $response->assertViewHas('item', $this->user);
+        $response->assertViewHas('item', $this->adminUser());
     }
 
     public function test_store(): void
     {
-        $resource = new MoonShineUserResource();
+        $resource = $this->testResource();
+
         $email = uniqid('', true) . '@example.com';
 
         $this->assertDatabaseMissing('moonshine_users', [
             'email' => $email,
         ]);
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->post($resource->route('store'), [
                 'name' => 'Test user',
                 'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
@@ -85,26 +85,26 @@ class MoonShineUserControllerTest extends TestCase
 
     public function test_show(): void
     {
-        $resource = new MoonShineUserResource();
+        $resource = $this->testResource();
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
-            ->get($resource->route('show', $this->user->id));
+        $response = $this->authorized()
+            ->get($resource->route('show', $this->adminUser()->id));
 
         $response->assertValid();
     }
     public function test_update(): void
     {
-        $resource = new MoonShineUserResource();
+        $resource = $this->testResource();
 
         $this->assertDatabaseMissing('moonshine_users', [
             'name' => 'Admin updated',
         ]);
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
-            ->put($resource->route('update', $this->user->id), [
+        $response = $this->authorized()
+            ->put($resource->route('update', $this->adminUser()->id), [
                 'name' => 'Admin updated',
                 'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
-                'email' => $this->user->email,
+                'email' => $this->adminUser()->email,
             ]);
 
         $response->assertValid();
@@ -118,7 +118,7 @@ class MoonShineUserControllerTest extends TestCase
 
     public function test_destroy(): void
     {
-        $resource = new MoonShineUserResource();
+        $resource = $this->testResource();
 
         $user = MoonshineUser::factory()->createOne([
             'id' => 2,
@@ -126,11 +126,73 @@ class MoonShineUserControllerTest extends TestCase
 
         $this->assertModelExists($user);
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->delete($resource->route('destroy', $user->id));
 
         $response->assertRedirect($resource->route('index'));
 
         $this->assertModelMissing($user);
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_updated_column(): void
+    {
+        $response = $this->authorized()
+            ->putJson(route('moonshine.update-column'), [
+                'model' => MoonshineUser::class,
+                'key' => $this->adminUser()->getKey(),
+                'field' => 'name',
+                'value' => 'Test update column'
+            ]);
+
+        $response->assertNoContent();
+
+        $this->assertDatabaseHas('moonshine_users', [
+            'name' => 'Test update column',
+        ]);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_precognition_validation_no_content(): void
+    {
+        $response = $this->authorized()
+            ->put(
+                $this->testResource()
+                    ->route('update', $this->adminUser()->getKey()), [
+                        'name' => 'Admin updated',
+                        'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
+                ], [
+                    'Precognition' => 'true'
+                ]
+            );
+
+        $response->assertNoContent();
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_precognition_validation_error(): void
+    {
+        $response = $this->authorized()
+            ->put(
+                $this->testResource()
+                    ->route('update', $this->adminUser()->getKey()), [
+                    'name' => 'Admin updated',
+            ], [
+                    'Precognition' => 'true',
+                    'Accept' => 'application/json',
+                ]
+            );
+
+        $response->assertJsonStructure(['errors' => ['moonshine_user_role_id']]);
+    }
+
 }

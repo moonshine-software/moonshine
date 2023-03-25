@@ -15,9 +15,9 @@ use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\SelectTransform;
-use Leeto\MoonShine\Traits\Fields\WithFields;
 use Leeto\MoonShine\Traits\Fields\WithPivot;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
+use Leeto\MoonShine\Traits\WithFields;
 
 class BelongsToMany extends Field implements HasRelationship, HasPivot, HasFields, ManyToManyRelation
 {
@@ -154,9 +154,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         }
 
         return (string) $item->{$this->relation()}->map(function ($item) use ($result) {
-            dd($item);
             $pivotAs = $this->getPivotAs($item);
-
 
             $result = $result->append($item->{$this->resourceTitleField()})
                 ->when($this->hasFields(), fn (Stringable $str) => $str->append(' - '));

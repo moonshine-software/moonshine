@@ -8,14 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 
 use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
+use Leeto\MoonShine\Contracts\Fields\HasFullPageMode;
+use Leeto\MoonShine\Contracts\Fields\Relationships\HasResourceMode;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
-use Leeto\MoonShine\Traits\Fields\WithFields;
+use Leeto\MoonShine\Traits\Fields\WithFullPageMode;
+use Leeto\MoonShine\Traits\Fields\WithResourceMode;
+use Leeto\MoonShine\Traits\Fields\WithJsonValues;
+use Leeto\MoonShine\Contracts\Fields\HasJsonValues;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
+use Leeto\MoonShine\Traits\WithFields;
 
-class HasMany extends Field implements HasRelationship, HasFields, OneToManyRelation
+class HasMany extends Field implements HasRelationship, HasFields, HasJsonValues, HasResourceMode, HasFullPageMode, OneToManyRelation
 {
+    use WithResourceMode;
+    use WithFullPageMode;
     use WithFields;
+    use WithJsonValues;
     use WithRelationship;
 
     protected static string $view = 'moonshine::fields.has-many';

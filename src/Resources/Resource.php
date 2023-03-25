@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Resources;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
@@ -14,45 +12,45 @@ use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Actions\FiltersAction;
 use Leeto\MoonShine\BulkActions\BulkAction;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Decorations\Tabs;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
+use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\FormActions\FormAction;
 use Leeto\MoonShine\FormComponents\FormComponent;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
-use Leeto\MoonShine\MoonShine;
+use Leeto\MoonShine\MoonShineRequest;
 use Leeto\MoonShine\QueryTags\QueryTag;
+use Leeto\MoonShine\Traits\Resource\ResourceCrudRouter;
+use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
+use Leeto\MoonShine\Traits\Resource\ResourceModelQuery;
+use Leeto\MoonShine\Traits\Resource\ResourceRouter;
+use Leeto\MoonShine\Traits\WithUriKey;
 use Throwable;
 
 abstract class Resource implements ResourceContract
 {
+    use ResourceRouter;
+    use ResourceCrudRouter;
+    use ResourceModelPolicy;
+    use ResourceModelQuery;
+    use WithUriKey;
+
     public static string $model;
 
     public static string $title = '';
 
     public static string $subTitle = '';
-
-    public static array $with = [];
-
-    public static bool $withPolicy = false;
-
-    public static string $orderField = 'id';
-
-    public static string $orderType = 'DESC';
-
-    public static int $itemsPerPage = 25;
 
     public static array $activeActions = ['create', 'show', 'edit', 'delete'];
 
@@ -72,15 +70,13 @@ abstract class Resource implements ResourceContract
 
     protected bool $editInModal = false;
 
-    protected bool $precognition = true;
+    protected bool $precognition = false;
 
     protected string $relatedColumn = '';
 
     protected string|int $relatedKey = '';
 
     protected bool $previewMode = false;
-
-    protected ?Builder $customBuilder = null;
 
     /**
      * Alias for route of resource.
@@ -199,6 +195,31 @@ abstract class Resource implements ResourceContract
     }
 
     /**
+     * Customize table row class
+     *
+     * @param  Model  $item
+     * @param  int  $index
+     * @return string
+     */
+    public function trClass(Model $item, int $index): string
+    {
+        return 'default';
+    }
+
+    /**
+     * Customize table td class
+     *
+     * @param  Model  $item
+     * @param  int  $index
+     * @param  int  $cell
+     * @return string
+     */
+    public function tdClass(Model $item, int $index, int $cell): string
+    {
+        return 'default';
+    }
+
+    /**
      * Customize table row style
      *
      * @param  Model  $item
@@ -207,7 +228,7 @@ abstract class Resource implements ResourceContract
      */
     public function trStyles(Model $item, int $index): string
     {
-        return 'default';
+        return '';
     }
 
     /**
@@ -220,7 +241,7 @@ abstract class Resource implements ResourceContract
      */
     public function tdStyles(Model $item, int $index, int $cell): string
     {
-        return 'default';
+        return '';
     }
 
     public function baseShowView(): string
@@ -278,14 +299,14 @@ abstract class Resource implements ResourceContract
         return static::$activeActions;
     }
 
-    public function isWithPolicy(): bool
-    {
-        return static::$withPolicy;
-    }
-
     public function isSystem(): bool
     {
         return static::$system;
+    }
+
+    public function isInModal(): bool
+    {
+        return $this->isEditInModal() || $this->isCreateInModal();
     }
 
     public function isCreateInModal(): bool
@@ -298,77 +319,11 @@ abstract class Resource implements ResourceContract
         return $this->editInModal;
     }
 
-    /**
-     * Take route of resource from alias or composite from resource and table names.
-     * @return string
-     */
-    public function routeAlias(): string
-    {
-        return (string)($this->routAlias ?
-            str($this->routAlias)
-                ->lcfirst()
-                ->squish() :
-            str(static::class)
-                ->classBasename()
-                ->replace(['Resource'], '')
-                ->plural()
-                ->lcfirst());
-    }
-
-    public function routeParam(): string
-    {
-        return (string)str($this->routeAlias())->singular();
-    }
-
-    public function routeName(string|null $action = null): string
-    {
-        return (string)str('moonshine')
-            ->append('.')
-            ->append($this->routeAlias())
-            ->when($action, fn ($str) => $str->append('.')->append($action));
-    }
-
-    public function currentRoute(array $query = []): string
-    {
-        return request()->url()
-            .($query ? '?'.http_build_query($query) : '');
-    }
-
-    public function route(string $action = null, int|string $id = null, array $query = []): string
-    {
-        if (empty($query) && Cache::has("moonshine_query_{$this->routeAlias()}")) {
-            parse_str(
-                Cache::get("moonshine_query_{$this->routeAlias()}", ''),
-                $query
-            );
-        }
-
-        if ($this->isRelatable()) {
-            $query['relatable_mode'] = 1;
-        }
-
-        return route(
-            $this->routeName($action),
-            $id ? array_merge([$this->routeParam() => $id], $query) : $query
-        );
-    }
-
-    public function controllerName(): string
-    {
-        return (string)str(static::class)
-            ->classBasename()
-            ->replace(['Resource'], '')
-            ->append('Controller')
-            ->when(
-                $this->isSystem(),
-                fn ($str) => $str->prepend('Leeto\MoonShine\Http\Controllers\\'),
-                fn ($str) => $str->prepend(MoonShine::namespace('\Controllers\\'))
-            );
-    }
-
     public function isPrecognition(): bool
     {
-        return $this->precognition;
+        return $this->precognition
+            || $this->isInModal()
+            || $this->isRelatable();
     }
 
     public function precognitionMode(): self
@@ -383,6 +338,8 @@ abstract class Resource implements ResourceContract
      */
     public function getActions(): Collection
     {
+        # TODO Wrap into Actions(Collection)
+
         $actions = collect();
 
         $hasFilters = false;
@@ -395,190 +352,32 @@ abstract class Resource implements ResourceContract
             $actions->add($action->setResource($this));
         }
 
-        if (! $hasFilters && ! empty($this->filters())) {
+        if (!$hasFilters && !empty($this->filters())) {
             $actions->add(
                 FiltersAction::make(trans('moonshine::ui.filters'))
                     ->setResource($this)
             );
         }
 
-        return $actions->filter(fn (Action $action) => $action->isSee(request()));
+        return $actions->filter(fn(Action $action) => $action->isSee(app(MoonShineRequest::class)));
     }
 
+    public function hasMassAction(): bool
+    {
+        return !$this->isPreviewMode() && (
+                count($this->bulkActions()) || (
+                    $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
+                )
+            );
+    }
 
     /**
-     * @return Collection<Field>
+     * @return Fields<Field|Decoration>
      * @throws Throwable
      */
-    public function getFields(): Collection
+    public function getFields(): Fields
     {
-        $fields = [];
-
-        $this->withdrawFields($this->fields(), $fields);
-
-        return collect($fields);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    private function withdrawFields($fieldsOrDecorations, array &$fields): void
-    {
-        foreach ($fieldsOrDecorations as $fieldOrDecoration) {
-            if ($fieldOrDecoration instanceof Field) {
-                $fields[] = $fieldOrDecoration;
-            } elseif ($fieldOrDecoration instanceof Tabs) {
-                foreach ($fieldOrDecoration->tabs() as $tab) {
-                    $this->withdrawFields($tab->fields(), $fields);
-                }
-            } elseif ($fieldOrDecoration instanceof Decoration) {
-                $this->withdrawFields($fieldOrDecoration->fields(), $fields);
-            }
-        }
-    }
-
-    /**
-     * @return Collection<Filter>
-     */
-    public function getFilters(): Collection
-    {
-        return collect($this->filters());
-    }
-
-    /**
-     * @return Collection<Field>
-     * @throws Throwable
-     */
-    public function whenFields(): Collection
-    {
-        return collect($this->getFields())
-            ->filter(fn (Field $field) => $field->showWhenState)
-            ->values();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function whenFieldNames(): Collection
-    {
-        $names = [];
-
-        foreach ($this->whenFields() as $field) {
-            $names[$field->showWhenField] = $field->showWhenField;
-        }
-
-        return collect($names);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function isWhenConditionField(string $name): bool
-    {
-        return $this->whenFieldNames()->has($name);
-    }
-
-    /**
-     * @return Collection<Field>
-     * @throws Throwable
-     */
-    public function indexFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnIndex)
-            ->values();
-    }
-
-    /**
-     * @return Collection<Field>
-     * @throws Throwable
-     */
-    public function showFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnDetail)
-            ->values();
-    }
-
-    /**
-     * @return Collection<Field|Decoration>
-     */
-    public function formComponents(): Collection
-    {
-        return collect($this->fields())->map(function ($component) {
-            if ($component instanceof Field) {
-                return $component->setParents();
-            }
-
-            return $component;
-        });
-    }
-
-    /**
-     * @return Collection<Field>
-     * @throws Throwable
-     */
-    public function relatableFormComponents(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn (Field $field) => $field->isResourceModeField())
-            ->values()
-            ->map(fn (Field $field) => $field->setParents());
-    }
-
-    /**
-     * @return Collection<Field>
-     * @throws Throwable
-     */
-    public function formFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnForm)
-            ->values();
-    }
-
-    /**
-     * @return Collection<Field>
-     * @throws Throwable
-     */
-    public function exportFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn (Field $field) => $field->showOnExport)
-            ->values();
-    }
-
-    /**
-     * @return Collection<Field>
-     * @throws Throwable
-     */
-    public function importFields(): Collection
-    {
-        return $this->getFields()
-            ->filter(fn (Field $field) => $field->useOnImport)
-            ->values();
-    }
-
-    /**
-     * @return array<string, string>
-     * @throws Throwable
-     */
-    public function fieldsLabels(): array
-    {
-        $labels = [];
-
-        foreach ($this->formFields() as $field) {
-            $labels[$field->field()] = $field->label();
-        }
-
-        return $labels;
-    }
-
-    public function getFilter(string $filterName): ?Filter
-    {
-        return collect($this->getFilters())->filter(function (Filter $filter) use ($filterName) {
-            return $filter->field() === $filterName;
-        })->first();
+        return Fields::make($this->fields());
     }
 
     /**
@@ -586,8 +385,25 @@ abstract class Resource implements ResourceContract
      */
     public function getField(string $fieldName): ?Field
     {
-        return collect($this->getFields())->filter(function (Field $field) use ($fieldName) {
-            return $field->field() === $fieldName;
+        return $this->getFields()->findFieldByColumn($fieldName);
+    }
+
+    /**
+     * @return Collection<Filter>
+     */
+    public function getFilters(): Collection
+    {
+        # TODO Wrap into Filters(Collection)
+
+        return collect($this->filters());
+    }
+
+    public function getFilter(string $filterName): ?Filter
+    {
+        # TODO Move to Filters(Collection)
+
+        return collect($this->getFilters())->filter(function (Filter $filter) use ($filterName) {
+            return $filter->field() === $filterName;
         })->first();
     }
 
@@ -608,12 +424,12 @@ abstract class Resource implements ResourceContract
         $this->createInModal = true;
         $this->editInModal = true;
 
-        return $this;
+        return $this->precognitionMode();
     }
 
     public function isRelatable(): bool
     {
-        return $this->relatedColumn && $this->relatedKey;
+        return ($this->relatedColumn && $this->relatedKey);
     }
 
     public function previewMode(): self
@@ -638,145 +454,49 @@ abstract class Resource implements ResourceContract
         return $this->relatedKey;
     }
 
-    public function all(): Collection
-    {
-        return $this->query()->get();
-    }
-
-    public function paginate(): LengthAwarePaginator
-    {
-        return $this->query()
-            ->paginate(static::$itemsPerPage)
-            ->appends(request()->except('page'));
-    }
-
-    public function customBuilder(Builder $builder): void
-    {
-        $this->customBuilder = $builder;
-    }
-
-    public function query(): Builder
-    {
-        $query = $this->customBuilder ?? $this->getModel()->query();
-
-        if (static::$with) {
-            $query = $query->with(static::$with);
-        }
-
-        if ($this->isRelatable()) {
-            return $query
-                ->where($this->relatedColumn(), $this->relatedKey())
-                ->orderBy(static::$orderField, static::$orderType);
-        }
-
-        if ($this->scopes()) {
-            foreach ($this->scopes() as $scope) {
-                $query = $query->withGlobalScope($scope::class, $scope);
-            }
-        }
-
-        if (request()->has('search') && count($this->search())) {
-            foreach ($this->search() as $field) {
-                $query = $query->orWhere(
-                    $field,
-                    'LIKE',
-                    '%'.request('search').'%'
-                );
-            }
-        }
-
-        if (request()->has('filters') && count($this->filters())) {
-            foreach ($this->filters() as $filter) {
-                $query = $filter->getQuery($query);
-            }
-        }
-
-        if (request()->has('order')) {
-            $query = $query->orderBy(
-                request('order.field'),
-                request('order.type')
-            );
-        } else {
-            $query = $query->orderBy(static::$orderField, static::$orderType);
-        }
-
-        Cache::forget("moonshine_query_{$this->routeAlias()}");
-        Cache::remember("moonshine_query_{$this->routeAlias()}", now()->addHours(2), function () {
-            return request()->getQueryString();
-        });
-
-        return $query;
-    }
-
+    /**
+     * @throws Throwable
+     */
     public function validate(Model $item): \Illuminate\Contracts\Validation\Validator|\Illuminate\Validation\Validator
     {
         return Validator::make(
             request()->all(),
             $this->rules($item),
             trans('moonshine::validation'),
-            $this->fieldsLabels()
+            $this->getFields()->extractLabels()
         );
     }
 
-    public function gateAbilities(): array
-    {
-        return [
-            'viewAny',
-            'view',
-            'create',
-            'update',
-            'delete',
-            'massDelete',
-            'restore',
-            'forceDelete',
-        ];
-    }
-
-    public function can(string $ability, Model $item = null): bool
-    {
-        $user = auth(config('moonshine.auth.guard'))->user();
-
-        if ($user->moonshineUserPermission
-            && (! $user->moonshineUserPermission->permissions->has(get_class($this))
-                || ! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
-            return false;
-        }
-
-        if (! $this->isWithPolicy()) {
-            return true;
-        }
-
-        return Gate::forUser($user)
-            ->allows($ability, $item ?? $this->getModel());
-    }
-
-    public function massDelete(array $ids): void
+    public function massDelete(array $ids)
     {
         if (method_exists($this, 'beforeMassDeleting')) {
             $this->beforeMassDeleting($ids);
         }
 
-        $this->getModel()
-            ->newModelQuery()
-            ->whereIn($this->getModel()->getKeyName(), $ids)
-            ->delete();
-
-        if (method_exists($this, 'afterMassDeleted')) {
-            $this->afterMassDeleted($ids);
-        }
+        return tap(
+            $this->getModel()
+                ->newModelQuery()
+                ->whereIn($this->getModel()->getKeyName(), $ids)
+                ->delete(),
+            function () use ($ids) {
+                if (method_exists($this, 'afterMassDeleted')) {
+                    $this->afterMassDeleted($ids);
+                }
+            }
+        );
     }
 
-    public function delete(Model $item): void
+    public function delete(Model $item): bool
     {
         if (method_exists($this, 'beforeDeleting')) {
             $this->beforeDeleting($item);
         }
 
-        $item->delete();
-
-        if (method_exists($this, 'afterDeleted')) {
-            $this->afterDeleted($item);
-        }
+        return tap($item->delete(), function () use ($item) {
+            if (method_exists($this, 'afterDeleted')) {
+                $this->afterDeleted($item);
+            }
+        });
     }
 
     /**
@@ -787,12 +507,12 @@ abstract class Resource implements ResourceContract
         ?Collection $fields = null,
         ?array $saveData = null
     ): Model {
-        $fields = $fields ?? $this->formFields();
+        $fields = $fields ?? $this->getFields()->formFields();
 
         try {
-            $fields->each(fn ($field) => $field->beforeSave($item));
+            $fields->each(fn($field) => $field->beforeSave($item));
 
-            if (! $item->exists && method_exists($this, 'beforeCreating')) {
+            if (!$item->exists && method_exists($this, 'beforeCreating')) {
                 $this->beforeCreating($item);
             }
 
@@ -801,7 +521,7 @@ abstract class Resource implements ResourceContract
             }
 
             foreach ($fields as $field) {
-                if (! $field->hasRelationship() || $field->belongToOne()) {
+                if (!$field->hasRelationship() || $field->belongToOne()) {
                     $item = $this->saveItem($item, $field, $saveData);
                 }
             }
@@ -810,20 +530,20 @@ abstract class Resource implements ResourceContract
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 foreach ($fields as $field) {
-                    if ($field->hasRelationship() && ! $field->belongToOne()) {
+                    if ($field->hasRelationship() && !$field->belongToOne()) {
                         $item = $this->saveItem($item, $field, $saveData);
                     }
                 }
 
                 $item->save();
 
-                $fields->each(fn ($field) => $field->afterSave($item));
+                $fields->each(fn($field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated && method_exists($this, 'afterCreated')) {
                     $this->afterCreated($item);
                 }
 
-                if (! $wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
+                if (!$wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
                     $this->afterUpdated($item);
                 }
             }
@@ -847,17 +567,17 @@ abstract class Resource implements ResourceContract
         return $item;
     }
 
-    public function renderField(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
+    public function renderField(ResourceRenderable $field, Model $item, int $level = 0): Factory|View|Application
     {
         return $this->_render($field, $item, $level);
     }
 
-    public function renderFilter(HtmlViewable $field, Model $item): Factory|View|Application
+    public function renderFilter(ResourceRenderable $field, Model $item): Factory|View|Application
     {
         return $this->_render($field, $item);
     }
 
-    public function renderDecoration(HtmlViewable $decoration, Model $item): Factory|View|Application
+    public function renderDecoration(ResourceRenderable $decoration, Model $item): Factory|View|Application
     {
         return view($decoration->getView(), [
             'resource' => $this,
@@ -866,7 +586,7 @@ abstract class Resource implements ResourceContract
         ]);
     }
 
-    public function renderMetric(HtmlViewable $metric): Factory|View|Application
+    public function renderMetric(ResourceRenderable $metric): Factory|View|Application
     {
         return view($metric->getView(), [
             'resource' => $this,
@@ -874,7 +594,7 @@ abstract class Resource implements ResourceContract
         ]);
     }
 
-    public function renderFormComponent(HtmlViewable $formComponent, Model $item): Factory|View|Application
+    public function renderFormComponent(ResourceRenderable $formComponent, Model $item): Factory|View|Application
     {
         return view($formComponent->getView(), [
             'resource' => $this,
@@ -883,16 +603,7 @@ abstract class Resource implements ResourceContract
         ]);
     }
 
-    public function isMassAction(): bool
-    {
-        return ! $this->isPreviewMode() && (
-            count($this->bulkActions()) || (
-                $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
-            )
-        );
-    }
-
-    protected function _render(HtmlViewable $field, Model $item, int $level = 0): Factory|View|Application
+    protected function _render(ResourceRenderable $field, Model $item, int $level = 0): Factory|View|Application
     {
         if ($field->hasRelationship() && ($field->belongToOne() || $field->manyToMany())) {
             $field->setValues($field->relatedValues($item));

@@ -27,7 +27,7 @@
         <div x-show="{{ $decoration->id() }}_open" class="accordion-body">
             <div class="accordion-content">
                 <x-moonshine::resource-renderable
-                    :components="$decoration->fields()"
+                    :components="$decoration->getFields()"
                     :item="$item"
                     :resource="$resource"
                     :container="true"

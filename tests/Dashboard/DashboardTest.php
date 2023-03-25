@@ -13,7 +13,7 @@ class DashboardTest extends TestCase
 {
     public function test_empty_page()
     {
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->get(route('moonshine.index'));
 
         $response->assertOk();
@@ -30,7 +30,7 @@ class DashboardTest extends TestCase
             ]),
         ]);
 
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->get(route('moonshine.index'));
 
         $response->assertOk();

@@ -18,7 +18,7 @@ use Leeto\MoonShine\MoonShine;
 use Leeto\MoonShine\Traits\WithLabel;
 
 /**
- * @mixin Field|WithFields
+ * @mixin Field|WithResourceMode
  */
 trait FormElement
 {
@@ -74,7 +74,7 @@ trait FormElement
             }
 
             if ($this instanceof HasFields && ! $this->manyToMany() && ! $this->hasFields()) {
-                $this->fields($this->resource()?->formFields()?->toArray() ?? []);
+                $this->fields($this->resource()?->getFields()?->formFields()?->toArray() ?? []);
             }
         }
 

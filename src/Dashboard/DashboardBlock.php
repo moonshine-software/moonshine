@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Dashboard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithColumnSpan;
 use Leeto\MoonShine\Traits\WithLabel;
@@ -42,7 +42,7 @@ class DashboardBlock
         $this->items = $items;
     }
 
-    public function render(HtmlViewable $item): Factory|View|Application
+    public function render(ResourceRenderable $item): Factory|View|Application
     {
         return view($item->getView(), [
             'block' => $this,

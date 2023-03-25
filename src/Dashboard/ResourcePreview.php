@@ -34,14 +34,14 @@ final class ResourcePreview extends DashboardItem
     public function items(): Collection
     {
         return $this->resource()
-            ->query()
+            ->resolveQuery()
             ->when($this->query, fn () => $this->query)
             ->get();
     }
 
     public function id(string $index = null): string
     {
-        return str($this->resource()->routeAlias())
+        return str($this->resource()->routeNameAlias())
             ->prepend('resource_preview_')
             ->slug('_');
     }

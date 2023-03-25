@@ -19,7 +19,7 @@ class DecorationTest extends TestCase
             Text::make('Last name'),
         ]);
         $this->assertTrue($decoration->hasFields());
-        $this->assertCount(2, $decoration->fields());
+        $this->assertCount(2, $decoration->getFields());
     }
 
     public function test_decoration_make_without_fields(): void
@@ -28,7 +28,7 @@ class DecorationTest extends TestCase
         $decoration = $this->createDecorationMockObject('Label');
 
         $this->assertFalse($decoration->hasFields());
-        $this->assertCount(0, $decoration->fields());
+        $this->assertCount(0, $decoration->getFields());
     }
 
     public function test_decoration_id(): void

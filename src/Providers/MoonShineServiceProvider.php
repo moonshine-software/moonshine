@@ -114,13 +114,10 @@ class MoonShineServiceProvider extends ServiceProvider
         Blade::withoutDoubleEncoding();
         Blade::componentNamespace('Leeto\MoonShine\Components', 'moonshine');
 
-        $this->app->singleton(MoonShine::class, fn () => new MoonShine());
-
-        $this->app->singleton(Menu::class, fn () => new Menu());
-
-        $this->app->singleton(Dashboard::class, fn () => new Dashboard());
-
-        $this->app->singleton(AssetManager::class, fn () => new AssetManager());
+        $this->app->singleton(MoonShine::class);
+        $this->app->singleton(Menu::class);
+        $this->app->singleton(Dashboard::class);
+        $this->app->singleton(AssetManager::class);
     }
 
     /**

@@ -17,10 +17,11 @@ final class BulkAction
     use WithLabel;
 
     public function __construct(
-        protected string $label,
+        string $label,
         protected Closure $callback,
         protected string $message = 'Done',
     ) {
+        $this->setLabel($label);
     }
 
     public function message(): string

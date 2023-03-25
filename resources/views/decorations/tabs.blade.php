@@ -25,7 +25,7 @@
                 <div x-show="activeTab_{{ $decoration->id() }} === '{{ $tab->id() }}'" class="tab-panel" style="display: none">
                     <div class="tabs-body">
                     <x-moonshine::resource-renderable
-                        :components="$tab->fields()"
+                        :components="$tab->getFields()"
                         :item="$item"
                         :resource="$resource"
                     />

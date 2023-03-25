@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\Tests\Controllers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Leeto\MoonShine\Tests\TestCase;
 
-class MoonShineAuthControllerTest extends TestCase
+class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,7 +21,7 @@ class MoonShineAuthControllerTest extends TestCase
 
     public function test_login_redirect_to_dashboard()
     {
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->get(route(config('moonshine.route.prefix').'.login'));
 
         $response->assertRedirect(route(config('moonshine.route.prefix').'.index'));
@@ -31,14 +31,14 @@ class MoonShineAuthControllerTest extends TestCase
     {
         $response = $this->post(
             route(config('moonshine.route.prefix').'.authenticate'),
-            ['email' => $this->user->email, 'password' => 'invalid']
+            ['email' => $this->adminUser()->email, 'password' => 'invalid']
         );
 
-        $response->assertInvalid(['login']);
+        $response->assertInvalid(['email']);
 
         $response = $this->post(
             route(config('moonshine.route.prefix').'.authenticate'),
-            ['email' => $this->user->email, 'password' => 'test']
+            ['email' => $this->adminUser()->email, 'password' => 'test']
         );
 
         $response->assertValid();
@@ -46,7 +46,7 @@ class MoonShineAuthControllerTest extends TestCase
 
     public function test_logout()
     {
-        $response = $this->actingAs($this->user, config('moonshine.auth.guard'))
+        $response = $this->authorized()
             ->get(route(config('moonshine.route.prefix').'.logout'));
 
         $response->assertRedirect(route(config('moonshine.route.prefix').'.login'));

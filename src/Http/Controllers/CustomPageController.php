@@ -17,11 +17,11 @@ class CustomPageController extends BaseController
 {
     public function __invoke(string $alias): Factory|View|Application
     {
-        if (app()->runningInConsole()) {
+        if (app()->runningInConsole() && !app()->runningUnitTests()) {
             abort(Response::HTTP_NOT_FOUND);
         }
 
-        $page = app(MoonShine::class)->getPages()
+        $page = MoonShine::getPages()
             ->first(fn (CustomPage $page) => $page->alias() === $alias);
 
         abort_if(! $page, Response::HTTP_NOT_FOUND);

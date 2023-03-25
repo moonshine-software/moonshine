@@ -2,7 +2,7 @@
 if($field->isFile()) {
     $value = false;
 } elseif(isset($valueKey)) {
-  $value = is_array($field->formViewValue($item)) ? ($field->formViewValue($item)[$valueKey] ?? '') : '';
+    $value = is_array($field->formViewValue($item)) ? ($field->formViewValue($item)[$valueKey] ?? '') : '';
 } else {
     $value = (string) $field->formViewValue($item);
 }
@@ -16,4 +16,5 @@ if($field->isFile()) {
         'type' => $field->type(),
         'value' => $value
     ])"
+    @class(['form-invalid' => $errors->has($field->name())])
 />

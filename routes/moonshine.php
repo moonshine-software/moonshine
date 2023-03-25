@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Leeto\MoonShine\Http\Controllers\AttachmentController;
 use Leeto\MoonShine\Http\Controllers\AuthenticateController;
+use Leeto\MoonShine\Http\Controllers\CrudController;
 use Leeto\MoonShine\Http\Controllers\CustomPageController;
 use Leeto\MoonShine\Http\Controllers\DashboardController;
 use Leeto\MoonShine\Http\Controllers\NotificationController;
@@ -11,11 +13,11 @@ use Leeto\MoonShine\Http\Controllers\SocialiteController;
 Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware(config('moonshine.route.middleware'))
     ->as('moonshine.')->group(static function () {
-        Route::controller(DashboardController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::post('/attachments', 'attachments')->name('attachments');
-            Route::get('/auto-update', 'autoUpdate')->name('auto-update');
-        });
+        Route::get('/', DashboardController::class)->name('index');
+        Route::post('/attachments', AttachmentController::class)->name('attachments');
+
+        Route::put("update-column", [CrudController::class, 'updateColumn'])
+            ->name("update-column");
 
         Route::controller(NotificationController::class)
             ->prefix('notifications')

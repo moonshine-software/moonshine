@@ -1,10 +1,10 @@
-@if($resource->isMassAction())
+@if($resource->hasMassAction())
     <td class="text-center"
-        colspan="{{ count($resource->indexFields())+2 }}"
+        colspan="{{ count($resource->getFields()->indexFields())+2 }}"
     >
         <div class="flex items-center gap-2">
             @foreach($resource->bulkActions() as $index => $action)
-                <x-moonshine::form :action="$resource->route('bulk', query: ['index' => $index])" method="POST">
+                <x-moonshine::form :action="$resource->route('actions.bulk', query: ['index' => $index])" method="POST">
                     @if($resource->isRelatable())
                         <x-moonshine::form.input
                             type="hidden"
@@ -29,7 +29,7 @@
                     />
 
                     <x-slot:button type="submit" title="{{ $action->label() }}">
-                        {{ $action->getIcon(6, 'pink', 'mr-2') }}
+                        {{ $action->getIcon(6) }}
                     </x-slot:button>
                 </x-moonshine::form>
             @endforeach
@@ -40,7 +40,7 @@
 
                     <x-moonshine::form
                         method="POST"
-                        action="{{ $resource->route('destroy', 1) }}"
+                        action="{{ $resource->route('massDelete') }}"
                     >
                         @method("delete")
 

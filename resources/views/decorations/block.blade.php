@@ -2,7 +2,7 @@
     :title="$decoration->label()"
 >
     <x-moonshine::resource-renderable
-        :components="$decoration->fields()"
+        :components="$decoration->getFields()"
         :item="$item"
         :resource="$resource"
     />

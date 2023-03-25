@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Leeto\MoonShine\Http\Controllers;
+
+use Illuminate\Http\RedirectResponse;
+use Leeto\MoonShine\Http\Requests\Resources\PermissionFormRequest;
+use Leeto\MoonShine\Models\MoonshineUserPermission;
+use Illuminate\Routing\Controller as BaseController;
+
+class PermissionController extends BaseController
+{
+    public function __invoke(PermissionFormRequest $request): RedirectResponse
+    {
+        $item = $request->getItem();
+
+        if (! $request->has('permissions')) {
+            $item->moonshineUserPermission()->delete();
+        } else {
+            MoonshineUserPermission::query()->updateOrCreate(
+                ['moonshine_user_id' => $item->getKey()],
+                request()
+                    ->merge(['moonshine_user_id' => $item->getKey()])
+                    ->only(['moonshine_user_id', 'permissions'])
+            );
+        }
+
+        return back()
+            ->with('alert', trans('moonshine::ui.saved'));
+    }
+}

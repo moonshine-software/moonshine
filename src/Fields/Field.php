@@ -10,12 +10,13 @@ use Leeto\MoonShine\Contracts\Fields\HasExportViewValue;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
 use Leeto\MoonShine\Contracts\Fields\HasIndexViewValue;
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\ResourceRenderable;
 
 use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\Traits\Fields\FormElement;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Fields\LinkTrait;
+use Leeto\MoonShine\Traits\Fields\ShowOrHide;
 use Leeto\MoonShine\Traits\Fields\ShowWhen;
 use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
 use Leeto\MoonShine\Traits\Fields\XModel;
@@ -24,31 +25,18 @@ use Leeto\MoonShine\Traits\WithAssets;
 use Leeto\MoonShine\Traits\WithView;
 use Leeto\MoonShine\Utilities\AssetManager;
 
-abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, HasIndexViewValue, HasFormViewValue
+abstract class Field implements ResourceRenderable, HasAssets, HasExportViewValue, HasIndexViewValue, HasFormViewValue
 {
-    use FormElement;
-    use LinkTrait;
     use Makeable;
-    use ShowWhen;
-    use WithAssets;
+    use FormElement;
+    use ShowOrHide;
     use WithHtmlAttributes;
     use WithView;
+    use WithAssets;
+    use LinkTrait;
+    use ShowWhen;
     use XModel;
     use HasCanSee;
-
-    public bool $showOnIndex = true;
-
-    public bool $showOnExport = false;
-
-    public bool $useOnImport = false;
-
-    public bool $showOnForm = true;
-
-    public bool $showOnCreateForm = true;
-
-    public bool $showOnUpdateForm = true;
-
-    public bool $showOnDetail = true;
 
     protected ?Field $parent = null;
 
@@ -77,162 +65,6 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     }
 
     /**
-     * Set field as visible on index page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnIndex(mixed $condition = null): static
-    {
-        $this->showOnIndex = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    /**
-     * Set field as hidden on index page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnIndex(mixed $condition = null): static
-    {
-        $this->showOnIndex = Condition::boolean($condition, false);
-
-        return $this;
-    }
-
-    /**
-     * Set field as visible on create/edit page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnForm(mixed $condition = null): static
-    {
-        $this->showOnForm = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    /**
-     * Set field as hidden on create/edit page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnForm(mixed $condition = null): static
-    {
-        $this->showOnForm = Condition::boolean($condition, false);
-
-        return $this;
-    }
-
-    /**
-     * Set field as visible on detail page, based on condition
-     *
-     * @param mixed $condition
-     * @return $this
-     */
-    public function showOnDetail(mixed $condition = null): static
-    {
-        $this->showOnDetail = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    /**
-     * Set field as hidden on detail page, based on condition
-     *
-     * @param mixed $condition
-     * @return $this
-     */
-    public function hideOnDetail(mixed $condition = null): static
-    {
-        $this->showOnDetail = Condition::boolean($condition, false);
-
-        return $this;
-    }
-
-    /**
-     * Set field as show on create page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnCreate(mixed $condition = null): static
-    {
-        $this->showOnCreateForm = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    /**
-     * Set field as hidden on create page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnCreate(mixed $condition = null): static
-    {
-        $this->showOnCreateForm = Condition::boolean($condition, false);
-
-        return $this;
-    }
-
-    /**
-     * Set field as show on update page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnUpdate(mixed $condition = null): static
-    {
-        $this->showOnUpdateForm = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    /**
-     * Set field as hidden on update page, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnUpdate(mixed $condition = null): static
-    {
-        $this->showOnUpdateForm = Condition::boolean($condition, false);
-
-        return $this;
-    }
-
-    /**
-     * Set field as visible in export report, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function showOnExport(mixed $condition = null): static
-    {
-        $this->showOnExport = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    /**
-     * Set field as hidden in export report, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function hideOnExport(mixed $condition = null): static
-    {
-        $this->showOnExport = Condition::boolean($condition, false);
-
-        return $this;
-    }
-
-    /**
      * Set field label block view on forms, based on condition
      *
      * @deprecated Will be deleted
@@ -252,19 +84,6 @@ abstract class Field implements HtmlViewable, HasAssets, HasExportViewValue, Has
     public function isFullWidth(): bool
     {
         return $this->fullWidth;
-    }
-
-    /**
-     * Set field as used on import, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
-     */
-    public function useOnImport(mixed $condition = null): static
-    {
-        $this->useOnImport = Condition::boolean($condition, true);
-
-        return $this;
     }
 
     public function fieldContainer(mixed $condition = null): static

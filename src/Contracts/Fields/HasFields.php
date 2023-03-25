@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Contracts\Fields;
 
-use Illuminate\Database\Eloquent\Model;
+use Leeto\MoonShine\Fields\Fields;
 
 interface HasFields
 {
@@ -12,7 +12,5 @@ interface HasFields
 
     public function hasFields(): bool;
 
-    public function getFields(): array;
-
-    public function jsonValues(Model $item = null): array;
+    public function getFields(): Fields;
 }

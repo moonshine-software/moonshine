@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\FormComponents;
 
-use Leeto\MoonShine\Contracts\HtmlViewable;
+use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithLabel;
 use Leeto\MoonShine\Traits\WithView;
 
-abstract class FormComponent implements HtmlViewable
+abstract class FormComponent implements ResourceRenderable
 {
     use Makeable;
     use HasCanSee;

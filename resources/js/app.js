@@ -1,3 +1,4 @@
+import './bootstrap'
 import './../css/app.css'
 
 import Alpine from 'alpinejs'
@@ -139,17 +140,13 @@ document.addEventListener("alpine:init", () => {
     }))
 
     Alpine.data('asyncData', () => ({
-        load(url, id) {
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-            }).then(function (response) {
-                return response.text()
-            }).then(function (html) {
+        async load(url, id) {
+            const {data, status} = await axios.get(url);
+
+            if(status === 200) {
                 let containerElement = document.getElementById(id)
 
-                containerElement.innerHTML = html
+                containerElement.innerHTML = data
 
                 const scriptElements = containerElement.querySelectorAll("script");
 
@@ -164,10 +161,23 @@ document.addEventListener("alpine:init", () => {
 
                     scriptElement.parentNode.replaceChild(clonedElement, scriptElement);
                 });
-
-            }).catch(function (err) {
-
+            }
+        },
+        async updateColumn(route, column, localKey, className, value) {
+            const response = await axios.put(route, {
+                value: value,
+                key: localKey,
+                model: className,
+                field: column
             });
+
+            if(response.status === 204) {
+                //
+            }
+
+            if(response.status === 422) {
+                //
+            }
         }
     }))
 
@@ -181,33 +191,26 @@ document.addEventListener("alpine:init", () => {
             form.querySelector('.form_submit_button').innerHTML = translates.loading;
             form.querySelector('.precognition_errors').innerHTML = '';
 
-            fetch(form.getAttribute('action'), {
-                method: 'POST',
+            axios.post(form.getAttribute('action'), new FormData(form), {
                 headers: {
-                    'Precognition': 'true',
-                },
-                body: new FormData(form)
+                    Precognition: true,
+                    Accept: 'application/json',
+                    'Content-Type': form.getAttribute('enctype')
+                }
             }).then(function (response) {
-                if (response.status === 200) {
-                    form.submit()
+                form.submit()
+            }).catch(errorResponse => {
+                form.querySelector('.form_submit_button').innerHTML = translates.saved_error;
+                form.querySelector('.form_submit_button').removeAttribute('disabled');
+
+                let errors = '';
+                let errorsData = errorResponse.response.data.errors;
+                for (const error in errorsData) {
+                    errors = errors + '<div class="mt-2 text-pink">' + errorsData[error] + '</div>';
                 }
 
-                return response.json();
-            }).then(function (json) {
-                if (Object.keys(json).length) {
-                    form.querySelector('.form_submit_button').innerHTML = translates.saved_error;
-                    form.querySelector('.form_submit_button').removeAttribute('disabled');
-
-                    let errors = '';
-
-                    for (const key in json) {
-                        errors = errors + '<div class="mt-2 text-pink">' + json[key] + '</div>';
-                    }
-
-                    form.querySelector('.precognition_errors').innerHTML = errors;
-                }
-            })
-
+                form.querySelector('.precognition_errors').innerHTML = errors;
+            });
 
             return false;
         },
@@ -253,5 +256,3 @@ document.addEventListener("alpine:init", () => {
 Alpine.plugin(persist)
 Alpine.plugin(mask)
 Alpine.start()
-
-
