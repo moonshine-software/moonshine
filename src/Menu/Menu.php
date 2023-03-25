@@ -17,7 +17,7 @@ class Menu
 
     public function all(): Collection|null
     {
-        return $this->menu->filter(function ($item) {
+        return $this->menu?->filter(function ($item) {
             if ($item->isGroup()) {
                 $item->setItems(
                     $item->items()->filter(fn ($subItem) => $subItem->isSee(request()))
