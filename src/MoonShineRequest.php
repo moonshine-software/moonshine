@@ -69,12 +69,12 @@ class MoonShineRequest extends FormRequest
             ?? $this->route('id');
     }
 
-    public function getItemOrInstance(): Model
+    public function getItemOrInstance(bool $eager = false): Model
     {
-        return $this->getItem() ?? $this->getResource()->getModel();
+        return $this->getItem($eager) ?? $this->getResource()->getModel();
     }
 
-    public function getItem(): ?Model
+    public function getItem(bool $eager = false): ?Model
     {
         if ($this->item) {
             return $this->item;
@@ -86,8 +86,8 @@ class MoonShineRequest extends FormRequest
 
         $model = $this->getResource()->getModel();
 
-        if ($this->getResource()->hasWith()) {
-            //$model->load($this->getResource()->getWith());
+        if ($eager && $this->getResource()->hasWith()) {
+            $model->load($this->getResource()->getWith());
         }
 
         if ($this->getResource()->softDeletes()) {
@@ -99,13 +99,13 @@ class MoonShineRequest extends FormRequest
         return $this->item;
     }
 
-    public function getItemOrFail(): ?Model
+    public function getItemOrFail(bool $eager = false): ?Model
     {
         if ($this->item) {
             return $this->item;
         }
 
-        $this->item = $this->getItem();
+        $this->item = $this->getItem($eager);
 
         abort_if(is_null($this->item), 404);
 

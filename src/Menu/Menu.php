@@ -16,7 +16,7 @@ class Menu
         self::$menu = $data;
     }
 
-    public static function all(): Collection|null
+    public static function all(): ?Collection
     {
         $request = app(MoonShineRequest::class);
 
