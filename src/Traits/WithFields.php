@@ -8,7 +8,6 @@ use Leeto\MoonShine\Contracts\Fields\HasJsonValues;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasResourceMode;
 use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Fields\Json;
 
 trait WithFields
 {
@@ -18,11 +17,11 @@ trait WithFields
     {
         $resolveChildFields = $this instanceof HasJsonValues
             || $this instanceof HasPivot
-            || ($this instanceof HasResourceMode && !$this->isResourceMode());
+            || ($this instanceof HasResourceMode && ! $this->isResourceMode());
 
         return Fields::make($this->fields)->when(
             $resolveChildFields,
-            fn(Fields $fields) => $fields->resolveChildFields($this)
+            fn (Fields $fields) => $fields->resolveChildFields($this)
         );
     }
 

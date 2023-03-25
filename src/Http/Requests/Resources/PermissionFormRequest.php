@@ -20,7 +20,7 @@ final class PermissionFormRequest extends MoonShineRequest
     public function rules(): array
     {
         return [
-            'permissions' => ['array']
+            'permissions' => ['array'],
         ];
     }
 }

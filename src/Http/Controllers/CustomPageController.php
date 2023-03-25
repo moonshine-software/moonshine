@@ -17,7 +17,7 @@ class CustomPageController extends BaseController
 {
     public function __invoke(string $alias): Factory|View|Application
     {
-        if (app()->runningInConsole() && !app()->runningUnitTests()) {
+        if (app()->runningInConsole() && ! app()->runningUnitTests()) {
             abort(Response::HTTP_NOT_FOUND);
         }
 

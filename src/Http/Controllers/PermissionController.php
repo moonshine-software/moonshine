@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\Http\Requests\Resources\PermissionFormRequest;
 use Leeto\MoonShine\Models\MoonshineUserPermission;
-use Illuminate\Routing\Controller as BaseController;
 
 class PermissionController extends BaseController
 {

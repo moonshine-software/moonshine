@@ -16,7 +16,7 @@ final class MassDeleteFormRequest extends MoonShineRequest
     public function rules(): array
     {
         return [
-            'ids' => ['required', 'array']
+            'ids' => ['required', 'array'],
         ];
     }
 
@@ -27,7 +27,7 @@ final class MassDeleteFormRequest extends MoonShineRequest
                 ->str('ids')
                 ->explode(';')
                 ->filter()
-                ->toArray()
+                ->toArray(),
         ]);
     }
 }

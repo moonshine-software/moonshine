@@ -19,5 +19,4 @@ final class CustomPageControllerTest extends TestCase
             ->assertOk()
             ->assertSeeText('Profile');
     }
-
 }
