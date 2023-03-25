@@ -14,7 +14,7 @@ class LineChartMetric extends Metric
 
     protected array $assets = [
         'https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.37.1/apexcharts.min.js',
-        '/vendor/moonshine/apexchart-config.js',
+        '/vendor/moonshine/js/apexchart-config.js',
     ];
 
     public function lines(): array
