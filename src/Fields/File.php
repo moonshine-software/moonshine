@@ -38,8 +38,10 @@ class File extends Field implements Fileable
         }
 
         $files = $this->isMultiple()
-            ? collect($item->{$this->field()})->map(fn ($value) => $this->path($value))
-            : $this->path($item->{$this->field()});
+            ? collect($item->{$this->field()})
+                ->map(fn ($value) => $this->path($value))
+                ->toArray()
+            : [$this->path($item->{$this->field()})];
 
         return view('moonshine::components.files', [
             'files' => $files,
