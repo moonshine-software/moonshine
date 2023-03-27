@@ -5,6 +5,7 @@ namespace Leeto\MoonShine\Fields\Spatie;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Fields\Json;
 use Leeto\MoonShine\Fields\Select;
 use Leeto\MoonShine\Fields\Text;
@@ -67,14 +68,14 @@ class Translatable extends Json
         return $this;
     }
 
-    public function getFields(): array
+    public function getFields(): Fields
     {
         if (empty($this->fields)) {
             $this->fields([
-                Select::make('Language', 'key')
+                Select::make(__('Code'), 'key')
                     ->options(array_combine($this->getLanguagesCodes(), array_map(fn ($code) => Str::upper($code), $this->getLanguagesCodes())))
                     ->nullable(),
-                Text::make('Value', 'value'),
+                Text::make(__('Value'), 'value'),
             ]);
         }
 
