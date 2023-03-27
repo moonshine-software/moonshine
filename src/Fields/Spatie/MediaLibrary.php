@@ -70,8 +70,8 @@ class MediaLibrary extends Field
 
         return $item->getFirstMediaUrl($this->field());
     }
-    
-    
+
+
     public function path(string $value): string
     {
         return '';
