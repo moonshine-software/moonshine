@@ -19,7 +19,7 @@ class MenuTest extends TestCase
         $this->assertCount(1, app(Menu::class)->all());
 
         foreach (app(Menu::class)->all() as $item) {
-            $this->assertEquals($item->resource()->title(), $item->title());
+            $this->assertEquals($item->resource()->title(), $item->label());
         }
     }
 
@@ -36,12 +36,12 @@ class MenuTest extends TestCase
 
         foreach (app(Menu::class)->all() as $item) {
             $this->assertTrue($item->isGroup());
-            $this->assertEquals('Section 1', $item->title());
+            $this->assertEquals('Section 1', $item->label());
             $this->assertNotEmpty($item->items());
 
             foreach ($item->items() as $inner) {
                 $this->assertTrue(! $inner->isGroup());
-                $this->assertEquals('Section inner', $inner->title());
+                $this->assertEquals('Section inner', $inner->label());
                 $this->assertInstanceOf(MoonShineUserRoleResource::class, $inner->resource());
             }
         }

@@ -13,9 +13,10 @@ class MenuGroup extends MenuSection
 {
     use Makeable;
 
-    final public function __construct(string $title, array $items, string $icon = null)
+    final public function __construct(string $label, array $items, string $icon = null)
     {
-        $this->title = $title;
+        $this->setLabel($label);
+
         $this->items = collect($items)->map(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 

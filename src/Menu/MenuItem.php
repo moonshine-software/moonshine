@@ -12,9 +12,9 @@ class MenuItem extends MenuSection
 {
     use Makeable;
 
-    final public function __construct(string $title, Resource|CustomPage|string $resource, string $icon = null)
+    final public function __construct(string $label, Resource|CustomPage|string $resource, string $icon = null)
     {
-        $this->title = $title;
+        $this->setLabel($label);
 
         if ($resource instanceof Resource) {
             $this->resource = $resource;

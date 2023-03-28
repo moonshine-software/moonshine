@@ -7,7 +7,7 @@
     <button @click.prevent="dropdown = ! dropdown" class="menu-inner-button" :class="dropdown && '_is-active'" type="button">
         {!! $item->getIcon(6, 'white') !!}
 
-        <span class="menu-inner-text">{{ $item->title() }}</span>
+        <span class="menu-inner-text">{{ $item->label() }}</span>
         <span class="menu-inner-arrow">
             <x-moonshine::icon
                 icon="heroicons.chevron-down"

@@ -10,13 +10,13 @@ use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\WithIcon;
+use Leeto\MoonShine\Traits\WithLabel;
 
 abstract class MenuSection
 {
     use WithIcon;
     use HasCanSee;
-
-    protected string $title;
+    use WithLabel;
 
     protected string|null $link = null;
 
@@ -27,11 +27,6 @@ abstract class MenuSection
     protected ?CustomPage $page = null;
 
     protected ?Closure $badge = null;
-
-    public function title(): string
-    {
-        return $this->title;
-    }
 
     public function items(): Collection
     {
