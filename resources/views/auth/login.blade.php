@@ -26,7 +26,7 @@
             >
                 <div class="form-flex-col">
                     <x-moonshine::form.input-wrapper
-                        name="login"
+                        name="email"
                         label="{{ trans('moonshine::ui.login.email') }}"
                         required
                     >
@@ -34,7 +34,7 @@
                             id="login"
                             type="email"
                             name="email"
-                            @class(['form-invalid' => $errors->has('login')])
+                            @class(['form-invalid' => $errors->has('email')])
                             placeholder="{{ trans('moonshine::ui.login.email') }}"
                             required
                             autofocus
