@@ -18,7 +18,7 @@ trait WithLabel
             return __(
                 str($this->label)->when(
                     $this->translatableKey,
-                    fn($str) => $str->prepend($this->translatableKey . '.')
+                    fn ($str) => $str->prepend($this->translatableKey . '.')
                 )->value()
             );
         }
