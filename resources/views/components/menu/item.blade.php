@@ -1,7 +1,9 @@
 @props([
     'item'
 ])
-<li class="menu-inner-item {{ $item->isActive() ? '_is-active' : '' }}">
+<li class="menu-inner-item {{ $item->isActive() ? '_is-active' : '' }}"
+    id="menu_item_{{ str($item->url())->remove(request()->schemeAndHttpHost())->slug('_') }}"
+>
     <a href="{{ $item->url() }}" class="menu-inner-link">
         {!! $item->getIcon(6) !!}
 
