@@ -31,11 +31,11 @@
                         </td>
                     @endforeach
 
+                    @if($field->isRemovable())
                     <td>
-                        @if($field->isRemovable())
-                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
-                        @endif
+                        <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
                     </td>
+                    @endif
                 @else
                     <th width="5%" class="text-center" x-text="index{{ $level }} + 1"></th>
 

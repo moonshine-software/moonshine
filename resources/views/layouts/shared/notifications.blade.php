@@ -9,7 +9,7 @@
             <x-slot:toggler class="notifications-icon">
                 <span class="absolute top-0 right-1 h-2 w-2 rounded-lg bg-red-500"></span>
                 <x-moonshine::icon
-                    icon="heroicons.bell"
+                    icon="heroicons.outline.bell"
                     color="gray"
                     size="6"
                 />

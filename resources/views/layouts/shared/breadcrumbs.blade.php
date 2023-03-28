@@ -4,7 +4,7 @@
         <li class="breadcrumbs-item">
             <a href="{{ route('moonshine.index') }}" rel="home">
                 <x-moonshine::icon
-                    icon="heroicons.home"
+                    icon="heroicons.outline.home"
                     size="6"
                 />
             </a>

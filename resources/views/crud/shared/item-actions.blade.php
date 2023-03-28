@@ -12,7 +12,7 @@
     <x-moonshine::link
         :href="$resource->route('show', $item->getKey())"
         :filled="false"
-        icon="heroicons.eye"
+        icon="heroicons.outline.eye"
     />
 @endif
 
@@ -25,14 +25,14 @@
             :filled="true"
         >
             <x-moonshine::icon
-                icon="heroicons.pencil-square"
+                icon="heroicons.outline.pencil-square"
                 size="4"
             />
         </x-moonshine::async-modal>
     @else
         <x-moonshine::link
             :href="$resource->route('edit', $item->getKey())"
-            icon="heroicons.pencil-square"
+            icon="heroicons.outline.pencil-square"
             :filled="true"
         />
     @endif
@@ -74,7 +74,7 @@
         <x-slot name="outerHtml">
             <x-moonshine::link
                 :filled="false"
-                icon="heroicons.trash"
+                icon="heroicons.outline.trash"
                 class="btn-pink"
                 @click.prevent="toggleModal"
             />

@@ -49,7 +49,7 @@
                             :filled="true"
                         >
                             <x-moonshine::icon
-                                icon="heroicons.squares-plus"
+                                icon="heroicons.outline.squares-plus"
                                 size="4"
                             />
 
@@ -58,7 +58,7 @@
                     @else
                         <x-moonshine::link
                             :href="$resource->route('create')"
-                            icon="heroicons.squares-plus"
+                            icon="heroicons.outline.squares-plus"
                             :filled="true"
                         >
                             {{ trans('moonshine::ui.create') }}
