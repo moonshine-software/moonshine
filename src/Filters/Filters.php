@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Filters;
 
-use Throwable;
 use Illuminate\Support\Collection;
+use Throwable;
 
 final class Filters extends Collection
 {

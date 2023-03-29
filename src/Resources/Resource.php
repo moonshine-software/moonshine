@@ -30,7 +30,6 @@ use Leeto\MoonShine\FormActions\FormAction;
 use Leeto\MoonShine\FormComponents\FormComponent;
 use Leeto\MoonShine\ItemActions\ItemAction;
 use Leeto\MoonShine\Metrics\Metric;
-use Leeto\MoonShine\MoonShineRequest;
 use Leeto\MoonShine\QueryTags\QueryTag;
 use Leeto\MoonShine\Traits\Resource\ResourceCrudRouter;
 use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
@@ -341,14 +340,14 @@ abstract class Resource implements ResourceContract
     {
         $actions = Actions::make($this->actions());
 
-        if (!$this->getFilters()->isEmpty()) {
+        if (! $this->getFilters()->isEmpty()) {
             $actions = $actions->mergeIfNotExists(
                 FiltersAction::make(trans('moonshine::ui.filters'))
             );
         }
 
         return $actions->onlyVisible()
-            ->map(fn(Action $action) => $action->setResource($this));
+            ->map(fn (Action $action) => $action->setResource($this));
     }
 
     public function hasMassAction(): bool
