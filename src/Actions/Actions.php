@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Actions;
 
-use Leeto\MoonShine\MoonShineRequest;
-use Throwable;
 use Illuminate\Support\Collection;
+use Leeto\MoonShine\MoonShineRequest;
 
 final class Actions extends Collection
 {
     public function mergeIfNotExists(Action $new): Actions
     {
         return $this->when(
-            !$this->first(static fn(Action $action) => get_class($action) === get_class($new)),
-            static fn(Actions $actions) => $actions->add($new)
+            ! $this->first(static fn (Action $action) => get_class($action) === get_class($new)),
+            static fn (Actions $actions) => $actions->add($new)
         );
     }
 
