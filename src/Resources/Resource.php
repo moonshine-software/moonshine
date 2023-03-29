@@ -14,6 +14,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Leeto\MoonShine\Actions\Action;
+use Leeto\MoonShine\Actions\Actions;
 use Leeto\MoonShine\Actions\FiltersAction;
 use Leeto\MoonShine\BulkActions\BulkAction;
 use Leeto\MoonShine\Contracts\Actions\ActionContract;
@@ -24,6 +25,7 @@ use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Filters\Filter;
+use Leeto\MoonShine\Filters\Filters;
 use Leeto\MoonShine\FormActions\FormAction;
 use Leeto\MoonShine\FormComponents\FormComponent;
 use Leeto\MoonShine\ItemActions\ItemAction;
@@ -333,32 +335,20 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Collection<ActionContract>
+     * @return Actions<ActionContract>
      */
-    public function getActions(): Collection
+    public function getActions(): Actions
     {
-        # TODO Wrap into Actions(Collection)
+        $actions = Actions::make($this->actions());
 
-        $actions = collect();
-
-        $hasFilters = false;
-
-        foreach ($this->actions() as $action) {
-            if ($action instanceof FiltersAction) {
-                $hasFilters = true;
-            }
-
-            $actions->add($action->setResource($this));
-        }
-
-        if (! $hasFilters && ! empty($this->filters())) {
-            $actions->add(
+        if (!$this->getFilters()->isEmpty()) {
+            $actions = $actions->mergeIfNotExists(
                 FiltersAction::make(trans('moonshine::ui.filters'))
-                    ->setResource($this)
             );
         }
 
-        return $actions->filter(fn (Action $action) => $action->isSee(app(MoonShineRequest::class)));
+        return $actions->onlyVisible()
+            ->map(fn(Action $action) => $action->setResource($this));
     }
 
     public function hasMassAction(): bool
@@ -388,22 +378,19 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @return Collection<Filter>
+     * @return Filters<Filter>
      */
-    public function getFilters(): Collection
+    public function getFilters(): Filters
     {
-        # TODO Wrap into Filters(Collection)
-
-        return collect($this->filters());
+        return Filters::make($this->filters());
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getFilter(string $filterName): ?Filter
     {
-        # TODO Move to Filters(Collection)
-
-        return collect($this->getFilters())->filter(function (Filter $filter) use ($filterName) {
-            return $filter->field() === $filterName;
-        })->first();
+        return $this->getFilters()->findFilterByColumn($filterName);
     }
 
     /**

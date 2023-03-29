@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Resources;
 
+use Leeto\MoonShine\Actions\Actions;
+use Leeto\MoonShine\Fields\Fields;
+use Leeto\MoonShine\Filters\Filters;
 use Leeto\MoonShine\Tests\TestCase;
 
 class ResourceTest extends TestCase
@@ -15,6 +18,10 @@ class ResourceTest extends TestCase
         $this->assertNotEmpty($resource->getFields());
         $this->assertNotEmpty($resource->getFilters());
         $this->assertNotEmpty($resource->getActions());
+
+        $this->assertEquals(Fields::class, get_class($resource->getFields()));
+        $this->assertEquals(Filters::class, get_class($resource->getFilters()));
+        $this->assertEquals(Actions::class, get_class($resource->getActions()));
     }
 
     public function test_route()

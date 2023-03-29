@@ -8,9 +8,12 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Actions\Action;
+use Leeto\MoonShine\Actions\Actions;
 use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Fields\Field;
+use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Filters\Filter;
+use Leeto\MoonShine\Filters\Filters;
 
 interface ResourceContract
 {
@@ -29,6 +32,13 @@ interface ResourceContract
     public function titleField(): string;
 
     /**
+     * Define if the resources protected by authentication
+     *
+     * @return bool
+     */
+    public function isWithPolicy(): bool;
+
+    /**
      * Get a model class, related to resource
      *
      * @return Model
@@ -45,30 +55,23 @@ interface ResourceContract
     /**
      * Get a collection of additional actions performed on resource page
      *
-     * @return Collection<Action>
+     * @return Actions<Action>
      */
-    public function getActions(): Collection;
-
-    /**
-     * Define if the resources protected by authentication
-     *
-     * @return bool
-     */
-    public function isWithPolicy(): bool;
+    public function getActions(): Actions;
 
     /**
      * Get a collection of fields of related model
      *
-     * @return Collection<Field>
+     * @return Fields<Field>
      */
-    public function getFields(): Collection;
+    public function getFields(): Fields;
 
     /**
      * Get a collection of filters
      *
-     * @return Collection<Filter>
+     * @return Filters<Filter>
      */
-    public function getFilters(): Collection;
+    public function getFilters(): Filters;
 
     /**
      * Check whether user can perform action on model

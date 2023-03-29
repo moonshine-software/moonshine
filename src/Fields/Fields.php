@@ -88,7 +88,7 @@ final class Fields extends Collection
 
         $this->withdrawFields($this->toArray(), $fieldsOrDecorations);
 
-        return Fields::make($fieldsOrDecorations);
+        return self::make($fieldsOrDecorations);
     }
 
     /**
@@ -240,6 +240,9 @@ final class Fields extends Collection
         }, $default);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function onlyFieldsColumns(): Fields
     {
         return $this->onlyFields()->transform(static function (Field $field) {
