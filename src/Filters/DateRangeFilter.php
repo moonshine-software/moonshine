@@ -24,10 +24,10 @@ class DateRangeFilter extends Filter
 
         return $query
             ->when($values['from'] ?? null, function ($query, $fromDate) {
-                $query->whereDate($this->field, '>=', Carbon::parse($fromDate));
+                $query->whereDate($this->field(), '>=', Carbon::parse($fromDate));
             })
             ->when($values['to'] ?? null, function ($query, $toDate) {
-                $query->whereDate($this->field, '<=', Carbon::parse($toDate));
+                $query->whereDate($this->field(), '<=', Carbon::parse($toDate));
             });
     }
 }
