@@ -9,6 +9,7 @@
 ])
 <div {{ $attributes->merge(['class' => 'form-group'])
     ->only(['class', 'x-show']) }}
+    id="wrapper_{{ $attributes->get('id') }}"
 >
     {{ $beforeLabel && !$inLabel ? $slot : '' }}
 

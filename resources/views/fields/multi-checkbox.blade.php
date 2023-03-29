@@ -7,8 +7,9 @@
 @else
     @foreach($field->values() as $optionValue => $optionName)
         <x-moonshine::form.input-wrapper
+            id="{{ $field->id($loop->index) }}"
             name="{{ $field->id($loop->index) }}"
-            class="form-group-inline"
+            class="form-group-inline !m-0"
             label="{{ $optionName }}"
             :beforeLabel="true"
             :inLabel="false"
@@ -24,7 +25,7 @@
             />
         </x-moonshine::form.input-wrapper>
 
-        @if($field->getFields())
+        @if($field->getFields()->isNotEmpty())
             <x-moonshine::form.input-wrapper
                 id="{{ $field->id($loop->index) }}_pivots"
                 class="form-group-inline w-full"
@@ -33,13 +34,11 @@
                     {{ $resource->renderField($pivotField, $field->pivotValue($item, $optionValue))}}
                 @endforeach
             </x-moonshine::form.input-wrapper>
-        @endif
 
-        @if($field->getFields())
             <script>
                 let input_{{ $field->id($loop->index) }} = document.querySelector("#{{ $field->id($loop->index) }}");
 
-                let pivotsDiv_input_{{ $field->id($loop->index) }} = document.querySelector("#{{ $field->id($loop->index) }}_pivots");
+                let pivotsDiv_input_{{ $field->id($loop->index) }} = document.querySelector("#wrapper_{{ $field->id($loop->index) }}_pivots");
 
                 let inputs_{{ $field->id($loop->index) }} = pivotsDiv_input_{{ $field->id($loop->index) }}.querySelectorAll('input, textarea, select');
 
