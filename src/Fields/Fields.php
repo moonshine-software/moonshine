@@ -57,7 +57,7 @@ final class Fields extends Collection
             return $field->setName(
                 (string)str($parent->name())
                     ->when(
-                        $parent->hasFields() && ! $parent->toOne(),
+                        $parent->hasFields(),
                         fn (Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
                     )
                     ->append("[{$field->field()}]")

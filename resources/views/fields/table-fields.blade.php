@@ -3,8 +3,10 @@
     x-init="handler_init_{{ $element->id() }}"
 >
     <x-slot:thead>
-        @if(!$element->toOne() && !$element->isFullPage())
-            <th width="5%" class="text-center">#</th>
+        @if(!$element->isFullPage())
+            @if(!$element->toOne())
+                <th width="5%" class="text-center">#</th>
+            @endif
 
             @foreach($element->getFields() as $subField)
                 <th>{{ $subField->label() }}</th>
@@ -22,8 +24,10 @@
             :key="Object.values(item)[0] ? (index{{ $level }} + '' + Object.values(item)[0]) : index{{ $level }}"
         >
             <tr :data-id="item.id" class="table_fields_{{ $element->id() }}">
-                @if(!$element->toOne() && !$element->isFullPage())
-                    <td class="text-center" scope="row" x-text="index{{ $level }} + 1"></td>
+                @if(!$element->isFullPage())
+                    @if(!$element->toOne())
+                        <td class="text-center" scope="row" x-text="index{{ $level }} + 1"></td>
+                    @endif
 
                     @foreach($element->getFields() as $subField)
                         <td class="space-y-3">
@@ -32,12 +36,14 @@
                     @endforeach
 
                     @if($element->isRemovable())
-                    <td>
-                        <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
-                    </td>
+                        <td>
+                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                        </td>
                     @endif
                 @else
-                    <th width="5%" class="text-center" x-text="index{{ $level }} + 1"></th>
+                    @if(!$element->toOne())
+                        <th width="5%" class="text-center" x-text="index{{ $level }} + 1"></th>
+                    @endif
 
                     <td class="space-y-3">
                         @foreach($element->getFields() as $subField)
@@ -47,7 +53,7 @@
                         @endforeach
                     </td>
 
-                    @if($element->isRemovable() && !$element->toOne())
+                    @if($element->isRemovable())
                         <td width="5%" class="text-center">
                             <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
                         </td>

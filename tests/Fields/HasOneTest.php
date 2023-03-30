@@ -33,7 +33,7 @@ class HasOneTest extends TestCase
             $this->assertInstanceOf(Text::class, $inner);
 
             $this->assertEquals('name', $inner->field());
-            $this->assertEquals('role[name]', $inner->name());
+            $this->assertEquals('role[${index0}][name]', $inner->name());
             $this->assertEquals('role_name', $inner->id());
             $this->assertNull($inner->relation());
             $this->assertEquals('Name', $inner->label());
