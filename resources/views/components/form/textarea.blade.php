@@ -2,6 +2,4 @@
     'class' => 'form-textarea',
     'type' => 'text'])
     }}
->
-    {{ $slot }}
-</textarea>
+>{{ $slot }}</textarea>

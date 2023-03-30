@@ -3,9 +3,7 @@
         'id' => 'ckeditor_' . $item->getKey() . '_' . $element->id(),
         'name' => $element->name()
     ])"
->
-    {!! $element->formViewValue($item) ?? '' !!}
-</x-moonshine::form.textarea>
+>{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
 
 <script>
     CKEDITOR.ClassicEditor.create(document.getElementById("ckeditor_{{ $item->getKey() }}_{{ $element->id() }}"), {

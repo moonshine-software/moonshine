@@ -3,9 +3,7 @@
         'id' => 'tinyeditor_' . $item->getKey() . '_' . $element->id(),
         'name' => $element->name()
     ])"
->
-    {!! $element->formViewValue($item) ?? '' !!}
-</x-moonshine::form.textarea>
+>{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
 
 <script>
     var editor_config = {
