@@ -17,8 +17,13 @@ use Leeto\MoonShine\Traits\Fields\WithRelationship;
 use Leeto\MoonShine\Traits\Fields\WithResourceMode;
 use Leeto\MoonShine\Traits\WithFields;
 
-class HasOne extends Field implements HasRelationship, HasFields, HasJsonValues, HasResourceMode, HasFullPageMode,
-                                      OneToOneRelation
+class HasOne extends Field implements
+    HasRelationship,
+    HasFields,
+    HasJsonValues,
+    HasResourceMode,
+    HasFullPageMode,
+    OneToOneRelation
 {
     use WithFields;
     use WithJsonValues;
