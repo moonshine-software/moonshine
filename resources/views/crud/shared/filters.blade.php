@@ -19,7 +19,7 @@
                 @foreach($filters as $filter)
                     @if($filter->isSee($resource->getModel()))
                         <x-moonshine::filter-container :filter="$filter" :resource="$resource">
-                            {{ $resource->renderFilter($filter, $resource->getModel()) }}
+                            {{ $resource->renderComponent($filter, $resource->getModel()) }}
                         </x-moonshine::filter-container>
                     @endif
                 @endforeach

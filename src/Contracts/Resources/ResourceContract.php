@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Contracts\Resources;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Leeto\MoonShine\Actions\Action;
 use Leeto\MoonShine\Actions\Actions;
 use Leeto\MoonShine\Contracts\ResourceRenderable;
@@ -88,11 +88,9 @@ interface ResourceContract
 
     public function resolveRoutes(): void;
 
-    public function renderDecoration(ResourceRenderable $decoration, Model $item);
-
-    public function renderField(ResourceRenderable $field, Model $item, int $level = 0);
-
-    public function renderFilter(ResourceRenderable $field, Model $item);
-
-    public function renderMetric(ResourceRenderable $metric);
+    public function renderComponent(
+        ResourceRenderable $component,
+        Model $item,
+        int $level = 0
+    ): View;
 }

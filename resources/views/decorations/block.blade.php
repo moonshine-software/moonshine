@@ -1,8 +1,8 @@
 <x-moonshine::box
-    :title="$decoration->label()"
+    :title="$element->label()"
 >
     <x-moonshine::resource-renderable
-        :components="$decoration->getFields()"
+        :components="$element->getFields()"
         :item="$item"
         :resource="$resource"
     />

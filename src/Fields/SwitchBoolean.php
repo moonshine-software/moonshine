@@ -29,7 +29,7 @@ class SwitchBoolean extends Field
         $this->disabled(! $this->autoUpdate);
 
         return view('moonshine::fields.switch', [
-            'field' => $this,
+            'element' => $this,
             'autoUpdate' => $this->autoUpdate,
             'item' => $item,
         ]);

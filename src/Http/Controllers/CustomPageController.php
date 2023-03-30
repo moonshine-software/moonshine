@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\MoonShine;
@@ -15,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CustomPageController extends BaseController
 {
-    public function __invoke(string $alias): Factory|View|Application
+    public function __invoke(string $alias): View
     {
         if (app()->runningInConsole() && ! app()->runningUnitTests()) {
             abort(Response::HTTP_NOT_FOUND);

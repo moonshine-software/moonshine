@@ -47,7 +47,7 @@
 @if($item->exists)
     @foreach($resource->getFields()->relatable() as $field)
         @if($field->canDisplayOnForm($item))
-            {{ $resource->renderField($field, $item) }}
+            {{ $resource->renderComponent($field, $item) }}
         @endif
     @endforeach
 @endif
@@ -55,7 +55,7 @@
 @if(!empty($resource->components()))
     @foreach($resource->components() as $formComponent)
         @if($formComponent->isSee($item))
-            {{ $resource->renderFormComponent($formComponent, $item) }}
+            {{ $resource->renderComponent($formComponent, $item) }}
         @endif
     @endforeach
 @endif

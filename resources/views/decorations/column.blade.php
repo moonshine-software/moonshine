@@ -1,9 +1,9 @@
 <x-moonshine::column
-    :colSpan="$decoration->columnSpanValue()"
-    :adaptiveColSpan="$decoration->adaptiveColumnSpanValue()"
+    :colSpan="$element->columnSpanValue()"
+    :adaptiveColSpan="$element->adaptiveColumnSpanValue()"
 >
     <x-moonshine::resource-renderable
-        :components="$decoration->getFields()"
+        :components="$element->getFields()"
         :item="$item"
         :resource="$resource"
         :container="true"

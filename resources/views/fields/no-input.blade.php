@@ -1,3 +1,3 @@
 <div>
-    {!! (string) $field->formViewValue($item) ?? '' !!}
+    {!! (string) $element->formViewValue($item) ?? '' !!}
 </div>

@@ -1,5 +1,5 @@
-@include("moonshine::fields.slide", [
-    "field" => $field,
-    "item" => $resource->getModel(),
-    "resource" => $resource,
+@include('moonshine::fields.slide', [
+    'element' => $element,
+    'item' => $resource->getModel(),
+    'resource' => $resource,
 ])

@@ -21,9 +21,10 @@ class MediaLibrary extends Field
 
     public function afterSave(Model $item): void
     {
-        if ($this->requestValue()) {
+        if ($this->isCanSave() && $this->requestValue()) {
             if ($this->isMultiple()) {
                 $item->clearMediaCollection($this->field());
+
                 foreach ($this->requestValue() as $file) {
                     $item->addMedia($file)
                         ->preservingOriginal()
@@ -33,6 +34,7 @@ class MediaLibrary extends Field
                 if ($media = $item->getFirstMedia($this->field())) {
                     $media->delete();
                 }
+
                 $item->addMedia($this->requestValue())
                     ->preservingOriginal()
                     ->toMediaCollection($this->field());

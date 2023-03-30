@@ -1,6 +1,6 @@
 <x-moonshine::grid>
     <x-moonshine::resource-renderable
-        :components="$decoration->getFields()"
+        :components="$element->getFields()"
         :item="$item"
         :resource="$resource"
         :container="true"

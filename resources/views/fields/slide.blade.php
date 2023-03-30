@@ -1,9 +1,9 @@
 <x-moonshine::form.range
-    :uniqueId="$field->id()"
-    :attributes="$field->attributes()"
-    :fromValue="$field->formViewValue($item)[$field->fromField] ?? $field->min"
-    :toValue="$field->formViewValue($item)[$field->toField] ?? $field->max"
-    fromName="{{ $field->name() }}[{{ $field->fromField }}]"
-    toName="{{ $field->name() }}[{{ $field->toField }}]"
-    @class(['form-invalid' => $errors->has($field->name())])
+    :uniqueId="$element->id()"
+    :attributes="$element->attributes()"
+    :fromValue="$element->formViewValue($item)[$element->fromField] ?? $element->min"
+    :toValue="$element->formViewValue($item)[$element->toField] ?? $element->max"
+    fromName="{{ $element->name() }}[{{ $element->fromField }}]"
+    toName="{{ $element->name() }}[{{ $element->toField }}]"
+    @class(['form-invalid' => $errors->has($element->name())])
 />

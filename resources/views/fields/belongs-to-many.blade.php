@@ -1,6 +1,6 @@
-@include('moonshine::fields.' . (method_exists($field, 'isSelect') && $field->isSelect() ? 'select' : 'multi-checkbox'), [
-    'field' => $field,
+@include('moonshine::fields.' . (method_exists($element, 'isSelect') && $element->isSelect() ? 'select' : 'multi-checkbox'), [
+    'element' => $element,
     'resource' => $resource,
     'item' => $item,
-    'model' => $field->formViewValue($item) ?? $resource->getModel()
+    'model' => $element->formViewValue($item) ?? $resource->getModel()
 ])

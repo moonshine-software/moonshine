@@ -1,16 +1,16 @@
 <x-moonshine::column
-    :colSpan="$item->columnSpanValue()"
-    :adaptiveColSpan="$item->adaptiveColumnSpanValue()"
+    :colSpan="$block->columnSpanValue()"
+    :adaptiveColSpan="$block->adaptiveColumnSpanValue()"
 >
-    @if($item->label())
+    @if($element->label())
         <h5 class="text-md font-medium">
-            <a href="{{ $item->resource()->route('index') }}">{{ $item->label() }}</a>
+            <a href="{{ $element->resource()->route('index') }}">{{ $element->label() }}</a>
         </h5>
     @endif
 
     @include('moonshine::crud.shared.table', [
-        'resource' => $item->resource(),
-        'items' => $item->items(),
+        'resource' => $element->resource(),
+        'items' => $element->items(),
     ])
 </x-moonshine::column>
 

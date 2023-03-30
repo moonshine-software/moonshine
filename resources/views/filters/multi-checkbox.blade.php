@@ -1,5 +1,5 @@
-@include("moonshine::fields.multi-checkbox", [
-    "field" => $field,
-    "resource" => $resource,
-    "item" => $resource->getModel()
+@include('moonshine::fields.multi-checkbox', [
+    'element' => $element,
+    'item' => $resource->getModel(),
+    'resource' => $resource,
 ])

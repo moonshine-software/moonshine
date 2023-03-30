@@ -11,4 +11,6 @@ interface HasRelationship
     public function relatedValues(Model $item): array;
 
     public function values(): array;
+
+    public function setValues(array $values): void;
 }

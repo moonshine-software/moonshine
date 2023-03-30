@@ -1,25 +1,25 @@
 <x-moonshine::form.textarea
-    :attributes="$field->attributes()->merge([
-        'id' => 'tinyeditor_' . $item->getKey() . '_' . $field->id(),
-        'name' => $field->name()
+    :attributes="$element->attributes()->merge([
+        'id' => 'tinyeditor_' . $item->getKey() . '_' . $element->id(),
+        'name' => $element->name()
     ])"
 >
-    {!! $field->formViewValue($item) ?? '' !!}
+    {!! $element->formViewValue($item) ?? '' !!}
 </x-moonshine::form.textarea>
 
 <script>
     var editor_config = {
         path_absolute: "/",
-        selector: 'textarea#tinyeditor_{{ $item->getKey() }}_{{ $field->id() }}',
+        selector: 'textarea#tinyeditor_{{ $item->getKey() }}_{{ $element->id() }}',
         relative_urls: false,
-        plugins: '{{ trim($field->plugins . ' ' . $field->addedPlugins) }}',
-        toolbar: '{{ trim($field->toolbar . ' ' . $field->addedToolbar) }}',
-        @if(!empty($field->commentAuthor))
+        plugins: '{{ trim($element->plugins . ' ' . $element->addedPlugins) }}',
+        toolbar: '{{ trim($element->toolbar . ' ' . $element->addedToolbar) }}',
+        @if(!empty($element->commentAuthor))
             tinycomments_mode: 'embedded',
-            tinycomments_author: '{{ $field->commentAuthor }}',
+            tinycomments_author: '{{ $element->commentAuthor }}',
         @endif
-        @if(!empty($field->mergeTags))
-            mergetags_list: @json($field->mergeTags),
+        @if(!empty($element->mergeTags))
+            mergetags_list: @json($element->mergeTags),
         @endif
 
         @if(config('moonshine.tinymce.file_manager', false))

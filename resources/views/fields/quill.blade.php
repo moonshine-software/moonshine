@@ -1,9 +1,9 @@
-<div id="quill_{{ $field->id() }}" style="height: auto;">
-    {!! $field->formViewValue($item) ?? '' !!}
+<div id="quill_{{ $element->id() }}" style="height: auto;">
+    {!! $element->formViewValue($item) ?? '' !!}
 </div>
 
 <script>
-    var quill = new Quill('#quill_{{ $field->id() }}', {
+    var quill = new Quill('#quill_{{ $element->id() }}', {
         theme: 'snow'
     });
 </script>

@@ -1,5 +1,5 @@
 @include('moonshine::fields.belongs-to-many', [
-    'field' => $field,
+    'element' => $element,
     'resource' => $resource,
     'item' => $item,
     'model' => $resource->getModel()

@@ -1,3 +1,3 @@
 <div class="mb-4">
-    {{ $decoration->label() }}
+    {{ $element->label() }}
 </div>

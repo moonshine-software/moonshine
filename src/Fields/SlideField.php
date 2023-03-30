@@ -37,10 +37,6 @@ class SlideField extends Field
 
     public function save(Model $item): Model
     {
-        if (! $this->canSave) {
-            return $item;
-        }
-
         $values = $this->requestValue();
 
         if ($values === false) {

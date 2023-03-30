@@ -1,5 +1,5 @@
 @include('moonshine::fields.select', [
-    'field' => $field,
+    'element' => $element,
     'resource' => $resource,
     'item' => $resource->getModel()
 ])

@@ -1,14 +1,14 @@
 <x-moonshine::form.textarea
-    :attributes="$field->attributes()->merge([
-        'id' => 'ckeditor_' . $item->getKey() . '_' . $field->id(),
-        'name' => $field->name()
+    :attributes="$element->attributes()->merge([
+        'id' => 'ckeditor_' . $item->getKey() . '_' . $element->id(),
+        'name' => $element->name()
     ])"
 >
-    {!! $field->formViewValue($item) ?? '' !!}
+    {!! $element->formViewValue($item) ?? '' !!}
 </x-moonshine::form.textarea>
 
 <script>
-    CKEDITOR.ClassicEditor.create(document.getElementById("ckeditor_{{ $item->getKey() }}_{{ $field->id() }}"), {
+    CKEDITOR.ClassicEditor.create(document.getElementById("ckeditor_{{ $item->getKey() }}_{{ $element->id() }}"), {
         // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
         toolbar: {
             items: [

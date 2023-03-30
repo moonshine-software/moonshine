@@ -1,13 +1,13 @@
-@if($decoration->tabs()->isNotEmpty())
+@if($element->tabs()->isNotEmpty())
     <!-- Tabs -->
-    <div class="tabs" x-data="{activeTab_{{ $decoration->id() }}: '{{ $decoration->tabs()->first()?->id() }}'}">
+    <div class="tabs" x-data="{activeTab_{{ $element->id() }}: '{{ $element->tabs()->first()?->id() }}'}">
         <!-- Tabs Buttons -->
         <ul class="tabs-list">
-            @foreach($decoration->tabs() as $tab)
+            @foreach($element->tabs() as $tab)
                 <li class="tabs-item">
                     <button
-                        @click.prevent="activeTab_{{ $decoration->id() }} = '{{ $tab->id() }}'"
-                        :class="{ '_is-active': activeTab_{{ $decoration->id() }} === '{{ $tab->id() }}' }"
+                        @click.prevent="activeTab_{{ $element->id() }} = '{{ $tab->id() }}'"
+                        :class="{ '_is-active': activeTab_{{ $element->id() }} === '{{ $tab->id() }}' }"
                         class="tabs-button"
                         type="button"
                     >
@@ -21,8 +21,8 @@
 
         <!-- Tabs content -->
         <div class="tabs-content">
-            @foreach($decoration->tabs() as $tab)
-                <div x-show="activeTab_{{ $decoration->id() }} === '{{ $tab->id() }}'" class="tab-panel" style="display: none">
+            @foreach($element->tabs() as $tab)
+                <div x-show="activeTab_{{ $element->id() }} === '{{ $tab->id() }}'" class="tab-panel" style="display: none">
                     <div class="tabs-body">
                     <x-moonshine::resource-renderable
                         :components="$tab->getFields()"

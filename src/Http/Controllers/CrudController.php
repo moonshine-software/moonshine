@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -18,7 +16,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Routing\Redirector;
 use Illuminate\Validation\ValidationException;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Http\Requests\Resources\CreateFormRequest;
@@ -96,7 +93,7 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function create(CreateFormRequest $request): string|View|Factory|Redirector|RedirectResponse|Application
+    public function create(CreateFormRequest $request): string|View|RedirectResponse
     {
         return $this->createOrEditView($request);
     }
@@ -105,7 +102,7 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function edit(EditFormRequest $request): string|View|Factory|Redirector|RedirectResponse|Application
+    public function edit(EditFormRequest $request): string|View|RedirectResponse
     {
         return $this->createOrEditView($request);
     }
@@ -113,7 +110,7 @@ class CrudController extends BaseController
     /**
      * @throws Throwable
      */
-    public function show(ViewFormRequest $request): View|Factory|Redirector|Application|RedirectResponse
+    public function show(ViewFormRequest $request): string|View|RedirectResponse
     {
         return view($request->getResource()->baseShowView(), [
             'resource' => $request->getResource(),
@@ -125,7 +122,7 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function update(UpdateFormRequest $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
+    public function update(UpdateFormRequest $request): JsonResponse|View|RedirectResponse
     {
         return $this->updateOrCreate($request);
     }
@@ -134,7 +131,7 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function store(StoreFormRequest $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
+    public function store(StoreFormRequest $request): JsonResponse|View|RedirectResponse
     {
         return $this->updateOrCreate($request);
     }
@@ -189,7 +186,7 @@ class CrudController extends BaseController
     /**
      * @throws Throwable
      */
-    protected function updateOrCreate(MoonShineRequest $request): JsonResponse|Factory|View|Redirector|Application|RedirectResponse
+    protected function updateOrCreate(MoonShineRequest $request): JsonResponse|View|RedirectResponse
     {
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();

@@ -1,5 +1,5 @@
 @include('moonshine::fields.table-fields', [
-    'field' => $field,
+    'element' => $element,
     'resource' => $resource,
     'item' => $item,
     'model' => $resource->getModel(),

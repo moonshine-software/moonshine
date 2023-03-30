@@ -1,10 +1,10 @@
 <div class="sm:flex
-    @if(!$decoration->isWithoutSpace()) gap-4 @endif
-    items-{{ $decoration->getItemsAlign() }}
-    justify-{{ $decoration->getJustifyAlign() }}"
+    @if(!$element->isWithoutSpace()) gap-4 @endif
+    items-{{ $element->getItemsAlign() }}
+    justify-{{ $element->getJustifyAlign() }}"
 >
     <x-moonshine::resource-renderable
-        :components="$decoration->getFields()"
+        :components="$element->getFields()"
         :item="$item"
         :resource="$resource"
         :container="true"

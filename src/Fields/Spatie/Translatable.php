@@ -106,7 +106,7 @@ class Translatable extends Json
      */
     public function save(Model $item): Model
     {
-        if ($this->requestValue() !== false) {
+        if ($this->isCanSave() && $this->requestValue() !== false) {
             $array = collect($this->requestValue())
                 ->filter(fn ($data) => ! empty($data['key']) && ! empty($data['value']))
                 ->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])

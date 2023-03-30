@@ -1,6 +1,6 @@
 <div>
-    @include('moonshine::fields.' . ($field->isGroup() ? 'multi-checkbox' : 'input'), [
-        'field' => $field,
+    @include('moonshine::fields.' . ($element->isGroup() ? 'multi-checkbox' : 'input'), [
+        'element' => $element,
         'item' => $item,
         'resource' => $resource
     ])

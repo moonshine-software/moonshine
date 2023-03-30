@@ -1,24 +1,24 @@
 <x-moonshine::column
-    :colSpan="$item->columnSpanValue()"
-    :adaptiveColSpan="$item->adaptiveColumnSpanValue()"
+    :colSpan="$element->columnSpanValue()"
+    :adaptiveColSpan="$element->adaptiveColumnSpanValue()"
 >
     <x-moonshine::box
         class="box-shadow zoom-in h-full p-0"
     >
         <div class="report-card">
             <div class="report-card-heading">
-                {!! $item->getIcon(6, 'pink') !!}
+                {!! $element->getIcon(6, 'pink') !!}
 
-                @if($item->isProgress())
+                @if($element->isProgress())
                     <div class="report-card-indicator bg-green-500">
-                        {{ $item->valueResult() }}%
+                        {{ $element->valueResult() }}%
                     </div>
                 @endif
             </div>
 
             <div class="report-card-body">
-                <div class="report-card-value">{{ $item->simpleValue() }}</div>
-                <h5 class="report-card-title">{{ $item->label() }}</h5>
+                <div class="report-card-value">{{ $element->simpleValue() }}</div>
+                <h5 class="report-card-title">{{ $element->label() }}</h5>
             </div>
         </div>
     </x-moonshine::box>

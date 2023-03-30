@@ -1,11 +1,11 @@
-<div x-data="tree_{{ $field->id() }}()" x-init="() => { initTree() }">
-    {!! $field->buildTreeHtml($item) !!}
+<div x-data="tree_{{ $element->id() }}()" x-init="() => { initTree() }">
+    {!! $element->buildTreeHtml($item) !!}
 
     <script>
-        function tree_{{ $field->id() }}() {
+        function tree_{{ $element->id() }}() {
             return {
-                checked: @json($field->formViewValue($item)->modelKeys()),
-                ids: @json($field->ids()),
+                checked: @json($element->formViewValue($item)->modelKeys()),
+                ids: @json($element->ids()),
                 initTree() {
                     var refs = this.$refs;
                     var checked = this.checked;

@@ -1,12 +1,12 @@
 <div class="hidden">
     @include("moonshine::fields.textarea", [
-        'field' => $field,
+        'element' => $element,
         'item' => $item,
         'resource' => $resource,
     ])
 </div>
 
-<trix-editor class="trix-editor" input="{{ $field->id() }}"></trix-editor>
+<trix-editor class="trix-editor" input="{{ $element->id() }}"></trix-editor>
 
 <script>
     (function () {

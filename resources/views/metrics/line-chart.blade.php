@@ -1,20 +1,20 @@
 <x-moonshine::column
-    :colSpan="$item->columnSpanValue()"
-    :adaptiveColSpan="$item->adaptiveColumnSpanValue()"
+    :colSpan="$element->columnSpanValue()"
+    :adaptiveColSpan="$element->adaptiveColumnSpanValue()"
 >
     <x-moonshine::box
         class="grow"
     >
-        <div id="{{ $item->id() }}" class="chart"></div>
+        <div id="{{ $element->id() }}" class="chart"></div>
     </x-moonshine::box>
 </x-moonshine::column>
 
 @push('scripts')
     <script>
-        let chart_element_{{ $item->id() }} = document.getElementById("{{ $item->id() }}")
-        let options_{{ $item->id() }} = {
+        let chart_element_{{ $element->id() }} = document.getElementById("{{ $element->id() }}")
+        let options_{{ $element->id() }} = {
             series: [
-                    @foreach($item->lines() as $index => $lines)
+                    @foreach($element->lines() as $index => $lines)
                     @foreach($lines as $label => $data)
                 {
                     name: "{{ $label }}",
@@ -23,15 +23,15 @@
                 @endforeach
                 @endforeach
             ],
-            colors: @json($item->colors()),
-            labels: @json($item->labels()),
+            colors: @json($element->colors()),
+            labels: @json($element->labels()),
             chart: {
                 height: 300,
                 type: "line",
             },
             yaxis: {
                 title: {
-                    text: "{{ $item->label() }}",
+                    text: "{{ $element->label() }}",
                     style: {
                         fontWeight: 400,
                     },
@@ -39,9 +39,9 @@
             },
         }
 
-        let chart_{{ $item->id() }} = new ApexCharts(chart_element_{{ $item->id() }}, options_{{ $item->id() }})
+        let chart_{{ $element->id() }} = new ApexCharts(chart_element_{{ $element->id() }}, options_{{ $element->id() }})
         setTimeout(() => {
-            chart_{{ $item->id() }}.render()
+            chart_{{ $element->id() }}.render()
         }, 300)
     </script>
 @endpush

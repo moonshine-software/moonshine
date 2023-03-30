@@ -105,6 +105,11 @@ abstract class Field implements ResourceRenderable, HasAssets, HasExportViewValu
         return $this;
     }
 
+    public function isCanSave(): bool
+    {
+        return $this->canSave;
+    }
+
     public function parent(): ?Field
     {
         return $this->parent;
@@ -260,10 +265,6 @@ abstract class Field implements ResourceRenderable, HasAssets, HasExportViewValu
 
     public function save(Model $item): Model
     {
-        if (! $this->canSave) {
-            return $item;
-        }
-
         $item->{$this->field()} = $this->requestValue() !== false
             ? $this->requestValue()
             : ($this->isNullable() ? null : '');

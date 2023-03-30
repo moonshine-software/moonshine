@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Dashboard;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Leeto\MoonShine\Contracts\ResourceRenderable;
 use Leeto\MoonShine\Traits\Makeable;
@@ -42,11 +40,11 @@ class DashboardBlock
         $this->items = $items;
     }
 
-    public function render(ResourceRenderable $item): Factory|View|Application
+    public function render(ResourceRenderable $component): View
     {
-        return view($item->getView(), [
+        return view($component->getView(), [
             'block' => $this,
-            'item' => $item,
+            'element' => $component,
         ]);
     }
 }

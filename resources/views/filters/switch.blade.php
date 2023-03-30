@@ -1,5 +1,5 @@
-@include("moonshine::fields.switch", [
-    "field" => $field,
-    "item" => $resource->getModel(),
-    "resource" => $resource,
+@include('moonshine::fields.switch', [
+    'element' => $element,
+    'item' => $resource->getModel(),
+    'resource' => $resource,
 ])

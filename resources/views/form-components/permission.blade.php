@@ -1,6 +1,6 @@
 @if($item->exists && $item instanceof \Leeto\MoonShine\Models\MoonshineUser)
     <div>
-        <div class="text-lg my-4">{{ $component->label() }}</div>
+        <div class="text-lg my-4">{{ $element->label() }}</div>
 
         <x-moonshine::form
             :action="$resource->route('permissions', $item->getKey())"

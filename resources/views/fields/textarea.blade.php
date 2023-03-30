@@ -1,11 +1,11 @@
 <x-moonshine::form.textarea
-    :attributes="$field->attributes()->merge([
-        'id' => $field->id(),
-        'placeholder' => $field->label() ?? '',
-        'aria-label' => $field->label() ?? '',
-        'name' => $field->name(),
+    :attributes="$element->attributes()->merge([
+        'id' => $element->id(),
+        'placeholder' => $element->label() ?? '',
+        'aria-label' => $element->label() ?? '',
+        'name' => $element->name(),
     ])"
-    @class(['form-invalid' => $errors->has($field->name())])
+    @class(['form-invalid' => $errors->has($element->name())])
 >
-    {!! $field->formViewValue($item) ?? '' !!}
+    {!! $element->formViewValue($item) ?? '' !!}
 </x-moonshine::form.textarea>

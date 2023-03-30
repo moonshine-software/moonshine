@@ -1,10 +1,10 @@
 <x-moonshine::form.file
-    :attributes="$field->attributes()->merge([
-        'id' => $field->id(),
-        'name' => $field->name(),
+    :attributes="$element->attributes()->merge([
+        'id' => $element->id(),
+        'name' => $element->name(),
     ])"
-    :files="is_iterable($field->formViewValue($item)) ? $field->formViewValue($item) : [$field->formViewValue($item)]"
-    :removable="$field->isRemovable()"
+    :files="is_iterable($element->formViewValue($item)) ? $element->formViewValue($item) : [$element->formViewValue($item)]"
+    :removable="$element->isRemovable()"
     :imageable="true"
-    :path="$field->path('')"
+    :path="$element->path('')"
 />
