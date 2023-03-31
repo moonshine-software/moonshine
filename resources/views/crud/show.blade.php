@@ -10,7 +10,7 @@
     @include('moonshine::layouts.shared.breadcrumbs', [
         'items' => [
             $resource->route('index') => $resource->title(),
-            '#' => $item->getKey() ?? trans('moonshine::ui.create')
+            '#' => $item->{$resource->titleField()} ?? $item->getKey() ?? trans('moonshine::ui.create')
         ]
     ])
 @endsection
