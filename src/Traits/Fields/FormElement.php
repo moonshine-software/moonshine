@@ -26,15 +26,15 @@ trait FormElement
 
     protected string $field;
 
-    protected string|null $relation = null;
+    protected ?string $relation = null;
 
-    protected ResourceContract|null $resource;
+    protected ?ResourceContract $resource;
 
     protected bool $group = false;
 
     protected string $resourceTitleField = '';
 
-    protected Closure|null $valueCallback = null;
+    protected ?Closure $valueCallback = null;
 
     protected static string $view = '';
 
@@ -95,7 +95,7 @@ trait FormElement
         return $this;
     }
 
-    public function relation(): string|null
+    public function relation(): ?string
     {
         return $this->relation;
     }
@@ -107,21 +107,31 @@ trait FormElement
         return $this;
     }
 
-    public function resource(): ResourceContract|null
+    public function resource(): ?ResourceContract
     {
         return $this->resource ?? $this->findResource();
     }
 
-    protected function findResource(): ResourceContract|null
+    protected function findResource(): ?ResourceContract
     {
-        $resourceClass = (string) str(MoonShine::namespace('\Resources\\'))
-            ->append(str($this->relation() ?? $this->field())->studly()->singular())
-            ->append('Resource');
+        if (isset($this->resource)) {
+            return $this->resource;
+        }
 
-        return class_exists($resourceClass) ? new $resourceClass() : null;
+        if (!$this->relation()) {
+            return null;
+        }
+
+        return MoonShine::getResourceFromUriKey(
+            str($this->relation())
+                ->singular()
+                ->append('Resource')
+                ->kebab()
+                ->value()
+        );
     }
 
-    public function setResource(ResourceContract|null $resource): void
+    public function setResource(?ResourceContract $resource): void
     {
         $this->resource = $resource;
     }
@@ -144,7 +154,7 @@ trait FormElement
         return $this;
     }
 
-    public function valueCallback(): Closure|null
+    public function valueCallback(): ?Closure
     {
         return $this->valueCallback;
     }

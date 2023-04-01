@@ -11,13 +11,13 @@ use Leeto\MoonShine\Helpers\Condition;
 
 trait WithHtmlAttributes
 {
-    protected string|null $name = null;
+    protected ?string $name = null;
 
-    protected string|null $id = null;
+    protected ?string $id = null;
 
     protected static string $type = '';
 
-    protected string|null $default = null;
+    protected ?string $default = null;
 
     protected bool $required = false;
 
@@ -120,6 +120,14 @@ trait WithHtmlAttributes
         return $this;
     }
 
+    public function removeAttribute(string $name): static
+    {
+        unset($this->customAttributes[$name]);
+        $this->attributes = array_filter($this->attributes, static fn($attr) => $attr !== $name);
+
+        return $this;
+    }
+
     public function attributes(): ComponentAttributeBag
     {
         $resolveAttributes = collect($this->attributes)->mapWithKeys(function ($attr) {
@@ -167,7 +175,7 @@ trait WithHtmlAttributes
         return $this;
     }
 
-    public function getDefault(): string|null
+    public function getDefault(): ?string
     {
         return old($this->nameDot(), $this->default);
     }

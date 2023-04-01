@@ -6,6 +6,13 @@ namespace Leeto\MoonShine\Traits\Fields;
 
 trait XModel
 {
+    public function clearXModel(): static
+    {
+        return $this->removeAttribute('x-model')
+            ->removeAttribute('x-bind:name')
+            ->removeAttribute('x-bind:id');
+    }
+
     public function xModel(): static
     {
         return $this->setAttribute('x-model', $this->xModelField())

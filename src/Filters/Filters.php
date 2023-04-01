@@ -11,7 +11,7 @@ final class Filters extends Collection
 {
     /**
      * @param  string  $column
-     * @param  Filter|null  $default
+     * @param  ?Filter  $default
      * @return ?Filter
      * @throws Throwable
      */

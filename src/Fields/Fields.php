@@ -202,7 +202,7 @@ final class Fields extends Collection
 
     /**
      * @param  string  $resource
-     * @param  Field|null  $default
+     * @param  ?Field  $default
      * @return ?Field
      * @throws Throwable
      */
@@ -216,7 +216,7 @@ final class Fields extends Collection
 
     /**
      * @param  string  $relation
-     * @param  Field|null  $default
+     * @param  ?Field  $default
      * @return ?Field
      * @throws Throwable
      */
@@ -229,7 +229,7 @@ final class Fields extends Collection
 
     /**
      * @param  string  $column
-     * @param  Field|null  $default
+     * @param  ?Field  $default
      * @return ?Field
      * @throws Throwable
      */

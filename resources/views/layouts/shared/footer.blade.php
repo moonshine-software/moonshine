@@ -8,13 +8,13 @@
                 </div>
             @endif
             @if(!empty(config('moonshine.footer.nav')))
-                @if(is_scalar(config('moonshine.footer.nav')))
+                @if(is_string(config('moonshine.footer.nav')))
                     <nav class="text-center text-2xs text-slate-500 md:text-left">
                         {!! config('moonshine.footer.nav') !!}
                     </nav>
                 @elseif(is_iterable(config('moonshine.footer.nav')))
                     <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start lg:gap-x-6">
-                        @foreach(config('moonshine.footer.nav') as $url=>$text)
+                        @foreach(config('moonshine.footer.nav') as $url => $text)
                             <a href="{{ $url }}" class="text-2xs text-slate-500 hover:text-purple"
                                target="_blank">{!! $text !!}</a>
                         @endforeach

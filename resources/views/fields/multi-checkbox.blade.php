@@ -5,49 +5,107 @@
         'resource' => $resource
     ])
 @else
-    @foreach($element->values() as $optionValue => $optionName)
-        <x-moonshine::form.input-wrapper
-            id="{{ $element->id($loop->index) }}"
-            name="{{ $element->id($loop->index) }}"
-            class="form-group-inline !m-0"
-            label="{{ $optionName }}"
-            :beforeLabel="true"
-            :inLabel="false"
-        >
-            <x-moonshine::form.input
-                :attributes="$element->attributes()->merge([
-                    'id' => $element->id($loop->index),
-                    'name' => $element->name($loop->index),
-                    'type' => 'checkbox',
-                    'value' => $optionValue,
-                    'checked' => $element->isChecked($item, $optionValue)
-                ])"
-            />
-        </x-moonshine::form.input-wrapper>
 
-        @if($element->getFields()->isNotEmpty())
-            <x-moonshine::form.input-wrapper
-                id="{{ $element->id($loop->index) }}_pivots"
-                class="form-group-inline w-full"
-            >
-                @foreach($element->getFields() as $pivotField)
-                    {{ $resource->renderComponent($pivotField, $element->pivotValue($item, $optionValue))}}
-                @endforeach
-            </x-moonshine::form.input-wrapper>
+    @if(method_exists($element, 'isOnlySelected') && $element->isOnlySelected())
+        <div x-data="search">
+            <div class="dropdown">
+                <x-moonshine::form.input
+                    x-model="query"
+                    @input.debounce="search"
+                    :placeholder="trans('moonshine::ui.search')"
+                />
+                <div class="dropdown-body pointer-events-auto visible opacity-100">
+                    <div class="dropdown-content">
+                        <ul class="dropdown-menu">
+                            <template x-for="(item, key) in match">
+                                <li class="dropdown-item">
+                                    <a href="#"
+                                       class="dropdown-menu-link"
+                                       x-text="item"
+                                       @click.prevent="select(key)"
+                                    />
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-4"></div>
+
+            <template x-for="item in items">
+                <div>
+                    <x-moonshine::form.pivot
+                        :label="'<span x-text=\'item.value\' />'"
+                        x-bind:id="`{{ $element->id('${item.key}') }}`"
+                        x-bind:name="`{{ $element->name('${item.key}') }}`"
+                        x-bind:value="item.key"
+                        :checked="true"
+                        :withFields="true"
+                        :attributes="$element->attributes()"
+                    >
+                        @if($element->getFields()->isNotEmpty())
+                            @foreach($element->getFields() as $pivotField)
+                                {{ $resource->renderComponent(
+                                        $pivotField->setAttribute('x-bind:name', '`'.(preg_replace('/\[\]$/', '[${item.key}]', $pivotField->name()).'`')),
+                                        $element->pivotValue($item, null)
+                                ) }}
+                            @endforeach
+                        @endif
+                    </x-moonshine::form.pivot>
+                </div>
+            </template>
 
             <script>
-                let input_{{ $element->id($loop->index) }} = document.querySelector("#{{ $element->id($loop->index) }}");
+                document.addEventListener('alpine:init', () => {
+                    Alpine.data('search', () => ({
+                        items: [],
+                        match: [],
+                        query: '',
+                        select(index) {
+                            if (!this.items.includes(this.match[index])) {
+                                this.items.push({key: index, value: this.match[index]})
+                            }
 
-                let pivotsDiv_input_{{ $element->id($loop->index) }} = document.querySelector("#wrapper_{{ $element->id($loop->index) }}_pivots");
-
-                let inputs_{{ $element->id($loop->index) }} = pivotsDiv_input_{{ $element->id($loop->index) }}.querySelectorAll('input, textarea, select');
-
-                inputs_{{ $element->id($loop->index) }}.forEach(function (value, key) {
-                    value.addEventListener('input', (event) => {
-                        input_{{ $element->id($loop->index) }}.checked = event.target.value;
-                    });
+                            this.query = ''
+                            this.match = []
+                        },
+                        async search() {
+                            if(this.query.length > 2) {
+                                let query = '?query='+this.query+'&resource={{ $resource->uriKey() }}&column={{ $element->field() }}';
+                                let response = fetch('{{ route('moonshine.search.relations', class_basename($element)) }}' + query)
+                                    .then((response) => {
+                                        return response.json();
+                                    })
+                                    .then((data) => {
+                                        this.match = data
+                                    })
+                            }
+                        },
+                    }))
                 })
             </script>
-        @endif
+        </div>
+    @endif
+
+    @foreach($element->values() as $optionValue => $optionName)
+        <x-moonshine::form.pivot
+            id="{{ $element->id($optionValue) }}"
+            name="{{ $element->name($optionValue) }}"
+            label="{{ $optionName }}"
+            value="{{ $optionValue }}"
+            :checked="$element->isChecked($item, $optionValue)"
+            :withFields="$element->getFields()->isNotEmpty()"
+            :attributes="$element->attributes()"
+        >
+            @if($element->getFields()->isNotEmpty())
+                @foreach($element->getFields() as $pivotField)
+                    {{ $resource->renderComponent(
+                            $pivotField->clearXModel()->setName(preg_replace('/\[\]$/', "[$optionValue]", $pivotField->name())),
+                            $element->pivotValue($item, $optionValue)
+                    ) }}
+                @endforeach
+            @endif
+        </x-moonshine::form.pivot>
     @endforeach
 @endif
