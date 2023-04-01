@@ -118,7 +118,7 @@ trait FormElement
             return $this->resource;
         }
 
-        if (!$this->relation()) {
+        if (! $this->relation()) {
             return null;
         }
 

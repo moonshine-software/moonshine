@@ -123,7 +123,7 @@ trait WithHtmlAttributes
     public function removeAttribute(string $name): static
     {
         unset($this->customAttributes[$name]);
-        $this->attributes = array_filter($this->attributes, static fn($attr) => $attr !== $name);
+        $this->attributes = array_filter($this->attributes, static fn ($attr) => $attr !== $name);
 
         return $this;
     }

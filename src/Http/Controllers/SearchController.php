@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Http\Controllers;
 
-use App\Models\Service;
-use App\Models\User;
 use Illuminate\Routing\Controller as BaseController;
 use Leeto\MoonShine\Fields\BelongsToMany;
 use Leeto\MoonShine\MoonShine;
@@ -18,7 +16,7 @@ class SearchController extends BaseController
      */
     public function relations(string $type)
     {
-        abort_if(!request()->has(['resource', 'column', 'query']), 404);
+        abort_if(! request()->has(['resource', 'column', 'query']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
@@ -41,7 +39,7 @@ class SearchController extends BaseController
                 $values = $query
                     ->where($field->searchColumn() ?? $field->resourceTitleField(), 'LIKE', "%$request%")
                     ->get()
-                    ->mapWithKeys(function ($relatedItem) use($field) {
+                    ->mapWithKeys(function ($relatedItem) use ($field) {
                         return [$relatedItem->getKey() => ($field->searchValueCallback())($relatedItem)];
                     });
             } else {

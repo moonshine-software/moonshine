@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
@@ -20,7 +21,6 @@ use Leeto\MoonShine\Traits\Fields\SelectTransform;
 use Leeto\MoonShine\Traits\Fields\WithPivot;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 use Leeto\MoonShine\Traits\WithFields;
-use Closure;
 
 class BelongsToMany extends Field implements HasRelationship, HasPivot, HasFields, ManyToManyRelation
 {
@@ -86,10 +86,10 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         $this->searchQuery = $searchQuery;
         $this->searchValueCallback = $searchValueCallback;
 
-        $this->valuesQuery = function (Builder $query) use($relation) {
+        $this->valuesQuery = function (Builder $query) use ($relation) {
             $request = app(MoonShineRequest::class);
 
-            if($request->getId()) {
+            if ($request->getId()) {
                 $related = $this->getRelated($request->getItem());
                 $table = $related->{$relation}()->getRelated()->getTable();
                 $key = $related->{$relation}()->getRelated()->getKeyName();
