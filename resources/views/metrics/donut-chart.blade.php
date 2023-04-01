@@ -38,6 +38,16 @@
             plotOptions: {
                 pie: {
                     expandOnClick: false,
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                label: "{{ $element->label() }}",
+                                showAlways: false,
+                                show: true
+                            }
+                        }
+                    }
                 },
             },
         }
