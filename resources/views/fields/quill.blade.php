@@ -1,5 +1,7 @@
-<div id="quill_{{ $element->id() }}" style="height: auto;">
-    {!! $element->formViewValue($item) ?? '' !!}
+<div>
+    <div id="quill_{{ $element->id() }}" style="height: auto;">
+        {!! $element->formViewValue($item) ?? '' !!}
+    </div>
 </div>
 
 <script>
