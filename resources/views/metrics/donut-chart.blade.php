@@ -13,9 +13,6 @@
     <script>
         let chart_element_{{ $element->id() }} = document.getElementById("{{ $element->id() }}")
 
-        let options = {
-        }
-
         let options_{{ $element->id() }} = {
             series: @json($element->getValues()),
             tooltip: {
