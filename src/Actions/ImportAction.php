@@ -32,9 +32,7 @@ class ImportAction extends Action implements ActionContract
     public string $inputName = 'import_file';
 
     protected bool $deleteAfter = false;
-
-    protected bool $inDropdown = false;
-
+    
     /**
      * @throws IOException
      * @throws ActionException
