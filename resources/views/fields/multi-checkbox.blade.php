@@ -28,7 +28,7 @@
         @if($element->getFields()->isNotEmpty())
             <x-moonshine::form.input-wrapper
                 id="{{ $element->id($loop->index) }}_pivots"
-                class="form-group-inline w-full"
+                class="form-group-inline w-full !mt-0 !mb-2"
             >
                 @foreach($element->getFields() as $pivotField)
                     {{ $resource->renderComponent($pivotField, $element->pivotValue($item, $optionValue))}}
