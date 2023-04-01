@@ -50,6 +50,13 @@ abstract class Action
         return $this;
     }
 
+    public function showInLine(): static
+    {
+        $this->inDropdown = false;
+
+        return $this;
+    }
+
     public function render(): string
     {
         return view($this->getView(), [
