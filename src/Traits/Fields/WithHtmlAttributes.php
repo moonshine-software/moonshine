@@ -159,6 +159,7 @@ trait WithHtmlAttributes
     public function required($condition = null): static
     {
         $this->required = Condition::boolean($condition, true);
+        $this->setAttribute('required', $this->required);
 
         return $this;
     }
@@ -183,6 +184,7 @@ trait WithHtmlAttributes
     public function disabled($condition = null): static
     {
         $this->disabled = Condition::boolean($condition, true);
+        $this->setAttribute('disabled', $this->disabled);
 
         return $this;
     }
@@ -207,6 +209,7 @@ trait WithHtmlAttributes
     public function readonly($condition = null): static
     {
         $this->readonly = Condition::boolean($condition, true);
+        $this->setAttribute('readonly', $this->readonly);
 
         return $this;
     }
