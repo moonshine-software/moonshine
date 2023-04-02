@@ -139,6 +139,44 @@ document.addEventListener("alpine:init", () => {
         },
     }))
 
+    Alpine.data('pivot', () => ({
+        autoCheck() {
+            let checker = this.$root.querySelector('.pivotChecker')
+            let fields = this.$root.querySelectorAll('.pivotFields')
+
+            fields.forEach(function (value, key) {
+                value.addEventListener('input', (event) => {
+                    checker.checked = event.target.value
+                });
+            })
+        }
+    }))
+
+    Alpine.data('search', (route, resourceUri, column) => ({
+        items: [],
+        match: [],
+        query: '',
+        select(index) {
+            if (!this.items.includes(this.match[index])) {
+                this.items.push({key: index, value: this.match[index]})
+            }
+
+            this.query = ''
+            this.match = []
+        },
+        async search() {
+            if(this.query.length > 2) {
+                let query = '?query='+this.query+'&resource='+resourceUri+'&column='+column;
+
+                fetch(route + query).then((response) => {
+                    return response.json();
+                }).then((data) => {
+                    this.match = data
+                })
+            }
+        },
+    }))
+
     Alpine.data('asyncData', () => ({
         async load(url, id) {
             const {data, status} = await axios.get(url);

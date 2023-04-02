@@ -12,6 +12,7 @@
 >
     <x-moonshine::form.input
         :attributes="$attributes->merge([
+            'class' => 'pivotChecker',
             'type' => 'checkbox',
             'value' => $value,
         ])"
@@ -21,6 +22,7 @@
 @if($withFields)
     <div
         id="wrapper_{{ $attributes->get('id') }}_pivots"
+        class="pivotFields"
         {!! $attributes->get('x-bind:id') ? 'x-bind:id="`wrapper_'.str_replace('`', '', $attributes->get('x-bind:id')).'_pivots`"' : '' !!}
     >
         <x-moonshine::form.input-wrapper
@@ -28,21 +30,5 @@
         >
             {{ $slot }}
         </x-moonshine::form.input-wrapper>
-
-        @if(!$attributes->get('x-bind:id'))
-            <script>
-                let input_{{ $attributes->get('id') }} = document.querySelector("#{{ $attributes->get('id') }}");
-
-                let pivotsDiv_input_{{ $attributes->get('id') }} = document.querySelector("#wrapper_{{ $attributes->get('id') }}_pivots");
-
-                let inputs_{{ $attributes->get('id') }} = pivotsDiv_input_{{ $attributes->get('id') }}.querySelectorAll('input, textarea, select');
-
-                inputs_{{ $attributes->get('id') }}.forEach(function (value, key) {
-                    value.addEventListener('input', (event) => {
-                        input_{{ $attributes->get('id') }}.checked = event.target.value;
-                    });
-                })
-            </script>
-        @endif
     </div>
 @endif

@@ -7,7 +7,7 @@
 @else
 
     @if(method_exists($element, 'isOnlySelected') && $element->isOnlySelected())
-        <div x-data="search">
+        <div x-data="search('{{ route('moonshine.search.relations', class_basename($element)) }}', '{{ $resource->uriKey() }}', '{{ $element->field() }}')">
             <div class="dropdown">
                 <x-moonshine::form.input
                     x-model="query"
@@ -34,7 +34,7 @@
             <div class="my-4"></div>
 
             <template x-for="item in items">
-                <div>
+                <div x-data="pivot" x-init="autoCheck">
                     <x-moonshine::form.pivot
                         :label="'<span x-text=\'item.value\' />'"
                         x-bind:id="`{{ $element->id('${item.key}') }}`"
@@ -55,41 +55,11 @@
                     </x-moonshine::form.pivot>
                 </div>
             </template>
-
-            <script>
-                document.addEventListener('alpine:init', () => {
-                    Alpine.data('search', () => ({
-                        items: [],
-                        match: [],
-                        query: '',
-                        select(index) {
-                            if (!this.items.includes(this.match[index])) {
-                                this.items.push({key: index, value: this.match[index]})
-                            }
-
-                            this.query = ''
-                            this.match = []
-                        },
-                        async search() {
-                            if(this.query.length > 2) {
-                                let query = '?query='+this.query+'&resource={{ $resource->uriKey() }}&column={{ $element->field() }}';
-                                let response = fetch('{{ route('moonshine.search.relations', class_basename($element)) }}' + query)
-                                    .then((response) => {
-                                        return response.json();
-                                    })
-                                    .then((data) => {
-                                        this.match = data
-                                    })
-                            }
-                        },
-                    }))
-                })
-            </script>
         </div>
     @endif
 
     @foreach($element->values() as $optionValue => $optionName)
-        <div>
+        <div x-data="pivot" x-init="autoCheck">
             <x-moonshine::form.pivot
                 id="{{ $element->id($optionValue) }}"
                 name="{{ $element->name($optionValue) }}"
