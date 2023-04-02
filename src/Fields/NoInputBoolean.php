@@ -10,7 +10,6 @@ use Leeto\MoonShine\Helpers\Condition;
 
 class NoInputBoolean extends Field
 {
-
     public static string $view = 'moonshine::fields.no-input-boolean';
 
     protected bool $hideTrue = false;
@@ -58,7 +57,7 @@ class NoInputBoolean extends Field
             $value = $this->valueCallback()($item);
         }
 
-        if (!$value && $this->hideFalse) {
+        if (! $value && $this->hideFalse) {
             $value = null;
         } elseif ($value && $this->hideTrue) {
             $value = null;

@@ -92,7 +92,7 @@ class Translatable extends Json
     {
         $columns = [];
         $values = collect($item->getTranslations($this->field()))
-            ->map(fn($value, $key)=>['key' => $key, 'value' => $value])
+            ->map(fn ($value, $key) => ['key' => $key, 'value' => $value])
             ->values();
 
         foreach ($this->getFields() as $field) {
