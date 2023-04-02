@@ -1,15 +1,13 @@
 <div>
     @if((isset($value) && !is_null($value)) || (isset($element) && !is_null($element->formViewValue($item))))
         @if((isset($value) && $value) || (isset($element) && $element->formViewValue($item)))
-            @include('moonshine::ui.badge', [
-                                'color' => 'green',
-                                'value' => view('moonshine::ui.icons.heroicons.outline.check')->render()
-                            ])
+            <x-moonshine::badge color='green'>
+                <x-moonshine::icon icon='heroicons.outline.check'/>
+            </x-moonshine::badge>
         @else
-            @include('moonshine::ui.badge', [
-                                'color' => 'red',
-                                'value' => view('moonshine::ui.icons.heroicons.outline.x-mark')->render()
-                            ])
+            <x-moonshine::badge color='red'>
+                <x-moonshine::icon icon='heroicons.outline.x-mark'/>
+            </x-moonshine::badge>
         @endif
     @endif
 </div>
