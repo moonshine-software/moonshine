@@ -107,11 +107,6 @@ trait WithHtmlAttributes
         return $this->attributes()->get($name);
     }
 
-    /**
-     * check bool $value
-     * @see CanBeMultiple::multiple()
-     * @see SelectTest::test_multiple()
-     */
     public function setAttribute(string $name, string|bool $value): static
     {
         $this->attributes[] = $name;
