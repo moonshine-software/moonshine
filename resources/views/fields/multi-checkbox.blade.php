@@ -30,11 +30,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="my-4"></div>
-
             <template x-for="item in items">
-                <div x-data="pivot" x-init="autoCheck">
+                <div x-data="pivot" x-init="autoCheck" class="mt-3">
                     <x-moonshine::form.pivot
                         :label="'<span x-text=\'item.value\' />'"
                         x-bind:id="`{{ $element->id('${item.key}') }}`"
@@ -59,7 +56,7 @@
     @endif
 
     @foreach($element->values() as $optionValue => $optionName)
-        <div x-data="pivot" x-init="autoCheck">
+        <div x-data="pivot" x-init="autoCheck" class="mt-1 first-of-type:mt-0">
             <x-moonshine::form.pivot
                 id="{{ $element->id($optionValue) }}"
                 name="{{ $element->name($optionValue) }}"

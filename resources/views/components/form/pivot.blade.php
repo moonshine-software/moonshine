@@ -22,7 +22,7 @@
 @if($withFields)
     <div
         id="wrapper_{{ $attributes->get('id') }}_pivots"
-        class="pivotFields"
+        class="pivotFields mt-1"
         {!! $attributes->get('x-bind:id') ? 'x-bind:id="`wrapper_'.str_replace('`', '', $attributes->get('x-bind:id')).'_pivots`"' : '' !!}
     >
         <x-moonshine::form.input-wrapper
