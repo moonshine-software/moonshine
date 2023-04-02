@@ -89,23 +89,25 @@
     @endif
 
     @foreach($element->values() as $optionValue => $optionName)
-        <x-moonshine::form.pivot
-            id="{{ $element->id($optionValue) }}"
-            name="{{ $element->name($optionValue) }}"
-            label="{{ $optionName }}"
-            value="{{ $optionValue }}"
-            :checked="$element->isChecked($item, $optionValue)"
-            :withFields="$element->getFields()->isNotEmpty()"
-            :attributes="$element->attributes()"
-        >
-            @if($element->getFields()->isNotEmpty())
-                @foreach($element->getFields() as $pivotField)
-                    {{ $resource->renderComponent(
-                            $pivotField->clearXModel()->setName(preg_replace('/\[\]$/', "[$optionValue]", $pivotField->name())),
-                            $element->pivotValue($item, $optionValue)
-                    ) }}
-                @endforeach
-            @endif
-        </x-moonshine::form.pivot>
+        <div>
+            <x-moonshine::form.pivot
+                id="{{ $element->id($optionValue) }}"
+                name="{{ $element->name($optionValue) }}"
+                label="{{ $optionName }}"
+                value="{{ $optionValue }}"
+                :checked="$element->isChecked($item, $optionValue)"
+                :withFields="$element->getFields()->isNotEmpty()"
+                :attributes="$element->attributes()"
+            >
+                @if($element->getFields()->isNotEmpty())
+                    @foreach($element->getFields() as $pivotField)
+                        {{ $resource->renderComponent(
+                                $pivotField->clearXModel()->setName(preg_replace('/\[\]$/', "[$optionValue]", $pivotField->name())),
+                                $element->pivotValue($item, $optionValue)
+                        ) }}
+                    @endforeach
+                @endif
+            </x-moonshine::form.pivot>
+        </div>
     @endforeach
 @endif
