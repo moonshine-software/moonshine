@@ -2,9 +2,11 @@
 
 namespace Leeto\MoonShine\Fields\Spatie;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Leeto\MoonShine\Fields\Fields;
 use Leeto\MoonShine\Fields\Json;
 use Leeto\MoonShine\Fields\Select;
 use Leeto\MoonShine\Fields\Text;
@@ -67,14 +69,14 @@ class Translatable extends Json
         return $this;
     }
 
-    public function getFields(): array
+    public function getFields(): Fields
     {
         if (empty($this->fields)) {
             $this->fields([
-                Select::make('Language', 'key')
+                Select::make(__('Code'), 'key')
                     ->options(array_combine($this->getLanguagesCodes(), array_map(static fn ($code) => Str::upper($code), $this->getLanguagesCodes())))
                     ->nullable(),
-                Text::make('Value', 'value'),
+                Text::make(__('Value'), 'value'),
             ]);
         }
 
@@ -86,9 +88,21 @@ class Translatable extends Json
         return true;
     }
 
-    public function indexViewValue(Model $item, bool $container = false): string
+    public function indexViewValue(Model $item, bool $container = false): View
     {
-        return $item->{$this->field()};
+        $columns = [];
+        $values = collect($item->getTranslations($this->field()))
+            ->map(fn($value, $key)=>['key' => $key, 'value' => $value])
+            ->values();
+
+        foreach ($this->getFields() as $field) {
+            $columns[$field->field()] = $field->label();
+        }
+
+        return view('moonshine::ui.table', [
+            'columns' => $columns,
+            'values' => $values,
+        ]);
     }
 
     public function exportViewValue(Model $item): string
@@ -117,7 +131,7 @@ class Translatable extends Json
             if (! empty($notSetLanguages)) {
                 throw ValidationException::withMessages(
                     [$this->field() =>
-                         sprintf('The field %s does not have translation values set for the following languages: %s', $this->label(), implode(', ', $notSetLanguages)), ]
+                        sprintf('The field %s does not have translation values set for the following languages: %s', $this->label(), implode(', ', $notSetLanguages)), ]
                 );
             }
 
