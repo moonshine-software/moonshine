@@ -8,6 +8,7 @@ use Leeto\MoonShine\Http\Controllers\CustomPageController;
 use Leeto\MoonShine\Http\Controllers\DashboardController;
 use Leeto\MoonShine\Http\Controllers\NotificationController;
 use Leeto\MoonShine\Http\Controllers\ProfileController;
+use Leeto\MoonShine\Http\Controllers\SearchController;
 use Leeto\MoonShine\Http\Controllers\SocialiteController;
 
 Route::prefix(config('moonshine.route.prefix', ''))
@@ -16,8 +17,11 @@ Route::prefix(config('moonshine.route.prefix', ''))
         Route::get('/', DashboardController::class)->name('index');
         Route::post('/attachments', AttachmentController::class)->name('attachments');
 
-        Route::put("update-column", [CrudController::class, 'updateColumn'])
-            ->name("update-column");
+        Route::get('/search/{type}', [SearchController::class, 'relations'])
+            ->name('search.relations');
+
+        Route::put('update-column', [CrudController::class, 'updateColumn'])
+            ->name('update-column');
 
         Route::controller(NotificationController::class)
             ->prefix('notifications')

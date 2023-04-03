@@ -7,7 +7,6 @@ namespace Leeto\MoonShine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Stringable;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Menu\Menu;
 use Leeto\MoonShine\Menu\MenuGroup;
@@ -45,24 +44,10 @@ class MoonShine
         return (config('moonshine.namespace') ?? static::NAMESPACE).$path;
     }
 
-    public static function getResourceFromUriKey(string $uri): ResourceContract
+    public static function getResourceFromUriKey(string $uri): ?ResourceContract
     {
-        $resource = self::getResources()
+        return self::getResources()
             ->first(fn (ResourceContract $resource) => $resource->uriKey() === $uri);
-
-        if ($resource) {
-            return $resource;
-        }
-
-        $class = (string)str($uri)
-            ->studly()
-            ->whenStartsWith(
-                'MoonShine',
-                fn (Stringable $str) => $str->prepend('Leeto\MoonShine\Resources\\'),
-                fn (Stringable $str) => $str->prepend(self::namespace('\Resources\\')),
-            );
-
-        return new $class();
     }
 
     /**
@@ -181,9 +166,7 @@ class MoonShine
         }
 
         if ($item->changeLogs->isNotEmpty()) {
-            return $item->changeLogs->filter(static function ($log) {
-                return $log->states_after;
-            });
+            return $item->changeLogs->filter(static fn ($log) => $log->states_after);
         }
 
         return null;

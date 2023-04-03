@@ -32,7 +32,7 @@ abstract class Decoration implements ResourceRenderable, FieldsDecoration
     /**
      * Get id of decoration
      *
-     * @param  string|null  $index
+     * @param  ?string  $index
      * @return string
      */
     public function id(string $index = null): string
@@ -43,7 +43,7 @@ abstract class Decoration implements ResourceRenderable, FieldsDecoration
     /**
      * Get name of decoration
      *
-     * @param  string|null  $index
+     * @param  ?string  $index
      * @return string
      */
     public function name(string $index = null): string

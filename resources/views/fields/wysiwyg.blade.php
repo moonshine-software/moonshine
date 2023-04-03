@@ -6,7 +6,9 @@
     ])
 </div>
 
-<trix-editor class="trix-editor" input="{{ $element->id() }}"></trix-editor>
+<div>
+    <trix-editor class="trix-editor" input="{{ $element->id() }}"></trix-editor>
+</div>
 
 <script>
     (function () {

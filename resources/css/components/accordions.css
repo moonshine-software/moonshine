@@ -19,7 +19,7 @@
     &-btn {
         @apply h-auto w-full grow justify-between whitespace-normal rounded-none p-3 text-left text-2xs current:bg-slate-100 dark:current:bg-dark-800 dark:current:hover:bg-dark-800 sm:px-4 sm:py-3 sm:text-xs;
         > svg {
-            @apply h-4 w-4 sm:h-5 sm:w-5;
+            @apply h-4 w-4;
         }
         &._is-active {
             > svg {

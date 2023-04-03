@@ -19,7 +19,7 @@
             :attributes="$attributes->only('required')"
         >
             {{ $beforeLabel && $inLabel ? $slot : '' }}
-            {{ $label }}
+            {!! $label !!}
             {{ !$beforeLabel && $inLabel ? $slot : '' }}
         </x-moonshine::form.label>
     @endif

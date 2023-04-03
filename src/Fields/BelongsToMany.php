@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
@@ -11,6 +13,7 @@ use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasPivot;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
+use Leeto\MoonShine\MoonShineRequest;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
 use Leeto\MoonShine\Traits\Fields\Searchable;
@@ -43,9 +46,61 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
 
     protected bool $onlyCount = false;
 
+    protected bool $onlySelected = false;
+
+    protected ?string $searchColumn = null;
+
+    protected ?Closure $searchQuery = null;
+
+    protected ?Closure $searchValueCallback = null;
+
     public function ids(): array
     {
         return $this->ids;
+    }
+
+    public function searchQuery(): ?Closure
+    {
+        return $this->searchQuery;
+    }
+
+    public function searchValueCallback(): ?Closure
+    {
+        return $this->searchValueCallback;
+    }
+
+    public function searchColumn(): ?string
+    {
+        return $this->searchColumn;
+    }
+
+    public function isOnlySelected(): bool
+    {
+        return $this->onlySelected;
+    }
+
+    public function onlySelected(string $relation, string $searchColumn = null, ?Closure $searchQuery = null, ?Closure $searchValueCallback = null): static
+    {
+        $this->onlySelected = true;
+        $this->searchColumn = $searchColumn;
+        $this->searchQuery = $searchQuery;
+        $this->searchValueCallback = $searchValueCallback;
+
+        $this->valuesQuery = function (Builder $query) use ($relation) {
+            $request = app(MoonShineRequest::class);
+
+            if ($request->getId()) {
+                $related = $this->getRelated($request->getItem());
+                $table = $related->{$relation}()->getRelated()->getTable();
+                $key = $related->{$relation}()->getRelated()->getKeyName();
+
+                return $query->whereRelation($relation, "$table.$key", '=', $request->getId());
+            }
+
+            return $query->has($relation, '>');
+        };
+
+        return $this;
     }
 
     public function onlyCount(): static
@@ -192,7 +247,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         return $item;
     }
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
         return collect($item->{$this->relation()})
             ->map(fn ($item) => $item->{$this->resourceTitleField()})

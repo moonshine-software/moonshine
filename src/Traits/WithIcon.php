@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 
 trait WithIcon
 {
-    protected string|null $icon = null;
+    protected ?string $icon = null;
 
     public function icon(string $icon): static
     {

@@ -11,13 +11,13 @@ use Leeto\MoonShine\Helpers\Condition;
 
 trait WithHtmlAttributes
 {
-    protected string|null $name = null;
+    protected ?string $name = null;
 
-    protected string|null $id = null;
+    protected ?string $id = null;
 
     protected static string $type = '';
 
-    protected string|null $default = null;
+    protected ?string $default = null;
 
     protected bool $required = false;
 
@@ -107,15 +107,18 @@ trait WithHtmlAttributes
         return $this->attributes()->get($name);
     }
 
-    /**
-     * check bool $value
-     * @see CanBeMultiple::multiple()
-     * @see SelectTest::test_multiple()
-     */
     public function setAttribute(string $name, string|bool $value): static
     {
         $this->attributes[] = $name;
         $this->customAttributes[$name] = $value;
+
+        return $this;
+    }
+
+    public function removeAttribute(string $name): static
+    {
+        unset($this->customAttributes[$name]);
+        $this->attributes = array_filter($this->attributes, static fn ($attr) => $attr !== $name);
 
         return $this;
     }
@@ -151,6 +154,7 @@ trait WithHtmlAttributes
     public function required($condition = null): static
     {
         $this->required = Condition::boolean($condition, true);
+        $this->setAttribute('required', $this->required);
 
         return $this;
     }
@@ -167,7 +171,7 @@ trait WithHtmlAttributes
         return $this;
     }
 
-    public function getDefault(): string|null
+    public function getDefault(): ?string
     {
         return old($this->nameDot(), $this->default);
     }
@@ -175,6 +179,7 @@ trait WithHtmlAttributes
     public function disabled($condition = null): static
     {
         $this->disabled = Condition::boolean($condition, true);
+        $this->setAttribute('disabled', $this->disabled);
 
         return $this;
     }
@@ -199,6 +204,7 @@ trait WithHtmlAttributes
     public function readonly($condition = null): static
     {
         $this->readonly = Condition::boolean($condition, true);
+        $this->setAttribute('readonly', $this->readonly);
 
         return $this;
     }

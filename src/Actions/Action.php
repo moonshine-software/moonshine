@@ -19,14 +19,14 @@ abstract class Action
 
     protected bool $inDropdown = true;
 
-    protected ResourceContract|null $resource;
+    protected ?ResourceContract $resource;
 
     final public function __construct(string $label)
     {
         $this->setLabel($label);
     }
 
-    public function resource(): ResourceContract|null
+    public function resource(): ?ResourceContract
     {
         return $this->resource;
     }

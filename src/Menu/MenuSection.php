@@ -18,7 +18,7 @@ abstract class MenuSection
     use HasCanSee;
     use WithLabel;
 
-    protected string|null $link = null;
+    protected ?string $link = null;
 
     protected Collection $items;
 

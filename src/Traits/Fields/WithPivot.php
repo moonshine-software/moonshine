@@ -13,7 +13,7 @@ trait WithPivot
         return array_key_first($item->getRelations());
     }
 
-    public function pivotItem(Model $item, $id): Model|null
+    public function pivotItem(Model $item, $id): ?Model
     {
         $value = $this->formViewValue($item);
 

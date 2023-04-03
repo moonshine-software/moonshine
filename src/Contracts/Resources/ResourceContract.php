@@ -77,7 +77,7 @@ interface ResourceContract
      * Check whether user can perform action on model
      *
      * @param  string  $ability  view, viewAny, restore, forceDelete
-     * @param  Model|null  $item  Model on which the action is performed
+     * @param  ?Model  $item  Model on which the action is performed
      * @return bool
      */
     public function can(string $ability, Model $item = null): bool;
