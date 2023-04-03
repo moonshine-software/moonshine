@@ -139,6 +139,25 @@ document.addEventListener("alpine:init", () => {
         },
     }))
 
+    /* Aside Navigation Tooltip */
+    Alpine.data('navTooltip', () => ({
+        tooltipInstance: null,
+        init() {
+            this.tooltipInstance = tippy(this.$el, {
+                placement: 'right',
+                offset: [0, 30],
+                content: () => this.$el.querySelector('.menu-inner-text').textContent,
+            })
+        },
+        toggleTooltip() {
+            const lgMediaQuery = window.matchMedia('(min-width: 1024px) and (max-width: 1279.98px)');
+
+            if (!this.$data.minimizedMenu && !lgMediaQuery.matches) {
+                this.tooltipInstance.hide()
+            }
+        },
+    }))
+
     Alpine.data('pivot', () => ({
         autoCheck() {
             let checker = this.$root.querySelector('.pivotChecker')
@@ -158,15 +177,15 @@ document.addEventListener("alpine:init", () => {
         query: '',
         select(index) {
             if (!this.items.includes(this.match[index])) {
-                this.items.push({key: index, value: this.match[index]})
+                this.items.push({ key: index, value: this.match[index] })
             }
 
             this.query = ''
             this.match = []
         },
         async search() {
-            if(this.query.length > 2) {
-                let query = '?query='+this.query+'&resource='+resourceUri+'&column='+column;
+            if (this.query.length > 2) {
+                let query = '?query=' + this.query + '&resource=' + resourceUri + '&column=' + column;
 
                 fetch(route + query).then((response) => {
                     return response.json();
@@ -179,9 +198,9 @@ document.addEventListener("alpine:init", () => {
 
     Alpine.data('asyncData', () => ({
         async load(url, id) {
-            const {data, status} = await axios.get(url);
+            const { data, status } = await axios.get(url);
 
-            if(status === 200) {
+            if (status === 200) {
                 let containerElement = document.getElementById(id)
 
                 containerElement.innerHTML = data
@@ -209,11 +228,11 @@ document.addEventListener("alpine:init", () => {
                 field: column
             });
 
-            if(response.status === 204) {
+            if (response.status === 204) {
                 //
             }
 
-            if(response.status === 422) {
+            if (response.status === 422) {
                 //
             }
         }
@@ -268,18 +287,18 @@ document.addEventListener("alpine:init", () => {
 
             let values = [];
 
-            for(let i=0, n=checkboxes.length;i<n;i++) {
-                if(type === 'all') {
+            for (let i = 0, n = checkboxes.length; i < n; i++) {
+                if (type === 'all') {
                     checkboxes[i].checked = all.checked;
                 }
 
-                if(checkboxes[i].checked && checkboxes[i].value) {
+                if (checkboxes[i].checked && checkboxes[i].value) {
                     values.push(checkboxes[i].value);
                 }
             }
 
-            for(let i=0, n=ids.length;i<n;i++) {
-                ids[i].value = values.join (";");
+            for (let i = 0, n = ids.length; i < n; i++) {
+                ids[i].value = values.join(";");
             }
 
             if (all.checked || values.length) {
