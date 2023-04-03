@@ -26,11 +26,21 @@ class Slug extends Field
         return $this;
     }
 
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
     public function separator(string $separator): static
     {
         $this->separator = $separator;
 
         return $this;
+    }
+
+    public function getSeparator(): string
+    {
+        return $this->separator;
     }
 
     public function unique(): static
@@ -40,15 +50,18 @@ class Slug extends Field
         return $this;
     }
 
+    public function isUnique(): bool
+    {
+        return $this->unique;
+    }
+
     public function save(Model $item): Model
     {
-        if (! $this->canSave) {
-            return $item;
-        }
+        $item->{$this->field()} = $this->requestValue() !== false ?
+            $this->requestValue()
+            : $this->generateSlug($item->{$this->getFrom()});
 
-        $item->{$this->field()} = $this->requestValue() !== false ? $this->requestValue() : $this->generateSlug($item->{$this->from});
-
-        if ($this->unique)
+        if ($this->isUnique())
         {
             $item->{$this->field()} = $this->makeSlugUnique($item);
         }
@@ -58,12 +71,15 @@ class Slug extends Field
 
     private function generateSlug(string $value): string
     {
-        return Str::slug($value, $this->separator);
+        return Str::slug($value, $this->getSeparator());
     }
 
     protected function checkUnique(Model $item, string $slug): bool
     {
-        return !DB::table($item->getTable())->whereNot('id', $item->id)->where($this->field(), $slug)->first();
+        return !DB::table($item->getTable())
+            ->whereNot($item->getKeyName(), $item->getKey())
+            ->where($this->field(), $slug)
+            ->first();
     }
 
     protected function makeSlugUnique(Model $item): string
@@ -72,7 +88,7 @@ class Slug extends Field
         $i = 1;
 
         while (!$this->checkUnique($item, $slug)) {
-            $slug = $item->{$this->field()}.$this->separator.$i++;
+            $slug = $item->{$this->field()}.$this->getSeparator().$i++;
         }
 
         return $slug;
