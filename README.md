@@ -31,11 +31,11 @@ Everything is already ready for use in your projects, documentation has been cre
 I invite interested users to use and develop Moonshine together.
 
 <p align="center">
-<img src="https://moonshine.cutcode.dev/screenshots/main.png?v=1.50.0" alt="Main">
+<img src="https://moonshine.cutcode.dev/screenshots/main.png?v=new1.50.0" alt="Main">
 </p>
 
 <p align="center">
-<img src="https://moonshine.cutcode.dev/screenshots/login.png?v=1.50.0" alt="Login">
+<img src="https://moonshine.cutcode.dev/screenshots/login.png?v=new1.50.0" alt="Login">
 </p>
 
 ## Contributing
