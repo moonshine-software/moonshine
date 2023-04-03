@@ -16,7 +16,7 @@
             @apply lg:pointer-events-none lg:absolute lg:opacity-0;
         }
         .menu-inner-counter {
-            @apply lg:absolute lg:top-0.5 lg:-right-2 lg:max-w-[64px] lg:scale-90 lg:z-10;
+            @apply lg:absolute lg:top-0.5 lg:-right-2 lg:max-w-[64px] lg:scale-90;
         }
         .menu-inner-dropdown {
             .menu-inner-counter {
@@ -114,7 +114,7 @@
                 @apply grow truncate text-left;
             }
             &-counter {
-                @apply h-6 shrink-0 truncate rounded-md bg-purple px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:top-0.5 lg:-right-2 lg:max-w-[64px] lg:scale-90 xl:static xl:top-0 xl:-right-1 xl:max-w-[120px] xl:scale-100;
+                @apply h-6 shrink-0 truncate rounded-md bg-purple px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:top-0.5 lg:-right-2 lg:max-w-[64px] lg:scale-90 xl:static xl:top-0 xl:-right-1 xl:max-w-[120px] xl:scale-100 lg:z-10;
             }
             &-arrow {
                 @apply transition-transform;
