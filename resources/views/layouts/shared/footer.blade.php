@@ -8,6 +8,7 @@
             @foreach(config('moonshine.footer.nav') as $url=>$text)
                 <a href="{{ $url }}" class="text-2xs text-slate-500 hover:text-purple" target="_blank">{!! $text !!}</a>
             @endforeach
+            <a href="https://moonshine.cutcode.dev/" class="text-2xs text-slate-500 hover:text-purple" target="_blank">{!! __('Documentation') !!}</a>
         </nav>
     </div>
 </footer>
