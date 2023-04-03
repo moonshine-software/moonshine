@@ -86,7 +86,7 @@
             </x-moonshine::form>
 
             <p class="text-center text-2xs">
-                {{ config('moonshine::auth.footer', '') }}
+                {!! config('moonshine.auth.footer', '') !!}
             </p>
 
             <div class="authentication-footer">
