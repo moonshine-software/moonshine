@@ -139,6 +139,14 @@ document.addEventListener("alpine:init", () => {
         },
     }))
 
+    /* Tooltip */
+    Alpine.data('tooltip', (text, config = {}) => ({
+        tooltipInstance: null,
+        init() {
+            this.tooltipInstance = tippy(this.$el, { ...config, content: () => text })
+        },
+    }))
+
     /* Aside Navigation Tooltip */
     Alpine.data('navTooltip', () => ({
         tooltipInstance: null,
