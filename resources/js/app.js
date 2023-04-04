@@ -74,13 +74,13 @@ document.addEventListener("alpine:init", () => {
 
         toggleDropdown() {
             this.open = !this.open
-            this.visibilityClasses.map(cssClass => this.dropdownBody.classList.toggle(cssClass))
+            this.visibilityClasses.forEach(cssClass => this.dropdownBody.classList.toggle(cssClass))
             this.popperInstance.update()
         },
 
         closeDropdown() {
             this.open = false
-            this.visibilityClasses.map(cssClass => this.dropdownBody.classList.remove(cssClass))
+            this.visibilityClasses.forEach(cssClass => this.dropdownBody.classList.remove(cssClass))
         }
     }))
 
@@ -135,8 +135,8 @@ document.addEventListener("alpine:init", () => {
         init() {
             this.ref = this.$refs.select
             this.placeholder = this.ref.getAttribute('placeholder')
-            this.searchEnabled = this.ref.dataset.searchEnabled ? true : false
-            this.removeItemButton = this.ref.dataset.removeItemButton ? true : false
+            this.searchEnabled = !!this.ref.dataset.searchEnabled
+            this.removeItemButton = !!this.ref.dataset.removeItemButton
             this.choicesInstance = new Choices(this.ref, {
                 allowHTML: true,
                 position: 'bottom',
@@ -317,11 +317,7 @@ document.addEventListener("alpine:init", () => {
                 ids[i].value = values.join(";");
             }
 
-            if (all.checked || values.length) {
-                this.actionsOpen = true;
-            } else {
-                this.actionsOpen = false;
-            }
+            this.actionsOpen = !!(all.checked || values.length);
         }
     }))
 })

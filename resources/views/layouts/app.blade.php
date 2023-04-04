@@ -20,7 +20,7 @@
         </style>
 
         <script>
-            const translates = @js(__('moonshine::ui'))
+            const translates = @js(__('moonshine::ui'));
         </script>
     </head>
     <body x-cloak x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }">

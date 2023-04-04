@@ -32,5 +32,4 @@
 @import "pages/authentication";
 
 @import "tippy.js/dist/tippy";
-@import "choices.js/public/assets/styles/base";
 @import "choices.js/public/assets/styles/choices";
