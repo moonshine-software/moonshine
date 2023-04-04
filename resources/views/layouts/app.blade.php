@@ -3,10 +3,10 @@
     <head>
         @include('moonshine::layouts.shared.head')
 
-        <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-        <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+        <script src="{{ asset('vendor/moonshine/js/libs/popper.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('vendor/moonshine/js/libs/choices/choices.min.css') }}">
+        <script src="{{ asset('vendor/moonshine/js/libs/choices/choices.min.js') }}"></script>
+        <script src="{{ asset('vendor/moonshine/js/libs/tippy-bundle.umd.js') }}"></script>
 
         @vite(['resources/js/app.js'], 'vendor/moonshine')
 
