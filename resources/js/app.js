@@ -143,7 +143,7 @@ document.addEventListener("alpine:init", () => {
     Alpine.data('tooltip', (text, config = {}) => ({
         tooltipInstance: null,
         init() {
-            this.tooltipInstance = tippy(this.$el, { ...config, content: () => text })
+            this.tooltipInstance = tippy(this.$el, { ...config, content: text })
         },
     }))
 
