@@ -8,7 +8,7 @@
 @else
     <x-moonshine::form.input-wrapper
         :attributes="$field->attributes()->merge([
-            'x-show' => $field->showWhenState ? 'whenFields.'.$field->showWhenField . '==`'.$field->showWhenValue.'`' : 'true'
+            'x-show' => $field->hasShowWhen() ? 'whenFields.'.$field->showWhenField . '==`'.$field->showWhenValue.'`' : 'true'
         ])"
         label="{{ $field->label() }}"
         name="{{ $field->name() }}"

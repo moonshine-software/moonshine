@@ -108,7 +108,7 @@ final class Fields extends Collection
     public function whenFieldNames(): Fields
     {
         return $this->whenFields()->mapWithKeys(static function (Field $field) {
-            return [$field->showWhenField] = $field->showWhenField;
+            return [$field->showWhenField => $field->showWhenField];
         });
     }
 
