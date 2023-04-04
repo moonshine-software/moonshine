@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use JsonException;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
