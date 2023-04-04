@@ -13,17 +13,20 @@
     "dependencies": {
         "@alpinejs/mask": "^3.12.0",
         "@alpinejs/persist": "^3.12.0",
+        "@popperjs/core": "^2.11.7",
         "@tailwindcss/aspect-ratio": "^0.4.2",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.9",
         "@vitejs/plugin-legacy": "^4.0.1",
         "autoprefixer": "^10.4.14",
+        "choices.js": "^10.2.0",
         "concurrently": "^7.6.0",
         "postcss": "^8.4.21",
         "postcss-import": "^15.1.0",
         "postcss-nested": "^6.0.0",
         "prettier": "^2.8.4",
         "prettier-plugin-tailwindcss": "^0.2.4",
-        "tailwindcss": "^3.2.7"
+        "tailwindcss": "^3.2.7",
+        "tippy.js": "^6.3.7"
     }
 }
