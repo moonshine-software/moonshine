@@ -34,7 +34,7 @@ class MoonShineRequest extends FormRequest
 
     public function getResourceUri(): ?string
     {
-        if (config('moonshine.route.prefix', '') === '') {
+        if (trim(config('moonshine.route.prefix', ''), '/') === '') {
             return $this->segment(2);
         }
 

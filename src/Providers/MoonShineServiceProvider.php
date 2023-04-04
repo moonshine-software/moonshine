@@ -63,8 +63,9 @@ class MoonShineServiceProvider extends ServiceProvider
     {
         $this->app->bind(ExceptionHandler::class, function ($app) {
             $handler = new Handler($app[Container::class]);
+            $prefix = str_replace('/', '\/', config('moonshine.route.prefix', '/'));
 
-            if (preg_match('/^' . config('moonshine.route.prefix', '\/') . '/', $app['request']->path())) {
+            if (preg_match("/^$prefix/", $app['request']->path())) {
                 $handler->renderable(function (NotFoundHttpException $e) {
                     return response()->view('moonshine::errors.404', [
                         'code' => $e->getStatusCode(),
