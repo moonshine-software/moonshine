@@ -53,7 +53,7 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode
     /**
      * @throws JsonException
      */
-    public function indexViewValue(Model $item, bool $container = false): View
+    public function indexViewValue(Model $item, bool $container = false): string|false
     {
         $columns = [];
         $values = $item->{$this->field()};
@@ -74,7 +74,7 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode
         return view('moonshine::ui.table', [
             'columns' => $columns,
             'values' => $values,
-        ]);
+        ])->render();
     }
 
     public function exportViewValue(Model $item): string

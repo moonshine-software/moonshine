@@ -7,11 +7,11 @@
     'tbody',
     'tfoot',
 ])
-@if(isset($thead, $tbody))
+@if(isset($tbody) || (is_iterable($values) && count($values)))
 <!-- Table -->
 <div class="table-responsive">
     <table {{ $attributes->merge(['class' => 'table' . ($crudMode ? '-list' : '')]) }}>
-        <thead {{ $thead?->attributes }}>
+        <thead {{ isset($thead) ? $thead?->attributes : '' }}>
             <tr>
                 @if(is_array($columns))
                     @foreach($columns as $name => $label)
@@ -24,8 +24,8 @@
                 {{ $thead ?? '' }}
             </tr>
         </thead>
-        <tbody  {{ $tbody?->attributes }}>
-            @if(is_array($values))
+        <tbody  {{ isset($tbody) ? $tbody?->attributes : '' }}>
+            @if(is_iterable($values))
                 @foreach($values as $index => $data)
                     <tr>
                         @foreach($columns as $name => $label)
