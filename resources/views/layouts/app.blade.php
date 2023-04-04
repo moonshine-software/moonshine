@@ -3,11 +3,6 @@
     <head>
         @include('moonshine::layouts.shared.head')
 
-        <script src="{{ asset('vendor/moonshine/js/libs/popper.js') }}"></script>
-        <link rel="stylesheet" href="{{ asset('vendor/moonshine/js/libs/choices/choices.min.css') }}">
-        <script src="{{ asset('vendor/moonshine/js/libs/choices/choices.min.js') }}"></script>
-        <script src="{{ asset('vendor/moonshine/js/libs/tippy-bundle.umd.js') }}"></script>
-
         @vite(['resources/js/app.js'], 'vendor/moonshine')
 
         {!! app(\Leeto\MoonShine\Utilities\AssetManager::class)->css() !!}

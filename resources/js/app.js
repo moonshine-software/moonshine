@@ -5,6 +5,14 @@ import Alpine from 'alpinejs'
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
 
+import {createPopper} from "@popperjs/core"
+
+import tippy from 'tippy.js'
+window.tippy = tippy
+
+import Choices from 'choices.js'
+window.Choices = Choices
+
 import.meta.glob([
     '../images/**',
     '../fonts/**',
@@ -44,7 +52,7 @@ document.addEventListener("alpine:init", () => {
 
             const dropdownPlacement = this.$refs.dropdownEl.dataset.dropdownPlacement;
 
-            this.popperInstance = Popper.createPopper(this.dropdownBtn, this.dropdownBody, {
+            this.popperInstance = createPopper(this.dropdownBtn, this.dropdownBody, {
                 placement: dropdownPlacement ? dropdownPlacement : "auto",
                 modifiers: [
                     {
