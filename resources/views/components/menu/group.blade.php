@@ -4,7 +4,7 @@
 <li class="menu-inner-item"
     x-data="{ dropdown: {{ $item->isActive() ? 'true' : 'false' }} }"
 >
-    <button @click.prevent="dropdown = ! dropdown" class="menu-inner-button" :class="dropdown && '_is-active'" type="button">
+    <button x-data="navTooltip" @mouseenter="toggleTooltip()" @click.prevent="dropdown = ! dropdown" class="menu-inner-button" :class="dropdown && '_is-active'" type="button">
         {!! $item->getIcon(6, 'white') !!}
 
         <span class="menu-inner-text">{{ $item->label() }}</span>
