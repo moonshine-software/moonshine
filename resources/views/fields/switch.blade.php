@@ -6,7 +6,7 @@
         :onValue="$element->getOnValue()"
         :offValue="$element->getOffValue()"
         :@change="(($autoUpdate ?? false) ? 'updateColumn(`'.route('moonshine.update-column').'`, `'.$element->field().'`, `'.$item->getKey().'`, `'.str_replace('\\', '\\\\', get_class($item)).'`, $event.target.checked)' : 'true')"
-        :value="($element->getOnValue() == $element->formViewValue($item) ? '1' : '0')"
+        :value="($element->getOnValue() == $element->formViewValue($item) ? $element->getOnValue() : $element->getOffValue())"
         :checked="$element->getOnValue() == $element->formViewValue($item)"
     />
 </div>
