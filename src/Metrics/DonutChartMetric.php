@@ -11,8 +11,8 @@ class DonutChartMetric extends Metric
     protected array $values = [];
 
     protected array $assets = [
-        'https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.37.1/apexcharts.min.js',
-        '/vendor/moonshine/js/apexchart-config.js',
+        '/vendor/moonshine/libs/apexcharts/apexcharts.min.js',
+        '/vendor/moonshine/libs/apexcharts/apexcharts-config.js',
     ];
 
     /**
