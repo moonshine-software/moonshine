@@ -13,8 +13,8 @@ class LineChartMetric extends Metric
     protected array $colors = [];
 
     protected array $assets = [
-        '/vendor/moonshine/libs/apexcharts/apexcharts.min.js',
-        '/vendor/moonshine/libs/apexcharts/apexcharts-config.js',
+        'vendor/moonshine/libs/apexcharts/apexcharts.min.js',
+        'vendor/moonshine/libs/apexcharts/apexcharts-config.js',
     ];
 
     public function lines(): array

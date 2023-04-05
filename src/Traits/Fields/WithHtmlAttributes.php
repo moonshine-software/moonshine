@@ -173,7 +173,9 @@ trait WithHtmlAttributes
 
     public function getDefault(): ?string
     {
-        return old($this->nameDot(), $this->default);
+        $value = old($this->nameDot(), $this->default);
+
+        return is_array($value) ? null : $value;
     }
 
     public function disabled($condition = null): static
