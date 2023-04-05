@@ -5,7 +5,6 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Leeto\MoonShine\Fields\Field;
 
 class Slug extends Field
 {
@@ -61,8 +60,7 @@ class Slug extends Field
             $this->requestValue()
             : $this->generateSlug($item->{$this->getFrom()});
 
-        if ($this->isUnique())
-        {
+        if ($this->isUnique()) {
             $item->{$this->field()} = $this->makeSlugUnique($item);
         }
 
@@ -76,7 +74,7 @@ class Slug extends Field
 
     protected function checkUnique(Model $item, string $slug): bool
     {
-        return !DB::table($item->getTable())
+        return ! DB::table($item->getTable())
             ->whereNot($item->getKeyName(), $item->getKey())
             ->where($this->field(), $slug)
             ->first();
@@ -87,7 +85,7 @@ class Slug extends Field
         $slug = $item->{$this->field()};
         $i = 1;
 
-        while (!$this->checkUnique($item, $slug)) {
+        while (! $this->checkUnique($item, $slug)) {
             $slug = $item->{$this->field()}.$this->getSeparator().$i++;
         }
 

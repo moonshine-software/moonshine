@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Fields\Slug;
+use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Tests\TestCase;
 
 class SlugFieldTest extends TestCase
