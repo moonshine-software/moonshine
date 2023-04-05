@@ -8,7 +8,7 @@ use Leeto\MoonShine\Fields\Text;
 use Leeto\MoonShine\Fields\Slug;
 use Leeto\MoonShine\Tests\TestCase;
 
-class SlagFieldTest extends TestCase
+class SlugFieldTest extends TestCase
 {
     public function test_make(): void
     {
