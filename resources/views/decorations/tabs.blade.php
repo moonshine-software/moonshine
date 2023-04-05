@@ -1,6 +1,6 @@
 @if($element->tabs()->isNotEmpty())
     <!-- Tabs -->
-    <div class="tabs" x-data="{activeTab_{{ $element->id() }}: '{{ $element->tabs()->first()?->id() }}'}">
+    <div class="tabs mb-4" x-data="{activeTab_{{ $element->id() }}: '{{ $element->tabs()->first()?->id() }}'}">
         <!-- Tabs Buttons -->
         <ul class="tabs-list">
             @foreach($element->tabs() as $tab)
