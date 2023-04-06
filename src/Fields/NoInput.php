@@ -28,7 +28,7 @@ class NoInput extends Field
     {
         if (is_callable($color)) {
             $this->badgeColorCallback = $color;
-        } elseif (!is_null($color)) {
+        } elseif (! is_null($color)) {
             $this->badgeColor = $color;
         }
 
@@ -60,14 +60,14 @@ class NoInput extends Field
 
         if ($this->isBoolean) {
             return view('moonshine::ui.boolean', [
-                'value' => $value
+                'value' => $value,
             ])->render();
         }
 
         if ($this->isBadge) {
             return view('moonshine::ui.badge', [
                 'color' => $this->badgeColor,
-                'value' => $value
+                'value' => $value,
             ])->render();
         }
 
@@ -93,7 +93,7 @@ class NoInput extends Field
         }
 
         if ($this->isBoolean) {
-            if ((!$value && $this->hideFalse) || ($value && $this->hideTrue)) {
+            if ((! $value && $this->hideFalse) || ($value && $this->hideTrue)) {
                 return null;
             }
 
