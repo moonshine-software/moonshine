@@ -46,15 +46,4 @@ class SwitchBoolean extends Field
 
         return parent::readonly($condition);
     }
-
-    public function save(Model $item): Model
-    {
-        if ($this->requestValue() === false) {
-            $item->{$this->field()} = $this->offValue;
-
-            return $item;
-        }
-
-        return parent::save($item);
-    }
 }
