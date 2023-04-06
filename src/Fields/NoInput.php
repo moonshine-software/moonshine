@@ -33,7 +33,7 @@ class NoInput extends Field
     {
         if (is_callable($color)) {
             $this->badgeColorCallback = $color;
-        } elseif (!is_null($color)) {
+        } elseif (! is_null($color)) {
             $this->badgeColor = $color;
         }
 
@@ -128,7 +128,7 @@ class NoInput extends Field
         }
 
         if ($this->isBoolean) {
-            if ((!$value && $this->hideFalse) || ($value && $this->hideTrue)) {
+            if ((! $value && $this->hideFalse) || ($value && $this->hideTrue)) {
                 return null;
             }
 

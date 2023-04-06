@@ -2,7 +2,6 @@
 
 namespace Leeto\MoonShine\Fields\Spatie;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
