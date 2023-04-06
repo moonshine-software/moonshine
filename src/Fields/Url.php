@@ -19,6 +19,7 @@ class Url extends Field
     public function indexViewValue(Model $item, bool $container = true): View
     {
         return view('moonshine::ui.url', [
+            'href' => parent::indexViewValue($item, $container),
             'value' => parent::indexViewValue($item, $container),
         ]);
     }

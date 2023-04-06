@@ -16,6 +16,8 @@ class NoInput extends Field
 
     protected bool $isBoolean = false;
 
+    protected bool $isLink = false;
+
     protected string $badgeColor = 'gray';
 
     protected ?Closure $badgeColorCallback = null;
@@ -24,16 +26,20 @@ class NoInput extends Field
 
     protected bool $hideFalse = false;
 
+    protected string|Closure $linkHref = '';
+
+
     public function badge(string|Closure|null $color = null): static
     {
         if (is_callable($color)) {
             $this->badgeColorCallback = $color;
-        } elseif (! is_null($color)) {
+        } elseif (!is_null($color)) {
             $this->badgeColor = $color;
         }
 
         $this->isBadge = true;
         $this->isBoolean = false;
+        $this->isLink = false;
 
         return $this;
     }
@@ -45,6 +51,20 @@ class NoInput extends Field
 
         $this->isBadge = false;
         $this->isBoolean = true;
+        $this->isLink = false;
+
+        return $this;
+    }
+
+    public function link(string|Closure $link = '#', bool $blank = false): static
+    {
+
+        $this->isBadge = false;
+        $this->isBoolean = false;
+        $this->isLink = true;
+
+        $this->linkHref = $link;
+        $this->linkBlank = $blank;
 
         return $this;
     }
@@ -71,6 +91,21 @@ class NoInput extends Field
             ])->render();
         }
 
+        if ($this->isLink) {
+
+            $href = $this->linkHref;
+
+            if (is_callable($href)) {
+                $href = call_user_func($href, $item);
+            }
+
+            return view('moonshine::ui.url', [
+                'value' => $value,
+                'href' => $href,
+                'blank' => $this->linkBlank,
+            ])->render();
+        }
+
         return $value;
     }
 
@@ -93,13 +128,13 @@ class NoInput extends Field
         }
 
         if ($this->isBoolean) {
-            if ((! $value && $this->hideFalse) || ($value && $this->hideTrue)) {
+            if ((!$value && $this->hideFalse) || ($value && $this->hideTrue)) {
                 return null;
             }
 
-            return (bool)$value;
+            return (bool) $value;
         }
 
-        return (string)$value;
+        return (string) $value;
     }
 }

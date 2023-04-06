@@ -88,7 +88,7 @@ class Translatable extends Json
         return true;
     }
 
-    public function indexViewValue(Model $item, bool $container = false): View
+    public function indexViewValue(Model $item, bool $container = false): string|false
     {
         $columns = [];
         $values = collect($item->getTranslations($this->field()))
