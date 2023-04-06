@@ -96,7 +96,7 @@ class NoInput extends Field
             $href = $this->linkHref;
 
             if (is_callable($href)) {
-                $href = call_user_func($href, $item);
+                $href = $href($item);
             }
 
             return view('moonshine::ui.url', [
@@ -111,7 +111,7 @@ class NoInput extends Field
 
     public function formViewValue(Model $item): string|bool|null
     {
-        return $this->getValue($item);
+        return $this->indexViewValue($item);
     }
 
     public function exportViewValue(Model $item): string|bool|null

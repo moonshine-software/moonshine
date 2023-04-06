@@ -5,7 +5,7 @@
 ])
 @if($value)
     <div class="flex">
-        <div class="zoom-in mx-auto h-10 w-10 overflow-hidden rounded-md">
+        <div class="zoom-in h-10 w-10 overflow-hidden rounded-md">
             <img {{ $attributes->merge(['class' => 'h-full w-full object-cover']) }}
                  src="{{ $value }}"
                  alt="{{ $alt }}"
