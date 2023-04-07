@@ -5,8 +5,10 @@
     ])"
 >{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
 
-<script>
+<script type="module">
     var editor_config = {
+        skin: Alpine.store("darkMode").on ? 'oxide-dark' : 'oxide',
+        content_css: Alpine.store("darkMode").on ? 'dark' : 'default',
         path_absolute: "/",
         selector: 'textarea#tinyeditor_{{ $item->getKey() }}_{{ $element->id() }}',
         relative_urls: false,
