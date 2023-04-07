@@ -1,5 +1,6 @@
 <?php
 
+use Leeto\MoonShine\Exceptions\MoonShineNotFoundException;
 use Leeto\MoonShine\Models\MoonshineUser;
 
 return [
@@ -13,6 +14,7 @@ return [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
         'middleware' => ['web', 'moonshine'],
         'custom_page_slug' => 'custom_page',
+        'notFoundHandler' => MoonShineNotFoundException::class
     ],
 
     'auth' => [

@@ -61,22 +61,6 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(ExceptionHandler::class, function ($app) {
-            $handler = new Handler($app[Container::class]);
-            $prefix = str_replace('/', '\/', config('moonshine.route.prefix', '/'));
-
-            if (preg_match("/^$prefix/", $app['request']->path())) {
-                $handler->renderable(function (NotFoundHttpException $e) {
-                    return response()->view('moonshine::errors.404', [
-                        'code' => $e->getStatusCode(),
-                        'message' => $e->getMessage(),
-                    ])->withHeaders($e->getHeaders());
-                });
-            }
-
-            return $handler;
-        });
-
         if (config('moonshine.auth.enable', true)) {
             $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
         }

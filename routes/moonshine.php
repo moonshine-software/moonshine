@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Leeto\MoonShine\Exceptions\MoonShineNotFoundException;
 use Leeto\MoonShine\Http\Controllers\AttachmentController;
 use Leeto\MoonShine\Http\Controllers\AuthenticateController;
 use Leeto\MoonShine\Http\Controllers\CrudController;
@@ -54,4 +55,13 @@ Route::prefix(config('moonshine.route.prefix', ''))
             config('moonshine.route.custom_page_slug', 'custom_page').'/{alias}',
             CustomPageController::class
         )->name('custom_page');
+
+        Route::fallback(static function () {
+            $handler = config(
+                'moonshine.route.notFoundHandler',
+                MoonShineNotFoundException::class
+            );
+
+            throw new $handler();
+        });
     });
