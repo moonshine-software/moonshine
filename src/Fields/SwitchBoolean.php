@@ -24,7 +24,7 @@ class SwitchBoolean extends Field
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): View
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         $this->disabled(! $this->autoUpdate);
 
@@ -32,12 +32,12 @@ class SwitchBoolean extends Field
             'element' => $this,
             'autoUpdate' => $this->autoUpdate,
             'item' => $item,
-        ]);
+        ])->render();
     }
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
-        return $item->{$this->field()};
+        return (string) $item->{$this->field()};
     }
 
     public function readonly($condition = null): static

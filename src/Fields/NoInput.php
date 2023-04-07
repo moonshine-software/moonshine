@@ -74,7 +74,7 @@ class NoInput extends Field
         return $item;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string|bool|null
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         $value = $this->getValue($item, $container);
 
@@ -106,20 +106,20 @@ class NoInput extends Field
             ])->render();
         }
 
-        return $value;
+        return (string) $value;
     }
 
-    public function formViewValue(Model $item): string|bool|null
+    public function formViewValue(Model $item): string
     {
         return $this->indexViewValue($item);
     }
 
-    public function exportViewValue(Model $item): string|bool|null
+    public function exportViewValue(Model $item): string
     {
-        return $this->getValue($item);
+        return (string) $this->getValue($item);
     }
 
-    public function getValue(Model $item, bool $container = true): null|bool|string
+    public function getValue(Model $item, bool $container = true): string|bool
     {
         $value = parent::indexViewValue($item, $container);
 
@@ -129,12 +129,12 @@ class NoInput extends Field
 
         if ($this->isBoolean) {
             if ((! $value && $this->hideFalse) || ($value && $this->hideTrue)) {
-                return null;
+                return '';
             }
 
             return (bool) $value;
         }
 
-        return (string) $value;
+        return $value;
     }
 }

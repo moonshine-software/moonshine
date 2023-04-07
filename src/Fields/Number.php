@@ -31,19 +31,19 @@ class Number extends Field
         return $this->stars;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         if ($this->withStars()) {
             return view('moonshine::ui.rating', [
                 'value' => $item->{$this->field()},
-            ]);
+            ])->render();
         }
 
         return parent::indexViewValue($item, $container);
     }
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
-        return $item->{$this->field()};
+        return (string) $item->{$this->field()};
     }
 }

@@ -46,7 +46,7 @@ class HasMany extends Field implements
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = false): mixed
+    public function indexViewValue(Model $item, bool $container = false): string
     {
         if ($this->onlyCount) {
             return (string)$item->{$this->relation()}->count();
@@ -68,7 +68,7 @@ class HasMany extends Field implements
         return view('moonshine::ui.table', [
             'columns' => $columns,
             'values' => $values,
-        ]);
+        ])->render();
     }
 
     public function exportViewValue(Model $item): string

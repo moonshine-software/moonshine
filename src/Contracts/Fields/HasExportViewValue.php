@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 
 interface HasExportViewValue
 {
-    public function exportViewValue(Model $item): mixed;
+    public function exportViewValue(Model $item): string;
 }

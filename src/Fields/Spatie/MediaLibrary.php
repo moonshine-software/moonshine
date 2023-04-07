@@ -42,25 +42,25 @@ class MediaLibrary extends Field
         }
     }
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         if ($this->isMultiple()) {
             return view('moonshine::ui.image', [
                 'values' => $item->getMedia($this->field())
                     ->map(fn ($value) => $value->getUrl())
                     ->toArray(),
-            ]);
+            ])->render();
         }
 
         $url = $item->getFirstMediaUrl($this->field());
 
         if (empty($url)) {
-            return null;
+            return '';
         }
 
         return view('moonshine::ui.image', [
             'value' => $url,
-        ]);
+        ])->render();
     }
 
     public function formViewValue(Model $item): mixed

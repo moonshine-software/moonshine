@@ -9,12 +9,12 @@ use UnitEnum;
 
 class Enum extends Select
 {
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         $value = $item->{$this->field()};
 
         if (isset($this->values()[$value?->value])) {
-            return $this->values()[$value->value];
+            return (string) ($this->values()[$value->value] ?? '');
         }
 
         return parent::indexViewValue($item, $container);

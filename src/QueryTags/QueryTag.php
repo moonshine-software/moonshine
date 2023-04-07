@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\QueryTags;
 
+use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Leeto\MoonShine\Traits\Fields\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
@@ -19,7 +20,7 @@ final class QueryTag
 
     public function __construct(
         string $label,
-        protected Builder $builder,
+        protected Builder|Closure $builder,
     ) {
         $this->setLabel($label);
     }
@@ -31,6 +32,8 @@ final class QueryTag
 
     public function builder(): Builder
     {
-        return $this->builder;
+        return is_callable($this->builder)
+            ? call_user_func($this->builder)
+            : $this->builder;
     }
 }

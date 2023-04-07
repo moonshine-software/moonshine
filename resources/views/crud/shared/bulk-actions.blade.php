@@ -1,5 +1,9 @@
 @foreach($resource->bulkActions() as $index => $action)
-    <x-moonshine::form :action="$resource->route('actions.bulk', query: ['index' => $index])" method="POST">
+    <x-moonshine::form
+        :action="$resource->route('actions.bulk', query: ['index' => $index])"
+        :raw="true"
+        method="POST"
+    >
         @if($resource->isRelatable())
             <x-moonshine::form.input
                 type="hidden"
@@ -23,9 +27,9 @@
             value=""
         />
 
-        <x-slot:button type="submit" title="{{ $action->label() }}">
+        <x-moonshine::form.button type="submit" title="{{ $action->label() }}">
             {{ $action->getIcon(6) }}
-        </x-slot:button>
+        </x-moonshine::form.button>
     </x-moonshine::form>
 @endforeach
 
@@ -36,6 +40,7 @@
         <x-moonshine::form
             method="POST"
             action="{{ $resource->route('massDelete') }}"
+            :raw="true"
         >
             @method("delete")
 
@@ -62,9 +67,9 @@
                 value=""
             />
 
-            <x-slot:button type="submit" class="btn-pink">
+            <x-moonshine::form.button type="submit" class="btn-pink">
                 {{ trans('moonshine::ui.confirm') }}
-            </x-slot:button>
+            </x-moonshine::form.button>
         </x-moonshine::form>
 
         <x-slot name="outerHtml">

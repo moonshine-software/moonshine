@@ -234,7 +234,7 @@ abstract class Field implements ResourceRenderable, HasAssets, HasExportViewValu
         return $item->{$this->field()} ?? $this->getDefault();
     }
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         if ($this->hasRelationship() && ! $item->relationLoaded($this->relation())) {
             $item->load($this->relation());
@@ -245,20 +245,20 @@ abstract class Field implements ResourceRenderable, HasAssets, HasExportViewValu
         }
 
         if (is_callable($this->valueCallback())) {
-            return $this->valueCallback()($item);
+            return (string) $this->valueCallback()($item);
         }
 
         if ($this->hasRelationship()) {
             return $container ? view('moonshine::ui.badge', [
                 'color' => 'purple',
                 'value' => $item->{$this->resourceTitleField()} ?? false,
-            ]) : $item->{$this->resourceTitleField()} ?? false;
+            ])->render() : (string) ($item->{$this->resourceTitleField()} ?? '');
         }
 
-        return $item->{$this->field()} ?? '';
+        return (string) ($item->{$this->field()} ?? '');
     }
 
-    public function exportViewValue(Model $item): mixed
+    public function exportViewValue(Model $item): string
     {
         return $this->indexViewValue($item, false);
     }

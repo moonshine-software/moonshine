@@ -16,11 +16,11 @@ class Url extends Field
 
     protected static string $type = 'url';
 
-    public function indexViewValue(Model $item, bool $container = true): View
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         return view('moonshine::ui.url', [
             'href' => parent::indexViewValue($item, $container),
             'value' => parent::indexViewValue($item, $container),
-        ]);
+        ])->render();
     }
 }

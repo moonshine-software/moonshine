@@ -17,9 +17,8 @@ class Select extends Field
 
     protected static string $view = 'moonshine::fields.select';
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
-        return $this->values()[$item->{$this->field()}]
-            ?? parent::indexViewValue($item, $container);
+        return (string) ($this->values()[$item->{$this->field()}] ?? parent::indexViewValue($item, $container));
     }
 }

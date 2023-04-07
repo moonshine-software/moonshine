@@ -52,13 +52,13 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode
     /**
      * @throws JsonException
      */
-    public function indexViewValue(Model $item, bool $container = false): string|false
+    public function indexViewValue(Model $item, bool $container = false): string
     {
         $columns = [];
         $values = $item->{$this->field()};
 
         if (! $this->hasFields()) {
-            return json_encode($values, JSON_THROW_ON_ERROR);
+            return (string) json_encode($values, JSON_THROW_ON_ERROR);
         }
 
         if ($this->isKeyValue()) {

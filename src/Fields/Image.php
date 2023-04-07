@@ -18,7 +18,7 @@ class Image extends Field implements Fileable
 
     public static string $type = 'file';
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         if (! $item->{$this->field()}) {
             return '';
@@ -29,11 +29,11 @@ class Image extends Field implements Fileable
                 'values' => collect($item->{$this->field()})
                     ->map(fn ($value) => $this->path($value ?? ''))
                     ->toArray(),
-            ]);
+            ])->render();
         }
 
         return view('moonshine::ui.image', [
             'value' => $this->path($item->{$this->field()}),
-        ]);
+        ])->render();
     }
 }

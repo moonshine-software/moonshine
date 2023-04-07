@@ -87,7 +87,7 @@ class Translatable extends Json
         return true;
     }
 
-    public function indexViewValue(Model $item, bool $container = false): string|false
+    public function indexViewValue(Model $item, bool $container = false): string
     {
         $columns = [];
         $values = collect($item->getTranslations($this->field()))
@@ -101,7 +101,7 @@ class Translatable extends Json
         return view('moonshine::ui.table', [
             'columns' => $columns,
             'values' => $values,
-        ]);
+        ])->render();
     }
 
     public function exportViewValue(Model $item): string

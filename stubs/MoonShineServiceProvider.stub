@@ -14,12 +14,14 @@ class MoonShineServiceProvider extends ServiceProvider
     public function boot(): void
     {
         app(MoonShine::class)->menu([
-            MenuGroup::make(__('moonshine::ui.resource.system'), [
-                MenuItem::make(__('moonshine::ui.resource.admins_title'), new MoonShineUserResource())
+            MenuGroup::make('moonshine::ui.resource.system', [
+                MenuItem::make('moonshine::ui.resource.admins_title', new MoonShineUserResource())
+                    ->translatable()
                     ->icon('users'),
-                MenuItem::make(__('moonshine::ui.resource.role_title'), new MoonShineUserRoleResource())
+                MenuItem::make('moonshine::ui.resource.role_title', new MoonShineUserRoleResource())
+                    ->translatable()
                     ->icon('bookmark'),
-            ]),
+            ])->translatable(),
 
             MenuItem::make('Documentation', 'https://laravel.com')
                 ->badge(fn() => 'Check'),

@@ -31,7 +31,7 @@ class File extends Field implements Fileable
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): mixed
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         if (! $item->{$this->field()}) {
             return '';
@@ -46,6 +46,6 @@ class File extends Field implements Fileable
         return view('moonshine::components.files', [
             'files' => $files,
             'download' => $this->canDownload(),
-        ]);
+        ])->render();
     }
 }
