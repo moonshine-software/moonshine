@@ -25,8 +25,8 @@ class SlideFilter extends Filter
 
         return $values
             ? $query->where(function (Builder $q) use ($values) {
-                $q->where($this->fromField, '>=', $values[$this->fromField])
-                    ->where($this->toField, '<=', $values[$this->toField]);
+                $q->where($this->field(), '>=', $values[$this->fromField])
+                    ->where($this->field(), '<=', $values[$this->toField]);
             })
             : $query;
     }
