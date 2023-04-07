@@ -295,7 +295,7 @@ document.addEventListener("alpine:init", () => {
             }
 
             let checkboxes = this.$root.querySelectorAll('.tableActionRow');
-            let ids = this.$root.querySelectorAll('.actionsCheckedIds');
+            let ids = document.querySelectorAll('.actionsCheckedIds');
 
             let values = [];
 
