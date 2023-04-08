@@ -25,7 +25,8 @@ final class TinyMce extends Textarea
     public function getAssets(): array
     {
         return [
-            "https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/tinymce.min.js",
+            "vendor/moonshine/libs/tinymce/tinymce.min.js",
+            "https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/plugins.min.js",
         ];
     }
 

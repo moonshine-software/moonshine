@@ -15,7 +15,7 @@ trait WithConfirmation
 
     public function withConfirm(): self
     {
-        $this->confirmation  = true;
+        $this->confirmation = true;
 
         return $this;
     }
