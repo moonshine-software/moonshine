@@ -21,7 +21,7 @@ return [
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
     'close' => 'Close',
-    'confirm_delete' => 'Are you sure?',
+    'confirm_message' => 'Are you sure?',
     'back' => 'Back',
     'more' => 'More',
     'all_sections' => 'All sections',

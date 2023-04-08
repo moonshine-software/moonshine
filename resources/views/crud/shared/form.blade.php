@@ -24,24 +24,10 @@
         :resource="$resource"
     />
 
-    <x-slot:button class="form_submit_button">
-        {{ trans('moonshine::ui.save') }}
-    </x-slot:button>
-
-    @if($item->exists && !request('relatable_mode'))
-        <x-slot:buttons>
-            @foreach($resource->formActions() as $index => $action)
-                @if($action->isSee($item))
-                    <x-moonshine::link
-                        :href="$resource->route('actions.form', $item->getKey(), ['index' => $index])"
-                        :icon="$action->iconValue()"
-                    >
-                        {{ $action->label() }}
-                    </x-moonshine::link>
-                @endif
-            @endforeach
-        </x-slot:buttons>
-    @endif
+    @include('moonshine::crud.shared.form-actions', [
+        'item' => $item,
+        'resource' => $resource
+    ])
 </x-moonshine::form>
 
 @if($item->exists)

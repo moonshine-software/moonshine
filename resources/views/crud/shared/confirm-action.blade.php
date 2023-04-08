@@ -1,0 +1,22 @@
+<x-moonshine::modal title="{{ trans('moonshine::ui.confirm') }}">
+    <div class="mb-4">
+        {{ trans('moonshine::ui.confirm_message') }}
+    </div>
+
+    <x-moonshine::link
+        :href="$href"
+        :icon="$action->iconValue()"
+    >
+        {{ $action->label() }}
+    </x-moonshine::link>
+
+    <x-slot name="outerHtml">
+        <x-moonshine::link
+            :icon="$action->iconValue()"
+            @click.prevent="toggleModal"
+        >
+            {{ $action->label() }}
+        </x-moonshine::link>
+    </x-slot>
+
+</x-moonshine::modal>

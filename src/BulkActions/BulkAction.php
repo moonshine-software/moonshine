@@ -6,7 +6,9 @@ namespace Leeto\MoonShine\BulkActions;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Leeto\MoonShine\Traits\InDropdownOrLine;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithConfirmation;
 use Leeto\MoonShine\Traits\WithIcon;
 use Leeto\MoonShine\Traits\WithLabel;
 
@@ -15,6 +17,8 @@ final class BulkAction
     use Makeable;
     use WithIcon;
     use WithLabel;
+    use InDropdownOrLine;
+    use WithConfirmation;
 
     public function __construct(
         string $label,

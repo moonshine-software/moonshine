@@ -1,10 +1,32 @@
-@foreach($resource->itemActions() as $index => $action)
+@if(collect($resource->itemActions())->filter(fn ($action) => $action->inDropdown())->isNotEmpty())
+    <x-moonshine::dropdown>
+        <x-slot:toggler class="btn">
+            <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
+        </x-slot:toggler>
+
+        <ul class="dropdown-menu">
+            @foreach(collect($resource->itemActions())->filter(fn ($action) => $action->inDropdown()) as $index => $action)
+                <li class="dropdown-menu-item">
+                    @include('moonshine::crud.shared.item-action-item', [
+                        'item' => $item,
+                        'action' => $action,
+                        'resource' => $resource,
+                        'index' => $index
+                    ])
+                </li>
+            @endforeach
+        </ul>
+    </x-moonshine::dropdown>
+@endif
+
+@foreach(collect($resource->itemActions())->filter(fn ($action) => !$action->inDropdown())  as $index => $action)
     @if($action->isSee($item))
-        <x-moonshine::link
-            :href="$resource->route('actions.item', $item->getKey(), request()->routeIs('*.query-tag') ? ['index' => $index, 'redirect_back' => 1] : ['index' => $index])"
-            :icon="$action->iconValue()"
-            :title="$action->label()"
-        />
+        @include('moonshine::crud.shared.item-action-item', [
+            'item' => $item,
+            'action' => $action,
+            'resource' => $resource,
+            'index' => $index
+        ])
     @endif
 @endforeach
 
@@ -42,7 +64,7 @@
     <x-moonshine::modal
         title="{{ trans('moonshine::ui.deleting') }}"
     >
-        {{ trans('moonshine::ui.confirm_delete') }}
+        {{ trans('moonshine::ui.confirm_message') }}
 
         <x-moonshine::form
             method="POST"

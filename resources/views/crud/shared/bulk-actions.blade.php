@@ -1,41 +1,34 @@
-@foreach($resource->bulkActions() as $index => $action)
-    <x-moonshine::form
-        :action="$resource->route('actions.bulk', query: ['index' => $index])"
-        :raw="true"
-        method="POST"
-    >
-        @if($resource->isRelatable())
-            <x-moonshine::form.input
-                type="hidden"
-                name="relatable_mode"
-                value="1"
-            />
-        @endif
+@if(collect($resource->bulkActions())->filter(fn ($action) => $action->inDropdown())->isNotEmpty())
+<x-moonshine::dropdown>
+    <x-slot:toggler class="btn">
+        <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
+    </x-slot:toggler>
 
-        @if(request()->routeIs('*.query-tag'))
-            <x-moonshine::form.input
-                type="hidden"
-                name="redirect_back"
-                value="1"
-            />
-        @endif
+    <ul class="dropdown-menu">
+        @foreach(collect($resource->bulkActions())->filter(fn ($action) => $action->inDropdown()) as $index => $action)
+            <li class="dropdown-menu-item">
+                @include('moonshine::crud.shared.bulk-action-item', [
+                    'action' => $action,
+                    'resource' => $resource,
+                    'index' => $index
+                ])
+            </li>
+        @endforeach
+    </ul>
+</x-moonshine::dropdown>
+@endif
 
-        <x-moonshine::form.input
-            type="hidden"
-            name="ids"
-            class="actionsCheckedIds"
-            value=""
-        />
-
-        <x-moonshine::form.button type="submit" title="{{ $action->label() }}">
-            {{ $action->getIcon(6) }}
-        </x-moonshine::form.button>
-    </x-moonshine::form>
+@foreach(collect($resource->bulkActions())->filter(fn ($action) => !$action->inDropdown()) as $index => $action)
+   @include('moonshine::crud.shared.bulk-action-item', [
+        'action' => $action,
+        'resource' => $resource,
+        'index' => $index
+   ])
 @endforeach
 
 @if($resource->can('massDelete') && in_array('delete', $resource->getActiveActions()))
     <x-moonshine::modal title="{{ trans('moonshine::ui.deleting') }}">
-        {{ trans('moonshine::ui.confirm_delete') }}
+        {{ trans('moonshine::ui.confirm_message') }}
 
         <x-moonshine::form
             method="POST"

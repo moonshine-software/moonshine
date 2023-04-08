@@ -8,7 +8,9 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Leeto\MoonShine\Traits\HasCanSee;
+use Leeto\MoonShine\Traits\InDropdownOrLine;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithConfirmation;
 use Leeto\MoonShine\Traits\WithIcon;
 use Leeto\MoonShine\Traits\WithLabel;
 
@@ -18,6 +20,8 @@ final class FormAction
     use WithIcon;
     use HasCanSee;
     use WithLabel;
+    use InDropdownOrLine;
+    use WithConfirmation;
 
     protected ?string $redirectTo = null;
 

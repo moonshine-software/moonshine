@@ -7,7 +7,9 @@ namespace Leeto\MoonShine\ItemActions;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\HasCanSee;
+use Leeto\MoonShine\Traits\InDropdownOrLine;
 use Leeto\MoonShine\Traits\Makeable;
+use Leeto\MoonShine\Traits\WithConfirmation;
 use Leeto\MoonShine\Traits\WithIcon;
 use Leeto\MoonShine\Traits\WithLabel;
 
@@ -17,6 +19,8 @@ final class ItemAction
     use WithIcon;
     use HasCanSee;
     use WithLabel;
+    use InDropdownOrLine;
+    use WithConfirmation;
 
     public function __construct(
         string $label,
