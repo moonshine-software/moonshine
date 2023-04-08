@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-use Leeto\MoonShine\Traits\Fields\WithMask;
-
-class Email extends Field
+class Email extends Text
 {
-    use WithMask;
-
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'email';
+    protected string $type = 'email';
 }

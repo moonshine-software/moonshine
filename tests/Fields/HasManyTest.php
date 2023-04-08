@@ -49,44 +49,4 @@ class HasManyTest extends TestCase
 
         $this->assertTrue($field->isRemovable());
     }
-
-    /*public function test_parents()
-    {
-        $resource = new ResourceHasMany();
-
-        foreach ($resource->formComponents() as $component) {
-            if($component instanceof HasMany) {
-                $this->assertFalse($component->hasParent());
-
-                $this->assertEquals('roles[]', $component->name());
-
-                foreach ($component->getFields() as $field) {
-                    $this->assertTrue($field->hasParent());
-                    $this->assertEquals($component, $field->parent());
-
-                    $this->assertEquals('roles[${index0}][roles2]', $field->name());
-
-                    if($field->hasFields()) {
-                        foreach ($field->getFields() as $subField) {
-                            $this->assertTrue($subField->hasParent());
-                            $this->assertEquals($field, $subField->parent());
-
-                            if($subField->hasFields()) {
-                                $this->assertEquals('roles[${index0}][roles2][${index1}][roles3]', $subField->name());
-
-                                foreach ($subField->getFields() as $sField) {
-                                    $this->assertTrue($sField->hasParent());
-                                    $this->assertEquals($subField, $sField->parent());
-
-                                    $this->assertEquals('roles[${index0}][roles2][${index1}][roles3][${index2}][name]', $sField->name());
-                                }
-                            } else {
-                                $this->assertEquals('roles[${index0}][roles2][${index1}][name]', $subField->name());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }*/
 }

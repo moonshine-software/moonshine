@@ -10,7 +10,7 @@ use Throwable;
 
 class Tabs extends Decoration
 {
-    public static string $view = 'moonshine::decorations.tabs';
+    protected static string $view = 'moonshine::decorations.tabs';
 
     public function __construct(protected array $tabs = [])
     {

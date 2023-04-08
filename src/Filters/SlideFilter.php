@@ -11,9 +11,19 @@ class SlideFilter extends Filter
     use NumberTrait;
     use SlideTrait;
 
-    public static string $view = 'moonshine::filters.slide';
+    protected string $type = 'number';
 
-    protected array $attributes = ['min', 'max', 'step'];
+    protected static string $view = 'moonshine::filters.slide';
+
+    protected array $attributes = [
+        'type',
+        'min',
+        'max',
+        'step',
+        'disabled',
+        'readonly',
+        'required'
+    ];
 
     public function getQuery(Builder $query): Builder
     {

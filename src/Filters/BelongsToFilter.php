@@ -10,11 +10,7 @@ use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class BelongsToFilter extends Filter implements HasRelationship, BelongsToRelation
+class BelongsToFilter extends SelectFilter implements HasRelationship, BelongsToRelation
 {
-    use CanBeMultiple;
-    use Searchable;
     use WithRelationship;
-
-    public static string $view = 'moonshine::filters.select';
 }

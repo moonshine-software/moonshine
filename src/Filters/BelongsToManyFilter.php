@@ -25,7 +25,7 @@ class BelongsToManyFilter extends Filter implements HasRelationship, HasFields, 
     use WithRelationship;
     use CanBeMultiple;
 
-    public static string $view = 'moonshine::filters.belongs-to-many';
+    protected static string $view = 'moonshine::filters.belongs-to-many';
 
     protected bool $group = true;
 }

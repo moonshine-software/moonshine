@@ -7,7 +7,6 @@ namespace Leeto\MoonShine\Actions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Exceptions\ActionException;
 use Leeto\MoonShine\Fields\Field;
@@ -20,7 +19,7 @@ use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Reader\Exception\ReaderNotOpenedException;
 use Rap2hpoutre\FastExcel\FastExcel;
 
-class ImportAction extends Action implements ActionContract
+class ImportAction extends Action
 {
     use WithStorage;
     use WithQueue;

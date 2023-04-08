@@ -13,6 +13,9 @@ class ResourceCommand extends MoonShineCommand
 
     protected $description = 'Create resource';
 
+    /**
+     * @throws FileNotFoundException
+     */
     public function handle(): void
     {
         $this->createResource();

@@ -13,9 +13,7 @@ use Leeto\MoonShine\Traits\WithView;
 
 final class ResourcePreview extends DashboardItem
 {
-    use Makeable;
-    use WithView;
-    use WithLabel;
+    protected static string $view = 'moonshine::blocks.resource_preview';
 
     public function __construct(
         protected Resource $resource,
@@ -54,10 +52,5 @@ final class ResourcePreview extends DashboardItem
     public function label(): string
     {
         return $this->label ?? $this->resource->title();
-    }
-
-    public function getView(): string
-    {
-        return 'moonshine::blocks.resource_preview';
     }
 }

@@ -9,7 +9,7 @@ use Leeto\MoonShine\MoonShineRequest;
 
 final class Actions extends Collection
 {
-    public function mergeIfNotExists(Action $new): Actions
+    public function mergeIfNotExists(Action $new): self
     {
         return $this->when(
             ! $this->first(static fn (Action $action) => get_class($action) === get_class($new)),
@@ -17,7 +17,7 @@ final class Actions extends Collection
         );
     }
 
-    public function onlyVisible(): Actions
+    public function onlyVisible(): self
     {
         return $this->filter(
             fn (Action $action) => $action->isSee(app(MoonShineRequest::class))

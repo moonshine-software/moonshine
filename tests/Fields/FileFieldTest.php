@@ -18,6 +18,7 @@ class FileFieldTest extends TestCase
         $this->assertEquals('names', $field->id());
         $this->assertNull($field->relation());
         $this->assertEquals('Names', $field->label());
+        $this->assertEquals('file', $field->type());
     }
 
     public function test_allowed_extensions()

@@ -8,18 +8,28 @@ use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\NumberTrait;
 use Leeto\MoonShine\Traits\Fields\SlideTrait;
 
-class SlideField extends Field
+class SlideField extends Number
 {
-    use NumberTrait;
     use SlideTrait;
 
     protected static string $view = 'moonshine::fields.slide';
 
-    protected array $attributes = ['min', 'max', 'step'];
-
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
+        $from = $item->{$this->fromField};
+        $to = $item->{$this->toField};
+
+        if ($this->withStars()) {
+            $from = view('moonshine::ui.rating', [
+                'value' => $from,
+            ])->render();
+
+            $to = view('moonshine::ui.rating', [
+                'value' => $to,
+            ])->render();
+        }
+
+        return "$from - $to";
     }
 
     public function exportViewValue(Model $item): string

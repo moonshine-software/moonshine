@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Fields\ID;
-use Leeto\MoonShine\Decorations\Block;
 use Leeto\MoonShine\Actions\FiltersAction;
 
 class DummyResource extends Resource

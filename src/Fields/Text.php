@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
+use Leeto\MoonShine\Traits\Fields\WithExt;
 use Leeto\MoonShine\Traits\Fields\WithMask;
 
 class Text extends Field
 {
     use WithMask;
+    use WithExt;
 
-    public static string $view = 'moonshine::fields.input';
+    protected static string $view = 'moonshine::fields.input';
 
-    public static string $type = 'text';
+    protected string $type = 'text';
 }

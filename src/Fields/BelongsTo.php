@@ -10,12 +10,9 @@ use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class BelongsTo extends Field implements HasRelationship, BelongsToRelation
+class BelongsTo extends Select implements HasRelationship, BelongsToRelation
 {
-    use Searchable;
     use WithRelationship;
-
-    protected static string $view = 'moonshine::fields.select';
 
     public function isMultiple(): bool
     {

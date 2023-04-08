@@ -6,13 +6,11 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Password extends Field
+class Password extends Text
 {
-    public static string $view = 'moonshine::fields.input';
+    protected string $type = 'password';
 
-    public static string $type = 'password';
-
-    protected array $attributes = ['autocomplete'];
+    protected array $attributes = ['type', 'autocomplete', 'disabled', 'readonly', 'required'];
 
     public function exportViewValue(Model $item): string
     {

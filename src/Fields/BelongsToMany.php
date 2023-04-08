@@ -32,7 +32,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     use SelectTransform;
     use CanBeMultiple;
 
-    public static string $view = 'moonshine::fields.belongs-to-many';
+    protected static string $view = 'moonshine::fields.belongs-to-many';
 
     protected bool $group = true;
 
@@ -43,8 +43,6 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     protected string $treeParentColumn = '';
 
     protected array $ids = [];
-
-    protected bool $onlyCount = false;
 
     protected bool $onlySelected = false;
 
@@ -99,13 +97,6 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
 
             return $query->has($relation, '>');
         };
-
-        return $this;
-    }
-
-    public function onlyCount(): static
-    {
-        $this->onlyCount = true;
 
         return $this;
     }

@@ -9,15 +9,11 @@ use Illuminate\Support\Carbon;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
 use Leeto\MoonShine\Traits\Fields\WithMask;
 
-class Date extends Field
+class Date extends Text
 {
     use DateTrait;
-    use WithMask;
 
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'date';
-    protected string $inputFormat = 'Y-m-d';
+    protected string $type = 'date';
 
     public function formViewValue(Model $item): mixed
     {
@@ -43,14 +39,5 @@ class Date extends Field
         $value = parent::indexViewValue($item, $container);
 
         return $value ? date($this->format, strtotime((string) $value)) : '';
-    }
-
-    public function withTime(): static
-    {
-        self::$type = "datetime-local";
-
-        $this->inputFormat = "Y-m-d\TH:i";
-
-        return $this;
     }
 }

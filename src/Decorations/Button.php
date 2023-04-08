@@ -12,7 +12,7 @@ class Button extends Decoration
     use WithIcon;
     use LinkTrait;
 
-    public static string $view = 'moonshine::decorations.button';
+    protected static string $view = 'moonshine::decorations.button';
 
     public function __construct(string $label, string $link, bool $blank = false)
     {

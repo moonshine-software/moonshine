@@ -17,7 +17,7 @@
         ], $attributes->has('x-model') ? [
            ':name' => '`hidden_`+' . $attributes->get('x-bind:name'),
            ':value' => 'xValue',
-        ] : ['value' => $file]))->except(['id', 'name', 'x-bind:name', 'x-model', 'x-bind:id', 'accept', 'multiple']) }}
+        ] : ['value' => $file]))->except(['type', 'id', 'name', 'x-bind:name', 'x-model', 'x-bind:id', 'accept', 'multiple']) }}
     />
 
     @if(!$imageable)

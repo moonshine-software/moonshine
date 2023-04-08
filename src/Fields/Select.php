@@ -19,6 +19,9 @@ class Select extends Field
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        return (string) ($this->values()[$item->{$this->field()}] ?? parent::indexViewValue($item, $container));
+        return (string)(
+            $this->values()[$item->{$this->field()}]
+            ?? parent::indexViewValue($item, $container)
+        );
     }
 }

@@ -6,16 +6,13 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ID extends Field
+class ID extends Text
 {
-    public string $field = 'id';
+    protected string $field = 'id';
 
-    public string $label = 'ID';
+    protected string $label = 'ID';
 
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'hidden';
-
+    protected string $type = 'hidden';
 
     public function indexViewValue(Model $item, bool $container = true): string
     {

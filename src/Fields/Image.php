@@ -9,14 +9,9 @@ use Leeto\MoonShine\Contracts\Fields\Fileable;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
 
-class Image extends Field implements Fileable
+class Image extends File
 {
-    use CanBeMultiple;
-    use FileTrait;
-
-    public static string $view = 'moonshine::fields.image';
-
-    public static string $type = 'file';
+    protected static string $view = 'moonshine::fields.image';
 
     public function indexViewValue(Model $item, bool $container = true): string
     {

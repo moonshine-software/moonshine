@@ -8,13 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
 
-class DateRangeFilter extends Filter
+class DateRangeFilter extends DateFilter
 {
-    use DateTrait;
-
-    public static string $view = 'moonshine::filters.date-range';
-
-    public static string $type = 'date';
+    protected static string $view = 'moonshine::filters.date-range';
 
     protected bool $group = true;
 

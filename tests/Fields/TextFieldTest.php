@@ -18,5 +18,6 @@ class TextFieldTest extends TestCase
         $this->assertEquals('first_name', $field->id());
         $this->assertNull($field->relation());
         $this->assertEquals('First name', $field->label());
+        $this->assertEquals('text', $field->type());
     }
 }

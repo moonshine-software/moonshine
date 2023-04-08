@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class TinyMce extends Field
+final class TinyMce extends Textarea
 {
     protected static string $view = 'moonshine::fields.tinymce';
 

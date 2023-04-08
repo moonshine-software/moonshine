@@ -8,7 +8,7 @@ use Leeto\MoonShine\Traits\Makeable;
 
 final class TextBlock extends DashboardItem
 {
-    use Makeable;
+    protected static string $view = 'moonshine::blocks.text';
 
     public function __construct(
         string $label,
@@ -30,10 +30,5 @@ final class TextBlock extends DashboardItem
     public function name(string $index = null): string
     {
         return $this->id($index);
-    }
-
-    public function getView(): string
-    {
-        return 'moonshine::blocks.text';
     }
 }

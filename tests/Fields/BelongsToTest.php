@@ -22,6 +22,7 @@ class BelongsToTest extends TestCase
         $this->assertEquals('admin_role_id', $field->id());
         $this->assertEquals('adminRole', $field->relation());
         $this->assertEquals('Role', $field->label());
+        $this->assertEquals('', $field->type());
     }
 
     public function test_callback()

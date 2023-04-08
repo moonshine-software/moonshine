@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace Leeto\MoonShine\Traits;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
@@ -15,21 +15,15 @@ trait WithHtmlAttributes
 
     protected ?string $id = null;
 
-    protected static string $type = '';
-
-    protected ?string $default = null;
-
     protected bool $required = false;
 
     protected bool $disabled = false;
-
-    protected bool $nullable = false;
 
     protected bool $readonly = false;
 
     protected bool $hidden = false;
 
-    protected array $attributes = ['disabled', 'required', 'readonly'];
+    protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
 
     protected array $customAttributes = [];
 
@@ -99,7 +93,14 @@ trait WithHtmlAttributes
 
     public function type(): string
     {
-        return $this->hidden ? 'hidden' : static::$type;
+        return $this->hidden
+            ? 'hidden'
+            : $this->attributes()->get('type', '');
+    }
+
+    public function isFile(): bool
+    {
+        return $this->type() === 'file';
     }
 
     public function getAttribute(string $name): mixed
@@ -164,20 +165,6 @@ trait WithHtmlAttributes
         return $this->required;
     }
 
-    public function default(string $default): static
-    {
-        $this->default = $default;
-
-        return $this;
-    }
-
-    public function getDefault(): ?string
-    {
-        $value = old($this->nameDot(), $this->default);
-
-        return is_array($value) ? null : $value;
-    }
-
     public function disabled($condition = null): static
     {
         $this->disabled = Condition::boolean($condition, true);
@@ -200,7 +187,7 @@ trait WithHtmlAttributes
 
     public function isHidden(): bool
     {
-        return static::$type === 'hidden' || $this->hidden;
+        return $this->hidden || $this->attributes()->get('type') === 'hidden';
     }
 
     public function readonly($condition = null): static
@@ -214,22 +201,5 @@ trait WithHtmlAttributes
     public function isReadonly(): bool
     {
         return $this->readonly;
-    }
-
-    public function nullable($condition = null): static
-    {
-        $this->nullable = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function isNullable(): bool
-    {
-        return $this->nullable;
-    }
-
-    public function isFile(): bool
-    {
-        return $this->type() === 'file';
     }
 }

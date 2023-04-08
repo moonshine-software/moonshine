@@ -22,6 +22,7 @@ use Leeto\MoonShine\Decorations\Decoration;
 use Leeto\MoonShine\Exceptions\ResourceException;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Fields\Fields;
+use Leeto\MoonShine\Fields\FormElement;
 use Leeto\MoonShine\Filters\Filter;
 use Leeto\MoonShine\Filters\Filters;
 use Leeto\MoonShine\FormActions\FormAction;
@@ -556,7 +557,7 @@ abstract class Resource implements ResourceContract
 
     public function renderComponent(ResourceRenderable $component, Model $item, int $level = 0): View
     {
-        if (($component instanceof Field || $component instanceof Filter) && $component->hasRelationship()
+        if ($component instanceof FormElement && $component->hasRelationship()
             && ($component->belongToOne() || $component->manyToMany())) {
             $component->setValues($component->relatedValues($item));
         }

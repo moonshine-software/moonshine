@@ -7,12 +7,8 @@ namespace Leeto\MoonShine\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Leeto\MoonShine\Traits\Fields\BooleanTrait;
 
-class IsEmptyFilter extends Filter
+class IsEmptyFilter extends SwitchBooleanFilter
 {
-    use BooleanTrait;
-
-    public static string $view = 'moonshine::filters.switch';
-
     public function getQuery(Builder $query): Builder
     {
         return $this->requestValue()

@@ -7,7 +7,6 @@
 <select
     {{ $attributes->merge([
         'class' => 'form-select',
-        'type' => 'text',
         'x-data' => 'select',
         'x-ref' => 'select',
         'data-search-enabled' => $searchable,

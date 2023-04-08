@@ -14,6 +14,8 @@ trait WithRelationship
 
     protected ?Closure $valuesQuery = null;
 
+    protected bool $onlyCount = false;
+
     public function setValues(array $values): void
     {
         $this->values = $values;
@@ -72,5 +74,12 @@ trait WithRelationship
 
         return (string) $this->formViewValue($item) === $value
             || (! $this->formViewValue($item) && (string) $this->getDefault() === $value);
+    }
+
+    public function onlyCount(): static
+    {
+        $this->onlyCount = true;
+
+        return $this;
     }
 }

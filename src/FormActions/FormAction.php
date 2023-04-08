@@ -7,7 +7,7 @@ namespace Leeto\MoonShine\FormActions;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
-use Leeto\MoonShine\Traits\Fields\HasCanSee;
+use Leeto\MoonShine\Traits\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithIcon;
 use Leeto\MoonShine\Traits\WithLabel;

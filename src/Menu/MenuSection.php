@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Resources\CustomPage;
 use Leeto\MoonShine\Resources\Resource;
-use Leeto\MoonShine\Traits\Fields\HasCanSee;
+use Leeto\MoonShine\Traits\HasCanSee;
 use Leeto\MoonShine\Traits\WithIcon;
 use Leeto\MoonShine\Traits\WithLabel;
 

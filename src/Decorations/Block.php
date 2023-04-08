@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\Decorations;
 
 class Block extends Decoration
 {
-    public static string $view = 'moonshine::decorations.block';
+    protected static string $view = 'moonshine::decorations.block';
 }

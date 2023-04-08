@@ -14,6 +14,8 @@ class SlugFieldTest extends TestCase
     {
         $field = Text::make('First name', 'name');
 
+        $this->assertEquals('text', $field->type());
+
         $slug_1 = Slug::make('SLUG', 'slug')->from('name');
 
         $this->assertEquals($slug_1->getFrom(), $field->name());

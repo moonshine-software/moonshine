@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Traits\Fields;
 
+use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Helpers\Condition;
 
 trait ShowOrHide
@@ -214,5 +215,12 @@ trait ShowOrHide
     public function isOnDetail(): bool
     {
         return $this->showOnDetail;
+    }
+
+    public function canDisplayOnForm(Model $item): bool
+    {
+        return $this->isSee($item)
+            && $this->showOnForm
+            && ($item->exists ? $this->showOnUpdateForm : $this->showOnCreateForm);
     }
 }

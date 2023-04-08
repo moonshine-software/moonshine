@@ -14,5 +14,5 @@ class SelectFilter extends Filter
     use Searchable;
     use SelectTrait;
 
-    public static string $view = 'moonshine::filters.select';
+    protected static string $view = 'moonshine::filters.select';
 }

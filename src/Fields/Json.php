@@ -9,16 +9,19 @@ use JsonException;
 use Leeto\MoonShine\Contracts\Fields\HasFields;
 use Leeto\MoonShine\Contracts\Fields\HasFullPageMode;
 use Leeto\MoonShine\Contracts\Fields\HasJsonValues;
+use Leeto\MoonShine\Contracts\Fields\RemovableContract;
 use Leeto\MoonShine\Traits\Fields\WithFullPageMode;
 use Leeto\MoonShine\Traits\Fields\WithJsonValues;
+use Leeto\MoonShine\Traits\Removable;
 use Leeto\MoonShine\Traits\WithFields;
 use Throwable;
 
-class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode
+class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, RemovableContract
 {
     use WithJsonValues;
     use WithFields;
     use WithFullPageMode;
+    use Removable;
 
     protected static string $view = 'moonshine::fields.json';
 

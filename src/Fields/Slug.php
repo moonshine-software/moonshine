@@ -6,12 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class Slug extends Field
+class Slug extends Text
 {
-    public static string $view = 'moonshine::fields.input';
-
-    public static string $type = 'text';
-
     protected string $from;
 
     protected string $separator = '-';

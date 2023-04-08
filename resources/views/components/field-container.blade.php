@@ -12,9 +12,7 @@
         ])"
         label="{{ $field->label() }}"
         name="{{ $field->name() }}"
-        :expansion="$field->ext()"
     >
-
         @if($field->hasLink())
             <x-slot:beforeSlot>
                 <x-moonshine::link-native

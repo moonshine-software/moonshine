@@ -42,13 +42,4 @@ class BelongsToManyTest extends TestCase
             $this->assertEquals('Pivot', $inner->label());
         }
     }
-
-    public function test_removable()
-    {
-        $field = BelongsToMany::make('Names')->fields([
-            Text::make('Name'),
-        ])->removable();
-
-        $this->assertTrue($field->isRemovable());
-    }
 }

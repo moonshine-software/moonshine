@@ -10,11 +10,13 @@ use Leeto\MoonShine\Contracts\Fields\HasJsonValues;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasResourceMode;
 use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
+use Leeto\MoonShine\Contracts\Fields\RemovableContract;
 use Leeto\MoonShine\Traits\Fields\HasOneOrMany;
 use Leeto\MoonShine\Traits\Fields\WithFullPageMode;
 use Leeto\MoonShine\Traits\Fields\WithJsonValues;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 use Leeto\MoonShine\Traits\Fields\WithResourceMode;
+use Leeto\MoonShine\Traits\Removable;
 use Leeto\MoonShine\Traits\WithFields;
 
 class HasOne extends Field implements
@@ -23,7 +25,8 @@ class HasOne extends Field implements
     HasJsonValues,
     HasResourceMode,
     HasFullPageMode,
-    OneToOneRelation
+    OneToOneRelation,
+    RemovableContract
 {
     use WithFields;
     use WithJsonValues;
@@ -31,6 +34,7 @@ class HasOne extends Field implements
     use WithFullPageMode;
     use WithRelationship;
     use HasOneOrMany;
+    use Removable;
 
     protected static string $view = 'moonshine::fields.has-one';
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-class WYSIWYG extends Field
+class WYSIWYG extends Textarea
 {
     protected static string $view = 'moonshine::fields.wysiwyg';
 

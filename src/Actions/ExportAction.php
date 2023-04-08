@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Actions;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-use Leeto\MoonShine\Contracts\Actions\ActionContract;
 use Leeto\MoonShine\Contracts\Resources\ResourceContract;
 use Leeto\MoonShine\Exceptions\ActionException;
 use Leeto\MoonShine\Jobs\ExportActionJob;
@@ -20,7 +19,7 @@ use OpenSpout\Writer\Exception\WriterNotOpenedException;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExportAction extends Action implements ActionContract
+class ExportAction extends Action
 {
     use WithStorage;
     use WithQueue;

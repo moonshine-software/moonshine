@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Fields;
 
-final class CKEditor extends Field
+final class CKEditor extends Textarea
 {
     protected static string $view = 'moonshine::fields.ckeditor';
 

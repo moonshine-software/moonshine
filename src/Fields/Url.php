@@ -7,13 +7,9 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\WithMask;
 
-class Url extends Field
+class Url extends Text
 {
-    use WithMask;
-
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'url';
+    protected string $type = 'url';
 
     public function indexViewValue(Model $item, bool $container = true): string
     {

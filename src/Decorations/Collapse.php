@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Decorations;
 
 class Collapse extends Decoration
 {
-    public static string $view = 'moonshine::decorations.collapse';
+    protected static string $view = 'moonshine::decorations.collapse';
 
     protected bool $show = false;
 

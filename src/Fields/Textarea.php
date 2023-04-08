@@ -8,5 +8,5 @@ class Textarea extends Field
 {
     protected static string $view = 'moonshine::fields.textarea';
 
-    protected array $attributes = ['rows', 'cols'];
+    protected array $attributes = ['rows', 'cols', 'disabled', 'readonly', 'required'];
 }

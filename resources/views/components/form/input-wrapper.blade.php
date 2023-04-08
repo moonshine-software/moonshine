@@ -3,7 +3,6 @@
     'label' => '',
     'beforeLabel' => false,
     'inLabel' => false,
-    'expansion' => null,
     'beforeSlot',
     'afterSlot'
 ])
@@ -26,21 +25,13 @@
 
     {{ $beforeSlot ?? '' }}
 
-    @if($expansion) <div class="form-group form-group-expansion"> @endif
-
     {{ !$beforeLabel && !$inLabel ? $slot : '' }}
-
-    @if($expansion)
-        <span class="expansion">{{ $expansion }}</span>
-    @endif
-
-    @if($expansion) </div> @endif
 
     {{ $afterSlot ?? '' }}
 
     @error($name)
-    <x-moonshine::form.input-error>
-        {{ $message }}
-    </x-moonshine::form.input-error>
+        <x-moonshine::form.input-error>
+            {{ $message }}
+        </x-moonshine::form.input-error>
     @enderror
 </div>

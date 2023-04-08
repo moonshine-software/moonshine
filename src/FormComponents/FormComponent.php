@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\FormComponents;
 
 use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Traits\Fields\HasCanSee;
+use Leeto\MoonShine\Traits\HasCanSee;
 use Leeto\MoonShine\Traits\Makeable;
 use Leeto\MoonShine\Traits\WithLabel;
 use Leeto\MoonShine\Traits\WithView;

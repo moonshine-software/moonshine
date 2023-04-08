@@ -8,14 +8,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
 use Leeto\MoonShine\Traits\Fields\WithMask;
 
-class DateFilter extends Filter
+class DateFilter extends TextFilter
 {
     use DateTrait;
-    use WithMask;
 
-    public static string $view = 'moonshine::filters.date';
+    protected static string $view = 'moonshine::filters.date';
 
-    public static string $type = 'date';
+    protected string $type = 'date';
 
     public function getQuery(Builder $query): Builder
     {

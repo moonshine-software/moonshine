@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Decorations;
 
 class Flex extends Decoration
 {
-    public static string $view = 'moonshine::decorations.flex';
+    protected static string $view = 'moonshine::decorations.flex';
 
     protected string $itemsAlign = 'start';
 

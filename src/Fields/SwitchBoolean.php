@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Helpers\Condition;
 use Leeto\MoonShine\Traits\Fields\BooleanTrait;
 
-class SwitchBoolean extends Field
+class SwitchBoolean extends Checkbox
 {
-    use BooleanTrait;
-
     protected static string $view = 'moonshine::fields.switch';
 
     protected bool $autoUpdate = true;
@@ -21,6 +19,13 @@ class SwitchBoolean extends Field
         $this->autoUpdate = Condition::boolean($condition, true);
 
         return $this;
+    }
+
+    public function readonly($condition = null): static
+    {
+        $this->autoUpdate(false);
+
+        return parent::readonly($condition);
     }
 
     public function indexViewValue(Model $item, bool $container = true): string
@@ -37,12 +42,5 @@ class SwitchBoolean extends Field
     public function exportViewValue(Model $item): string
     {
         return (string) $item->{$this->field()};
-    }
-
-    public function readonly($condition = null): static
-    {
-        $this->autoUpdate(false);
-
-        return parent::readonly($condition);
     }
 }

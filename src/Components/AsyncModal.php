@@ -13,7 +13,7 @@ class AsyncModal extends Component
 
     public string $route;
 
-    public function __construct($id, $route)
+    public function __construct(string $id, string $route)
     {
         $this->id = (string) str($id)->slug('_');
         $this->route = $route;

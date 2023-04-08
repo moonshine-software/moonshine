@@ -6,11 +6,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Leeto\MoonShine\Traits\Fields\WithMask;
 
-class Phone extends Field
+class Phone extends Text
 {
-    use WithMask;
-
-    protected static string $view = 'moonshine::fields.input';
-
-    protected static string $type = 'tel';
+    protected string $type = 'tel';
 }

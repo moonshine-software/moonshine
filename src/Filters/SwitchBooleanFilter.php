@@ -10,5 +10,5 @@ class SwitchBooleanFilter extends Filter
 {
     use BooleanTrait;
 
-    public static string $view = 'moonshine::filters.switch';
+    protected static string $view = 'moonshine::filters.switch';
 }

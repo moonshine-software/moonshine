@@ -6,5 +6,5 @@ namespace Leeto\MoonShine\Decorations;
 
 class Grid extends Decoration
 {
-    public static string $view = 'moonshine::decorations.grid';
+    protected static string $view = 'moonshine::decorations.grid';
 }

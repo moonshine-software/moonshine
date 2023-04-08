@@ -6,7 +6,7 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Code extends Field
+class Code extends Textarea
 {
     protected static string $view = 'moonshine::fields.code';
 
@@ -14,7 +14,9 @@ class Code extends Field
 
     public bool $lineNumbers = false;
 
-    protected array $assets = ['https://unpkg.com/codeflask/build/codeflask.min.js'];
+    protected array $assets = [
+        'https://unpkg.com/codeflask/build/codeflask.min.js'
+    ];
 
     public function language(string $language): static
     {

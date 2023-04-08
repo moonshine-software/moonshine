@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace Leeto\MoonShine\Traits;
 
 use Closure;
 

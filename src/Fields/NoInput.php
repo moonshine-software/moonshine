@@ -10,7 +10,7 @@ use Leeto\MoonShine\Helpers\Condition;
 
 class NoInput extends Field
 {
-    public static string $view = 'moonshine::fields.no-input';
+    protected static string $view = 'moonshine::fields.no-input';
 
     protected bool $isBadge = false;
 

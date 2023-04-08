@@ -15,6 +15,9 @@ class InstallCommand extends MoonShineCommand
 
     protected $description = 'Install the moonshine package';
 
+    /**
+     * @throws FileNotFoundException
+     */
     public function handle(): void
     {
         $this->components->info('MoonShine installation ...');

@@ -2,7 +2,7 @@
     <div class="flex flex-row justify-start items-center">
         <div class="relative -mr-10 ml-2 w-8 h-8 rounded-full overflow-hidden">
             <x-moonshine::form.input
-                :attributes="$element->attributes()->merge([
+                :attributes="$element->attributes()->except('type')->merge([
                     'type' => 'color',
                 ])"
                 class="absolute -top-2 -left-2 w-16 h-16 rounded-full"

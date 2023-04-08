@@ -3,7 +3,6 @@
         'id' => $element->id(),
         'placeholder' => $element->label() ?? '',
         'name' => $element->name(),
-        'type' => $element->type(),
     ])"
     :nullable="$element->isNullable()"
     :searchable="$element->isSearchable()"

@@ -3,16 +3,19 @@
 namespace Leeto\MoonShine\Fields\Spatie;
 
 use Illuminate\Database\Eloquent\Model;
+use Leeto\MoonShine\Contracts\Fields\RemovableContract;
 use Leeto\MoonShine\Fields\Field;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
+use Leeto\MoonShine\Traits\Removable;
 
-class MediaLibrary extends Field
+class MediaLibrary extends Field implements RemovableContract
 {
     use CanBeMultiple;
+    use Removable;
 
-    public static string $view = 'moonshine::fields.image';
+    protected static string $view = 'moonshine::fields.image';
 
-    public static string $type = 'file';
+    protected string $type = 'file';
 
     public function save(Model $item): Model
     {

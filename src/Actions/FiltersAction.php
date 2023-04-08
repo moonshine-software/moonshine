@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Actions;
 
-use Leeto\MoonShine\Contracts\Actions\ActionContract;
-
-final class FiltersAction extends Action implements ActionContract
+final class FiltersAction extends Action
 {
     protected static string $view = 'moonshine::crud.shared.filters';
 

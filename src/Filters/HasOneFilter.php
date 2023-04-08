@@ -11,13 +11,9 @@ use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
-class HasOneFilter extends Filter implements HasRelationship, OneToOneRelation
+class HasOneFilter extends SelectFilter implements HasRelationship, OneToOneRelation
 {
-    use CanBeMultiple;
-    use Searchable;
     use WithRelationship;
-
-    public static string $view = 'moonshine::filters.select';
 
     public function getQuery(Builder $query): Builder
     {

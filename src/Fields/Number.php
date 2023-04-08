@@ -7,15 +7,21 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Traits\Fields\NumberTrait;
 
-class Number extends Field
+class Number extends Text
 {
     use NumberTrait;
 
-    protected static string $view = 'moonshine::fields.input';
+    protected string $type = 'number';
 
-    protected static string $type = 'number';
-
-    protected array $attributes = ['min', 'max', 'step'];
+    protected array $attributes = [
+        'type',
+        'min',
+        'max',
+        'step',
+        'disabled',
+        'readonly',
+        'required'
+    ];
 
     protected bool $stars = false;
 
@@ -44,6 +50,6 @@ class Number extends Field
 
     public function exportViewValue(Model $item): string
     {
-        return (string) $item->{$this->field()};
+        return (string)$item->{$this->field()};
     }
 }

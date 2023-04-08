@@ -6,42 +6,11 @@ namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasAssets;
 use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Traits\Fields\FormElement;
-use Leeto\MoonShine\Traits\Fields\HasCanSee;
-use Leeto\MoonShine\Traits\Fields\ShowWhen;
-use Leeto\MoonShine\Traits\Fields\WithHtmlAttributes;
-use Leeto\MoonShine\Traits\Fields\XModel;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithAssets;
-use Leeto\MoonShine\Traits\WithView;
-use Leeto\MoonShine\Utilities\AssetManager;
+use Leeto\MoonShine\Fields\FormElement;
 
-abstract class Filter implements ResourceRenderable, HasAssets, HasFormViewValue
+abstract class Filter extends FormElement implements HasFormViewValue
 {
-    use FormElement;
-    use Makeable;
-    use ShowWhen;
-    use WithAssets;
-    use WithHtmlAttributes;
-    use WithView;
-    use XModel;
-    use HasCanSee;
-
-    protected function afterMake(): void
-    {
-        if ($this->getAssets()) {
-            app(AssetManager::class)->add($this->getAssets());
-        }
-    }
-
-    public function name(string $index = null): string
-    {
-        return $this->prepareName($index, 'filters');
-    }
-
     public function getQuery(Builder $query): Builder
     {
         if ($this->hasRelationship()) {
@@ -65,6 +34,11 @@ abstract class Filter implements ResourceRenderable, HasAssets, HasFormViewValue
         return $this->requestValue() !== false
             ? $query->where($this->field(), $this->requestValue())
             : $query;
+    }
+
+    public function name(string $index = null): string
+    {
+        return $this->prepareName($index, 'filters');
     }
 
     public function formViewValue(Model $item): mixed

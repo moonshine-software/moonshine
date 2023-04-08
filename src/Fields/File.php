@@ -6,22 +6,28 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\Fileable;
+use Leeto\MoonShine\Contracts\Fields\RemovableContract;
 use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
 use Leeto\MoonShine\Traits\Fields\FileTrait;
+use Leeto\MoonShine\Traits\Removable;
 
-class File extends Field implements Fileable
+class File extends Field implements Fileable, RemovableContract
 {
     use CanBeMultiple;
     use FileTrait;
+    use Removable;
 
     protected static string $view = 'moonshine::fields.file';
 
-    protected static string $type = 'file';
+    protected string $type = 'file';
 
     protected string $accept = '*/*';
 
     protected array $attributes = [
+        'type',
         'accept',
+        'required',
+        'disabled'
     ];
 
     public function accept(string $value): static
