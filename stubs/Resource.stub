@@ -3,6 +3,7 @@
 namespace {namespace};
 
 use Illuminate\Database\Eloquent\Model;
+use {model-namespace};
 
 use Leeto\MoonShine\Resources\Resource;
 use Leeto\MoonShine\Fields\ID;
@@ -10,7 +11,7 @@ use Leeto\MoonShine\Actions\FiltersAction;
 
 class DummyResource extends Resource
 {
-	public static string $model = 'DummyModel';
+	public static string $model = {model}::class;
 
 	public static string $title = 'DummyTitle';
 

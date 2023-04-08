@@ -43,7 +43,8 @@ class ResourceCommand extends MoonShineCommand
 
         $this->copyStub('Resource', $resource, [
             '{namespace}' => MoonShine::namespace('\Resources'),
-            'DummyModel' => $model,
+            '{model-namespace}' => $model,
+            '{model}' => class_basename($model),
             'DummyTitle' => $title,
             'Dummy' => $name,
         ]);
