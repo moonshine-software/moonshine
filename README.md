@@ -40,7 +40,7 @@ I invite interested users to use and develop Moonshine together.
 
 ## Contributing
 
-Thank you for contributing in the project, more information in the official guide [Documentation](https://moonshine.cutcode.dev/contribution).
+Thank you for contributing in the project, more information in the official guide [Documentation](https://moonshine.cutcode.dev/section/contribution).
 
 ## License
 
