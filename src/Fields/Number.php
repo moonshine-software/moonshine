@@ -20,7 +20,7 @@ class Number extends Text
         'step',
         'disabled',
         'readonly',
-        'required'
+        'required',
     ];
 
     protected bool $stars = false;

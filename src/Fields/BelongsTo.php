@@ -7,7 +7,6 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use Leeto\MoonShine\Traits\Fields\Searchable;
 use Leeto\MoonShine\Traits\Fields\WithRelationship;
 
 class BelongsTo extends Select implements HasRelationship, BelongsToRelation

@@ -22,7 +22,7 @@ class SlideFilter extends Filter
         'step',
         'disabled',
         'readonly',
-        'required'
+        'required',
     ];
 
     public function getQuery(Builder $query): Builder

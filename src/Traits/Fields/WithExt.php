@@ -17,7 +17,7 @@ trait WithExt
 
     public function hasExt(): bool
     {
-        return !is_null($this->ext);
+        return ! is_null($this->ext);
     }
 
     public function ext(): ?string

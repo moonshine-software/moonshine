@@ -40,7 +40,7 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
 
     public function formViewValue(Model $item): mixed
     {
-        if ($this->hasRelationship() && !$item->relationLoaded($this->relation())) {
+        if ($this->hasRelationship() && ! $item->relationLoaded($this->relation())) {
             $item->load($this->relation());
         }
 
@@ -61,7 +61,7 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        if ($this->hasRelationship() && !$item->relationLoaded($this->relation())) {
+        if ($this->hasRelationship() && ! $item->relationLoaded($this->relation())) {
             $item->load($this->relation());
         }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Traits\Fields\BooleanTrait;
 
 class IsEmptyFilter extends SwitchBooleanFilter
 {

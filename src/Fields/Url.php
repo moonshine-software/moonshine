@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\Fields\WithMask;
 
 class Url extends Text
 {

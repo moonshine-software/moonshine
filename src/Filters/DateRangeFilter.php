@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
-use Leeto\MoonShine\Traits\Fields\DateTrait;
 
 class DateRangeFilter extends DateFilter
 {

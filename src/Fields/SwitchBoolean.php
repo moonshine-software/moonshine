@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Leeto\MoonShine\Helpers\Condition;
-use Leeto\MoonShine\Traits\Fields\BooleanTrait;
 
 class SwitchBoolean extends Checkbox
 {

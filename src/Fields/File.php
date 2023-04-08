@@ -27,7 +27,7 @@ class File extends Field implements Fileable, RemovableContract
         'type',
         'accept',
         'required',
-        'disabled'
+        'disabled',
     ];
 
     public function accept(string $value): static

@@ -6,7 +6,6 @@ namespace Leeto\MoonShine\Tests\Fields;
 
 use Leeto\MoonShine\Fields\HasMany;
 use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Tests\Examples\ResourceHasMany;
 use Leeto\MoonShine\Tests\TestCase;
 
 class HasManyTest extends TestCase

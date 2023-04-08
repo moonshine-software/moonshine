@@ -7,9 +7,6 @@ namespace Leeto\MoonShine\Dashboard;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Leeto\MoonShine\Resources\Resource;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithLabel;
-use Leeto\MoonShine\Traits\WithView;
 
 final class ResourcePreview extends DashboardItem
 {

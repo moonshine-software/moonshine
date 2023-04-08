@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leeto\MoonShine\Dashboard;
 
-use Leeto\MoonShine\Traits\Makeable;
-
 final class TextBlock extends DashboardItem
 {
     protected static string $view = 'moonshine::blocks.text';

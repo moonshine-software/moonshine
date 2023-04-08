@@ -7,7 +7,6 @@ namespace Leeto\MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Leeto\MoonShine\Traits\Fields\DateTrait;
-use Leeto\MoonShine\Traits\Fields\WithMask;
 
 class Date extends Text
 {
