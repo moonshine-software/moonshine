@@ -70,7 +70,7 @@ input[type="number"] {
             @apply rounded-r-none;
         }
         .expansion {
-            @apply rounded-none border border-gray-300 bg-slate-100 py-2 px-3 text-2xs text-slate-600 shadow-sm first:rounded-l-md last:rounded-r-md dark:border-dark-300 dark:bg-dark-900/20 dark:text-slate-400 [&:not(:first-child)]:border-l-transparent [&:not(:last-child)]:border-r-transparent;
+            @apply rounded-none border border-gray-300 bg-slate-100 py-2 px-3 text-2xs text-slate-600 shadow-sm first:rounded-l-md last:rounded-r-md dark:border-dark-300 dark:bg-dark-900/20 dark:text-slate-400 [&:not(:first-child)]:border-l-transparent;
             ~ .form-input {
                 @apply rounded-l-none rounded-r-md;
             }
@@ -140,7 +140,7 @@ input[type="number"] {
 .form-select,
 .form-multiselect,
 .form-file-upload {
-    @apply mb-4 block w-full rounded-md border border-gray-300 text-2xs outline-none transition-colors duration-200 placeholder:text-2xs placeholder:text-gray-400 focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-70 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-2xs disabled:text-gray-400 dark:border-dark-300 dark:bg-dark-800 dark:placeholder:text-gray-500 dark:focus:ring-dark-100 dark:focus:ring-opacity-30 dark:disabled:bg-dark-700 dark:disabled:text-gray-500;
+    @apply mb-4 block w-full rounded-md border border-gray-300 text-2xs outline-none transition-colors duration-200 placeholder:text-2xs placeholder:text-gray-400 focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-70 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-2xs disabled:text-gray-400 read-only:bg-gray-100 dark:border-dark-300 dark:bg-dark-800 dark:placeholder:text-gray-500 dark:focus:ring-dark-100 dark:focus:ring-opacity-30 dark:disabled:bg-dark-700 dark:disabled:text-gray-500 dark:read-only:bg-dark-700;
 
     /* Invalid field */
     &.form-invalid {
