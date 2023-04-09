@@ -13,8 +13,8 @@
 </p>
 
 #### [Documentation](https://moonshine.cutcode.dev)
-#### [Documentation repository](https://github.com/lee-to/moonshine-doc)
-#### [Demo project](https://github.com/CutCodeRu/moonshine-demo-project)
+#### [Documentation repository](https://github.com/moonshine-software/doc)
+#### [Demo project](https://github.com/moonshine-software/demo-project)
 
 #### Hello Laravel user!
 
