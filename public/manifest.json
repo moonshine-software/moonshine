@@ -3,21 +3,21 @@
     "file": "fonts/Gilroy-Black.woff2",
     "src": "resources/fonts/Gilroy-Black.woff2"
   },
-  "resources/fonts/Gilroy-Bold.woff2": {
-    "file": "fonts/Gilroy-Bold.woff2",
-    "src": "resources/fonts/Gilroy-Bold.woff2"
-  },
   "resources/fonts/Gilroy-Medium.woff2": {
     "file": "fonts/Gilroy-Medium.woff2",
     "src": "resources/fonts/Gilroy-Medium.woff2"
   },
-  "resources/fonts/Gilroy-Regular.woff2": {
-    "file": "fonts/Gilroy-Regular.woff2",
-    "src": "resources/fonts/Gilroy-Regular.woff2"
-  },
   "resources/fonts/Gilroy-SemiBold.woff2": {
     "file": "fonts/Gilroy-SemiBold.woff2",
     "src": "resources/fonts/Gilroy-SemiBold.woff2"
+  },
+  "resources/fonts/Gilroy-Bold.woff2": {
+    "file": "fonts/Gilroy-Bold.woff2",
+    "src": "resources/fonts/Gilroy-Bold.woff2"
+  },
+  "resources/fonts/Gilroy-Regular.woff2": {
+    "file": "fonts/Gilroy-Regular.woff2",
+    "src": "resources/fonts/Gilroy-Regular.woff2"
   },
   "resources/images/logo-small.svg": {
     "file": "assets/logo-small.svg",
@@ -27,16 +27,16 @@
     "file": "assets/logo.svg",
     "src": "resources/images/logo.svg"
   },
+  "resources/js/app.js": {
+    "file": "js/moonshine.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "css/moonshine.css"
+    ]
+  },
   "resources/js/app.css": {
     "file": "css/moonshine.css",
     "src": "resources/js/app.css"
-  },
-  "resources/js/app.js": {
-    "css": [
-      "css/moonshine.css"
-    ],
-    "file": "js/moonshine.js",
-    "isEntry": true,
-    "src": "resources/js/app.js"
   }
 }

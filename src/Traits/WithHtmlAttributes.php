@@ -140,7 +140,7 @@ trait WithHtmlAttributes
 
     public function customAttributes(array $attributes): static
     {
-        $this->customAttributes = $attributes;
+        $this->customAttributes = array_merge($this->customAttributes, $attributes);
 
         return $this;
     }
