@@ -72,21 +72,7 @@
         >
             @method("delete")
 
-            @if($resource->isRelatable())
-                <x-moonshine::form.input
-                    type="hidden"
-                    name="relatable_mode"
-                    value="1"
-                />
-            @endif
-
-            @if(request()->routeIs('*.query-tag'))
-                <x-moonshine::form.input
-                    type="hidden"
-                    name="redirect_back"
-                    value="1"
-                />
-            @endif
+            @include('moonshine::crud.shared.form-hidden', ['resource' => $resource])
 
             <x-slot:button type="submit" class="btn-pink">
                 {{ trans('moonshine::ui.confirm') }}

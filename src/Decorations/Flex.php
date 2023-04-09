@@ -8,9 +8,9 @@ class Flex extends Decoration
 {
     protected static string $view = 'moonshine::decorations.flex';
 
-    protected string $itemsAlign = 'start';
+    protected string $itemsAlign = 'center';
 
-    protected string $justifyAlign = 'between';
+    protected string $justifyAlign = 'center';
 
     protected bool $withoutSpace = false;
 

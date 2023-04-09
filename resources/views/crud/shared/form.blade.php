@@ -6,13 +6,7 @@
     method="POST"
     x-on:submit.prevent="{{ $resource->isPrecognition() ? 'precognition($event.target)' : '$event.target.submit()' }}"
 >
-    @if(request('relatable_mode'))
-        <x-moonshine::form.input
-            type="hidden"
-            name="relatable_mode"
-            value="1"
-        />
-    @endif
+    @include('moonshine::crud.shared.form-hidden', ['resource' => $resource])
 
     @if($item->exists)
         @method('PUT')
