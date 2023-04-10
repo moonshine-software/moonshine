@@ -147,14 +147,14 @@ final class Fields extends Collection
     public function withoutCanBeRelatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => !$field->canBeResourceMode())
+            ->filter(static fn (Field $field) => ! $field->canBeResourceMode())
             ->values();
     }
 
     public function withoutRelatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => !$field->isResourceModeField())
+            ->filter(static fn (Field $field) => ! $field->isResourceModeField())
             ->values();
     }
 
