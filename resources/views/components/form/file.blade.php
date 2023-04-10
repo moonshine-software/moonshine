@@ -12,10 +12,18 @@
     />
 
     @if($attributes->has('x-model') || array_filter((array) $files))
-        <div class="dropzone" @if($attributes->has('x-model')) x-show="Object.keys({{ $attributes->get('x-model') }}).length" @endif>
+        <div class="dropzone"
+             @if($attributes->has('x-model'))
+                @if($attributes->get('multiple'))
+                    x-show="Object.keys({{ $attributes->get('x-model') }}).length"
+                @else
+                    x-show="{{ $attributes->get('x-model') }}"
+                @endif
+            @endif
+        >
             <div class="dropzone-items"
                  @if($attributes->has('x-model'))
-                     x-data="{xValues: {{ $attributes->get('x-model', '') }}}"
+                     x-data="{xValues: {{ $attributes->get('multiple') ? $attributes->get('x-model', '[]') : $attributes->get('x-model', '') . '.split(" ")' }}}"
                 @endif
             >
                 @if($attributes->has('x-model'))

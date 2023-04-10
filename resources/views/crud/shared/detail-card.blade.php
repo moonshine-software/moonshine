@@ -13,7 +13,12 @@
     </table>
 </x-moonshine::box>
 
-
 @if(!$resource->isPreviewMode())
     @include("moonshine::crud.shared.detail-card-actions", ["item" => $item, "resource" => $resource])
 @endif
+
+@foreach($resource->getFields()->relatable() as $field)
+    @if($field->canDisplayOnForm($item))
+        {{ $resource->renderComponent($field, $item) }}
+    @endif
+@endforeach
