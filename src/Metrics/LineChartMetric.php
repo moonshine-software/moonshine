@@ -25,7 +25,7 @@ class LineChartMetric extends Metric
     public function line(array $line, string|array $color = '#7843E9'): static
     {
         $this->lines[] = $line;
-        
+
         if(is_string($color)) {
             $this->colors[] = $color;
         } else {
