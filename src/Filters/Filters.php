@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Filters;
+namespace MoonShine\Filters;
 
 use Illuminate\Support\Collection;
 use Throwable;

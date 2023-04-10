@@ -1,7 +1,7 @@
 @foreach($components as $fieldOrDecoration)
-    @if($fieldOrDecoration instanceof \Leeto\MoonShine\Decorations\Decoration)
+    @if($fieldOrDecoration instanceof \MoonShine\Decorations\Decoration)
         {{ $resource->renderComponent($fieldOrDecoration, $item) }}
-    @elseif($fieldOrDecoration instanceof \Leeto\MoonShine\Fields\Field
+    @elseif($fieldOrDecoration instanceof \MoonShine\Fields\Field
         && $fieldOrDecoration->canDisplayOnForm($item)
         && !$fieldOrDecoration->isResourceModeField()
     )

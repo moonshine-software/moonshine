@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Decorations;
+namespace MoonShine\Decorations;
 
-use Leeto\MoonShine\Contracts\Decorations\FieldsDecoration;
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithFields;
-use Leeto\MoonShine\Traits\WithLabel;
-use Leeto\MoonShine\Traits\WithView;
+use MoonShine\Contracts\Decorations\FieldsDecoration;
+use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithFields;
+use MoonShine\Traits\WithLabel;
+use MoonShine\Traits\WithView;
 
 abstract class Decoration implements ResourceRenderable, FieldsDecoration
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits;
+namespace MoonShine\Traits;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\View\ComponentAttributeBag;
-use Leeto\MoonShine\Helpers\Condition;
+use MoonShine\Helpers\Condition;
 
 trait WithHtmlAttributes
 {

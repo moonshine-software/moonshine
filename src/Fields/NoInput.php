@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Helpers\Condition;
+use MoonShine\Helpers\Condition;
 
 class NoInput extends Field
 {

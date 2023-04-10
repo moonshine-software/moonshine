@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Actions;
+namespace MoonShine\Actions;
 
-use Leeto\MoonShine\Contracts\Actions\ActionContract;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Traits\HasCanSee;
-use Leeto\MoonShine\Traits\InDropdownOrLine;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithLabel;
-use Leeto\MoonShine\Traits\WithView;
+use MoonShine\Contracts\Actions\ActionContract;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\InDropdownOrLine;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithLabel;
+use MoonShine\Traits\WithView;
 
 abstract class Action implements ActionContract
 {

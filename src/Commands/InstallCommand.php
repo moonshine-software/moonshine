@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Commands;
+namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Artisan;
-use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Providers\MoonShineServiceProvider;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
 
 class InstallCommand extends MoonShineCommand
 {

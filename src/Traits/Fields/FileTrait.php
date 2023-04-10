@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Leeto\MoonShine\Exceptions\FieldException;
-use Leeto\MoonShine\Helpers\Condition;
-use Leeto\MoonShine\Traits\WithStorage;
+use MoonShine\Exceptions\FieldException;
+use MoonShine\Helpers\Condition;
+use MoonShine\Traits\WithStorage;
 use Throwable;
 
 trait FileTrait

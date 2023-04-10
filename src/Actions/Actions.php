@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Actions;
+namespace MoonShine\Actions;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\MoonShineRequest;
+use MoonShine\MoonShineRequest;
 
 final class Actions extends Collection
 {

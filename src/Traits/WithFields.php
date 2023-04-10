@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits;
+namespace MoonShine\Traits;
 
-use Leeto\MoonShine\Contracts\Fields\HasJsonValues;
-use Leeto\MoonShine\Contracts\Fields\HasPivot;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasResourceMode;
-use Leeto\MoonShine\Fields\Fields;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasJsonValues;
+use MoonShine\Contracts\Fields\HasPivot;
+use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
+use MoonShine\Fields\Fields;
 
 trait WithFields
 {
@@ -18,6 +19,12 @@ trait WithFields
         $resolveChildFields = $this instanceof HasJsonValues
             || $this instanceof HasPivot
             || ($this instanceof HasResourceMode && ! $this->isResourceMode());
+
+        if ($this instanceof HasFields && ! $this->manyToMany() && ! $this->hasFields()) {
+            $this->fields(
+                Fields::make($this->resource()?->getFields())->formFields()?->toArray() ?? []
+            );
+        }
 
         return Fields::make($this->fields)->when(
             $resolveChildFields,

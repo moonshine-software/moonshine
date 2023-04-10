@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\Fileable;
-use Leeto\MoonShine\Fields\Field;
-use Leeto\MoonShine\Fields\HasOne;
-use Leeto\MoonShine\Fields\ID;
-use Leeto\MoonShine\Fields\Json;
+use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Fields\Field;
+use MoonShine\Fields\HasOne;
+use MoonShine\Fields\ID;
+use MoonShine\Fields\Json;
 
 /**
  * @mixin Field

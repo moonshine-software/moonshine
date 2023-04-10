@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Middleware;
+namespace MoonShine\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

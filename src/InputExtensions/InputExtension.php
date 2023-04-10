@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\InputExtensions;
+namespace MoonShine\InputExtensions;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\Traits\WithHtmlAttributes;
-use Leeto\MoonShine\Traits\WithView;
+use MoonShine\Traits\WithHtmlAttributes;
+use MoonShine\Traits\WithView;
 
 abstract class InputExtension
 {

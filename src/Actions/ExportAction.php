@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Actions;
+namespace MoonShine\Actions;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Exceptions\ActionException;
-use Leeto\MoonShine\Jobs\ExportActionJob;
-use Leeto\MoonShine\Notifications\MoonShineNotification;
-use Leeto\MoonShine\Traits\WithQueue;
-use Leeto\MoonShine\Traits\WithStorage;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Exceptions\ActionException;
+use MoonShine\Jobs\ExportActionJob;
+use MoonShine\Notifications\MoonShineNotification;
+use MoonShine\Traits\WithQueue;
+use MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;

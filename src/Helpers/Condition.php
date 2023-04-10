@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Helpers;
+namespace MoonShine\Helpers;
 
 use Closure;
 

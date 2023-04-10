@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Decorations\Block;
-use Leeto\MoonShine\Decorations\Decoration;
-use Leeto\MoonShine\Exceptions\FieldsException;
-use Leeto\MoonShine\Fields\BelongsTo;
-use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Fields\ID;
-use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Decoration;
+use MoonShine\Exceptions\FieldsException;
+use MoonShine\Fields\BelongsTo;
+use MoonShine\Fields\Fields;
+use MoonShine\Fields\ID;
+use MoonShine\Fields\Text;
+use MoonShine\Resources\MoonShineUserRoleResource;
+use MoonShine\Tests\TestCase;
 use ReflectionException;
 
 class FieldsTest extends TestCase

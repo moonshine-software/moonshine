@@ -1,4 +1,4 @@
-@if($item->exists && $item instanceof \Leeto\MoonShine\Models\MoonshineUser)
+@if($item->exists && $item instanceof \MoonShine\Models\MoonshineUser)
     <div>
         <div class="text-lg my-4">{{ $element->label() }}</div>
 
@@ -7,7 +7,7 @@
             method="post"
         >
 
-            @foreach(app(\Leeto\MoonShine\MoonShine::class)->getResources() as $resource)
+            @foreach(app(\MoonShine\MoonShine::class)->getResources() as $resource)
                 <div>
                     <div class="text-md my-4">{{ $resource->title() }}</div>
 

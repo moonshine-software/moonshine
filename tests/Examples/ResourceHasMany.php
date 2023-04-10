@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Examples;
+namespace MoonShine\Tests\Examples;
 
-use Leeto\MoonShine\Fields\HasMany;
-use Leeto\MoonShine\Fields\Json;
-use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Resources\Resource;
+use MoonShine\Fields\HasMany;
+use MoonShine\Fields\Json;
+use MoonShine\Fields\Text;
+use MoonShine\Models\MoonshineUser;
+use MoonShine\Resources\Resource;
 
 class ResourceHasMany extends Resource
 {

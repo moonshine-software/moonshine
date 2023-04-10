@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Decorations;
+namespace MoonShine\Tests\Decorations;
 
-use Leeto\MoonShine\Decorations\Heading;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Decorations\Heading;
+use MoonShine\Tests\TestCase;
 
 class HeadingTest extends TestCase
 {

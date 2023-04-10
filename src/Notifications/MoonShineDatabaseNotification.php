@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Notifications;
+namespace MoonShine\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Leeto\MoonShine\Traits\Makeable;
+use MoonShine\Traits\Makeable;
 
 final class MoonShineDatabaseNotification extends Notification
 {

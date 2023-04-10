@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Jobs;
+namespace MoonShine\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Leeto\MoonShine\Actions\ImportAction;
+use MoonShine\Actions\ImportAction;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Reader\Exception\ReaderNotOpenedException;

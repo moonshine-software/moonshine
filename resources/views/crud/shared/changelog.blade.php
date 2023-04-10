@@ -1,4 +1,4 @@
-@if($logs = \Leeto\MoonShine\MoonShine::changeLogs($item))
+@if($logs = \MoonShine\MoonShine::changeLogs($item))
     <div class="my-6 text-lg">@lang('moonshine::ui.last_changes')</div>
     <x-moonshine::table>
         <x-slot:thead>
@@ -36,7 +36,7 @@
                     </x-slot:thead>
                     <x-slot:tbody>
                 @foreach($log->states_after as $changedField => $changedValue)
-                    @if($resource->getField($changedField) && !$resource->getField($changedField) instanceof \Leeto\MoonShine\Fields\Json)
+                    @if($resource->getField($changedField) && !$resource->getField($changedField) instanceof \MoonShine\Fields\Json)
                         <tr>
                             <td>
                                 {{ $resource->getField($changedField) ? $resource->getField($changedField)->label() : $changedField }}

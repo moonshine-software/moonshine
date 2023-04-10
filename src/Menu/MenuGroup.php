@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Menu;
+namespace MoonShine\Menu;
 
-use Leeto\MoonShine\Exceptions\MenuException;
-use Leeto\MoonShine\Resources\CustomPage;
-use Leeto\MoonShine\Resources\Resource;
-use Leeto\MoonShine\Traits\Makeable;
+use MoonShine\Exceptions\MenuException;
+use MoonShine\Resources\CustomPage;
+use MoonShine\Resources\Resource;
+use MoonShine\Traits\Makeable;
 
 class MenuGroup extends MenuSection
 {

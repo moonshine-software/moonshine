@@ -1,7 +1,7 @@
 <?php
 
 spl_autoload_register(static function ($class) {
-    $prefix = 'Leeto\\MoonShine\\';
+    $prefix = 'MoonShine\\';
 
     $length = strlen($prefix);
     if (strncmp($prefix, $class, $length) !== 0) {

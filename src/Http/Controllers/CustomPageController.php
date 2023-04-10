@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Controllers;
+namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
-use Leeto\MoonShine\MoonShine;
+use MoonShine\MoonShine;
 
-use Leeto\MoonShine\Resources\CustomPage;
+use MoonShine\Resources\CustomPage;
 use Symfony\Component\HttpFoundation\Response;
 
 class CustomPageController extends BaseController

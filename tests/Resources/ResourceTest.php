@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Resources;
+namespace MoonShine\Tests\Resources;
 
-use Leeto\MoonShine\Actions\Actions;
-use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Filters\Filters;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Actions\Actions;
+use MoonShine\Fields\Fields;
+use MoonShine\Filters\Filters;
+use MoonShine\Tests\TestCase;
 
 class ResourceTest extends TestCase
 {

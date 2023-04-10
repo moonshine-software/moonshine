@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Utilities;
+namespace MoonShine\Tests\Utilities;
 
-use Leeto\MoonShine\Fields\Code;
-use Leeto\MoonShine\Tests\TestCase;
-use Leeto\MoonShine\Utilities\AssetManager;
+use MoonShine\Fields\Code;
+use MoonShine\Tests\TestCase;
+use MoonShine\Utilities\AssetManager;
 
 class AssetManagerTest extends TestCase
 {

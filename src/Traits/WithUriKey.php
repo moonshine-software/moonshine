@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits;
+namespace MoonShine\Traits;
 
-use Leeto\MoonShine\MoonShineRouter;
+use MoonShine\MoonShineRouter;
 
 trait WithUriKey
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Dashboard;
+namespace MoonShine\Dashboard;
 
 use Illuminate\Contracts\View\View;
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithColumnSpan;
-use Leeto\MoonShine\Traits\WithLabel;
+use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithColumnSpan;
+use MoonShine\Traits\WithLabel;
 
 class DashboardBlock
 {

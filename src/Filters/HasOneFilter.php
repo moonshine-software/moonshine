@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Filters;
+namespace MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
-use Leeto\MoonShine\Traits\Fields\WithRelationship;
+use MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
+use MoonShine\Traits\Fields\WithRelationship;
 
 class HasOneFilter extends SelectFilter implements HasRelationship, OneToOneRelation
 {

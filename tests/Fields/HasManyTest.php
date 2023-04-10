@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Fields\HasMany;
-use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Fields\HasMany;
+use MoonShine\Fields\Text;
+use MoonShine\Tests\TestCase;
 
 class HasManyTest extends TestCase
 {

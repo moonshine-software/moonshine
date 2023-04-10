@@ -1,6 +1,6 @@
 <?php
 
-namespace Leeto\MoonShine\Attributes;
+namespace MoonShine\Attributes;
 
 use Attribute;
 use Illuminate\Support\Arr;

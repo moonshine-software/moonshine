@@ -2,7 +2,7 @@
 
 namespace {namespace};
 
-use Leeto\MoonShine\Dashboard\DashboardScreen;
+use MoonShine\Dashboard\DashboardScreen;
 
 class Dashboard extends DashboardScreen
 {

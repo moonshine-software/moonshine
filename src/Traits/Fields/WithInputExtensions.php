@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace MoonShine\Traits\Fields;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\InputExtensions\InputCopy;
-use Leeto\MoonShine\InputExtensions\InputExt;
-use Leeto\MoonShine\InputExtensions\InputExtension;
-use Leeto\MoonShine\InputExtensions\InputEye;
-use Leeto\MoonShine\InputExtensions\InputLock;
+use MoonShine\InputExtensions\InputCopy;
+use MoonShine\InputExtensions\InputExt;
+use MoonShine\InputExtensions\InputExtension;
+use MoonShine\InputExtensions\InputEye;
+use MoonShine\InputExtensions\InputLock;
 
 trait WithInputExtensions
 {

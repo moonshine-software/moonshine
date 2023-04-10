@@ -1,11 +1,11 @@
 <?php
 
-namespace Leeto\MoonShine\Database\Factories;
+namespace MoonShine\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Models\MoonshineUserRole;
+use MoonShine\Models\MoonshineUser;
+use MoonShine\Models\MoonshineUserRole;
 
 class MoonshineUserFactory extends Factory
 {

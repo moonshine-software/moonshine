@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Controllers;
+namespace MoonShine\Tests\Controllers;
 
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Tests\TestCase;
 
 final class CustomPageControllerTest extends TestCase
 {

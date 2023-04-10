@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Fields\Slug;
-use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Fields\Slug;
+use MoonShine\Fields\Text;
+use MoonShine\Tests\TestCase;
 
 class SlugFieldTest extends TestCase
 {

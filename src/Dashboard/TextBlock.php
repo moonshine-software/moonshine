@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Dashboard;
+namespace MoonShine\Dashboard;
 
 final class TextBlock extends DashboardItem
 {

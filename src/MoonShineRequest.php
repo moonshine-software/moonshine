@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine;
+namespace MoonShine;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
-use Leeto\MoonShine\Resources\Resource;
+use MoonShine\Resources\Resource;
 
 class MoonShineRequest extends FormRequest
 {

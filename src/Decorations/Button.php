@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Decorations;
+namespace MoonShine\Decorations;
 
-use Leeto\MoonShine\Traits\Fields\LinkTrait;
-use Leeto\MoonShine\Traits\WithIcon;
+use MoonShine\Traits\Fields\LinkTrait;
+use MoonShine\Traits\WithIcon;
 
 class Button extends Decoration
 {

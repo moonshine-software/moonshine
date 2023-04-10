@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Fields\File;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Fields\File;
+use MoonShine\Tests\TestCase;
 
 class FileFieldTest extends TestCase
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Filters;
+namespace MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Traits\Fields\DateTrait;
+use MoonShine\Traits\Fields\DateTrait;
 
 class DateFilter extends TextFilter
 {

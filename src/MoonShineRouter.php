@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine;
+namespace MoonShine;
 
 final class MoonShineRouter
 {

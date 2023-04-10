@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Dashboard;
+namespace MoonShine\Dashboard;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\MoonShine;
+use MoonShine\MoonShine;
 
 class Dashboard
 {

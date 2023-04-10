@@ -1,6 +1,6 @@
 <?php
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;

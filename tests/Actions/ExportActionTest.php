@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Actions;
+namespace MoonShine\Tests\Actions;
 
-use Leeto\MoonShine\Actions\ExportAction;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Actions\ExportAction;
+use MoonShine\Tests\TestCase;
 
 class ExportActionTest extends TestCase
 {

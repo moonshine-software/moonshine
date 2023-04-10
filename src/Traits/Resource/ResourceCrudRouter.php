@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Resource;
+namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Http\Controllers\ActionController;
-use Leeto\MoonShine\Http\Controllers\CrudController;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Http\Controllers\ActionController;
+use MoonShine\Http\Controllers\CrudController;
 
 /**
  * @mixin ResourceContract

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Providers;
+namespace MoonShine\Providers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Leeto\MoonShine\Commands\InstallCommand;
-use Leeto\MoonShine\Commands\ResourceCommand;
-use Leeto\MoonShine\Commands\UserCommand;
-use Leeto\MoonShine\Dashboard\Dashboard;
-use Leeto\MoonShine\Http\Middleware\Authenticate;
-use Leeto\MoonShine\Http\Middleware\ChangeLocale;
-use Leeto\MoonShine\Http\Middleware\Session;
-use Leeto\MoonShine\Menu\Menu;
-use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Utilities\AssetManager;
+use MoonShine\Commands\InstallCommand;
+use MoonShine\Commands\ResourceCommand;
+use MoonShine\Commands\UserCommand;
+use MoonShine\Dashboard\Dashboard;
+use MoonShine\Http\Middleware\Authenticate;
+use MoonShine\Http\Middleware\ChangeLocale;
+use MoonShine\Http\Middleware\Session;
+use MoonShine\Menu\Menu;
+use MoonShine\MoonShine;
+use MoonShine\Utilities\AssetManager;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -93,7 +93,7 @@ class MoonShineServiceProvider extends ServiceProvider
         }
 
         Blade::withoutDoubleEncoding();
-        Blade::componentNamespace('Leeto\MoonShine\Components', 'moonshine');
+        Blade::componentNamespace('MoonShine\Components', 'moonshine');
 
         $this->app->singleton(MoonShine::class);
         $this->app->singleton(Menu::class);

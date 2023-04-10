@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasExportViewValue;
-use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
-use Leeto\MoonShine\Contracts\Fields\HasIndexViewValue;
-use Leeto\MoonShine\Helpers\Condition;
-use Leeto\MoonShine\Traits\Fields\LinkTrait;
-use Leeto\MoonShine\Traits\Fields\ShowOrHide;
+use MoonShine\Contracts\Fields\HasExportViewValue;
+use MoonShine\Contracts\Fields\HasFormViewValue;
+use MoonShine\Contracts\Fields\HasIndexViewValue;
+use MoonShine\Helpers\Condition;
+use MoonShine\Traits\Fields\LinkTrait;
+use MoonShine\Traits\Fields\ShowOrHide;
 
 abstract class Field extends FormElement implements HasExportViewValue, HasIndexViewValue, HasFormViewValue
 {

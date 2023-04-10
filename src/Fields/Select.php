@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
-use Leeto\MoonShine\Traits\Fields\Searchable;
-use Leeto\MoonShine\Traits\Fields\SelectTrait;
+use MoonShine\Traits\Fields\CanBeMultiple;
+use MoonShine\Traits\Fields\Searchable;
+use MoonShine\Traits\Fields\SelectTrait;
 
 class Select extends Field
 {

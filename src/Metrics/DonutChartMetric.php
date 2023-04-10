@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Metrics;
+namespace MoonShine\Metrics;
 
 class DonutChartMetric extends Metric
 {

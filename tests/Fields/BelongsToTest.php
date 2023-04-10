@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Leeto\MoonShine\Database\Factories\MoonshineUserFactory;
-use Leeto\MoonShine\Fields\BelongsTo;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Database\Factories\MoonshineUserFactory;
+use MoonShine\Fields\BelongsTo;
+use MoonShine\Tests\TestCase;
 
 class BelongsToTest extends TestCase
 {

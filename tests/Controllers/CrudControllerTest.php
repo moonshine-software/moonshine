@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Controllers;
+namespace MoonShine\Tests\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Models\MoonshineUserRole;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Models\MoonshineUser;
+use MoonShine\Models\MoonshineUserRole;
+use MoonShine\Tests\TestCase;
 
 class CrudControllerTest extends TestCase
 {

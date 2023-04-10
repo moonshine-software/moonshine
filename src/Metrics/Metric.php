@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Metrics;
+namespace MoonShine\Metrics;
 
-use Leeto\MoonShine\Contracts\Fields\HasAssets;
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithAssets;
-use Leeto\MoonShine\Traits\WithColumnSpan;
-use Leeto\MoonShine\Traits\WithIcon;
-use Leeto\MoonShine\Traits\WithLabel;
-use Leeto\MoonShine\Traits\WithView;
-use Leeto\MoonShine\Utilities\AssetManager;
+use MoonShine\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithAssets;
+use MoonShine\Traits\WithColumnSpan;
+use MoonShine\Traits\WithIcon;
+use MoonShine\Traits\WithLabel;
+use MoonShine\Traits\WithView;
+use MoonShine\Utilities\AssetManager;
 
 abstract class Metric implements ResourceRenderable, HasAssets
 {

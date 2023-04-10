@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Controllers;
+namespace MoonShine\Http\Controllers;
 
 use function auth;
 use function back;
@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 
 use Illuminate\Support\Facades\Hash;
-use Leeto\MoonShine\Http\Requests\ProfileFormRequest;
+use MoonShine\Http\Requests\ProfileFormRequest;
 
 class ProfileController extends BaseController
 {

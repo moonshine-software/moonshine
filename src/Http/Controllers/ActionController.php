@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Controllers;
+namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
-use Leeto\MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\ViewFormRequest;
+use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
+use MoonShine\Http\Requests\Resources\ViewFormRequest;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 

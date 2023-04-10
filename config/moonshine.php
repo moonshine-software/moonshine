@@ -1,7 +1,7 @@
 <?php
 
-use Leeto\MoonShine\Exceptions\MoonShineNotFoundException;
-use Leeto\MoonShine\Models\MoonshineUser;
+use MoonShine\Exceptions\MoonShineNotFoundException;
+use MoonShine\Models\MoonshineUser;
 
 return [
     'dir' => 'app/MoonShine',

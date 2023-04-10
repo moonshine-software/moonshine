@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Decorations;
+namespace MoonShine\Decorations;
 
-use Leeto\MoonShine\Traits\WithColumnSpan;
+use MoonShine\Traits\WithColumnSpan;
 
 class Column extends Decoration
 {

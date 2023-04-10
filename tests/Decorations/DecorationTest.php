@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Decorations;
+namespace MoonShine\Tests\Decorations;
 
-use Leeto\MoonShine\Decorations\Decoration;
-use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Decorations\Decoration;
+use MoonShine\Fields\Text;
+use MoonShine\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class DecorationTest extends TestCase

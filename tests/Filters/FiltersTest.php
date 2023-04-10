@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Filters;
+namespace MoonShine\Tests\Filters;
 
-use Leeto\MoonShine\Filters\BelongsToFilter;
-use Leeto\MoonShine\Filters\TextFilter;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Filters\BelongsToFilter;
+use MoonShine\Filters\TextFilter;
+use MoonShine\Tests\TestCase;
 
 class FiltersTest extends TestCase
 {

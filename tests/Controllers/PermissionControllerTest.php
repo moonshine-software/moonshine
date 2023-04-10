@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Controllers;
+namespace MoonShine\Tests\Controllers;
 
-use Leeto\MoonShine\Resources\MoonShineUserResource;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Tests\TestCase;
 
 final class PermissionControllerTest extends TestCase
 {

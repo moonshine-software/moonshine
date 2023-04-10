@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Helpers\Condition;
+use MoonShine\Helpers\Condition;
 
 class SwitchBoolean extends Checkbox
 {

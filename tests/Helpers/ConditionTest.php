@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Helpers;
+namespace MoonShine\Tests\Helpers;
 
-use Leeto\MoonShine\Helpers\Condition;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Helpers\Condition;
+use MoonShine\Tests\TestCase;
 
 class ConditionTest extends TestCase
 {

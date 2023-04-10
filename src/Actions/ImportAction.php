@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Actions;
+namespace MoonShine\Actions;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Exceptions\ActionException;
-use Leeto\MoonShine\Fields\Field;
-use Leeto\MoonShine\Jobs\ImportActionJob;
-use Leeto\MoonShine\Notifications\MoonShineNotification;
-use Leeto\MoonShine\Traits\WithQueue;
-use Leeto\MoonShine\Traits\WithStorage;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Exceptions\ActionException;
+use MoonShine\Fields\Field;
+use MoonShine\Jobs\ImportActionJob;
+use MoonShine\Notifications\MoonShineNotification;
+use MoonShine\Traits\WithQueue;
+use MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Reader\Exception\ReaderNotOpenedException;

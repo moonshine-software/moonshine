@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use Leeto\MoonShine\Traits\Fields\WithRelationship;
+use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
+use MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use MoonShine\Traits\Fields\WithRelationship;
 
 class BelongsTo extends Select implements HasRelationship, BelongsToRelation
 {

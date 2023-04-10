@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Filters;
+namespace MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
-use Leeto\MoonShine\Fields\FormElement;
+use MoonShine\Contracts\Fields\HasFormViewValue;
+use MoonShine\Fields\FormElement;
 
 abstract class Filter extends FormElement implements HasFormViewValue
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Controllers;
+namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 
 use Illuminate\Validation\ValidationException;
-use Leeto\MoonShine\Http\Requests\LoginFormRequest;
+use MoonShine\Http\Requests\LoginFormRequest;
 
 class AuthenticateController extends BaseController
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Commands;
+namespace MoonShine\Commands;
 
 use Illuminate\Support\Facades\Hash;
-use Leeto\MoonShine\Models\MoonshineUser;
+use MoonShine\Models\MoonshineUser;
 
 class UserCommand extends MoonShineCommand
 {

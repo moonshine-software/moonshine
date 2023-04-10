@@ -1,14 +1,14 @@
 <?php
 
-namespace Leeto\MoonShine\Fields\Spatie;
+namespace MoonShine\Fields\Spatie;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Fields\Json;
-use Leeto\MoonShine\Fields\Select;
-use Leeto\MoonShine\Fields\Text;
+use MoonShine\Fields\Fields;
+use MoonShine\Fields\Json;
+use MoonShine\Fields\Select;
+use MoonShine\Fields\Text;
 
 class Translatable extends Json
 {

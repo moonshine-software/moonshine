@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Dashboard;
+namespace MoonShine\Tests\Dashboard;
 
-use Leeto\MoonShine\Dashboard\Dashboard;
-use Leeto\MoonShine\Dashboard\DashboardBlock;
-use Leeto\MoonShine\Metrics\ValueMetric;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Dashboard\Dashboard;
+use MoonShine\Dashboard\DashboardBlock;
+use MoonShine\Metrics\ValueMetric;
+use MoonShine\Tests\TestCase;
 
 class DashboardTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Contracts\Decorations;
+namespace MoonShine\Contracts\Decorations;
 
 interface FieldsDecoration
 {

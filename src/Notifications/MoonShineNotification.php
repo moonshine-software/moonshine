@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Notifications;
+namespace MoonShine\Notifications;
 
 use Illuminate\Support\Facades\Notification;
-use Leeto\MoonShine\Models\MoonshineUser;
+use MoonShine\Models\MoonshineUser;
 
 final class MoonShineNotification
 {

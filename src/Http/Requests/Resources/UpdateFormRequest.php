@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Requests\Resources;
+namespace MoonShine\Http\Requests\Resources;
 
-use Leeto\MoonShine\MoonShineRequest;
+use MoonShine\MoonShineRequest;
 
 final class UpdateFormRequest extends MoonShineRequest
 {

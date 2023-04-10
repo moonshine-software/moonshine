@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Database\Factories\MoonshineUserFactory;
-use Leeto\MoonShine\Fields\Json;
-use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Database\Factories\MoonshineUserFactory;
+use MoonShine\Fields\Json;
+use MoonShine\Fields\Text;
+use MoonShine\Tests\TestCase;
 
 class JsonTest extends TestCase
 {

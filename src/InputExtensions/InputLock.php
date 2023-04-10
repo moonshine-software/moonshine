@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\InputExtensions;
+namespace MoonShine\InputExtensions;
 
 final class InputLock extends InputExtension
 {

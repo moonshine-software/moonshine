@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Menu;
+namespace MoonShine\Menu;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\MoonShineRequest;
+use MoonShine\MoonShineRequest;
 
 class Menu
 {

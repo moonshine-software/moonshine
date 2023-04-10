@@ -5,13 +5,13 @@
 
         @vite(['resources/js/app.js'], 'vendor/moonshine')
 
-        {!! app(\Leeto\MoonShine\Utilities\AssetManager::class)->css() !!}
+        {!! app(\MoonShine\Utilities\AssetManager::class)->css() !!}
 
         @yield('after-styles')
 
         @stack('styles')
 
-        {!! app(\Leeto\MoonShine\Utilities\AssetManager::class)->js() !!}
+        {!! app(\MoonShine\Utilities\AssetManager::class)->js() !!}
 
         @yield('after-scripts')
 

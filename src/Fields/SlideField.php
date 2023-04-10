@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\Fields\SlideTrait;
+use MoonShine\Traits\Fields\SlideTrait;
 
 class SlideField extends Number
 {

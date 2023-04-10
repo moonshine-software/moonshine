@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\FormComponents;
+namespace MoonShine\FormComponents;
 
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Traits\HasCanSee;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithLabel;
-use Leeto\MoonShine\Traits\WithView;
+use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithLabel;
+use MoonShine\Traits\WithView;
 
 abstract class FormComponent implements ResourceRenderable
 {

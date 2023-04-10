@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\FormComponents;
+namespace MoonShine\FormComponents;
 
 final class PermissionFormComponent extends FormComponent
 {

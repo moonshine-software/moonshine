@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
-use Leeto\MoonShine\Fields\Select;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Fields\Select;
+use MoonShine\Tests\TestCase;
 
 class SelectTest extends TestCase
 {

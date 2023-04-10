@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace MoonShine\Traits\Fields;
 
-use Leeto\MoonShine\Fields\Field;
-use Leeto\MoonShine\Filters\Filter;
+use MoonShine\Fields\Field;
+use MoonShine\Filters\Filter;
 
 /**
  * @mixin Field|Filter

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\Contracts\Fields\HasFormViewValue;
-use Leeto\MoonShine\Fields\Field;
-use Leeto\MoonShine\Fields\Json;
+use MoonShine\Contracts\Fields\HasFormViewValue;
+use MoonShine\Fields\Field;
+use MoonShine\Fields\Json;
 
 /**
  * @mixin Field

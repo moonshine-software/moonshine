@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Metrics;
+namespace MoonShine\Tests\Metrics;
 
-use Leeto\MoonShine\Metrics\LineChartMetric;
-use Leeto\MoonShine\Metrics\ValueMetric;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Metrics\LineChartMetric;
+use MoonShine\Metrics\ValueMetric;
+use MoonShine\Tests\TestCase;
 
 class MetricTest extends TestCase
 {

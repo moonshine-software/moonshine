@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Controllers;
+namespace MoonShine\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
-use Leeto\MoonShine\Fields\BelongsToMany;
-use Leeto\MoonShine\MoonShine;
+use MoonShine\Fields\BelongsToMany;
+use MoonShine\MoonShine;
 use Throwable;
 
 class SearchController extends BaseController

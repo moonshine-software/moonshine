@@ -1,13 +1,13 @@
 {
-  "name": "lee-to/moonshine",
-  "description": "Laravel dashboard",
+  "name": "moonshine/moonshine",
+  "description": "Laravel administration panel",
   "keywords": ["laravel", "admin", "dashboard", "moonshine"],
   "type": "library",
   "homepage": "https://moonshine.cutcode.dev",
   "license": "MIT",
   "support": {
-    "issues": "https://github.com/lee-to/moonshine/issues",
-    "source": "https://github.com/lee-to/moonshine"
+    "issues": "https://github.com/moonshine-software/moonshine/issues",
+    "source": "https://github.com/moonshine-software/moonshine"
   },
   "authors": [
     {
@@ -32,13 +32,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Leeto\\MoonShine\\": "src/"
+      "MoonShine\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Leeto\\MoonShine\\Tests\\": "tests/",
-      "Leeto\\MoonShine\\Database\\Factories\\": "database/factories/"
+      "MoonShine\\Tests\\": "tests/",
+      "MoonShine\\Database\\Factories\\": "database/factories/"
     }
   },
   "suggest": {
@@ -55,7 +55,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Leeto\\MoonShine\\Providers\\MoonShineServiceProvider"
+        "MoonShine\\Providers\\MoonShineServiceProvider"
       ]
     }
   }

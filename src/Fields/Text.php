@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
-use Leeto\MoonShine\Traits\Fields\WithInputExtensions;
-use Leeto\MoonShine\Traits\Fields\WithMask;
+use MoonShine\Traits\Fields\WithInputExtensions;
+use MoonShine\Traits\Fields\WithMask;
 
 class Text extends Field
 {

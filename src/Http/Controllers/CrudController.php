@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Controllers;
+namespace MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
@@ -17,18 +17,18 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Validation\ValidationException;
-use Leeto\MoonShine\Exceptions\ResourceException;
-use Leeto\MoonShine\Http\Requests\Resources\CreateFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\DeleteFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\EditFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\StoreFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\UpdateFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use Leeto\MoonShine\Http\Requests\Resources\ViewFormRequest;
-use Leeto\MoonShine\MoonShineRequest;
-use Leeto\MoonShine\QueryTags\QueryTag;
-use Leeto\MoonShine\Resources\Resource;
+use MoonShine\Exceptions\ResourceException;
+use MoonShine\Http\Requests\Resources\CreateFormRequest;
+use MoonShine\Http\Requests\Resources\DeleteFormRequest;
+use MoonShine\Http\Requests\Resources\EditFormRequest;
+use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
+use MoonShine\Http\Requests\Resources\StoreFormRequest;
+use MoonShine\Http\Requests\Resources\UpdateFormRequest;
+use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
+use MoonShine\Http\Requests\Resources\ViewFormRequest;
+use MoonShine\MoonShineRequest;
+use MoonShine\QueryTags\QueryTag;
+use MoonShine\Resources\Resource;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 

@@ -5,9 +5,9 @@ namespace {namespace};
 use Illuminate\Database\Eloquent\Model;
 use {model-namespace};
 
-use Leeto\MoonShine\Resources\Resource;
-use Leeto\MoonShine\Fields\ID;
-use Leeto\MoonShine\Actions\FiltersAction;
+use MoonShine\Resources\Resource;
+use MoonShine\Fields\ID;
+use MoonShine\Actions\FiltersAction;
 
 class DummyResource extends Resource
 {

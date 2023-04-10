@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\Fileable;
-use Leeto\MoonShine\Contracts\Fields\RemovableContract;
-use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
-use Leeto\MoonShine\Traits\Fields\FileTrait;
-use Leeto\MoonShine\Traits\Removable;
+use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Contracts\Fields\RemovableContract;
+use MoonShine\Traits\Fields\CanBeMultiple;
+use MoonShine\Traits\Fields\FileTrait;
+use MoonShine\Traits\Removable;
 
 class File extends Field implements Fileable, RemovableContract
 {

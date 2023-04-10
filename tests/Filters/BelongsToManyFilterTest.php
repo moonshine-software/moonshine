@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Filters;
+namespace MoonShine\Tests\Filters;
 
-use Leeto\MoonShine\Filters\BelongsToManyFilter;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Filters\BelongsToManyFilter;
+use MoonShine\Tests\TestCase;
 
 class BelongsToManyFilterTest extends TestCase
 {

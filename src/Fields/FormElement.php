@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Contracts\Fields\HasAssets;
-use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
-use Leeto\MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use Leeto\MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
-use Leeto\MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
-use Leeto\MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Helpers\Condition;
-use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Traits\Fields\ShowWhen;
-use Leeto\MoonShine\Traits\Fields\XModel;
-use Leeto\MoonShine\Traits\HasCanSee;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithAssets;
-use Leeto\MoonShine\Traits\WithHint;
-use Leeto\MoonShine\Traits\WithHtmlAttributes;
-use Leeto\MoonShine\Traits\WithLabel;
-use Leeto\MoonShine\Traits\WithView;
-use Leeto\MoonShine\Utilities\AssetManager;
+use MoonShine\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
+use MoonShine\Contracts\Fields\Relationships\HasRelationship;
+use MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
+use MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
+use MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
+use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Helpers\Condition;
+use MoonShine\MoonShine;
+use MoonShine\Traits\Fields\ShowWhen;
+use MoonShine\Traits\Fields\XModel;
+use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithAssets;
+use MoonShine\Traits\WithHint;
+use MoonShine\Traits\WithHtmlAttributes;
+use MoonShine\Traits\WithLabel;
+use MoonShine\Traits\WithView;
+use MoonShine\Utilities\AssetManager;
 
 abstract class FormElement implements ResourceRenderable, HasAssets
 {
@@ -97,10 +97,6 @@ abstract class FormElement implements ResourceRenderable, HasAssets
                 $this->setResource($resource);
             } elseif (is_string($resource)) {
                 $this->setResourceTitleField($resource);
-            }
-
-            if ($this instanceof HasFields && ! $this->manyToMany() && ! $this->hasFields()) {
-                $this->fields($this->resource()?->getFields()?->formFields()?->toArray() ?? []);
             }
         }
 

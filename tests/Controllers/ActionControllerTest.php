@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Controllers;
+namespace MoonShine\Tests\Controllers;
 
-use Leeto\MoonShine\Actions\ExportAction;
-use Leeto\MoonShine\Exceptions\ActionException;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Actions\ExportAction;
+use MoonShine\Exceptions\ActionException;
+use MoonShine\Tests\TestCase;
 
 class ActionControllerTest extends TestCase
 {

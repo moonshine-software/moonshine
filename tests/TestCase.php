@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests;
+namespace MoonShine\Tests;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
-use Leeto\MoonShine\Menu\MenuItem;
-use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Models\MoonshineUserRole;
-use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Providers\MoonShineServiceProvider;
-use Leeto\MoonShine\Resources\MoonShineUserResource;
-use Leeto\MoonShine\Resources\Resource;
+use MoonShine\Menu\MenuItem;
+use MoonShine\Models\MoonshineUser;
+use MoonShine\Models\MoonshineUserRole;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
+use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Resources\Resource;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -41,6 +41,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         $this->artisan('moonshine:install');
         $this->artisan('config:clear');
+        $this->artisan('view:clear');
         $this->artisan('cache:clear');
 
         $this->refreshApplication();
@@ -55,7 +56,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         Factory::guessFactoryNamesUsing(static function ($factory) {
             $factoryBasename = class_basename($factory);
 
-            return "Leeto\MoonShine\Database\Factories\\$factoryBasename".'Factory';
+            return "MoonShine\Database\Factories\\$factoryBasename".'Factory';
         });
 
         return $this;

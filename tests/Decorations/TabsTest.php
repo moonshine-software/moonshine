@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Decorations;
+namespace MoonShine\Tests\Decorations;
 
-use Leeto\MoonShine\Decorations\Tab;
-use Leeto\MoonShine\Decorations\Tabs;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Decorations\Tab;
+use MoonShine\Decorations\Tabs;
+use MoonShine\Tests\TestCase;
 
 class TabsTest extends TestCase
 {

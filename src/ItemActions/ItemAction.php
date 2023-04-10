@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\ItemActions;
+namespace MoonShine\ItemActions;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Traits\HasCanSee;
-use Leeto\MoonShine\Traits\InDropdownOrLine;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithConfirmation;
-use Leeto\MoonShine\Traits\WithIcon;
-use Leeto\MoonShine\Traits\WithLabel;
+use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\InDropdownOrLine;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithConfirmation;
+use MoonShine\Traits\WithIcon;
+use MoonShine\Traits\WithLabel;
 
 final class ItemAction
 {

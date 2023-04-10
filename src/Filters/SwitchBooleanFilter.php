@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Filters;
+namespace MoonShine\Filters;
 
-use Leeto\MoonShine\Traits\Fields\BooleanTrait;
+use MoonShine\Traits\Fields\BooleanTrait;
 
 class SwitchBooleanFilter extends Filter
 {

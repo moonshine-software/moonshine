@@ -1,16 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Exceptions\MoonShineNotFoundException;
-use Leeto\MoonShine\Http\Controllers\AttachmentController;
-use Leeto\MoonShine\Http\Controllers\AuthenticateController;
-use Leeto\MoonShine\Http\Controllers\CrudController;
-use Leeto\MoonShine\Http\Controllers\CustomPageController;
-use Leeto\MoonShine\Http\Controllers\DashboardController;
-use Leeto\MoonShine\Http\Controllers\NotificationController;
-use Leeto\MoonShine\Http\Controllers\ProfileController;
-use Leeto\MoonShine\Http\Controllers\SearchController;
-use Leeto\MoonShine\Http\Controllers\SocialiteController;
+use MoonShine\Exceptions\MoonShineNotFoundException;
+use MoonShine\Http\Controllers\AttachmentController;
+use MoonShine\Http\Controllers\AuthenticateController;
+use MoonShine\Http\Controllers\CrudController;
+use MoonShine\Http\Controllers\CustomPageController;
+use MoonShine\Http\Controllers\DashboardController;
+use MoonShine\Http\Controllers\NotificationController;
+use MoonShine\Http\Controllers\ProfileController;
+use MoonShine\Http\Controllers\SearchController;
+use MoonShine\Http\Controllers\SocialiteController;
 
 Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware(config('moonshine.route.middleware'))

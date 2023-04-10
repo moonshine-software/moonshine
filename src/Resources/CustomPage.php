@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Resources;
+namespace MoonShine\Resources;
 
 use Closure;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithLabel;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithLabel;
 
 final class CustomPage
 {

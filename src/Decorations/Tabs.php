@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Decorations;
+namespace MoonShine\Decorations;
 
 use Illuminate\Support\Collection;
-use Leeto\MoonShine\Exceptions\DecorationException;
+use MoonShine\Exceptions\DecorationException;
 use Throwable;
 
 class Tabs extends Decoration

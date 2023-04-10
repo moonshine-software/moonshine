@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use Leeto\MoonShine\Contracts\Decorations\FieldsDecoration;
-use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\Fields\HasPivot;
-use Leeto\MoonShine\Decorations\Decoration;
-use Leeto\MoonShine\Decorations\Tabs;
-use Leeto\MoonShine\Exceptions\FieldException;
-use Leeto\MoonShine\Exceptions\FieldsException;
+use MoonShine\Contracts\Decorations\FieldsDecoration;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasPivot;
+use MoonShine\Decorations\Decoration;
+use MoonShine\Decorations\Tabs;
+use MoonShine\Exceptions\FieldException;
+use MoonShine\Exceptions\FieldsException;
 use ReflectionClass;
 use ReflectionException;
 use Throwable;

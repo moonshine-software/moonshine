@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Contracts\Fields\Relationships;
+namespace MoonShine\Contracts\Fields\Relationships;
 
 interface BelongsToRelation
 {

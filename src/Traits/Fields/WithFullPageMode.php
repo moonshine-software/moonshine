@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Fields;
+namespace MoonShine\Traits\Fields;
 
-use Leeto\MoonShine\Fields\Field;
+use MoonShine\Fields\Field;
 
 /**
  * @mixin Field

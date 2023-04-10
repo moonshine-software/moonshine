@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Filters;
+namespace MoonShine\Filters;
 
-use Leeto\MoonShine\Traits\Fields\CanBeMultiple;
-use Leeto\MoonShine\Traits\Fields\Searchable;
-use Leeto\MoonShine\Traits\Fields\SelectTrait;
+use MoonShine\Traits\Fields\CanBeMultiple;
+use MoonShine\Traits\Fields\Searchable;
+use MoonShine\Traits\Fields\SelectTrait;
 
 class SelectFilter extends Filter
 {

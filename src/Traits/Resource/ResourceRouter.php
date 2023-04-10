@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Traits\Resource;
+namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Facades\Cache;
-use Leeto\MoonShine\MoonShineRouter;
+use MoonShine\MoonShineRouter;
 
 trait ResourceRouter
 {

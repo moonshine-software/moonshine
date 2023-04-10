@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Decorations;
+namespace MoonShine\Decorations;
 
-use Leeto\MoonShine\Exceptions\DecorationException;
-use Leeto\MoonShine\Traits\WithIcon;
+use MoonShine\Exceptions\DecorationException;
+use MoonShine\Traits\WithIcon;
 
 class Tab extends Decoration
 {

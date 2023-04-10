@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests;
+namespace MoonShine\Tests;
 
 trait WithAuthTesting
 {

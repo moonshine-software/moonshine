@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Contracts\Resources;
+namespace MoonShine\Contracts\Resources;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
-use Leeto\MoonShine\Actions\Action;
-use Leeto\MoonShine\Actions\Actions;
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Fields\Field;
-use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Filters\Filter;
-use Leeto\MoonShine\Filters\Filters;
+use MoonShine\Actions\Action;
+use MoonShine\Actions\Actions;
+use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Fields\Field;
+use MoonShine\Fields\Fields;
+use MoonShine\Filters\Filter;
+use MoonShine\Filters\Filters;
 
 interface ResourceContract
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Menu;
+namespace MoonShine\Menu;
 
-use Leeto\MoonShine\Resources\CustomPage;
-use Leeto\MoonShine\Resources\Resource;
-use Leeto\MoonShine\Traits\Makeable;
+use MoonShine\Resources\CustomPage;
+use MoonShine\Resources\Resource;
+use MoonShine\Traits\Makeable;
 
 class MenuItem extends MenuSection
 {

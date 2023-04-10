@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine;
+namespace MoonShine;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Menu\Menu;
-use Leeto\MoonShine\Menu\MenuGroup;
-use Leeto\MoonShine\Menu\MenuItem;
-use Leeto\MoonShine\Menu\MenuSection;
-use Leeto\MoonShine\Resources\CustomPage;
-use Leeto\MoonShine\Resources\Resource;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Menu\Menu;
+use MoonShine\Menu\MenuGroup;
+use MoonShine\Menu\MenuItem;
+use MoonShine\Menu\MenuSection;
+use MoonShine\Resources\CustomPage;
+use MoonShine\Resources\Resource;
 
 class MoonShine
 {

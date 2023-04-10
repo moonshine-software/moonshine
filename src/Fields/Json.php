@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use JsonException;
-use Leeto\MoonShine\Contracts\Fields\HasFields;
-use Leeto\MoonShine\Contracts\Fields\HasFullPageMode;
-use Leeto\MoonShine\Contracts\Fields\HasJsonValues;
-use Leeto\MoonShine\Contracts\Fields\RemovableContract;
-use Leeto\MoonShine\Traits\Fields\WithFullPageMode;
-use Leeto\MoonShine\Traits\Fields\WithJsonValues;
-use Leeto\MoonShine\Traits\Removable;
-use Leeto\MoonShine\Traits\WithFields;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasFullPageMode;
+use MoonShine\Contracts\Fields\HasJsonValues;
+use MoonShine\Contracts\Fields\RemovableContract;
+use MoonShine\Traits\Fields\WithFullPageMode;
+use MoonShine\Traits\Fields\WithJsonValues;
+use MoonShine\Traits\Removable;
+use MoonShine\Traits\WithFields;
 use Throwable;
 
 class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, RemovableContract

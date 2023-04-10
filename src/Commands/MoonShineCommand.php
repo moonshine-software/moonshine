@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Commands;
+namespace MoonShine\Commands;
 
-use Leeto\MoonShine\MoonShine;
+use MoonShine\MoonShine;
 use Leeto\PackageCommand\Command;
 
 class MoonShineCommand extends Command

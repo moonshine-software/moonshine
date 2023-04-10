@@ -6,6 +6,7 @@
     <x-moonshine::form.input
         type="hidden"
         :name="$attributes->get('name')"
+        :attributes="$attributes->only(['x-bind:name'])"
         value="{{ $offValue }}"
     />
 

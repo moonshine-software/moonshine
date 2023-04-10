@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
-use Leeto\MoonShine\Traits\Fields\BooleanTrait;
-use Leeto\MoonShine\Traits\Fields\CheckboxTrait;
+use MoonShine\Traits\Fields\BooleanTrait;
+use MoonShine\Traits\Fields\CheckboxTrait;
 
 class Checkbox extends Field
 {

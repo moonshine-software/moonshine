@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Contracts\Fields;
+namespace MoonShine\Contracts\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Leeto\MoonShine\Filters;
+namespace MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Leeto\MoonShine\Traits\Fields\NumberTrait;
-use Leeto\MoonShine\Traits\Fields\SlideTrait;
+use MoonShine\Traits\Fields\NumberTrait;
+use MoonShine\Traits\Fields\SlideTrait;
 
 class SlideFilter extends Filter
 {

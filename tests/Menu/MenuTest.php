@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Menu;
+namespace MoonShine\Tests\Menu;
 
-use Leeto\MoonShine\Menu\Menu;
-use Leeto\MoonShine\Menu\MenuGroup;
-use Leeto\MoonShine\Menu\MenuItem;
-use Leeto\MoonShine\MoonShine;
-use Leeto\MoonShine\Resources\MoonShineUserRoleResource;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Menu\Menu;
+use MoonShine\Menu\MenuGroup;
+use MoonShine\Menu\MenuItem;
+use MoonShine\MoonShine;
+use MoonShine\Resources\MoonShineUserRoleResource;
+use MoonShine\Tests\TestCase;
 
 class MenuTest extends TestCase
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Commands;
+namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Leeto\MoonShine\MoonShine;
+use MoonShine\MoonShine;
 
 class ResourceCommand extends MoonShineCommand
 {

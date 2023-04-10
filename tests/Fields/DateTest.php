@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Fields;
+namespace MoonShine\Tests\Fields;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Leeto\MoonShine\Fields\Date;
-use Leeto\MoonShine\Models\MoonshineUser;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Fields\Date;
+use MoonShine\Models\MoonshineUser;
+use MoonShine\Tests\TestCase;
 
 class DateTest extends TestCase
 {

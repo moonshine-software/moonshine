@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Utilities;
+namespace MoonShine\Utilities;
 
 class AssetManager
 {

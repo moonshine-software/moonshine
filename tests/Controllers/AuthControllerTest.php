@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Controllers;
+namespace MoonShine\Tests\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {

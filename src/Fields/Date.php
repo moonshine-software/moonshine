@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Fields;
+namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Leeto\MoonShine\Traits\Fields\DateTrait;
+use MoonShine\Traits\Fields\DateTrait;
 
 class Date extends Text
 {

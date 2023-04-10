@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Http\Controllers;
+namespace MoonShine\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -10,8 +10,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\Facades\Socialite;
 
-use Leeto\MoonShine\Exceptions\AuthException;
-use Leeto\MoonShine\Models\MoonshineSocialite;
+use MoonShine\Exceptions\AuthException;
+use MoonShine\Models\MoonshineSocialite;
 
 class SocialiteController extends BaseController
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Resources;
+namespace MoonShine\Resources;
 
-use Leeto\MoonShine\Decorations\Block;
-use Leeto\MoonShine\Fields\ID;
-use Leeto\MoonShine\Fields\Text;
-use Leeto\MoonShine\Filters\TextFilter;
-use Leeto\MoonShine\Models\MoonshineUserRole;
+use MoonShine\Decorations\Block;
+use MoonShine\Fields\ID;
+use MoonShine\Fields\Text;
+use MoonShine\Filters\TextFilter;
+use MoonShine\Models\MoonshineUserRole;
 
 class MoonShineUserRoleResource extends Resource
 {

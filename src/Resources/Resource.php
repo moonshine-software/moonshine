@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Resources;
+namespace MoonShine\Resources;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
@@ -11,30 +11,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
-use Leeto\MoonShine\Actions\Action;
-use Leeto\MoonShine\Actions\Actions;
-use Leeto\MoonShine\Actions\FiltersAction;
-use Leeto\MoonShine\BulkActions\BulkAction;
-use Leeto\MoonShine\Contracts\Actions\ActionContract;
-use Leeto\MoonShine\Contracts\ResourceRenderable;
-use Leeto\MoonShine\Contracts\Resources\ResourceContract;
-use Leeto\MoonShine\Decorations\Decoration;
-use Leeto\MoonShine\Exceptions\ResourceException;
-use Leeto\MoonShine\Fields\Field;
-use Leeto\MoonShine\Fields\Fields;
-use Leeto\MoonShine\Fields\FormElement;
-use Leeto\MoonShine\Filters\Filter;
-use Leeto\MoonShine\Filters\Filters;
-use Leeto\MoonShine\FormActions\FormAction;
-use Leeto\MoonShine\FormComponents\FormComponent;
-use Leeto\MoonShine\ItemActions\ItemAction;
-use Leeto\MoonShine\Metrics\Metric;
-use Leeto\MoonShine\QueryTags\QueryTag;
-use Leeto\MoonShine\Traits\Resource\ResourceCrudRouter;
-use Leeto\MoonShine\Traits\Resource\ResourceModelPolicy;
-use Leeto\MoonShine\Traits\Resource\ResourceModelQuery;
-use Leeto\MoonShine\Traits\Resource\ResourceRouter;
-use Leeto\MoonShine\Traits\WithUriKey;
+use MoonShine\Actions\Action;
+use MoonShine\Actions\Actions;
+use MoonShine\Actions\FiltersAction;
+use MoonShine\BulkActions\BulkAction;
+use MoonShine\Contracts\Actions\ActionContract;
+use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Decorations\Decoration;
+use MoonShine\Exceptions\ResourceException;
+use MoonShine\Fields\Field;
+use MoonShine\Fields\Fields;
+use MoonShine\Fields\FormElement;
+use MoonShine\Filters\Filter;
+use MoonShine\Filters\Filters;
+use MoonShine\FormActions\FormAction;
+use MoonShine\FormComponents\FormComponent;
+use MoonShine\ItemActions\ItemAction;
+use MoonShine\Metrics\Metric;
+use MoonShine\QueryTags\QueryTag;
+use MoonShine\Traits\Resource\ResourceCrudRouter;
+use MoonShine\Traits\Resource\ResourceModelPolicy;
+use MoonShine\Traits\Resource\ResourceModelQuery;
+use MoonShine\Traits\Resource\ResourceRouter;
+use MoonShine\Traits\WithUriKey;
 use Throwable;
 
 abstract class Resource implements ResourceContract

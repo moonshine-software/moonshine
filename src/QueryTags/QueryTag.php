@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\QueryTags;
+namespace MoonShine\QueryTags;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Leeto\MoonShine\Traits\HasCanSee;
-use Leeto\MoonShine\Traits\Makeable;
-use Leeto\MoonShine\Traits\WithIcon;
-use Leeto\MoonShine\Traits\WithLabel;
+use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithIcon;
+use MoonShine\Traits\WithLabel;
 
 final class QueryTag
 {

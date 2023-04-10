@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leeto\MoonShine\Tests\Filters;
+namespace MoonShine\Tests\Filters;
 
-use Leeto\MoonShine\Filters\DateRangeFilter;
-use Leeto\MoonShine\Tests\TestCase;
+use MoonShine\Filters\DateRangeFilter;
+use MoonShine\Tests\TestCase;
 
 class DateRangeFilterTest extends TestCase
 {
