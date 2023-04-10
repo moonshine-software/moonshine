@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Commands;
 
-use MoonShine\MoonShine;
 use Leeto\PackageCommand\Command;
+use MoonShine\MoonShine;
 
 class MoonShineCommand extends Command
 {
