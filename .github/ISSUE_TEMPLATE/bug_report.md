@@ -1,38 +1,44 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
----
-
-**Describe the bug**
-A clear and concise description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+name: Bug Report
+description: "Report something that's broken."
+body:
+  - type: input
+    attributes:
+      label: MoonShine Version
+      description: Provide the MoonShine version that you are using.
+      placeholder: 1.52.0
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Laravel Version
+      description: Provide the Laravel version that you are using.
+      placeholder: 10.4.1
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: PHP Version
+      description: Provide the PHP version that you are using.
+      placeholder: 8.1.4
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Database Driver & Version
+      description: If applicable, provide the database driver and version you are using.
+      placeholder: "MySQL 8.0.31 for macOS 13.0 on arm64 (Homebrew)"
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Description
+      description: Provide a detailed description of the issue you are facing.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps To Reproduce
+      description: Provide detailed steps to reproduce your issue. If necessary, please provide a GitHub repository to demonstrate your issue using `laravel new bug-report --github="--public"`.
+    validations:
+      required: true
+      
