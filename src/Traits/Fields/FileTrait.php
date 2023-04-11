@@ -122,7 +122,7 @@ trait FileTrait
                 ->toArray();
         } elseif (isset($values[$this->field()])) {
             $values[$this->field()] = $this->store($values[$this->field()]);
-        } elseif (!isset($values[$this->field()])) {
+        } elseif (! isset($values[$this->field()])) {
             $values[$this->field()] = request($hiddenKey, '');
         }
 
@@ -163,7 +163,7 @@ trait FileTrait
 
     public function formViewValue(Model $item): Collection|string
     {
-        if ($this->isMultiple() && !$item->{$this->field()} instanceof Collection) {
+        if ($this->isMultiple() && ! $item->{$this->field()} instanceof Collection) {
             return collect($item->{$this->field()});
         }
 
