@@ -85,7 +85,7 @@ class SocialiteController extends BaseController
         return redirect()
             ->route('moonshine.login')
             ->withErrors([
-                'email' => __('moonshine::auth.failed')
+                'email' => __('moonshine::auth.failed'),
             ]);
     }
 
