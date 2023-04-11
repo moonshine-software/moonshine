@@ -1,6 +1,7 @@
 @props([
     'files' => [],
     'path' => '',
+    'dir' => '',
     'download' => false,
     'removable' => true,
     'imageable' => true
@@ -31,6 +32,7 @@
                         <x-moonshine::form.file-item
                             :attributes="$attributes"
                             :path="$path"
+                            :dir="$dir"
                             :download="$download"
                             :removable="$removable"
                             :imageable="$imageable"
@@ -40,6 +42,7 @@
                     @foreach($files as $index => $file)
                         <x-moonshine::form.file-item
                             :attributes="$attributes"
+                            :dir="$dir"
                             :path="$path"
                             :file="$file"
                             :download="$download"

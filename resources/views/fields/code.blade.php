@@ -3,10 +3,12 @@
      style="min-height: 300px">
 </div>
 
-<input type="hidden"
-       id="{{ $element->id() }}"
-       name="{{ $element->name() }}"
-       value="{{ $element->formViewValue($item) ?? '' }}"
+<x-moonshine::form.input
+    type="hidden"
+    id="{{ $element->id() }}"
+    name="{{ $element->name() }}"
+    :attributes="$element->attributes()->only(['x-bind:name'])"
+    value="{{ $element->formViewValue($item) ?? '' }}"
 />
 
 <script>

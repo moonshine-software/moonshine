@@ -7,5 +7,6 @@
     :removable="$element->isRemovable()"
     :imageable="false"
     :download="$element->canDownload()"
+    :dir="$element->getDir()"
     :path="$element->path('')"
 />
