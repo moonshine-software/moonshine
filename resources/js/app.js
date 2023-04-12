@@ -132,9 +132,9 @@ document.addEventListener("alpine:init", () => {
         init() {
             this.ref = this.$refs.select
             this.placeholder = this.ref.getAttribute('placeholder')
-            this.searchEnabled = this.ref.dataset.searchEnabled ? true : false
-            this.removeItemButton = this.ref.dataset.removeItemButton ? true : false
-            this.shouldSort = this.ref.dataset.shouldSort ? true : false
+            this.searchEnabled = !!this.ref.dataset.searchEnabled
+            this.removeItemButton = !!this.ref.dataset.removeItemButton
+            this.shouldSort = !!this.ref.dataset.shouldSort
             this.choicesInstance = new Choices(this.ref, {
                 allowHTML: true,
                 position: 'bottom',
