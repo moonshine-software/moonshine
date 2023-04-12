@@ -23,7 +23,7 @@ class SocialiteController extends BaseController
     {
         $this->ensureSocialiteIsInstalled();
 
-        if (!$this->hasDriver($driver)) {
+        if (! $this->hasDriver($driver)) {
             throw new AuthException('Driver not found in config file');
         }
 
@@ -39,7 +39,7 @@ class SocialiteController extends BaseController
     {
         $this->ensureSocialiteIsInstalled();
 
-        if (!$this->hasDriver($driver)) {
+        if (! $this->hasDriver($driver)) {
             throw new AuthException('Driver not found in config file');
         }
 
@@ -54,9 +54,9 @@ class SocialiteController extends BaseController
             return $this->bindAccount($socialiteUser, $driver, $account);
         }
 
-        if (!$account) {
+        if (! $account) {
             return to_route('moonshine.login')->withErrors([
-                'email' => __('moonshine::auth.failed')
+                'email' => __('moonshine::auth.failed'),
             ])->with('alert', __('moonshine::auth.failed'));
         }
 
