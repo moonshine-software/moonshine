@@ -45,6 +45,17 @@ trait ResourceRouter
             .($query ? '?'.http_build_query($query) : '');
     }
 
+    public function getRouteAfterSave(): string
+    {
+        return match ($this->stayAfterSave) {
+            'show', 'edit' => $this->route(
+                $this->stayAfterSave,
+                $this?->item->getKey()
+            ),
+            default => $this->route('index')
+        };
+    }
+
     public function route(string $action = null, int|string $id = null, array $query = []): string
     {
         if (empty($query) && Cache::has($this->queryCacheKey())) {

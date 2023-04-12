@@ -223,7 +223,7 @@ class CrudController extends BaseController
                     ->with('alert', trans('moonshine::ui.saved_error'));
             }
 
-            return $request->redirectRoute($resource->route('index'))
+            return $request->redirectRoute($resource->getRouteAfterSave())
                 ->with('alert', trans('moonshine::ui.saved'));
         }
 
