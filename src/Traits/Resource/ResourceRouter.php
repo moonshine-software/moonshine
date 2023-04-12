@@ -47,9 +47,9 @@ trait ResourceRouter
 
     public function getRouteAfterSave(): string
     {
-        return match ($this->stayAfterSave) {
+        return match ($this->routeAfterSave) {
             'show', 'edit' => $this->route(
-                $this->stayAfterSave,
+                $this->routeAfterSave,
                 $this?->item->getKey()
             ),
             default => $this->route('index')

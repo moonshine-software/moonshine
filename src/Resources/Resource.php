@@ -77,7 +77,7 @@ abstract class Resource implements ResourceContract
 
     protected bool $previewMode = false;
 
-    protected string $stayAfterSave = 'index';
+    protected string $routeAfterSave = 'index';
 
     /**
      * Alias for route of resource.
