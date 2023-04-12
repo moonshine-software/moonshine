@@ -16,7 +16,7 @@ class AuthenticateController extends BaseController
     public function login(): View|RedirectResponse
     {
         if (auth(config('moonshine.auth.guard'))->check()) {
-            return redirect(route('moonshine.index'));
+            return to_route('moonshine.index');
         }
 
         return view('moonshine::auth.login');
@@ -29,13 +29,14 @@ class AuthenticateController extends BaseController
     {
         $request->authenticate();
 
-        return redirect(url()->previous());
+        return redirect()
+            ->intended(route('moonshine.index'));
     }
 
     public function logout(): RedirectResponse
     {
         auth(config('moonshine.auth.guard'))->logout();
 
-        return redirect(route('moonshine.login'));
+        return to_route('moonshine.login');
     }
 }

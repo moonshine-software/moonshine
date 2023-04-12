@@ -9,9 +9,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\Facades\Socialite;
-
 use MoonShine\Exceptions\AuthException;
 use MoonShine\Models\MoonshineSocialite;
+use RuntimeException;
 
 class SocialiteController extends BaseController
 {
@@ -23,7 +23,7 @@ class SocialiteController extends BaseController
     {
         $this->ensureSocialiteIsInstalled();
 
-        if (! $this->hasDriver($driver)) {
+        if (!$this->hasDriver($driver)) {
             throw new AuthException('Driver not found in config file');
         }
 
@@ -39,7 +39,7 @@ class SocialiteController extends BaseController
     {
         $this->ensureSocialiteIsInstalled();
 
-        if (! $this->hasDriver($driver)) {
+        if (!$this->hasDriver($driver)) {
             throw new AuthException('Driver not found in config file');
         }
 
@@ -54,24 +54,22 @@ class SocialiteController extends BaseController
             return $this->bindAccount($socialiteUser, $driver, $account);
         }
 
-        if (! $account) {
-            request()->session()->flash('alert', trans('moonshine::auth.failed'));
-
-            return redirect()
-                ->route('moonshine.login');
+        if (!$account) {
+            return to_route('moonshine.login')->withErrors([
+                'email' => __('moonshine::auth.failed')
+            ])->with('alert', __('moonshine::auth.failed'));
         }
 
         auth(config('moonshine.auth.guard'))
             ->loginUsingId($account->moonshine_user_id);
 
-        return redirect()
-            ->route('moonshine.index');
+        return to_route('moonshine.index');
     }
 
     private function bindAccount(User $socialiteUser, string $driver, ?MoonshineSocialite $account): RedirectResponse
     {
         if ($account) {
-            request()->session()->flash('alert', trans('moonshine::auth.socialite.link_exists'));
+            session()->flash('alert', __('moonshine::auth.socialite.link_exists'));
         } else {
             MoonshineSocialite::query()->create([
                 'moonshine_user_id' => auth(config('moonshine.auth.guard'))->id(),
@@ -79,14 +77,13 @@ class SocialiteController extends BaseController
                 'identity' => $socialiteUser->getId(),
             ]);
 
-            request()->session()->flash('success', trans('moonshine::auth.socialite.link_success'));
+            session()->flash('success', __('moonshine::auth.socialite.link_success'));
         }
 
-        return redirect()
-            ->route('moonshine.login')
-            ->withErrors([
-                'email' => __('moonshine::auth.failed'),
-            ]);
+        return to_route(
+            'moonshine.custom_page',
+            'profile'
+        );
     }
 
     protected function drivers(): array
@@ -108,6 +105,8 @@ class SocialiteController extends BaseController
             return;
         }
 
-        throw new Exception('Please install the Socialite: laravel/socialite');
+        throw new RuntimeException(
+            'Please install the Socialite: laravel/socialite'
+        );
     }
 }
