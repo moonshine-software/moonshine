@@ -122,7 +122,6 @@ document.addEventListener("alpine:init", () => {
 
     /* Select */
     Alpine.data('select', () => ({
-        ref: null,
         choicesInstance: null,
         placeholder: null,
         searchEnabled: null,
@@ -130,18 +129,20 @@ document.addEventListener("alpine:init", () => {
         shouldSort: null,
 
         init() {
-            this.ref = this.$refs.select
-            this.placeholder = this.ref.getAttribute('placeholder')
-            this.searchEnabled = !!this.ref.dataset.searchEnabled
-            this.removeItemButton = !!this.ref.dataset.removeItemButton
-            this.shouldSort = !!this.ref.dataset.shouldSort
-            this.choicesInstance = new Choices(this.ref, {
-                allowHTML: true,
-                position: 'bottom',
-                placeholderValue: this.placeholder,
-                searchEnabled: this.searchEnabled,
-                removeItemButton: this.removeItemButton,
-                shouldSort: this.shouldSort,
+            this.placeholder = this.$el.getAttribute('placeholder')
+            this.searchEnabled = !!this.$el.dataset.searchEnabled
+            this.removeItemButton = !!this.$el.dataset.removeItemButton
+            this.shouldSort = !!this.$el.dataset.shouldSort
+
+            this.$nextTick(() => {
+                this.choicesInstance = new Choices(this.$el, {
+                    allowHTML: true,
+                    position: 'bottom',
+                    placeholderValue: this.placeholder,
+                    searchEnabled: this.searchEnabled,
+                    removeItemButton: this.removeItemButton,
+                    shouldSort: this.shouldSort,
+                })
             })
         },
     }))

@@ -8,7 +8,6 @@
     {{ $attributes->merge([
         'class' => 'form-select',
         'x-data' => 'select',
-        'x-ref' => 'select',
         'data-search-enabled' => $searchable,
         'data-remove-item-button' => $nullable
     ]) }}
