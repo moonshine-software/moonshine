@@ -285,65 +285,6 @@ a {
 }
 }
 
-/* CKEditor */
-.ck {
-&.ck-editor {
-     @apply w-full;
- }
-.ck-content {
-    min-height: 250px;
-    max-height: 70vh;
-}
-}
-
-:root {
-    --ck-color-toolbar-background: theme(colors.slate.100);
-    --ck-color-base-border: theme(colors.gray.200);
-    --ck-color-list-button-hover-background: theme(colors.slate.100);
-    --ck-color-list-button-on-background: theme(colors.purple.DEFAULT);
-    --ck-color-list-button-on-background-focus: theme(colors.purple.DEFAULT);
-    --ck-color-list-button-on-text: theme(colors.white);
-    --ck-color-focus-border: theme(colors.purple.DEFAULT);
-    --ck-color-focus-outer-shadow: rgba(0, 0, 0, 0.15);
-    --ck-focus-disabled-outer-shadow: rgba(0, 0, 0, 0.15);
-    --ck-color-button-on-hover-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-on-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-on-active-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-on-color: theme(colors.white);
-}
-
-:root[class="dark"] {
-    --ck-color-toolbar-background: theme(colors.dark.700);
-    --ck-color-base-background: theme(colors.dark.800);
-    --ck-color-base-foreground: theme(colors.dark.800);
-    --ck-color-base-border: theme(colors.dark.800);
-    --ck-color-base-active: theme(colors.purple.DEFAULT);
-    --ck-color-base-focus: theme(colors.purple.DEFAULT);
-    --ck-color-text: theme(colors.gray.200);
-    --ck-color-button-default-hover-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-default-active-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-on-hover-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-on-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-on-active-background: theme(colors.purple.DEFAULT);
-    --ck-color-button-on-color: theme(colors.white);
-    --ck-color-color-grid-check-icon: theme(colors.purple.DEFAULT);
-    --ck-color-input-disabled-background: theme(colors.dark.200);
-    --ck-color-input-disabled-border: theme(colors.dark.200);
-    --ck-color-input-disabled-text: theme(colors.slate.400);
-    --ck-color-focus-outer-shadow: theme(colors.purple.DEFAULT);
-    --ck-focus-disabled-outer-shadow: rgba(255, 255, 255, 0.15);
-    --ck-color-focus-border: theme(colors.purple.DEFAULT);
-    --ck-color-list-button-hover-background: theme(colors.slate.100);
-    --ck-color-list-button-hover-background: theme(colors.dark.400);
-    --ck-color-list-button-on-background: theme(colors.purple.DEFAULT);
-    --ck-color-list-button-on-background-focus: theme(colors.purple.DEFAULT);
-    --ck-color-list-button-on-text: theme(colors.white);
-    --ck-color-tooltip-background: theme(colors.dark.900);
-    --ck-color-tooltip-text: theme(colors.white);
-    --ck-color-resizer-tooltip-background: theme(colors.dark.900);
-    --ck-color-resizer-tooltip-text: theme(colors.white);
-}
-
 /* TinyMCE */
 .tox-tinymce {
     @apply w-full;
