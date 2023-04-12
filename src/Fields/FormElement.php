@@ -265,9 +265,14 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this->group;
     }
 
+    public function canBeResourceMode(): bool
+    {
+        return $this->toOne() || $this->toMany();
+    }
+
     public function isResourceModeField(): bool
     {
-        return ($this->toOne() || $this->toMany()) && $this->isResourceMode();
+        return $this->canBeResourceMode() && $this->isResourceMode();
     }
 
     /**

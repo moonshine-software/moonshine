@@ -1,10 +1,20 @@
 @props([
     'file' => null,
     'path' => '',
+    'dir' => '',
     'download' => false,
     'removable' => true,
     'imageable' => true
 ])
+@php
+    $fileWithDir = str($file)->remove($dir)
+                        ->prepend($dir)
+                        ->prepend($path)
+                        ->value();
+
+    $xValueExpr = "xValue ? ('$path') + '$dir' + xValue.replace('$dir', '') : ''";
+@endphp
+
 <div
     id="hidden_parent_{{ $attributes->get('id')  }}"
     class="x-removeable dropzone-item zoom-in @if(!$imageable) dropzone-item-file @endif"
@@ -22,8 +32,10 @@
 
     @if(!$imageable)
         @include('moonshine::ui.file', [
-            'value' => $file,
-            'xValue' => $attributes->has('x-model') ? "xValue ? ('$path') + xValue : ''" : null,
+            'value' => $fileWithDir,
+            'xValue' => $attributes->has('x-model')
+                ? $xValueExpr
+                : null,
             'download' => $download
         ])
     @endif
@@ -40,9 +52,9 @@
     @if($imageable)
         <img
             @if($attributes->has('x-model'))
-                :src="xValue ? ('{{ $path }}') + xValue : ''"
+                :src="{{ $xValueExpr }}"
             @else
-                src="{{ $path }}{{ $file }}"
+                src="{{ $fileWithDir }}"
             @endif
         >
     @endif

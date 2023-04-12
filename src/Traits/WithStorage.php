@@ -33,7 +33,9 @@ trait WithStorage
 
     public function getDir(): string
     {
-        return $this->dir;
+        return str($this->dir)
+            ->trim('/')
+            ->value();
     }
 
     public function dir(string $dir): static

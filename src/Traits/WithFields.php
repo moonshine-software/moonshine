@@ -22,7 +22,7 @@ trait WithFields
 
         if ($this instanceof HasFields && ! $this->manyToMany() && ! $this->hasFields()) {
             $this->fields(
-                Fields::make($this->resource()?->getFields())->formFields()?->toArray() ?? []
+                $this->resource()?->getFields()->withoutCanBeRelatable()?->toArray() ?? []
             );
         }
 

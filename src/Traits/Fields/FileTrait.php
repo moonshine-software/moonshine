@@ -17,31 +17,22 @@ trait FileTrait
 {
     use WithStorage;
 
-    protected string $withPrefix = '';
-
     protected array $allowedExtensions = [];
 
     protected bool $disableDownload = false;
 
     protected bool $keepOriginalFileName = false;
 
+    /**
+     * @deprecated Will be removed
+     */
+    protected string $withPrefix = '';
+
     public function keepOriginalFileName(): static
     {
         $this->keepOriginalFileName = true;
 
         return $this;
-    }
-
-    public function withPrefix(string $withPrefix): static
-    {
-        $this->withPrefix = $withPrefix;
-
-        return $this;
-    }
-
-    public function prefix(): string
-    {
-        return $this->withPrefix;
     }
 
     public function allowedExtensions(array $allowedExtensions): static
@@ -83,8 +74,7 @@ trait FileTrait
 
     public function path(string $value): string
     {
-        return Storage::disk($this->getDisk())
-            ->url($this->unPrefixedValue($value));
+        return Storage::disk($this->getDisk())->url($value);
     }
 
     /**
@@ -100,18 +90,14 @@ trait FileTrait
         );
 
         if ($this->keepOriginalFileName) {
-            return $this->prefixedValue(
-                $file->storeAs(
-                    $this->getDir(),
-                    $file->getClientOriginalName(),
-                    $this->getDisk()
-                )
+            return $file->storeAs(
+                $this->getDir(),
+                $file->getClientOriginalName(),
+                $this->getDisk()
             );
         }
 
-        return $this->prefixedValue(
-            $file->store($this->getDir(), $this->getDisk())
-        );
+        return $file->store($this->getDir(), $this->getDisk());
     }
 
     /**
@@ -120,8 +106,7 @@ trait FileTrait
     public function hasManyOrOneSave($hiddenKey, array $values = []): array
     {
         if ($this->isMultiple()) {
-            $saveValues = collect(request($hiddenKey, []))
-                ->map(fn ($file) => $this->prefixedValue($file));
+            $saveValues = collect(request($hiddenKey, []));
 
             if (isset($values[$this->field()])) {
                 foreach ($values[$this->field()] as $value) {
@@ -132,11 +117,13 @@ trait FileTrait
             }
 
             $values[$this->field()] = $saveValues->values()
+                ->filter()
                 ->unique()
-                ->map(fn ($file) => $this->prefixedValue($file))
                 ->toArray();
         } elseif (isset($values[$this->field()])) {
             $values[$this->field()] = $this->store($values[$this->field()]);
+        } elseif (! isset($values[$this->field()])) {
+            $values[$this->field()] = request($hiddenKey, '');
         }
 
         return $values;
@@ -148,8 +135,7 @@ trait FileTrait
     public function save(Model $item): Model
     {
         $requestValue = $this->requestValue();
-        $oldValues = collect(request("hidden_{$this->field()}", []))
-            ->map(fn ($file) => $this->prefixedValue($file));
+        $oldValues = collect(request("hidden_{$this->field()}", []));
 
         $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
 
@@ -163,7 +149,6 @@ trait FileTrait
 
                 $saveValue = $saveValue->merge($paths)
                     ->values()
-                    ->map(fn ($file) => $this->prefixedValue($file))
                     ->unique()
                     ->toArray();
             } else {
@@ -178,22 +163,11 @@ trait FileTrait
 
     public function formViewValue(Model $item): Collection|string
     {
-        if ($this->isMultiple()) {
-            return collect($item->{$this->field()})
-                ->map(fn ($value) => $this->unPrefixedValue($value));
+        if ($this->isMultiple() && ! $item->{$this->field()} instanceof Collection) {
+            return collect($item->{$this->field()});
         }
 
-        return $this->unPrefixedValue($item->{$this->field()});
-    }
-
-    protected function unPrefixedValue(string|bool|null $value): string
-    {
-        return $value ? ltrim($value, $this->prefix()) : '';
-    }
-
-    protected function prefixedValue(string|bool|null $value): string
-    {
-        return $value ? ($this->prefix() . ltrim($value, $this->prefix())) : '';
+        return $item->{$this->field()} ?? '';
     }
 
     public function exportViewValue(Model $item): string
@@ -208,9 +182,50 @@ trait FileTrait
     public function acceptExtension(): string
     {
         $extensions = array_map(static function ($val) {
-            return "." . $val;
+            return '.' . $val;
         }, $this->allowedExtensions);
 
-        return implode(",", $extensions);
+        return implode(',', $extensions);
+    }
+
+    /**
+     * @deprecated Will be removed
+     * @param  string  $withPrefix
+     * @return $this
+     */
+    public function withPrefix(string $withPrefix): static
+    {
+        $this->withPrefix = $withPrefix;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated Will be removed
+     * @return string
+     */
+    public function prefix(): string
+    {
+        return $this->withPrefix;
+    }
+
+    /**
+     * @deprecated Will be removed
+     * @param  string|bool|null  $value
+     * @return string
+     */
+    protected function unPrefixedValue(string|bool|null $value): string
+    {
+        return $value ? ltrim($value, $this->prefix()) : '';
+    }
+
+    /**
+     * @deprecated Will be removed
+     * @param  string|bool|null  $value
+     * @return string
+     */
+    protected function prefixedValue(string|bool|null $value): string
+    {
+        return $value ? ($this->prefix() . ltrim($value, $this->prefix())) : '';
     }
 }

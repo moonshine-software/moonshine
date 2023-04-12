@@ -144,6 +144,20 @@ final class Fields extends Collection
             ->map(fn (Field $field) => $field->setParents());
     }
 
+    public function withoutCanBeRelatable(): Fields
+    {
+        return $this->onlyFields()
+            ->filter(static fn (Field $field) => ! $field->canBeResourceMode())
+            ->values();
+    }
+
+    public function withoutRelatable(): Fields
+    {
+        return $this->onlyFields()
+            ->filter(static fn (Field $field) => ! $field->isResourceModeField())
+            ->values();
+    }
+
     /**
      * @return Fields<Field|Decoration>
      * @throws Throwable

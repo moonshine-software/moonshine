@@ -1,6 +1,7 @@
 @props([
     'files' => [],
     'path' => '',
+    'dir' => '',
     'download' => false,
     'removable' => true,
     'imageable' => true
@@ -12,10 +13,18 @@
     />
 
     @if($attributes->has('x-model') || array_filter((array) $files))
-        <div class="dropzone" @if($attributes->has('x-model')) x-show="Object.keys({{ $attributes->get('x-model') }}).length" @endif>
+        <div class="dropzone"
+             @if($attributes->has('x-model'))
+                @if($attributes->get('multiple'))
+                    x-show="Object.keys({{ $attributes->get('x-model') }}).length"
+                @else
+                    x-show="{{ $attributes->get('x-model') }}"
+                @endif
+            @endif
+        >
             <div class="dropzone-items"
                  @if($attributes->has('x-model'))
-                     x-data="{xValues: {{ $attributes->get('x-model', '') }}}"
+                     x-data="{xValues: {{ $attributes->get('multiple') ? $attributes->get('x-model', '[]') : $attributes->get('x-model', '') . '.split(" ")' }}}"
                 @endif
             >
                 @if($attributes->has('x-model'))
@@ -23,6 +32,7 @@
                         <x-moonshine::form.file-item
                             :attributes="$attributes"
                             :path="$path"
+                            :dir="$dir"
                             :download="$download"
                             :removable="$removable"
                             :imageable="$imageable"
@@ -32,6 +42,7 @@
                     @foreach($files as $index => $file)
                         <x-moonshine::form.file-item
                             :attributes="$attributes"
+                            :dir="$dir"
                             :path="$path"
                             :file="$file"
                             :download="$download"

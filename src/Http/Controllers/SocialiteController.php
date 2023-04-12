@@ -83,7 +83,10 @@ class SocialiteController extends BaseController
         }
 
         return redirect()
-            ->route('moonshine.custom_page', 'profile');
+            ->route('moonshine.login')
+            ->withErrors([
+                'email' => __('moonshine::auth.failed'),
+            ]);
     }
 
     protected function drivers(): array

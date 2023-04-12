@@ -24,7 +24,11 @@
     ])
 </x-moonshine::form>
 
-@if($item->exists)
+@if($item->exists &&
+    !$resource->isInModal()
+    && !$resource->isRelatable()
+    && !request('relatable_mode')
+)
     @foreach($resource->getFields()->relatable() as $field)
         @if($field->canDisplayOnForm($item))
             {{ $resource->renderComponent($field, $item) }}
