@@ -41,14 +41,12 @@ class ImportAction extends Action
     public function handle(): RedirectResponse
     {
         if (! request()->hasFile($this->inputName)) {
-            return redirect()
-                ->back()
+            return back()
                 ->with('alert', trans('moonshine::ui.resource.import.file_required'));
         }
 
         if (! in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
-            return redirect()
-                ->back()
+            return back()
                 ->with('alert', trans('moonshine::ui.resource.import.extension_not_supported'));
         }
 
@@ -73,15 +71,13 @@ class ImportAction extends Action
                 $this->deleteAfter
             );
 
-            return redirect()
-                ->back()
+            return back()
                 ->with('alert', trans('moonshine::ui.resource.queued'));
         }
 
         self::process($path, $this->resource(), $this->deleteAfter);
 
-        return redirect()
-            ->back()
+        return back()
             ->with('alert', trans('moonshine::ui.resource.import.imported'));
     }
 

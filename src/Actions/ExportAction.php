@@ -54,8 +54,7 @@ class ExportAction extends Action
                 $this->getDir()
             );
 
-            return redirect()
-                ->back()
+            return back()
                 ->with('alert', trans('moonshine::ui.resource.queued'));
         }
 

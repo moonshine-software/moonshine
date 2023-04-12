@@ -12,7 +12,7 @@
                         ->prepend($path)
                         ->value();
 
-    $xValueExpr = "xValue ? ('$path') + '$dir' + xValue.replace('$dir', '') : ''";
+    $xValueExpr = "xValue ? ('$path') + '$dir' + (!xValue.replace('$dir', '').startsWith('/') ? '/' : '') + xValue.replace('$dir', '') : ''";
 @endphp
 
 <div

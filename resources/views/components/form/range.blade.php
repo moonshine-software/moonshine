@@ -3,31 +3,37 @@
     'fromName',
     'toName',
     'fromValue',
-    'toValue'
+    'toValue',
+    'fromField' => $fromName,
+    'toField' => $toName
 ])
 <div class="form-group-range">
-    <div x-data="range_{{ $uniqueId }}()"
+    <div x-data="range_{{ $uniqueId }}({{ $attributes->get('x-model') ? 'item.'.$fromField.',item.'.$toField : '`'.$fromValue.'`,`'.$toValue.'`' }})"
          x-init="mintrigger(); maxtrigger()"
          class="form-group-range-wrapper"
     >
         <div>
-            <input type="range"
-                   step="{{ $attributes->get('step', 1) }}"
-                   x-bind:min="min"
-                   x-bind:max="max"
-                   x-on:input="mintrigger"
-                   x-model="minValue"
-                   class="form-range-input"
-            >
+            <x-moonshine::form.input
+                type="range"
+                step="{{ $attributes->get('step', 1) }}"
+                x-bind:min="min"
+                x-bind:max="max"
+                x-on:input="mintrigger"
+                x-model="minValue"
+                class="form-range-input"
+                x-bind:name="`{{ $fromName }}`"
+            />
 
-            <input type="range"
-                   step="{{ $attributes->get('step', 1) }}"
-                   x-bind:min="min"
-                   x-bind:max="max"
-                   x-on:input="maxtrigger"
-                   x-model="maxValue"
-                   class="form-range-input"
-            >
+            <x-moonshine::form.input
+                type="range"
+                step="{{ $attributes->get('step', 1) }}"
+                x-bind:min="min"
+                x-bind:max="max"
+                x-on:input="maxtrigger"
+                x-model="maxValue"
+                class="form-range-input"
+                x-bind:name="`{{ $toName }}`"
+            />
 
             <div class="form-range-slider">
                 <div class="form-range-tracker"></div>
@@ -40,6 +46,7 @@
         <div class="form-group-range-fields">
             <x-moonshine::form.input
                 name="{{ $fromName }}"
+                x-bind:name="`{{ $fromName }}`"
                 type="text"
                 maxlength="5"
                 x-on:input="mintrigger"
@@ -48,6 +55,7 @@
 
             <x-moonshine::form.input
                 name="{{ $toName }}"
+                x-bind:name="`{{ $toName }}`"
                 type="text"
                 maxlength="5"
                 x-on:input="maxtrigger"
@@ -57,10 +65,10 @@
     </div>
 
     <script>
-        function range_{{ $uniqueId }}() {
+        function range_{{ $uniqueId }}(from = '0', to = '0') {
             return {
-                minValue: parseInt('{{ $fromValue }}'),
-                maxValue: parseInt('{{ $toValue }}'),
+                minValue: parseInt(from),
+                maxValue: parseInt(to),
                 min: parseInt('{{ $attributes->get('min', 0) }}'),
                 max: parseInt('{{ $attributes->get('max', 1000) }}'),
                 step: parseInt('{{ $attributes->get('step', 1) }}'),

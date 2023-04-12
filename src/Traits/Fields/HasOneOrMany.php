@@ -10,6 +10,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
+use MoonShine\Fields\SlideField;
 
 /**
  * @mixin Field
@@ -45,6 +46,12 @@ trait HasOneOrMany
 
                     if ($field instanceof Fileable) {
                         $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
+                    }
+
+                    if ($field instanceof SlideField) {
+                        $values[$field->fromField] = $values[$field->field()][$field->fromField] ?? '';
+                        $values[$field->toField] = $values[$field->field()][$field->toField] ?? '';
+                        unset($values[$field->field()]);
                     }
 
                     if ($field instanceof Json && $field->isKeyValue()) {
