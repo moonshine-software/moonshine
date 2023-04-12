@@ -127,18 +127,21 @@ document.addEventListener("alpine:init", () => {
         placeholder: null,
         searchEnabled: null,
         removeItemButton: null,
+        shouldSort: null,
 
         init() {
             this.ref = this.$refs.select
             this.placeholder = this.ref.getAttribute('placeholder')
-            this.searchEnabled = !!this.ref.dataset.searchEnabled
-            this.removeItemButton = !!this.ref.dataset.removeItemButton
+            this.searchEnabled = this.ref.dataset.searchEnabled ? true : false
+            this.removeItemButton = this.ref.dataset.removeItemButton ? true : false
+            this.shouldSort = this.ref.dataset.shouldSort ? true : false
             this.choicesInstance = new Choices(this.ref, {
                 allowHTML: true,
                 position: 'bottom',
                 placeholderValue: this.placeholder,
                 searchEnabled: this.searchEnabled,
                 removeItemButton: this.removeItemButton,
+                shouldSort: this.shouldSort,
             })
         },
     }))
