@@ -1,16 +1,14 @@
 @props([
-    'fetchApiRoute',
-    'fetchApiUriKey',
-    'fetchApiField',
     'searchable' => false,
     'nullable' => false,
     'values' => [],
-    'options' => false
+    'options' => false,
+    'fetchRoute'=>''
 ])
 <select
     {{ $attributes->merge([
         'class' => 'form-select',
-        'x-data' => sprintf('selectFetchApi("%s","%s","%s")', $fetchApiRoute, $fetchApiUriKey, $fetchApiField),
+        'x-data' => $fetchRoute ? 'select(\''.$fetchRoute.'\')' : 'select',
         'data-search-enabled' => $searchable,
         'data-remove-item-button' => $nullable
     ]) }}

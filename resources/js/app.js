@@ -121,7 +121,7 @@ document.addEventListener("alpine:init", () => {
     }))
 
     /* Select */
-    Alpine.data('select', () => ({
+    Alpine.data('select', (fetchRoute = '') => ({
         choicesInstance: null,
         placeholder: null,
         searchEnabled: null,
@@ -143,65 +143,39 @@ document.addEventListener("alpine:init", () => {
                     removeItemButton: this.removeItemButton,
                     shouldSort: this.shouldSort,
                 })
+
+                if (fetchRoute) {
+                    this.$el.addEventListener(
+                      'search',
+                      (event) => {
+                          if (event.detail.value.length > 2) {
+                              this.setChoicesFromFetchApi(fetchRoute + event.detail.value)
+                          }
+                      },
+                      false,
+                    )
+                }
+
             })
         },
-    }))
 
-    Alpine.data('selectFetchApi', (route, resourceUri, column) => ({
-      choicesInstance: null,
-      placeholder: null,
-      searchEnabled: null,
-      removeItemButton: null,
-      shouldSort: null,
-
-      init () {
-        this.placeholder = this.$el.getAttribute('placeholder')
-        this.searchEnabled = !!this.$el.dataset.searchEnabled
-        this.removeItemButton = !!this.$el.dataset.removeItemButton
-        this.shouldSort = !!this.$el.dataset.shouldSort
-
-        this.$nextTick(() => {
-
-          this.choicesInstance = new Choices(this.$el, {
-            allowHTML: true,
-            position: 'bottom',
-            placeholderValue: this.placeholder,
-            searchEnabled: this.searchEnabled,
-            removeItemButton: this.removeItemButton,
-            shouldSort: this.shouldSort,
-          })
-
-          this.$el.addEventListener(
-            'search',
-            (event) => {
-              if (event.detail.value.length > 2) {
-                this.setChoices(event.detail.value)
-              }
-            },
-            false,
-          )
-        })
-      },
-
-      setChoices (query = null) {
-
-        this.choicesInstance.setChoices(() => {
-            return fetch(route + '?resource=' + resourceUri + '&column=' + column +
-              '&query=' + query).then((response) => {
-              return response.json()
-            }).then((jsondata) => {
-              return Object.keys(jsondata).map((key) => {
-                return {
-                  value: key,
-                  label: jsondata[key],
-                }
-              })
-            })
-          },
-          'value',
-          'label',
-          true)
-      }
+        setChoicesFromFetchApi(url) {
+            this.choicesInstance.setChoices(() => {
+                  return fetch(url).then((response) => {
+                      return response.json()
+                  }).then((jsondata) => {
+                      return Object.keys(jsondata).map((key) => {
+                          return {
+                              value: key,
+                              label: jsondata[key],
+                          }
+                      })
+                  })
+              },
+              'value',
+              'label',
+              true)
+        }
     }))
 
     /* Tooltip */
