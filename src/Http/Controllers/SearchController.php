@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Fields\BelongsTo;
 use MoonShine\Fields\BelongsToMany;
 use MoonShine\MoonShine;
 use Throwable;
@@ -16,7 +17,7 @@ class SearchController extends BaseController
      */
     public function relations(string $type)
     {
-        abort_if(! request()->has(['resource', 'column', 'query']), 404);
+        abort_if(! request()->has(['resource', 'column']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
@@ -26,7 +27,7 @@ class SearchController extends BaseController
 
         $field = $resource->getFields()->findFieldByColumn(request('column'));
 
-        if ($field instanceof BelongsToMany && $type === class_basename($field)) {
+        if (($field instanceof BelongsToMany || $field instanceof BelongsTo) && $type === class_basename($field) && request('query')) {
             $request = request('query');
             $related = $field->getRelated($item);
             $query = $related->newModelQuery();
