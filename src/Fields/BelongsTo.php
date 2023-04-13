@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Closure;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\MoonShineRequest;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithOnlySelect;
 use MoonShine\Traits\Fields\WithRelationship;
