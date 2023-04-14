@@ -49,19 +49,6 @@ trait WithRelatedValues
                 ->toBase()
                 ->get()
                 ->pluck($this->resourceTitleField(), $related->getKeyName());
-            // Без этого ошибка MySQL потому что ->pluck берет только нужные поля, это изменение ни на что не повлияет
-            // (ну почти. только на расход памяти, потому добавил ->toBase()):
-            // SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'id' in field list is ambiguous
-            //SELECT
-            //  `title`,
-            //  `id`
-            //FROM
-            //  `categories`
-            //  INNER JOIN `article_category` ON `categories`.`id` = `article_category`.`category_id`
-            //WHERE
-            //  `article_category`.`article_id` = 1
-
-            // Без ->selectRaw($related->getTable().'.*') он берет ID из таблицы промежуточной (((
         }
 
         return $values->toArray();
