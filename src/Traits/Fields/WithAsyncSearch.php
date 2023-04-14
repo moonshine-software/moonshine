@@ -65,8 +65,7 @@ trait WithAsyncSearch
             $request = app(MoonShineRequest::class);
 
             if ($request->getId()) {
-                $relation = $this->relation();
-                return $request->getItem()->$relation();
+                return $request->getItem()->{$this->relation()}();
             }
 
             return $query->whereRaw('1=0');

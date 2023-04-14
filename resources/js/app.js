@@ -121,7 +121,7 @@ document.addEventListener("alpine:init", () => {
     }))
 
     /* Select */
-    Alpine.data('select', (asyncRoute = '') => ({
+    Alpine.data('select', (asyncUrl = '') => ({
         choicesInstance: null,
         placeholder: null,
         searchEnabled: null,
@@ -144,12 +144,12 @@ document.addEventListener("alpine:init", () => {
                     shouldSort: this.shouldSort,
                 })
 
-                if (asyncRoute) {
+                if (asyncUrl) {
                     this.$el.addEventListener(
                       'search',
                       (event) => {
                           if (event.detail.value.length > 2) {
-                              this.setChoicesFromFetchApi(asyncRoute + 'query=' + event.detail.value)
+                              this.fromUrl(asyncUrl + 'query=' + event.detail.value)
                           }
                       },
                       false,
@@ -159,7 +159,7 @@ document.addEventListener("alpine:init", () => {
             })
         },
 
-        setChoicesFromFetchApi(url) {
+        fromUrl(url) {
             this.choicesInstance.setChoices(() => {
                   return fetch(url).then((response) => {
                       return response.json()

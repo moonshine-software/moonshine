@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
@@ -84,6 +85,19 @@ class BelongsToMany extends Field implements
     public function isTree(): bool
     {
         return $this->tree;
+    }
+
+    public function onlySelected(
+        string $relation,
+        string $searchColumn = null,
+        ?Closure $searchQuery = null,
+        ?Closure $searchValueCallback = null
+    ): static {
+        return $this->asyncSearch(
+            $searchColumn,
+            asyncSearchQuery: $searchQuery,
+            asyncSearchValueCallback: $searchValueCallback
+        );
     }
 
     private function treePerformData(Collection $data): array
