@@ -3,5 +3,6 @@
     'resource' => $resource,
     'item' => $item,
     'model' => $resource->getModel(),
-    'level' => $level ?? 0
+    'level' => $level ?? 0,
+    'toOne' => false,
 ])

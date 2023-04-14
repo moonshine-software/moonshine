@@ -10,6 +10,7 @@
         'resource' => $resource,
         'item' => $item,
         'model' => $element->formViewValue($item)->first() ?? $element->getRelated($item),
-        'level' => $level ?? 0
+        'level' => $level ?? 0,
+        'toOne' => false,
     ])
 @endif
