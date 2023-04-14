@@ -85,6 +85,7 @@ class MoonshineTestResource extends Resource
                 FiltersAction::make(trans('moonshine::ui.filters')),
             ];
         }
+
         return $this->testActions;
     }
 

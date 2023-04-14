@@ -8,7 +8,6 @@ use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Exceptions\FieldsException;
 use MoonShine\Fields\BelongsTo;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;

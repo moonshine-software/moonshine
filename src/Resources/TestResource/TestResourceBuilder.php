@@ -17,7 +17,7 @@ class TestResourceBuilder
                 ->showOnExport(),
 
             Text::make('Name', 'name')
-                ->canSee(fn($item) => $item->id === 2)
+                ->canSee(fn ($item) => $item->id === 2)
                 ->showOnExport(),
 
             Email::make('Email', 'email')
@@ -25,6 +25,7 @@ class TestResourceBuilder
                 ->showOnExport()
                 ->required(),
         ]);
+
         return $testResource;
     }
 }
