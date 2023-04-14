@@ -7,13 +7,11 @@
         :nullable="$element->isNullable()"
         :searchable="$element->isSearchable()"
         @class(['form-invalid' => $errors->has($element->name())])
-        :fetchRoute="(method_exists($element, 'isOnlySelected') && $element->isOnlySelected()) ?
+        :asyncRoute="(method_exists($element, 'isAsyncSearch') && $element->isAsyncSearch()) ?
             route('moonshine.search.relations', [
-                    'type' => class_basename($element),
                     'resource' => $resource->uriKey(),
                     'column' => $element->field(),
-                    'query' => '',
-                ]) : false"
+                ]).'&' : null"
 
 >
     <x-slot:options>

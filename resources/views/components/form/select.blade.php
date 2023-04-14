@@ -3,15 +3,15 @@
     'nullable' => false,
     'values' => [],
     'options' => false,
-    'fetchRoute'=>''
+    'asyncRoute' => null
 ])
 <select
-    {{ $attributes->merge([
-        'class' => 'form-select',
-        'x-data' => $fetchRoute ? 'select(\''.$fetchRoute.'\')' : 'select',
-        'data-search-enabled' => $searchable,
-        'data-remove-item-button' => $nullable
-    ]) }}
+        {{ $attributes->merge([
+            'class' => 'form-select',
+            'x-data' => 'select(\''. $asyncRoute .'\')',
+            'data-search-enabled' => $searchable,
+            'data-remove-item-button' => $nullable
+        ]) }}
 >
     @if($options ?? false)
         {{ $options }}

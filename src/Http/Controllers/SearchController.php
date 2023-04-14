@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Fields\BelongsTo;
 use MoonShine\Fields\BelongsToMany;
 use MoonShine\MoonShine;
@@ -15,9 +17,9 @@ class SearchController extends BaseController
     /**
      * @throws Throwable
      */
-    public function relations(string $type)
+    public function searchRelations(): JsonResponse
     {
-        abort_if(! request()->has(['resource', 'column']), 404);
+        abort_if(!request()->has(['resource', 'column']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
@@ -27,26 +29,26 @@ class SearchController extends BaseController
 
         $field = $resource->getFields()->findFieldByColumn(request('column'));
 
-        if (($field instanceof BelongsToMany || $field instanceof BelongsTo) && $type === class_basename($field) && request('query')) {
-            $request = request('query');
+        $requestQuery = request('query');
+
+        if (($field instanceof HasAsyncSearch) && $requestQuery) {
             $related = $field->getRelated($item);
             $query = $related->newModelQuery();
 
-            if (is_callable($field->searchQuery())) {
-                $query = call_user_func($field->searchQuery(), $query, $request);
+            if (is_callable($field->asyncSearchQuery())) {
+                $query = call_user_func($field->asyncSearchQuery(), $query, $requestQuery);
             }
 
-            if (is_callable($field->searchValueCallback())) {
-                $values = $query
-                    ->where($field->searchColumn() ?? $field->resourceTitleField(), 'LIKE', "%$request%")
-                    ->get()
+            $query = $query->where($field->asyncSearchColumn() ?? $field->resourceTitleField(), 'LIKE', "%$requestQuery%")
+                ->limit($field->asyncSearchCount());
+
+            if (is_callable($field->asyncSearchValueCallback())) {
+                $values = $query->get()
                     ->mapWithKeys(function ($relatedItem) use ($field) {
-                        return [$relatedItem->getKey() => ($field->searchValueCallback())($relatedItem)];
+                        return [$relatedItem->getKey() => ($field->asyncSearchValueCallback())($relatedItem)];
                     });
             } else {
-                $values = $query
-                    ->where($field->searchColumn() ?? $field->resourceTitleField(), 'LIKE', "%$request%")
-                    ->pluck($field->resourceTitleField(), $related->getKeyName());
+                $values = $query->pluck($field->resourceTitleField(), $related->getKeyName()); // TODO Why not $field->asyncSearchColumn() ?? $field->resourceTitleField()
             }
 
             $response = $values->toArray();
