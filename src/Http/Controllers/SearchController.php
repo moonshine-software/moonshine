@@ -7,8 +7,6 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Contracts\Fields\HasAsyncSearch;
-use MoonShine\Fields\BelongsTo;
-use MoonShine\Fields\BelongsToMany;
 use MoonShine\MoonShine;
 use Throwable;
 
@@ -19,7 +17,7 @@ class SearchController extends BaseController
      */
     public function relations(): JsonResponse
     {
-        abort_if(!request()->has(['resource', 'column']), 404);
+        abort_if(! request()->has(['resource', 'column']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));

@@ -6,12 +6,10 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
-use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use MoonShine\MoonShineRequest;
 
 trait WithAsyncSearch
 {
-
     protected bool $asyncSearch = false;
 
     protected ?string $asyncSearchColumn = null;

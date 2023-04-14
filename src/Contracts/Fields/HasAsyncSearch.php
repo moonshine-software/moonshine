@@ -8,7 +8,6 @@ use Closure;
 
 interface HasAsyncSearch
 {
-
     public function isAsyncSearch(): bool;
 
     public function asyncSearchColumn(): ?string;
