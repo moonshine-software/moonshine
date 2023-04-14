@@ -4,7 +4,7 @@
 >
     <x-slot:thead>
         @if(!$element->isFullPage())
-            @if(!$element->toOne())
+            @if(!isset($toOne) || !$toOne)
                 <th width="5%" class="text-center">#</th>
             @endif
 
@@ -25,7 +25,7 @@
         >
             <tr :data-id="item.id" class="table_fields_{{ $element->id() }}">
                 @if(!$element->isFullPage())
-                    @if(!$element->toOne())
+                    @if(!isset($toOne) || !$toOne)
                         <td class="text-center" scope="row" x-text="index{{ $level }} + 1"></td>
                     @endif
 
@@ -41,7 +41,7 @@
                         </td>
                     @endif
                 @else
-                    @if(!$element->toOne())
+                    @if(!isset($toOne) || !$toOne)
                         <th width="5%" class="text-center" x-text="index{{ $level }} + 1"></th>
                     @endif
 
@@ -69,10 +69,10 @@
                 href="#"
                 class="w-full"
                 icon="heroicons.plus-circle"
-                :x-show="$element->toOne() ? 'items.length == 0' : 'true'"
+                :x-show="!isset($toOne) || $toOne ? 'items.length == 0' : 'true'"
                 @click.prevent="addNewField()"
             >
-                @lang('moonshine::ui.' . ($element->toOne() ? 'create' : 'add'))
+                @lang('moonshine::ui.' . (!isset($toOne) || $toOne ? 'create' : 'add'))
             </x-moonshine::link>
         </td>
     </x-slot:tfoot>

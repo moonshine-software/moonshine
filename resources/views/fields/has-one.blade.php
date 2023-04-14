@@ -21,6 +21,7 @@
         'element' => $element,
         'resource' => $resource,
         'item' => $item,
+        'toOne' => true,
         'model' => $element->formViewValue($item) ?? $element->getRelated($item),
         'level' => $level ?? 0
     ])

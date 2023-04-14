@@ -62,7 +62,7 @@ trait ResourceRouter
             parse_str(Cache::get($this->queryCacheKey(), ''), $query);
         }
 
-        unset($query['change-moonshine-locale']);
+        unset($query['change-moonshine-locale'], $query['reset']);
 
         if ($this->isRelatable()) {
             $query['relatable_mode'] = 1;
