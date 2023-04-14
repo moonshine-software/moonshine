@@ -17,7 +17,7 @@ class SearchController extends BaseController
     /**
      * @throws Throwable
      */
-    public function searchRelations(): JsonResponse
+    public function relations(): JsonResponse
     {
         abort_if(!request()->has(['resource', 'column']), 404);
 

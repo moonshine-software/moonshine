@@ -18,7 +18,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
         Route::get('/', DashboardController::class)->name('index');
         Route::post('/attachments', AttachmentController::class)->name('attachments');
 
-        Route::get('/search/relations', [SearchController::class, 'searchRelations'])
+        Route::get('/search/relations', [SearchController::class, 'relations'])
             ->name('search.relations');
 
         Route::put('update-column', [CrudController::class, 'updateColumn'])
