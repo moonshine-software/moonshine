@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 
 trait SelectTrait
 {
@@ -24,11 +26,23 @@ trait SelectTrait
 
     public function isSelected(Model $item, string $value): bool
     {
-        if (! $this->formViewValue($item)) {
+        $formValue = $this->formViewValue($item);
+
+        if (! $formValue) {
             return false;
         }
 
-        return (string) $this->formViewValue($item) === $value
-            || (! $this->formViewValue($item) && (string) $this->getDefault() === $value);
+        if ($this->hasRelationship()) {
+            $related = $this->getRelated($item);
+
+            return match (true) {
+                $formValue instanceof Collection => $formValue->contains($related->getKeyName(), '=', $value),
+                is_array($formValue) => in_array($value, $formValue, true),
+                default => (string) $formValue === $value
+            };
+        }
+
+        return (string) $formValue === $value
+            || (! $formValue && (string) $this->getDefault() === $value);
     }
 }

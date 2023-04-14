@@ -8,13 +8,11 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-trait WithRelationship
+trait WithRelatedValues
 {
     protected array $values = [];
 
     protected ?Closure $valuesQuery = null;
-
-    protected bool $onlyCount = false;
 
     public function setValues(array $values): void
     {
@@ -52,34 +50,5 @@ trait WithRelationship
         }
 
         return $values->toArray();
-    }
-
-    public function isSelected(Model $item, string $value): bool
-    {
-        if (! $this->formViewValue($item)) {
-            return false;
-        }
-
-        if (! $this->belongToOne() && ! $this->toOne()) {
-            $related = $this->getRelated($item);
-
-            return $this->formViewValue($item) instanceof Collection
-                ? $this->formViewValue($item)->contains($related->getKeyName(), '=', $value)
-                : in_array($value, $this->formViewValue($item), true);
-        }
-
-        if ($this->belongToOne() && is_array($this->formViewValue($item))) {
-            return in_array($value, $this->formViewValue($item), true);
-        }
-
-        return (string) $this->formViewValue($item) === $value
-            || (! $this->formViewValue($item) && (string) $this->getDefault() === $value);
-    }
-
-    public function onlyCount(): static
-    {
-        $this->onlyCount = true;
-
-        return $this;
     }
 }

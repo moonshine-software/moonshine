@@ -11,22 +11,26 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
+use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
 use MoonShine\MoonShineRequest;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\CheckboxTrait;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTransform;
 use MoonShine\Traits\Fields\WithPivot;
-use MoonShine\Traits\Fields\WithRelationship;
+use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
 
-class BelongsToMany extends Field implements HasRelationship, HasPivot, HasFields, ManyToManyRelation
+class BelongsToMany extends Field implements
+    HasRelationship,
+    HasRelatedValues,
+    HasPivot,
+    HasFields
 {
     use WithFields;
     use WithPivot;
-    use WithRelationship;
+    use WithRelatedValues;
     use CheckboxTrait;
     use Searchable;
     use SelectTransform;
@@ -51,6 +55,15 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     protected ?Closure $searchQuery = null;
 
     protected ?Closure $searchValueCallback = null;
+
+    protected bool $onlyCount = false;
+
+    public function onlyCount(): static
+    {
+        $this->onlyCount = true;
+
+        return $this;
+    }
 
     public function ids(): array
     {
@@ -77,8 +90,12 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         return $this->onlySelected;
     }
 
-    public function onlySelected(string $relation, string $searchColumn = null, ?Closure $searchQuery = null, ?Closure $searchValueCallback = null): static
-    {
+    public function onlySelected(
+        string $relation,
+        string $searchColumn = null,
+        ?Closure $searchQuery = null,
+        ?Closure $searchValueCallback = null
+    ): static {
         $this->onlySelected = true;
         $this->searchColumn = $searchColumn;
         $this->searchQuery = $searchQuery;
@@ -143,7 +160,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     {
         $this->makeTree($this->treePerformData($data));
 
-        $this->treeHtml = (string) str($this->treeHtml())->wrap("<ul class='tree-list'>", "</ul>");
+        $this->treeHtml = (string)str($this->treeHtml())->wrap("<ul class='tree-list'>", "</ul>");
     }
 
     public function buildTreeHtml(Model $item): string
@@ -171,7 +188,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
                 $element = view('moonshine::components.form.input-composition', [
                     'attributes' => $this->attributes()->merge([
                         'type' => 'checkbox',
-                        'id' => $this->id((string) $item->getKey()),
+                        'id' => $this->id((string)$item->getKey()),
                         'name' => $this->name(),
                         'value' => $item->getKey(),
                         'class' => 'form-group-inline',
@@ -196,14 +213,14 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
         $result = str('');
 
         if ($this->onlyCount) {
-            return (string) $item->{$this->relation()}->count();
+            return (string)$item->{$this->relation()}->count();
         }
 
-        return (string) $item->{$this->relation()}->map(function ($item) use ($result) {
+        return (string)$item->{$this->relation()}->map(function ($item) use ($result) {
             $pivotAs = $this->getPivotAs($item);
 
             $result = $result->append($item->{$this->resourceTitleField()})
-                ->when($this->hasFields(), fn (Stringable $str) => $str->append(' - '));
+                ->when($this->hasFields(), fn(Stringable $str) => $str->append(' - '));
 
             foreach ($this->getFields() as $field) {
                 $result = $result->when(
@@ -214,7 +231,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
                 );
             }
 
-            return (string) $result;
+            return (string)$result;
         })->implode(', ');
     }
 
@@ -241,7 +258,7 @@ class BelongsToMany extends Field implements HasRelationship, HasPivot, HasField
     public function exportViewValue(Model $item): string
     {
         return collect($item->{$this->relation()})
-            ->map(fn ($item) => $item->{$this->resourceTitleField()})
+            ->map(fn($item) => $item->{$this->resourceTitleField()})
             ->implode(';');
     }
 }

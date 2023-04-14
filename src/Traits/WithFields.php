@@ -16,11 +16,10 @@ trait WithFields
 
     public function getFields(): Fields
     {
-        $resolveChildFields = $this instanceof HasJsonValues
-            || $this instanceof HasPivot
+        $resolveChildFields = $this instanceof HasJsonValues || $this instanceof HasPivot
             || ($this instanceof HasResourceMode && ! $this->isResourceMode());
 
-        if ($this instanceof HasFields && ! $this->manyToMany() && ! $this->hasFields()) {
+        if ($this instanceof HasFields && ! $this instanceof HasPivot && ! $this->hasFields()) {
             $this->fields(
                 $this->resource()?->getFields()->withoutCanBeRelatable()?->toArray() ?? []
             );

@@ -6,12 +6,16 @@ namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
+use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Traits\Fields\WithRelationship;
+use MoonShine\Traits\Fields\WithRelatedValues;
 
-class BelongsTo extends Select implements HasRelationship, BelongsToRelation
+class BelongsTo extends Select implements
+    HasRelationship,
+    HasRelatedValues,
+    BelongsToRelation
 {
-    use WithRelationship;
+    use WithRelatedValues;
 
     public function isMultiple(): bool
     {

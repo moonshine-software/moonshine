@@ -10,12 +10,11 @@ use MoonShine\Contracts\Fields\HasFullPageMode;
 use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
-use MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\HasOneOrMany;
 use MoonShine\Traits\Fields\WithFullPageMode;
 use MoonShine\Traits\Fields\WithJsonValues;
-use MoonShine\Traits\Fields\WithRelationship;
+use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\Fields\WithResourceMode;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
@@ -26,14 +25,13 @@ class HasMany extends Field implements
     HasJsonValues,
     HasResourceMode,
     HasFullPageMode,
-    OneToManyRelation,
     RemovableContract
 {
     use WithResourceMode;
     use WithFullPageMode;
     use WithFields;
     use WithJsonValues;
-    use WithRelationship;
+    use WithRelatedValues;
     use HasOneOrMany;
     use Removable;
 
@@ -43,10 +41,6 @@ class HasMany extends Field implements
 
     public function indexViewValue(Model $item, bool $container = false): string
     {
-        if ($this->onlyCount) {
-            return (string)$item->{$this->relation()}->count();
-        }
-
         $columns = [];
         $values = [];
 

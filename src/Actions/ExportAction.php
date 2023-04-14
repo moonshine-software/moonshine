@@ -18,6 +18,7 @@ use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Writer\Exception\WriterNotOpenedException;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 class ExportAction extends Action
 {
@@ -67,7 +68,7 @@ class ExportAction extends Action
      * @throws WriterNotOpenedException
      * @throws IOException
      * @throws UnsupportedTypeException
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|Throwable
      */
     public static function process(
         string $path,

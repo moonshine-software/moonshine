@@ -9,10 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
+use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Contracts\Fields\Relationships\ManyToManyRelation;
-use MoonShine\Contracts\Fields\Relationships\OneToManyRelation;
-use MoonShine\Contracts\Fields\Relationships\OneToOneRelation;
+use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
 use MoonShine\Contracts\ResourceRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Helpers\Condition;
@@ -75,7 +74,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         if ($this->hasRelationship()) {
             $this->setField($field ?? (string)str($this->label)->camel());
 
-            if ($this->belongToOne() && ! str($this->field())->contains('_id')) {
+            if ($this->belongToOne() && !str($this->field())->contains('_id')) {
                 $this->setField(
                     (string)str($this->field())
                         ->append('_id')
@@ -147,7 +146,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
             return $this->resource;
         }
 
-        if (! $this->relation()) {
+        if (!$this->relation()) {
             return null;
         }
 
@@ -267,7 +266,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
 
     public function canBeResourceMode(): bool
     {
-        return $this->toOne() || $this->toMany();
+        return $this instanceof HasResourceMode;
     }
 
     public function isResourceModeField(): bool
@@ -314,24 +313,14 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this instanceof HasRelationship;
     }
 
+    public function hasRelatedValues(): bool
+    {
+        return $this instanceof HasRelatedValues;
+    }
+
     public function belongToOne(): bool
     {
         return $this->hasRelationship() && $this instanceof BelongsToRelation;
-    }
-
-    public function toOne(): bool
-    {
-        return $this->hasRelationship() && $this instanceof OneToOneRelation;
-    }
-
-    public function toMany(): bool
-    {
-        return $this->hasRelationship() && $this instanceof OneToManyRelation;
-    }
-
-    public function manyToMany(): bool
-    {
-        return $this->hasRelationship() && $this instanceof ManyToManyRelation;
     }
 
     public function getRelated(Model $model): Model

@@ -559,8 +559,7 @@ abstract class Resource implements ResourceContract
 
     public function renderComponent(ResourceRenderable $component, Model $item, int $level = 0): View
     {
-        if ($component instanceof FormElement && $component->hasRelationship()
-            && ($component->belongToOne() || $component->manyToMany())) {
+        if ($component instanceof FormElement && $component->hasRelatedValues()) {
             $component->setValues($component->relatedValues($item));
         }
 
