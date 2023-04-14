@@ -7,7 +7,7 @@
                 <th width="15%">
                     {{$field->label()}}
                 </th>
-                <td>{!! $field->indexViewValue($item) !!}</td>
+                <td>{!! $field->isSee($item) ? $field->indexViewValue($item): '' !!}</td>
             </tr>
         @endforeach
     </table>
