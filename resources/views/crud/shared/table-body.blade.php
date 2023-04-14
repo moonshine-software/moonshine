@@ -15,7 +15,7 @@
             <td class="bgc-{{ $resource->tdClass($item, $loop->parent->index, $index + 1) }}"
                 style="{{ $resource->tdStyles($item, $loop->parent->index, $index + 1) }}"
             >
-                {!! $field->indexViewValue($item) !!}
+                {!! $field->isSee($item) ? $field->indexViewValue($item): '' !!}
             </td>
         @endforeach
 
