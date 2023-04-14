@@ -15,6 +15,11 @@
             @endif
         </x-slot:toggler>
         <x-moonshine::form action="{{ $resource->currentRoute() }}" method="get">
+            @if(request('order.field'))
+                <x-moonshine::form.input type="hidden" name="order[type]" value="{{ request('order.type') }}" />
+                <x-moonshine::form.input type="hidden" name="order[field]" value="{{ request('order.field') }}" />
+            @endif
+
             <div class="form-flex-col">
                 @foreach($filters as $filter)
                     @if($filter->isSee($resource->getModel()))
