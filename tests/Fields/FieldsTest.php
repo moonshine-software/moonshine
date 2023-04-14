@@ -8,10 +8,12 @@ use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Exceptions\FieldsException;
 use MoonShine\Fields\BelongsTo;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\MoonShineUserRoleResource;
+use MoonShine\Resources\TestResource\TestResourceBuilder;
 use MoonShine\Tests\TestCase;
 use ReflectionException;
 
@@ -88,6 +90,24 @@ class FieldsTest extends TestCase
     {
         foreach ($this->testResource()->getFields()->formFields()->onlyFields() as $field) {
             $this->assertIsBool($field->isOnForm());
+        }
+    }
+
+    /**
+     * @test
+     * @throws \Throwable
+     */
+    public function it_can_see_field()
+    {
+        $testResource = TestResourceBuilder::buildForCanSeeTest();
+
+        $this->assertNotEmpty($testResource->getFields());
+
+        foreach ($testResource->getFields()->indexFields() as $field) {
+            match ($field->field()) {
+                'id', 'email' => $this->assertTrue($field->isSee($this->adminUser)),
+                'name' => $this->assertFalse($field->isSee($this->adminUser)),
+            };
         }
     }
 
