@@ -11,7 +11,7 @@
             route('moonshine.search.relations', [
                     'resource' => $resource->uriKey(),
                     'column' => $element->field(),
-                ]).'&' : null"
+                ]) : null"
 
 >
     <x-slot:options>

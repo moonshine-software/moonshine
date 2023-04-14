@@ -149,7 +149,7 @@ document.addEventListener("alpine:init", () => {
                       'search',
                       (event) => {
                           if (event.detail.value.length > 2) {
-                              this.fromUrl(asyncUrl + 'query=' + event.detail.value)
+                              this.fromUrl(asyncUrl + '&query=' + event.detail.value)
                           }
                       },
                       false,
@@ -218,7 +218,7 @@ document.addEventListener("alpine:init", () => {
         }
     }))
 
-    Alpine.data('search', (route, resourceUri, column) => ({
+    Alpine.data('search', (route) => ({
         items: [],
         match: [],
         query: '',
@@ -232,7 +232,7 @@ document.addEventListener("alpine:init", () => {
         },
         async search() {
             if (this.query.length > 2) {
-                let query = '?query=' + this.query + '&resource=' + resourceUri + '&column=' + column;
+                let query = '&query=' + this.query;
 
                 fetch(route + query).then((response) => {
                     return response.json();

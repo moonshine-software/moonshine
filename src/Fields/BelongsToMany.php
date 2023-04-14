@@ -87,6 +87,9 @@ class BelongsToMany extends Field implements
         return $this->tree;
     }
 
+    /**
+     * @deprecated Will be deleted, use asyncSearch
+     */
     public function onlySelected(
         string $relation,
         string $searchColumn = null,
