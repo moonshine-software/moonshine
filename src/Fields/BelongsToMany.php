@@ -220,7 +220,7 @@ class BelongsToMany extends Field implements
             $pivotAs = $this->getPivotAs($item);
 
             $result = $result->append($item->{$this->resourceTitleField()})
-                ->when($this->hasFields(), fn(Stringable $str) => $str->append(' - '));
+                ->when($this->hasFields(), fn (Stringable $str) => $str->append(' - '));
 
             foreach ($this->getFields() as $field) {
                 $result = $result->when(
@@ -258,7 +258,7 @@ class BelongsToMany extends Field implements
     public function exportViewValue(Model $item): string
     {
         return collect($item->{$this->relation()})
-            ->map(fn($item) => $item->{$this->resourceTitleField()})
+            ->map(fn ($item) => $item->{$this->resourceTitleField()})
             ->implode(';');
     }
 }

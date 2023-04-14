@@ -6,7 +6,6 @@ namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 
 trait SelectTrait
 {

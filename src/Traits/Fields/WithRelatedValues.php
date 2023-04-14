@@ -6,7 +6,6 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 trait WithRelatedValues
 {
