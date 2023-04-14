@@ -1,11 +1,11 @@
-@if(collect($resource->itemActions())->filter(fn ($action) => $action->inDropdown())->isNotEmpty())
+@if($resource->itemActionsCollection()->onlyVisible($item)->inDropdown()->isNotEmpty())
     <x-moonshine::dropdown>
         <x-slot:toggler class="btn">
             <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
         </x-slot:toggler>
 
         <ul class="dropdown-menu">
-            @foreach(collect($resource->itemActions())->filter(fn ($action) => $action->inDropdown()) as $index => $action)
+            @foreach($resource->itemActionsCollection()->onlyVisible($item)->inDropdown() as $index => $action)
                 <li class="dropdown-menu-item">
                     @include('moonshine::crud.shared.item-action-item', [
                         'item' => $item,
@@ -19,15 +19,13 @@
     </x-moonshine::dropdown>
 @endif
 
-@foreach(collect($resource->itemActions())->filter(fn ($action) => !$action->inDropdown())  as $index => $action)
-    @if($action->isSee($item))
-        @include('moonshine::crud.shared.item-action-item', [
-            'item' => $item,
-            'action' => $action,
-            'resource' => $resource,
-            'index' => $index
-        ])
-    @endif
+@foreach($resource->itemActionsCollection()->onlyVisible($item)->inLine()  as $index => $action)
+    @include('moonshine::crud.shared.item-action-item', [
+        'item' => $item,
+        'action' => $action,
+        'resource' => $resource,
+        'index' => $index
+    ])
 @endforeach
 
 @if(!in_array('show', $except, true) && $resource->can('view', $item) && in_array('show', $resource->getActiveActions()))

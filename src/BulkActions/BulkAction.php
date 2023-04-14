@@ -6,17 +6,20 @@ namespace MoonShine\BulkActions;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Actions\MassActionContact;
+use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithConfirmation;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
-final class BulkAction
+final class BulkAction implements MassActionContact
 {
     use Makeable;
     use WithIcon;
     use WithLabel;
+    use HasCanSee;
     use InDropdownOrLine;
     use WithConfirmation;
 

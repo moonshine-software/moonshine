@@ -1,11 +1,11 @@
-@if(collect($resource->bulkActions())->filter(fn ($action) => $action->inDropdown())->isNotEmpty())
+@if($resource->bulkActionsCollection()->onlyVisible()->inDropdown()->isNotEmpty())
 <x-moonshine::dropdown>
     <x-slot:toggler class="btn">
         <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
     </x-slot:toggler>
 
     <ul class="dropdown-menu">
-        @foreach(collect($resource->bulkActions())->filter(fn ($action) => $action->inDropdown()) as $index => $action)
+        @foreach($resource->bulkActionsCollection()->onlyVisible()->inDropdown() as $index => $action)
             <li class="dropdown-menu-item">
                 @include('moonshine::crud.shared.bulk-action-item', [
                     'action' => $action,
@@ -18,7 +18,7 @@
 </x-moonshine::dropdown>
 @endif
 
-@foreach(collect($resource->bulkActions())->filter(fn ($action) => !$action->inDropdown()) as $index => $action)
+@foreach($resource->bulkActionsCollection()->onlyVisible()->inLine() as $index => $action)
    @include('moonshine::crud.shared.bulk-action-item', [
         'action' => $action,
         'resource' => $resource,

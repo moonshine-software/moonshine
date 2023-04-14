@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Resources;
 
-use MoonShine\Actions\Actions;
+use MoonShine\Actions\MassActions;
 use MoonShine\Fields\Fields;
 use MoonShine\Filters\Filters;
 use MoonShine\Tests\TestCase;
@@ -21,7 +21,7 @@ class ResourceTest extends TestCase
 
         $this->assertEquals(Fields::class, get_class($resource->getFields()));
         $this->assertEquals(Filters::class, get_class($resource->getFilters()));
-        $this->assertEquals(Actions::class, get_class($resource->getActions()));
+        $this->assertEquals(MassActions::class, get_class($resource->getActions()));
     }
 
     public function test_route()

@@ -7,6 +7,7 @@ namespace MoonShine\FormActions;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
+use MoonShine\Contracts\Actions\ItemActionContact;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\Makeable;
@@ -14,7 +15,7 @@ use MoonShine\Traits\WithConfirmation;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
-final class FormAction
+final class FormAction implements ItemActionContact
 {
     use Makeable;
     use WithIcon;

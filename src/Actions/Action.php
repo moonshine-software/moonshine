@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Actions;
 
 use MoonShine\Contracts\Actions\ActionContract;
+use MoonShine\Contracts\Actions\MassActionContact;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
@@ -12,7 +13,7 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 
-abstract class Action implements ActionContract
+abstract class Action implements ActionContract, MassActionContact
 {
     use Makeable;
     use WithView;

@@ -19,7 +19,7 @@
             />
 
             <x-moonshine::form.button type="submit" title="{{ $action->label() }}">
-                {{ $action->getIcon(6) }}
+                {{ $action->getIcon(6) }} {{ $action->label() }}
             </x-moonshine::form.button>
         </x-moonshine::form>
 
@@ -49,7 +49,7 @@
         />
 
         <x-moonshine::form.button type="submit" title="{{ $action->label() }}">
-            {{ $action->getIcon(6) }}
+            {{ $action->getIcon(6) }} {{ $action->label() }}
         </x-moonshine::form.button>
     </x-moonshine::form>
 @endif

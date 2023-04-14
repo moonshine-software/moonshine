@@ -8,7 +8,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Actions\Action;
-use MoonShine\Actions\Actions;
+use MoonShine\Actions\MassActions;
 use MoonShine\Contracts\ResourceRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -55,9 +55,9 @@ interface ResourceContract
     /**
      * Get a collection of additional actions performed on resource page
      *
-     * @return Actions<Action>
+     * @return MassActions<Action>
      */
-    public function getActions(): Actions;
+    public function getActions(): MassActions;
 
     /**
      * Get a collection of fields of related model

@@ -74,8 +74,8 @@ class CrudController extends BaseController
         $view = view($resource->baseIndexView(), [
             'resource' => $resource,
             'filters' => $resource->filters(),
-            'dropdownActions' => $actions->filter(fn ($action) => $action->inDropdown()),
-            'lineActions' => $actions->filter(fn ($action) => ! $action->inDropdown()),
+            'dropdownActions' => $actions->inDropdown(),
+            'lineActions' => $actions->inLine(),
             'metrics' => $resource->metrics(),
             'items' => $resource->paginate(),
         ]);
