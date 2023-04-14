@@ -142,4 +142,9 @@ class MoonShineRequest extends FormRequest
 
         return $redirectRoute;
     }
+
+    public function user($guard = null)
+    {
+        return parent::user($guard ?? 'moonshine');
+    }
 }

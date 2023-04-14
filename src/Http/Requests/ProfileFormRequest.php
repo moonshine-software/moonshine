@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use MoonShine\MoonShineRequest;
 
-class ProfileFormRequest extends FormRequest
+class ProfileFormRequest extends MoonShineRequest
 {
     /**
      * Determine if the user is authorized to make this request.

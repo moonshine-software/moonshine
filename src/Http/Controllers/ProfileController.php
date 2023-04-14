@@ -30,9 +30,7 @@ class ProfileController extends BaseController
             $data['avatar'] = $request->file('avatar')->store('moonshine_users');
         }
 
-        auth(config('moonshine.auth.guard'))
-            ->user()
-            ->update($data);
+        $request->user()->update($data);
 
         return back();
     }

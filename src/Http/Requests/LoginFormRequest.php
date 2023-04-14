@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests;
 
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use MoonShine\MoonShineRequest;
 
-class LoginFormRequest extends FormRequest
+class LoginFormRequest extends MoonShineRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -38,7 +38,7 @@ class LoginFormRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'email' => (string) str(request('email'))
+            'email' => (string)str(request('email'))
                 ->lower()
                 ->trim(),
         ]);
@@ -55,7 +55,10 @@ class LoginFormRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! auth(config('moonshine.auth.guard'))->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (!auth(config('moonshine.auth.guard'))->attempt(
+            $this->only('email', 'password'),
+            $this->boolean('remember')
+        )) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -75,7 +78,7 @@ class LoginFormRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
