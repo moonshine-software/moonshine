@@ -15,7 +15,7 @@ class Url extends Text
         return view('moonshine::ui.url', [
             'href' => parent::indexViewValue($item, $container),
             'value' => parent::indexViewValue($item, $container),
-            'blank' => $this->isLinkBlank()
+            'blank' => $this->isLinkBlank(),
         ])->render();
     }
 }
