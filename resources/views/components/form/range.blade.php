@@ -47,7 +47,10 @@
             <x-moonshine::form.input
                 name="{{ $fromName }}"
                 x-bind:name="`{{ $fromName }}`"
-                type="text"
+                step="{{ $attributes->get('step', 1) }}"
+                x-bind:min="min"
+                x-bind:max="max"
+                type="number"
                 maxlength="5"
                 x-on:input="mintrigger"
                 x-model="minValue"
@@ -56,7 +59,10 @@
             <x-moonshine::form.input
                 name="{{ $toName }}"
                 x-bind:name="`{{ $toName }}`"
-                type="text"
+                step="{{ $attributes->get('step', 1) }}"
+                x-bind:min="min"
+                x-bind:max="max"
+                type="number"
                 maxlength="5"
                 x-on:input="maxtrigger"
                 x-model="maxValue"
@@ -77,11 +83,17 @@
 
                 mintrigger() {
                     this.minValue = Math.min(this.minValue, this.maxValue - this.step);
+                    if(this.minValue < this.min) {
+                        this.minValue = this.min
+                    }
                     this.minthumb = ((this.minValue - this.min) / (this.max - this.min)) * 100;
                 },
 
                 maxtrigger() {
                     this.maxValue = Math.max(this.maxValue, this.minValue + this.step);
+                    if(this.maxValue > this.max) {
+                        this.maxValue = this.max
+                    }
                     this.maxthumb = 100 - (((this.maxValue - this.min) / (this.max - this.min)) * 100);
                 },
             }
