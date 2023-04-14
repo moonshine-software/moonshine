@@ -104,7 +104,7 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
     {
         $item->{$this->field()} = $this->requestValue() !== false
             ? $this->requestValue()
-            : ($this->isNullable() ? null : '');
+            : ($this->isNullable() ? null : $this->getDefault());
 
         return $item;
     }

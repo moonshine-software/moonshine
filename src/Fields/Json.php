@@ -65,8 +65,10 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, R
         }
 
         if ($this->isKeyValue()) {
-            $values = collect($item->{$this->field()})
-                ->map(fn ($value, $key) => ['key' => $key, 'value' => $value]);
+            $values = collect($values)
+                ->reject(fn ($value, $key) => !is_scalar($value))
+                ->map(fn ($value, $key) => ['key' => $key, 'value' => $value])
+                ->toArray();
         }
 
         foreach ($this->getFields() as $field) {
@@ -86,15 +88,19 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, R
 
     public function save(Model $item): Model
     {
-        if ($this->isKeyValue()) {
-            if ($this->requestValue() !== false) {
-                $item->{$this->field()} = collect($this->requestValue())
-                    ->mapWithKeys(fn ($data) => [$data['key'] => $data['value']]);
-            }
+        if ($this->requestValue() === false) {
+            $item->{$this->field()} = [];
 
             return $item;
         }
 
-        return parent::save($item);
+        $item->{$this->field()} = collect($this->requestValue())
+            ->when(
+                $this->isKeyValue(),
+                static fn($data) => $data->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])
+            )
+            ->toArray();
+
+        return $item;
     }
 }
