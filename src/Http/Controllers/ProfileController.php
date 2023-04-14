@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use function auth;
 use function back;
 
 use Illuminate\Http\RedirectResponse;
