@@ -33,6 +33,7 @@ class ProfileFormRequest extends FormRequest
                 Rule::unique('moonshine_users', 'email')
                     ->ignore(auth(config('moonshine.auth.guard'))->id()),
             ],
+            'avatar' => ['image'],
             'password' => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
         ];
     }
