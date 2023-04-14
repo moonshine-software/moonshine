@@ -45,7 +45,10 @@ trait WithRelatedValues
                     return [$relatedItem->getKey() => ($this->valueCallback())($relatedItem)];
                 });
         } else {
-            $values = $query->pluck($this->resourceTitleField(), $related->getKeyName());
+            $values = $query->selectRaw("{$related->getTable()}.{$related->getKeyName()}, {$related->getTable()}.{$this->resourceTitleField()}")
+                ->toBase()
+                ->get()
+                ->pluck($this->resourceTitleField(), $related->getKeyName());
         }
 
         return $values->toArray();

@@ -2,15 +2,16 @@
     'searchable' => false,
     'nullable' => false,
     'values' => [],
-    'options' => false
+    'options' => false,
+    'asyncRoute' => null
 ])
 <select
-    {{ $attributes->merge([
-        'class' => 'form-select',
-        'x-data' => 'select',
-        'data-search-enabled' => $searchable,
-        'data-remove-item-button' => $nullable
-    ]) }}
+        {{ $attributes->merge([
+            'class' => 'form-select',
+            'x-data' => 'select(\''. $asyncRoute .'\')',
+            'data-search-enabled' => $searchable,
+            'data-remove-item-button' => $nullable
+        ]) }}
 >
     @if($options ?? false)
         {{ $options }}

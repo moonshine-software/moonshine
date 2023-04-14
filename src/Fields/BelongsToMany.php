@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use MoonShine\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\MoonShineRequest;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\CheckboxTrait;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTransform;
+use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithPivot;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
@@ -26,7 +26,8 @@ class BelongsToMany extends Field implements
     HasRelationship,
     HasRelatedValues,
     HasPivot,
-    HasFields
+    HasFields,
+    HasAsyncSearch
 {
     use WithFields;
     use WithPivot;
@@ -35,6 +36,7 @@ class BelongsToMany extends Field implements
     use Searchable;
     use SelectTransform;
     use CanBeMultiple;
+    use WithAsyncSearch;
 
     protected static string $view = 'moonshine::fields.belongs-to-many';
 
@@ -48,14 +50,6 @@ class BelongsToMany extends Field implements
 
     protected array $ids = [];
 
-    protected bool $onlySelected = false;
-
-    protected ?string $searchColumn = null;
-
-    protected ?Closure $searchQuery = null;
-
-    protected ?Closure $searchValueCallback = null;
-
     protected bool $onlyCount = false;
 
     public function onlyCount(): static
@@ -68,54 +62,6 @@ class BelongsToMany extends Field implements
     public function ids(): array
     {
         return $this->ids;
-    }
-
-    public function searchQuery(): ?Closure
-    {
-        return $this->searchQuery;
-    }
-
-    public function searchValueCallback(): ?Closure
-    {
-        return $this->searchValueCallback;
-    }
-
-    public function searchColumn(): ?string
-    {
-        return $this->searchColumn;
-    }
-
-    public function isOnlySelected(): bool
-    {
-        return $this->onlySelected;
-    }
-
-    public function onlySelected(
-        string $relation,
-        string $searchColumn = null,
-        ?Closure $searchQuery = null,
-        ?Closure $searchValueCallback = null
-    ): static {
-        $this->onlySelected = true;
-        $this->searchColumn = $searchColumn;
-        $this->searchQuery = $searchQuery;
-        $this->searchValueCallback = $searchValueCallback;
-
-        $this->valuesQuery = function (Builder $query) use ($relation) {
-            $request = app(MoonShineRequest::class);
-
-            if ($request->getId()) {
-                $related = $this->getRelated($request->getItem());
-                $table = $related->{$relation}()->getRelated()->getTable();
-                $key = $related->{$relation}()->getRelated()->getKeyName();
-
-                return $query->whereRelation($relation, "$table.$key", '=', $request->getId());
-            }
-
-            return $query->has($relation, '>');
-        };
-
-        return $this;
     }
 
     public function treeHtml(): string
@@ -139,6 +85,22 @@ class BelongsToMany extends Field implements
     public function isTree(): bool
     {
         return $this->tree;
+    }
+
+    /**
+     * @deprecated Will be deleted, use asyncSearch
+     */
+    public function onlySelected(
+        string $relation,
+        string $searchColumn = null,
+        ?Closure $searchQuery = null,
+        ?Closure $searchValueCallback = null
+    ): static {
+        return $this->asyncSearch(
+            $searchColumn,
+            asyncSearchQuery: $searchQuery,
+            asyncSearchValueCallback: $searchValueCallback
+        );
     }
 
     private function treePerformData(Collection $data): array

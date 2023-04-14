@@ -121,7 +121,7 @@ document.addEventListener("alpine:init", () => {
     }))
 
     /* Select */
-    Alpine.data('select', () => ({
+    Alpine.data('select', (asyncUrl = '') => ({
         choicesInstance: null,
         placeholder: null,
         searchEnabled: null,
@@ -143,8 +143,39 @@ document.addEventListener("alpine:init", () => {
                     removeItemButton: this.removeItemButton,
                     shouldSort: this.shouldSort,
                 })
+
+                if (asyncUrl) {
+                    this.$el.addEventListener(
+                      'search',
+                      (event) => {
+                          if (event.detail.value.length > 2) {
+                              this.fromUrl(asyncUrl + '&query=' + event.detail.value)
+                          }
+                      },
+                      false,
+                    )
+                }
+
             })
         },
+
+        fromUrl(url) {
+            this.choicesInstance.setChoices(() => {
+                  return fetch(url).then((response) => {
+                      return response.json()
+                  }).then((json) => {
+                      return Object.keys(json).map((key) => {
+                          return {
+                              value: key,
+                              label: json[key],
+                          }
+                      })
+                  })
+              },
+              'value',
+              'label',
+              true)
+        }
     }))
 
     /* Tooltip */
@@ -187,7 +218,7 @@ document.addEventListener("alpine:init", () => {
         }
     }))
 
-    Alpine.data('search', (route, resourceUri, column) => ({
+    Alpine.data('search', (route) => ({
         items: [],
         match: [],
         query: '',
@@ -201,7 +232,7 @@ document.addEventListener("alpine:init", () => {
         },
         async search() {
             if (this.query.length > 2) {
-                let query = '?query=' + this.query + '&resource=' + resourceUri + '&column=' + column;
+                let query = '&query=' + this.query;
 
                 fetch(route + query).then((response) => {
                     return response.json();
