@@ -35,7 +35,7 @@ final class MassActions extends Collection
     public function inLine(): self
     {
         return $this->filter(
-            static fn (MassActionContact $action) => !$action->inDropdown()
+            static fn (MassActionContact $action) => ! $action->inDropdown()
         );
     }
 }

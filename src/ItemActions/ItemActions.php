@@ -13,7 +13,7 @@ final class ItemActions extends Collection
     public function onlyVisible(Model $item): self
     {
         return $this->filter(
-            fn(ItemActionContact $action) => $action->isSee($item)
+            fn (ItemActionContact $action) => $action->isSee($item)
         );
     }
 
@@ -27,7 +27,7 @@ final class ItemActions extends Collection
     public function inLine(): self
     {
         return $this->filter(
-            static fn (ItemActionContact $action) => !$action->inDropdown()
+            static fn (ItemActionContact $action) => ! $action->inDropdown()
         );
     }
 }
