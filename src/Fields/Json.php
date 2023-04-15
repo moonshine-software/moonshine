@@ -66,7 +66,7 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, R
 
         if ($this->isKeyValue()) {
             $values = collect($values)
-                ->reject(fn ($value, $key) => !is_scalar($value))
+                ->reject(fn ($value, $key) => ! is_scalar($value))
                 ->map(fn ($value, $key) => ['key' => $key, 'value' => $value])
                 ->toArray();
         }
@@ -97,7 +97,7 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, R
         $item->{$this->field()} = collect($this->requestValue())
             ->when(
                 $this->isKeyValue(),
-                static fn($data) => $data->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])
+                static fn ($data) => $data->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])
             )
             ->toArray();
 
