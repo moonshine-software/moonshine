@@ -30,7 +30,7 @@ trait WithAsyncSearch
         return $this->asyncSearchColumn;
     }
 
-    public function asyncSearchCount(): ?int
+    public function asyncSearchCount(): int
     {
         return $this->asyncSearchCount;
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Contracts\Fields;
+namespace MoonShine\Contracts\Fields\Relationships;
 
 use Closure;
 
@@ -13,6 +13,8 @@ interface HasAsyncSearch
     public function asyncSearchColumn(): ?string;
 
     public function asyncSearchQuery(): ?Closure;
+
+    public function asyncSearchCount(): int;
 
     public function asyncSearchValueCallback(): ?Closure;
 

@@ -4,7 +4,7 @@
     'toggler'
 ])
 <div x-data="offcanvas">
-    <button @click.prevent="toggleCanvas" {{ $toggler->attributes->merge(['class' => 'btn']) }}>
+    <button type="button" @click.prevent="toggleCanvas" {{ $toggler->attributes->merge(['class' => 'btn']) }}>
         {{ $toggler }}
     </button>
 

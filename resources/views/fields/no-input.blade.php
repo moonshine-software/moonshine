@@ -1,6 +1,6 @@
 <div
-    @if($element->attributes()->get('x-model'))
-        x-text="{{ $element->attributes()->get('x-model') }}"
+    @if($element->attributes()->get('x-model-field'))
+        x-text="{{ $element->attributes()->get('x-model-field') }}"
     @endif
 >
     {!! (string) $element->formViewValue($item) ?? '' !!}

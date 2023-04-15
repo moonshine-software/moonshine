@@ -1,5 +1,5 @@
 @props(['extension'])
-<button @click.prevent="toggleLock()" class="expansion">
+<button @click.prevent="toggleLock()" class="expansion" type="button">
     <span x-show="isLock">
         <x-moonshine::icon
             icon="heroicons.lock-closed"

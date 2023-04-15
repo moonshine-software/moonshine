@@ -148,7 +148,7 @@ document.addEventListener("alpine:init", () => {
                     this.$el.addEventListener(
                       'search',
                       (event) => {
-                          if (event.detail.value.length > 2) {
+                          if (event.detail.value.length > 0) {
                               this.fromUrl(asyncUrl + '&query=' + event.detail.value)
                           }
                       },

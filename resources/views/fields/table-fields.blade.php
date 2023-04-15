@@ -37,7 +37,7 @@
 
                     @if($element->isRemovable())
                         <td>
-                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                            <button type="button" @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
                         </td>
                     @endif
                 @else
@@ -55,7 +55,7 @@
 
                     @if($element->isRemovable())
                         <td width="5%" class="text-center">
-                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                            <button type="button" @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
                         </td>
                     @endif
                 @endif

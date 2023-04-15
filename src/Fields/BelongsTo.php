@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
+use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Traits\Fields\WithAsyncSearch;

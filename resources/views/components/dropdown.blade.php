@@ -9,7 +9,7 @@
      data-dropdown-placement="{{ $placement }}"
      class="dropdown"
 >
-    <button @click.prevent="toggleDropdown" {{ $toggler->attributes->merge(['class' => 'dropdown-btn']) }}>
+    <button type="button" @click.prevent="toggleDropdown" {{ $toggler->attributes->merge(['class' => 'dropdown-btn']) }}>
         {{ $toggler }}
     </button>
 

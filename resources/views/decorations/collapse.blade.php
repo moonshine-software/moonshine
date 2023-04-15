@@ -13,7 +13,7 @@
     >
 
         <h2 class="accordion-header">
-            <button @click.prevent="{{ $element->id() }}_toggle()" :class="{ '_is-active': {{ $element->id() }}_open }"
+            <button type="button" @click.prevent="{{ $element->id() }}_toggle()" :class="{ '_is-active': {{ $element->id() }}_open }"
                     class="accordion-btn btn"
                     type="button"
             >

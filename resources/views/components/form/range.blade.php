@@ -8,7 +8,7 @@
     'toField' => $toName
 ])
 <div class="form-group-range">
-    <div x-data="range_{{ $uniqueId }}({{ $attributes->get('x-model') ? 'item.'.$fromField.',item.'.$toField : '`'.$fromValue.'`,`'.$toValue.'`' }})"
+    <div x-data="range_{{ $uniqueId }}({{ $attributes->get('x-model-field') ? 'item.'.$fromField.',item.'.$toField : '`'.$fromValue.'`,`'.$toValue.'`' }})"
          x-init="mintrigger(); maxtrigger()"
          class="form-group-range-wrapper"
     >

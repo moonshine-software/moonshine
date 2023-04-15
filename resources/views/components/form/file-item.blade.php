@@ -12,7 +12,7 @@
                         ->prepend($path)
                         ->value();
 
-    $xValueExpr = "xValue ? ('$path') + '$dir' + (!xValue.replace('$dir', '').startsWith('/') ? '/' : '') + xValue.replace('$dir', '') : ''";
+    $xValueExpr = "xValue && xValue.length ? ('$path') + '$dir' + (!xValue.replace('$dir', '').startsWith('/') ? '/' : '') + xValue.replace('$dir', '') : ''";
 @endphp
 
 <div
@@ -24,16 +24,16 @@
         :name="'hidden_' . $attributes->get('name')"
         {{ $attributes->merge(array_merge([
             'x-ref' => 'hidden_' . $attributes->get('id'),
-        ], $attributes->has('x-model') ? [
+        ], $attributes->has('x-model-field') ? [
            ':name' => '`hidden_`+' . $attributes->get('x-bind:name'),
            ':value' => 'xValue',
-        ] : ['value' => $file]))->except(['type', 'id', 'name', 'x-bind:name', 'x-model', 'x-bind:id', 'accept', 'multiple']) }}
+        ] : ['value' => $file]))->except(['type', 'id', 'name', 'x-bind:name', 'x-model', 'x-model.lazy', 'x-bind:id', 'accept', 'multiple']) }}
     />
 
     @if(!$imageable)
         @include('moonshine::ui.file', [
             'value' => $fileWithDir,
-            'xValue' => $attributes->has('x-model')
+            'xValue' => $attributes->has('x-model-field')
                 ? $xValueExpr
                 : null,
             'download' => $download
@@ -43,6 +43,7 @@
     @if($removable)
         <button
             class="dropzone-remove"
+            type="button"
             @click.prevent="$event.target.closest('#hidden_parent_{{ $attributes->get('id')  }}').remove()"
         >
             <x-moonshine::icon icon="heroicons.x-mark"/>
@@ -51,7 +52,7 @@
 
     @if($imageable)
         <img
-            @if($attributes->has('x-model'))
+            @if($attributes->has('x-model-field'))
                 :src="{{ $xValueExpr }}"
             @else
                 src="{{ $fileWithDir }}"

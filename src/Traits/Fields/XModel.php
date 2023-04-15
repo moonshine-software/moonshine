@@ -8,14 +8,18 @@ trait XModel
 {
     public function clearXModel(): static
     {
-        return $this->removeAttribute('x-model')
+        return $this
+            ->removeAttribute('x-model-field')
+            ->removeAttribute('x-model.lazy')
             ->removeAttribute('x-bind:name')
             ->removeAttribute('x-bind:id');
     }
 
     public function xModel(): static
     {
-        return $this->setAttribute('x-model', $this->xModelField())
+        return $this
+            ->setAttribute('x-model-field', $this->xModelField())
+            ->setAttribute('x-model.lazy', $this->xModelField())
             ->setAttribute('x-bind:name', "`{$this->name()}`")
             ->setAttribute('x-bind:id', "`{$this->id()}`");
     }
