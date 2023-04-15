@@ -17,7 +17,7 @@ class SearchController extends BaseController
      */
     public function relations(): JsonResponse
     {
-        abort_if(!request()->has(['resource', 'column']), 404);
+        abort_if(! request()->has(['resource', 'column']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
