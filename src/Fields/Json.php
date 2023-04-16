@@ -88,7 +88,7 @@ class Json extends Field implements
 
         return $collection->when(
             $this->isKeyValue(),
-            static fn($data) => $data->mapWithKeys(static fn($data) => [$data['key'] => $data['value']])
+            static fn ($data) => $data->mapWithKeys(static fn ($data) => [$data['key'] => $data['value']])
         )->toArray();
     }
 
@@ -96,7 +96,7 @@ class Json extends Field implements
     {
         if ($this->isKeyValue()) {
             return collect(parent::formViewValue($item))
-                ->map(fn($data, $index) => $this->extractValues([$index => $data]))
+                ->map(fn ($data, $index) => $this->extractValues([$index => $data]))
                 ->values()
                 ->toArray();
         }
@@ -109,7 +109,7 @@ class Json extends Field implements
         if ($this->isKeyValue()) {
             return [
                 'key' => key($data),
-                'value' => $data[key($data)] ?? ''
+                'value' => $data[key($data)] ?? '',
             ];
         }
 

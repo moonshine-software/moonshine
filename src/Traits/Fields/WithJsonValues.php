@@ -34,8 +34,8 @@ trait WithJsonValues
 
         if (is_iterable($value)) {
             foreach ($value as $index => $data) {
-                if (!$data instanceof Model) {
-                    $data = (new class extends Model {
+                if (! $data instanceof Model) {
+                    $data = (new class () extends Model {
                         protected $guarded = [];
                     })->newInstance($data);
                 }

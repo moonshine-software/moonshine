@@ -29,7 +29,7 @@ class SwitchBoolean extends Checkbox
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        if (!$this->autoUpdate || !$container) {
+        if (! $this->autoUpdate || ! $container) {
             return parent::indexViewValue($item, $container);
         }
 

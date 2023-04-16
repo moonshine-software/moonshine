@@ -176,7 +176,7 @@ class BelongsToMany extends Field implements
     public function exportViewValue(Model $item): string
     {
         return collect($item->{$this->relation()})
-            ->map(fn($item) => $item->{$this->resourceTitleField()})
+            ->map(fn ($item) => $item->{$this->resourceTitleField()})
             ->implode(';');
     }
 
