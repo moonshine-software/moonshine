@@ -10,10 +10,10 @@ export default () => ({
   visibilityClasses: ['pointer-events-auto', 'visible', 'opacity-100'],
 
   init() {
-    this.dropdownBtn = this.$refs.dropdownEl.querySelector(".dropdown-btn")
-    this.dropdownBody = this.$refs.dropdownEl.querySelector(".dropdown-body")
+    this.dropdownBtn = this.$root.querySelector(".dropdown-btn")
+    this.dropdownBody = this.$root.querySelector(".dropdown-body")
 
-    const dropdownPlacement = this.$refs.dropdownEl.dataset.dropdownPlacement;
+    const dropdownPlacement = this.$root.dataset.dropdownPlacement;
 
     this.popperInstance = createPopper(this.dropdownBtn, this.dropdownBody, {
       placement: dropdownPlacement ? dropdownPlacement : "auto",

@@ -4,7 +4,7 @@
     'title',
     'footer'
 ])
-<div x-data="dropdown" x-ref="dropdownEl"
+<div x-data="dropdown"
      @click.outside="closeDropdown"
      data-dropdown-placement="{{ $placement }}"
      class="dropdown"
