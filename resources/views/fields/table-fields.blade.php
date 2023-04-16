@@ -1,6 +1,9 @@
 <x-moonshine::table
-    x-data="handler_{{ $element->id() }}()"
-    x-init="handler_init_{{ $element->id() }}"
+    x-data="table_fields_{{ $element->id() }}({{
+    $element->attributes()->get('x-model-has-fields')
+            ? 'item.'.$element->field()
+            : json_encode($element->jsonValues($item))
+    }}, {{ json_encode($element->jsonValues()) }})"
 >
     <x-slot:thead>
         @if(!$element->isFullPage())
@@ -21,9 +24,9 @@
     <x-slot:tbody>
         <template
             x-for="(item, index{{ $level }}) in items"
-            :key="Object.values(item)[0] ? (index{{ $level }} + '' + Object.values(item)[0]) : index{{ $level }}"
+            :key="key(item, index{{ $level }})"
         >
-            <tr :data-id="item.id" class="table_fields_{{ $element->id() }}">
+            <tr :data-id="key(item, index{{ $level }})" class="table_fields_{{ $element->id() }}">
                 @if(!$element->isFullPage())
                     @if(!$toOne)
                         <td class="text-center" scope="row" x-text="index{{ $level }} + 1"></td>
@@ -37,7 +40,8 @@
 
                     @if($element->isRemovable())
                         <td>
-                            <button type="button" @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;
+                            </button>
                         </td>
                     @endif
                 @else
@@ -55,7 +59,7 @@
 
                     @if($element->isRemovable())
                         <td width="5%" class="text-center">
-                            <button type="button" @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;</button>
+                            <button @click.prevent="remove(index{{ $level }})" class="badge badge-red">&times;</button>
                         </td>
                     @endif
                 @endif
@@ -70,7 +74,7 @@
                 class="w-full"
                 icon="heroicons.plus-circle"
                 :x-show="$toOne ? 'items.length == 0' : 'true'"
-                @click.prevent="addNewField()"
+                @click.prevent="add()"
             >
                 @lang('moonshine::ui.' . ($toOne ? 'create' : 'add'))
             </x-moonshine::link>
@@ -79,32 +83,42 @@
 </x-moonshine::table>
 
 <script>
-    function handler_{{ $element->id() }}() {
+    function table_fields_{{ $element->id() }}(data = {}, emptyData = {}) {
         return {
-            handler_init_{{ $element->id() }}() {
-                this.items = @json($element->jsonValues($item));
+            items: data,
+            key(item, index) {
+                if (item.hasOwnProperty('id')) {
+                    return item.id + '_' + index;
+                }
+
+                if (Object.values(item)[0]) {
+                    return Object.values(item)[0] + '_' + index;
+                }
+
+                return index;
             },
-            items: [],
-            addNewField() {
-                if(Array.isArray(this.items)) {
-                    this.items.push(@json($element->jsonValues()));
+            add() {
+                if (Array.isArray(this.items)) {
+                    this.items.push(emptyData);
                 } else {
-                    this.items = [@json($element->jsonValues())];
+                    this.items = [emptyData];
                 }
 
                 this.$nextTick(() => {
-                    let newRow = this.$root.querySelector('[data-id=""]:last-child');
-                    let removeable = newRow.querySelectorAll('.x-removeable');
+                    let newRow = this.$root.querySelector('[data-id]:last-child');
+                    if (newRow !== null) {
+                        let removeable = newRow.querySelectorAll('.x-removeable');
 
-                    if(removeable !== null) {
-                        for (let i = 0; i < removeable.length; i++) {
-                            removeable[i].remove();
+                        if (removeable !== null) {
+                            for (let i = 0; i < removeable.length; i++) {
+                                removeable[i].remove();
+                            }
                         }
                     }
                 });
 
             },
-            removeField(index) {
+            remove(index) {
                 this.items.splice(index, 1);
             },
         }

@@ -7,7 +7,6 @@ namespace MoonShine\Fields;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
@@ -87,22 +86,6 @@ class BelongsToMany extends Field implements
         return $this->tree;
     }
 
-    /**
-     * @deprecated Will be deleted, use asyncSearch
-     */
-    public function onlySelected(
-        string $relation,
-        string $searchColumn = null,
-        ?Closure $searchQuery = null,
-        ?Closure $searchValueCallback = null
-    ): static {
-        return $this->asyncSearch(
-            $searchColumn,
-            asyncSearchQuery: $searchQuery,
-            asyncSearchValueCallback: $searchValueCallback
-        );
-    }
-
     private function treePerformData(Collection $data): array
     {
         $performData = [];
@@ -170,33 +153,6 @@ class BelongsToMany extends Field implements
         }
     }
 
-    public function indexViewValue(Model $item, bool $container = false): string
-    {
-        $result = str('');
-
-        if ($this->onlyCount) {
-            return (string)$item->{$this->relation()}->count();
-        }
-
-        return (string)$item->{$this->relation()}->map(function ($item) use ($result) {
-            $pivotAs = $this->getPivotAs($item);
-
-            $result = $result->append($item->{$this->resourceTitleField()})
-                ->when($this->hasFields(), fn (Stringable $str) => $str->append(' - '));
-
-            foreach ($this->getFields() as $field) {
-                $result = $result->when(
-                    $field->formViewValue($item->{$pivotAs}),
-                    function (Stringable $str) use ($pivotAs, $field, $item) {
-                        return $str->append($field->formViewValue($item->{$pivotAs}));
-                    }
-                );
-            }
-
-            return (string)$result;
-        })->implode(', ');
-    }
-
     public function save(Model $item): Model
     {
         $values = $this->requestValue() ?: [];
@@ -220,7 +176,23 @@ class BelongsToMany extends Field implements
     public function exportViewValue(Model $item): string
     {
         return collect($item->{$this->relation()})
-            ->map(fn ($item) => $item->{$this->resourceTitleField()})
+            ->map(fn($item) => $item->{$this->resourceTitleField()})
             ->implode(';');
+    }
+
+    /**
+     * @deprecated Will be deleted, use asyncSearch
+     */
+    public function onlySelected(
+        string $relation,
+        string $searchColumn = null,
+        ?Closure $searchQuery = null,
+        ?Closure $searchValueCallback = null
+    ): static {
+        return $this->asyncSearch(
+            $searchColumn,
+            asyncSearchQuery: $searchQuery,
+            asyncSearchValueCallback: $searchValueCallback
+        );
     }
 }

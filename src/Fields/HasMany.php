@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasFullPageMode;
 use MoonShine\Contracts\Fields\HasJsonValues;
@@ -38,30 +37,4 @@ class HasMany extends Field implements
     protected static string $view = 'moonshine::fields.has-many';
 
     protected bool $group = true;
-
-    public function indexViewValue(Model $item, bool $container = false): string
-    {
-        $columns = [];
-        $values = [];
-
-        foreach ($this->getFields() as $field) {
-            $columns[$field->field()] = $field->label();
-        }
-
-        foreach ($item->{$this->field()} as $index => $data) {
-            foreach ($this->getFields() as $field) {
-                $values[$index][$field->field()] = $field->indexViewValue($data, false);
-            }
-        }
-
-        return view('moonshine::ui.table', [
-            'columns' => $columns,
-            'values' => $values,
-        ])->render();
-    }
-
-    public function exportViewValue(Model $item): string
-    {
-        return '';
-    }
 }

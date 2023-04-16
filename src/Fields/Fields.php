@@ -7,7 +7,6 @@ namespace MoonShine\Fields;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
@@ -45,11 +44,6 @@ final class Fields extends Collection
                 new FieldException('Relationship fields in JSON field unavailable. Use resourceMode')
             );
 
-            throw_if(
-                ! $field instanceof Json && $field instanceof HasFields,
-                new FieldException('Field with fields unavailable. Use resourceMode')
-            );
-
             if ($parent instanceof HasPivot) {
                 return $field->setName("{$parent->relation()}_{$field->field()}[]");
             }
@@ -58,11 +52,11 @@ final class Fields extends Collection
                 (string)str($parent->name())
                     ->when(
                         $parent->hasFields(),
-                        fn (Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
+                        fn(Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
                     )
                     ->append("[{$field->field()}]")
                     ->replace('[]', '')
-                    ->when($field->getAttribute('multiple'), fn (Stringable $s) => $s->append('[]'))
+                    ->when($field->getAttribute('multiple'), fn(Stringable $s) => $s->append('[]'))
             )->xModel();
         });
     }
@@ -98,7 +92,7 @@ final class Fields extends Collection
     public function whenFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->hasShowWhen())
+            ->filter(static fn(Field $field) => $field->hasShowWhen())
             ->values();
     }
 
@@ -127,7 +121,7 @@ final class Fields extends Collection
     public function indexFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnIndex())
+            ->filter(static fn(Field $field) => $field->isOnIndex())
             ->values();
     }
 
@@ -139,22 +133,22 @@ final class Fields extends Collection
     public function relatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isResourceModeField())
+            ->filter(static fn(Field $field) => $field->isResourceModeField())
             ->values()
-            ->map(fn (Field $field) => $field->setParents());
+            ->map(fn(Field $field) => $field->setParents());
     }
 
     public function withoutCanBeRelatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => ! $field->canBeResourceMode())
+            ->filter(static fn(Field $field) => !$field->canBeResourceMode())
             ->values();
     }
 
     public function withoutRelatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => ! $field->isResourceModeField())
+            ->filter(static fn(Field $field) => !$field->isResourceModeField())
             ->values();
     }
 
@@ -165,7 +159,7 @@ final class Fields extends Collection
     public function formFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnForm())
+            ->filter(static fn(Field $field) => $field->isOnForm())
             ->values();
     }
 
@@ -176,7 +170,7 @@ final class Fields extends Collection
     public function detailFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnDetail())
+            ->filter(static fn(Field $field) => $field->isOnDetail())
             ->values();
     }
 
@@ -187,7 +181,7 @@ final class Fields extends Collection
     public function exportFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnExport())
+            ->filter(static fn(Field $field) => $field->isOnExport())
             ->values();
     }
 
@@ -198,7 +192,7 @@ final class Fields extends Collection
     public function importFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnImport())
+            ->filter(static fn(Field $field) => $field->isOnImport())
             ->values();
     }
 
@@ -271,7 +265,7 @@ final class Fields extends Collection
     {
         $reflectionClass = new ReflectionClass($class);
 
-        if (! $reflectionClass->implementsInterface(FieldsDecoration::class)) {
+        if (!$reflectionClass->implementsInterface(FieldsDecoration::class)) {
             throw FieldsException::wrapError();
         }
 

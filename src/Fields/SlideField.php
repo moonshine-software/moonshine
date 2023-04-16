@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Traits\Fields\SlideTrait;
 
-class SlideField extends Number
+class SlideField extends Number implements HasValueExtraction
 {
     use SlideTrait;
 
@@ -38,9 +39,14 @@ class SlideField extends Number
 
     public function formViewValue(Model $item): array
     {
+        return $this->extractValues($item->toArray());
+    }
+
+    public function extractValues(array $data): array
+    {
         return [
-            $this->fromField => $item->{$this->fromField},
-            $this->toField => $item->{$this->toField},
+            $this->fromField => $data[$this->fromField],
+            $this->toField => $data[$this->toField],
         ];
     }
 

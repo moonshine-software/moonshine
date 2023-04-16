@@ -28,7 +28,9 @@ class MoonShineRequest extends FormRequest
     public function attributes(): array
     {
         return $this->hasResource()
-            ? $this->getResource()->getFields()->extractLabels()
+            ? $this->getResource()->getFields()
+                ->formFields()
+                ->extractLabels()
             : [];
     }
 

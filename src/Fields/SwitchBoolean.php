@@ -29,7 +29,9 @@ class SwitchBoolean extends Checkbox
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        $this->disabled(! $this->autoUpdate);
+        if (!$this->autoUpdate || !$container) {
+            return parent::indexViewValue($item, $container);
+        }
 
         return view('moonshine::fields.switch', [
             'element' => $this,
@@ -40,6 +42,6 @@ class SwitchBoolean extends Checkbox
 
     public function exportViewValue(Model $item): string
     {
-        return (string) $item->{$this->field()};
+        return (string)$item->{$this->field()};
     }
 }

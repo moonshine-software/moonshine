@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use JsonException;
+use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasFullPageMode;
 use MoonShine\Contracts\Fields\HasJsonValues;
+use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\WithFullPageMode;
 use MoonShine\Traits\Fields\WithJsonValues;
@@ -16,7 +17,12 @@ use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
-class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, RemovableContract
+class Json extends Field implements
+    HasFields,
+    HasJsonValues,
+    HasFullPageMode,
+    RemovableContract,
+    HasValueExtraction
 {
     use WithJsonValues;
     use WithFields;
@@ -52,40 +58,6 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, R
         return $this->keyValue;
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function indexViewValue(Model $item, bool $container = false): string
-    {
-        $columns = [];
-        $values = $item->{$this->field()};
-
-        if (! $this->hasFields()) {
-            return (string) json_encode($values, JSON_THROW_ON_ERROR);
-        }
-
-        if ($this->isKeyValue()) {
-            $values = collect($values)
-                ->reject(fn ($value, $key) => ! is_scalar($value))
-                ->map(fn ($value, $key) => ['key' => $key, 'value' => $value])
-                ->toArray();
-        }
-
-        foreach ($this->getFields() as $field) {
-            $columns[$field->field()] = $field->label();
-        }
-
-        return view('moonshine::ui.table', [
-            'columns' => $columns,
-            'values' => $values,
-        ])->render();
-    }
-
-    public function exportViewValue(Model $item): string
-    {
-        return '';
-    }
-
     public function save(Model $item): Model
     {
         if ($this->requestValue() === false) {
@@ -94,13 +66,53 @@ class Json extends Field implements HasFields, HasJsonValues, HasFullPageMode, R
             return $item;
         }
 
-        $item->{$this->field()} = collect($this->requestValue())
-            ->when(
-                $this->isKeyValue(),
-                static fn ($data) => $data->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])
-            )
-            ->toArray();
+        $item->{$this->field()} = $this->mapKeyValue(collect($this->requestValue()));
 
         return $item;
+    }
+
+    protected function mapKeyValue(Collection $collection): array
+    {
+        if ($this->hasFields()) {
+            $fields = $this->getFields()->formFields();
+            $collection = $collection->map(function ($data) use ($fields) {
+                foreach ($fields as $field) {
+                    if ($field instanceof Json && $field->isKeyValue()) {
+                        $data[$field->field()] = $field->mapKeyValue(collect($data[$field->field()] ?? []));
+                    }
+                }
+
+                return $data;
+            });
+        }
+
+        return $collection->when(
+            $this->isKeyValue(),
+            static fn($data) => $data->mapWithKeys(static fn($data) => [$data['key'] => $data['value']])
+        )->toArray();
+    }
+
+    public function formViewValue(Model $item): mixed
+    {
+        if ($this->isKeyValue()) {
+            return collect(parent::formViewValue($item))
+                ->map(fn($data, $index) => $this->extractValues([$index => $data]))
+                ->values()
+                ->toArray();
+        }
+
+        return parent::formViewValue($item);
+    }
+
+    public function extractValues(array $data): array
+    {
+        if ($this->isKeyValue()) {
+            return [
+                'key' => key($data),
+                'value' => $data[key($data)] ?? ''
+            ];
+        }
+
+        return $data;
     }
 }
