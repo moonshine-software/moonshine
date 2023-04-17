@@ -21,7 +21,7 @@ use MoonShine\Traits\Fields\WithPivot;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
 
-class BelongsToMany extends Field implements
+class BelongsToMany extends Select implements
     HasRelationship,
     HasRelatedValues,
     HasPivot,
@@ -32,9 +32,7 @@ class BelongsToMany extends Field implements
     use WithPivot;
     use WithRelatedValues;
     use CheckboxTrait;
-    use Searchable;
     use SelectTransform;
-    use CanBeMultiple;
     use WithAsyncSearch;
 
     protected static string $view = 'moonshine::fields.belongs-to-many';
@@ -48,15 +46,6 @@ class BelongsToMany extends Field implements
     protected string $treeParentColumn = '';
 
     protected array $ids = [];
-
-    protected bool $onlyCount = false;
-
-    public function onlyCount(): static
-    {
-        $this->onlyCount = true;
-
-        return $this;
-    }
 
     public function ids(): array
     {

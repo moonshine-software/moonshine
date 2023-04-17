@@ -24,6 +24,15 @@ trait WithFields
 {
     protected array $fields = [];
 
+    protected bool $onlyCount = false;
+
+    public function onlyCount(): static
+    {
+        $this->onlyCount = true;
+
+        return $this;
+    }
+
     public function getFields(): Fields
     {
         $resolveChildFields = $this instanceof HasJsonValues || $this instanceof HasPivot
@@ -68,8 +77,10 @@ trait WithFields
             $value = [$value];
         }
 
-        if (method_exists($this, 'onlyCount') && $this->onlyCount) {
-            return (string)$value->count();
+        if ($this->onlyCount) {
+            return (string) ($this instanceof HasRelationship
+                ? $value->count()
+                : count($value));
         }
 
         $values = [];
@@ -92,8 +103,8 @@ trait WithFields
                     if ($this instanceof HasPivot && $fields->isNotEmpty()) {
                         $pivotAs = $this->getPivotAs($data);
 
-                        $data = tap($data->{$pivotAs}, function ($in) use ($data) {
-                            $in->category_id = $data->{$this->resourceTitleField()};
+                        $data = tap($data->{$pivotAs}, function ($in) use ($data, $item) {
+                            $in->{$item->{$this->relation()}()->getRelatedPivotKeyName()} = $data->{$this->resourceTitleField()};
                         });
                     }
 
