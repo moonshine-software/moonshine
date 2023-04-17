@@ -13,6 +13,7 @@ use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
+use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
 use Throwable;
@@ -77,7 +78,7 @@ trait WithFields
             $value = [$value];
         }
 
-        if ($this->onlyCount) {
+        if ($this->onlyCount && !$this instanceof HasOne) {
             return (string) ($this instanceof HasRelationship
                 ? $value->count()
                 : count($value));
