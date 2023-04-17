@@ -86,36 +86,41 @@ trait WithFields
 
         $columns = $fields->extractLabels();
 
-        if (is_iterable($value)) {
-            foreach ($value as $index => $data) {
-                if ($this instanceof HasPivot && $fields->isNotEmpty()) {
-                    $pivotAs = $this->getPivotAs($data);
+        try {
+            if (is_iterable($value)) {
+                foreach ($value as $index => $data) {
+                    if ($this instanceof HasPivot && $fields->isNotEmpty()) {
+                        $pivotAs = $this->getPivotAs($data);
 
-                    $data = tap($data->{$pivotAs}, function ($in) use ($data) {
-                        $in->category_id = $data->{$this->resourceTitleField()};
-                    });
-                }
+                        $data = tap($data->{$pivotAs}, function ($in) use ($data) {
+                            $in->category_id = $data->{$this->resourceTitleField()};
+                        });
+                    }
 
-                if ($this instanceof Json && $this->isKeyValue()) {
-                    $data = $this->extractValues([$index => $data]);
-                }
+                    if ($this instanceof Json && $this->isKeyValue()) {
+                        $data = $this->extractValues([$index => $data]);
+                    }
 
-                if (! $data instanceof Model) {
-                    $fields->each(function ($field) use (&$data) {
-                        if ($field instanceof HasValueExtraction && ! $field instanceof Json) {
-                            $data = array_merge($data, $field->extractValues($data[$field->field()]));
-                        }
-                    });
+                    if (! $data instanceof Model) {
+                        $fields->each(function ($field) use (&$data) {
+                            if ($field instanceof HasValueExtraction && ! $field instanceof Json) {
+                                $data = array_merge($data, $field->extractValues($data[$field->field()]));
+                            }
+                        });
 
-                    $data = (new class () extends Model {
-                        protected $guarded = [];
-                    })->newInstance($data);
-                }
+                        $data = (new class () extends Model {
+                            protected $guarded = [];
+                        })->newInstance($data);
+                    }
 
-                foreach ($fields as $field) {
-                    $values[$index][$field->field()] = $field->indexViewValue($data, false);
+                    foreach ($fields as $field) {
+                        $values[$index][$field->field()] = $field->indexViewValue($data, false);
+                    }
                 }
             }
+        } catch (Throwable $e) {
+            report($e);
+            $values = [];
         }
 
         return view('moonshine::ui.table', [

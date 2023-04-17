@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Field;
+use Throwable;
 
 /**
  * @mixin Field
@@ -32,18 +33,23 @@ trait WithJsonValues
 
         $fields = $this->getFields()->formFields();
 
-        if (is_iterable($value)) {
-            foreach ($value as $index => $data) {
-                if (! $data instanceof Model) {
-                    $data = (new class () extends Model {
-                        protected $guarded = [];
-                    })->newInstance($data);
-                }
+        try {
+            if (is_iterable($value)) {
+                foreach ($value as $index => $data) {
+                    if (! $data instanceof Model) {
+                        $data = (new class () extends Model {
+                            protected $guarded = [];
+                        })->newInstance($data);
+                    }
 
-                foreach ($fields as $field) {
-                    $values[$index][$field->field()] = $field->formViewValue($data);
+                    foreach ($fields as $field) {
+                        $values[$index][$field->field()] = $field->formViewValue($data);
+                    }
                 }
             }
+        } catch (Throwable $e) {
+            report($e);
+            $values = [];
         }
 
         return $values;

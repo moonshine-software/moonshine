@@ -14,10 +14,11 @@ import select from './alpine/select'
 import tooltip from './alpine/tooltip'
 import navTooltip from './alpine/navTooltip'
 import pivot from './alpine/pivot'
-import search from './alpine/search'
+import asyncSearch from './alpine/asyncSearch'
 import asyncData from './alpine/asyncData'
 import crudForm from './alpine/crudForm'
 import crudTable from './alpine/crudTable'
+import tableFields from './alpine/tableFields'
 
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
@@ -26,10 +27,11 @@ Alpine.data('select', select)
 Alpine.data('tooltip', tooltip)
 Alpine.data('navTooltip', navTooltip)
 Alpine.data('pivot', pivot)
-Alpine.data('search', search)
+Alpine.data('asyncSearch', asyncSearch)
 Alpine.data('asyncData', asyncData)
 Alpine.data('crudForm', crudForm)
 Alpine.data('crudTable', crudTable)
+Alpine.data('tableFields', tableFields)
 
 // Alpine components
 

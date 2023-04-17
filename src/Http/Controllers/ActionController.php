@@ -6,8 +6,8 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Http\Requests\Resources\EditFormRequest;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use MoonShine\Http\Requests\Resources\ViewFormRequest;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -30,7 +30,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function item(ViewFormRequest $request): RedirectResponse
+    public function item(ViewAnyFormRequest $request): RedirectResponse
     {
         abort_if(
             ! $action = $request->getResource()->itemActions()[$request->getIndexParameter()] ?? false,
@@ -55,7 +55,7 @@ final class ActionController extends BaseController
             ->with('alert', $action->message());
     }
 
-    public function form(ViewFormRequest $request): RedirectResponse
+    public function form(EditFormRequest $request): RedirectResponse
     {
         abort_if(
             ! $action = $request->getResource()->formActions()[$request->getIndexParameter()] ?? false,

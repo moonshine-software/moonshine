@@ -7,11 +7,11 @@
                 checked: @json($element->formViewValue($item)->modelKeys()),
                 ids: @json($element->ids()),
                 initTree() {
-                    var refs = this.$refs;
-                    var checked = this.checked;
+                    const refs = this.$refs;
+                    const checked = this.checked;
 
                     this.ids.forEach(function (id) {
-                        var input = refs["item_" + id].querySelector("input");
+                        const input = refs["item_" + id].querySelector("input");
 
                         checked.forEach(function (c) {
                             if(c == input.value) {
