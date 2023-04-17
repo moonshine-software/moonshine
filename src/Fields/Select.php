@@ -19,6 +19,21 @@ class Select extends Field
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
+        $value = $item->{$this->field()};
+
+        if ($this->isMultiple()) {
+            if (is_string($value)) {
+                $value = json_decode($value, true);
+            }
+
+            return collect($value)->map(function ($v) {
+                return view('moonshine::ui.badge', [
+                    'color' => 'purple',
+                    'value' => $this->values()[$v] ?? false,
+                ])->render();
+            })->implode(',');
+        }
+
         return (string)(
             $this->values()[$item->{$this->field()}]
             ?? parent::indexViewValue($item, $container)
