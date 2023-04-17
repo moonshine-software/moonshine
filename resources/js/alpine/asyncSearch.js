@@ -1,7 +1,6 @@
 /* Search */
 
 export default (route) => ({
-
   items: [],
   match: [],
   query: '',

@@ -45,8 +45,8 @@ class SlideField extends Number implements HasValueExtraction
     public function extractValues(array $data): array
     {
         return [
-            $this->fromField => $data[$this->fromField],
-            $this->toField => $data[$this->toField],
+            $this->fromField => $data[$this->fromField] ?? '',
+            $this->toField => $data[$this->toField] ?? '',
         ];
     }
 

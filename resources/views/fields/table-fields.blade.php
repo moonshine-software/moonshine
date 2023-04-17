@@ -1,5 +1,5 @@
 <x-moonshine::table
-    x-data="table_fields_{{ $element->id() }}({{
+    x-data="tableFields({{
     $element->attributes()->get('x-model-has-fields')
             ? 'item.'.$element->field()
             : json_encode($element->jsonValues($item))
@@ -40,8 +40,7 @@
 
                     @if($element->isRemovable())
                         <td>
-                            <button @click.prevent="removeField(index{{ $level }})" class="badge badge-red">&times;
-                            </button>
+                            <button @click.prevent="remove(index{{ $level }})" class="badge badge-red">&times;</button>
                         </td>
                     @endif
                 @else
@@ -81,46 +80,3 @@
         </td>
     </x-slot:tfoot>
 </x-moonshine::table>
-
-<script>
-    function table_fields_{{ $element->id() }}(data = {}, emptyData = {}) {
-        return {
-            items: data,
-            key(item, index) {
-                if (item.hasOwnProperty('id')) {
-                    return item.id + '_' + index;
-                }
-
-                if (Object.values(item)[0]) {
-                    return Object.values(item)[0] + '_' + index;
-                }
-
-                return index;
-            },
-            add() {
-                if (Array.isArray(this.items)) {
-                    this.items.push(emptyData);
-                } else {
-                    this.items = [emptyData];
-                }
-
-                this.$nextTick(() => {
-                    let newRow = this.$root.querySelector('[data-id]:last-child');
-                    if (newRow !== null) {
-                        let removeable = newRow.querySelectorAll('.x-removeable');
-
-                        if (removeable !== null) {
-                            for (let i = 0; i < removeable.length; i++) {
-                                removeable[i].remove();
-                            }
-                        }
-                    }
-                });
-
-            },
-            remove(index) {
-                this.items.splice(index, 1);
-            },
-        }
-    }
-</script>

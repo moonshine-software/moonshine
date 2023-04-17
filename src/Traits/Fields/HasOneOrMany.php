@@ -56,7 +56,8 @@ trait HasOneOrMany
 
                     if ($field instanceof Json && $field->isKeyValue()) {
                         $values[$field->field()] = collect($values[$field->field()] ?? [])
-                            ->mapWithKeys(fn ($data) => [$data['key'] => $data['value']]);
+                            ->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])
+                            ->filter();
                     }
                 }
 

@@ -106,7 +106,8 @@ trait FileTrait
     public function hasManyOrOneSave($hiddenKey, array $values = []): array
     {
         if ($this->isMultiple()) {
-            $saveValues = collect(request($hiddenKey, []));
+            $saveValues = collect(request($hiddenKey, []))
+                ->reject(fn($v) => is_numeric($v));
 
             if (isset($values[$this->field()])) {
                 foreach ($values[$this->field()] as $value) {
