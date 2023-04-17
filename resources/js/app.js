@@ -7,17 +7,17 @@ import mask from '@alpinejs/mask'
 
 // Alpine components
 
-import dropdown from 'alpine/dropdown'
-import modal from 'alpine/modal'
-import offcanvas from 'alpine/offcanvas'
-import select from 'alpine/select'
-import tooltip from 'alpine/tooltip'
-import navTooltip from 'alpine/navTooltip'
-import pivot from 'alpine/pivot'
-import search from 'alpine/search'
-import asyncData from 'alpine/asyncData'
-import crudForm from 'alpine/crudForm'
-import crudTable from 'alpine/crudTable'
+import dropdown from './alpine/dropdown'
+import modal from './alpine/modal'
+import offcanvas from './alpine/offcanvas'
+import select from './alpine/select'
+import tooltip from './alpine/tooltip'
+import navTooltip from './alpine/navTooltip'
+import pivot from './alpine/pivot'
+import search from './alpine/search'
+import asyncData from './alpine/asyncData'
+import crudForm from './alpine/crudForm'
+import crudTable from './alpine/crudTable'
 
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
