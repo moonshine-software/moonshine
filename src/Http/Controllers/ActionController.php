@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\Resources\EditFormRequest;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use MoonShine\Http\Requests\Resources\ViewFormRequest;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 

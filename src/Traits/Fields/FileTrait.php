@@ -107,7 +107,7 @@ trait FileTrait
     {
         if ($this->isMultiple()) {
             $saveValues = collect(request($hiddenKey, []))
-                ->reject(fn($v) => is_numeric($v));
+                ->reject(fn ($v) => is_numeric($v));
 
             if (isset($values[$this->field()])) {
                 foreach ($values[$this->field()] as $value) {

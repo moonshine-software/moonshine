@@ -101,9 +101,9 @@ trait WithFields
                         $data = $this->extractValues([$index => $data]);
                     }
 
-                    if (!$data instanceof Model) {
+                    if (! $data instanceof Model) {
                         $fields->each(function ($field) use (&$data) {
-                            if ($field instanceof HasValueExtraction && !$field instanceof Json) {
+                            if ($field instanceof HasValueExtraction && ! $field instanceof Json) {
                                 $data = array_merge($data, $field->extractValues($data[$field->field()]));
                             }
                         });
