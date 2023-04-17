@@ -78,7 +78,7 @@ trait WithFields
             $value = [$value];
         }
 
-        if ($this->onlyCount && !$this instanceof HasOne) {
+        if ($this->onlyCount && ! $this instanceof HasOne) {
             return (string) ($this instanceof HasRelationship
                 ? $value->count()
                 : count($value));
