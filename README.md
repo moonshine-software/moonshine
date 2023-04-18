@@ -1,6 +1,6 @@
 <p align="center">
 <a href="https://moonshine.cutcode.dev" target="_blank">
-<img src="https://moonshine.cutcode.dev/moon-promo-dark.svg?v=1.50.0">
+<img src="https://moonshine.cutcode.dev/moon-promo-dark.svg?v=1.53.0">
 </a>
 </p>
 

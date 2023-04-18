@@ -548,6 +548,8 @@ abstract class Resource implements ResourceContract
                 if (! $wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
                     $this->afterUpdated($item);
                 }
+
+                $this->setItem($item);
             }
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());

@@ -13,6 +13,7 @@ use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
+use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
 use Throwable;
@@ -23,6 +24,15 @@ use Throwable;
 trait WithFields
 {
     protected array $fields = [];
+
+    protected bool $onlyCount = false;
+
+    public function onlyCount(): static
+    {
+        $this->onlyCount = true;
+
+        return $this;
+    }
 
     public function getFields(): Fields
     {
@@ -68,8 +78,10 @@ trait WithFields
             $value = [$value];
         }
 
-        if (method_exists($this, 'onlyCount') && $this->onlyCount) {
-            return (string)$value->count();
+        if ($this->onlyCount && ! $this instanceof HasOne) {
+            return (string) ($this instanceof HasRelationship
+                ? $value->count()
+                : count($value));
         }
 
         $values = [];
@@ -92,8 +104,8 @@ trait WithFields
                     if ($this instanceof HasPivot && $fields->isNotEmpty()) {
                         $pivotAs = $this->getPivotAs($data);
 
-                        $data = tap($data->{$pivotAs}, function ($in) use ($data) {
-                            $in->category_id = $data->{$this->resourceTitleField()};
+                        $data = tap($data->{$pivotAs}, function ($in) use ($data, $item) {
+                            $in->{$item->{$this->relation()}()->getRelatedPivotKeyName()} = $data->{$this->resourceTitleField()};
                         });
                     }
 

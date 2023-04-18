@@ -44,7 +44,14 @@
                         @if($element->getFields()->isNotEmpty())
                             @foreach($element->getFields() as $pivotField)
                                 {{ $resource->renderComponent(
-                                        $pivotField->setAttribute('x-bind:name', '`'.(preg_replace('/\[\]$/', '[${item.key}]', $pivotField->name()).'`')),
+                                        $pivotField->setAttribute(
+                                            'x-bind:name',
+                                            '`'.(preg_replace(
+                                                    '/\[\]$/',
+                                                    '[${item.key}]'.($pivotField->attributes()->get('multiple') ? '[]' : ''),
+                                                    $pivotField->name()).'`'
+                                                )
+                                        ),
                                         $element->pivotValue($item, null)
                                 ) }}
                             @endforeach
@@ -69,7 +76,13 @@
                 @if($element->getFields()->isNotEmpty())
                     @foreach($element->getFields() as $pivotField)
                         {{ $resource->renderComponent(
-                                $pivotField->clearXModel()->setName(preg_replace('/\[\]$/', "[$optionValue]", $pivotField->name())),
+                                $pivotField->clearXModel()->setName(
+                                    preg_replace(
+                                        '/\[\]$/',
+                                        "[$optionValue]".($pivotField->attributes()->get('multiple') ? '[]' : ''),
+                                        $pivotField->name()
+                                    )
+                                ),
                                 $element->pivotValue($item, $optionValue)
                         ) }}
                     @endforeach

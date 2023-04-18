@@ -230,7 +230,7 @@ a {
 
 /* Choises (Single/Multiple Select) */
 .choices {
-    @apply mb-0 w-full text-2xs dark:after:!border-t-dark-50;
+    @apply !mb-0 w-full text-2xs dark:after:!border-t-dark-50;
 
 &.is-open {
      @apply dark:after:!border-t-transparent dark:after:!border-b-dark-50;

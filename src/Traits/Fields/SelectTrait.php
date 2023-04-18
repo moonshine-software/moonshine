@@ -36,11 +36,28 @@ trait SelectTrait
 
             return match (true) {
                 $formValue instanceof Collection => $formValue->contains($related->getKeyName(), '=', $value),
-                is_array($formValue) => in_array($value, $formValue, true),
-                default => (string) $formValue === $value
+                is_array($formValue) => in_array($value, $formValue),
+                default => $this->defaultIsSelected($formValue, $value)
             };
         }
 
+        if($this->isMultiple()) {
+            if(is_string($formValue)) {
+                $formValue = json_decode($formValue, true);
+            }
+
+            return match (true) {
+                $formValue instanceof Collection => $formValue->contains($value),
+                is_array($formValue) => in_array($value, $formValue),
+                default => $this->defaultIsSelected($formValue, $value)
+            };
+        }
+
+        return $this->defaultIsSelected($formValue, $value);
+    }
+
+    protected function defaultIsSelected(mixed $formValue, string $value): bool
+    {
         return (string) $formValue === $value
             || (! $formValue && (string) $this->getDefault() === $value);
     }

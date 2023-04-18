@@ -12,16 +12,14 @@ use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\CheckboxTrait;
-use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTransform;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithPivot;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
 
-class BelongsToMany extends Field implements
+class BelongsToMany extends Select implements
     HasRelationship,
     HasRelatedValues,
     HasPivot,
@@ -32,9 +30,7 @@ class BelongsToMany extends Field implements
     use WithPivot;
     use WithRelatedValues;
     use CheckboxTrait;
-    use Searchable;
     use SelectTransform;
-    use CanBeMultiple;
     use WithAsyncSearch;
 
     protected static string $view = 'moonshine::fields.belongs-to-many';
@@ -48,15 +44,6 @@ class BelongsToMany extends Field implements
     protected string $treeParentColumn = '';
 
     protected array $ids = [];
-
-    protected bool $onlyCount = false;
-
-    public function onlyCount(): static
-    {
-        $this->onlyCount = true;
-
-        return $this;
-    }
 
     public function ids(): array
     {
@@ -161,7 +148,7 @@ class BelongsToMany extends Field implements
         if ($this->hasFields()) {
             foreach ($values as $index => $value) {
                 foreach ($this->getFields() as $field) {
-                    $sync[$value][$field->field()] = $field->requestValue()[$index] ?? '';
+                    $sync[$value][$field->field()] = $field->requestValue()[$index] ?? null;
                 }
             }
         } else {
