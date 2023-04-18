@@ -49,8 +49,8 @@ trait ResourceRouter
     {
         return match ($this->routeAfterSave) {
             'show', 'edit' => $this->route(
-                $this->routeAfterSave,
-                $this?->item->getKey()
+                $this->item ? $this->routeAfterSave : 'index',
+                $this?->item?->getKey()
             ),
             default => $this->route('index')
         };
