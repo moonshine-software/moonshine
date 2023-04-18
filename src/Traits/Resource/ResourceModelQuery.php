@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Resource;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
 
 trait ResourceModelQuery
@@ -18,12 +18,17 @@ trait ResourceModelQuery
 
     public static int $itemsPerPage = 25;
 
+    public static bool $simplePaginate = false;
+
     protected ?Builder $customBuilder = null;
 
-    public function paginate(): LengthAwarePaginator
+    public function paginate(): Paginator
     {
         return $this->resolveQuery()
-            ->paginate(static::$itemsPerPage)
+            ->when(static::$simplePaginate,
+                fn(Builder $query) => $query->simplePaginate(static::$itemsPerPage),
+                fn(Builder $query) => $query->paginate(static::$itemsPerPage),
+            )
             ->appends(request()->except('page'));
     }
 

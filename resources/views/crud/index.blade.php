@@ -43,23 +43,23 @@
                 @if($resource->can('create') && in_array('create', $resource->getActiveActions()))
                     @if($resource->isCreateInModal())
                         <x-moonshine::async-modal
-                            id="create_{{$resource->getModel()->getTable()}}_modal"
-                            title="{{ $resource->title() }}"
-                            route="{{ $resource->route('create', query: request('related_column') ? ['related_column' => request('related_column'), 'related_key' => request('related_key')] : []) }}"
-                            :filled="true"
+                                id="create_{{$resource->getModel()->getTable()}}_modal"
+                                title="{{ $resource->title() }}"
+                                route="{{ $resource->route('create', query: request('related_column') ? ['related_column' => request('related_column'), 'related_key' => request('related_key')] : []) }}"
+                                :filled="true"
                         >
                             <x-moonshine::icon
-                                icon="heroicons.outline.squares-plus"
-                                size="4"
+                                    icon="heroicons.outline.squares-plus"
+                                    size="4"
                             />
 
                             {{ trans('moonshine::ui.create') }}
                         </x-moonshine::async-modal>
                     @else
                         <x-moonshine::link
-                            :href="$resource->route('create')"
-                            icon="heroicons.outline.squares-plus"
-                            :filled="true"
+                                :href="$resource->route('create')"
+                                icon="heroicons.outline.squares-plus"
+                                :filled="true"
                         >
                             {{ trans('moonshine::ui.create') }}
                         </x-moonshine::link>
@@ -69,7 +69,7 @@
                 @if(!$resource->isRelatable() && $dropdownActions->isNotEmpty() && $items->isNotEmpty())
                     <x-moonshine::dropdown>
                         <x-slot:toggler class="btn">
-                            <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
+                            <x-moonshine::icon icon="heroicons.ellipsis-vertical"/>
                         </x-slot:toggler>
 
                         @include('moonshine::crud.shared.dropdown-actions', [
@@ -93,9 +93,9 @@
                 <div class="flex flex-wrap items-center gap-2">
                     @foreach($resource->queryTags() as $queryTag)
                         <x-moonshine::link
-                            :href="$resource->route('query-tag', query: ['queryTag' => $queryTag->uri()])"
-                            :filled="request()->routeIs('*.query-tag') && request()->route('queryTag') === $queryTag->uri()"
-                            :icon="$queryTag->iconValue()"
+                                :href="$resource->route('query-tag', query: ['queryTag' => $queryTag->uri()])"
+                                :filled="request()->routeIs('*.query-tag') && request()->route('queryTag') === $queryTag->uri()"
+                                :icon="$queryTag->iconValue()"
                         >
                             {{ $queryTag->label() }}
                         </x-moonshine::link>
@@ -110,7 +110,7 @@
                 ])
 
                 @if(!$resource->isRelatable())
-                    {{ $items->links('moonshine::ui.pagination') }}
+                    {{ $items->links($resource::$simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination') }}
                 @endif
             @else
                 <x-moonshine::alert type="default" class="my-4" icon="heroicons.no-symbol">

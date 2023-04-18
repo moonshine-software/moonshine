@@ -4,6 +4,10 @@
 
 	&-list {
 		@apply flex flex-wrap justify-center gap-2;
+
+		&.simple {
+			@apply justify-between;
+		}
 	}
 
 	&-item {
@@ -17,8 +21,17 @@
 		@apply flex h-full w-full items-center justify-center rounded-md text-center text-3xs font-medium;
 	}
 
+	&-simple {
+		@apply flex h-8 px-2 items-center rounded-md text-3xs font-medium;
+
+		&.disabled {
+			@apply pointer-events-none;
+		}
+	}
+
 	&-first,
-	&-last {
+	&-last,
+	&-simple.disabled {
 		@apply text-gray-400 dark:text-slate-500;
 		> svg {
 			@apply h-3.5 w-3.5;
@@ -31,7 +44,8 @@
 
 	&-first,
 	&-last,
-	&-page {
+	&-page,
+	&-simple {
 		@apply hover:bg-gray-100 hover:text-gray-800 focus:ring focus:ring-gray-200 focus:ring-opacity-70 dark:hover:bg-dark-400 dark:focus:ring-dark-200;
 	}
 
