@@ -25,9 +25,10 @@ trait ResourceModelQuery
     public function paginate(): Paginator
     {
         return $this->resolveQuery()
-            ->when(static::$simplePaginate,
-                fn(Builder $query) => $query->simplePaginate(static::$itemsPerPage),
-                fn(Builder $query) => $query->paginate(static::$itemsPerPage),
+            ->when(
+                static::$simplePaginate,
+                fn (Builder $query) => $query->simplePaginate(static::$itemsPerPage),
+                fn (Builder $query) => $query->paginate(static::$itemsPerPage),
             )
             ->appends(request()->except('page'));
     }
