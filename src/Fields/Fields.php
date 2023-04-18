@@ -16,6 +16,12 @@ use ReflectionClass;
 use ReflectionException;
 use Throwable;
 
+/**
+ * @template TKey of array-key
+ * @template Field
+ *
+ * @extends  Collection<TKey, Field>
+ */
 final class Fields extends Collection
 {
     /**

@@ -11,6 +11,7 @@ use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
 use MoonShine\Fields\HasOne;
@@ -34,6 +35,9 @@ trait WithFields
         return $this;
     }
 
+    /**
+     * @return Fields<Field>
+     */
     public function getFields(): Fields
     {
         $resolveChildFields = $this instanceof HasJsonValues || $this instanceof HasPivot
