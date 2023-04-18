@@ -110,7 +110,7 @@
                 ])
 
                 @if(!$resource->isRelatable())
-                    {{ $items->links('moonshine::ui.pagination') }}
+                    {{ $items->links($resource::$simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination') }}
                 @endif
             @else
                 <x-moonshine::alert type="default" class="my-4" icon="heroicons.no-symbol">
