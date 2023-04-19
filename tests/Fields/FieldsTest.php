@@ -12,7 +12,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\MoonShineUserRoleResource;
-use MoonShine\Resources\TestResource\TestResourceBuilder;
+use MoonShine\Tests\Fixtures\TestResource\TestResourceBuilder;
 use MoonShine\Tests\TestCase;
 use ReflectionException;
 

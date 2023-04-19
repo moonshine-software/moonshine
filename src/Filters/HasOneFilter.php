@@ -15,12 +15,9 @@ class HasOneFilter extends SelectFilter implements
 {
     use WithRelatedValues;
 
-    public function getQuery(Builder $query): Builder
+    protected function resolveQuery(Builder $query): Builder
     {
         $related = $this->getRelated($query->getModel());
-
-        return $this->requestValue()
-            ? $query->whereRelation($this->relation(), $related->getKeyName(), '=', $this->requestValue())
-            : $query;
+        return $query->whereRelation($this->relation(), $related->getKeyName(), '=', $this->requestValue());
     }
 }
