@@ -12,9 +12,13 @@ class Url extends Text
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
+        if (!$value = parent::indexViewValue($item, $container)) {
+            return '';
+        }
+
         return view('moonshine::ui.url', [
-            'href' => parent::indexViewValue($item, $container),
-            'value' => parent::indexViewValue($item, $container),
+            'href' => $value,
+            'value' => $value,
             'blank' => $this->isLinkBlank(),
         ])->render();
     }
