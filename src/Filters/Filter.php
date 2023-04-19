@@ -21,9 +21,14 @@ abstract class Filter extends FormElement implements HasFormViewValue
         return $this;
     }
 
+    public function __invoke(Builder $query, $next): Builder
+    {
+        return $next($this->getQuery($query));
+    }
+
     public function getQuery(Builder $query): Builder
     {
-        if($this->requestValue() === false) {
+        if ($this->requestValue() === false) {
             return $query;
         }
 

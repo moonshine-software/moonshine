@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Resource;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
+use MoonShine\Filters\Filter;
 
 trait ResourceModelQuery
 {
@@ -87,9 +88,8 @@ trait ResourceModelQuery
         }
 
         if (request()->has('filters') && count($this->filters())) {
-            foreach ($this->filters() as $filter) {
-                $query = $filter->getQuery($query);
-            }
+            $this->getFilters()
+                ->each(fn(Filter $filter) => $filter->getQuery($query));
         }
 
         if (request()->has('order')) {
