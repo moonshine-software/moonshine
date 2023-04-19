@@ -27,11 +27,11 @@ class MoonshineTestResource extends Resource
     }
 
     /**
-     * @param array $testFileds
+     * @param array $testFields
      */
-    public function setTestFields(array $testFileds): void
+    public function setTestFields(array $testFields): void
     {
-        $this->testFields = $testFileds;
+        $this->testFields = $testFields;
     }
 
     /**
