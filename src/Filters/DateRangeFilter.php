@@ -13,7 +13,7 @@ class DateRangeFilter extends DateFilter
 
     protected bool $group = true;
 
-    public function getQuery(Builder $query): Builder
+    protected function resolveQuery(Builder $query): Builder
     {
         $values = $this->requestValue();
 
