@@ -17,6 +17,7 @@ abstract class Filter extends FormElement implements HasFormViewValue
     public function customQuery(Closure $callback): static
     {
         $this->queryCallback = $callback;
+
         return $this;
     }
 

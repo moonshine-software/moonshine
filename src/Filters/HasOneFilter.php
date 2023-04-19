@@ -18,6 +18,7 @@ class HasOneFilter extends SelectFilter implements
     protected function resolveQuery(Builder $query): Builder
     {
         $related = $this->getRelated($query->getModel());
+
         return $query->whereRelation($this->relation(), $related->getKeyName(), '=', $this->requestValue());
     }
 }
