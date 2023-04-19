@@ -207,7 +207,7 @@ class CrudControllerTest extends TestCase
     {
         $data = [
             'name' => 'FilteredTest',
-            'created_at' => '2023-01-03'
+            'created_at' => '2023-01-03',
         ];
 
         MoonshineUser::factory()->create($data);
@@ -221,7 +221,7 @@ class CrudControllerTest extends TestCase
         $this->authorized()->get(
             $this->testResource()->route('index', query: [
                 'filters' => [
-                    'created_at' => '2023-01-03'
+                    'created_at' => '2023-01-03',
                 ],
             ]),
         )->assertOk()->assertSeeText('FilteredTest');

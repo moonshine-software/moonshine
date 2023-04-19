@@ -132,7 +132,7 @@ class MoonShineUserResource extends Resource
     {
         return [
             TextFilter::make(trans('moonshine::ui.resource.name'), 'name'),
-            DateFilter::make(trans('moonshine::ui.resource.created_at'), 'created_at')
+            DateFilter::make(trans('moonshine::ui.resource.created_at'), 'created_at'),
         ];
     }
 

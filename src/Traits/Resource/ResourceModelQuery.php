@@ -89,7 +89,7 @@ trait ResourceModelQuery
 
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
-                ->each(fn(Filter $filter) => $filter->getQuery($query));
+                ->each(fn (Filter $filter) => $filter->getQuery($query));
         }
 
         if (request()->has('order')) {
