@@ -12,7 +12,9 @@
 <form
     {{ $attributes->merge(['class' => 'form', 'method' => 'POST']) }}
 >
-    @csrf
+    @if(strtolower($attributes->get('method', '')) !== 'get')
+        @csrf
+    @endif
 
     {{ $slot }}
 
