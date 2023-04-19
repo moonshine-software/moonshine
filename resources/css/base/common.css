@@ -134,3 +134,8 @@ ul.tree-list {
         }
     }
 }
+
+/* Divider */
+.divider {
+    @apply my-2 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-200;
+}
