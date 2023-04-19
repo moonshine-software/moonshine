@@ -198,4 +198,39 @@ class CrudControllerTest extends TestCase
 
         $response->assertJsonStructure(['errors' => ['moonshine_user_role_id']]);
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function it_filtered_data(): void
+    {
+        $data = [
+            'name' => 'FilteredTest',
+            'created_at' => '2023-01-03',
+        ];
+
+        MoonshineUser::factory()->create($data);
+
+        $this->authorized()->get(
+            $this->testResource()->route('index', query: [
+                'filters' => $data,
+            ]),
+        )->assertOk()->assertSeeText('FilteredTest');
+
+        $this->authorized()->get(
+            $this->testResource()->route('index', query: [
+                'filters' => [
+                    'created_at' => '2023-01-03',
+                ],
+            ]),
+        )->assertOk()->assertSeeText('FilteredTest');
+
+        $this->authorized()->get(
+            $this->testResource()->route('index', query: [
+                'filters' => ['created_at' => '2023-01-04'],
+            ]),
+        )->assertOk()->assertSeeText(__('moonshine::ui.notfound'));
+    }
+
 }

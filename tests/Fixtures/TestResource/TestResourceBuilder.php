@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonShine\Resources\TestResource;
+namespace MoonShine\Tests\Fixtures\TestResource;
 
 use MoonShine\Fields\Email;
 use MoonShine\Fields\ID;

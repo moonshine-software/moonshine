@@ -40,7 +40,7 @@ class MenuTest extends TestCase
             $this->assertNotEmpty($item->items());
 
             foreach ($item->items() as $inner) {
-                $this->assertTrue(! $inner->isGroup());
+                $this->assertNotTrue($inner->isGroup());
                 $this->assertEquals('Section inner', $inner->label());
                 $this->assertInstanceOf(MoonShineUserRoleResource::class, $inner->resource());
             }

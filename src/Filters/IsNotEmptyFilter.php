@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class IsNotEmptyFilter extends SwitchBooleanFilter
 {
-    public function getQuery(Builder $query): Builder
+    protected function resolveQuery(Builder $query): Builder
     {
         return $this->requestValue()
             ? $query->where(fn (Builder $query) => $query->whereNotNull($this->field())->orWhereNot($this->field(), '')->orWhereNot($this->field(), 0))
