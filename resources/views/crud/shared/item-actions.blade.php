@@ -62,7 +62,9 @@
     <x-moonshine::modal
         title="{{ trans('moonshine::ui.deleting') }}"
     >
-        {{ trans('moonshine::ui.confirm_message') }}
+        <div class="mb-4">
+            {{ trans('moonshine::ui.confirm_message') }}
+        </div>
 
         <x-moonshine::form
             method="POST"
