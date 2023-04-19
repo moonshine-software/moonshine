@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonShine\Resources\TestResource;
+namespace MoonShine\Tests\Fixtures\TestResource;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Actions\FiltersAction;
