@@ -45,8 +45,8 @@ class FieldSortableTest extends TestCase
         $this->fakeRequest(parameters: [
             'order' => [
                 'type' => 'desc',
-                'field' => $field->field()
-            ]
+                'field' => $field->field(),
+            ],
         ]);
 
 
@@ -55,8 +55,8 @@ class FieldSortableTest extends TestCase
         $this->fakeRequest(parameters: [
             'order' => [
                 'type' => 'asc',
-                'field' => $field->field()
-            ]
+                'field' => $field->field(),
+            ],
         ]);
 
         $this->assertTrue($field->sortType('asc'));
@@ -73,16 +73,16 @@ class FieldSortableTest extends TestCase
         $this->fakeRequest(parameters: [
             'order' => [
                 'type' => 'asc',
-                'field' => $field->field()
-            ]
+                'field' => $field->field(),
+            ],
         ]);
 
         $this->assertEquals(
             request()->url() . '/?' . http_build_query([
                 'order' => [
                     'field' => $field->field(),
-                    'type' => 'desc'
-                ]
+                    'type' => 'desc',
+                ],
             ]),
             $field->sortQuery()
         );

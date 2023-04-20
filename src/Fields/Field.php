@@ -43,8 +43,8 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
         return request()->fullUrlWithQuery([
             'order' => [
                 'field' => $this->field(),
-                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc' : 'asc'
-            ]
+                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc' : 'asc',
+            ],
         ]);
     }
 
