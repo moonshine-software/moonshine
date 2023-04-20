@@ -22,6 +22,8 @@ final class TinyMce extends Textarea
 
     public string $commentAuthor = '';
 
+    public string $locale = '';
+
     public function getAssets(): array
     {
         return [
@@ -68,6 +70,13 @@ final class TinyMce extends Textarea
     public function addToolbar(string $toolbar): self
     {
         $this->addedToolbar = $toolbar;
+
+        return $this;
+    }
+
+    public function locale(string $locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }
