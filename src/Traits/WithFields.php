@@ -11,16 +11,16 @@ use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
+use MoonShine\Contracts\ResourceRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Fields\FormElement;
 use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
 use Throwable;
 
 /**
- * @mixin FormElement
+ * @mixin ResourceRenderable
  */
 trait WithFields
 {

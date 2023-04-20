@@ -1,6 +1,6 @@
 @if($element->isResourceMode())
     @if($item->exists)
-        <div x-data="asyncData" x-init="load('{{ $element->resource()->route('index') }}?related_column={{ $item->{$element->relation()}()->getForeignKeyName() }}&related_key={{ $item->getKey() }}', 'has_many_{{ $element->id() }}')">
+        <div x-data="asyncData" x-init="load('{{ $element->resource()->route('index', query: ['relatable_mode' => 1]) }}&related_column={{ $item->{$element->relation()}()->getForeignKeyName() }}&related_key={{ $item->getKey() }}', 'has_many_{{ $element->id() }}')">
             <div id="has_many_{{ $element->id() }}"></div>
         </div>
     @endif

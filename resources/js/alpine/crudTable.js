@@ -1,33 +1,58 @@
-export default () => ({
+export default (async) => ({
+    actionsOpen: false,
+    async: async,
+    loading: false,
+    init() {
+        this.$refs.foot.classList.remove('hidden')
+    },
+    canBeAsync() {
+        if(!async) {
+            window.location = this.$el.href
+        }
 
-  actionsOpen: false,
-  actions (type) {
-    let all = this.$root.querySelector('.actionsAllChecked')
+        this.loading = true
 
-    if (all === null) {
-      return
-    }
+        axios.get(this.$el.href, {
+            headers: {
+                'X-Fragment': 'crud-table',
+            }
+        })
+            .then(response => response.data)
+            .then(html => {
+                this.loading = false
+                this.$root.innerHTML = html
+            })
+            .catch(error => {
+                //
+            });
+    },
+    actions(type) {
+        let all = this.$root.querySelector('.actionsAllChecked')
 
-    let checkboxes = this.$root.querySelectorAll('.tableActionRow')
-    let ids = document.querySelectorAll('.actionsCheckedIds')
+        if (all === null) {
+            return
+        }
 
-    let values = []
+        let checkboxes = this.$root.querySelectorAll('.tableActionRow')
+        let ids = document.querySelectorAll('.actionsCheckedIds')
 
-    for (let i = 0, n = checkboxes.length; i < n; i++) {
-      if (type === 'all') {
-        checkboxes[i].checked = all.checked
-      }
+        let values = []
 
-      if (checkboxes[i].checked && checkboxes[i].value) {
-        values.push(checkboxes[i].value)
-      }
-    }
+        for (let i = 0, n = checkboxes.length; i < n; i++) {
+            if (type === 'all') {
+                checkboxes[i].checked = all.checked
+            }
 
-    for (let i = 0, n = ids.length; i < n; i++) {
-      ids[i].value = values.join(';')
-    }
+            if (checkboxes[i].checked && checkboxes[i].value) {
+                values.push(checkboxes[i].value)
+            }
+        }
 
-    this.actionsOpen = !!(all.checked || values.length)
-  },
+        for (let i = 0, n = ids.length; i < n; i++) {
+            ids[i].value = values.join(';')
+        }
+
+        this.actionsOpen = !!(all.checked || values.length)
+    },
 
 })

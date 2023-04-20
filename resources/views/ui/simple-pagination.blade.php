@@ -9,7 +9,7 @@
                         {!! __('moonshine::pagination.previous') !!}
                     </span>
                 @else
-                    <a href="{{ $paginator->previousPageUrl() }}" class="pagination-simple">
+                    <a href="{{ $paginator->previousPageUrl() }}" @click.prevent="canBeAsync" class="pagination-simple">
                         {!! __('moonshine::pagination.previous') !!}
                     </a>
                 @endif
@@ -18,7 +18,7 @@
             {{-- Next Page Link --}}
             <li>
                 @if ($paginator->hasMorePages())
-                    <a href="{{ $paginator->nextPageUrl() }}" class="pagination-simple">
+                    <a href="{{ $paginator->nextPageUrl() }}" @click.prevent="canBeAsync" class="pagination-simple">
                         {!! __('moonshine::pagination.next') !!}
                     </a>
                 @else

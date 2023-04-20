@@ -80,6 +80,10 @@ class CrudController extends BaseController
             'items' => $resource->paginate(),
         ]);
 
+        if ($request->hasHeader('X-Fragment')) {
+            return $view->fragment($request->header('X-Fragment'));
+        }
+
         if (request()->ajax()) {
             $sections = $view->renderSections();
 
@@ -251,6 +255,10 @@ class CrudController extends BaseController
             'resource' => $resource,
             'item' => $item,
         ]);
+
+        if ($request->hasHeader('X-Fragment')) {
+            return $view->fragment($request->header('X-Fragment'));
+        }
 
         if (request()->ajax()) {
             $sections = $view->renderSections();

@@ -65,12 +65,6 @@ trait ResourceModelQuery
     {
         $query = $this->query();
 
-        if ($this->isRelatable()) {
-            return $query
-                ->where($this->relatedColumn(), $this->relatedKey())
-                ->orderBy(static::$orderField, static::$orderType);
-        }
-
         if ($this->scopes()) {
             foreach ($this->scopes() as $scope) {
                 $query = $query->withGlobalScope($scope::class, $scope);
@@ -87,18 +81,19 @@ trait ResourceModelQuery
             }
         }
 
+        $query = $query->orderBy(
+            request('order.field', static::$orderField),
+            request('order.type', static::$orderType)
+        );
+
+        if ($this->isRelatable()) {
+            return $query
+                ->where($this->relatedColumn(), $this->relatedKey());
+        }
+
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
                 ->each(fn (Filter $filter) => $filter->getQuery($query));
-        }
-
-        if (request()->has('order')) {
-            $query = $query->orderBy(
-                request('order.field'),
-                request('order.type')
-            );
-        } else {
-            $query = $query->orderBy(static::$orderField, static::$orderType);
         }
 
         Cache::forget($this->queryCacheKey());
