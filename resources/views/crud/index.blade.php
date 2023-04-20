@@ -103,20 +103,25 @@
                 </div>
             @endif
 
-            @if($items->isNotEmpty())
-                @include("moonshine::crud.shared.table", [
-                    'resource' => $resource,
-                    'items' => $items
-                ])
+            @fragment('crud-table')
+                <div x-data="crudTable({{ $resource->isRelatable() ? 'true' : 'false' }})">
+                    <x-moonshine::loader x-show="loading" />
+                    <div x-show="!loading">
+                        @if($items->isNotEmpty())
+                            @include("moonshine::crud.shared.table", [
+                                'resource' => $resource,
+                                'items' => $items
+                            ])
 
-                @if(!$resource->isRelatable())
-                    {{ $items->links($resource::$simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination') }}
-                @endif
-            @else
-                <x-moonshine::alert type="default" class="my-4" icon="heroicons.no-symbol">
-                    {{ trans('moonshine::ui.notfound') }}
-                </x-moonshine::alert>
-            @endif
+                            {{ $items->links($resource::$simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination') }}
+                        @else
+                            <x-moonshine::alert type="default" class="my-4" icon="heroicons.no-symbol">
+                                {{ trans('moonshine::ui.notfound') }}
+                            </x-moonshine::alert>
+                        @endif
+                    </div>
+                </div>
+            @endfragment
         </div>
     </x-moonshine::grid>
 @endsection

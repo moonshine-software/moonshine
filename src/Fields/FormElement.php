@@ -74,7 +74,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         if ($this->hasRelationship()) {
             $this->setField($field ?? (string)str($this->label)->camel());
 
-            if ($this->belongToOne() && ! str($this->field())->contains('_id')) {
+            if ($this->belongToOne() && !str($this->field())->contains('_id')) {
                 $this->setField(
                     (string)str($this->field())
                         ->append('_id')
@@ -146,7 +146,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
             return $this->resource;
         }
 
-        if (! $this->relation()) {
+        if (!$this->relation()) {
             return null;
         }
 

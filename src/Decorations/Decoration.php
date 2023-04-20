@@ -18,7 +18,7 @@ abstract class Decoration implements ResourceRenderable, FieldsDecoration
     use WithLabel;
     use WithFields;
 
-    public function __construct(string|array $labelOrFields, array $fields = [])
+    public function __construct(string|array $labelOrFields = '', array $fields = [])
     {
         if (is_array($labelOrFields)) {
             $fields = $labelOrFields;

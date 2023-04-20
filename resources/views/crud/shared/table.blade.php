@@ -1,7 +1,5 @@
 <x-moonshine::table
     :crudMode="true"
-    x-data="crudTable()"
-    x-init="$refs.foot.classList.remove('hidden')"
 >
     <x-slot:thead>
         @include("moonshine::crud.shared.table-head", [$resource])

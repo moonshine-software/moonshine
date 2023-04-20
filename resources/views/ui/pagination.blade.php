@@ -4,7 +4,7 @@
         <ul class="pagination-list">
             @if (!$paginator->onFirstPage())
                 <li class="pagination-item">
-                    <a href="{{ $paginator->previousPageUrl() }}" class="pagination-first" title="{!! __('moonshine::pagination.previous') !!}">
+                    <a href="{{ $paginator->previousPageUrl() }}" @click.prevent="canBeAsync" class="pagination-first" title="{!! __('moonshine::pagination.previous') !!}">
                         <x-moonshine::icon
                             icon="heroicons.chevron-double-left"
                             size="6"
@@ -25,7 +25,7 @@
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         <li class="pagination-item">
-                            <a href="{{ $url }}" class="pagination-page @if ($page == $paginator->currentPage()) _is-active @endif">
+                            <a href="{{ $url }}" @click.prevent="canBeAsync" class="pagination-page @if ($page == $paginator->currentPage()) _is-active @endif">
                                 {{ $page }}
                             </a>
                         </li>
@@ -35,7 +35,7 @@
 
             @if (!$paginator->hasMorePages())
                 <li class="pagination-item">
-                    <a href="{{ $paginator->nextPageUrl() }}" class="pagination-last" title="{!! __('moonshine::pagination.next') !!}">
+                    <a href="{{ $paginator->nextPageUrl() }}" @click.prevent="canBeAsync" class="pagination-last" title="{!! __('moonshine::pagination.next') !!}">
                         <x-moonshine::icon
                             icon="heroicons.chevron-double-right"
                             size="6"

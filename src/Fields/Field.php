@@ -38,6 +38,28 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
         return $this->sortable;
     }
 
+    public function sortQuery(): string
+    {
+        return request()->fullUrlWithQuery([
+            'order' => [
+                'field' => $this->field(),
+                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc' : 'asc'
+            ]
+        ]);
+    }
+
+    public function sortType(string $type): bool
+    {
+        return request()->has('order.type')
+            && request('order.type') === strtolower($type);
+    }
+
+    public function sortActive(): bool
+    {
+        return request()->has('order.field')
+            && request('order.field') === $this->field();
+    }
+
     public function formViewValue(Model $item): mixed
     {
         if ($this->hasRelationship() && ! $item->relationLoaded($this->relation())) {
