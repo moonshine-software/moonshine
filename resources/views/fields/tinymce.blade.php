@@ -12,6 +12,7 @@
         path_absolute: "/",
         selector: 'textarea#tinyeditor_{{ $item->getKey() }}_{{ $element->id() }}',
         relative_urls: false,
+        language: '{{ !empty($element->locale) ? $element->locale : app()->getLocale() }}',
         plugins: '{{ trim($element->plugins . ' ' . $element->addedPlugins) }}',
         toolbar: '{{ trim($element->toolbar . ' ' . $element->addedToolbar) }}',
         @if(!empty($element->commentAuthor))
