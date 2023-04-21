@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Actions;
 
+use Illuminate\Support\Arr;
+
 final class FiltersAction extends Action
 {
     protected static string $view = 'moonshine::crud.shared.filters';
@@ -34,6 +36,14 @@ final class FiltersAction extends Action
         $this->filters = $filters;
 
         return $this;
+    }
+
+    public function activeCount(): int
+    {
+        return request()
+            ->collect('filters')
+            ->filter(fn($filter) => is_array($filter) ? Arr::whereNotNull($filter) : $filter)
+            ->count();
     }
 
     public function render(): string
