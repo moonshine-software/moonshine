@@ -8,6 +8,8 @@ final class FiltersAction extends Action
 {
     protected static string $view = 'moonshine::crud.shared.filters';
 
+    protected ?string $icon = 'heroicons.outline.adjustments-horizontal';
+
     protected array $filters = [];
 
     protected bool $inDropdown = false;

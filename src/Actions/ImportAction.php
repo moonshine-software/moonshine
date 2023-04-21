@@ -26,7 +26,7 @@ class ImportAction extends Action
 
     protected static string $view = 'moonshine::actions.import';
 
-    public string $triggerKey = 'importAction';
+    protected ?string $icon = 'heroicons.outline.paper-clip';
 
     public string $inputName = 'import_file';
 
@@ -130,23 +130,6 @@ class ImportAction extends Action
         );
 
         return $result;
-    }
-
-    public function isTriggered(): bool
-    {
-        return request()->has($this->triggerKey);
-    }
-
-    /**
-     * @throws ActionException
-     */
-    public function url(): string
-    {
-        if (is_null($this->resource())) {
-            throw new ActionException('Resource is required for action');
-        }
-
-        return $this->resource()->route('actions.index');
     }
 
     public function deleteAfter(): self

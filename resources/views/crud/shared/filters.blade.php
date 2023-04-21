@@ -1,17 +1,18 @@
 @if(count($filters))
     <x-moonshine::offcanvas
-        title="{{ trans('moonshine::ui.filters') }}"
+        title="{{ $action->label() ?? trans('moonshine::ui.filters') }}"
         :left="false"
     >
-        <x-slot:toggler class="btn-pink">
+        <x-slot:toggler class="btn-pink w-full">
             <x-moonshine::icon
-                icon="heroicons.adjustments-horizontal"
+                :icon="$action->iconValue()"
                 size="6"
             />
-            @lang('moonshine::ui.filters')
+
+            {{ $action->label() ?? trans('moonshine::ui.filters') }}
 
             @if(request('filters'))
-                ({{ count(array_filter(Arr::map(request('filters'), fn($filter) => is_array($filter) ? Arr::whereNotNull($filter) : $filter))) }})
+                ({{ count(array_filter(Arr::map(request('filters'), static fn($filter) => is_array($filter) ? Arr::whereNotNull($filter) : $filter))) }})
             @endif
         </x-slot:toggler>
         <x-moonshine::form action="{{ $resource->currentRoute() }}" method="get">

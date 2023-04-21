@@ -25,9 +25,9 @@ class ExportAction extends Action
     use WithStorage;
     use WithQueue;
 
-    protected static string $view = 'moonshine::actions.export';
+    protected ?string $icon = 'heroicons.outline.table-cells';
 
-    protected string $triggerKey = 'exportAction';
+    protected bool $withQuery = true;
 
     /**
      * @throws ActionException
@@ -105,46 +105,6 @@ class ExportAction extends Action
         );
 
         return $result;
-    }
-
-    public function isTriggered(): bool
-    {
-        return request()->has($this->triggerKey);
-    }
-
-    /**
-     * @throws ActionException
-     */
-    public function url(): string
-    {
-        if (is_null($this->resource())) {
-            throw new ActionException('Resource is required for action');
-        }
-
-        $query = [$this->triggerKey => true];
-
-        if (request()->has('filters')) {
-            foreach (request()->query('filters') as $filterField => $filterQuery) {
-                if (is_array($filterQuery)) {
-                    foreach ($filterQuery as $filterInnerField => $filterValue) {
-                        if (is_numeric($filterInnerField) && ! is_array($filterValue)) {
-                            $query['filters'][$filterField][] = $filterValue;
-                        } else {
-                            $query['filters'][$filterInnerField] = $filterValue;
-                        }
-                    }
-                } else {
-                    $query['filters'][$filterField] = $filterQuery;
-                }
-            }
-        }
-
-        if (request()->has('search')) {
-            $query['search'] = request('search');
-        }
-
-        return $this->resource()
-            ->route('actions.index', query: $query);
     }
 
     protected function resolveStorage(): void
