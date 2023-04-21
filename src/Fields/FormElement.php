@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
@@ -38,6 +39,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
     use ShowWhen;
     use HasCanSee;
     use XModel;
+    use Conditionable;
 
     protected string $field;
 
