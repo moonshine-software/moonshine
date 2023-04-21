@@ -3,7 +3,9 @@ export default (async) => ({
     async: async,
     loading: false,
     init() {
-        this.$refs.foot.classList.remove('hidden')
+        if(this.$refs.foot !== undefined) {
+            this.$refs.foot.classList.remove('hidden')
+        }
     },
     canBeAsync() {
         if(!async) {
