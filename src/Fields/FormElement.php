@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
@@ -17,6 +18,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Helpers\Condition;
 use MoonShine\MoonShine;
 use MoonShine\Traits\Fields\ShowWhen;
+use MoonShine\Traits\Fields\WithResourceMode;
 use MoonShine\Traits\Fields\XModel;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
@@ -27,6 +29,9 @@ use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 use MoonShine\Utilities\AssetManager;
 
+/**
+ * @mixin WithResourceMode
+ */
 abstract class FormElement implements ResourceRenderable, HasAssets
 {
     use Makeable;
@@ -38,6 +43,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
     use ShowWhen;
     use HasCanSee;
     use XModel;
+    use Conditionable;
 
     protected string $field;
 
