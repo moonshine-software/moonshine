@@ -27,6 +27,8 @@ class ProfileController extends BaseController
 
         if ($request->hasFile('avatar')) {
             $data['avatar'] = $request->file('avatar')->store('moonshine_users');
+        } else {
+            $data['avatar'] = $request->get('hidden_avatar');
         }
 
         $request->user()->update($data);
