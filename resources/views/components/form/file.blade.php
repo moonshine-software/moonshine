@@ -24,7 +24,7 @@
         >
             <div class="dropzone-items"
                  @if($attributes->has('x-model-field'))
-                     x-data="{xValues: {{ $attributes->get('multiple') ? $attributes->get('x-model-field', '[]') : $attributes->get('x-model', '') . '.split(" ")' }}}"
+                     x-data="{xValues: {{ $attributes->get('multiple') ? $attributes->get('x-model-field', '[]') : $attributes->get('x-model-field', '') . '.split(" ")' }}}"
                 @endif
             >
                 @if($attributes->has('x-model-field'))
