@@ -11,8 +11,8 @@
 
             {{ $action->label() ?? trans('moonshine::ui.filters') }}
 
-            @if(request('filters'))
-                ({{ count(array_filter(Arr::map(request('filters'), static fn($filter) => is_array($filter) ? Arr::whereNotNull($filter) : $filter))) }})
+            @if($action->activeCount())
+                ({{ $action->activeCount() }})
             @endif
         </x-slot:toggler>
         <x-moonshine::form action="{{ $resource->currentRoute() }}" method="get">

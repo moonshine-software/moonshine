@@ -66,7 +66,7 @@
                     @endif
                 @endif
 
-                @if(!$resource->isRelatable() && $dropdownActions->isNotEmpty() && $items->isNotEmpty())
+                @if(!$resource->isRelatable() && $dropdownActions->isNotEmpty())
                     <x-moonshine::dropdown>
                         <x-slot:toggler class="btn">
                             <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
