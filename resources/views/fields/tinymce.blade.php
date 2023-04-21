@@ -1,9 +1,11 @@
-<x-moonshine::form.textarea
-    :attributes="$element->attributes()->merge([
-        'id' => 'tinyeditor_' . $item->getKey() . '_' . $element->id(),
-        'name' => $element->name()
-    ])"
->{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
+<div class="tinymce">
+    <x-moonshine::form.textarea
+        :attributes="$element->attributes()->merge([
+            'id' => 'tinyeditor_' . $item->getKey() . '_' . $element->id(),
+            'name' => $element->name()
+        ])"
+    >{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
+</div>
 
 <script type="module">
     var editor_config = {
@@ -46,8 +48,14 @@
                         callback(message.content);
                     }
                 });
-            }
+            },
         @endif
+        init_instance_callback: function (editor) {
+            editor.on('blur', function (e) {
+                document.getElementById('tinyeditor_{{ $item->getKey() }}_{{ $element->id() }}')
+                    .innerHTML = editor.getContent();
+            });
+        }
     };
 
     tinymce.init(editor_config);
