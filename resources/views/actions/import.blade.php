@@ -2,8 +2,8 @@
     title="{{ $action->label() }}"
     :left="true"
 >
-    <x-slot:toggler class="btn-pink">
-        <x-moonshine::icon icon="heroicons.paper-clip" :size="6" />
+    <x-slot:toggler class="btn-pink w-full">
+        <x-moonshine::icon :icon="$action->iconValue()" :size="6" />
         {{ $action->label()  }}
     </x-slot:toggler>
 
@@ -15,7 +15,7 @@
         <div class="form-flex-col">
             <x-moonshine::form.input
                 type="hidden"
-                name="{{ $action->triggerKey }}"
+                name="{{ $action->getTriggerKey() }}"
                 value="1"
             />
 
