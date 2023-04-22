@@ -1,54 +1,16 @@
-<x-moonshine::form.textarea
-    :attributes="$element->attributes()->merge([
-        'id' => 'tinyeditor_' . $item->getKey() . '_' . $element->id(),
-        'name' => $element->name()
-    ])"
->{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
-
-<script type="module">
-    var editor_config = {
-        skin: Alpine.store("darkMode").on ? 'oxide-dark' : 'oxide',
-        content_css: Alpine.store("darkMode").on ? 'dark' : 'default',
-        path_absolute: "/",
-        selector: 'textarea#tinyeditor_{{ $item->getKey() }}_{{ $element->id() }}',
-        relative_urls: false,
-        language: '{{ !empty($element->locale) ? $element->locale : app()->getLocale() }}',
-        plugins: '{{ trim($element->plugins . ' ' . $element->addedPlugins) }}',
-        toolbar: '{{ trim($element->toolbar . ' ' . $element->addedToolbar) }}',
-        @if(!empty($element->commentAuthor))
-            tinycomments_mode: 'embedded',
-            tinycomments_author: '{{ $element->commentAuthor }}',
-        @endif
-        @if(!empty($element->mergeTags))
-            mergetags_list: @json($element->mergeTags),
-        @endif
-
-        @if(config('moonshine.tinymce.file_manager', false))
-            file_picker_callback: function (callback, value, meta) {
-                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-                var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-
-                var cmsURL = editor_config.path_absolute + '{{ config('moonshine.tinymce.file_manager', 'laravel-filemanager') }}?editor=' + meta.fieldname;
-                if (meta.filetype == 'image') {
-                    cmsURL = cmsURL + "&type=Images";
-                } else {
-                    cmsURL = cmsURL + "&type=Files";
-                }
-
-                tinyMCE.activeEditor.windowManager.openUrl({
-                    url: cmsURL,
-                    title: 'Filemanager',
-                    width: x * 0.8,
-                    height: y * 0.8,
-                    resizable: "yes",
-                    close_previous: "no",
-                    onMessage: (api, message) => {
-                        callback(message.content);
-                    }
-                });
-            }
-        @endif
-    };
-
-    tinymce.init(editor_config);
-</script>
+<div class="tinymce">
+    <x-moonshine::form.textarea
+        :attributes="$element->attributes()->merge([
+            'id' => 'tinyeditor_' . $item->getKey() . '_' . $element->id(),
+            'name' => $element->name()
+        ])"
+        x-data="tinymce('textarea#tinyeditor_{{$item->getKey()}}_{{$element->id()}}')"
+        :data-language="!empty($element->locale) ? $element->locale : app()->getLocale()"
+        :data-plugins="trim($element->plugins . ' ' . $element->addedPlugins)"
+        :data-toolbar="trim($element->toolbar . ' ' . $element->addedToolbar)"
+        :data-tinycomments_mode="!empty($element->commentAuthor) ? 'embedded' : null"
+        :data-tinycomments_author="!empty($element->commentAuthor) ? $element->commentAuthor : null"
+        :data-mergetags_list="!empty($element->mergeTags) ? json_encode($element->mergeTags) : null"
+        :data-file_manager="config('moonshine.tinymce.file_manager', false) ? config('moonshine.tinymce.file_manager', 'laravel-filemanager') : null"
+    >{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
+</div>

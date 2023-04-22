@@ -19,6 +19,7 @@ import asyncData from './alpine/asyncData'
 import crudForm from './alpine/crudForm'
 import crudTable from './alpine/crudTable'
 import tableFields from './alpine/tableFields'
+import tinymce from './alpine/tinymce'
 
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
@@ -32,6 +33,7 @@ Alpine.data('asyncData', asyncData)
 Alpine.data('crudForm', crudForm)
 Alpine.data('crudTable', crudTable)
 Alpine.data('tableFields', tableFields)
+Alpine.data('tinymce', tinymce)
 
 // Alpine components
 

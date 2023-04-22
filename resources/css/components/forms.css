@@ -286,6 +286,12 @@ a {
 }
 
 /* TinyMCE */
+.tinymce {
+    @apply relative;
+}
+.tinymce > textarea {
+    @apply !block absolute opacity-0 h-full w-full;
+}
 .tox-tinymce {
     @apply w-full;
 }
