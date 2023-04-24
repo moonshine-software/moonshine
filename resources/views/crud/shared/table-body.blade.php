@@ -1,4 +1,3 @@
-
 @foreach($resources as $resourceItem)
     <tr class="bgc-{{ $resourceItem->trClass($loop->index) }}" style="{{ $resourceItem->trStyles($loop->index) }}">
         @if($resource->hasMassAction())
@@ -24,7 +23,7 @@
             <td class="bgc-{{ $resourceItem->tdClass($loop->index, count($resource->getFields()->indexFields()) + 1) }}"
                 style="{{ $resource->tdStyles($loop->index, count($resource->getFields()->indexFields()) + 1) }}"
             >
-                @include("moonshine::crud.shared.table-row-actions", ["item" => $resourceItem->getItem(), "resource" => $resource])
+                @include("moonshine::crud.shared.table-row-actions", ["resource" => $resourceItem])
             </td>
         @endif
     </tr>

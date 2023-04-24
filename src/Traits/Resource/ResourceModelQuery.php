@@ -23,7 +23,7 @@ trait ResourceModelQuery
 
     protected ?Builder $customBuilder = null;
 
-    public function paginate(string $resourсeClass): Paginator
+    public function paginate(): Paginator
     {
         $paginator = $this->resolveQuery()
             ->when(
@@ -33,10 +33,11 @@ trait ResourceModelQuery
             )
             ->appends(request()->except('page'));
 
+        $resourceClass = get_class($this);
         return $paginator->setCollection(
             $paginator
                 ->getCollection()
-                ->transform(fn($value) => (new $resourсeClass)->setItem($value))
+                ->transform(fn($value) => (new $resourceClass)->setItem($value))
         );
     }
 
