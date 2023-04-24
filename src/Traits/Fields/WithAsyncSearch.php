@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\MoonShineRequest;
 
 trait WithAsyncSearch
@@ -42,7 +43,24 @@ trait WithAsyncSearch
 
     public function asyncSearchValueCallback(): ?Closure
     {
-        return $this->asyncSearchValueCallback;
+
+        if (!empty($this->asyncSearchValueCallback)) {
+            return $this->asyncSearchValueCallback;
+        }
+
+        return function (Model $item) {
+            if (
+                method_exists($item, 'getTranslation') &&
+                property_exists($item, 'translatable') &&
+                is_array($item->translatable) &&
+                in_array($this->asyncSearchColumn(),$item->translatable)
+            ) {
+                return $item->getTranslation($this->asyncSearchColumn());
+            }
+
+            return $item->{$this->asyncSearchColumn()};
+
+        };
     }
 
     public function asyncSearch(
