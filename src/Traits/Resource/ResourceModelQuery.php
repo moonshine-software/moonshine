@@ -23,17 +23,22 @@ trait ResourceModelQuery
 
     protected ?Builder $customBuilder = null;
 
-    public function paginate(): Paginator
+    public function paginate(string $resourсeClass): Paginator
     {
-        return $this->resolveQuery()
+        $paginator = $this->resolveQuery()
             ->when(
                 static::$simplePaginate,
                 fn (Builder $query) => $query->simplePaginate(static::$itemsPerPage),
                 fn (Builder $query) => $query->paginate(static::$itemsPerPage),
             )
             ->appends(request()->except('page'));
-    }
 
+        return $paginator->setCollection(
+            $paginator
+                ->getCollection()
+                ->transform(fn($value) => (new $resourсeClass)->setItem($value))
+        );
+    }
 
     public function customBuilder(Builder $builder): void
     {

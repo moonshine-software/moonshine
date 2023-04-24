@@ -218,7 +218,7 @@ abstract class Resource implements ResourceContract
      * @param  int  $index
      * @return string
      */
-    public function trClass(Model $item, int $index): string
+    public function trClass(int $index): string
     {
         return 'default';
     }
@@ -231,7 +231,7 @@ abstract class Resource implements ResourceContract
      * @param  int  $cell
      * @return string
      */
-    public function tdClass(Model $item, int $index, int $cell): string
+    public function tdClass(int $index, int $cell): string
     {
         return 'default';
     }
@@ -243,7 +243,7 @@ abstract class Resource implements ResourceContract
      * @param  int  $index
      * @return string
      */
-    public function trStyles(Model $item, int $index): string
+    public function trStyles(int $index): string
     {
         return '';
     }
@@ -256,7 +256,7 @@ abstract class Resource implements ResourceContract
      * @param  int  $cell
      * @return string
      */
-    public function tdStyles(Model $item, int $index, int $cell): string
+    public function tdStyles(int $index, int $cell): string
     {
         return '';
     }
@@ -301,9 +301,10 @@ abstract class Resource implements ResourceContract
         return $this->item;
     }
 
-    public function setItem(Model $item): void
+    public function setItem(Model $item): self
     {
         $this->item = $item;
+        return $this;
     }
 
     public function getModel(): Model
