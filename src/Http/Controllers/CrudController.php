@@ -62,6 +62,7 @@ class CrudController extends BaseController
 
         if (request()->ajax()) {
             abort_if(! $request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
+
             $resource->relatable(
                 $request->relatedColumn(),
                 $request->relatedKey()
@@ -70,26 +71,38 @@ class CrudController extends BaseController
 
         $actions = $resource->getActions();
 
-        $view = view($resource->baseIndexView(), [
-            'resource' => $resource,
-            'resources' => $resource->paginate(),
-            'filters' => $resource->filters(),
-            'dropdownActions' => $actions->inDropdown(),
-            'lineActions' => $actions->inLine(),
-            'metrics' => $resource->metrics(),
-        ]);
+        try {
+            $view = view($resource->baseIndexView(), [
+                'resource' => $resource,
+                'resources' => $resource->paginate(),
+                'filters' => $resource->filters(),
+                'dropdownActions' => $actions->inDropdown(),
+                'lineActions' => $actions->inLine(),
+                'metrics' => $resource->metrics(),
+            ]);
 
-        if ($request->hasHeader('X-Fragment')) {
-            return $view->fragment($request->header('X-Fragment'));
+            if ($request->hasHeader('X-Fragment')) {
+                return $view->fragment($request->header('X-Fragment'));
+            }
+
+            if (request()->ajax()) {
+                $sections = $view->renderSections();
+
+                return $sections['content'] ?? '';
+            }
+
+            return $view;
+        } catch (Throwable $e) {
+            throw_if(! app()->isProduction(), $e);
+            report_if(app()->isProduction(), $e);
+
+            return view('moonshine::components.alert', [
+                'type' => 'error',
+                'slot' => app()->isProduction()
+                    ? trans('moonshine::ui.saved_error')
+                    : $e->getMessage()
+            ]);
         }
-
-        if (request()->ajax()) {
-            $sections = $view->renderSections();
-
-            return $sections['content'] ?? '';
-        }
-
-        return $view;
     }
 
     /**
@@ -220,7 +233,7 @@ class CrudController extends BaseController
                 $resource->save($item);
             } catch (ResourceException $e) {
                 throw_if(! app()->isProduction(), $e);
-                report($e);
+                report_if(app()->isProduction(), $e);
 
                 return $redirectRoute
                     ->with('alert', trans('moonshine::ui.saved_error'));

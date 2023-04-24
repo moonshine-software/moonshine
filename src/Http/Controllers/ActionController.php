@@ -45,7 +45,7 @@ final class ActionController extends BaseController
             $action->callback($request->getItem());
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
-            report($e);
+            report_if(app()->isProduction(), $e);
 
             return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));
@@ -72,7 +72,7 @@ final class ActionController extends BaseController
             $action->callback($request->getItem());
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
-            report($e);
+            report_if(app()->isProduction(), $e);
 
             return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));
@@ -105,7 +105,7 @@ final class ActionController extends BaseController
             $items->each(fn ($item) => $action->callback($item));
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
-            report($e);
+            report_if(app()->isProduction(), $e);
 
             return $redirectRoute
                 ->with('alert', trans('moonshine::ui.saved_error'));

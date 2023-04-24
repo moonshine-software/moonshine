@@ -37,21 +37,25 @@ trait WithFields
 
     /**
      * @return Fields<Field>
+     * @throws Throwable
      */
     public function getFields(): Fields
     {
-        $resolveChildFields = $this instanceof HasJsonValues || $this instanceof HasPivot
-            || ($this instanceof HasResourceMode && ! $this->isResourceMode());
-
-        if ($this instanceof HasFields && ! $this instanceof HasPivot && ! $this->hasFields()) {
+        if ($this instanceof HasFields && !$this instanceof HasPivot && !$this->hasFields()) {
             $this->fields(
-                $this->resource()?->getFields()->withoutCanBeRelatable()?->toArray() ?? []
+                $this->resource()?->getFields()
+                    ->withoutCanBeRelatable()
+                    ?->toArray() ?? []
             );
         }
 
+        $resolveChildFields = $this instanceof HasJsonValues
+            || $this instanceof HasPivot
+            || ($this instanceof HasResourceMode && !$this->isResourceMode());
+
         return Fields::make($this->fields)->when(
             $resolveChildFields,
-            fn (Fields $fields) => $fields->resolveChildFields($this)
+            fn(Fields $fields) => $fields->resolveChildFields($this)
         );
     }
 
@@ -82,8 +86,8 @@ trait WithFields
             $value = [$value];
         }
 
-        if ($this->onlyCount && ! $this instanceof HasOne) {
-            return (string) ($this instanceof HasRelationship
+        if ($this->onlyCount && !$this instanceof HasOne) {
+            return (string)($this instanceof HasRelationship
                 ? $value->count()
                 : count($value));
         }
@@ -109,7 +113,8 @@ trait WithFields
                         $pivotAs = $this->getPivotAs($data);
 
                         $data = tap($data->{$pivotAs}, function ($in) use ($data, $item) {
-                            $in->{$item->{$this->relation()}()->getRelatedPivotKeyName()} = $data->{$this->resourceTitleField()};
+                            $in->{$item->{$this->relation()}()->getRelatedPivotKeyName(
+                            )} = $data->{$this->resourceTitleField()};
                         });
                     }
 
@@ -117,9 +122,9 @@ trait WithFields
                         $data = $this->extractValues([$index => $data]);
                     }
 
-                    if (! $data instanceof Model) {
+                    if (!$data instanceof Model) {
                         $fields->each(function ($field) use (&$data) {
-                            if ($field instanceof HasValueExtraction && ! $field instanceof Json) {
+                            if ($field instanceof HasValueExtraction && !$field instanceof Json) {
                                 $data = array_merge($data, $field->extractValues($data[$field->field()]));
                             }
                         });

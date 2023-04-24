@@ -5,20 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\Filters;
 
 use Illuminate\Support\Collection;
-use Throwable;
+use MoonShine\Fields\FormElements;
 
-final class Filters extends Collection
+/**
+ * @template TKey of array-key
+ * @template Field
+ *
+ * @extends  Collection<TKey, Filter>
+ */
+final class Filters extends FormElements
 {
-    /**
-     * @param  string  $column
-     * @param  ?Filter  $default
-     * @return ?Filter
-     * @throws Throwable
-     */
-    public function findFilterByColumn(string $column, Filter $default = null): ?Filter
-    {
-        return $this->first(static function (Filter $field) use ($column) {
-            return $field->field() === $column;
-        }, $default);
-    }
+
 }

@@ -6,8 +6,10 @@ namespace MoonShine\Traits\Resource;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Filters\Filter;
+use Throwable;
 
 trait ResourceModelQuery
 {
@@ -28,17 +30,22 @@ trait ResourceModelQuery
         $paginator = $this->resolveQuery()
             ->when(
                 static::$simplePaginate,
-                fn (Builder $query) => $query->simplePaginate(static::$itemsPerPage),
-                fn (Builder $query) => $query->paginate(static::$itemsPerPage),
+                fn(Builder $query) => $query->simplePaginate(static::$itemsPerPage),
+                fn(Builder $query) => $query->paginate(static::$itemsPerPage),
             )
             ->appends(request()->except('page'));
 
+        return $paginator->setCollection(
+            $this->transformToResources($paginator->getCollection())
+        );
+    }
+
+    public function transformToResources(Collection $collection): Collection
+    {
         $resourceClass = get_class($this);
 
-        return $paginator->setCollection(
-            $paginator
-                ->getCollection()
-                ->transform(fn ($value) => (new $resourceClass())->setItem($value))
+        return $collection->transform(
+            fn($value) => (new $resourceClass())->setItem($value)
         );
     }
 
@@ -68,6 +75,9 @@ trait ResourceModelQuery
         return $query;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function resolveQuery(): Builder
     {
         $query = $this->query();
@@ -79,13 +89,15 @@ trait ResourceModelQuery
         }
 
         if (request()->has('search') && count($this->search())) {
-            foreach ($this->search() as $field) {
-                $query = $query->orWhere(
-                    $field,
-                    'LIKE',
-                    '%'.request('search').'%'
-                );
-            }
+            $query = $query->where(function (Builder $q) {
+                foreach ($this->search() as $field) {
+                    $q->orWhere(
+                        $field,
+                        'LIKE',
+                        '%'.request('search').'%'
+                    );
+                }
+            });
         }
 
         $query = $query->orderBy(
@@ -100,7 +112,8 @@ trait ResourceModelQuery
 
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
-                ->each(fn (Filter $filter) => $filter->getQuery($query));
+                ->onlyFields()
+                ->each(fn(Filter $filter) => $filter->getQuery($query));
         }
 
         Cache::forget($this->queryCacheKey());

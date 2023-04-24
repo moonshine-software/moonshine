@@ -17,11 +17,23 @@
         {{ $options }}
     @else
         @foreach($values as $value => $label)
-            <option @selected($value == $attributes->get('value', ''))
-                    value="{{ $value }}"
-            >
-                {{ $label }}
-            </option>
+            @if(is_array($label))
+                <optgroup label="{{ $value }}">
+                    @foreach($label as $oValue => $oName)
+                        <option @selected($oValue == $attributes->get('value', ''))
+                                value="{{ $oValue }}"
+                        >
+                            {{ $oName }}
+                        </option>
+                    @endforeach
+                </optgroup>
+            @else
+                <option @selected($value == $attributes->get('value', ''))
+                        value="{{ $value }}"
+                >
+                    {{ $label }}
+                </option>
+            @endif
         @endforeach
     @endif
 </select>

@@ -18,6 +18,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Helpers\Condition;
 use MoonShine\MoonShine;
 use MoonShine\Traits\Fields\ShowWhen;
+use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\Fields\WithResourceMode;
 use MoonShine\Traits\Fields\XModel;
 use MoonShine\Traits\HasCanSee;
@@ -31,6 +32,7 @@ use MoonShine\Utilities\AssetManager;
 
 /**
  * @mixin WithResourceMode
+ * @mixin WithRelatedValues
  */
 abstract class FormElement implements ResourceRenderable, HasAssets
 {

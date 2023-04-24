@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\MoonShineRouter;
 
@@ -36,13 +37,17 @@ trait ResourceRouter
         return (string) str('moonshine')
             ->append('.')
             ->append($this->routeNameAlias())
-            ->when($action, fn ($str) => $str->append('.')->append($action));
+            ->when($action, static fn ($str) => $str->append('.')->append($action));
     }
 
     public function currentRoute(array $query = []): string
     {
-        return request()->url()
-            .($query ? '?'.http_build_query($query) : '');
+        return str(request()->url())
+            ->when(
+                $query,
+                static fn($str) => $str->append('?')
+                    ->append(Arr::query($query))
+            )->value();
     }
 
     public function getRouteAfterSave(): string

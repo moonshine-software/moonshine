@@ -1,9 +1,10 @@
+@php use MoonShine\Filters\Filter; @endphp
 @foreach($components as $fieldOrDecoration)
     @if($fieldOrDecoration instanceof \MoonShine\Decorations\Decoration)
         {{ $resource->renderComponent($fieldOrDecoration, $item) }}
-    @elseif($fieldOrDecoration instanceof \MoonShine\Fields\Field
+    @elseif($fieldOrDecoration instanceof Filter || ($fieldOrDecoration instanceof \MoonShine\Fields\Field
         && $fieldOrDecoration->canDisplayOnForm($item)
-        && !$fieldOrDecoration->isResourceModeField()
+        && !$fieldOrDecoration->isResourceModeField())
     )
         @if($fieldOrDecoration->hasFieldContainer())
             <x-moonshine::field-container :field="$fieldOrDecoration" :item="$item" :resource="$resource">

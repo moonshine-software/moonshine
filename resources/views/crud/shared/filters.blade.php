@@ -1,4 +1,4 @@
-@if(count($filters))
+@if($filters->isNotEmpty())
     <x-moonshine::offcanvas
         title="{{ $action->label() ?? trans('moonshine::ui.filters') }}"
         :left="false"
@@ -22,13 +22,11 @@
             @endif
 
             <div class="form-flex-col">
-                @foreach($filters as $filter)
-                    @if($filter->isSee($resource->getModel()))
-                        <x-moonshine::filter-container :filter="$filter" :resource="$resource">
-                            {{ $resource->renderComponent($filter, $resource->getModel()) }}
-                        </x-moonshine::filter-container>
-                    @endif
-                @endforeach
+                <x-moonshine::resource-renderable
+                    :components="$filters"
+                    :item="$resource->getModel()"
+                    :resource="$resource"
+                />
             </div>
 
             <x-slot:button type="submit">

@@ -18,12 +18,12 @@ class FiltersTest extends TestCase
     {
         $this->assertInstanceOf(
             TextFilter::class,
-            $this->testResource()->getFilters()->findFilterByColumn('name')
+            $this->testResource()->getFilters()->findByColumn('name')
         );
 
         $this->assertInstanceOf(
             BelongsToFilter::class,
-            $this->testResource()->getFilters()->findFilterByColumn('undefined', BelongsToFilter::make('default'))
+            $this->testResource()->getFilters()->findByColumn('undefined', BelongsToFilter::make('default'))
         );
     }
 }

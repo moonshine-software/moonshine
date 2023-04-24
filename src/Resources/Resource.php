@@ -408,7 +408,7 @@ abstract class Resource implements ResourceContract
      */
     public function getField(string $fieldName): ?Field
     {
-        return $this->getFields()->findFieldByColumn($fieldName);
+        return $this->getFields()->findByColumn($fieldName);
     }
 
     /**
@@ -424,7 +424,7 @@ abstract class Resource implements ResourceContract
      */
     public function getFilter(string $filterName): ?Filter
     {
-        return $this->getFilters()->findFilterByColumn($filterName);
+        return $this->getFilters()->findByColumn($filterName);
     }
 
     /**

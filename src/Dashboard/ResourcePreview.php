@@ -7,6 +7,7 @@ namespace MoonShine\Dashboard;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use MoonShine\Resources\Resource;
+use Throwable;
 
 final class ResourcePreview extends DashboardItem
 {
@@ -26,12 +27,18 @@ final class ResourcePreview extends DashboardItem
             ->previewMode();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function items(): Collection
     {
-        return $this->resource()
+        $collections = $this->resource()
             ->resolveQuery()
             ->when($this->query, fn () => $this->query)
             ->get();
+
+        return $this->resource()
+            ->transformToResources($collections);
     }
 
     public function id(string $index = null): string

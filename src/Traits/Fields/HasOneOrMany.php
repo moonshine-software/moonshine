@@ -39,7 +39,7 @@ trait HasOneOrMany
                 $identity = $this instanceof HasOne ? $item->{$this->relation()}?->getKey() : null;
 
                 foreach ($this->getFields() as $field) {
-                    if (! $this instanceof HasOne && $field instanceof ID) {
+                    if (!$this instanceof HasOne && $field instanceof ID) {
                         $identity = $values[$field->field()] ?? null;
                         $currentIdentities[$identity] = $identity;
                     }
@@ -56,7 +56,7 @@ trait HasOneOrMany
 
                     if ($field instanceof Json && $field->isKeyValue()) {
                         $values[$field->field()] = collect($values[$field->field()] ?? [])
-                            ->mapWithKeys(fn ($data) => [$data['key'] => $data['value']])
+                            ->mapWithKeys(static fn($data) => [$data['key'] => $data['value']])
                             ->filter();
                     }
                 }
@@ -73,7 +73,7 @@ trait HasOneOrMany
             $item->{$this->relation()}()->delete();
         }
 
-        if (! $this instanceof HasOne) {
+        if (!$this instanceof HasOne) {
             $item->{$this->relation()}()
                 ->whereIn($primaryKey, collect($prevIdentities)->diff($currentIdentities)->toArray())
                 ->delete();

@@ -22,7 +22,7 @@ class SearchController extends BaseController
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
 
-        $field = $resource->getFields()->findFieldByColumn(request('column'));
+        $field = $resource->getFields()->findByColumn(request('column'));
 
         $requestQuery = request('query');
 

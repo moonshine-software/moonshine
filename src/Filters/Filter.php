@@ -9,9 +9,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasFormViewValue;
 use MoonShine\Fields\FormElement;
+use MoonShine\Traits\Fields\LinkTrait;
 
 abstract class Filter extends FormElement implements HasFormViewValue
 {
+    use LinkTrait;
+
     protected ?Closure $queryCallback = null;
 
     public function customQuery(Closure $callback): static
