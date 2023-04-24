@@ -216,9 +216,13 @@ abstract class Resource implements ResourceContract
      *
      * @param  Model  $item
      * @param  int  $index
+     *
+     * @deprecated $item argument is deprecated and will be removed in future versions,
+     * use $this->getItem() instead of $item
+     *
      * @return string
      */
-    public function trClass(int $index): string
+    public function trClass(Model  $item, int $index): string
     {
         return 'default';
     }
@@ -229,9 +233,13 @@ abstract class Resource implements ResourceContract
      * @param  Model  $item
      * @param  int  $index
      * @param  int  $cell
+     *
+     * @deprecated $item argument is deprecated and will be removed in future versions,
+     * use $this->getItem() instead of $item
+     *
      * @return string
      */
-    public function tdClass(int $index, int $cell): string
+    public function tdClass(Model  $item, int $index, int $cell): string
     {
         return 'default';
     }
@@ -241,9 +249,13 @@ abstract class Resource implements ResourceContract
      *
      * @param  Model  $item
      * @param  int  $index
+     *
+     * @deprecated $item argument is deprecated and will be removed in future versions,
+     * use $this->getItem() instead of $item
+     *
      * @return string
      */
-    public function trStyles(int $index): string
+    public function trStyles(Model  $item, int $index): string
     {
         return '';
     }
@@ -254,9 +266,13 @@ abstract class Resource implements ResourceContract
      * @param  Model  $item
      * @param  int  $index
      * @param  int  $cell
+     *
+     * @deprecated $item argument is deprecated and will be removed in future versions,
+     * use $this->getItem() instead of $item
+     *
      * @return string
      */
-    public function tdStyles(int $index, int $cell): string
+    public function tdStyles(Model  $item, int $index, int $cell): string
     {
         return '';
     }
