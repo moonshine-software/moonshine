@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
 trait ResourceModelPolicy

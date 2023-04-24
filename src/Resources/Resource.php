@@ -320,6 +320,7 @@ abstract class Resource implements ResourceContract
     public function setItem(Model $item): self
     {
         $this->item = $item;
+
         return $this;
     }
 

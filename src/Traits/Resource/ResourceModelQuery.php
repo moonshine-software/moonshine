@@ -34,10 +34,11 @@ trait ResourceModelQuery
             ->appends(request()->except('page'));
 
         $resourceClass = get_class($this);
+
         return $paginator->setCollection(
             $paginator
                 ->getCollection()
-                ->transform(fn($value) => (new $resourceClass)->setItem($value))
+                ->transform(fn ($value) => (new $resourceClass())->setItem($value))
         );
     }
 
