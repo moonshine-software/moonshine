@@ -46,7 +46,6 @@ trait WithRelatedValues
                 });
         } else {
             $values = $query->selectRaw("{$related->getTable()}.{$related->getKeyName()}, {$related->getTable()}.{$this->resourceTitleField()}")
-                ->toBase()
                 ->get()
                 ->pluck($this->resourceTitleField(), $related->getKeyName());
         }
