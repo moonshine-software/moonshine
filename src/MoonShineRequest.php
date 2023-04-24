@@ -88,15 +88,15 @@ class MoonShineRequest extends FormRequest
 
         $model = $this->getResource()->getModel();
 
-        if ($eager && $this->getResource()->hasWith()) {
-            $model->load($this->getResource()->getWith());
-        }
-
         if ($this->getResource()->softDeletes()) {
-            $model->withTrashed();
+            $model = $model->withTrashed();
         }
 
         $this->item = $model->find($this->getId());
+
+        if ($eager && $this->getResource()->hasWith()) {
+            $this->item->load($this->getResource()->getWith());
+        }
 
         return $this->item;
     }
