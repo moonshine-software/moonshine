@@ -41,8 +41,8 @@ trait SelectTrait
             };
         }
 
-        if($this->isMultiple()) {
-            if(is_string($formValue)) {
+        if ($this->isMultiple()) {
+            if (is_string($formValue)) {
                 $formValue = json_decode($formValue, true);
             }
 

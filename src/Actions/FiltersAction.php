@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Actions;
 
 use Illuminate\Support\Arr;
+use MoonShine\Filters\Filters;
 
 final class FiltersAction extends Action
 {
@@ -51,8 +52,8 @@ final class FiltersAction extends Action
         return view($this->getView(), [
             'action' => $this,
             'filters' => count($this->filters)
-                ? $this->filters
-                : $this->resource()->getFilters()->toArray(),
+                ? Filters::make($this->filters)
+                : $this->resource()->getFilters(),
             'resource' => $this->resource(),
         ])->render();
     }

@@ -8,6 +8,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Filters\Filter;
+use Throwable;
 
 trait ResourceModelQuery
 {
@@ -68,6 +69,9 @@ trait ResourceModelQuery
         return $query;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function resolveQuery(): Builder
     {
         $query = $this->query();
@@ -79,13 +83,15 @@ trait ResourceModelQuery
         }
 
         if (request()->has('search') && count($this->search())) {
-            foreach ($this->search() as $field) {
-                $query = $query->orWhere(
-                    $field,
-                    'LIKE',
-                    '%'.request('search').'%'
-                );
-            }
+            $query = $query->where(function (Builder $q) {
+                foreach ($this->search() as $field) {
+                    $q->orWhere(
+                        $field,
+                        'LIKE',
+                        '%'.request('search').'%'
+                    );
+                }
+            });
         }
 
         $query = $query->orderBy(
@@ -100,6 +106,7 @@ trait ResourceModelQuery
 
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
+                ->onlyFields()
                 ->each(fn (Filter $filter) => $filter->getQuery($query));
         }
 

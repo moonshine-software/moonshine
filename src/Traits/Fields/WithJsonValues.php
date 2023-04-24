@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasValueExtraction;
+use MoonShine\Fields\BelongsToMany;
 use MoonShine\Fields\Field;
 use Throwable;
 
@@ -13,13 +16,24 @@ use Throwable;
  */
 trait WithJsonValues
 {
+    /**
+     * @throws Throwable
+     */
     public function jsonValues(Model $item = null): array
     {
         $values = [];
 
         if (is_null($item)) {
             foreach ($this->getFields() as $field) {
-                $values[$field->field()] = '';
+                $defaultValue = $field->getAttribute('multiple')
+                    || $field instanceof HasFields
+                    ? [] : '';
+
+                if ($field instanceof HasValueExtraction) {
+                    $defaultValue = $field->extractValues([]);
+                }
+
+                $values[$field->field()] = $defaultValue;
             }
 
             return $values;
@@ -43,7 +57,13 @@ trait WithJsonValues
                     }
 
                     foreach ($fields as $field) {
-                        $values[$index][$field->field()] = $field->formViewValue($data);
+                        $fieldValue = $field->formViewValue($data);
+
+                        if ($field instanceof BelongsToMany) {
+                            $fieldValue = $fieldValue->pluck('id');
+                        }
+
+                        $values[$index][$field->field()] = $fieldValue;
                     }
                 }
             }

@@ -26,12 +26,12 @@ class FieldsTest extends TestCase
     {
         $this->assertInstanceOf(
             ID::class,
-            $this->testResource()->getFields()->findFieldByColumn('id')
+            $this->testResource()->getFields()->findByColumn('id')
         );
 
         $this->assertInstanceOf(
             Text::class,
-            $this->testResource()->getFields()->findFieldByColumn('undefined', Text::make('default'))
+            $this->testResource()->getFields()->findByColumn('undefined', Text::make('default'))
         );
     }
 
@@ -43,7 +43,7 @@ class FieldsTest extends TestCase
     {
         $this->assertInstanceOf(
             BelongsTo::class,
-            $this->testResource()->getFields()->findFieldByRelation('moonshineUserRole')
+            $this->testResource()->getFields()->findByRelation('moonshineUserRole')
         );
     }
 
@@ -55,7 +55,7 @@ class FieldsTest extends TestCase
     {
         $this->assertInstanceOf(
             BelongsTo::class,
-            $this->testResource()->getFields()->findFieldByResourceClass(MoonShineUserRoleResource::class)
+            $this->testResource()->getFields()->findByResourceClass(MoonShineUserRoleResource::class)
         );
     }
 
@@ -150,7 +150,7 @@ class FieldsTest extends TestCase
      */
     public function it_only_fields_columns(): void
     {
-        $columns = $this->testResource()->getFields()->onlyFieldsColumns();
+        $columns = $this->testResource()->getFields()->onlyColumns();
 
         $this->assertContains('id', $columns);
         $this->assertContains('name', $columns);

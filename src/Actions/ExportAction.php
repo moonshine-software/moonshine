@@ -106,11 +106,4 @@ class ExportAction extends Action
 
         return $result;
     }
-
-    protected function resolveStorage(): void
-    {
-        if (! Storage::disk($this->getDisk())->exists($this->getDir())) {
-            Storage::disk($this->getDisk())->makeDirectory($this->getDir());
-        }
-    }
 }

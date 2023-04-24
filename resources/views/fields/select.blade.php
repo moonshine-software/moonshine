@@ -19,9 +19,23 @@
             <option @selected(!$element->formViewValue($item)) value="">-</option>
         @endif
         @foreach($element->values() as $optionValue => $optionName)
-            <option @selected($element->isSelected($item, $optionValue)) value="{{ $optionValue }}">
-                {{ $optionName }}
-            </option>
+            @if(is_array($optionName))
+                <optgroup label="{{ $optionValue }}">
+                    @foreach($optionName as $oValue => $oName)
+                        <option @selected($element->isSelected($item, $oValue))
+                                value="{{ $oValue }}"
+                        >
+                            {{ $oName }}
+                        </option>
+                    @endforeach
+                </optgroup>
+            @else
+                <option @selected($element->isSelected($item, $optionValue))
+                        value="{{ $optionValue }}"
+                >
+                    {{ $optionName }}
+                </option>
+            @endif
         @endforeach
     </x-slot:options>
 </x-moonshine::form.select>
