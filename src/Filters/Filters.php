@@ -15,5 +15,4 @@ use MoonShine\Fields\FormElements;
  */
 final class Filters extends FormElements
 {
-
 }

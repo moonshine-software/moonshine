@@ -45,7 +45,7 @@ trait ResourceRouter
         return str(request()->url())
             ->when(
                 $query,
-                static fn($str) => $str->append('?')
+                static fn ($str) => $str->append('?')
                     ->append(Arr::query($query))
             )->value();
     }

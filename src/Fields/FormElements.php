@@ -65,7 +65,7 @@ abstract class FormElements extends Collection
     public function whenFields(): FormElements
     {
         return $this->onlyFields()
-            ->filter(static fn(FormElement $field) => $field->hasShowWhen())
+            ->filter(static fn (FormElement $field) => $field->hasShowWhen())
             ->values();
     }
 
@@ -156,7 +156,7 @@ abstract class FormElements extends Collection
     {
         $reflectionClass = new ReflectionClass($class);
 
-        if (!$reflectionClass->implementsInterface(FieldsDecoration::class)) {
+        if (! $reflectionClass->implementsInterface(FieldsDecoration::class)) {
             throw FieldsException::wrapError();
         }
 

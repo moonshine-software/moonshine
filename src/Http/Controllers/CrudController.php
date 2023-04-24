@@ -100,7 +100,7 @@ class CrudController extends BaseController
                 'type' => 'error',
                 'slot' => app()->isProduction()
                     ? trans('moonshine::ui.saved_error')
-                    : $e->getMessage()
+                    : $e->getMessage(),
             ]);
         }
     }

@@ -30,8 +30,8 @@ trait ResourceModelQuery
         $paginator = $this->resolveQuery()
             ->when(
                 static::$simplePaginate,
-                fn(Builder $query) => $query->simplePaginate(static::$itemsPerPage),
-                fn(Builder $query) => $query->paginate(static::$itemsPerPage),
+                fn (Builder $query) => $query->simplePaginate(static::$itemsPerPage),
+                fn (Builder $query) => $query->paginate(static::$itemsPerPage),
             )
             ->appends(request()->except('page'));
 
@@ -45,7 +45,7 @@ trait ResourceModelQuery
         $resourceClass = get_class($this);
 
         return $collection->transform(
-            fn($value) => (new $resourceClass())->setItem($value)
+            fn ($value) => (new $resourceClass())->setItem($value)
         );
     }
 
@@ -113,7 +113,7 @@ trait ResourceModelQuery
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
                 ->onlyFields()
-                ->each(fn(Filter $filter) => $filter->getQuery($query));
+                ->each(fn (Filter $filter) => $filter->getQuery($query));
         }
 
         Cache::forget($this->queryCacheKey());
