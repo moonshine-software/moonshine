@@ -10,7 +10,7 @@
 
     @include('moonshine::crud.shared.table', [
         'resource' => $element->resource(),
-        'items' => $element->items(),
+        'resources' => $element->items(),
     ])
 </x-moonshine::column>
 

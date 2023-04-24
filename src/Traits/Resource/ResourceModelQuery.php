@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Resource;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Filters\Filter;
 use Throwable;
@@ -29,17 +30,22 @@ trait ResourceModelQuery
         $paginator = $this->resolveQuery()
             ->when(
                 static::$simplePaginate,
-                fn (Builder $query) => $query->simplePaginate(static::$itemsPerPage),
-                fn (Builder $query) => $query->paginate(static::$itemsPerPage),
+                fn(Builder $query) => $query->simplePaginate(static::$itemsPerPage),
+                fn(Builder $query) => $query->paginate(static::$itemsPerPage),
             )
             ->appends(request()->except('page'));
 
+        return $paginator->setCollection(
+            $this->transformToResources($paginator->getCollection())
+        );
+    }
+
+    public function transformToResources(Collection $collection): Collection
+    {
         $resourceClass = get_class($this);
 
-        return $paginator->setCollection(
-            $paginator
-                ->getCollection()
-                ->transform(fn ($value) => (new $resourceClass())->setItem($value))
+        return $collection->transform(
+            fn($value) => (new $resourceClass())->setItem($value)
         );
     }
 
@@ -107,7 +113,7 @@ trait ResourceModelQuery
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
                 ->onlyFields()
-                ->each(fn (Filter $filter) => $filter->getQuery($query));
+                ->each(fn(Filter $filter) => $filter->getQuery($query));
         }
 
         Cache::forget($this->queryCacheKey());
