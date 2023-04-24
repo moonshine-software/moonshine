@@ -25,15 +25,21 @@ trait ResourceModelQuery
 
     public function paginate(): Paginator
     {
-        return $this->resolveQuery()
+        $paginator = $this->resolveQuery()
             ->when(
                 static::$simplePaginate,
                 fn (Builder $query) => $query->simplePaginate(static::$itemsPerPage),
                 fn (Builder $query) => $query->paginate(static::$itemsPerPage),
             )
             ->appends(request()->except('page'));
-    }
 
+        $resourceClass = get_class($this);
+        return $paginator->setCollection(
+            $paginator
+                ->getCollection()
+                ->transform(fn($value) => (new $resourceClass)->setItem($value))
+        );
+    }
 
     public function customBuilder(Builder $builder): void
     {

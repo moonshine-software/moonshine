@@ -62,7 +62,6 @@ class CrudController extends BaseController
 
         if (request()->ajax()) {
             abort_if(! $request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
-
             $resource->relatable(
                 $request->relatedColumn(),
                 $request->relatedKey()
@@ -73,11 +72,11 @@ class CrudController extends BaseController
 
         $view = view($resource->baseIndexView(), [
             'resource' => $resource,
+            'resources' => $resource->paginate(),
             'filters' => $resource->filters(),
             'dropdownActions' => $actions->inDropdown(),
             'lineActions' => $actions->inLine(),
             'metrics' => $resource->metrics(),
-            'items' => $resource->paginate(),
         ]);
 
         if ($request->hasHeader('X-Fragment')) {

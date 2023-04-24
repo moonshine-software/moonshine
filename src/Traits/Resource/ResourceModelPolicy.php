@@ -30,7 +30,7 @@ trait ResourceModelPolicy
         ];
     }
 
-    public function can(string $ability, Model $item = null): bool
+    public function can(string $ability): bool
     {
         $user = auth(config('moonshine.auth.guard'))->user();
 
@@ -45,6 +45,6 @@ trait ResourceModelPolicy
         }
 
         return Gate::forUser($user)
-            ->allows($ability, $item ?? $this->getModel());
+            ->allows($ability, $this->getItem() ?? $this->getModel());
     }
 }

@@ -1,14 +1,13 @@
-@if($resource->itemActionsCollection()->onlyVisible($item)->inDropdown()->isNotEmpty())
+@if($resource->itemActionsCollection()->onlyVisible($resource->getItem())->inDropdown()->isNotEmpty())
     <x-moonshine::dropdown>
         <x-slot:toggler class="btn">
             <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
         </x-slot:toggler>
 
         <ul class="dropdown-menu">
-            @foreach($resource->itemActionsCollection()->onlyVisible($item)->inDropdown() as $index => $action)
+            @foreach($resource->itemActionsCollection()->onlyVisible($resource->getItem())->inDropdown() as $index => $action)
                 <li class="dropdown-menu-item">
                     @include('moonshine::crud.shared.item-action-item', [
-                        'item' => $item,
                         'action' => $action,
                         'resource' => $resource,
                         'index' => $index
@@ -19,28 +18,27 @@
     </x-moonshine::dropdown>
 @endif
 
-@foreach($resource->itemActionsCollection()->onlyVisible($item)->inLine()  as $index => $action)
+@foreach($resource->itemActionsCollection()->onlyVisible($resource->getItem())->inLine()  as $index => $action)
     @include('moonshine::crud.shared.item-action-item', [
-        'item' => $item,
         'action' => $action,
         'resource' => $resource,
         'index' => $index
     ])
 @endforeach
 
-@if(!in_array('show', $except, true) && $resource->can('view', $item) && in_array('show', $resource->getActiveActions()))
+@if(!in_array('show', $except, true) && $resource->can('view') && in_array('show', $resource->getActiveActions()))
     <x-moonshine::link
-        :href="$resource->route('show', $item->getKey())"
+        :href="$resource->route('show', $resource->getItem()->getKey())"
         :filled="false"
         icon="heroicons.outline.eye"
     />
 @endif
 
-@if(!in_array('edit', $except, true) && $resource->can('update', $item) && in_array('edit', $resource->getActiveActions()))
+@if(!in_array('edit', $except, true) && $resource->can('update') && in_array('edit', $resource->getActiveActions()))
     @if($resource->isEditInModal())
         <x-moonshine::async-modal
-            id="edit_{{ $item->getTable() }}_modal_{{ $item->getKey() }}"
-            route="{{ $resource->route('edit', $item->getKey()) }}"
+            id="edit_{{ $resource->getItem()->getTable() }}_modal_{{ $resource->getItem()->getKey() }}"
+            route="{{ $resource->route('edit', $resource->getItem()->getKey()) }}"
             title="{{ $resource->title() }}"
             :filled="true"
         >
@@ -51,14 +49,14 @@
         </x-moonshine::async-modal>
     @else
         <x-moonshine::link
-            :href="$resource->route('edit', $item->getKey())"
+            :href="$resource->route('edit', $resource->getItem()->getKey())"
             icon="heroicons.outline.pencil-square"
             :filled="true"
         />
     @endif
 @endif
 
-@if(!in_array('delete', $except, true) && $resource->can('delete', $item) && in_array('delete', $resource->getActiveActions()))
+@if(!in_array('delete', $except, true) && $resource->can('delete') && in_array('delete', $resource->getActiveActions()))
     <x-moonshine::modal
         title="{{ trans('moonshine::ui.deleting') }}"
     >
@@ -68,7 +66,7 @@
 
         <x-moonshine::form
             method="POST"
-            action="{{ $resource->route('destroy', $item->getKey()) }}"
+            action="{{ $resource->route('destroy', $resource->getItem()->getKey()) }}"
         >
             @method("delete")
 
