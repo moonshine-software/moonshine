@@ -6,7 +6,7 @@ export default (items = {}, emptyData = {}) => ({
             return item.id + '_' + index;
         }
 
-        if (Object.values(item)[0]) {
+        if (Object.values(item)[0] && (/number|string/.test(typeof Object.values(item)[0]))) {
             return Object.values(item)[0] + '_' + index;
         }
 
