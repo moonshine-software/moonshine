@@ -108,7 +108,7 @@ class Json extends Field implements
     {
         if ($this->isKeyValue()) {
             return [
-                'key' => key($data),
+                'key' => key($data) ?? '',
                 'value' => $data[key($data)] ?? '',
             ];
         }
