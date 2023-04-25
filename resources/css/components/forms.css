@@ -284,6 +284,9 @@ a {
 }
 }
 }
+.choices__heading {
+    @apply !border-gray-300 dark:!border-dark-300 !text-gray-400 dark:!text-gray-500;
+}
 
 /* TinyMCE */
 .tinymce {
