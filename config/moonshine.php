@@ -46,6 +46,7 @@ return [
     'socialite' => [
         // 'driver' => 'path_to_image_for_button'
     ],
+    'header' => null, // blade path
     'footer' => [
         'copyright' => 'Made with ❤️ by <a href="https://cutcode.dev" class="font-semibold text-purple hover:text-pink" target="_blank">CutCode</a>',
         'nav' => [

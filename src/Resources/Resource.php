@@ -217,12 +217,12 @@ abstract class Resource implements ResourceContract
      * @param  Model  $item
      * @param  int  $index
      *
+     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
-     * @return string
      */
-    public function trClass(Model  $item, int $index): string
+    public function trClass(Model $item, int $index): string
     {
         return 'default';
     }
@@ -234,12 +234,12 @@ abstract class Resource implements ResourceContract
      * @param  int  $index
      * @param  int  $cell
      *
+     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
-     * @return string
      */
-    public function tdClass(Model  $item, int $index, int $cell): string
+    public function tdClass(Model $item, int $index, int $cell): string
     {
         return 'default';
     }
@@ -250,12 +250,12 @@ abstract class Resource implements ResourceContract
      * @param  Model  $item
      * @param  int  $index
      *
+     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
-     * @return string
      */
-    public function trStyles(Model  $item, int $index): string
+    public function trStyles(Model $item, int $index): string
     {
         return '';
     }
@@ -267,12 +267,12 @@ abstract class Resource implements ResourceContract
      * @param  int  $index
      * @param  int  $cell
      *
+     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
-     * @return string
      */
-    public function tdStyles(Model  $item, int $index, int $cell): string
+    public function tdStyles(Model $item, int $index, int $cell): string
     {
         return '';
     }
@@ -375,23 +375,23 @@ abstract class Resource implements ResourceContract
     {
         $actions = MassActions::make($this->actions());
 
-        if (! $this->getFilters()->isEmpty()) {
+        if (!$this->getFilters()->isEmpty()) {
             $actions = $actions->mergeIfNotExists(
                 FiltersAction::make(trans('moonshine::ui.filters'))
             );
         }
 
         return $actions->onlyVisible()
-            ->map(fn (Action $action) => $action->setResource($this));
+            ->map(fn(Action $action) => $action->setResource($this));
     }
 
     public function hasMassAction(): bool
     {
-        return ! $this->isPreviewMode() && (
-            count($this->bulkActions()) || (
-                $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
-            )
-        );
+        return !$this->isPreviewMode() && (
+                count($this->bulkActions()) || (
+                    $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
+                )
+            );
     }
 
     /**
@@ -530,9 +530,9 @@ abstract class Resource implements ResourceContract
         $fields = $fields ?? $this->getFields()->formFields();
 
         try {
-            $fields->each(fn ($field) => $field->beforeSave($item));
+            $fields->each(fn(Field $field) => $field->beforeSave($item));
 
-            if (! $item->exists && method_exists($this, 'beforeCreating')) {
+            if (!$item->exists && method_exists($this, 'beforeCreating')) {
                 $this->beforeCreating($item);
             }
 
@@ -541,7 +541,7 @@ abstract class Resource implements ResourceContract
             }
 
             foreach ($fields as $field) {
-                if (! $field->hasRelationship() || $field->belongToOne()) {
+                if (!$field->hasRelationship() || $field->belongToOne()) {
                     $item = $this->saveItem($item, $field, $saveData);
                 }
             }
@@ -550,20 +550,20 @@ abstract class Resource implements ResourceContract
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 foreach ($fields as $field) {
-                    if ($field->hasRelationship() && ! $field->belongToOne()) {
+                    if ($field->hasRelationship() && !$field->belongToOne()) {
                         $item = $this->saveItem($item, $field, $saveData);
                     }
                 }
 
                 $item->save();
 
-                $fields->each(fn ($field) => $field->afterSave($item));
+                $fields->each(fn($field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated && method_exists($this, 'afterCreated')) {
                     $this->afterCreated($item);
                 }
 
-                if (! $wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
+                if (!$wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
                     $this->afterUpdated($item);
                 }
 
@@ -578,7 +578,7 @@ abstract class Resource implements ResourceContract
 
     protected function saveItem(Model $item, Field $field, ?array $saveData = null): Model
     {
-        if (! $field->isCanSave()) {
+        if (!$field->isCanSave()) {
             return $item;
         }
 
@@ -595,7 +595,9 @@ abstract class Resource implements ResourceContract
 
     public function renderComponent(ResourceRenderable $component, Model $item, int $level = 0): View
     {
-        if ($component instanceof FormElement && $component->hasRelatedValues()) {
+        if ($component instanceof FormElement
+            && $component->hasRelatedValues()
+            && !$component->values()) {
             $component->setValues($component->relatedValues($item));
         }
 

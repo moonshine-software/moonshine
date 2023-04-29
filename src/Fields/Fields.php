@@ -107,7 +107,7 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field|Decoration>
+     * @return Fields<Field>
      * @throws Throwable
      */
     public function formFields(): Fields

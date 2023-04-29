@@ -13,7 +13,7 @@ export default (route) => ({
     this.match = []
   },
   async search() {
-    if (this.query.length > 2) {
+    if (this.query.length > 0) {
       let query = '&query=' + this.query;
 
       fetch(route + query).then((response) => {
