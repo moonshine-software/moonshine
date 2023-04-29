@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
-use MoonShine\Decorations\Decoration;
 use MoonShine\Exceptions\FieldException;
 use Throwable;
 

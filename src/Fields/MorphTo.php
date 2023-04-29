@@ -41,11 +41,11 @@ class MorphTo extends BelongsTo
             ->required();
 
         $this->searchColumns = collect($types)
-            ->mapWithKeys(fn(string $searchColumn, string $type) => [$type => $searchColumn])
+            ->mapWithKeys(fn (string $searchColumn, string $type) => [$type => $searchColumn])
             ->toArray();
 
         $this->types = collect($types)
-            ->mapWithKeys(fn(string $searchColumn, string $type) => [$type => class_basename($type)])
+            ->mapWithKeys(fn (string $searchColumn, string $type) => [$type => class_basename($type)])
             ->toArray();
 
         return $this;

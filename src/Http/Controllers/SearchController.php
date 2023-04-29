@@ -18,7 +18,7 @@ class SearchController extends BaseController
      */
     public function relations(): JsonResponse
     {
-        abort_if(!request()->has(['resource', 'column']), 404);
+        abort_if(! request()->has(['resource', 'column']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
@@ -30,7 +30,7 @@ class SearchController extends BaseController
         if ($field instanceof HasAsyncSearch && $requestQuery) {
             if ($field instanceof MorphTo) {
                 $morphClass = request('extra');
-                $related = new $morphClass;
+                $related = new $morphClass();
                 $searchColumn = $field->getSearchColumn($morphClass);
             } else {
                 $related = $field->getRelated($resource->getModel());
