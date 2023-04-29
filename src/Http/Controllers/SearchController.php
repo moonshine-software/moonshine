@@ -7,6 +7,7 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Fields\MorphTo;
 use MoonShine\MoonShine;
 use Throwable;
 
@@ -17,7 +18,7 @@ class SearchController extends BaseController
      */
     public function relations(): JsonResponse
     {
-        abort_if(! request()->has(['resource', 'column']), 404);
+        abort_if(!request()->has(['resource', 'column']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
@@ -27,7 +28,15 @@ class SearchController extends BaseController
         $requestQuery = request('query');
 
         if ($field instanceof HasAsyncSearch && $requestQuery) {
-            $related = $field->getRelated($resource->getModel());
+            if ($field instanceof MorphTo) {
+                $morphClass = request('extra');
+                $related = new $morphClass;
+                $searchColumn = $field->getSearchColumn($morphClass);
+            } else {
+                $related = $field->getRelated($resource->getModel());
+                $searchColumn = $field->asyncSearchColumn() ?? $field->resourceTitleField();
+            }
+
             $query = $related->newModelQuery();
 
             if (is_callable($field->asyncSearchQuery())) {
@@ -35,7 +44,7 @@ class SearchController extends BaseController
             }
 
             $query = $query->where(
-                $field->asyncSearchColumn() ?? $field->resourceTitleField(),
+                $searchColumn,
                 'LIKE',
                 "%$requestQuery%"
             )->limit($field->asyncSearchCount());
@@ -46,7 +55,7 @@ class SearchController extends BaseController
                 });
             } else {
                 $values = $query->pluck(
-                    $field->asyncSearchColumn() ?? $field->resourceTitleField(),
+                    $searchColumn,
                     $related->getKeyName()
                 );
             }

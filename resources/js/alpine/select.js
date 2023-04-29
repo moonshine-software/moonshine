@@ -31,7 +31,13 @@ export default (asyncUrl = '') => ({
           'search',
           (event) => {
             if (event.detail.value.length > 0) {
-              this.fromUrl(asyncUrl + '&query=' + event.detail.value)
+                let extraQuery = ''
+
+                if(this.$el.dataset.asyncExtra !== undefined) {
+                    extraQuery = '&extra=' + this.$el.dataset.asyncExtra
+                }
+
+              this.fromUrl(asyncUrl + '&query=' + event.detail.value + extraQuery)
             }
           },
           false,
