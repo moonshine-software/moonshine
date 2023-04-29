@@ -3,7 +3,8 @@
     $element->attributes()->get('x-model-has-fields')
             ? 'item.'.$element->field()
             : json_encode($element->jsonValues($item))
-    }}, {{ json_encode($element->jsonValues()) }})"
+    }})"
+    data-empty="{{ json_encode($element->jsonValues()) }}"
 >
     <x-slot:thead>
         @if(!$element->isFullPage())
@@ -69,7 +70,6 @@
     <x-slot:tfoot>
         <td colspan="{{ count($element->getFields())+2 }}">
             <x-moonshine::link
-                href="#"
                 class="w-full"
                 icon="heroicons.plus-circle"
                 :x-show="$toOne ? 'items.length == 0' : 'true'"

@@ -1,6 +1,5 @@
-export default (items = {}, emptyData = {}) => ({
+export default (items = {}) => ({
     items: items,
-    emptyData: emptyData,
     key(item, index) {
         if (item.hasOwnProperty('id')) {
             return item.id + '_' + index;
@@ -13,10 +12,12 @@ export default (items = {}, emptyData = {}) => ({
         return index;
     },
     add() {
+        let empty = JSON.parse(this.$root.dataset.empty ?? '{}')
+
         if (Array.isArray(this.items)) {
-            this.items.push(this.emptyData);
+            this.items.push(empty);
         } else {
-            this.items = [this.emptyData];
+            this.items = [empty];
         }
 
         this.$nextTick(() => {
