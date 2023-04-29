@@ -20,6 +20,7 @@
         "@vitejs/plugin-legacy": "^4.0.1",
         "autoprefixer": "^10.4.14",
         "choices.js": "^10.2.0",
+        "codeflask": "^1.4.1",
         "concurrently": "^7.6.0",
         "postcss": "^8.4.21",
         "postcss-import": "^15.1.0",

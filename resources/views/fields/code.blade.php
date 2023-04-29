@@ -1,6 +1,10 @@
-<div id="flask_{{ $element->id() }}"
-     class="w-100 relative border"
-     style="min-height: 300px">
+<div
+    x-data="code('{{ $element->id() }}', {
+        lineNumbers: {{ $element->lineNumbers ? 'true' : 'false' }},
+        language: '{{ $element->language ?? 'js' }}',
+        readonly: {{ $element->isReadonly() ? 'true' : 'false' }},
+    })"
+    class="w-100 min-h-[300px] relative border">
 </div>
 
 <x-moonshine::form.input
@@ -10,24 +14,3 @@
     :attributes="$element->attributes()->only(['x-bind:name'])"
     value="{{ $element->formViewValue($item) ?? '' }}"
 />
-
-<script>
-  (function() {
-    document.addEventListener("DOMContentLoaded", function(event) {
-      const input = document.getElementById('{{ $element->id() }}');
-
-      const flask = new CodeFlask('#flask_{{ $element->id() }}', {
-        lineNumbers: {{ $element->lineNumbers ? 'true' : 'false' }},
-        language: '{{ $element->language }}',
-        readonly: {{ $element->isReadonly() ? 'true' : 'false' }},
-      });
-
-      flask.onUpdate((code) => {
-        input.value = code;
-      });
-
-      flask.updateCode(input.value);
-    });
-  })();
-</script>
-

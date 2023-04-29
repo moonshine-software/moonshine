@@ -21,6 +21,7 @@ import crudTable from './alpine/crudTable'
 import tableFields from './alpine/tableFields'
 import tinymce from './alpine/tinymce'
 import range from './alpine/range'
+import code from './alpine/code'
 
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
@@ -36,6 +37,7 @@ Alpine.data('crudTable', crudTable)
 Alpine.data('tableFields', tableFields)
 Alpine.data('tinymce', tinymce)
 Alpine.data('range', range)
+Alpine.data('code', code)
 
 // Alpine components
 
