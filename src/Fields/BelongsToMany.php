@@ -43,13 +43,6 @@ class BelongsToMany extends Select implements
 
     protected string $treeParentColumn = '';
 
-    protected array $ids = [];
-
-    public function ids(): array
-    {
-        return $this->ids;
-    }
-
     public function treeHtml(): string
     {
         return $this->treeHtml;
@@ -115,8 +108,6 @@ class BelongsToMany extends Select implements
     {
         if (isset($performedData[$parent_id])) {
             foreach ($performedData[$parent_id] as $item) {
-                $this->ids[] = $item->getKey();
-
                 $element = view('moonshine::components.form.input-composition', [
                     'attributes' => $this->attributes()->merge([
                         'type' => 'checkbox',
@@ -130,8 +121,7 @@ class BelongsToMany extends Select implements
                 ]);
 
                 $this->treeHtml .= str($element)->wrap(
-                    "<li x-ref='item_{$item->getKey()}'
-                            style='margin-left: ".($offset * 30)."px'>",
+                    "<li style='margin-left: " . ($offset * 30) . "px'>",
                     "</li>"
                 );
 
