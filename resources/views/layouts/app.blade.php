@@ -3,8 +3,6 @@
     <head>
         @include('moonshine::layouts.shared.head')
 
-        @vite(['resources/js/app.js'], 'vendor/moonshine')
-
         {!! app(\MoonShine\Utilities\AssetManager::class)->css() !!}
 
         @yield('after-styles')
