@@ -66,8 +66,8 @@ class MoonShine
      */
     public static function menu(array $data): void
     {
-        self::$resources = collect();
-        self::$pages = collect();
+        self::$resources = self::getResources();
+        self::$pages = self::getPages();
         self::$menu = collect();
 
         collect($data)->each(function ($item) {
@@ -120,7 +120,7 @@ class MoonShine
      */
     public static function getResources(): Collection
     {
-        return self::$resources;
+        return self::$resources ?? collect();
     }
 
     /**
@@ -130,7 +130,7 @@ class MoonShine
      */
     public static function getPages(): Collection
     {
-        return self::$pages;
+        return self::$pages ?? collect();
     }
 
     /**
