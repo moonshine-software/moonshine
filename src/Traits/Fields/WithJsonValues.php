@@ -30,7 +30,9 @@ trait WithJsonValues
                     ? [] : '';
 
                 if ($field instanceof HasValueExtraction) {
-                    $defaultValue = $field->extractValues([]);
+                    $defaultValue = $field->isGroup()
+                        ? [$field->extractValues([])]
+                        : $field->extractValues([]);
                 }
 
                 $values[$field->field()] = $defaultValue;
