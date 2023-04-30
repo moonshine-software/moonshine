@@ -12,3 +12,9 @@
 <link rel="mask-icon" href="{{ asset('vendor/moonshine/safari-pinned-tab.svg') }}" color="#7843E9">
 <meta name="msapplication-TileColor" content="#7843E9">
 <meta name="theme-color" content="#7843E9">
+
+{{
+    \Illuminate\Support\Facades\Vite::useHotFile(storage_path('moonshine.hot'))
+        ->useBuildDirectory('vendor/moonshine')
+        ->withEntryPoints(['resources/js/app.js'])
+}}
