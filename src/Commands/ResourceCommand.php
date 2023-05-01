@@ -9,7 +9,7 @@ use MoonShine\MoonShine;
 
 class ResourceCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=}';
+    protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=} {--s|singleton} {--id=}';
 
     protected $description = 'Create resource';
 
@@ -26,10 +26,16 @@ class ResourceCommand extends MoonShineCommand
      */
     public function createResource(): void
     {
-        $name = str($this->argument('name'));
+        $name = str($this->argument('name') ?? $this->ask('Name'));
+        $id = null;
 
         if ($name->isEmpty()) {
             $name = str($this->ask('Resource name'));
+        }
+
+        if ($this->option('singleton')) {
+            $id = $this->option('id')
+                ?? $this->ask('Item id', 1);
         }
 
         $name = $name->ucfirst()
@@ -41,16 +47,20 @@ class ResourceCommand extends MoonShineCommand
 
         $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
 
-        $this->copyStub('Resource', $resource, [
+        $stub = $this->option('singleton')
+            ? 'SingletonResource'
+            : 'Resource';
+
+        $this->copyStub($stub, $resource, [
             '{namespace}' => MoonShine::namespace('\Resources'),
             '{model-namespace}' => $model,
             '{model}' => class_basename($model),
+            '{id}' => $id,
             'DummyTitle' => $title,
             'Dummy' => $name,
         ]);
 
         $this->components->info("{$name}Resource file was created: ".str_replace(base_path(), '', $resource));
-
         $this->components->info('Now register resource in menu');
     }
 }
