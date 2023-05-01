@@ -8,8 +8,11 @@
     'toField' => $toName
 ])
 <div class="form-group-range">
-    <div x-data="range_{{ $uniqueId }}({{ $attributes->get('x-model-field') ? 'item.'.$fromField.',item.'.$toField : '`'.$fromValue.'`,`'.$toValue.'`' }})"
+    <div x-data="range({{ $attributes->get('x-model-field') ? 'item.'.$fromField.',item.'.$toField : '`'.$fromValue.'`,`'.$toValue.'`' }})"
          x-init="mintrigger(); maxtrigger()"
+         data-min="{{ $attributes->get('min', 0) }}"
+         data-max="{{ $attributes->get('max', 1000) }}"
+         data-step="{{ $attributes->get('step', 1) }}"
          class="form-group-range-wrapper"
     >
         <div>
@@ -69,34 +72,4 @@
             />
         </div>
     </div>
-
-    <script>
-        function range_{{ $uniqueId }}(from = '0', to = '0') {
-            return {
-                minValue: parseInt(from),
-                maxValue: parseInt(to),
-                min: parseInt('{{ $attributes->get('min', 0) }}'),
-                max: parseInt('{{ $attributes->get('max', 1000) }}'),
-                step: parseInt('{{ $attributes->get('step', 1) }}'),
-                minthumb: 0,
-                maxthumb: 0,
-
-                mintrigger() {
-                    this.minValue = Math.min(this.minValue, this.maxValue - this.step);
-                    if(this.minValue < this.min) {
-                        this.minValue = this.min
-                    }
-                    this.minthumb = ((this.minValue - this.min) / (this.max - this.min)) * 100;
-                },
-
-                maxtrigger() {
-                    this.maxValue = Math.max(this.maxValue, this.minValue + this.step);
-                    if(this.maxValue > this.max) {
-                        this.maxValue = this.max
-                    }
-                    this.maxthumb = 100 - (((this.maxValue - this.min) / (this.max - this.min)) * 100);
-                },
-            }
-        }
-    </script>
 </div>

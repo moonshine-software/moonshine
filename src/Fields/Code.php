@@ -14,10 +14,6 @@ class Code extends Textarea
 
     public bool $lineNumbers = false;
 
-    protected array $assets = [
-        'https://unpkg.com/codeflask/build/codeflask.min.js',
-    ];
-
     public function language(string $language): static
     {
         $this->language = $language;

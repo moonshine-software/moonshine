@@ -1,4 +1,9 @@
-<div x-data="date_range_{{ $element->id() }}()" class="form-group form-group-inline">
+<div x-data="{
+         fromDate: '{{ $element->formViewValue($item)['from'] ?? '' }}',
+         toDate: '{{ $element->formViewValue($item)['to'] ?? '' }}'
+     }"
+     class="form-group form-group-inline"
+>
     <x-moonshine::form.input
         :attributes="$element->attributes()->merge([
             'name' => $element->name('from')
@@ -17,12 +22,3 @@
         x-model="toDate"
     />
 </div>
-
-<script>
-    function date_range_{{ $element->id()}}() {
-        return {
-            fromDate: '{{ $element->formViewValue($item)['from'] ?? '' }}',
-            toDate: '{{ $element->formViewValue($item)['to'] ?? '' }}',
-        }
-    }
-</script>
