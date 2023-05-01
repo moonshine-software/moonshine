@@ -104,23 +104,10 @@
             @endif
 
             @fragment('crud-table')
-                <div x-data="crudTable({{ $resource->isRelatable() ? 'true' : 'false' }})">
-                    <x-moonshine::loader x-show="loading" />
-                    <div x-show="!loading">
-                        @if($resources->isNotEmpty())
-                            @include("moonshine::crud.shared.table", [
-                                'resource' => $resource,
-                                'resources' => $resources
-                            ])
-
-                            {{ $resources->links($resource::$simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination') }}
-                        @else
-                            <x-moonshine::alert type="default" class="my-4" icon="heroicons.no-symbol">
-                                {{ trans('moonshine::ui.notfound') }}
-                            </x-moonshine::alert>
-                        @endif
-                    </div>
-                </div>
+                @include("moonshine::crud.shared.table", [
+                    'resource' => $resource,
+                    'resources' => $resources
+                ])
             @endfragment
         </div>
     </x-moonshine::grid>
