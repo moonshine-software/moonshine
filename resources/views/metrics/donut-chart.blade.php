@@ -2,59 +2,48 @@
     :colSpan="$element->columnSpanValue()"
     :adaptiveColSpan="$element->adaptiveColumnSpanValue()"
 >
-    <x-moonshine::box
-        class="grow"
-    >
-        <div id="{{ $element->id() }}" class="chart"></div>
-    </x-moonshine::box>
-</x-moonshine::column>
-
-@push('scripts')
-    <script>
-        let chart_element_{{ $element->id() }} = document.getElementById("{{ $element->id() }}")
-
-        let options_{{ $element->id() }} = {
-            series: @json($element->getValues()),
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return `${val}`
-                    },
-                    title: {
-                        formatter: function (seriesName) {
-                            return `"${seriesName}":`
+    <x-moonshine::box class="grow">
+        <div
+            id="{{ $element->id() }}"
+            class="chart"
+            x-data="charts({
+                series: {{ json_encode($element->getValues()) }},
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return `${val}`
+                        },
+                        title: {
+                            formatter: function (seriesName) {
+                                return `${seriesName}:`
+                            },
                         },
                     },
                 },
-            },
-            labels: @json($element->labels()),
-            chart: {
-                height: 350,
-                type: "donut",
-            },
-            stroke: {
-                colors: "transparent",
-            },
-            plotOptions: {
-                pie: {
-                    expandOnClick: false,
-                    donut: {
-                        labels: {
-                            show: true,
-                            total: {
-                                label: "{{ $element->label() }}",
-                                showAlways: false,
-                                show: true
+                labels: {{ json_encode($element->labels()) }},
+                chart: {
+                    height: 350,
+                    type: 'donut',
+                },
+                stroke: {
+                    colors: 'transparent',
+                },
+                plotOptions: {
+                    pie: {
+                        expandOnClick: false,
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    label: '{{ $element->label() }}',
+                                    showAlways: false,
+                                    show: true
+                                }
                             }
                         }
-                    }
+                    },
                 },
-            },
-        }
-
-        let chart_{{ $element->id() }} = new ApexCharts(chart_element_{{ $element->id() }}, options_{{ $element->id() }})
-        setTimeout(() => {
-            chart_{{ $element->id() }}.render()
-        }, 300)
-    </script>
-@endpush
+            })"
+        ></div>
+    </x-moonshine::box>
+</x-moonshine::column>

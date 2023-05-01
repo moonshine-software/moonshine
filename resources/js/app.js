@@ -23,6 +23,7 @@ import tinymce from './alpine/tinymce'
 import range from './alpine/range'
 import code from './alpine/code'
 import tree from './alpine/tree'
+import charts from './alpine/charts'
 
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
@@ -40,6 +41,7 @@ Alpine.data('tinymce', tinymce)
 Alpine.data('range', range)
 Alpine.data('code', code)
 Alpine.data('tree', tree)
+Alpine.data('charts', charts)
 
 // Alpine components
 
