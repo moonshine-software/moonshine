@@ -17,7 +17,7 @@ class UserCommand extends MoonShineCommand
     {
         $email = $this->ask('Email');
         $name = $this->ask('Name');
-        $password = $this->ask('Password');
+        $password = $this->secret('Password');
 
         if ($email && $name && $password) {
             MoonshineUser::query()->create([
