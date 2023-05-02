@@ -42,10 +42,8 @@ trait ResourceModelQuery
 
     public function transformToResources(Collection $collection): Collection
     {
-        $resourceClass = get_class($this);
-
         return $collection->transform(
-            fn ($value) => (new $resourceClass())->setItem($value)
+            fn ($value) => (clone $this)->setItem($value)
         );
     }
 
