@@ -55,7 +55,7 @@ trait WithFields
             || ($this instanceof HasResourceMode && ! $this->isResourceMode());
 
         return Fields::make($this->fields)->when(
-            !$this instanceof Filter && $resolveChildFields,
+            ! $this instanceof Filter && $resolveChildFields,
             fn (Fields $fields) => $fields->resolveChildFields($this)
         );
     }
