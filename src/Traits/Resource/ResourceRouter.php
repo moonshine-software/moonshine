@@ -29,9 +29,7 @@ trait ResourceRouter
 
     public function routeParam(): string
     {
-        return (string) str($this->routeNameAlias())
-            ->prepend('resource_item_')
-            ->singular();
+        return 'resourceItem';
     }
 
     public function routeName(?string $action = null): string
