@@ -32,7 +32,7 @@
                 placeholder="{{ trans('moonshine::ui.resource.email') }}"
                 autocomplete="email"
                 required
-                value="{{ old('name', auth(config('moonshine.auth.guard'))->user()->email) }}"
+                value="{{ old('email', auth(config('moonshine.auth.guard'))->user()->email) }}"
             />
         </x-moonshine::form.input-wrapper>
 
