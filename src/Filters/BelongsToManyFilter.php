@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Filters;
 
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Traits\Fields\CheckboxTrait;
@@ -16,6 +17,7 @@ use MoonShine\Traits\WithFields;
 class BelongsToManyFilter extends SelectFilter implements
     HasRelationship,
     HasRelatedValues,
+    HasPivot,
     HasFields
 {
     use CheckboxTrait;
