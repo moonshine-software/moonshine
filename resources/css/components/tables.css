@@ -53,7 +53,7 @@ table {
     thead {
         td,
         th {
-            @apply max-w-lg whitespace-nowrap px-5 py-3 text-2xs font-semibold dark:border-dark-300;
+            @apply max-w-lg px-5 py-3 text-2xs font-semibold dark:border-dark-300;
         }
     }
 

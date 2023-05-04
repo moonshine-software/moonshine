@@ -48,7 +48,8 @@ abstract class Filter extends FormElement implements HasFormViewValue
     {
         if ($this->hasRelationship()) {
             $related = $this->getRelated($query->getModel());
-            $query->whereHas($this->relation(), function (Builder $q) use ($related) {
+
+            return $query->whereHas($this->relation(), function (Builder $q) use ($related) {
                 $table = $q->getModel()->getTable();
                 $id = $related->getKeyName();
 

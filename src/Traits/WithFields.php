@@ -17,6 +17,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
+use MoonShine\Filters\Filter;
 use Throwable;
 
 /**
@@ -54,7 +55,7 @@ trait WithFields
             || ($this instanceof HasResourceMode && ! $this->isResourceMode());
 
         return Fields::make($this->fields)->when(
-            $resolveChildFields,
+            ! $this instanceof Filter && $resolveChildFields,
             fn (Fields $fields) => $fields->resolveChildFields($this)
         );
     }
