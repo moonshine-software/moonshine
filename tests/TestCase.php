@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Tests;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
@@ -16,15 +16,15 @@ use MoonShine\MoonShine;
 use MoonShine\Providers\MoonShineServiceProvider;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Resources\Resource;
+use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+class TestCase extends Orchestra
 {
     use InteractsWithViews;
-    use WithAuthTesting;
 
     protected Authenticatable|MoonshineUser $adminUser;
 
-    protected Resource $testResource;
+    protected Resource $moonShineUserResource;
 
     protected function setUp(): void
     {
@@ -33,7 +33,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->performApplication()
             ->resolveFactories()
             ->resolveSuperUser()
-            ->resolveTestResource()
+            ->resolveMoonShineUserResource()
             ->registerTestResource();
     }
 
@@ -66,8 +66,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [
             'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'name' => fake()->name(),
+            'email' => fake()->email(),
             'password' => bcrypt('test'),
         ];
     }
@@ -81,34 +81,39 @@ class TestCase extends \Orchestra\Testbench\TestCase
         return $this;
     }
 
-    protected function adminUser(): Model|Builder|Authenticatable
+    protected function resolveMoonShineUserResource(): static
     {
-        return $this->adminUser;
-    }
-
-    protected function resolveTestResource(): static
-    {
-        $this->testResource = new MoonShineUserResource();
+        $this->moonShineUserResource = new MoonShineUserResource();
 
         return $this;
-    }
-
-    protected function testResource(): Resource
-    {
-        return $this->testResource;
     }
 
     protected function registerTestResource(): static
     {
         MoonShine::resources([
-            $this->testResource(),
+            $this->moonShineUserResource(),
         ]);
 
         MoonShine::menu([
-            MenuItem::make('Admins', $this->testResource()),
+            MenuItem::make('Admins', $this->moonShineUserResource()),
         ]);
 
         return $this;
+    }
+
+    protected function moonShineUserResource(): Resource
+    {
+        return $this->moonShineUserResource;
+    }
+
+    protected function adminUser(): Model|Builder|Authenticatable
+    {
+        return $this->adminUser;
+    }
+
+    protected function asAdmin(): TestCase
+    {
+        return $this->actingAs($this->adminUser(), 'moonshine');
     }
 
     protected function getPackageProviders($app): array

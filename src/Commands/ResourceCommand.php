@@ -29,10 +29,6 @@ class ResourceCommand extends MoonShineCommand
         $name = str($this->argument('name') ?? $this->ask('Name'));
         $id = null;
 
-        if ($name->isEmpty()) {
-            $name = str($this->ask('Resource name'));
-        }
-
         if ($this->option('singleton')) {
             $id = $this->option('id')
                 ?? $this->ask('Item id', 1);
