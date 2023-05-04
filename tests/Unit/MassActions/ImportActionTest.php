@@ -64,3 +64,11 @@ it('is triggered', function () {
         ->isTriggered()
         ->toBeTrue();
 });
+
+it('render view', function () {
+    test()->withViewErrors([]);
+
+    expect($this->action)
+        ->render()
+        ->toContain($this->label);
+});

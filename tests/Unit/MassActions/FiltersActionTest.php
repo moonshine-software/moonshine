@@ -1,13 +1,14 @@
 <?php
 
 use MoonShine\Actions\FiltersAction;
+use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('mass-actions');
 
 beforeEach(function () {
     $this->label = 'Filters';
-    $this->resource = TestResourceBuilder::new(addRoutes: true);
+    $this->resource = TestResourceBuilder::new(MoonshineUser::class, addRoutes: true);
     $this->action = FiltersAction::make($this->label)
         ->setResource($this->resource);
 });
@@ -46,4 +47,12 @@ it('correct active count', function () {
     expect($this->action)
         ->activeCount()
         ->toBe(2);
+});
+
+it('render view', function () {
+    test()->withViewErrors([]);
+
+    expect($this->action)
+        ->render()
+        ->toContain($this->label);
 });
