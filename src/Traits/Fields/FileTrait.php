@@ -77,6 +77,14 @@ trait FileTrait
         return Storage::disk($this->getDisk())->url($value);
     }
 
+    public function pathWithDir(string $value): string
+    {
+        $dir = !(empty($this->getDir())) ? $this->getDir(). '/' : '';
+        return $this->path(str($value)->remove($dir)
+            ->prepend($dir)
+            ->value());
+    }
+
     /**
      * @throws Throwable
      */
