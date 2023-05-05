@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 final class MoonShineAuth
 {
-    public static function instance(): Guard|StatefulGuard
+    public static function guard(): Guard|StatefulGuard
     {
         return Auth::guard(config('moonshine.auth.guard'));
     }
 
     public static function provider(): ?UserProvider
     {
-        return self::instance()?->getProvider();
+        return self::guard()?->getProvider();
     }
 
     public static function model(): ?Model

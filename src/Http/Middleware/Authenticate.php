@@ -19,7 +19,7 @@ class Authenticate
 {
     public function handle($request, Closure $next)
     {
-        if (! $this->except($request) && MoonShineAuth::instance()->guest()) {
+        if (! $this->except($request) && MoonShineAuth::guard()->guest()) {
             return redirect()->guest(route('moonshine.login'));
         }
 

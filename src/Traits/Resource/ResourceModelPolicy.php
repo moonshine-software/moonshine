@@ -32,7 +32,7 @@ trait ResourceModelPolicy
 
     public function can(string $ability): bool
     {
-        $user = MoonShineAuth::instance()->user();
+        $user = MoonShineAuth::guard()->user();
 
         if ($user->moonshineUserPermission
             && (! $user->moonshineUserPermission->permissions->has(get_class($this))

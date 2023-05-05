@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests;
 
+use Arr;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,14 +40,19 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function performApplication(): static
     {
-        $this->refreshApplication();
-        $this->loadLaravelMigrations();
-        $this->loadMigrationsFrom(realpath('./database/migrations'));
+        config(
+            Arr::dot(config('moonshine.auth', []), 'auth.')
+        );
+
+        $this->artisan('moonshine:install');
 
         $this->artisan('config:clear');
         $this->artisan('view:clear');
         $this->artisan('cache:clear');
-        $this->artisan('moonshine:install');
+
+        $this->refreshApplication();
+        $this->loadLaravelMigrations();
+        $this->loadMigrationsFrom(realpath('./database/migrations'));
 
         return $this;
     }

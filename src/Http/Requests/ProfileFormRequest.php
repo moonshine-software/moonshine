@@ -17,7 +17,7 @@ class ProfileFormRequest extends MoonShineRequest
      */
     public function authorize(): bool
     {
-        return MoonShineAuth::instance()->check();
+        return MoonShineAuth::guard()->check();
     }
 
     /**
@@ -32,7 +32,7 @@ class ProfileFormRequest extends MoonShineRequest
             'email' => [
                 'required',
                 Rule::unique(MoonShineAuth::model()?->getTable(), 'email')
-                    ->ignore(MoonShineAuth::instance()->id()),
+                    ->ignore(MoonShineAuth::guard()->id()),
             ],
             'avatar' => ['image'],
             'password' => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',

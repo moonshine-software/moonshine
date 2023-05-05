@@ -20,7 +20,7 @@ class LoginFormRequest extends MoonShineRequest
      */
     public function authorize(): bool
     {
-        return MoonShineAuth::instance()->guest();
+        return MoonShineAuth::guard()->guest();
     }
 
     /**
@@ -56,7 +56,7 @@ class LoginFormRequest extends MoonShineRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! MoonShineAuth::instance()->attempt(
+        if (! MoonShineAuth::guard()->attempt(
             $this->only('email', 'password'),
             $this->boolean('remember')
         )) {

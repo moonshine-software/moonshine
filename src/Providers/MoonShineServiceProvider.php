@@ -57,7 +57,7 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (config('moonshine.use_migrations', true) && config('moonshine.auth.enable', true)) {
+        if (config('moonshine.use_migrations', true)) {
             $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
         }
 

@@ -26,9 +26,9 @@ trait HasMoonShineChangeLog
 
     public function createLog(): void
     {
-        if (MoonShineAuth::instance()->check()) {
+        if (MoonShineAuth::guard()->check()) {
             $this->changeLogs()->create([
-                'moonshine_user_id' => MoonShineAuth::instance()->id(),
+                'moonshine_user_id' => MoonShineAuth::guard()->id(),
                 'states_before' => $this->getOriginal(),
                 'states_after' => $this->getChanges(),
             ]);
@@ -38,7 +38,7 @@ trait HasMoonShineChangeLog
     public function changeLogs(): MorphMany
     {
         return $this->morphMany(MoonshineChangeLog::class, 'changelogable')
-            ->where(['moonshine_user_id' => MoonShineAuth::instance()->id()])
+            ->where(['moonshine_user_id' => MoonShineAuth::guard()->id()])
             ->orderByDesc('created_at');
     }
 }

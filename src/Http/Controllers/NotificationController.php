@@ -13,7 +13,7 @@ class NotificationController extends BaseController
 {
     public function readAll(): RedirectResponse
     {
-        MoonShineAuth::instance()->user()
+        MoonShineAuth::guard()->user()
             ->unreadNotifications
             ->markAsRead();
 

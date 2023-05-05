@@ -51,7 +51,7 @@ class SocialiteController extends BaseController
             ->where('identity', $socialiteUser->getId())
             ->first();
 
-        if (MoonShineAuth::instance()->check()) {
+        if (MoonShineAuth::guard()->check()) {
             return $this->bindAccount($socialiteUser, $driver, $account);
         }
 
@@ -61,7 +61,7 @@ class SocialiteController extends BaseController
             ])->with('alert', __('moonshine::auth.failed'));
         }
 
-        MoonShineAuth::instance()
+        MoonShineAuth::guard()
             ->loginUsingId($account->moonshine_user_id);
 
         return to_route('moonshine.index');
@@ -73,7 +73,7 @@ class SocialiteController extends BaseController
             session()->flash('alert', __('moonshine::auth.socialite.link_exists'));
         } else {
             MoonshineSocialite::query()->create([
-                'moonshine_user_id' => MoonShineAuth::instance()->id(),
+                'moonshine_user_id' => MoonShineAuth::guard()->id(),
                 'driver' => $driver,
                 'identity' => $socialiteUser->getId(),
             ]);
