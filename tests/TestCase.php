@@ -39,14 +39,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function performApplication(): static
     {
-        $this->artisan('moonshine:install');
-        $this->artisan('config:clear');
-        $this->artisan('view:clear');
-        $this->artisan('cache:clear');
-
         $this->refreshApplication();
         $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(realpath('./database/migrations'));
+
+        $this->artisan('config:clear');
+        $this->artisan('view:clear');
+        $this->artisan('cache:clear');
+        $this->artisan('moonshine:install');
 
         return $this;
     }
