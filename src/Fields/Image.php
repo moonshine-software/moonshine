@@ -19,13 +19,13 @@ class Image extends File
         if ($this->isMultiple()) {
             return view('moonshine::ui.image', [
                 'values' => collect($item->{$this->field()})
-                    ->map(fn ($value) => $this->path($value ?? ''))
+                    ->map(fn ($value) => $this->pathWithDir($value ?? ''))
                     ->toArray(),
             ])->render();
         }
 
         return view('moonshine::ui.image', [
-            'value' => $this->path($item->{$this->field()}),
+            'value' => $this->pathWithDir($item->{$this->field()}),
         ])->render();
     }
 }
