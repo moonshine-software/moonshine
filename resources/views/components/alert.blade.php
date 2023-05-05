@@ -1,6 +1,6 @@
 @props([
     'icon' => 'heroicons.bell-alert',
-    'type' => 'info',
+    'type' => 'default',
     'removable' => false
 ])
 <div {{ $attributes->merge(['class' => "alert alert-$type"]) }}
