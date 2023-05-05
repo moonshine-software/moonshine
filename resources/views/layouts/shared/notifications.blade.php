@@ -1,4 +1,4 @@
-@if(auth(config('moonshine.auth.guard'))->user()->unreadNotifications->isNotEmpty())
+@if(config('moonshine.use_notifications', true) && auth(config('moonshine.auth.guard'))->user()?->unreadNotifications?->isNotEmpty())
     <!-- Notifications -->
     <div class="notifications">
         <x-moonshine::dropdown

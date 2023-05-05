@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Models;
 
-use function auth;
+use MoonShine\MoonShineAuth;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -26,9 +26,9 @@ trait HasMoonShineChangeLog
 
     public function createLog(): void
     {
-        if (auth(config('moonshine.auth.guard'))->check()) {
+        if (MoonShineAuth::instance()->check()) {
             $this->changeLogs()->create([
-                'moonshine_user_id' => auth(config('moonshine.auth.guard'))->id(),
+                'moonshine_user_id' => MoonShineAuth::instance()->id(),
                 'states_before' => $this->getOriginal(),
                 'states_after' => $this->getChanges(),
             ]);
@@ -38,7 +38,7 @@ trait HasMoonShineChangeLog
     public function changeLogs(): MorphMany
     {
         return $this->morphMany(MoonshineChangeLog::class, 'changelogable')
-            ->where(['moonshine_user_id' => auth(config('moonshine.auth.guard'))->id()])
+            ->where(['moonshine_user_id' => MoonShineAuth::instance()->id()])
             ->orderByDesc('created_at');
     }
 }

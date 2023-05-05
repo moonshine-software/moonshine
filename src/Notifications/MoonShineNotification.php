@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Notifications;
 
 use Illuminate\Support\Facades\Notification;
-use MoonShine\Models\MoonshineUser;
+use MoonShine\MoonShineAuth;
 
 final class MoonShineNotification
 {
@@ -17,14 +17,16 @@ final class MoonShineNotification
      */
     public static function send(string $message, array $button = [], array $ids = []): void
     {
-        Notification::sendNow(
-            MoonshineUser::query()
-                ->when($ids, fn ($query) => $query->whereIn('id', $ids))
-                ->get(),
-            MoonShineDatabaseNotification::make(
-                $message,
-                $button
-            )
-        );
+        if (config('moonshine.use_notifications', true)) {
+            Notification::sendNow(
+                MoonShineAuth::model()->query()
+                    ->when($ids, fn ($query) => $query->whereIn('id', $ids))
+                    ->get(),
+                MoonShineDatabaseNotification::make(
+                    $message,
+                    $button
+                )
+            );
+        }
     }
 }

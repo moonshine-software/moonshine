@@ -6,7 +6,7 @@
     @parent
 
     @include('moonshine::layouts.shared.breadcrumbs', [
-        'items' => [route('moonshine.index') => 'Dashboard']
+        'items' => [route('moonshine.index') => __('moonshine::ui.dashboard')]
     ])
 @endsection
 

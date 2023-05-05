@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use MoonShine\MoonShineAuth;
 
 return new class extends Migration
 {
@@ -17,7 +18,10 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('moonshine_user_id')
-                ->constrained()
+                ->constrained(
+                    MoonShineAuth::model()?->getTable(),
+                    MoonShineAuth::model()?->getKeyName()
+                )
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
