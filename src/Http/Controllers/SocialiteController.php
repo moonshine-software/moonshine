@@ -11,6 +11,7 @@ use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\Facades\Socialite;
 use MoonShine\Exceptions\AuthException;
 use MoonShine\Models\MoonshineSocialite;
+use MoonShine\MoonShineAuth;
 use RuntimeException;
 
 class SocialiteController extends BaseController
@@ -50,7 +51,7 @@ class SocialiteController extends BaseController
             ->where('identity', $socialiteUser->getId())
             ->first();
 
-        if (auth(config('moonshine.auth.guard'))->check()) {
+        if (MoonShineAuth::guard()->check()) {
             return $this->bindAccount($socialiteUser, $driver, $account);
         }
 
@@ -60,7 +61,7 @@ class SocialiteController extends BaseController
             ])->with('alert', __('moonshine::auth.failed'));
         }
 
-        auth(config('moonshine.auth.guard'))
+        MoonShineAuth::guard()
             ->loginUsingId($account->moonshine_user_id);
 
         return to_route('moonshine.index');
@@ -72,7 +73,7 @@ class SocialiteController extends BaseController
             session()->flash('alert', __('moonshine::auth.socialite.link_exists'));
         } else {
             MoonshineSocialite::query()->create([
-                'moonshine_user_id' => auth(config('moonshine.auth.guard'))->id(),
+                'moonshine_user_id' => MoonShineAuth::guard()->id(),
                 'driver' => $driver,
                 'identity' => $socialiteUser->getId(),
             ]);

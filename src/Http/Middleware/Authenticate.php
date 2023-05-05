@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Middleware;
 
-use function auth;
-
 use Closure;
 
 use function config;
 
 use Illuminate\Http\Request;
+
+use MoonShine\MoonShineAuth;
 
 use function redirect;
 use function route;
@@ -19,7 +19,7 @@ class Authenticate
 {
     public function handle($request, Closure $next)
     {
-        if (! $this->except($request) && auth(config('moonshine.auth.guard'))->guest()) {
+        if (! $this->except($request) && MoonShineAuth::guard()->guest()) {
             return redirect()->guest(route('moonshine.login'));
         }
 

@@ -16,7 +16,8 @@ return [
         'custom_page_slug' => 'custom_page',
         'notFoundHandler' => MoonShineNotFoundException::class
     ],
-
+    'use_migrations' => true,
+    'use_notifications' => true,
     'auth' => [
         'enable' => true,
         'guard' => 'moonshine',

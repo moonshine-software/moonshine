@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Support\Facades\Hash;
-use MoonShine\Models\MoonshineUser;
+use MoonShine\MoonShineAuth;
 
 class UserCommand extends MoonShineCommand
 {
@@ -20,7 +20,7 @@ class UserCommand extends MoonShineCommand
         $password = $this->secret('Password');
 
         if ($email && $name && $password) {
-            MoonshineUser::query()->create([
+            MoonShineAuth::model()->query()->create([
                 'email' => $email,
                 'name' => $name,
                 'password' => Hash::make($password),

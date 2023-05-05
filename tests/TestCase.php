@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests;
 
+use Arr;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,7 +40,12 @@ class TestCase extends Orchestra
 
     protected function performApplication(): static
     {
+        config(
+            Arr::dot(config('moonshine.auth', []), 'auth.')
+        );
+
         $this->artisan('moonshine:install');
+
         $this->artisan('config:clear');
         $this->artisan('view:clear');
         $this->artisan('cache:clear');

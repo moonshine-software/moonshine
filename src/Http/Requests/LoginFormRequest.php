@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use MoonShine\MoonShineAuth;
 use MoonShine\MoonShineRequest;
 
 class LoginFormRequest extends MoonShineRequest
@@ -19,7 +20,7 @@ class LoginFormRequest extends MoonShineRequest
      */
     public function authorize(): bool
     {
-        return auth(config('moonshine.auth.guard'))->guest();
+        return MoonShineAuth::guard()->guest();
     }
 
     /**
@@ -55,7 +56,7 @@ class LoginFormRequest extends MoonShineRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! auth(config('moonshine.auth.guard'))->attempt(
+        if (! MoonShineAuth::guard()->attempt(
             $this->only('email', 'password'),
             $this->boolean('remember')
         )) {

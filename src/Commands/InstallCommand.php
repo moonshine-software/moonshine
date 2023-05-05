@@ -22,9 +22,9 @@ class InstallCommand extends MoonShineCommand
     {
         $this->components->info('MoonShine installation ...');
 
+        $this->initServiceProvider();
         $this->initDirectories();
         $this->initDashboard();
-        $this->initServiceProvider();
 
         $this->components->info('Installation completed');
 
@@ -52,12 +52,24 @@ class InstallCommand extends MoonShineCommand
 
         $this->components->task('Storage link created');
 
-        if (config('moonshine.auth.enable', true)) {
+        if (config('moonshine.use_migrations', true)) {
             Artisan::call('migrate');
 
             $this->components->task('Tables migrated');
         } else {
-            $this->components->task('Auth disabled, installed without database');
+            $this->components->task('Installed without default migrations');
+        }
+
+        if (! app()->runningUnitTests()) {
+            $this->choice('Can you quickly star our GitHub repository? 🙏🏻', [
+                'yes', 'no',
+            ], 'yes');
+
+            $this->components->bulletList([
+                'Star or contribute to MoonShine: https://github.com/moonshine-software/moonshine',
+                'MoonShine Documentation: https://moonshine.cutcode.dev',
+                'CutCode: https://cutcode.dev',
+            ]);
         }
     }
 

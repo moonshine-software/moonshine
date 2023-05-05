@@ -10,12 +10,13 @@ use Illuminate\Routing\Controller as BaseController;
 
 use Illuminate\Validation\ValidationException;
 use MoonShine\Http\Requests\LoginFormRequest;
+use MoonShine\MoonShineAuth;
 
 class AuthenticateController extends BaseController
 {
     public function login(): View|RedirectResponse
     {
-        if (auth(config('moonshine.auth.guard'))->check()) {
+        if (MoonShineAuth::guard()->check()) {
             return to_route('moonshine.index');
         }
 
@@ -35,7 +36,7 @@ class AuthenticateController extends BaseController
 
     public function logout(): RedirectResponse
     {
-        auth(config('moonshine.auth.guard'))->logout();
+        MoonShineAuth::guard()->logout();
 
         return to_route('moonshine.login');
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Facades\Gate;
+use MoonShine\MoonShineAuth;
 
 trait ResourceModelPolicy
 {
@@ -31,7 +32,7 @@ trait ResourceModelPolicy
 
     public function can(string $ability): bool
     {
-        $user = auth(config('moonshine.auth.guard'))->user();
+        $user = MoonShineAuth::guard()->user();
 
         if ($user->moonshineUserPermission
             && (! $user->moonshineUserPermission->permissions->has(get_class($this))

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use MoonShine\MoonShineAuth;
 use MoonShine\MoonShineRequest;
 
 class ProfileFormRequest extends MoonShineRequest
@@ -16,7 +17,7 @@ class ProfileFormRequest extends MoonShineRequest
      */
     public function authorize(): bool
     {
-        return auth(config('moonshine.auth.guard'))->check();
+        return MoonShineAuth::guard()->check();
     }
 
     /**
@@ -30,8 +31,8 @@ class ProfileFormRequest extends MoonShineRequest
             'name' => ['required'],
             'email' => [
                 'required',
-                Rule::unique('moonshine_users', 'email')
-                    ->ignore(auth(config('moonshine.auth.guard'))->id()),
+                Rule::unique(MoonShineAuth::model()?->getTable(), 'email')
+                    ->ignore(MoonShineAuth::guard()->id()),
             ],
             'avatar' => ['image'],
             'password' => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',

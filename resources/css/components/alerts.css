@@ -25,7 +25,7 @@
 		@apply grow text-2xs font-medium;
 
 		> a {
-			@apply font-medium text-inherit opacity-100 hover:text-inherit hover:opacity-70;
+			@apply font-medium text-inherit opacity-100 underline hover:text-inherit hover:opacity-70 hover:no-underline;
 		}
 	}
 
