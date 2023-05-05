@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Middleware;
 
-use MoonShine\MoonShineAuth;
-
 use Closure;
 
 use function config;
 
 use Illuminate\Http\Request;
+
+use MoonShine\MoonShineAuth;
 
 use function redirect;
 use function route;

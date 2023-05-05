@@ -60,15 +60,15 @@ class InstallCommand extends MoonShineCommand
             $this->components->task('Auth disabled, installed without database');
         }
 
-        if (!app()->runningUnitTests()) {
+        if (! app()->runningUnitTests()) {
             $this->choice('Can you quickly star our GitHub repository? 🙏🏻', [
-                'yes', 'no'
+                'yes', 'no',
             ], 'yes');
 
             $this->components->bulletList([
                 'Star or contribute to MoonShine: https://github.com/moonshine-software/moonshine',
                 'MoonShine Documentation: https://moonshine.cutcode.dev',
-                'CutCode: https://cutcode.dev'
+                'CutCode: https://cutcode.dev',
             ]);
         }
     }

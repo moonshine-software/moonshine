@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Models;
 
-use MoonShine\MoonShineAuth;
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use MoonShine\Models\MoonshineChangeLog;
+
+use MoonShine\MoonShineAuth;
 
 trait HasMoonShineChangeLog
 {
