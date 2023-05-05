@@ -79,7 +79,8 @@ trait FileTrait
 
     public function pathWithDir(string $value): string
     {
-        $dir = !(empty($this->getDir())) ? $this->getDir(). '/' : '';
+        $dir = ! (empty($this->getDir())) ? $this->getDir(). '/' : '';
+
         return $this->path(str($value)->remove($dir)
             ->prepend($dir)
             ->value());
