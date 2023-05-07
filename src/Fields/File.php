@@ -45,9 +45,9 @@ class File extends Field implements Fileable, RemovableContract
 
         $files = $this->isMultiple()
             ? collect($item->{$this->field()})
-                ->map(fn ($value) => $this->path($value))
+                ->map(fn ($value) => $this->pathWithDir($value))
                 ->toArray()
-            : [$this->path($item->{$this->field()})];
+            : [$this->pathWithDir($item->{$this->field()})];
 
         return view('moonshine::components.files', [
             'files' => $files,
