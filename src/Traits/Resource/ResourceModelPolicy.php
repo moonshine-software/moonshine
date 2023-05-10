@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use MoonShine\MoonShineAuth;
+use MoonShine\Traits\Models\HasMoonShinePermissions;
 
 trait ResourceModelPolicy
 {
@@ -34,9 +36,7 @@ trait ResourceModelPolicy
     {
         $user = MoonShineAuth::guard()->user();
 
-        if ($user->moonshineUserPermission
-            && (! $user->moonshineUserPermission->permissions->has(get_class($this))
-                || ! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability]))) {
+        if (!$this->checkUserPermissions($user, $ability)) {
             return false;
         }
 
@@ -46,5 +46,31 @@ trait ResourceModelPolicy
 
         return Gate::forUser($user)
             ->allows($ability, $this->getItem() ?? $this->getModel());
+    }
+
+    private function hasUserPermissions(): bool
+    {
+        return in_array(
+            HasMoonShinePermissions::class,
+            class_uses_recursive(MoonShineAuth::model()::class),
+            true
+        );
+    }
+
+    private function checkUserPermissions(Model $user, string $ability): bool
+    {
+        if (!$this->hasUserPermissions()) {
+            return true;
+        }
+
+        if (!$user->moonshineUserPermission) {
+            return true;
+        }
+
+        if (! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability])) {
+            return false;
+        }
+
+        return true;
     }
 }

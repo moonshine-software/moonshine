@@ -17,6 +17,4 @@
 
 @section('content')
     @include('moonshine::crud.shared.form', ['item' => $item])
-
-    @include('moonshine::crud.shared.changelog', ['resource' => $resource, 'item' => $item])
 @endsection
