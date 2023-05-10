@@ -12,5 +12,7 @@ class TextFilter extends Filter
     use WithMask;
     use WithInputExtensions;
 
+    public string $type = 'text';
+
     protected static string $view = 'moonshine::filters.text';
 }

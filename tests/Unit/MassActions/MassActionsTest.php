@@ -1,9 +1,7 @@
 <?php
 
 use MoonShine\Actions\ExportAction;
-use MoonShine\Actions\FiltersAction;
 use MoonShine\Actions\MassActions;
-use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('mass-actions');
 

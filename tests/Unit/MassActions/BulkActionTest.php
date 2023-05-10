@@ -22,8 +22,7 @@ it('new instance', function () {
         ->label()
         ->toBe($this->label)
         ->callback($model)
-        ->toBe($model->getKey())
-    ;
+        ->toBe($model->getKey());
 });
 
 it('confirmation modal', function () {

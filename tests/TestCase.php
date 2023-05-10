@@ -71,6 +71,7 @@ class TestCase extends Orchestra
     protected function superAdminAttributes(): array
     {
         return [
+            'id' => 1,
             'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
             'name' => fake()->name(),
             'email' => fake()->email(),
@@ -115,11 +116,6 @@ class TestCase extends Orchestra
     protected function adminUser(): Model|Builder|Authenticatable
     {
         return $this->adminUser;
-    }
-
-    protected function asAdmin(): TestCase
-    {
-        return $this->actingAs($this->adminUser(), 'moonshine');
     }
 
     protected function getPackageProviders($app): array

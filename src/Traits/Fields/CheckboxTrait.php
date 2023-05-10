@@ -9,9 +9,13 @@ use Illuminate\Support\Collection;
 
 trait CheckboxTrait
 {
-    public function isChecked(Model $item, string $value): bool
+    public function isChecked(Model $item, string|bool $value): bool
     {
         $formValue = $this->formViewValue($item);
+
+        if (is_scalar($formValue)) {
+            return $formValue === $value;
+        }
 
         if ($formValue instanceof Collection) {
             return $formValue->isNotEmpty()

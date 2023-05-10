@@ -9,7 +9,10 @@ final class MoonShineRouter
     public static function to(string $name, array $params = []): string
     {
         return route(
-            $name,
+            str($name)
+                ->remove('moonshine.')
+                ->prepend('moonshine.')
+                ->value(),
             $params
         );
     }

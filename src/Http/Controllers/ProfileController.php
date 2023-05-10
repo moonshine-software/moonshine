@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use function back;
-
 use Illuminate\Http\RedirectResponse;
-
 use Illuminate\Routing\Controller as BaseController;
-
 use Illuminate\Support\Facades\Hash;
 use MoonShine\Http\Requests\ProfileFormRequest;
+
+use function back;
 
 class ProfileController extends BaseController
 {
@@ -26,7 +24,8 @@ class ProfileController extends BaseController
         }
 
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')->store('moonshine_users');
+            $data['avatar'] = $request->file('avatar')
+                ->store('moonshine_users', 'public');
         } else {
             $data['avatar'] = $request->get('hidden_avatar');
         }

@@ -1,9 +1,14 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Illuminate\Http\Request;
+use MoonShine\Fields\Fields;
+use MoonShine\Fields\Text;
+use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\TestCase;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+
+use function Pest\Laravel\actingAs;
 
 uses(TestCase::class)
     ->in(__DIR__);
@@ -16,6 +21,19 @@ function fakeRequest(string $url = '/', string $method = 'GET', array $parameter
     app()->instance('request', request()->create($url, $method, $parameters));
 }
 
+function asAdmin(): TestCase
+{
+    return actingAs(MoonshineUser::query()->find(1), 'moonshine');
+}
+
+function exampleFields(): Fields
+{
+    return Fields::make([
+        Text::make('Field 1'),
+        Text::make('Field 2'),
+    ]);
+}
+
 function createRequest($method, $uri): Request
 {
     $symfonyRequest = SymfonyRequest::create(
@@ -26,22 +44,28 @@ function createRequest($method, $uri): Request
     return Request::createFromBase($symfonyRequest);
 }
 
-expect()->extend('isForbidden', function() {
+expect()->extend('isForbidden', function () {
     return expect($this->value->isForbidden())->toBeTrue();
 });
 
-expect()->extend('isSuccessful', function() {
+expect()->extend('isSuccessful', function () {
     return expect($this->value->status())->toBeIn([200]);
 });
 
-expect()->extend('isRedirect', function() {
+expect()->extend('isRedirect', function () {
     return expect($this->value->status())->toBeIn([301, 302]);
 });
 
-expect()->extend('isSuccessfulOrRedirect', function() {
+expect()->extend('isSuccessfulOrRedirect', function () {
     return expect($this->value->status())->toBeIn([200, 301, 302]);
 });
 
-expect()->extend('see', function(string $value) {
+expect()->extend('see', function (string $value) {
     return expect($this->value->content())->toContain($value);
+});
+
+expect()->extend('hasFields', function (array $fields = null) {
+    return expect($this->value)
+        ->toBeCollection()
+        ->toHaveCount($fields ? count($fields) : 0);
 });

@@ -1,11 +1,19 @@
 <?php
 
+use MoonShine\Fields\Text;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Requests\CrudRequestFactory;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\assertModelExists;
+use function Pest\Laravel\assertModelMissing;
+
 uses()->group('controllers');
+uses()->group('crud');
 
 beforeEach(function () {
     $this->user = MoonshineUser::factory()->create();
@@ -14,7 +22,7 @@ beforeEach(function () {
 });
 
 it('show index page if authorized', function () {
-    $response = $this->asAdmin()
+    $response = asAdmin()
         ->get($this->resource->route('index'));
 
     expect($response)->isSuccessful();
@@ -33,7 +41,7 @@ it('show index page if not authorized', function () {
 });
 
 it('show create page', function () {
-    $response = $this->asAdmin()
+    $response = asAdmin()
         ->get($this->resource->route('create'));
 
     expect($response)->isSuccessful();
@@ -46,7 +54,7 @@ it('show create page', function () {
 it('show edit page', function () {
     $this->resource->setItem($this->user);
 
-    $response = $this->asAdmin()
+    $response = asAdmin()
         ->get($this->resource->route('edit', $this->user->getKey()));
 
     expect($response)->isSuccessful();
@@ -59,7 +67,7 @@ it('show edit page', function () {
 it('show detail page', function () {
     $this->resource->setItem($this->user);
 
-    $response = $this->asAdmin()
+    $response = asAdmin()
         ->get($this->resource->route('show', $this->user->getKey()));
 
     expect($response)->isSuccessful();
@@ -74,16 +82,16 @@ it('successful stored', function () {
 
     $this->requestData->withEmail($email);
 
-    $this->assertDatabaseMissing('moonshine_users', [
+    assertDatabaseMissing('moonshine_users', [
         'email' => $email,
     ]);
 
-    $this->asAdmin()
+    asAdmin()
         ->post($this->resource->route('store'), $this->requestData->create())
         ->assertValid()
         ->assertRedirect($this->resource->route('index'));
 
-    $this->assertDatabaseHas('moonshine_users', [
+    assertDatabaseHas('moonshine_users', [
         'email' => $email,
     ]);
 });
@@ -91,7 +99,7 @@ it('successful stored', function () {
 it('validation error on stored', function () {
     $this->requestData->withEmail('');
 
-    $this->asAdmin()
+    asAdmin()
         ->post($this->resource->route('store'), $this->requestData->create())
         ->assertInvalid(['email']);
 });
@@ -101,13 +109,13 @@ it('successful updated', function () {
 
     $this->requestData->withEmail($email);
 
-    $this->assertDatabaseMissing('moonshine_users', [
+    assertDatabaseMissing('moonshine_users', [
         'email' => $email,
     ]);
 
     $requestData = $this->requestData->create();
 
-    $this->asAdmin()
+    asAdmin()
         ->put(
             $this->resource->route('update', $this->user->getKey()),
             $requestData
@@ -125,7 +133,7 @@ it('successful updated', function () {
 it('validation error on updated', function () {
     $this->requestData->withEmail('');
 
-    $this->asAdmin()
+    asAdmin()
         ->put(
             $this->resource->route('update', $this->user->getKey()),
             $this->requestData->create()
@@ -137,7 +145,7 @@ it('changed route after save', function () {
     $this->resource = TestResourceBuilder::new(get_class($this->user), true)
         ->setTestRouteAfterSave('edit');
 
-    $this->asAdmin()
+    asAdmin()
         ->put(
             $this->resource->route('update', $this->user->getKey()),
             $this->requestData->create()
@@ -147,34 +155,34 @@ it('changed route after save', function () {
 });
 
 it('successful destroy item', function () {
-    $this->assertModelExists($this->user);
+    assertModelExists($this->user);
 
-    $this->asAdmin()
+    asAdmin()
         ->delete($this->resource->route('destroy', $this->user->getKey()))
         ->assertRedirect($this->resource->route('index'));
 
-    $this->assertModelMissing($this->user);
+    assertModelMissing($this->user);
 });
 
 it('successful mass delete items', function () {
     $users = MoonshineUser::factory(10)->create();
 
-    $users->each(fn($user) => $this->assertModelExists($user));
+    $users->each(fn($user) => assertModelExists($user));
 
-    $this->asAdmin()
+    asAdmin()
         ->delete($this->resource->route('massDelete'), ['ids' => $users->implode('id', ';')]);
 
-    $users->each(fn($user) => $this->assertModelMissing($user));
+    $users->each(fn($user) => assertModelMissing($user));
 });
 
 it('column updated', function () {
     $columnValue = fake()->words(asText: true);
 
-    $this->assertDatabaseMissing('moonshine_users', [
+    assertDatabaseMissing('moonshine_users', [
         'name' => $columnValue,
     ]);
 
-    $this->asAdmin()
+    asAdmin()
         ->putJson(route('moonshine.update-column'), [
             'model' => $this->user::class,
             'key' => $this->user->getKey(),
@@ -182,7 +190,7 @@ it('column updated', function () {
             'value' => $columnValue,
         ])->assertNoContent();
 
-    $this->assertDatabaseHas('moonshine_users', [
+    assertDatabaseHas('moonshine_users', [
         'name' => $columnValue,
     ]);
 });
@@ -193,13 +201,13 @@ it('precognition responses', function () {
         'Accept' => 'application/json',
     ];
 
-    $this->asAdmin()->put(
+    asAdmin()->put(
         $this->resource->route('update', $this->user->getKey()),
         $this->requestData->create(),
         $headers
     )->assertNoContent();
 
-    $this->asAdmin()->put(
+    asAdmin()->put(
         $this->resource->route('update', $this->user->getKey()),
         [],
         $headers
@@ -217,11 +225,11 @@ it('filtered', function () {
 
     MoonshineUser::factory()->create($data);
 
-    $this->asAdmin()->get(
+    asAdmin()->get(
         $this->resource->route('index', query: ['filters' => $data]),
     )->assertOk()->assertSeeText($nameValue);
 
-    $this->asAdmin()->get(
+    asAdmin()->get(
         $this->resource->route('index', query: [
             'filters' => [
                 'created_at' => $dateValue,
@@ -229,7 +237,7 @@ it('filtered', function () {
         ]),
     )->assertOk()->assertSeeText($nameValue);
 
-    $this->asAdmin()->get(
+    asAdmin()->get(
         $this->resource->route('index', query: [
             'filters' => ['created_at' => fake()->date()],
         ]),
@@ -242,7 +250,7 @@ it('sorted', function () {
         ->orderByDesc('created_at')
         ->pluck('email');
 
-    $this->asAdmin()->get(
+    asAdmin()->get(
         $this->resource->route('index', query: [
             'order' => [
                 'field' => 'created_at',
@@ -264,7 +272,7 @@ it('search', function () {
         'name' => $notSearchValue
     ]);
 
-    $response = $this->asAdmin()->get(
+    $response = asAdmin()->get(
         $this->resource->route('index', query: ['search' => $searchValue]),
     );
 
@@ -273,7 +281,7 @@ it('search', function () {
 });
 
 it('fragment load', function () {
-    $response = $this->asAdmin()->getJson(
+    $response = asAdmin()->getJson(
         $this->resource->route('index'),
         ['X-Fragment' => 'crud-table']
     );
@@ -282,4 +290,31 @@ it('fragment load', function () {
         ->see('crudTable')
         ->and($response)
         ->not->see('<html');
+});
+
+it('query tags', function () {
+    MoonshineUser::factory()->create([
+        'email' => 'testing@example.com'
+    ]);
+
+    MoonshineUser::factory()->create([
+        'email' => 'notfound@example.com'
+    ]);
+
+    $tag = QueryTag::make('Tag 1', fn() => MoonshineUser::query()->where('email', 'testing@example.com'));
+
+    $resource = TestResourceBuilder::new(MoonshineUser::class, true)
+        ->setTestFields([
+            Text::make('Email')
+        ])
+        ->setTestQueryTags([$tag]);
+
+    $response = asAdmin()->get(
+        $resource->route('query-tag', query: ['queryTag' => $tag->uri()]),
+    );
+
+    expect($response)
+        ->see('testing@example.com')
+        ->and($response)
+        ->not->see('notfound@example.com');
 });

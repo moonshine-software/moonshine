@@ -17,7 +17,22 @@ class TestResource extends Resource
 
     private array $testActions = [];
 
+    private array $testBulkActions = [];
+
+    private array $testFormActions = [];
+
+    private array $testItemActions = [];
+
     private array $testSearch = [];
+
+    private array $testQueryTags = [];
+
+    public function setTestPolicy(bool $value): static
+    {
+        static::$withPolicy = $value;
+
+        return $this;
+    }
 
     public function setTestTitle(string $value): static
     {
@@ -61,9 +76,37 @@ class TestResource extends Resource
         return $this;
     }
 
+    public function setTestBulkActions(array $testActions): static
+    {
+        $this->testBulkActions = $testActions;
+
+        return $this;
+    }
+
+    public function setTestFormActions(array $testActions): static
+    {
+        $this->testFormActions = $testActions;
+
+        return $this;
+    }
+
+    public function setTestItemActions(array $testActions): static
+    {
+        $this->testItemActions = $testActions;
+
+        return $this;
+    }
+
     public function setTestSearch(array $testSearch): static
     {
         $this->testSearch = $testSearch;
+
+        return $this;
+    }
+
+    public function setTestQueryTags(array $testQueryTags): static
+    {
+        $this->testQueryTags = $testQueryTags;
 
         return $this;
     }
@@ -114,6 +157,26 @@ class TestResource extends Resource
         }
 
         return $this->testActions;
+    }
+
+    public function bulkActions(): array
+    {
+        return $this->testBulkActions;
+    }
+
+    public function formActions(): array
+    {
+        return $this->testFormActions;
+    }
+
+    public function itemActions(): array
+    {
+        return $this->testItemActions;
+    }
+
+    public function queryTags(): array
+    {
+        return $this->testQueryTags;
     }
 
     public function search(): array

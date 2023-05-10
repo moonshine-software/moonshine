@@ -31,7 +31,7 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Execute Feature test via PHPUnit
+      - name: Execute tests via PEST(PHPUnit)
         env:
           DB_PASSWORD: root
-        run: vendor/bin/phpunit
+        run: vendor/bin/pest

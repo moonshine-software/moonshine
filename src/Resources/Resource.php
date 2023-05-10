@@ -400,7 +400,8 @@ abstract class Resource implements ResourceContract
      */
     public function getFields(): Fields
     {
-        return Fields::make($this->fields());
+        return Fields::make($this->fields())
+            ->withParents();
     }
 
     /**

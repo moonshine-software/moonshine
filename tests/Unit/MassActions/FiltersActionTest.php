@@ -35,15 +35,17 @@ it('show in dropdown or line', function () {
 });
 
 it('correct active count', function () {
-    fakeRequest($this->resource->route('index', query: [
-        'filters' => [
-            'name' => 'Value',
-            'price' => [
-                'from' => 0,
-                'to' => 1000
+    fakeRequest(
+        $this->resource->route('index', query: [
+            'filters' => [
+                'name' => 'Value',
+                'price' => [
+                    'from' => 0,
+                    'to' => 1000
+                ]
             ]
-        ]
-    ]));
+        ])
+    );
     expect($this->action)
         ->activeCount()
         ->toBe(2);
