@@ -27,7 +27,7 @@ class Tabs extends Decoration
     {
         return tap(Collection::make($this->tabs), static function (Collection $tabs) {
             throw_if(
-                $tabs->every(fn($tab) => !$tab instanceof Tab),
+                $tabs->every(fn ($tab) => ! $tab instanceof Tab),
                 new DecorationException('Tabs must be a class of '.Tab::class)
             );
         });
@@ -38,7 +38,7 @@ class Tabs extends Decoration
         return $this->tabs()->mapWithKeys(function (Tab $tab) {
             return [
                 $tab->id() => $tab->getIcon(6, 'pink') . PHP_EOL
-                    . $tab->label()
+                    . $tab->label(),
             ];
         });
     }
@@ -51,7 +51,7 @@ class Tabs extends Decoration
                     'components' => $tab->getFields(),
                     'item' => $item,
                     'resource' => $resource,
-                ])->render()
+                ])->render(),
             ];
         });
     }

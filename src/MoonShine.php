@@ -89,7 +89,7 @@ class MoonShine
                     self::$pages->when($subItem->page(), function ($r) use ($subItem, $item) {
                         $r->add(
                             $subItem->page()->breadcrumbs([
-                                $item->url() => $item->label()
+                                $item->url() => $item->label(),
                             ])
                         );
                     });
