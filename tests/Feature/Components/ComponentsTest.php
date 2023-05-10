@@ -344,11 +344,9 @@ it('tabs', function () {
 
     test()
         ->blade('<x-moonshine::tabs
-            :id="$id"
             :tabs="$tabs"
             :contents="$contents"
-        />', ['id' => 'testing', 'tabs' => $tabs, 'contents' => $contents])
-        ->assertSee('testing')
+        />', ['tabs' => $tabs, 'contents' => $contents])
         ->assertSee('tabs-button')
         ->assertSeeInOrder($tabs)
         ->assertSeeInOrder($contents);
