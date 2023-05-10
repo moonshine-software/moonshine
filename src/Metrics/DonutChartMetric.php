@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Metrics;
 
+use Closure;
+
 class DonutChartMetric extends Metric
 {
     protected static string $view = 'moonshine::metrics.donut-chart';
@@ -16,11 +18,13 @@ class DonutChartMetric extends Metric
     ];
 
     /**
-     * @param $values array<string, int|float>
+     * @param $values array<string, int|float>|Closure
      */
-    public function values(array $values): self
+    public function values(array|Closure $values): self
     {
-        $this->values = $values;
+        $this->values = is_callable($values)
+            ? $values()
+            : $values;
 
         return $this;
     }
