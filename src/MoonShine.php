@@ -85,8 +85,14 @@ class MoonShine
             } elseif ($item instanceof MenuGroup) {
                 self::$menu->add($item);
 
-                $item->items()->each(function ($subItem) {
-                    self::$pages->when($subItem->page(), fn ($r) => $r->add($subItem->page()));
+                $item->items()->each(function ($subItem) use ($item) {
+                    self::$pages->when($subItem->page(), function ($r) use ($subItem, $item) {
+                        $r->add(
+                            $subItem->page()->breadcrumbs([
+                                $item->url() => $item->label()
+                            ])
+                        );
+                    });
                     self::$resources->when($subItem->resource(), fn ($r) => $r->add($subItem->resource()));
                 });
             }
