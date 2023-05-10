@@ -67,6 +67,13 @@ abstract class MenuSection
         return $this;
     }
 
+    public function setLink(string|Closure|null $link): static
+    {
+        $this->link = is_callable($link) ? $link() : $link;
+
+        return $this;
+    }
+
     public function isGroup(): bool
     {
         return $this instanceof MenuGroup;
@@ -82,7 +89,9 @@ abstract class MenuSection
             return $this->page()->url();
         }
 
-        return route($this->resource()->routeName('index'));
+        return $this->resource()
+            ? route($this->resource()->routeName('index'))
+            : '';
     }
 
     public function isActive(): bool

@@ -1,4 +1,4 @@
-@extends('moonshine::layouts.app')
+@extends($page->getLayout())
 
 @section('title', $page->label())
 
@@ -6,12 +6,12 @@
     @parent
 
     @include('moonshine::layouts.shared.breadcrumbs', [
-        'items' => ['#' => $page->label()]
+        'items' => $page->getBreadcrumbs()
     ])
 @endsection
 
 @section('content')
-    @include('moonshine::layouts.shared.title', ['title' => $page->label()])
+    @includeWhen($page->withTitle(), 'moonshine::layouts.shared.title', ['title' => $page->label()])
 
     @includeIf($page->getView(), $page->getViewData())
 @endsection

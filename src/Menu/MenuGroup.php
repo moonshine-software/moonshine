@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Menu;
 
+use Closure;
 use MoonShine\Exceptions\MenuException;
 use MoonShine\Resources\CustomPage;
 use MoonShine\Resources\Resource;
@@ -13,15 +14,20 @@ class MenuGroup extends MenuSection
 {
     use Makeable;
 
-    final public function __construct(string $label, array $items, string $icon = null)
-    {
+    final public function __construct(
+        string $label,
+        array $items,
+        string $icon = null,
+        string|Closure|null $link = null
+    ) {
         $this->setLabel($label);
+        $this->setLink($link);
 
         $this->items = collect($items)->map(function ($item) {
             $item = is_string($item) ? new $item() : $item;
 
             throw_if(
-                ! $item instanceof MenuItem && ! $item instanceof Resource && ! $item instanceof CustomPage,
+                !$item instanceof MenuItem && !$item instanceof Resource && !$item instanceof CustomPage,
                 new MenuException('An object of the MenuItem|Resource|CustomPage class is required')
             );
 
