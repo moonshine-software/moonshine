@@ -16,14 +16,14 @@ beforeEach(function () {
         ->fields(exampleFields()->toArray());
     $this->fieldKeyValue = Json::make('Key value')
         ->keyValue();
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public array $key_value = [
             'key1' => 'value1',
-            'key2' => 'value2'
+            'key2' => 'value2',
         ];
 
         public array $json = [
-            ['field1' => 'field1_value', 'field2' => 'field2_value']
+            ['field1' => 'field1_value', 'field2' => 'field2_value'],
         ];
     };
 });
@@ -95,7 +95,7 @@ it('has fields key value', function () {
     expect($this->fieldKeyValue->getFields())
         ->hasFields([
             Text::make('Key2'),
-            Text::make('Value2')
+            Text::make('Value2'),
         ])
         ->each(function ($field, $key) {
             $name = $key === 0 ? 'key' : 'value';
@@ -113,7 +113,7 @@ it('json values', function () {
         ->toBeArray()
         ->toBe(
             exampleFields()
-                ->mapWithKeys(fn($f) => [$f->field() => ''])
+                ->mapWithKeys(fn ($f) => [$f->field() => ''])
                 ->toArray()
         )
         ->and($this->field->jsonValues($this->item))
@@ -126,13 +126,13 @@ it('json values key value', function () {
         ->toBeArray()
         ->toBe(
             exampleFields()
-                ->mapWithKeys(fn($f, $k) => [$k === 0 ? 'key' : 'value' => ''])
+                ->mapWithKeys(fn ($f, $k) => [$k === 0 ? 'key' : 'value' => ''])
                 ->toArray()
         )
         ->and($this->fieldKeyValue->jsonValues($this->item))
         ->toBe([
             ['key' => 'key1', 'value' => 'value1'],
-            ['key' => 'key2', 'value' => 'value2']
+            ['key' => 'key2', 'value' => 'value2'],
         ])
     ;
 });

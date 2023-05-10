@@ -30,10 +30,10 @@ it('correct name', function () {
 
 it('form view name', function () {
     fakeRequest(parameters: [
-        'filters' => ['text' => 'Testing']
+        'filters' => ['text' => 'Testing'],
     ]);
 
-    expect($this->filter->formViewValue(new class extends Model {}))
+    expect($this->filter->formViewValue(new class () extends Model {}))
         ->toBe('Testing');
 });
 

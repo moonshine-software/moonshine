@@ -7,7 +7,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->field = Checkbox::make('Active');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public bool $active = true;
     };
 });
@@ -41,4 +41,3 @@ it('on/off values', function () {
         ->getOffValue()
         ->toBe('no');
 });
-

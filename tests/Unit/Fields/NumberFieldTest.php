@@ -8,7 +8,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->field = Number::make('Rating');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public int $rating = 3;
     };
 });
@@ -56,4 +56,3 @@ it('index view value with stars', function () {
             'value' => '3',
         ])->render());
 });
-

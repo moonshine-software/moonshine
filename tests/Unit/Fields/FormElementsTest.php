@@ -18,9 +18,9 @@ it('only fields', function () {
             Tab::make('Tab 1', exampleFields()->toArray()),
             Tab::make('Tab 2', [
                 Heading::make('Heading'),
-                Block::make(exampleFields()->toArray())
-            ])
-        ])
+                Block::make(exampleFields()->toArray()),
+            ]),
+        ]),
     ]);
 
     expect($fields->onlyFields())
@@ -32,19 +32,19 @@ it('only fields', function () {
 it('with parents', function () {
     $fields = Fields::make([
         HasMany::make('Parent')
-            ->fields(exampleFields()->toArray())
+            ->fields(exampleFields()->toArray()),
     ]);
 
     expect($fields->withParents())
         ->first()
         ->getFields()
-        ->each(fn($field) => $field->parent()->toBeInstanceOf(HasMany::class));
+        ->each(fn ($field) => $field->parent()->toBeInstanceOf(HasMany::class));
 });
 
 it('when fields', function () {
     $fields = Fields::make([
         Text::make('Field 1'),
-        Text::make('Field 2')->showWhen('field1', '')
+        Text::make('Field 2')->showWhen('field1', ''),
     ]);
 
     expect($fields->whenFields())
@@ -54,7 +54,7 @@ it('when fields', function () {
 it('when fields names', function () {
     $fields = Fields::make([
         Text::make('Field 1'),
-        Text::make('Field 2')->showWhen('field1', '')
+        Text::make('Field 2')->showWhen('field1', ''),
     ]);
 
     expect($fields->whenFieldNames())
@@ -65,7 +65,7 @@ it('when fields names', function () {
 it('is when field', function () {
     $fields = Fields::make([
         Text::make('Field 1'),
-        Text::make('Field 2')->showWhen('field1', '')
+        Text::make('Field 2')->showWhen('field1', ''),
     ]);
 
     expect($fields->isWhenConditionField('field1'))
@@ -83,7 +83,7 @@ it('find by resource class', function () {
 
     $fields = Fields::make([
         Text::make('Field 1'),
-        HasMany::make('Has many', resource: $resource)
+        HasMany::make('Has many', resource: $resource),
     ]);
 
     expect($fields->findByResourceClass($resource::class))
@@ -93,7 +93,7 @@ it('find by resource class', function () {
 it('find by relation', function () {
     $fields = Fields::make([
         Text::make('Field 1'),
-        HasMany::make('Has many', 'relation')
+        HasMany::make('Has many', 'relation'),
     ]);
 
     expect($fields->findByRelation('relation'))
@@ -103,7 +103,7 @@ it('find by relation', function () {
 it('find by column', function () {
     $fields = Fields::make([
         Text::make('Field 1'),
-        HasMany::make('Has many', 'column', 'relation')
+        HasMany::make('Has many', 'column', 'relation'),
     ]);
 
     expect($fields->findByColumn('column'))
@@ -113,7 +113,7 @@ it('find by column', function () {
 it('only columns', function () {
     $fields = Fields::make([
         Text::make('Field 1'),
-        HasMany::make('Has many', 'column', 'relation')
+        HasMany::make('Has many', 'column', 'relation'),
     ]);
 
     expect($fields->onlyColumns()->toArray())

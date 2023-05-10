@@ -29,7 +29,7 @@ it('merge if not exists', function () {
 });
 
 it('only visible actions', function () {
-    $this->actions->mergeIfNotExists(ExportAction::make('Export')->canSee(fn() => false));
+    $this->actions->mergeIfNotExists(ExportAction::make('Export')->canSee(fn () => false));
 
     expect($this->actions)
         ->count()

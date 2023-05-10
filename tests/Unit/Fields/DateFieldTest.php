@@ -58,7 +58,7 @@ it('index view value', function () {
 it('form view value', function () {
     $item = MoonshineUser::factory()->create();
     $itemDateNull = MoonshineUser::factory()->create([
-        'created_at' => null
+        'created_at' => null,
     ]);
 
     expect($this->field->formViewValue($item))
@@ -74,5 +74,3 @@ it('form view value', function () {
         ->toBe($item->created_at->format('Y-m-d\TH:i'))
     ;
 });
-
-

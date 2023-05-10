@@ -92,4 +92,3 @@ it('pivot fields', function () {
         ->and($this->fieldWithPivot->hasFields())
         ->toBeTrue();
 });
-

@@ -18,6 +18,3 @@ it('type', function () {
     expect($this->field->type())
         ->toBe('hidden');
 });
-
-
-

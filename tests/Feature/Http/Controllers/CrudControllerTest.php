@@ -167,12 +167,12 @@ it('successful destroy item', function () {
 it('successful mass delete items', function () {
     $users = MoonshineUser::factory(10)->create();
 
-    $users->each(fn($user) => assertModelExists($user));
+    $users->each(fn ($user) => assertModelExists($user));
 
     asAdmin()
         ->delete($this->resource->route('massDelete'), ['ids' => $users->implode('id', ';')]);
 
-    $users->each(fn($user) => assertModelMissing($user));
+    $users->each(fn ($user) => assertModelMissing($user));
 });
 
 it('column updated', function () {
@@ -254,7 +254,7 @@ it('sorted', function () {
         $this->resource->route('index', query: [
             'order' => [
                 'field' => 'created_at',
-                'type' => 'DESC'
+                'type' => 'DESC',
             ],
         ]),
     )->assertOk()->assertSeeTextInOrder($items->toArray());
@@ -265,11 +265,11 @@ it('search', function () {
     $notSearchValue = fake()->words(asText: true);
 
     MoonshineUser::factory()->create([
-        'name' => $searchValue
+        'name' => $searchValue,
     ]);
 
     MoonshineUser::factory()->create([
-        'name' => $notSearchValue
+        'name' => $notSearchValue,
     ]);
 
     $response = asAdmin()->get(
@@ -294,18 +294,18 @@ it('fragment load', function () {
 
 it('query tags', function () {
     MoonshineUser::factory()->create([
-        'email' => 'testing@example.com'
+        'email' => 'testing@example.com',
     ]);
 
     MoonshineUser::factory()->create([
-        'email' => 'notfound@example.com'
+        'email' => 'notfound@example.com',
     ]);
 
-    $tag = QueryTag::make('Tag 1', fn() => MoonshineUser::query()->where('email', 'testing@example.com'));
+    $tag = QueryTag::make('Tag 1', fn () => MoonshineUser::query()->where('email', 'testing@example.com'));
 
     $resource = TestResourceBuilder::new(MoonshineUser::class, true)
         ->setTestFields([
-            Text::make('Email')
+            Text::make('Email'),
         ])
         ->setTestQueryTags([$tag]);
 

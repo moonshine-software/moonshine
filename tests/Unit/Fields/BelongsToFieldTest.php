@@ -81,5 +81,3 @@ it('selected correctly', function () {
     expect($this->field->isSelected($this->item, $this->item->moonshine_user_role_id))
         ->toBeTrue();
 });
-
-

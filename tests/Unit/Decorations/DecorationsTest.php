@@ -17,7 +17,7 @@ uses()->group('decorations');
 beforeEach(function () {
     $this->fields = [
         Text::make('Field 1'),
-        Text::make('Field 2')
+        Text::make('Field 2'),
     ];
 });
 
@@ -142,7 +142,7 @@ it('flex', function () {
 it('tabs', function () {
     $decoration = Tabs::make([
         Tab::make('Tab 1', $this->fields),
-        Tab::make('Tab 2', $this->fields)
+        Tab::make('Tab 2', $this->fields),
     ]);
 
     expect($decoration)

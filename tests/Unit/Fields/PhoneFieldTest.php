@@ -23,4 +23,3 @@ it('view', function () {
     expect($this->field->getView())
         ->toBe('moonshine::fields.input');
 });
-

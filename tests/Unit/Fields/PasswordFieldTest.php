@@ -8,7 +8,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->field = Password::make('Password');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public string $password = '';
     };
 });
@@ -45,4 +45,3 @@ it('save', function () {
         ->password
         ->toBeString();
 });
-

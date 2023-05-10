@@ -6,9 +6,10 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\TestCase;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 use function Pest\Laravel\actingAs;
+
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 uses(TestCase::class)
     ->in(__DIR__);

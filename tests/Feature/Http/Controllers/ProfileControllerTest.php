@@ -15,19 +15,19 @@ beforeEach(function () {
 it('updated name', function () {
     $updatedName = 'Profile testing';
 
-    assertDatabaseMissing('moonshine_users',[
+    assertDatabaseMissing('moonshine_users', [
         'name' => $updatedName,
     ]);
 
     asAdmin()
         ->post(route('moonshine.profile.store'), [
             'name' => $updatedName,
-            'email' => fake()->email()
+            'email' => fake()->email(),
         ])
         ->assertValid();
 
-    assertDatabaseHas('moonshine_users',[
-        'name' => $updatedName
+    assertDatabaseHas('moonshine_users', [
+        'name' => $updatedName,
     ]);
 });
 
@@ -46,7 +46,7 @@ it('avatar uploaded', function () {
         ->post(route('moonshine.profile.store'), [
             'name' => fake()->name(),
             'email' => fake()->email(),
-            'avatar' => $avatar
+            'avatar' => $avatar,
         ])
         ->assertValid();
 

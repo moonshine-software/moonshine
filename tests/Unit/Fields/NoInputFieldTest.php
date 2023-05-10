@@ -7,7 +7,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->field = NoInput::make('NoInput', 'no_input');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public string|bool $no_input = 'Hello world';
     };
 });
@@ -23,7 +23,7 @@ it('default item value', function () {
 });
 
 it('reformat item value', function () {
-    $this->field = NoInput::make('NoInput', 'no_input', fn() => 'Testing');
+    $this->field = NoInput::make('NoInput', 'no_input', fn () => 'Testing');
 
     expect($this->field->indexViewValue($this->item))
         ->toBe('Testing');
@@ -58,6 +58,6 @@ it('link value', function () {
         ->toBe(view('moonshine::ui.url', [
             'value' => $this->item->no_input,
             'href' => '/',
-            'blank' => true
+            'blank' => true,
         ])->render());
 });

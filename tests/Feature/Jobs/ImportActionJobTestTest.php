@@ -34,6 +34,6 @@ it('successful imported', function () {
     Storage::disk('public')->assertMissing($path);
 
     assertDatabaseHas('moonshine_users', [
-        'name' => 'Updated name'
+        'name' => 'Updated name',
     ]);
 });

@@ -11,8 +11,8 @@ it('make instance', function () {
 
     $instance->registerBlocks([
         DashboardBlock::make([
-            TextBlock::make('Label', 'Text')
-        ])
+            TextBlock::make('Label', 'Text'),
+        ]),
     ]);
 
     expect($instance)

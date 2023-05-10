@@ -41,9 +41,9 @@ it('correct active count', function () {
                 'name' => 'Value',
                 'price' => [
                     'from' => 0,
-                    'to' => 1000
-                ]
-            ]
+                    'to' => 1000,
+                ],
+            ],
         ])
     );
     expect($this->action)

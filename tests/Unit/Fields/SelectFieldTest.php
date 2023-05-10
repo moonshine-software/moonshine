@@ -9,7 +9,7 @@ beforeEach(function () {
     $this->selectOptions = [
         0 => 1,
         1 => 2,
-        2 => 3
+        2 => 3,
     ];
 
     $this->field = Select::make('Select')->options($this->selectOptions);
@@ -17,12 +17,12 @@ beforeEach(function () {
     $this->fieldMultiple = Select::make('Select multiple')
         ->options($this->selectOptions)
         ->multiple();
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public int $select = 1;
         public array $select_multiple = [1];
 
         protected $casts = [
-            'select_multiple' => 'json'
+            'select_multiple' => 'json',
         ];
     };
 });

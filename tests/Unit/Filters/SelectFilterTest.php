@@ -9,7 +9,7 @@ beforeEach(function () {
     $this->selectOptions = [
         0 => 1,
         1 => 2,
-        2 => 3
+        2 => 3,
     ];
 
     $this->filter = SelectFilter::make('Select')

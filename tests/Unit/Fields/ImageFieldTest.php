@@ -17,7 +17,7 @@ beforeEach(function () {
         ->disk('public')
         ->dir('images');
 
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public string $image = 'images/image.png';
         public string $images = '["images/image1.png", "images/image2.png"]';
 
@@ -52,7 +52,7 @@ it('index view value', function () {
 
 it('index view value for multiple', function () {
     $files = collect($this->item->images)
-        ->map(fn($value) => $this->fieldMultiple->pathWithDir($value))
+        ->map(fn ($value) => $this->fieldMultiple->pathWithDir($value))
         ->toArray();
 
     expect($this->fieldMultiple->indexViewValue($this->item))

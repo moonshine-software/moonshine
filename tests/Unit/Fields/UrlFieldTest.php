@@ -8,7 +8,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->field = Url::make('Url');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public string $url = 'https://cutcode.dev';
     };
 });
@@ -28,10 +28,7 @@ it('index view value', function () {
         ->toBe(
             view('moonshine::ui.url', [
                 'href' => 'https://cutcode.dev',
-                'value' => 'https://cutcode.dev'
+                'value' => 'https://cutcode.dev',
             ])->render()
         );
 });
-
-
-

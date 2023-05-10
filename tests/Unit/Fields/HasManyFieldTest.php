@@ -118,6 +118,6 @@ it('json values', function () {
     expect($this->field->jsonValues())
         ->toBeArray()
         ->toBe(exampleFields()
-            ->mapWithKeys(fn($f) => [$f->field() => ''])
+            ->mapWithKeys(fn ($f) => [$f->field() => ''])
             ->toArray());
 });

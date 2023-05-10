@@ -18,7 +18,7 @@ it('resolved child fields / names', function () {
     expect(exampleFields()->resolveChildFields($parent))
         ->toBeIterable()
         ->each(
-            fn($field, $index) => $field->name()->toBe("hasMany[field".($index + 1)."]")
+            fn ($field, $index) => $field->name()->toBe("hasMany[field".($index + 1)."]")
         );
 });
 
@@ -26,7 +26,7 @@ it('resolved child fields / json with exception ', function () {
     $json = Json::make('Parent');
 
     $relationFields = Fields::make([
-        HasMany::make('Child')
+        HasMany::make('Child'),
     ]);
 
     $relationFields->resolveChildFields($json);
@@ -39,7 +39,7 @@ it('resolved child fields / pivot', function () {
     expect(exampleFields()->resolveChildFields($field))
         ->toBeIterable()
         ->each(
-            fn($field, $index) => $field->name()->toBe("field_field".($index + 1)."[]")
+            fn ($field, $index) => $field->name()->toBe("field_field".($index + 1)."[]")
         );
 });
 
@@ -49,7 +49,7 @@ it('resolved child fields / child is related field on form', function () {
     $parent = HasMany::make('Parent');
 
     $fields = Fields::make([
-        HasMany::make('Child')
+        HasMany::make('Child'),
     ]);
 
     expect($fields->resolveChildFields($parent))
@@ -62,13 +62,13 @@ it('resolved child fields / multiple', function () {
 
     $fields = Fields::make([
         Select::make('Child')
-            ->multiple()
+            ->multiple(),
     ]);
 
     expect($fields->resolveChildFields($parent))
         ->toBeIterable()
         ->each(
-            fn($field, $index) => $field->name()->toBe("parent[child][]")
+            fn ($field, $index) => $field->name()->toBe("parent[child][]")
         );
 });
 
@@ -79,13 +79,13 @@ it('resolved child fields / x-model', function () {
 
     $fields = Fields::make([
         Select::make('Child')
-            ->multiple()
+            ->multiple(),
     ]);
 
     expect($fields->resolveChildFields($parent))
         ->toBeIterable()
         ->each(
-            fn($field, $index) => $field->name()->toBe("parent[\${index0}][child][]")
+            fn ($field, $index) => $field->name()->toBe("parent[\${index0}][child][]")
         );
 });
 
@@ -96,7 +96,7 @@ it('index fields', function () {
             Text::make('Field 2')->showOnIndex(),
         ])->indexFields()
     )->toHaveCount(1)
-        ->each(fn($field) => $field->field()->toBe('field2'));
+        ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
 it('relatable fields', function () {
@@ -133,7 +133,7 @@ it('only form fields', function () {
             Text::make('Field 2')->showOnForm(),
         ])->formFields()
     )->toHaveCount(1)
-        ->each(fn($field) => $field->field()->toBe('field2'));
+        ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
 it('only detail fields', function () {
@@ -143,7 +143,7 @@ it('only detail fields', function () {
             Text::make('Field 2')->showOnDetail(),
         ])->detailFields()
     )->toHaveCount(1)
-        ->each(fn($field) => $field->field()->toBe('field2'));
+        ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
 it('only export fields', function () {
@@ -153,7 +153,7 @@ it('only export fields', function () {
             Text::make('Field 2')->showOnExport(),
         ])->exportFields()
     )->toHaveCount(1)
-        ->each(fn($field) => $field->field()->toBe('field2'));
+        ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
 it('only import fields', function () {
@@ -163,5 +163,5 @@ it('only import fields', function () {
             Text::make('Field 2')->useOnImport(true),
         ])->importFields()
     )->toHaveCount(1)
-        ->each(fn($field) => $field->field()->toBe('field2'));
+        ->each(fn ($field) => $field->field()->toBe('field2'));
 });

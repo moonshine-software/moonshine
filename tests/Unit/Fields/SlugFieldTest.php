@@ -10,7 +10,7 @@ beforeEach(function () {
     $this->field = Slug::make('Slug')
         ->from('title')
         ->separator('-');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public string $title = 'Title';
         public string $slug = 'title';
     };
@@ -42,4 +42,3 @@ it('save', function () {
             ->toBe('hello_world')
     ;
 });
-

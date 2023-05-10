@@ -29,6 +29,3 @@ it('has assets', function () {
         ->toBeArray()
         ->not->toBeEmpty();
 });
-
-
-

@@ -17,7 +17,7 @@ it('show or hide / index', function () {
         ->hideOnIndex()
         ->isOnIndex()
         ->toBeFalse()
-        ->showOnIndex(fn() => true)
+        ->showOnIndex(fn () => true)
         ->isOnIndex()
         ->toBeTrue();
 });
@@ -29,7 +29,7 @@ it('show or hide / form', function () {
         ->hideOnForm()
         ->isOnForm()
         ->toBeFalse()
-        ->showOnForm(fn() => true)
+        ->showOnForm(fn () => true)
         ->isOnForm()
         ->toBeTrue();
 });
@@ -41,7 +41,7 @@ it('show or hide / detail', function () {
         ->hideOnDetail()
         ->isOnDetail()
         ->toBeFalse()
-        ->showOnDetail(fn() => true)
+        ->showOnDetail(fn () => true)
         ->isOnDetail()
         ->toBeTrue();
 });
@@ -53,7 +53,7 @@ it('show or hide / export', function () {
         ->hideOnExport()
         ->isOnExport()
         ->toBeFalse()
-        ->showOnExport(fn() => true)
+        ->showOnExport(fn () => true)
         ->isOnExport()
         ->toBeTrue();
 });
@@ -65,7 +65,7 @@ it('show or hide / import', function () {
         ->useOnImport(false)
         ->isOnImport()
         ->toBeFalse()
-        ->useOnImport(fn() => true)
+        ->useOnImport(fn () => true)
         ->isOnImport()
         ->toBeTrue();
 });
@@ -110,8 +110,8 @@ it('sortable', function () {
             request()->fullUrlWithQuery([
                 'order' => [
                     'field' => 'field_name',
-                    'type' => 'asc'
-                ]
+                    'type' => 'asc',
+                ],
             ])
         );
 
@@ -123,8 +123,8 @@ it('sortable', function () {
             request()->fullUrlWithQuery([
                 'order' => [
                     'field' => 'field_name',
-                    'type' => 'desc'
-                ]
+                    'type' => 'desc',
+                ],
             ])
         )
         ->sortType('asc')

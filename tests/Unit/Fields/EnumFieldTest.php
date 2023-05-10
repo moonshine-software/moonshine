@@ -11,11 +11,11 @@ beforeEach(function () {
     $this->field = Enum::make('Enum')
         ->attach(TestEnumColor::class);
 
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public TestEnumColor $enum = TestEnumColor::Red;
 
         protected $casts = [
-            'enum' => TestEnumColor::class
+            'enum' => TestEnumColor::class,
         ];
     };
 });
@@ -39,4 +39,3 @@ it('index view value', function () {
     expect($this->field->indexViewValue($this->item))
         ->toBe('Red');
 });
-

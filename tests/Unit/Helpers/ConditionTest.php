@@ -12,6 +12,6 @@ it('conditions', function (array $arguments, bool $expected) {
     [[false, true], false],
     [[null, true], true],
     [[null, false], false],
-    [[fn() => true, false], true],
-    [[fn() => false, true], false],
+    [[fn () => true, false], true],
+    [[fn () => false, true], false],
 ]);

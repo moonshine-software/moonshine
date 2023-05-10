@@ -34,10 +34,10 @@ beforeEach(function () {
             LineChartMetric::make('LineChartMetric')
                 ->line([
                     'Profit' => [
-                        now()->format('d.m.Y') => 100
-                    ]
-                ])
-        ])
+                        now()->format('d.m.Y') => 100,
+                    ],
+                ]),
+        ]),
     ]);
 });
 

@@ -10,10 +10,10 @@ beforeEach(function () {
 
 it('successful changed', function () {
     asAdmin()->get(route('moonshine.index', [
-        ChangeLocale::KEY => 'en'
+        ChangeLocale::KEY => 'en',
     ]))->assertSee('Dashboard');
 
     asAdmin()->get(route('moonshine.index', [
-        ChangeLocale::KEY => 'ru'
+        ChangeLocale::KEY => 'ru',
     ]))->assertSee('Панель');
 });

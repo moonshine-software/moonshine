@@ -22,7 +22,7 @@ it('successful stored', function () {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     fakeRequest(method: 'POST', parameters: [
-        'avatar' => $avatar
+        'avatar' => $avatar,
     ]);
 
     $this->field->save($this->item);
@@ -37,7 +37,7 @@ it('successful stored with original name', function () {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     fakeRequest(method: 'POST', parameters: [
-        'avatar' => $avatar
+        'avatar' => $avatar,
     ]);
 
     $this->field
@@ -56,7 +56,7 @@ it('store throw allowed extension exception', function () {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     fakeRequest(method: 'POST', parameters: [
-        'avatar' => $avatar
+        'avatar' => $avatar,
     ]);
 
     $this->field->save($this->item);
@@ -65,8 +65,8 @@ it('store throw allowed extension exception', function () {
 it('has one or many method', function () {
     fakeRequest(parameters: [
         'hidden_files' => [
-            'hidden_file1.png'
-        ]
+            'hidden_file1.png',
+        ],
     ]);
 
     $avatar = UploadedFile::fake()->image('avatar.png');
@@ -77,8 +77,3 @@ it('has one or many method', function () {
 
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 });
-
-
-
-
-

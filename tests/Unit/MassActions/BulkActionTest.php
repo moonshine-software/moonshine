@@ -8,7 +8,7 @@ uses()->group('mass-actions');
 beforeEach(function () {
     $this->label = 'MassDelete';
     $this->message = 'Done';
-    $this->callback = fn($model) => $model->getKey();
+    $this->callback = fn ($model) => $model->getKey();
     $this->action = BulkAction::make($this->label, $this->callback, $this->message);
 });
 

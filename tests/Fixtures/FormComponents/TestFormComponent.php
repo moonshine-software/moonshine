@@ -8,5 +8,4 @@ use MoonShine\FormComponents\FormComponent;
 
 final class TestFormComponent extends FormComponent
 {
-
 }

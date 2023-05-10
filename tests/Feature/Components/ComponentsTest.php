@@ -10,7 +10,7 @@ uses()->group('components');
 it('menu', function () {
     MoonShine::menu([
         TestResourceBuilder::new()
-            ->setTestTitle('Testing menu item')
+            ->setTestTitle('Testing menu item'),
     ]);
 
     test()
@@ -68,7 +68,7 @@ it('table with values', function () {
     test()
         ->blade('<x-moonshine::table :values="$values" :columns="$columns" />', [
             'columns' => ['id' => 'ID'],
-            'values' => [['id' => 1]]
+            'values' => [['id' => 1]],
         ])
         ->assertSee('table')
         ->assertSee('ID')
@@ -268,7 +268,7 @@ it('field-container', function () {
             [
                 'resource' => $resource,
                 'field' => $field,
-                'item' => $item
+                'item' => $item,
             ]
         )
         ->assertSee('Email')
@@ -337,4 +337,3 @@ it('thumbnails', function () {
         ->assertSee($value)
         ->assertSee('img');
 });
-

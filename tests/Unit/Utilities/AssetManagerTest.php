@@ -23,7 +23,7 @@ it('add new assets', function () {
         'script2.js',
         'style1.css',
         'style2.css',
-        'trash'
+        'trash',
     ]);
 
     expect($this->manager)

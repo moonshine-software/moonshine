@@ -53,7 +53,7 @@ it('resource uri key', function () {
 
 it('resource fields', function () {
     $this->resource->setTestFields([
-        Text::make('Label')
+        Text::make('Label'),
     ]);
 
     expect($this->resource->getFields())
@@ -65,7 +65,7 @@ it('resource fields', function () {
 it('find field', function () {
     $field = Text::make('Label');
     $this->resource->setTestFields([
-        $field
+        $field,
     ]);
 
     expect($this->resource->getField('label'))
@@ -74,7 +74,7 @@ it('find field', function () {
 
 it('resource filters', function () {
     $this->resource->setTestFilters([
-        TextFilter::make('Label')
+        TextFilter::make('Label'),
     ]);
 
     expect($this->resource->getFilters())
@@ -86,7 +86,7 @@ it('resource filters', function () {
 it('find filter', function () {
     $field = TextFilter::make('Label');
     $this->resource->setTestFilters([
-        $field
+        $field,
     ]);
 
     expect($this->resource->getFilter('label'))
@@ -96,7 +96,7 @@ it('find filter', function () {
 it('resource actions', function () {
     $action = ExportAction::make('Label');
     $this->resource->setTestActions([
-        $action
+        $action,
     ]);
 
     expect($this->resource->getActions())
@@ -106,9 +106,9 @@ it('resource actions', function () {
 });
 
 it('resource item actions', function () {
-    $action = ItemAction::make('Label', static fn() => '');
+    $action = ItemAction::make('Label', static fn () => '');
     $this->resource->setTestItemActions([
-        $action
+        $action,
     ]);
 
     expect($this->resource->itemActionsCollection())
@@ -118,9 +118,9 @@ it('resource item actions', function () {
 });
 
 it('resource form actions', function () {
-    $action = FormAction::make('Label', static fn() => '');
+    $action = FormAction::make('Label', static fn () => '');
     $this->resource->setTestFormActions([
-        $action
+        $action,
     ]);
 
     expect($this->resource->formActionsCollection())
@@ -130,9 +130,9 @@ it('resource form actions', function () {
 });
 
 it('resource bulk actions', function () {
-    $action = BulkAction::make('Label', static fn() => '');
+    $action = BulkAction::make('Label', static fn () => '');
     $this->resource->setTestBulkActions([
-        $action
+        $action,
     ]);
 
     expect($this->resource->bulkActionsCollection())
@@ -142,9 +142,9 @@ it('resource bulk actions', function () {
 });
 
 it('resource query tags', function () {
-    $tag = QueryTag::make('Label', static fn() => MoonshineUser::query());
+    $tag = QueryTag::make('Label', static fn () => MoonshineUser::query());
     $this->resource->setTestQueryTags([
-        $tag
+        $tag,
     ]);
 
     expect($this->resource->queryTags())

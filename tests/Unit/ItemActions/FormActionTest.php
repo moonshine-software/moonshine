@@ -8,7 +8,7 @@ uses()->group('item-actions');
 beforeEach(function () {
     $this->label = 'Delete';
     $this->message = 'Done';
-    $this->callback = fn($model) => $model->getKey();
+    $this->callback = fn ($model) => $model->getKey();
     $this->action = FormAction::make($this->label, $this->callback, $this->message);
 });
 

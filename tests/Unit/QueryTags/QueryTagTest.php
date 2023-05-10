@@ -9,7 +9,7 @@ uses()->group('query-tags');
 beforeEach(function () {
     $this->tag = QueryTag::make(
         'Tag',
-        static fn() => MoonshineUser::query()
+        static fn () => MoonshineUser::query()
     );
 });
 

@@ -18,8 +18,7 @@ beforeEach(function () {
         ->disk('public')
         ->dir('files');
 
-    $this->item = new class extends Model
-    {
+    $this->item = new class () extends Model {
         public string $file = 'files/file.pdf';
         public string $files = '["files/file1.pdf", "files/file2.pdf"]';
 

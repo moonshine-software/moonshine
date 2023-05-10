@@ -8,7 +8,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->field = SwitchBoolean::make('Active');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public bool $active = true;
     };
 });
@@ -47,4 +47,3 @@ it('index view value with auto update', function () {
             ])->render()
         );
 });
-

@@ -12,7 +12,7 @@ beforeEach(function () {
 
 it('find resource by uri key', function () {
     MoonShine::resources([
-        $this->resource
+        $this->resource,
     ]);
 
     expect(MoonShine::getResourceFromUriKey($this->resource->uriKey()))
@@ -21,7 +21,7 @@ it('find resource by uri key', function () {
 
 it('menu', function () {
     MoonShine::menu([
-        $this->resource
+        $this->resource,
     ]);
 
     expect(MoonShine::getMenu())

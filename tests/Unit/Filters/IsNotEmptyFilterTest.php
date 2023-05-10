@@ -18,4 +18,3 @@ it('correct name', function () {
     expect($this->filter->name())
         ->toBe('filters[is_not_empty_not_empty]');
 });
-

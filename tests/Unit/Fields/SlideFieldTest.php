@@ -10,7 +10,7 @@ beforeEach(function () {
     $this->field = SlideField::make('Slide')
         ->toField('to')
         ->fromField('from');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public int $from = 10;
         public int $to = 20;
     };
@@ -53,8 +53,8 @@ it('save', function () {
     fakeRequest(parameters: [
         'slide' => [
             'from' => 100,
-            'to' => 200
-        ]
+            'to' => 200,
+        ],
     ]);
 
     expect($this->field->save($this->item))
@@ -64,4 +64,3 @@ it('save', function () {
         ->toBe(200)
     ;
 });
-

@@ -25,13 +25,13 @@ beforeEach(function () {
             FiltersAction::make('Filters'),
         ])
         ->setTestBulkActions([
-            BulkAction::make('Delete', static fn($item) => $item->delete())
+            BulkAction::make('Delete', static fn ($item) => $item->delete()),
         ])
         ->setTestItemActions([
-            ItemAction::make('Delete', static fn($item) => $item->delete())
+            ItemAction::make('Delete', static fn ($item) => $item->delete()),
         ])
         ->setTestFormActions([
-            FormAction::make('Delete', static fn($item) => $item->delete())
+            FormAction::make('Delete', static fn ($item) => $item->delete()),
         ]);
 });
 
@@ -61,13 +61,13 @@ it('import action', function () {
 it('bulk action', function () {
     $users = MoonshineUser::factory(10)->create();
 
-    $users->each(fn($user) => assertModelExists($user));
+    $users->each(fn ($user) => assertModelExists($user));
 
     asAdmin()->post(
         $this->resource->route('actions.bulk', query: ['index' => 0, 'ids' => $users->implode('id', ';')])
     );
 
-    $users->each(fn($user) => assertModelMissing($user));
+    $users->each(fn ($user) => assertModelMissing($user));
 });
 
 it('item action', function () {

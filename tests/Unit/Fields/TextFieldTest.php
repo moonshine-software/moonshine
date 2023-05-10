@@ -42,4 +42,3 @@ it('extension', function () {
         ->getExtensions()
         ->each->toBeInstanceOf(InputExtension::class);
 });
-

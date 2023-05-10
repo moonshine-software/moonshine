@@ -8,7 +8,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->field = Code::make('Code');
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public string $code = 'echo 1;';
     };
 });
