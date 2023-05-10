@@ -1,16 +1,18 @@
 <x-moonshine::box
         title="#{{ $item->getKey() }}"
 >
-    <table class="table">
-        @foreach($resource->getFields()->detailFields() as $index => $field)
-            <tr>
-                <th width="15%">
-                    {{$field->label()}}
-                </th>
-                <td>{!! $field->isSee($item) ? $field->indexViewValue($item): '' !!}</td>
-            </tr>
-        @endforeach
-    </table>
+    <x-moonshine::table>
+        <x-slot:tbody>
+            @foreach($resource->getFields()->detailFields() as $index => $field)
+                <tr>
+                    <th width="15%">
+                        {{$field->label()}}
+                    </th>
+                    <td>{!! $field->isSee($item) ? $field->indexViewValue($item): '' !!}</td>
+                </tr>
+            @endforeach
+        </x-slot:tbody>
+    </x-moonshine::table>
 </x-moonshine::box>
 
 @if(!$resource->isPreviewMode())
