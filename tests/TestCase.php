@@ -27,6 +27,23 @@ class TestCase extends Orchestra
 
     protected Resource $moonShineUserResource;
 
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('auth.guards', [
+            'moonshine' => [
+                'driver' => 'session',
+                'provider' => 'moonshine',
+            ],
+        ]);
+
+        $app['config']->set('auth.providers', [
+            'moonshine' => [
+                'driver' => 'eloquent',
+                'model' => MoonshineUser::class,
+            ],
+        ]);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();

@@ -12,10 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
-      - uses: actions/checkout@v2
+          tools: composer:v2
+          coverage: xdebug
+      - uses: actions/checkout@v3
 
       - name: Set up MySQL
         env:
@@ -29,9 +31,9 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Execute tests via PEST(PHPUnit)
         env:
           DB_PASSWORD: root
-        run: vendor/bin/pest
+        run: ./vendor/bin/pest
