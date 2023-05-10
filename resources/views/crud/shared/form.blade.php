@@ -13,7 +13,7 @@
     @endif
 
     <x-moonshine::resource-renderable
-        :components="$resource->getFields()->withParents()"
+        :components="$resource->getFields()"
         :item="$item"
         :resource="$resource"
     />

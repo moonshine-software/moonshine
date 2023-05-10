@@ -11,7 +11,7 @@ class SlideFilter extends Filter
     use NumberTrait;
     use SlideTrait;
 
-    protected string $type = 'number';
+    public string $type = 'number';
 
     protected static string $view = 'moonshine::filters.slide';
 

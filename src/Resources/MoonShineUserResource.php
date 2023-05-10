@@ -46,6 +46,7 @@ class MoonShineUserResource extends Resource
                    Block::make(trans('moonshine::ui.resource.main_information'), [
                        ID::make()
                            ->sortable()
+                           ->useOnImport()
                            ->showOnExport(),
 
                        BelongsTo::make(
@@ -57,6 +58,7 @@ class MoonShineUserResource extends Resource
 
                        Text::make(trans('moonshine::ui.resource.name'), 'name')
                            ->required()
+                           ->useOnImport()
                            ->showOnExport(),
 
                        Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
@@ -84,13 +86,15 @@ class MoonShineUserResource extends Resource
                            ->customAttributes(['autocomplete' => 'new-password'])
                            ->hideOnIndex()
                            ->hideOnExport()
-                           ->hideOnDetail(),
+                           ->hideOnDetail()
+                           ->eye(),
 
                        PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
                            ->customAttributes(['autocomplete' => 'confirm-password'])
                            ->hideOnIndex()
                            ->hideOnExport()
-                           ->hideOnDetail(),
+                           ->hideOnDetail()
+                           ->eye(),
                    ]),
                ]),
             ]),

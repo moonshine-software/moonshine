@@ -13,7 +13,7 @@ class DateFilter extends TextFilter
 
     protected static string $view = 'moonshine::filters.date';
 
-    protected string $type = 'date';
+    public string $type = 'date';
 
     protected function resolveQuery(Builder $query): Builder
     {

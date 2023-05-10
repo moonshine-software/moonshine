@@ -11,21 +11,22 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class ChangeLocale
 {
+    public const KEY = 'change-moonshine-locale';
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function handle(Request $request, Closure $next)
     {
-        $key = 'change-moonshine-locale';
         $local = $request->get(
-            $key,
-            session($key)
+            self::KEY,
+            session(self::KEY)
         );
 
         if ($local) {
             app()->setLocale($local);
-            session()->put($key, $local);
+            session()->put(self::KEY, $local);
         }
 
         return $next($request);

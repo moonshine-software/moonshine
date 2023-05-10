@@ -13,7 +13,6 @@ use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\HasOneOrMany;
 use MoonShine\Traits\Fields\WithFullPageMode;
 use MoonShine\Traits\Fields\WithJsonValues;
-use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\Fields\WithResourceMode;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
@@ -30,7 +29,6 @@ class HasMany extends Field implements
     use WithFullPageMode;
     use WithFields;
     use WithJsonValues;
-    use WithRelatedValues;
     use HasOneOrMany;
     use Removable;
 

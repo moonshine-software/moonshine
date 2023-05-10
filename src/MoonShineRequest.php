@@ -82,7 +82,7 @@ class MoonShineRequest extends FormRequest
             return $this->item;
         }
 
-        if (! $this->getId()) {
+        if (!$this->getId()) {
             return null;
         }
 

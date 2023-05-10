@@ -37,6 +37,6 @@ class Date extends Text
     {
         $value = parent::indexViewValue($item, $container);
 
-        return $value ? date($this->format, strtotime((string) $value)) : '';
+        return $value ? date($this->format, strtotime($value)) : '';
     }
 }

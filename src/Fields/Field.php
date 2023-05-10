@@ -133,8 +133,8 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
 
     public function isNowOnForm(): bool
     {
-        return request()->routeIs('*.edit')
-            || request()->routeIs('*.create');
+        return request()->is('*/edit')
+            || request()->is('*/create');
     }
 
     public function beforeSave(Model $item): void

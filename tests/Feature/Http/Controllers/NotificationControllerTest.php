@@ -1,0 +1,28 @@
+<?php
+
+use MoonShine\Notifications\MoonShineNotification;
+
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\assertDatabaseHas;
+
+uses()->group('controllers');
+uses()->group('notifications');
+
+beforeEach(function () {
+    //
+});
+
+it('read all notifications', function () {
+    assertDatabaseCount('notifications', 0);
+
+    MoonShineNotification::send('Message');
+
+    assertDatabaseCount('notifications', 1);
+
+    asAdmin()
+        ->get(route('moonshine.notifications.readAll'));
+
+    assertDatabaseHas('notifications', [
+        'read_at' => now(),
+    ]);
+});
