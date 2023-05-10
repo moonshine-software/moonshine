@@ -23,7 +23,7 @@ trait WithIcon
     }
 
     public function getIcon(
-        string $size = '8',
+        int $size = 8,
         string $color = '',
         string $class = ''
     ): View|string {

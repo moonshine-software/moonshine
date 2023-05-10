@@ -337,3 +337,19 @@ it('thumbnails', function () {
         ->assertSee($value)
         ->assertSee('img');
 });
+
+it('tabs', function () {
+    $tabs = ['tab_1' => 'Tab 1', 'tab_2' => 'Tab 2'];
+    $contents = ['tab_1' => 'Content 1', 'tab_2' => 'Content 2'];
+
+    test()
+        ->blade('<x-moonshine::tabs
+            :id="$id"
+            :tabs="$tabs"
+            :contents="$contents"
+        />', ['id' => 'testing', 'tabs' => $tabs, 'contents' => $contents])
+        ->assertSee('testing')
+        ->assertSee('tabs-button')
+        ->assertSeeInOrder($tabs)
+        ->assertSeeInOrder($contents);
+});
