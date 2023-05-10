@@ -36,7 +36,7 @@ trait ResourceModelPolicy
     {
         $user = MoonShineAuth::guard()->user();
 
-        if (!$this->checkUserPermissions($user, $ability)) {
+        if (! $this->checkUserPermissions($user, $ability)) {
             return false;
         }
 
@@ -59,11 +59,11 @@ trait ResourceModelPolicy
 
     private function checkUserPermissions(Model $user, string $ability): bool
     {
-        if (!$this->hasUserPermissions()) {
+        if (! $this->hasUserPermissions()) {
             return true;
         }
 
-        if (!$user->moonshineUserPermission) {
+        if (! $user->moonshineUserPermission) {
             return true;
         }
 
