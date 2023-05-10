@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Metrics;
 
+use Closure;
+
 class ValueMetric extends Metric
 {
     protected static string $view = 'moonshine::metrics.value';
@@ -16,9 +18,9 @@ class ValueMetric extends Metric
 
     public int|float $target = 0;
 
-    public function valueFormat(string $value): static
+    public function valueFormat(string|Closure $value): static
     {
-        $this->valueFormat = $value;
+        $this->valueFormat = is_callable($value) ? $value() : $value;
 
         return $this;
     }
@@ -37,17 +39,17 @@ class ValueMetric extends Metric
         return str_replace('{value}', (string) $this->value, $this->valueFormat);
     }
 
-    public function value(int|float $value): static
+    public function value(int|float|Closure $value): static
     {
-        $this->value = $value;
+        $this->value = is_callable($value) ? $value() : $value;
 
         return $this;
     }
 
-    public function progress(int|float $target): static
+    public function progress(int|float|Closure $target): static
     {
         $this->progress = true;
-        $this->target = $target;
+        $this->target = is_callable($target) ? $target() : $target;
 
         return $this;
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Metrics;
 
+use Closure;
+
 class LineChartMetric extends Metric
 {
     protected static string $view = 'moonshine::metrics.line-chart';
@@ -22,11 +24,13 @@ class LineChartMetric extends Metric
         return $this->lines;
     }
 
-    public function line(array $line, string|array $color = '#7843E9'): static
+    public function line(array|Closure $line, string|array|Closure $color = '#7843E9'): static
     {
-        $this->lines[] = $line;
+        $this->lines[] = is_callable($line) ? $line() : $line;
 
-        if(is_string($color)) {
+        $color = is_callable($color) ? $color() : $color;
+
+        if (is_string($color)) {
             $this->colors[] = $color;
         } else {
             $this->colors = $color;
