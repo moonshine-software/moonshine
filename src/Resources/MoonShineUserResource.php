@@ -20,6 +20,7 @@ use MoonShine\Fields\PasswordRepeat;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\DateFilter;
 use MoonShine\Filters\TextFilter;
+use MoonShine\FormComponents\ChangeLogFormComponent;
 use MoonShine\FormComponents\PermissionFormComponent;
 use MoonShine\Http\Controllers\PermissionController;
 use MoonShine\Models\MoonshineUser;
@@ -105,6 +106,9 @@ class MoonShineUserResource extends Resource
     {
         return [
             PermissionFormComponent::make('Permissions')
+                ->canSee(fn ($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
+
+            ChangeLogFormComponent::make('Change log')
                 ->canSee(fn ($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
         ];
     }

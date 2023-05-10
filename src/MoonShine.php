@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -157,18 +156,5 @@ class MoonShine
                     $resource->resolveRoutes();
                 });
             });
-    }
-
-    public static function changeLogs(Model $item): ?Collection
-    {
-        if (! isset($item->changeLogs) || ! $item->changeLogs instanceof Collection) {
-            return null;
-        }
-
-        if ($item->changeLogs->isNotEmpty()) {
-            return $item->changeLogs->filter(static fn ($log) => $log->states_after);
-        }
-
-        return null;
     }
 }

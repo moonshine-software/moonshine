@@ -1,5 +1,9 @@
-@if($logs = \MoonShine\MoonShine::changeLogs($item))
-    <div class="my-6 text-lg">@lang('moonshine::ui.last_changes')</div>
+@if($element->logs($item)->isNotEmpty())
+    <div class="my-4">
+        <div class="text-lg">{{ $element->label() }}</div>
+        <div class="text-sm">@lang('moonshine::ui.last_changes')</div>
+    </div>
+
     <x-moonshine::table>
         <x-slot:thead>
             <th>
@@ -13,7 +17,7 @@
             </th>
         </x-slot:thead>
         <x-slot:tbody>
-            @foreach($logs->take(5) as $log)
+            @foreach($element->logs($item)->take(5) as $log)
                 <tr>
                     <td>
                         @include('moonshine::ui.badge', [
