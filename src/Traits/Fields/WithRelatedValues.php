@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 trait WithRelatedValues
 {
@@ -45,7 +46,8 @@ trait WithRelatedValues
                     return [$relatedItem->getKey() => ($this->valueCallback())($relatedItem)];
                 });
         } else {
-            $values = $query->selectRaw("{$related->getTable()}.{$related->getKeyName()}, {$related->getTable()}.{$this->resourceTitleField()}")
+            $tableName = DB::getTablePrefix().$related->getTable();
+            $values = $query->selectRaw("{$tableName}.{$related->getKeyName()}, {$tableName}.{$this->resourceTitleField()}")
                 ->pluck($this->resourceTitleField(), $related->getKeyName());
         }
 
