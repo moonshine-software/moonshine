@@ -351,3 +351,31 @@ it('tabs', function () {
         ->assertSeeInOrder($tabs)
         ->assertSeeInOrder($contents);
 });
+
+it('card', function () {
+    $values = ['ID' => 'Content ID', 'Title' => 'Content Title'];
+
+    test()
+        ->blade('<x-moonshine::card
+            :overlay="$overlay"
+            url="/url-to-moonshine"
+            title="Testing"
+            subtitle="Sub title"
+            thumbnail="image.png"
+            :values="$values"
+        >
+            <x-slot:actions>Actions here</x-slot:actions>
+            <x-slot:header>Header here</x-slot:header>
+
+            Slot here
+        </x-moonshine::card>', ['overlay' => true, 'values' => $values])
+        ->assertSee('/url-to-moonshine')
+        ->assertSee('Testing')
+        ->assertSee('Sub title')
+        ->assertSee('image.png')
+        ->assertSee('Actions here')
+        ->assertSee('Header here')
+        ->assertSee('Slot here')
+        ->assertSeeInOrder(array_keys($values))
+        ->assertSeeInOrder($values);
+});

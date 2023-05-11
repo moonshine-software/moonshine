@@ -104,7 +104,7 @@
             @endif
 
             @fragment('crud-table')
-                @include("moonshine::crud.shared.table", [
+                @include($resource->itemsView(), [
                     'resource' => $resource,
                     'resources' => $resources
                 ])

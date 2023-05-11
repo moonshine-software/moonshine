@@ -60,6 +60,8 @@ abstract class Resource implements ResourceContract
 
     public static string $baseShowView = 'moonshine::crud.show';
 
+    protected string $itemsView = 'moonshine::crud.shared.table';
+
     public string $titleField = '';
 
     protected static bool $system = false;
@@ -290,6 +292,11 @@ abstract class Resource implements ResourceContract
     public function baseEditView(): string
     {
         return static::$baseEditView;
+    }
+
+    public function itemsView(): string
+    {
+        return $this->itemsView;
     }
 
     public function title(): string
