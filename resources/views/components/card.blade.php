@@ -20,7 +20,7 @@
 
                     @if($subtitle)
                         <div class="subcategory">
-                            {{ $subtitle }}</a>
+                            {{ $subtitle }}
                         </div>
                     @endif
                 </div>
@@ -34,7 +34,7 @@
         @if(!$overlay && $title)
             {{ $header ?? '' }}
 
-            <h3 class="title">{{ $title }}</h3>
+            <h3 class="title"><a href="{{ $url }}">{{ $title }}</a></h3>
         @endif
 
         @if($values)
