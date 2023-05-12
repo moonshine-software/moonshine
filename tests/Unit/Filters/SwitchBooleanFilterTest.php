@@ -16,7 +16,7 @@ it('filter is parent', function () {
 
 it('type', function () {
     expect($this->filter->type())
-        ->toBe('number');
+        ->toBe('checkbox');
 });
 
 it('view', function () {
