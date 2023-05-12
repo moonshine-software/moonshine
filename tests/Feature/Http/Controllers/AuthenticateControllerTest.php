@@ -19,15 +19,15 @@ it('redirect to dashboard', function () {
 it('successful authenticated', function () {
     $this->post(
         route('moonshine.authenticate'),
-        ['email' => $this->adminUser()->email, 'password' => 'test']
+        ['username' => $this->adminUser()->email, 'password' => 'test']
     )->assertValid();
 });
 
 it('invalid credentials', function () {
     $this->post(
         route('moonshine.authenticate'),
-        ['email' => $this->adminUser()->email, 'password' => 'invalid']
-    )->assertInvalid(['email']);
+        ['username' => $this->adminUser()->email, 'password' => 'invalid']
+    )->assertInvalid(['username']);
 });
 
 it('logout', function () {

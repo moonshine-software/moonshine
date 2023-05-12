@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use MoonShine\Models\MoonshineChangeLog;
-
 use MoonShine\MoonShineAuth;
 
 trait HasMoonShineChangeLog
@@ -37,8 +35,9 @@ trait HasMoonShineChangeLog
 
     public function changeLogs(): MorphMany
     {
-        return $this->morphMany(MoonshineChangeLog::class, 'changelogable')
-            ->where(['moonshine_user_id' => MoonShineAuth::guard()->id()])
-            ->orderByDesc('created_at');
+        return $this->morphMany(
+            MoonshineChangeLog::class,
+            'changelogable'
+        )->orderByDesc('created_at');
     }
 }

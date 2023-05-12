@@ -15,24 +15,26 @@
                 name="name"
                 @class(['form-invalid' => $errors->has('name')])
                 placeholder="{{ trans('moonshine::ui.resource.name') }}"
-                value="{{ old('name', auth(config('moonshine.auth.guard'))->user()->name) }}"
+                value="{{ old('name', auth(config('moonshine.auth.guard'))->user()
+                                ->{config('moonshine.auth.fields.name', 'name')}) }}"
             />
         </x-moonshine::form.input-wrapper>
 
         <x-moonshine::form.input-wrapper
-            name="email"
-            label="{{ trans('moonshine::ui.resource.email') }}"
+            name="username"
+            label="{{ trans('moonshine::ui.login.username') }}"
             required
         >
             <x-moonshine::form.input
-                id="email"
-                type="email"
-                name="email"
-                @class(['form-invalid' => $errors->has('email')])
-                placeholder="{{ trans('moonshine::ui.resource.email') }}"
-                autocomplete="email"
+                id="username"
+                type="text"
+                name="username"
+                @class(['form-invalid' => $errors->has('username')])
+                placeholder="{{ trans('moonshine::ui.login.username') }}"
+                autocomplete="username"
                 required
-                value="{{ old('email', auth(config('moonshine.auth.guard'))->user()->email) }}"
+                value="{{ old('username', auth(config('moonshine.auth.guard'))->user()
+                        ->{config('moonshine.auth.fields.username', 'email')}) }}"
             />
         </x-moonshine::form.input-wrapper>
 
@@ -73,7 +75,8 @@
                 id="avatar"
                 @class(['form-invalid' => $errors->has('avatar')])
                 placeholder="{{ trans('moonshine::ui.resource.avatar') }}"
-                :files="[auth(config('moonshine.auth.guard'))->user()->avatar ?? null]"
+                :files="[auth(config('moonshine.auth.guard'))->user()
+                        ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null]"
                 dir="moonshine_users"
                 :path="Storage::disk('public')->url('/')"
                 :removable="true"

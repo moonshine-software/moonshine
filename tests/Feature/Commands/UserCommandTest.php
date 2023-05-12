@@ -10,7 +10,10 @@ uses()->group('commands');
 
 it('reports progress', function () {
     artisan(UserCommand::class)
-        ->expectsQuestion('Email', 'example@example.com')
+        ->expectsQuestion(
+            'Username('.config('moonshine.auth.fields.username', 'email').')',
+            'example@example.com'
+        )
         ->expectsQuestion('Name', 'Admin')
         ->expectsQuestion('Password', 'example')
         ->expectsOutputToContain('User is created')

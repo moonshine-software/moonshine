@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests;
 
-use Arr;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,23 +26,6 @@ class TestCase extends Orchestra
 
     protected Resource $moonShineUserResource;
 
-    protected function getEnvironmentSetUp($app)
-    {
-        $app['config']->set('auth.guards', [
-            'moonshine' => [
-                'driver' => 'session',
-                'provider' => 'moonshine',
-            ],
-        ]);
-
-        $app['config']->set('auth.providers', [
-            'moonshine' => [
-                'driver' => 'eloquent',
-                'model' => MoonshineUser::class,
-            ],
-        ]);
-    }
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -57,10 +39,6 @@ class TestCase extends Orchestra
 
     protected function performApplication(): static
     {
-        config(
-            Arr::dot(config('moonshine.auth', []), 'auth.')
-        );
-
         $this->artisan('moonshine:install');
 
         $this->artisan('config:clear');

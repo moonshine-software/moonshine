@@ -20,6 +20,12 @@ return [
     'use_notifications' => true,
     'auth' => [
         'enable' => true,
+        'fields' => [
+            'username' => 'email',
+            'password' => 'password',
+            'name' => 'name',
+            'avatar' => 'avatar'
+        ],
         'guard' => 'moonshine',
         'guards' => [
             'moonshine' => [
