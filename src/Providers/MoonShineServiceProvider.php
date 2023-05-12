@@ -48,6 +48,8 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->loadAuthConfig();
 
         $this->registerRouteMiddleware();
+
+        $this->disableDefaultUser();
     }
 
     /**
@@ -132,5 +134,18 @@ class MoonShineServiceProvider extends ServiceProvider
         foreach ($this->middlewareGroups as $key => $middleware) {
             app('router')->middlewareGroup($key, $middleware);
         }
+    }
+
+    /**
+     * Prevent access to default authorized user
+     *
+     * @return void
+     */
+    protected function disableDefaultUser(): void
+    {
+        $auth = app('auth');
+        $auth->resolveUsersUsing(
+            fn($guard = null) => $guard ? $auth->userResolver() : null
+        );
     }
 }
