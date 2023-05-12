@@ -18,8 +18,6 @@ abstract class MenuSection
     use HasCanSee;
     use WithLabel;
 
-    protected ?string $link = null;
-
     protected Collection $items;
 
     protected ?Resource $resource = null;
@@ -27,6 +25,8 @@ abstract class MenuSection
     protected ?CustomPage $page = null;
 
     protected ?Closure $badge = null;
+
+    protected Closure|string|null $link = null;
 
     public function items(): Collection
     {
@@ -69,7 +69,7 @@ abstract class MenuSection
 
     public function setLink(string|Closure|null $link): static
     {
-        $this->link = is_callable($link) ? $link() : $link;
+        $this->link = $link;
 
         return $this;
     }
@@ -82,7 +82,9 @@ abstract class MenuSection
     public function url(): string
     {
         if ($this->link) {
-            return $this->link;
+            return is_callable($this->link)
+                ? call_user_func($this->link)
+                : $this->link;
         }
 
         if ($this->page()) {
@@ -114,6 +116,7 @@ abstract class MenuSection
             return request()->url() === $this->page()->url();
         }
 
-        return false;
+        return str($this->url())
+            ->contains(request()->url());
     }
 }
