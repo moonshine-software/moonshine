@@ -116,7 +116,12 @@ abstract class MenuSection
             return request()->url() === $this->page()->url();
         }
 
-        return str($this->url())
-            ->contains(request()->url());
+        $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
+
+        if ($path === '/') {
+            return request()->path() === $path;
+        }
+
+        return request()->fullUrlIs($this->url() . '*');
     }
 }
