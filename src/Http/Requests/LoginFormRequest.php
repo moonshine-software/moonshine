@@ -43,7 +43,7 @@ class LoginFormRequest extends MoonShineRequest
             'username' => (string)str(request('username'))
                 ->when(
                     config('moonshine.auth.fields.username', 'email') === 'email',
-                    fn(Stringable $str) => $str->lower()
+                    fn (Stringable $str) => $str->lower()
                 )
                 ->squish(),
         ]);
@@ -62,7 +62,7 @@ class LoginFormRequest extends MoonShineRequest
 
         $credentials = [
             config('moonshine.auth.fields.username', 'email') => $this->get('username'),
-            config('moonshine.auth.fields.password', 'password') => $this->get('password')
+            config('moonshine.auth.fields.password', 'password') => $this->get('password'),
         ];
 
         if (! MoonShineAuth::guard()->attempt(

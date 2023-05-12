@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests;
 
-use Arr;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
