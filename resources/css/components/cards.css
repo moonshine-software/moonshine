@@ -35,7 +35,7 @@
 		table {
 			@apply text-gray-600 dark:text-slate-400;
 			th {
-				@apply font-semibold;
+				@apply font-semibold pr-2;
 			}
 		}
 	}
