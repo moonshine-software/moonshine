@@ -7,6 +7,7 @@ namespace MoonShine\Http\Requests;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 use Illuminate\Validation\ValidationException;
 use MoonShine\MoonShineAuth;
 use MoonShine\MoonShineRequest;
@@ -31,7 +32,7 @@ class LoginFormRequest extends MoonShineRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required'],
         ];
     }
@@ -39,9 +40,12 @@ class LoginFormRequest extends MoonShineRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'email' => (string)str(request('email'))
-                ->lower()
-                ->trim(),
+            'username' => (string)str(request('username'))
+                ->when(
+                    config('moonshine.auth.fields.username', 'email') === 'email',
+                    fn(Stringable $str) => $str->lower()
+                )
+                ->squish(),
         ]);
     }
 
@@ -56,14 +60,19 @@ class LoginFormRequest extends MoonShineRequest
     {
         $this->ensureIsNotRateLimited();
 
+        $credentials = [
+            config('moonshine.auth.fields.username', 'email') => $this->get('username'),
+            config('moonshine.auth.fields.password', 'password') => $this->get('password')
+        ];
+
         if (! MoonShineAuth::guard()->attempt(
-            $this->only('email', 'password'),
+            $credentials,
             $this->boolean('remember')
         )) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('moonshine::auth.failed'),
+                'username' => __('moonshine::auth.failed'),
             ]);
         }
 
@@ -88,7 +97,7 @@ class LoginFormRequest extends MoonShineRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'username' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -103,7 +112,7 @@ class LoginFormRequest extends MoonShineRequest
     public function throttleKey(): string
     {
         return Str::transliterate(
-            str($this->input('email').'|'.$this->ip())
+            str($this->input('username').'|'.$this->ip())
                 ->lower()
         );
     }

@@ -49,6 +49,7 @@ return [
         'remember_me' => 'Remember me',
         'login' => 'Log in',
         'logout' => 'Log out',
+        'username' => 'Username',
         'email' => 'E-mail',
         'password' => 'Password',
         'or_socials' => 'or',

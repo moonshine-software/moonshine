@@ -61,7 +61,7 @@ trait ResourceModelPolicy
         );
     }
 
-    private function checkUserPermissions(Model $user, string $ability): bool
+    public function checkUserPermissions(Model $user, string $ability): bool
     {
         if (! $this->hasUserPermissions()) {
             return true;

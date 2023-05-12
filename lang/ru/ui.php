@@ -49,6 +49,7 @@ return [
         'remember_me' => 'Запомнить',
         'login' => 'Войти',
         'logout' => 'Выйти',
+        'username' => 'Логин',
         'email' => 'E-mail',
         'password' => 'Пароль',
         'or_socials' => 'или',

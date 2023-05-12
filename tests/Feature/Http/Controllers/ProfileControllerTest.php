@@ -22,7 +22,7 @@ it('updated name', function () {
     asAdmin()
         ->post(route('moonshine.profile.store'), [
             'name' => $updatedName,
-            'email' => fake()->email(),
+            'username' => fake()->email(),
         ])
         ->assertValid();
 
@@ -36,7 +36,7 @@ it('validation fail', function () {
         ->post(route('moonshine.profile.store'), [
             'name' => fake()->name(),
         ])
-        ->assertInvalid(['email']);
+        ->assertInvalid(['username']);
 });
 
 it('avatar uploaded', function () {
@@ -45,7 +45,7 @@ it('avatar uploaded', function () {
     asAdmin()
         ->post(route('moonshine.profile.store'), [
             'name' => fake()->name(),
-            'email' => fake()->email(),
+            'username' => fake()->email(),
             'avatar' => $avatar,
         ])
         ->assertValid();

@@ -6,14 +6,9 @@ namespace MoonShine\Http\Middleware;
 
 use Closure;
 
-use function config;
-
 use Illuminate\Http\Request;
 
 use MoonShine\MoonShineAuth;
-
-use function redirect;
-use function route;
 
 class Authenticate
 {

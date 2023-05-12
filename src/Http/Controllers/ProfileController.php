@@ -17,21 +17,25 @@ class ProfileController extends BaseController
     public function store(ProfileFormRequest $request): RedirectResponse
     {
         $data = $request->validated();
+        $resultData = [
+            config('moonshine.auth.fields.username', 'email') => $data['username'],
+            config('moonshine.auth.fields.name', 'name') => $data['name'],
+        ];
 
         if (isset($data['password']) && $data['password'] !== '') {
-            $data['password'] = Hash::make($data['password']);
+            $resultData[config('moonshine.auth.fields.password', 'password')] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
 
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')
+            $resultData[config('moonshine.auth.fields.avatar', 'avatar')] = $request->file('avatar')
                 ->store('moonshine_users', 'public');
         } else {
-            $data['avatar'] = $request->get('hidden_avatar');
+            $resultData[config('moonshine.auth.fields.avatar', 'avatar')] = $request->get('hidden_avatar');
         }
 
-        $request->user()->update($data);
+        $request->user()->update($resultData);
 
         return back();
     }

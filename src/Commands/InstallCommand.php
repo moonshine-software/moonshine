@@ -22,12 +22,28 @@ class InstallCommand extends MoonShineCommand
     {
         $this->components->info('MoonShine installation ...');
 
+        $this->initVendorPublish();
+        $this->initStorage();
         $this->initServiceProvider();
         $this->initDirectories();
         $this->initDashboard();
+        $this->initMigrations();
 
         $this->components->info('Installation completed');
 
+        if (! app()->runningUnitTests()) {
+            $this->choice('Can you quickly star our GitHub repository? 🙏🏻', [
+                'yes', 'no',
+            ], 'yes');
+
+            $this->components->bulletList([
+                'Star or contribute to MoonShine: https://github.com/moonshine-software/moonshine',
+                'MoonShine Documentation: https://moonshine.cutcode.dev',
+                'CutCode: https://cutcode.dev',
+            ]);
+        }
+
+        $this->components->task('');
         $this->components->info("Now run 'php artisan moonshine:user'");
     }
 
@@ -40,7 +56,10 @@ class InstallCommand extends MoonShineCommand
         $this->makeDir($this->getDirectory() . '/Resources');
 
         $this->components->task('Resources directory created');
+    }
 
+    protected function initVendorPublish(): void
+    {
         Artisan::call('vendor:publish', [
             '--provider' => MoonShineServiceProvider::class,
             '--force' => true,
@@ -48,28 +67,24 @@ class InstallCommand extends MoonShineCommand
 
         $this->components->task('Vendor published');
 
+
+    }
+
+    protected function initStorage(): void
+    {
         Artisan::call('storage:link');
 
         $this->components->task('Storage link created');
+    }
 
+    protected function initMigrations(): void
+    {
         if (config('moonshine.use_migrations', true)) {
             Artisan::call('migrate');
 
             $this->components->task('Tables migrated');
         } else {
             $this->components->task('Installed without default migrations');
-        }
-
-        if (! app()->runningUnitTests()) {
-            $this->choice('Can you quickly star our GitHub repository? 🙏🏻', [
-                'yes', 'no',
-            ], 'yes');
-
-            $this->components->bulletList([
-                'Star or contribute to MoonShine: https://github.com/moonshine-software/moonshine',
-                'MoonShine Documentation: https://moonshine.cutcode.dev',
-                'CutCode: https://cutcode.dev',
-            ]);
         }
     }
 

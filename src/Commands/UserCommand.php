@@ -15,15 +15,15 @@ class UserCommand extends MoonShineCommand
 
     public function handle(): void
     {
-        $email = $this->ask('Email');
+        $username = $this->ask('Username('.config('moonshine.auth.fields.username', 'email').')');
         $name = $this->ask('Name');
         $password = $this->secret('Password');
 
-        if ($email && $name && $password) {
+        if ($username && $name && $password) {
             MoonShineAuth::model()->query()->create([
-                'email' => $email,
-                'name' => $name,
-                'password' => Hash::make($password),
+                config('moonshine.auth.fields.username', 'email') => $username,
+                config('moonshine.auth.fields.name', 'name') => $name,
+                config('moonshine.auth.fields.password', 'password') => Hash::make($password),
             ]);
 
             $this->components->info('User is created');

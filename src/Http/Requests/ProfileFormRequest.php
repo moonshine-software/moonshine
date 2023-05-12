@@ -29,10 +29,12 @@ class ProfileFormRequest extends MoonShineRequest
     {
         return [
             'name' => ['required'],
-            'email' => [
+            'username' => [
                 'required',
-                Rule::unique(MoonShineAuth::model()?->getTable(), 'email')
-                    ->ignore(MoonShineAuth::guard()->id()),
+                Rule::unique(
+                    MoonShineAuth::model()?->getTable(),
+                    config('moonshine.auth.fields.username', 'email')
+                )->ignore(MoonShineAuth::guard()->id()),
             ],
             'avatar' => ['image'],
             'password' => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
