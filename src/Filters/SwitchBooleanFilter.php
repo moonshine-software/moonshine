@@ -10,7 +10,7 @@ class SwitchBooleanFilter extends Filter
 {
     use BooleanTrait;
 
-    public string $type = 'number';
+    public string $type = 'checkbox';
 
     protected static string $view = 'moonshine::filters.switch';
 }
