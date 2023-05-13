@@ -26,7 +26,7 @@
         @endif
 
         @foreach($resource->formActionsCollection()->onlyVisible($item)->inLine() as $index => $action)
-            @include('moonshine::crud.shared.item-action-item', [
+            @include('moonshine::crud.shared.form-action-item', [
                 'item' => $item,
                 'action' => $action,
                 'resource' => $resource,
