@@ -11,13 +11,13 @@ class Authenticate extends Middleware
 {
     protected function authenticate($request, array $guards): void
     {
-        if (!config('moonshine.auth.enable', true)) {
+        if (! config('moonshine.auth.enable', true)) {
             return;
         }
 
         $guard = MoonShineAuth::guard();
 
-        if (!$guard->check()) {
+        if (! $guard->check()) {
             $this->unauthenticated($request, $guards);
         }
 
