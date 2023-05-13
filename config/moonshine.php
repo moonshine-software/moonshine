@@ -12,7 +12,7 @@ return [
 
     'route' => [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
-        'middleware' => ['web', 'moonshine'],
+        'middleware' => ['moonshine'],
         'custom_page_slug' => 'custom_page',
         'notFoundHandler' => MoonShineNotFoundException::class
     ],
@@ -57,9 +57,9 @@ return [
     'footer' => [
         'copyright' => 'Made with ❤️ by <a href="https://cutcode.dev" class="font-semibold text-purple hover:text-pink" target="_blank">CutCode</a>',
         'nav' => [
-            'https://github.com/lee-to/moonshine/blob/1.x/LICENSE.md' => 'License',
+            'https://github.com/moonshine-software/moonshine/blob/1.5.x/LICENSE.md' => 'License',
             'https://moonshine.cutcode.dev' => 'Documentation',
-            'https://github.com/lee-to/moonshine' => 'GitHub',
+            'https://github.com/moonshine-software/moonshine' => 'GitHub',
         ],
     ]
 ];

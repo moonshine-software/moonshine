@@ -4,45 +4,28 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Middleware;
 
-use Closure;
-
-use Illuminate\Http\Request;
-
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use MoonShine\MoonShineAuth;
 
-class Authenticate
+class Authenticate extends Middleware
 {
-    public function handle($request, Closure $next)
-    {
-        if (! $this->except($request) && MoonShineAuth::guard()->guest()) {
-            return redirect()->guest(route('moonshine.login'));
-        }
-
-        return $next($request);
-    }
-
-    /**
-     * Determine if the request has a URI that should pass through verification.
-     *
-     * @param  Request  $request
-     *
-     * @return bool
-     */
-    protected function except(Request $request): bool
+    protected function authenticate($request, array $guards): void
     {
         if (! config('moonshine.auth.enable', true)) {
-            return true;
+            return;
         }
 
-        $prefix = config('moonshine.route.prefix')
-            ? config('moonshine.route.prefix').'/'
-            : '';
+        $guard = MoonShineAuth::guard();
 
-        return $request->is([
-            "{$prefix}login",
-            "{$prefix}authenticate",
-            "{$prefix}logout",
-            "{$prefix}socialite/*",
-        ]);
+        if (! $guard->check()) {
+            $this->unauthenticated($request, $guards);
+        }
+
+        $this->auth->shouldUse(MoonShineAuth::guardName());
+    }
+
+    protected function redirectTo($request): string
+    {
+        return route('moonshine.login');
     }
 }
