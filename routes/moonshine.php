@@ -12,8 +12,12 @@ use MoonShine\Http\Controllers\ProfileController;
 use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
 
+$middlewares = collect(config('moonshine.route.middleware'))
+    ->except('web')
+    ->toArray();
+
 Route::prefix(config('moonshine.route.prefix', ''))
-    ->middleware(config('moonshine.route.middleware'))
+    ->middleware($middlewares)
     ->as('moonshine.')->group(static function () {
         Route::get('/', DashboardController::class)->name('index');
         Route::post('/attachments', AttachmentController::class)->name('attachments');
