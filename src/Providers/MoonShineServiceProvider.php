@@ -13,13 +13,13 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Session\Middleware\AuthenticateSession;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\ResourceCommand;
 use MoonShine\Commands\UserCommand;
 use MoonShine\Dashboard\Dashboard;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Http\Middleware\ChangeLocale;
-use MoonShine\Http\Middleware\Session;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
 use MoonShine\Utilities\AssetManager;
@@ -32,22 +32,21 @@ class MoonShineServiceProvider extends ServiceProvider
         UserCommand::class,
     ];
 
-    protected array $middlewareAliases = [
-        'moonshine.auth' => Authenticate::class,
-        'moonshine.session' => Session::class,
-    ];
-
     protected array $middlewareGroups = [
         'moonshine' => [
-            ChangeLocale::class,
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
+            AuthenticateSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
-            'moonshine.auth',
+            ChangeLocale::class,
         ],
+    ];
+
+    protected array $middlewareAliases = [
+        'auth.moonshine' => Authenticate::class,
     ];
 
     /**
