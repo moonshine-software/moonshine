@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\Providers;
 
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\ResourceCommand;
 use MoonShine\Commands\UserCommand;
@@ -26,15 +32,21 @@ class MoonShineServiceProvider extends ServiceProvider
         UserCommand::class,
     ];
 
-    protected array $routeMiddleware = [
+    protected array $middlewareAliases = [
         'moonshine.auth' => Authenticate::class,
         'moonshine.session' => Session::class,
     ];
 
     protected array $middlewareGroups = [
         'moonshine' => [
-            'moonshine.auth',
             ChangeLocale::class,
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            'moonshine.auth',
         ],
     ];
 
@@ -108,7 +120,13 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     protected function loadAuthConfig(): void
     {
-        config(Arr::dot(config('moonshine.auth', []), 'auth.'));
+        $authConfig = collect(config('moonshine.auth', []))
+            ->only(['guards', 'providers'])
+            ->toArray();
+
+        config(
+            Arr::dot($authConfig, 'auth.')
+        );
     }
 
     /**
@@ -119,7 +137,7 @@ class MoonShineServiceProvider extends ServiceProvider
     protected function registerRouteMiddleware(): void
     {
         // register route middleware.
-        foreach ($this->routeMiddleware as $key => $middleware) {
+        foreach ($this->middlewareAliases as $key => $middleware) {
             app('router')->aliasMiddleware($key, $middleware);
         }
 
