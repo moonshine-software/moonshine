@@ -156,7 +156,7 @@ class MoonShine
     protected static function resolveResourcesRoutes(): void
     {
         $middlewares = collect(config('moonshine.route.middleware'))
-            ->except('web')
+            ->reject(fn($middleware) => $middleware === 'web')
             ->push('auth.moonshine')
             ->toArray();
 
