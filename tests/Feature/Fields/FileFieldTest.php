@@ -77,3 +77,22 @@ it('has one or many method', function () {
 
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 });
+
+it('custom name', function () {
+    $avatar = UploadedFile::fake()->image('avatar.png');
+
+    fakeRequest(method: 'POST', parameters: [
+        'avatar' => $avatar,
+    ]);
+
+    $this->field
+        ->customName(function (UploadedFile $file) {
+            return 'testing.' . $file->extension();
+        })
+        ->save($this->item);
+
+    expect($this->item->avatar)
+        ->toBe('files/testing.png');
+
+    Storage::disk('public')->assertExists('files/testing.png');
+});

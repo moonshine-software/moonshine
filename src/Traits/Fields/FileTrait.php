@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -23,6 +24,8 @@ trait FileTrait
 
     protected bool $keepOriginalFileName = false;
 
+    protected ?Closure $customName = null;
+
     /**
      * @deprecated Will be removed
      */
@@ -31,6 +34,13 @@ trait FileTrait
     public function keepOriginalFileName(): static
     {
         $this->keepOriginalFileName = true;
+
+        return $this;
+    }
+
+    public function customName(Closure $name): static
+    {
+        $this->customName = $name;
 
         return $this;
     }
@@ -102,6 +112,14 @@ trait FileTrait
             return $file->storeAs(
                 $this->getDir(),
                 $file->getClientOriginalName(),
+                $this->getDisk()
+            );
+        }
+
+        if (is_callable($this->customName)) {
+            return $file->storeAs(
+                $this->getDir(),
+                call_user_func($this->customName, $file),
                 $this->getDisk()
             );
         }
