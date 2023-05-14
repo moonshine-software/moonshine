@@ -52,7 +52,7 @@ trait ResourceModelPolicy
             ->allows($ability, $this->getItem() ?? $this->getModel());
     }
 
-    private function hasUserPermissions(): bool
+    public function hasUserPermissions(): bool
     {
         return in_array(
             HasMoonShinePermissions::class,
@@ -71,6 +71,11 @@ trait ResourceModelPolicy
             return true;
         }
 
+        return $this->isHaveUserPermission($user, $ability);
+    }
+
+    public function isHaveUserPermission(Model $user, string $ability): bool
+    {
         if (! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability])) {
             return false;
         }

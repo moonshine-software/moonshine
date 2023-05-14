@@ -1,4 +1,4 @@
-@if($item->exists)
+@if($item->exists && $resource->hasUserPermissions())
     <div>
         <div class="text-lg my-4">{{ $element->label() }}</div>
 
@@ -25,7 +25,7 @@
                                     type="checkbox"
                                     name="permissions[{{ get_class($resource) }}][{{ $ability }}]"
                                     value="1"
-                                    :checked="$resource->checkUserPermissions($item, $ability)"
+                                    :checked="$resource->isHaveUserPermission($item, $ability)"
 
                                 />
                             </x-moonshine::form.input-wrapper>

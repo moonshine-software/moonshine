@@ -57,7 +57,7 @@ class SocialiteController extends BaseController
 
         if (! $account) {
             return to_route('moonshine.login')->withErrors([
-                'email' => __('moonshine::auth.failed'),
+                'username' => __('moonshine::auth.failed'),
             ])->with('alert', __('moonshine::auth.failed'));
         }
 
