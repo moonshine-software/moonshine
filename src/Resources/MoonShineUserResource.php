@@ -107,10 +107,10 @@ class MoonShineUserResource extends Resource
     {
         return [
             PermissionFormComponent::make('Permissions')
-                ->canSee(fn($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
+                ->canSee(fn ($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
 
             ChangeLogFormComponent::make('Change log')
-                ->canSee(fn($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
+                ->canSee(fn ($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
         ];
     }
 
@@ -126,7 +126,7 @@ class MoonShineUserResource extends Resource
                 'email',
                 Rule::unique('moonshine_users')->ignoreModel($item),
             ],
-            'password' => !$item->exists
+            'password' => ! $item->exists
                 ? 'required|min:6|required_with:password_repeat|same:password_repeat'
                 : 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
         ];
