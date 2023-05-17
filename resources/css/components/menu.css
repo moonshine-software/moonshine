@@ -23,6 +23,11 @@
                 @apply lg:top-0.5 lg:right-0 lg:max-w-[48px];
             }
         }
+        .menu-inner-divider {
+            > span {
+                @apply hidden;
+            }
+        }
         .menu-profile {
             @apply lg:flex-col;
             &-info {
@@ -149,6 +154,19 @@
                 }
                 .menu-inner-counter {
                     @apply h-5 bg-pink text-[11px] leading-5 lg:top-0.5 lg:right-0 lg:max-w-[48px] xl:right-1 xl:max-w-[120px];
+                }
+                .menu-inner-divider {
+                    > span {
+                        @apply bg-[#2e384e] lg:bg-[#292a4d];
+                    }
+                }
+            }
+
+            /* Divider */
+            &-divider {
+                @apply relative my-2 mx-0.5 pl-4 pr-0.5 text-slate-400 before:absolute before:inset-x-0.5 before:top-1/2 before:-z-1 before:h-[1px] before:bg-dark-50;
+                > span {
+                    @apply block w-full truncate bg-dark-700 pl-2.5 pr-4 lg:bg-darkblue;
                 }
             }
         }
