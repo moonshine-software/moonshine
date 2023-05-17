@@ -5,14 +5,15 @@ import tippy from 'tippy.js'
 export default () => ({
 
   tooltipInstance: null,
-  init () {
+  init() {
     this.tooltipInstance = tippy(this.$el, {
       placement: 'right',
       offset: [0, 30],
+      trigger: 'mouseenter',
       content: () => this.$el.querySelector('.menu-inner-text').textContent,
     })
   },
-  toggleTooltip () {
+  toggleTooltip() {
     const lgMediaQuery = window.matchMedia(
       '(min-width: 1024px) and (max-width: 1279.98px)')
 

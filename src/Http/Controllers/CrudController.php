@@ -72,9 +72,13 @@ class CrudController extends BaseController
         $actions = $resource->getActions();
 
         try {
+            $resources = $resource->isPaginationUsed()
+                ? $resource->paginate()
+                : $resource->items();
+
             $view = view($resource->baseIndexView(), [
                 'resource' => $resource,
-                'resources' => $resource->paginate(),
+                'resources' => $resources,
                 'filters' => $resource->filters(),
                 'dropdownActions' => $actions->inDropdown(),
                 'lineActions' => $actions->inLine(),

@@ -15,7 +15,7 @@
                 name="name"
                 @class(['form-invalid' => $errors->has('name')])
                 placeholder="{{ trans('moonshine::ui.resource.name') }}"
-                value="{{ old('name', auth(config('moonshine.auth.guard'))->user()
+                value="{{ old('name', auth()->user()
                                 ->{config('moonshine.auth.fields.name', 'name')}) }}"
             />
         </x-moonshine::form.input-wrapper>
@@ -33,7 +33,7 @@
                 placeholder="{{ trans('moonshine::ui.login.username') }}"
                 autocomplete="username"
                 required
-                value="{{ old('username', auth(config('moonshine.auth.guard'))->user()
+                value="{{ old('username', auth()->user()
                         ->{config('moonshine.auth.fields.username', 'email')}) }}"
             />
         </x-moonshine::form.input-wrapper>
@@ -75,7 +75,7 @@
                 id="avatar"
                 @class(['form-invalid' => $errors->has('avatar')])
                 placeholder="{{ trans('moonshine::ui.resource.avatar') }}"
-                :files="[auth(config('moonshine.auth.guard'))->user()
+                :files="[auth()->user()
                         ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null]"
                 dir="moonshine_users"
                 :path="Storage::disk('public')->url('/')"

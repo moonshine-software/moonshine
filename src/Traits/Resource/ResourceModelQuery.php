@@ -15,13 +15,15 @@ trait ResourceModelQuery
 {
     public static array $with = [];
 
-    public static string $orderField = 'id';
+    public static string $orderField = '';
 
     public static string $orderType = 'DESC';
 
     public static int $itemsPerPage = 25;
 
     public static bool $simplePaginate = false;
+
+    protected bool $usePagination = true;
 
     protected ?Builder $customBuilder = null;
 
@@ -37,6 +39,16 @@ trait ResourceModelQuery
 
         return $paginator->setCollection(
             $this->transformToResources($paginator->getCollection())
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function items(): Collection
+    {
+        return $this->transformToResources(
+            $this->resolveQuery()->get()
         );
     }
 
@@ -60,6 +72,23 @@ trait ResourceModelQuery
     public function getWith(): array
     {
         return static::$with;
+    }
+
+    public function isPaginationUsed(): bool
+    {
+        return $this->usePagination;
+    }
+
+    public function sortColumn(): string
+    {
+        return static::$orderField ?: $this->getModel()->getKeyName();
+    }
+
+    public function sortDirection(): string
+    {
+        return in_array(strtolower(static::$orderType), ['asc', 'desc'])
+            ? static::$orderType
+            : 'DESC';
     }
 
     public function query(): Builder
@@ -99,8 +128,8 @@ trait ResourceModelQuery
         }
 
         $query = $query->orderBy(
-            request('order.field', static::$orderField),
-            request('order.type', static::$orderType)
+            request('order.field', $this->sortColumn()),
+            request('order.type', $this->sortDirection())
         );
 
         if ($this->isRelatable()) {
