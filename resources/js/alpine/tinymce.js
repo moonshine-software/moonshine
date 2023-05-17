@@ -1,6 +1,6 @@
 /* Tinymce */
 
-export default () => ({
+export default (selector) => ({
     init() {
         const fileManager = function (callback, value, meta) {
             const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
@@ -19,7 +19,7 @@ export default () => ({
         }
 
         const config = {
-            selector: '#' + this.$el.getAttribute('id'),
+            selector: selector,
             path_absolute: '/',
             file_manager: '',
             relative_urls: false,
@@ -30,7 +30,6 @@ export default () => ({
             init_instance_callback: (editor) => editor.on('blur', () => this.$el.innerHTML = editor.getContent())
         }
 
-        tinymce.init(config);
-
+        tinymce.init(config)
     },
 })
