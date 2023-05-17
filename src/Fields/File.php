@@ -23,6 +23,8 @@ class File extends Field implements Fileable, RemovableContract
 
     protected string $accept = '*/*';
 
+    protected bool $isDeleteFiles = true;
+
     protected array $attributes = [
         'type',
         'accept',
@@ -53,5 +55,13 @@ class File extends Field implements Fileable, RemovableContract
             'files' => $files,
             'download' => $this->canDownload(),
         ])->render();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleteFiles(): bool
+    {
+        return $this->isDeleteFiles;
     }
 }

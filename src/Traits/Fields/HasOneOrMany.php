@@ -46,6 +46,12 @@ trait HasOneOrMany
 
                     if ($field instanceof Fileable) {
                         $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
+                        if($field->isDeleteFiles()) {
+                            $field->checkForDeletion(
+                                $item->{$this->relation()}[$index]?->{$field->field()},
+                                $values[$field->field()]
+                            );
+                        }
                     }
 
                     if ($field instanceof SlideField) {

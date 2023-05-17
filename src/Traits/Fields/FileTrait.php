@@ -169,16 +169,8 @@ trait FileTrait
         $requestValue = $this->requestValue();
         $oldValues = collect(request("hidden_{$this->field()}", []));
 
-        if(!empty($storedValues = $item->{$this->field()})) {
-            if ($this->isMultiple()) {
-                foreach ($storedValues as $storedValue) {
-                    if(!in_array($storedValue, $oldValues->toArray())) {
-                        $this->deleteFile($storedValue);
-                    }
-                }
-            } else if(empty($oldValues->count())) {
-                $this->deleteFile($storedValues);
-            }
+        if($this->isDeleteFiles()) {
+            $this->checkForDeletion($item->{$this->field()}, $oldValues->toArray());
         }
 
         $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
@@ -203,6 +195,26 @@ trait FileTrait
         $item->{$this->field()} = $saveValue;
 
         return $item;
+    }
+
+    public function checkForDeletion(
+        array|string|null $storedValues,
+        array|string $inputValues
+    ): void
+    {
+        if(empty($storedValues)) {
+            return;
+        }
+
+        if ($this->isMultiple()) {
+            foreach ($storedValues as $storedValue) {
+                if(!in_array($storedValue, $inputValues)) {
+                    $this->deleteFile($storedValue);
+                }
+            }
+        } elseif ($storedValues != $inputValues) {
+            $this->deleteFile($storedValues);
+        }
     }
 
     public function deleteFile(string $fileName): void
