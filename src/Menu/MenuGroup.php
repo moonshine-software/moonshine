@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Menu;
 
 use Closure;
+use MoonShine\Contracts\Menu\MenuElement;
 use MoonShine\Exceptions\MenuException;
 use MoonShine\Resources\CustomPage;
 use MoonShine\Resources\Resource;
@@ -27,7 +28,7 @@ class MenuGroup extends MenuSection
             $item = is_string($item) ? new $item() : $item;
 
             throw_if(
-                ! $item instanceof MenuItem && ! $item instanceof Resource && ! $item instanceof CustomPage,
+                ! $item instanceof MenuElement && ! $item instanceof Resource && ! $item instanceof CustomPage,
                 new MenuException('An object of the MenuItem|Resource|CustomPage class is required')
             );
 

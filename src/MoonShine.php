@@ -6,6 +6,7 @@ namespace MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use MoonShine\Contracts\Menu\MenuElement;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuGroup;
@@ -78,7 +79,7 @@ class MoonShine
             } elseif ($item instanceof CustomPage) {
                 self::$pages->add($item);
                 self::$menu->add(new MenuItem($item->label(), $item));
-            } elseif ($item instanceof MenuItem) {
+            } elseif ($item instanceof MenuElement) {
                 self::$resources->when($item->resource(), fn ($r) => $r->add($item->resource()));
                 self::$pages->when($item->page(), fn ($r) => $r->add($item->page()));
                 self::$menu->add($item);

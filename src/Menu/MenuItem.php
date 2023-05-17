@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Menu;
 
 use Closure;
+use MoonShine\Contracts\Menu\MenuElement;
 use MoonShine\Resources\CustomPage;
 use MoonShine\Resources\Resource;
 use MoonShine\Traits\Makeable;
 
-class MenuItem extends MenuSection
+class MenuItem extends MenuSection implements MenuElement
 {
     use Makeable;
 
