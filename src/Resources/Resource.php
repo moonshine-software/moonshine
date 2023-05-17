@@ -537,6 +537,8 @@ abstract class Resource implements ResourceContract
     ): Model {
         $fields = $fields ?? $this->getFields()->formFields();
 
+
+
         try {
             $fields->each(fn (Field $field) => $field->beforeSave($item));
 

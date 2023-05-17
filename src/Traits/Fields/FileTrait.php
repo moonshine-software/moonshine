@@ -89,11 +89,15 @@ trait FileTrait
 
     public function pathWithDir(string $value): string
     {
-        $dir = ! (empty($this->getDir())) ? $this->getDir(). '/' : '';
+        return $this->path($this->prependDir($value));
+    }
 
-        return $this->path(str($value)->remove($dir)
+    public function prependDir(string $value): string
+    {
+        $dir = ! (empty($this->getDir())) ? $this->getDir(). '/' : '';
+        return str($value)->remove($dir)
             ->prepend($dir)
-            ->value());
+            ->value();
     }
 
     /**
@@ -165,6 +169,18 @@ trait FileTrait
         $requestValue = $this->requestValue();
         $oldValues = collect(request("hidden_{$this->field()}", []));
 
+        if(!empty($storedValues = $item->{$this->field()})) {
+            if ($this->isMultiple()) {
+                foreach ($storedValues as $storedValue) {
+                    if(!in_array($storedValue, $oldValues->toArray())) {
+                        $this->deleteFile($storedValue);
+                    }
+                }
+            } else if(empty($oldValues->count())) {
+                $this->deleteFile($storedValues);
+            }
+        }
+
         $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
 
         if ($requestValue !== false) {
@@ -187,6 +203,12 @@ trait FileTrait
         $item->{$this->field()} = $saveValue;
 
         return $item;
+    }
+
+    public function deleteFile(string $fileName): void
+    {
+        $fileName = $this->prependDir($fileName);
+        Storage::disk($this->getDisk())->delete($fileName);
     }
 
     public function formViewValue(Model $item): Collection|string
