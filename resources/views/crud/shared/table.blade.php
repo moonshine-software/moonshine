@@ -8,6 +8,7 @@
                 <x-slot:thead>
                     @include("moonshine::crud.shared.table-head", [$resource])
                 </x-slot:thead>
+
                 <x-slot:tbody>
                     @include("moonshine::crud.shared.table-body", [$resources])
                 </x-slot:tbody>
@@ -17,7 +18,7 @@
                 </x-slot:tfoot>
             </x-moonshine::table>
 
-            @if(!$resource->isPreviewMode())
+            @if($resource->isPaginationUsed() && !$resource->isPreviewMode())
                 {{ $resources->links($resource::$simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination') }}
             @endif
         @else
