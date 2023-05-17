@@ -1,4 +1,4 @@
-@if(config('moonshine.use_notifications', true) && auth(config('moonshine.auth.guard'))->user()?->unreadNotifications?->isNotEmpty())
+@if(config('moonshine.use_notifications', true) && auth()->user()?->unreadNotifications?->isNotEmpty())
     <!-- Notifications -->
     <div class="notifications">
         <x-moonshine::dropdown
@@ -15,7 +15,7 @@
                 />
             </x-slot:toggler>
 
-            @foreach(auth(config('moonshine.auth.guard'))->user()->unreadNotifications as $notification)
+            @foreach(auth()->user()->unreadNotifications as $notification)
                 <div class="notifications-item">
                     <a href="{{ route('moonshine.notifications.read', $notification) }}"
                        class="notifications-remove"

@@ -14,11 +14,11 @@
     </div>
 
     @if($attached ?? false)
-        @if(auth(config('moonshine.auth.guard'))->user()?->moonshineSocialites?->isNotEmpty())
+        @if(auth()->user()?->moonshineSocialites?->isNotEmpty())
         <div class="social">
             <div class="social-divider">@lang('moonshine::ui.resource.linked_socialite')</div>
             <div class="social-list">
-                @foreach(auth(config('moonshine.auth.guard'))->user()->moonshineSocialites as $socials)
+                @foreach(auth()->user()->moonshineSocialites as $socials)
                     {{ $socials->driver }} - {{ $socials->identity }}
                 @endforeach
             </div>
