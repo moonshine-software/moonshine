@@ -4,35 +4,35 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url("/vendor/moonshine/fonts/Gilroy-Regular.woff2") format("woff2");
+    src: url("/fonts/Gilroy-Regular.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url("/vendor/moonshine/fonts/Gilroy-Medium.woff2") format("woff2");
+    src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url("/vendor/moonshine/fonts/Gilroy-SemiBold.woff2") format("woff2");
+    src: url("/fonts/Gilroy-SemiBold.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url("/vendor/moonshine/fonts/Gilroy-Bold.woff2") format("woff2");
+    src: url("/fonts/Gilroy-Bold.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 900;
     font-display: swap;
-    src: url("/vendor/moonshine/fonts/Gilroy-Black.woff2") format("woff2");
+    src: url("/fonts/Gilroy-Black.woff2") format("woff2");
 }
 
 /* Custom Scrollbar */
@@ -115,6 +115,7 @@ pre {
     }
 }
 
+/* Checkboxes tree */
 ul.tree-list {
     @apply -m-1 space-y-1.5 overflow-x-auto p-1;
     li {
@@ -125,6 +126,7 @@ ul.tree-list {
     }
 }
 
+/* Images in a row */
 .images-row {
     @apply flex;
     & > * {
@@ -136,6 +138,13 @@ ul.tree-list {
 }
 
 /* Divider */
-.divider {
-    @apply my-2 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-200;
+hr,
+hr.divider {
+    @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
+}
+div.divider {
+    @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
+    &-centered {
+        @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
+    }
 }
