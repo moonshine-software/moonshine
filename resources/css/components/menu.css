@@ -135,7 +135,7 @@
 
             /* Dropdown Menu */
             &-dropdown {
-                @apply mt-2 flex flex-col gap-y-1 rounded-lg bg-white/5 py-1.5 px-1 dark:bg-dark-500;
+                @apply mt-2 flex flex-col gap-y-1 rounded-lg bg-dark-600 py-1.5 px-1 dark:bg-dark-500;
                 .menu-inner-item {
                     &::before,
                     &::after {
@@ -157,16 +157,16 @@
                 }
                 .menu-inner-divider {
                     > span {
-                        @apply bg-[#2e384e] lg:bg-[#292a4d];
+                        @apply bg-dark-600 dark:bg-dark-500 lg:bg-dark-600;
                     }
                 }
             }
 
             /* Divider */
             &-divider {
-                @apply relative my-2 mx-0.5 pl-4 pr-0.5 text-slate-400 before:absolute before:inset-x-0.5 before:top-1/2 before:-z-1 before:h-[1px] before:bg-dark-50;
+                @apply relative my-2 mx-0.5 pl-4 pr-0.5 text-slate-400 before:absolute before:inset-x-0.5 before:top-1/2 before:h-[1px] before:bg-slate-500;
                 > span {
-                    @apply block w-full truncate bg-dark-700 pl-2.5 pr-4 lg:bg-darkblue;
+                    @apply relative z-1 block w-full truncate bg-dark-700 pl-2.5 pr-4 dark:bg-dark-700 lg:hidden lg:bg-darkblue lg:dark:bg-body xl:block;
                 }
             }
         }
