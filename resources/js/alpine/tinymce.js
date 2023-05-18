@@ -1,6 +1,6 @@
 /* Tinymce */
 
-export default (selector) => ({
+export default () => ({
     init() {
         const fileManager = function (callback, value, meta) {
             const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
@@ -19,7 +19,7 @@ export default (selector) => ({
         }
 
         const config = {
-            selector: selector,
+            selector: this.$el.getAttribute('id'),
             path_absolute: '/',
             file_manager: '',
             relative_urls: false,
