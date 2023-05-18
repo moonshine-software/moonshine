@@ -77,7 +77,10 @@ class File extends Field implements Fileable, RemovableContract
             Storage::disk($this->getDisk())->delete($this->prependDir($item->{$this->field()}));
         }
 
-        if(empty(Storage::disk($this->getDisk())->files($this->getDir()))) {
+        if(
+            empty(Storage::disk($this->getDisk())->directories($this->getDir()))
+            && empty(Storage::disk($this->getDisk())->files($this->getDir()))
+        ) {
             Storage::disk($this->getDisk())->deleteDirectory($this->getDir());
         }
     }

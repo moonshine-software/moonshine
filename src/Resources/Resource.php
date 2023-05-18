@@ -495,23 +495,23 @@ abstract class Resource implements ResourceContract
         );
     }
 
-    public function massDelete(array $ids)
+    public function massDelete(array $ids): void
     {
         if (method_exists($this, 'beforeMassDeleting')) {
             $this->beforeMassDeleting($ids);
         }
 
-        return tap(
-            $this->getModel()
-                ->newModelQuery()
-                ->whereIn($this->getModel()->getKeyName(), $ids)
-                ->delete(),
-            function () use ($ids) {
-                if (method_exists($this, 'afterMassDeleted')) {
-                    $this->afterMassDeleted($ids);
-                }
-            }
-        );
+        $this->transformToResources(
+                $this->getModel()
+                    ->newModelQuery()
+                    ->whereIn($this->getModel()->getKeyName(), $ids)
+                    ->get()
+            )
+            ->each(fn($resource) => $resource->delete($resource->getItem()));
+
+        if (method_exists($this, 'afterMassDeleted')) {
+            $this->afterMassDeleted($ids);
+        }
     }
 
     public function delete(Model $item): bool
