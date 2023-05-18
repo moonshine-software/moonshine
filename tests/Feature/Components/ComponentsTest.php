@@ -415,6 +415,10 @@ it('breadcrumbs', function () {
 it('divider', function () {
     test()
         ->blade('<x-moonshine::divider label="Test" />')
+        ->assertSee('Test');
+
+    test()
+        ->blade('<x-moonshine::divider />')
         ->assertSee('hr');
 });
 
