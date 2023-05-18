@@ -6,7 +6,6 @@ namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasFullPageMode;
 use MoonShine\Contracts\Fields\HasJsonValues;
