@@ -403,7 +403,7 @@ it('boolean', function () {
 it('breadcrumbs', function () {
     $items = [
         '/' => 'Home page',
-        '/test' => 'Current page'
+        '/test' => 'Current page',
     ];
 
     test()
@@ -445,7 +445,7 @@ it('pagination', function () {
                 :elements="$elements"
         />', [
             'paginator' => $items,
-            'elements' => $items->linkCollection()
+            'elements' => $items->linkCollection(),
         ])
         ->assertSee('pagination')
         ->assertSee('pagination-item');
