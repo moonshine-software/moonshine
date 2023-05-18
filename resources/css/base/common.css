@@ -4,35 +4,35 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url("/fonts/Gilroy-Regular.woff2") format("woff2");
+    src: url("/vendor/moonshine/fonts/Gilroy-Regular.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
+    src: url("/vendor/moonshine/fonts/Gilroy-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url("/fonts/Gilroy-SemiBold.woff2") format("woff2");
+    src: url("/vendor/moonshine/fonts/Gilroy-SemiBold.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url("/fonts/Gilroy-Bold.woff2") format("woff2");
+    src: url("/vendor/moonshine/fonts/Gilroy-Bold.woff2") format("woff2");
 }
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
     font-weight: 900;
     font-display: swap;
-    src: url("/fonts/Gilroy-Black.woff2") format("woff2");
+    src: url("/vendor/moonshine/fonts/Gilroy-Black.woff2") format("woff2");
 }
 
 /* Custom Scrollbar */
@@ -115,7 +115,6 @@ pre {
     }
 }
 
-/* Checkboxes tree */
 ul.tree-list {
     @apply -m-1 space-y-1.5 overflow-x-auto p-1;
     li {
@@ -126,7 +125,6 @@ ul.tree-list {
     }
 }
 
-/* Images in a row */
 .images-row {
     @apply flex;
     & > * {
