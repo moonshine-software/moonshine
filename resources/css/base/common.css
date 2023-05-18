@@ -136,6 +136,13 @@ ul.tree-list {
 }
 
 /* Divider */
-.divider {
-    @apply my-2 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-200;
+hr,
+hr.divider {
+    @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
+}
+div.divider {
+    @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
+    &-centered {
+        @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
+    }
 }
