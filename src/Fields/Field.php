@@ -146,4 +146,9 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
     {
         //
     }
+
+    public function afterDelete(Model $item): void
+    {
+        //
+    }
 }

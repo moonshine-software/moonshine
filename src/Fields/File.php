@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\CanBeMultiple;
@@ -39,6 +40,11 @@ class File extends Field implements Fileable, RemovableContract
         return $this;
     }
 
+    public function isDeleteFiles(): bool
+    {
+        return $this->isDeleteFiles;
+    }
+
     public function indexViewValue(Model $item, bool $container = true): string
     {
         if (! $item->{$this->field()}) {
@@ -57,11 +63,22 @@ class File extends Field implements Fileable, RemovableContract
         ])->render();
     }
 
-    /**
-     * @return bool
-     */
-    public function isDeleteFiles(): bool
+    public function afterDelete(Model $item): void
     {
-        return $this->isDeleteFiles;
+        if (!$this->isDeleteFiles()) {
+            return;
+        }
+
+        if ($this->isMultiple()) {
+            foreach ($item->{$this->field()} as $value) {
+                Storage::disk($this->getDisk())->delete($this->prependDir($value));
+            }
+        } elseif(!empty($item->{$this->field()})) {
+            Storage::disk($this->getDisk())->delete($this->prependDir($item->{$this->field()}));
+        }
+
+        if(empty(Storage::disk($this->getDisk())->files($this->getDir()))) {
+            Storage::disk($this->getDisk())->deleteDirectory($this->getDir());
+        }
     }
 }

@@ -87,4 +87,15 @@ trait HasOneOrMany
 
         return $item;
     }
+
+    public function afterDelete(Model $item): void
+    {
+        foreach ($this->getFields() as $field) {
+            if ($field instanceof Fileable) {
+                foreach ($item->{$this->relation()} as $itemRelation) {
+                    $field->afterDelete($itemRelation);
+                }
+            }
+        }
+    }
 }
