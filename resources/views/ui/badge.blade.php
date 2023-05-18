@@ -1,7 +1,7 @@
 @if($value !== false)
-    <span class="badge badge-{{ $color }}">
+    <x-moonshine::badge :color="$color">
         {!! $value !!}
-    </span>
+    </x-moonshine::badge>
 @else
     &mdash;
 @endif

@@ -1,1 +1,4 @@
-<hr class="divider" />
+<x-moonshine::divider
+    :label="$element->label()"
+    :centered="$element->isCentered()"
+/>

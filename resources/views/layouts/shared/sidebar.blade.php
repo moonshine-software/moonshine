@@ -28,7 +28,7 @@
 
     <nav class="menu" :class="asideMenuOpen && '_is-opened'">
         <!-- Main menu -->
-        <x-moonshine::menu-component />
+        <x-moonshine::menu-component class="mt-4" />
 
         @includeWhen(
             config('moonshine.auth.enable', true),

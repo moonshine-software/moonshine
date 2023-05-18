@@ -3,13 +3,14 @@
     'values' => false,
     'columns' => false,
     'notfound' => false,
+    'responsive' => true,
     'thead',
     'tbody',
     'tfoot',
 ])
 @if(isset($tbody) || (is_iterable($values) && count($values)))
     <!-- Table -->
-    <div class="table-responsive">
+    <div @if ($responsive) class="table-responsive" @endif>
         <table {{ $attributes->merge(['class' => 'table' . ($crudMode ? '-list' : '')]) }}>
             <thead {{ isset($thead) ? $thead?->attributes : '' }}>
             <tr>

@@ -4,7 +4,9 @@
 ])
 @if($tabs)
     <!-- Tabs -->
-    <div class="tabs mb-4" x-data="{ activeTab: '{{ array_key_first($tabs) }}'}">
+    <div {{ $attributes->class(['tabs']) }}
+         x-data="{ activeTab: '{{ array_key_first($tabs) }}'}"
+    >
         <!-- Tabs Buttons -->
         <ul class="tabs-list">
             @foreach($tabs as $tabId => $tabContent)
