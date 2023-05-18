@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasFullPageMode;
 use MoonShine\Contracts\Fields\HasJsonValues;
@@ -58,6 +59,9 @@ class Json extends Field implements
         return $this->keyValue;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function save(Model $item): Model
     {
         if ($this->requestValue() === false) {
@@ -84,6 +88,9 @@ class Json extends Field implements
         return $item;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function mapKeyValue(Collection $collection): array
     {
         if ($this->hasFields()) {
