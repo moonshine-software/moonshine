@@ -5,7 +5,7 @@
         <div class="authentication-logo">
             <a href="/" rel="home">
                 <img class="h-16"
-                     src="{{ config('moonshine.logo') ? config('moonshine.logo') : asset('vendor/moonshine/logo.svg') }}"
+                     src="{{ config('moonshine.logo') ?: asset('vendor/moonshine/logo.svg') }}"
                      alt="{{ config('moonshine.title') }}"
                 >
             </a>

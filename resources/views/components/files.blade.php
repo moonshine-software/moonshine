@@ -3,7 +3,7 @@
     'download' => true,
 ])
 @if(array_filter((array) $files))
-    <div class="dropzone-items">
+    <div {{ $attributes->class(['dropzone-items']) }}>
         @foreach($files as $file)
             <div class="dropzone-item dropzone-item-file">
                 @include('moonshine::ui.file', [

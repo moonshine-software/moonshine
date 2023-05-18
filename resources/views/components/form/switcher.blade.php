@@ -2,7 +2,7 @@
     'onValue' => '1',
     'offValue' => '0'
 ])
-<label class="form-switcher" x-data>
+<label {{ $attributes->class(['form-switcher'])->only('class') }} x-data>
     <x-moonshine::form.input
         type="hidden"
         :name="$attributes->get('name')"

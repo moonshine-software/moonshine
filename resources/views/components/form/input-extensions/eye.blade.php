@@ -1,5 +1,8 @@
 @props(['extension'])
-<button @click.prevent="toggleEye()" class="expansion" type="button">
+<button @click.prevent="toggleEye()"
+        {{ $attributes->class(['expansion']) }}
+        type="button"
+>
     <span x-show="isHidden">
         <x-moonshine::icon
             icon="heroicons.outline.eye-slash"

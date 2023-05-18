@@ -1,8 +1,8 @@
 @section('title', $title)
 
-<h1 class="{{ isset($subTitle) && $subTitle ?: 'mb-6' }} truncate text-md font-medium">
+<x-moonshine::title class="{{ isset($subTitle) && $subTitle ?: 'mb-6' }}">
     {{ $title }}
-</h1>
+</x-moonshine::title>
 
 @if($subTitle ?? false)
     <div class="pt-2 mb-6">{!! $subTitle !!}</div>
