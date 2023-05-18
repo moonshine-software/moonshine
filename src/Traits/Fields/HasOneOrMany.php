@@ -45,12 +45,24 @@ trait HasOneOrMany
                     }
 
                     if ($field instanceof Fileable) {
+
                         $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
+
                         if($field->isDeleteFiles()) {
-                            $field->checkForDeletion(
-                                $item->{$this->relation()}[$index]?->{$field->field()},
-                                $values[$field->field()]
-                            );
+                            if(
+                                $this instanceof HasOne
+                                && !empty($item->{$this->relation()}?->{$field->field()})
+                            ) {
+                                $field->checkForDeletion(
+                                    $item->{$this->relation()}->{$field->field()},
+                                    $values[$field->field()]
+                                );
+                            } elseif (!empty($item->{$this->relation()}[$index]?->{$field->field()})) {
+                                $field->checkForDeletion(
+                                    $item->{$this->relation()}[$index]->{$field->field()},
+                                    $values[$field->field()]
+                                );
+                            }
                         }
                     }
 
@@ -80,8 +92,20 @@ trait HasOneOrMany
         }
 
         if (! $this instanceof HasOne) {
+            $ids = collect($prevIdentities)->diff($currentIdentities)->toArray();
+
+            foreach ($this->getFields() as $field) {
+                if ($field instanceof Fileable && $field->isDeleteFiles()) {
+                    foreach ($item->{$this->relation()} as $value) {
+                        if(in_array($value->{$primaryKey}, $ids)) {
+                            $field->deleteFile($value->{$field->field()});
+                        }
+                    }
+                }
+            }
+
             $item->{$this->relation()}()
-                ->whereIn($primaryKey, collect($prevIdentities)->diff($currentIdentities)->toArray())
+                ->whereIn($primaryKey, $ids)
                 ->delete();
         }
 
@@ -91,9 +115,16 @@ trait HasOneOrMany
     public function afterDelete(Model $item): void
     {
         foreach ($this->getFields() as $field) {
-            if ($field instanceof Fileable) {
-                foreach ($item->{$this->relation()} as $itemRelation) {
-                    $field->afterDelete($itemRelation);
+            if (
+                $field instanceof Fileable
+                && !empty($item->{$this->relation()})
+            ) {
+                if($this instanceof HasOne) {
+                    $field->afterDelete($item->{$this->relation()});
+                } else {
+                    foreach ($item->{$this->relation()} as $itemRelation) {
+                        $field->afterDelete($itemRelation);
+                    }
                 }
             }
         }

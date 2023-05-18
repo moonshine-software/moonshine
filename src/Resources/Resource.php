@@ -520,13 +520,13 @@ abstract class Resource implements ResourceContract
             $this->beforeDeleting($item);
         }
 
+        $this->getFields()->formFields()->each(fn($field) => $field->afterDelete($item));
+
         $result = tap($item->delete(), function () use ($item) {
             if (method_exists($this, 'afterDeleted')) {
                 $this->afterDeleted($item);
             }
         });
-
-        $this->getFields()->formFields()->each(fn($field) => $field->afterDelete($item));
 
         return $result;
     }
