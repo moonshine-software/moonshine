@@ -67,7 +67,20 @@ class Json extends Field implements
             return $item;
         }
 
-        $item->{$this->field()} = $this->mapKeyValue(collect($this->requestValue()));
+        $requestValues = $this->requestValue();
+
+        foreach ($requestValues as $index => $values) {
+            foreach ($this->getFields() as $field) {
+                if ($field instanceof Fileable) {
+                    $requestValues[$index] = $field->hasManyOrOneSave(
+                        "hidden_{$this->field()}.$index.{$field->field()}",
+                        $values
+                    );
+                }
+            }
+        }
+
+        $item->{$this->field()} = $this->mapKeyValue(collect($requestValues));
 
         return $item;
     }
