@@ -8,6 +8,7 @@ use MoonShine\Fields\Json;
 use MoonShine\Fields\NoInput;
 use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;
+use MoonShine\Fields\File;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
@@ -164,4 +165,24 @@ it('only import fields', function () {
         ])->importFields()
     )->toHaveCount(1)
         ->each(fn ($field) => $field->field()->toBe('field2'));
+});
+
+it('only file fields', function () {
+    expect(
+        Fields::make([
+            File::make('File 1'),
+            File::make('File 2'),
+            Text::make('Text'),
+        ])->onlyFileFields()
+    )->toHaveCount(2)->each->toBeInstanceOf(File::class);
+});
+
+it('only file fields with isDeleteFiles true', function () {
+    expect(
+        Fields::make([
+            File::make('File 1'),
+            File::make('File 2')->disableDeleteFiles(),
+            Text::make('Text'),
+        ])->onlyDeletableFileFields()
+    )->toHaveCount(1)->each->toBeInstanceOf(File::class);
 });

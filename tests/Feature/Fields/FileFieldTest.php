@@ -3,7 +3,10 @@
 use Illuminate\Http\UploadedFile;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\File;
+use MoonShine\Fields\ID;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use function Pest\Laravel\assertModelMissing;
 
 uses()->group('fields');
 uses()->group('file-field');
@@ -15,20 +18,32 @@ beforeEach(function () {
         ->disk('public')
         ->dir('files');
 
+    $this->resource = TestResourceBuilder::new(MoonshineUser::class)
+        ->setTestFields([
+                ID::make(),
+                $this->field,
+            ]
+        );
+
     $this->item = MoonshineUser::factory()->create();
 });
 
-it('successful stored', function () {
-    $avatar = UploadedFile::fake()->image('avatar.png');
+expect()->extend('storeAvatarFile', function ($avatar, $field, $item) {
 
     fakeRequest(method: 'POST', parameters: [
         'avatar' => $avatar,
     ]);
 
-    $this->field->save($this->item);
+    $field->save($item);
 
-    expect($this->item->avatar)
+    return expect($item->avatar)
         ->toBe('files/'.$avatar->hashName());
+});
+
+it('successful stored', function () {
+    $avatar = UploadedFile::fake()->image('avatar.png');
+
+    expect()->storeAvatarFile($avatar, $this->field, $this->item);
 
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 });
@@ -95,4 +110,57 @@ it('custom name', function () {
         ->toBe('files/testing.png');
 
     Storage::disk('public')->assertExists('files/testing.png');
+});
+
+it('successful removal from the form', function () {
+    $avatar = UploadedFile::fake()->image('avatar-to-delete.png');
+
+    expect()->storeAvatarFile($avatar, $this->field, $this->item);
+
+    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+
+    fakeRequest(method: 'POST', parameters: [
+        'avatar' => null,
+    ]);
+
+    $this->field->save($this->item);
+
+    expect($this->item->avatar)
+        ->toBeNull();
+
+    Storage::disk('public')->assertMissing('files/'.$avatar->hashName());
+});
+
+it('successful removal from the index', function () {
+    $avatar = UploadedFile::fake()->image('avatar-to-delete.png');
+
+    expect()->storeAvatarFile($avatar, $this->field, $this->item);
+
+    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+
+    $this->field->afterDelete($this->item);
+
+    Storage::disk('public')->assertMissing('files/'.$avatar->hashName());
+});
+
+it('successful mass delete files', function () {
+    $users = MoonshineUser::factory(3)->create();
+
+    $avatars = [];
+
+    foreach ($users as $user) {
+        $avatar = UploadedFile::fake()->image($user->id.'_avatar-to-delete.png');
+        expect()->storeAvatarFile($avatar, $this->field, $user);
+        $this->field->save($user);
+        $user->save();
+        $avatars[] = $avatar;
+    }
+
+    $this->resource->massDelete($users->map(fn($i) => $i->id)->toArray());
+
+    $users->each(fn ($user) => assertModelMissing($user));
+
+    foreach ($avatars as $avatar) {
+        Storage::disk('public')->assertMissing('moonshine_users/'.$avatar->hashName());
+    }
 });

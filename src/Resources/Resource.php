@@ -495,23 +495,23 @@ abstract class Resource implements ResourceContract
         );
     }
 
-    public function massDelete(array $ids)
+    public function massDelete(array $ids): void
     {
         if (method_exists($this, 'beforeMassDeleting')) {
             $this->beforeMassDeleting($ids);
         }
 
-        return tap(
-            $this->getModel()
-                ->newModelQuery()
-                ->whereIn($this->getModel()->getKeyName(), $ids)
-                ->delete(),
-            function () use ($ids) {
-                if (method_exists($this, 'afterMassDeleted')) {
-                    $this->afterMassDeleted($ids);
-                }
-            }
-        );
+        $this->transformToResources(
+                $this->getModel()
+                    ->newModelQuery()
+                    ->whereIn($this->getModel()->getKeyName(), $ids)
+                    ->get()
+            )
+            ->each(fn($resource) => $resource->delete($resource->getItem()));
+
+        if (method_exists($this, 'afterMassDeleted')) {
+            $this->afterMassDeleted($ids);
+        }
     }
 
     public function delete(Model $item): bool
@@ -520,11 +520,15 @@ abstract class Resource implements ResourceContract
             $this->beforeDeleting($item);
         }
 
-        return tap($item->delete(), function () use ($item) {
+        $this->getFields()->formFields()->each(fn($field) => $field->afterDelete($item));
+
+        $result = tap($item->delete(), function () use ($item) {
             if (method_exists($this, 'afterDeleted')) {
                 $this->afterDeleted($item);
             }
         });
+
+        return $result;
     }
 
     /**

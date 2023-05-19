@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\CanBeMultiple;
+use MoonShine\Traits\Fields\FileDeletable;
 use MoonShine\Traits\Fields\FileTrait;
 use MoonShine\Traits\Removable;
 
@@ -15,6 +16,7 @@ class File extends Field implements Fileable, RemovableContract
 {
     use CanBeMultiple;
     use FileTrait;
+    use FileDeletable;
     use Removable;
 
     protected static string $view = 'moonshine::fields.file';
@@ -53,5 +55,22 @@ class File extends Field implements Fileable, RemovableContract
             'files' => $files,
             'download' => $this->canDownload(),
         ])->render();
+    }
+
+    public function afterDelete(Model $item): void
+    {
+        if (!$this->isDeleteFiles()) {
+            return;
+        }
+
+        if ($this->isMultiple()) {
+            foreach ($item->{$this->field()} as $value) {
+                $this->deleteFile($value);
+            }
+        } elseif(!empty($item->{$this->field()})) {
+            $this->deleteFile($item->{$this->field()});
+        }
+
+        $this->deleteDir();
     }
 }

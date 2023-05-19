@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\File;
+use MoonShine\Fields\HasMany;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\WithStorage;
 use Throwable;
@@ -89,11 +92,15 @@ trait FileTrait
 
     public function pathWithDir(string $value): string
     {
-        $dir = ! (empty($this->getDir())) ? $this->getDir(). '/' : '';
+        return $this->path($this->prependDir($value));
+    }
 
-        return $this->path(str($value)->remove($dir)
+    public function prependDir(string $value): string
+    {
+        $dir = ! (empty($this->getDir())) ? $this->getDir(). '/' : '';
+        return str($value)->remove($dir)
             ->prepend($dir)
-            ->value());
+            ->value();
     }
 
     /**
@@ -164,6 +171,10 @@ trait FileTrait
     {
         $requestValue = $this->requestValue();
         $oldValues = collect(request("hidden_{$this->field()}", []));
+
+        if($this->isDeleteFiles()) {
+            $this->checkAndDelete($item->{$this->field()}, $oldValues->toArray());
+        }
 
         $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
 
