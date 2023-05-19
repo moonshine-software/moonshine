@@ -6,6 +6,7 @@ use MoonShine\Fields\File;
 use MoonShine\Fields\ID;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+
 use function Pest\Laravel\assertModelMissing;
 
 uses()->group('fields');
@@ -19,7 +20,8 @@ beforeEach(function () {
         ->dir('files');
 
     $this->resource = TestResourceBuilder::new(MoonshineUser::class)
-        ->setTestFields([
+        ->setTestFields(
+            [
                 ID::make(),
                 $this->field,
             ]
@@ -156,7 +158,7 @@ it('successful mass delete files', function () {
         $avatars[] = $avatar;
     }
 
-    $this->resource->massDelete($users->map(fn($i) => $i->id)->toArray());
+    $this->resource->massDelete($users->map(fn ($i) => $i->id)->toArray());
 
     $users->each(fn ($user) => assertModelMissing($user));
 

@@ -3,12 +3,12 @@
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\BelongsToMany;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\File;
 use MoonShine\Fields\HasMany;
 use MoonShine\Fields\Json;
 use MoonShine\Fields\NoInput;
 use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;
-use MoonShine\Fields\File;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');

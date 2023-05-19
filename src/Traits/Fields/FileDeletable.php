@@ -45,7 +45,7 @@ trait FileDeletable
 
         if ($this->isMultiple()) {
             foreach ($storedValues as $storedValue) {
-                if(!in_array($storedValue, $inputValues)) {
+                if(! in_array($storedValue, $inputValues)) {
                     $this->deleteFile($storedValue);
                 }
             }

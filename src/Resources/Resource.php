@@ -502,12 +502,12 @@ abstract class Resource implements ResourceContract
         }
 
         $this->transformToResources(
-                $this->getModel()
+            $this->getModel()
                     ->newModelQuery()
                     ->whereIn($this->getModel()->getKeyName(), $ids)
                     ->get()
-            )
-            ->each(fn($resource) => $resource->delete($resource->getItem()));
+        )
+            ->each(fn ($resource) => $resource->delete($resource->getItem()));
 
         if (method_exists($this, 'afterMassDeleted')) {
             $this->afterMassDeleted($ids);
@@ -520,7 +520,7 @@ abstract class Resource implements ResourceContract
             $this->beforeDeleting($item);
         }
 
-        $this->getFields()->formFields()->each(fn($field) => $field->afterDelete($item));
+        $this->getFields()->formFields()->each(fn ($field) => $field->afterDelete($item));
 
         $result = tap($item->delete(), function () use ($item) {
             if (method_exists($this, 'afterDeleted')) {

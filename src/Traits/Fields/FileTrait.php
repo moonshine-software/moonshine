@@ -9,10 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Exceptions\FieldException;
-use MoonShine\Fields\File;
-use MoonShine\Fields\HasMany;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\WithStorage;
 use Throwable;
@@ -98,6 +95,7 @@ trait FileTrait
     public function prependDir(string $value): string
     {
         $dir = ! (empty($this->getDir())) ? $this->getDir(). '/' : '';
+
         return str($value)->remove($dir)
             ->prepend($dir)
             ->value();

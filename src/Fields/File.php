@@ -59,7 +59,7 @@ class File extends Field implements Fileable, RemovableContract
 
     public function afterDelete(Model $item): void
     {
-        if (!$this->isDeleteFiles()) {
+        if (! $this->isDeleteFiles()) {
             return;
         }
 
@@ -67,7 +67,7 @@ class File extends Field implements Fileable, RemovableContract
             foreach ($item->{$this->field()} as $value) {
                 $this->deleteFile($value);
             }
-        } elseif(!empty($item->{$this->field()})) {
+        } elseif(! empty($item->{$this->field()})) {
             $this->deleteFile($item->{$this->field()});
         }
 

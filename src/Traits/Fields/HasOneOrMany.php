@@ -49,7 +49,7 @@ trait HasOneOrMany
                         $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
 
                         if($field->isDeleteFiles()) {
-                            $storedValues =  $this instanceof HasOne
+                            $storedValues = $this instanceof HasOne
                                 ? $item->{$this->relation()}?->{$field->field()}
                                 : $item->{$this->relation()}[$index]?->{$field->field()};
 
@@ -83,7 +83,7 @@ trait HasOneOrMany
             }
         } elseif ($this instanceof HasOne) {
             foreach ($this->getFields()->onlyDeletableFileFields() as $field) {
-                if (!empty($item->{$this->relation()}?->{$field->field()})) {
+                if (! empty($item->{$this->relation()}?->{$field->field()})) {
                     $field->deleteFile(
                         $item->{$this->relation()}->{$field->field()}
                     );
@@ -114,12 +114,12 @@ trait HasOneOrMany
     public function afterDelete(Model $item): void
     {
         foreach ($this->getFields()->onlyFileFields() as $field) {
-            if (!empty($item->{$this->relation()})) {
+            if (! empty($item->{$this->relation()})) {
                 if($this instanceof HasOne) {
                     $field->afterDelete($item->{$this->relation()});
                 } else {
                     $item->{$this->relation()}->each(
-                        fn($itemRelation) => $field->afterDelete($itemRelation)
+                        fn ($itemRelation) => $field->afterDelete($itemRelation)
                     );
                 }
             }

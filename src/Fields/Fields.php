@@ -136,7 +136,7 @@ final class Fields extends FormElements
     public function onlyFileFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn(Field $field) => $field instanceof Fileable)
+            ->filter(static fn (Field $field) => $field instanceof Fileable)
             ->values();
     }
 
@@ -150,7 +150,7 @@ final class Fields extends FormElements
     {
         return $this->onlyFileFields()
             ->filter(
-                static fn(Field $field) => $field->isDeleteFiles() === $isDeleteFiles
+                static fn (Field $field) => $field->isDeleteFiles() === $isDeleteFiles
             )
             ->values();
     }
