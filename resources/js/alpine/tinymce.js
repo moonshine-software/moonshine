@@ -19,7 +19,7 @@ export default () => ({
         }
 
         const config = {
-            selector: this.$el.getAttribute('id'),
+            selector: '#' + this.$el.getAttribute('id'),
             path_absolute: '/',
             file_manager: '',
             relative_urls: false,
