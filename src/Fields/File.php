@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\CanBeMultiple;
+use MoonShine\Traits\Fields\FileDeleteableTrait;
 use MoonShine\Traits\Fields\FileTrait;
 use MoonShine\Traits\Removable;
 
@@ -16,6 +16,7 @@ class File extends Field implements Fileable, RemovableContract
 {
     use CanBeMultiple;
     use FileTrait;
+    use FileDeleteableTrait;
     use Removable;
 
     protected static string $view = 'moonshine::fields.file';
@@ -23,8 +24,6 @@ class File extends Field implements Fileable, RemovableContract
     protected string $type = 'file';
 
     protected string $accept = '*/*';
-
-    protected bool $isDeleteFiles = true;
 
     protected array $attributes = [
         'type',
@@ -38,11 +37,6 @@ class File extends Field implements Fileable, RemovableContract
         $this->accept = $value;
 
         return $this;
-    }
-
-    public function isDeleteFiles(): bool
-    {
-        return $this->isDeleteFiles;
     }
 
     public function indexViewValue(Model $item, bool $container = true): string
@@ -71,17 +65,12 @@ class File extends Field implements Fileable, RemovableContract
 
         if ($this->isMultiple()) {
             foreach ($item->{$this->field()} as $value) {
-                Storage::disk($this->getDisk())->delete($this->prependDir($value));
+                $this->deleteFile($value);
             }
         } elseif(!empty($item->{$this->field()})) {
-            Storage::disk($this->getDisk())->delete($this->prependDir($item->{$this->field()}));
+            $this->deleteFile($item->{$this->field()});
         }
 
-        if(
-            empty(Storage::disk($this->getDisk())->directories($this->getDir()))
-            && empty(Storage::disk($this->getDisk())->files($this->getDir()))
-        ) {
-            Storage::disk($this->getDisk())->deleteDirectory($this->getDir());
-        }
+        $this->deleteDir();
     }
 }

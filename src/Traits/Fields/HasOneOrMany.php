@@ -49,20 +49,7 @@ trait HasOneOrMany
                         $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
 
                         if($field->isDeleteFiles()) {
-                            if(
-                                $this instanceof HasOne
-                                && !empty($item->{$this->relation()}?->{$field->field()})
-                            ) {
-                                $field->checkForDeletion(
-                                    $item->{$this->relation()}->{$field->field()},
-                                    $values[$field->field()]
-                                );
-                            } elseif (!empty($item->{$this->relation()}[$index]?->{$field->field()})) {
-                                $field->checkForDeletion(
-                                    $item->{$this->relation()}[$index]->{$field->field()},
-                                    $values[$field->field()]
-                                );
-                            }
+                            $field->checkForDeletionFromRelation($this, $item, $index, $values[$field->field()]);
                         }
                     }
 
@@ -96,11 +83,7 @@ trait HasOneOrMany
 
             foreach ($this->getFields() as $field) {
                 if ($field instanceof Fileable && $field->isDeleteFiles()) {
-                    foreach ($item->{$this->relation()} as $value) {
-                        if(in_array($value->{$primaryKey}, $ids)) {
-                            $field->deleteFile($value->{$field->field()});
-                        }
-                    }
+                    $field->deleteFilesFromRelation($this, $item, $ids, $primaryKey);
                 }
             }
 
@@ -122,9 +105,9 @@ trait HasOneOrMany
                 if($this instanceof HasOne) {
                     $field->afterDelete($item->{$this->relation()});
                 } else {
-                    foreach ($item->{$this->relation()} as $itemRelation) {
-                        $field->afterDelete($itemRelation);
-                    }
+                    $item->{$this->relation()}->each(
+                        fn($itemRelation) => $field->afterDelete($itemRelation)
+                    );
                 }
             }
         }

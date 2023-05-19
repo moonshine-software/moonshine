@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\File;
+use MoonShine\Fields\HasMany;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\WithStorage;
 use Throwable;
@@ -195,32 +198,6 @@ trait FileTrait
         $item->{$this->field()} = $saveValue;
 
         return $item;
-    }
-
-    public function checkForDeletion(
-        array|string|null $storedValues,
-        array|string $inputValues
-    ): void
-    {
-        if(empty($storedValues)) {
-            return;
-        }
-
-        if ($this->isMultiple()) {
-            foreach ($storedValues as $storedValue) {
-                if(!in_array($storedValue, $inputValues)) {
-                    $this->deleteFile($storedValue);
-                }
-            }
-        } elseif ($storedValues != $inputValues) {
-            $this->deleteFile($storedValues);
-        }
-    }
-
-    public function deleteFile(string $fileName): void
-    {
-        $fileName = $this->prependDir($fileName);
-        Storage::disk($this->getDisk())->delete($fileName);
     }
 
     public function formViewValue(Model $item): Collection|string
