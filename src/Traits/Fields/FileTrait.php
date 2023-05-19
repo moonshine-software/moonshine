@@ -173,7 +173,7 @@ trait FileTrait
         $oldValues = collect(request("hidden_{$this->field()}", []));
 
         if($this->isDeleteFiles()) {
-            $this->checkForDeletion($item->{$this->field()}, $oldValues->toArray());
+            $this->checkAndDelete($item->{$this->field()}, $oldValues->toArray());
         }
 
         $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();

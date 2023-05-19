@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Exceptions\FieldException;
@@ -124,6 +125,33 @@ final class Fields extends FormElements
     {
         return $this->onlyFields()
             ->filter(static fn (Field $field) => $field->isOnDetail())
+            ->values();
+    }
+
+    /**
+     * @return Fields<File>
+     *
+     * @throws Throwable
+     */
+    public function onlyFileFields(): Fields
+    {
+        return $this->onlyFields()
+            ->filter(static fn(Field $field) => $field instanceof Fileable)
+            ->values();
+    }
+
+    /**
+     * @return Fields<File>
+     *
+     * @param bool $isDeleteFiles
+     * @throws Throwable
+     */
+    public function onlyDeletableFileFields(bool $isDeleteFiles = true): Fields
+    {
+        return $this->onlyFileFields()
+            ->filter(
+                static fn(Field $field) => $field->isDeleteFiles() === $isDeleteFiles
+            )
             ->values();
     }
 

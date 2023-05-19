@@ -35,7 +35,7 @@ trait FileDeletable
         return $this;
     }
 
-    public function checkForDeletion(
+    public function checkAndDelete(
         array|string|null $storedValues,
         array|string $inputValues
     ): void {

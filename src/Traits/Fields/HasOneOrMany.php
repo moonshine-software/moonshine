@@ -53,7 +53,7 @@ trait HasOneOrMany
                                 ? $item->{$this->relation()}?->{$field->field()}
                                 : $item->{$this->relation()}[$index]?->{$field->field()};
 
-                            $field->checkForDeletion(
+                            $field->checkAndDelete(
                                 $storedValues,
                                 $values[$field->field()]
                             );
@@ -82,18 +82,23 @@ trait HasOneOrMany
                 ], $values);
             }
         } elseif ($this instanceof HasOne) {
+            foreach ($this->getFields()->onlyDeletableFileFields() as $field) {
+                if (!empty($item->{$this->relation()}?->{$field->field()})) {
+                    $field->deleteFile(
+                        $item->{$this->relation()}->{$field->field()}
+                    );
+                }
+            }
             $item->{$this->relation()}()->delete();
         }
 
         if (! $this instanceof HasOne) {
             $ids = collect($prevIdentities)->diff($currentIdentities)->toArray();
 
-            foreach ($this->getFields() as $field) {
-                if ($field instanceof Fileable && $field->isDeleteFiles()) {
-                    foreach ($item->{$this->relation()} as $value) {
-                        if(in_array($value->{$primaryKey}, $ids)) {
-                            $field->deleteFile($value->{$field->field()});
-                        }
+            foreach ($this->getFields()->onlyDeletableFileFields() as $field) {
+                foreach ($item->{$this->relation()} as $value) {
+                    if(in_array($value->{$primaryKey}, $ids)) {
+                        $field->deleteFile($value->{$field->field()});
                     }
                 }
             }
@@ -108,11 +113,8 @@ trait HasOneOrMany
 
     public function afterDelete(Model $item): void
     {
-        foreach ($this->getFields() as $field) {
-            if (
-                $field instanceof Fileable
-                && !empty($item->{$this->relation()})
-            ) {
+        foreach ($this->getFields()->onlyFileFields() as $field) {
+            if (!empty($item->{$this->relation()})) {
                 if($this instanceof HasOne) {
                     $field->afterDelete($item->{$this->relation()});
                 } else {
