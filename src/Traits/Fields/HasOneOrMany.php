@@ -49,7 +49,14 @@ trait HasOneOrMany
                         $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
 
                         if($field->isDeleteFiles()) {
-                            $field->checkForDeletionFromRelation($this, $item, $index, $values[$field->field()]);
+                            $storedValues =  $this instanceof HasOne
+                                ? $item->{$this->relation()}?->{$field->field()}
+                                : $item->{$this->relation()}[$index]?->{$field->field()};
+
+                            $field->checkForDeletion(
+                                $storedValues,
+                                $values[$field->field()]
+                            );
                         }
                     }
 
@@ -83,7 +90,11 @@ trait HasOneOrMany
 
             foreach ($this->getFields() as $field) {
                 if ($field instanceof Fileable && $field->isDeleteFiles()) {
-                    $field->deleteFilesFromRelation($this, $item, $ids, $primaryKey);
+                    foreach ($item->{$this->relation()} as $value) {
+                        if(in_array($value->{$primaryKey}, $ids)) {
+                            $field->deleteFile($value->{$field->field()});
+                        }
+                    }
                 }
             }
 

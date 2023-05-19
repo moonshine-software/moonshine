@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\CanBeMultiple;
-use MoonShine\Traits\Fields\FileDeleteableTrait;
+use MoonShine\Traits\Fields\FileDeletable;
 use MoonShine\Traits\Fields\FileTrait;
 use MoonShine\Traits\Removable;
 
@@ -16,7 +16,7 @@ class File extends Field implements Fileable, RemovableContract
 {
     use CanBeMultiple;
     use FileTrait;
-    use FileDeleteableTrait;
+    use FileDeletable;
     use Removable;
 
     protected static string $view = 'moonshine::fields.file';
