@@ -24,12 +24,14 @@ trait FileDeletable
     public function disableDeleteFiles(): static
     {
         $this->isDeleteFiles = false;
+
         return $this;
     }
 
     public function enableDeleteDir(): static
     {
         $this->isDeleteDir = true;
+
         return $this;
     }
 
@@ -51,14 +53,14 @@ trait FileDeletable
                     $this->deleteFile($storedValue);
                 }
             }
-        } elseif (!in_array($storedValues, $inputValues)) {
+        } elseif (! in_array($storedValues, $inputValues)) {
             $this->deleteFile($storedValues);
         }
     }
 
     public function deleteFile(string $fileName): bool
     {
-        if(!$this->isDeleteFiles()) {
+        if(! $this->isDeleteFiles()) {
             return false;
         }
 

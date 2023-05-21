@@ -175,7 +175,7 @@ it('checking if file is saved after request', function () {
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 
     fakeRequest(method: 'POST', parameters: [
-        'hidden_avatar' => 'files/'.$avatar->hashName()
+        'hidden_avatar' => 'files/'.$avatar->hashName(),
     ]);
 
     $this->field->save($this->item);
