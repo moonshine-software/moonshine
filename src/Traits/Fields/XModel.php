@@ -30,7 +30,7 @@ trait XModel
 
     public function isXModelField(): bool
     {
-        return !is_null($this->getAttribute('x-model-field'));
+        return ! is_null($this->getAttribute('x-model-field'));
     }
 
     public function xModelField(string $variable = 'item'): string

@@ -6,7 +6,7 @@ use MoonShine\Fields\Text;
 uses()->group('request-values');
 
 beforeEach(function () {
-    $this->item = new class extends Model {
+    $this->item = new class () extends Model {
         public mixed $value;
     };
 });

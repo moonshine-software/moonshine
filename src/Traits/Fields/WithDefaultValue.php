@@ -24,7 +24,7 @@ trait WithDefaultValue
 
     public function getDefault(): mixed
     {
-        if ($this->hasRelationship() && !$this->belongToOne()) {
+        if ($this->hasRelationship() && ! $this->belongToOne()) {
             return null;
         }
 

@@ -14,19 +14,18 @@ use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
 uses()->group('default-value');
 
 beforeEach(function () {
-    $this->item = new class extends Model
-    {
+    $this->item = new class () extends Model {
         public mixed $value;
     };
 });
 
 expect()->extend('toBeDefaultWith', function (mixed $default) {
-    $item = new class extends Model
-    {
+    $item = new class () extends Model {
         public mixed $value;
     };
 
-    return expect($this->value
+    return expect(
+        $this->value
         ->default($default)
         ->formViewValue($item)
     )->toBe($default);
@@ -40,7 +39,7 @@ dataset('all_values', [
     true,
     false,
     TestEnumColor::Red,
-    new MoonshineUser()
+    new MoonshineUser(),
 ]);
 
 it('text default values', function ($default) {
@@ -48,8 +47,8 @@ it('text default values', function ($default) {
 
     expect($field)->when(
         $default === 'string',
-        fn($field) => $field->toBeDefaultWith($default),
-        fn($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default),
+        fn ($field) => $field->not->toBeDefaultWith($default)
     );
 })->with('all_values');
 
@@ -59,8 +58,8 @@ it('enum default values', function ($default) {
 
     expect($field)->when(
         $default === TestEnumColor::Red,
-        fn($field) => $field->toBeDefaultWith($default),
-        fn($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default),
+        fn ($field) => $field->not->toBeDefaultWith($default)
     );
 })->with('all_values');
 
@@ -107,8 +106,8 @@ it('checkbox default values', function ($default) {
 
     expect($field)->when(
         in_array($default, ['string', true, false, 2], true),
-        fn($field) => $field->toBeDefaultWith($default),
-        fn($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default),
+        fn ($field) => $field->not->toBeDefaultWith($default)
     );
 })->with('all_values');
 
@@ -138,8 +137,8 @@ it('number default values', function ($default) {
 
     expect($field)->when(
         in_array($default, ['string', 2, null], true),
-        fn($field) => $field->toBeDefaultWith($default),
-        fn($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default),
+        fn ($field) => $field->not->toBeDefaultWith($default)
     );
 })->with('all_values');
 
@@ -148,8 +147,8 @@ it('switcher default values', function ($default) {
 
     expect($field)->when(
         in_array($default, ['string', true, false, 2], true),
-        fn($field) => $field->toBeDefaultWith($default),
-        fn($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default),
+        fn ($field) => $field->not->toBeDefaultWith($default)
     );
 })->with('all_values');
 
@@ -159,8 +158,8 @@ it('json default values', function ($default) {
 
     expect($field)->when(
         is_array($default),
-        fn($field) => $field->toBeDefaultWith($default),
-        fn($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default),
+        fn ($field) => $field->not->toBeDefaultWith($default)
     );
 })->with('all_values');
 
@@ -169,8 +168,8 @@ it('select default values', function ($default) {
 
     expect($field)->when(
         in_array($default, ['string', [1,2,3], 2], true),
-        fn($field) => $field->toBeDefaultWith($default),
-        fn($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default),
+        fn ($field) => $field->not->toBeDefaultWith($default)
     );
 })->with('all_values');
 
@@ -198,5 +197,3 @@ it('select default values is selected multiple', function () {
         ->and($field->isSelected($this->item, "W"))
         ->toBeFalse();
 });
-
-

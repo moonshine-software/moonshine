@@ -69,7 +69,7 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
 
         $old = old($this->nameDot());
 
-        if ($old && (!$this->hasRelationship() || $this->belongToOne())) {
+        if ($old && (! $this->hasRelationship() || $this->belongToOne())) {
             return $old;
         }
 

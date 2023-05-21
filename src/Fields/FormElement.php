@@ -82,7 +82,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         if ($this->hasRelationship()) {
             $this->setField($field ?? (string)str($this->label)->camel());
 
-            if ($this->belongToOne() && !str($this->field())->contains('_id')) {
+            if ($this->belongToOne() && ! str($this->field())->contains('_id')) {
                 $this->setField(
                     (string)str($this->field())
                         ->append('_id')
@@ -154,7 +154,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
             return $this->resource;
         }
 
-        if (!$this->relation()) {
+        if (! $this->relation()) {
             return null;
         }
 
@@ -325,8 +325,8 @@ abstract class FormElement implements ResourceRenderable, HasAssets
     public function requestValue(string|int|null $index = null): mixed
     {
         $nameDot = str($this->nameDot())->when(
-            !is_null($index) && $index !== '',
-            fn(Stringable $str) => $str->append(".$index")
+            ! is_null($index) && $index !== '',
+            fn (Stringable $str) => $str->append(".$index")
         )->value();
 
         $default = $this instanceof HasDefaultValue
