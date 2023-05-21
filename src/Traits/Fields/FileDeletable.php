@@ -2,8 +2,8 @@
 
 namespace MoonShine\Traits\Fields;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Helpers\Condition;
 
 trait FileDeletable
 {
@@ -21,24 +21,26 @@ trait FileDeletable
         return $this->isDeleteDir;
     }
 
-    public function disableDeleteFiles($condition = null): static
+    public function disableDeleteFiles(): static
     {
-        $this->isDeleteFiles = Condition::boolean($condition, false);
-
+        $this->isDeleteFiles = false;
         return $this;
     }
 
-    public function enableDeleteDir($condition = null): static
+    public function enableDeleteDir(): static
     {
-        $this->isDeleteDir = Condition::boolean($condition, true);
-
+        $this->isDeleteDir = true;
         return $this;
     }
 
     public function checkAndDelete(
-        array|string|null $storedValues,
-        array|string $inputValues
+        iterable|string|null $storedValues,
+        array $inputValues
     ): void {
+        if($storedValues instanceof Collection) {
+            $storedValues = $storedValues->toArray();
+        }
+
         if(empty($storedValues)) {
             return;
         }
@@ -49,13 +51,17 @@ trait FileDeletable
                     $this->deleteFile($storedValue);
                 }
             }
-        } elseif ($storedValues != $inputValues) {
+        } elseif (!in_array($storedValues, $inputValues)) {
             $this->deleteFile($storedValues);
         }
     }
 
     public function deleteFile(string $fileName): bool
     {
+        if(!$this->isDeleteFiles()) {
+            return false;
+        }
+
         return Storage::disk($this->getDisk())->delete($this->prependDir($fileName));
     }
 
