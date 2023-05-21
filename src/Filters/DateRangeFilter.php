@@ -6,8 +6,9 @@ namespace MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 
-class DateRangeFilter extends DateFilter
+class DateRangeFilter extends DateFilter implements DefaultCanBeArray
 {
     protected static string $view = 'moonshine::filters.date-range';
 

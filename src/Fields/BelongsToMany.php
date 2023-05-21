@@ -138,7 +138,7 @@ class BelongsToMany extends Select implements
         if ($this->hasFields()) {
             foreach ($values as $index => $value) {
                 foreach ($this->getFields() as $field) {
-                    $sync[$value][$field->field()] = $field->requestValue()[$index] ?? $field->getDefault();
+                    $sync[$value][$field->field()] = $field->requestValue($index);
                 }
             }
         } else {

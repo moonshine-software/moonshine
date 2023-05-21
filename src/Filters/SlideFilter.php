@@ -3,13 +3,19 @@
 namespace MoonShine\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Traits\Fields\NumberTrait;
 use MoonShine\Traits\Fields\SlideTrait;
+use MoonShine\Traits\Fields\WithDefaultValue;
 
-class SlideFilter extends Filter
+class SlideFilter extends Filter implements
+    HasDefaultValue,
+    DefaultCanBeArray
 {
     use NumberTrait;
     use SlideTrait;
+    use WithDefaultValue;
 
     public string $type = 'number';
 

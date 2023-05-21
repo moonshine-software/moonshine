@@ -6,10 +6,9 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\TestCase;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 use function Pest\Laravel\actingAs;
-
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 uses(TestCase::class)
     ->in(__DIR__);
@@ -19,7 +18,10 @@ uses(RefreshDatabase::class)
 
 function fakeRequest(string $url = '/', string $method = 'GET', array $parameters = []): void
 {
-    app()->instance('request', request()->create($url, $method, $parameters));
+    app()->instance(
+        'request',
+        request()->create($url, $method, $parameters)
+    );
 }
 
 function asAdmin(): TestCase

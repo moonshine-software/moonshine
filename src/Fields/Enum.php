@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeEnum;
 use UnitEnum;
 
-class Enum extends Select
+class Enum extends Select implements DefaultCanBeEnum
 {
     public function indexViewValue(Model $item, bool $container = true): string
     {
@@ -26,21 +27,5 @@ class Enum extends Select
         $this->options(array_column($class::cases(), 'name', 'value'));
 
         return $this;
-    }
-
-    public function isSelected(Model $item, string $value): bool
-    {
-        $formValue = $this->formViewValue($item);
-
-        if (! $formValue) {
-            return false;
-        }
-
-        if (is_string($formValue)) {
-            return $formValue === $value || (string) $this->getDefault() === $value;
-        }
-
-        return (string) $formValue->value === $value
-            || (! $formValue->value && (string) $this->getDefault() === $value);
     }
 }
