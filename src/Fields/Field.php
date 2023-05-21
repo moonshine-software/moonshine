@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasExportViewValue;
 use MoonShine\Contracts\Fields\HasFormViewValue;
 use MoonShine\Contracts\Fields\HasIndexViewValue;
@@ -66,19 +67,29 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
             $item->load($this->relation());
         }
 
+        $old = old($this->nameDot());
+
+        if ($old && (!$this->hasRelationship() || $this->belongToOne())) {
+            return $old;
+        }
+
+        $default = $this instanceof HasDefaultValue
+            ? $this->getDefault()
+            : null;
+
         if ($this->belongToOne()) {
-            return $item->{$this->relation()}?->getKey() ?? $this->getDefault();
+            return $item->{$this->relation()}?->getKey() ?? $default;
         }
 
         if ($this->hasRelationship()) {
-            return $item->{$this->relation()} ?? $this->getDefault();
+            return $item->{$this->relation()};
         }
 
         if (is_callable($this->valueCallback())) {
-            return $this->valueCallback()($item) ?? $this->getDefault();
+            return $this->valueCallback()($item) ?? $default;
         }
 
-        return $item->{$this->field()} ?? $this->getDefault();
+        return $item->{$this->field()} ?? $default;
     }
 
     public function indexViewValue(Model $item, bool $container = true): string
@@ -126,7 +137,7 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
     {
         $item->{$this->field()} = $this->requestValue() !== false
             ? $this->requestValue()
-            : ($this->isNullable() ? null : $this->getDefault());
+            : null;
 
         return $item;
     }

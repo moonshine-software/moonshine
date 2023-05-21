@@ -72,6 +72,7 @@ abstract class Filter extends FormElement implements HasFormViewValue
 
     public function formViewValue(Model $item): mixed
     {
-        return $this->requestValue();
+        return $this->requestValue()
+            ?? old($this->nameDot(), false);
     }
 }

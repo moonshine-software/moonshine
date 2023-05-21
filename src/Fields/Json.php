@@ -6,12 +6,15 @@ namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasFullPageMode;
 use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\RemovableContract;
+use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Fields\WithFullPageMode;
 use MoonShine\Traits\Fields\WithJsonValues;
 use MoonShine\Traits\Removable;
@@ -23,12 +26,15 @@ class Json extends Field implements
     HasJsonValues,
     HasFullPageMode,
     RemovableContract,
-    HasValueExtraction
+    HasValueExtraction,
+    HasDefaultValue,
+    DefaultCanBeArray
 {
     use WithJsonValues;
     use WithFields;
     use WithFullPageMode;
     use Removable;
+    use WithDefaultValue;
 
     protected static string $view = 'moonshine::fields.json';
 

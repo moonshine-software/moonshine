@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Traits\Fields\NumberTrait;
 
-class Number extends Text
+class Number extends Text implements DefaultCanBeNumeric
 {
     use NumberTrait;
 

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Traits\Fields\SlideTrait;
 
-class SlideField extends Number implements HasValueExtraction
+class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
 {
     use SlideTrait;
 

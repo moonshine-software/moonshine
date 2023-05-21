@@ -6,6 +6,8 @@ namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Fields\Enum;
+use UnitEnum;
 
 trait SelectTrait
 {
@@ -27,8 +29,8 @@ trait SelectTrait
     {
         $formValue = $this->formViewValue($item);
 
-        if (! $formValue) {
-            return false;
+        if ($this instanceof Enum && $formValue instanceof UnitEnum) {
+            $formValue = $formValue->value ?? $formValue->name ?? null;
         }
 
         if ($this->hasRelationship()) {
@@ -37,7 +39,7 @@ trait SelectTrait
             return match (true) {
                 $formValue instanceof Collection => $formValue->contains($related->getKeyName(), '=', $value),
                 is_array($formValue) => in_array($value, $formValue),
-                default => $this->defaultIsSelected($formValue, $value)
+                default => (string) $formValue === $value
             };
         }
 
@@ -49,16 +51,10 @@ trait SelectTrait
             return match (true) {
                 $formValue instanceof Collection => $formValue->contains($value),
                 is_array($formValue) => in_array($value, $formValue),
-                default => $this->defaultIsSelected($formValue, $value)
+                default => (string) $formValue === $value
             };
         }
 
-        return $this->defaultIsSelected($formValue, $value);
-    }
-
-    protected function defaultIsSelected(mixed $formValue, string $value): bool
-    {
-        return (string) $formValue === $value
-            || (! $formValue && (string) $this->getDefault() === $value);
+        return (string) $formValue === $value;
     }
 }

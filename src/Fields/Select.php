@@ -5,15 +5,25 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTrait;
+use MoonShine\Traits\Fields\WithDefaultValue;
 
-class Select extends Field
+class Select extends Field implements
+    HasDefaultValue,
+    DefaultCanBeArray,
+    DefaultCanBeString,
+    DefaultCanBeNumeric
 {
     use CanBeMultiple;
     use Searchable;
     use SelectTrait;
+    use WithDefaultValue;
 
     protected static string $view = 'moonshine::fields.select';
 
