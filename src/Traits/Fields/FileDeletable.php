@@ -2,6 +2,7 @@
 
 namespace MoonShine\Traits\Fields;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,7 +38,7 @@ trait FileDeletable
 
     public function checkAndDelete(
         iterable|string|null $storedValues,
-        array $inputValues
+        array|string $inputValues
     ): void {
         if($storedValues instanceof Collection) {
             $storedValues = $storedValues->toArray();
@@ -46,6 +47,8 @@ trait FileDeletable
         if(empty($storedValues)) {
             return;
         }
+
+        $inputValues = Arr::wrap($inputValues);
 
         if ($this->isMultiple()) {
             foreach ($storedValues as $storedValue) {
