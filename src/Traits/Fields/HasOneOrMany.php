@@ -45,8 +45,13 @@ trait HasOneOrMany
                     }
 
                     if ($field instanceof Fileable) {
-
-                        $values = $field->hasManyOrOneSave("hidden_{$this->field()}.$index.{$field->field()}", $values);
+                        $values = $field->hasManyOrOneSave(
+                            "hidden_{$this->field()}.$index.{$field->field()}",
+                            $values,
+                            $this instanceof HasOne
+                                ? $item->{$this->relation()}
+                                : $item->{$this->relation()}[$index]
+                        );
 
                         if($field->isDeleteFiles()) {
                             $storedValues = $this instanceof HasOne

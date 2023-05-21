@@ -135,7 +135,7 @@ trait FileTrait
     /**
      * @throws Throwable
      */
-    public function hasManyOrOneSave($hiddenKey, array $values = []): array
+    public function hasManyOrOneSave($hiddenKey, array $values = [], Model $item = null): array
     {
         if ($this->isMultiple()) {
             $saveValues = collect(request($hiddenKey, []))

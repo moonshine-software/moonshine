@@ -83,7 +83,8 @@ class Json extends Field implements
                 if ($field instanceof Fileable) {
                     $requestValues[$index] = $field->hasManyOrOneSave(
                         "hidden_{$this->field()}.$index.{$field->field()}",
-                        $values
+                        $values,
+                        $item
                     );
                 }
             }
