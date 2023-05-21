@@ -166,3 +166,19 @@ it('successful mass delete files', function () {
         Storage::disk('public')->assertMissing('moonshine_users/'.$avatar->hashName());
     }
 });
+
+it('checking if file is saved after request', function () {
+    $avatar = UploadedFile::fake()->image('avatar-to-delete.png');
+
+    expect()->storeAvatarFile($avatar, $this->field, $this->item);
+
+    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+
+    fakeRequest(method: 'POST', parameters: [
+        'hidden_avatar' => 'files/'.$avatar->hashName()
+    ]);
+
+    $this->field->save($this->item);
+
+    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+});
