@@ -15,4 +15,9 @@ class MenuDivider extends MenuSection implements MenuElement
     {
         $this->setLabel($label);
     }
+
+    public function isActive(): bool
+    {
+        return false;
+    }
 }
