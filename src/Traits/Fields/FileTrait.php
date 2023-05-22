@@ -138,7 +138,8 @@ trait FileTrait
     public function hasManyOrOneSave($hiddenKey, array $values = [], Model $item = null): array
     {
         if ($this->isMultiple()) {
-            $saveValues = collect(request($hiddenKey, []))
+            $saveValues = request()
+                ->collect($hiddenKey)
                 ->reject(fn ($v) => is_numeric($v));
 
             if (isset($values[$this->field()])) {
@@ -168,7 +169,7 @@ trait FileTrait
     public function save(Model $item): Model
     {
         $requestValue = $this->requestValue();
-        $oldValues = collect(request("hidden_{$this->field()}", []));
+        $oldValues = request()->collect("hidden_{$this->field()}");
 
         if($this->isDeleteFiles()) {
             $this->checkAndDelete($item->{$this->field()}, $oldValues->toArray());
