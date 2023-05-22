@@ -47,7 +47,7 @@ trait HasOneOrMany
                     if ($field instanceof Fileable) {
 
                         $model = null;
-                        if(!is_null($item->{$this->relation()})) {
+                        if(! is_null($item->{$this->relation()})) {
                             $model = $this instanceof HasOne
                                 ? $item->{$this->relation()}
                                 : ($item->{$this->relation()}[$index] ?? null);
