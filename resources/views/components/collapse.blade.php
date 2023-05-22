@@ -1,10 +1,17 @@
 @props([
+    'persist' => false,
     'show' => false,
     'title'
 ])
 <div
     {{ $attributes->class(['accordion']) }}
-    x-data="{open: $persist({{ $show ? 'true' : 'false' }}).as($id('collapse')), toggle() {
+    x-data="{
+        @if($persist)
+            open: $persist({{ $show ? 'true' : 'false' }}).as($id('collapse')),
+        @else
+            open: {{ $show ? 'true' : 'false' }},
+        @endif
+        toggle() {
             this.open = !this.open
         },
     }"

@@ -1,5 +1,6 @@
 <x-moonshine::collapse :show="$element->isShow()"
                        :title="$element->label()"
+                       :persist=true
 >
     <x-moonshine::resource-renderable
         :components="$element->getFields()"
