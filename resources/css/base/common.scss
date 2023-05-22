@@ -6,6 +6,7 @@
     font-display: swap;
     src: url("/vendor/moonshine/fonts/Gilroy-Regular.woff2") format("woff2");
 }
+
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
@@ -13,6 +14,7 @@
     font-display: swap;
     src: url("/vendor/moonshine/fonts/Gilroy-Medium.woff2") format("woff2");
 }
+
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
@@ -20,6 +22,7 @@
     font-display: swap;
     src: url("/vendor/moonshine/fonts/Gilroy-SemiBold.woff2") format("woff2");
 }
+
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
@@ -27,6 +30,7 @@
     font-display: swap;
     src: url("/vendor/moonshine/fonts/Gilroy-Bold.woff2") format("woff2");
 }
+
 @font-face {
     font-family: "Gilroy";
     font-style: normal;
@@ -40,6 +44,7 @@
     --scrollbar-color: theme(colors.gray.300);
     --scrollbar-hover-color: theme(colors.gray.200);
 }
+
 :root[class="dark"] {
     --scrollbar-color: theme(colors.dark.100);
     --scrollbar-hover-color: theme(colors.dark.50);
@@ -49,22 +54,27 @@
         color-scheme: dark;
     }
 }
+
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-color) transparent;
 }
+
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
 }
+
 ::-webkit-scrollbar-track {
     background-color: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
     border-radius: 20px;
     border: 3px solid transparent;
     background-clip: padding-box;
     background-color: var(--scrollbar-color);
+
     &:hover {
         background-color: var(--scrollbar-hover-color);
     }
@@ -83,6 +93,7 @@ body {
 a {
     @apply inline-block transition-all hover:text-purple dark:hover:text-white;
 }
+
 .link {
     @apply font-medium text-purple hover:text-pink dark:text-pink dark:hover:text-slate-200;
 }
@@ -140,6 +151,7 @@ hr,
 hr.divider {
     @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
 }
+
 div.divider {
     @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
     &-centered {

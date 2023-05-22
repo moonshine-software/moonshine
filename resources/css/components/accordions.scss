@@ -8,6 +8,7 @@
                 @apply rounded-t-lg;
             }
         }
+
         &:last-child {
             .accordion-btn:not(._is-active),
             .accordion-content {
@@ -21,6 +22,7 @@
         > svg {
             @apply h-4 w-4;
         }
+
         &._is-active {
             > svg {
                 @apply scale-y-[-1];

@@ -1,0 +1,46 @@
+/* Modal */
+.modal {
+    @apply fixed left-0 top-0 z-modal h-full w-full overflow-y-auto overflow-x-hidden bg-clip-padding outline-none transition-transform;
+
+    &-template {
+        @apply relative z-modal;
+    }
+
+    &-dialog {
+        @apply pointer-events-none mx-auto my-8 flex items-center px-4 sm:max-w-[520px] md:max-w-[720px];
+        min-height: calc(100% - 2rem * 2);
+
+        &-auto {
+            @apply max-w-max;
+            .modal-header,
+            .modal-body {
+                @apply p-4;
+            }
+        }
+
+        &-xl {
+            @apply max-w-[1640px];
+        }
+    }
+
+    &-content {
+        @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700;
+    }
+
+    &-header {
+        @apply flex justify-between gap-x-4 border-b border-gray-200 p-4 dark:border-dark-200 lg:p-6;
+    }
+
+    &-title {
+        @apply self-center text-xs font-semibold xs:text-sm;
+    }
+
+    &-body {
+        @apply grow overflow-y-auto p-4 lg:p-6;
+    }
+
+    /* Backdrop */
+    &-backdrop {
+        @apply fixed inset-0 z-50 h-screen w-screen bg-darkblue/80 dark:bg-dark-900/80;
+    }
+}

@@ -5,9 +5,11 @@ table {
     .dropzone-items {
         @apply max-h-[8rem] max-w-xs gap-1.5 overflow-y-auto;
     }
+
     .dropzone-item-file {
         @apply gap-1 border-0 p-1;
     }
+
     .dropzone-file-icon > svg {
         @apply h-5 w-5;
     }
@@ -28,10 +30,12 @@ table {
         tr {
             @apply odd:bg-gray-50 even:bg-white dark:odd:bg-dark-700 dark:even:bg-dark-700/70;
         }
+
         td,
         th {
             @apply max-w-lg break-words border border-gray-200 p-3 dark:border-dark-400;
         }
+
         th {
             @apply font-semibold;
         }
@@ -61,6 +65,7 @@ table {
         tr {
             @apply bg-white dark:bg-dark-600;
         }
+
         td,
         th {
             @apply max-w-lg whitespace-nowrap px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 lg:whitespace-normal;
