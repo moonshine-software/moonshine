@@ -95,7 +95,7 @@ trait HasOneOrMany
                     : $item->{$this->relation()};
 
                 foreach ($items as $newItem) {
-                    $fields->each(static fn(FormElement $field) => $field->afterSave($newItem));
+                    $fields->each(static fn (FormElement $field) => $field->afterSave($newItem));
                 }
             }
         } elseif ($this instanceof HasOne) {

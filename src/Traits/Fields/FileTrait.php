@@ -107,7 +107,7 @@ trait FileTrait
         return str('hidden_')
             ->when(
                 $this->parentRequestValueKey(),
-                fn(Stringable $str) => $str->append(
+                fn (Stringable $str) => $str->append(
                     $this->parentRequestValueKey() . "."
                 )
             )
@@ -153,7 +153,7 @@ trait FileTrait
     {
         if ($this->isMultiple()) {
             throw_if(
-                !is_null($valueOrValues) && !is_array($valueOrValues),
+                ! is_null($valueOrValues) && ! is_array($valueOrValues),
                 new FieldException('Files must be an array')
             );
 
