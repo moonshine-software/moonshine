@@ -6,28 +6,28 @@ namespace MoonShine\ItemActions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Actions\ItemActionContact;
+use MoonShine\Contracts\Actions\ItemActionContract;
 
 final class ItemActions extends Collection
 {
     public function onlyVisible(Model $item): self
     {
         return $this->filter(
-            fn (ItemActionContact $action) => $action->isSee($item)
+            fn (ItemActionContract $action) => $action->isSee($item)
         );
     }
 
     public function inDropdown(): self
     {
         return $this->filter(
-            static fn (ItemActionContact $action) => $action->inDropdown()
+            static fn (ItemActionContract $action) => $action->inDropdown()
         );
     }
 
     public function inLine(): self
     {
         return $this->filter(
-            static fn (ItemActionContact $action) => ! $action->inDropdown()
+            static fn (ItemActionContract $action) => ! $action->inDropdown()
         );
     }
 }
