@@ -5,6 +5,7 @@
 
 /* Tailwind Components */
 @import "tailwindcss/components";
+@import "components/breadcrumbs";
 @import "components/box";
 @import "components/menu";
 @import "components/navigation";
