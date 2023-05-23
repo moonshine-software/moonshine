@@ -458,3 +458,11 @@ it('collapse', function () {
         />')
         ->assertSee('Collapse component');
 });
+
+it('progress', function () {
+    test()
+        ->blade('<x-moonshine::progress-bar
+                value="20"
+        />')
+        ->assertSee('20%');
+});
