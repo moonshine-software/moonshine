@@ -227,3 +227,251 @@ it('category save files after put', function () {
         ->assertExists($category->files[1]->name[1])
     ;
 });
+
+it('delete only image from has one', function () {
+    expect()->createResourceWithFiles($this->categoryResource);
+
+    $category = $this->categoryResource->getItem();
+
+    fakeRequest(method: 'PUT', parameters: [
+        'id' => $category->id,
+        'name' => 'Test Name',
+        'content' => 'Test Content',
+        'image' => [
+            ['id' =>  $category->image->id]
+        ],
+        'images' => [
+            ['id' => $category->images[0]->id],
+            ['id' => $category->images[1]->id],
+        ],
+        'hidden_images' => [
+            ['name' => $category->images[0]->name],
+            ['name' => $category->images[1]->name],
+        ],
+        'files' => [
+            ['id' => $category->files[0]->id],
+            ['id' => $category->files[1]->id],
+        ],
+        'hidden_files' => [
+            ['name' => [$category->files[0]->name[0], $category->files[0]->name[1]]],
+            ['name' => [$category->files[1]->name[0], $category->files[1]->name[1]]],
+        ],
+    ]);
+
+    $this->categoryResource->save($category);
+
+    $saveCategory = Category::query()->where('id', $category->id)->with('image')->first();
+
+    expect($saveCategory->image)->not()->toBeEmpty()
+        ->and($saveCategory->image->name)->toBeEmpty();
+
+    Storage::disk('public')->assertMissing($category->image->name);
+});
+
+it('delete file and item from has one', function () {
+    expect()->createResourceWithFiles($this->categoryResource);
+
+    $category = $this->categoryResource->getItem();
+
+    fakeRequest(method: 'PUT', parameters: [
+        'id' => $category->id,
+        'name' => 'Test Name',
+        'content' => 'Test Content',
+        'images' => [
+            ['id' => $category->images[0]->id],
+            ['id' => $category->images[1]->id],
+        ],
+        'hidden_images' => [
+            ['name' => $category->images[0]->name],
+            ['name' => $category->images[1]->name],
+        ],
+        'files' => [
+            ['id' => $category->files[0]->id],
+            ['id' => $category->files[1]->id],
+        ],
+        'hidden_files' => [
+            ['name' => [$category->files[0]->name[0], $category->files[0]->name[1]]],
+            ['name' => [$category->files[1]->name[0], $category->files[1]->name[1]]],
+        ],
+    ]);
+
+    $this->categoryResource->save($category);
+
+    $saveCategory = Category::query()->where('id', $category->id)->with('image')->first();
+
+    expect($saveCategory->image)->toBeEmpty();
+
+    Storage::disk('public')->assertMissing($category->image->name);
+});
+
+it('delete only image from has many', function () {
+    expect()->createResourceWithFiles($this->categoryResource);
+
+    $category = $this->categoryResource->getItem();
+
+    fakeRequest(method: 'PUT', parameters: [
+        'id' => $category->id,
+        'name' => 'Test Name',
+        'content' => 'Test Content',
+        'image' => [
+            ['id' =>  $category->image->id]
+        ],
+        'hidden_image' => [
+            ['name' => $category->image->name]
+        ],
+        'images' => [
+            0 => ['id' => $category->images[0]->id],
+            1 => ['id' => $category->images[1]->id],
+        ],
+        'hidden_images' => [
+            1 => ['name' => $category->images[1]->name],
+        ],
+        'files' => [
+            ['id' => $category->files[0]->id],
+            ['id' => $category->files[1]->id],
+        ],
+        'hidden_files' => [
+            ['name' => [$category->files[0]->name[0], $category->files[0]->name[1]]],
+            ['name' => [$category->files[1]->name[0], $category->files[1]->name[1]]],
+        ],
+    ]);
+
+    $this->categoryResource->save($category);
+
+    $saveCategory = Category::query()->where('id', $category->id)->with('images')->first();
+
+    expect($saveCategory->images[0])->not()->toBeEmpty()
+        ->and($saveCategory->images[0]->name)->toBeEmpty();
+
+    Storage::disk('public')->assertMissing($category->images[0]->name);
+});
+
+it('delete item and image from has many', function () {
+    expect()->createResourceWithFiles($this->categoryResource);
+
+    $category = $this->categoryResource->getItem();
+
+    fakeRequest(method: 'PUT', parameters: [
+        'id' => $category->id,
+        'name' => 'Test Name',
+        'content' => 'Test Content',
+        'image' => [
+            ['id' =>  $category->image->id]
+        ],
+        'hidden_image' => [
+            ['name' => $category->image->name]
+        ],
+        'images' => [
+            1 => ['id' => $category->images[1]->id],
+        ],
+        'hidden_images' => [
+            1 => ['name' => $category->images[1]->name],
+        ],
+        'files' => [
+            ['id' => $category->files[0]->id],
+            ['id' => $category->files[1]->id],
+        ],
+        'hidden_files' => [
+            ['name' => [$category->files[0]->name[0], $category->files[0]->name[1]]],
+            ['name' => [$category->files[1]->name[0], $category->files[1]->name[1]]],
+        ],
+    ]);
+
+    $this->categoryResource->save($category);
+
+    $saveCategory = Category::query()->where('id', $category->id)->with('images')->first();
+
+    expect($saveCategory->images[0]->id)->toBeInt($category->images[1]->id);
+
+    Storage::disk('public')->assertMissing($category->images[0]->name);
+});
+
+it('delete only image from has many multiple', function () {
+    expect()->createResourceWithFiles($this->categoryResource);
+
+    $category = $this->categoryResource->getItem();
+
+    fakeRequest(method: 'PUT', parameters: [
+        'id' => $category->id,
+        'name' => 'Test Name',
+        'content' => 'Test Content',
+        'image' => [
+            ['id' =>  $category->image->id]
+        ],
+        'hidden_image' => [
+            ['name' => $category->image->name]
+        ],
+        'images' => [
+            ['id' => $category->images[0]->id],
+            ['id' => $category->images[1]->id],
+        ],
+        'hidden_images' => [
+            ['name' => $category->images[0]->name],
+            ['name' => $category->images[1]->name],
+        ],
+        'files' => [
+            ['id' => $category->files[0]->id],
+            ['id' => $category->files[1]->id],
+        ],
+        'hidden_files' => [
+            ['name' => [$category->files[0]->name[0]]],
+            ['name' => [$category->files[1]->name[0], $category->files[1]->name[1]]],
+        ],
+    ]);
+
+    $this->categoryResource->save($category);
+
+    $saveCategory = Category::query()->where('id', $category->id)->with('files')->first();
+
+    expect($saveCategory->files[0]->name)->toBeArray()
+        ->and(count($saveCategory->files[0]->name))->toBeInt(1)
+        ->and($saveCategory->files[0]->name[0])->toBeString($category->files[0]->name[0])
+    ;
+
+    Storage::disk('public')->assertMissing($category->files[0]->name[1]);
+});
+
+it('delete item and image from has many multiple', function () {
+    expect()->createResourceWithFiles($this->categoryResource);
+
+    $category = $this->categoryResource->getItem();
+
+    fakeRequest(method: 'PUT', parameters: [
+        'id' => $category->id,
+        'name' => 'Test Name',
+        'content' => 'Test Content',
+        'image' => [
+            ['id' =>  $category->image->id]
+        ],
+        'hidden_image' => [
+            ['name' => $category->image->name]
+        ],
+        'images' => [
+            ['id' => $category->images[0]->id],
+            ['id' => $category->images[1]->id],
+        ],
+        'hidden_images' => [
+            ['name' => $category->images[0]->name],
+            ['name' => $category->images[1]->name],
+        ],
+        'files' => [
+            1 => ['id' => $category->files[1]->id],
+        ],
+        'hidden_files' => [
+            1 => ['name' => [$category->files[1]->name[0], $category->files[1]->name[1]]],
+        ],
+    ]);
+
+    $this->categoryResource->save($category);
+
+    $saveCategory = Category::query()->where('id', $category->id)->with('files')->first();
+
+    expect($saveCategory->files[0]->name)->toBeArray()
+        ->and(count($saveCategory->files[0]->name))->toBeInt(1)
+        ->and($saveCategory->files[0]->name[0])->toBeString($category->files[1]->name[0])
+        ->and($saveCategory->files[0]->name[1])->toBeString($category->files[1]->name[1])
+    ;
+
+    Storage::disk('public')->assertMissing($category->files[0]->name[0]);
+    Storage::disk('public')->assertMissing($category->files[0]->name[1]);
+});
