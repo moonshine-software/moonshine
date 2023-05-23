@@ -77,7 +77,7 @@ class TestResourceBuilder
                                     ID::make()->sortable(),
                                     Image::make('Файл', 'name')
                                         ->dir('category_images')
-                                        ->removable()
+                                        ->removable(),
                                 ])->removable(),
 
                                 Date::make('Дата публикации', 'public_at')
@@ -96,7 +96,7 @@ class TestResourceBuilder
                                             ->enableDeleteDir(),
                                     ])
                                     ->hideOnIndex()
-                                    ->removable()
+                                    ->removable(),
                             ]),
 
                             Tab::make('Файлы', [
@@ -109,10 +109,10 @@ class TestResourceBuilder
                                             ->removable(),
                                     ])
                                     ->hideOnIndex()
-                                    ->removable()
-                            ])
-                        ])
-                    ])
+                                    ->removable(),
+                            ]),
+                        ]),
+                    ]),
                 ]
             );
     }

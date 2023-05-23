@@ -20,7 +20,7 @@ class Category extends Model
         'moonshine_user_id',
         'public_at',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function items(): HasMany

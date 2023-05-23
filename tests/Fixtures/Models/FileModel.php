@@ -18,7 +18,7 @@ class FileModel extends Model
     ];
 
     protected $casts = [
-        'name' => 'array'
+        'name' => 'array',
     ];
 
     public function fileable(): MorphTo

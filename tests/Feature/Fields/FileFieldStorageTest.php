@@ -59,7 +59,7 @@ expect()->extend('createResourceWithFiles', function ($categoryResource) {
         'name' => 'Test Name',
         'content' => 'Test Content',
         'image' => [
-            ['name' => $image]
+            ['name' => $image],
         ],
         'images' => [
             ['name' => $hasManyImage1],
@@ -182,10 +182,10 @@ it('category save files after put', function () {
         'name' => 'Test Name',
         'content' => 'Test Content',
         'image' => [
-            ['id' =>  $category->image->id]
+            ['id' => $category->image->id],
         ],
         'hidden_image' => [
-            ['name' => $category->image->name]
+            ['name' => $category->image->name],
         ],
         'images' => [
             ['id' => $category->images[0]->id],
@@ -238,7 +238,7 @@ it('delete only image from has one', function () {
         'name' => 'Test Name',
         'content' => 'Test Content',
         'image' => [
-            ['id' =>  $category->image->id]
+            ['id' => $category->image->id],
         ],
         'images' => [
             ['id' => $category->images[0]->id],
@@ -314,10 +314,10 @@ it('delete only image from has many', function () {
         'name' => 'Test Name',
         'content' => 'Test Content',
         'image' => [
-            ['id' =>  $category->image->id]
+            ['id' => $category->image->id],
         ],
         'hidden_image' => [
-            ['name' => $category->image->name]
+            ['name' => $category->image->name],
         ],
         'images' => [
             0 => ['id' => $category->images[0]->id],
@@ -356,10 +356,10 @@ it('delete item and image from has many', function () {
         'name' => 'Test Name',
         'content' => 'Test Content',
         'image' => [
-            ['id' =>  $category->image->id]
+            ['id' => $category->image->id],
         ],
         'hidden_image' => [
-            ['name' => $category->image->name]
+            ['name' => $category->image->name],
         ],
         'images' => [
             1 => ['id' => $category->images[1]->id],
@@ -396,10 +396,10 @@ it('delete only image from has many multiple', function () {
         'name' => 'Test Name',
         'content' => 'Test Content',
         'image' => [
-            ['id' =>  $category->image->id]
+            ['id' => $category->image->id],
         ],
         'hidden_image' => [
-            ['name' => $category->image->name]
+            ['name' => $category->image->name],
         ],
         'images' => [
             ['id' => $category->images[0]->id],
@@ -441,10 +441,10 @@ it('delete item and image from has many multiple', function () {
         'name' => 'Test Name',
         'content' => 'Test Content',
         'image' => [
-            ['id' =>  $category->image->id]
+            ['id' => $category->image->id],
         ],
         'hidden_image' => [
-            ['name' => $category->image->name]
+            ['name' => $category->image->name],
         ],
         'images' => [
             ['id' => $category->images[0]->id],
