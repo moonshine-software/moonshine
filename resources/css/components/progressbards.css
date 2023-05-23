@@ -116,8 +116,13 @@
         --thickness: 8px;
 
         /* Sizes */
+        &-sm {
+            --size: 3rem;
+            --thickness: 4px;
+        }
         &-md {
             --size: 6rem;
+            --thickness: 6px;
         }
         &-lg {
             --size: 9rem;
