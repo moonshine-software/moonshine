@@ -105,12 +105,8 @@ class TestResourceBuilder
                                         ID::make()->sortable(),
                                         File::make('Файл', 'name')
                                             ->dir('category_files')
-                                            ->customAttributes(
-                                                [
-                                                    'type' => 'hidden',
-                                                    'style' => 'display:none'
-                                                ]
-                                            ),
+                                            ->multiple()
+                                            ->removable(),
                                     ])
                                     ->hideOnIndex()
                                     ->removable()

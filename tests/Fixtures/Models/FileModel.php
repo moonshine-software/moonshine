@@ -16,6 +16,10 @@ class FileModel extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'name' => 'array'
+    ];
+
     public function fileable(): MorphTo
     {
         return $this->morphTo();
