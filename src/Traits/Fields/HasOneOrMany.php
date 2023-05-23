@@ -107,7 +107,13 @@ trait HasOneOrMany
             foreach ($this->getFields()->onlyDeletableFileFields() as $field) {
                 foreach ($item->{$this->relation()} as $value) {
                     if(in_array($value->{$primaryKey}, $ids)) {
-                        $field->deleteFile($value->{$field->field()});
+                        if($field->isMultiple()) {
+                            foreach ($value->{$field->field()} as $fileItem) {
+                                $field->deleteFile($fileItem);
+                            }
+                        } else {
+                            $field->deleteFile($value->{$field->field()});
+                        }
                     }
                 }
             }

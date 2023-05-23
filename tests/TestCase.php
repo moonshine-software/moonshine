@@ -48,6 +48,7 @@ class TestCase extends Orchestra
         $this->refreshApplication();
         $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(realpath('./database/migrations'));
+        $this->loadMigrationsFrom(realpath('./tests/Fixtures/Migrations'));
 
         return $this;
     }
