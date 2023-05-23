@@ -71,6 +71,8 @@ abstract class FormElement implements ResourceRenderable, HasAssets
      */
     protected bool $fullWidth = false;
 
+    protected ?string $parentRequestValueKey = null;
+
     final public function __construct(
         string $label = null,
         string $field = null,
@@ -82,7 +84,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         if ($this->hasRelationship()) {
             $this->setField($field ?? (string)str($this->label)->camel());
 
-            if ($this->belongToOne() && ! str($this->field())->contains('_id')) {
+            if ($this->belongToOne() && !str($this->field())->contains('_id')) {
                 $this->setField(
                     (string)str($this->field())
                         ->append('_id')
@@ -154,7 +156,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
             return $this->resource;
         }
 
-        if (! $this->relation()) {
+        if (!$this->relation()) {
             return null;
         }
 
@@ -322,12 +324,29 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $model->{$this->relation()}()->getRelated();
     }
 
+    public function setParentRequestValueKey(?string $key): static
+    {
+        $this->parentRequestValueKey = $key;
+
+        return $this;
+    }
+
+    public function parentRequestValueKey(): ?string
+    {
+        return $this->parentRequestValueKey;
+    }
+
     public function requestValue(string|int|null $index = null): mixed
     {
-        $nameDot = str($this->nameDot())->when(
-            ! is_null($index) && $index !== '',
-            fn (Stringable $str) => $str->append(".$index")
-        )->value();
+        $nameDot = str($this->isXModelField() ? $this->field() : $this->nameDot())
+            ->when(
+                $this->parentRequestValueKey(),
+                fn(Stringable $str) => $str->prepend("{$this->parentRequestValueKey()}.")
+            )
+            ->when(
+                !is_null($index) && $index !== '',
+                fn(Stringable $str) => $str->append(".$index")
+            )->value();
 
         $default = $this instanceof HasDefaultValue
             ? $this->getDefault()

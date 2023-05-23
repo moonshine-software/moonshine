@@ -63,10 +63,9 @@ it('has one or many method', function () {
     ]);
 
     $avatar = UploadedFile::fake()->image('avatar.png');
-    $values = ['avatar' => $avatar];
 
-    expect($this->field->hasManyOrOneSave('hidden_files', $values))
-        ->toBe(['avatar' => 'files/'.$avatar->hashName()]);
+    expect($this->field->hasManyOrOneSave($avatar))
+        ->toBe('files/'.$avatar->hashName());
 
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 });

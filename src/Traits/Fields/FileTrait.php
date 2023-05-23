@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Stringable;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\WithStorage;
@@ -101,6 +102,19 @@ trait FileTrait
             ->value();
     }
 
+    public function hiddenOldValuesKey(): string
+    {
+        return str('hidden_')
+            ->when(
+                $this->parentRequestValueKey(),
+                fn(Stringable $str) => $str->append(
+                    $this->parentRequestValueKey() . "."
+                )
+            )
+            ->append($this->field())
+            ->value();
+    }
+
     /**
      * @throws Throwable
      */
@@ -135,32 +149,41 @@ trait FileTrait
     /**
      * @throws Throwable
      */
-    public function hasManyOrOneSave($hiddenKey, array $values = [], Model $item = null): array
+    public function hasManyOrOneSave(array|UploadedFile|null $valueOrValues = null): array|string|null
     {
         if ($this->isMultiple()) {
+            throw_if(
+                !is_null($valueOrValues) && !is_array($valueOrValues),
+                new FieldException('Files must be an array')
+            );
+
             $saveValues = request()
-                ->collect($hiddenKey)
+                ->collect($this->hiddenOldValuesKey())
                 ->reject(fn ($v) => is_numeric($v));
 
-            if (isset($values[$this->field()])) {
-                foreach ($values[$this->field()] as $value) {
+            if ($valueOrValues) {
+                foreach ($valueOrValues as $value) {
                     $saveValues = $saveValues->merge([
                         $this->store($value),
                     ]);
                 }
             }
 
-            $values[$this->field()] = $saveValues->values()
+
+            $valueOrValues = $saveValues->values()
                 ->filter()
                 ->unique()
                 ->toArray();
-        } elseif (isset($values[$this->field()])) {
-            $values[$this->field()] = $this->store($values[$this->field()]);
-        } elseif (! isset($values[$this->field()])) {
-            $values[$this->field()] = request($hiddenKey, '');
+        } elseif ($valueOrValues instanceof UploadedFile) {
+            $valueOrValues = $this->store($valueOrValues);
+        } elseif (empty($valueOrValues)) {
+            $valueOrValues = request(
+                $this->hiddenOldValuesKey(),
+                $this->isNullable() ? null : ''
+            );
         }
 
-        return $values;
+        return $valueOrValues;
     }
 
     /**
@@ -169,9 +192,10 @@ trait FileTrait
     public function save(Model $item): Model
     {
         $requestValue = $this->requestValue();
-        $oldValues = request()->collect("hidden_{$this->field()}");
+        $oldValues = request()
+            ->collect($this->hiddenOldValuesKey());
 
-        if($this->isDeleteFiles()) {
+        if ($this->isDeleteFiles()) {
             $this->checkAndDelete($item->{$this->field()}, $oldValues->toArray());
         }
 
