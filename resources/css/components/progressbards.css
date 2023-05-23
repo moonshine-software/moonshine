@@ -29,14 +29,11 @@
 
 /* Radial Progress bars */
 .radial-progress {
-    --size: 8rem;
-    --thickness: 8px;
+    --value: 0;
+    --size: 6rem;
+    --thickness: 6px;
 
-    @media (min-width: 1024px) {
-        --size: 9rem;
-    }
-
-    @apply relative box-content flex items-center justify-center rounded-full bg-transparent text-center text-slate-500 before:absolute before:inset-0 before:rounded-full after:absolute after:rounded-full;
+    @apply relative box-content flex items-center justify-center rounded-full bg-transparent text-center text-slate-500 before:pointer-events-none before:absolute before:inset-0 before:rounded-full after:pointer-events-none after:absolute after:rounded-full;
     width: var(--size);
     height: var(--size);
     box-shadow: inset 0 0 0 var(--thickness) theme(colors.slate.100);
@@ -68,7 +65,30 @@
 
     /* Label */
     > span {
-        @apply text-md font-bold sm:text-lg lg:text-xl;
+        @apply font-bold;
+        font-size: clamp(
+            0.875rem,
+            calc(var(--size) / 4),
+            calc(var(--size) / 2)
+        );
+    }
+
+    /* Sizes */
+    &-sm {
+        --size: 3rem;
+        --thickness: 4px;
+    }
+    &-md {
+        --size: 6rem;
+        --thickness: 6px;
+    }
+    &-lg {
+        --size: 7.5rem;
+        --thickness: 6px;
+    }
+    &-xl {
+        --size: 9rem;
+        --thickness: 6px;
     }
 
     /* Themes */
@@ -89,6 +109,24 @@
     }
     &--blue {
         @apply text-blue-500;
+    }
+
+    @media (min-width: 1024px) {
+        --size: 9rem;
+        --thickness: 8px;
+
+        /* Sizes */
+        &-md {
+            --size: 6rem;
+        }
+        &-lg {
+            --size: 9rem;
+            --thickness: 8px;
+        }
+        &-xl {
+            --size: 12rem;
+            --thickness: 10px;
+        }
     }
 }
 
