@@ -15,7 +15,7 @@ final class UpdateColumnFormRequest extends MoonShineRequest
             return false;
         }
 
-        if (!$this->field()) {
+        if (! $this->field()) {
             return false;
         }
 
@@ -26,7 +26,7 @@ final class UpdateColumnFormRequest extends MoonShineRequest
     {
         return [
             'field' => ['required'],
-            'value' => ['required']
+            'value' => ['required'],
         ];
     }
 

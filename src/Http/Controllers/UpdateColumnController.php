@@ -15,7 +15,7 @@ class UpdateColumnController extends BaseController
     public function __invoke(UpdateColumnFormRequest $request): Response
     {
         $request->merge([
-            $request->field()->field() => $request->get('value')
+            $request->field()->field() => $request->get('value'),
         ]);
 
         try {
@@ -24,7 +24,7 @@ class UpdateColumnController extends BaseController
                 Fields::make([$request->field()])
             );
         } catch (ResourceException $e) {
-            throw_if(!app()->isProduction(), $e);
+            throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
             return response($e->getMessage());

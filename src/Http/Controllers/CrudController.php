@@ -41,13 +41,13 @@ class CrudController extends BaseController
 
         if ($request->hasQueryTag() && $resource->queryTags()) {
             $queryTag = collect($resource->queryTags())
-                ->first(fn(QueryTag $tag) => $tag->uri() === $request->getQueryTag());
+                ->first(fn (QueryTag $tag) => $tag->uri() === $request->getQueryTag());
 
             $resource->customBuilder($queryTag->builder());
         }
 
         if (request()->ajax()) {
-            abort_if(!$request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
+            abort_if(! $request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
 
             $resource->relatable(
                 $request->relatedColumn(),
@@ -83,7 +83,7 @@ class CrudController extends BaseController
 
             return $view;
         } catch (Throwable $e) {
-            throw_if(!app()->isProduction(), $e);
+            throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
             return view('moonshine::components.alert', [
@@ -191,7 +191,7 @@ class CrudController extends BaseController
             try {
                 $resource->save($item);
             } catch (ResourceException $e) {
-                throw_if(!app()->isProduction(), $e);
+                throw_if(! app()->isProduction(), $e);
                 report_if(app()->isProduction(), $e);
 
                 return $redirectRoute
@@ -213,7 +213,7 @@ class CrudController extends BaseController
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
 
-        if (!$item->exists && $request->isRelatableMode()) {
+        if (! $item->exists && $request->isRelatableMode()) {
             $item = $resource->getModel();
             $item->{$request->relatedColumn()} = $request->relatedKey();
         }
