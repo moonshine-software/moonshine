@@ -14,6 +14,6 @@ final class DeleteFormRequest extends MoonShineRequest
             return false;
         }
 
-        return $this->getResource()->can('delete', $this->getItemOrFail());
+        return $this->getResource()->can('delete');
     }
 }

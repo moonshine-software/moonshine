@@ -10,7 +10,7 @@ final class MassDeleteFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('massDelete', $this->getResource()->getModel());
+        return $this->getResource()->can('massDelete');
     }
 
     public function rules(): array

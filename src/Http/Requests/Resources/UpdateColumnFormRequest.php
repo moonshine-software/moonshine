@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests\Resources;
 
+use MoonShine\Fields\Field;
 use MoonShine\MoonShineRequest;
 
-final class PermissionFormRequest extends MoonShineRequest
+final class UpdateColumnFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
         if (! in_array('edit', $this->getResource()->getActiveActions(), true)) {
+            return false;
+        }
+
+        if (!$this->field()) {
             return false;
         }
 
@@ -20,7 +25,14 @@ final class PermissionFormRequest extends MoonShineRequest
     public function rules(): array
     {
         return [
-            'permissions' => ['array'],
+            'field' => ['required'],
+            'value' => ['required']
         ];
+    }
+
+    public function field(): ?Field
+    {
+        return $this->getResource()
+            ->getField(request('field', ''));
     }
 }

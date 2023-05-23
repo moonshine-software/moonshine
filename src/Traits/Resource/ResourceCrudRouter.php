@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Http\Controllers\ActionController;
 use MoonShine\Http\Controllers\CrudController;
+use MoonShine\Http\Controllers\UpdateColumnController;
 
 /**
  * @mixin ResourceContract
@@ -34,6 +35,11 @@ trait ResourceCrudRouter
                 "{$this->uriKey()}/massDelete",
                 [CrudController::class, 'massDelete']
             )->name("{$this->routeNameAlias()}.massDelete");
+
+            Route::put(
+                "{$this->uriKey()}/update-column/{{$this->routeParam()}}",
+                UpdateColumnController::class
+            )->name("{$this->routeNameAlias()}.update-column");
 
             Route::resource($this->uriKey(), CrudController::class)
                 ->parameters([$this->uriKey() => $this->routeParam()])

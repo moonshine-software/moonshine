@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
-use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Http\Controllers\CustomPageController;
 use MoonShine\Http\Controllers\DashboardController;
 use MoonShine\Http\Controllers\NotificationController;
@@ -25,9 +24,6 @@ Route::prefix(config('moonshine.route.prefix', ''))
 
             Route::get('/search/relations', [SearchController::class, 'relations'])
                 ->name('search.relations');
-
-            Route::put('update-column', [CrudController::class, 'updateColumn'])
-                ->name('update-column');
 
             Route::controller(NotificationController::class)
                 ->prefix('notifications')
