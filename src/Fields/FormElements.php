@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Exceptions\FieldsException;
@@ -39,6 +40,17 @@ abstract class FormElements extends Collection
         return $this->map(static function ($fieldsOrDecoration) {
             if ($fieldsOrDecoration instanceof FormElement) {
                 return $fieldsOrDecoration->setParents();
+            }
+
+            return $fieldsOrDecoration;
+        });
+    }
+
+    public function withCurrentResource(ResourceContract $resource): FormElements
+    {
+        return $this->map(static function ($fieldsOrDecoration) use ($resource) {
+            if ($fieldsOrDecoration instanceof FormElement) {
+                return $fieldsOrDecoration->setResources($resource);
             }
 
             return $fieldsOrDecoration;

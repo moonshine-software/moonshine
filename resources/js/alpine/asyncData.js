@@ -24,11 +24,9 @@ export default () => ({
     }
   },
 
-  async updateColumn (route, column, localKey, className, value) {
+  async updateColumn (route, column, value) {
     const response = await axios.put(route, {
       value: value,
-      key: localKey,
-      model: className,
       field: column,
     })
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\Fields\HasCurrentResource;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
@@ -172,6 +173,29 @@ abstract class FormElement implements ResourceRenderable, HasAssets
     public function setResource(?ResourceContract $resource): void
     {
         $this->resource = $resource;
+    }
+
+    public function setResources(ResourceContract $resource): static
+    {
+        if ($this instanceof HasFields) {
+            $fields = [];
+
+            foreach ($this->getFields() as $field) {
+                $field = $field->setResources($resource);
+
+                if ($field instanceof HasCurrentResource) {
+                    $field->setResource($resource);
+                }
+
+                $fields[] = $field;
+            }
+
+            $this->fields($fields);
+        } elseif ($this instanceof HasCurrentResource) {
+            $this->setResource($resource);
+        }
+
+        return $this;
     }
 
     public function resourceTitleField(): string

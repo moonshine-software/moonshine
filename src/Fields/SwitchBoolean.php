@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\HasCurrentResource;
 use MoonShine\Helpers\Condition;
 
-class SwitchBoolean extends Checkbox
+class SwitchBoolean extends Checkbox implements HasCurrentResource
 {
     protected static string $view = 'moonshine::fields.switch';
 

@@ -6,17 +6,10 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Validation\ValidationException;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Http\Requests\Resources\CreateFormRequest;
 use MoonShine\Http\Requests\Resources\DeleteFormRequest;
@@ -28,18 +21,11 @@ use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use MoonShine\Http\Requests\Resources\ViewFormRequest;
 use MoonShine\MoonShineRequest;
 use MoonShine\QueryTags\QueryTag;
-use MoonShine\Resources\Resource;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 class CrudController extends BaseController
 {
-    use AuthorizesRequests;
-    use DispatchesJobs;
-    use ValidatesRequests;
-
-    protected Resource $resource;
-
     public function __construct()
     {
         $this->middleware(HandlePrecognitiveRequests::class)
@@ -55,13 +41,13 @@ class CrudController extends BaseController
 
         if ($request->hasQueryTag() && $resource->queryTags()) {
             $queryTag = collect($resource->queryTags())
-                ->first(fn (QueryTag $tag) => $tag->uri() === $request->getQueryTag());
+                ->first(fn(QueryTag $tag) => $tag->uri() === $request->getQueryTag());
 
             $resource->customBuilder($queryTag->builder());
         }
 
         if (request()->ajax()) {
-            abort_if(! $request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
+            abort_if(!$request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
 
             $resource->relatable(
                 $request->relatedColumn(),
@@ -97,7 +83,7 @@ class CrudController extends BaseController
 
             return $view;
         } catch (Throwable $e) {
-            throw_if(! app()->isProduction(), $e);
+            throw_if(!app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
             return view('moonshine::components.alert', [
@@ -172,37 +158,6 @@ class CrudController extends BaseController
             ->with('alert', trans('moonshine::ui.deleted'));
     }
 
-    public function updateColumn(Request $request): Response
-    {
-        $request->validate([
-            'model' => ['required', 'string'],
-            'key' => ['required'],
-            'field' => ['required'],
-            'value' => ['required'],
-        ]);
-
-        $class = $request->get('model');
-
-        if (! class_exists($class)) {
-            ValidationException::withMessages([
-                'model' => 'Model not found',
-            ]);
-        }
-
-        $model = new $class();
-
-        if (in_array(SoftDeletes::class, class_uses_recursive($model), true)) {
-            $model = $model->withTrashed();
-        }
-
-        $item = $model->findOrFail($request->get('key'));
-
-        $item->{$request->get('field')} = $request->get('value');
-        $item->save();
-
-        return response()->noContent();
-    }
-
     /**
      * @throws Throwable
      */
@@ -236,7 +191,7 @@ class CrudController extends BaseController
             try {
                 $resource->save($item);
             } catch (ResourceException $e) {
-                throw_if(! app()->isProduction(), $e);
+                throw_if(!app()->isProduction(), $e);
                 report_if(app()->isProduction(), $e);
 
                 return $redirectRoute
@@ -258,7 +213,7 @@ class CrudController extends BaseController
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
 
-        if (! $item->exists && $request->isRelatableMode()) {
+        if (!$item->exists && $request->isRelatableMode()) {
             $item = $resource->getModel();
             $item->{$request->relatedColumn()} = $request->relatedKey();
         }

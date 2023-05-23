@@ -176,6 +176,8 @@ it('successful mass delete items', function () {
 });
 
 it('column updated', function () {
+    $item = MoonshineUser::factory()->create(['name' => 'Before']);
+
     $columnValue = fake()->words(asText: true);
 
     assertDatabaseMissing('moonshine_users', [
@@ -183,9 +185,7 @@ it('column updated', function () {
     ]);
 
     asAdmin()
-        ->putJson(route('moonshine.update-column'), [
-            'model' => $this->user::class,
-            'key' => $this->user->getKey(),
+        ->putJson($this->resource->route('update-column', $item->getKey()), [
             'field' => 'name',
             'value' => $columnValue,
         ])->assertNoContent();

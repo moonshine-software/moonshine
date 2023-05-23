@@ -14,7 +14,7 @@ final class UpdateFormRequest extends MoonShineRequest
             return false;
         }
 
-        return $this->getResource()->can('update', $this->getItemOrFail());
+        return $this->getResource()->can('update');
     }
 
     public function rules(): array

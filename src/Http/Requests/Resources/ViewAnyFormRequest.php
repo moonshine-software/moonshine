@@ -10,7 +10,7 @@ final class ViewAnyFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        return $this->getResource()->can('viewAny', $this->getResource()->getModel());
+        return $this->getResource()->can('viewAny');
     }
 
     public function hasQueryTag(): bool

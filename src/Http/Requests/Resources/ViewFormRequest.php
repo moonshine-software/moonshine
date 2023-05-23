@@ -14,7 +14,7 @@ final class ViewFormRequest extends MoonShineRequest
             return false;
         }
 
-        return $this->getResource()->can('view', $this->getItemOrFail(eager: true));
+        return $this->getResource()->can('view');
     }
 
     public function rules(): array
