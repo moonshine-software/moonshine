@@ -6,7 +6,7 @@ namespace MoonShine\ItemActions;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Actions\ItemActionContact;
+use MoonShine\Contracts\Actions\ItemActionContract;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\Makeable;
@@ -14,7 +14,7 @@ use MoonShine\Traits\WithConfirmation;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
-final class ItemAction implements ItemActionContact
+final class ItemAction implements ItemActionContract
 {
     use Makeable;
     use WithIcon;

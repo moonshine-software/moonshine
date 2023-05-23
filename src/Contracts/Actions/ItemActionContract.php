@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Actions;
 
-interface ItemActionContact
+interface ItemActionContract
 {
 }
