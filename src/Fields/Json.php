@@ -81,10 +81,10 @@ class Json extends Field implements
         foreach ($requestValues as $index => $values) {
             foreach ($this->getFields() as $field) {
                 if ($field instanceof Fileable) {
-                    $requestValues[$index] = $field->hasManyOrOneSave(
-                        "hidden_{$this->field()}.$index.{$field->field()}",
-                        $values,
-                        $item
+                    $field->setParentRequestValueKey($this->field().".".$index);
+
+                    $requestValues[$index][$field->field()] = $field->hasManyOrOneSave(
+                        $values[$field->field()] ?? null
                     );
                 }
             }
