@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Actions;
 
 use MoonShine\Contracts\Actions\ActionContract;
-use MoonShine\Contracts\Actions\MassActionContact;
+use MoonShine\Contracts\Actions\MassActionContract;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Traits\HasCanSee;
@@ -15,7 +15,7 @@ use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 
-abstract class Action implements ActionContract, MassActionContact
+abstract class Action implements ActionContract, MassActionContract
 {
     use Makeable;
     use WithView;
