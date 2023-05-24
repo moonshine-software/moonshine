@@ -25,6 +25,7 @@
 @import "components/colors";
 @import "components/cards";
 @import "components/progressbars";
+@import "components/popovers";
 
 /* Tailwind Utilities */
 @import "tailwindcss/utilities";

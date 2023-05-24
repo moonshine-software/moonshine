@@ -1,0 +1,28 @@
+/* Popovers */
+.tippy-box[data-theme="ms-light"] {
+    @apply bg-white text-gray-700 shadow-[0_4px_16px_rgba(161,172,184,0.45)] dark:bg-dark-600 dark:text-slate-200 dark:shadow-[0_4px_24px_rgba(0,0,0,0.15)];
+
+    .popover-body {
+        .title {
+            @apply border-gray-300 dark:border-dark-200;
+        }
+    }
+
+    .tippy-arrow {
+        @apply text-white dark:text-dark-600;
+    }
+}
+.tippy-box {
+    @apply bg-dark-800 dark:text-slate-200 dark:shadow-[0_4px_24px_rgba(0,0,0,0.15)];
+
+    .popover-body {
+        @apply p-1.5 sm:p-2.5;
+        .title {
+            @apply mb-3 border-b border-gray-600 pb-3 text-sm font-semibold sm:text-md;
+        }
+    }
+
+    .tippy-arrow {
+        @apply text-dark-800;
+    }
+}
