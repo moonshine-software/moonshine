@@ -466,3 +466,30 @@ it('progress', function () {
         />')
         ->assertSee('20%');
 });
+
+it('tooltip', function () {
+    test()
+        ->blade('<x-moonshine::tooltip>
+            <x-slot:trigger>
+                <button>Trigger</button>
+            </x-slot:trigger>
+            Tooltip content
+        </x-moonshine:tooltip>
+        ')
+        ->assertSee('Trigger')
+        ->assertSee('Tooltip content');
+});
+
+it('popover', function () {
+    test()
+        ->blade('<x-moonshine::popover title="Popover title">
+            <x-slot:trigger>
+                <button>Trigger</button>
+            </x-slot:trigger>
+            Popover content
+        </x-moonshine:tooltip>
+        ')
+        ->assertSee('Popover title')
+        ->assertSee('Trigger')
+        ->assertSee('Popover content');
+});
