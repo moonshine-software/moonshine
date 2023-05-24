@@ -13,7 +13,7 @@
     }
 }
 .tippy-box {
-    @apply dark:bg-dark-800 dark:text-slate-200 dark:shadow-[0_4px_24px_rgba(0,0,0,0.15)];
+    @apply bg-dark-800 dark:text-slate-200 dark:shadow-[0_4px_24px_rgba(0,0,0,0.15)];
 
     .popover-body {
         @apply p-1.5 sm:p-2.5;
