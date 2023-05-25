@@ -2,6 +2,7 @@
 
 use MoonShine\Commands\ResourceCommand;
 
+use MoonShine\MoonShine;
 use function Pest\Laravel\artisan;
 
 use Symfony\Component\Console\Command\Command;
@@ -37,12 +38,13 @@ it('generates correct resource title', function (
         '--id' => $id,
     ])->assertExitCode(Command::SUCCESS);
 
-    $resourceFileName = ucfirst($name).'Resource.php';
-    $contents = file_get_contents(__DIR__.'/../../../app/MoonShine/Resources/'.$resourceFileName);
+    $path = MoonShine::path().'/app/MoonShine/Resources/'.ucfirst($name).'Resource.php';
+    $contents = file_get_contents($path);
 
     expect($contents)
         ->toContain('public static string $title = \''.$result.'\';');
 
+    @unlink($path);
 })->with([
     'singular resource' => [
         'Children', // result

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Support\Pluralizer;
-use Illuminate\Support\Str;
 use MoonShine\MoonShine;
 
 class ResourceCommand extends MoonShineCommand
@@ -41,7 +39,8 @@ class ResourceCommand extends MoonShineCommand
             ->value();
 
         $model = $this->qualifyModel($this->option('model') ?? $name);
-        $title = $this->option('title') ?? ($this->option('singleton') ? $name : $this->plural($name));
+        $title = $this->option('title') ??
+            ($this->option('singleton') ? $name : str($name)->singular()->plural()->value());
 
         $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
 
@@ -60,17 +59,5 @@ class ResourceCommand extends MoonShineCommand
 
         $this->components->info("{$name}Resource file was created: ".str_replace(base_path(), '', $resource));
         $this->components->info('Now register resource in menu');
-    }
-
-    private function plural(string $value): string
-    {
-        // If main app uses language other than English.
-        // Run English for this command only.
-        Pluralizer::useLanguage('english');
-
-        $valuePlural = Str::plural(Str::singular($value));
-
-        // if true - value is already plural
-        return $valuePlural === $value ? $value : $valuePlural;
     }
 }
