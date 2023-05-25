@@ -27,11 +27,25 @@
 @endforeach
 
 @if(!in_array('show', $except, true) && $resource->can('view') && in_array('show', $resource->getActiveActions()))
-    <x-moonshine::link
-        :href="$resource->route('show', $resource->getItem()->getKey())"
-        :filled="false"
-        icon="heroicons.outline.eye"
-    />
+    @if($resource->isShowInModal())
+        <x-moonshine::async-modal
+            id="show_{{ $resource->getItem()->getTable() }}_modal_{{ $resource->getItem()->getKey() }}"
+            route="{{ $resource->route('show', $resource->getItem()->getKey()) }}"
+            title="{{ $resource->title() }}"
+            :filled="false"
+        >
+            <x-moonshine::icon
+                icon="heroicons.outline.eye"
+                size="4"
+            />
+        </x-moonshine::async-modal>
+    @else
+        <x-moonshine::link
+            :href="$resource->route('show', $resource->getItem()->getKey())"
+            :filled="false"
+            icon="heroicons.outline.eye"
+        />
+    @endif
 @endif
 
 @if(!in_array('edit', $except, true) && $resource->can('update') && in_array('edit', $resource->getActiveActions()))

@@ -194,7 +194,7 @@ it('modal', function () {
     expect($this->resource)
         ->isCreateInModal()
         ->toBeFalse()
-        ->isInModal()
+        ->isInCreateOrEditModal()
         ->toBeFalse()
         ->isEditInModal()
         ->toBeFalse()

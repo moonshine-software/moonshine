@@ -1,11 +1,15 @@
 @if($element->isResourceMode())
     <div class="mb-6">
-        <h1 class="mb-6 truncate text-md font-medium">
+        <x-moonshine::title class="mb-6">
             {{ $element->label() }}
-        </h1>
+        </x-moonshine::title>
 
         @if($element->formViewValue($item))
-            <x-moonshine::async-modal id="edit_{{ $item->getTable() }}_modal_{{ $element->id() }}_{{ $item->getKey() }}" route="{{ $element->resource()->route('edit', $element->formViewValue($item)->getKey() , query: ['relatable_mode' => 1, 'related_column' => $item->{$element->relation()}()->getForeignKeyName(), 'related_key' => $item->getKey()]) }}" class="inline-flex  items-center bg-transparent hover:bg-purple text-purple border border-purple hover:text-white hover:border-transparent font-semibold  py-2 px-4 rounded">
+            <x-moonshine::async-modal
+                id="edit_{{ $item->getTable() }}_modal_{{ $element->id() }}_{{ $item->getKey() }}"
+                route="{{ $element->resource()->relatable()->route('edit', $element->formViewValue($item)->getKey()) }}"
+                title="{{ $element->resource()->title() }}"
+            >
                 <x-moonshine::icon
                     icon="heroicons.pencil-square"
                     size="4"
@@ -13,7 +17,14 @@
                 <span>{{ trans('moonshine::ui.edit') }}</span>
             </x-moonshine::async-modal>
         @elseif($item->exists)
-            <x-moonshine::async-modal id="create_{{ $element->resource()->getModel()->getTable() }}_modal_{{ $element->id() }}" route="{{ $element->resource()->route('create', query: ['relatable_mode' => 1, 'related_column' => $item->{$element->relation()}()->getForeignKeyName(), 'related_key' => $item->getKey()]) }}" class="inline-flex  items-center bg-transparent hover:bg-purple text-purple border border-purple hover:text-white hover:border-transparent font-semibold  py-2 px-4 rounded">
+            <x-moonshine::async-modal
+                id="create_{{ $element->resource()->getModel()->getTable() }}_modal_{{ $element->id() }}"
+                route="{{ $resource->route('relation-field-form', query: [
+                '_field_relation' => $element->relation(),
+                '_related_key' => $item->getKey()
+                ]) }}"
+                title="{{ $element->resource()->title() }}"
+            >
                 <x-moonshine::icon
                     icon="heroicons.squares-plus"
                     size="4"

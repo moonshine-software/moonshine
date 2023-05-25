@@ -1,5 +1,6 @@
 @props([
     'wide' => false,
+    'auto' => false,
     'title' => '',
     'outerHtml' => ''
 ])
@@ -18,7 +19,7 @@
             aria-modal="true"
             role="dialog"
         >
-            <div class="modal-dialog @if($wide) modal-dialog-xl @endif" x-bind="dismissModal">
+            <div class="modal-dialog @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif" x-bind="dismissModal">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ $title ?? '' }}</h5>

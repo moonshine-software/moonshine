@@ -16,8 +16,10 @@
 @endsection
 
 @section('content')
-    @include('moonshine::crud.shared.detail-card', [
+    @fragment('crud-detail')
+    @include($resource->detailView(), [
         'resource' => $resource,
         'item' => $item
     ])
+    @endfragment
 @endsection

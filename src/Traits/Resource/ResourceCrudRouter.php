@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Http\Controllers\ActionController;
 use MoonShine\Http\Controllers\CrudController;
+use MoonShine\Http\Controllers\RelationFieldController;
 use MoonShine\Http\Controllers\UpdateColumnController;
 
 /**
@@ -40,6 +41,16 @@ trait ResourceCrudRouter
                 "{$this->uriKey()}/update-column/{{$this->routeParam()}}",
                 UpdateColumnController::class
             )->name("{$this->routeNameAlias()}.update-column");
+
+            Route::get(
+                "{$this->uriKey()}/relation-field-items/{{$this->routeParam()}}",
+                [RelationFieldController::class, 'index']
+            )->name("{$this->routeNameAlias()}.relation-field-items");
+
+            Route::get(
+                "{$this->uriKey()}/relation-field-form/{{$this->routeParam()}?}",
+                [RelationFieldController::class, 'form']
+            )->name("{$this->routeNameAlias()}.relation-field-form");
 
             Route::resource($this->uriKey(), CrudController::class)
                 ->parameters([$this->uriKey() => $this->routeParam()])
