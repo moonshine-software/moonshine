@@ -469,11 +469,8 @@ it('progress', function () {
 
 it('tooltip', function () {
     test()
-        ->blade('<x-moonshine::tooltip>
-            <x-slot:trigger>
-                <button>Trigger</button>
-            </x-slot:trigger>
-            Tooltip content
+        ->blade('<x-moonshine::tooltip content="Tooltip content">
+            <button>Trigger</button>
         </x-moonshine:tooltip>
         ')
         ->assertSee('Trigger')

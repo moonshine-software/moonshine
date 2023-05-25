@@ -1,10 +1,9 @@
 @props([
-    'title' => '',
+    'content' => '',
     'placement' => 'right',
-    'trigger',
 ])
-<span {{ $attributes }}
-     x-data="tooltip(`{{ $slot }}`, {placement: '{{ $placement }}'})"
+<span {{ $attributes->class(['inline-block']) }}
+     x-data="tooltip(`{{ $content }}`, {placement: '{{ $placement }}'})"
 >
-    {{ $trigger }}
+    {{ $slot }}
 </span>
