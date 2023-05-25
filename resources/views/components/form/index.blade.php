@@ -33,7 +33,7 @@
             </x-moonshine::column>
 
             <x-moonshine::column>
-                <div class="precognition_errors"></div>
+                <div class="precognition_errors mb-6"></div>
             </x-moonshine::column>
         </x-moonshine::grid>
     @endif

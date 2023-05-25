@@ -493,3 +493,21 @@ it('popover', function () {
         ->assertSee('Trigger')
         ->assertSee('Popover content');
 });
+
+it('spinner', function () {
+    test()
+        ->blade('<x-moonshine::spinner />')
+        ->assertSee('spinner');
+
+    test()
+        ->blade('<x-moonshine::spinner
+            size="md"
+            color="purple"
+            :fixed="true"
+            :absolute="true"
+        />')
+        ->assertSee('spinner--purple')
+        ->assertSee('spinner-fixed')
+        ->assertSee('spinner-absolute')
+        ->assertSee('spinner-md');
+});

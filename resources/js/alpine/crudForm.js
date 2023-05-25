@@ -7,7 +7,7 @@ export default () => ({
   precognition (form) {
     form.querySelector('.form_submit_button').
       setAttribute('disabled', 'true')
-    form.querySelector('.form_submit_button').innerHTML = translates.loading
+    form.querySelector('.form_submit_button_loader').style.display = 'block'
     form.querySelector('.precognition_errors').innerHTML = ''
 
     axios.post(form.getAttribute('action'), new FormData(form), {
@@ -19,8 +19,7 @@ export default () => ({
     }).then(function (response) {
       form.submit()
     }).catch(errorResponse => {
-      form.querySelector(
-        '.form_submit_button').innerHTML = translates.saved_error
+      form.querySelector('.form_submit_button_loader').style.display = 'none'
       form.querySelector('.form_submit_button').removeAttribute('disabled')
 
       let errors = ''
