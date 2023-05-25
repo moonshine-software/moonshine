@@ -21,11 +21,12 @@
 @import "components/tabs";
 @import "components/accordions";
 @import "components/alerts";
+@import "components/loader";
 @import "components/colors";
 @import "components/cards";
 @import "components/progressbars";
 @import "components/popovers";
-@import "components/loaders";
+@import "components/spinners";
 
 /* Tailwind Utilities */
 @import "tailwindcss/utilities";

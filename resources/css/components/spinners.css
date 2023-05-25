@@ -1,5 +1,5 @@
-/* Loaders (spinners) */
-.loader {
+/* Spinners (loaders) */
+.spinner {
     @apply relative h-8 w-8 rounded-full before:absolute before:inset-0 before:box-border before:rounded-full before:border-3 before:border-gray-500;
     animation: ms-loader-rotate 1s linear infinite;
     &::before {
