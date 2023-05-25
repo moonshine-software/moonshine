@@ -38,7 +38,7 @@ it('generates correct resource title', function (
         '--id' => $id,
     ])->assertExitCode(Command::SUCCESS);
 
-    $path = MoonShine::path().'/app/MoonShine/Resources/'.ucfirst($name).'Resource.php';
+    $path = MoonShine::path('app/MoonShine/Resources/'.ucfirst($name).'Resource.php');
     $contents = file_get_contents($path);
 
     expect($contents)
