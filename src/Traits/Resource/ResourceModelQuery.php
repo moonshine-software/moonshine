@@ -132,11 +132,6 @@ trait ResourceModelQuery
             request('order.type', $this->sortDirection())
         );
 
-        if ($this->isRelatable()) {
-            return $query
-                ->where($this->relatedColumn(), $this->relatedKey());
-        }
-
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
                 ->onlyFields()

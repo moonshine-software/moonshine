@@ -104,7 +104,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
             }
 
             if ($resource instanceof ResourceContract) {
-                $this->setResource($resource);
+                $this->setResource($resource->relatable());
             } elseif (is_string($resource)) {
                 $this->setResourceTitleField($resource);
             }

@@ -25,9 +25,8 @@
 </x-moonshine::form>
 
 @if($item->exists &&
-    !$resource->isInModal()
+    !$resource->isInCreateOrEditModal()
     && !$resource->isRelatable()
-    && !request('relatable_mode')
 )
     @foreach($resource->getFields()->relatable() as $field)
         @if($field->canDisplayOnForm($item))

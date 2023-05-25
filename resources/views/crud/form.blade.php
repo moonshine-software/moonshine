@@ -16,5 +16,7 @@
 @endsection
 
 @section('content')
-    @include('moonshine::crud.shared.form', ['item' => $item])
+    @fragment('crud-form')
+        @include($resource->formView(), ['item' => $item])
+    @endfragment
 @endsection

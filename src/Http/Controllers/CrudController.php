@@ -49,10 +49,7 @@ class CrudController extends BaseController
         if (request()->ajax()) {
             abort_if(! $request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
 
-            $resource->relatable(
-                $request->relatedColumn(),
-                $request->relatedKey()
-            );
+            $resource->relatable();
         }
 
         $actions = $resource->getActions();
@@ -62,26 +59,14 @@ class CrudController extends BaseController
                 ? $resource->paginate()
                 : $resource->items();
 
-            $view = view($resource->baseIndexView(), [
+            return $this->viewOrFragment(view($resource->baseIndexView(), [
                 'resource' => $resource,
                 'resources' => $resources,
                 'filters' => $resource->filters(),
                 'dropdownActions' => $actions->inDropdown(),
                 'lineActions' => $actions->inLine(),
                 'metrics' => $resource->metrics(),
-            ]);
-
-            if ($request->hasHeader('X-Fragment')) {
-                return $view->fragment($request->header('X-Fragment'));
-            }
-
-            if (request()->ajax()) {
-                $sections = $view->renderSections();
-
-                return $sections['content'] ?? '';
-            }
-
-            return $view;
+            ]));
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
@@ -118,10 +103,10 @@ class CrudController extends BaseController
      */
     public function show(ViewFormRequest $request): string|View|RedirectResponse
     {
-        return view($request->getResource()->baseShowView(), [
+        return $this->viewOrFragment(view($request->getResource()->baseShowView(), [
             'resource' => $request->getResource(),
             'item' => $request->getItem(),
-        ]);
+        ]));
     }
 
     /**
@@ -213,22 +198,20 @@ class CrudController extends BaseController
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
 
-        if (! $item->exists && $request->isRelatableMode()) {
-            $item = $resource->getModel();
-            $item->{$request->relatedColumn()} = $request->relatedKey();
-        }
-
         if (request()->ajax()) {
             $resource->precognitionMode();
         }
 
-        $view = view($resource->baseEditView(), [
+        return $this->viewOrFragment(view($resource->baseEditView(), [
             'resource' => $resource,
             'item' => $item,
-        ]);
+        ]));
+    }
 
-        if ($request->hasHeader('X-Fragment')) {
-            return $view->fragment($request->header('X-Fragment'));
+    protected function viewOrFragment(View $view): View|string
+    {
+        if (request()->hasHeader('X-Fragment')) {
+            return $view->fragment(request()->header('X-Fragment'));
         }
 
         if (request()->ajax()) {

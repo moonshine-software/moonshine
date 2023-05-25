@@ -62,11 +62,17 @@ abstract class Resource implements ResourceContract
 
     protected string $itemsView = 'moonshine::crud.shared.table';
 
+    protected string $formView = 'moonshine::crud.shared.form';
+
+    protected string $detailView = 'moonshine::crud.shared.detail-card';
+
     public string $titleField = '';
 
     protected static bool $system = false;
 
     protected ?Model $item = null;
+
+    protected bool $showInModal = false;
 
     protected bool $createInModal = false;
 
@@ -74,11 +80,9 @@ abstract class Resource implements ResourceContract
 
     protected bool $precognition = false;
 
-    protected string $relatedColumn = '';
-
-    protected string|int $relatedKey = '';
-
     protected bool $previewMode = false;
+
+    protected bool $relatable = false;
 
     protected string $routeAfterSave = 'index';
 
@@ -299,6 +303,16 @@ abstract class Resource implements ResourceContract
         return $this->itemsView;
     }
 
+    public function formView(): string
+    {
+        return $this->formView;
+    }
+
+    public function detailView(): string
+    {
+        return $this->detailView;
+    }
+
     public function title(): string
     {
         return static::$title;
@@ -346,9 +360,10 @@ abstract class Resource implements ResourceContract
         return static::$system;
     }
 
-    public function isInModal(): bool
+    public function isInCreateOrEditModal(): bool
     {
-        return $this->isEditInModal() || $this->isCreateInModal();
+        return $this->isEditInModal()
+            || $this->isCreateInModal();
     }
 
     public function isCreateInModal(): bool
@@ -361,10 +376,15 @@ abstract class Resource implements ResourceContract
         return $this->editInModal;
     }
 
+    public function isShowInModal(): bool
+    {
+        return $this->showInModal;
+    }
+
     public function isPrecognition(): bool
     {
         return $this->precognition
-            || $this->isInModal()
+            || $this->isInCreateOrEditModal()
             || $this->isRelatable();
     }
 
@@ -446,19 +466,19 @@ abstract class Resource implements ResourceContract
         return in_array(SoftDeletes::class, class_uses_recursive(static::$model), true);
     }
 
-    public function relatable(string $column, string|int $key): self
+    public function relatable(): self
     {
-        $this->relatedColumn = $column;
-        $this->relatedKey = $key;
+        $this->relatable = true;
         $this->createInModal = true;
         $this->editInModal = true;
+        $this->showInModal = true;
 
         return $this->precognitionMode();
     }
 
     public function isRelatable(): bool
     {
-        return ($this->relatedColumn && $this->relatedKey);
+        return $this->relatable;
     }
 
     public function previewMode(): self
@@ -471,16 +491,6 @@ abstract class Resource implements ResourceContract
     public function isPreviewMode(): bool
     {
         return $this->previewMode;
-    }
-
-    public function relatedColumn(): string
-    {
-        return $this->relatedColumn;
-    }
-
-    public function relatedKey(): string|int
-    {
-        return $this->relatedKey;
     }
 
     /**

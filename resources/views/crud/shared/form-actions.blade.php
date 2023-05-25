@@ -2,7 +2,7 @@
     {{ trans('moonshine::ui.save') }}
 </x-slot:button>
 
-@if($item->exists && !request('relatable_mode'))
+@if($item->exists)
     <x-slot:buttons>
         @if($resource->formActionsCollection()->onlyVisible($item)->inDropdown()->isNotEmpty())
             <x-moonshine::dropdown>
