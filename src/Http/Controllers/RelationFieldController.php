@@ -29,7 +29,7 @@ class RelationFieldController extends BaseController
             ->getFields()
             ->findByRelation($request->get('_field_relation', ''));
 
-        if (is_null($this->field) || !$this->field->hasRelationship() || !$this->field->resource()) {
+        if (is_null($this->field) || ! $this->field->hasRelationship() || ! $this->field->resource()) {
             $this->fieldNotFound = true;
         } else {
             $this->fieldResource = $this->field->resource()->relatable();
@@ -66,7 +66,7 @@ class RelationFieldController extends BaseController
         $foreignKeyName = $item->{$this->field->relation()}()
             ->getForeignKeyName();
 
-        if (!$id = $request->get('_related_key')) {
+        if (! $id = $request->get('_related_key')) {
             $id = MoonShineRequest::create(
                 $request->headers->get('referer')
             )->getIdBySegment();

@@ -17,7 +17,7 @@ beforeEach(function () {
         ->setTestModel(CategoryImage::class)
         ->setTestFields([
             ID::make(),
-            Text::make('Name')
+            Text::make('Name'),
         ])
         ->setTestUriKey('category-image-resource')
         ->addRoutes();
@@ -26,21 +26,21 @@ beforeEach(function () {
         ->setTestModel(Item::class)
         ->setTestFields([
             ID::make(),
-            Text::make('Name')
+            Text::make('Name'),
         ])
         ->setTestUriKey('item-resource')
         ->addRoutes();
 
     $this->item = Category::query()->create([
         'name' => 'Testing',
-        'content' => 'Testing'
+        'content' => 'Testing',
     ]);
 
     $this->resource = TestResourceBuilder::new()
         ->setTestModel(Category::class)
         ->setTestFields([
             HasOne::make('Image', resource: $this->imageResource)->resourceMode(),
-            HasMany::make('Items', resource: $this->itemResource)->resourceMode()
+            HasMany::make('Items', resource: $this->itemResource)->resourceMode(),
         ])
         ->setTestUriKey('category-resource')
         ->addRoutes();
@@ -49,7 +49,7 @@ beforeEach(function () {
 function relationFieldItemsUrl(string $relation)
 {
     return test()->resource->route('relation-field-items', test()->item->getKey(), query: [
-        '_field_relation' => $relation
+        '_field_relation' => $relation,
     ]);
 }
 
@@ -57,7 +57,7 @@ function relationFieldFormUrl(string $relation, string|int $key)
 {
     return test()->resource->route('relation-field-form', test()->item->getKey(), query: [
         '_field_relation' => $relation,
-        '_related_key' => $key
+        '_related_key' => $key,
     ]);
 }
 
@@ -72,13 +72,13 @@ it('index has many successful response', function () {
     $itemWithCategory = Item::query()->create([
         'name' => 'Testing',
         'category_id' => $this->item->getKey(),
-        'content' => 'Testing'
+        'content' => 'Testing',
     ]);
 
     $itemWithoutCategory = Item::query()->create([
         'name' => 'Testing',
         'category_id' => null,
-        'content' => 'Testing'
+        'content' => 'Testing',
     ]);
 
     expect(asAdmin()->get(relationFieldItemsUrl('items')))
