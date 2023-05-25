@@ -1,8 +1,8 @@
 <?php
 
 use MoonShine\Commands\ResourceCommand;
-
 use MoonShine\MoonShine;
+
 use function Pest\Laravel\artisan;
 
 use Symfony\Component\Console\Command\Command;
