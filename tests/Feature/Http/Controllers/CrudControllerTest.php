@@ -7,6 +7,7 @@ use MoonShine\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Requests\CrudRequestFactory;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
+use function Pest\Laravel\assertDatabaseEmpty;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\assertModelExists;
@@ -86,6 +87,8 @@ it('successful stored', function () {
         'email' => $email,
     ]);
 
+    assertDatabaseEmpty('moonshine_change_logs');
+
     asAdmin()
         ->post($this->resource->route('store'), $this->requestData->create())
         ->assertValid()
@@ -93,6 +96,11 @@ it('successful stored', function () {
 
     assertDatabaseHas('moonshine_users', [
         'email' => $email,
+    ]);
+
+    assertDatabaseHas('moonshine_change_logs', [
+        'changelogable_type' => MoonshineUser::class,
+        'changelogable_id' => MoonshineUser::query()->where('email', $email)->first()->id,
     ]);
 });
 
@@ -113,6 +121,8 @@ it('successful updated', function () {
         'email' => $email,
     ]);
 
+    assertDatabaseEmpty('moonshine_change_logs');
+
     $requestData = $this->requestData->create();
 
     asAdmin()
@@ -128,6 +138,11 @@ it('successful updated', function () {
     expect($updatedUser)
         ->email->toBe($requestData['email'])
         ->name->toBe($requestData['name']);
+
+    assertDatabaseHas('moonshine_change_logs', [
+        'changelogable_type' => MoonshineUser::class,
+        'changelogable_id' => $updatedUser->id,
+    ]);
 });
 
 it('validation error on updated', function () {
