@@ -39,7 +39,8 @@ class ResourceCommand extends MoonShineCommand
             ->value();
 
         $model = $this->qualifyModel($this->option('model') ?? $name);
-        $title = $this->option('title') ?? $name;
+        $title = $this->option('title') ??
+            ($this->option('singleton') ? $name : str($name)->singular()->plural()->value());
 
         $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
 
