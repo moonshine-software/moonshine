@@ -3,6 +3,10 @@
 @import "base/common";
 @import "base/layout";
 
+/* Libs */
+@import "tippy.js/dist/tippy";
+@import "choices.js/public/assets/styles/choices";
+
 /* Tailwind Components */
 @import "tailwindcss/components";
 @import "components/breadcrumbs";
@@ -36,7 +40,3 @@
 /* Pages */
 @import "pages/dashboard";
 @import "pages/authentication";
-
-/* Libs */
-@import "tippy.js/dist/tippy";
-@import "choices.js/public/assets/styles/choices";
