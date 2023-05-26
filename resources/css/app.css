@@ -27,6 +27,7 @@
 @import "components/progressbars";
 @import "components/popovers";
 @import "components/spinners";
+@import "components/toasts";
 
 /* Tailwind Utilities */
 @import "tailwindcss/utilities";

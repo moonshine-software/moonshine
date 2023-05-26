@@ -101,6 +101,7 @@ module.exports = {
                 '5': '5',
                 'modal': '1070',
                 'offcanvas': '1050',
+                'toast': '1500',
             },
             opacity: {
                 '15': '.15',
