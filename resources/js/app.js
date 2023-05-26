@@ -11,6 +11,7 @@ import dropdown from './alpine/dropdown'
 import modal from './alpine/modal'
 import offcanvas from './alpine/offcanvas'
 import select from './alpine/select'
+import toasts from './alpine/toasts'
 import tooltip from './alpine/tooltip'
 import navTooltip from './alpine/navTooltip'
 import popovers from './alpine/popovers'
@@ -30,6 +31,7 @@ Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
 Alpine.data('offcanvas', offcanvas)
 Alpine.data('select', select)
+Alpine.data('toasts', toasts)
 Alpine.data('tooltip', tooltip)
 Alpine.data('navTooltip', navTooltip)
 Alpine.data('popover', popovers)
