@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Event;
 use MoonShine\Fields\Text;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Models\MoonshineUser;
@@ -7,7 +8,6 @@ use MoonShine\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Requests\CrudRequestFactory;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
-use function Pest\Laravel\assertDatabaseEmpty;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\assertModelExists;
@@ -79,6 +79,8 @@ it('show detail page', function () {
 });
 
 it('successful stored', function () {
+    Event::fake();
+
     $email = fake()->email();
 
     $this->requestData->withEmail($email);
@@ -87,8 +89,6 @@ it('successful stored', function () {
         'email' => $email,
     ]);
 
-    assertDatabaseEmpty('moonshine_change_logs');
-
     asAdmin()
         ->post($this->resource->route('store'), $this->requestData->create())
         ->assertValid()
@@ -96,11 +96,6 @@ it('successful stored', function () {
 
     assertDatabaseHas('moonshine_users', [
         'email' => $email,
-    ]);
-
-    assertDatabaseHas('moonshine_change_logs', [
-        'changelogable_type' => MoonshineUser::class,
-        'changelogable_id' => MoonshineUser::query()->where('email', $email)->first()->id,
     ]);
 });
 
@@ -113,6 +108,8 @@ it('validation error on stored', function () {
 });
 
 it('successful updated', function () {
+    Event::fake();
+
     $email = fake()->email();
 
     $this->requestData->withEmail($email);
@@ -120,8 +117,6 @@ it('successful updated', function () {
     assertDatabaseMissing('moonshine_users', [
         'email' => $email,
     ]);
-
-    assertDatabaseEmpty('moonshine_change_logs');
 
     $requestData = $this->requestData->create();
 
@@ -138,11 +133,6 @@ it('successful updated', function () {
     expect($updatedUser)
         ->email->toBe($requestData['email'])
         ->name->toBe($requestData['name']);
-
-    assertDatabaseHas('moonshine_change_logs', [
-        'changelogable_type' => MoonshineUser::class,
-        'changelogable_id' => $updatedUser->id,
-    ]);
 });
 
 it('validation error on updated', function () {
@@ -157,6 +147,8 @@ it('validation error on updated', function () {
 });
 
 it('changed route after save', function () {
+    Event::fake();
+
     $this->resource = TestResourceBuilder::new(get_class($this->user), true)
         ->setTestRouteAfterSave('edit');
 

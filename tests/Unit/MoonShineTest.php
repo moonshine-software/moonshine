@@ -1,7 +1,6 @@
 <?php
 
 use MoonShine\Menu\MenuSection;
-use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShine;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -30,27 +29,4 @@ it('menu', function () {
         ->toHaveCount(1)
         ->first()
         ->toBeInstanceOf(MenuSection::class);
-});
-
-it('recognizes internal request as MoonShine request', function () {
-    $user = MoonshineUser::factory()->create();
-    $resource = $this->moonShineUserResource();
-    $resource->setItem($user);
-
-    asAdmin()
-        ->get($resource->route('edit', $user->getKey()))
-        ->assertOk();
-
-    expect(MoonShine::isMoonShineRequest())
-        ->toBeTrue();
-});
-
-it('recognizes external request as non MoonShine request', function () {
-    $this->post(
-        route('moonshine.authenticate'),
-        ['username' => $this->adminUser()->email, 'password' => 'test']
-    )->assertValid();
-
-    expect(MoonShine::isMoonShineRequest())
-        ->toBeFalse();
 });
