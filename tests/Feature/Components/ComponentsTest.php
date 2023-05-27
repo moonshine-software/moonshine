@@ -508,3 +508,9 @@ it('spinner', function () {
         ->assertSee('spinner-absolute')
         ->assertSee('spinner-md');
 });
+
+it('toast', function () {
+    test()
+        ->blade('<x-moonshine::toast>Toast content</x-moonshine::toast>')
+        ->assertSee('Toast content');
+});

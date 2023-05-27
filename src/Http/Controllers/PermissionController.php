@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\Resources\PermissionFormRequest;
 use MoonShine\Models\MoonshineUserPermission;
+use MoonShine\MoonShineUI;
 
 class PermissionController extends BaseController
 {
@@ -26,7 +27,11 @@ class PermissionController extends BaseController
             );
         }
 
-        return back()
-            ->with('alert', trans('moonshine::ui.saved'));
+        MoonShineUI::toast(
+            __('moonshine::ui.saved'),
+            'success'
+        );
+
+        return back();
     }
 }
