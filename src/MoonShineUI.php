@@ -10,8 +10,7 @@ class MoonShineUI
     {
         session()->flash('toast', [
             'type' => $type,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 }
-
