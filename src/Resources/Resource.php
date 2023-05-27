@@ -19,6 +19,7 @@ use MoonShine\Contracts\Actions\ActionContract;
 use MoonShine\Contracts\ResourceRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Decorations\Decoration;
+use MoonShine\DetailComponents\DetailComponent;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -200,11 +201,16 @@ abstract class Resource implements ResourceContract
     /**
      * Get an array of custom form actions
      *
-     * @return array<int, FormComponent>
+     * @return array<int, FormComponent|DetailComponent>
      */
     public function components(): array
     {
         return [];
+    }
+
+    public function componentsCollection(): ResourceComponents
+    {
+        return ResourceComponents::make($this->components());
     }
 
     /**
