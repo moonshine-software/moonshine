@@ -12,6 +12,7 @@ use Laravel\Socialite\Facades\Socialite;
 use MoonShine\Exceptions\AuthException;
 use MoonShine\Models\MoonshineSocialite;
 use MoonShine\MoonShineAuth;
+use MoonShine\MoonShineUI;
 use RuntimeException;
 
 class SocialiteController extends BaseController
@@ -56,9 +57,14 @@ class SocialiteController extends BaseController
         }
 
         if (! $account) {
+            MoonShineUI::toast(
+                __('moonshine::auth.failed'),
+                'error'
+            );
+
             return to_route('moonshine.login')->withErrors([
                 'username' => __('moonshine::auth.failed'),
-            ])->with('alert', __('moonshine::auth.failed'));
+            ]);
         }
 
         MoonShineAuth::guard()
@@ -70,7 +76,9 @@ class SocialiteController extends BaseController
     private function bindAccount(User $socialiteUser, string $driver, ?MoonshineSocialite $account): RedirectResponse
     {
         if ($account) {
-            session()->flash('alert', __('moonshine::auth.socialite.link_exists'));
+            MoonShineUI::toast(
+                __('moonshine::auth.socialite.link_exists')
+            );
         } else {
             MoonshineSocialite::query()->create([
                 'moonshine_user_id' => MoonShineAuth::guard()->id(),
@@ -78,7 +86,10 @@ class SocialiteController extends BaseController
                 'identity' => $socialiteUser->getId(),
             ]);
 
-            session()->flash('success', __('moonshine::auth.socialite.link_success'));
+            MoonShineUI::toast(
+                __('moonshine::auth.socialite.link_success'),
+                'success'
+            );
         }
 
         return to_route(

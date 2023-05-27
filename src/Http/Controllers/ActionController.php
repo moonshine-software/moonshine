@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\Resources\EditFormRequest;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
+use MoonShine\MoonShineUI;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -47,12 +48,19 @@ final class ActionController extends BaseController
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
-            return $redirectRoute
-                ->with('alert', trans('moonshine::ui.saved_error'));
+            MoonShineUI::toast(
+                __('moonshine::ui.saved_error'),
+                'error'
+            );
+
+            return $redirectRoute;
         }
 
-        return $redirectRoute
-            ->with('alert', $action->message());
+        MoonShineUI::toast(
+            $action->message()
+        );
+
+        return $redirectRoute;
     }
 
     public function form(EditFormRequest $request): RedirectResponse
@@ -74,12 +82,17 @@ final class ActionController extends BaseController
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
-            return $redirectRoute
-                ->with('alert', trans('moonshine::ui.saved_error'));
+            MoonShineUI::toast(
+                __('moonshine::ui.saved_error'),
+                'error'
+            );
+
+            return $redirectRoute;
         }
 
-        return $redirectRoute
-            ->with('alert', $action->message());
+        MoonShineUI::toast($action->message());
+
+        return $redirectRoute;
     }
 
     public function bulk(ViewAnyFormRequest $request): RedirectResponse
@@ -107,11 +120,16 @@ final class ActionController extends BaseController
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
-            return $redirectRoute
-                ->with('alert', trans('moonshine::ui.saved_error'));
+            MoonShineUI::toast(
+                __('moonshine::ui.saved_error'),
+                'error'
+            );
+
+            return $redirectRoute;
         }
 
-        return $redirectRoute
-            ->with('alert', $action->message());
+        MoonShineUI::toast($action->message());
+
+        return $redirectRoute;
     }
 }
