@@ -24,3 +24,11 @@
         {{ $resource->renderComponent($field, $item) }}
     @endif
 @endforeach
+
+@if($resource->componentsCollection()->detailComponents()->isNotEmpty())
+    @foreach($resource->componentsCollection()->detailComponents() as $detailComponent)
+        @if($detailComponent->isSee($item))
+            {{ $resource->renderComponent($detailComponent, $item) }}
+        @endif
+    @endforeach
+@endif
