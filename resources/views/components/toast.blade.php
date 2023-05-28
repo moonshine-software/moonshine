@@ -7,7 +7,7 @@
 @if($showOnCreate)
 <div x-data
      x-init="$nextTick(() => { $dispatch('toast', {type: '{{ $type }}', text: '{{ $slot }}'}) })"
-/>
+></div>
 @else
     <div x-data @click="$dispatch('toast', {type: '{{ $type }}', text: '{{ $content }}'})">
         {{ $slot }}
