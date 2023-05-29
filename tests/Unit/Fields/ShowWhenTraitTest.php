@@ -1,10 +1,12 @@
 <?php
 
+use MoonShine\Traits\Fields\ShowWhen;
+
 uses()->group('fields');
 
 beforeEach(function () {
     $this->showWhenTest = new class() {
-        use \MoonShine\Traits\Fields\ShowWhen;
+        use ShowWhen;
 
         public function name()
         {
@@ -60,3 +62,7 @@ it('error operator', function () {
 it('error operator in', function () {
     $this->showWhenTest->showWhen('field2', 'in', 1);
 })->throws(InvalidArgumentException::class, 'Illegal operator and value combination. Value must be array type');
+
+it('error null value', function () {
+    $this->showWhenTest->showWhen('field2', '>', null);
+})->throws(InvalidArgumentException::class, 'Illegal operator and value combination.');

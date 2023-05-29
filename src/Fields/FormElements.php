@@ -58,16 +58,16 @@ abstract class FormElements extends Collection
         });
     }
 
-    public function prepareAttributes()
+    public function prepareAttributes(): FormElements
     {
-        return $this->onlyFields()->map(static function ($fieldsOrDecoration) {
-            if (
-                $fieldsOrDecoration instanceof FormElement
-                && !$fieldsOrDecoration instanceof Fileable
-            ) {
-                return $fieldsOrDecoration->customAttributes(['x-on:change' => 'onChangeField($event)']);
-            }
-            return $fieldsOrDecoration;
+        return $this->onlyFields()->map(static function (FormElement $formElement) {
+            $formElement->when(!$formElement instanceof Fileable, function ($field) {
+                    $field->customAttributes(
+                        ['x-on:change' => 'onChangeField($event)']
+                    );
+                }
+            );
+            return $formElement;
         });
     }
 
@@ -95,7 +95,7 @@ abstract class FormElements extends Collection
             ->values();
     }
 
-    public function whenFieldsConditions()
+    public function whenFieldsConditions(): FormElements
     {
         return $this->onlyFields()
             ->filter(static fn (FormElement $field) => $field->hasShowWhen())

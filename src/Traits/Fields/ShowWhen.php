@@ -29,7 +29,7 @@ trait ShowWhen
      * @return array {
      *               showField: string,
      *               changeField: string,
-     *               operator: string,
+     *               operator: mixed,
      *               value: mixed,
      *               }
      */
@@ -38,7 +38,7 @@ trait ShowWhen
         return $this->showWhenCondition;
     }
 
-    public function showWhen(string $column, $operator = null, $value = null): static
+    public function showWhen(string $column, mixed $operator = null, mixed $value = null): static
     {
         [$column, $value, $operator] = $this->makeCondition(...func_get_args());
 
@@ -54,17 +54,19 @@ trait ShowWhen
         return $this;
     }
 
-    private function makeCondition(string $column, $operator = null, $value = null): array
+    private function makeCondition(string $column, mixed $operator = null, mixed $value = null): array
     {
         return [$column, ...$this->prepareValueAndOperator(
             $value, $operator, func_num_args() === 2
         )];
     }
 
-    private function prepareValueAndOperator($value, $operator, $useDefault = false): array
+    private function prepareValueAndOperator(mixed $value, mixed $operator = null, $useDefault = false): array
     {
         if ($useDefault) {
             return [$operator, '='];
+        } elseif ($this->invalidOperatorAndValue($operator, $value)) {
+            throw new InvalidArgumentException('Illegal operator and value combination.');
         }
 
         if ($this->invalidOperator($operator)) {
@@ -78,7 +80,13 @@ trait ShowWhen
         return [$value, $operator];
     }
 
-    private function invalidOperator($operator): bool
+    private function invalidOperatorAndValue($operator, $value): bool
+    {
+        return is_null($value) && in_array($operator, $this->operators) &&
+            ! in_array($operator, ['=', '!=']);
+    }
+
+    private function invalidOperator(mixed $operator): bool
     {
         return ! is_string($operator) || (! in_array(strtolower($operator), $this->operators, true));
     }
