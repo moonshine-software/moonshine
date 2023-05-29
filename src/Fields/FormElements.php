@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
+use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
@@ -57,6 +58,19 @@ abstract class FormElements extends Collection
         });
     }
 
+    public function prepareAttributes()
+    {
+        return $this->onlyFields()->map(static function ($fieldsOrDecoration) {
+            if (
+                $fieldsOrDecoration instanceof FormElement
+                && !$fieldsOrDecoration instanceof Fileable
+            ) {
+                return $fieldsOrDecoration->customAttributes(['x-on:change' => 'onChangeField($event)']);
+            }
+            return $fieldsOrDecoration;
+        });
+    }
+
     /**
      * @return FormElements<Field|Filter>
      * @throws Throwable
@@ -79,6 +93,13 @@ abstract class FormElements extends Collection
         return $this->onlyFields()
             ->filter(static fn (FormElement $field) => $field->hasShowWhen())
             ->values();
+    }
+
+    public function whenFieldsConditions()
+    {
+        return $this->onlyFields()
+            ->filter(static fn (FormElement $field) => $field->hasShowWhen())
+            ->map(static fn (FormElement $field) => $field->showWhenCondition());
     }
 
     /**
