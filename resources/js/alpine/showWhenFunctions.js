@@ -80,10 +80,30 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
             validateShow = inputs[field.changeField] <= field.value
             break;
         case 'in':
-            validateShow = field.value.indexOf(inputs[field.changeField]) !== -1
+            if(Array.isArray(field.value) && Array.isArray(inputs[field.changeField])) {
+                for (let i = 0; i < field.value.length; i++) {
+                    if(inputs[field.changeField].includes(field.value[i])){
+                        validateShow = true
+                        break
+                    }
+                }
+            } else {
+                validateShow = field.value.includes(inputs[field.changeField])
+            }
             break;
         case 'not in':
-            validateShow = field.value.indexOf(inputs[field.changeField]) === -1
+            if(Array.isArray(field.value) && Array.isArray(inputs[field.changeField])) {
+                let includes = false
+                for (let i = 0; i < field.value.length; i++) {
+                    if(inputs[field.changeField].includes(field.value[i])){
+                        includes = true
+                        break
+                    }
+                }
+                validateShow = !includes
+            } else {
+                validateShow = !field.value.includes(inputs[field.changeField])
+            }
             break;
     }
 
