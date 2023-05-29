@@ -183,8 +183,9 @@ it('show when', function () {
         ->and($this->field->showWhen('title', 'testing'))
         ->hasShowWhen()
         ->toBeTrue()
-        ->showWhenField->toBe('title')
-        ->showWhenValue->toBe('testing');
+        ->and($this->field->showWhenCondition()['changeField'])->toBe('title')
+        ->and($this->field->showWhenCondition()['operator'])->toBe('=')
+        ->and($this->field->showWhenCondition()['value'])->toBe('testing');
 });
 
 it('assets', function () {

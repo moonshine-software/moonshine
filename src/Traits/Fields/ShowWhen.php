@@ -25,6 +25,14 @@ trait ShowWhen
         return $this->showWhenState;
     }
 
+    /**
+     * @return array {
+     *               showField: string,
+     *               changeField: string,
+     *               operator: string,
+     *               value: mixed,
+     *               }
+     */
     public function showWhenCondition(): array
     {
         return $this->showWhenCondition;
@@ -57,8 +65,6 @@ trait ShowWhen
     {
         if ($useDefault) {
             return [$operator, '='];
-        } elseif ($this->invalidOperatorAndValue($operator, $value)) {
-            throw new InvalidArgumentException('Illegal operator and value combination.');
         }
 
         if ($this->invalidOperator($operator)) {
@@ -70,12 +76,6 @@ trait ShowWhen
         }
 
         return [$value, $operator];
-    }
-
-    private function invalidOperatorAndValue($operator, $value): bool
-    {
-        return is_null($value) && in_array($operator, $this->operators) &&
-            ! in_array($operator, ['=', '<>', '!=']);
     }
 
     private function invalidOperator($operator): bool

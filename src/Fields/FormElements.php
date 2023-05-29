@@ -108,7 +108,7 @@ abstract class FormElements extends Collection
     public function whenFieldNames(): FormElements
     {
         return $this->whenFields()->mapWithKeys(static function (FormElement $field) {
-            return [$field->showWhenField => $field->showWhenField];
+            return [$field->showWhenCondition()['changeField'] => $field->showWhenCondition()['changeField']];
         });
     }
 
