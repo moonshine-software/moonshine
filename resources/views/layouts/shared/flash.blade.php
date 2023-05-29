@@ -5,7 +5,5 @@
 @endif
 
 @if($toast = session()->get('toast'))
-    <x-moonshine::toast :type="$toast['type']">
-        {{ $toast['message'] }}
-    </x-moonshine::toast>
+    <x-moonshine::toast :type="$toast['type']" :content="$toast['message']" />
 @endif
