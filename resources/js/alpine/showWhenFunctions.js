@@ -22,6 +22,10 @@ export function getInputs() {
         inputs[inputFieldName(element.getAttribute('name'))] = value
     })
 
+    document.querySelectorAll('#moonshine-form [data-input-table]').forEach(element => {
+        inputs[inputFieldName(element.getAttribute('data-input-table'))] = element.getAttribute('data-input-table')
+    })
+
     return inputs
 }
 
@@ -42,7 +46,16 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
         return
     }
 
-    const inputElement = document.querySelector('#moonshine-form [name=' + field.showField + ']')
+    let inputElement = document.querySelector('#moonshine-form [name=' + field.showField + ']')
+
+    if(inputElement === null) {
+        inputElement = document.querySelector('#moonshine-form [data-input-table=' + field.showField + ']')
+    }
+
+    if(inputElement === null) {
+        return
+    }
+
     const fieldContainer = inputElement.closest('.form-group')
 
     let validateShow = false;

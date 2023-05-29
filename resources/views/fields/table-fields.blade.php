@@ -5,6 +5,7 @@
             : json_encode($element->jsonValues($item))
     }})"
     data-empty="{{ json_encode($element->jsonValues()) }}"
+    data-input-table="{{ str_replace('[]', '', $element->name()) }}"
 >
     <x-slot:thead>
         @if(!$element->isFullPage())
