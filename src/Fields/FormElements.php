@@ -61,12 +61,15 @@ abstract class FormElements extends Collection
     public function prepareAttributes(): FormElements
     {
         return $this->onlyFields()->map(static function (FormElement $formElement) {
-            $formElement->when(!$formElement instanceof Fileable, function ($field) {
+            $formElement->when(
+                ! $formElement instanceof Fileable,
+                function ($field) {
                     $field->customAttributes(
                         ['x-on:change' => 'onChangeField($event)']
                     );
                 }
             );
+
             return $formElement;
         });
     }

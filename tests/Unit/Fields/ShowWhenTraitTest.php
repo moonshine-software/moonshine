@@ -5,7 +5,7 @@ use MoonShine\Traits\Fields\ShowWhen;
 uses()->group('fields');
 
 beforeEach(function () {
-    $this->showWhenTest = new class() {
+    $this->showWhenTest = new class () {
         use ShowWhen;
 
         public function name()
@@ -17,7 +17,7 @@ beforeEach(function () {
 
 it('default operator', function () {
     $this->showWhenTest->showWhen('field2', 1);
-    
+
     $condition = $this->showWhenTest->showWhenCondition();
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')
@@ -28,7 +28,7 @@ it('default operator', function () {
 
 it('operator >', function () {
     $this->showWhenTest->showWhen('field2', '>', 1);
-    
+
     $condition = $this->showWhenTest->showWhenCondition();
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')

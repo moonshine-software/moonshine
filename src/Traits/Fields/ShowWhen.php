@@ -9,11 +9,11 @@ use InvalidArgumentException;
 trait ShowWhen
 {
     public array $operators = [
-        '=', '<', '>', '<=', '>=', '!=', 'in', 'not in'
+        '=', '<', '>', '<=', '>=', '!=', 'in', 'not in',
     ];
 
     public array $arrayOperators = [
-        'in', 'not in'
+        'in', 'not in',
     ];
 
     public bool $showWhenState = false;
@@ -57,7 +57,9 @@ trait ShowWhen
     private function makeCondition(string $column, mixed $operator = null, mixed $value = null): array
     {
         return [$column, ...$this->prepareValueAndOperator(
-            $value, $operator, func_num_args() === 2
+            $value,
+            $operator,
+            func_num_args() === 2
         )];
     }
 
@@ -73,7 +75,7 @@ trait ShowWhen
             [$value, $operator] = [$operator, '='];
         }
 
-        if(in_array($operator, $this->arrayOperators) && !is_array($value)) {
+        if(in_array($operator, $this->arrayOperators) && ! is_array($value)) {
             throw new InvalidArgumentException('Illegal operator and value combination. Value must be array type');
         }
 
