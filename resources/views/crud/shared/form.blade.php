@@ -1,6 +1,7 @@
 <x-moonshine::form :errors="$errors"
+    id="moonshine-form"
     x-data="crudForm()"
-    :x-init="'init('.json_encode($resource->getFields()->whenFieldNames()->map(fn($value) => $item[$value] ?? '')).')'"
+    :x-init="'init('.json_encode(['whenFields' => array_values($resource->getFields()->whenFieldsConditions()->toArray())]).')'"
     action="{{ $resource->route(($item->exists ? 'update' : 'store'), $item->getKey()) }}"
     enctype="multipart/form-data"
     method="POST"

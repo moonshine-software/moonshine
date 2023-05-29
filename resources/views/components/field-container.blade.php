@@ -7,9 +7,7 @@
     <div class="hidden">{{ $slot }}</div>
 @else
     <x-moonshine::form.input-wrapper
-        :attributes="$field->attributes()->merge([
-            'x-show' => $field->hasShowWhen() ? 'whenFields.'.$field->showWhenField . '==`'.$field->showWhenValue.'`' : 'true'
-        ])"
+        :attributes="$field->attributes()"
         label="{{ $field->label() }}"
         name="{{ $field->name() }}"
     >

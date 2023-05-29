@@ -25,6 +25,7 @@
                 x-model="minValue"
                 class="form-range-input"
                 x-bind:name="`{{ $fromName }}`"
+                x-on:change="onChangeField($event)"
             />
 
             <x-moonshine::form.input
@@ -36,6 +37,7 @@
                 x-model="maxValue"
                 class="form-range-input"
                 x-bind:name="`{{ $toName }}`"
+                x-on:change="onChangeField($event)"
             />
 
             <div class="form-range-slider">
@@ -57,6 +59,7 @@
                 maxlength="5"
                 x-on:input="mintrigger"
                 x-model="minValue"
+                x-on:change="onChangeField($event)"
             />
 
             <x-moonshine::form.input
@@ -69,6 +72,7 @@
                 maxlength="5"
                 x-on:input="maxtrigger"
                 x-model="maxValue"
+                x-on:change="onChangeField($event)"
             />
         </div>
     </div>
