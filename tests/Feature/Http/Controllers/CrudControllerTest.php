@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Event;
 use MoonShine\Fields\Text;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Models\MoonshineUser;
@@ -78,6 +79,8 @@ it('show detail page', function () {
 });
 
 it('successful stored', function () {
+    Event::fake();
+
     $email = fake()->email();
 
     $this->requestData->withEmail($email);
@@ -105,6 +108,8 @@ it('validation error on stored', function () {
 });
 
 it('successful updated', function () {
+    Event::fake();
+
     $email = fake()->email();
 
     $this->requestData->withEmail($email);
@@ -142,6 +147,8 @@ it('validation error on updated', function () {
 });
 
 it('changed route after save', function () {
+    Event::fake();
+
     $this->resource = TestResourceBuilder::new(get_class($this->user), true)
         ->setTestRouteAfterSave('edit');
 

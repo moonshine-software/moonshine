@@ -20,6 +20,7 @@ use MoonShine\Http\Requests\Resources\UpdateFormRequest;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use MoonShine\Http\Requests\Resources\ViewFormRequest;
 use MoonShine\MoonShineRequest;
+use MoonShine\MoonShineUI;
 use MoonShine\QueryTags\QueryTag;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -131,16 +132,28 @@ class CrudController extends BaseController
     {
         $request->getResource()->delete($request->getItem());
 
-        return $request->redirectRoute($request->getResource()->route('index'))
-            ->with('alert', trans('moonshine::ui.deleted'));
+        MoonShineUI::toast(
+            __('moonshine::ui.deleted'),
+            'success'
+        );
+
+        return $request->redirectRoute(
+            $request->getResource()->route('index')
+        );
     }
 
     public function massDelete(MassDeleteFormRequest $request): RedirectResponse
     {
         $request->getResource()->massDelete($request->get('ids'));
 
-        return $request->redirectRoute($request->getResource()->route('index'))
-            ->with('alert', trans('moonshine::ui.deleted'));
+        MoonShineUI::toast(
+            __('moonshine::ui.deleted'),
+            'success'
+        );
+
+        return $request->redirectRoute(
+            $request->getResource()->route('index')
+        );
     }
 
     /**
@@ -179,12 +192,22 @@ class CrudController extends BaseController
                 throw_if(! app()->isProduction(), $e);
                 report_if(app()->isProduction(), $e);
 
-                return $redirectRoute
-                    ->with('alert', trans('moonshine::ui.saved_error'));
+                MoonShineUI::toast(
+                    __('moonshine::ui.saved_error'),
+                    'error'
+                );
+
+                return $redirectRoute;
             }
 
-            return $request->redirectRoute($resource->getRouteAfterSave())
-                ->with('alert', trans('moonshine::ui.saved'));
+            MoonShineUI::toast(
+                __('moonshine::ui.saved'),
+                'success'
+            );
+
+            return $request->redirectRoute(
+                $resource->getRouteAfterSave()
+            );
         }
 
         return $this->createOrEditView($request);

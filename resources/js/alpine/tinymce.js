@@ -1,7 +1,9 @@
 /* Tinymce */
 
 export default () => ({
-    init() {
+    async init() {
+        await this.$nextTick();
+
         const fileManager = function (callback, value, meta) {
             const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
             const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight

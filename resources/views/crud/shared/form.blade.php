@@ -36,8 +36,8 @@
     @endforeach
 @endif
 
-@if(!empty($resource->components()))
-    @foreach($resource->components() as $formComponent)
+@if($resource->componentsCollection()->formComponents()->isNotEmpty())
+    @foreach($resource->componentsCollection()->formComponents() as $formComponent)
         @if($formComponent->isSee($item))
             {{ $resource->renderComponent($formComponent, $item) }}
         @endif

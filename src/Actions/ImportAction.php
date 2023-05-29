@@ -11,6 +11,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Fields\Field;
 use MoonShine\Jobs\ImportActionJob;
+use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
 use MoonShine\Traits\WithQueue;
 use MoonShine\Traits\WithStorage;
@@ -41,13 +42,21 @@ class ImportAction extends Action
     public function handle(): RedirectResponse
     {
         if (! request()->hasFile($this->inputName)) {
-            return back()
-                ->with('alert', trans('moonshine::ui.resource.import.file_required'));
+            MoonShineUI::toast(
+                __('moonshine::ui.resource.import.file_required'),
+                'error'
+            );
+
+            return back();
         }
 
         if (! in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
-            return back()
-                ->with('alert', trans('moonshine::ui.resource.import.extension_not_supported'));
+            MoonShineUI::toast(
+                __('moonshine::ui.resource.import.extension_not_supported'),
+                'error'
+            );
+
+            return back();
         }
 
         if (is_null($this->resource())) {
@@ -71,14 +80,21 @@ class ImportAction extends Action
                 $this->deleteAfter
             );
 
-            return back()
-                ->with('alert', trans('moonshine::ui.resource.queued'));
+            MoonShineUI::toast(
+                __('moonshine::ui.resource.queued')
+            );
+
+            return back();
         }
 
         self::process($path, $this->resource(), $this->deleteAfter);
 
-        return back()
-            ->with('alert', trans('moonshine::ui.resource.import.imported'));
+        MoonShineUI::toast(
+            __('moonshine::ui.resource.import.imported'),
+            'success'
+        );
+
+        return back();
     }
 
     /**

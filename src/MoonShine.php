@@ -149,6 +149,13 @@ class MoonShine
         return self::$menu;
     }
 
+    public static function isMoonShineRequest(): bool
+    {
+        $middlewares = request()?->route()?->gatherMiddleware() ?? [];
+
+        return in_array('auth.moonshine', $middlewares);
+    }
+
     /**
      * Register moonshine routes and resources routes in the system
      *

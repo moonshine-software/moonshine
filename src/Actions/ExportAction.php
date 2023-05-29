@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Jobs\ExportActionJob;
+use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
 use MoonShine\Traits\WithQueue;
 use MoonShine\Traits\WithStorage;
@@ -55,8 +56,11 @@ class ExportAction extends Action
                 $this->getDir()
             );
 
-            return back()
-                ->with('alert', trans('moonshine::ui.resource.queued'));
+            MoonShineUI::toast(
+                __('moonshine::ui.resource.queued')
+            );
+
+            return back();
         }
 
         return response()->download(
