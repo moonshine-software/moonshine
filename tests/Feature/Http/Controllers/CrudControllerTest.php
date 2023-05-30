@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ViewErrorBag;
 use MoonShine\Fields\Text;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Models\MoonshineUser;
@@ -105,6 +106,27 @@ it('validation error on stored', function () {
     asAdmin()
         ->post($this->resource->route('store'), $this->requestData->create())
         ->assertInvalid(['email']);
+});
+
+it('validation error with specified error message on stored', function () {
+    $resource = TestResourceBuilder::new(MoonshineUser::class, true)
+        ->setTestFields([
+            Text::make('Email'),
+        ])
+        ->setTestRules([
+            'email' => 'required',
+        ])
+        ->setTestValidationMessages([
+            'email.required' => 'Some error message',
+        ]);
+
+    $this->requestData->withEmail('');
+
+    asAdmin()
+        ->post($resource->route('store'), $this->requestData->create())
+        ->assertInvalid([
+            'email' => 'Some error message',
+        ]);
 });
 
 it('successful updated', function () {

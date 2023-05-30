@@ -132,6 +132,16 @@ abstract class Resource implements ResourceContract
     abstract public function search(): array;
 
     /**
+     * Get custom messages for validator errors
+     *
+     * @return array<string, string|array<string, string>>
+     */
+    public function validationMessages(): array
+    {
+        return [];
+    }
+
+    /**
      * Get an array of filter scopes, which will be applied on resource index page
      *
      * @see https://laravel.com/docs/eloquent#writing-global-scopes
@@ -511,7 +521,7 @@ abstract class Resource implements ResourceContract
         return Validator::make(
             request()->all(),
             $this->rules($item),
-            trans('moonshine::validation'),
+            array_merge(trans('moonshine::validation'), $this->validationMessages()),
             $this->getFields()->extractLabels()
         );
     }
