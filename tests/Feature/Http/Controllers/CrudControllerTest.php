@@ -124,14 +124,7 @@ it('validation error with specified error message on stored', function () {
 
     asAdmin()
         ->post($resource->route('store'), $this->requestData->create())
-        ->assertInvalid(['email'])
-        ->assertSessionHas('errors', function ($value) {
-            if (! $value instanceof ViewErrorBag) {
-                return false;
-            }
-
-            return ['email' => ['Some error message']] === $value->getMessages();
-        });
+        ->assertInvalid(['email' => 'Some error message']);
 });
 
 it('successful updated', function () {
