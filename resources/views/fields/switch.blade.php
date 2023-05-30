@@ -1,6 +1,6 @@
 <div x-data="asyncData">
     <x-moonshine::form.switcher
-        :attributes="$element->attributes()"
+        :attributes="$element->attributes()->except('x-on:change')"
         :id="$element->id()"
         :name="$element->name()"
         :onValue="$element->getOnValue()"
@@ -11,7 +11,7 @@
                 `'.$element->field().'`,
                 $event.target.checked ? `'.$element->getOnValue().'` : `'.$element->getOffValue().'`
             )'
-            : 'true'
+            : $element->attributes()->get('x-on:change')
         )"
         :value="($element->getOnValue() == $element->formViewValue($item) ? $element->getOnValue() : $element->getOffValue())"
         :checked="$element->getOnValue() == $element->formViewValue($item)"

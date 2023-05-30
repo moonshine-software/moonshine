@@ -565,18 +565,18 @@ abstract class Resource implements ResourceContract
         try {
             $fields->each(fn (Field $field) => $field->beforeSave($item));
 
+            foreach ($fields as $field) {
+                if (! $field->hasRelationship() || $field->belongToOne()) {
+                    $item = $this->saveItem($item, $field, $saveData);
+                }
+            }
+
             if (! $item->exists && method_exists($this, 'beforeCreating')) {
                 $this->beforeCreating($item);
             }
 
             if ($item->exists && method_exists($this, 'beforeUpdating')) {
                 $this->beforeUpdating($item);
-            }
-
-            foreach ($fields as $field) {
-                if (! $field->hasRelationship() || $field->belongToOne()) {
-                    $item = $this->saveItem($item, $field, $saveData);
-                }
             }
 
             if ($item->save()) {
