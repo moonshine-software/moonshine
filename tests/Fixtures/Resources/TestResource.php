@@ -13,7 +13,7 @@ class TestResource extends Resource
 
     private array $testFields = [];
 
-    private array $testMessages = [];
+    private array $testValidationMessages = [];
 
     private array $testFilters = [];
 
@@ -66,9 +66,9 @@ class TestResource extends Resource
         return $this;
     }
 
-    public function setTestMessages(array $testMessages): static
+    public function setTestValidationMessages(array $testValidationMessages): static
     {
-        $this->testMessages = $testMessages;
+        $this->testValidationMessages = $testValidationMessages;
 
         return $this;
     }
@@ -159,7 +159,7 @@ class TestResource extends Resource
 
     public function validationMessages(): array
     {
-        return $this->testMessages;
+        return $this->testValidationMessages;
     }
 
     public function filters(): array

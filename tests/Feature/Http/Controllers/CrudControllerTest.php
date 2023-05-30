@@ -116,7 +116,7 @@ it('validation error with specified error message on stored', function () {
         ->setTestRules([
             'email' => 'required',
         ])
-        ->setTestMessages([
+        ->setTestValidationMessages([
             'email.required' => 'Some error message',
         ]);
 
