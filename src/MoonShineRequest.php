@@ -23,7 +23,12 @@ class MoonShineRequest extends FormRequest
 
     public function messages(): array
     {
-        return trans('moonshine::validation');
+        return array_merge_recursive(
+            trans('moonshine::validation'),
+            $this->hasResource()
+                ? $this->getResource()->messages()
+                : [],
+        );
     }
 
     /**

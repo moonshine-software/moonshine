@@ -13,6 +13,8 @@ class TestResource extends Resource
 
     private array $testFields = [];
 
+    private array $testMessages = [];
+
     private array $testFilters = [];
 
     private array $testActions = [];
@@ -60,6 +62,13 @@ class TestResource extends Resource
     public function setTestFields(array $testFields): static
     {
         $this->testFields = $testFields;
+
+        return $this;
+    }
+
+    public function setTestMessages(array $testMessages): static
+    {
+        $this->testMessages = $testMessages;
 
         return $this;
     }
@@ -146,6 +155,11 @@ class TestResource extends Resource
     public function fields(): array
     {
         return $this->testFields;
+    }
+
+    public function messages(): array
+    {
+        return $this->testMessages;
     }
 
     public function filters(): array
