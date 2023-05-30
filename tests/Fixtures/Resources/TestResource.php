@@ -157,7 +157,7 @@ class TestResource extends Resource
         return $this->testFields;
     }
 
-    public function messages(): array
+    public function validationMessages(): array
     {
         return $this->testMessages;
     }
