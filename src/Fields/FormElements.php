@@ -36,28 +36,29 @@ abstract class FormElements extends Collection
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     public function withParents(): FormElements
     {
-        return $this->map(static function ($fieldsOrDecoration) {
-            if ($fieldsOrDecoration instanceof FormElement) {
-                return $fieldsOrDecoration->setParents();
-            }
-
-            return $fieldsOrDecoration;
+        return $this->onlyFields()->map(static function (FormElement $formElement) {
+            return $formElement->setParents();
         });
     }
 
+    /**
+     * @throws Throwable
+     */
     public function withCurrentResource(ResourceContract $resource): FormElements
     {
-        return $this->map(static function ($fieldsOrDecoration) use ($resource) {
-            if ($fieldsOrDecoration instanceof FormElement) {
-                return $fieldsOrDecoration->setResources($resource);
-            }
-
-            return $fieldsOrDecoration;
+        return $this->onlyFields()->map(static function (FormElement $formElement) use ($resource) {
+            return $formElement->setResources($resource);
         });
     }
 
+    /**
+     * @throws Throwable
+     */
     public function prepareAttributes(): FormElements
     {
         return $this->onlyFields()->map(static function (FormElement $formElement) {
@@ -98,6 +99,9 @@ abstract class FormElements extends Collection
             ->values();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function whenFieldsConditions(): FormElements
     {
         return $this->onlyFields()
