@@ -25,6 +25,8 @@
 
 	&-content {
 		@apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700;
+        max-height: calc(100vh - 2rem * 2);
+        overflow: hidden;
 	}
 
 	&-header {
