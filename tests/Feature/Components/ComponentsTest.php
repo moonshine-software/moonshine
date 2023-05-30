@@ -511,6 +511,6 @@ it('spinner', function () {
 
 it('toast', function () {
     test()
-        ->blade('<x-moonshine::toast>Toast content</x-moonshine::toast>')
+        ->blade('<x-moonshine::toast content="Toast content"/>')
         ->assertSee('Toast content');
 });
