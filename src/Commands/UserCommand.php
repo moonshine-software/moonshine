@@ -21,7 +21,7 @@ class UserCommand extends MoonShineCommand
 
         if ($username && $name && $password) {
             MoonShineAuth::model()->query()->create([
-                config('moonshine.auth.fields.username', 'email') => $username,
+                config('moonshine.auth.fields.username', 'email') => Str::lower($username),
                 config('moonshine.auth.fields.name', 'name') => $name,
                 config('moonshine.auth.fields.password', 'password') => Hash::make($password),
             ]);
