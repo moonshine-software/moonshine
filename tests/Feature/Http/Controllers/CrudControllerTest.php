@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\ViewErrorBag;
 use MoonShine\Fields\Text;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Models\MoonshineUser;
