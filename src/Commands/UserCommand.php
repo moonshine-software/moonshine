@@ -21,7 +21,9 @@ class UserCommand extends MoonShineCommand
 
         if ($email && $name && $password) {
             MoonshineUser::query()->create([
-                'email' => $email,
+                'email' => (string) str($email)
+                    ->lower()
+                    ->trim(),
                 'name' => $name,
                 'password' => Hash::make($password),
             ]);
