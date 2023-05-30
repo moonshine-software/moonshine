@@ -124,7 +124,9 @@ it('validation error with specified error message on stored', function () {
 
     asAdmin()
         ->post($resource->route('store'), $this->requestData->create())
-        ->assertInvalid(['email' => 'Some error message']);
+        ->assertInvalid([
+            'email' => 'Some error message',
+        ]);
 });
 
 it('successful updated', function () {
