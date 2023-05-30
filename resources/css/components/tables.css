@@ -20,7 +20,7 @@ table {
         @apply bg-slate-100 text-3xs uppercase dark:bg-dark-700;
         td,
         th {
-            @apply max-w-lg border border-gray-200 p-3 font-semibold dark:border-dark-400;
+            @apply max-w-lg overflow-hidden border border-gray-200 p-3 font-semibold dark:border-dark-400;
         }
     }
 
