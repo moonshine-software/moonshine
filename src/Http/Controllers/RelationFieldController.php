@@ -27,9 +27,10 @@ class RelationFieldController extends BaseController
     {
         $this->field = $request->getResource()
             ->getFields()
+            ->relatable()
             ->findByRelation($request->get('_field_relation', ''));
 
-        if (is_null($this->field) || ! $this->field->hasRelationship() || ! $this->field->resource()) {
+        if (is_null($this->field) || ! $this->field->resource()) {
             $this->fieldNotFound = true;
         } else {
             $this->fieldResource = $this->field->resource()->relatable();

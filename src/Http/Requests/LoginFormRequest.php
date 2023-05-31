@@ -76,6 +76,8 @@ class LoginFormRequest extends MoonShineRequest
             ]);
         }
 
+        session()->regenerate();
+
         RateLimiter::clear($this->throttleKey());
     }
 
