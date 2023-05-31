@@ -443,10 +443,10 @@ abstract class Resource implements ResourceContract
      */
     public function getFields(): Fields
     {
-        $fields = Fields::make($this->fields())
-            ->withCurrentResource($this)
-            ->withParents();
+        $fields = Fields::make($this->fields());
 
+        $fields->withCurrentResource($this);
+        $fields->withParents();
         $fields->prepareAttributes();
 
         return $fields;

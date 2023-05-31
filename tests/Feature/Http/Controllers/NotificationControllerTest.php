@@ -23,6 +23,6 @@ it('read all notifications', function () {
         ->get(route('moonshine.notifications.readAll'));
 
     assertDatabaseHas('notifications', [
-        'read_at' => now(),
+        'read_at' => now()->format('Y-m-d H:i:s'),
     ]);
 });

@@ -81,14 +81,15 @@
         <x-moonshine::form
             method="POST"
             action="{{ $resource->route('destroy', $resource->getItem()->getKey()) }}"
+            :raw="true"
         >
             @method("delete")
 
             @include('moonshine::crud.shared.form-hidden', ['resource' => $resource])
 
-            <x-slot:button type="submit" class="btn-pink">
+            <x-moonshine::form.button type="submit" class="btn-pink">
                 {{ trans('moonshine::ui.confirm') }}
-            </x-slot:button>
+            </x-moonshine::form.button>
         </x-moonshine::form>
 
         <x-slot name="outerHtml">
