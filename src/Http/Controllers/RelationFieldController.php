@@ -14,16 +14,16 @@ use Throwable;
 
 class RelationFieldController extends BaseController
 {
-    protected ?Field $field;
+    protected ?Field $field = null;
 
     protected bool $fieldNotFound = false;
 
-    protected ?Resource $fieldResource;
+    protected ?Resource $fieldResource = null;
 
     /**
      * @throws Throwable
      */
-    public function __construct(MoonShineRequest $request)
+    public function resolveFieldData(MoonShineRequest $request): void
     {
         $this->field = $request->getResource()
             ->getFields()
@@ -41,8 +41,13 @@ class RelationFieldController extends BaseController
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     public function index(ViewAnyFormRequest $request): View
     {
+        $this->resolveFieldData($request);
+
         if ($this->fieldNotFound) {
             return $this->fieldNotFoundResponse();
         }
@@ -55,8 +60,13 @@ class RelationFieldController extends BaseController
         ]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function form(ViewAnyFormRequest $request): View
     {
+        $this->resolveFieldData($request);
+
         if ($this->fieldNotFound) {
             return $this->fieldNotFoundResponse();
         }
