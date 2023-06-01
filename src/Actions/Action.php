@@ -15,6 +15,9 @@ use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 
+/**
+ * @method static static make(string $label = '')
+ */
 abstract class Action implements ActionContract, MassActionContract
 {
     use Makeable;

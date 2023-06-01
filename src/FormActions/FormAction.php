@@ -15,6 +15,9 @@ use MoonShine\Traits\WithConfirmation;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
+/**
+ * @method static static make(string $label, Closure $callback, string $message = 'Done')
+ */
 final class FormAction implements ItemActionContract
 {
     use Makeable;

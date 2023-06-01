@@ -8,6 +8,9 @@ use Closure;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
 
+/**
+ * @method static static make(string $label, string $alias, string|Closure $view, Closure|null $viewData = null)
+ */
 final class CustomPage
 {
     use Makeable;

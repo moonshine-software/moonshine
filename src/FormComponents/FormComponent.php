@@ -10,6 +10,9 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 
+/**
+ * @method static static make(string $label)
+ */
 abstract class FormComponent implements ResourceRenderable
 {
     use Makeable;

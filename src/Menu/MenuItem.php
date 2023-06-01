@@ -10,6 +10,9 @@ use MoonShine\Resources\CustomPage;
 use MoonShine\Resources\Resource;
 use MoonShine\Traits\Makeable;
 
+/**
+ * @method static static make(string $label, Resource|CustomPage|Closure|string $resource, string $icon = null)
+ */
 class MenuItem extends MenuSection implements MenuElement
 {
     use Makeable;

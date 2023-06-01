@@ -14,6 +14,9 @@ use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 use MoonShine\Utilities\AssetManager;
 
+/**
+ * @method static static make(string $label)
+ */
 abstract class Metric implements ResourceRenderable, HasAssets
 {
     use Makeable;

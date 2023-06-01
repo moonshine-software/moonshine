@@ -10,6 +10,9 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithColumnSpan;
 use MoonShine\Traits\WithLabel;
 
+/**
+ * @method static static make(array $items = [], string $label = '')
+ */
 class DashboardBlock
 {
     use Makeable;

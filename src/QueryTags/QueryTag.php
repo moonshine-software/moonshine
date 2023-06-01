@@ -11,6 +11,9 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
+/**
+ * @method static static make(string $label, Builder|Closure $builder)
+ */
 final class QueryTag
 {
     use Makeable;

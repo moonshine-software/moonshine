@@ -8,6 +8,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use MoonShine\Traits\Makeable;
 
+/**
+ * @method static static make(string $message, array $button = [])
+ */
 final class MoonShineDatabaseNotification extends Notification
 {
     use Queueable;
