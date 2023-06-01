@@ -10,6 +10,9 @@ use MoonShine\Exceptions\DecorationException;
 use MoonShine\Resources\Resource;
 use Throwable;
 
+/**
+ * @method static static make(array $tabs = [])
+ */
 class Tabs extends Decoration
 {
     protected static string $view = 'moonshine::decorations.tabs';

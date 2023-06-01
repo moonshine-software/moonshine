@@ -10,6 +10,9 @@ use Illuminate\Support\Collection;
 use MoonShine\Resources\Resource;
 use Throwable;
 
+/**
+ * @method static static make(Resource $resource, string $label = '', Builder|Closure|null $query = null)
+ */
 final class ResourcePreview extends DashboardItem
 {
     protected static string $view = 'moonshine::blocks.resource_preview';

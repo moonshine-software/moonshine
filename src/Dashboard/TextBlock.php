@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Dashboard;
 
+/**
+ * @method static static make(string $label, string $text)
+ */
 final class TextBlock extends DashboardItem
 {
     protected static string $view = 'moonshine::blocks.text';

@@ -11,6 +11,9 @@ use MoonShine\Resources\CustomPage;
 use MoonShine\Resources\Resource;
 use MoonShine\Traits\Makeable;
 
+/**
+ * @method static static make(string $label, array $items, string|null $icon = null, string|Closure|null $link = null)
+ */
 class MenuGroup extends MenuSection
 {
     use Makeable;

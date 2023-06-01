@@ -7,6 +7,9 @@ namespace MoonShine\Menu;
 use MoonShine\Contracts\Menu\MenuElement;
 use MoonShine\Traits\Makeable;
 
+/**
+ * @method static static make(string $label = '')
+ */
 class MenuDivider extends MenuSection implements MenuElement
 {
     use Makeable;

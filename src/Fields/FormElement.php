@@ -34,6 +34,8 @@ use MoonShine\Traits\WithView;
 use MoonShine\Utilities\AssetManager;
 
 /**
+ * @method static static make(string|null $label = null, string|null $field = null, Closure|ResourceContract|string|null $resource = null)
+ *
  * @mixin WithResourceMode
  * @mixin WithRelatedValues
  */

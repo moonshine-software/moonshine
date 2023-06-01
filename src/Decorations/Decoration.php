@@ -11,6 +11,9 @@ use MoonShine\Traits\WithFields;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 
+/**
+ * @method static static make(string|array $labelOrFields = '', array $fields = [])
+ */
 abstract class Decoration implements ResourceRenderable, FieldsDecoration
 {
     use Makeable;
