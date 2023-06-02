@@ -30,6 +30,34 @@ class ExportAction extends Action
 
     protected bool $withQuery = true;
 
+    protected bool $isCsv = false;
+
+    protected string $csvDelimiter = ',';
+
+    public function csv(): static
+    {
+        $this->isCsv = true;
+
+        return $this;
+    }
+
+    public function isCsv(): bool
+    {
+        return $this->isCsv;
+    }
+
+    public function delimiter(string $value): static
+    {
+        $this->csvDelimiter = $value;
+
+        return $this;
+    }
+
+    public function getDelimiter(): string
+    {
+        return $this->csvDelimiter;
+    }
+
     /**
      * @throws ActionException
      * @throws IOException
@@ -46,14 +74,15 @@ class ExportAction extends Action
         $this->resolveStorage();
 
         $path = Storage::disk($this->getDisk())
-            ->path("{$this->getDir()}/{$this->resource()->routeNameAlias()}.xlsx");
+            ->path("{$this->getDir()}/{$this->resource()->routeNameAlias()}." . ($this->isCsv() ? 'csv' : 'xlsx'));
 
         if ($this->isQueue()) {
             ExportActionJob::dispatch(
                 get_class($this->resource()),
                 $path,
                 $this->getDisk(),
-                $this->getDir()
+                $this->getDir(),
+                $this->getDelimiter()
             );
 
             MoonShineUI::toast(
@@ -64,7 +93,7 @@ class ExportAction extends Action
         }
 
         return response()->download(
-            self::process($path, $this->resource(), $this->getDisk(), $this->getDir())
+            self::process($path, $this->resource(), $this->getDisk(), $this->getDir(), $this->getDelimiter())
         );
     }
 
@@ -78,7 +107,8 @@ class ExportAction extends Action
         string $path,
         ResourceContract $resource,
         string $disk = 'public',
-        string $dir = '/'
+        string $dir = '/',
+        string $delimiter = ','
     ): string {
         $fields = $resource->getFields()->exportFields();
 
@@ -96,8 +126,13 @@ class ExportAction extends Action
             $data->add($row);
         }
 
-        $result = (new FastExcel($data))
-            ->export($path);
+        $fastExcel = new FastExcel($data);
+
+        if (str_contains($path, '.csv')) {
+            $fastExcel->configureCsv($delimiter);
+        }
+
+        $result = $fastExcel->export($path);
 
         $url = str($path)
             ->remove(Storage::disk($disk)->path($dir))

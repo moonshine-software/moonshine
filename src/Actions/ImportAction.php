@@ -33,6 +33,20 @@ class ImportAction extends Action
 
     protected bool $deleteAfter = false;
 
+    protected string $csvDelimiter = ',';
+
+    public function delimiter(string $value): static
+    {
+        $this->csvDelimiter = $value;
+
+        return $this;
+    }
+
+    public function getDelimiter(): string
+    {
+        return $this->csvDelimiter;
+    }
+
     /**
      * @throws IOException
      * @throws ActionException
@@ -50,7 +64,9 @@ class ImportAction extends Action
             return back();
         }
 
-        if (! in_array(request()->file($this->inputName)->extension(), ['csv', 'xlsx'])) {
+        $requestFile = request()->file($this->inputName);
+
+        if (! in_array($requestFile->getClientOriginalExtension(), ['csv', 'xlsx'])) {
             MoonShineUI::toast(
                 __('moonshine::ui.resource.import.extension_not_supported'),
                 'error'
@@ -65,8 +81,9 @@ class ImportAction extends Action
 
         $this->resolveStorage();
 
-        $path = request()->file($this->inputName)->store(
+        $path = request()->file($this->inputName)->storeAs(
             $this->getDir(),
+            str_replace('.txt', '.csv', $requestFile->hashName()),
             $this->getDisk()
         );
 
@@ -77,7 +94,8 @@ class ImportAction extends Action
             ImportActionJob::dispatch(
                 get_class($this->resource()),
                 $path,
-                $this->deleteAfter
+                $this->deleteAfter,
+                $this->getDelimiter()
             );
 
             MoonShineUI::toast(
@@ -87,7 +105,7 @@ class ImportAction extends Action
             return back();
         }
 
-        self::process($path, $this->resource(), $this->deleteAfter);
+        self::process($path, $this->resource(), $this->deleteAfter, $this->getDelimiter());
 
         MoonShineUI::toast(
             __('moonshine::ui.resource.import.imported'),
@@ -105,9 +123,16 @@ class ImportAction extends Action
     public static function process(
         string $path,
         ResourceContract $resource,
-        bool $deleteAfter = false
+        bool $deleteAfter = false,
+        string $delimiter = ','
     ): Collection {
-        $result = (new FastExcel())->import($path, function ($line) use ($resource) {
+        $fastExcel = new FastExcel();
+
+        if (str_contains($path, '.csv')) {
+            $fastExcel->configureCsv($delimiter);
+        }
+
+        $result = $fastExcel->import($path, function ($line) use ($resource) {
             $data = collect($line)->mapWithKeys(function ($value, $key) use ($resource) {
                 $field = $resource->getFields()->importFields()->first(function ($field) use ($key) {
                     return $field->field() === $key || $field->label() === $key;
@@ -124,10 +149,14 @@ class ImportAction extends Action
                 unset($data[$resource->getModel()->getKeyName()]);
             }
 
+            if (empty($data)) {
+                return false;
+            }
+
             $item = isset($data[$resource->getModel()->getKeyName()])
                 ? $resource->getModel()
                     ->newModelQuery()
-                    ->find($data[$resource->getModel()->getKeyName()])
+                    ->findOrNew($data[$resource->getModel()->getKeyName()])
                 : $resource->getModel();
 
             return $resource->save(
