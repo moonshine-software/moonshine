@@ -64,7 +64,7 @@ class TestCase extends Orchestra
         return $this;
     }
 
-    protected function superAdminAttributes(): array
+    public function superAdminAttributes(): array
     {
         return [
             'id' => 1,
@@ -104,12 +104,12 @@ class TestCase extends Orchestra
         return $this;
     }
 
-    protected function moonShineUserResource(): Resource
+    public function moonShineUserResource(): Resource
     {
         return $this->moonShineUserResource;
     }
 
-    protected function adminUser(): Model|Builder|Authenticatable
+    public function adminUser(): Model|Builder|Authenticatable
     {
         return $this->adminUser;
     }

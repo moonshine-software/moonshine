@@ -209,3 +209,75 @@ it('correct item', function () {
         ->toBe($item)
     ;
 });
+
+it('is now on detail route', function () {
+    $item = MoonshineUser::factory()->create();
+
+    $this->get($this->resource->route('show', $item->getKey()));
+
+    expect($this->resource)
+        ->isNowOnIndex()
+        ->toBeFalse()
+        ->isNowOnForm()
+        ->toBeFalse()
+        ->isNowOnCreateForm()
+        ->toBeFalse()
+        ->isNowOnUpdateForm()
+        ->toBeFalse()
+        ->isNowOnDetail()
+        ->toBeTrue()
+    ;
+});
+
+it('is now on index route', function () {
+    $this->get($this->resource->route('index'));
+
+    expect($this->resource)
+        ->isNowOnIndex()
+        ->toBeTrue()
+        ->isNowOnForm()
+        ->toBeFalse()
+        ->isNowOnCreateForm()
+        ->toBeFalse()
+        ->isNowOnUpdateForm()
+        ->toBeFalse()
+        ->isNowOnDetail()
+        ->toBeFalse()
+    ;
+});
+
+it('is now on create form route', function () {
+    $this->get($this->resource->route('create'));
+
+    expect($this->resource)
+        ->isNowOnIndex()
+        ->toBeFalse()
+        ->isNowOnForm()
+        ->toBeTrue()
+        ->isNowOnCreateForm()
+        ->toBeTrue()
+        ->isNowOnUpdateForm()
+        ->toBeFalse()
+        ->isNowOnDetail()
+        ->toBeFalse()
+    ;
+});
+
+it('is now on update form route', function () {
+    $item = MoonshineUser::factory()->create();
+
+    $this->get($this->resource->route('edit', $item->getKey()));
+
+    expect($this->resource)
+        ->isNowOnIndex()
+        ->toBeFalse()
+        ->isNowOnForm()
+        ->toBeTrue()
+        ->isNowOnCreateForm()
+        ->toBeFalse()
+        ->isNowOnUpdateForm()
+        ->toBeTrue()
+        ->isNowOnDetail()
+        ->toBeFalse()
+    ;
+});

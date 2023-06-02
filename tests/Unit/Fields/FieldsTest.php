@@ -45,7 +45,7 @@ it('resolved child fields / pivot', function () {
 });
 
 it('resolved child fields / child is related field on form', function () {
-    fakeRequest('/resource/create');
+    $this->get(test()->moonShineUserResource()->route('create'));
 
     $parent = HasMany::make('Parent');
 

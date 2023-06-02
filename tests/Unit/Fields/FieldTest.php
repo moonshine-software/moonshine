@@ -77,7 +77,7 @@ it('show or hide / now form', function () {
         ->isNowOnForm()
         ->toBeFalse();
 
-    fakeRequest($resource->route('create'));
+    $this->get($resource->route('create'));
 
     expect($this->field)
         ->isNowOnForm()

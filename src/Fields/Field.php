@@ -12,11 +12,13 @@ use MoonShine\Contracts\Fields\HasIndexViewValue;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
+use MoonShine\Traits\WithIsNowOnRoute;
 
 abstract class Field extends FormElement implements HasExportViewValue, HasIndexViewValue, HasFormViewValue
 {
     use ShowOrHide;
     use LinkTrait;
+    use WithIsNowOnRoute;
 
     protected bool $sortable = false;
 
@@ -140,12 +142,6 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
             : null;
 
         return $item;
-    }
-
-    public function isNowOnForm(): bool
-    {
-        return request()->is('*/edit')
-            || request()->is('*/create');
     }
 
     public function beforeSave(Model $item): void
