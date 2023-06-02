@@ -1,6 +1,7 @@
 /* Select */
 
 import Choices from 'choices.js'
+import {crudFormQuery} from "./formFunctions"
 
 export default (asyncUrl = '') => ({
 
@@ -37,7 +38,7 @@ export default (asyncUrl = '') => ({
                     extraQuery = '&extra=' + this.$el.dataset.asyncExtra
                 }
 
-              this.fromUrl(asyncUrl + '&query=' + event.detail.value + extraQuery)
+                this.fromUrl(asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery)
             }
           },
           false,
