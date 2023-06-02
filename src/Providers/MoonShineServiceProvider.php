@@ -20,6 +20,7 @@ use MoonShine\Commands\UserCommand;
 use MoonShine\Dashboard\Dashboard;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Http\Middleware\ChangeLocale;
+use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
 use MoonShine\Utilities\AssetManager;
@@ -42,6 +43,7 @@ class MoonShineServiceProvider extends ServiceProvider
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             ChangeLocale::class,
+            SecurityHeadersMiddleware::class,
         ],
     ];
 
