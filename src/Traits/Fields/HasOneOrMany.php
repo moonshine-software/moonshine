@@ -40,7 +40,7 @@ trait HasOneOrMany
                 $identity = $this instanceof HasOne ? $item->{$this->relation()}?->getKey() : null;
                 $fields = collect();
 
-                foreach ($this->getFields() as $field) {
+                foreach ($this->getFields()->onlyFields() as $field) {
                     if (! $this instanceof HasOne && $field instanceof ID) {
                         $identity = $values[$field->field()] ?? null;
                         $currentIdentities[$identity] = $identity;

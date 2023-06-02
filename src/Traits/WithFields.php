@@ -17,6 +17,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
+use MoonShine\Fields\StackFields;
 use MoonShine\Filters\Filter;
 use Throwable;
 
@@ -42,21 +43,26 @@ trait WithFields
      */
     public function getFields(): Fields
     {
-        if ($this instanceof HasFields && ! $this instanceof HasPivot && ! $this->hasFields()) {
+        if ($this instanceof HasFields
+            && !$this instanceof HasPivot
+            && !$this->hasFields()
+            && $this->resource()
+        ) {
             $this->fields(
-                $this->resource()?->getFields()
+                $this->resource()->getFields()
                     ->withoutCanBeRelatable()
-                    ?->toArray() ?? []
+                    ->unwrapFields(StackFields::class)
+                    ->toArray() ?? []
             );
         }
 
         $resolveChildFields = $this instanceof HasJsonValues
             || $this instanceof HasPivot
-            || ($this instanceof HasResourceMode && ! $this->isResourceMode());
+            || ($this instanceof HasResourceMode && !$this->isResourceMode());
 
         return Fields::make($this->fields)->when(
-            ! $this instanceof Filter && $resolveChildFields,
-            fn (Fields $fields) => $fields->resolveChildFields($this)
+            !$this instanceof Filter && $resolveChildFields,
+            fn(Fields $fields) => $fields->resolveChildFields($this)
         );
     }
 
@@ -87,7 +93,7 @@ trait WithFields
             $value = [$value];
         }
 
-        if ($this->onlyCount && ! $this instanceof HasOne) {
+        if ($this->onlyCount && !$this instanceof HasOne) {
             return (string)($this instanceof HasRelationship
                 ? $value->count()
                 : count($value));
@@ -123,9 +129,9 @@ trait WithFields
                         $data = $this->extractValues([$index => $data]);
                     }
 
-                    if (! $data instanceof Model) {
+                    if (!$data instanceof Model) {
                         $fields->each(function ($field) use (&$data) {
-                            if ($field instanceof HasValueExtraction && ! $field instanceof Json) {
+                            if ($field instanceof HasValueExtraction && !$field instanceof Json) {
                                 $data = array_merge($data, $field->extractValues($data[$field->field()]));
                             }
                         });
