@@ -26,7 +26,8 @@ class ExportActionJob implements ShouldQueue
         protected string $resource,
         protected string $path,
         protected string $disk,
-        protected string $dir
+        protected string $dir,
+        protected string $delimiter = ','
     ) {
     }
 
@@ -42,7 +43,8 @@ class ExportActionJob implements ShouldQueue
             $this->path,
             new $this->resource(),
             $this->disk,
-            $this->dir
+            $this->dir,
+            $this->delimiter
         );
     }
 }

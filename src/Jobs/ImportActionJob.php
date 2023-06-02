@@ -24,7 +24,8 @@ class ImportActionJob implements ShouldQueue
     public function __construct(
         protected string $resource,
         protected string $path,
-        protected bool $deleteAfter
+        protected bool $deleteAfter,
+        protected string $delimiter = ','
     ) {
     }
 
@@ -38,7 +39,8 @@ class ImportActionJob implements ShouldQueue
         ImportAction::process(
             $this->path,
             new $this->resource(),
-            $this->deleteAfter
+            $this->deleteAfter,
+            $this->delimiter
         );
     }
 }
