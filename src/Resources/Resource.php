@@ -36,6 +36,7 @@ use MoonShine\Traits\Resource\ResourceCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
 use MoonShine\Traits\Resource\ResourceRouter;
+use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithUriKey;
 use Throwable;
 
@@ -46,6 +47,7 @@ abstract class Resource implements ResourceContract
     use ResourceModelPolicy;
     use ResourceModelQuery;
     use WithUriKey;
+    use WithIsNowOnRoute;
 
     public static string $model;
 

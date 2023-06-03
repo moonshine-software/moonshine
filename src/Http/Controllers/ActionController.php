@@ -113,7 +113,12 @@ final class ActionController extends BaseController
         try {
             $items = $request->getResource()->getModel()
                 ->newModelQuery()
-                ->findMany(explode(';', request('ids')));
+                ->findMany(
+                    request()->str('ids')
+                        ->explode(';')
+                        ->filter()
+                        ->toArray()
+                );
 
             $items->each(fn ($item) => $action->callback($item));
         } catch (Throwable $e) {
