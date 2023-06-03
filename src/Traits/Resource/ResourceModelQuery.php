@@ -80,7 +80,8 @@ trait ResourceModelQuery
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
                 ->onlyFields()
-                ->each(fn (Filter $filter): Builder => $filter->getQuery($query)
+                ->each(
+                    fn (Filter $filter): Builder => $filter->getQuery($query)
                 );
         }
 

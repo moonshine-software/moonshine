@@ -58,8 +58,10 @@ trait FileTrait
 
     public function acceptExtension(): string
     {
-        $extensions = array_map(static fn ($val): string => '.' . $val,
-            $this->allowedExtensions);
+        $extensions = array_map(
+            static fn ($val): string => '.' . $val,
+            $this->allowedExtensions
+        );
 
         return implode(',', $extensions);
     }

@@ -44,10 +44,10 @@ it('correct interfaces', function (): void {
 });
 
 it('correctly value callback', function (): void {
-    $this->field = BelongsTo::make('Moonshine user role', resource: fn($item): string => $item->id.$item->name);
+    $this->field = BelongsTo::make('Moonshine user role', resource: fn ($item): string => $item->id . $item->name);
 
     expect($this->field->indexViewValue($this->item, false))
-        ->toBe($this->item->moonshineUserRole->id.$this->item->moonshineUserRole->name)
+        ->toBe($this->item->moonshineUserRole->id . $this->item->moonshineUserRole->name)
         ->and($this->field->formViewValue($this->item))
         ->toBe($this->item->moonshineUserRole->id);
 });

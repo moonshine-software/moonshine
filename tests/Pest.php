@@ -7,9 +7,10 @@ use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\TestCase;
 use Pest\Expectation;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 use function Pest\Laravel\actingAs;
+
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 uses(TestCase::class)
     ->in(__DIR__);
@@ -48,16 +49,16 @@ function createRequest($method, $uri): Request
     return Request::createFromBase($symfonyRequest);
 }
 
-expect()->extend('isForbidden', fn(): Expectation => expect($this->value->isForbidden())->toBeTrue());
+expect()->extend('isForbidden', fn (): Expectation => expect($this->value->isForbidden())->toBeTrue());
 
-expect()->extend('isSuccessful', fn(): Expectation => expect($this->value->status())->toBeIn([200]));
+expect()->extend('isSuccessful', fn (): Expectation => expect($this->value->status())->toBeIn([200]));
 
-expect()->extend('isRedirect', fn(): Expectation => expect($this->value->status())->toBeIn([301, 302]));
+expect()->extend('isRedirect', fn (): Expectation => expect($this->value->status())->toBeIn([301, 302]));
 
-expect()->extend('isSuccessfulOrRedirect', fn(): Expectation => expect($this->value->status())->toBeIn([200, 301, 302]));
+expect()->extend('isSuccessfulOrRedirect', fn (): Expectation => expect($this->value->status())->toBeIn([200, 301, 302]));
 
-expect()->extend('see', fn(string $value): Expectation => expect($this->value->content())->toContain($value));
+expect()->extend('see', fn (string $value): Expectation => expect($this->value->content())->toContain($value));
 
-expect()->extend('hasFields', fn(array $fields = null) => expect($this->value)
+expect()->extend('hasFields', fn (array $fields = null) => expect($this->value)
     ->toBeCollection()
     ->toHaveCount($fields ? count($fields) : 0));

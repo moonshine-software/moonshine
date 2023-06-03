@@ -20,7 +20,8 @@ final class ItemActions extends Collection
     public function inLine(): self
     {
         return $this->filter(
-            static fn (ItemActionContract $action
+            static fn (
+                ItemActionContract $action
             ): bool => ! $action->inDropdown()
         );
     }

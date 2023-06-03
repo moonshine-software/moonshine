@@ -19,10 +19,10 @@ trait CheckboxTrait
 
         if ($formValue instanceof Collection) {
             return $formValue->isNotEmpty() && $formValue->contains(
-                    $formValue->first()->getKeyName(),
-                    '=',
-                    $value
-                );
+                $formValue->first()->getKeyName(),
+                '=',
+                $value
+            );
         }
 
         if (is_array($formValue)) {

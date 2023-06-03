@@ -12,10 +12,10 @@ spl_autoload_register(static function ($class): void {
 
 
     $file = rtrim(__DIR__, '/') . '/' . str_replace(
-            '\\',
-            '/',
-            $relativeClass
-        ) . '.php';
+        '\\',
+        '/',
+        $relativeClass
+    ) . '.php';
 
     if (file_exists($file)) {
         require_once $file;

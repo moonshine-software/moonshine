@@ -14,9 +14,10 @@ use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
 
-abstract class Field extends FormElement implements HasExportViewValue,
-                                                    HasIndexViewValue,
-                                                    HasFormViewValue
+abstract class Field extends FormElement implements
+    HasExportViewValue,
+    HasIndexViewValue,
+    HasFormViewValue
 {
     use ShowOrHide;
     use LinkTrait;
@@ -69,8 +70,8 @@ abstract class Field extends FormElement implements HasExportViewValue,
     public function formViewValue(Model $item): mixed
     {
         if ($this->hasRelationship() && ! $item->relationLoaded(
-                $this->relation()
-            )) {
+            $this->relation()
+        )) {
             $item->load($this->relation());
         }
 
@@ -107,8 +108,8 @@ abstract class Field extends FormElement implements HasExportViewValue,
     public function indexViewValue(Model $item, bool $container = true): string
     {
         if ($this->hasRelationship() && ! $item->relationLoaded(
-                $this->relation()
-            )) {
+            $this->relation()
+        )) {
             $item->load($this->relation());
         }
 

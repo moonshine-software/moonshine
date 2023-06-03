@@ -72,9 +72,9 @@ trait FileDeletable
         if (
             $this->isDeleteDir()
             && empty(
-            Storage::disk($this->getDisk())->directories(
-                $this->getDir()
-            )
+                Storage::disk($this->getDisk())->directories(
+                    $this->getDir()
+                )
             )
             && empty(Storage::disk($this->getDisk())->files($this->getDir()))
         ) {

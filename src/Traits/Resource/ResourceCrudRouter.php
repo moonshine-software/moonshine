@@ -41,14 +41,16 @@ trait ResourceCrudRouter
 
             Route::get(
                 "{$this->uriKey()}/query-tag/{queryTag}",
-                fn (ViewAnyFormRequest $request
+                fn (
+                    ViewAnyFormRequest $request
                 ): View|string => (new CrudController())->index($request)
             )
                 ->name("{$this->routeNameAlias()}.query-tag");
 
             Route::delete(
                 "{$this->uriKey()}/massDelete",
-                fn (MassDeleteFormRequest $request
+                fn (
+                    MassDeleteFormRequest $request
                 ): RedirectResponse => (new CrudController())->massDelete(
                     $request
                 )
@@ -61,13 +63,15 @@ trait ResourceCrudRouter
 
             Route::get(
                 "{$this->uriKey()}/relation-field-items/{{$this->routeParam()}}",
-                fn (ViewAnyFormRequest $request
+                fn (
+                    ViewAnyFormRequest $request
                 ): View => (new RelationFieldController())->index($request)
             )->name("{$this->routeNameAlias()}.relation-field-items");
 
             Route::get(
                 "{$this->uriKey()}/relation-field-form/{{$this->routeParam()}?}",
-                fn (ViewAnyFormRequest $request
+                fn (
+                    ViewAnyFormRequest $request
                 ): View => (new RelationFieldController())->form($request)
             )->name("{$this->routeNameAlias()}.relation-field-form");
 

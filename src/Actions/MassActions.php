@@ -14,10 +14,12 @@ final class MassActions extends Collection
     {
         return $this->when(
             ! $this->first(
-                static fn (Action $action
+                static fn (
+                    Action $action
                 ): bool => $action::class === $new::class
             ),
-            static fn (MassActions $actions
+            static fn (
+                MassActions $actions
             ): MassActions => $actions->add($new)
         );
     }
@@ -34,7 +36,8 @@ final class MassActions extends Collection
     public function inLine(): self
     {
         return $this->filter(
-            static fn (MassActionContract $action
+            static fn (
+                MassActionContract $action
             ): bool => ! $action->inDropdown()
         );
     }

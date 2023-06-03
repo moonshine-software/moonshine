@@ -23,7 +23,7 @@ it('successful stored', function (): void {
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
 
-    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+    Storage::disk('public')->assertExists('files/' . $avatar->hashName());
 });
 
 it('successful stored with original name', function (): void {
@@ -38,9 +38,9 @@ it('successful stored with original name', function (): void {
         ->save($this->item);
 
     expect($this->item->avatar)
-        ->toBe('files/'.$avatar->getClientOriginalName());
+        ->toBe('files/' . $avatar->getClientOriginalName());
 
-    Storage::disk('public')->assertExists('files/'.$avatar->getClientOriginalName());
+    Storage::disk('public')->assertExists('files/' . $avatar->getClientOriginalName());
 });
 
 it('store throw allowed extension exception', function (): void {
@@ -65,9 +65,9 @@ it('has one or many method', function (): void {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     expect($this->field->hasManyOrOneSave($avatar))
-        ->toBe('files/'.$avatar->hashName());
+        ->toBe('files/' . $avatar->hashName());
 
-    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+    Storage::disk('public')->assertExists('files/' . $avatar->hashName());
 });
 
 it('custom name', function (): void {
@@ -78,7 +78,7 @@ it('custom name', function (): void {
     ]);
 
     $this->field
-        ->customName(fn(UploadedFile $file): string => 'testing.' . $file->extension())
+        ->customName(fn (UploadedFile $file): string => 'testing.' . $file->extension())
         ->save($this->item);
 
     expect($this->item->avatar)

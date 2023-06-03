@@ -37,8 +37,8 @@ class MenuItem extends MenuSection implements MenuElement
         }
 
         if (is_null($this->resource) && (is_string($resource) || is_callable(
-                    $resource
-                ))) {
+            $resource
+        ))) {
             $this->link = $resource;
         }
 

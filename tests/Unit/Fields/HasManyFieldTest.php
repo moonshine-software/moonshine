@@ -108,9 +108,9 @@ it('has fields', function (): void {
 
             $field->toBeInstanceOf(Text::class)
                 ->name()
-                ->toBe('hasMany[${index0}][field'.$key.']')
+                ->toBe('hasMany[${index0}][field' . $key . ']')
                 ->id()
-                ->toBe('has_many_field'.$key);
+                ->toBe('has_many_field' . $key);
         });
 });
 

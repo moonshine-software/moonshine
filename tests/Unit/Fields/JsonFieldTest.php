@@ -85,9 +85,9 @@ it('has fields', function (): void {
 
             $field->toBeInstanceOf(Text::class)
                 ->name()
-                ->toBe('json[${index0}][field'.$key.']')
+                ->toBe('json[${index0}][field' . $key . ']')
                 ->id()
-                ->toBe('json_field'.$key);
+                ->toBe('json_field' . $key);
         });
 });
 
@@ -102,9 +102,9 @@ it('has fields key value', function (): void {
 
             $field->toBeInstanceOf(Text::class)
                 ->name()
-                ->toBe('key_value[${index0}]['.$name.']')
+                ->toBe('key_value[${index0}][' . $name . ']')
                 ->id()
-                ->toBe('key_value_'.$name);
+                ->toBe('key_value_' . $name);
         });
 });
 

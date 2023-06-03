@@ -19,7 +19,7 @@ it('resolved child fields / names', function (): void {
     expect(exampleFields()->resolveChildFields($parent))
         ->toBeIterable()
         ->each(
-            fn ($field, $index) => $field->name()->toBe("hasMany[field".($index + 1)."]")
+            fn ($field, $index) => $field->name()->toBe("hasMany[field" . ($index + 1) . "]")
         );
 });
 
@@ -40,7 +40,7 @@ it('resolved child fields / pivot', function (): void {
     expect(exampleFields()->resolveChildFields($field))
         ->toBeIterable()
         ->each(
-            fn ($field, $index) => $field->name()->toBe("field_field".($index + 1)."[]")
+            fn ($field, $index) => $field->name()->toBe("field_field" . ($index + 1) . "[]")
         );
 });
 

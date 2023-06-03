@@ -31,8 +31,8 @@ class AssetManager
             )
             ->map(
                 fn ($asset): string => "<script src='" . asset(
-                        $asset
-                    ) . "'></script>"
+                    $asset
+                ) . "'></script>"
             )->implode(PHP_EOL);
     }
 
@@ -44,8 +44,8 @@ class AssetManager
             )
             ->map(
                 fn ($asset): string => "<link href='" . asset(
-                        $asset
-                    ) . "' rel='stylesheet'>"
+                    $asset
+                ) . "' rel='stylesheet'>"
             )->implode(PHP_EOL);
     }
 }

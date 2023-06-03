@@ -107,7 +107,8 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function create(CreateFormRequest $request
+    public function create(
+        CreateFormRequest $request
     ): string|View|RedirectResponse {
         return $this->createOrEditView($request);
     }
@@ -158,7 +159,8 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function update(UpdateFormRequest $request
+    public function update(
+        UpdateFormRequest $request
     ): JsonResponse|View|RedirectResponse {
         return $this->updateOrCreate($request);
     }
@@ -166,7 +168,8 @@ class CrudController extends BaseController
     /**
      * @throws Throwable
      */
-    protected function updateOrCreate(MoonShineRequest $request
+    protected function updateOrCreate(
+        MoonShineRequest $request
     ): JsonResponse|View|RedirectResponse {
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
@@ -227,7 +230,8 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function store(StoreFormRequest $request
+    public function store(
+        StoreFormRequest $request
     ): JsonResponse|View|RedirectResponse {
         return $this->updateOrCreate($request);
     }

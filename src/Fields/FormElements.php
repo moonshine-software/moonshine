@@ -24,7 +24,8 @@ abstract class FormElements extends Collection
     public function withParents(): FormElements
     {
         return $this->onlyFields()->map(
-            static fn (FormElement $formElement
+            static fn (
+                FormElement $formElement
             ): FormElement => $formElement->setParents()
         );
     }
@@ -63,10 +64,12 @@ abstract class FormElements extends Collection
     /**
      * @throws Throwable
      */
-    public function withCurrentResource(ResourceContract $resource
+    public function withCurrentResource(
+        ResourceContract $resource
     ): FormElements {
         return $this->onlyFields()->map(
-            static fn (FormElement $formElement
+            static fn (
+                FormElement $formElement
             ): FormElement => $formElement->setResources($resource)
         );
     }
@@ -102,7 +105,8 @@ abstract class FormElements extends Collection
                 static fn (FormElement $field): bool => $field->hasShowWhen()
             )
             ->map(
-                static fn (FormElement $field
+                static fn (
+                    FormElement $field
                 ): array => $field->showWhenCondition()
             );
     }

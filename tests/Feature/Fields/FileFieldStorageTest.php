@@ -103,7 +103,7 @@ it('successful removal from the form', function (): void {
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
 
-    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+    Storage::disk('public')->assertExists('files/' . $avatar->hashName());
 
     fakeRequest(method: 'POST', parameters: [
         'avatar' => null,
@@ -114,7 +114,7 @@ it('successful removal from the form', function (): void {
     expect($this->item->avatar)
         ->toBeNull();
 
-    Storage::disk('public')->assertMissing('files/'.$avatar->hashName());
+    Storage::disk('public')->assertMissing('files/' . $avatar->hashName());
 });
 
 it('successful removal from the index', function (): void {
@@ -122,11 +122,11 @@ it('successful removal from the index', function (): void {
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
 
-    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+    Storage::disk('public')->assertExists('files/' . $avatar->hashName());
 
     $this->field->afterDelete($this->item);
 
-    Storage::disk('public')->assertMissing('files/'.$avatar->hashName());
+    Storage::disk('public')->assertMissing('files/' . $avatar->hashName());
 });
 
 it('successful mass delete files', function (): void {
@@ -135,7 +135,7 @@ it('successful mass delete files', function (): void {
     $avatars = [];
 
     foreach ($users as $user) {
-        $avatar = UploadedFile::fake()->image($user->id.'_avatar-to-delete.png');
+        $avatar = UploadedFile::fake()->image($user->id . '_avatar-to-delete.png');
         expect()->storeAvatarFile($avatar, $this->field, $user);
         $this->field->save($user);
         $user->save();
@@ -145,7 +145,7 @@ it('successful mass delete files', function (): void {
     $this->resource->massDelete($users->map(fn ($i) => $i->id)->toArray());
 
     foreach ($avatars as $avatar) {
-        Storage::disk('public')->assertMissing('moonshine_users/'.$avatar->hashName());
+        Storage::disk('public')->assertMissing('moonshine_users/' . $avatar->hashName());
     }
 });
 
@@ -154,15 +154,15 @@ it('checking if file is saved after request', function (): void {
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
 
-    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+    Storage::disk('public')->assertExists('files/' . $avatar->hashName());
 
     fakeRequest(method: 'POST', parameters: [
-        'hidden_avatar' => 'files/'.$avatar->hashName(),
+        'hidden_avatar' => 'files/' . $avatar->hashName(),
     ]);
 
     $this->field->save($this->item);
 
-    Storage::disk('public')->assertExists('files/'.$avatar->hashName());
+    Storage::disk('public')->assertExists('files/' . $avatar->hashName());
 });
 
 it('category create with files', function (): void {

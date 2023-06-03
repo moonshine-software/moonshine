@@ -141,10 +141,10 @@ it('form view value', function (): void {
     expect($this->field->formViewValue($item))
         ->toBe($item->email);
 
-    $valueCallbackField = Text::make('Email', 'email', fn(MoonshineUser $item): string => $item->id.'|'.$item->email);
+    $valueCallbackField = Text::make('Email', 'email', fn (MoonshineUser $item): string => $item->id . '|' . $item->email);
 
     expect($valueCallbackField->formViewValue($item))
-        ->toBe($item->id.'|'.$item->email);
+        ->toBe($item->id . '|' . $item->email);
 
     $this->field->default('-');
 
@@ -160,10 +160,10 @@ it('index/export view value', function (): void {
     expect($this->field->indexViewValue($item))->and($this->field->exportViewValue($item))
         ->toBe($item->email);
 
-    $valueCallbackField = Text::make('Email', 'email', fn(MoonshineUser $item): string => $item->id.'|'.$item->email);
+    $valueCallbackField = Text::make('Email', 'email', fn (MoonshineUser $item): string => $item->id . '|' . $item->email);
 
     expect($valueCallbackField->indexViewValue($item))->and($valueCallbackField->exportViewValue($item))
-        ->toBe($item->id.'|'.$item->email);
+        ->toBe($item->id . '|' . $item->email);
 });
 
 it('can save', function (): void {

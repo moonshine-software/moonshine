@@ -80,7 +80,8 @@ trait HasOneOrMany
                             $values[$field->field()] ?? []
                         )
                             ->mapWithKeys(
-                                static fn ($data
+                                static fn (
+                                    $data
                                 ): array => [$data['key'] => $data['value']]
                             )
                             ->filter();

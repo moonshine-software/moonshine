@@ -14,9 +14,9 @@ final class ChangeLogFormComponent extends FormComponent
     public static function logs(Model $item): Collection
     {
         if (! (property_exists(
-                    $item,
-                    'changeLogs'
-                ) && $item->changeLogs !== null) || ! $item->changeLogs instanceof Collection) {
+            $item,
+            'changeLogs'
+        ) && $item->changeLogs !== null) || ! $item->changeLogs instanceof Collection) {
             return collect();
         }
 

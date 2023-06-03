@@ -2,9 +2,10 @@
 
 use MoonShine\Commands\ResourceCommand;
 use MoonShine\MoonShine;
-use Symfony\Component\Console\Command\Command;
 
 use function Pest\Laravel\artisan;
+
+use Symfony\Component\Console\Command\Command;
 
 uses()->group('commands');
 
@@ -37,11 +38,11 @@ it('generates correct resource title', function (
         '--id' => $id,
     ])->assertExitCode(Command::SUCCESS);
 
-    $path = MoonShine::path('app/MoonShine/Resources/'.ucfirst($name).'Resource.php');
+    $path = MoonShine::path('app/MoonShine/Resources/' . ucfirst($name) . 'Resource.php');
     $contents = file_get_contents($path);
 
     expect($contents)
-        ->toContain('public static string $title = \''.$result.'\';');
+        ->toContain('public static string $title = \'' . $result . '\';');
 
     @unlink($path);
 })->with([

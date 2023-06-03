@@ -58,7 +58,7 @@ class TestCase extends Orchestra
         Factory::guessFactoryNamesUsing(static function ($factory): string {
             $factoryBasename = class_basename($factory);
 
-            return "MoonShine\Database\Factories\\$factoryBasename".'Factory';
+            return "MoonShine\Database\Factories\\$factoryBasename" . 'Factory';
         });
 
         return $this;

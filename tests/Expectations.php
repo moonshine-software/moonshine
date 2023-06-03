@@ -11,5 +11,5 @@ expect()->extend('storeAvatarFile', function ($avatar, $field, $item): Expectati
     $field->save($item);
 
     return expect($item->avatar)
-        ->toBe('files/'.$avatar->hashName());
+        ->toBe('files/' . $avatar->hashName());
 });
