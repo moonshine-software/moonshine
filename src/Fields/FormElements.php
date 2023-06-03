@@ -202,4 +202,21 @@ abstract class FormElements extends Collection
 
         return self::make([new $class($label, $this->toArray())]);
     }
+
+    public function unwrapFields(string $class): FormElements
+    {
+        $modified = self::make();
+
+        $this->each(static function ($fieldOrDecoration) use ($class, $modified) {
+            if ($fieldOrDecoration instanceof $class) {
+               $fieldOrDecoration
+                    ->getFields()
+                    ->each(fn($inner) => $modified->push($inner));
+            } else {
+                $modified->push($fieldOrDecoration);
+            }
+        });
+
+        return $modified;
+    }
 }
