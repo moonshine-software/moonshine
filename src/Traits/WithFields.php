@@ -50,6 +50,7 @@ trait WithFields
         $value = $item->{$this instanceof HasRelationship ? $this->relation()
             : $this->field()};
 
+
         if ($value instanceof Model) {
             $value = [$value];
         }
