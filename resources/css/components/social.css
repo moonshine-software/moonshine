@@ -1,17 +1,17 @@
 /* Social */
 .social {
-	&-divider {
-		@apply mb-4 flex w-full items-center gap-x-2 before:h-[1px] before:min-w-[6px] before:grow before:bg-gray-200 after:h-[1px] after:min-w-[6px] after:grow after:bg-gray-200 dark:before:bg-dark-200 dark:after:bg-dark-200;
-	}
+  &-divider {
+    @apply mb-4 flex w-full items-center gap-x-2 before:h-[1px] before:min-w-[6px] before:grow before:bg-gray-200 after:h-[1px] after:min-w-[6px] after:grow after:bg-gray-200 dark:before:bg-dark-200 dark:after:bg-dark-200;
+  }
 
-	&-list {
-		@apply flex flex-wrap items-center justify-center gap-2 xs:gap-3;
-	}
+  &-list {
+    @apply flex flex-wrap items-center justify-center gap-2 xs:gap-3;
+  }
 
-	&-item {
-		@apply inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-700 hover:bg-pink hover:text-white dark:bg-slate-400 dark:hover:bg-pink;
-		> svg {
-			@apply h-3.5 w-3.5 fill-current stroke-current;
-		}
-	}
+  &-item {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-700 hover:bg-pink hover:text-white dark:bg-slate-400 dark:hover:bg-pink;
+    > svg {
+      @apply h-3.5 w-3.5 fill-current stroke-current;
+    }
+  }
 }

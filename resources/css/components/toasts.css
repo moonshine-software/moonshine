@@ -1,24 +1,24 @@
 /* Toasts (notices) */
 .toast {
-    &-container {
-        @apply z-toast pointer-events-none fixed inset-0 flex h-screen w-screen flex-col-reverse items-end justify-end;
-    }
+  &-container {
+    @apply pointer-events-none fixed inset-0 z-toast flex h-screen w-screen flex-col-reverse items-end justify-end;
+  }
 
-    &-item {
-        @apply pointer-events-auto mt-2 mr-2 flex w-56 cursor-pointer items-center justify-center rounded bg-gray-600 p-2 text-center text-2xs text-white dark:bg-dark-50 dark:text-white sm:p-3 lg:mt-4 lg:mr-4;
-    }
+  &-item {
+    @apply pointer-events-auto mt-2 mr-2 flex w-56 cursor-pointer items-center justify-center rounded bg-gray-600 p-2 text-center text-2xs text-white dark:bg-dark-50 dark:text-white sm:p-3 lg:mt-4 lg:mr-4;
+  }
 
-    /* Themes */
-    &-info {
-        @apply bg-purple text-white dark:bg-purple dark:text-white;
-    }
-    &-success {
-        @apply bg-green-600 text-white dark:bg-green-800 dark:text-green-300;
-    }
-    &-warning {
-        @apply bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-300;
-    }
-    &-error {
-        @apply bg-pink text-white dark:bg-pink dark:text-white;
-    }
+  /* Themes */
+  &-info {
+    @apply bg-purple text-white dark:bg-purple dark:text-white;
+  }
+  &-success {
+    @apply bg-green-600 text-white dark:bg-green-800 dark:text-green-300;
+  }
+  &-warning {
+    @apply bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-300;
+  }
+  &-error {
+    @apply bg-pink text-white dark:bg-pink dark:text-white;
+  }
 }
