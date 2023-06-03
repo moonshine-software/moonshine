@@ -10,7 +10,7 @@ uses()->group('stack-fields');
 beforeEach(function (): void {
     $this->field = StackFields::make('Email')->fields([
         Text::make('text_1'),
-        Text::make('text_2')
+        Text::make('text_2'),
     ]);
 
     $this->item = new class () extends Model {
@@ -37,7 +37,7 @@ it('index view value', function (): void {
 it('save', function (): void {
     fakeRequest(parameters: [
         'text_1' => 'New value 1',
-        'text_2' => 'New value 2'
+        'text_2' => 'New value 2',
     ]);
 
     expect($this->field->save($this->item))
