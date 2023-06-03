@@ -6,10 +6,8 @@ on: [push, pull_request]
 jobs:
     rector:
         runs-on: ubuntu-latest
-        if: github.event.pull_request.head.repo.full_name == 'moonshine-software/moonshine'
         steps:
             -
-                if: github.event.pull_request.head.repo.full_name == github.repository
                 uses: actions/checkout@v3
                 with:
                     # Must be used to trigger workflow after push
