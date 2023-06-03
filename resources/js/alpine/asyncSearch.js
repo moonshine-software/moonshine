@@ -1,4 +1,5 @@
 /* Search */
+import {crudFormQuery} from "./formFunctions"
 
 export default (route) => ({
   items: [],
@@ -16,7 +17,7 @@ export default (route) => ({
     if (this.query.length > 0) {
       let query = '&query=' + this.query;
 
-      fetch(route + query).then((response) => {
+      fetch(route + query + '&' + crudFormQuery).then((response) => {
         return response.json();
       }).then((data) => {
         this.match = data

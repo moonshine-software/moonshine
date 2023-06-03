@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Fields\MorphTo;
@@ -16,16 +17,17 @@ class SearchController extends BaseController
     /**
      * @throws Throwable
      */
-    public function relations(): JsonResponse
+    public function relations(Request $request): JsonResponse
     {
-        abort_if(! request()->has(['resource', 'column']), 404);
+        abort_if(! $request->has(['resource', 'column']), 404);
 
         $response = [];
         $resource = MoonShine::getResourceFromUriKey(request('resource'));
 
-        $field = $resource->getFields()->findByColumn(request('column'));
+        $fields = $resource->getFields();
+        $field = $fields->findByColumn(request('column'));
 
-        $requestQuery = request('query');
+        $requestQuery = $request->get('query');
 
         if ($field instanceof HasAsyncSearch && $requestQuery) {
             if ($field instanceof MorphTo) {
@@ -40,7 +42,7 @@ class SearchController extends BaseController
             $query = $related->newModelQuery();
 
             if (is_callable($field->asyncSearchQuery())) {
-                $query = call_user_func($field->asyncSearchQuery(), $query, $requestQuery);
+                $query = call_user_func($field->asyncSearchQuery(), $query, $request);
             }
 
             $query = $query->where(
