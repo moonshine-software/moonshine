@@ -13,6 +13,9 @@ final class MassDeleteFormRequest extends MoonShineRequest
         return $this->getResource()->can('massDelete');
     }
 
+    /**
+     * @return array{ids: string[]}
+     */
     public function rules(): array
     {
         return [
@@ -20,7 +23,7 @@ final class MassDeleteFormRequest extends MoonShineRequest
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'ids' => request()

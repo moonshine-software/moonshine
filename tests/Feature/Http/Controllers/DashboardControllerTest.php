@@ -13,7 +13,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 uses()->group('controllers');
 uses()->group('dashboard');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $resource = TestResourceBuilder::new(MoonshineUser::class, true);
 
     app(Dashboard::class)->registerBlocks([
@@ -41,7 +41,7 @@ beforeEach(function () {
     ]);
 });
 
-it('successful response', function () {
+it('successful response', function (): void {
     asAdmin()->get(route('moonshine.index'))
         ->assertOk()
         ->assertSee(155)

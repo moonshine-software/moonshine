@@ -14,11 +14,11 @@ trait HasMoonShineChangeLog
 {
     public static function bootHasMoonShineChangeLog(): void
     {
-        static::created(static function (Model $row) {
+        static::created(static function (Model $row): void {
             $row->createLog();
         });
 
-        static::updated(static function (Model $row) {
+        static::updated(static function (Model $row): void {
             $row->createLog();
         });
     }

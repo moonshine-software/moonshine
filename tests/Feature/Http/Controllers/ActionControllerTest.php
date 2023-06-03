@@ -15,7 +15,7 @@ use function Pest\Laravel\assertModelMissing;
 uses()->group('controllers');
 uses()->group('actions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     Storage::fake('public');
 
     $this->resource = TestResourceBuilder::new(model: MoonshineUser::class, addRoutes: true)
@@ -35,7 +35,7 @@ beforeEach(function () {
         ]);
 });
 
-it('export action', function () {
+it('export action', function (): void {
     $action = ExportAction::make('Export')
         ->disk('public')
         ->setResource($this->resource);
@@ -48,7 +48,7 @@ it('export action', function () {
         ->assertDownload("{$this->resource->routeNameAlias()}.xlsx");
 });
 
-it('import action', function () {
+it('import action', function (): void {
     $action = ImportAction::make('Import')
         ->disk('public')
         ->setResource($this->resource);
@@ -58,7 +58,7 @@ it('import action', function () {
     ))->isSuccessfulOrRedirect();
 });
 
-it('bulk action', function () {
+it('bulk action', function (): void {
     $users = MoonshineUser::factory(10)->create();
 
     $users->each(fn ($user) => assertModelExists($user));
@@ -70,7 +70,7 @@ it('bulk action', function () {
     $users->each(fn ($user) => assertModelMissing($user));
 });
 
-it('item action', function () {
+it('item action', function (): void {
     $user = MoonshineUser::factory()->create();
 
     assertModelExists($user);
@@ -82,7 +82,7 @@ it('item action', function () {
     assertModelMissing($user);
 });
 
-it('form action', function () {
+it('form action', function (): void {
     $user = MoonshineUser::factory()->create();
 
     assertModelExists($user);

@@ -43,7 +43,10 @@ final class FiltersAction extends Action
     {
         return request()
             ->collect('filters')
-            ->filter(fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter) : $filter)
+            ->filter(
+                fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter)
+                    : $filter
+            )
             ->count();
     }
 

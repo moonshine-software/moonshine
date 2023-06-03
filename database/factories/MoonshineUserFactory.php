@@ -14,14 +14,14 @@ class MoonshineUserFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array{moonshine_user_role_id: mixed, name: string, email: string, password: string, remember_token: mixed}
      */
     public function definition()
     {
         return [
             'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];

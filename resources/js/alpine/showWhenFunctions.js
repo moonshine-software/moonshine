@@ -10,10 +10,10 @@ export function getInputs() {
             value = []
             for (let option of element.options) {
                 if (option.selected) {
-                    value.push(option.value);
+                    value.push(option.value)
                 }
             }
-        } else if(type === 'checkbox' || type === 'radio') {
+        } else if (type === 'checkbox' || type === 'radio') {
             value = element.checked
         } else {
             value = element.value
@@ -22,16 +22,20 @@ export function getInputs() {
         inputs[inputFieldName(element.getAttribute('name'))] = value
     })
 
-    document.querySelectorAll('#moonshine-form [data-input-table]').forEach(element => {
-        inputs[inputFieldName(element.getAttribute('data-input-table'))] = element.getAttribute('data-input-table')
-    })
+    document.querySelectorAll('#moonshine-form [data-input-table]').
+        forEach(element => {
+            inputs[inputFieldName(
+                element.getAttribute(
+                    'data-input-table'))] = element.getAttribute(
+                'data-input-table')
+        })
 
     return inputs
 }
 
 export function showWhenChange(fieldName) {
 
-    fieldName = inputFieldName(fieldName);
+    fieldName = inputFieldName(fieldName)
 
     this.whenFields.forEach(field => {
         if (fieldName != field.changeField) {
@@ -46,43 +50,46 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
         return
     }
 
-    let inputElement = document.querySelector('#moonshine-form [name=' + field.showField + ']')
+    let inputElement = document.querySelector(
+        '#moonshine-form [name=' + field.showField + ']')
 
-    if(inputElement === null) {
-        inputElement = document.querySelector('#moonshine-form [data-input-table=' + field.showField + ']')
+    if (inputElement === null) {
+        inputElement = document.querySelector(
+            '#moonshine-form [data-input-table=' + field.showField + ']')
     }
 
-    if(inputElement === null) {
+    if (inputElement === null) {
         return
     }
 
     const fieldContainer = inputElement.closest('.form-group')
 
-    let validateShow = false;
+    let validateShow = false
 
     switch (field.operator) {
         case '=':
             validateShow = inputs[field.changeField] == field.value
-            break;
+            break
         case '!=':
             validateShow = inputs[field.changeField] != field.value
-            break;
+            break
         case '>':
             validateShow = inputs[field.changeField] > field.value
-            break;
+            break
         case '<':
             validateShow = inputs[field.changeField] < field.value
-            break;
+            break
         case '>=':
             validateShow = inputs[field.changeField] >= field.value
-            break;
+            break
         case '<=':
             validateShow = inputs[field.changeField] <= field.value
-            break;
+            break
         case 'in':
-            if(Array.isArray(field.value) && Array.isArray(inputs[field.changeField])) {
+            if (Array.isArray(field.value) &&
+                Array.isArray(inputs[field.changeField])) {
                 for (let i = 0; i < field.value.length; i++) {
-                    if(inputs[field.changeField].includes(field.value[i])){
+                    if (inputs[field.changeField].includes(field.value[i])) {
                         validateShow = true
                         break
                     }
@@ -90,12 +97,13 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
             } else {
                 validateShow = field.value.includes(inputs[field.changeField])
             }
-            break;
+            break
         case 'not in':
-            if(Array.isArray(field.value) && Array.isArray(inputs[field.changeField])) {
+            if (Array.isArray(field.value) &&
+                Array.isArray(inputs[field.changeField])) {
                 let includes = false
                 for (let i = 0; i < field.value.length; i++) {
-                    if(inputs[field.changeField].includes(field.value[i])){
+                    if (inputs[field.changeField].includes(field.value[i])) {
                         includes = true
                         break
                     }
@@ -104,7 +112,7 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
             } else {
                 validateShow = !field.value.includes(inputs[field.changeField])
             }
-            break;
+            break
     }
 
     if (validateShow) {
@@ -114,11 +122,10 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
     }
 }
 
-function inputFieldName(inputName)
-{
+function inputFieldName(inputName) {
     inputName = inputName.replace('[]', '')
-    if(inputName.indexOf('slide[') !== -1) {
-        inputName = inputName.replace('slide[','').replace(']','')
+    if (inputName.indexOf('slide[') !== -1) {
+        inputName = inputName.replace('slide[', '').replace(']', '')
     }
-    return inputName;
+    return inputName
 }

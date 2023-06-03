@@ -1,0 +1,11 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    paths:
+        - src/
+    level: 1
+
+    excludePaths:
+        - ./src/Http/Controllers/SocialiteController.php
+        - ./src/Traits/Makeable.php

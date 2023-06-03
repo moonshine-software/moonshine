@@ -6,11 +6,11 @@ use MoonShine\Models\MoonshineUser;
 uses()->group('jobs');
 uses()->group('mass-actions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->resource = $this->moonShineUserResource();
 });
 
-it('successful exported', function () {
+it('successful exported', function (): void {
     $path = 'moonshine_users/export.csv';
 
     Storage::fake('public');

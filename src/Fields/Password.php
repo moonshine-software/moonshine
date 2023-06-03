@@ -10,7 +10,13 @@ class Password extends Text
 {
     protected string $type = 'password';
 
-    protected array $attributes = ['type', 'autocomplete', 'disabled', 'readonly', 'required'];
+    protected array $attributes = [
+        'type',
+        'autocomplete',
+        'disabled',
+        'readonly',
+        'required',
+    ];
 
     public function exportViewValue(Model $item): string
     {

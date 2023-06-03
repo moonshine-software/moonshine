@@ -85,13 +85,14 @@ final class CustomPage
 
     public function getViewData(): array
     {
-        return is_callable($this->viewData) ? call_user_func($this->viewData) : [];
+        return is_callable($this->viewData) ? call_user_func($this->viewData)
+            : [];
     }
 
     public function url(): string
     {
         return route(
-            (string)str('moonshine')
+            (string) str('moonshine')
                 ->append('.')
                 ->append('custom_page'),
             $this->alias

@@ -13,13 +13,13 @@ use function Pest\Laravel\get;
 uses()->group('controllers');
 uses()->group('crud');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->user = MoonshineUser::factory()->create();
     $this->resource = $this->moonShineUserResource();
     $this->requestData = CrudRequestFactory::new();
 });
 
-it('logs stored record', function () {
+it('logs stored record', function (): void {
     $email = fake()->email();
     $this->requestData->withEmail($email);
 
@@ -35,7 +35,7 @@ it('logs stored record', function () {
     ]);
 });
 
-it('logs updated record', function () {
+it('logs updated record', function (): void {
     $email = fake()->email();
     $this->requestData->withEmail($email);
 
@@ -56,7 +56,7 @@ it('logs updated record', function () {
     ]);
 });
 
-it('does not generate logs for non MoonShine request', function () {
+it('does not generate logs for non MoonShine request', function (): void {
     $user = User::factory()->create([
         'name' => 'John',
     ]);
@@ -65,7 +65,7 @@ it('does not generate logs for non MoonShine request', function () {
 
     assertDatabaseEmpty('moonshine_change_logs');
 
-    Route::get('/change-me', function () use ($user) {
+    Route::get('/change-me', function () use ($user): void {
         $user->name = 'Nick';
         $user->save();
     })

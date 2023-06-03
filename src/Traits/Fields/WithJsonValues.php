@@ -26,7 +26,7 @@ trait WithJsonValues
         if (is_null($item)) {
             foreach ($this->getFields() as $field) {
                 $defaultValue = $field->getAttribute('multiple')
-                    || $field instanceof HasFields
+                || $field instanceof HasFields
                     ? [] : '';
 
                 if ($field instanceof HasValueExtraction) {

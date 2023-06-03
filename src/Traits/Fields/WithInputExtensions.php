@@ -15,24 +15,23 @@ trait WithInputExtensions
 {
     protected array $extensions = [];
 
-    public function extension(InputExtension $extension): static
-    {
-        $this->extensions[$extension::class] = $extension;
-        $this->setAttribute('x-ref', 'extensionInput');
-
-        return $this;
-    }
-
     public function getExtensions(): Collection
     {
         return collect($this->extensions);
     }
 
-
     /** Just a sugar methods below */
     public function copy(): static
     {
         $this->extension(new InputCopy());
+
+        return $this;
+    }
+
+    public function extension(InputExtension $extension): static
+    {
+        $this->extensions[$extension::class] = $extension;
+        $this->setAttribute('x-ref', 'extensionInput');
 
         return $this;
     }

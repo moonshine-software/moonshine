@@ -5,25 +5,25 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('mass-actions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->label = 'Import';
     $this->resource = TestResourceBuilder::new(addRoutes: true);
     $this->action = ImportAction::make($this->label)
         ->setResource($this->resource);
 });
 
-it('make new object', function () {
+it('make new object', function (): void {
     expect($this->action)
         ->toBeInstanceOf(ImportAction::class);
 });
 
-it('correct resource', function () {
+it('correct resource', function (): void {
     expect($this->action)
         ->resource()
         ->toBe($this->resource);
 });
 
-it('show in dropdown or line', function () {
+it('show in dropdown or line', function (): void {
     expect($this->action)
         ->showInLine()
         ->inDropdown()
@@ -33,7 +33,7 @@ it('show in dropdown or line', function () {
         ->toBeTrue();
 });
 
-it('configure storage', function () {
+it('configure storage', function (): void {
     expect($this->action)
         ->dir('/import')
         ->getDir()
@@ -43,13 +43,13 @@ it('configure storage', function () {
         ->toBe('custom');
 });
 
-it('correct url', function () {
+it('correct url', function (): void {
     expect($this->action)
         ->url()
         ->toBe($this->resource->route('actions.index', query: [class_basename($this->action) => 1]));
 });
 
-it('correct trigger', function () {
+it('correct trigger', function (): void {
     expect($this->action)
         ->getTriggerKey()
         ->toBe(class_basename($this->action))
@@ -57,7 +57,7 @@ it('correct trigger', function () {
         ->toBeFalse();
 });
 
-it('is triggered', function () {
+it('is triggered', function (): void {
     fakeRequest($this->resource->route('actions.index', query: [class_basename($this->action) => 1]));
 
     expect($this->action)
@@ -65,7 +65,7 @@ it('is triggered', function () {
         ->toBeTrue();
 });
 
-it('render view', function () {
+it('render view', function (): void {
     test()->withViewErrors([]);
 
     expect($this->action)

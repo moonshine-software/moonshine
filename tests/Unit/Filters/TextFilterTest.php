@@ -8,33 +8,33 @@ use MoonShine\InputExtensions\InputEye;
 
 uses()->group('filters');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->filter = TextFilter::make('Text');
 });
 
-it('filter and form element is parent', function () {
+it('filter and form element is parent', function (): void {
     expect($this->filter)
         ->toBeInstanceOf(Filter::class)
         ->toBeInstanceOf(FormElement::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->filter->type())
         ->toBe('text');
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->filter->getView())
         ->toBe('moonshine::filters.text');
 });
 
-it('mask', function () {
+it('mask', function (): void {
     expect($this->filter->mask('999'))
         ->getMask()
         ->toBe('999');
 });
 
-it('extension', function () {
+it('extension', function (): void {
     expect($this->filter->extension(new InputEye()))
         ->getExtensions()
         ->toBeCollection()

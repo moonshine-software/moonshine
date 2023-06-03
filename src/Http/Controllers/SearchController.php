@@ -42,7 +42,11 @@ class SearchController extends BaseController
             $query = $related->newModelQuery();
 
             if (is_callable($field->asyncSearchQuery())) {
-                $query = call_user_func($field->asyncSearchQuery(), $query, $request);
+                $query = call_user_func(
+                    $field->asyncSearchQuery(),
+                    $query,
+                    $request
+                );
             }
 
             $query = $query->where(
@@ -52,9 +56,11 @@ class SearchController extends BaseController
             )->limit($field->asyncSearchCount());
 
             if (is_callable($field->asyncSearchValueCallback())) {
-                $values = $query->get()->mapWithKeys(function ($relatedItem) use ($field) {
-                    return [$relatedItem->getKey() => ($field->asyncSearchValueCallback())($relatedItem)];
-                });
+                $values = $query->get()->mapWithKeys(
+                    fn ($relatedItem): array => [
+                        $relatedItem->getKey() => ($field->asyncSearchValueCallback())($relatedItem),
+                    ]
+                );
             } else {
                 $values = $query->pluck(
                     $searchColumn,

@@ -5,11 +5,11 @@ use MoonShine\Actions\MassActions;
 
 uses()->group('mass-actions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->actions = MassActions::make([]);
 });
 
-it('merge if not exists', function () {
+it('merge if not exists', function (): void {
     $this->actions->mergeIfNotExists(ExportAction::make('Export'));
 
     expect($this->actions)
@@ -28,8 +28,8 @@ it('merge if not exists', function () {
         ->toBeInstanceOf(ExportAction::class);
 });
 
-it('only visible actions', function () {
-    $this->actions->mergeIfNotExists(ExportAction::make('Export')->canSee(fn () => false));
+it('only visible actions', function (): void {
+    $this->actions->mergeIfNotExists(ExportAction::make('Export')->canSee(fn (): bool => false));
 
     expect($this->actions)
         ->count()
@@ -38,7 +38,7 @@ it('only visible actions', function () {
         ->toBeEmpty();
 });
 
-it('only in dropdown/in line', function () {
+it('only in dropdown/in line', function (): void {
     $this->actions->mergeIfNotExists(ExportAction::make('Export')->showInDropdown());
 
     expect($this->actions->inDropdown())

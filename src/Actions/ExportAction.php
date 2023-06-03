@@ -41,21 +41,11 @@ class ExportAction extends Action
         return $this;
     }
 
-    public function isCsv(): bool
-    {
-        return $this->isCsv;
-    }
-
     public function delimiter(string $value): static
     {
         $this->csvDelimiter = $value;
 
         return $this;
-    }
-
-    public function getDelimiter(): string
-    {
-        return $this->csvDelimiter;
     }
 
     /**
@@ -74,11 +64,13 @@ class ExportAction extends Action
         $this->resolveStorage();
 
         $path = Storage::disk($this->getDisk())
-            ->path("{$this->getDir()}/{$this->resource()->routeNameAlias()}." . ($this->isCsv() ? 'csv' : 'xlsx'));
+            ->path(
+                "{$this->getDir()}/{$this->resource()->routeNameAlias()}." . ($this->isCsv() ? 'csv' : 'xlsx')
+            );
 
         if ($this->isQueue()) {
             ExportActionJob::dispatch(
-                get_class($this->resource()),
+                $this->resource()::class,
                 $path,
                 $this->getDisk(),
                 $this->getDir(),
@@ -93,8 +85,24 @@ class ExportAction extends Action
         }
 
         return response()->download(
-            self::process($path, $this->resource(), $this->getDisk(), $this->getDir(), $this->getDelimiter())
+            self::process(
+                $path,
+                $this->resource(),
+                $this->getDisk(),
+                $this->getDir(),
+                $this->getDelimiter()
+            )
         );
+    }
+
+    public function isCsv(): bool
+    {
+        return $this->isCsv;
+    }
+
+    public function getDelimiter(): string
+    {
+        return $this->csvDelimiter;
     }
 
     /**
@@ -128,7 +136,7 @@ class ExportAction extends Action
 
         $fastExcel = new FastExcel($data);
 
-        if (str_contains($path, '.csv')) {
+        if (str($path)->contains('.csv')) {
             $fastExcel->configureCsv($delimiter);
         }
 
@@ -140,7 +148,10 @@ class ExportAction extends Action
 
         MoonShineNotification::send(
             trans('moonshine::ui.resource.export.exported'),
-            ['link' => Storage::disk($disk)->url(trim($dir, '/') . $url), 'label' => trans('moonshine::ui.download')]
+            [
+                'link' => Storage::disk($disk)->url(trim($dir, '/') . $url),
+                'label' => trans('moonshine::ui.download'),
+            ]
         );
 
         return $result;

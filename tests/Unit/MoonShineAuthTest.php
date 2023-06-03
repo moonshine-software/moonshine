@@ -6,16 +6,16 @@ use MoonShine\MoonShineAuth;
 
 uses()->group('core');
 
-beforeEach(function () {
+beforeEach(function (): void {
     //
 });
 
-it('moonshine guard', function () {
+it('moonshine guard', function (): void {
     expect(MoonShineAuth::guard())
         ->toBeInstanceOf(Guard::class);
 });
 
-it('moonshine model', function () {
+it('moonshine model', function (): void {
     expect(MoonShineAuth::model())
         ->toBeInstanceOf(MoonshineUser::class);
 });

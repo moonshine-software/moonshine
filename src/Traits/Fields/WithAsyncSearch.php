@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use MoonShine\MoonShineRequest;
 
 trait WithAsyncSearch
@@ -59,7 +59,6 @@ trait WithAsyncSearch
         $this->asyncSearchValueCallback = $asyncSearchValueCallback;
 
         $this->valuesQuery = function (Builder $query) {
-
             $request = app(MoonShineRequest::class);
 
             if ($request->getId()) {

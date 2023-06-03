@@ -53,8 +53,6 @@ class MoonShineServiceProvider extends ServiceProvider
 
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -64,9 +62,42 @@ class MoonShineServiceProvider extends ServiceProvider
     }
 
     /**
+     * Setup auth configuration.
+     */
+    protected function loadAuthConfig(): void
+    {
+        $authConfig = collect(config('moonshine.auth', []))
+            ->only(['guards', 'providers'])
+            ->toArray();
+
+        config(
+            Arr::dot($authConfig, 'auth.')
+        );
+    }
+
+    /**
+     * Register the route middleware.
+     */
+    protected function registerRouteMiddleware(): void
+    {
+        // register route middleware.
+        foreach ($this->middlewareAliases as $key => $middleware) {
+            app('router')->aliasMiddleware($key, $middleware);
+        }
+
+        // register middleware group.
+        $this->middlewareGroups['moonshine'] = array_merge(
+            $this->middlewareGroups['moonshine'],
+            config('moonshine.middlewares', [])
+        );
+
+        foreach ($this->middlewareGroups as $key => $middleware) {
+            app('router')->middlewareGroup($key, $middleware);
+        }
+    }
+
+    /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -79,7 +110,9 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
 
         $this->publishes([
-            MoonShine::path('/config/moonshine.php') => config_path('moonshine.php'),
+            MoonShine::path('/config/moonshine.php') => config_path(
+                'moonshine.php'
+            ),
         ]);
 
         $this->mergeConfigFrom(
@@ -92,7 +125,9 @@ class MoonShineServiceProvider extends ServiceProvider
         ], ['moonshine-assets', 'laravel-assets']);
 
         $this->publishes([
-            MoonShine::path('/lang') => $this->app->langPath('vendor/moonshine'),
+            MoonShine::path('/lang') => $this->app->langPath(
+                'vendor/moonshine'
+            ),
         ]);
 
         $this->publishes([
@@ -112,44 +147,5 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(Menu::class);
         $this->app->singleton(Dashboard::class);
         $this->app->singleton(AssetManager::class);
-    }
-
-    /**
-     * Setup auth configuration.
-     *
-     * @return void
-     */
-    protected function loadAuthConfig(): void
-    {
-        $authConfig = collect(config('moonshine.auth', []))
-            ->only(['guards', 'providers'])
-            ->toArray();
-
-        config(
-            Arr::dot($authConfig, 'auth.')
-        );
-    }
-
-    /**
-     * Register the route middleware.
-     *
-     * @return void
-     */
-    protected function registerRouteMiddleware(): void
-    {
-        // register route middleware.
-        foreach ($this->middlewareAliases as $key => $middleware) {
-            app('router')->aliasMiddleware($key, $middleware);
-        }
-
-        // register middleware group.
-        $this->middlewareGroups['moonshine'] = array_merge(
-            $this->middlewareGroups['moonshine'],
-            config('moonshine.middlewares', [])
-        );
-
-        foreach ($this->middlewareGroups as $key => $middleware) {
-            app('router')->middlewareGroup($key, $middleware);
-        }
     }
 }

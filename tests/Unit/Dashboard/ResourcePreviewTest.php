@@ -6,25 +6,25 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('dashboard');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(MoonshineUser::class);
     $this->block = ResourcePreview::make($this->resource, 'Label');
 });
 
-it('make instance', function () {
+it('make instance', function (): void {
     expect($this->block)
         ->label()
         ->toBe('Label');
 });
 
 
-it('correct resource', function () {
+it('correct resource', function (): void {
     expect($this->block)
         ->resource()
         ->toBe($this->resource);
 });
 
-it('correct items', function () {
+it('correct items', function (): void {
     expect($this->block)
         ->items()
         ->toBeCollection();

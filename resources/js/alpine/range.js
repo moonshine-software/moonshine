@@ -18,18 +18,20 @@ export default (from = 0, to = 0) => ({
     },
 
     mintrigger() {
-        this.minValue = Math.min(this.minValue, this.maxValue - this.step);
+        this.minValue = Math.min(this.minValue, this.maxValue - this.step)
         if (this.minValue < this.min) {
             this.minValue = this.min
         }
-        this.minthumb = ((this.minValue - this.min) / (this.max - this.min)) * 100;
+        this.minthumb = ((this.minValue - this.min) / (this.max - this.min)) *
+            100
     },
 
     maxtrigger() {
-        this.maxValue = Math.max(this.maxValue, this.minValue + this.step);
+        this.maxValue = Math.max(this.maxValue, this.minValue + this.step)
         if (this.maxValue > this.max) {
             this.maxValue = this.max
         }
-        this.maxthumb = 100 - (((this.maxValue - this.min) / (this.max - this.min)) * 100);
+        this.maxthumb = 100 -
+            (((this.maxValue - this.min) / (this.max - this.min)) * 100)
     },
 })

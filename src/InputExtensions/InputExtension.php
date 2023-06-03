@@ -10,8 +10,8 @@ use MoonShine\Traits\WithView;
 
 abstract class InputExtension
 {
-    use WithHtmlAttributes;
     use WithView;
+    use WithHtmlAttributes;
 
     protected array $xInit = [];
 

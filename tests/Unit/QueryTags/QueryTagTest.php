@@ -6,14 +6,14 @@ use MoonShine\QueryTags\QueryTag;
 
 uses()->group('query-tags');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->tag = QueryTag::make(
         'Tag',
-        static fn () => MoonshineUser::query()
+        static fn (): \Illuminate\Database\Eloquent\Builder => MoonshineUser::query()
     );
 });
 
-it('query tag methods', function () {
+it('query tag methods', function (): void {
     expect($this->tag)
         ->label()
         ->toBe('Tag')

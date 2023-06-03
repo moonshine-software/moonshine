@@ -6,7 +6,7 @@ use MoonShine\Dashboard\TextBlock;
 
 uses()->group('dashboard');
 
-it('make instance', function () {
+it('make instance', function (): void {
     $instance = new Dashboard();
 
     $instance->registerBlocks([

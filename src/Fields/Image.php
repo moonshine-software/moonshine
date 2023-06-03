@@ -19,7 +19,9 @@ class Image extends File
         if ($this->isMultiple()) {
             return view('moonshine::ui.image', [
                 'values' => collect($item->{$this->field()})
-                    ->map(fn ($value) => $this->pathWithDir($value ?? ''))
+                    ->map(
+                        fn ($value): string => $this->pathWithDir($value ?? '')
+                    )
                     ->toArray(),
             ])->render();
         }

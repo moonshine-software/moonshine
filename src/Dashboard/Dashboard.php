@@ -15,7 +15,7 @@ class Dashboard
     {
         $this->blocks = collect();
 
-        collect($data)->each(function ($item) {
+        collect($data)->each(function ($item): void {
             $item = is_string($item) ? new $item() : $item;
 
             if ($item instanceof DashboardBlock) {
@@ -27,7 +27,8 @@ class Dashboard
     public function getBlocks(): ?Collection
     {
         $class = MoonShine::namespace('\Dashboard');
-        $blocks = class_exists($class) ? (new $class())->getBlocks() : collect();
+        $blocks = class_exists($class) ? (new $class())->getBlocks()
+            : collect();
 
         return $blocks->isNotEmpty() ? $blocks : $this->blocks;
     }

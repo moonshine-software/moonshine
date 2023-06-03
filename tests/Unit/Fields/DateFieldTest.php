@@ -6,45 +6,45 @@ use MoonShine\Models\MoonshineUser;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = Date::make('Created at');
 });
 
-it('text field is parent', function () {
+it('text field is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Text::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBe('date');
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.input');
 });
 
-it('default format', function () {
+it('default format', function (): void {
     expect($this->field->getFormat())
         ->toBe('Y-m-d H:i:s');
 });
 
-it('change format', function () {
+it('change format', function (): void {
     $this->field->format('d.m.Y');
 
     expect($this->field->getFormat())
         ->toBe('d.m.Y');
 });
 
-it('with time', function () {
+it('with time', function (): void {
     $this->field->withTime();
 
     expect($this->field->type())
         ->toBe('datetime-local');
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     $item = MoonshineUser::factory()->create();
 
     expect($this->field->indexViewValue($item))
@@ -55,7 +55,7 @@ it('index view value', function () {
     ;
 });
 
-it('form view value', function () {
+it('form view value', function (): void {
     $item = MoonshineUser::factory()->create();
     $itemDateNull = MoonshineUser::factory()->create([
         'created_at' => null,

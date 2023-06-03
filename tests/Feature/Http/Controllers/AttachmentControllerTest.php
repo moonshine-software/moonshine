@@ -5,11 +5,11 @@ use Illuminate\Http\UploadedFile;
 
 uses()->group('controllers');
 
-beforeEach(function () {
+beforeEach(function (): void {
     Storage::fake('public');
 });
 
-it('successful upload', function () {
+it('successful upload', function (): void {
     $file = UploadedFile::fake()->image('attachment.jpg');
 
     asAdmin()

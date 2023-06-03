@@ -5,7 +5,7 @@ use MoonShine\Filters\SelectFilter;
 
 uses()->group('filters');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->selectOptions = [
         0 => 1,
         1 => 2,
@@ -16,29 +16,29 @@ beforeEach(function () {
         ->options($this->selectOptions);
 });
 
-it('filter is parent', function () {
+it('filter is parent', function (): void {
     expect($this->filter)
         ->toBeInstanceOf(Filter::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->filter->type())
         ->toBeEmpty();
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->filter->getView())
         ->toBe('moonshine::filters.select');
 });
 
-it('multiple', function () {
+it('multiple', function (): void {
     expect($this->filter->isMultiple())
         ->toBeFalse()
         ->and($this->filter->multiple()->isMultiple())
         ->toBeTrue();
 });
 
-it('searchable', function () {
+it('searchable', function (): void {
     expect($this->filter)
         ->isSearchable()
         ->toBeFalse()
@@ -47,13 +47,13 @@ it('searchable', function () {
         ->toBeTrue();
 });
 
-it('options', function () {
+it('options', function (): void {
     expect($this->filter)
         ->values()
         ->toBe($this->selectOptions);
 });
 
-it('names single', function () {
+it('names single', function (): void {
     expect($this->filter)
         ->name()
         ->toBe('filters[select]')
@@ -61,7 +61,7 @@ it('names single', function () {
         ->toBe('filters[select]');
 });
 
-it('names multiple', function () {
+it('names multiple', function (): void {
     expect($this->filter->multiple())
         ->name()
         ->toBe('filters[select][]')

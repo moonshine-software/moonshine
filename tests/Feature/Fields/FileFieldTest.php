@@ -8,7 +8,7 @@ use MoonShine\Models\MoonshineUser;
 uses()->group('fields');
 uses()->group('file-field');
 
-beforeEach(function () {
+beforeEach(function (): void {
     Storage::fake('public');
 
     $this->field = File::make('avatar')
@@ -18,7 +18,7 @@ beforeEach(function () {
     $this->item = MoonshineUser::factory()->create();
 });
 
-it('successful stored', function () {
+it('successful stored', function (): void {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
@@ -26,7 +26,7 @@ it('successful stored', function () {
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 });
 
-it('successful stored with original name', function () {
+it('successful stored with original name', function (): void {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     fakeRequest(method: 'POST', parameters: [
@@ -43,7 +43,7 @@ it('successful stored with original name', function () {
     Storage::disk('public')->assertExists('files/'.$avatar->getClientOriginalName());
 });
 
-it('store throw allowed extension exception', function () {
+it('store throw allowed extension exception', function (): void {
     $this->field->allowedExtensions(['gif']);
 
     $avatar = UploadedFile::fake()->image('avatar.png');
@@ -55,7 +55,7 @@ it('store throw allowed extension exception', function () {
     $this->field->save($this->item);
 })->throws(FieldException::class);
 
-it('has one or many method', function () {
+it('has one or many method', function (): void {
     fakeRequest(parameters: [
         'hidden_files' => [
             'hidden_file1.png',
@@ -70,7 +70,7 @@ it('has one or many method', function () {
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 });
 
-it('custom name', function () {
+it('custom name', function (): void {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     fakeRequest(method: 'POST', parameters: [
@@ -78,9 +78,7 @@ it('custom name', function () {
     ]);
 
     $this->field
-        ->customName(function (UploadedFile $file) {
-            return 'testing.' . $file->extension();
-        })
+        ->customName(fn(UploadedFile $file): string => 'testing.' . $file->extension())
         ->save($this->item);
 
     expect($this->item->avatar)

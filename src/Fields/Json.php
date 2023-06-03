@@ -45,8 +45,10 @@ class Json extends Field implements
     /**
      * @throws Throwable
      */
-    public function keyValue(string $key = 'Key', string $value = 'Value'): static
-    {
+    public function keyValue(
+        string $key = 'Key',
+        string $value = 'Value'
+    ): static {
         $this->keyValue = true;
 
         $this->fields([
@@ -58,11 +60,6 @@ class Json extends Field implements
         ]);
 
         return $this;
-    }
-
-    public function isKeyValue(): bool
-    {
-        return $this->keyValue;
     }
 
     /**
@@ -81,7 +78,9 @@ class Json extends Field implements
         foreach ($requestValues as $index => $values) {
             foreach ($this->getFields() as $field) {
                 if ($field instanceof Fileable) {
-                    $field->setParentRequestValueKey($this->field().".".$index);
+                    $field->setParentRequestValueKey(
+                        $this->field() . "." . $index
+                    );
 
                     $requestValues[$index][$field->field()] = $field->hasManyOrOneSave(
                         $values[$field->field()] ?? null
@@ -105,7 +104,9 @@ class Json extends Field implements
             $collection = $collection->map(function ($data) use ($fields) {
                 foreach ($fields as $field) {
                     if ($field instanceof Json && $field->isKeyValue()) {
-                        $data[$field->field()] = $field->mapKeyValue(collect($data[$field->field()] ?? []));
+                        $data[$field->field()] = $field->mapKeyValue(
+                            collect($data[$field->field()] ?? [])
+                        );
                     }
                 }
 
@@ -115,15 +116,26 @@ class Json extends Field implements
 
         return $collection->when(
             $this->isKeyValue(),
-            static fn ($data) => $data->mapWithKeys(static fn ($data) => [$data['key'] => $data['value']])
+            static fn ($data): Collection => $data->mapWithKeys(
+                static fn ($data): array => [$data['key'] => $data['value']]
+            )
         )->toArray();
+    }
+
+    public function isKeyValue(): bool
+    {
+        return $this->keyValue;
     }
 
     public function formViewValue(Model $item): mixed
     {
         if ($this->isKeyValue()) {
             return collect(parent::formViewValue($item))
-                ->map(fn ($data, $index) => $this->extractValues([$index => $data]))
+                ->map(
+                    fn ($data, $index): array => $this->extractValues(
+                        [$index => $data]
+                    )
+                )
                 ->values()
                 ->toArray();
         }

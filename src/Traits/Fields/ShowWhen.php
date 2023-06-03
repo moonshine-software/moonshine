@@ -9,11 +9,19 @@ use InvalidArgumentException;
 trait ShowWhen
 {
     public array $operators = [
-        '=', '<', '>', '<=', '>=', '!=', 'in', 'not in',
+        '=',
+        '<',
+        '>',
+        '<=',
+        '>=',
+        '!=',
+        'in',
+        'not in',
     ];
 
     public array $arrayOperators = [
-        'in', 'not in',
+        'in',
+        'not in',
     ];
 
     public bool $showWhenState = false;
@@ -38,8 +46,11 @@ trait ShowWhen
         return $this->showWhenCondition;
     }
 
-    public function showWhen(string $column, mixed $operator = null, mixed $value = null): static
-    {
+    public function showWhen(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null
+    ): static {
         [$column, $value, $operator] = $this->makeCondition(...func_get_args());
 
         $this->showWhenState = true;
@@ -54,29 +65,43 @@ trait ShowWhen
         return $this;
     }
 
-    private function makeCondition(string $column, mixed $operator = null, mixed $value = null): array
-    {
-        return [$column, ...$this->prepareValueAndOperator(
-            $value,
-            $operator,
-            func_num_args() === 2
-        )];
+    private function makeCondition(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null
+    ): array {
+        return [
+            $column,
+            ...$this->prepareValueAndOperator(
+                $value,
+                $operator,
+                func_num_args() === 2
+            ),
+        ];
     }
 
-    private function prepareValueAndOperator(mixed $value, mixed $operator = null, $useDefault = false): array
-    {
+    private function prepareValueAndOperator(
+        mixed $value,
+        mixed $operator = null,
+        $useDefault = false
+    ): array {
         if ($useDefault) {
             return [$operator, '='];
         } elseif ($this->invalidOperatorAndValue($operator, $value)) {
-            throw new InvalidArgumentException('Illegal operator and value combination.');
+            throw new InvalidArgumentException(
+                'Illegal operator and value combination.'
+            );
         }
 
         if ($this->invalidOperator($operator)) {
-            [$value, $operator] = [$operator, '='];
+            $value = $operator;
+            $operator = '=';
         }
 
-        if(in_array($operator, $this->arrayOperators) && ! is_array($value)) {
-            throw new InvalidArgumentException('Illegal operator and value combination. Value must be array type');
+        if (in_array($operator, $this->arrayOperators) && ! is_array($value)) {
+            throw new InvalidArgumentException(
+                'Illegal operator and value combination. Value must be array type'
+            );
         }
 
         return [$value, $operator];
@@ -90,6 +115,10 @@ trait ShowWhen
 
     private function invalidOperator(mixed $operator): bool
     {
-        return ! is_string($operator) || (! in_array(strtolower($operator), $this->operators, true));
+        return ! is_string($operator) || (! in_array(
+                strtolower($operator),
+                $this->operators,
+                true
+            ));
     }
 }

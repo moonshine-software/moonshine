@@ -13,11 +13,6 @@ trait ResourceModelPolicy
 {
     public static bool $withPolicy = false;
 
-    public function isWithPolicy(): bool
-    {
-        return static::$withPolicy;
-    }
-
     public function gateAbilities(): array
     {
         return [
@@ -52,15 +47,6 @@ trait ResourceModelPolicy
             ->allows($ability, $this->getItem() ?? $this->getModel());
     }
 
-    public function hasUserPermissions(): bool
-    {
-        return in_array(
-            HasMoonShinePermissions::class,
-            class_uses_recursive(MoonShineAuth::model()::class),
-            true
-        );
-    }
-
     public function checkUserPermissions(Model $user, string $ability): bool
     {
         if (! $this->hasUserPermissions()) {
@@ -74,12 +60,22 @@ trait ResourceModelPolicy
         return $this->isHaveUserPermission($user, $ability);
     }
 
+    public function hasUserPermissions(): bool
+    {
+        return in_array(
+            HasMoonShinePermissions::class,
+            class_uses_recursive(MoonShineAuth::model()::class),
+            true
+        );
+    }
+
     public function isHaveUserPermission(Model $user, string $ability): bool
     {
-        if (! isset($user->moonshineUserPermission->permissions[get_class($this)][$ability])) {
-            return false;
-        }
+        return isset($user->moonshineUserPermission->permissions[$this::class][$ability]);
+    }
 
-        return true;
+    public function isWithPolicy(): bool
+    {
+        return static::$withPolicy;
     }
 }

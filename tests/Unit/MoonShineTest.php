@@ -6,11 +6,11 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('core');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new();
 });
 
-it('find resource by uri key', function () {
+it('find resource by uri key', function (): void {
     MoonShine::resources([
         $this->resource,
     ]);
@@ -19,7 +19,7 @@ it('find resource by uri key', function () {
         ->toBe($this->resource);
 });
 
-it('menu', function () {
+it('menu', function (): void {
     MoonShine::menu([
         $this->resource,
     ]);

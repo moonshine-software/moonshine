@@ -6,7 +6,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('core');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->item = MoonshineUser::factory()->create();
     $this->resource = TestResourceBuilder::new(
         MoonshineUser::class,
@@ -14,7 +14,7 @@ beforeEach(function () {
     );
 });
 
-it('find resource', function () {
+it('find resource', function (): void {
     fakeRequest($this->resource->route('index'));
 
     $request = app(MoonShineRequest::class);

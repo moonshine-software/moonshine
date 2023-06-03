@@ -7,7 +7,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('components');
 
-it('menu', function () {
+it('menu', function (): void {
     MoonShine::menu([
         TestResourceBuilder::new()
             ->setTestTitle('Testing menu item'),
@@ -18,7 +18,7 @@ it('menu', function () {
         ->assertSee('Testing menu item');
 });
 
-it('async modal', function () {
+it('async modal', function (): void {
     test()
         ->blade(
             '<x-moonshine::async-modal id="async" route="/">
@@ -28,7 +28,7 @@ it('async modal', function () {
         ->assertSee('OuterHtml');
 });
 
-it('form and input', function () {
+it('form and input', function (): void {
     test()
         ->blade(
             '<x-moonshine::form>
@@ -40,7 +40,7 @@ it('form and input', function () {
         ->assertSee('test-input');
 });
 
-it('table with slots', function () {
+it('table with slots', function (): void {
     test()
         ->blade(
             '<x-moonshine::table>
@@ -64,7 +64,7 @@ it('table with slots', function () {
         ->assertSee('footer');
 });
 
-it('table with values', function () {
+it('table with values', function (): void {
     test()
         ->blade('<x-moonshine::table :values="$values" :columns="$columns" />', [
             'columns' => ['id' => 'ID'],
@@ -77,7 +77,7 @@ it('table with values', function () {
         ->assertSee('1');
 });
 
-it('form > button', function () {
+it('form > button', function (): void {
     test()
         ->blade('<x-moonshine::form.button>Click me</x-moonshine::form.button>')
         ->assertSee('button')
@@ -85,7 +85,7 @@ it('form > button', function () {
         ->assertSee('btn');
 });
 
-it('form > file', function () {
+it('form > file', function (): void {
     $file = fake()->filePath();
 
     test()
@@ -94,14 +94,14 @@ it('form > file', function () {
         ->assertSee($file);
 });
 
-it('form > hint', function () {
+it('form > hint', function (): void {
     test()
         ->blade('<x-moonshine::form.hint>Hint</x-moonshine::form.hint>')
         ->assertSee('form-hint')
         ->assertSee('Hint');
 });
 
-it('form > input', function () {
+it('form > input', function (): void {
     test()
         ->blade('<x-moonshine::form.input class="custom-class" />')
         ->assertSee('form-input')
@@ -115,14 +115,14 @@ it('form > input', function () {
         ->assertSee('custom-class');
 });
 
-it('form > input-error', function () {
+it('form > input-error', function (): void {
     test()
         ->blade('<x-moonshine::form.input-error>Error</x-moonshine::form.input-error>')
         ->assertSee('form-error')
         ->assertSee('Error');
 });
 
-it('form > input-wrapper', function () {
+it('form > input-wrapper', function (): void {
     test()
         ->withViewErrors([])
         ->blade(
@@ -136,7 +136,7 @@ it('form > input-wrapper', function () {
         ->assertSee('input');
 });
 
-it('form > label', function () {
+it('form > label', function (): void {
     test()
         ->blade(
             '<x-moonshine::form.label>
@@ -147,7 +147,7 @@ it('form > label', function () {
         ->assertSee('Im Label');
 });
 
-it('form > pivot', function () {
+it('form > pivot', function (): void {
     test()
         ->withViewErrors([])
         ->blade(
@@ -160,7 +160,7 @@ it('form > pivot', function () {
 });
 
 
-it('form > range', function () {
+it('form > range', function (): void {
     test()
         ->withViewErrors([])
         ->blade(
@@ -178,7 +178,7 @@ it('form > range', function () {
         ->assertSee('29000');
 });
 
-it('form > select', function () {
+it('form > select', function (): void {
     test()
         ->withViewErrors([])
         ->blade(
@@ -190,28 +190,28 @@ it('form > select', function () {
         ->assertSeeInOrder(['Option 1', 'Option 2']);
 });
 
-it('form > switcher', function () {
+it('form > switcher', function (): void {
     test()
         ->withViewErrors([])
         ->blade('<x-moonshine::form.switcher />')
         ->assertSee('form-switcher');
 });
 
-it('form > textarea', function () {
+it('form > textarea', function (): void {
     test()
         ->withViewErrors([])
         ->blade('<x-moonshine::form.textarea>Editor value</x-moonshine::form.textarea>')
         ->assertSee('Editor value');
 });
 
-it('badge', function () {
+it('badge', function (): void {
     test()
         ->blade('<x-moonshine::badge color="purple">Badge value</x-moonshine::badge>')
         ->assertSee('badge badge-purple')
         ->assertSee('Badge value');
 });
 
-it('box', function () {
+it('box', function (): void {
     test()
         ->blade('<x-moonshine::box title="Box title">Box value</x-moonshine::box>')
         ->assertSee('box')
@@ -219,7 +219,7 @@ it('box', function () {
         ->assertSee('Box value');
 });
 
-it('column', function () {
+it('column', function (): void {
     test()
         ->blade('<x-moonshine::column colSpan="6" adaptiveColSpan="6">Column value</x-moonshine::column>')
         ->assertSee('col-span-6')
@@ -227,13 +227,13 @@ it('column', function () {
         ->assertSee('Column value');
 });
 
-it('grid', function () {
+it('grid', function (): void {
     test()
         ->blade('<x-moonshine::grid>Grid value</x-moonshine::grid>')
         ->assertSee('Grid value');
 });
 
-it('dropdown', function () {
+it('dropdown', function (): void {
     test()
         ->blade(
             '<x-moonshine::dropdown
@@ -251,7 +251,7 @@ it('dropdown', function () {
 });
 
 
-it('field-container', function () {
+it('field-container', function (): void {
     $field = Text::make('Email');
     $resource = TestResourceBuilder::new(MoonshineUser::class)
         ->setTestFields([$field]);
@@ -275,7 +275,7 @@ it('field-container', function () {
         ->assertSee('Email is required');
 });
 
-it('icon', function () {
+it('icon', function (): void {
     test()
         ->blade(
             '<x-moonshine::icon size="6"
@@ -288,7 +288,7 @@ it('icon', function () {
         ->assertSee('svg');
 });
 
-it('link', function () {
+it('link', function (): void {
     test()
         ->blade(
             '<x-moonshine::link
@@ -299,7 +299,7 @@ it('link', function () {
         ->assertSee('svg');
 });
 
-it('link-native', function () {
+it('link-native', function (): void {
     test()
         ->blade(
             '<x-moonshine::link-native
@@ -310,13 +310,13 @@ it('link-native', function () {
         ->assertSee('svg');
 });
 
-it('loader', function () {
+it('loader', function (): void {
     test()
         ->blade('<x-moonshine::loader />')
         ->assertSee('svg');
 });
 
-it('offcanvas', function () {
+it('offcanvas', function (): void {
     test()
         ->blade(
             '<x-moonshine::offcanvas title="Offcanvas title">
@@ -329,7 +329,7 @@ it('offcanvas', function () {
         ->assertSee('Click me');
 });
 
-it('thumbnails', function () {
+it('thumbnails', function (): void {
     $value = fake()->filePath();
 
     test()
@@ -338,7 +338,7 @@ it('thumbnails', function () {
         ->assertSee('img');
 });
 
-it('tabs', function () {
+it('tabs', function (): void {
     $tabs = ['tab_1' => 'Tab 1', 'tab_2' => 'Tab 2'];
     $contents = ['tab_1' => 'Content 1', 'tab_2' => 'Content 2'];
 
@@ -355,7 +355,7 @@ it('tabs', function () {
         ->assertSeeInOrder($contents);
 });
 
-it('card', function () {
+it('card', function (): void {
     $values = ['ID' => 'Content ID', 'Title' => 'Content Title'];
 
     test()
@@ -386,7 +386,7 @@ it('card', function () {
         ->assertSeeInOrder($values);
 });
 
-it('boolean', function () {
+it('boolean', function (): void {
     test()
         ->blade('<x-moonshine::boolean />', [])
         ->assertSee('bg-green-500');
@@ -400,7 +400,7 @@ it('boolean', function () {
         ->assertSee('bg-red-500');
 });
 
-it('breadcrumbs', function () {
+it('breadcrumbs', function (): void {
     $items = [
         '/' => 'Home page',
         '/test' => 'Current page',
@@ -412,7 +412,7 @@ it('breadcrumbs', function () {
         ->assertSeeInOrder($items);
 });
 
-it('divider', function () {
+it('divider', function (): void {
     test()
         ->blade('<x-moonshine::divider label="Test" />')
         ->assertSee('Test');
@@ -422,20 +422,20 @@ it('divider', function () {
         ->assertSee('hr');
 });
 
-it('rating', function () {
+it('rating', function (): void {
     test()
         ->blade('<x-moonshine::rating value="5" />')
         ->assertSee('svg');
 });
 
-it('title', function () {
+it('title', function (): void {
     test()
         ->blade('<x-moonshine::title>Title</x-moonshine::title>')
         ->assertSee('h1')
         ->assertSee('Title');
 });
 
-it('pagination', function () {
+it('pagination', function (): void {
     MoonshineUser::factory(20)->create();
     $items = MoonshineUser::query()->paginate(10);
 
@@ -451,7 +451,7 @@ it('pagination', function () {
         ->assertSee('pagination-item');
 });
 
-it('collapse', function () {
+it('collapse', function (): void {
     test()
         ->blade('<x-moonshine::collapse
                 title="Collapse component"
@@ -459,7 +459,7 @@ it('collapse', function () {
         ->assertSee('Collapse component');
 });
 
-it('progress', function () {
+it('progress', function (): void {
     test()
         ->blade('<x-moonshine::progress-bar
                 value="20"
@@ -467,7 +467,7 @@ it('progress', function () {
         ->assertSee('20%');
 });
 
-it('tooltip', function () {
+it('tooltip', function (): void {
     test()
         ->blade('<x-moonshine::tooltip content="Tooltip content">
             <button>Trigger</button>
@@ -477,7 +477,7 @@ it('tooltip', function () {
         ->assertSee('Tooltip content');
 });
 
-it('popover', function () {
+it('popover', function (): void {
     test()
         ->blade('<x-moonshine::popover title="Popover title">
             <x-slot:trigger>
@@ -491,7 +491,7 @@ it('popover', function () {
         ->assertSee('Popover content');
 });
 
-it('spinner', function () {
+it('spinner', function (): void {
     test()
         ->blade('<x-moonshine::spinner />')
         ->assertSee('spinner');
@@ -509,7 +509,7 @@ it('spinner', function () {
         ->assertSee('spinner-md');
 });
 
-it('toast', function () {
+it('toast', function (): void {
     test()
         ->blade('<x-moonshine::toast content="Toast content"/>')
         ->assertSee('Toast content');

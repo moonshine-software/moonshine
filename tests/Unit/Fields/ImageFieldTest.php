@@ -7,7 +7,7 @@ use MoonShine\Fields\Image;
 uses()->group('fields');
 uses()->group('file-field');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = Image::make('Image')
         ->disk('public')
         ->dir('images');
@@ -26,22 +26,22 @@ beforeEach(function () {
 });
 
 
-it('file is parent', function () {
+it('file is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(File::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBe('file');
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.image');
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe(
             view('moonshine::ui.image', [
@@ -50,7 +50,7 @@ it('index view value', function () {
         );
 });
 
-it('index view value for multiple', function () {
+it('index view value for multiple', function (): void {
     $files = collect($this->item->images)
         ->map(fn ($value) => $this->fieldMultiple->pathWithDir($value))
         ->toArray();
@@ -63,14 +63,14 @@ it('index view value for multiple', function () {
         );
 });
 
-it('empty index view value', function () {
+it('empty index view value', function (): void {
     $this->item->image = '';
 
     expect($this->field->indexViewValue($this->item))
         ->toBeEmpty();
 });
 
-it('empty index view value for multiple', function () {
+it('empty index view value for multiple', function (): void {
     $this->item->images = '';
 
     expect($this->fieldMultiple->indexViewValue($this->item))

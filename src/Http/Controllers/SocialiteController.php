@@ -34,6 +34,30 @@ class SocialiteController extends BaseController
     }
 
     /**
+     * @throws Exception
+     */
+    protected function ensureSocialiteIsInstalled(): void
+    {
+        if (class_exists(Socialite::class)) {
+            return;
+        }
+
+        throw new RuntimeException(
+            'Please install the Socialite: laravel/socialite'
+        );
+    }
+
+    protected function hasDriver(string $driver): bool
+    {
+        return isset($this->drivers()[$driver]);
+    }
+
+    protected function drivers(): array
+    {
+        return config('moonshine.socialite', []);
+    }
+
+    /**
      * @throws AuthException
      * @throws Exception
      */
@@ -73,9 +97,12 @@ class SocialiteController extends BaseController
         return to_route('moonshine.index');
     }
 
-    private function bindAccount(User $socialiteUser, string $driver, ?MoonshineSocialite $account): RedirectResponse
-    {
-        if ($account) {
+    private function bindAccount(
+        User $socialiteUser,
+        string $driver,
+        ?MoonshineSocialite $account
+    ): RedirectResponse {
+        if ($account instanceof MoonshineSocialite) {
             MoonShineUI::toast(
                 __('moonshine::auth.socialite.link_exists')
             );
@@ -95,30 +122,6 @@ class SocialiteController extends BaseController
         return to_route(
             'moonshine.custom_page',
             'profile'
-        );
-    }
-
-    protected function drivers(): array
-    {
-        return config('moonshine.socialite', []);
-    }
-
-    protected function hasDriver(string $driver): bool
-    {
-        return isset($this->drivers()[$driver]);
-    }
-
-    /**
-     * @throws Exception
-     */
-    protected function ensureSocialiteIsInstalled(): void
-    {
-        if (class_exists(Socialite::class)) {
-            return;
-        }
-
-        throw new RuntimeException(
-            'Please install the Socialite: laravel/socialite'
         );
     }
 }

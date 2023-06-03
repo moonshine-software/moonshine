@@ -40,7 +40,9 @@ trait WithDefaultValue
             return $this->default;
         }
 
-        if (is_numeric($this->default) && $this instanceof DefaultCanBeNumeric) {
+        if (is_numeric(
+                $this->default
+            ) && $this instanceof DefaultCanBeNumeric) {
             return $this->default;
         }
 

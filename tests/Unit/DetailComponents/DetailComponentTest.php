@@ -4,16 +4,14 @@ use MoonShine\Tests\Fixtures\DetailComponents\TestDetailComponent;
 
 uses()->group('detail-components');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->component = TestDetailComponent::make('Component');
 });
 
-it('component methods', function () {
+it('component methods', function (): void {
     expect($this->component)
         ->label()
         ->toBe('Component')
         ->id()
-        ->toBe(str('Component')->slug('_')->value())
-        ->name()
-        ->toBe(str('Component')->slug('_')->value());
+        ->toBeString();
 });

@@ -10,7 +10,11 @@ final class CreateFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        if (! in_array('create', $this->getResource()->getActiveActions(), true)) {
+        if (! in_array(
+            'create',
+            $this->getResource()->getActiveActions(),
+            true
+        )) {
             return false;
         }
 

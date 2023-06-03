@@ -42,13 +42,18 @@ class CrudController extends BaseController
 
         if ($request->hasQueryTag() && $resource->queryTags()) {
             $queryTag = collect($resource->queryTags())
-                ->first(fn (QueryTag $tag) => $tag->uri() === $request->getQueryTag());
+                ->first(
+                    fn (QueryTag $tag): bool => $tag->uri() === $request->getQueryTag()
+                );
 
             $resource->customBuilder($queryTag->builder());
         }
 
         if (request()->ajax()) {
-            abort_if(! $request->isRelatableMode(), ResponseAlias::HTTP_NOT_FOUND);
+            abort_if(
+                ! $request->isRelatableMode(),
+                ResponseAlias::HTTP_NOT_FOUND
+            );
 
             $resource->relatable();
         }
@@ -60,14 +65,16 @@ class CrudController extends BaseController
                 ? $resource->paginate()
                 : $resource->items();
 
-            return $this->viewOrFragment(view($resource->baseIndexView(), [
-                'resource' => $resource,
-                'resources' => $resources,
-                'filters' => $resource->filters(),
-                'dropdownActions' => $actions->inDropdown(),
-                'lineActions' => $actions->inLine(),
-                'metrics' => $resource->metrics(),
-            ]));
+            return $this->viewOrFragment(
+                view($resource->baseIndexView(), [
+                    'resource' => $resource,
+                    'resources' => $resources,
+                    'filters' => $resource->filters(),
+                    'dropdownActions' => $actions->inDropdown(),
+                    'lineActions' => $actions->inLine(),
+                    'metrics' => $resource->metrics(),
+                ])
+            );
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
@@ -81,13 +88,48 @@ class CrudController extends BaseController
         }
     }
 
+    protected function viewOrFragment(View $view): View|string
+    {
+        if (request()->hasHeader('X-Fragment')) {
+            return $view->fragment(request()->header('X-Fragment'));
+        }
+
+        if (request()->ajax()) {
+            $sections = $view->renderSections();
+
+            return $sections['content'] ?? '';
+        }
+
+        return $view;
+    }
+
     /**
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function create(CreateFormRequest $request): string|View|RedirectResponse
-    {
+    public function create(CreateFormRequest $request
+    ): string|View|RedirectResponse {
         return $this->createOrEditView($request);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function createOrEditView(MoonShineRequest $request): View|string
+    {
+        $item = $request->getItemOrInstance();
+        $resource = $request->getResource();
+
+        if (request()->ajax()) {
+            $resource->precognitionMode();
+        }
+
+        return $this->viewOrFragment(
+            view($resource->baseEditView(), [
+                'resource' => $resource,
+                'item' => $item,
+            ])
+        );
     }
 
     /**
@@ -104,69 +146,37 @@ class CrudController extends BaseController
      */
     public function show(ViewFormRequest $request): string|View|RedirectResponse
     {
-        return $this->viewOrFragment(view($request->getResource()->baseShowView(), [
-            'resource' => $request->getResource(),
-            'item' => $request->getItem(),
-        ]));
+        return $this->viewOrFragment(
+            view($request->getResource()->baseShowView(), [
+                'resource' => $request->getResource(),
+                'item' => $request->getItem(),
+            ])
+        );
     }
 
     /**
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function update(UpdateFormRequest $request): JsonResponse|View|RedirectResponse
-    {
+    public function update(UpdateFormRequest $request
+    ): JsonResponse|View|RedirectResponse {
         return $this->updateOrCreate($request);
-    }
-
-    /**
-     * @throws AuthorizationException
-     * @throws Throwable
-     */
-    public function store(StoreFormRequest $request): JsonResponse|View|RedirectResponse
-    {
-        return $this->updateOrCreate($request);
-    }
-
-    public function destroy(DeleteFormRequest $request): RedirectResponse
-    {
-        $request->getResource()->delete($request->getItem());
-
-        MoonShineUI::toast(
-            __('moonshine::ui.deleted'),
-            'success'
-        );
-
-        return $request->redirectRoute(
-            $request->getResource()->route('index')
-        );
-    }
-
-    public function massDelete(MassDeleteFormRequest $request): RedirectResponse
-    {
-        $request->getResource()->massDelete($request->get('ids'));
-
-        MoonShineUI::toast(
-            __('moonshine::ui.deleted'),
-            'success'
-        );
-
-        return $request->redirectRoute(
-            $request->getResource()->route('index')
-        );
     }
 
     /**
      * @throws Throwable
      */
-    protected function updateOrCreate(MoonShineRequest $request): JsonResponse|View|RedirectResponse
-    {
+    protected function updateOrCreate(MoonShineRequest $request
+    ): JsonResponse|View|RedirectResponse {
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
 
         if ($request->isMethod('post') || $request->isMethod('put')) {
             $redirectRoute = $request->redirectRoute(
-                $resource->route($item->exists ? 'edit' : 'create', $item->getKey())
+                $resource->route(
+                    $item->exists ? 'edit' : 'create',
+                    $item->getKey()
+                )
             );
 
             $validator = $resource->validate($item);
@@ -214,35 +224,39 @@ class CrudController extends BaseController
     }
 
     /**
+     * @throws AuthorizationException
      * @throws Throwable
      */
-    protected function createOrEditView(MoonShineRequest $request): View|string
-    {
-        $item = $request->getItemOrInstance();
-        $resource = $request->getResource();
-
-        if (request()->ajax()) {
-            $resource->precognitionMode();
-        }
-
-        return $this->viewOrFragment(view($resource->baseEditView(), [
-            'resource' => $resource,
-            'item' => $item,
-        ]));
+    public function store(StoreFormRequest $request
+    ): JsonResponse|View|RedirectResponse {
+        return $this->updateOrCreate($request);
     }
 
-    protected function viewOrFragment(View $view): View|string
+    public function destroy(DeleteFormRequest $request): RedirectResponse
     {
-        if (request()->hasHeader('X-Fragment')) {
-            return $view->fragment(request()->header('X-Fragment'));
-        }
+        $request->getResource()->delete($request->getItem());
 
-        if (request()->ajax()) {
-            $sections = $view->renderSections();
+        MoonShineUI::toast(
+            __('moonshine::ui.deleted'),
+            'success'
+        );
 
-            return $sections['content'] ?? '';
-        }
+        return $request->redirectRoute(
+            $request->getResource()->route('index')
+        );
+    }
 
-        return $view;
+    public function massDelete(MassDeleteFormRequest $request): RedirectResponse
+    {
+        $request->getResource()->massDelete($request->get('ids'));
+
+        MoonShineUI::toast(
+            __('moonshine::ui.deleted'),
+            'success'
+        );
+
+        return $request->redirectRoute(
+            $request->getResource()->route('index')
+        );
     }
 }

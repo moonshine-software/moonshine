@@ -24,12 +24,13 @@
     "lee-to/laravel-package-command": "^0.9.1"
   },
   "require-dev": {
-    "phpstan/phpstan": "^1.4.7",
     "pestphp/pest": "^2.0",
     "mockery/mockery": "^1.5",
     "orchestra/testbench": "^8.5",
     "pestphp/pest-plugin-laravel": "^2.0",
-    "pestphp/pest-plugin-mock": "^2.0"
+    "pestphp/pest-plugin-mock": "^2.0",
+    "rector/rector": "^0.16.0",
+    "nunomaduro/larastan": "^2.6"
   },
   "autoload": {
     "psr-4": {
@@ -50,7 +51,9 @@
     "laravel/framework": "<9.37.0"
   },
   "scripts": {
-    "test": "vendor/bin/phpunit",
+    "analyse": "vendor/bin/phpstan analyse src --memory-limit=-1",
+    "rector": "vendor/bin/rector process --clear-cache",
+    "test": "vendor/bin/pest",
     "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
   },
   "extra": {

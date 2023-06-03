@@ -37,7 +37,11 @@ trait SelectTrait
             $related = $this->getRelated($item);
 
             return match (true) {
-                $formValue instanceof Collection => $formValue->contains($related->getKeyName(), '=', $value),
+                $formValue instanceof Collection => $formValue->contains(
+                    $related->getKeyName(),
+                    '=',
+                    $value
+                ),
                 is_array($formValue) => in_array($value, $formValue),
                 default => (string) $formValue === $value
             };
@@ -45,11 +49,18 @@ trait SelectTrait
 
         if ($this->isMultiple()) {
             if (is_string($formValue)) {
-                $formValue = json_decode($formValue, true);
+                $formValue = json_decode(
+                    $formValue,
+                    true,
+                    512,
+                    JSON_THROW_ON_ERROR
+                );
             }
 
             return match (true) {
-                $formValue instanceof Collection => $formValue->contains($value),
+                $formValue instanceof Collection => $formValue->contains(
+                    $value
+                ),
                 is_array($formValue) => in_array($value, $formValue),
                 default => (string) $formValue === $value
             };

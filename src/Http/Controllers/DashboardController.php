@@ -6,7 +6,6 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
-
 use MoonShine\Dashboard\Dashboard;
 
 class DashboardController extends BaseController

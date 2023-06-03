@@ -2,21 +2,20 @@
 
 use MoonShine\Commands\ResourceCommand;
 use MoonShine\MoonShine;
+use Symfony\Component\Console\Command\Command;
 
 use function Pest\Laravel\artisan;
 
-use Symfony\Component\Console\Command\Command;
-
 uses()->group('commands');
 
-it('reports progress', function () {
+it('reports progress', function (): void {
     artisan(ResourceCommand::class)
         ->expectsQuestion('Name', 'Test')
         ->expectsOutputToContain('Now register resource in menu')
         ->assertExitCode(Command::SUCCESS);
 });
 
-it('reports progress singleton', function () {
+it('reports progress singleton', function (): void {
     artisan(ResourceCommand::class, ['--singleton' => true])
         ->expectsQuestion('Name', 'Test')
         ->expectsQuestion('Item id', 1)
@@ -30,7 +29,7 @@ it('generates correct resource title', function (
     bool $singleton,
     int $id = null,
     string $title = null,
-) {
+): void {
     artisan(ResourceCommand::class, [
         'name' => $name,
         '--title' => $title,

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Eloquent\Builder;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\MassActions;
 use MoonShine\BulkActions\BulkAction;
@@ -16,14 +17,14 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('resource');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(
         MoonshineUser::class,
         true
     );
 });
 
-it('correct router', function () {
+it('correct router', function (): void {
     expect($this->resource)
         ->routeParam()
         ->toBe('resourceItem')
@@ -46,12 +47,12 @@ it('correct router', function () {
     ;
 });
 
-it('resource uri key', function () {
+it('resource uri key', function (): void {
     expect($this->resource->uriKey())
         ->toBe('test-resource');
 });
 
-it('resource fields', function () {
+it('resource fields', function (): void {
     $this->resource->setTestFields([
         Text::make('Label'),
     ]);
@@ -62,7 +63,7 @@ it('resource fields', function () {
         ->first()->toBeInstanceOf(Text::class);
 });
 
-it('find field', function () {
+it('find field', function (): void {
     $field = Text::make('Label');
     $this->resource->setTestFields([
         $field,
@@ -72,7 +73,7 @@ it('find field', function () {
         ->toBe($field);
 });
 
-it('resource filters', function () {
+it('resource filters', function (): void {
     $this->resource->setTestFilters([
         TextFilter::make('Label'),
     ]);
@@ -83,7 +84,7 @@ it('resource filters', function () {
         ->first()->toBeInstanceOf(TextFilter::class);
 });
 
-it('find filter', function () {
+it('find filter', function (): void {
     $field = TextFilter::make('Label');
     $this->resource->setTestFilters([
         $field,
@@ -93,7 +94,7 @@ it('find filter', function () {
         ->toBe($field);
 });
 
-it('resource actions', function () {
+it('resource actions', function (): void {
     $action = ExportAction::make('Label');
     $this->resource->setTestActions([
         $action,
@@ -105,8 +106,8 @@ it('resource actions', function () {
         ->first()->toBeInstanceOf(ExportAction::class);
 });
 
-it('resource item actions', function () {
-    $action = ItemAction::make('Label', static fn () => '');
+it('resource item actions', function (): void {
+    $action = ItemAction::make('Label', static fn (): string => '');
     $this->resource->setTestItemActions([
         $action,
     ]);
@@ -117,8 +118,8 @@ it('resource item actions', function () {
         ->first()->toBeInstanceOf(ItemAction::class);
 });
 
-it('resource form actions', function () {
-    $action = FormAction::make('Label', static fn () => '');
+it('resource form actions', function (): void {
+    $action = FormAction::make('Label', static fn (): string => '');
     $this->resource->setTestFormActions([
         $action,
     ]);
@@ -129,8 +130,8 @@ it('resource form actions', function () {
         ->first()->toBeInstanceOf(FormAction::class);
 });
 
-it('resource bulk actions', function () {
-    $action = BulkAction::make('Label', static fn () => '');
+it('resource bulk actions', function (): void {
+    $action = BulkAction::make('Label', static fn (): string => '');
     $this->resource->setTestBulkActions([
         $action,
     ]);
@@ -141,8 +142,8 @@ it('resource bulk actions', function () {
         ->first()->toBeInstanceOf(BulkAction::class);
 });
 
-it('resource query tags', function () {
-    $tag = QueryTag::make('Label', static fn () => MoonshineUser::query());
+it('resource query tags', function (): void {
+    $tag = QueryTag::make('Label', static fn (): Builder => MoonshineUser::query());
     $this->resource->setTestQueryTags([
         $tag,
     ]);
@@ -153,7 +154,7 @@ it('resource query tags', function () {
         ->each->toBeInstanceOf(QueryTag::class);
 });
 
-it('resource authorization', function () {
+it('resource authorization', function (): void {
     asAdmin();
 
     expect($this->resource->can('view'))
@@ -166,12 +167,12 @@ it('resource authorization', function () {
         ->toBeFalse();
 });
 
-it('soft deletes', function () {
+it('soft deletes', function (): void {
     expect($this->resource->softDeletes())
         ->toBeFalse();
 });
 
-it('precognition mode', function () {
+it('precognition mode', function (): void {
     expect($this->resource->isPrecognition())
         ->toBeFalse()
         ->and($this->resource->precognitionMode()->isPrecognition())
@@ -179,7 +180,7 @@ it('precognition mode', function () {
     ;
 });
 
-it('relatable mode', function () {
+it('relatable mode', function (): void {
     expect($this->resource->isPrecognition())
         ->toBeFalse()
         ->and($this->resource->relatable('column', 'key'))
@@ -190,7 +191,7 @@ it('relatable mode', function () {
     ;
 });
 
-it('modal', function () {
+it('modal', function (): void {
     expect($this->resource)
         ->isCreateInModal()
         ->toBeFalse()
@@ -201,7 +202,7 @@ it('modal', function () {
     ;
 });
 
-it('correct item', function () {
+it('correct item', function (): void {
     $item = MoonshineUser::factory()->create();
 
     expect($this->resource->setItem($item))
@@ -210,7 +211,7 @@ it('correct item', function () {
     ;
 });
 
-it('is now on detail route', function () {
+it('is now on detail route', function (): void {
     $item = MoonshineUser::factory()->create();
 
     $this->get($this->resource->route('show', $item->getKey()));
@@ -229,7 +230,7 @@ it('is now on detail route', function () {
     ;
 });
 
-it('is now on index route', function () {
+it('is now on index route', function (): void {
     $this->get($this->resource->route('index'));
 
     expect($this->resource)
@@ -246,7 +247,7 @@ it('is now on index route', function () {
     ;
 });
 
-it('is now on create form route', function () {
+it('is now on create form route', function (): void {
     $this->get($this->resource->route('create'));
 
     expect($this->resource)
@@ -263,7 +264,7 @@ it('is now on create form route', function () {
     ;
 });
 
-it('is now on update form route', function () {
+it('is now on update form route', function (): void {
     $item = MoonshineUser::factory()->create();
 
     $this->get($this->resource->route('edit', $item->getKey()));

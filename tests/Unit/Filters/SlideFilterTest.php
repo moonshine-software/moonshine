@@ -5,28 +5,28 @@ use MoonShine\Filters\SlideFilter;
 
 uses()->group('filters');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->filter = SlideFilter::make('Slide')
         ->toField('to')
         ->fromField('from');
 });
 
-it('filter is parent', function () {
+it('filter is parent', function (): void {
     expect($this->filter)
         ->toBeInstanceOf(Filter::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->filter->type())
         ->toBe('number');
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->filter->getView())
         ->toBe('moonshine::filters.slide');
 });
 
-it('number methods', function () {
+it('number methods', function (): void {
     expect($this->filter)
         ->min(3)
         ->min->toBe(3)

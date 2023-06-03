@@ -5,7 +5,7 @@ use MoonShine\Fields\Select;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->selectOptions = [
         0 => 1,
         1 => 2,
@@ -27,17 +27,17 @@ beforeEach(function () {
     };
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBeEmpty();
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.select');
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe('2')
         ->and($this->fieldMultiple->indexViewValue($this->item))
@@ -47,14 +47,14 @@ it('index view value', function () {
         ])->render());
 });
 
-it('multiple', function () {
+it('multiple', function (): void {
     expect($this->field->isMultiple())
         ->toBeFalse()
         ->and($this->fieldMultiple->isMultiple())
         ->toBeTrue();
 });
 
-it('searchable', function () {
+it('searchable', function (): void {
     expect($this->fieldMultiple)
         ->isSearchable()
         ->toBeFalse()
@@ -63,25 +63,25 @@ it('searchable', function () {
         ->toBeTrue();
 });
 
-it('options', function () {
+it('options', function (): void {
     expect($this->fieldMultiple)
         ->values()
         ->toBe($this->selectOptions);
 });
 
-it('is selected correctly', function () {
+it('is selected correctly', function (): void {
     expect($this->fieldMultiple)
         ->isSelected($this->item, '1')
         ->toBeTrue();
 });
 
-it('is selected invalid', function () {
+it('is selected invalid', function (): void {
     expect($this->fieldMultiple)
         ->isSelected($this->item, '2')
         ->toBeFalse();
 });
 
-it('names single', function () {
+it('names single', function (): void {
     expect($this->field)
         ->name()
         ->toBe('select')
@@ -89,7 +89,7 @@ it('names single', function () {
         ->toBe('select');
 });
 
-it('names multiple', function () {
+it('names multiple', function (): void {
     expect($this->fieldMultiple)
         ->name()
         ->toBe('select_multiple[]')

@@ -47,7 +47,9 @@ trait HasOneOrMany
                     }
 
                     if ($field instanceof Fileable) {
-                        $field->setParentRequestValueKey($this->field().".".$index);
+                        $field->setParentRequestValueKey(
+                            $this->field() . "." . $index
+                        );
 
                         $values[$field->field()] = $field->hasManyOrOneSave(
                             $values[$field->field()] ?? null
@@ -74,8 +76,13 @@ trait HasOneOrMany
                     }
 
                     if ($field instanceof Json && $field->isKeyValue()) {
-                        $values[$field->field()] = collect($values[$field->field()] ?? [])
-                            ->mapWithKeys(static fn ($data) => [$data['key'] => $data['value']])
+                        $values[$field->field()] = collect(
+                            $values[$field->field()] ?? []
+                        )
+                            ->mapWithKeys(
+                                static fn ($data
+                                ): array => [$data['key'] => $data['value']]
+                            )
                             ->filter();
                     }
 
@@ -95,7 +102,11 @@ trait HasOneOrMany
                     : $item->{$this->relation()};
 
                 foreach ($items as $newItem) {
-                    $fields->each(static fn (FormElement $field) => $field->afterSave($newItem));
+                    $fields->each(
+                        static fn (FormElement $field) => $field->afterSave(
+                            $newItem
+                        )
+                    );
                 }
             }
         } elseif ($this instanceof HasOne) {

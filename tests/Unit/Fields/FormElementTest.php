@@ -5,11 +5,11 @@ use MoonShine\Fields\Text;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = Text::make('Field name');
 });
 
-it('make instance', function () {
+it('make instance', function (): void {
     expect($this->field)
         ->label()
         ->toBe('Field name')
@@ -27,7 +27,7 @@ it('make instance', function () {
         ->toBe('field_name');
 });
 
-it('custom field', function () {
+it('custom field', function (): void {
     $field = Text::make('Field name', 'custom_field');
 
     expect($field)
@@ -47,7 +47,7 @@ it('custom field', function () {
         ->toBe('text');
 });
 
-it('correct link', function () {
+it('correct link', function (): void {
     $link = fake()->url();
 
     expect($this->field->addLink('Link', $link, true))
@@ -59,7 +59,7 @@ it('correct link', function () {
         ->toBeTrue();
 });
 
-it('nullable', function () {
+it('nullable', function (): void {
     expect($this->field)
         ->isNullable()
         ->toBeFalse()
@@ -68,19 +68,19 @@ it('nullable', function () {
         ->toBeTrue();
 });
 
-it('is group', function () {
+it('is group', function (): void {
     expect($this->field)
         ->isGroup()
         ->toBeFalse();
 });
 
-it('has parent', function () {
+it('has parent', function (): void {
     expect($this->field)
         ->hasParent()
         ->toBeFalse();
 });
 
-it('not relationship field', function () {
+it('not relationship field', function (): void {
     expect($this->field)
         ->hasRelationship()
         ->toBeFalse()
@@ -94,7 +94,7 @@ it('not relationship field', function () {
         ->toBeFalse();
 });
 
-it('field container', function () {
+it('field container', function (): void {
     expect($this->field)
         ->hasFieldContainer()
         ->toBeTrue()
@@ -103,7 +103,7 @@ it('field container', function () {
         ->toBeFalse();
 });
 
-it('request value', function () {
+it('request value', function (): void {
     fakeRequest('/', 'POST', [$this->field->field() => 'testing']);
 
     expect($this->field)
@@ -120,13 +120,13 @@ it('request value', function () {
         ->toBe('-');
 });
 
-it('hint', function () {
+it('hint', function (): void {
     expect($this->field->hint('Hint'))
         ->getHint()
         ->toBe('Hint');
 });
 
-it('html attributes', function () {
+it('html attributes', function (): void {
     expect($this->field->setAttribute('data-test', true))
         ->attributes()
         ->toBeInstanceOf(ComponentAttributeBag::class)
@@ -143,7 +143,7 @@ it('html attributes', function () {
         ->toBeTrue();
 });
 
-it('custom attributes', function () {
+it('custom attributes', function (): void {
     expect($this->field->customAttributes(['readonly' => true, 'multiple' => true]))
         ->getAttribute('readonly')
         ->toBeTrue()
@@ -151,13 +151,13 @@ it('custom attributes', function () {
         ->toBeTrue();
 });
 
-it('custom class', function () {
+it('custom class', function (): void {
     expect($this->field->customClasses(['class_1', 'class_2']))
         ->getAttribute('class')
         ->toBe('class_1 class_2');
 });
 
-it('xModel', function () {
+it('xModel', function (): void {
     expect($this->field->xModel())
         ->xModelField()
         ->toBe('item.field_name')
@@ -176,7 +176,7 @@ it('xModel', function () {
         ->toBeNull();
 });
 
-it('show when', function () {
+it('show when', function (): void {
     expect($this->field)
         ->hasShowWhen()
         ->toBeFalse()
@@ -188,7 +188,7 @@ it('show when', function () {
         ->and($this->field->showWhenCondition()['value'])->toBe('testing');
 });
 
-it('assets', function () {
+it('assets', function (): void {
     expect($this->field)
         ->getAssets()
         ->toBeArray()

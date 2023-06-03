@@ -8,11 +8,11 @@ use function Pest\Laravel\assertDatabaseMissing;
 uses()->group('controllers');
 uses()->group('profile');
 
-beforeEach(function () {
+beforeEach(function (): void {
     Storage::fake('public');
 });
 
-it('updated name', function () {
+it('updated name', function (): void {
     $updatedName = 'Profile testing';
 
     assertDatabaseMissing('moonshine_users', [
@@ -31,7 +31,7 @@ it('updated name', function () {
     ]);
 });
 
-it('validation fail', function () {
+it('validation fail', function (): void {
     asAdmin()
         ->post(route('moonshine.profile.store'), [
             'name' => fake()->name(),
@@ -39,7 +39,7 @@ it('validation fail', function () {
         ->assertInvalid(['username']);
 });
 
-it('avatar uploaded', function () {
+it('avatar uploaded', function (): void {
     $avatar = UploadedFile::fake()->image('avatar.png');
 
     asAdmin()

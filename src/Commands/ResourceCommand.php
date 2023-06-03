@@ -40,9 +40,10 @@ class ResourceCommand extends MoonShineCommand
 
         $model = $this->qualifyModel($this->option('model') ?? $name);
         $title = $this->option('title') ??
-            ($this->option('singleton') ? $name : str($name)->singular()->plural()->value());
+            ($this->option('singleton') ? $name
+                : str($name)->singular()->plural()->value());
 
-        $resource = $this->getDirectory()."/Resources/{$name}Resource.php";
+        $resource = $this->getDirectory() . "/Resources/{$name}Resource.php";
 
         $stub = $this->option('singleton')
             ? 'SingletonResource'
@@ -57,7 +58,13 @@ class ResourceCommand extends MoonShineCommand
             'Dummy' => $name,
         ]);
 
-        $this->components->info("{$name}Resource file was created: ".str_replace(base_path(), '', $resource));
+        $this->components->info(
+            "{$name}Resource file was created: " . str_replace(
+                base_path(),
+                '',
+                $resource
+            )
+        );
         $this->components->info('Now register resource in menu');
     }
 }

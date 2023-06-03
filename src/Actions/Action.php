@@ -27,7 +27,7 @@ abstract class Action implements ActionContract, MassActionContract
     use HasCanSee;
     use InDropdownOrLine;
 
-    protected ?ResourceContract $resource;
+    protected ?ResourceContract $resource = null;
 
     protected ?string $triggerKey = null;
 
@@ -39,11 +39,6 @@ abstract class Action implements ActionContract, MassActionContract
     }
 
     abstract public function handle(): mixed;
-
-    public function getTriggerKey(): string
-    {
-        return $this->triggerKey ?? class_basename($this);
-    }
 
     /**
      * @throws ActionException
@@ -64,14 +59,24 @@ abstract class Action implements ActionContract, MassActionContract
             ->route('actions.index', query: $query);
     }
 
-    public function isTriggered(): bool
-    {
-        return request()->has($this->getTriggerKey());
-    }
-
     public function resource(): ?ResourceContract
     {
         return $this->resource;
+    }
+
+    public function getTriggerKey(): string
+    {
+        return $this->triggerKey ?? class_basename($this);
+    }
+
+    protected function withQuery(): bool
+    {
+        return $this->withQuery;
+    }
+
+    public function isTriggered(): bool
+    {
+        return request()->has($this->getTriggerKey());
     }
 
     public function setResource(ResourceContract $resource): static
@@ -81,15 +86,14 @@ abstract class Action implements ActionContract, MassActionContract
         return $this;
     }
 
-    protected function withQuery(): bool
-    {
-        return $this->withQuery;
-    }
-
     public function render(): string
     {
-        return view($this->getView() !== '' ? $this->getView() : 'moonshine::actions.default', [
-            'action' => $this,
-        ])->render();
+        return view(
+            $this->getView() !== '' ? $this->getView()
+                : 'moonshine::actions.default',
+            [
+                'action' => $this,
+            ]
+        )->render();
     }
 }

@@ -13,11 +13,8 @@ use MoonShine\Models\MoonshineUserRole;
 class MoonShineUserRoleResource extends Resource
 {
     public static string $model = MoonshineUserRole::class;
-
-    public string $titleField = 'name';
-
     protected static bool $system = true;
-
+    public string $titleField = 'name';
     protected bool $createInModal = true;
 
     protected bool $editInModal = true;
@@ -42,6 +39,9 @@ class MoonShineUserRoleResource extends Resource
         ];
     }
 
+    /**
+     * @return array{name: string[]}
+     */
     public function rules($item): array
     {
         return [

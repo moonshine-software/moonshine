@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\Dashboard;
 
+use MoonShine\Traits\WithUniqueId;
+
 /**
  * @method static static make(string $label, string $text)
  */
 final class TextBlock extends DashboardItem
 {
+    use WithUniqueId;
+
     protected static string $view = 'moonshine::blocks.text';
 
     public function __construct(
@@ -21,15 +25,5 @@ final class TextBlock extends DashboardItem
     public function text(): string
     {
         return $this->text;
-    }
-
-    public function id(string $index = null): string
-    {
-        return str(uniqid('', true))->slug('_')->value();
-    }
-
-    public function name(string $index = null): string
-    {
-        return $this->id($index);
     }
 }

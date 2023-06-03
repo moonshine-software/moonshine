@@ -31,27 +31,6 @@ class MoonShineRequest extends FormRequest
         );
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function attributes(): array
-    {
-        return $this->hasResource()
-            ? $this->getResource()->getFields()
-                ->formFields()
-                ->extractLabels()
-            : [];
-    }
-
-    public function getResourceUri(): ?string
-    {
-        if (trim(config('moonshine.route.prefix', ''), '/') === '') {
-            return $this->segment(2);
-        }
-
-        return $this->segment(3);
-    }
-
     public function hasResource(): bool
     {
         return str($this->url())->contains('resource/');
@@ -59,11 +38,13 @@ class MoonShineRequest extends FormRequest
 
     public function getResource(): Resource
     {
-        if ($this->resource) {
+        if ($this->resource instanceof Resource) {
             return $this->resource;
         }
 
-        $this->resource = MoonShine::getResourceFromUriKey($this->getResourceUri());
+        $this->resource = MoonShine::getResourceFromUriKey(
+            $this->getResourceUri()
+        );
 
         if ($this->getId()) {
             $this->resource->setItem(
@@ -74,9 +55,13 @@ class MoonShineRequest extends FormRequest
         return $this->resource;
     }
 
-    public function getIdBySegment(): ?string
+    public function getResourceUri(): ?string
     {
-        return $this->segment(4);
+        if (trim((string) config('moonshine.route.prefix', ''), '/') === '') {
+            return $this->segment(2);
+        }
+
+        return $this->segment(3);
     }
 
     public function getId(): ?string
@@ -85,14 +70,22 @@ class MoonShineRequest extends FormRequest
             ?? $this->route('id');
     }
 
-    public function getItemOrInstance(bool $eager = false): Model
+    public function getItemOrFail(bool $eager = false): ?Model
     {
-        return $this->getItem($eager) ?? $this->getResource()->getModel();
+        if ($this->item instanceof Model) {
+            return $this->item;
+        }
+
+        $this->item = $this->getItem($eager);
+
+        abort_if(is_null($this->item), 404);
+
+        return $this->item;
     }
 
     public function getItem(bool $eager = false): ?Model
     {
-        if ($this->item) {
+        if ($this->item instanceof Model) {
             return $this->item;
         }
 
@@ -115,17 +108,26 @@ class MoonShineRequest extends FormRequest
         return $this->item;
     }
 
-    public function getItemOrFail(bool $eager = false): ?Model
+    /**
+     * @throws Throwable
+     */
+    public function attributes(): array
     {
-        if ($this->item) {
-            return $this->item;
-        }
+        return $this->hasResource()
+            ? $this->getResource()->getFields()
+                ->formFields()
+                ->extractLabels()
+            : [];
+    }
 
-        $this->item = $this->getItem($eager);
+    public function getIdBySegment(): ?string
+    {
+        return $this->segment(4);
+    }
 
-        abort_if(is_null($this->item), 404);
-
-        return $this->item;
+    public function getItemOrInstance(bool $eager = false): Model
+    {
+        return $this->getItem($eager) ?? $this->getResource()->getModel();
     }
 
     public function getIndexParameter(): ?string

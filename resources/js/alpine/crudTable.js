@@ -3,12 +3,12 @@ export default (async) => ({
     async: async,
     loading: false,
     init() {
-        if(this.$refs.foot !== undefined) {
+        if (this.$refs.foot !== undefined) {
             this.$refs.foot.classList.remove('hidden')
         }
     },
     canBeAsync() {
-        if(!async) {
+        if (!async) {
             window.location = this.$el.href
         }
 
@@ -17,16 +17,13 @@ export default (async) => ({
         axios.get(this.$el.href, {
             headers: {
                 'X-Fragment': 'crud-table',
-            }
+            },
+        }).then(response => response.data).then(html => {
+            this.loading = false
+            this.$root.innerHTML = html
+        }).catch(error => {
+            //
         })
-            .then(response => response.data)
-            .then(html => {
-                this.loading = false
-                this.$root.innerHTML = html
-            })
-            .catch(error => {
-                //
-            });
     },
     actions(type) {
         let all = this.$root.querySelector('.actionsAllChecked')

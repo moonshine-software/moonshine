@@ -33,18 +33,18 @@ class Select extends Field implements
 
         if ($this->isMultiple()) {
             if (is_string($value)) {
-                $value = json_decode($value, true);
+                $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
             }
 
-            return collect($value)->map(function ($v) {
-                return view('moonshine::ui.badge', [
+            return collect($value)->map(
+                fn ($v): string => view('moonshine::ui.badge', [
                     'color' => 'purple',
                     'value' => $this->values()[$v] ?? false,
-                ])->render();
-            })->implode(',');
+                ])->render()
+            )->implode(',');
         }
 
-        return (string)(
+        return (string) (
             $this->values()[$item->{$this->field()}]
             ?? parent::indexViewValue($item, $container)
         );

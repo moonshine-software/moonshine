@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
@@ -56,7 +57,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
 
     protected ?string $relation = null;
 
-    protected ?ResourceContract $resource;
+    protected ?ResourceContract $resource = null;
 
     protected ?Field $parent = null;
     protected bool $group = false;
@@ -76,30 +77,38 @@ abstract class FormElement implements ResourceRenderable, HasAssets
 
     protected ?string $parentRequestValueKey = null;
 
+    protected ?string $name = null;
+
+    protected ?string $id = null;
+
     final public function __construct(
         string $label = null,
         string $field = null,
         Closure|ResourceContract|string|null $resource = null
     ) {
-        $this->setLabel(trim($label ?? (string)str($this->label)->ucfirst()));
-        $this->setField(trim($field ?? (string)str($this->label)->lower()->snake()));
+        $this->setLabel(trim($label ?? (string) str($this->label)->ucfirst()));
+        $this->setField(
+            trim($field ?? (string) str($this->label)->lower()->snake())
+        );
 
         if ($this->hasRelationship()) {
-            $this->setField($field ?? (string)str($this->label)->camel());
+            $this->setField($field ?? (string) str($this->label)->camel());
 
-            if ($this->belongToOne() && ! str($this->field())->contains('_id')) {
+            if ($this->belongToOne() && ! str($this->field())->contains(
+                    '_id'
+                )) {
                 $this->setField(
-                    (string)str($this->field())
+                    (string) str($this->field())
                         ->append('_id')
                         ->snake()
                 );
             }
 
-            $this->setRelation($field ?? (string)str($this->label)->camel());
+            $this->setRelation($field ?? (string) str($this->label)->camel());
 
             if (str($this->relation())->contains('_id')) {
                 $this->setRelation(
-                    (string)str($this->relation())
+                    (string) str($this->relation())
                         ->remove('_id')
                         ->camel()
                 );
@@ -117,18 +126,6 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         }
     }
 
-    protected function afterMake(): void
-    {
-        if ($this->getAssets()) {
-            app(AssetManager::class)->add($this->getAssets());
-        }
-    }
-
-    public function field(): string
-    {
-        return $this->field;
-    }
-
     public function setField(string $field): static
     {
         $this->field = $field;
@@ -136,9 +133,19 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this;
     }
 
-    public function relation(): ?string
+    public function hasRelationship(): bool
     {
-        return $this->relation;
+        return $this instanceof HasRelationship;
+    }
+
+    public function belongToOne(): bool
+    {
+        return $this->hasRelationship() && $this instanceof BelongsToRelation;
+    }
+
+    public function field(): string
+    {
+        return $this->field;
     }
 
     public function setRelation(string $relation): static
@@ -148,33 +155,26 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this;
     }
 
-    public function resource(): ?ResourceContract
+    public function relation(): ?string
     {
-        return $this->resource ?? $this->findResource();
-    }
-
-    protected function findResource(): ?ResourceContract
-    {
-        if (isset($this->resource)) {
-            return $this->resource;
-        }
-
-        if (! $this->relation()) {
-            return null;
-        }
-
-        return MoonShine::getResourceFromUriKey(
-            str($this->relation())
-                ->singular()
-                ->append('Resource')
-                ->kebab()
-                ->value()
-        );
+        return $this->relation;
     }
 
     public function setResource(?ResourceContract $resource): void
     {
         $this->resource = $resource;
+    }
+
+    public function setResourceTitleField(string $resourceTitleField): static
+    {
+        $this->resourceTitleField = trim($resourceTitleField);
+
+        return $this;
+    }
+
+    protected function setValueCallback(Closure $valueCallback): void
+    {
+        $this->valueCallback = $valueCallback;
     }
 
     public function setResources(ResourceContract $resource): static
@@ -202,7 +202,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
 
     public function resourceTitleField(): string
     {
-        if ($this->resourceTitleField) {
+        if ($this->resourceTitleField !== '' && $this->resourceTitleField !== '0') {
             return $this->resourceTitleField;
         }
 
@@ -211,11 +211,28 @@ abstract class FormElement implements ResourceRenderable, HasAssets
             : 'id';
     }
 
-    public function setResourceTitleField(string $resourceTitleField): static
+    public function resource(): ?ResourceContract
     {
-        $this->resourceTitleField = trim($resourceTitleField);
+        return $this->resource ?? $this->findResource();
+    }
 
-        return $this;
+    protected function findResource(): ?ResourceContract
+    {
+        if (isset($this->resource)) {
+            return $this->resource;
+        }
+
+        if (! $this->relation()) {
+            return null;
+        }
+
+        return MoonShine::getResourceFromUriKey(
+            str($this->relation())
+                ->singular()
+                ->append('Resource')
+                ->kebab()
+                ->value()
+        );
     }
 
     public function valueCallback(): ?Closure
@@ -223,12 +240,7 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this->valueCallback;
     }
 
-    protected function setValueCallback(Closure $valueCallback): void
-    {
-        $this->valueCallback = $valueCallback;
-    }
-
-    public function nullable($condition = null): static
+    public function nullable(Closure|bool|null $condition = null): static
     {
         $this->nullable = Condition::boolean($condition, true);
 
@@ -250,13 +262,6 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this->parent instanceof self;
     }
 
-    protected function setParent(Field $field): static
-    {
-        $this->parent = $field;
-
-        return $this;
-    }
-
     public function setParents(): static
     {
         if ($this instanceof HasFields) {
@@ -274,11 +279,53 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this;
     }
 
-    protected function group(): static
+    protected function setParent(Field $field): static
     {
-        $this->group = true;
+        $this->parent = $field;
 
         return $this;
+    }
+
+    public function id(string $index = null): string
+    {
+        if ($this->id) {
+            return $this->id;
+        }
+
+        return (string) str($this->name ?? $this->name())
+            ->replace(['[', ']'], '_')
+            ->replaceMatches('/\${index\d+}/', '')
+            ->replaceMatches('/_{2,}/', '_')
+            ->trim('_')
+            ->snake()
+            ->when(
+                ! is_null($index),
+                fn (Stringable $str): Stringable => $str->append("_$index")
+            );
+    }
+
+    public function name(string $index = null): string
+    {
+        return $this->prepareName($index);
+    }
+
+    protected function prepareName($index = null, $wrap = null): string
+    {
+        if ($this->name) {
+            return $this->name;
+        }
+
+        return (string) str($this->field())
+            ->when(
+                ! is_null($wrap),
+                fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")
+            )
+            ->when(
+                $this->isGroup() || $this->getAttribute('multiple'),
+                fn (Stringable $str): Stringable => $str->append(
+                    "[" . ($index ?? '') . "]"
+                )
+            );
     }
 
     public function isGroup(): bool
@@ -286,9 +333,18 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this->group;
     }
 
-    public function canBeResourceMode(): bool
+    public function setName(string $name): static
     {
-        return $this instanceof HasResourceMode;
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function setId(string $id): static
+    {
+        $this->id = (string) str($id)->remove(['[', ']'])->snake();
+
+        return $this;
     }
 
     public function isResourceModeField(): bool
@@ -296,11 +352,13 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this->canBeResourceMode() && $this->isResourceMode();
     }
 
+    public function canBeResourceMode(): bool
+    {
+        return $this instanceof HasResourceMode;
+    }
+
     /**
      * Set field label block view on forms, based on condition
-     *
-     * @param  mixed  $condition
-     * @return $this
      * @deprecated Will be deleted
      */
     public function fullWidth(mixed $condition = null): static
@@ -330,19 +388,9 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this->fieldContainer;
     }
 
-    public function hasRelationship(): bool
-    {
-        return $this instanceof HasRelationship;
-    }
-
     public function hasRelatedValues(): bool
     {
         return $this instanceof HasRelatedValues;
-    }
-
-    public function belongToOne(): bool
-    {
-        return $this->hasRelationship() && $this instanceof BelongsToRelation;
     }
 
     public function getRelated(Model $model): Model
@@ -357,21 +405,20 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         return $this;
     }
 
-    public function parentRequestValueKey(): ?string
-    {
-        return $this->parentRequestValueKey;
-    }
-
     public function requestValue(string|int|null $index = null): mixed
     {
-        $nameDot = str($this->isXModelField() ? $this->field() : $this->nameDot())
+        $nameDot = str(
+            $this->isXModelField() ? $this->field() : $this->nameDot()
+        )
             ->when(
                 $this->parentRequestValueKey(),
-                fn (Stringable $str) => $str->prepend("{$this->parentRequestValueKey()}.")
+                fn (Stringable $str): Stringable => $str->prepend(
+                    "{$this->parentRequestValueKey()}."
+                )
             )
             ->when(
                 ! is_null($index) && $index !== '',
-                fn (Stringable $str) => $str->append(".$index")
+                fn (Stringable $str): Stringable => $str->append(".$index")
             )->value();
 
         $default = $this instanceof HasDefaultValue
@@ -379,5 +426,38 @@ abstract class FormElement implements ResourceRenderable, HasAssets
             : false;
 
         return request($nameDot, $default) ?? false;
+    }
+
+    protected function nameDot(): string
+    {
+        $name = (string) str($this->name())->replace('[]', '');
+
+        parse_str($name, $array);
+
+        $result = collect(Arr::dot(array_filter($array)));
+
+
+        return $result->isEmpty()
+            ? $name
+            : (string) str($result->keys()->first());
+    }
+
+    public function parentRequestValueKey(): ?string
+    {
+        return $this->parentRequestValueKey;
+    }
+
+    protected function afterMake(): void
+    {
+        if ($this->getAssets()) {
+            app(AssetManager::class)->add($this->getAssets());
+        }
+    }
+
+    protected function group(): static
+    {
+        $this->group = true;
+
+        return $this;
     }
 }

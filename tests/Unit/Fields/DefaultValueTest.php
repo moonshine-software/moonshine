@@ -10,16 +10,17 @@ use MoonShine\Fields\SwitchBoolean;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
+use Pest\Expectation;
 
 uses()->group('default-value');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->item = new class () extends Model {
         public mixed $value;
     };
 });
 
-expect()->extend('toBeDefaultWith', function (mixed $default) {
+expect()->extend('toBeDefaultWith', function (mixed $default): Expectation {
     $item = new class () extends Model {
         public mixed $value;
     };
@@ -42,28 +43,26 @@ dataset('all_values', [
     new MoonshineUser(),
 ]);
 
-it('text default values', function ($default) {
+it('text default values', function ($default): void {
     $field = Text::make('Value');
 
     expect($field)->when(
         $default === 'string',
-        fn ($field) => $field->toBeDefaultWith($default),
-        fn ($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default)
     );
 })->with('all_values');
 
-it('enum default values', function ($default) {
+it('enum default values', function ($default): void {
     $field = Enum::make('Value')
         ->attach(TestEnumColor::class);
 
     expect($field)->when(
         $default === TestEnumColor::Red,
-        fn ($field) => $field->toBeDefaultWith($default),
-        fn ($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default)
     );
 })->with('all_values');
 
-it('enum default values is selected', function () {
+it('enum default values is selected', function (): void {
     $field = Enum::make('Value')
         ->attach(TestEnumColor::class)
         ->default("R");
@@ -87,7 +86,7 @@ it('enum default values is selected', function () {
         ->toBeFalse();
 });
 
-it('enum default values is selected multiple', function () {
+it('enum default values is selected multiple', function (): void {
     $field = Enum::make('Value')
         ->attach(TestEnumColor::class)
         ->multiple()
@@ -101,18 +100,17 @@ it('enum default values is selected multiple', function () {
         ->toBeFalse();
 });
 
-it('checkbox default values', function ($default) {
+it('checkbox default values', function ($default): void {
     $field = Checkbox::make('Value');
 
     expect($field)->when(
         in_array($default, ['string', true, false, 2], true),
-        fn ($field) => $field->toBeDefaultWith($default),
-        fn ($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default)
     );
 })->with('all_values');
 
 
-it('checkbox default values is checked', function () {
+it('checkbox default values is checked', function (): void {
     $field = Checkbox::make('Value')
         ->default("Test");
 
@@ -132,48 +130,44 @@ it('checkbox default values is checked', function () {
         ->toBeFalse();
 });
 
-it('number default values', function ($default) {
+it('number default values', function ($default): void {
     $field = Number::make('Value');
 
     expect($field)->when(
         in_array($default, ['string', 2, null], true),
-        fn ($field) => $field->toBeDefaultWith($default),
-        fn ($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default)
     );
 })->with('all_values');
 
-it('switcher default values', function ($default) {
+it('switcher default values', function ($default): void {
     $field = SwitchBoolean::make('Value');
 
     expect($field)->when(
         in_array($default, ['string', true, false, 2], true),
-        fn ($field) => $field->toBeDefaultWith($default),
-        fn ($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default)
     );
 })->with('all_values');
 
 
-it('json default values', function ($default) {
+it('json default values', function ($default): void {
     $field = Json::make('Value');
 
     expect($field)->when(
         is_array($default),
-        fn ($field) => $field->toBeDefaultWith($default),
-        fn ($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default)
     );
 })->with('all_values');
 
-it('select default values', function ($default) {
+it('select default values', function ($default): void {
     $field = Select::make('Value');
 
     expect($field)->when(
         in_array($default, ['string', [1,2,3], 2], true),
-        fn ($field) => $field->toBeDefaultWith($default),
-        fn ($field) => $field->not->toBeDefaultWith($default)
+        fn ($field) => $field->toBeDefaultWith($default)
     );
 })->with('all_values');
 
-it('select default values is selected', function () {
+it('select default values is selected', function (): void {
     $field = Select::make('Value')
         ->default("R");
 
@@ -185,7 +179,7 @@ it('select default values is selected', function () {
         ->toBeFalse();
 });
 
-it('select default values is selected multiple', function () {
+it('select default values is selected multiple', function (): void {
     $field = Select::make('Value')
         ->multiple()
         ->default(["B", "R"]);

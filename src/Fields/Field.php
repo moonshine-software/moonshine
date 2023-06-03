@@ -14,7 +14,9 @@ use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
 
-abstract class Field extends FormElement implements HasExportViewValue, HasIndexViewValue, HasFormViewValue
+abstract class Field extends FormElement implements HasExportViewValue,
+                                                    HasIndexViewValue,
+                                                    HasFormViewValue
 {
     use ShowOrHide;
     use LinkTrait;
@@ -46,15 +48,10 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
         return request()->fullUrlWithQuery([
             'order' => [
                 'field' => $this->field(),
-                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc' : 'asc',
+                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc'
+                    : 'asc',
             ],
         ]);
-    }
-
-    public function sortType(string $type): bool
-    {
-        return request()->has('order.type')
-            && request('order.type') === strtolower($type);
     }
 
     public function sortActive(): bool
@@ -63,9 +60,17 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
             && request('order.field') === $this->field();
     }
 
+    public function sortType(string $type): bool
+    {
+        return request()->has('order.type')
+            && request('order.type') === strtolower($type);
+    }
+
     public function formViewValue(Model $item): mixed
     {
-        if ($this->hasRelationship() && ! $item->relationLoaded($this->relation())) {
+        if ($this->hasRelationship() && ! $item->relationLoaded(
+                $this->relation()
+            )) {
             $item->load($this->relation());
         }
 
@@ -94,9 +99,16 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
         return $item->{$this->field()} ?? $default;
     }
 
+    public function exportViewValue(Model $item): string
+    {
+        return $this->indexViewValue($item, false);
+    }
+
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        if ($this->hasRelationship() && ! $item->relationLoaded($this->relation())) {
+        if ($this->hasRelationship() && ! $item->relationLoaded(
+                $this->relation()
+            )) {
             $item->load($this->relation());
         }
 
@@ -105,22 +117,18 @@ abstract class Field extends FormElement implements HasExportViewValue, HasIndex
         }
 
         if (is_callable($this->valueCallback())) {
-            return (string)$this->valueCallback()($item);
+            return (string) $this->valueCallback()($item);
         }
 
         if ($this->hasRelationship()) {
             return $container ? view('moonshine::ui.badge', [
                 'color' => 'purple',
                 'value' => $item->{$this->resourceTitleField()} ?? false,
-            ])->render() : (string)($item->{$this->resourceTitleField()} ?? '');
+            ])->render()
+                : (string) ($item->{$this->resourceTitleField()} ?? '');
         }
 
-        return (string)($item->{$this->field()} ?? '');
-    }
-
-    public function exportViewValue(Model $item): string
-    {
-        return $this->indexViewValue($item, false);
+        return (string) ($item->{$this->field()} ?? '');
     }
 
     public function canSave(mixed $condition = null): static

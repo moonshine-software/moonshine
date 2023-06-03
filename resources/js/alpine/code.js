@@ -1,13 +1,13 @@
 /* Flask */
 
-import CodeFlask from 'codeflask';
+import CodeFlask from 'codeflask'
 
-export default (id, config={}) => ({
+export default (id, config = {}) => ({
     flaskInstance: null,
     init() {
-        const input = document.getElementById(id);
+        const input = document.getElementById(id)
         this.flaskInstance = new CodeFlask(this.$el, config)
         this.flaskInstance.onUpdate((code) => input.value = code)
-        this.flaskInstance.updateCode(input.value);
+        this.flaskInstance.updateCode(input.value)
     },
 })

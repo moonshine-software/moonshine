@@ -2,7 +2,7 @@
 
 namespace MoonShine\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Traits\Fields\NumberTrait;
@@ -17,10 +17,8 @@ class SlideFilter extends Filter implements
     use SlideTrait;
     use WithDefaultValue;
 
-    public string $type = 'number';
-
     protected static string $view = 'moonshine::filters.slide';
-
+    public string $type = 'number';
     protected array $attributes = [
         'type',
         'min',
@@ -35,7 +33,7 @@ class SlideFilter extends Filter implements
     {
         $values = array_filter($this->requestValue(), 'is_numeric');
 
-        return $query->where(function (Builder $query) use ($values) {
+        return $query->where(function (Builder $query) use ($values): void {
             $query
                 ->where($this->field(), '>=', $values[$this->fromField])
                 ->where($this->field(), '<=', $values[$this->toField]);

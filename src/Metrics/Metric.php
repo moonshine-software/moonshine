@@ -31,22 +31,17 @@ abstract class Metric implements ResourceRenderable, HasAssets
         $this->setLabel($label);
     }
 
+    public function id(string $index = null): string
+    {
+        return (string) str($this->label())
+            ->slug('_')
+            ->when(! is_null($index), fn ($str) => $str->append('_' . $index));
+    }
+
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
             app(AssetManager::class)->add($this->getAssets());
         }
-    }
-
-    public function id(string $index = null): string
-    {
-        return (string) str($this->label())
-            ->slug('_')
-            ->when(! is_null($index), fn ($str) => $str->append('_'.$index));
-    }
-
-    public function name(string $index = null): string
-    {
-        return $this->id($index);
     }
 }

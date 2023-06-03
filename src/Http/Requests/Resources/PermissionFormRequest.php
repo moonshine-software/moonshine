@@ -10,13 +10,20 @@ final class PermissionFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        if (! in_array('edit', $this->getResource()->getActiveActions(), true)) {
+        if (! in_array(
+            'edit',
+            $this->getResource()->getActiveActions(),
+            true
+        )) {
             return false;
         }
 
         return $this->getResource()->can('update');
     }
 
+    /**
+     * @return array{permissions: string[]}
+     */
     public function rules(): array
     {
         return [

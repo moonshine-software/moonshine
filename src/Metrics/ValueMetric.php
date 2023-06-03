@@ -11,12 +11,9 @@ class ValueMetric extends Metric
     protected static string $view = 'moonshine::metrics.value';
 
     public int|float $value = 0;
-
-    protected string $valueFormat = '{value}';
-
-    protected bool $progress = false;
-
     public int|float $target = 0;
+    protected string $valueFormat = '{value}';
+    protected bool $progress = false;
 
     public function valueFormat(string|Closure $value): static
     {
@@ -34,9 +31,18 @@ class ValueMetric extends Metric
         return $this->simpleValue();
     }
 
+    public function isProgress(): bool
+    {
+        return $this->progress;
+    }
+
     public function simpleValue(): string|float
     {
-        return str_replace('{value}', (string) $this->value, $this->valueFormat);
+        return str_replace(
+            '{value}',
+            (string) $this->value,
+            $this->valueFormat
+        );
     }
 
     public function value(int|float|Closure $value): static
@@ -52,10 +58,5 @@ class ValueMetric extends Metric
         $this->target = is_callable($target) ? $target() : $target;
 
         return $this;
-    }
-
-    public function isProgress(): bool
-    {
-        return $this->progress;
     }
 }

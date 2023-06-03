@@ -14,18 +14,18 @@ class SwitchBoolean extends Checkbox implements HasCurrentResource
 
     protected bool $autoUpdate = true;
 
-    public function autoUpdate(mixed $condition = null): static
-    {
-        $this->autoUpdate = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
     public function readonly($condition = null): static
     {
         $this->autoUpdate(false);
 
         return parent::readonly($condition);
+    }
+
+    public function autoUpdate(mixed $condition = null): static
+    {
+        $this->autoUpdate = Condition::boolean($condition, true);
+
+        return $this;
     }
 
     public function indexViewValue(Model $item, bool $container = true): string
@@ -43,6 +43,6 @@ class SwitchBoolean extends Checkbox implements HasCurrentResource
 
     public function exportViewValue(Model $item): string
     {
-        return (string)$item->{$this->field()};
+        return (string) $item->{$this->field()};
     }
 }

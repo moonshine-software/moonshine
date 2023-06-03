@@ -55,7 +55,7 @@ class TestCase extends Orchestra
 
     protected function resolveFactories(): static
     {
-        Factory::guessFactoryNamesUsing(static function ($factory) {
+        Factory::guessFactoryNamesUsing(static function ($factory): string {
             $factoryBasename = class_basename($factory);
 
             return "MoonShine\Database\Factories\\$factoryBasename".'Factory';

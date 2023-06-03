@@ -7,23 +7,23 @@ uses()->group('fields');
 uses()->group('relation-fields');
 uses()->group('has-one-or-many-fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = HasManyThrough::make('Has many')->fields(
         exampleFields()->toArray()
     );
 });
 
-it('has many is parent', function () {
+it('has many is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(HasMany::class);
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.has-many');
 });
 
-it('is group', function () {
+it('is group', function (): void {
     expect($this->field->isGroup())
         ->toBeTrue();
 });

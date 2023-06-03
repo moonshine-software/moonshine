@@ -12,7 +12,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 uses()->group('controllers');
 uses()->group('relation-field-controllers');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->imageResource = TestResourceBuilder::new()
         ->setTestModel(CategoryImage::class)
         ->setTestFields([
@@ -61,7 +61,7 @@ function relationFieldFormUrl(string $relation, string|int $key)
     ]);
 }
 
-it('index has many successful response', function () {
+it('index has many successful response', function (): void {
     asAdmin()->get(relationFieldItemsUrl('items'))
         ->assertOk()
         ->assertViewIs($this->resource->itemsView())
@@ -86,13 +86,13 @@ it('index has many successful response', function () {
         ->not->assertSee($itemWithoutCategory->name);
 });
 
-it('index has many alert response', function () {
+it('index has many alert response', function (): void {
     asAdmin()->get(relationFieldItemsUrl('test'))
         ->assertOk()
         ->assertSee('Field not found');
 });
 
-it('form has one successful response', function () {
+it('form has one successful response', function (): void {
     asAdmin()->get(relationFieldFormUrl('image', $this->item->getKey()))
         ->assertOk()
         ->assertViewIs($this->resource->formView())
@@ -100,7 +100,7 @@ it('form has one successful response', function () {
         ->assertViewHas('item', $this->itemResource->getModel());
 });
 
-it('form has one alert response', function () {
+it('form has one alert response', function (): void {
     asAdmin()->get(relationFieldFormUrl('test', $this->item->getKey()))
         ->assertOk()
         ->assertSee('Field not found');

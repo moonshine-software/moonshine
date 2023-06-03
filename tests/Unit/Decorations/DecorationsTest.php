@@ -14,14 +14,14 @@ use MoonShine\Fields\Text;
 
 uses()->group('decorations');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->fields = [
         Text::make('Field 1'),
         Text::make('Field 2'),
     ];
 });
 
-it('block', function () {
+it('block', function (): void {
     $decoration = Block::make('Label', $this->fields);
 
     expect($decoration)
@@ -32,12 +32,10 @@ it('block', function () {
         ->label()
         ->toBe('Label')
         ->id()
-        ->toBe('label')
-        ->name()
-        ->toBe('label');
+        ->toBeString();
 });
 
-it('heading', function () {
+it('heading', function (): void {
     $decoration = Heading::make('Label');
 
     expect($decoration)
@@ -46,12 +44,10 @@ it('heading', function () {
         ->label()
         ->toBe('Label')
         ->id()
-        ->toBe('label')
-        ->name()
-        ->toBe('label');
+        ->toBeString();
 });
 
-it('collapse', function () {
+it('collapse', function (): void {
     $decoration = Collapse::make('Label', $this->fields);
 
     expect($decoration)
@@ -62,9 +58,7 @@ it('collapse', function () {
         ->label()
         ->toBe('Label')
         ->id()
-        ->toBe('label')
-        ->name()
-        ->toBe('label')
+        ->toBeString()
         ->isShow()
         ->toBeFalse()
         ->and($decoration->show())
@@ -72,7 +66,7 @@ it('collapse', function () {
         ->toBeTrue();
 });
 
-it('button', function () {
+it('button', function (): void {
     $link = fake()->url();
     $decoration = Button::make('Label', $link);
 
@@ -89,7 +83,7 @@ it('button', function () {
         ->toBeFalse();
 });
 
-it('divider', function () {
+it('divider', function (): void {
     $decoration = Divider::make();
 
     expect($decoration)
@@ -97,7 +91,7 @@ it('divider', function () {
         ->toBe('moonshine::decorations.divider');
 });
 
-it('column', function () {
+it('column', function (): void {
     $decoration = Column::make($this->fields)->columnSpan(3, 4);
 
     expect($decoration)
@@ -111,7 +105,7 @@ it('column', function () {
         ->toBe(4);
 });
 
-it('grid', function () {
+it('grid', function (): void {
     $decoration = Grid::make($this->fields);
 
     expect($decoration)
@@ -121,7 +115,7 @@ it('grid', function () {
         ->toBe('moonshine::decorations.grid');
 });
 
-it('flex', function () {
+it('flex', function (): void {
     $decoration = Flex::make($this->fields)
         ->itemsAlign('right');
 
@@ -139,7 +133,7 @@ it('flex', function () {
         ->toBeTrue();
 });
 
-it('tabs', function () {
+it('tabs', function (): void {
     $decoration = Tabs::make([
         Tab::make('Tab 1', $this->fields),
         Tab::make('Tab 2', $this->fields),

@@ -40,7 +40,7 @@ class TestResourceBuilder
                 ->showOnExport(),
 
             Text::make('Name', 'name')
-                ->canSee(fn ($item) => $item->id === 2)
+                ->canSee(fn ($item): bool => $item->id === 2)
                 ->showOnExport(),
 
             Email::make('Email', 'email')

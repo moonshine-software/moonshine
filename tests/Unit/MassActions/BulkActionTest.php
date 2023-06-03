@@ -5,14 +5,14 @@ use MoonShine\Models\MoonshineUser;
 
 uses()->group('mass-actions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->label = 'MassDelete';
     $this->message = 'Done';
     $this->callback = fn ($model) => $model->getKey();
     $this->action = BulkAction::make($this->label, $this->callback, $this->message);
 });
 
-it('new instance', function () {
+it('new instance', function (): void {
     $model = MoonshineUser::factory()->create();
 
     expect($this->action)
@@ -25,7 +25,7 @@ it('new instance', function () {
         ->toBe($model->getKey());
 });
 
-it('confirmation modal', function () {
+it('confirmation modal', function (): void {
     expect($this->action)
         ->confirmation()
         ->toBeFalse()

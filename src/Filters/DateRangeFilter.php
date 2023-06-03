@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 
@@ -19,10 +19,14 @@ class DateRangeFilter extends DateFilter implements DefaultCanBeArray
         $values = $this->requestValue();
 
         return $query
-            ->when($values['from'] ?? null, function ($query, $fromDate) {
-                $query->whereDate($this->field(), '>=', Carbon::parse($fromDate));
+            ->when($values['from'] ?? null, function ($query, $fromDate): void {
+                $query->whereDate(
+                    $this->field(),
+                    '>=',
+                    Carbon::parse($fromDate)
+                );
             })
-            ->when($values['to'] ?? null, function ($query, $toDate) {
+            ->when($values['to'] ?? null, function ($query, $toDate): void {
                 $query->whereDate($this->field(), '<=', Carbon::parse($toDate));
             });
     }

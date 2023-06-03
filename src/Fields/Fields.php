@@ -25,14 +25,18 @@ final class Fields extends FormElements
      */
     public function resolveChildFields(Field $parent): Fields
     {
-        return $this->map(function (Field $field) use ($parent) {
+        return $this->map(function (Field $field) use ($parent): Field|NoInput {
             throw_if(
                 $parent instanceof Json && $field->hasRelationship(),
-                new FieldException('Relationship fields in JSON field unavailable. Use resourceMode')
+                new FieldException(
+                    'Relationship fields in JSON field unavailable. Use resourceMode'
+                )
             );
 
             if ($parent instanceof HasPivot) {
-                return $field->setName("{$parent->relation()}_{$field->field()}[]");
+                return $field->setName(
+                    "{$parent->relation()}_{$field->field()}[]"
+                );
             }
 
             if ($field instanceof HasFields
@@ -42,21 +46,25 @@ final class Fields extends FormElements
                 return NoInput::make(
                     $field->label(),
                     $field->field(),
-                    static fn () => 'Relationship fields with fields unavailable. Use resourceMode'
+                    static fn (): string => 'Relationship fields with fields unavailable. Use resourceMode'
                 )->badge('red');
             }
 
             return $field->setName(
-                (string)str($parent->name())
+                (string) str($parent->name())
                     ->when(
                         $parent->hasFields(),
-                        fn (Stringable $s) => $s->append('[${index'.$s->substrCount('$').'}]')
+                        fn (Stringable $s): Stringable => $s->append(
+                            '[${index' . $s->substrCount('$') . '}]'
+                        )
                     )
                     ->append("[{$field->field()}]")
                     ->replace('[]', '')
                     ->when(
                         $field->getAttribute('multiple'),
-                        static fn (Stringable $s) => $s->append('[]')
+                        static fn (Stringable $s): Stringable => $s->append(
+                            '[]'
+                        )
                     )
             )->xModel();
         });
@@ -69,7 +77,7 @@ final class Fields extends FormElements
     public function indexFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnIndex())
+            ->filter(static fn (Field $field): bool => $field->isOnIndex())
             ->values();
     }
 
@@ -81,9 +89,11 @@ final class Fields extends FormElements
     public function relatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isResourceModeField())
+            ->filter(
+                static fn (Field $field): bool => $field->isResourceModeField()
+            )
             ->values()
-            ->map(fn (Field $field) => $field->setParents());
+            ->map(fn (Field $field): Field => $field->setParents());
     }
 
     /**
@@ -92,7 +102,9 @@ final class Fields extends FormElements
     public function withoutCanBeRelatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => ! $field->canBeResourceMode())
+            ->filter(
+                static fn (Field $field): bool => ! $field->canBeResourceMode()
+            )
             ->values();
     }
 
@@ -102,7 +114,9 @@ final class Fields extends FormElements
     public function withoutRelatable(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => ! $field->isResourceModeField())
+            ->filter(
+                static fn (Field $field): bool => ! $field->isResourceModeField()
+            )
             ->values();
     }
 
@@ -113,7 +127,7 @@ final class Fields extends FormElements
     public function formFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnForm())
+            ->filter(static fn (Field $field): bool => $field->isOnForm())
             ->values();
     }
 
@@ -124,7 +138,21 @@ final class Fields extends FormElements
     public function detailFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnDetail())
+            ->filter(static fn (Field $field): bool => $field->isOnDetail())
+            ->values();
+    }
+
+    /**
+     * @return Fields<File>
+     *
+     * @throws Throwable
+     */
+    public function onlyDeletableFileFields(bool $isDeleteFiles = true): Fields
+    {
+        return $this->onlyFileFields()
+            ->filter(
+                static fn (Field $field): bool => $field->isDeleteFiles() === $isDeleteFiles
+            )
             ->values();
     }
 
@@ -136,21 +164,8 @@ final class Fields extends FormElements
     public function onlyFileFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field instanceof Fileable)
-            ->values();
-    }
-
-    /**
-     * @return Fields<File>
-     *
-     * @param bool $isDeleteFiles
-     * @throws Throwable
-     */
-    public function onlyDeletableFileFields(bool $isDeleteFiles = true): Fields
-    {
-        return $this->onlyFileFields()
             ->filter(
-                static fn (Field $field) => $field->isDeleteFiles() === $isDeleteFiles
+                static fn (Field $field): bool => $field instanceof Fileable
             )
             ->values();
     }
@@ -162,7 +177,7 @@ final class Fields extends FormElements
     public function exportFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnExport())
+            ->filter(static fn (Field $field): bool => $field->isOnExport())
             ->values();
     }
 
@@ -173,7 +188,7 @@ final class Fields extends FormElements
     public function importFields(): Fields
     {
         return $this->onlyFields()
-            ->filter(static fn (Field $field) => $field->isOnImport())
+            ->filter(static fn (Field $field): bool => $field->isOnImport())
             ->values();
     }
 }

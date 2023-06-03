@@ -5,11 +5,11 @@ use MoonShine\Utilities\AssetManager;
 
 uses()->group('assets');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->manager = app(AssetManager::class);
 });
 
-it('empty', function () {
+it('empty', function (): void {
     expect($this->manager)
         ->css()
         ->toBeEmpty()
@@ -17,7 +17,7 @@ it('empty', function () {
         ->toBeEmpty();
 });
 
-it('add new assets', function () {
+it('add new assets', function (): void {
     $this->manager->add([
         'script1.js',
         'script2.js',
@@ -39,7 +39,7 @@ it('add new assets', function () {
         ->toContain(asset('style1.css'), asset('style2.css'));
 });
 
-it('field assets', function () {
+it('field assets', function (): void {
     $field = Code::make('Test');
 
     expect($this->manager->getAssets())

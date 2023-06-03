@@ -30,10 +30,8 @@ class MoonShineUserResource extends Resource
     use WithUserPermissions;
 
     public static string $model = MoonshineUser::class;
-
-    public string $titleField = 'name';
-
     protected static bool $system = true;
+    public string $titleField = 'name';
 
     public function title(): string
     {
@@ -45,59 +43,89 @@ class MoonShineUserResource extends Resource
         return [
             Grid::make([
                 Column::make([
-                    Block::make(trans('moonshine::ui.resource.main_information'), [
-                        ID::make()
-                            ->sortable()
-                            ->useOnImport()
-                            ->showOnExport(),
+                    Block::make(
+                        trans('moonshine::ui.resource.main_information'),
+                        [
+                            ID::make()
+                                ->sortable()
+                                ->useOnImport()
+                                ->showOnExport(),
 
-                        BelongsTo::make(
-                            trans('moonshine::ui.resource.role'),
-                            'moonshine_user_role_id',
-                            new MoonShineUserRoleResource()
-                        )
-                            ->showOnExport(),
+                            BelongsTo::make(
+                                trans('moonshine::ui.resource.role'),
+                                'moonshine_user_role_id',
+                                new MoonShineUserRoleResource()
+                            )
+                                ->showOnExport(),
 
-                        Text::make(trans('moonshine::ui.resource.name'), 'name')
-                            ->required()
-                            ->useOnImport()
-                            ->showOnExport(),
+                            Text::make(
+                                trans('moonshine::ui.resource.name'),
+                                'name'
+                            )
+                                ->required()
+                                ->useOnImport()
+                                ->showOnExport(),
 
-                        Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
-                            ->removable()
-                            ->showOnExport()
-                            ->disk(config('filesystems.default'))
-                            ->dir('moonshine_users')
-                            ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
+                            Image::make(
+                                trans('moonshine::ui.resource.avatar'),
+                                'avatar'
+                            )
+                                ->removable()
+                                ->showOnExport()
+                                ->disk(config('filesystems.default'))
+                                ->dir('moonshine_users')
+                                ->allowedExtensions(
+                                    ['jpg', 'png', 'jpeg', 'gif']
+                                ),
 
-                        Date::make(trans('moonshine::ui.resource.created_at'), 'created_at')
-                            ->format("d.m.Y")
-                            ->default(now()->toDateTimeString())
-                            ->sortable()
-                            ->hideOnForm()
-                            ->showOnExport(),
+                            Date::make(
+                                trans('moonshine::ui.resource.created_at'),
+                                'created_at'
+                            )
+                                ->format("d.m.Y")
+                                ->default(now()->toDateTimeString())
+                                ->sortable()
+                                ->hideOnForm()
+                                ->showOnExport(),
 
-                        Email::make(trans('moonshine::ui.resource.email'), 'email')
-                            ->sortable()
-                            ->showOnExport()
-                            ->required(),
-                    ]),
+                            Email::make(
+                                trans('moonshine::ui.resource.email'),
+                                'email'
+                            )
+                                ->sortable()
+                                ->showOnExport()
+                                ->required(),
+                        ]
+                    ),
 
-                    Block::make(trans('moonshine::ui.resource.change_password'), [
-                        Password::make(trans('moonshine::ui.resource.password'), 'password')
-                            ->customAttributes(['autocomplete' => 'new-password'])
-                            ->hideOnIndex()
-                            ->hideOnExport()
-                            ->hideOnDetail()
-                            ->eye(),
+                    Block::make(
+                        trans('moonshine::ui.resource.change_password'),
+                        [
+                            Password::make(
+                                trans('moonshine::ui.resource.password'),
+                                'password'
+                            )
+                                ->customAttributes(
+                                    ['autocomplete' => 'new-password']
+                                )
+                                ->hideOnIndex()
+                                ->hideOnExport()
+                                ->hideOnDetail()
+                                ->eye(),
 
-                        PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
-                            ->customAttributes(['autocomplete' => 'confirm-password'])
-                            ->hideOnIndex()
-                            ->hideOnExport()
-                            ->hideOnDetail()
-                            ->eye(),
-                    ]),
+                            PasswordRepeat::make(
+                                trans('moonshine::ui.resource.repeat_password'),
+                                'password_repeat'
+                            )
+                                ->customAttributes(
+                                    ['autocomplete' => 'confirm-password']
+                                )
+                                ->hideOnIndex()
+                                ->hideOnExport()
+                                ->hideOnDetail()
+                                ->eye(),
+                        ]
+                    ),
                 ]),
             ]),
         ];
@@ -107,13 +135,22 @@ class MoonShineUserResource extends Resource
     {
         return [
             PermissionFormComponent::make('Permissions')
-                ->canSee(fn ($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
+                ->canSee(
+                    fn ($user
+                    ): bool => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID
+                ),
 
             ChangeLogFormComponent::make('Change log')
-                ->canSee(fn ($user) => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID),
+                ->canSee(
+                    fn ($user
+                    ): bool => $user->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID
+                ),
         ];
     }
 
+    /**
+     * @return array{name: string, moonshine_user_role_id: string, email: mixed[], password: string}
+     */
     public function rules($item): array
     {
         return [
@@ -126,9 +163,9 @@ class MoonShineUserResource extends Resource
                 'email',
                 Rule::unique('moonshine_users')->ignoreModel($item),
             ],
-            'password' => ! $item->exists
-                ? 'required|min:6|required_with:password_repeat|same:password_repeat'
-                : 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
+            'password' => $item->exists
+                ? 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat'
+                : 'required|min:6|required_with:password_repeat|same:password_repeat',
         ];
     }
 
@@ -141,7 +178,10 @@ class MoonShineUserResource extends Resource
     {
         return [
             TextFilter::make(trans('moonshine::ui.resource.name'), 'name'),
-            DateFilter::make(trans('moonshine::ui.resource.created_at'), 'created_at'),
+            DateFilter::make(
+                trans('moonshine::ui.resource.created_at'),
+                'created_at'
+            ),
         ];
     }
 

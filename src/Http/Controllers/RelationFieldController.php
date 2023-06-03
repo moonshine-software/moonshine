@@ -23,6 +23,25 @@ class RelationFieldController extends BaseController
     /**
      * @throws Throwable
      */
+    public function index(ViewAnyFormRequest $request): View
+    {
+        $this->resolveFieldData($request);
+
+        if ($this->fieldNotFound) {
+            return $this->fieldNotFoundResponse();
+        }
+
+        return view($this->fieldResource->itemsView(), [
+            'resource' => $this->fieldResource,
+            'resources' => $this->fieldResource->isPaginationUsed()
+                ? $this->fieldResource->paginate()
+                : $this->fieldResource->items(),
+        ]);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function resolveFieldData(MoonShineRequest $request): void
     {
         $this->field = $request->getResource()
@@ -41,22 +60,11 @@ class RelationFieldController extends BaseController
         }
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function index(ViewAnyFormRequest $request): View
+    private function fieldNotFoundResponse(): View
     {
-        $this->resolveFieldData($request);
-
-        if ($this->fieldNotFound) {
-            return $this->fieldNotFoundResponse();
-        }
-
-        return view($this->fieldResource->itemsView(), [
-            'resource' => $this->fieldResource,
-            'resources' => $this->fieldResource->isPaginationUsed()
-                ? $this->fieldResource->paginate()
-                : $this->fieldResource->items(),
+        return view('moonshine::components.alert', [
+            'type' => 'error',
+            'slot' => 'Field not found',
         ]);
     }
 
@@ -88,14 +96,6 @@ class RelationFieldController extends BaseController
         return view($this->fieldResource->formView(), [
             'resource' => $this->fieldResource,
             'item' => $model,
-        ]);
-    }
-
-    private function fieldNotFoundResponse(): View
-    {
-        return view('moonshine::components.alert', [
-            'type' => 'error',
-            'slot' => 'Field not found',
         ]);
     }
 }

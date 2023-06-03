@@ -19,13 +19,10 @@ class LineChartMetric extends Metric
         'vendor/moonshine/libs/apexcharts/apexcharts-config.js',
     ];
 
-    public function lines(): array
-    {
-        return $this->lines;
-    }
-
-    public function line(array|Closure $line, string|array|Closure $color = '#7843E9'): static
-    {
+    public function line(
+        array|Closure $line,
+        string|array|Closure $color = '#7843E9'
+    ): static {
         $this->lines[] = is_callable($line) ? $line() : $line;
 
         $color = is_callable($color) ? $color() : $color;
@@ -57,5 +54,10 @@ class LineChartMetric extends Metric
             ->sortKeys()
             ->keys()
             ->toArray();
+    }
+
+    public function lines(): array
+    {
+        return $this->lines;
     }
 }

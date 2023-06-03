@@ -22,40 +22,43 @@ class Tabs extends Decoration
         parent::__construct(uniqid('', true));
     }
 
+    public function tabsWithHtml(): Collection
+    {
+        return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [
+            $tab->id() => $tab->getIcon(6, 'pink') . PHP_EOL
+                . $tab->label(),
+        ]);
+    }
+
     /**
      * @return Collection<Tab>
      * @throws Throwable
      */
     public function tabs(): Collection
     {
-        return tap(Collection::make($this->tabs), static function (Collection $tabs) {
-            throw_if(
-                $tabs->every(fn ($tab) => ! $tab instanceof Tab),
-                new DecorationException('Tabs must be a class of '.Tab::class)
-            );
-        });
+        return tap(
+            Collection::make($this->tabs),
+            static function (Collection $tabs): void {
+                throw_if(
+                    $tabs->every(fn ($tab): bool => ! $tab instanceof Tab),
+                    new DecorationException(
+                        'Tabs must be a class of ' . Tab::class
+                    )
+                );
+            }
+        );
     }
 
-    public function tabsWithHtml(): Collection
-    {
-        return $this->tabs()->mapWithKeys(function (Tab $tab) {
-            return [
-                $tab->id() => $tab->getIcon(6, 'pink') . PHP_EOL
-                    . $tab->label(),
-            ];
-        });
-    }
-
-    public function contentWithHtml(Resource $resource, ?Model $item = null): Collection
-    {
-        return $this->tabs()->mapWithKeys(function (Tab $tab) use ($resource, $item) {
-            return [
-                $tab->id() => view('moonshine::components.resource-renderable', [
-                    'components' => $tab->getFields(),
-                    'item' => $item,
-                    'resource' => $resource,
-                ])->render(),
-            ];
-        });
+    public function contentWithHtml(
+        Resource $resource,
+        ?Model $item = null
+    ): Collection {
+        return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [
+            $tab->id() => view('moonshine::components.resource-renderable', [
+                'components' => $tab->getFields(),
+                'item' => $item,
+                'resource' => $resource,
+            ])->render(),
+        ]);
     }
 }

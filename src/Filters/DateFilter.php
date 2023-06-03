@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use MoonShine\Traits\Fields\DateTrait;
 
 class DateFilter extends TextFilter

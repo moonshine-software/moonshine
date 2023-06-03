@@ -12,14 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 final class MoonShineAuth
 {
-    public static function guardName(): string
+    public static function model(): ?Model
     {
-        return config('moonshine.auth.guard', 'web');
-    }
+        $model = self::provider()?->getModel();
 
-    public static function guard(): Guard|StatefulGuard
-    {
-        return Auth::guard(self::guardName());
+        return $model ? new $model() : null;
     }
 
     public static function provider(): ?UserProvider
@@ -27,10 +24,13 @@ final class MoonShineAuth
         return self::guard()?->getProvider();
     }
 
-    public static function model(): ?Model
+    public static function guard(): Guard|StatefulGuard
     {
-        $model = self::provider()?->getModel();
+        return Auth::guard(self::guardName());
+    }
 
-        return $model ? new $model() : null;
+    public static function guardName(): string
+    {
+        return config('moonshine.auth.guard', 'web');
     }
 }

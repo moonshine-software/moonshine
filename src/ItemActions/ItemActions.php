@@ -17,17 +17,18 @@ final class ItemActions extends Collection
         );
     }
 
+    public function inLine(): self
+    {
+        return $this->filter(
+            static fn (ItemActionContract $action
+            ): bool => ! $action->inDropdown()
+        );
+    }
+
     public function inDropdown(): self
     {
         return $this->filter(
             static fn (ItemActionContract $action) => $action->inDropdown()
-        );
-    }
-
-    public function inLine(): self
-    {
-        return $this->filter(
-            static fn (ItemActionContract $action) => ! $action->inDropdown()
         );
     }
 }

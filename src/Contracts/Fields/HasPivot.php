@@ -11,4 +11,6 @@ interface HasPivot
     public function pivotItem(Model $item, $id): ?Model;
 
     public function pivotValue(Model $item, $id): Model;
+
+    public function getPivotAs(Model $item): int|string|null;
 }

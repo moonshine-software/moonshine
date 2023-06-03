@@ -17,8 +17,11 @@ class Button extends Decoration
 
     protected static string $view = 'moonshine::decorations.button';
 
-    public function __construct(string $label, string $link, bool $blank = false)
-    {
+    public function __construct(
+        string $label,
+        string $link,
+        bool $blank = false
+    ) {
         parent::__construct($label);
 
         $this->addLink($label, $link, $blank);

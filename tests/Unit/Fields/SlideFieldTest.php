@@ -6,7 +6,7 @@ use MoonShine\Fields\SlideField;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = SlideField::make('Slide')
         ->toField('to')
         ->fromField('from');
@@ -16,22 +16,22 @@ beforeEach(function () {
     };
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBe('number');
 });
 
-it('number is parent', function () {
+it('number is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Number::class);
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.slide');
 });
 
-it('index view value with stars', function () {
+it('index view value with stars', function (): void {
     $from = view('moonshine::ui.rating', [
         'value' => $this->item->from,
     ])->render();
@@ -44,12 +44,12 @@ it('index view value with stars', function () {
         ->toBe("$from - $to");
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe("{$this->item->from} - {$this->item->to}");
 });
 
-it('save', function () {
+it('save', function (): void {
     fakeRequest(parameters: [
         'slide' => [
             'from' => 100,

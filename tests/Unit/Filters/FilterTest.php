@@ -7,11 +7,11 @@ use MoonShine\Models\MoonshineUser;
 
 uses()->group('filters');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->filter = TextFilter::make('Text');
 });
 
-it('correct link', function () {
+it('correct link', function (): void {
     $link = fake()->url();
 
     expect($this->filter->addLink('Link', $link, true))
@@ -23,12 +23,12 @@ it('correct link', function () {
         ->toBeTrue();
 });
 
-it('correct name', function () {
+it('correct name', function (): void {
     expect($this->filter->name())
         ->toBe('filters[text]');
 });
 
-it('form view name', function () {
+it('form view name', function (): void {
     fakeRequest(parameters: [
         'filters' => ['text' => 'Testing'],
     ]);
@@ -37,7 +37,7 @@ it('form view name', function () {
         ->toBe('Testing');
 });
 
-it('get query', function () {
+it('get query', function (): void {
     expect($this->filter->getQuery(MoonshineUser::query()))
         ->toBeInstanceOf(Builder::class);
 });
