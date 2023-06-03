@@ -209,9 +209,9 @@ abstract class FormElements extends Collection
 
         $this->each(static function ($fieldOrDecoration) use ($class, $modified) {
             if ($fieldOrDecoration instanceof $class) {
-               $fieldOrDecoration
-                    ->getFields()
-                    ->each(fn($inner) => $modified->push($inner));
+                $fieldOrDecoration
+                     ->getFields()
+                     ->each(fn ($inner) => $modified->push($inner));
             } else {
                 $modified->push($fieldOrDecoration);
             }

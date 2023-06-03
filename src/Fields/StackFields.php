@@ -38,6 +38,6 @@ final class StackFields extends Field implements HasFields
 
         $this->getFields()
             ->onlyFields()
-            ->each(fn(FormElement $field) => $field->afterSave($item));
+            ->each(fn (FormElement $field) => $field->afterSave($item));
     }
 }

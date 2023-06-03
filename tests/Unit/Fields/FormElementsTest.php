@@ -143,11 +143,11 @@ it('can`t be wrapped in a not decoration class', function () {
 it('unwrap fields', function () {
     $fields = Fields::make([
         StackFields::make()->fields([
-            Text::make('Text')
+            Text::make('Text'),
         ]),
         HasMany::make()->fields([
-            Number::make('Text 2')
-        ])
+            Number::make('Text 2'),
+        ]),
     ]);
 
     expect($fields->unwrapFields(StackFields::class)->first())
