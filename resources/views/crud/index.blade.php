@@ -28,17 +28,27 @@
     <x-moonshine::grid>
         @if(!$resource->isRelatable())
             @if(count($metrics))
-                <div class="col-span-12 pb-10">
+                <x-moonshine::column class="pb-10">
                     <div class="flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10">
                         @foreach($metrics as $metric)
                             {!! $resource->renderComponent($metric, $resource->getModel()) !!}
                         @endforeach
                     </div>
-                </div>
+                </x-moonshine::column>
             @endif
         @endif
 
-        <div class="col-span-12 flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap">
+        @if($resource->componentsCollection()->indexComponents()->isNotEmpty())
+            @foreach($resource->componentsCollection()->indexComponents() as $indexComponent)
+                @if($indexComponent->isSee($resource->getModel()))
+                    <x-moonshine::column class="pb-10">
+                        {{ $resource->renderComponent($indexComponent, $resource->getModel()) }}
+                    </x-moonshine::column>
+                @endif
+            @endforeach
+        @endif
+
+        <x-moonshine::column class="flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap">
             <div class="flex items-center gap-2">
                 @if($resource->can('create') && in_array('create', $resource->getActiveActions()))
                     @if($resource->isCreateInModal())
@@ -86,9 +96,9 @@
                     'actions' => $lineActions
                 ]
             )
-        </div>
+        </x-moonshine::column>
 
-        <div class="col-span-12">
+        <x-moonshine::column>
             @if(!empty($resource->queryTags()))
                 <div class="flex flex-wrap items-center gap-2">
                     @foreach($resource->queryTags() as $queryTag)
@@ -109,6 +119,6 @@
                     'resources' => $resources
                 ])
             @endfragment
-        </div>
+        </x-moonshine::column>
     </x-moonshine::grid>
 @endsection

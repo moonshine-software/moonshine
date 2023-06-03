@@ -8,7 +8,8 @@ return [
     'namespace' => 'App\MoonShine',
 
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
-    'logo' => env('MOONSHINE_LOGO', ''),
+    'logo' => env('MOONSHINE_LOGO'),
+    'logo_small' => env('MOONSHINE_LOGO_SMALL'),
 
     'route' => [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),

@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\ResourceRenderable;
 use MoonShine\DetailComponents\DetailComponent;
 use MoonShine\FormComponents\FormComponent;
+use MoonShine\IndexComponents\IndexComponent;
 
 final class ResourceComponents extends Collection
 {
@@ -26,6 +27,15 @@ final class ResourceComponents extends Collection
             static fn (
                 ResourceRenderable $component
             ): bool => $component instanceof DetailComponent
+        )->values();
+    }
+
+    public function indexComponents(): self
+    {
+        return $this->filter(
+            static fn (
+                ResourceRenderable $component
+            ): bool => $component instanceof IndexComponent
         )->values();
     }
 }
