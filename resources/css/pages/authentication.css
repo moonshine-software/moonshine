@@ -1,26 +1,26 @@
 /* Authentication */
 .authentication {
-	@apply flex min-h-screen flex-col items-center justify-center gap-y-6 py-8 px-4;
+  @apply flex min-h-screen flex-col items-center justify-center gap-y-6 py-8 px-4;
 
-	&-content {
-		@apply w-full max-w-[420px] rounded-lg bg-white p-5 dark:bg-dark-600 lg:p-8;
-	}
+  &-content {
+    @apply w-full max-w-[420px] rounded-lg bg-white p-5 dark:bg-dark-600 lg:p-8;
+  }
 
-	&-header {
-		@apply mb-6 space-y-2 text-center;
-		.title {
-			@apply text-md font-semibold;
-		}
-		.description {
-			@apply text-2xs text-slate-500 dark:text-slate-400;
-		}
-	}
+  &-header {
+    @apply mb-6 space-y-2 text-center;
+    .title {
+      @apply text-md font-semibold;
+    }
+    .description {
+      @apply text-2xs text-slate-500 dark:text-slate-400;
+    }
+  }
 
-	&-footer {
-		@apply mt-6 space-y-4;
+  &-footer {
+    @apply mt-6 space-y-4;
 
-		> p {
-			@apply dark:text-slate-400;
-		}
-	}
+    > p {
+      @apply dark:text-slate-400;
+    }
+  }
 }

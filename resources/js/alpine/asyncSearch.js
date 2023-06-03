@@ -1,28 +1,29 @@
 /* Search */
 import {crudFormQuery} from './formFunctions'
 
-export default (route) => ({
-    items: [],
-    match: [],
-    query: '',
-    select(index) {
-        if (!this.items.includes(this.match[index])) {
-            this.items.push({key: index, value: this.match[index]})
-        }
+export default route => ({
+  items: [],
+  match: [],
+  query: '',
+  select(index) {
+    if (!this.items.includes(this.match[index])) {
+      this.items.push({key: index, value: this.match[index]})
+    }
 
-        this.query = ''
-        this.match = []
-    },
-    async search() {
-        if (this.query.length > 0) {
-            let query = '&query=' + this.query
+    this.query = ''
+    this.match = []
+  },
+  async search() {
+    if (this.query.length > 0) {
+      let query = '&query=' + this.query
 
-            fetch(route + query + '&' + crudFormQuery).then((response) => {
-                return response.json()
-            }).then((data) => {
-                this.match = data
-            })
-        }
-    },
-
+      fetch(route + query + '&' + crudFormQuery)
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          this.match = data
+        })
+    }
+  },
 })

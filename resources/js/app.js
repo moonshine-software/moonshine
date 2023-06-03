@@ -48,31 +48,26 @@ Alpine.data('charts', charts)
 
 // Alpine components
 
-import.meta.glob([
-    '../images/**',
-    '../fonts/**',
-])
+import.meta.glob(['../images/**', '../fonts/**'])
 
 window.Alpine = Alpine
 
 /* Alpine.js */
 document.addEventListener('alpine:init', () => {
+  /* Dark mode */
+  Alpine.store('darkMode', {
+    on: Alpine.$persist(false).as('darkMode'),
+    toggle() {
+      this.on = !this.on
+      window.location.reload()
+    },
+  })
 
-    /* Dark mode */
-    Alpine.store('darkMode', {
-        on: Alpine.$persist(false).as('darkMode'),
-        toggle() {
-            this.on = !this.on
-            window.location.reload()
-        },
-    })
-
-    if (Alpine.store('darkMode').on) {
-        document.documentElement.classList.add('dark')
-    } else {
-        document.documentElement.classList.remove('dark')
-    }
-
+  if (Alpine.store('darkMode').on) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
 })
 
 Alpine.plugin(persist)

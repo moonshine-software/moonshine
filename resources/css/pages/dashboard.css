@@ -1,30 +1,30 @@
 /* Report card */
 .report-card {
-	@apply flex h-full flex-col  rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
+  @apply flex h-full flex-col  rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
 
-	&-heading {
-		@apply flex items-center justify-between;
-		> svg {
-			@apply h-6 w-6 text-pink;
-		}
-	}
+  &-heading {
+    @apply flex items-center justify-between;
+    > svg {
+      @apply h-6 w-6 text-pink;
+    }
+  }
 
-	&-indicator {
-		@apply flex items-center gap-x-1 rounded-full px-2 py-1.5 text-3xs leading-none text-white;
-		> svg {
-			@apply h-3.5 w-3.5;
-		}
-	}
+  &-indicator {
+    @apply flex items-center gap-x-1 rounded-full px-2 py-1.5 text-3xs leading-none text-white;
+    > svg {
+      @apply h-3.5 w-3.5;
+    }
+  }
 
-	&-body {
-		@apply mt-auto;
-	}
+  &-body {
+    @apply mt-auto;
+  }
 
-	&-value {
-		@apply mt-6 truncate text-xl font-medium leading-none;
-	}
+  &-value {
+    @apply mt-6 truncate text-xl font-medium leading-none;
+  }
 
-	&-title {
-		@apply mt-2 truncate text-2xs text-slate-500;
-	}
+  &-title {
+    @apply mt-2 truncate text-2xs text-slate-500;
+  }
 }
