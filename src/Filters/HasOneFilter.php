@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultMustBeNull;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
@@ -21,6 +21,11 @@ class HasOneFilter extends SelectFilter implements
     {
         $related = $this->getRelated($query->getModel());
 
-        return $query->whereRelation($this->relation(), $related->getKeyName(), '=', $this->requestValue());
+        return $query->whereRelation(
+            $this->relation(),
+            $related->getKeyName(),
+            '=',
+            $this->requestValue()
+        );
     }
 }

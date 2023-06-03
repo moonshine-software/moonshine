@@ -26,11 +26,8 @@ class ImportAction extends Action
     use WithQueue;
 
     protected static string $view = 'moonshine::actions.import';
-
-    protected ?string $icon = 'heroicons.outline.paper-clip';
-
     public string $inputName = 'import_file';
-
+    protected ?string $icon = 'heroicons.outline.paper-clip';
     protected bool $deleteAfter = false;
 
     protected string $csvDelimiter = ',';
@@ -40,11 +37,6 @@ class ImportAction extends Action
         $this->csvDelimiter = $value;
 
         return $this;
-    }
-
-    public function getDelimiter(): string
-    {
-        return $this->csvDelimiter;
     }
 
     /**
@@ -66,7 +58,10 @@ class ImportAction extends Action
 
         $requestFile = request()->file($this->inputName);
 
-        if (! in_array($requestFile->getClientOriginalExtension(), ['csv', 'xlsx'])) {
+        if (! in_array(
+            $requestFile->getClientOriginalExtension(),
+            ['csv', 'xlsx']
+        )) {
             MoonShineUI::toast(
                 __('moonshine::ui.resource.import.extension_not_supported'),
                 'error'
@@ -83,7 +78,7 @@ class ImportAction extends Action
 
         $path = request()->file($this->inputName)->storeAs(
             $this->getDir(),
-            str_replace('.txt', '.csv', $requestFile->hashName()),
+            str_replace('.txt', '.csv', (string) $requestFile->hashName()),
             $this->getDisk()
         );
 
@@ -92,7 +87,7 @@ class ImportAction extends Action
 
         if ($this->isQueue()) {
             ImportActionJob::dispatch(
-                get_class($this->resource()),
+                $this->resource()::class,
                 $path,
                 $this->deleteAfter,
                 $this->getDelimiter()
@@ -105,7 +100,12 @@ class ImportAction extends Action
             return back();
         }
 
-        self::process($path, $this->resource(), $this->deleteAfter, $this->getDelimiter());
+        self::process(
+            $path,
+            $this->resource(),
+            $this->deleteAfter,
+            $this->getDelimiter()
+        );
 
         MoonShineUI::toast(
             __('moonshine::ui.resource.import.imported'),
@@ -113,6 +113,11 @@ class ImportAction extends Action
         );
 
         return back();
+    }
+
+    public function getDelimiter(): string
+    {
+        return $this->csvDelimiter;
     }
 
     /**
@@ -128,28 +133,30 @@ class ImportAction extends Action
     ): Collection {
         $fastExcel = new FastExcel();
 
-        if (str_contains($path, '.csv')) {
+        if (str($path)->contains('.csv')) {
             $fastExcel->configureCsv($delimiter);
         }
 
         $result = $fastExcel->import($path, function ($line) use ($resource) {
-            $data = collect($line)->mapWithKeys(function ($value, $key) use ($resource) {
-                $field = $resource->getFields()->importFields()->first(function ($field) use ($key) {
-                    return $field->field() === $key || $field->label() === $key;
-                });
+            $data = collect($line)->mapWithKeys(
+                function ($value, $key) use ($resource) {
+                    $field = $resource->getFields()->importFields()->first(
+                        fn ($field): bool => $field->field() === $key || $field->label() === $key
+                    );
 
-                if (! $field instanceof Field) {
-                    return [];
+                    if (! $field instanceof Field) {
+                        return [];
+                    }
+
+                    return [$field->field() => $value];
                 }
-
-                return [$field->field() => $value];
-            })->toArray();
+            )->toArray();
 
             if (($data[$resource->getModel()->getKeyName()] ?? '') === '') {
                 unset($data[$resource->getModel()->getKeyName()]);
             }
 
-            if (empty($data)) {
+            if ($data === []) {
                 return false;
             }
 

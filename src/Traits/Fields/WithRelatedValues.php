@@ -42,12 +42,18 @@ trait WithRelatedValues
 
         if (is_callable($this->valueCallback())) {
             $values = $query->get()
-                ->mapWithKeys(function ($relatedItem) {
-                    return [$relatedItem->getKey() => ($this->valueCallback())($relatedItem)];
-                });
+                ->mapWithKeys(
+                    fn ($relatedItem): array => [
+                        $relatedItem->getKey() => ($this->valueCallback())(
+                            $relatedItem
+                        ),
+                    ]
+                );
         } else {
-            $tableName = DB::getTablePrefix().$related->getTable();
-            $values = $query->selectRaw("{$tableName}.{$related->getKeyName()}, {$tableName}.{$this->resourceTitleField()}")
+            $tableName = DB::getTablePrefix() . $related->getTable();
+            $values = $query->selectRaw(
+                "{$tableName}.{$related->getKeyName()}, {$tableName}.{$this->resourceTitleField()}"
+            )
                 ->pluck($this->resourceTitleField(), $related->getKeyName());
         }
 

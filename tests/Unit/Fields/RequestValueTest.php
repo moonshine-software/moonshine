@@ -5,13 +5,13 @@ use MoonShine\Fields\Text;
 
 uses()->group('request-values');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->item = new class () extends Model {
         public mixed $value;
     };
 });
 
-expect()->extend('requestAndFormViewValues', function (Model $item, mixed $requestValue, mixed $formViewValue) {
+expect()->extend('requestAndFormViewValues', function (Model $item, mixed $requestValue, mixed $formViewValue): void {
     expect($this->value)
         ->requestValue()
         ->toBe($requestValue)
@@ -19,7 +19,7 @@ expect()->extend('requestAndFormViewValues', function (Model $item, mixed $reque
         ->toBe($formViewValue);
 });
 
-it('default value level', function () {
+it('default value level', function (): void {
     $field = Text::make('Value');
 
     expect($field)
@@ -32,7 +32,7 @@ it('default value level', function () {
         ->requestAndFormViewValues($this->item, 'Testing', 'Testing');
 });
 
-it('request value level', function () {
+it('request value level', function (): void {
     $field = Text::make('Value')
         ->default('Testing');
 
@@ -44,7 +44,7 @@ it('request value level', function () {
         ->requestAndFormViewValues($this->item, 'A', 'B');
 });
 
-it('item value level', function () {
+it('item value level', function (): void {
     $field = Text::make('Value')
         ->default('Testing');
 

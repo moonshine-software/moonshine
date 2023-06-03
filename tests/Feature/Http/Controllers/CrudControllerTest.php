@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Event;
 use MoonShine\Fields\Text;
 use MoonShine\Http\Controllers\CrudController;
@@ -16,13 +17,13 @@ use function Pest\Laravel\assertModelMissing;
 uses()->group('controllers');
 uses()->group('crud');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->user = MoonshineUser::factory()->create();
     $this->resource = $this->moonShineUserResource();
     $this->requestData = CrudRequestFactory::new();
 });
 
-it('show index page if authorized', function () {
+it('show index page if authorized', function (): void {
     $response = asAdmin()
         ->get($this->resource->route('index'));
 
@@ -33,7 +34,7 @@ it('show index page if authorized', function () {
     $response->assertViewHas('resources', $this->resource->paginate());
 });
 
-it('show index page if not authorized', function () {
+it('show index page if not authorized', function (): void {
     $response = $this->get(action([CrudController::class, 'index']));
 
     expect($response)->isRedirect();
@@ -41,7 +42,7 @@ it('show index page if not authorized', function () {
     $response->assertRedirect(route('moonshine.login'));
 });
 
-it('show create page', function () {
+it('show create page', function (): void {
     $response = asAdmin()
         ->get($this->resource->route('create'));
 
@@ -52,7 +53,7 @@ it('show create page', function () {
     $response->assertViewHas('item', $this->resource->getModel());
 });
 
-it('show edit page', function () {
+it('show edit page', function (): void {
     $this->resource->setItem($this->user);
 
     $response = asAdmin()
@@ -65,7 +66,7 @@ it('show edit page', function () {
     $response->assertViewHas('item', $this->user);
 });
 
-it('show detail page', function () {
+it('show detail page', function (): void {
     $this->resource->setItem($this->user);
 
     $response = asAdmin()
@@ -78,7 +79,7 @@ it('show detail page', function () {
     $response->assertViewHas('item', $this->user);
 });
 
-it('successful stored', function () {
+it('successful stored', function (): void {
     Event::fake();
 
     $email = fake()->email();
@@ -99,7 +100,7 @@ it('successful stored', function () {
     ]);
 });
 
-it('validation error on stored', function () {
+it('validation error on stored', function (): void {
     $this->requestData->withEmail('');
 
     asAdmin()
@@ -107,7 +108,7 @@ it('validation error on stored', function () {
         ->assertInvalid(['email']);
 });
 
-it('validation error with specified error message on stored', function () {
+it('validation error with specified error message on stored', function (): void {
     $resource = TestResourceBuilder::new(MoonshineUser::class, true)
         ->setTestFields([
             Text::make('Email'),
@@ -128,7 +129,7 @@ it('validation error with specified error message on stored', function () {
         ]);
 });
 
-it('successful updated', function () {
+it('successful updated', function (): void {
     Event::fake();
 
     $email = fake()->email();
@@ -156,7 +157,7 @@ it('successful updated', function () {
         ->name->toBe($requestData['name']);
 });
 
-it('validation error on updated', function () {
+it('validation error on updated', function (): void {
     $this->requestData->withEmail('');
 
     asAdmin()
@@ -167,10 +168,10 @@ it('validation error on updated', function () {
         ->assertInvalid(['email']);
 });
 
-it('changed route after save', function () {
+it('changed route after save', function (): void {
     Event::fake();
 
-    $this->resource = TestResourceBuilder::new(get_class($this->user), true)
+    $this->resource = TestResourceBuilder::new($this->user::class, true)
         ->setTestRouteAfterSave('edit');
 
     asAdmin()
@@ -182,7 +183,7 @@ it('changed route after save', function () {
         ->assertRedirect($this->resource->route('edit', $this->user->getKey()));
 });
 
-it('successful destroy item', function () {
+it('successful destroy item', function (): void {
     assertModelExists($this->user);
 
     asAdmin()
@@ -192,7 +193,7 @@ it('successful destroy item', function () {
     assertModelMissing($this->user);
 });
 
-it('successful mass delete items', function () {
+it('successful mass delete items', function (): void {
     $users = MoonshineUser::factory(10)->create();
 
     $users->each(fn ($user) => assertModelExists($user));
@@ -203,7 +204,7 @@ it('successful mass delete items', function () {
     $users->each(fn ($user) => assertModelMissing($user));
 });
 
-it('column updated', function () {
+it('column updated', function (): void {
     $item = MoonshineUser::factory()->create(['name' => 'Before']);
 
     $columnValue = fake()->words(asText: true);
@@ -223,7 +224,7 @@ it('column updated', function () {
     ]);
 });
 
-it('precognition responses', function () {
+it('precognition responses', function (): void {
     $headers = [
         'Precognition' => 'true',
         'Accept' => 'application/json',
@@ -242,7 +243,7 @@ it('precognition responses', function () {
     )->assertJsonStructure(['errors' => ['moonshine_user_role_id']]);
 });
 
-it('filtered', function () {
+it('filtered', function (): void {
     $nameValue = fake()->word();
     $dateValue = fake()->date();
 
@@ -272,7 +273,7 @@ it('filtered', function () {
     )->assertOk()->assertSeeText(__('moonshine::ui.notfound'));
 });
 
-it('sorted', function () {
+it('sorted', function (): void {
     $items = $this->resource
         ->query()
         ->orderByDesc('created_at')
@@ -288,7 +289,7 @@ it('sorted', function () {
     )->assertOk()->assertSeeTextInOrder($items->toArray());
 });
 
-it('search', function () {
+it('search', function (): void {
     $searchValue = fake()->words(asText: true);
     $notSearchValue = fake()->words(asText: true);
 
@@ -308,7 +309,7 @@ it('search', function () {
         ->and($response)->not->see($notSearchValue);
 });
 
-it('fragment load', function () {
+it('fragment load', function (): void {
     $response = asAdmin()->getJson(
         $this->resource->route('index'),
         ['X-Fragment' => 'crud-table']
@@ -320,7 +321,7 @@ it('fragment load', function () {
         ->not->see('<html');
 });
 
-it('query tags', function () {
+it('query tags', function (): void {
     MoonshineUser::factory()->create([
         'email' => 'testing@example.com',
     ]);
@@ -329,7 +330,7 @@ it('query tags', function () {
         'email' => 'notfound@example.com',
     ]);
 
-    $tag = QueryTag::make('Tag 1', fn () => MoonshineUser::query()->where('email', 'testing@example.com'));
+    $tag = QueryTag::make('Tag 1', fn (): Builder => MoonshineUser::query()->where('email', 'testing@example.com'));
 
     $resource = TestResourceBuilder::new(MoonshineUser::class, true)
         ->setTestFields([

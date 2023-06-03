@@ -8,7 +8,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 uses()->group('controllers');
 uses()->group('search');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(
         MoonshineUser::class,
         true
@@ -16,12 +16,12 @@ beforeEach(function () {
         BelongsTo::make('Moonshine user role')
             ->asyncSearch(
                 'name',
-                asyncSearchValueCallback: fn ($item) => $item->id.$item->name
+                asyncSearchValueCallback: fn ($item): string => $item->id.$item->name
             ),
     ]);
 });
 
-it('successful find item', function () {
+it('successful find item', function (): void {
     $role = MoonshineUserRole::factory()->create();
 
     asAdmin()->getJson(route('moonshine.search.relations', [

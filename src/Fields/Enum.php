@@ -6,7 +6,6 @@ namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeEnum;
-use UnitEnum;
 
 class Enum extends Select implements DefaultCanBeEnum
 {

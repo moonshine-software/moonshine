@@ -23,7 +23,9 @@ class Menu
         return self::$menu?->filter(function ($item) use ($request) {
             if ($item->isGroup()) {
                 $item->setItems(
-                    $item->items()->filter(fn ($subItem) => $subItem->isSee($request))
+                    $item->items()->filter(
+                        fn ($subItem) => $subItem->isSee($request)
+                    )
                 );
             }
 

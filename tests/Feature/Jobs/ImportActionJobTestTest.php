@@ -8,11 +8,11 @@ use function Pest\Laravel\assertDatabaseHas;
 uses()->group('jobs');
 uses()->group('mass-actions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->resource = $this->moonShineUserResource();
 });
 
-it('successful imported', function () {
+it('successful imported', function (): void {
     $path = 'moonshine_users/import.csv';
 
     $user = MoonshineUser::factory()->create(['name' => 'Testing']);

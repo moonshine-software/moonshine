@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Filters;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasFormViewValue;
 use MoonShine\Fields\FormElement;
@@ -49,17 +49,20 @@ abstract class Filter extends FormElement implements HasFormViewValue
         if ($this->hasRelationship()) {
             $related = $this->getRelated($query->getModel());
 
-            return $query->whereHas($this->relation(), function (Builder $q) use ($related) {
-                $table = $q->getModel()->getTable();
-                $id = $related->getKeyName();
+            return $query->whereHas(
+                $this->relation(),
+                function (Builder $q) use ($related): Builder {
+                    $table = $q->getModel()->getTable();
+                    $id = $related->getKeyName();
 
-                return $q->whereIn(
-                    "$table.$id",
-                    is_array($this->requestValue())
-                        ? $this->requestValue()
-                        : [$this->requestValue()]
-                );
-            });
+                    return $q->whereIn(
+                        "$table.$id",
+                        is_array($this->requestValue())
+                            ? $this->requestValue()
+                            : [$this->requestValue()]
+                    );
+                }
+            );
         }
 
         return $query->where($this->field(), $this->requestValue());

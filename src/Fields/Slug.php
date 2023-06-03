@@ -21,11 +21,6 @@ class Slug extends Text
         return $this;
     }
 
-    public function getFrom(): string
-    {
-        return $this->from;
-    }
-
     public function separator(string $separator): static
     {
         $this->separator = $separator;
@@ -33,21 +28,11 @@ class Slug extends Text
         return $this;
     }
 
-    public function getSeparator(): string
-    {
-        return $this->separator;
-    }
-
     public function unique(): static
     {
         $this->unique = true;
 
         return $this;
-    }
-
-    public function isUnique(): bool
-    {
-        return $this->unique;
     }
 
     public function save(Model $item): Model
@@ -68,12 +53,19 @@ class Slug extends Text
         return Str::slug($value, $this->getSeparator());
     }
 
-    protected function checkUnique(Model $item, string $slug): bool
+    public function getSeparator(): string
     {
-        return ! DB::table($item->getTable())
-            ->whereNot($item->getKeyName(), $item->getKey())
-            ->where($this->field(), $slug)
-            ->first();
+        return $this->separator;
+    }
+
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
+    public function isUnique(): bool
+    {
+        return $this->unique;
     }
 
     protected function makeSlugUnique(Model $item): string
@@ -82,10 +74,18 @@ class Slug extends Text
         $i = 1;
 
         while (! $this->checkUnique($item, $slug)) {
-            $slug = $item->{$this->field()}.$this->getSeparator().$i++;
+            $slug = $item->{$this->field()} . $this->getSeparator() . $i++;
         }
 
         return $slug;
+    }
+
+    protected function checkUnique(Model $item, string $slug): bool
+    {
+        return ! DB::table($item->getTable())
+            ->whereNot($item->getKeyName(), $item->getKey())
+            ->where($this->field(), $slug)
+            ->first();
     }
 
 }

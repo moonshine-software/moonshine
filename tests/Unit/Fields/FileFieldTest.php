@@ -8,7 +8,7 @@ use MoonShine\Fields\File;
 uses()->group('fields');
 uses()->group('file-field');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = File::make('File')
         ->disk('public')
         ->dir('files');
@@ -26,7 +26,7 @@ beforeEach(function () {
     };
 });
 
-it('storage methods', function () {
+it('storage methods', function (): void {
     expect($this->field)
         ->getDir()
         ->toBe('files')
@@ -34,13 +34,13 @@ it('storage methods', function () {
         ->toBe('public');
 });
 
-it('storage methods with slashes', function () {
+it('storage methods with slashes', function (): void {
     expect($this->field->dir('/files/'))
         ->getDir()
         ->toBe('files');
 });
 
-it('can be multiple methods', function () {
+it('can be multiple methods', function (): void {
     expect($this->field)
         ->isMultiple()
         ->toBeFalse()
@@ -49,7 +49,7 @@ it('can be multiple methods', function () {
         ->toBeTrue();
 });
 
-it('removable methods', function () {
+it('removable methods', function (): void {
     expect($this->field)
         ->isRemovable()
         ->toBeFalse()
@@ -58,30 +58,30 @@ it('removable methods', function () {
         ->toBeTrue();
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBe('file');
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.file');
 });
 
-it('correct interfaces', function () {
+it('correct interfaces', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Fileable::class)
         ->toBeInstanceOf(RemovableContract::class);
 });
 
-it('accept attribute', function () {
+it('accept attribute', function (): void {
     $this->field->accept('png');
 
     expect($this->field->getAttribute('accept'))
         ->toBe('png');
 });
 
-it('allowed extensions', function () {
+it('allowed extensions', function (): void {
     $this->field->allowedExtensions(['gif']);
 
     expect($this->field->getAllowedExtensions())
@@ -92,28 +92,28 @@ it('allowed extensions', function () {
         ->toBeFalse();
 });
 
-it('can download', function () {
+it('can download', function (): void {
     expect($this->field->canDownload())
         ->toBeTrue()
         ->and($this->field->disableDownload()->canDownload())
         ->toBeFalse();
 });
 
-it('correct path', function () {
+it('correct path', function (): void {
     expect($this->field->path(''))
         ->toBe(Storage::disk($this->field->getDisk())->url(''))
         ->and($this->field->path('file.png'))
         ->toBe(Storage::disk($this->field->getDisk())->url('file.png'));
 });
 
-it('correct path with dir', function () {
+it('correct path with dir', function (): void {
     expect($this->field->pathWithDir(''))
         ->toBe(Storage::disk($this->field->getDisk())->url($this->field->getDir() . '/'))
         ->and($this->field->dir('')->pathWithDir('/'))
         ->toBe(Storage::disk($this->field->getDisk())->url('/'));
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe(view('moonshine::components.files', [
             'files' => [$this->field->pathWithDir($this->item->file)],
@@ -121,7 +121,7 @@ it('index view value', function () {
         ])->render());
 });
 
-it('index view value for multiple', function () {
+it('index view value for multiple', function (): void {
     $files = collect($this->item->files)
         ->map(fn ($value) => $this->fieldMultiple->pathWithDir($value))
         ->toArray();
@@ -133,21 +133,21 @@ it('index view value for multiple', function () {
         ])->render());
 });
 
-it('empty index view value', function () {
+it('empty index view value', function (): void {
     $this->item->file = '';
 
     expect($this->field->indexViewValue($this->item))
         ->toBeEmpty();
 });
 
-it('empty index view value for multiple', function () {
+it('empty index view value for multiple', function (): void {
     $this->item->files = '';
 
     expect($this->fieldMultiple->indexViewValue($this->item))
         ->toBeEmpty();
 });
 
-it('names single', function () {
+it('names single', function (): void {
     expect($this->field)
         ->name()
         ->toBe('file')
@@ -155,7 +155,7 @@ it('names single', function () {
         ->toBe('file');
 });
 
-it('names multiple', function () {
+it('names multiple', function (): void {
     expect($this->fieldMultiple)
         ->name()
         ->toBe('files[]')

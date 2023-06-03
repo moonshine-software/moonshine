@@ -164,7 +164,7 @@ class TestResource extends Resource
 
     public function filters(): array
     {
-        if (empty($this->testFilters)) {
+        if ($this->testFilters === []) {
             return ['id'];
         }
 
@@ -173,7 +173,7 @@ class TestResource extends Resource
 
     public function actions(): array
     {
-        if (empty($this->testActions)) {
+        if ($this->testActions === []) {
             return [
                 FiltersAction::make(trans('moonshine::ui.filters')),
             ];

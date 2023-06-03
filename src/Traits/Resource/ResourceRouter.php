@@ -10,36 +10,6 @@ use MoonShine\MoonShineRouter;
 
 trait ResourceRouter
 {
-    /**
-     * Take route of resource from alias or composite from resource and table names.
-     * @return string
-     */
-    public function routeNameAlias(): string
-    {
-        return (string)($this->routAlias ?
-            str($this->routAlias)
-                ->lcfirst()
-                ->squish() :
-            str(static::class)
-                ->classBasename()
-                ->replace(['Resource'], '')
-                ->plural()
-                ->lcfirst());
-    }
-
-    public function routeParam(): string
-    {
-        return 'resourceItem';
-    }
-
-    public function routeName(?string $action = null): string
-    {
-        return (string) str('moonshine')
-            ->append('.')
-            ->append($this->routeNameAlias())
-            ->when($action, static fn ($str) => $str->append('.')->append($action));
-    }
-
     public function currentRoute(array $query = []): string
     {
         return str(request()->url())
@@ -61,9 +31,12 @@ trait ResourceRouter
         };
     }
 
-    public function route(string $action = null, int|string $id = null, array $query = []): string
-    {
-        if (empty($query) && Cache::has($this->queryCacheKey())) {
+    public function route(
+        string $action = null,
+        int|string $id = null,
+        array $query = []
+    ): string {
+        if ($query === [] && Cache::has($this->queryCacheKey())) {
             parse_str(Cache::get($this->queryCacheKey(), ''), $query);
         }
 
@@ -77,5 +50,39 @@ trait ResourceRouter
             $this->routeName($action),
             $id ? array_merge([$this->routeParam() => $id], $query) : $query
         );
+    }
+
+    public function routeName(?string $action = null): string
+    {
+        return (string) str('moonshine')
+            ->append('.')
+            ->append($this->routeNameAlias())
+            ->when(
+                $action,
+                static fn ($str) => $str->append('.')->append($action)
+            );
+    }
+
+    /**
+     * Take route of resource from alias or composite from resource and table names.
+     */
+    public function routeNameAlias(): string
+    {
+        return (string) ($this->routAlias
+            ?
+            str($this->routAlias)
+                ->lcfirst()
+                ->squish()
+            :
+            str(static::class)
+                ->classBasename()
+                ->replace(['Resource'], '')
+                ->plural()
+                ->lcfirst());
+    }
+
+    public function routeParam(): string
+    {
+        return 'resourceItem';
     }
 }

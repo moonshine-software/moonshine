@@ -13,7 +13,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
-it('resolved child fields / names', function () {
+it('resolved child fields / names', function (): void {
     $parent = HasMany::make('Has many');
 
     expect(exampleFields()->resolveChildFields($parent))
@@ -23,7 +23,7 @@ it('resolved child fields / names', function () {
         );
 });
 
-it('resolved child fields / json with exception ', function () {
+it('resolved child fields / json with exception ', function (): void {
     $json = Json::make('Parent');
 
     $relationFields = Fields::make([
@@ -33,7 +33,7 @@ it('resolved child fields / json with exception ', function () {
     $relationFields->resolveChildFields($json);
 })->throws(FieldException::class);
 
-it('resolved child fields / pivot', function () {
+it('resolved child fields / pivot', function (): void {
     $field = BelongsToMany::make('Field')
         ->fields(exampleFields()->toArray());
 
@@ -44,7 +44,7 @@ it('resolved child fields / pivot', function () {
         );
 });
 
-it('resolved child fields / child is related field on form', function () {
+it('resolved child fields / child is related field on form', function (): void {
     $this->get(test()->moonShineUserResource()->route('create'));
 
     $parent = HasMany::make('Parent');
@@ -58,7 +58,7 @@ it('resolved child fields / child is related field on form', function () {
         ->each->toBeInstanceOf(NoInput::class);
 });
 
-it('resolved child fields / multiple', function () {
+it('resolved child fields / multiple', function (): void {
     $parent = HasMany::make('Parent');
 
     $fields = Fields::make([
@@ -73,7 +73,7 @@ it('resolved child fields / multiple', function () {
         );
 });
 
-it('resolved child fields / x-model', function () {
+it('resolved child fields / x-model', function (): void {
     $parent = HasMany::make('Parent')->fields(
         exampleFields()->toArray()
     );
@@ -90,7 +90,7 @@ it('resolved child fields / x-model', function () {
         );
 });
 
-it('index fields', function () {
+it('index fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1')->hideOnIndex(),
@@ -100,7 +100,7 @@ it('index fields', function () {
         ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
-it('relatable fields', function () {
+it('relatable fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1'),
@@ -109,7 +109,7 @@ it('relatable fields', function () {
     )->toHaveCount(1)->each->toBeInstanceOf(HasMany::class);
 });
 
-it('without can be relatable fields', function () {
+it('without can be relatable fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1'),
@@ -118,7 +118,7 @@ it('without can be relatable fields', function () {
     )->toHaveCount(1)->each->toBeInstanceOf(Text::class);
 });
 
-it('without relatable fields', function () {
+it('without relatable fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1'),
@@ -127,7 +127,7 @@ it('without relatable fields', function () {
     )->toHaveCount(1)->each->toBeInstanceOf(Text::class);
 });
 
-it('only form fields', function () {
+it('only form fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1')->hideOnForm(),
@@ -137,7 +137,7 @@ it('only form fields', function () {
         ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
-it('only detail fields', function () {
+it('only detail fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1')->hideOnDetail(),
@@ -147,7 +147,7 @@ it('only detail fields', function () {
         ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
-it('only export fields', function () {
+it('only export fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1')->hideOnExport(),
@@ -157,7 +157,7 @@ it('only export fields', function () {
         ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
-it('only import fields', function () {
+it('only import fields', function (): void {
     expect(
         Fields::make([
             Text::make('Field 1')->useOnImport(false),
@@ -167,7 +167,7 @@ it('only import fields', function () {
         ->each(fn ($field) => $field->field()->toBe('field2'));
 });
 
-it('only file fields', function () {
+it('only file fields', function (): void {
     expect(
         Fields::make([
             File::make('File 1'),
@@ -177,7 +177,7 @@ it('only file fields', function () {
     )->toHaveCount(2)->each->toBeInstanceOf(File::class);
 });
 
-it('only file fields with isDeleteFiles true', function () {
+it('only file fields with isDeleteFiles true', function (): void {
     expect(
         Fields::make([
             File::make('File 1'),

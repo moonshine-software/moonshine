@@ -8,15 +8,15 @@ trait WithQueue
 {
     protected bool $queue = false;
 
-    protected function isQueue(): bool
-    {
-        return $this->queue;
-    }
-
     public function queue(): self
     {
         $this->queue = true;
 
         return $this;
+    }
+
+    protected function isQueue(): bool
+    {
+        return $this->queue;
     }
 }

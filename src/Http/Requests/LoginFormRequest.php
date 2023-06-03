@@ -16,8 +16,6 @@ class LoginFormRequest extends MoonShineRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -27,7 +25,7 @@ class LoginFormRequest extends MoonShineRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array{username: string[], password: string[]}
      */
     public function rules(): array
     {
@@ -37,23 +35,9 @@ class LoginFormRequest extends MoonShineRequest
         ];
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'username' => request()->str('username')
-                ->when(
-                    config('moonshine.auth.fields.username', 'email') === 'email',
-                    fn (Stringable $str) => $str->lower()
-                )
-                ->squish()
-                ->value(),
-        ]);
-    }
-
     /**
      * Attempt to authenticate the request's credentials.
      *
-     * @return void
      *
      * @throws ValidationException
      */
@@ -62,8 +46,12 @@ class LoginFormRequest extends MoonShineRequest
         $this->ensureIsNotRateLimited();
 
         $credentials = [
-            config('moonshine.auth.fields.username', 'email') => $this->get('username'),
-            config('moonshine.auth.fields.password', 'password') => $this->get('password'),
+            config('moonshine.auth.fields.username', 'email') => $this->get(
+                'username'
+            ),
+            config('moonshine.auth.fields.password', 'password') => $this->get(
+                'password'
+            ),
         ];
 
         if (! MoonShineAuth::guard()->attempt(
@@ -85,7 +73,6 @@ class LoginFormRequest extends MoonShineRequest
     /**
      * Ensure the login request is not rate limited.
      *
-     * @return void
      *
      * @throws ValidationException
      */
@@ -109,14 +96,28 @@ class LoginFormRequest extends MoonShineRequest
 
     /**
      * Get the rate limiting throttle key for the request.
-     *
-     * @return string
      */
     public function throttleKey(): string
     {
         return Str::transliterate(
-            str($this->input('username').'|'.$this->ip())
+            str($this->input('username') . '|' . $this->ip())
                 ->lower()
         );
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'username' => request()->str('username')
+                ->when(
+                    config(
+                        'moonshine.auth.fields.username',
+                        'email'
+                    ) === 'email',
+                    fn (Stringable $str): Stringable => $str->lower()
+                )
+                ->squish()
+                ->value(),
+        ]);
     }
 }

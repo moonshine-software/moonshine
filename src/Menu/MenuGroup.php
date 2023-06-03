@@ -32,7 +32,9 @@ class MenuGroup extends MenuSection
 
             throw_if(
                 ! $item instanceof MenuElement && ! $item instanceof Resource && ! $item instanceof CustomPage,
-                new MenuException('An object of the MenuItem|Resource|CustomPage class is required')
+                new MenuException(
+                    'An object of the MenuItem|Resource|CustomPage class is required'
+                )
             );
 
             if ($item instanceof Resource) {

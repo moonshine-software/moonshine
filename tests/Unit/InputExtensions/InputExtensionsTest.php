@@ -5,11 +5,11 @@ use MoonShine\InputExtensions\InputEye;
 
 uses()->group('input-extensions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->ext = new InputEye('Value');
 });
 
-it('methods', function () {
+it('methods', function (): void {
     expect($this->ext)
         ->toBeInstanceOf(InputExtension::class)
         ->getValue()

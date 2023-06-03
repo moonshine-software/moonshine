@@ -12,18 +12,18 @@ use MoonShine\Fields\Text;
 uses()->group('fields');
 uses()->group('relation-fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = BelongsToMany::make('Role', 'roles', resource: 'name');
     $this->fieldWithPivot = BelongsToMany::make('Pivot', 'pivots', resource: 'name')
         ->fields(exampleFields()->toArray());
 });
 
-it('select is parent', function () {
+it('select is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Select::class);
 });
 
-it('correct interfaces', function () {
+it('correct interfaces', function (): void {
     expect($this->field)
         ->toBeInstanceOf(HasRelationship::class)
         ->toBeInstanceOf(HasRelatedValues::class)
@@ -32,12 +32,12 @@ it('correct interfaces', function () {
         ->toBeInstanceOf(HasAsyncSearch::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBeEmpty();
 });
 
-it('async search', function () {
+it('async search', function (): void {
     expect($this->field->asyncSearch('name'))
         ->isAsyncSearch()
         ->toBeTrue()
@@ -45,14 +45,14 @@ it('async search', function () {
         ->toBe('name');
 });
 
-it('transformed to select', function () {
+it('transformed to select', function (): void {
     $this->field->select();
 
     expect($this->field->isSelect())
         ->toBeTrue();
 });
 
-it('names', function () {
+it('names', function (): void {
     expect($this->field)
         ->field()
         ->toBe('roles')
@@ -70,10 +70,10 @@ it('names', function () {
         ->toBe('Role');
 });
 
-it('pivot fields', function () {
+it('pivot fields', function (): void {
     expect($this->fieldWithPivot->getFields())
         ->hasFields(exampleFields()->toArray())
-        ->each(function ($field, $index) {
+        ->each(function ($field, $index): void {
             $index++;
             $fieldName = "field$index";
 

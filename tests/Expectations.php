@@ -1,6 +1,8 @@
 <?php
 
-expect()->extend('storeAvatarFile', function ($avatar, $field, $item) {
+use Pest\Expectation;
+
+expect()->extend('storeAvatarFile', function ($avatar, $field, $item): Expectation {
 
     fakeRequest(method: 'POST', parameters: [
         'avatar' => $avatar,

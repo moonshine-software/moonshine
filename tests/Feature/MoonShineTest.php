@@ -5,7 +5,7 @@ use MoonShine\MoonShine;
 
 uses()->group('core');
 
-it('recognizes internal request as MoonShine request', function () {
+it('recognizes internal request as MoonShine request', function (): void {
     $user = MoonshineUser::factory()->create();
     $resource = $this->moonShineUserResource();
     $resource->setItem($user);
@@ -18,7 +18,7 @@ it('recognizes internal request as MoonShine request', function () {
         ->toBeTrue();
 });
 
-it('recognizes external request as non MoonShine request', function () {
+it('recognizes external request as non MoonShine request', function (): void {
     $this->post(
         route('moonshine.authenticate'),
         ['username' => $this->adminUser()->email, 'password' => 'test']

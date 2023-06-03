@@ -12,23 +12,23 @@ use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
 
 $middlewares = collect(config('moonshine.route.middleware'))
-    ->reject(fn($middleware) => $middleware === 'web')
+    ->reject(fn($middleware): bool => $middleware === 'web')
     ->toArray();
 
 Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware($middlewares)
     ->as('moonshine.')->group(static function () {
-        Route::middleware('auth.moonshine')->group(function () {
+        Route::middleware('auth.moonshine')->group(function (): void {
             Route::get('/', DashboardController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');
 
-            Route::get('/search/relations', [SearchController::class, 'relations'])
+            Route::get('/search/relations', (new SearchController())->relations(...))
                 ->name('search.relations');
 
             Route::controller(NotificationController::class)
                 ->prefix('notifications')
                 ->as('notifications.')
-                ->group(static function () {
+                ->group(static function (): void {
                     Route::get('/', 'readAll')->name('readAll');
                     Route::get('/{notification}', 'read')->name('read');
                 });
@@ -42,7 +42,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
 
         if (config('moonshine.auth.enable', true)) {
             Route::controller(AuthenticateController::class)
-                ->group(static function () {
+                ->group(static function (): void {
                     Route::get('/login', 'login')->name('login');
                     Route::post('/authenticate', 'authenticate')->name('authenticate');
                     Route::get('/logout', 'logout')->name('logout');
@@ -51,17 +51,17 @@ Route::prefix(config('moonshine.route.prefix', ''))
             Route::controller(SocialiteController::class)
                 ->prefix('socialite')
                 ->as('socialite.')
-                ->group(static function () {
+                ->group(static function (): void {
                     Route::get('/{driver}/redirect', 'redirect')->name('redirect');
                     Route::get('/{driver}/callback', 'callback')->name('callback');
                 });
 
-            Route::post('/profile', [ProfileController::class, 'store'])
+            Route::post('/profile', (new ProfileController())->store(...))
                 ->middleware('auth.moonshine')
                 ->name('profile.store');
         }
 
-        Route::fallback(static function () {
+        Route::fallback(static function (): never {
             $handler = config(
                 'moonshine.route.notFoundHandler',
                 MoonShineNotFoundException::class

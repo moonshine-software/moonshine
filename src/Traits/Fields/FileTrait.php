@@ -49,26 +49,19 @@ trait FileTrait
     public function allowedExtensions(array $allowedExtensions): static
     {
         $this->allowedExtensions = $allowedExtensions;
-        if (! empty($allowedExtensions)) {
+        if ($allowedExtensions !== []) {
             $this->setAttribute("accept", $this->acceptExtension());
         }
 
         return $this;
     }
 
-    public function getAllowedExtensions(): array
+    public function acceptExtension(): string
     {
-        return $this->allowedExtensions;
-    }
+        $extensions = array_map(static fn ($val): string => '.' . $val,
+            $this->allowedExtensions);
 
-    /**
-     * @param  string  $extension
-     * @return bool
-     */
-    public function isAllowedExtension(string $extension): bool
-    {
-        return empty($this->getAllowedExtensions())
-            || in_array($extension, $this->getAllowedExtensions(), true);
+        return implode(',', $extensions);
     }
 
     public function disableDownload($condition = null): static
@@ -83,23 +76,64 @@ trait FileTrait
         return ! $this->disableDownload;
     }
 
-    public function path(string $value): string
-    {
-        return Storage::disk($this->getDisk())->url($value);
-    }
-
     public function pathWithDir(string $value): string
     {
         return $this->path($this->prependDir($value));
     }
 
+    public function path(string $value): string
+    {
+        return Storage::disk($this->getDisk())->url($value);
+    }
+
     public function prependDir(string $value): string
     {
-        $dir = ! (empty($this->getDir())) ? $this->getDir(). '/' : '';
+        $dir = empty($this->getDir()) ? '' : $this->getDir() . '/';
 
         return str($value)->remove($dir)
             ->prepend($dir)
             ->value();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function hasManyOrOneSave(
+        array|UploadedFile|null $valueOrValues = null
+    ): array|string|null {
+        if ($this->isMultiple()) {
+            throw_if(
+                ! is_null($valueOrValues) && ! is_array($valueOrValues),
+                new FieldException('Files must be an array')
+            );
+
+            $saveValues = request()
+                ->collect($this->hiddenOldValuesKey())
+                ->reject(fn ($v): bool => is_numeric($v));
+
+            if ($valueOrValues) {
+                foreach ($valueOrValues as $value) {
+                    $saveValues = $saveValues->merge([
+                        $this->store($value),
+                    ]);
+                }
+            }
+
+
+            $valueOrValues = $saveValues->values()
+                ->filter()
+                ->unique()
+                ->toArray();
+        } elseif ($valueOrValues instanceof UploadedFile) {
+            $valueOrValues = $this->store($valueOrValues);
+        } elseif (empty($valueOrValues)) {
+            $valueOrValues = request(
+                $this->hiddenOldValuesKey(),
+                $this->isNullable() ? null : ''
+            );
+        }
+
+        return $valueOrValues;
     }
 
     public function hiddenOldValuesKey(): string
@@ -107,7 +141,7 @@ trait FileTrait
         return str('hidden_')
             ->when(
                 $this->parentRequestValueKey(),
-                fn (Stringable $str) => $str->append(
+                fn (Stringable $str): Stringable => $str->append(
                     $this->parentRequestValueKey() . "."
                 )
             )
@@ -146,44 +180,15 @@ trait FileTrait
         return $file->store($this->getDir(), $this->getDisk());
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function hasManyOrOneSave(array|UploadedFile|null $valueOrValues = null): array|string|null
+    public function isAllowedExtension(string $extension): bool
     {
-        if ($this->isMultiple()) {
-            throw_if(
-                ! is_null($valueOrValues) && ! is_array($valueOrValues),
-                new FieldException('Files must be an array')
-            );
+        return empty($this->getAllowedExtensions())
+            || in_array($extension, $this->getAllowedExtensions(), true);
+    }
 
-            $saveValues = request()
-                ->collect($this->hiddenOldValuesKey())
-                ->reject(fn ($v) => is_numeric($v));
-
-            if ($valueOrValues) {
-                foreach ($valueOrValues as $value) {
-                    $saveValues = $saveValues->merge([
-                        $this->store($value),
-                    ]);
-                }
-            }
-
-
-            $valueOrValues = $saveValues->values()
-                ->filter()
-                ->unique()
-                ->toArray();
-        } elseif ($valueOrValues instanceof UploadedFile) {
-            $valueOrValues = $this->store($valueOrValues);
-        } elseif (empty($valueOrValues)) {
-            $valueOrValues = request(
-                $this->hiddenOldValuesKey(),
-                $this->isNullable() ? null : ''
-            );
-        }
-
-        return $valueOrValues;
+    public function getAllowedExtensions(): array
+    {
+        return $this->allowedExtensions;
     }
 
     /**
@@ -196,7 +201,10 @@ trait FileTrait
             ->collect($this->hiddenOldValuesKey());
 
         if ($this->isDeleteFiles()) {
-            $this->checkAndDelete($item->{$this->field()}, $oldValues->toArray());
+            $this->checkAndDelete(
+                $item->{$this->field()},
+                $oldValues->toArray()
+            );
         }
 
         $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
@@ -241,19 +249,9 @@ trait FileTrait
         return $item->{$this->field()} ?? '';
     }
 
-    public function acceptExtension(): string
-    {
-        $extensions = array_map(static function ($val) {
-            return '.' . $val;
-        }, $this->allowedExtensions);
-
-        return implode(',', $extensions);
-    }
-
     /**
-     * @deprecated Will be removed
-     * @param  string  $withPrefix
      * @return $this
+     * @deprecated Will be removed
      */
     public function withPrefix(string $withPrefix): static
     {
@@ -264,17 +262,6 @@ trait FileTrait
 
     /**
      * @deprecated Will be removed
-     * @return string
-     */
-    public function prefix(): string
-    {
-        return $this->withPrefix;
-    }
-
-    /**
-     * @deprecated Will be removed
-     * @param  string|bool|null  $value
-     * @return string
      */
     protected function unPrefixedValue(string|bool|null $value): string
     {
@@ -283,8 +270,14 @@ trait FileTrait
 
     /**
      * @deprecated Will be removed
-     * @param  string|bool|null  $value
-     * @return string
+     */
+    public function prefix(): string
+    {
+        return $this->withPrefix;
+    }
+
+    /**
+     * @deprecated Will be removed
      */
     protected function prefixedValue(string|bool|null $value): string
     {

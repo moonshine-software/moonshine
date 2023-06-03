@@ -6,7 +6,6 @@ import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
 
 // Alpine components
-
 import dropdown from './alpine/dropdown'
 import modal from './alpine/modal'
 import offcanvas from './alpine/offcanvas'
@@ -50,8 +49,8 @@ Alpine.data('charts', charts)
 // Alpine components
 
 import.meta.glob([
-  '../images/**',
-  '../fonts/**',
+    '../images/**',
+    '../fonts/**',
 ])
 
 window.Alpine = Alpine
@@ -59,20 +58,20 @@ window.Alpine = Alpine
 /* Alpine.js */
 document.addEventListener('alpine:init', () => {
 
-  /* Dark mode */
-  Alpine.store('darkMode', {
-    on: Alpine.$persist(false).as('darkMode'),
-    toggle() {
-      this.on = !this.on
-      window.location.reload()
-    },
-  })
+    /* Dark mode */
+    Alpine.store('darkMode', {
+        on: Alpine.$persist(false).as('darkMode'),
+        toggle() {
+            this.on = !this.on
+            window.location.reload()
+        },
+    })
 
-  if (Alpine.store('darkMode').on) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
+    if (Alpine.store('darkMode').on) {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
 
 })
 

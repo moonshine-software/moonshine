@@ -32,6 +32,16 @@ final class TinyMce extends Textarea
         ];
     }
 
+    protected function token(): string
+    {
+        return config('moonshine.tinymce.token', '');
+    }
+
+    protected function version(): string
+    {
+        return (string) config('moonshine.tinymce.version', 6);
+    }
+
     public function mergeTags(array $mergeTags): self
     {
         $this->mergeTags = $mergeTags;
@@ -79,16 +89,6 @@ final class TinyMce extends Textarea
         $this->locale = $locale;
 
         return $this;
-    }
-
-    protected function token(): string
-    {
-        return config('moonshine.tinymce.token', '');
-    }
-
-    protected function version(): string
-    {
-        return (string) config('moonshine.tinymce.version', 6);
     }
 
     public function formViewValue(Model $item): string

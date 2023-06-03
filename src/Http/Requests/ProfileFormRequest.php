@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use MoonShine\MoonShineAuth;
 use MoonShine\MoonShineRequest;
 
@@ -12,8 +13,6 @@ class ProfileFormRequest extends MoonShineRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -23,7 +22,7 @@ class ProfileFormRequest extends MoonShineRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array{name: string[], username: Unique[]|string[], avatar: string[], password: string}
      */
     public function rules(): array
     {

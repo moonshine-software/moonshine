@@ -6,25 +6,25 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('mass-actions');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->label = 'Filters';
     $this->resource = TestResourceBuilder::new(MoonshineUser::class, addRoutes: true);
     $this->action = FiltersAction::make($this->label)
         ->setResource($this->resource);
 });
 
-it('make new object', function () {
+it('make new object', function (): void {
     expect($this->action)
         ->toBeInstanceOf(FiltersAction::class);
 });
 
-it('correct resource', function () {
+it('correct resource', function (): void {
     expect($this->action)
         ->resource()
         ->toBe($this->resource);
 });
 
-it('show in dropdown or line', function () {
+it('show in dropdown or line', function (): void {
     expect($this->action)
         ->showInLine()
         ->inDropdown()
@@ -34,7 +34,7 @@ it('show in dropdown or line', function () {
         ->toBeTrue();
 });
 
-it('correct active count', function () {
+it('correct active count', function (): void {
     fakeRequest(
         $this->resource->route('index', query: [
             'filters' => [
@@ -51,7 +51,7 @@ it('correct active count', function () {
         ->toBe(2);
 });
 
-it('render view', function () {
+it('render view', function (): void {
     test()->withViewErrors([]);
 
     expect($this->action)

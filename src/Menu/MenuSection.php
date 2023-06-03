@@ -28,11 +28,6 @@ abstract class MenuSection
 
     protected Closure|string|null $link = null;
 
-    public function items(): Collection
-    {
-        return $this->items;
-    }
-
     public function badge(Closure $callback): static
     {
         $this->badge = $callback;
@@ -50,16 +45,6 @@ abstract class MenuSection
         return call_user_func($this->badge);
     }
 
-    public function resource(): ?Resource
-    {
-        return $this->resource;
-    }
-
-    public function page(): ?CustomPage
-    {
-        return $this->page;
-    }
-
     public function setItems(Collection $items): static
     {
         $this->items = $items;
@@ -74,28 +59,6 @@ abstract class MenuSection
         return $this;
     }
 
-    public function isGroup(): bool
-    {
-        return $this instanceof MenuGroup;
-    }
-
-    public function url(): string
-    {
-        if ($this->link) {
-            return is_callable($this->link)
-                ? call_user_func($this->link)
-                : $this->link;
-        }
-
-        if ($this->page()) {
-            return $this->page()->url();
-        }
-
-        return $this->resource()
-            ? route($this->resource()->routeName('index'))
-            : '';
-    }
-
     public function isActive(): bool
     {
         if ($this->isGroup()) {
@@ -108,11 +71,11 @@ abstract class MenuSection
             return false;
         }
 
-        if ($this->resource()) {
+        if ($this->resource() instanceof Resource) {
             return request()->routeIs($this->resource()->routeName('*'));
         }
 
-        if ($this->page()) {
+        if ($this->page() instanceof CustomPage) {
             return request()->url() === $this->page()->url();
         }
 
@@ -123,5 +86,42 @@ abstract class MenuSection
         }
 
         return request()->fullUrlIs($this->url() . '*');
+    }
+
+    public function isGroup(): bool
+    {
+        return $this instanceof MenuGroup;
+    }
+
+    public function items(): Collection
+    {
+        return $this->items;
+    }
+
+    public function resource(): ?Resource
+    {
+        return $this->resource;
+    }
+
+    public function page(): ?CustomPage
+    {
+        return $this->page;
+    }
+
+    public function url(): string
+    {
+        if ($this->link) {
+            return is_callable($this->link)
+                ? call_user_func($this->link)
+                : $this->link;
+        }
+
+        if ($this->page() instanceof CustomPage) {
+            return $this->page()->url();
+        }
+
+        return $this->resource() instanceof Resource
+            ? route($this->resource()->routeName('index'))
+            : '';
     }
 }

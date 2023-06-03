@@ -4,7 +4,7 @@ use MoonShine\Helpers\Condition;
 
 uses()->group('helpers');
 
-it('conditions', function (array $arguments, bool $expected) {
+it('conditions', function (array $arguments, bool $expected): void {
     expect($expected)
         ->toBe(Condition::boolean(...$arguments));
 })->with([
@@ -12,6 +12,6 @@ it('conditions', function (array $arguments, bool $expected) {
     [[false, true], false],
     [[null, true], true],
     [[null, false], false],
-    [[fn () => true, false], true],
-    [[fn () => false, true], false],
+    [[fn (): bool => true, false], true],
+    [[fn (): bool => false, true], false],
 ]);

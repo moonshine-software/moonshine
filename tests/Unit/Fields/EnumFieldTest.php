@@ -7,7 +7,7 @@ use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = Enum::make('Enum')
         ->attach(TestEnumColor::class);
 
@@ -20,22 +20,22 @@ beforeEach(function () {
     };
 });
 
-it('select field is parent', function () {
+it('select field is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Select::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBeEmpty();
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.select');
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe('Red');
 });

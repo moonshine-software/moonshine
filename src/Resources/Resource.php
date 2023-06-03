@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -62,17 +63,11 @@ abstract class Resource implements ResourceContract
     public static string $baseEditView = 'moonshine::crud.form';
 
     public static string $baseShowView = 'moonshine::crud.show';
-
-    protected string $itemsView = 'moonshine::crud.shared.table';
-
-    protected string $formView = 'moonshine::crud.shared.form';
-
-    protected string $detailView = 'moonshine::crud.shared.detail-card';
-
-    public string $titleField = '';
-
     protected static bool $system = false;
-
+    public string $titleField = '';
+    protected string $itemsView = 'moonshine::crud.shared.table';
+    protected string $formView = 'moonshine::crud.shared.form';
+    protected string $detailView = 'moonshine::crud.shared.detail-card';
     protected ?Model $item = null;
 
     protected bool $showInModal = false;
@@ -91,57 +86,13 @@ abstract class Resource implements ResourceContract
 
     /**
      * Alias for route of resource.
-     * @var string
      */
     protected string $routAlias = '';
 
     /**
-     * Get an array of validation rules for resource related model
-     *
-     * @see https://laravel.com/docs/validation#available-validation-rules
-     *
-     * @param  Model  $item
-     * @return array
-     */
-    abstract public function rules(Model $item): array;
-
-    /**
-     * Get an array of visible fields on resource page
-     *
-     * @return Field[]|Decoration[]
-     */
-    abstract public function fields(): array;
-
-    /**
-     * Get an array of filters displayed on resource index page
-     *
-     * @return Filter[]
-     */
-    abstract public function filters(): array;
-
-    /**
-     * Get an array of additional actions performed on resource page
-     *
-     * @return Action[]
-     */
-    abstract public function actions(): array;
-
-    /**
      * Get an array of fields which will be used for search on resource index page
-     *
-     * @return array
      */
     abstract public function search(): array;
-
-    /**
-     * Get custom messages for validator errors
-     *
-     * @return array<string, string|array<string, string>>
-     */
-    public function validationMessages(): array
-    {
-        return [];
-    }
 
     /**
      * Get an array of filter scopes, which will be applied on resource index page
@@ -165,6 +116,11 @@ abstract class Resource implements ResourceContract
         return [];
     }
 
+    public function bulkActionsCollection(): MassActions
+    {
+        return MassActions::make($this->bulkActions());
+    }
+
     /**
      * Get an array of custom bulk actions
      *
@@ -175,9 +131,9 @@ abstract class Resource implements ResourceContract
         return [];
     }
 
-    public function bulkActionsCollection(): MassActions
+    public function itemActionsCollection(): ItemActions
     {
-        return MassActions::make($this->bulkActions());
+        return ItemActions::make($this->itemActions());
     }
 
     /**
@@ -190,9 +146,9 @@ abstract class Resource implements ResourceContract
         return [];
     }
 
-    public function itemActionsCollection(): ItemActions
+    public function formActionsCollection(): ItemActions
     {
-        return ItemActions::make($this->itemActions());
+        return ItemActions::make($this->formActions());
     }
 
     /**
@@ -205,9 +161,9 @@ abstract class Resource implements ResourceContract
         return [];
     }
 
-    public function formActionsCollection(): ItemActions
+    public function componentsCollection(): ResourceComponents
     {
-        return ItemActions::make($this->formActions());
+        return ResourceComponents::make($this->components());
     }
 
     /**
@@ -218,11 +174,6 @@ abstract class Resource implements ResourceContract
     public function components(): array
     {
         return [];
-    }
-
-    public function componentsCollection(): ResourceComponents
-    {
-        return ResourceComponents::make($this->components());
     }
 
     /**
@@ -238,10 +189,7 @@ abstract class Resource implements ResourceContract
     /**
      * Customize table row class
      *
-     * @param  Model  $item
-     * @param  int  $index
      *
-     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
@@ -254,11 +202,7 @@ abstract class Resource implements ResourceContract
     /**
      * Customize table td class
      *
-     * @param  Model  $item
-     * @param  int  $index
-     * @param  int  $cell
      *
-     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
@@ -271,10 +215,7 @@ abstract class Resource implements ResourceContract
     /**
      * Customize table row style
      *
-     * @param  Model  $item
-     * @param  int  $index
      *
-     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
@@ -287,11 +228,7 @@ abstract class Resource implements ResourceContract
     /**
      * Customize table td style
      *
-     * @param  Model  $item
-     * @param  int  $index
-     * @param  int  $cell
      *
-     * @return string
      * @deprecated $item argument is deprecated and will be removed in future versions,
      * use $this->getItem() instead of $item
      *
@@ -351,47 +288,9 @@ abstract class Resource implements ResourceContract
         $this->titleField = $titleField;
     }
 
-    public function getItem(): ?Model
-    {
-        return $this->item;
-    }
-
-    public function setItem(Model $item): self
-    {
-        $this->item = $item;
-
-        return $this;
-    }
-
-    public function getModel(): Model
-    {
-        return new static::$model();
-    }
-
-    public function getActiveActions(): array
-    {
-        return static::$activeActions;
-    }
-
     public function isSystem(): bool
     {
         return static::$system;
-    }
-
-    public function isInCreateOrEditModal(): bool
-    {
-        return $this->isEditInModal()
-            || $this->isCreateInModal();
-    }
-
-    public function isCreateInModal(): bool
-    {
-        return $this->createInModal;
-    }
-
-    public function isEditInModal(): bool
-    {
-        return $this->editInModal;
     }
 
     public function isShowInModal(): bool
@@ -406,11 +305,25 @@ abstract class Resource implements ResourceContract
             || $this->isRelatable();
     }
 
-    public function precognitionMode(): self
+    public function isInCreateOrEditModal(): bool
     {
-        $this->precognition = true;
+        return $this->isEditInModal()
+            || $this->isCreateInModal();
+    }
 
-        return $this;
+    public function isEditInModal(): bool
+    {
+        return $this->editInModal;
+    }
+
+    public function isCreateInModal(): bool
+    {
+        return $this->createInModal;
+    }
+
+    public function isRelatable(): bool
+    {
+        return $this->relatable;
     }
 
     /**
@@ -427,16 +340,60 @@ abstract class Resource implements ResourceContract
         }
 
         return $actions->onlyVisible()
-            ->map(fn (Action $action) => $action->setResource($this));
+            ->map(fn (Action $action): Action => $action->setResource($this));
     }
+
+    /**
+     * Get an array of additional actions performed on resource page
+     *
+     * @return Action[]
+     */
+    abstract public function actions(): array;
+
+    /**
+     * @return Filters<Filter>
+     */
+    public function getFilters(): Filters
+    {
+        return Filters::make($this->filters());
+    }
+
+    /**
+     * Get an array of filters displayed on resource index page
+     *
+     * @return Filter[]
+     */
+    abstract public function filters(): array;
 
     public function hasMassAction(): bool
     {
         return ! $this->isPreviewMode() && (
-            count($this->bulkActions()) || (
-                $this->can('massDelete') && in_array('delete', $this->getActiveActions(), true)
-            )
-        );
+                count($this->bulkActions()) || (
+                    $this->can('massDelete') && in_array(
+                        'delete',
+                        $this->getActiveActions(),
+                        true
+                    )
+                )
+            );
+    }
+
+    public function isPreviewMode(): bool
+    {
+        return $this->previewMode;
+    }
+
+    public function getActiveActions(): array
+    {
+        return static::$activeActions;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getField(string $fieldName): ?Field
+    {
+        return $this->getFields()->findByColumn($fieldName);
     }
 
     /**
@@ -455,20 +412,11 @@ abstract class Resource implements ResourceContract
     }
 
     /**
-     * @throws Throwable
+     * Get an array of visible fields on resource page
+     *
+     * @return Field[]|Decoration[]
      */
-    public function getField(string $fieldName): ?Field
-    {
-        return $this->getFields()->findByColumn($fieldName);
-    }
-
-    /**
-     * @return Filters<Filter>
-     */
-    public function getFilters(): Filters
-    {
-        return Filters::make($this->filters());
-    }
+    abstract public function fields(): array;
 
     /**
      * @throws Throwable
@@ -480,12 +428,14 @@ abstract class Resource implements ResourceContract
 
     /**
      * Determine if this resource uses soft deletes.
-     *
-     * @return bool
      */
     public function softDeletes(): bool
     {
-        return in_array(SoftDeletes::class, class_uses_recursive(static::$model), true);
+        return in_array(
+            SoftDeletes::class,
+            class_uses_recursive(static::$model),
+            true
+        );
     }
 
     public function relatable(): self
@@ -498,9 +448,11 @@ abstract class Resource implements ResourceContract
         return $this->precognitionMode();
     }
 
-    public function isRelatable(): bool
+    public function precognitionMode(): self
     {
-        return $this->relatable;
+        $this->precognition = true;
+
+        return $this;
     }
 
     public function previewMode(): self
@@ -510,22 +462,37 @@ abstract class Resource implements ResourceContract
         return $this;
     }
 
-    public function isPreviewMode(): bool
-    {
-        return $this->previewMode;
-    }
-
     /**
      * @throws Throwable
      */
-    public function validate(Model $item): \Illuminate\Contracts\Validation\Validator|\Illuminate\Validation\Validator
+    public function validate(Model $item): ValidatorContract
     {
         return Validator::make(
             request()->all(),
             $this->rules($item),
-            array_merge(trans('moonshine::validation'), $this->validationMessages()),
+            array_merge(
+                trans('moonshine::validation'),
+                $this->validationMessages()
+            ),
             $this->getFields()->extractLabels()
         );
+    }
+
+    /**
+     * Get an array of validation rules for resource related model
+     *
+     * @see https://laravel.com/docs/validation#available-validation-rules
+     */
+    abstract public function rules(Model $item): array;
+
+    /**
+     * Get custom messages for validator errors
+     *
+     * @return array<string, string|array<string, string>>
+     */
+    public function validationMessages(): array
+    {
+        return [];
     }
 
     public function massDelete(array $ids): void
@@ -536,9 +503,9 @@ abstract class Resource implements ResourceContract
 
         $this->transformToResources(
             $this->getModel()
-                    ->newModelQuery()
-                    ->whereIn($this->getModel()->getKeyName(), $ids)
-                    ->get()
+                ->newModelQuery()
+                ->whereIn($this->getModel()->getKeyName(), $ids)
+                ->get()
         )
             ->each(fn ($resource) => $resource->delete($resource->getItem()));
 
@@ -547,21 +514,38 @@ abstract class Resource implements ResourceContract
         }
     }
 
+    public function getModel(): Model
+    {
+        return new static::$model();
+    }
+
     public function delete(Model $item): bool
     {
         if (method_exists($this, 'beforeDeleting')) {
             $this->beforeDeleting($item);
         }
 
-        $this->getFields()->formFields()->each(fn ($field) => $field->afterDelete($item));
+        $this->getFields()->formFields()->each(
+            fn ($field) => $field->afterDelete($item)
+        );
 
-        $result = tap($item->delete(), function () use ($item) {
+        return tap($item->delete(), function () use ($item): void {
             if (method_exists($this, 'afterDeleted')) {
                 $this->afterDeleted($item);
             }
         });
+    }
 
-        return $result;
+    public function getItem(): ?Model
+    {
+        return $this->item;
+    }
+
+    public function setItem(Model $item): self
+    {
+        $this->item = $item;
+
+        return $this;
     }
 
     /**
@@ -572,7 +556,7 @@ abstract class Resource implements ResourceContract
         ?Collection $fields = null,
         ?array $saveData = null
     ): Model {
-        $fields = $fields ?? $this->getFields()->formFields();
+        $fields ??= $this->getFields()->formFields();
 
         try {
             $fields->each(fn (Field $field) => $field->beforeSave($item));
@@ -604,11 +588,17 @@ abstract class Resource implements ResourceContract
 
                 $fields->each(fn ($field) => $field->afterSave($item));
 
-                if ($wasRecentlyCreated && method_exists($this, 'afterCreated')) {
+                if ($wasRecentlyCreated && method_exists(
+                        $this,
+                        'afterCreated'
+                    )) {
                     $this->afterCreated($item);
                 }
 
-                if (! $wasRecentlyCreated && method_exists($this, 'afterUpdated')) {
+                if (! $wasRecentlyCreated && method_exists(
+                        $this,
+                        'afterUpdated'
+                    )) {
                     $this->afterUpdated($item);
                 }
 
@@ -621,8 +611,11 @@ abstract class Resource implements ResourceContract
         return $item;
     }
 
-    protected function saveItem(Model $item, Field $field, ?array $saveData = null): Model
-    {
+    protected function saveItem(
+        Model $item,
+        Field $field,
+        ?array $saveData = null
+    ): Model {
         if (! $field->isCanSave()) {
             return $item;
         }
@@ -638,8 +631,11 @@ abstract class Resource implements ResourceContract
         return $item;
     }
 
-    public function renderComponent(ResourceRenderable $component, Model $item, int $level = 0): View
-    {
+    public function renderComponent(
+        ResourceRenderable $component,
+        Model $item,
+        int $level = 0
+    ): View {
         if ($component instanceof FormElement
             && $component->hasRelatedValues()
             && ! $component->values()) {

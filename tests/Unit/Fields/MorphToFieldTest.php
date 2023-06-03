@@ -8,21 +8,21 @@ uses()->group('fields');
 uses()->group('relation-fields');
 uses()->group('morph-fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = MorphTo::make('Morph to');
 });
 
-it('belongs to is parent', function () {
+it('belongs to is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(BelongsTo::class);
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.morph-to');
 });
 
-it('types', function () {
+it('types', function (): void {
     expect($this->field->types([MoonshineUser::class => 'users']))
         ->getTypes()
         ->toBe([MoonshineUser::class => 'MoonshineUser'])

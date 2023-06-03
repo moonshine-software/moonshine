@@ -6,19 +6,13 @@ namespace MoonShine\Traits;
 
 trait WithIsNowOnRoute
 {
-    public function isNowOnCreateForm(): bool
-    {
-        return request()?->routeIs('*.create', '*.store', '*.relation-field-form');
-    }
-
-    public function isNowOnUpdateForm(): bool
-    {
-        return request()?->routeIs('*.edit', '*.update', '*.relation-field-form');
-    }
-
     public function isNowOnIndex(): bool
     {
-        return request()?->routeIs('*.query-tag', '*.index', '*.relation-field-items');
+        return request()?->routeIs(
+            '*.query-tag',
+            '*.index',
+            '*.relation-field-items'
+        );
     }
 
     public function isNowOnDetail(): bool
@@ -30,5 +24,23 @@ trait WithIsNowOnRoute
     {
         return $this->isNowOnCreateForm()
             || $this->isNowOnUpdateForm();
+    }
+
+    public function isNowOnCreateForm(): bool
+    {
+        return request()?->routeIs(
+            '*.create',
+            '*.store',
+            '*.relation-field-form'
+        );
+    }
+
+    public function isNowOnUpdateForm(): bool
+    {
+        return request()?->routeIs(
+            '*.edit',
+            '*.update',
+            '*.relation-field-form'
+        );
     }
 }

@@ -10,12 +10,10 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('moonshine_user_roles', function (Blueprint $table) {
+        Schema::create('moonshine_user_roles', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->timestamps();
@@ -31,10 +29,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('moonshine_user_roles');
     }

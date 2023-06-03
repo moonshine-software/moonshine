@@ -6,7 +6,7 @@ use MoonShine\Fields\Text;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = Slug::make('Slug')
         ->from('title')
         ->separator('-');
@@ -16,22 +16,22 @@ beforeEach(function () {
     };
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBe('text');
 });
 
-it('text is parent', function () {
+it('text is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Text::class);
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.input');
 });
 
-it('save', function () {
+it('save', function (): void {
     $this->item->title = 'Hello world';
 
     expect($this->field->save($this->item))

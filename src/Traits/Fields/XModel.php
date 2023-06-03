@@ -28,15 +28,15 @@ trait XModel
             ->setAttribute('x-bind:id', "`{$this->id()}`");
     }
 
-    public function isXModelField(): bool
-    {
-        return ! is_null($this->getAttribute('x-model-field'));
-    }
-
     public function xModelField(string $variable = 'item'): string
     {
         return (string) str($variable)
             ->whenNotEmpty(fn ($f) => $f->append('.'))
             ->append($this->field());
+    }
+
+    public function isXModelField(): bool
+    {
+        return ! is_null($this->getAttribute('x-model-field'));
     }
 }

@@ -14,7 +14,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
-it('only fields', function () {
+it('only fields', function (): void {
     $fields = Fields::make([
         Tabs::make([
             Tab::make('Tab 1', exampleFields()->toArray()),
@@ -31,7 +31,7 @@ it('only fields', function () {
         ->toBeInstanceOf(Text::class);
 });
 
-it('with parents', function () {
+it('with parents', function (): void {
     $fields = Fields::make([
         HasMany::make('Parent')
             ->fields(exampleFields()->toArray()),
@@ -43,7 +43,7 @@ it('with parents', function () {
         ->each(fn ($field) => $field->parent()->toBeInstanceOf(HasMany::class));
 });
 
-it('when fields', function () {
+it('when fields', function (): void {
     $fields = Fields::make([
         Text::make('Field 1'),
         Text::make('Field 2')->showWhen('field1', ''),
@@ -53,7 +53,7 @@ it('when fields', function () {
         ->toHaveCount(1);
 });
 
-it('when fields names', function () {
+it('when fields names', function (): void {
     $fields = Fields::make([
         Text::make('Field 1'),
         Text::make('Field 2')->showWhen('field1', ''),
@@ -64,7 +64,7 @@ it('when fields names', function () {
         ->not->toContain('field2');
 });
 
-it('is when field', function () {
+it('is when field', function (): void {
     $fields = Fields::make([
         Text::make('Field 1'),
         Text::make('Field 2')->showWhen('field1', ''),
@@ -74,13 +74,13 @@ it('is when field', function () {
         ->toBeTrue();
 });
 
-it('extracted labels', function () {
+it('extracted labels', function (): void {
     expect(exampleFields()->extractLabels())
         ->toBeArray()
         ->toBe(['field1' => 'Field 1', 'field2' => 'Field 2']);
 });
 
-it('find by resource class', function () {
+it('find by resource class', function (): void {
     $resource = TestResourceBuilder::new();
 
     $fields = Fields::make([
@@ -92,7 +92,7 @@ it('find by resource class', function () {
         ->toBeInstanceOf(HasMany::class);
 });
 
-it('find by relation', function () {
+it('find by relation', function (): void {
     $fields = Fields::make([
         Text::make('Field 1'),
         HasMany::make('Has many', 'relation'),
@@ -102,7 +102,7 @@ it('find by relation', function () {
         ->toBeInstanceOf(HasMany::class);
 });
 
-it('find by column', function () {
+it('find by column', function (): void {
     $fields = Fields::make([
         Text::make('Field 1'),
         HasMany::make('Has many', 'column', 'relation'),
@@ -112,7 +112,7 @@ it('find by column', function () {
         ->toBeInstanceOf(HasMany::class);
 });
 
-it('only columns', function () {
+it('only columns', function (): void {
     $fields = Fields::make([
         Text::make('Field 1'),
         HasMany::make('Has many', 'column', 'relation'),
@@ -122,7 +122,7 @@ it('only columns', function () {
         ->toBe(['field1', 'column']);
 });
 
-it('transformed to columns by resource', function () {
+it('transformed to columns by resource', function (): void {
     expect(TestResourceBuilder::buildWithFields()->getFields()->onlyColumns())
         ->toBeIterable()
         ->toContain('id', 'name')
@@ -130,17 +130,17 @@ it('transformed to columns by resource', function () {
         ->each->toBeScalar();
 });
 
-it('wrapped into decoration', function () {
+it('wrapped into decoration', function (): void {
     expect(exampleFields()->wrapIntoDecoration(Block::class, 'Label'))
         ->first()
         ->toBeInstanceOf(Block::class);
 });
 
-it('can`t be wrapped in a not decoration class', function () {
+it('can`t be wrapped in a not decoration class', function (): void {
     exampleFields()->wrapIntoDecoration(Fields::class, 'Label');
 })->throws(FieldsException::class, FieldsException::wrapError()->getMessage());
 
-it('unwrap fields', function () {
+it('unwrap fields', function (): void {
     $fields = Fields::make([
         StackFields::make()->fields([
             Text::make('Text'),

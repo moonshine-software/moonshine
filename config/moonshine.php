@@ -14,7 +14,7 @@ return [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
         'middleware' => ['moonshine'],
         'custom_page_slug' => 'custom_page',
-        'notFoundHandler' => MoonShineNotFoundException::class
+        'notFoundHandler' => MoonShineNotFoundException::class,
     ],
     'use_migrations' => true,
     'use_notifications' => true,
@@ -24,7 +24,7 @@ return [
             'username' => 'email',
             'password' => 'password',
             'name' => 'name',
-            'avatar' => 'avatar'
+            'avatar' => 'avatar',
         ],
         'guard' => 'moonshine',
         'guards' => [
@@ -39,16 +39,17 @@ return [
                 'model' => MoonshineUser::class,
             ],
         ],
-        'footer' => ''
+        'footer' => '',
     ],
     'locales' => [
-        'en', 'ru'
+        'en',
+        'ru',
     ],
     'middlewares' => [],
     'tinymce' => [
         'file_manager' => false, // or 'laravel-filemanager' prefix for lfm
         'token' => env('MOONSHINE_TINYMCE_TOKEN', ''),
-        'version' => env('MOONSHINE_TINYMCE_VERSION', '6')
+        'version' => env('MOONSHINE_TINYMCE_VERSION', '6'),
     ],
     'socialite' => [
         // 'driver' => 'path_to_image_for_button'
@@ -61,5 +62,5 @@ return [
             'https://moonshine.cutcode.dev' => 'Documentation',
             'https://github.com/moonshine-software/moonshine' => 'GitHub',
         ],
-    ]
+    ],
 ];

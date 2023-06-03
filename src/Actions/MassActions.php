@@ -13,15 +13,29 @@ final class MassActions extends Collection
     public function mergeIfNotExists(MassActionContract $new): self
     {
         return $this->when(
-            ! $this->first(static fn (Action $action) => get_class($action) === get_class($new)),
-            static fn (MassActions $actions) => $actions->add($new)
+            ! $this->first(
+                static fn (Action $action
+                ): bool => $action::class === $new::class
+            ),
+            static fn (MassActions $actions
+            ): MassActions => $actions->add($new)
         );
     }
 
     public function onlyVisible(): self
     {
         return $this->filter(
-            static fn (MassActionContract $action) => $action->isSee(app(MoonShineRequest::class))
+            static fn (MassActionContract $action) => $action->isSee(
+                app(MoonShineRequest::class)
+            )
+        );
+    }
+
+    public function inLine(): self
+    {
+        return $this->filter(
+            static fn (MassActionContract $action
+            ): bool => ! $action->inDropdown()
         );
     }
 
@@ -29,13 +43,6 @@ final class MassActions extends Collection
     {
         return $this->filter(
             static fn (MassActionContract $action) => $action->inDropdown()
-        );
-    }
-
-    public function inLine(): self
-    {
-        return $this->filter(
-            static fn (MassActionContract $action) => ! $action->inDropdown()
         );
     }
 }

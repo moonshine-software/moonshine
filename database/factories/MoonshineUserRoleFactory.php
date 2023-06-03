@@ -3,7 +3,6 @@
 namespace MoonShine\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use MoonShine\Models\MoonshineUserRole;
 
 class MoonshineUserRoleFactory extends Factory
@@ -13,12 +12,12 @@ class MoonshineUserRoleFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array{name: string}
      */
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => fake()->name(),
         ];
     }
 }

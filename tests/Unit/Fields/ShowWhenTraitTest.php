@@ -4,18 +4,18 @@ use MoonShine\Traits\Fields\ShowWhen;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->showWhenTest = new class () {
         use ShowWhen;
 
-        public function name()
+        public function name(): string
         {
             return 'field1';
         }
     };
 });
 
-it('default operator', function () {
+it('default operator', function (): void {
     $this->showWhenTest->showWhen('field2', 1);
 
     $condition = $this->showWhenTest->showWhenCondition();
@@ -26,7 +26,7 @@ it('default operator', function () {
     ;
 });
 
-it('operator >', function () {
+it('operator >', function (): void {
     $this->showWhenTest->showWhen('field2', '>', 1);
 
     $condition = $this->showWhenTest->showWhenCondition();
@@ -37,7 +37,7 @@ it('operator >', function () {
     ;
 });
 
-it('operator in', function () {
+it('operator in', function (): void {
     $this->showWhenTest->showWhen('field2', 'in', [1,2]);
 
     $condition = $this->showWhenTest->showWhenCondition();
@@ -48,7 +48,7 @@ it('operator in', function () {
     ;
 });
 
-it('error operator', function () {
+it('error operator', function (): void {
     $this->showWhenTest->showWhen('field2', '%', 1);
 
     $condition = $this->showWhenTest->showWhenCondition();
@@ -59,10 +59,10 @@ it('error operator', function () {
     ;
 });
 
-it('error operator in', function () {
+it('error operator in', function (): void {
     $this->showWhenTest->showWhen('field2', 'in', 1);
 })->throws(InvalidArgumentException::class, 'Illegal operator and value combination. Value must be array type');
 
-it('error null value', function () {
+it('error null value', function (): void {
     $this->showWhenTest->showWhen('field2', '>', null);
 })->throws(InvalidArgumentException::class, 'Illegal operator and value combination.');

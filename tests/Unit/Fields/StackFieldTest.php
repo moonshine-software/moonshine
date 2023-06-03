@@ -7,7 +7,7 @@ use MoonShine\Fields\Text;
 uses()->group('fields');
 uses()->group('stack-fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = StackFields::make('Email')->fields([
         Text::make('text_1'),
         Text::make('text_2'),
@@ -19,22 +19,22 @@ beforeEach(function () {
     };
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.stack');
 });
 
-it('has fields', function () {
+it('has fields', function (): void {
     expect($this->field->getFields())
         ->each->toBeInstanceOf(Text::class);
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe('Text 1<br>Text 2');
 });
 
-it('save', function () {
+it('save', function (): void {
     fakeRequest(parameters: [
         'text_1' => 'New value 1',
         'text_2' => 'New value 2',

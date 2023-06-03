@@ -8,11 +8,11 @@ use function Pest\Laravel\assertDatabaseHas;
 uses()->group('controllers');
 uses()->group('notifications');
 
-beforeEach(function () {
+beforeEach(function (): void {
     //
 });
 
-it('read all notifications', function () {
+it('read all notifications', function (): void {
     assertDatabaseCount('notifications', 0);
 
     MoonShineNotification::send('Message');

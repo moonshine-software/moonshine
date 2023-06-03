@@ -27,20 +27,14 @@ class DashboardBlock
         $this->setLabel($label);
     }
 
-    /**
-     * @return array
-     */
-    public function items(): array
-    {
-        return $this->items;
-    }
-
-    /**
-     * @param  array  $items
-     */
     public function setItems(array $items): void
     {
         $this->items = $items;
+    }
+
+    public function items(): array
+    {
+        return $this->items;
     }
 
     public function render(ResourceRenderable $component): View

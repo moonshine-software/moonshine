@@ -8,14 +8,14 @@ use MoonShine\Tests\Fixtures\FormComponents\TestFormComponent;
 
 uses()->group('resource-components');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->collection = ResourceComponents::make([
         TestFormComponent::make('Form component'),
         TestDetailComponent::make('Detail component'),
     ]);
 });
 
-it('only form components', function () {
+it('only form components', function (): void {
     expect($this->collection)
         ->count()
         ->toBe(2)
@@ -26,7 +26,7 @@ it('only form components', function () {
         ->toContainOnlyInstancesOf(FormComponent::class);
 });
 
-it('only detail components', function () {
+it('only detail components', function (): void {
     expect($this->collection)
         ->count()
         ->toBe(2)

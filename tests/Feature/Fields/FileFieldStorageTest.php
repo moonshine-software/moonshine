@@ -7,12 +7,13 @@ use MoonShine\Fields\ID;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use Pest\Expectation;
 
 uses()->group('fields');
 uses()->group('file-field');
 uses()->group('file-field-storage');
 
-beforeEach(function () {
+beforeEach(function (): void {
     Storage::fake('public');
 
     $this->field = File::make('avatar')
@@ -40,7 +41,7 @@ beforeEach(function () {
     $this->categoryResource = TestResourceBuilder::buildCategoryResource();
 });
 
-expect()->extend('createResourceWithFiles', function ($categoryResource) {
+expect()->extend('createResourceWithFiles', function ($categoryResource): Expectation {
 
     $image = UploadedFile::fake()->image('test-category-image.png');
 
@@ -97,7 +98,7 @@ expect()->extend('createResourceWithFiles', function ($categoryResource) {
         ->toBeInt(2);
 });
 
-it('successful removal from the form', function () {
+it('successful removal from the form', function (): void {
     $avatar = UploadedFile::fake()->image('avatar-to-delete.png');
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
@@ -116,7 +117,7 @@ it('successful removal from the form', function () {
     Storage::disk('public')->assertMissing('files/'.$avatar->hashName());
 });
 
-it('successful removal from the index', function () {
+it('successful removal from the index', function (): void {
     $avatar = UploadedFile::fake()->image('avatar-to-delete.png');
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
@@ -128,7 +129,7 @@ it('successful removal from the index', function () {
     Storage::disk('public')->assertMissing('files/'.$avatar->hashName());
 });
 
-it('successful mass delete files', function () {
+it('successful mass delete files', function (): void {
     $users = MoonshineUser::factory(3)->create();
 
     $avatars = [];
@@ -148,7 +149,7 @@ it('successful mass delete files', function () {
     }
 });
 
-it('checking if file is saved after request', function () {
+it('checking if file is saved after request', function (): void {
     $avatar = UploadedFile::fake()->image('avatar-to-delete.png');
 
     expect()->storeAvatarFile($avatar, $this->field, $this->item);
@@ -164,7 +165,7 @@ it('checking if file is saved after request', function () {
     Storage::disk('public')->assertExists('files/'.$avatar->hashName());
 });
 
-it('category create with files', function () {
+it('category create with files', function (): void {
     expect()
         ->createResourceWithFiles($this->categoryResource)
         ->and($this->categoryResource->getItem()->id)
@@ -172,7 +173,7 @@ it('category create with files', function () {
     ;
 });
 
-it('category save files after put', function () {
+it('category save files after put', function (): void {
     expect()->createResourceWithFiles($this->categoryResource);
 
     $category = $this->categoryResource->getItem();
@@ -228,7 +229,7 @@ it('category save files after put', function () {
     ;
 });
 
-it('delete only image from has one', function () {
+it('delete only image from has one', function (): void {
     expect()->createResourceWithFiles($this->categoryResource);
 
     $category = $this->categoryResource->getItem();
@@ -268,7 +269,7 @@ it('delete only image from has one', function () {
     Storage::disk('public')->assertMissing($category->image->name);
 });
 
-it('delete file and item from has one', function () {
+it('delete file and item from has one', function (): void {
     expect()->createResourceWithFiles($this->categoryResource);
 
     $category = $this->categoryResource->getItem();
@@ -304,7 +305,7 @@ it('delete file and item from has one', function () {
     Storage::disk('public')->assertMissing($category->image->name);
 });
 
-it('delete only image from has many', function () {
+it('delete only image from has many', function (): void {
     expect()->createResourceWithFiles($this->categoryResource);
 
     $category = $this->categoryResource->getItem();
@@ -346,7 +347,7 @@ it('delete only image from has many', function () {
     Storage::disk('public')->assertMissing($category->images[0]->name);
 });
 
-it('delete item and image from has many', function () {
+it('delete item and image from has many', function (): void {
     expect()->createResourceWithFiles($this->categoryResource);
 
     $category = $this->categoryResource->getItem();
@@ -386,7 +387,7 @@ it('delete item and image from has many', function () {
     Storage::disk('public')->assertMissing($category->images[0]->name);
 });
 
-it('delete only image from has many multiple', function () {
+it('delete only image from has many multiple', function (): void {
     expect()->createResourceWithFiles($this->categoryResource);
 
     $category = $this->categoryResource->getItem();
@@ -424,14 +425,14 @@ it('delete only image from has many multiple', function () {
     $saveCategory = Category::query()->where('id', $category->id)->with('files')->first();
 
     expect($saveCategory->files[0]->name)->toBeArray()
-        ->and(count($saveCategory->files[0]->name))->toBeInt(1)
+        ->and(is_countable($saveCategory->files[0]->name) ? count($saveCategory->files[0]->name) : 0)->toBeInt(1)
         ->and($saveCategory->files[0]->name[0])->toBeString($category->files[0]->name[0])
     ;
 
     Storage::disk('public')->assertMissing($category->files[0]->name[1]);
 });
 
-it('delete item and image from has many multiple', function () {
+it('delete item and image from has many multiple', function (): void {
     expect()->createResourceWithFiles($this->categoryResource);
 
     $category = $this->categoryResource->getItem();
@@ -467,7 +468,7 @@ it('delete item and image from has many multiple', function () {
     $saveCategory = Category::query()->where('id', $category->id)->with('files')->first();
 
     expect($saveCategory->files[0]->name)->toBeArray()
-        ->and(count($saveCategory->files[0]->name))->toBeInt(1)
+        ->and(is_countable($saveCategory->files[0]->name) ? count($saveCategory->files[0]->name) : 0)->toBeInt(1)
         ->and($saveCategory->files[0]->name[0])->toBeString($category->files[1]->name[0])
         ->and($saveCategory->files[0]->name[1])->toBeString($category->files[1]->name[1])
     ;

@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         if(!Schema::hasTable('notifications')) {
-            Schema::create('notifications', function (Blueprint $table) {
+            Schema::create('notifications', function (Blueprint $table): void {
                 $table->uuid('id')->primary();
                 $table->string('type');
                 $table->morphs('notifiable');

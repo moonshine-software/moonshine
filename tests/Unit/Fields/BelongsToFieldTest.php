@@ -12,22 +12,22 @@ use MoonShine\Models\MoonshineUserRole;
 uses()->group('fields');
 uses()->group('relation-fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = BelongsTo::make('Moonshine user role', resource: 'name');
     $this->item = MoonshineUser::factory()->create();
 });
 
-it('select is parent', function () {
+it('select is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Select::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBeEmpty();
 });
 
-it('index view value', function () {
+it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe(view('moonshine::ui.badge', [
             'color' => 'purple',
@@ -35,7 +35,7 @@ it('index view value', function () {
         ])->render());
 });
 
-it('correct interfaces', function () {
+it('correct interfaces', function (): void {
     expect($this->field)
         ->toBeInstanceOf(HasRelationship::class)
         ->toBeInstanceOf(HasRelatedValues::class)
@@ -43,10 +43,8 @@ it('correct interfaces', function () {
         ->toBeInstanceOf(HasAsyncSearch::class);
 });
 
-it('correctly value callback', function () {
-    $this->field = BelongsTo::make('Moonshine user role', resource: function ($item) {
-        return $item->id.$item->name;
-    });
+it('correctly value callback', function (): void {
+    $this->field = BelongsTo::make('Moonshine user role', resource: fn($item): string => $item->id.$item->name);
 
     expect($this->field->indexViewValue($this->item, false))
         ->toBe($this->item->moonshineUserRole->id.$this->item->moonshineUserRole->name)
@@ -54,7 +52,7 @@ it('correctly value callback', function () {
         ->toBe($this->item->moonshineUserRole->id);
 });
 
-it('multiple always false', function () {
+it('multiple always false', function (): void {
     expect($this->field->isMultiple())
         ->toBeFalse()
         ->and($this->field->multiple())
@@ -62,14 +60,14 @@ it('multiple always false', function () {
         ->toBeFalse();
 });
 
-it('related values', function () {
+it('related values', function (): void {
     expect($this->field->relatedValues($this->item))
         ->toBe(
             MoonshineUserRole::query()->pluck('name', 'id')->toArray()
         );
 });
 
-it('async search', function () {
+it('async search', function (): void {
     expect($this->field->asyncSearch('name'))
         ->isAsyncSearch()
         ->toBeTrue()
@@ -77,7 +75,7 @@ it('async search', function () {
         ->toBe('name');
 });
 
-it('selected correctly', function () {
+it('selected correctly', function (): void {
     expect($this->field->isSelected($this->item, $this->item->moonshine_user_role_id))
         ->toBeTrue();
 });

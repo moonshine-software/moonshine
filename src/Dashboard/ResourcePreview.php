@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use MoonShine\Resources\Resource;
+use MoonShine\Traits\WithUniqueId;
 use Throwable;
 
 /**
@@ -15,6 +16,8 @@ use Throwable;
  */
 final class ResourcePreview extends DashboardItem
 {
+    use WithUniqueId;
+
     protected static string $view = 'moonshine::blocks.resource_preview';
 
     /**
@@ -28,12 +31,6 @@ final class ResourcePreview extends DashboardItem
         $this->setLabel($label);
     }
 
-    public function resource(): Resource
-    {
-        return $this->resource
-            ->previewMode();
-    }
-
     /**
      * @throws Throwable
      */
@@ -41,11 +38,17 @@ final class ResourcePreview extends DashboardItem
     {
         $collections = $this->resource()
             ->resolveQuery()
-            ->when($this->getQuery(), fn () => $this->getQuery())
+            ->when($this->getQuery(), fn (): ?Builder => $this->getQuery())
             ->get();
 
         return $this->resource()
             ->transformToResources($collections);
+    }
+
+    public function resource(): Resource
+    {
+        return $this->resource
+            ->previewMode();
     }
 
     protected function getQuery(): ?Builder
@@ -60,11 +63,6 @@ final class ResourcePreview extends DashboardItem
         return str($this->resource()->routeNameAlias())
             ->prepend('resource_preview_')
             ->slug('_');
-    }
-
-    public function name(string $index = null): string
-    {
-        return $this->id($index);
     }
 
     public function label(): string

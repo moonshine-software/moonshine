@@ -6,71 +6,71 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = Text::make('Field name');
 });
 
-it('show or hide / index', function () {
+it('show or hide / index', function (): void {
     expect($this->field)
         ->isOnIndex()
         ->toBeTrue()
         ->hideOnIndex()
         ->isOnIndex()
         ->toBeFalse()
-        ->showOnIndex(fn () => true)
+        ->showOnIndex(fn (): bool => true)
         ->isOnIndex()
         ->toBeTrue();
 });
 
-it('show or hide / form', function () {
+it('show or hide / form', function (): void {
     expect($this->field)
         ->isOnForm()
         ->toBeTrue()
         ->hideOnForm()
         ->isOnForm()
         ->toBeFalse()
-        ->showOnForm(fn () => true)
+        ->showOnForm(fn (): bool => true)
         ->isOnForm()
         ->toBeTrue();
 });
 
-it('show or hide / detail', function () {
+it('show or hide / detail', function (): void {
     expect($this->field)
         ->isOnDetail()
         ->toBeTrue()
         ->hideOnDetail()
         ->isOnDetail()
         ->toBeFalse()
-        ->showOnDetail(fn () => true)
+        ->showOnDetail(fn (): bool => true)
         ->isOnDetail()
         ->toBeTrue();
 });
 
-it('show or hide / export', function () {
+it('show or hide / export', function (): void {
     expect($this->field->showOnExport())
         ->isOnExport()
         ->toBeTrue()
         ->hideOnExport()
         ->isOnExport()
         ->toBeFalse()
-        ->showOnExport(fn () => true)
+        ->showOnExport(fn (): bool => true)
         ->isOnExport()
         ->toBeTrue();
 });
 
-it('show or hide / import', function () {
+it('show or hide / import', function (): void {
     expect($this->field->useOnImport())
         ->isOnImport()
         ->toBeTrue()
         ->useOnImport(false)
         ->isOnImport()
         ->toBeFalse()
-        ->useOnImport(fn () => true)
+        ->useOnImport(fn (): bool => true)
         ->isOnImport()
         ->toBeTrue();
 });
 
-it('show or hide / now form', function () {
+it('show or hide / now form', function (): void {
     $resource = TestResourceBuilder::new(addRoutes: true);
 
     expect($this->field)
@@ -84,7 +84,7 @@ it('show or hide / now form', function () {
         ->toBeTrue();
 });
 
-it('correct link', function () {
+it('correct link', function (): void {
     $link = fake()->url();
 
     expect($this->field->addLink('Link', $link, true))
@@ -96,7 +96,7 @@ it('correct link', function () {
         ->toBeTrue();
 });
 
-it('sortable', function () {
+it('sortable', function (): void {
     fakeRequest('/');
 
     expect($this->field)
@@ -133,7 +133,7 @@ it('sortable', function () {
         ->toBeTrue();
 });
 
-it('form view value', function () {
+it('form view value', function (): void {
     $this->field->setField('email');
 
     $item = MoonshineUser::factory()->create();
@@ -141,9 +141,7 @@ it('form view value', function () {
     expect($this->field->formViewValue($item))
         ->toBe($item->email);
 
-    $valueCallbackField = Text::make('Email', 'email', function (MoonshineUser $item) {
-        return $item->id.'|'.$item->email;
-    });
+    $valueCallbackField = Text::make('Email', 'email', fn(MoonshineUser $item): string => $item->id.'|'.$item->email);
 
     expect($valueCallbackField->formViewValue($item))
         ->toBe($item->id.'|'.$item->email);
@@ -154,7 +152,7 @@ it('form view value', function () {
         ->toBe('-');
 });
 
-it('index/export view value', function () {
+it('index/export view value', function (): void {
     $this->field->setField('email');
 
     $item = MoonshineUser::factory()->create();
@@ -162,15 +160,13 @@ it('index/export view value', function () {
     expect($this->field->indexViewValue($item))->and($this->field->exportViewValue($item))
         ->toBe($item->email);
 
-    $valueCallbackField = Text::make('Email', 'email', function (MoonshineUser $item) {
-        return $item->id.'|'.$item->email;
-    });
+    $valueCallbackField = Text::make('Email', 'email', fn(MoonshineUser $item): string => $item->id.'|'.$item->email);
 
     expect($valueCallbackField->indexViewValue($item))->and($valueCallbackField->exportViewValue($item))
         ->toBe($item->id.'|'.$item->email);
 });
 
-it('can save', function () {
+it('can save', function (): void {
     expect($this->field)
         ->isCanSave()
         ->toBeTrue()
@@ -179,7 +175,7 @@ it('can save', function () {
         ->toBeFalse();
 });
 
-it('save', function () {
+it('save', function (): void {
     $this->field->setField('email');
 
     fakeRequest('/', 'POST', [$this->field->field() => 'testing']);

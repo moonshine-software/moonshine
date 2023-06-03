@@ -1,4 +1,9 @@
-import {getInputs, inputFieldName, showWhenChange, showWhenVisibilityChange} from "./showWhenFunctions"
+import {
+    getInputs,
+    inputFieldName,
+    showWhenChange,
+    showWhenVisibilityChange,
+} from './showWhenFunctions'
 
 export default () => ({
 
@@ -21,8 +26,10 @@ export default () => ({
         }
     },
     precognition(form) {
-        form.querySelector('.form_submit_button').setAttribute('disabled', 'true')
-        form.querySelector('.form_submit_button_loader').style.display = 'block'
+        form.querySelector('.form_submit_button').
+            setAttribute('disabled', 'true')
+        form.querySelector(
+            '.form_submit_button_loader').style.display = 'block'
         form.querySelector('.precognition_errors').innerHTML = ''
 
         axios.post(form.getAttribute('action'), new FormData(form), {
@@ -31,16 +38,19 @@ export default () => ({
                 Accept: 'application/json',
                 'Content-Type': form.getAttribute('enctype'),
             },
-        }).then(function (response) {
+        }).then(function(response) {
             form.submit()
         }).catch(errorResponse => {
-            form.querySelector('.form_submit_button_loader').style.display = 'none'
-            form.querySelector('.form_submit_button').removeAttribute('disabled')
+            form.querySelector(
+                '.form_submit_button_loader').style.display = 'none'
+            form.querySelector('.form_submit_button').
+                removeAttribute('disabled')
 
             let errors = ''
             let errorsData = errorResponse.response.data.errors
             for (const error in errorsData) {
-                errors = errors + '<div class="mt-2 text-pink">' + errorsData[error] +
+                errors = errors + '<div class="mt-2 text-pink">' +
+                    errorsData[error] +
                     '</div>'
             }
 

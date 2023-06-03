@@ -12,8 +12,10 @@ trait WithColumnSpan
 
     protected int $adaptiveColumnSpan = 12;
 
-    public function columnSpan(int $columnSpan, int $adaptiveColumnSpan = 12): static
-    {
+    public function columnSpan(
+        int $columnSpan,
+        int $adaptiveColumnSpan = 12
+    ): static {
         if (($columnSpan <= 0 || $columnSpan > 12) && ($adaptiveColumnSpan <= 0 || $adaptiveColumnSpan > 12)) {
             throw new InvalidArgumentException(
                 'columnSpan must be greater than zero and less than 12'

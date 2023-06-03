@@ -9,24 +9,17 @@ use MoonShine\Helpers\Condition;
 
 trait ShowOrHide
 {
-    protected bool $showOnIndex = true;
-
-    protected bool $showOnExport = false;
-
-    protected bool $showOnForm = true;
-
-    protected bool $showOnDetail = true;
-
     public bool $showOnCreateForm = true;
-
     public bool $showOnUpdateForm = true;
-
     public bool $useOnImport = false;
+    protected bool $showOnIndex = true;
+    protected bool $showOnExport = false;
+    protected bool $showOnForm = true;
+    protected bool $showOnDetail = true;
 
     /**
      * Set field as visible on index page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function showOnIndex(mixed $condition = null): static
@@ -39,7 +32,6 @@ trait ShowOrHide
     /**
      * Set field as hidden on index page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnIndex(mixed $condition = null): static
@@ -52,7 +44,6 @@ trait ShowOrHide
     /**
      * Set field as visible on create/edit page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function showOnForm(mixed $condition = null): static
@@ -65,7 +56,6 @@ trait ShowOrHide
     /**
      * Set field as hidden on create/edit page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnForm(mixed $condition = null): static
@@ -78,7 +68,6 @@ trait ShowOrHide
     /**
      * Set field as visible on show page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function showOnDetail(mixed $condition = null): static
@@ -91,7 +80,6 @@ trait ShowOrHide
     /**
      * Set field as hidden on show page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnDetail(mixed $condition = null): static
@@ -104,7 +92,6 @@ trait ShowOrHide
     /**
      * Set field as visible in export report, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function showOnExport(mixed $condition = null): static
@@ -117,7 +104,6 @@ trait ShowOrHide
     /**
      * Set field as hidden in export report, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnExport(mixed $condition = null): static
@@ -130,7 +116,6 @@ trait ShowOrHide
     /**
      * Set field as show on create page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function showOnCreate(mixed $condition = null): static
@@ -143,7 +128,6 @@ trait ShowOrHide
     /**
      * Set field as hidden on create page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnCreate(mixed $condition = null): static
@@ -156,7 +140,6 @@ trait ShowOrHide
     /**
      * Set field as show on update page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function showOnUpdate(mixed $condition = null): static
@@ -169,7 +152,6 @@ trait ShowOrHide
     /**
      * Set field as hidden on update page, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function hideOnUpdate(mixed $condition = null): static
@@ -182,7 +164,6 @@ trait ShowOrHide
     /**
      * Set field as used on import, based on condition
      *
-     * @param  mixed  $condition
      * @return $this
      */
     public function useOnImport(mixed $condition = null): static
@@ -221,6 +202,7 @@ trait ShowOrHide
     {
         return $this->isSee($item)
             && $this->showOnForm
-            && ($item->exists ? $this->showOnUpdateForm : $this->showOnCreateForm);
+            && ($item->exists ? $this->showOnUpdateForm
+                : $this->showOnCreateForm);
     }
 }

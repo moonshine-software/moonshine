@@ -19,36 +19,26 @@ interface ResourceContract
 {
     /**
      * Get a resource title, will be displayed in admin panel menu
-     *
-     * @return string
      */
     public function title(): string;
 
     /**
      * Define a field name, which will be used to display value in relation
-     *
-     * @return string
      */
     public function titleField(): string;
 
     /**
      * Define if the resources protected by authentication
-     *
-     * @return bool
      */
     public function isWithPolicy(): bool;
 
     /**
      * Get a model class, related to resource
-     *
-     * @return Model
      */
     public function getModel(): Model;
 
     /**
      * Get current eloquent instance
-     *
-     * @return ?Model
      */
     public function getItem(): ?Model;
 
@@ -77,7 +67,6 @@ interface ResourceContract
      * Check whether user can perform action on model
      *
      * @param  string  $ability  view, viewAny, restore, forceDelete
-     * @return bool
      */
     public function can(string $ability): bool;
 

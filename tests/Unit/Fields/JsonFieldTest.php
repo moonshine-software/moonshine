@@ -11,7 +11,7 @@ use MoonShine\Fields\Text;
 uses()->group('fields');
 uses()->group('json-field');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = Json::make('Json')
         ->fields(exampleFields()->toArray());
     $this->fieldKeyValue = Json::make('Key value')
@@ -28,7 +28,7 @@ beforeEach(function () {
     };
 });
 
-it('names', function () {
+it('names', function (): void {
     expect($this->field)
         ->name()
         ->toBe('json[]')
@@ -36,7 +36,7 @@ it('names', function () {
         ->toBe('json[1]');
 });
 
-it('correct interfaces', function () {
+it('correct interfaces', function (): void {
     expect($this->field)
         ->toBeInstanceOf(HasFields::class)
         ->toBeInstanceOf(HasJsonValues::class)
@@ -44,22 +44,22 @@ it('correct interfaces', function () {
         ->toBeInstanceOf(HasFullPageMode::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBeEmpty();
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.json');
 });
 
-it('is group', function () {
+it('is group', function (): void {
     expect($this->field->isGroup())
         ->toBeTrue();
 });
 
-it('removable methods', function () {
+it('removable methods', function (): void {
     expect($this->field)
         ->isRemovable()
         ->toBeFalse()
@@ -68,7 +68,7 @@ it('removable methods', function () {
         ->toBeTrue();
 });
 
-it('full page mode', function () {
+it('full page mode', function (): void {
     expect($this->field)
         ->isFullPage()
         ->toBeFalse()
@@ -77,10 +77,10 @@ it('full page mode', function () {
         ->toBeTrue();
 });
 
-it('has fields', function () {
+it('has fields', function (): void {
     expect($this->field->getFields())
         ->hasFields(exampleFields()->toArray())
-        ->each(function ($field, $key) {
+        ->each(function ($field, $key): void {
             $key++;
 
             $field->toBeInstanceOf(Text::class)
@@ -91,13 +91,13 @@ it('has fields', function () {
         });
 });
 
-it('has fields key value', function () {
+it('has fields key value', function (): void {
     expect($this->fieldKeyValue->getFields())
         ->hasFields([
             Text::make('Key2'),
             Text::make('Value2'),
         ])
-        ->each(function ($field, $key) {
+        ->each(function ($field, $key): void {
             $name = $key === 0 ? 'key' : 'value';
 
             $field->toBeInstanceOf(Text::class)
@@ -108,7 +108,7 @@ it('has fields key value', function () {
         });
 });
 
-it('json values', function () {
+it('json values', function (): void {
     expect($this->field->jsonValues())
         ->toBeArray()
         ->toBe(
@@ -121,7 +121,7 @@ it('json values', function () {
     ;
 });
 
-it('json values key value', function () {
+it('json values key value', function (): void {
     expect($this->fieldKeyValue->jsonValues())
         ->toBeArray()
         ->toBe(

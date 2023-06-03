@@ -10,7 +10,11 @@ final class DeleteFormRequest extends MoonShineRequest
 {
     public function authorize(): bool
     {
-        if (! in_array('delete', $this->getResource()->getActiveActions(), true)) {
+        if (! in_array(
+            'delete',
+            $this->getResource()->getActiveActions(),
+            true
+        )) {
             return false;
         }
 

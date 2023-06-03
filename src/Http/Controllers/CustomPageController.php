@@ -7,7 +7,6 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\MoonShine;
-
 use MoonShine\Resources\CustomPage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,7 +19,7 @@ class CustomPageController extends BaseController
         }
 
         $page = MoonShine::getPages()
-            ->first(fn (CustomPage $page) => $page->alias() === $alias);
+            ->first(fn (CustomPage $page): bool => $page->alias() === $alias);
 
         abort_if(! $page, Response::HTTP_NOT_FOUND);
 

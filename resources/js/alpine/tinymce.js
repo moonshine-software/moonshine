@@ -2,12 +2,19 @@
 
 export default () => ({
     async init() {
-        await this.$nextTick();
+        await this.$nextTick()
 
-        const fileManager = function (callback, value, meta) {
-            const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
-            const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight
-            const cmsURL = config.path_absolute + config.file_manager + '?editor=' + meta.fieldname + (meta.filetype === 'image' ? '&type=Images' : '&type=Files')
+        const fileManager = function(callback, value, meta) {
+            const x = window.innerWidth ||
+                document.documentElement.clientWidth ||
+                document.getElementsByTagName('body')[0].clientWidth
+            const y = window.innerHeight ||
+                document.documentElement.clientHeight ||
+                document.getElementsByTagName('body')[0].clientHeight
+            const cmsURL = config.path_absolute + config.file_manager +
+                '?editor=' +
+                meta.fieldname +
+                (meta.filetype === 'image' ? '&type=Images' : '&type=Files')
 
             tinyMCE.activeEditor.windowManager.openUrl({
                 url: cmsURL,
@@ -16,7 +23,7 @@ export default () => ({
                 height: y * 0.8,
                 resizable: 'yes',
                 close_previous: 'no',
-                onMessage: (api, message) => callback(message.content)
+                onMessage: (api, message) => callback(message.content),
             })
         }
 
@@ -28,8 +35,11 @@ export default () => ({
             skin: Alpine.store('darkMode').on ? 'oxide-dark' : 'oxide',
             content_css: Alpine.store('darkMode').on ? 'dark' : 'default',
             ...this.$el.dataset,
-            file_picker_callback: this.$el.dataset.file_manager ? fileManager : null,
-            init_instance_callback: (editor) => editor.on('blur', () => this.$el.innerHTML = editor.getContent())
+            file_picker_callback: this.$el.dataset.file_manager
+                ? fileManager
+                : null,
+            init_instance_callback: (editor) => editor.on('blur',
+                () => this.$el.innerHTML = editor.getContent()),
         }
 
         tinymce.init(config)

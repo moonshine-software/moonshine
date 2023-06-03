@@ -11,7 +11,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class ChangeLocale
 {
-    public const KEY = 'change-moonshine-locale';
+    final public const KEY = 'change-moonshine-locale';
 
     /**
      * @throws ContainerExceptionInterface

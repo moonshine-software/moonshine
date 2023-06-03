@@ -1,14 +1,13 @@
 <?php
 
 use MoonShine\Commands\InstallCommand;
+use Symfony\Component\Console\Command\Command;
 
 use function Pest\Laravel\artisan;
 
-use Symfony\Component\Console\Command\Command;
-
 uses()->group('commands');
 
-it('reports progress', function () {
+it('reports progress', function (): void {
     artisan(InstallCommand::class)
         ->expectsOutputToContain('MoonShine installation ...')
         ->expectsOutputToContain('Installation completed')

@@ -5,26 +5,26 @@ use MoonShine\Fields\TinyMce;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = TinyMce::make('TinyMce');
 });
 
-it('textarea is parent', function () {
+it('textarea is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Textarea::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBeEmpty();
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.tinymce');
 });
 
-it('has assets', function () {
+it('has assets', function (): void {
     expect($this->field->getAssets())
         ->toBeArray()
         ->not->toBeEmpty();

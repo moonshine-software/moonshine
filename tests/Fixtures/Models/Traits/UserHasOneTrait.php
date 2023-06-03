@@ -7,10 +7,6 @@ use MoonShine\Models\MoonshineUser;
 
 trait UserHasOneTrait
 {
-    /**
-     * Получение пользователя
-     * @return HasOne
-     */
     public function user(): HasOne
     {
         return $this->hasOne(MoonshineUser::class, 'id', 'user_id');

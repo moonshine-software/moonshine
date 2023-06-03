@@ -16,7 +16,9 @@ class AttachmentController extends BaseController
             $file = $request->file('file');
 
             return [
-                'attachment' => Storage::url($file->store('attachments', 'public')),
+                'attachment' => Storage::url(
+                    $file->store('attachments', 'public')
+                ),
             ];
         }
 

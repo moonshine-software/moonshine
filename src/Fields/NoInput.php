@@ -44,8 +44,10 @@ class NoInput extends Field
         return $this;
     }
 
-    public function boolean(mixed $hideTrue = null, mixed $hideFalse = null): static
-    {
+    public function boolean(
+        mixed $hideTrue = null,
+        mixed $hideFalse = null
+    ): static {
         $this->hideTrue = Condition::boolean($hideTrue, false);
         $this->hideFalse = Condition::boolean($hideFalse, false);
 
@@ -56,9 +58,10 @@ class NoInput extends Field
         return $this;
     }
 
-    public function link(string|Closure $link = '#', bool $blank = false): static
-    {
-
+    public function link(
+        string|Closure $link = '#',
+        bool $blank = false
+    ): static {
         $this->isBadge = false;
         $this->isBoolean = false;
         $this->isLink = true;
@@ -72,6 +75,11 @@ class NoInput extends Field
     public function save(Model $item): Model
     {
         return $item;
+    }
+
+    public function formViewValue(Model $item): string
+    {
+        return $this->indexViewValue($item);
     }
 
     public function indexViewValue(Model $item, bool $container = true): string
@@ -92,7 +100,6 @@ class NoInput extends Field
         }
 
         if ($this->isLink) {
-
             $href = $this->linkHref;
 
             if (is_callable($href)) {
@@ -109,22 +116,15 @@ class NoInput extends Field
         return (string) $value;
     }
 
-    public function formViewValue(Model $item): string
-    {
-        return $this->indexViewValue($item);
-    }
-
-    public function exportViewValue(Model $item): string
-    {
-        return (string) $this->getValue($item);
-    }
-
     public function getValue(Model $item, bool $container = true): string|bool
     {
         $value = parent::indexViewValue($item, $container);
 
         if ($this->isBadge && is_callable($this->badgeColorCallback)) {
-            $this->badgeColor = call_user_func($this->badgeColorCallback, $item);
+            $this->badgeColor = call_user_func(
+                $this->badgeColorCallback,
+                $item
+            );
         }
 
         if ($this->isBoolean) {
@@ -136,5 +136,10 @@ class NoInput extends Field
         }
 
         return $value;
+    }
+
+    public function exportViewValue(Model $item): string
+    {
+        return (string) $this->getValue($item);
     }
 }

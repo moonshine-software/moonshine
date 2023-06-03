@@ -47,7 +47,7 @@ class File extends Field implements Fileable, RemovableContract
 
         $files = $this->isMultiple()
             ? collect($item->{$this->field()})
-                ->map(fn ($value) => $this->pathWithDir($value))
+                ->map(fn ($value): string => $this->pathWithDir($value))
                 ->toArray()
             : [$this->pathWithDir($item->{$this->field()})];
 
@@ -67,7 +67,7 @@ class File extends Field implements Fileable, RemovableContract
             foreach ($item->{$this->field()} as $value) {
                 $this->deleteFile($value);
             }
-        } elseif(! empty($item->{$this->field()})) {
+        } elseif (! empty($item->{$this->field()})) {
             $this->deleteFile($item->{$this->field()});
         }
 

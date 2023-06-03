@@ -12,7 +12,7 @@ class MoonshineUserRole extends Model
 {
     use HasFactory;
 
-    public const DEFAULT_ROLE_ID = 1;
+    final public const DEFAULT_ROLE_ID = 1;
 
     protected $fillable = ['name'];
 

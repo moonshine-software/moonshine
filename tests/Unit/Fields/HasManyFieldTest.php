@@ -15,13 +15,13 @@ uses()->group('fields');
 uses()->group('relation-fields');
 uses()->group('has-one-or-many-fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = HasMany::make('Has many')->fields(
         exampleFields()->toArray()
     );
 });
 
-it('names', function () {
+it('names', function (): void {
     expect($this->field)
         ->name()
         ->toBe('hasMany[]')
@@ -29,7 +29,7 @@ it('names', function () {
         ->toBe('hasMany[1]');
 });
 
-it('relation methods', function () {
+it('relation methods', function (): void {
     $resource = TestResourceBuilder::new();
     $this->field->setResource($resource);
 
@@ -42,7 +42,7 @@ it('relation methods', function () {
         ->toBe($resource);
 });
 
-it('correct interfaces', function () {
+it('correct interfaces', function (): void {
     expect($this->field)
         ->toBeInstanceOf(HasRelationship::class)
         ->toBeInstanceOf(HasFields::class)
@@ -52,22 +52,22 @@ it('correct interfaces', function () {
         ->toBeInstanceOf(HasFullPageMode::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBeEmpty();
 });
 
-it('view', function () {
+it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.has-many');
 });
 
-it('is group', function () {
+it('is group', function (): void {
     expect($this->field->isGroup())
         ->toBeTrue();
 });
 
-it('removable methods', function () {
+it('removable methods', function (): void {
     expect($this->field)
         ->isRemovable()
         ->toBeFalse()
@@ -76,7 +76,7 @@ it('removable methods', function () {
         ->toBeTrue();
 });
 
-it('resource mode', function () {
+it('resource mode', function (): void {
     $this->field->setResource(TestResourceBuilder::new());
 
     expect($this->field)
@@ -87,7 +87,7 @@ it('resource mode', function () {
         ->toBeTrue();
 });
 
-it('full page mode', function () {
+it('full page mode', function (): void {
     expect($this->field)
         ->isFullPage()
         ->toBeFalse()
@@ -96,14 +96,14 @@ it('full page mode', function () {
         ->toBeTrue();
 });
 
-it('resource mode throw exception', function () {
+it('resource mode throw exception', function (): void {
     $this->field->resourceMode();
 })->throws(FieldException::class);
 
-it('has fields', function () {
+it('has fields', function (): void {
     expect($this->field->getFields())
         ->hasFields(exampleFields()->toArray())
-        ->each(function ($field, $key) {
+        ->each(function ($field, $key): void {
             $key++;
 
             $field->toBeInstanceOf(Text::class)
@@ -114,7 +114,7 @@ it('has fields', function () {
         });
 });
 
-it('json values', function () {
+it('json values', function (): void {
     expect($this->field->jsonValues())
         ->toBeArray()
         ->toBe(exampleFields()

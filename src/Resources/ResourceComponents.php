@@ -14,14 +14,16 @@ final class ResourceComponents extends Collection
     public function formComponents(): self
     {
         return $this->filter(
-            static fn (ResourceRenderable $component) => $component instanceof FormComponent
+            static fn (ResourceRenderable $component
+            ): bool => $component instanceof FormComponent
         )->values();
     }
 
     public function detailComponents(): self
     {
         return $this->filter(
-            static fn (ResourceRenderable $component) => $component instanceof DetailComponent
+            static fn (ResourceRenderable $component
+            ): bool => $component instanceof DetailComponent
         )->values();
     }
 }

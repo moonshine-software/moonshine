@@ -5,16 +5,16 @@ use MoonShine\Fields\Text;
 
 uses()->group('fields');
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->field = ID::make();
 });
 
-it('text is parent', function () {
+it('text is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Text::class);
 });
 
-it('type', function () {
+it('type', function (): void {
     expect($this->field->type())
         ->toBe('hidden');
 });
