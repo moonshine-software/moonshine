@@ -1,42 +1,42 @@
 /* Tailwind Base */
-@import 'tailwindcss/base';
-@import 'base/common';
-@import 'base/layout';
+@import 'tailwindcss/base.css';
+@import 'base/common.css';
+@import 'base/layout.css';
 
 /* Libs */
-@import 'tippy.js/dist/tippy';
-@import 'choices.js/public/assets/styles/choices';
+@import 'tippy.js/dist/tippy.css';
+@import 'choices.js/public/assets/styles/choices.css';
 
 /* Tailwind Components */
-@import 'tailwindcss/components';
-@import 'components/breadcrumbs';
-@import 'components/box';
-@import 'components/menu';
-@import 'components/navigation';
-@import 'components/dropdowns';
-@import 'components/buttons';
-@import 'components/social';
-@import 'components/forms';
-@import 'components/tables';
-@import 'components/pagination';
-@import 'components/badges';
-@import 'components/modals';
-@import 'components/offcanvas';
-@import 'components/tabs';
-@import 'components/accordions';
-@import 'components/alerts';
-@import 'components/loader';
-@import 'components/colors';
-@import 'components/cards';
-@import 'components/progressbars';
-@import 'components/popovers';
-@import 'components/spinners';
-@import 'components/toasts';
+@import 'tailwindcss/components.css';
+@import 'components/breadcrumbs.css';
+@import 'components/box.css';
+@import 'components/menu.css';
+@import 'components/navigation.css';
+@import 'components/dropdowns.css';
+@import 'components/buttons.css';
+@import 'components/social.css';
+@import 'components/forms.css';
+@import 'components/tables.css';
+@import 'components/pagination.css';
+@import 'components/badges.css';
+@import 'components/modals.css';
+@import 'components/offcanvas.css';
+@import 'components/tabs.css';
+@import 'components/accordions.css';
+@import 'components/alerts.css';
+@import 'components/loader.css';
+@import 'components/colors.css';
+@import 'components/cards.css';
+@import 'components/progressbars.css';
+@import 'components/popovers.css';
+@import 'components/spinners.css';
+@import 'components/toasts.css';
 
 /* Tailwind Utilities */
-@import 'tailwindcss/utilities';
-@import 'base/animation';
+@import 'tailwindcss/utilities.css';
+@import 'base/animation.css';
 
 /* Pages */
-@import 'pages/dashboard';
-@import 'pages/authentication';
+@import 'pages/dashboard.css';
+@import 'pages/authentication.css';

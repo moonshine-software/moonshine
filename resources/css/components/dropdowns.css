@@ -1,34 +1,38 @@
 /* Dropdown */
 .dropdown {
-  @apply relative;
+    @apply relative;
 
-  &-body {
-    @apply pointer-events-none invisible absolute z-50 overflow-hidden rounded-md bg-white opacity-0 shadow-lg dark:bg-dark-500 dark:shadow-black/20;
-    &[data-show] {
-      @apply block;
+    &-body {
+        @apply pointer-events-none invisible absolute z-50 overflow-hidden rounded-md bg-white opacity-0 shadow-lg dark:bg-dark-500 dark:shadow-black/20;
+
+        &[data-show] {
+            @apply block;
+        }
     }
-  }
 
-  &-heading {
-    @apply border-b-2 border-gray-200 bg-white p-4 font-medium dark:border-dark-200 dark:bg-dark-500;
-  }
-
-  &-content {
-    @apply flex max-h-64 max-w-[280px] flex-col divide-y divide-gray-200 overflow-y-auto dark:divide-dark-200 xs:max-w-[320px] sm:w-max;
-  }
-
-  &-footer {
-    @apply border-t-2 border-gray-200 py-3 px-4 dark:border-dark-200;
-  }
-
-  /* Dropdown menu */
-  &-menu {
-    @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
-    &-link {
-      @apply flex items-center gap-x-2 py-2.5 px-2 text-3xs hover:bg-gray-100 hover:text-black dark:hover:bg-dark-400 xs:px-4 lg:text-2xs;
-      > svg {
-        @apply h-4 w-4;
-      }
+    &-heading {
+        @apply border-b-2 border-gray-200 bg-white p-4 font-medium dark:border-dark-200 dark:bg-dark-500;
     }
-  }
+
+    &-content {
+        @apply flex max-h-64 max-w-[280px] flex-col divide-y divide-gray-200 overflow-y-auto dark:divide-dark-200 xs:max-w-[320px] sm:w-max;
+    }
+
+    &-footer {
+        @apply border-t-2 border-gray-200 py-3 px-4 dark:border-dark-200;
+    }
+
+    /* Dropdown menu */
+
+    &-menu {
+        @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
+
+        &-link {
+            @apply flex items-center gap-x-2 py-2.5 px-2 text-3xs hover:bg-gray-100 hover:text-black dark:hover:bg-dark-400 xs:px-4 lg:text-2xs;
+
+            > svg {
+                @apply h-4 w-4;
+            }
+        }
+    }
 }

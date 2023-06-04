@@ -1,31 +1,31 @@
 /* Theme layout */
 .layout {
-  &-wrapper {
-    @apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-16 pb-3 transition-all md:px-5 lg:flex-row lg:py-6 lg:pl-[5.75rem] xl:pr-6 xl:pl-72;
+    &-wrapper {
+        @apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-16 pb-3 transition-all md:px-5 lg:flex-row lg:py-6 lg:pl-[5.75rem] xl:pr-6 xl:pl-72;
 
-    &-short {
-      @apply lg:pl-[6rem];
+        &-short {
+            @apply lg:pl-[6rem];
+        }
     }
-  }
 
-  &-menu {
-    @apply fixed inset-y-0 left-5 z-3 box-content flex shrink-0 flex-col justify-between lg:z-0 lg:pt-6;
-    height: calc(100vh - 4rem);
-  }
+    &-menu {
+        @apply fixed inset-y-0 left-5 z-3 box-content flex shrink-0 flex-col justify-between lg:z-0 lg:pt-6;
+        height: calc(100vh - 4rem);
+    }
 
-  &-page {
-    @apply relative z-2 flex w-full grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
-  }
+    &-page {
+        @apply relative z-2 flex w-full grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
+    }
 
-  &-navigation {
-    @apply relative flex items-center gap-x-4 border-b border-gray-200 pb-4 dark:border-dark-200;
-  }
+    &-navigation {
+        @apply relative flex items-center gap-x-4 border-b border-gray-200 pb-4 dark:border-dark-200;
+    }
 
-  &-content {
-    @apply flex-auto py-6 lg:py-8;
-  }
+    &-content {
+        @apply flex-auto py-6 lg:py-8;
+    }
 
-  &-footer {
-    @apply pt-6;
-  }
+    &-footer {
+        @apply pt-6;
+    }
 }

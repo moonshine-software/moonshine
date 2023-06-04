@@ -1,30 +1,34 @@
 /* Buttons */
 .btn {
-  @apply inline-flex h-10 cursor-pointer items-center justify-center gap-x-2 whitespace-nowrap rounded-md border bg-white py-2 px-3 text-3xs font-medium text-slate-600 hover:bg-gray-50 hover:text-slate-600 focus:ring focus:ring-gray-400 focus:ring-opacity-20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70 dark:border-dark-200 dark:bg-dark-500 dark:text-slate-300 dark:hover:bg-dark-400 dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
-  > svg {
-    @apply h-4 w-4;
-  }
+    @apply inline-flex h-10 cursor-pointer items-center justify-center gap-x-2 whitespace-nowrap rounded-md border bg-white py-2 px-3 text-3xs font-medium text-slate-600 hover:bg-gray-50 hover:text-slate-600 focus:ring focus:ring-gray-400 focus:ring-opacity-20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70 dark:border-dark-200 dark:bg-dark-500 dark:text-slate-300 dark:hover:bg-dark-400 dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
 
-  &.btn-lg {
-    @apply h-12 px-4;
     > svg {
-      @apply h-5 w-5;
+        @apply h-4 w-4;
     }
-  }
+
+    &.btn-lg {
+        @apply h-12 px-4;
+
+        > svg {
+            @apply h-5 w-5;
+        }
+    }
 }
 
 /* Button themes */
 .btn.btn-primary {
-  @apply border-purple bg-purple text-white hover:bg-purple/90 hover:text-white focus:ring-purple focus:ring-opacity-20 dark:focus:ring-opacity-40;
+    @apply border-purple bg-purple text-white hover:bg-purple/90 hover:text-white focus:ring-purple focus:ring-opacity-20 dark:focus:ring-opacity-40;
 }
+
 .btn.btn-pink {
-  @apply border-pink bg-pink text-white hover:bg-pink/90 hover:text-white focus:ring-pink focus:ring-opacity-20 dark:focus:ring-opacity-40;
+    @apply border-pink bg-pink text-white hover:bg-pink/90 hover:text-white focus:ring-pink focus:ring-opacity-20 dark:focus:ring-opacity-40;
 }
 
 /* Button variants */
 .btn-close {
-  @apply h-10 w-10 p-0;
-  > svg {
-    @apply h-5 w-5;
-  }
+    @apply h-10 w-10 p-0;
+
+    > svg {
+        @apply h-5 w-5;
+    }
 }

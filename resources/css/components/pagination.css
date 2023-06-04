@@ -1,56 +1,58 @@
 /* Pagination */
 .pagination {
-  @apply mt-5;
+    @apply mt-5;
 
-  &-list {
-    @apply flex flex-wrap justify-center gap-2;
+    &-list {
+        @apply flex flex-wrap justify-center gap-2;
 
-    &.simple {
-      @apply justify-between;
+        &.simple {
+            @apply justify-between;
+        }
     }
-  }
 
-  &-item {
-    @apply h-8 w-8;
-  }
-
-  &-page,
-  &-dots,
-  &-first,
-  &-last {
-    @apply flex h-full w-full items-center justify-center rounded-md text-center text-3xs font-medium;
-  }
-
-  &-simple {
-    @apply flex h-8 items-center rounded-md px-2 text-3xs font-medium;
-
-    &.disabled {
-      @apply pointer-events-none;
+    &-item {
+        @apply h-8 w-8;
     }
-  }
 
-  &-first,
-  &-last,
-  &-simple.disabled {
-    @apply text-gray-400 dark:text-slate-500;
-    > svg {
-      @apply h-3.5 w-3.5;
+    &-page,
+    &-dots,
+    &-first,
+    &-last {
+        @apply flex h-full w-full items-center justify-center rounded-md text-center text-3xs font-medium;
     }
-  }
 
-  &-page {
-    @apply current:pointer-events-none current:bg-purple current:text-white;
-  }
+    &-simple {
+        @apply flex h-8 items-center rounded-md px-2 text-3xs font-medium;
 
-  &-first,
-  &-last,
-  &-page,
-  &-simple {
-    @apply hover:bg-gray-100 hover:text-gray-800 focus:ring focus:ring-gray-200 focus:ring-opacity-70 dark:hover:bg-dark-400 dark:focus:ring-dark-200;
-  }
+        &.disabled {
+            @apply pointer-events-none;
+        }
+    }
 
-  /* Pagination results */
-  &-results {
-    @apply mt-5 text-center text-3xs text-gray-400 dark:text-slate-500;
-  }
+    &-first,
+    &-last,
+    &-simple.disabled {
+        @apply text-gray-400 dark:text-slate-500;
+
+        > svg {
+            @apply h-3.5 w-3.5;
+        }
+    }
+
+    &-page {
+        @apply current:pointer-events-none current:bg-purple current:text-white;
+    }
+
+    &-first,
+    &-last,
+    &-page,
+    &-simple {
+        @apply hover:bg-gray-100 hover:text-gray-800 focus:ring focus:ring-gray-200 focus:ring-opacity-70 dark:hover:bg-dark-400 dark:focus:ring-dark-200;
+    }
+
+    /* Pagination results */
+
+    &-results {
+        @apply mt-5 text-center text-3xs text-gray-400 dark:text-slate-500;
+    }
 }
