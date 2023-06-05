@@ -436,7 +436,6 @@ abstract class FormElement implements ResourceRenderable, HasAssets
 
         $result = collect(Arr::dot(array_filter($array)));
 
-
         return $result->isEmpty()
             ? $name
             : (string) str($result->keys()->first());
