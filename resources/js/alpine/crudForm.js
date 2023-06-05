@@ -1,6 +1,5 @@
 import {
   getInputs,
-  inputFieldName,
   showWhenChange,
   showWhenVisibilityChange,
 } from './showWhenFunctions'
