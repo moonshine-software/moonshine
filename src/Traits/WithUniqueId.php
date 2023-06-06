@@ -8,10 +8,16 @@ use Illuminate\Support\Str;
 
 trait WithUniqueId
 {
+    protected ?string $uniqueId = null;
+
     public function id(string $index = null): string
     {
-        return (string) str(Str::random())
-            ->slug('_')
-            ->when(! is_null($index), fn ($str) => $str->append('_' . $index));
+        if (is_null($this->uniqueId)) {
+            $this->uniqueId = (string) str(Str::random())
+                ->slug('_')
+                ->when(! is_null($index), fn ($str) => $str->append('_' . $index));
+        }
+
+        return $this->uniqueId;
     }
 }
