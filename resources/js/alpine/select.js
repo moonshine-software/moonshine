@@ -38,7 +38,7 @@ export default (asyncUrl = '') => ({
               }
 
               this.fromUrl(
-                asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery
+                asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery()
               )
             }
           },

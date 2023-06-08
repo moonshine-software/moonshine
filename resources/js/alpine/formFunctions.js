@@ -5,7 +5,7 @@ export function crudFormQuery() {
     return ''
   }
 
-  const formData = new FormData()
+  const formData = new FormData(form)
   const data = [...formData.entries()]
 
   return data.map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`).join('&')
