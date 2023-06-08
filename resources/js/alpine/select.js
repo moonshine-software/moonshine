@@ -24,12 +24,14 @@ export default (asyncUrl = '') => ({
         searchEnabled: this.searchEnabled,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
+        searchResultLimit: 100,
       })
 
       if (asyncUrl) {
         this.$el.addEventListener(
           'search',
           event => {
+
             if (event.detail.value.length > 0) {
               let extraQuery = ''
 

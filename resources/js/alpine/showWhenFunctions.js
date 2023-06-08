@@ -1,24 +1,8 @@
 export function getInputs() {
   const inputs = {}
   document.querySelectorAll('#moonshine-form [name]').forEach(element => {
-    let value
 
-    const type = element.getAttribute('type')
-
-    if (element.hasAttribute('multiple') && element.options !== undefined) {
-      value = []
-      for (let option of element.options) {
-        if (option.selected) {
-          value.push(option.value)
-        }
-      }
-    } else if (type === 'checkbox' || type === 'radio') {
-      value = element.checked
-    } else {
-      value = element.value
-    }
-
-    inputs[inputFieldName(element.getAttribute('name'))] = value
+    inputs[inputFieldName(element.getAttribute('name'))] = inputGeValue(element)
   })
 
   document.querySelectorAll('#moonshine-form [data-input-table]').forEach(element => {
@@ -115,10 +99,31 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
   }
 }
 
-function inputFieldName(inputName) {
+export function inputFieldName(inputName) {
   inputName = inputName.replace('[]', '')
   if (inputName.indexOf('slide[') !== -1) {
     inputName = inputName.replace('slide[', '').replace(']', '')
   }
   return inputName
+}
+
+export function inputGeValue(element) {
+  let value
+
+  const type = element.getAttribute('type')
+
+  if (element.hasAttribute('multiple') && element.options !== undefined) {
+    value = []
+    for (let option of element.options) {
+      if (option.selected) {
+        value.push(option.value)
+      }
+    }
+  } else if (type === 'checkbox' || type === 'radio') {
+    value = element.checked
+  } else {
+    value = element.value
+  }
+
+  return value
 }
