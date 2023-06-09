@@ -2,6 +2,7 @@
 
 import Choices from 'choices.js'
 import {crudFormQuery} from './formFunctions'
+import {debounce} from "lodash";
 
 export default (asyncUrl = '') => ({
   choicesInstance: null,
@@ -30,42 +31,44 @@ export default (asyncUrl = '') => ({
       if (asyncUrl) {
         this.$el.addEventListener(
           'search',
-          event => {
+          debounce(
+            event => {
+              if (event.detail.value.length > 0) {
+                let extraQuery = ''
 
-            if (event.detail.value.length > 0) {
-              let extraQuery = ''
+                if (this.$el.dataset.asyncExtra !== undefined) {
+                  extraQuery = '&extra=' + this.$el.dataset.asyncExtra
+                }
 
-              if (this.$el.dataset.asyncExtra !== undefined) {
-                extraQuery = '&extra=' + this.$el.dataset.asyncExtra
+                this.fromUrl(
+                  asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery()
+                )
               }
-
-              this.fromUrl(
-                asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery()
-              )
-            }
-          },
+            },
+            300
+          ),
           false
         )
       }
     })
   },
 
-  fromUrl(url) {
+  async fromUrl(url) {
+    const json = await fetch(url)
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        return Object.keys(json).map(key => {
+          return {
+            value: key,
+            label: json[key],
+          }
+        })
+      })
+
     this.choicesInstance.setChoices(
-      () => {
-        return fetch(url)
-          .then(response => {
-            return response.json()
-          })
-          .then(json => {
-            return Object.keys(json).map(key => {
-              return {
-                value: key,
-                label: json[key],
-              }
-            })
-          })
-      },
+      json,
       'value',
       'label',
       true
