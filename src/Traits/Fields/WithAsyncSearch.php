@@ -59,6 +59,13 @@ trait WithAsyncSearch
         $this->asyncSearchValueCallback = $asyncSearchValueCallback;
 
         $this->valuesQuery = function (Builder $query) {
+            if ($this->parent() && $this->parent()->resource()) {
+                return $this->parent()
+                    ->resource()
+                    ->getModel()
+                    ->{$this->relation()}();
+            }
+
             $request = app(MoonShineRequest::class);
 
             if ($request->getId()) {

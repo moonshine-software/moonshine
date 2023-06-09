@@ -17,7 +17,7 @@ export default route => ({
     if (this.query.length > 0) {
       let query = '&query=' + this.query
 
-      fetch(route + query + '&' + crudFormQuery)
+      fetch(route + query + '&' + crudFormQuery())
         .then(response => {
           return response.json()
         })

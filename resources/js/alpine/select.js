@@ -2,6 +2,7 @@
 
 import Choices from 'choices.js'
 import {crudFormQuery} from './formFunctions'
+import {debounce} from 'lodash'
 
 export default (asyncUrl = '') => ({
   choicesInstance: null,
@@ -24,12 +25,13 @@ export default (asyncUrl = '') => ({
         searchEnabled: this.searchEnabled,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
+        searchResultLimit: 100,
       })
 
       if (asyncUrl) {
         this.$el.addEventListener(
           'search',
-          event => {
+          debounce(event => {
             if (event.detail.value.length > 0) {
               let extraQuery = ''
 
@@ -38,35 +40,30 @@ export default (asyncUrl = '') => ({
               }
 
               this.fromUrl(
-                asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery
+                asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery()
               )
             }
-          },
+          }, 300),
           false
         )
       }
     })
   },
 
-  fromUrl(url) {
-    this.choicesInstance.setChoices(
-      () => {
-        return fetch(url)
-          .then(response => {
-            return response.json()
-          })
-          .then(json => {
-            return Object.keys(json).map(key => {
-              return {
-                value: key,
-                label: json[key],
-              }
-            })
-          })
-      },
-      'value',
-      'label',
-      true
-    )
+  async fromUrl(url) {
+    const json = await fetch(url)
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        return Object.keys(json).map(key => {
+          return {
+            value: key,
+            label: json[key],
+          }
+        })
+      })
+
+    this.choicesInstance.setChoices(json, 'value', 'label', true)
   },
 })
