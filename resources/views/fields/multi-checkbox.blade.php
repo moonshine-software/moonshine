@@ -7,7 +7,12 @@
 @else
 
     @if(method_exists($element, 'isAsyncSearch') && $element->isAsyncSearch())
-        <div x-data="asyncSearch('{{ route('moonshine.search.relations', ['resource' => $resource->uriKey(), 'column' => $element->field()]) }}')">
+        <div x-data="asyncSearch('{{ route('moonshine.search.relations', [
+            'resource' => $element->parent() && $element->parent()->resource()
+                ? $element->parent()->resource()->uriKey()
+                : $resource->uriKey(),
+            'column' => $element->field()
+        ]) }}')">
             <div class="dropdown">
                 <x-moonshine::form.input
                     x-model="query"
