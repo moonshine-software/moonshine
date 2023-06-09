@@ -11,16 +11,18 @@ export function crudFormQuery() {
   formElements.forEach(element => {
     const name = element.getAttribute('name')
 
-    if (element.getAttribute('type') !== 'file'
-      && element.tagName.toLowerCase() !== 'textarea'
-      && name !== '_token'
-      && name !== '_method'
-      && !name.startsWith('hidden_')
+    if (
+      element.getAttribute('type') !== 'file' &&
+      element.tagName.toLowerCase() !== 'textarea' &&
+      name !== '_token' &&
+      name !== '_method' &&
+      !name.startsWith('hidden_')
     ) {
       values[inputFieldName(name)] = inputGeValue(element)
     }
   })
 
-  return Object.entries(values).map(
-    x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`).join('&')
+  return Object.entries(values)
+    .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+    .join('&')
 }

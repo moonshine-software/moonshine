@@ -2,7 +2,7 @@
 
 import Choices from 'choices.js'
 import {crudFormQuery} from './formFunctions'
-import {debounce} from "lodash";
+import {debounce} from 'lodash'
 
 export default (asyncUrl = '') => ({
   choicesInstance: null,
@@ -31,22 +31,19 @@ export default (asyncUrl = '') => ({
       if (asyncUrl) {
         this.$el.addEventListener(
           'search',
-          debounce(
-            event => {
-              if (event.detail.value.length > 0) {
-                let extraQuery = ''
+          debounce(event => {
+            if (event.detail.value.length > 0) {
+              let extraQuery = ''
 
-                if (this.$el.dataset.asyncExtra !== undefined) {
-                  extraQuery = '&extra=' + this.$el.dataset.asyncExtra
-                }
-
-                this.fromUrl(
-                  asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery()
-                )
+              if (this.$el.dataset.asyncExtra !== undefined) {
+                extraQuery = '&extra=' + this.$el.dataset.asyncExtra
               }
-            },
-            300
-          ),
+
+              this.fromUrl(
+                asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery()
+              )
+            }
+          }, 300),
           false
         )
       }
@@ -67,11 +64,6 @@ export default (asyncUrl = '') => ({
         })
       })
 
-    this.choicesInstance.setChoices(
-      json,
-      'value',
-      'label',
-      true
-    )
+    this.choicesInstance.setChoices(json, 'value', 'label', true)
   },
 })

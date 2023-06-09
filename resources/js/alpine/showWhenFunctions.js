@@ -1,7 +1,6 @@
 export function getInputs() {
   const inputs = {}
   document.querySelectorAll('#moonshine-form [name]').forEach(element => {
-
     inputs[inputFieldName(element.getAttribute('name'))] = inputGeValue(element)
   })
 
