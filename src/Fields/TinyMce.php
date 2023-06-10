@@ -28,7 +28,7 @@ final class TinyMce extends Textarea
     {
         $assets = ["vendor/moonshine/libs/tinymce/tinymce.min.js"];
 
-        if ($this->token()) {
+        if ($this->token() !== '' && $this->token() !== '0') {
             $assets[] = "https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/plugins.min.js";
         }
 
