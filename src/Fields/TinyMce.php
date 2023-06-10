@@ -26,10 +26,13 @@ final class TinyMce extends Textarea
 
     public function getAssets(): array
     {
-        return [
-            "vendor/moonshine/libs/tinymce/tinymce.min.js",
-            "https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/plugins.min.js",
-        ];
+        $assets = ["vendor/moonshine/libs/tinymce/tinymce.min.js"];
+
+        if ($this->token()) {
+            $assets[] = "https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/plugins.min.js";
+        }
+
+        return $assets;
     }
 
     protected function token(): string

@@ -36,6 +36,7 @@ export default () => ({
       path_absolute: '/',
       file_manager: '',
       relative_urls: false,
+      branding: false,
       skin: Alpine.store('darkMode').on ? 'oxide-dark' : 'oxide',
       content_css: Alpine.store('darkMode').on ? 'dark' : 'default',
       ...this.$el.dataset,
