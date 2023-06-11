@@ -9,7 +9,7 @@ uses()->group('query-tags');
 beforeEach(function (): void {
     $this->tag = QueryTag::make(
         'Tag',
-        static fn (): \Illuminate\Database\Eloquent\Builder => MoonshineUser::query()
+        static fn (Builder $query): Builder => $query
     );
 });
 
@@ -19,6 +19,6 @@ it('query tag methods', function (): void {
         ->toBe('Tag')
         ->uri()
         ->toBe('tag')
-        ->builder()
+        ->builder(MoonshineUser::query())
         ->toBeInstanceOf(Builder::class);
 });
