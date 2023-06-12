@@ -4,7 +4,10 @@
             {{ $element->label() }}
         </x-moonshine::title>
 
-        @if($element->formViewValue($item))
+        @if($element->formViewValue($item)
+            && $element->resource()->can('update')
+            && in_array('edit', $element->resource()->getActiveActions())
+        )
             <x-moonshine::async-modal
                 id="edit_{{ $item->getTable() }}_modal_{{ $element->id() }}_{{ $item->getKey() }}"
                 route="{{ $element->resource()->relatable()->route('edit', $element->formViewValue($item)->getKey()) }}"
@@ -16,7 +19,10 @@
                 />
                 <span>{{ trans('moonshine::ui.edit') }}</span>
             </x-moonshine::async-modal>
-        @elseif($item->exists)
+        @elseif($item->exists
+            && $element->resource()->can('create')
+            && in_array('create', $element->resource()->getActiveActions())
+        )
             <x-moonshine::async-modal
                 id="create_{{ $element->resource()->getModel()->getTable() }}_modal_{{ $element->id() }}"
                 route="{{ $resource->route('relation-field-form', query: [
