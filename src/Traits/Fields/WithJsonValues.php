@@ -27,7 +27,7 @@ trait WithJsonValues
             foreach ($this->getFields() as $field) {
                 $defaultValue = $field->getAttribute('multiple')
                 || $field instanceof HasFields
-                    ? [] : '';
+                    ? [] : ($field instanceof HasDefaultValue ? $field->getDefault() : '');
 
                 if ($field instanceof HasValueExtraction) {
                     $defaultValue = $field->isGroup()
