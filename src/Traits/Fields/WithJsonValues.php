@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Fields\BelongsToMany;
