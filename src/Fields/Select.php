@@ -29,12 +29,16 @@ class Select extends Field implements
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
+        if ($this->hasRelationship()) {
+            return parent::indexViewValue($item, $container);
+        }
+
         $value = $item->{$this->field()};
 
         if ($this->isMultiple()) {
-            if (is_string($value)) {
-                $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-            }
+            $value = is_string($value) ?
+                json_decode($value, true, 512, JSON_THROW_ON_ERROR)
+                : $value;
 
             return collect($value)->map(
                 fn ($v): string => view('moonshine::ui.badge', [
@@ -44,9 +48,6 @@ class Select extends Field implements
             )->implode(',');
         }
 
-        return (string) (
-            $this->values()[$item->{$this->field()}]
-            ?? parent::indexViewValue($item, $container)
-        );
+        return (string) ($this->values()[$value] ?? '');
     }
 }
