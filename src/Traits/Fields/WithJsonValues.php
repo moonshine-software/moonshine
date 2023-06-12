@@ -26,14 +26,20 @@ trait WithJsonValues
 
         if (is_null($item)) {
             foreach ($this->getFields() as $field) {
-                $defaultValue = $field->getAttribute('multiple')
-                || $field instanceof HasFields
-                    ? [] : ($field instanceof HasDefaultValue ? $field->getDefault() : '');
+                $defaultValue = '';
+
+                if ($field instanceof HasFields || $field->getAttribute('multiple')) {
+                    $defaultValue = [];
+                }
 
                 if ($field instanceof HasValueExtraction) {
                     $defaultValue = $field->isGroup()
                         ? [$field->extractValues([])]
                         : $field->extractValues([]);
+                }
+
+                if ($field instanceof HasDefaultValue && ! is_null($field->getDefault())) {
+                    $defaultValue = $field->getDefault();
                 }
 
                 $values[$field->field()] = $defaultValue;
