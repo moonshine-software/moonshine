@@ -24,8 +24,8 @@ trait ResourceCrudRouter
                 ->as("{$this->routeNameAlias()}.actions.")
                 ->group(function (): void {
                     Route::any('action', 'index')->name('index');
-                    Route::get("form/{".$this->routeParam()."}/{index}", 'form')->name('form');
-                    Route::get("item/{".$this->routeParam()."}/{index}", 'item')->name('item');
+                    Route::get("form/{" . $this->routeParam() . "}/{index}", 'form')->name('form');
+                    Route::get("item/{" . $this->routeParam() . "}/{index}", 'item')->name('item');
                     Route::post('bulk/{index}', 'bulk')->name('bulk');
                 });
 
