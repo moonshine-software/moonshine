@@ -17,6 +17,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->skip([
         __DIR__ . '/app',
+        __DIR__ . '/routes',
         __DIR__ . '/public',
         __DIR__ . '/resources',
         __DIR__ . '/vendor',
