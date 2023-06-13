@@ -17,9 +17,9 @@ use MoonShine\Resources\Resource;
 
 class MoonShine
 {
-    final public const DIR = 'app/MoonShine';
+    public const DIR = 'app/MoonShine';
 
-    final public const NAMESPACE = 'App\MoonShine';
+    public const NAMESPACE = 'App\MoonShine';
 
     protected static ?Collection $resources = null;
 
