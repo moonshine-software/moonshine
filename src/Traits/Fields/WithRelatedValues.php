@@ -52,7 +52,7 @@ trait WithRelatedValues
         } else {
             $tableName = DB::getTablePrefix() . $related->getTable();
             $values = $query->selectRaw(
-                "{$tableName}.{$related->getKeyName()}, {$tableName}.{$this->resourceTitleField()}"
+                "$tableName.{$related->getKeyName()}, $tableName.{$this->resourceTitleField()}"
             )
                 ->pluck($this->resourceTitleField(), $related->getKeyName());
         }

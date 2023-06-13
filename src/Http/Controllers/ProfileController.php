@@ -16,7 +16,7 @@ class ProfileController extends BaseController
 {
     public function store(ProfileFormRequest $request): RedirectResponse
     {
-        $data = $request->validated(null, null);
+        $data = $request->validated();
         $resultData = [
             config(
                 'moonshine.auth.fields.username',

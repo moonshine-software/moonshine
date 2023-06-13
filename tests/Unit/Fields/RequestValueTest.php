@@ -57,7 +57,7 @@ it('item value level', function (): void {
 
     $this->item->value = null;
 
-    fakeRequest('/', 'POST', []);
+    fakeRequest(method: 'POST');
 
     expect($field)
         ->requestAndFormViewValues($this->item, 'Testing', 'Testing');

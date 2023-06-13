@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -17,13 +18,12 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->skip([
         __DIR__ . '/app',
-        __DIR__ . '/routes',
         __DIR__ . '/public',
         __DIR__ . '/resources',
         __DIR__ . '/vendor',
         __DIR__ . '/stubs',
         __DIR__ . '/tests',
-        __DIR__ . '/src/Http/Middleware/Authenticate.php'
+        CallableThisArrayToAnonymousFunctionRector::class
     ]);
 
     $rectorConfig->importNames();

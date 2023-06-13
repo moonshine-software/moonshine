@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('moonshine_user_roles', function (Blueprint $table): void {
+        Schema::create('moonshine_user_roles', static function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->timestamps();

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         if(!Schema::hasTable('notifications')) {
-            Schema::create('notifications', function (Blueprint $table): void {
+            Schema::create('notifications', static function (Blueprint $table): void {
                 $table->uuid('id')->primary();
                 $table->string('type');
                 $table->morphs('notifiable');

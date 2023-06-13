@@ -183,7 +183,7 @@ it('precognition mode', function (): void {
 it('relatable mode', function (): void {
     expect($this->resource->isPrecognition())
         ->toBeFalse()
-        ->and($this->resource->relatable('column', 'key'))
+        ->and($this->resource->relatable())
         ->isPrecognition()
         ->toBeTrue()
         ->isRelatable()

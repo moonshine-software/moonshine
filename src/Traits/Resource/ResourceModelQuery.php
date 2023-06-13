@@ -28,6 +28,9 @@ trait ResourceModelQuery
 
     protected ?Builder $customBuilder = null;
 
+    /**
+     * @throws Throwable
+     */
     public function paginate(): Paginator
     {
         $paginator = $this->resolveQuery()

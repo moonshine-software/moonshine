@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('moonshine_users', function (Blueprint $table): void {
+        Schema::create('moonshine_users', static function (Blueprint $table): void {
             $table->id();
 
             $table->foreignId('moonshine_user_role_id')

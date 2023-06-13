@@ -151,7 +151,7 @@ class MoonShineUserResource extends Resource
     }
 
     /**
-     * @return array{name: string, moonshine_user_role_id: string, email: mixed[], password: string}
+     * @return array{name: string, moonshine_user_role_id: string, email: array, password: string}
      */
     public function rules($item): array
     {

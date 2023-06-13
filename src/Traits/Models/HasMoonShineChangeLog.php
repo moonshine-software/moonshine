@@ -25,7 +25,7 @@ trait HasMoonShineChangeLog
 
     public function createLog(): void
     {
-        if (MoonShineAuth::guard()->check() && MoonShine::isMoonShineRequest()) {
+        if (MoonShine::isMoonShineRequest() && MoonShineAuth::guard()->check()) {
             $this->changeLogs()->create([
                 'moonshine_user_id' => MoonShineAuth::guard()->id(),
                 'states_before' => $this->getOriginal(),

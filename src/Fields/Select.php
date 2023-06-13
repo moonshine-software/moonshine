@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Database\Eloquent\Model;
+use JsonException;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
@@ -27,6 +28,9 @@ class Select extends Field implements
 
     protected static string $view = 'moonshine::fields.select';
 
+    /**
+     * @throws JsonException
+     */
     public function indexViewValue(Model $item, bool $container = true): string
     {
         if ($this->hasRelationship()) {

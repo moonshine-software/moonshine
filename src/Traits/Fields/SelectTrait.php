@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use JsonException;
 use MoonShine\Fields\Enum;
 use UnitEnum;
 
@@ -25,6 +26,9 @@ trait SelectTrait
         return $this->options;
     }
 
+    /**
+     * @throws JsonException
+     */
     public function isSelected(Model $item, string $value): bool
     {
         $formValue = $this->formViewValue($item);

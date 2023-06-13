@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('moonshine_user_permissions', function (Blueprint $table): void {
+        Schema::create('moonshine_user_permissions', static function (Blueprint $table): void {
             $table->id();
 
             $table->foreignId('moonshine_user_id');

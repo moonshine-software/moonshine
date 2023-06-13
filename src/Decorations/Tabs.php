@@ -22,6 +22,9 @@ class Tabs extends Decoration
         parent::__construct(uniqid('', true));
     }
 
+    /**
+     * @throws Throwable
+     */
     public function tabsWithHtml(): Collection
     {
         return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [

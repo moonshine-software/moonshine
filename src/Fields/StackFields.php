@@ -7,6 +7,7 @@ namespace MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
+use Throwable;
 
 final class StackFields extends Field implements HasFields
 {
@@ -15,6 +16,9 @@ final class StackFields extends Field implements HasFields
     protected static string $view = 'moonshine::fields.stack';
     protected bool $fieldContainer = false;
 
+    /**
+     * @throws Throwable
+     */
     public function save(Model $item): Model
     {
         $this->getFields()->onlyFields()->each(
@@ -34,6 +38,9 @@ final class StackFields extends Field implements HasFields
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function afterSave(Model $item): void
     {
         parent::afterSave($item);

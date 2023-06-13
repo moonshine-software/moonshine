@@ -11,7 +11,7 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table): void {
+        Schema::create('categories', static function (Blueprint $table): void {
             $table->id();
 
             $table->string('name');

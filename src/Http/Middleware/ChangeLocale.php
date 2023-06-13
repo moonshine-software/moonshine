@@ -6,17 +6,11 @@ namespace MoonShine\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class ChangeLocale
 {
     public const KEY = 'change-moonshine-locale';
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function handle(Request $request, Closure $next)
     {
         $local = $request->get(

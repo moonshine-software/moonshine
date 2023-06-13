@@ -16,7 +16,7 @@ class MoonshineUserFactory extends Factory
      *
      * @return array{moonshine_user_role_id: mixed, name: string, email: string, password: string, remember_token: mixed}
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,

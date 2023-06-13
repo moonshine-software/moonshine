@@ -18,6 +18,7 @@ use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithPivot;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
+use Throwable;
 
 class BelongsToMany extends Select implements
     HasRelationship,
@@ -139,6 +140,9 @@ class BelongsToMany extends Select implements
         return $this->treeHtml;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function save(Model $item): Model
     {
         $values = $this->requestValue() ?: [];

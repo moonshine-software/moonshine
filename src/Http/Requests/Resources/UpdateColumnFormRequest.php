@@ -6,6 +6,7 @@ namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Fields\Field;
 use MoonShine\MoonShineRequest;
+use Throwable;
 
 final class UpdateColumnFormRequest extends MoonShineRequest
 {
@@ -26,6 +27,9 @@ final class UpdateColumnFormRequest extends MoonShineRequest
         return $this->getResource()->can('update');
     }
 
+    /**
+     * @throws Throwable
+     */
     public function field(): ?Field
     {
         return $this->getResource()

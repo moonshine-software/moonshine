@@ -6,7 +6,7 @@ use MoonShine\Actions\MassActions;
 uses()->group('mass-actions');
 
 beforeEach(function (): void {
-    $this->actions = MassActions::make([]);
+    $this->actions = MassActions::make();
 });
 
 it('merge if not exists', function (): void {

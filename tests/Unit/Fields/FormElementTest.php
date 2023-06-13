@@ -110,7 +110,7 @@ it('request value', function (): void {
         ->requestValue()
         ->toBe('testing');
 
-    fakeRequest('/');
+    fakeRequest();
 
     expect($this->field)
         ->requestValue()

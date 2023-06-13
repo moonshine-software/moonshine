@@ -65,7 +65,7 @@ it('does not generate logs for non MoonShine request', function (): void {
 
     assertDatabaseEmpty('moonshine_change_logs');
 
-    Route::get('/change-me', function () use ($user): void {
+    Route::get('/change-me', static function () use ($user): void {
         $user->name = 'Nick';
         $user->save();
     })

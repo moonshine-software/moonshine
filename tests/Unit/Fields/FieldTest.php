@@ -97,7 +97,7 @@ it('correct link', function (): void {
 });
 
 it('sortable', function (): void {
-    fakeRequest('/');
+    fakeRequest();
 
     expect($this->field)
         ->isSortable()

@@ -53,7 +53,7 @@ class ExportAction extends Action
      * @throws IOException
      * @throws WriterNotOpenedException
      * @throws UnsupportedTypeException
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|Throwable
      */
     public function handle(): RedirectResponse|BinaryFileResponse
     {

@@ -12,7 +12,7 @@ use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
 
 $middlewares = collect(config('moonshine.route.middleware'))
-    ->reject(fn($middleware): bool => $middleware === 'web')
+    ->reject(static fn($middleware): bool => $middleware === 'web')
     ->toArray();
 
 Route::prefix(config('moonshine.route.prefix', ''))

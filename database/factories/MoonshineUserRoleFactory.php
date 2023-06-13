@@ -14,7 +14,7 @@ class MoonshineUserRoleFactory extends Factory
      *
      * @return array{name: string}
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => fake()->name(),

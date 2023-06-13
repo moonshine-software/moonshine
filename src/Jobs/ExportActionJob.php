@@ -14,6 +14,7 @@ use OpenSpout\Common\Exception\InvalidArgumentException;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Writer\Exception\WriterNotOpenedException;
+use Throwable;
 
 class ExportActionJob implements ShouldQueue
 {
@@ -35,7 +36,7 @@ class ExportActionJob implements ShouldQueue
      * @throws IOException
      * @throws WriterNotOpenedException
      * @throws UnsupportedTypeException
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|Throwable
      */
     public function handle(): void
     {

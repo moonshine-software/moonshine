@@ -11,7 +11,7 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('category_images', function (Blueprint $table): void {
+        Schema::create('category_images', static function (Blueprint $table): void {
             $table->id();
 
             $table->foreignIdFor(Category::class)

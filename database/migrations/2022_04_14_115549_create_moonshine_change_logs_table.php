@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('moonshine_change_logs', function (Blueprint $table): void {
+        Schema::create('moonshine_change_logs', static function (Blueprint $table): void {
             $table->id();
 
             $table->foreignId('moonshine_user_id');
