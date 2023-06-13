@@ -22,7 +22,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
             Route::get('/', DashboardController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');
 
-            Route::get('/search/relations', (new SearchController())->relations(...))
+            Route::get('/search/relations', [SearchController::class, 'relations'])
                 ->name('search.relations');
 
             Route::controller(NotificationController::class)
