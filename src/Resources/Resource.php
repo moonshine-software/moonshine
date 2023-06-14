@@ -25,6 +25,7 @@ use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
+use MoonShine\Fields\StackFields;
 use MoonShine\Filters\Filter;
 use MoonShine\Filters\Filters;
 use MoonShine\FormActions\FormAction;
@@ -393,7 +394,10 @@ abstract class Resource implements ResourceContract
      */
     public function getField(string $fieldName): ?Field
     {
-        return $this->getFields()->findByColumn($fieldName);
+        return $this->getFields()
+            ->onlyFields()
+            ->unwrapFields(StackFields::class)
+            ->findByColumn($fieldName);
     }
 
     /**
@@ -423,7 +427,10 @@ abstract class Resource implements ResourceContract
      */
     public function getFilter(string $filterName): ?Filter
     {
-        return $this->getFilters()->findByColumn($filterName);
+        return $this->getFilters()
+            ->onlyFields()
+            ->unwrapFields(StackFields::class)
+            ->findByColumn($filterName);
     }
 
     /**

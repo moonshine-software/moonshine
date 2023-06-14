@@ -9,12 +9,26 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
-final class StackFields extends Field implements HasFields
+class StackFields extends Field implements HasFields
 {
     use WithFields;
 
     protected static string $view = 'moonshine::fields.stack';
     protected bool $fieldContainer = false;
+
+    protected bool $withLabels = false;
+
+    public function withLabels(): static
+    {
+        $this->withLabels = true;
+
+        return $this;
+    }
+
+    public function hasLabels(): bool
+    {
+        return $this->withLabels;
+    }
 
     /**
      * @throws Throwable
@@ -32,10 +46,11 @@ final class StackFields extends Field implements HasFields
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        return $this->getFields()->indexFields()->implode(
-            fn ($field) => $field->indexViewValue($item, $container),
-            '<br>'
-        );
+        return view($this->getView(), [
+            'element' => $this,
+            'item' => $item,
+            'indexView' => true,
+        ])->render();
     }
 
     /**

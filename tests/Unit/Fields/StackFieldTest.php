@@ -31,7 +31,7 @@ it('has fields', function (): void {
 
 it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
-        ->toBe('Text 1<br>Text 2');
+        ->toContain('Text 1', 'Text 2');
 });
 
 it('save', function (): void {
