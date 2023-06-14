@@ -1,7 +1,7 @@
 @if($action->confirmation())
-    <x-moonshine::modal title="{{ trans('moonshine::ui.confirm') }}">
+    <x-moonshine::modal title="{{ $action->modal()->title() }}">
         <div class="mb-4">
-            {{ trans('moonshine::ui.confirm_message') }}
+            {{ $action->modal()->content() }}
         </div>
 
         <x-moonshine::form
@@ -19,7 +19,7 @@
             />
 
             <x-moonshine::form.button type="submit" title="{{ $action->label() }}">
-                {{ $action->getIcon(6) }} {{ $action->label() }}
+                {{ $action->getIcon(6) }} {{ $action->modal()->getConfirmButtonText() }}
             </x-moonshine::form.button>
         </x-moonshine::form>
 

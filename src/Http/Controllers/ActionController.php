@@ -49,7 +49,7 @@ final class ActionController extends BaseController
             report_if(app()->isProduction(), $e);
 
             MoonShineUI::toast(
-                __('moonshine::ui.saved_error'),
+                $action->getErrorMessage(),
                 'error'
             );
 
@@ -126,7 +126,7 @@ final class ActionController extends BaseController
             report_if(app()->isProduction(), $e);
 
             MoonShineUI::toast(
-                __('moonshine::ui.saved_error'),
+                $action->getErrorMessage(),
                 'error'
             );
 

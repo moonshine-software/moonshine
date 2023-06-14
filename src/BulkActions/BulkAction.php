@@ -11,6 +11,7 @@ use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithConfirmation;
+use MoonShine\Traits\WithErrorMessage;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
@@ -25,6 +26,7 @@ final class BulkAction implements MassActionContract
     use HasCanSee;
     use InDropdownOrLine;
     use WithConfirmation;
+    use WithErrorMessage;
 
     public function __construct(
         string $label,
@@ -32,6 +34,7 @@ final class BulkAction implements MassActionContract
         protected string $message = 'Done',
     ) {
         $this->setLabel($label);
+        $this->errorMessage = __('moonshine::ui.saved_error');
     }
 
     public function message(): string
