@@ -14,6 +14,7 @@ trait WithErrorMessage
     public function errorMessage(string $errorMessage): static
     {
         $this->errorMessage = $errorMessage;
+
         return $this;
     }
 }

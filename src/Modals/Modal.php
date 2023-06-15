@@ -13,7 +13,8 @@ abstract class Modal
     public function __construct(
         protected ?string $title,
         protected ?string $content
-    ) {}
+    ) {
+    }
 
     public function title(): ?string
     {
@@ -33,6 +34,7 @@ abstract class Modal
     public function confirmButtonText(string $confirmButtonText): Modal
     {
         $this->confirmButtonText = $confirmButtonText;
+
         return $this;
     }
 }
