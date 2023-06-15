@@ -14,6 +14,8 @@ use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
 
+use function MoonShine\tryOrReturn;
+
 abstract class Field extends FormElement implements
     HasExportViewValue,
     HasIndexViewValue,
@@ -122,9 +124,16 @@ abstract class Field extends FormElement implements
         }
 
         if ($this->hasRelationship()) {
+            $value = $item->{$this->resourceTitleField()} ?? false;
+
+            $href = tryOrReturn(
+                fn () => $this->resource()?->route('show', $item->getKey()),
+                '',
+            );
+
             return $container ? view('moonshine::ui.badge', [
                 'color' => 'purple',
-                'value' => $item->{$this->resourceTitleField()} ?? false,
+                'value' => $value ? "<a href='$href'>$value</a>" : false,
             ])->render()
                 : (string) ($item->{$this->resourceTitleField()} ?? '');
         }

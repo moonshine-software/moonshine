@@ -60,10 +60,11 @@ trait WithAsyncSearch
 
         $this->valuesQuery = function (Builder $query) {
             if ($this->parent() && $this->parent()->resource()) {
-                return $this->parent()
-                    ->resource()
-                    ->getModel()
-                    ->{$this->relation()}();
+                return $this->getRelated(
+                    $this->parent()
+                        ->resource()
+                        ->getModel()
+                )->newModelQuery();
             }
 
             $request = app(MoonShineRequest::class);
