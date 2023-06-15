@@ -96,7 +96,7 @@ class TestCase extends Orchestra
     {
         MoonShine::resources([
             $this->moonShineUserResource(),
-            new MoonShineUserRoleResource()
+            new MoonShineUserRoleResource(),
         ]);
 
         MoonShine::menu([

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\Resources\EditFormRequest;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineUI;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -95,8 +95,7 @@ final class ActionController extends BaseController
         array $actions,
         MoonShineRequest $request,
         ?string $route = null
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         abort_if(
             ! $action = $actions[$request->getIndexParameter()] ?? false,
             ResponseAlias::HTTP_NOT_FOUND
