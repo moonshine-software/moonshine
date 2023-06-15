@@ -12,7 +12,7 @@
     )
 
     @includeWhen(
-        config('moonshine.locales'),
+        count(config('moonshine.locales', [])) > 1,
         'moonshine::layouts.shared.locales'
     )
 </div>

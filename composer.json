@@ -36,9 +36,9 @@
     "psr-4": {
       "MoonShine\\": "src/"
     },
-  "files": [
+    "files": [
       "src/helpers.php"
-  ]
+    ]
   },
   "autoload-dev": {
     "psr-4": {
