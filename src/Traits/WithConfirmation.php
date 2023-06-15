@@ -4,19 +4,34 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use MoonShine\Modals\ConfirmActionModal;
+
 trait WithConfirmation
 {
-    protected bool $confirmation = false;
+    protected bool $isConfirmed = false;
 
-    public function confirmation(): bool
+    protected ?ConfirmActionModal $modal = null;
+
+    public function isConfirmed(): bool
     {
-        return $this->confirmation;
+        return $this->isConfirmed;
     }
 
-    public function withConfirm(): self
-    {
-        $this->confirmation = true;
+    public function withConfirm(
+        string $title = null,
+        string $content = null,
+        string $confirmButtonText = null
+    ): self {
+        $this->isConfirmed = true;
+
+        $this->modal = ConfirmActionModal::make($title, $content)
+            ->confirmButtonText($confirmButtonText ?? $this->label());
 
         return $this;
+    }
+
+    public function modal(): ?ConfirmActionModal
+    {
+        return $this->modal;
     }
 }

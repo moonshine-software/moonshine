@@ -254,12 +254,22 @@ class CrudController extends BaseController
 
     public function massDelete(MassDeleteFormRequest $request): RedirectResponse
     {
-        $request->getResource()->massDelete($request->get('ids'));
+        try {
+            $request->getResource()->massDelete($request->get('ids'));
 
-        MoonShineUI::toast(
-            __('moonshine::ui.deleted'),
-            'success'
-        );
+            MoonShineUI::toast(
+                __('moonshine::ui.deleted'),
+                'success'
+            );
+        } catch (Throwable $e) {
+            throw_if(! app()->isProduction(), $e);
+            report_if(app()->isProduction(), $e);
+
+            MoonShineUI::toast(
+                __('moonshine::ui.saved_error'),
+                'error'
+            );
+        }
 
         return $request->redirectRoute(
             $request->getResource()->route('index')

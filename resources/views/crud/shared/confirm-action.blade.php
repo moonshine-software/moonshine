@@ -1,13 +1,13 @@
-<x-moonshine::modal title="{{ trans('moonshine::ui.confirm') }}">
+<x-moonshine::modal title="{{ $action->modal()->title() }}">
     <div class="mb-4">
-        {{ trans('moonshine::ui.confirm_message') }}
+        {{ $action->modal()->content() }}
     </div>
 
     <x-moonshine::link
         :href="$href"
         :icon="$action->iconValue()"
     >
-        {{ $action->label() }}
+        {{ $action->modal()->getConfirmButtonText() }}
     </x-moonshine::link>
 
     <x-slot name="outerHtml">
