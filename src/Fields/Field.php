@@ -13,7 +13,6 @@ use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
-use Throwable;
 
 use function MoonShine\tryOrReturn;
 
@@ -73,8 +72,8 @@ abstract class Field extends FormElement implements
     public function formViewValue(Model $item): mixed
     {
         if ($this->hasRelationship() && ! $item->relationLoaded(
-                $this->relation()
-            )) {
+            $this->relation()
+        )) {
             $item->load($this->relation());
         }
 
@@ -111,8 +110,8 @@ abstract class Field extends FormElement implements
     public function indexViewValue(Model $item, bool $container = true): string
     {
         if ($this->hasRelationship() && ! $item->relationLoaded(
-                $this->relation()
-            )) {
+            $this->relation()
+        )) {
             $item->load($this->relation());
         }
 
@@ -128,7 +127,7 @@ abstract class Field extends FormElement implements
             $value = $item->{$this->resourceTitleField()} ?? false;
 
             $href = tryOrReturn(
-                fn() => $this->resource()?->route('show', $item->getKey()),
+                fn () => $this->resource()?->route('show', $item->getKey()),
                 '',
             );
 
