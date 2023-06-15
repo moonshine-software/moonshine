@@ -1,4 +1,4 @@
-@if($action->confirmation())
+@if($action->isConfirmed())
     @include('moonshine::crud.shared.confirm-action', ['action' => $action, 'href' => $resource->route('actions.form', $item->getKey(), ['index' => $index])])
 @else
     <x-dynamic-component

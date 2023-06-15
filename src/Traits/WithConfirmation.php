@@ -8,13 +8,13 @@ use MoonShine\Modals\ConfirmActionModal;
 
 trait WithConfirmation
 {
-    protected bool $confirmation = false;
+    protected bool $isConfirmed = false;
 
     protected ?ConfirmActionModal $modal = null;
 
-    public function confirmation(): bool
+    public function isConfirmed(): bool
     {
-        return $this->confirmation;
+        return $this->isConfirmed;
     }
 
     public function withConfirm(
@@ -22,7 +22,7 @@ trait WithConfirmation
         string $content = null,
         string $confirmButtonText = null
     ): self {
-        $this->confirmation = true;
+        $this->isConfirmed = true;
 
         $this->modal = ConfirmActionModal::make($title, $content)
             ->confirmButtonText($confirmButtonText ?? $this->label());

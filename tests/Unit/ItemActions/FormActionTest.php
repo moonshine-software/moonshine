@@ -27,9 +27,9 @@ it('new instance', function (): void {
 
 it('confirmation modal', function (): void {
     expect($this->action)
-        ->confirmation()
+        ->isConfirmed()
         ->toBeFalse()
         ->withConfirm()
-        ->confirmation()
+        ->isConfirmed()
         ->toBeTrue();
 });

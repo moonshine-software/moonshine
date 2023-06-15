@@ -1,4 +1,4 @@
-@if($action->confirmation())
+@if($action->isConfirmed())
     <x-moonshine::modal title="{{ $action->modal()->title() }}">
         <div class="mb-4">
             {{ $action->modal()->content() }}

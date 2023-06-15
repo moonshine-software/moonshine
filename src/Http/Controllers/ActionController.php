@@ -44,21 +44,16 @@ final class ActionController extends BaseController
 
         try {
             $action->callback($request->getItem());
+            MoonShineUI::toast($action->message());
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
             MoonShineUI::toast(
-                $action->getErrorMessage(),
+                $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
                 'error'
             );
-
-            return $redirectRoute;
         }
-
-        MoonShineUI::toast(
-            $action->message()
-        );
 
         return $redirectRoute;
     }
@@ -78,19 +73,16 @@ final class ActionController extends BaseController
 
         try {
             $action->callback($request->getItem());
+            MoonShineUI::toast($action->message());
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
             MoonShineUI::toast(
-                __('moonshine::ui.saved_error'),
+                $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
                 'error'
             );
-
-            return $redirectRoute;
         }
-
-        MoonShineUI::toast($action->message());
 
         return $redirectRoute;
     }
@@ -121,19 +113,16 @@ final class ActionController extends BaseController
                 );
 
             $items->each(fn ($item) => $action->callback($item));
+            MoonShineUI::toast($action->message());
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
             MoonShineUI::toast(
-                $action->getErrorMessage(),
+                $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
                 'error'
             );
-
-            return $redirectRoute;
         }
-
-        MoonShineUI::toast($action->message());
 
         return $redirectRoute;
     }
