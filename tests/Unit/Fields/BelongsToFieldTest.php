@@ -8,6 +8,8 @@ use MoonShine\Fields\BelongsTo;
 use MoonShine\Fields\Select;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
+use MoonShine\MoonShine;
+use MoonShine\Resources\MoonShineUserRoleResource;
 
 uses()->group('fields');
 uses()->group('relation-fields');
@@ -31,7 +33,7 @@ it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe(view('moonshine::ui.badge', [
             'color' => 'purple',
-            'value' => $this->item->moonshineUserRole->name,
+            'value' => "<a href=''>{$this->item->moonshineUserRole->name}</a>",
         ])->render());
 });
 

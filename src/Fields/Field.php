@@ -13,6 +13,9 @@ use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
+use Throwable;
+
+use function MoonShine\tryOrReturn;
 
 abstract class Field extends FormElement implements
     HasExportViewValue,
@@ -70,8 +73,8 @@ abstract class Field extends FormElement implements
     public function formViewValue(Model $item): mixed
     {
         if ($this->hasRelationship() && ! $item->relationLoaded(
-            $this->relation()
-        )) {
+                $this->relation()
+            )) {
             $item->load($this->relation());
         }
 
@@ -108,8 +111,8 @@ abstract class Field extends FormElement implements
     public function indexViewValue(Model $item, bool $container = true): string
     {
         if ($this->hasRelationship() && ! $item->relationLoaded(
-            $this->relation()
-        )) {
+                $this->relation()
+            )) {
             $item->load($this->relation());
         }
 
@@ -122,9 +125,16 @@ abstract class Field extends FormElement implements
         }
 
         if ($this->hasRelationship()) {
+            $value = $item->{$this->resourceTitleField()} ?? false;
+
+            $href = tryOrReturn(
+                fn() => $this->resource()?->route('show', $item->getKey()),
+                '',
+            );
+
             return $container ? view('moonshine::ui.badge', [
                 'color' => 'purple',
-                'value' => $item->{$this->resourceTitleField()} ?? false,
+                'value' => $value ? "<a href='$href'>$value</a>" : false,
             ])->render()
                 : (string) ($item->{$this->resourceTitleField()} ?? '');
         }

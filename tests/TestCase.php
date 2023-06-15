@@ -15,6 +15,7 @@ use MoonShine\Models\MoonshineUserRole;
 use MoonShine\MoonShine;
 use MoonShine\Providers\MoonShineServiceProvider;
 use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Resources\MoonShineUserRoleResource;
 use MoonShine\Resources\Resource;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -95,10 +96,12 @@ class TestCase extends Orchestra
     {
         MoonShine::resources([
             $this->moonShineUserResource(),
+            new MoonShineUserRoleResource()
         ]);
 
         MoonShine::menu([
             MenuItem::make('Admins', $this->moonShineUserResource()),
+            MoonShineUserRoleResource::class,
         ]);
 
         return $this;

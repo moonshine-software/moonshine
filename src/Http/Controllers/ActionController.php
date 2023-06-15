@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\Resources\EditFormRequest;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
+use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineUI;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -33,58 +34,19 @@ final class ActionController extends BaseController
 
     public function item(ViewAnyFormRequest $request): RedirectResponse
     {
-        abort_if(
-            ! $action = $request->getResource()->itemActions()[$request->getIndexParameter()] ?? false,
-            ResponseAlias::HTTP_NOT_FOUND
+        return $this->itemActionProcess(
+            $request->getResource()->itemActions(),
+            $request
         );
-
-        $redirectRoute = $request->redirectRoute(
-            $request->getResource()->route('index')
-        );
-
-        try {
-            $action->callback($request->getItem());
-            MoonShineUI::toast($action->message());
-        } catch (Throwable $e) {
-            throw_if(! app()->isProduction(), $e);
-            report_if(app()->isProduction(), $e);
-
-            MoonShineUI::toast(
-                $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
-                'error'
-            );
-        }
-
-        return $redirectRoute;
     }
 
     public function form(EditFormRequest $request): RedirectResponse
     {
-        abort_if(
-            ! $action = $request->getResource()->formActions()[$request->getIndexParameter()] ?? false,
-            ResponseAlias::HTTP_NOT_FOUND
+        return $this->itemActionProcess(
+            $request->getResource()->formActions(),
+            $request,
+            $request->getResource()->getRouteAfterSave()
         );
-
-        if (! $redirectRoute = $action->getRedirectTo()) {
-            $redirectRoute = $request->redirectRoute(
-                $request->getResource()->route('index')
-            );
-        }
-
-        try {
-            $action->callback($request->getItem());
-            MoonShineUI::toast($action->message());
-        } catch (Throwable $e) {
-            throw_if(! app()->isProduction(), $e);
-            report_if(app()->isProduction(), $e);
-
-            MoonShineUI::toast(
-                $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
-                'error'
-            );
-        }
-
-        return $redirectRoute;
     }
 
     public function bulk(ViewAnyFormRequest $request): RedirectResponse
@@ -97,8 +59,10 @@ final class ActionController extends BaseController
             return $redirectRoute;
         }
 
+        $actions = $request->getResource()->bulkActions();
+
         abort_if(
-            ! $action = $request->getResource()->bulkActions()[$request->getIndexParameter()] ?? false,
+            ! $action = $actions[$request->getIndexParameter()] ?? false,
             ResponseAlias::HTTP_NOT_FOUND
         );
 
@@ -122,6 +86,44 @@ final class ActionController extends BaseController
                 $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
                 'error'
             );
+        }
+
+        return $redirectRoute;
+    }
+
+    private function itemActionProcess(
+        array $actions,
+        MoonShineRequest $request,
+        ?string $route = null
+    ): RedirectResponse
+    {
+        abort_if(
+            ! $action = $actions[$request->getIndexParameter()] ?? false,
+            ResponseAlias::HTTP_NOT_FOUND
+        );
+
+        $redirectRoute = $request->redirectRoute(
+            $route ?? $request->getResource()->route('index')
+        );
+
+        try {
+            $callback = $action->callback($request->getItem());
+
+            if ($callback instanceof RedirectResponse) {
+                $redirectRoute = $callback;
+            }
+
+            MoonShineUI::toast($action->message());
+        } catch (Throwable $e) {
+            throw_if(! app()->isProduction(), $e);
+            report_if(app()->isProduction(), $e);
+
+            MoonShineUI::toast(
+                $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
+                'error'
+            );
+
+            return $redirectRoute;
         }
 
         return $redirectRoute;

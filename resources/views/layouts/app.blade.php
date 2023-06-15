@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+@php use function MoonShine\moonshineAssets; @endphp
+    <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{}">
     <head>
         @include('moonshine::layouts.shared.head')
 
-        {!! app(\MoonShine\Utilities\AssetManager::class)->css() !!}
+        {!! moonshineAssets()->css() !!}
 
         @yield('after-styles')
 
         @stack('styles')
 
-        {!! app(\MoonShine\Utilities\AssetManager::class)->js() !!}
+        {!! moonshineAssets()->js() !!}
 
         @yield('after-scripts')
 

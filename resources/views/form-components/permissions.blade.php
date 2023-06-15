@@ -1,3 +1,4 @@
+@php use function MoonShine\moonshine; @endphp
 @if($item->exists && $resource->hasUserPermissions())
     <div>
         <div class="text-lg my-4">{{ $element->label() }}</div>
@@ -6,8 +7,7 @@
             :action="$resource->route('permissions', $item->getKey())"
             method="post"
         >
-
-            @foreach(app(\MoonShine\MoonShine::class)->getResources() as $resource)
+            @foreach(moonshine()->getResources() as $resource)
                 <div>
                     <div class="text-md my-4">{{ $resource->title() }}</div>
 
