@@ -31,9 +31,18 @@ trait WithFields
 
     protected bool $onlyCount = false;
 
+    protected bool $inLine = false;
+
     public function onlyCount(): static
     {
         $this->onlyCount = true;
+
+        return $this;
+    }
+
+    public function inLine(): static
+    {
+        $this->inLine = true;
 
         return $this;
     }
@@ -59,6 +68,13 @@ trait WithFields
             return (string) ($this instanceof HasRelationship
                 ? $value->count()
                 : count($value));
+        }
+
+        if ($this instanceof HasRelationship
+            && ! $this instanceof HasOne
+            && $this->inLine
+        ) {
+            return $value?->implode($this->resourceTitleField(), ', ') ?? '';
         }
 
         $values = [];
