@@ -9,9 +9,8 @@ use Illuminate\View\Component;
 
 class AsyncModal extends Component
 {
-    public function __construct(public string $id, public string $route)
+    public function __construct(public string $route)
     {
-        $this->id = (string) str($id)->slug('_');
     }
 
     public function render(): View

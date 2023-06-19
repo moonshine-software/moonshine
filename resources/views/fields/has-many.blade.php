@@ -6,7 +6,6 @@
 
         @if($element->resource()->can('create') && in_array('create', $element->resource()->getActiveActions()))
             <x-moonshine::async-modal
-                id="create_{{ $element->resource()->getModel()->getTable() }}_modal_{{ $element->id() }}"
                 route="{{ $resource->route('relation-field-form', query: [
                 '_field_relation' => $element->relation(),
                 '_related_key' => $item->getKey()

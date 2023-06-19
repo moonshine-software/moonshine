@@ -53,7 +53,6 @@
                 @if($resource->can('create') && in_array('create', $resource->getActiveActions()))
                     @if($resource->isCreateInModal())
                         <x-moonshine::async-modal
-                            id="create_{{$resource->getModel()->getTable()}}_modal"
                             title="{{ $resource->title() }}"
                             route="{{ $resource->route('create', query: request('related_column') ? ['related_column' => request('related_column'), 'related_key' => request('related_key')] : []) }}"
                             :filled="true"
