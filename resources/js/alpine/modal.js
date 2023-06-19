@@ -5,7 +5,7 @@ export default () => ({
 
   init() {
     Alpine.bind('dismissModal', () => ({
-      '@click.outside'() {
+      '@click.stop'() {
         this.open = false
       },
       '@keydown.escape.window'() {

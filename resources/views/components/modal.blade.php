@@ -18,8 +18,9 @@
             class="modal"
             aria-modal="true"
             role="dialog"
+            x-bind="dismissModal"
         >
-            <div class="modal-dialog @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif" x-bind="dismissModal">
+            <div class="modal-dialog @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif" @click.stop>
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ $title ?? '' }}</h5>
