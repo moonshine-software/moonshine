@@ -21,7 +21,7 @@ it('menu', function (): void {
 it('async modal', function (): void {
     test()
         ->blade(
-            '<x-moonshine::async-modal id="async" route="/">
+            '<x-moonshine::async-modal route="/">
             OuterHtml
         </x-moonshine::async-modal>'
         )
