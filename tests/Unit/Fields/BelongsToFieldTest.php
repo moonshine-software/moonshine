@@ -33,7 +33,7 @@ it('index view value', function (): void {
             'color' => 'purple',
             'value' => $this->item->moonshineUserRole->name,
         ])->render());
-})->group('ttt');
+});
 
 it('correct interfaces', function (): void {
     expect($this->field)
