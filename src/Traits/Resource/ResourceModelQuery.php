@@ -75,7 +75,8 @@ trait ResourceModelQuery
             });
         }
 
-        $query = $query->orderBy(
+        $query = $this->performOrder(
+            $query,
             request('order.field', $this->sortColumn()),
             request('order.type', $this->sortDirection())
         );
@@ -107,6 +108,11 @@ trait ResourceModelQuery
         }
 
         return $query;
+    }
+
+    public function performOrder(Builder $query, string $column, string $direction): Builder
+    {
+        return $query->orderBy($column, $direction);
     }
 
     public function hasWith(): bool

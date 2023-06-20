@@ -4,7 +4,7 @@
 </a>
 </p>
 
-## MoonShine
+## MoonShine - easy to use, powerful, customizable, illegal :smile:
 ### Administration panel for Laravel framework
 
 
