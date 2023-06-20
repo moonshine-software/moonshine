@@ -2,11 +2,8 @@
 
 declare(strict_types=1);
 
-namespace MoonShine;
-
-use Closure;
+use MoonShine\MoonShine;
 use MoonShine\Utilities\AssetManager;
-use Throwable;
 
 if (! function_exists('tryOrReturn')) {
     function tryOrReturn(Closure $tryCallback, mixed $default = false): mixed

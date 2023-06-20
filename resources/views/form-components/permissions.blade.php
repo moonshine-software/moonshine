@@ -1,4 +1,3 @@
-@php use function MoonShine\moonshine; @endphp
 @if($item->exists && $resource->hasUserPermissions())
     <div>
         <div class="text-lg my-4">{{ $element->label() }}</div>

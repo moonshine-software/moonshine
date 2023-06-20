@@ -33,6 +33,10 @@ trait WithFields
 
     protected bool $inLine = false;
 
+    protected string $inLineSeparator = '';
+
+    protected bool $inLineBadge = false;
+
     public function onlyCount(): static
     {
         $this->onlyCount = true;
@@ -40,9 +44,11 @@ trait WithFields
         return $this;
     }
 
-    public function inLine(): static
+    public function inLine(string $separator = '', bool $badge = false): static
     {
         $this->inLine = true;
+        $this->inLineSeparator = $separator;
+        $this->inLineBadge = $badge;
 
         return $this;
     }
@@ -74,7 +80,25 @@ trait WithFields
             && ! $this instanceof HasOne
             && $this->inLine
         ) {
-            return $value?->implode($this->resourceTitleField(), ', ') ?? '';
+            return $value?->implode(function ($item) {
+                $implodeValue = $item->{$this->resourceTitleField()} ?? false;
+
+                if ($this->inLineBadge) {
+                    $link = tryOrReturn(
+                        fn () => $this->resource()?->route('show', $item->getKey()),
+                        '',
+                    );
+
+                    return view('moonshine::ui.badge', [
+                        'color' => 'purple',
+                        'link' => $link,
+                        'value' => $implodeValue,
+                        'margin' => true
+                    ])->render();
+                }
+
+                return $implodeValue;
+            }, $this->inLineSeparator) ?? '';
         }
 
         $values = [];
