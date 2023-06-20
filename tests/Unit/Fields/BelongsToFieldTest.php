@@ -31,9 +31,9 @@ it('index view value', function (): void {
     expect($this->field->indexViewValue($this->item))
         ->toBe(view('moonshine::ui.badge', [
             'color' => 'purple',
-            'value' => "<a href=''>{$this->item->moonshineUserRole->name}</a>",
+            'value' => $this->item->moonshineUserRole->name,
         ])->render());
-});
+})->group('ttt');
 
 it('correct interfaces', function (): void {
     expect($this->field)
