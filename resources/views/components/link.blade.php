@@ -3,10 +3,12 @@
     'filled' => false
 ])
 <a {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
-    <x-moonshine::icon
-        :icon="$icon"
-        size="4"
-    />
+    @if($icon)
+        <x-moonshine::icon
+            :icon="$icon"
+            size="4"
+        />
+    @endif
 
     {{ $slot }}
 </a>
