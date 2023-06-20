@@ -93,7 +93,7 @@ trait WithFields
                         'color' => 'purple',
                         'link' => $link,
                         'value' => $implodeValue,
-                        'margin' => true
+                        'margin' => true,
                     ])->render();
                 }
 
