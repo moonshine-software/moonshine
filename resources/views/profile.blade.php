@@ -66,23 +66,25 @@
             />
         </x-moonshine::form.input-wrapper>
 
-        <x-moonshine::form.input-wrapper
-            name="avatar"
-            label="{{ trans('moonshine::ui.resource.avatar') }}"
-        >
-            <x-moonshine::form.file
+        @if(config('moonshine.auth.fields.avatar', true))
+            <x-moonshine::form.input-wrapper
                 name="avatar"
-                id="avatar"
-                @class(['form-invalid' => $errors->has('avatar')])
-                placeholder="{{ trans('moonshine::ui.resource.avatar') }}"
-                :files="[auth()->user()
-                        ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null]"
-                dir="moonshine_users"
-                :path="Storage::disk('public')->url('/')"
-                :removable="true"
-                :imageable="true"
-            />
-        </x-moonshine::form.input-wrapper>
+                label="{{ trans('moonshine::ui.resource.avatar') }}"
+            >
+                <x-moonshine::form.file
+                    name="avatar"
+                    id="avatar"
+                    @class(['form-invalid' => $errors->has('avatar')])
+                    placeholder="{{ trans('moonshine::ui.resource.avatar') }}"
+                    :files="[auth()->user()
+                            ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null]"
+                    dir="moonshine_users"
+                    :path="Storage::disk('public')->url('/')"
+                    :removable="true"
+                    :imageable="true"
+                />
+            </x-moonshine::form.input-wrapper>
+        @endif
     </div>
 
     <div class="my-4"></div>

@@ -154,6 +154,6 @@ class MoonShineRequest extends FormRequest
 
     public function user($guard = null)
     {
-        return parent::user($guard ?? 'moonshine');
+        return parent::user($guard ?? MoonShineAuth::guardName());
     }
 }
