@@ -6,6 +6,7 @@ namespace MoonShine\FormComponents;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Traits\Models\HasMoonShineChangeLog;
 
 final class ChangeLogFormComponent extends FormComponent
 {
@@ -13,10 +14,11 @@ final class ChangeLogFormComponent extends FormComponent
 
     public static function logs(Model $item): Collection
     {
-        if (! (property_exists(
-            $item,
-            'changeLogs'
-        ) && $item->changeLogs !== null) || ! $item->changeLogs instanceof Collection) {
+        if (! in_array(
+            HasMoonShineChangeLog::class,
+            class_uses_recursive($item),
+            true
+        )) {
             return collect();
         }
 

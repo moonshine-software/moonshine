@@ -27,6 +27,8 @@ class TestResource extends Resource
 
     private array $testSearch = [];
 
+    private array $testComponents = [];
+
     private array $testQueryTags = [];
 
     private ?string $testUriKey = null;
@@ -111,6 +113,13 @@ class TestResource extends Resource
     public function setTestSearch(array $testSearch): static
     {
         $this->testSearch = $testSearch;
+
+        return $this;
+    }
+
+    public function setComponents(array $components): static
+    {
+        $this->testComponents = $components;
 
         return $this;
     }
@@ -205,6 +214,11 @@ class TestResource extends Resource
     public function search(): array
     {
         return $this->testSearch;
+    }
+
+    public function components(): array
+    {
+        return $this->testComponents;
     }
 
     public function uriKey(): string
