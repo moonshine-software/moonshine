@@ -36,7 +36,11 @@ class SlideFilter extends Filter implements
         return $query->where(function (Builder $query) use ($values): void {
             $query
                 ->where($this->field(), '>=', $values[$this->fromField])
-                ->where($this->field(), '<=', $values[$this->toField]);
+                ->where($this->field(), '<=', $values[$this->toField])
+                ->when(
+                    ($this->isNullable() && (float)$values['from'] === (float)$this->min),
+                    fn(Builder $query) => $query->orWhereNull($this->field())
+                );
         });
     }
 }
