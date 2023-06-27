@@ -7,6 +7,7 @@ namespace MoonShine\Actions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Fields\Field;
@@ -146,6 +147,12 @@ class ImportAction extends Action
 
                     if (! $field instanceof Field) {
                         return [];
+                    }
+
+                    if (empty($value)) {
+                        $value = $field instanceof HasDefaultValue
+                            ? $field->getDefault()
+                            : ($field->isNullable() ? null : $value);
                     }
 
                     return [$field->field() => $value];
