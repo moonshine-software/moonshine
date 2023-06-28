@@ -24,7 +24,6 @@
                 x-on:input="mintrigger"
                 x-model="minValue"
                 class="form-range-input"
-                x-bind:name="`{{ $fromName }}`"
                 x-on:change="onChangeField($event)"
             />
 
@@ -36,7 +35,6 @@
                 x-on:input="maxtrigger"
                 x-model="maxValue"
                 class="form-range-input"
-                x-bind:name="`{{ $toName }}`"
                 x-on:change="onChangeField($event)"
             />
 
