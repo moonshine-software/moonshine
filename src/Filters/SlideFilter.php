@@ -29,18 +29,28 @@ class SlideFilter extends Filter implements
         'required',
     ];
 
+    protected array $values;
+
     protected function resolveQuery(Builder $query): Builder
     {
-        $values = array_filter($this->requestValue(), 'is_numeric');
+        $this->values = array_filter($this->requestValue(), 'is_numeric');
 
-        return $query->where(function (Builder $query) use ($values): void {
+        return $query->where(function (Builder $query): void {
             $query
-                ->where($this->field(), '>=', $values[$this->fromField])
-                ->where($this->field(), '<=', $values[$this->toField])
+                ->where($this->field(), '>=', $this->values[$this->fromField] ?? $this->min)
+                ->where($this->field(), '<=', $this->values[$this->toField] ?? $this->max)
                 ->when(
-                    ($this->isNullable() && (float)$values[$this->fromField] === (float)$this->min),
+                    ($this->isNullable() && !$this->isChanged()),
                     fn(Builder $query) => $query->orWhereNull($this->field())
                 );
         });
+    }
+
+    public function isChanged(): bool
+    {
+        $fromValue = (float)($this->values[$this->fromField] ?? $this->min);
+        $toValue = (float)($this->values[$this->toField] ?? $this->max);
+
+        return $fromValue !== (float)$this->min || $toValue !== (float)$this->max;
     }
 }
