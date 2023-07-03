@@ -51,7 +51,7 @@ class File extends Field implements Fileable, RemovableContract
                 ->toArray()
             : [$this->pathWithDir($item->{$this->field()})];
 
-        if (!$container) {
+        if (! $container) {
             return implode(';', array_filter($files));
         }
 

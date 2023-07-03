@@ -80,7 +80,7 @@ trait WithFields
             && ! $this instanceof HasOne
             && $this->inLine
         ) {
-            return $value?->implode(function ($item) use($container) {
+            return $value?->implode(function ($item) use ($container) {
                 $implodeValue = $item->{$this->resourceTitleField()} ?? false;
 
                 if ($this->inLineBadge) {
@@ -165,7 +165,7 @@ trait WithFields
             $values = [];
         }
 
-        if (!$container) {
+        if (! $container) {
             return '';
         }
 

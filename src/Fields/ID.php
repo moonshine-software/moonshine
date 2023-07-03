@@ -16,7 +16,7 @@ class ID extends Text
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        if (!$container) {
+        if (! $container) {
             return parent::indexViewValue($item, $container);
         }
 
