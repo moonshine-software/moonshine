@@ -33,24 +33,19 @@ class Number extends Text implements DefaultCanBeNumeric
         return $this;
     }
 
+    public function withStars(): bool
+    {
+        return $this->stars;
+    }
+
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        if ($this->withStars()) {
+        if ($container && $this->withStars()) {
             return view('moonshine::ui.rating', [
                 'value' => $item->{$this->field()},
             ])->render();
         }
 
         return parent::indexViewValue($item, $container);
-    }
-
-    public function withStars(): bool
-    {
-        return $this->stars;
-    }
-
-    public function exportViewValue(Model $item): string
-    {
-        return (string) $item->{$this->field()};
     }
 }

@@ -80,7 +80,7 @@ trait WithFields
             && ! $this instanceof HasOne
             && $this->inLine
         ) {
-            return $value?->implode(function ($item) {
+            return $value?->implode(function ($item) use($container) {
                 $implodeValue = $item->{$this->resourceTitleField()} ?? false;
 
                 if ($this->inLineBadge) {
@@ -89,12 +89,12 @@ trait WithFields
                         '',
                     );
 
-                    return view('moonshine::ui.badge', [
+                    return $container ? view('moonshine::ui.badge', [
                         'color' => 'purple',
                         'link' => $link,
                         'value' => $implodeValue,
                         'margin' => true,
-                    ])->render();
+                    ])->render() : $implodeValue;
                 }
 
                 return $implodeValue;
@@ -163,6 +163,10 @@ trait WithFields
         } catch (Throwable $e) {
             report($e);
             $values = [];
+        }
+
+        if (!$container) {
+            return '';
         }
 
         return view('moonshine::ui.table', [

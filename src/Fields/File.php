@@ -51,6 +51,10 @@ class File extends Field implements Fileable, RemovableContract
                 ->toArray()
             : [$this->pathWithDir($item->{$this->field()})];
 
+        if (!$container) {
+            return implode(';', array_filter($files));
+        }
+
         return view('moonshine::components.files', [
             'files' => $files,
             'download' => $this->canDownload(),
