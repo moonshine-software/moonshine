@@ -18,11 +18,6 @@ class Password extends Text
         'required',
     ];
 
-    public function exportViewValue(Model $item): string
-    {
-        return '***';
-    }
-
     public function indexViewValue(Model $item, bool $container = true): string
     {
         return '***';

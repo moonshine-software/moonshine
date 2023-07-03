@@ -40,9 +40,4 @@ class SwitchBoolean extends Checkbox implements HasCurrentResource
             'item' => $item,
         ])->render();
     }
-
-    public function exportViewValue(Model $item): string
-    {
-        return (string) $item->{$this->field()};
-    }
 }

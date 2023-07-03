@@ -29,8 +29,19 @@ class Checkbox extends Field implements
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
+        if (! $container) {
+            return parent::indexViewValue($item, $container);
+        }
+
         return view('moonshine::ui.boolean', [
             'value' => (bool) $this->formViewValue($item),
         ])->render();
+    }
+
+    public function exportViewValue(Model $item): string
+    {
+        return (string) ($this->formViewValue($item)
+            ? $this->onValue
+            : $this->offValue);
     }
 }

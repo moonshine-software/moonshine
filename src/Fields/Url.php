@@ -21,6 +21,10 @@ class Url extends Text
             return '';
         }
 
+        if (! $container) {
+            return $value;
+        }
+
         return view('moonshine::ui.url', [
             'href' => $value,
             'value' => $value,

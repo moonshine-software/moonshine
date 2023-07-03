@@ -16,15 +16,14 @@ class ID extends Text
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
+        if (!$container) {
+            return parent::indexViewValue($item, $container);
+        }
+
         return view('moonshine::ui.badge', [
             'value' => parent::indexViewValue($item, $container),
             'color' => 'purple',
         ])->render();
-    }
-
-    public function exportViewValue(Model $item): string
-    {
-        return (string) $item->{$this->field()};
     }
 
     public function save(Model $item): Model

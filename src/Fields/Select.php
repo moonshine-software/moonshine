@@ -44,12 +44,17 @@ class Select extends Field implements
                 json_decode($value, true, 512, JSON_THROW_ON_ERROR)
                 : $value;
 
-            return collect($value)->map(
-                fn ($v): string => view('moonshine::ui.badge', [
-                    'color' => 'purple',
-                    'value' => $this->values()[$v] ?? false,
-                ])->render()
-            )->implode(',');
+            return collect($value)
+                ->when(
+                    $container,
+                    fn ($collect) => $collect->map(
+                        fn ($v): string => view('moonshine::ui.badge', [
+                            'color' => 'purple',
+                            'value' => $this->values()[$v] ?? false,
+                        ])->render()
+                    )
+                )
+                ->implode(',');
         }
 
         return (string) ($this->values()[$value] ?? '');
