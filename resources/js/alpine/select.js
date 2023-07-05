@@ -29,7 +29,7 @@ export default (asyncUrl = '') => ({
         searchResultLimit: 100,
       })
 
-      if (!!this.$el.dataset.overflow) {
+      if (!!this.$el.dataset.overflow || this.$el.closest('.table-responsive')) {
         // Modifier "Same width" Popper reference
         const sameWidth = {
           name: 'sameWidth',
