@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
