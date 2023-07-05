@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use JsonException;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
@@ -47,7 +48,7 @@ class Select extends Field implements
             return collect($value)
                 ->when(
                     $container,
-                    fn ($collect) => $collect->map(
+                    fn ($collect): Collection => $collect->map(
                         fn ($v): string => view('moonshine::ui.badge', [
                             'color' => 'purple',
                             'value' => $this->values()[$v] ?? false,
