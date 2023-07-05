@@ -1,6 +1,7 @@
 /* Select */
 
 import Choices from 'choices.js'
+import {createPopper} from '@popperjs/core'
 import {crudFormQuery} from './formFunctions'
 import {debounce} from 'lodash'
 
@@ -27,6 +28,35 @@ export default (asyncUrl = '') => ({
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
       })
+
+      if (this.$el.dataset.overflow || this.$el.closest('.table-responsive')) {
+        // Modifier "Same width" Popper reference
+        const sameWidth = {
+          name: 'sameWidth',
+          enabled: true,
+          phase: 'beforeWrite',
+          requires: ['computeStyles'],
+          fn: ({state}) => {
+            state.styles.popper.width = `${state.rects.reference.width}px`
+          },
+          effect: ({state}) => {
+            state.elements.popper.style.width = `${
+              state.elements.reference.offsetWidth
+            }px`
+          }
+        }
+
+        // Create Popper on showDropdown event
+        this.choicesInstance.passedElement.element.addEventListener('showDropdown', (event) => {
+          createPopper(this.choicesInstance.containerInner.element, this.choicesInstance.dropdown.element, {
+            placement: 'bottom',
+            strategy: 'fixed',
+            modifiers: [
+              sameWidth,
+            ],
+          })
+        }, false)
+      }
 
       if (asyncUrl) {
         this.$el.addEventListener(
