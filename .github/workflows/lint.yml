@@ -19,9 +19,10 @@ jobs:
               id: extract_branch
 
             - name: Commit changes
-              uses: stefanzweifel/git-auto-commit-action@v2.3.0
+              uses: stefanzweifel/git-auto-commit-action@v4
               with:
                   commit_message: Fix styling
+                  push_options: '--force'
                   branch: ${{ steps.extract_branch.outputs.branch }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
