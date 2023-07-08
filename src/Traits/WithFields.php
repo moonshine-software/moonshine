@@ -56,7 +56,7 @@ trait WithFields
     /**
      * @throws Throwable
      */
-    public function indexViewValue(Model $item, bool $container = false): string
+    public function indexViewValue(Model $item, bool $container = true): string
     {
         if (! $this instanceof FormElement) {
             return '';
