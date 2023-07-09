@@ -39,7 +39,6 @@ class LineChartMetric extends Metric
         return collect($this->lines())
             ->collapse()
             ->mapWithKeys(fn ($item) => $item)
-            ->sortKeys()
             ->keys()
             ->toArray();
     }
