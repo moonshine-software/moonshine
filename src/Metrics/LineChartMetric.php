@@ -12,6 +12,8 @@ class LineChartMetric extends Metric
 
     protected array $colors = [];
 
+    protected bool $withoutSortKeys = false;
+
     protected array $assets = [
         'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js',
     ];
@@ -39,8 +41,20 @@ class LineChartMetric extends Metric
         return collect($this->lines())
             ->collapse()
             ->mapWithKeys(fn ($item) => $item)
-            ->sortKeys()
+            ->when(! $this->isWithoutSortKeys(), fn ($lines) => $lines->sortKeys())
             ->keys()
             ->toArray();
+    }
+
+    public function withoutSortKeys(): static
+    {
+        $this->withoutSortKeys = true;
+
+        return $this;
+    }
+
+    protected function isWithoutSortKeys(): bool
+    {
+        return $this->withoutSortKeys;
     }
 }
