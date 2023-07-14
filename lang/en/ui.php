@@ -37,6 +37,7 @@ return [
     'notfound' => 'Records not found',
     'collapse_menu' => 'Collapse menu',
     '404' => 'Houston we have a problem page not found',
+    'copied' => 'Copied!',
     'notifications' => [
         'title' => 'Notifications',
         'mark_as_read_all' => 'Mark all as read',
