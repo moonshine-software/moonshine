@@ -22,14 +22,16 @@
 
         <hr class="divider" />
 
-        <div x-data="asyncData"
-             x-init="load(
-                '{{ $resource->route('relation-field-items', $item->getKey(), query: [
-                        '_field_relation' => $element->relation()
-                    ]) }}',
-                 'has_many_{{ $element->id() }}'
-             )">
-            <div id="has_many_{{ $element->id() }}"></div>
+        <div x-data="{ id: $id('has_many') }">
+            <div x-data="asyncData"
+                 x-init="load(
+                    '{{ $resource->route('relation-field-items', $item->getKey(), query: [
+                            '_field_relation' => $element->relation()
+                        ]) }}',
+                     id
+                 )">
+                <div :id="id"></div>
+            </div>
         </div>
     @endif
 @else
