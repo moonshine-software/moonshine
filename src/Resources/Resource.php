@@ -369,14 +369,14 @@ abstract class Resource implements ResourceContract
     public function hasMassAction(): bool
     {
         return ! $this->isPreviewMode() && (
-                count($this->bulkActions()) || (
-                    $this->can('massDelete') && in_array(
-                        'delete',
-                        $this->getActiveActions(),
-                        true
-                    )
+            count($this->bulkActions()) || (
+                $this->can('massDelete') && in_array(
+                    'delete',
+                    $this->getActiveActions(),
+                    true
                 )
-            );
+            )
+        );
     }
 
     public function isPreviewMode(): bool
@@ -600,16 +600,16 @@ abstract class Resource implements ResourceContract
                 $fields->each(fn ($field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated && method_exists(
-                        $this,
-                        'afterCreated'
-                    )) {
+                    $this,
+                    'afterCreated'
+                )) {
                     $this->afterCreated($item);
                 }
 
                 if (! $wasRecentlyCreated && method_exists(
-                        $this,
-                        'afterUpdated'
-                    )) {
+                    $this,
+                    'afterUpdated'
+                )) {
                     $this->afterUpdated($item);
                 }
 
