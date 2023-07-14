@@ -13,6 +13,7 @@ return [
 
     'route' => [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'moonshine'),
+        'index_route' => env('MOONSHINE_INDEX_ROUTE', 'moonshine.index'),
         'middleware' => ['moonshine'],
         'custom_page_slug' => 'custom_page',
         'notFoundHandler' => MoonShineNotFoundException::class,
