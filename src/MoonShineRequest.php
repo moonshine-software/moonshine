@@ -31,6 +31,13 @@ class MoonShineRequest extends FormRequest
         );
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->hasResource()) {
+            $this->getResource()->prepareForValidation();
+        }
+    }
+
     public function hasResource(): bool
     {
         return str($this->url())->contains('resource/');
