@@ -30,6 +30,6 @@ class Dashboard
         $blocks = class_exists($class) ? (new $class())->getBlocks()
             : collect();
 
-        return $blocks->isNotEmpty() ? $blocks : $this->blocks;
+        return !empty($this->blocks) ? $this->blocks : $blocks;
     }
 }
