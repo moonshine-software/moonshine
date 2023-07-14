@@ -94,7 +94,7 @@ class SocialiteController extends BaseController
         MoonShineAuth::guard()
             ->loginUsingId($account->moonshine_user_id);
 
-        return to_route(config('moonshine.route.index_route'));
+        return to_route(config('moonshine.route.index_route', 'moonshine.index'));
     }
 
     private function bindAccount(
