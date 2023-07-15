@@ -14,6 +14,8 @@ class LineChartMetric extends Metric
 
     protected array $colors = [];
 
+    protected bool $withoutSortKeys = false;
+
     protected array $assets = [
         'vendor/moonshine/libs/apexcharts/apexcharts.min.js',
         'vendor/moonshine/libs/apexcharts/apexcharts-config.js',
@@ -51,7 +53,7 @@ class LineChartMetric extends Metric
         return collect($this->lines())
             ->collapse()
             ->mapWithKeys(fn ($item) => $item)
-            ->sortKeys()
+            ->when(! $this->isWithoutSortKeys, fn ($items) => $items->sortKeys())
             ->keys()
             ->toArray();
     }
@@ -59,5 +61,17 @@ class LineChartMetric extends Metric
     public function lines(): array
     {
         return $this->lines;
+    }
+
+    public function withoutSortKeys(): static
+    {
+        $this->withoutSortKeys = true;
+
+        return $this;
+    }
+
+    public function isWithoutSortKeys(): bool
+    {
+        return $thisd->withoutSortKeys();
     }
 }
