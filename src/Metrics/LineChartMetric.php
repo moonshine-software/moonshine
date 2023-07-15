@@ -72,6 +72,6 @@ class LineChartMetric extends Metric
 
     public function isWithoutSortKeys(): bool
     {
-        return $thisd->withoutSortKeys();
+        return $this->withoutSortKeys();
     }
 }
