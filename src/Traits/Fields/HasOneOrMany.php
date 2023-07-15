@@ -75,14 +75,14 @@ trait HasOneOrMany
                         unset($values[$field->field()]);
                     }
 
-                    if ($field instanceof Json && $field->isKeyValue()) {
+                    if ($field instanceof Json && $field->isKeyOrOnlyValue()) {
                         $values[$field->field()] = collect(
                             $values[$field->field()] ?? []
                         )
                             ->mapWithKeys(
                                 static fn (
-                                    $data
-                                ): array => [$data['key'] => $data['value']]
+                                    $data, $key
+                                ): array => $field->isOnlyValue() ? [$key => $data['value']] : [$data['key'] => $data['value']]
                             )
                             ->filter();
                     }
