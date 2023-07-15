@@ -81,7 +81,8 @@ trait HasOneOrMany
                         )
                             ->mapWithKeys(
                                 static fn (
-                                    $data, $key
+                                    $data,
+                                    $key
                                 ): array => $field->isOnlyValue() ? [$key => $data['value']] : [$data['key'] => $data['value']]
                             )
                             ->filter();
