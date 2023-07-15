@@ -7,7 +7,6 @@ namespace MoonShine\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasFullPageMode;
@@ -40,6 +39,8 @@ class Json extends Field implements
 
     protected bool $keyValue = false;
 
+    protected bool $onlyValue = false;
+
     protected bool $group = true;
 
     /**
@@ -50,11 +51,29 @@ class Json extends Field implements
         string $value = 'Value'
     ): static {
         $this->keyValue = true;
+        $this->onlyValue = false;
 
         $this->fields([
             Text::make($key, 'key')
                 ->customAttributes($this->attributes()->getAttributes()),
 
+            Text::make($value, 'value')
+                ->customAttributes($this->attributes()->getAttributes()),
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function onlyValue(
+        string $value = 'Value'
+    ): static {
+        $this->keyValue = false;
+        $this->onlyValue = true;
+
+        $this->fields([
             Text::make($value, 'value')
                 ->customAttributes($this->attributes()->getAttributes()),
         ]);
@@ -76,16 +95,14 @@ class Json extends Field implements
         $requestValues = $this->requestValue();
 
         foreach ($requestValues as $index => $values) {
-            foreach ($this->getFields() as $field) {
-                if ($field instanceof Fileable) {
-                    $field->setParentRequestValueKey(
-                        $this->field() . "." . $index
-                    );
+            foreach ($this->getFields()->onlyFileFields() as $field) {
+                $field->setParentRequestValueKey(
+                    $this->field() . "." . $index
+                );
 
-                    $requestValues[$index][$field->field()] = $field->hasManyOrOneSave(
-                        $values[$field->field()] ?? null
-                    );
-                }
+                $requestValues[$index][$field->field()] = $field->hasManyOrOneSave(
+                    $values[$field->field()] ?? null
+                );
             }
         }
 
@@ -103,7 +120,7 @@ class Json extends Field implements
             $fields = $this->getFields()->formFields();
             $collection = $collection->map(function ($data) use ($fields) {
                 foreach ($fields as $field) {
-                    if ($field instanceof Json && $field->isKeyValue()) {
+                    if ($field instanceof Json && $field->isKeyOrOnlyValue()) {
                         $data[$field->field()] = $field->mapKeyValue(
                             collect($data[$field->field()] ?? [])
                         );
@@ -115,9 +132,11 @@ class Json extends Field implements
         }
 
         return $collection->when(
-            $this->isKeyValue(),
-            static fn ($data): Collection => $data->mapWithKeys(
-                static fn ($data): array => [$data['key'] => $data['value']]
+            $this->isKeyOrOnlyValue(),
+            fn ($data): Collection => $data->mapWithKeys(
+                fn ($data, $key): array => $this->isOnlyValue()
+                    ? [$key => $data['value']]
+                    : [$data['key'] => $data['value']]
             )
         )->toArray();
     }
@@ -127,13 +146,23 @@ class Json extends Field implements
         return $this->keyValue;
     }
 
+    public function isOnlyValue(): bool
+    {
+        return $this->onlyValue;
+    }
+
+    public function isKeyOrOnlyValue(): bool
+    {
+        return $this->keyValue || $this->onlyValue;
+    }
+
     public function formViewValue(Model $item): mixed
     {
-        if ($this->isKeyValue()) {
+        if ($this->isKeyOrOnlyValue()) {
             return collect(parent::formViewValue($item))
                 ->map(
                     fn ($data, $index): array => $this->extractValues(
-                        [$index => $data]
+                        $this->isOnlyValue() ? [$data] : [$index => $data]
                     )
                 )
                 ->values()
@@ -148,6 +177,12 @@ class Json extends Field implements
         if ($this->isKeyValue()) {
             return [
                 'key' => key($data) ?? '',
+                'value' => $data[key($data)] ?? '',
+            ];
+        }
+
+        if ($this->isOnlyValue()) {
+            return [
                 'value' => $data[key($data)] ?? '',
             ];
         }

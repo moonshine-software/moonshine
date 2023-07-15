@@ -16,10 +16,17 @@ beforeEach(function (): void {
         ->fields(exampleFields()->toArray());
     $this->fieldKeyValue = Json::make('Key value')
         ->keyValue();
+    $this->fieldOnlyValue = Json::make('Only value')
+        ->onlyValue();
     $this->item = new class () extends Model {
         public array $key_value = [
             'key1' => 'value1',
             'key2' => 'value2',
+        ];
+
+        public array $only_value = [
+            'value1',
+            'value2',
         ];
 
         public array $json = [
@@ -133,6 +140,22 @@ it('json values key value', function (): void {
         ->toBe([
             ['key' => 'key1', 'value' => 'value1'],
             ['key' => 'key2', 'value' => 'value2'],
+        ])
+    ;
+});
+
+it('json values only value', function (): void {
+    expect($this->fieldOnlyValue->jsonValues())
+        ->toBeArray()
+        ->toBe(
+            exampleFields()
+                ->mapWithKeys(fn ($f, $k) => ['value' => ''])
+                ->toArray()
+        )
+        ->and($this->fieldOnlyValue->jsonValues($this->item))
+        ->toBe([
+            ['value' => 'value1'],
+            ['value' => 'value2'],
         ])
     ;
 });
