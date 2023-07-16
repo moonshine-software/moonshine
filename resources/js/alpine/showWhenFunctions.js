@@ -40,7 +40,7 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
     return
   }
 
-  const fieldContainer = inputElement.closest('.form-group')
+  const fieldContainer = inputElement.closest('#wrapper_')
 
   let validateShow = false
 
