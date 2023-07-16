@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Metrics;
 
-use Illuminate\Support\Collection;
 use Closure;
+use Illuminate\Support\Collection;
 
 class LineChartMetric extends Metric
 {
