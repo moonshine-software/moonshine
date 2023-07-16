@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Metrics;
 
+use Illuminate\Support\Collection;
 use Closure;
 
 class LineChartMetric extends Metric
@@ -53,7 +54,7 @@ class LineChartMetric extends Metric
         return collect($this->lines())
             ->collapse()
             ->mapWithKeys(fn ($item) => $item)
-            ->when(! $this->isWithoutSortKeys(), fn ($items) => $items->sortKeys())
+            ->when(! $this->isWithoutSortKeys(), fn ($items): Collection => $items->sortKeys())
             ->keys()
             ->toArray();
     }

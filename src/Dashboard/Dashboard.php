@@ -30,6 +30,6 @@ class Dashboard
         $blocks = class_exists($class) ? (new $class())->getBlocks()
             : collect();
 
-        return ! $this->blocks instanceof Collection ? $blocks : $this->blocks;
+        return $this->blocks instanceof Collection ? $this->blocks : $blocks;
     }
 }
