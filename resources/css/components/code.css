@@ -4,7 +4,7 @@
   border-color: rgb(209, 213, 219);
 
   &.codeflask--has-line-numbers:before {
-    z-index: 4!important;
+    z-index: 4 !important;
     background: #eee;
   }
 
@@ -22,11 +22,11 @@
 
   .codeflask__textarea {
     color: inherit;
-    outline: none!important;
+    outline: none !important;
   }
   .codeflask__textarea::selection {
-    color: rgba(255, 255, 255, 0)!important;
-    background: #eee!important;
+    color: rgba(255, 255, 255, 0) !important;
+    background: #eee !important;
   }
 }
 
@@ -36,7 +36,7 @@
     background-color: rgb(27, 37, 59);
 
     &.codeflask--has-line-numbers:before {
-       background-color: rgb(35, 45, 69);
+      background-color: rgb(35, 45, 69);
     }
 
     .codeflask__lines {
@@ -47,7 +47,7 @@
       caret-color: #fff;
 
       &::selection {
-        background-color: #fff!important;
+        background-color: #fff !important;
       }
     }
   }
