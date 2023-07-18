@@ -4,7 +4,7 @@
         language: '{{ $element->language ?? 'js' }}',
         readonly: {{ $element->isReadonly() ? 'true' : 'false' }},
     })"
-    class="w-100 min-h-[300px] relative border">
+    class="w-100 min-h-[300px] relative">
 </div>
 
 <x-moonshine::form.input
