@@ -32,6 +32,7 @@
 @import 'components/popovers';
 @import 'components/spinners';
 @import 'components/toasts';
+@import 'components/code';
 
 /* Tailwind Utilities */
 @import 'tailwindcss/utilities';
