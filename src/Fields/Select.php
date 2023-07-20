@@ -58,6 +58,13 @@ class Select extends Field implements
                 ->implode(',');
         }
 
+        if (
+            version_compare(version1: PHP_VERSION, version2: '8.0.0', operator: '>=')
+            && $value instanceof \UnitEnum
+        ) {
+            $value = $value->value;
+        }
+
         return (string) ($this->values()[$value] ?? '');
     }
 }
