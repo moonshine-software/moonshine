@@ -60,7 +60,7 @@ class Select extends Field implements
         }
 
         if (
-            version_compare(version1: PHP_VERSION, version2: '8.0.0', operator: '>=')
+            version_compare(version1: PHP_VERSION, version2: '8.1.0', operator: '>=')
             && $value instanceof UnitEnum
         ) {
             $value = $value->value;
