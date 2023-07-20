@@ -51,6 +51,6 @@ Thank you for contributing in the project, more information in the official guid
 
 ## License
 
-MoonShine is open-sourced software licensed under the [MIT license](LICENSE.md).
+MoonShine is open-sourced software licensed under the [MIT license](LICENSE.md).d
 
 
