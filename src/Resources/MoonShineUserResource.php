@@ -138,7 +138,7 @@ class MoonShineUserResource extends Resource
                 ->canSee(
                     fn (
                         $user
-                    ): bool => auth()?->user()->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID
+                    ): bool => auth()?->user()?->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID
                 ),
 
             ChangeLogFormComponent::make('Change log')
