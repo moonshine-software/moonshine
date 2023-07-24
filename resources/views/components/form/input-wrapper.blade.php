@@ -6,7 +6,7 @@
     'beforeSlot',
     'afterSlot'
 ])
-<div {{ $attributes->merge(['class' => 'form-group'])
+<div {{ $attributes->merge(['class' => 'form-group moonshine-field'])
     ->only(['class', 'x-show']) }}
     id="wrapper_{{ $attributes->get('id') }}"
 >
