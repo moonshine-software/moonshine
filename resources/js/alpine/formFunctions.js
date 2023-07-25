@@ -1,9 +1,10 @@
 import {inputFieldName, inputGeValue} from './showWhenFunctions'
 
 export function crudFormQuery(customFormElements = null) {
-  const formElements = customFormElements !== null
-    ? customFormElements
-    : document.querySelectorAll('#moonshine-form [name]');
+  const formElements =
+    customFormElements !== null
+      ? customFormElements
+      : document.querySelectorAll('#moonshine-form [name]')
 
   if (formElements.length === 0) {
     return ''
