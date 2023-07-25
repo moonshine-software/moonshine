@@ -1,3 +1,5 @@
+import {crudFormQuery} from './formFunctions'
+
 export default async => ({
   actionsOpen: false,
   async: async,
@@ -8,26 +10,33 @@ export default async => ({
     }
   },
   canBeAsync() {
+    this.$event.preventDefault()
+
+    const isForm = this.$el.tagName === 'FORM'
+    const url = isForm
+      ? this.$el.getAttribute('action') + '?' + crudFormQuery(
+      this.$el.querySelectorAll('[name]')
+    ) : this.$el.href
+
+    if (!async && isForm) {
+      this.$el.submit()
+    }
+
     if (!async) {
-      window.location = this.$el.href
+      window.location = url
     }
 
     this.loading = true
 
-    axios
-      .get(this.$el.href, {
-        headers: {
-          'X-Fragment': 'crud-table',
-        },
-      })
-      .then(response => response.data)
-      .then(html => {
-        this.loading = false
-        this.$root.innerHTML = html
-      })
-      .catch(error => {
-        //
-      })
+    axios.get(url, {
+      headers: {
+        'X-Fragment': 'crud-table',
+      },
+    }).then(response => response.data).then(html => {
+      this.$root.outerHTML = html
+    }).catch(error => {
+      //
+    })
   },
   actions(type) {
     let all = this.$root.querySelector('.actionsAllChecked')
