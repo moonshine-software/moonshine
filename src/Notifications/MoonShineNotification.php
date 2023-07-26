@@ -24,7 +24,10 @@ final class MoonShineNotification
                 MoonShineAuth::model()->query()
                     ->when(
                         $ids,
-                        fn ($query): Builder => $query->whereIn('id', $ids)
+                        fn ($query): Builder => $query->whereIn(
+                            MoonShineAuth::model()?->getKeyName() ?? 'id',
+                            $ids
+                        )
                     )
                     ->get(),
                 MoonShineDatabaseNotification::make(
