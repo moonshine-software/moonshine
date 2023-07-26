@@ -151,7 +151,7 @@ abstract class FormElements extends Collection
     public function extractLabels(): array
     {
         return $this->onlyFields()->flatMap(
-            static fn ($field): array => [$field->field() => $field->label()]
+            static fn (Field $field): array => [$field->column() => $field->label()]
         )->toArray();
     }
 
@@ -194,7 +194,7 @@ abstract class FormElements extends Collection
         FormElement $default = null
     ): ?FormElement {
         return $this->onlyFields()->first(
-            static fn (FormElement $field): bool => $field->field() === $column,
+            static fn (FormElement $field): bool => $field->column() === $column,
             $default
         );
     }
@@ -205,7 +205,7 @@ abstract class FormElements extends Collection
     public function onlyColumns(): FormElements
     {
         return $this->onlyFields()->transform(
-            static fn (FormElement $field): string => $field->field()
+            static fn (FormElement $field): string => $field->column()
         );
     }
 
