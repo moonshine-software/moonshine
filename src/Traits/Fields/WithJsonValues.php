@@ -69,7 +69,7 @@ trait WithJsonValues
                         $fieldValue = $field->formViewValue($data);
 
                         if ($field instanceof BelongsToMany) {
-                            $fieldValue = $fieldValue->pluck('id');
+                            $fieldValue = $fieldValue->pluck($data->getKeyName());
                         }
 
                         $values[$index][$field->field()] = $fieldValue;

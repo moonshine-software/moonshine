@@ -134,7 +134,7 @@ trait WithFields
                         );
                     }
 
-                    if ($this instanceof Json && $this->isKeyValue()) {
+                    if ($this instanceof Json && $this->isKeyOrOnlyValue()) {
                         $data = $this->extractValues([$index => $data]);
                     }
 
