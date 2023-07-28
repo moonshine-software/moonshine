@@ -58,6 +58,6 @@ class Select extends Field implements
                 ->implode(',');
         }
 
-        return (string) ($this->values()[$value] ?? '');
+        return (string) ($this->smoothedValues()[$value] ?? '');
     }
 }

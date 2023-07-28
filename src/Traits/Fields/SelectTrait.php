@@ -26,6 +26,13 @@ trait SelectTrait
         return $this->options;
     }
 
+    public function smoothedValues() : array
+    {
+        return collect($this->values())->mapWithKeys(function($item, $i) : array {
+            return is_array($item) ? $item : [$i => $item];
+        })->toArray();
+    }
+
     /**
      * @throws JsonException
      */
