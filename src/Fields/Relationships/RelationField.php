@@ -6,5 +6,4 @@ namespace MoonShine\Fields\Relationships;
 
 final class RelationField
 {
-
 }

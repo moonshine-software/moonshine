@@ -37,8 +37,8 @@ trait WithDefaultValue
         }
 
         if (is_numeric(
-                $this->default
-            ) && $this instanceof DefaultCanBeNumeric) {
+            $this->default
+        ) && $this instanceof DefaultCanBeNumeric) {
             return $this->default;
         }
 

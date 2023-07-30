@@ -50,7 +50,7 @@ abstract class Metric implements Renderable, HasAssets
     public function render(): View|Closure|string
     {
         return view($this->getView(), [
-            'element' => $this
+            'element' => $this,
         ]);
     }
 

@@ -19,6 +19,7 @@ class Image extends File
                 ->map(fn ($value): string => $this->pathWithDir($value ?? ''))
                 ->toArray()
             : [$this->pathWithDir($this->value())];
+
         return implode(';', array_filter($files));
     }
 }

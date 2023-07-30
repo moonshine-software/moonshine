@@ -20,7 +20,7 @@ trait WithModal
 
     public function isInModal(): bool
     {
-        return !is_null($this->modal);
+        return ! is_null($this->modal);
     }
 
     public function inModal(

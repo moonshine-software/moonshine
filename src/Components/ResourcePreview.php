@@ -74,7 +74,7 @@ final class ResourcePreview extends Component implements Renderable
     public function render(): View|Closure|string
     {
         return view('moonshine::components.resource-preview', [
-            'element' => $this
+            'element' => $this,
         ]);
     }
 

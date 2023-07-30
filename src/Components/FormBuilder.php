@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
-use Throwable;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
@@ -16,6 +15,7 @@ use MoonShine\Contracts\Renderable;
 use MoonShine\Fields\Fields;
 use MoonShine\ItemActions\ItemActions;
 use MoonShine\Traits\Makeable;
+use Throwable;
 
 /**
  * @method static static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
@@ -51,7 +51,7 @@ final class FormBuilder extends Component implements FormContract, Renderable
         protected array $values = []
     ) {
         $this->submitAttributes = $this->newAttributeBag([
-            'type' => 'submit'
+            'type' => 'submit',
         ]);
 
         $this->withAttributes([
@@ -153,7 +153,7 @@ final class FormBuilder extends Component implements FormContract, Renderable
     public function getCastedValues(): mixed
     {
         return $this->typeCast
-            ? (new $this->typeCast)->forceFill($this->values)
+            ? (new $this->typeCast())->forceFill($this->values)
             : $this->values;
     }
 
@@ -191,7 +191,7 @@ final class FormBuilder extends Component implements FormContract, Renderable
             'fields' => $this->getFields(),
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
-            'submitAttributes' => $this->submitAttributes
+            'submitAttributes' => $this->submitAttributes,
         ]);
     }
 

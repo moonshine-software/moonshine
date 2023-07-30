@@ -37,7 +37,7 @@ final class ItemActions extends Collection
         return $this->filter(
             static fn (
                 ItemActionContract $action
-            ): bool => !$action->isBulk()
+            ): bool => ! $action->isBulk()
         );
     }
 

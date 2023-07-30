@@ -67,6 +67,7 @@ abstract class MenuSection
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -75,7 +76,7 @@ abstract class MenuSection
         }
 
         if ($this->resource() instanceof Resource) {
-            return !is_null(
+            return ! is_null(
                 request()->route('resourceUri', $this->resource()->uriKey())
             );
         }

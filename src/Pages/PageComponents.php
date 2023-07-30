@@ -8,5 +8,4 @@ use Illuminate\Support\Collection;
 
 final class PageComponents extends Collection
 {
-
 }

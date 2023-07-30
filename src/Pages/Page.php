@@ -36,7 +36,7 @@ abstract class Page implements Renderable
     public function breadcrumbs(): array
     {
         return [
-            $this->route() => $this->title()
+            $this->route() => $this->title(),
         ];
     }
 
@@ -78,7 +78,7 @@ abstract class Page implements Renderable
     {
         return MoonShineRouter::to('page', [
             'resourceUri' => $this->getResource()->uriKey(),
-            'pageUri' => $this->uriKey()
+            'pageUri' => $this->uriKey(),
         ]);
     }
 

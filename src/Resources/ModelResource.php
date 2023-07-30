@@ -40,7 +40,7 @@ abstract class ModelResource extends Resource
 
     public function getModel(): Model
     {
-        return new $this->model;
+        return new $this->model();
     }
 
     /**
@@ -124,7 +124,7 @@ abstract class ModelResource extends Resource
 
             foreach ($fields as $field) {
                 //if (! $field->hasRelationship() || $field->belongToOne()) {
-                    $item = $this->saveItem($item, $field, $saveData);
+                $item = $this->saveItem($item, $field, $saveData);
                 //}
             }
 
@@ -133,7 +133,7 @@ abstract class ModelResource extends Resource
 
                 foreach ($fields as $field) {
                     //if ($field->hasRelationship() && ! $field->belongToOne()) {
-                        $item = $this->saveItem($item, $field, $saveData);
+                    $item = $this->saveItem($item, $field, $saveData);
                     //}
                 }
 
@@ -142,16 +142,16 @@ abstract class ModelResource extends Resource
                 $fields->each(fn (Field $field) => $field->afterSave());
 
                 if ($wasRecentlyCreated && method_exists(
-                        $this,
-                        'afterCreated'
-                    )) {
+                    $this,
+                    'afterCreated'
+                )) {
                     $this->afterCreated($item);
                 }
 
                 if (! $wasRecentlyCreated && method_exists(
-                        $this,
-                        'afterUpdated'
-                    )) {
+                    $this,
+                    'afterUpdated'
+                )) {
                     $this->afterUpdated($item);
                 }
 
@@ -175,6 +175,7 @@ abstract class ModelResource extends Resource
 
         if (is_null($saveData)) {
             $item->{$field->column()} = $field->requestValue();
+
             return $item;
         }
 

@@ -42,13 +42,13 @@ class IndexPage extends Page
                 ->cast($this->getResource()->getModel()::class)
                 ->items($items->items())
                 ->paginator($items)
-                ->trAttributes(fn($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
+                ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
                     $index === 0 && $data->getKey() === 2,
                     fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                         'class' => 'bgc-purple',
                     ])
                 ))
-                ->tdAttributes(fn($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
+                ->tdAttributes(fn ($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
                     $index === 1 && $cell === 0 && $data->getKey() === 1,
                     fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                         'class' => 'bgc-red',
@@ -56,7 +56,8 @@ class IndexPage extends Page
                 ))
                 ->buttons([
                     ItemAction::make(
-                        '', url: fn ($data): string => route('moonshine.page', [
+                        '',
+                        url: fn ($data): string => route('moonshine.page', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'pageUri' => 'form-page',
                         'item' => $data->getKey(),
@@ -68,7 +69,8 @@ class IndexPage extends Page
 
 
                     ItemAction::make(
-                        '', url: fn ($data): string => route('moonshine.crud.destroy', [
+                        '',
+                        url: fn ($data): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => $data->getKey(),
                     ])
@@ -80,7 +82,8 @@ class IndexPage extends Page
 
 
                     ItemAction::make(
-                        '', url: fn (): string => route('moonshine.crud.destroy', [
+                        '',
+                        url: fn (): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => 0,
                     ])
@@ -92,7 +95,7 @@ class IndexPage extends Page
                             'Delete',
                             (string) FormBuilder::make()
                                 ->fields([
-                                    Hidden::make('ids')
+                                    Hidden::make('ids'),
                                 ])
                                 ->submit('Delete', ['class' => 'btn-red'])
                         )

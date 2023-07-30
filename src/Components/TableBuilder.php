@@ -72,7 +72,7 @@ final class TableBuilder extends Component implements Renderable
     public function getItems(): Collection
     {
         return collect($this->items)
-            ->map(fn($item) => $item->toArray());
+            ->map(fn ($item) => $item->toArray());
     }
 
     public function rows(): Collection
@@ -104,7 +104,7 @@ final class TableBuilder extends Component implements Renderable
 
     public function hasPaginator(): bool
     {
-        return !is_null($this->paginator);
+        return ! is_null($this->paginator);
     }
 
     public function cast(string $cast): self
@@ -117,7 +117,7 @@ final class TableBuilder extends Component implements Renderable
     public function castValues(array $data): mixed
     {
         return $this->typeCast
-            ? (new $this->typeCast)->forceFill($data)
+            ? (new $this->typeCast())->forceFill($data)
             : $data;
     }
 
@@ -164,7 +164,7 @@ final class TableBuilder extends Component implements Renderable
             'fields' => $this->getFields(),
             'bulkButtons' => $this->getBulkButtons(),
             'hasPaginator' => $this->hasPaginator(),
-            'paginator' => $this->getPaginator()
+            'paginator' => $this->getPaginator(),
         ]);
     }
 

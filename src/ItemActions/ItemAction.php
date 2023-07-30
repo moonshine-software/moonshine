@@ -52,12 +52,12 @@ final class ItemAction implements ItemActionContract
 
         return $this;
     }
-    
+
     public function url(): string
     {
         return is_callable($this->url)
             ? call_user_func($this->url, $this->item)
             : $this->url;
     }
-    
+
 }

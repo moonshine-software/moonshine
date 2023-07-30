@@ -49,6 +49,7 @@ class File extends Field implements Fileable, RemovableContract
                 ->map(fn ($value): string => $this->pathWithDir($value))
                 ->toArray()
             : [$this->pathWithDir($this->value())];
+
         return implode(';', array_filter($files));
     }
 
