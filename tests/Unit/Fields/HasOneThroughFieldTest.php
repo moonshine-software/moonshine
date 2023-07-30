@@ -1,7 +1,7 @@
 <?php
 
-use MoonShine\Fields\HasOne;
-use MoonShine\Fields\HasOneThrough;
+use MoonShine\Fields\Relationships\HasOne;
+use MoonShine\Fields\Relationships\HasOneThrough;
 
 uses()->group('fields');
 uses()->group('relation-fields');

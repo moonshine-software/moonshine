@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
+use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
-use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Renderable;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithFields;
 use MoonShine\Traits\WithLabel;
@@ -15,7 +17,7 @@ use MoonShine\Traits\WithView;
 /**
  * @method static static make(string|array $labelOrFields = '', array $fields = [])
  */
-abstract class Decoration implements ResourceRenderable, FieldsDecoration
+abstract class Decoration implements Renderable, FieldsDecoration
 {
     use Makeable;
     use WithView;
@@ -34,5 +36,17 @@ abstract class Decoration implements ResourceRenderable, FieldsDecoration
 
         $this->setLabel($labelOrFields);
         $this->fields($fields);
+    }
+
+    public function render(): View|Closure|string
+    {
+        return view($this->getView(), [
+            'element' => $this,
+        ]);
+    }
+
+    public function __toString()
+    {
+        return (string) $this->render();
     }
 }

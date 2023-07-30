@@ -1,9 +1,9 @@
 <?php
 
+use MoonShine\Components\ResourcePreview;
 use MoonShine\Dashboard\Dashboard;
 use MoonShine\Dashboard\DashboardBlock;
-use MoonShine\Dashboard\ResourcePreview;
-use MoonShine\Dashboard\TextBlock;
+use MoonShine\Decorations\TextBlock;
 use MoonShine\Metrics\DonutChartMetric;
 use MoonShine\Metrics\LineChartMetric;
 use MoonShine\Metrics\ValueMetric;

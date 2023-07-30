@@ -1,10 +1,14 @@
 @if($action->isConfirmed())
-    @include('moonshine::crud.shared.confirm-action', ['action' => $action, 'href' => $resource->route('actions.item', $resource->getItem()->getKey(), request()->routeIs('*.query-tag') ? ['index' => $index, 'redirect_back' => 1] : ['index' => $index])])
+    @include('moonshine::crud.shared.confirm-action', [
+        'action' => $action,
+        'url' => $action->url()
+    ])
 @else
     <x-dynamic-component
+        :attributes="$action->attributes()"
         :component="'moonshine::' . ($action->inDropdown() ? 'link-native' : 'link')"
         @class(['p-2' => $action->inDropdown()])
-        :href="$resource->route('actions.item', $resource->getItem()->getKey(), request()->routeIs('*.query-tag') ? ['index' => $index, 'redirect_back' => 1] : ['index' => $index])"
+        :href="$action->url()"
         :icon="$action->iconValue()"
     >
         {{ $action->label() }}

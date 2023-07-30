@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 trait CheckboxTrait
 {
-    public function isChecked(Model $item, string|bool $value): bool
+    public function isChecked(string|bool $value): bool
     {
-        $formValue = $this->formViewValue($item);
+        $formValue = $this->value();
 
         if (is_scalar($formValue)) {
             return $formValue === $value;

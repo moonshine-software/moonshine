@@ -12,5 +12,5 @@
     id="{{ $element->id() }}"
     name="{{ $element->name() }}"
     :attributes="$element->attributes()->only(['x-bind:name'])"
-    value="{{ $element->formViewValue($item) ?? '' }}"
+    value="{{ $element->value() ?? '' }}"
 />

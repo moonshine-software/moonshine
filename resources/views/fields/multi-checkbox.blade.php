@@ -1,16 +1,10 @@
 @if(method_exists($element, 'isTree') && $element->isTree())
     @include('moonshine::fields.tree', [
         'element' => $element,
-        'item' => $item,
-        'resource' => $resource
     ])
 @else
-
     @if(method_exists($element, 'isAsyncSearch') && $element->isAsyncSearch())
         <div x-data="asyncSearch('{{ route('moonshine.search.relations', [
-            'resource' => $element->parent() && $element->parent()->resource()
-                ? $element->parent()->resource()->uriKey()
-                : $resource->uriKey(),
             'column' => $element->field()
         ]) }}')">
             <div class="dropdown">

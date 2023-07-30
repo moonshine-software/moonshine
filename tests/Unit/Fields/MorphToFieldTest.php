@@ -1,7 +1,7 @@
 <?php
 
-use MoonShine\Fields\BelongsTo;
-use MoonShine\Fields\MorphTo;
+use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Models\MoonshineUser;
 
 uses()->group('fields');

@@ -37,12 +37,12 @@ class Slug extends Text
 
     public function save(Model $item): Model
     {
-        $item->{$this->field()} = $this->requestValue() !== false ?
+        $item->{$this->column()} = $this->requestValue() !== false ?
             $this->requestValue()
             : $this->generateSlug($item->{$this->getFrom()});
 
         if ($this->isUnique()) {
-            $item->{$this->field()} = $this->makeSlugUnique($item);
+            $item->{$this->column()} = $this->makeSlugUnique($item);
         }
 
         return $item;
@@ -70,11 +70,11 @@ class Slug extends Text
 
     protected function makeSlugUnique(Model $item): string
     {
-        $slug = $item->{$this->field()};
+        $slug = $item->{$this->column()};
         $i = 1;
 
         while (! $this->checkUnique($item, $slug)) {
-            $slug = $item->{$this->field()} . $this->getSeparator() . $i++;
+            $slug = $item->{$this->column()} . $this->getSeparator() . $i++;
         }
 
         return $slug;
@@ -84,7 +84,7 @@ class Slug extends Text
     {
         return ! DB::table($item->getTable())
             ->whereNot($item->getKeyName(), $item->getKey())
-            ->where($this->field(), $slug)
+            ->where($this->column(), $slug)
             ->first();
     }
 

@@ -7,7 +7,6 @@ namespace MoonShine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Menu\MenuElement;
-use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
@@ -45,11 +44,11 @@ class MoonShine
         return (config('moonshine.namespace') ?? static::NAMESPACE) . $path;
     }
 
-    public static function getResourceFromUriKey(string $uri): ?ResourceContract
+    public static function getResourceFromUriKey(string $uri): ?Resource
     {
         return self::getResources()
             ->first(
-                fn (ResourceContract $resource): bool => $resource->uriKey() === $uri
+                fn (Resource $resource): bool => $resource->uriKey() === $uri
             );
     }
 
@@ -64,17 +63,9 @@ class MoonShine
     }
 
     /**
-     * @deprecated Will be deleted
-     */
-    public static function registerResources(array $data): void
-    {
-        self::menu($data);
-    }
-
-    /**
      * Register Menu with resources and pages in the system
      *
-     * @param  array<string|MenuSection|ResourceContract>  $data
+     * @param  array<string|MenuSection|Resource>  $data
      */
     public static function menu(array $data): void
     {
@@ -133,7 +124,7 @@ class MoonShine
 
         app(Menu::class)->register(self::$menu);
 
-        self::resolveResourcesRoutes();
+        //self::resolveResourcesRoutes();
     }
 
     /**
@@ -160,7 +151,7 @@ class MoonShine
             ->middleware($middlewares)
             ->as('moonshine.')->group(function (): void {
                 self::getResources()->each(
-                    function (ResourceContract $resource): void {
+                    function (Resource $resource): void {
                         $resource->resolveRoutes();
                     }
                 );
@@ -170,7 +161,7 @@ class MoonShine
     /**
      * Register resources in the system
      *
-     * @param  array<ResourceContract>  $data
+     * @param  array<Resource>  $data
      */
     public static function resources(array $data): void
     {

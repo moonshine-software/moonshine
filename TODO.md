@@ -1,0 +1,6 @@
+- [x] Dashboard to Decorations
+- [x] Decorations with PageComponents
+- [x] Use BladeComponents, Livewire components in PageComponents
+- [ ] TableBuilder BulkActions (Perhaps ItemAction with method bulk)
+- [ ] PageComponents: Actions, QueryTags
+- [ ] Rename Renderable

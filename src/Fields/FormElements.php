@@ -200,6 +200,20 @@ abstract class FormElements extends Collection
     }
 
     /**
+     * @param  ?FormElement  $default
+     * @throws Throwable
+     */
+    public function findByClass(
+        string $class,
+        FormElement $default = null
+    ): ?FormElement {
+        return $this->onlyFields()->first(
+            static fn (FormElement $field): bool => get_class($field) === $class,
+            $default
+        );
+    }
+
+    /**
      * @throws Throwable
      */
     public function onlyColumns(): FormElements

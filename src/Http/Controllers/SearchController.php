@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Fields\MorphTo;
+use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\MoonShine;
 use Throwable;
 

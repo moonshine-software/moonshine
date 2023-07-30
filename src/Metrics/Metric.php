@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Metrics;
 
+use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasAssets;
-use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Renderable;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithColumnSpan;
@@ -17,7 +19,7 @@ use MoonShine\Utilities\AssetManager;
 /**
  * @method static static make(string $label)
  */
-abstract class Metric implements ResourceRenderable, HasAssets
+abstract class Metric implements Renderable, HasAssets
 {
     use Makeable;
     use WithAssets;
@@ -43,5 +45,17 @@ abstract class Metric implements ResourceRenderable, HasAssets
         if ($this->getAssets()) {
             app(AssetManager::class)->add($this->getAssets());
         }
+    }
+
+    public function render(): View|Closure|string
+    {
+        return view($this->getView(), [
+            'element' => $this
+        ]);
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->render();
     }
 }

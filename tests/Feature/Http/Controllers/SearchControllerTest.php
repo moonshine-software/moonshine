@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Fields\BelongsTo;
+use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;

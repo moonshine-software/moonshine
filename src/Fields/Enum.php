@@ -11,7 +11,7 @@ class Enum extends Select implements DefaultCanBeEnum
 {
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        $value = $item->{$this->field()};
+        $value = $item->{$this->column()};
 
         if (isset($this->values()[$value?->value])) {
             return (string) ($this->values()[$value->value] ?? '');

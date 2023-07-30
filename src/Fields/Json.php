@@ -87,7 +87,7 @@ class Json extends Field implements
     public function save(Model $item): Model
     {
         if ($this->requestValue() === false) {
-            $item->{$this->field()} = [];
+            $item->{$this->column()} = [];
 
             return $item;
         }
@@ -97,16 +97,16 @@ class Json extends Field implements
         foreach ($requestValues as $index => $values) {
             foreach ($this->getFields()->onlyFileFields() as $field) {
                 $field->setParentRequestValueKey(
-                    $this->field() . "." . $index
+                    $this->column() . "." . $index
                 );
 
-                $requestValues[$index][$field->field()] = $field->hasManyOrOneSave(
-                    $values[$field->field()] ?? null
+                $requestValues[$index][$field->column()] = $field->hasManyOrOneSave(
+                    $values[$field->column()] ?? null
                 );
             }
         }
 
-        $item->{$this->field()} = $this->mapKeyValue(collect($requestValues));
+        $item->{$this->column()} = $this->mapKeyValue(collect($requestValues));
 
         return $item;
     }
@@ -121,8 +121,8 @@ class Json extends Field implements
             $collection = $collection->map(function ($data) use ($fields) {
                 foreach ($fields as $field) {
                     if ($field instanceof Json && $field->isKeyOrOnlyValue()) {
-                        $data[$field->field()] = $field->mapKeyValue(
-                            collect($data[$field->field()] ?? [])
+                        $data[$field->column()] = $field->mapKeyValue(
+                            collect($data[$field->column()] ?? [])
                         );
                     }
                 }

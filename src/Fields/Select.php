@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
@@ -32,22 +31,16 @@ class Select extends Field implements
     /**
      * @throws JsonException
      */
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function preview(): string
     {
-        if ($this->hasRelationship()) {
-            return parent::indexViewValue($item, $container);
-        }
-
-        $value = $item->{$this->field()};
-
         if ($this->isMultiple()) {
-            $value = is_string($value) ?
-                json_decode($value, true, 512, JSON_THROW_ON_ERROR)
-                : $value;
+            $value = is_string($this->value()) ?
+                json_decode($this->value(), true, 512, JSON_THROW_ON_ERROR)
+                : $this->value();
 
             return collect($value)
                 ->when(
-                    $container,
+                    false, // $container
                     fn ($collect): Collection => $collect->map(
                         fn ($v): string => view('moonshine::ui.badge', [
                             'color' => 'purple',
@@ -58,6 +51,6 @@ class Select extends Field implements
                 ->implode(',');
         }
 
-        return (string) ($this->values()[$value] ?? '');
+        return (string) ($this->values()[$this->value()] ?? '');
     }
 }

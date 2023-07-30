@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Http\Requests\Resources\EditFormRequest;
-use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use MoonShine\MoonShineRequest;
+use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Http\Requests\Resources\EditFormFormRequest;
+use MoonShine\Http\Requests\Resources\ViewAnyFormFormRequest;
 use MoonShine\MoonShineUI;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -15,7 +15,7 @@ use Throwable;
 
 final class ActionController extends BaseController
 {
-    public function index(ViewAnyFormRequest $request): mixed
+    public function index(ViewAnyFormFormRequest $request): mixed
     {
         $actions = $request->getResource()->getActions();
 
@@ -32,7 +32,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function item(ViewAnyFormRequest $request): RedirectResponse
+    public function item(ViewAnyFormFormRequest $request): RedirectResponse
     {
         return $this->itemActionProcess(
             $request->getResource()->itemActions(),
@@ -40,7 +40,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function form(EditFormRequest $request): RedirectResponse
+    public function form(EditFormFormRequest $request): RedirectResponse
     {
         return $this->itemActionProcess(
             $request->getResource()->formActions(),
@@ -49,7 +49,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function bulk(ViewAnyFormRequest $request): RedirectResponse
+    public function bulk(ViewAnyFormFormRequest $request): RedirectResponse
     {
         $redirectRoute = $request->redirectRoute(
             $request->getResource()->route('index')
@@ -93,7 +93,7 @@ final class ActionController extends BaseController
 
     private function itemActionProcess(
         array $actions,
-        MoonShineRequest $request,
+        MoonshineFormRequest $request,
         ?string $route = null
     ): RedirectResponse {
         abort_if(

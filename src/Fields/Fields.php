@@ -23,11 +23,9 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function fillValues(array $rawValues = [], mixed $castedValues = null): void
+    public function fillValues(array $rawValues = [], mixed $castedValues = null): self
     {
-        $this->onlyFields()->map(
-            fn(Field $field) => $field->resolveValue($rawValues, $castedValues)
-        );
+        return $this->onlyFields()->map(fn (Field $field) => clone $field->resolveValue($rawValues, $castedValues));
     }
 
     /**

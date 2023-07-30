@@ -8,11 +8,11 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
-use MoonShine\Http\Requests\Resources\UpdateColumnFormRequest;
+use MoonShine\Http\Requests\Resources\UpdateColumnFormFormRequest;
 
 class UpdateColumnController extends BaseController
 {
-    public function __invoke(UpdateColumnFormRequest $request): Response
+    public function __invoke(UpdateColumnFormFormRequest $request): Response
     {
         $request->merge([
             $request->field()->field() => $request->get('value'),

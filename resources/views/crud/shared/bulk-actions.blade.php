@@ -1,15 +1,14 @@
-@if($resource->bulkActionsCollection()->onlyVisible()->inDropdown()->isNotEmpty())
+@if($actions->inDropdown()->isNotEmpty())
 <x-moonshine::dropdown>
     <x-slot:toggler class="btn">
         <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
     </x-slot:toggler>
 
     <ul class="dropdown-menu">
-        @foreach($resource->bulkActionsCollection()->onlyVisible()->inDropdown() as $index => $action)
+        @foreach($actions->inDropdown() as $index => $action)
             <li class="dropdown-menu-item">
                 @include('moonshine::crud.shared.bulk-action-item', [
                     'action' => $action,
-                    'resource' => $resource,
                     'index' => $index
                 ])
             </li>
@@ -18,48 +17,11 @@
 </x-moonshine::dropdown>
 @endif
 
-@foreach($resource->bulkActionsCollection()->onlyVisible()->inLine() as $index => $action)
-   @include('moonshine::crud.shared.bulk-action-item', [
-        'action' => $action,
-        'resource' => $resource,
-        'index' => $index
-   ])
-@endforeach
-
-@if($resource->can('massDelete') && in_array('delete', $resource->getActiveActions()))
-    <x-moonshine::modal title="{{ trans('moonshine::ui.deleting') }}">
-        <div class="mb-4">
-            {{ trans('moonshine::ui.confirm_message') }}
-        </div>
-
-        <x-moonshine::form
-            method="POST"
-            action="{{ $resource->route('massDelete') }}"
-            :raw="true"
-        >
-            @method("delete")
-
-            @include('moonshine::crud.shared.form-hidden', ['resource' => $resource])
-
-            <x-moonshine::form.input
-                type="hidden"
-                name="ids"
-                class="actionsCheckedIds"
-                value=""
-            />
-
-            <x-moonshine::form.button type="submit" class="btn-pink">
-                {{ trans('moonshine::ui.confirm') }}
-            </x-moonshine::form.button>
-        </x-moonshine::form>
-
-        <x-slot name="outerHtml">
-            <x-moonshine::link
-                :filled="false"
-                icon="heroicons.outline.trash"
-                class="btn-pink"
-                @click.prevent="toggleModal"
-            />
-        </x-slot>
-    </x-moonshine::modal>
+@if($actions->inLine()->isNotEmpty())
+    @foreach($actions->inLine() as $index => $action)
+       @include('moonshine::crud.shared.bulk-action-item', [
+            'action' => $action,
+            'index' => $index
+       ])
+    @endforeach
 @endif

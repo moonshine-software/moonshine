@@ -24,9 +24,11 @@ abstract class Field extends FormElement
 
     protected bool $canSave = true;
 
-    public function setValue(mixed $value = null)
+    public function setValue(mixed $value = null): self
     {
         $this->value = $value;
+
+        return $this;
     }
 
     public function setRawValue(mixed $value = null)
@@ -36,6 +38,10 @@ abstract class Field extends FormElement
 
     public function resolveValue(array $rawValues = [], mixed $castedValues = null): self
     {
+        if($this->value) {
+            return $this;
+        }
+
         $value = $rawValues[$this->column()] ?? null;
 
         $this->setRawValue($value);

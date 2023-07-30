@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Renderable;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\ShowWhen;
 use MoonShine\Traits\Fields\WithRelatedValues;
@@ -32,7 +33,7 @@ use MoonShine\Utilities\AssetManager;
  * @mixin WithResourceMode
  * @mixin WithRelatedValues
  */
-abstract class FormElement implements ResourceRenderable, HasAssets
+abstract class FormElement implements Renderable, HasAssets
 {
     use Makeable;
     use WithLabel;
@@ -278,5 +279,19 @@ abstract class FormElement implements ResourceRenderable, HasAssets
         $this->group = true;
 
         return $this;
+    }
+
+    public function render(): View|Closure|string
+    {
+        return view($this->getView());
+    }
+
+    public function __toString()
+    {
+        return $this->render()
+            ->with([
+                'element' => $this,
+            ])
+            ->render();
     }
 }

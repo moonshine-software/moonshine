@@ -5,25 +5,28 @@ declare(strict_types=1);
 namespace MoonShine\Dashboard;
 
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Renderable;
 
 abstract class DashboardScreen
 {
-    public function getBlocks(): Collection
+    public function getComponents(): Collection
     {
-        $blocks = collect();
+        $components = collect();
 
-        collect($this->blocks() ?? [])->each(
-            function ($item) use ($blocks): void {
-                $item = is_string($item) ? new $item() : $item;
+        collect($this->components() ?? [])->each(
+            function ($component) use ($components): void {
+                $component = is_string($component)
+                    ? new $component()
+                    : $component;
 
-                if ($item instanceof DashboardBlock) {
-                    $blocks->add($item);
+                if ($component instanceof Renderable) {
+                    $components->add($component);
                 }
             }
         );
 
-        return $blocks;
+        return $components;
     }
 
-    abstract public function blocks(): array;
+    abstract public function components(): array;
 }

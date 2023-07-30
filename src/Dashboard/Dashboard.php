@@ -5,31 +5,38 @@ declare(strict_types=1);
 namespace MoonShine\Dashboard;
 
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Renderable;
 use MoonShine\MoonShine;
 
 class Dashboard
 {
-    protected ?Collection $blocks = null;
+    protected ?Collection $components = null;
 
-    public function registerBlocks(array $data): void
+    public function components(array $data): void
     {
-        $this->blocks = collect();
+        $this->components = collect();
 
-        collect($data)->each(function ($item): void {
-            $item = is_string($item) ? new $item() : $item;
+        collect($data)->each(function ($component): void {
+            $component = is_string($component)
+                ? new $component()
+                : $component;
 
-            if ($item instanceof DashboardBlock) {
-                $this->blocks->add($item);
+            if ($component instanceof Renderable) {
+                $this->components->add($component);
             }
         });
     }
 
-    public function getBlocks(): ?Collection
+    public function getComponents(): ?Collection
     {
         $class = MoonShine::namespace('\Dashboard');
-        $blocks = class_exists($class) ? (new $class())->getBlocks()
+
+        $components = class_exists($class)
+            ? (new $class())->getComponents()
             : collect();
 
-        return $this->blocks instanceof Collection ? $this->blocks : $blocks;
+        return $this->components instanceof Collection
+            ? $this->components
+            : $components;
     }
 }

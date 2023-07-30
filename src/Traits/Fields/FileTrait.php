@@ -27,11 +27,6 @@ trait FileTrait
 
     protected ?Closure $customName = null;
 
-    /**
-     * @deprecated Will be removed
-     */
-    protected string $withPrefix = '';
-
     public function keepOriginalFileName(): static
     {
         $this->keepOriginalFileName = true;
@@ -249,40 +244,5 @@ trait FileTrait
         }
 
         return $item->{$this->field()} ?? '';
-    }
-
-    /**
-     * @return $this
-     * @deprecated Will be removed
-     */
-    public function withPrefix(string $withPrefix): static
-    {
-        $this->withPrefix = $withPrefix;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated Will be removed
-     */
-    protected function unPrefixedValue(string|bool|null $value): string
-    {
-        return $value ? ltrim($value, $this->prefix()) : '';
-    }
-
-    /**
-     * @deprecated Will be removed
-     */
-    public function prefix(): string
-    {
-        return $this->withPrefix;
-    }
-
-    /**
-     * @deprecated Will be removed
-     */
-    protected function prefixedValue(string|bool|null $value): string
-    {
-        return $value ? ($this->prefix() . ltrim($value, $this->prefix())) : '';
     }
 }

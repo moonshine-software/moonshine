@@ -30,7 +30,7 @@ class Code extends Textarea
 
     public function indexViewValue(Model $item, bool $container = true): string
     {
-        return (string) str($item->{$this->field()})
+        return (string) str($item->{$this->column()})
             ->before('<pre>')
             ->after('</pre>')
             ->stripTags();

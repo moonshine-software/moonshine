@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class Image extends File
 {
     protected static string $view = 'moonshine::fields.image';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function preview(): string
     {
-        if (! $item->{$this->field()}) {
+        if (! $this->value()) {
             return '';
         }
 
         $files = $this->isMultiple()
-            ? collect($item->{$this->field()})
+            ? collect($this->value())
                 ->map(fn ($value): string => $this->pathWithDir($value ?? ''))
                 ->toArray()
-            : [$this->pathWithDir($item->{$this->field()})];
+            : [$this->pathWithDir($this->value())];
 
-        if (! $container) {
+        if (! false) { // $container
             return implode(';', array_filter($files));
         }
 

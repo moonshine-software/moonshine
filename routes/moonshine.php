@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
+use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Http\Controllers\CustomPageController;
 use MoonShine\Http\Controllers\DashboardController;
 use MoonShine\Http\Controllers\NotificationController;
+use MoonShine\Http\Controllers\PageController;
 use MoonShine\Http\Controllers\ProfileController;
 use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
@@ -19,6 +21,9 @@ Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware($middlewares)
     ->as('moonshine.')->group(static function () {
         Route::middleware('auth.moonshine')->group(function (): void {
+            Route::get('/resource/{resourceUri}/{pageUri}', PageController::class)->name('page');
+            Route::resource('/resource/{resourceUri}/crud', CrudController::class)->parameter('crud', 'item');
+
             Route::get('/', DashboardController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');
 

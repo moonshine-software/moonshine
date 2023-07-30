@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\CanBeMultiple;
@@ -39,19 +38,19 @@ class File extends Field implements Fileable, RemovableContract
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function preview(): string
     {
-        if (! $item->{$this->field()}) {
+        if (! $this->value()) {
             return '';
         }
 
         $files = $this->isMultiple()
-            ? collect($item->{$this->field()})
+            ? collect($this->value())
                 ->map(fn ($value): string => $this->pathWithDir($value))
                 ->toArray()
-            : [$this->pathWithDir($item->{$this->field()})];
+            : [$this->pathWithDir($this->value())];
 
-        if (! $container) {
+        if (! false) { // $container
             return implode(';', array_filter($files));
         }
 
@@ -61,18 +60,18 @@ class File extends Field implements Fileable, RemovableContract
         ])->render();
     }
 
-    public function afterDelete(Model $item): void
+    public function afterDelete(): void
     {
         if (! $this->isDeleteFiles()) {
             return;
         }
 
         if ($this->isMultiple()) {
-            foreach ($item->{$this->field()} as $value) {
+            foreach ($this->value() as $value) {
                 $this->deleteFile($value);
             }
-        } elseif (! empty($item->{$this->field()})) {
-            $this->deleteFile($item->{$this->field()});
+        } elseif (! empty($this->value())) {
+            $this->deleteFile($this->value());
         }
 
         $this->deleteDir();

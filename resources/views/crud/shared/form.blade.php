@@ -13,10 +13,8 @@
         @method('PUT')
     @endif
 
-    <x-moonshine::resource-renderable
+    <x-moonshine::fields-group
         :components="$resource->getFields()"
-        :item="$item"
-        :resource="$resource"
     />
 
     @include('moonshine::crud.shared.form-actions', [

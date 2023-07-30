@@ -22,10 +22,8 @@
             @endif
 
             <div class="form-flex-col">
-                <x-moonshine::resource-renderable
+                <x-moonshine::fields-group
                     :components="$filters"
-                    :item="$resource->getModel()"
-                    :resource="$resource"
                 />
             </div>
 

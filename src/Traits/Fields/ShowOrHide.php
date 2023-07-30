@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Helpers\Condition;
 
 trait ShowOrHide
@@ -198,7 +197,7 @@ trait ShowOrHide
         return $this->showOnDetail;
     }
 
-    public function canDisplayOnForm(Model $item): bool
+    public function canDisplayOnForm(mixed $item): bool
     {
         return $this->isSee($item)
             && $this->showOnForm

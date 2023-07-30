@@ -7,7 +7,7 @@ use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Exceptions\FieldException;
-use MoonShine\Fields\HasMany;
+use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Text;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
