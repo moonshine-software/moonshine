@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
+use Throwable;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
@@ -120,7 +121,7 @@ final class FormBuilder extends Component implements FormContract, Renderable
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getFields(): Fields
     {
@@ -194,7 +195,7 @@ final class FormBuilder extends Component implements FormContract, Renderable
         ]);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }

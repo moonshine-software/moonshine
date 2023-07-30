@@ -286,7 +286,7 @@ abstract class FormElement implements Renderable, HasAssets
         return view($this->getView());
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render()
             ->with([

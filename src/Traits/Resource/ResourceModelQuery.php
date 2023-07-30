@@ -33,7 +33,7 @@ trait ResourceModelQuery
      */
     public function paginate(): Paginator
     {
-        $paginator = $this->resolveQuery()
+        return $this->resolveQuery()
             ->when(
                 static::$simplePaginate,
                 fn (Builder $query): Paginator => $query->simplePaginate(
@@ -44,8 +44,6 @@ trait ResourceModelQuery
                 ),
             )
             ->appends(request()->except('page'));
-
-        return $paginator;
     }
 
     /**

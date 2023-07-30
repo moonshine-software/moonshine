@@ -49,15 +49,7 @@ class File extends Field implements Fileable, RemovableContract
                 ->map(fn ($value): string => $this->pathWithDir($value))
                 ->toArray()
             : [$this->pathWithDir($this->value())];
-
-        if (! false) { // $container
-            return implode(';', array_filter($files));
-        }
-
-        return view('moonshine::components.files', [
-            'files' => $files,
-            'download' => $this->canDownload(),
-        ])->render();
+        return implode(';', array_filter($files));
     }
 
     public function afterDelete(): void

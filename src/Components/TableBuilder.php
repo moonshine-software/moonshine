@@ -77,7 +77,7 @@ final class TableBuilder extends Component implements Renderable
 
     public function rows(): Collection
     {
-        return $this->getItems()->map(function (array $data) {
+        return $this->getItems()->map(function (array $data): TableRow {
             $castedValues = $this->castValues($data);
 
             return TableRow::make(
@@ -168,7 +168,7 @@ final class TableBuilder extends Component implements Renderable
         ]);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }

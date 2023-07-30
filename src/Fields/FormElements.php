@@ -208,7 +208,7 @@ abstract class FormElements extends Collection
         FormElement $default = null
     ): ?FormElement {
         return $this->onlyFields()->first(
-            static fn (FormElement $field): bool => get_class($field) === $class,
+            static fn (FormElement $field): bool => $field::class === $class,
             $default
         );
     }

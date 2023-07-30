@@ -176,7 +176,6 @@ abstract class ModelResource extends Resource
         if (is_null($saveData)) {
             $item->{$field->column()} = $field->requestValue();
             return $item;
-            return $field->save($item);
         }
 
         if (isset($saveData[$field->column()])) {

@@ -31,7 +31,7 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    public function setRawValue(mixed $value = null)
+    public function setRawValue(mixed $value = null): void
     {
         $this->rawValue = $value;
     }
@@ -49,7 +49,7 @@ abstract class Field extends FormElement
         if (is_callable($this->valueCallback())) {
             $value = call_user_func(
                 $this->valueCallback(),
-                ! empty($castedValues) ? $castedValues : $rawValues
+                empty($castedValues) ? $rawValues : $castedValues
             );
         }
 

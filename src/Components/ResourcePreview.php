@@ -78,7 +78,7 @@ final class ResourcePreview extends Component implements Renderable
         ]);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }

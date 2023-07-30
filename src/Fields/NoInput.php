@@ -116,7 +116,7 @@ class NoInput extends Field
         return (string) $value;
     }
 
-    public function getValue(Model $item, bool $container = true): string|bool
+    public function getValue(Model $item = null, bool $container = true): string|bool
     {
         $value = parent::indexViewValue($item, $container);
 

@@ -39,28 +39,24 @@ class IndexPage extends Page
                 ])->columnSpan(6),
             ]),
             TableBuilder::make()->fields($this->getResource()->getFields()->onlyFields()->toArray())
-                ->cast(get_class($this->getResource()->getModel()))
+                ->cast($this->getResource()->getModel()::class)
                 ->items($items->items())
                 ->paginator($items)
-                ->trAttributes(function ($data, int $index, ComponentAttributeBag $attributes) {
-                    return $attributes->when(
-                        $index === 0 && $data->getKey() === 2,
-                        fn (ComponentAttributeBag $attr) => $attr->merge([
-                            'class' => 'bgc-purple',
-                        ])
-                    );
-                })
-                ->tdAttributes(function ($data, int $cell, int $index, ComponentAttributeBag $attributes) {
-                    return $attributes->when(
-                        $index === 1 && $cell === 0 && $data->getKey() === 1,
-                        fn (ComponentAttributeBag $attr) => $attr->merge([
-                            'class' => 'bgc-red',
-                        ])
-                    );
-                })
+                ->trAttributes(fn($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
+                    $index === 0 && $data->getKey() === 2,
+                    fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                        'class' => 'bgc-purple',
+                    ])
+                ))
+                ->tdAttributes(fn($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
+                    $index === 1 && $cell === 0 && $data->getKey() === 1,
+                    fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                        'class' => 'bgc-red',
+                    ])
+                ))
                 ->buttons([
                     ItemAction::make(
-                        '', url: fn ($data) => route('moonshine.page', [
+                        '', url: fn ($data): string => route('moonshine.page', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'pageUri' => 'form-page',
                         'item' => $data->getKey(),
@@ -72,7 +68,7 @@ class IndexPage extends Page
 
 
                     ItemAction::make(
-                        '', url: fn ($data) => route('moonshine.crud.destroy', [
+                        '', url: fn ($data): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => $data->getKey(),
                     ])
@@ -84,7 +80,7 @@ class IndexPage extends Page
 
 
                     ItemAction::make(
-                        '', url: fn () => route('moonshine.crud.destroy', [
+                        '', url: fn (): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => 0,
                     ])

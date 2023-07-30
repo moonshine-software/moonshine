@@ -95,12 +95,15 @@ class MoonShineUserResource extends ModelResource
     public function itemActions(): array
     {
         return [
-            ItemAction::make('Login as', function (MoonshineUser $item) {
+            ItemAction::make('Login as', function (MoonshineUser $item): void {
                 auth(config('moonshine.auth.guard'))->login($item);
             }, 'Success')->icon('users'),
         ];
     }
 
+    /**
+     * @return array{name: string, moonshine_user_role_id: string, email: mixed[], password: string}
+     */
     public function rules($item): array
     {
         return [
@@ -113,9 +116,9 @@ class MoonShineUserResource extends ModelResource
                 'email',
                 Rule::unique('moonshine_users')->ignoreModel($item),
             ],
-            'password' => ! $item->exists
-                ? 'required|min:6|required_with:password_repeat|same:password_repeat'
-                : 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
+            'password' => $item->exists
+                ? 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat'
+                : 'required|min:6|required_with:password_repeat|same:password_repeat',
         ];
     }
 
@@ -142,7 +145,7 @@ class MoonShineUserResource extends ModelResource
     {
         //parent::resolveRoutes();
 
-        Route::prefix('resource')->group(function () {
+        Route::prefix('resource')->group(function (): void {
             Route::post(
                 "{$this->uriKey()}/{" . $this->routeParam() . "}/permissions",
                 PermissionController::class

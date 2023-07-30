@@ -45,7 +45,7 @@ abstract class Decoration implements Renderable, FieldsDecoration
         ]);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }

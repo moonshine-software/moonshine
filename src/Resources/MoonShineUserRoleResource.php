@@ -32,6 +32,9 @@ class MoonShineUserRoleResource extends ModelResource
         ];
     }
 
+    /**
+     * @return array{name: string}
+     */
     public function rules($item): array
     {
         return [

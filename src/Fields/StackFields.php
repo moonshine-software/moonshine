@@ -56,12 +56,12 @@ class StackFields extends Field implements HasFields
     /**
      * @throws Throwable
      */
-    public function afterSave(Model $item): void
+    public function afterSave(Model $item = null): void
     {
         parent::afterSave($item);
 
         $this->getFields()
             ->onlyFields()
-            ->each(fn (FormElement $field) => $field->afterSave($item));
+            ->each(fn (FormElement $field) => $field->afterSave());
     }
 }
