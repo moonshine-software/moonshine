@@ -4,14 +4,12 @@
             <x-moonshine::divider :label="$field->label()" />
         @endif
         <div class="my-2">
-            {!! $field->indexViewValue($item) !!}
+            {!! $field->preview() !!}
         </div>
     @endforeach
 @else
-    <x-moonshine::resource-renderable
+    <x-moonshine::fields-group
         :components="$element->getFields()"
-        :item="$item"
-        :resource="$resource"
         :container="false"
     />
 @endif

@@ -67,16 +67,17 @@ abstract class MenuSection
                     return true;
                 }
             }
-
             return false;
         }
 
-        if ($this->resource() instanceof Resource) {
-            return request()->routeIs($this->resource()->routeName('*'));
+        if ($this->resource() instanceof Resource && request()->route('page')) {
+            return str_contains($this->url(), request()->route('page'));
         }
 
-        if ($this->page() instanceof CustomPage) {
-            return request()->url() === $this->page()->url();
+        if ($this->resource() instanceof Resource) {
+            return !is_null(
+                request()->route('resourceUri', $this->resource()->uriKey())
+            );
         }
 
         $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
@@ -116,12 +117,9 @@ abstract class MenuSection
                 : $this->link;
         }
 
-        if ($this->page() instanceof CustomPage) {
-            return $this->page()->url();
-        }
-
-        return $this->resource() instanceof Resource
-            ? route($this->resource()->routeName('index'))
-            : '';
+        return $this->resource()
+            ?->getPages()
+            ->first()
+            ->route();
     }
 }

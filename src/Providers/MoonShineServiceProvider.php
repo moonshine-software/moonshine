@@ -23,6 +23,7 @@ use MoonShine\Http\Middleware\ChangeLocale;
 use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
+use MoonShine\MoonShineRequest;
 use MoonShine\Utilities\AssetManager;
 
 class MoonShineServiceProvider extends ServiceProvider
@@ -142,6 +143,10 @@ class MoonShineServiceProvider extends ServiceProvider
 
         Blade::withoutDoubleEncoding();
         Blade::componentNamespace('MoonShine\Components', 'moonshine');
+
+        $this->app->bind(MoonShineRequest::class, function ($app) {
+            return MoonShineRequest::createFrom($app['request']);
+        });
 
         $this->app->singleton(MoonShine::class);
         $this->app->singleton(Menu::class);

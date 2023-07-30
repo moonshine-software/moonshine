@@ -2,8 +2,6 @@
     @if($element->isGroup())
         @include('moonshine::fields.multi-checkbox', [
             'element' => $element,
-            'item' => $item,
-            'resource' => $resource
         ])
     @else
         <x-moonshine::form.input
@@ -18,7 +16,7 @@
                 'id' => $element->id(),
                 'name' => $element->name(),
                 'value' => $element->getOnValue(),
-                'checked' => $element->getOnValue() == $element->formViewValue($item)
+                'checked' => $element->getOnValue() == $element->value()
             ])"
             @class(['form-invalid' => $errors->has($element->name())])
             x-bind:checked="{{ $element->attributes()->get('x-model-field') ? $element->attributes()->get('x-model-field') . '==`'.$element->getOnValue().'`' : '$el.checked' }}"

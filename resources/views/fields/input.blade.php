@@ -2,9 +2,9 @@
 if($element->isFile()) {
     $value = false;
 } elseif(isset($valueKey)) {
-    $value = is_array($element->formViewValue($item)) ? ($element->formViewValue($item)[$valueKey] ?? '') : '';
+    $value = is_array($element->value()) ? ($element->value()[$valueKey] ?? '') : '';
 } else {
-    $value = (string) $element->formViewValue($item);
+    $value = (string) $element->value();
 }
 @endphp
 

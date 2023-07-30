@@ -23,6 +23,14 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
+    public function fillValues(array $rawValues = [], mixed $castedValues = null): self
+    {
+        return $this->onlyFields()->map(fn (Field $field) => clone $field->resolveValue($rawValues, $castedValues));
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function resolveChildFields(Field $parent): Fields
     {
         return $this->map(function (Field $field) use ($parent): Field|NoInput {
@@ -35,7 +43,7 @@ final class Fields extends FormElements
 
             if ($parent instanceof HasPivot) {
                 return $field->setName(
-                    "{$parent->relation()}_{$field->field()}[]"
+                    "{$parent->relation()}_{$field->column()}[]"
                 );
             }
 
@@ -45,7 +53,7 @@ final class Fields extends FormElements
                 && ! $parent->isResourceModeField()) {
                 return NoInput::make(
                     $field->label(),
-                    $field->field(),
+                    $field->column(),
                     static fn (): string => 'Relationship fields with fields unavailable. Use resourceMode'
                 )->badge('red');
             }
@@ -58,7 +66,7 @@ final class Fields extends FormElements
                             '[${index' . $s->substrCount('$') . '}]'
                         )
                     )
-                    ->append("[{$field->field()}]")
+                    ->append("[{$field->column()}]")
                     ->replace('[]', '')
                     ->when(
                         $field->getAttribute('multiple'),

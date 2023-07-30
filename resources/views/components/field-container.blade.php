@@ -1,7 +1,5 @@
 @props([
-    'resource',
     'field',
-    'item'
 ])
 @if($field->isHidden())
     <div class="hidden">{{ $slot }}</div>

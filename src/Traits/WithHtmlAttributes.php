@@ -21,8 +21,6 @@ trait WithHtmlAttributes
 
     protected array $customAttributes = [];
 
-    protected array $customClasses = [];
-
     public function getAttribute(string $name): mixed
     {
         return $this->attributes()->get($name);
@@ -42,19 +40,7 @@ trait WithHtmlAttributes
         return (new ComponentAttributeBag(
             $this->customAttributes + $resolveAttributes->toArray()
         )
-        )->class($this->customClasses);
-    }
-
-    public function isFile(): bool
-    {
-        return $this->type() === 'file';
-    }
-
-    public function type(): string
-    {
-        return $this->hidden
-            ? 'hidden'
-            : $this->attributes()->get('type', '');
+        );
     }
 
     public function removeAttribute(string $name): static
@@ -78,25 +64,30 @@ trait WithHtmlAttributes
         return $this;
     }
 
-    public function customClasses(array $classes): static
+    public function setAttribute(string $name, string|bool $value): static
     {
-        $this->customClasses = $classes;
+        $this->attributes[] = $name;
+        $this->customAttributes[$name] = $value;
 
         return $this;
+    }
+
+    public function isFile(): bool
+    {
+        return $this->type() === 'file';
+    }
+
+    public function type(): string
+    {
+        return $this->hidden
+            ? 'hidden'
+            : $this->attributes()->get('type', '');
     }
 
     public function required($condition = null): static
     {
         $this->required = Condition::boolean($condition, true);
         $this->setAttribute('required', $this->required);
-
-        return $this;
-    }
-
-    public function setAttribute(string $name, string|bool $value): static
-    {
-        $this->attributes[] = $name;
-        $this->customAttributes[$name] = $value;
 
         return $this;
     }

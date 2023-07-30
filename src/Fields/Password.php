@@ -31,7 +31,7 @@ class Password extends Text
     public function save(Model $item): Model
     {
         if ($this->requestValue()) {
-            $item->{$this->field()} = bcrypt($this->requestValue());
+            $item->{$this->column()} = bcrypt($this->requestValue());
         }
 
         return $item;

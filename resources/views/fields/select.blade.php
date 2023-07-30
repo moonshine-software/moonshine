@@ -9,22 +9,19 @@
         @class(['form-invalid' => $errors->has($element->name())])
         :asyncRoute="(method_exists($element, 'isAsyncSearch') && $element->isAsyncSearch()) ?
             route('moonshine.search.relations', [
-                    'resource' => $element->parent() && $element->parent()->resource()
-                        ? $element->parent()->resource()->uriKey()
-                        : $resource->uriKey(),
                     'column' => $element->field(),
                 ]) : null"
 
 >
     <x-slot:options>
         @if($element->isNullable())
-            <option @selected(!$element->formViewValue($item)) value="">-</option>
+            <option @selected(!$element->value()) value="">-</option>
         @endif
         @foreach($element->values() as $optionValue => $optionName)
             @if(is_array($optionName))
                 <optgroup label="{{ $optionValue }}">
                     @foreach($optionName as $oValue => $oName)
-                        <option @selected($element->isSelected($item, $oValue))
+                        <option @selected($element->isSelected($oValue))
                                 value="{{ $oValue }}"
                         >
                             {{ $oName }}
@@ -32,7 +29,7 @@
                     @endforeach
                 </optgroup>
             @else
-                <option @selected($element->isSelected($item, $optionValue))
+                <option @selected($element->isSelected($optionValue))
                         value="{{ $optionValue }}"
                 >
                     {{ $optionName }}

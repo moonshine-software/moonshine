@@ -7,8 +7,8 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Fields\Field;
-use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use MoonShine\MoonShineRequest;
+use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Http\Requests\Resources\ViewAnyFormFormRequest;
 use MoonShine\Resources\Resource;
 use Throwable;
 
@@ -23,7 +23,7 @@ class RelationFieldController extends BaseController
     /**
      * @throws Throwable
      */
-    public function index(ViewAnyFormRequest $request): View
+    public function index(ViewAnyFormFormRequest $request): View
     {
         $this->resolveFieldData($request);
 
@@ -42,7 +42,7 @@ class RelationFieldController extends BaseController
     /**
      * @throws Throwable
      */
-    public function resolveFieldData(MoonShineRequest $request): void
+    public function resolveFieldData(MoonshineFormRequest $request): void
     {
         $this->field = $request->getResource()
             ->getFields()
@@ -71,7 +71,7 @@ class RelationFieldController extends BaseController
     /**
      * @throws Throwable
      */
-    public function form(ViewAnyFormRequest $request): View
+    public function form(ViewAnyFormFormRequest $request): View
     {
         $this->resolveFieldData($request);
 
@@ -86,7 +86,7 @@ class RelationFieldController extends BaseController
             ->getForeignKeyName();
 
         if (! $id = $request->get('_related_key')) {
-            $id = MoonShineRequest::create(
+            $id = MoonshineFormRequest::create(
                 $request->headers->get('referer')
             )->getIdBySegment();
         }

@@ -1,10 +1,10 @@
 <x-moonshine::modal title="{{ $action->modal()->title() }}">
     <div class="mb-4">
-        {{ $action->modal()->content() }}
+        {!! $action->modal()->content() !!}
     </div>
 
     <x-moonshine::link
-        :href="$href"
+        :href="$action->url()"
         :icon="$action->iconValue()"
     >
         {{ $action->modal()->getConfirmButtonText() }}

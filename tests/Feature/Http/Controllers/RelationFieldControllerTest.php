@@ -1,8 +1,8 @@
 <?php
 
-use MoonShine\Fields\HasMany;
-use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
+use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\Text;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\CategoryImage;

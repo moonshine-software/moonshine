@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasValueExtraction;
-use MoonShine\Fields\BelongsToMany;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Relationships\BelongsToMany;
 use Throwable;
 
 /**
@@ -20,11 +20,12 @@ trait WithJsonValues
     /**
      * @throws Throwable
      */
-    public function jsonValues(Model $item = null): array
+    public function jsonValues(): array
     {
         $values = [];
+        $value = $this->value();
 
-        if (is_null($item)) {
+        if (is_null($value)) {
             foreach ($this->getFields() as $field) {
                 $defaultValue = '';
 
@@ -48,8 +49,6 @@ trait WithJsonValues
             return $values;
         }
 
-        $value = $this->formViewValue($item);
-
         if ($value instanceof Model) {
             $value = [$value];
         }
@@ -66,7 +65,7 @@ trait WithJsonValues
                     }
 
                     foreach ($fields as $field) {
-                        $fieldValue = $field->formViewValue($data);
+                        $fieldValue = $field->value();
 
                         if ($field instanceof BelongsToMany) {
                             $fieldValue = $fieldValue->pluck($data->getKeyName());

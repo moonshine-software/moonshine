@@ -29,7 +29,7 @@ class ID extends Text
     public function save(Model $item): Model
     {
         if ($this->requestValue()) {
-            $item->{$this->field()} = $this->requestValue();
+            $item->{$this->column()} = $this->requestValue();
         }
 
         return $item;

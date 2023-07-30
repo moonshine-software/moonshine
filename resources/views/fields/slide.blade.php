@@ -1,8 +1,8 @@
 <x-moonshine::form.range
     :uniqueId="$element->id()"
     :attributes="$element->attributes()"
-    :fromValue="$element->formViewValue($item)[$element->fromField] ?? $element->min"
-    :toValue="$element->formViewValue($item)[$element->toField] ?? $element->max"
+    :fromValue="$element->value()[$element->fromField] ?? $element->min"
+    :toValue="$element->value()[$element->toField] ?? $element->max"
     fromName="{{ $element->name() }}[{{ $element->fromField }}]"
     toName="{{ $element->name() }}[{{ $element->toField }}]"
     fromField="{{ $element->field() }}.{{ $element->fromField }}"

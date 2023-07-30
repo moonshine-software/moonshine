@@ -4,7 +4,7 @@ use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Fields\BelongsTo;
+use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Select;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;

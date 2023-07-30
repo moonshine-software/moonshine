@@ -24,10 +24,6 @@ trait WithDefaultValue
 
     public function getDefault(): mixed
     {
-        if ($this->hasRelationship() && ! $this->belongToOne()) {
-            return null;
-        }
-
         if ($this instanceof DefaultMustBeNull) {
             return null;
         }
@@ -41,8 +37,8 @@ trait WithDefaultValue
         }
 
         if (is_numeric(
-            $this->default
-        ) && $this instanceof DefaultCanBeNumeric) {
+                $this->default
+            ) && $this instanceof DefaultCanBeNumeric) {
             return $this->default;
         }
 

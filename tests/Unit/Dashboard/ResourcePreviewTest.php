@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Dashboard\ResourcePreview;
+use MoonShine\Components\ResourcePreview;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 

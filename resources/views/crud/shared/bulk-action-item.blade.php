@@ -5,12 +5,10 @@
         </div>
 
         <x-moonshine::form
-            :action="$resource->route('actions.bulk', query: ['index' => $index])"
+            :action="$action->url()"
             :raw="true"
             method="POST"
         >
-            @include('moonshine::crud.shared.form-hidden', ['resource' => $resource])
-
             <x-moonshine::form.input
                 type="hidden"
                 name="ids"
@@ -35,12 +33,10 @@
     </x-moonshine::modal>
 @else
     <x-moonshine::form
-        :action="$resource->route('actions.bulk', query: ['index' => $index])"
+        :action="$action->url()"
         :raw="true"
         method="POST"
     >
-        @include('moonshine::crud.shared.form-hidden', ['resource' => $resource])
-
         <x-moonshine::form.input
             type="hidden"
             name="ids"

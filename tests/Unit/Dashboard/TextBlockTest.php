@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Dashboard\TextBlock;
+use MoonShine\Decorations\TextBlock;
 
 uses()->group('dashboard');
 

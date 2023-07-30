@@ -3,10 +3,8 @@
     items-{{ $element->getItemsAlign() }}
     justify-{{ $element->getJustifyAlign() }}"
 >
-    <x-moonshine::resource-renderable
+    <x-moonshine::fields-group
         :components="$element->getFields()"
-        :item="$item"
-        :resource="$resource"
         :container="true"
     />
 </div>

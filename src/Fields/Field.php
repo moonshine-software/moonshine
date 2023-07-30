@@ -4,28 +4,59 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\HasExportViewValue;
-use MoonShine\Contracts\Fields\HasFormViewValue;
-use MoonShine\Contracts\Fields\HasIndexViewValue;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
 
-abstract class Field extends FormElement implements
-    HasExportViewValue,
-    HasIndexViewValue,
-    HasFormViewValue
+abstract class Field extends FormElement
 {
     use ShowOrHide;
     use LinkTrait;
     use WithIsNowOnRoute;
 
+    protected mixed $rawValue = null;
+
+    protected mixed $value = null;
+
     protected bool $sortable = false;
 
     protected bool $canSave = true;
+
+    public function setValue(mixed $value = null): self
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    public function setRawValue(mixed $value = null)
+    {
+        $this->rawValue = $value;
+    }
+
+    public function resolveValue(array $rawValues = [], mixed $castedValues = null): self
+    {
+        if($this->value) {
+            return $this;
+        }
+
+        $value = $rawValues[$this->column()] ?? null;
+
+        $this->setRawValue($value);
+
+        if (is_callable($this->valueCallback())) {
+            $value = call_user_func(
+                $this->valueCallback(),
+                ! empty($castedValues) ? $castedValues : $rawValues
+            );
+        }
+
+        $this->setValue($value);
+
+        return $this;
+    }
 
     /**
      * Define whether if index page can be sorted by this field
@@ -48,7 +79,7 @@ abstract class Field extends FormElement implements
     {
         return request()->fullUrlWithQuery([
             'order' => [
-                'field' => $this->field(),
+                'field' => $this->column(),
                 'type' => $this->sortActive() && $this->sortType('asc') ? 'desc'
                     : 'asc',
             ],
@@ -58,7 +89,7 @@ abstract class Field extends FormElement implements
     public function sortActive(): bool
     {
         return request()->has('order.field')
-            && request('order.field') === $this->field();
+            && request('order.field') === $this->column();
     }
 
     public function sortType(string $type): bool
@@ -67,17 +98,21 @@ abstract class Field extends FormElement implements
             && request('order.type') === strtolower($type);
     }
 
-    public function formViewValue(Model $item): mixed
+    public function toRawValue(): mixed
     {
-        if ($this->hasRelationship() && ! $item->relationLoaded(
-            $this->relation()
-        )) {
-            $item->load($this->relation());
-        }
+        return $this->rawValue;
+    }
 
+    public function getValue(): mixed
+    {
+        return $this->value;
+    }
+
+    public function value(): mixed
+    {
         $old = old($this->nameDot());
 
-        if ($old && (! $this->hasRelationship() || $this->belongToOne())) {
+        if ($old) {
             return $old;
         }
 
@@ -85,59 +120,12 @@ abstract class Field extends FormElement implements
             ? $this->getDefault()
             : null;
 
-        if ($this->belongToOne()) {
-            return $item->{$this->relation()}?->getKey() ?? $default;
-        }
-
-        if ($this->hasRelationship()) {
-            return $item->{$this->relation()};
-        }
-
-        if (is_callable($this->valueCallback())) {
-            return $this->valueCallback()($item) ?? $default;
-        }
-
-        return $item->{$this->field()} ?? $default;
+        return $this->getValue() ?? $default;
     }
 
-    public function exportViewValue(Model $item): string
+    public function preview(): string
     {
-        return $this->indexViewValue($item, false);
-    }
-
-    public function indexViewValue(Model $item, bool $container = true): string
-    {
-        if ($this->hasRelationship() && ! $item->relationLoaded(
-            $this->relation()
-        )) {
-            $item->load($this->relation());
-        }
-
-        if ($this->hasRelationship()) {
-            $item = $item->{$this->relation()};
-        }
-
-        if (is_callable($this->valueCallback())) {
-            return (string) $this->valueCallback()($item);
-        }
-
-        if ($this->hasRelationship()) {
-            $value = $item->{$this->resourceTitleField()} ?? false;
-
-            $link = tryOrReturn(
-                fn () => $this->resource()?->route('show', $item->getKey()),
-                '',
-            );
-
-            return $container ? view('moonshine::ui.badge', [
-                'color' => 'purple',
-                'link' => $link,
-                'value' => $value,
-            ])->render()
-                : (string) ($item->{$this->resourceTitleField()} ?? '');
-        }
-
-        return (string) ($item->{$this->field()} ?? '');
+        return (string) ($this->value() ?? '');
     }
 
     public function canSave(mixed $condition = null): static
@@ -152,26 +140,17 @@ abstract class Field extends FormElement implements
         return $this->canSave;
     }
 
-    public function save(Model $item): Model
-    {
-        $item->{$this->field()} = $this->requestValue() !== false
-            ? $this->requestValue()
-            : null;
-
-        return $item;
-    }
-
-    public function beforeSave(Model $item): void
+    public function beforeSave(): void
     {
         //
     }
 
-    public function afterSave(Model $item): void
+    public function afterSave(): void
     {
         //
     }
 
-    public function afterDelete(Model $item): void
+    public function afterDelete(): void
     {
         //
     }

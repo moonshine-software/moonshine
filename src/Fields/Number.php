@@ -42,7 +42,7 @@ class Number extends Text implements DefaultCanBeNumeric
     {
         if ($container && $this->withStars()) {
             return view('moonshine::ui.rating', [
-                'value' => $item->{$this->field()},
+                'value' => $item->{$this->column()},
             ])->render();
         }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
@@ -27,20 +26,20 @@ class Checkbox extends Field implements
 
     protected string $type = 'checkbox';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function preview(): string
     {
-        if (! $container) {
-            return parent::indexViewValue($item, $container);
+        if (! false) { // $container
+            return parent::preview();
         }
 
         return view('moonshine::ui.boolean', [
-            'value' => (bool) $this->formViewValue($item),
+            'value' => (bool) $this->value(),
         ])->render();
     }
 
-    public function exportViewValue(Model $item): string
+    public function exportViewValue(): string
     {
-        return (string) ($this->formViewValue($item)
+        return (string) ($this->value()
             ? $this->onValue
             : $this->offValue);
     }

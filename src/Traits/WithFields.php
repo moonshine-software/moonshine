@@ -11,19 +11,19 @@ use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
-use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Renderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
-use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
+use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\StackFields;
 use MoonShine\Filters\Filter;
 use Throwable;
 
 /**
- * @mixin ResourceRenderable
+ * @mixin Renderable
  */
 trait WithFields
 {

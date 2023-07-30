@@ -6,4 +6,4 @@
         'name' => $element->name(),
     ])"
     @class(['form-invalid' => $errors->has($element->name())])
->{!! $element->formViewValue($item) ?? '' !!}</x-moonshine::form.textarea>
+>{!! $element->value() ?? '' !!}</x-moonshine::form.textarea>

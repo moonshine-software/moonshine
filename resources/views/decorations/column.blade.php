@@ -2,10 +2,8 @@
     :colSpan="$element->columnSpanValue()"
     :adaptiveColSpan="$element->adaptiveColumnSpanValue()"
 >
-    <x-moonshine::resource-renderable
+    <x-moonshine::fields-group
         :components="$element->getFields()"
-        :item="$item"
-        :resource="$resource"
         :container="true"
     />
 </x-moonshine::column>

@@ -7,11 +7,11 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
-use MoonShine\Http\Requests\ProfileFormRequest;
+use MoonShine\Http\Requests\ProfileFormFormRequest;
 
 class ProfileController extends BaseController
 {
-    public function store(ProfileFormRequest $request): RedirectResponse
+    public function store(ProfileFormFormRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $resultData = [

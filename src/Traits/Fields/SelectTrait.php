@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Fields\Enum;
@@ -29,26 +28,12 @@ trait SelectTrait
     /**
      * @throws JsonException
      */
-    public function isSelected(Model $item, string $value): bool
+    public function isSelected(string $value): bool
     {
-        $formValue = $this->formViewValue($item);
+        $formValue = $this->value();
 
         if ($this instanceof Enum && $formValue instanceof UnitEnum) {
             $formValue = $formValue->value ?? $formValue->name ?? null;
-        }
-
-        if ($this->hasRelationship()) {
-            $related = $this->getRelated($item);
-
-            return match (true) {
-                $formValue instanceof Collection => $formValue->contains(
-                    $related->getKeyName(),
-                    '=',
-                    $value
-                ),
-                is_array($formValue) => in_array($value, $formValue),
-                default => (string) $formValue === $value
-            };
         }
 
         if ($this->isMultiple()) {

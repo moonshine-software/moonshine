@@ -15,9 +15,9 @@ trait WithUserPermissions
 
         Route::prefix('resource')->group(function (): void {
             Route::post(
-                "{$this->uriKey()}/{" . $this->routeParam() . "}/permissions",
+                "{$this->uriKey()}/{item}/permissions",
                 PermissionController::class
-            )->name("{$this->routeNameAlias()}.permissions");
+            )->name("permissions");
         });
     }
 }

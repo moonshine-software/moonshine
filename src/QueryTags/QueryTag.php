@@ -21,12 +21,9 @@ final class QueryTag
     use HasCanSee;
     use WithLabel;
 
-    /**
-     * @deprecated Builder $builder, use Closure $builder
-     */
     public function __construct(
         string $label,
-        protected Builder|Closure $builder,
+        protected Closure $builder,
     ) {
         $this->setLabel($label);
     }

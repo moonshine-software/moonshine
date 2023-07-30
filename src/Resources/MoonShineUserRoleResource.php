@@ -9,29 +9,22 @@ use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\TextFilter;
 use MoonShine\Models\MoonshineUserRole;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 
-class MoonShineUserRoleResource extends Resource
+class MoonShineUserRoleResource extends ModelResource
 {
-    public static string $model = MoonshineUserRole::class;
-    protected static bool $system = true;
+    public string $model = MoonshineUserRole::class;
+
     public string $titleField = 'name';
-    protected bool $createInModal = true;
 
-    protected bool $editInModal = true;
-
-    public function title(): string
-    {
-        return trans('moonshine::ui.resource.role');
-    }
+    public static bool $withPolicy = true;
 
     public function fields(): array
     {
         return [
-            Block::make(trans('moonshine::ui.resource.main_information'), [
-                ID::make()
-                    ->sortable()
-                    ->showOnExport(),
-
+            Block::make('', [
+                ID::make()->sortable()->showOnExport(),
                 Text::make(trans('moonshine::ui.resource.role_name'), 'name')
                     ->required()
                     ->showOnExport(),
@@ -39,13 +32,10 @@ class MoonShineUserRoleResource extends Resource
         ];
     }
 
-    /**
-     * @return array{name: string[]}
-     */
     public function rules($item): array
     {
         return [
-            'name' => ['required', 'min:5'],
+            'name' => 'required|min:5',
         ];
     }
 
@@ -64,5 +54,18 @@ class MoonShineUserRoleResource extends Resource
     public function actions(): array
     {
         return [];
+    }
+
+    public function pages(): array
+    {
+        return [
+            IndexPage::make('Роли'),
+
+            FormPage::make(
+                request('item')
+                    ? 'Редактировать'
+                    : 'Добавить'
+            ),
+        ];
     }
 }

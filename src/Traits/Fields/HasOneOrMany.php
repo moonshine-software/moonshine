@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\FormElement;
-use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Json;
+use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\SlideField;
 
 /**

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use MoonShine\MoonShine;
+use MoonShine\MoonShineRequest;
 use MoonShine\Utilities\AssetManager;
 
 if (! function_exists('tryOrReturn')) {
@@ -22,6 +23,13 @@ if (! function_exists('moonshine')) {
     function moonshine(): MoonShine
     {
         return app(MoonShine::class);
+    }
+}
+
+if (! function_exists('moonshineRequest')) {
+    function moonshineRequest(): MoonShineRequest
+    {
+        return app(MoonShineRequest::class);
     }
 }
 

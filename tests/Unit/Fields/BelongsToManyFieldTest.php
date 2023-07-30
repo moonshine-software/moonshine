@@ -5,7 +5,7 @@ use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Fields\BelongsToMany;
+use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;
 

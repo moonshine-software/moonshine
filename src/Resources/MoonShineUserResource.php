@@ -4,155 +4,103 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Decorations\Block;
-use MoonShine\Decorations\Column;
-use MoonShine\Decorations\Grid;
-use MoonShine\Fields\BelongsTo;
+use MoonShine\Decorations\Heading;
+use MoonShine\Decorations\Tab;
+use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\Email;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
+use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
-use MoonShine\Filters\DateFilter;
 use MoonShine\Filters\TextFilter;
-use MoonShine\FormComponents\ChangeLogFormComponent;
-use MoonShine\FormComponents\PermissionFormComponent;
+use MoonShine\Http\Controllers\PermissionController;
+use MoonShine\ItemActions\ItemAction;
 use MoonShine\Models\MoonshineUser;
-use MoonShine\Models\MoonshineUserRole;
-use MoonShine\Traits\Resource\WithUserPermissions;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 
-class MoonShineUserResource extends Resource
+class MoonShineUserResource extends ModelResource
 {
-    use WithUserPermissions;
+    public string $model = MoonshineUser::class;
 
-    public static string $model = MoonshineUser::class;
-    protected static bool $system = true;
     public string $titleField = 'name';
 
-    public function title(): string
-    {
-        return trans('moonshine::ui.resource.admins_title');
-    }
+    public static bool $withPolicy = true;
 
     public function fields(): array
     {
         return [
-            Grid::make([
-                Column::make([
-                    Block::make(
-                        trans('moonshine::ui.resource.main_information'),
-                        [
-                            ID::make()
-                                ->sortable()
-                                ->useOnImport()
-                                ->showOnExport(),
+            Block::make('', [
+                Tabs::make([
+                    Tab::make('Main', [
+                        ID::make()
+                            ->sortable()
+                            ->showOnExport(),
 
-                            BelongsTo::make(
-                                trans('moonshine::ui.resource.role'),
-                                'moonshine_user_role_id',
-                                new MoonShineUserRoleResource()
-                            )
-                                ->showOnExport(),
+                        BelongsTo::make(
+                            trans('moonshine::ui.resource.role'),
+                            'moonshine_user_role_id',
+                            new MoonShineUserRoleResource()
+                        )
+                            ->showOnExport(),
 
-                            Text::make(
-                                trans('moonshine::ui.resource.name'),
-                                'name'
-                            )
-                                ->required()
-                                ->useOnImport()
-                                ->showOnExport(),
+                        Text::make(trans('moonshine::ui.resource.name'), 'name')
+                            ->required()
+                            ->showOnExport(),
 
-                            Image::make(
-                                trans('moonshine::ui.resource.avatar'),
-                                'avatar'
-                            )
-                                ->removable()
-                                ->showOnExport()
-                                ->disk(config('filesystems.default'))
-                                ->dir('moonshine_users')
-                                ->allowedExtensions(
-                                    ['jpg', 'png', 'jpeg', 'gif']
-                                ),
+                        Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
+                            ->showOnExport()
+                            ->disk('public')
+                            ->dir('moonshine_users')
+                            ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
-                            Date::make(
-                                trans('moonshine::ui.resource.created_at'),
-                                'created_at'
-                            )
-                                ->format("d.m.Y")
-                                ->default(now()->toDateTimeString())
-                                ->sortable()
-                                ->hideOnForm()
-                                ->showOnExport(),
+                        Date::make(trans('moonshine::ui.resource.created_at'), 'created_at')
+                            ->format("d.m.Y")
+                            ->default(now()->toDateTimeString())
+                            ->sortable()
+                            ->hideOnForm()
+                            ->showOnExport(),
 
-                            Email::make(
-                                trans('moonshine::ui.resource.email'),
-                                'email'
-                            )
-                                ->sortable()
-                                ->showOnExport()
-                                ->required(),
-                        ]
-                    ),
+                        Email::make(trans('moonshine::ui.resource.email'), 'email')
+                            ->sortable()
+                            ->showOnExport()
+                            ->required(),
+                    ]),
 
-                    Block::make(
-                        trans('moonshine::ui.resource.change_password'),
-                        [
-                            Password::make(
-                                trans('moonshine::ui.resource.password'),
-                                'password'
-                            )
-                                ->customAttributes(
-                                    ['autocomplete' => 'new-password']
-                                )
-                                ->hideOnIndex()
-                                ->hideOnExport()
-                                ->hideOnDetail()
-                                ->eye(),
+                    Tab::make(trans('moonshine::ui.resource.password'), [
+                        Heading::make('Change password'),
 
-                            PasswordRepeat::make(
-                                trans('moonshine::ui.resource.repeat_password'),
-                                'password_repeat'
-                            )
-                                ->customAttributes(
-                                    ['autocomplete' => 'confirm-password']
-                                )
-                                ->hideOnIndex()
-                                ->hideOnExport()
-                                ->hideOnDetail()
-                                ->eye(),
-                        ]
-                    ),
+                        Password::make(trans('moonshine::ui.resource.password'), 'password')
+                            ->customAttributes(['autocomplete' => 'new-password'])
+                            ->hideOnIndex()
+                            ->eye(),
+
+                        PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
+                            ->customAttributes(['autocomplete' => 'confirm-password'])
+                            ->hideOnIndex()
+                            ->eye(),
+                    ]),
                 ]),
             ]),
         ];
     }
 
-    public function components(): array
+    public function itemActions(): array
     {
         return [
-            PermissionFormComponent::make('Permissions')
-                ->canSee(
-                    fn (
-                        $user
-                    ): bool => auth()?->user()?->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID
-                ),
-
-            ChangeLogFormComponent::make('Change log')
-                ->canSee(
-                    fn (
-                        $user
-                    ): bool => auth()?->user()->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID
-                ),
+            ItemAction::make('Login as', function (MoonshineUser $item) {
+                auth(config('moonshine.auth.guard'))->login($item);
+            }, 'Success')->icon('users'),
         ];
     }
 
-    /**
-     * @return array{name: string, moonshine_user_role_id: string, email: array, password: string}
-     */
     public function rules($item): array
     {
         return [
@@ -165,9 +113,9 @@ class MoonShineUserResource extends Resource
                 'email',
                 Rule::unique('moonshine_users')->ignoreModel($item),
             ],
-            'password' => $item->exists
-                ? 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat'
-                : 'required|min:6|required_with:password_repeat|same:password_repeat',
+            'password' => ! $item->exists
+                ? 'required|min:6|required_with:password_repeat|same:password_repeat'
+                : 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
         ];
     }
 
@@ -180,10 +128,6 @@ class MoonShineUserResource extends Resource
     {
         return [
             TextFilter::make(trans('moonshine::ui.resource.name'), 'name'),
-            DateFilter::make(
-                trans('moonshine::ui.resource.created_at'),
-                'created_at'
-            ),
         ];
     }
 
@@ -191,6 +135,32 @@ class MoonShineUserResource extends Resource
     {
         return [
             ExportAction::make(trans('moonshine::ui.export')),
+        ];
+    }
+
+    public function resolveRoutes(): void
+    {
+        //parent::resolveRoutes();
+
+        Route::prefix('resource')->group(function () {
+            Route::post(
+                "{$this->uriKey()}/{" . $this->routeParam() . "}/permissions",
+                PermissionController::class
+            )
+                ->name("{$this->routeNameAlias()}.permissions");
+        });
+    }
+
+    public function pages(): array
+    {
+        return [
+            IndexPage::make('Пользователи'),
+
+            FormPage::make(
+                request('item')
+                    ? 'Редактировать'
+                    : 'Добавить'
+            ),
         ];
     }
 }

@@ -65,7 +65,7 @@ class ExportAction extends Action
 
         $path = Storage::disk($this->getDisk())
             ->path(
-                "{$this->getDir()}/{$this->resource()->routeNameAlias()}." . ($this->isCsv() ? 'csv' : 'xlsx')
+                "{$this->getDir()}/{$this->resource()->uriKey()}." . ($this->isCsv() ? 'csv' : 'xlsx')
             );
 
         if ($this->isQueue()) {

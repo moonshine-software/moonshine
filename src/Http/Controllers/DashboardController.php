@@ -13,7 +13,7 @@ class DashboardController extends BaseController
     public function __invoke(): View
     {
         return view('moonshine::dashboard', [
-            'blocks' => app(Dashboard::class)->getBlocks(),
+            'components' => app(Dashboard::class)->getComponents(),
         ]);
     }
 }

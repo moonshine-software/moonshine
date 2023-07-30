@@ -2,7 +2,7 @@
 
 use MoonShine\Dashboard\Dashboard;
 use MoonShine\Dashboard\DashboardBlock;
-use MoonShine\Dashboard\TextBlock;
+use MoonShine\Decorations\TextBlock;
 
 uses()->group('dashboard');
 

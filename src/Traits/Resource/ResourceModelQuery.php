@@ -45,9 +45,7 @@ trait ResourceModelQuery
             )
             ->appends(request()->except('page'));
 
-        return $paginator->setCollection(
-            $this->transformToResources($paginator->getCollection())
-        );
+        return $paginator;
     }
 
     /**
@@ -99,6 +97,11 @@ trait ResourceModelQuery
         return $query;
     }
 
+    public function scopes(): array
+    {
+        return [];
+    }
+
     public function query(): Builder
     {
         $query = $this->customBuilder ?? $this->getModel()->query();
@@ -139,14 +142,7 @@ trait ResourceModelQuery
 
     protected function queryCacheKey(): string
     {
-        return "moonshine_query_{$this->routeNameAlias()}";
-    }
-
-    public function transformToResources(Collection $collection): Collection
-    {
-        return $collection->transform(
-            fn ($value) => (clone $this)->setItem($value)
-        );
+        return "moonshine_query_{$this->uriKey()}";
     }
 
     /**
@@ -154,9 +150,7 @@ trait ResourceModelQuery
      */
     public function items(): Collection
     {
-        return $this->transformToResources(
-            $this->resolveQuery()->get()
-        );
+        return $this->resolveQuery()->get();
     }
 
     public function customBuilder(Builder $builder): void

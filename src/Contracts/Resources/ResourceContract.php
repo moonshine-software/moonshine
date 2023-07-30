@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Actions\Action;
 use MoonShine\Actions\MassActions;
-use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Renderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Filters\Filter;
@@ -77,7 +77,7 @@ interface ResourceContract
     public function resolveRoutes(): void;
 
     public function renderComponent(
-        ResourceRenderable $component,
+        Renderable $component,
         Model $item,
         int $level = 0
     ): View;

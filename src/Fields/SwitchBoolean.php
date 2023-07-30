@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasCurrentResource;
 use MoonShine\Helpers\Condition;
 
@@ -28,16 +27,17 @@ class SwitchBoolean extends Checkbox implements HasCurrentResource
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function preview(): string
     {
+        $container = true;
+
         if (! $this->autoUpdate || ! $container) {
-            return parent::indexViewValue($item, $container);
+            return parent::preview($container);
         }
 
         return view('moonshine::fields.switch', [
             'element' => $this,
             'autoUpdate' => $this->autoUpdate,
-            'item' => $item,
         ])->render();
     }
 }

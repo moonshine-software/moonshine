@@ -8,10 +8,10 @@ use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\Email;
 use MoonShine\Fields\File;
-use MoonShine\Fields\HasOne;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
-use MoonShine\Fields\MorphMany;
+use MoonShine\Fields\Relationships\HasOne;
+use MoonShine\Fields\Relationships\MorphMany;
 use MoonShine\Fields\Text;
 use MoonShine\Tests\Fixtures\Models\Category;
 

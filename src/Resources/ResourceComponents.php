@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\ResourceRenderable;
+use MoonShine\Contracts\Renderable;
 use MoonShine\DetailComponents\DetailComponent;
 use MoonShine\FormComponents\FormComponent;
 use MoonShine\IndexComponents\IndexComponent;
@@ -16,7 +16,7 @@ final class ResourceComponents extends Collection
     {
         return $this->filter(
             static fn (
-                ResourceRenderable $component
+                Renderable $component
             ): bool => $component instanceof FormComponent
         )->values();
     }
@@ -25,7 +25,7 @@ final class ResourceComponents extends Collection
     {
         return $this->filter(
             static fn (
-                ResourceRenderable $component
+                Renderable $component
             ): bool => $component instanceof DetailComponent
         )->values();
     }
@@ -34,7 +34,7 @@ final class ResourceComponents extends Collection
     {
         return $this->filter(
             static fn (
-                ResourceRenderable $component
+                Renderable $component
             ): bool => $component instanceof IndexComponent
         )->values();
     }
