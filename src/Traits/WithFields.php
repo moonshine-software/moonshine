@@ -156,7 +156,7 @@ trait WithFields
                     }
 
                     foreach ($fields as $field) {
-                        $values[$index][$field->field()] = $field->indexViewValue($data, false);
+                        $values[$index][$field->field()] = $field->indexViewValue($data, true);
                     }
                 }
             }
