@@ -26,11 +26,11 @@ trait SelectTrait
         return $this->options;
     }
 
-    public function smoothedValues() : array
+    public function flattenValues(): array
     {
-        return collect($this->values())->mapWithKeys(function($item, $i) : array {
-            return is_array($item) ? $item : [$i => $item];
-        })->toArray();
+        return collect($this->values())
+            ->mapWithKeys(fn ($value, $key): array => is_array($value) ? $value : [$key => $value])
+            ->toArray();
     }
 
     /**
