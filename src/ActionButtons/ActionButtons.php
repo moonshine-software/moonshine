@@ -37,7 +37,7 @@ final class ActionButtons extends Collection
         return $this->filter(
             static fn (
                 ActionButtonContract $action
-            ): bool => !$action->isBulk()
+            ): bool => ! $action->isBulk()
         );
     }
 

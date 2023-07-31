@@ -44,34 +44,34 @@ class IndexPage extends Page
                         ActionGroup::make([
                             ExportAction::make('Export')
                                 ->setResource($this->getResource())
-                                ->showInDropdown()
+                                ->showInDropdown(),
                         ]),
                     ])->justifyAlign('start'),
 
                     ActionGroup::make([
                         FiltersAction::make('Filters')
                             ->filters([
-                                Text::make('Test')
+                                Text::make('Test'),
                             ])
                             ->setResource($this->getResource())
-                            ->showInLine()
+                            ->showInLine(),
                     ]),
 
                 ])->customAttributes([
-                    'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap'
+                    'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),
             ]),
             TableBuilder::make()->fields($this->getResource()->getFields()->onlyFields()->toArray())
                 ->cast($this->getResource()->getModel()::class)
                 ->items($items->items())
                 ->paginator($items)
-                ->trAttributes(fn($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
+                ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
                     $index === 0 && $data->getKey() === 2,
                     fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                         'class' => 'bgc-purple',
                     ])
                 ))
-                ->tdAttributes(fn($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
+                ->tdAttributes(fn ($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
                     $index === 1 && $cell === 0 && $data->getKey() === 1,
                     fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                         'class' => 'bgc-red',
@@ -79,7 +79,8 @@ class IndexPage extends Page
                 ))
                 ->buttons([
                     ActionButton::make(
-                        '', url: fn ($data): string => route('moonshine.page', [
+                        '',
+                        url: fn ($data): string => route('moonshine.page', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'pageUri' => 'form-page',
                         'item' => $data->getKey(),
@@ -91,7 +92,8 @@ class IndexPage extends Page
 
 
                     ActionButton::make(
-                        '', url: fn ($data): string => route('moonshine.crud.destroy', [
+                        '',
+                        url: fn ($data): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => $data->getKey(),
                     ])
@@ -103,7 +105,8 @@ class IndexPage extends Page
 
 
                     ActionButton::make(
-                        '', url: fn (): string => route('moonshine.crud.destroy', [
+                        '',
+                        url: fn (): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => 0,
                     ])
@@ -116,8 +119,8 @@ class IndexPage extends Page
                             (string) FormBuilder::make()
                                 ->fields([
                                     Hidden::make('ids')->customAttributes([
-                                        'class' => 'actionsCheckedIds'
-                                    ])
+                                        'class' => 'actionsCheckedIds',
+                                    ]),
                                 ])
                                 ->submit('Delete', ['class' => 'btn-pink'])
                         )

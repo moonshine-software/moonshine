@@ -39,7 +39,7 @@ final class ActionGroup extends Component implements MoonShineRenderable
     {
         return view('moonshine::components.action-group', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'actions' => $this->getActions()
+            'actions' => $this->getActions(),
         ]);
     }
 
