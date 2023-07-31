@@ -17,7 +17,8 @@ final class MoonShineNotification
     public static function send(
         string $message,
         array $button = [],
-        array $ids = []
+        array $ids = [],
+        string $color = 'green',
     ): void {
         if (config('moonshine.use_notifications', true)) {
             Notification::sendNow(
@@ -32,7 +33,8 @@ final class MoonShineNotification
                     ->get(),
                 MoonShineDatabaseNotification::make(
                     $message,
-                    $button
+                    $button,
+                    $color
                 )
             );
         }
