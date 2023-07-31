@@ -6,7 +6,8 @@ namespace MoonShine\Pages;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\PageException;
 use MoonShine\MoonShineRouter;
 use MoonShine\Resources\Resource;
@@ -15,7 +16,7 @@ use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithView;
 use Throwable;
 
-abstract class Page implements Renderable
+abstract class Page implements MoonShineRenderable
 {
     use WithUriKey;
     use Makeable;
@@ -23,7 +24,7 @@ abstract class Page implements Renderable
 
     protected string $subtitle = '';
 
-    protected ?Resource $resource = null;
+    protected ?ResourceContract $resource = null;
 
     public function __construct(
         protected string $title

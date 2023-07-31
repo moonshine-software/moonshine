@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Resources\Resource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
@@ -18,7 +18,7 @@ use Throwable;
 /**
  * @method static static make(Resource $resource, string $label = '', Builder|Closure|null $query = null)
  */
-final class ResourcePreview extends Component implements Renderable
+final class ResourcePreview extends Component implements MoonShineRenderable
 {
     use Makeable;
     use WithUniqueId;

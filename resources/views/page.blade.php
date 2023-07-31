@@ -1,10 +1,10 @@
-@extends("moonshine::layouts.app")
+@extends('moonshine::layouts.app')
 
 @section('sidebar-inner')
     @parent
 @endsection
 
-@section("header-inner")
+@section('header-inner')
     @parent
 
     @include('moonshine::layouts.shared.breadcrumbs', [

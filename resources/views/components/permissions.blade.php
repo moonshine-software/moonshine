@@ -33,9 +33,11 @@
                 </div>
             @endforeach
 
-            <x-slot:button type="submit" class="form_submit_button">
-                {{ trans('moonshine::ui.save') }}
-            </x-slot:button>
+            <x-slot:buttons>
+                <x-moonshine::form.button type="submit" class="form_submit_button">
+                    {{ trans('moonshine::ui.save') }}
+                </x-moonshine::form.button>
+            </x-slot:buttons>
         </x-moonshine::form>
     </div>
 @endif

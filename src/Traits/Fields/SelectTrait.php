@@ -57,4 +57,11 @@ trait SelectTrait
 
         return (string) $formValue === $value;
     }
+
+    public function flattenValues(): array
+    {
+        return collect($this->values())
+            ->mapWithKeys(fn ($value, $key): array => is_array($value) ? $value : [$key => $value])
+            ->toArray();
+    }
 }

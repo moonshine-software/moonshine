@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Dashboard;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
 
 abstract class DashboardScreen
 {
@@ -19,7 +19,7 @@ abstract class DashboardScreen
                     ? new $component()
                     : $component;
 
-                if ($component instanceof Renderable) {
+                if ($component instanceof MoonShineRenderable) {
                     $components->add($component);
                 }
             }

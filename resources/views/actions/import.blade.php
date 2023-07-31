@@ -31,8 +31,10 @@
             </x-moonshine::form.input-wrapper>
         </div>
 
-        <x-slot:button type="submit">
-            {{ trans('moonshine::ui.confirm') }}
-        </x-slot:button>
+        <x-slot:buttons>
+            <x-moonshine::form.button type="submit">
+                {{ trans('moonshine::ui.confirm') }}
+            </x-moonshine::form.button>
+        </x-slot:buttons>
     </x-moonshine::form>
 </x-moonshine::offcanvas>

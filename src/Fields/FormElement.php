@@ -12,7 +12,7 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\ShowWhen;
 use MoonShine\Traits\Fields\WithRelatedValues;
@@ -33,7 +33,7 @@ use MoonShine\Utilities\AssetManager;
  * @mixin WithResourceMode
  * @mixin WithRelatedValues
  */
-abstract class FormElement implements Renderable, HasAssets
+abstract class FormElement implements MoonShineRenderable, HasAssets
 {
     use Makeable;
     use WithLabel;

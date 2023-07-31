@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Actions;
 
+use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use MoonShine\Filters\Filters;
 
@@ -50,14 +52,12 @@ final class FiltersAction extends Action
             ->count();
     }
 
-    public function render(): string
+    public function render(): View|Closure|string
     {
         return view($this->getView(), [
             'action' => $this,
-            'filters' => count($this->filters)
-                ? Filters::make($this->filters)
-                : $this->resource()->getFilters(),
+            'filters' => Filters::make($this->filters),
             'resource' => $this->resource(),
-        ])->render();
+        ]);
     }
 }

@@ -4,6 +4,7 @@
         :target="$element->isLinkBlank() ? '_blank' : '_self'"
         :filled="true"
         :icon="$element->iconValue()"
+        :attributes="$element->attributes()"
     >
         {{ $element->getLinkName() }}
     </x-moonshine::link>

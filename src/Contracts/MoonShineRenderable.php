@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Stringable;
 
-interface Renderable extends Stringable
+interface MoonShineRenderable extends Stringable
 {
     public function render(): View|Closure|string;
 }

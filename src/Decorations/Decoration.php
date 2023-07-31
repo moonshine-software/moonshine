@@ -7,9 +7,10 @@ namespace MoonShine\Decorations;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithFields;
+use MoonShine\Traits\WithHtmlAttributes;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithUniqueId;
 use MoonShine\Traits\WithView;
@@ -17,13 +18,14 @@ use MoonShine\Traits\WithView;
 /**
  * @method static static make(string|array $labelOrFields = '', array $fields = [])
  */
-abstract class Decoration implements Renderable, FieldsDecoration
+abstract class Decoration implements MoonShineRenderable, FieldsDecoration
 {
     use Makeable;
     use WithView;
     use WithLabel;
     use WithFields;
     use WithUniqueId;
+    use WithHtmlAttributes;
 
     public function __construct(
         string|array $labelOrFields = '',

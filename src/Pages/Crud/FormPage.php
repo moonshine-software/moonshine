@@ -5,7 +5,7 @@ namespace MoonShine\Pages\Crud;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Hidden;
 use MoonShine\Http\Controllers\CrudController;
-use MoonShine\ItemActions\ItemAction;
+use MoonShine\ItemActions\ActionButton;
 use MoonShine\Pages\Page;
 
 class FormPage extends Page
@@ -40,10 +40,10 @@ class FormPage extends Page
                         ->toArray()
                 )
                 ->fill($this->getResource()->getItem()?->toArray() ?? [])
-                ->cast($this->getResource()->getModel()::class)
+                ->cast(get_class($this->getResource()->getModel()))
                 ->submit('Go')
                 ->buttons([
-                    ItemAction::make('Yo', url: fn ($data): string => '/' . $data->title),
+                    ActionButton::make('Yo', url: fn ($data) => '/' . $data->title),
                 ]),
         ];
     }

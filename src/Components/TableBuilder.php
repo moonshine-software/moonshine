@@ -11,16 +11,17 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Fields\Fields;
-use MoonShine\ItemActions\ItemActions;
+use MoonShine\ItemActions\ActionButtons;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\Makeable;
 
 /**
  * @method static static make(array $fields = [], array $values = [])
  */
-final class TableBuilder extends Component implements Renderable
+final class TableBuilder extends Component implements MoonShineRenderable, TableContract
 {
     use Makeable;
     use Macroable;
@@ -128,17 +129,17 @@ final class TableBuilder extends Component implements Renderable
         return $this;
     }
 
-    public function getButtons(array $data): ItemActions
+    public function getButtons(array $data): ActionButtons
     {
-        return ItemActions::make($this->buttons)
+        return ActionButtons::make($this->buttons)
             ->onlyVisible($this->castValues($data))
             ->fillItem($this->castValues($data))
             ->withoutBulk();
     }
 
-    public function getBulkButtons(): ItemActions
+    public function getBulkButtons(): ActionButtons
     {
-        return ItemActions::make($this->buttons)
+        return ActionButtons::make($this->buttons)
             ->bulk();
     }
 

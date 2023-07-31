@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\ItemActions\ItemAction;
+use MoonShine\ItemActions\ActionButton;
 use MoonShine\Models\MoonshineUser;
 
 uses()->group('item-actions');
@@ -9,14 +9,14 @@ beforeEach(function (): void {
     $this->label = 'Delete';
     $this->message = 'Done';
     $this->callback = fn ($model) => $model->getKey();
-    $this->action = ItemAction::make($this->label, $this->callback, $this->message);
+    $this->action = ActionButton::make($this->label, $this->callback, $this->message);
 });
 
 it('new instance', function (): void {
     $model = MoonshineUser::factory()->create();
 
     expect($this->action)
-        ->toBeInstanceOf(ItemAction::class)
+        ->toBeInstanceOf(ActionButton::class)
         ->message()
         ->toBe($this->message)
         ->label()

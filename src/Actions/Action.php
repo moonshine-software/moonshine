@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Actions;
 
+use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Actions\ActionContract;
-use MoonShine\Contracts\Actions\MassActionContract;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Traits\HasCanSee;
@@ -18,7 +20,7 @@ use MoonShine\Traits\WithView;
 /**
  * @method static static make(string $label = '')
  */
-abstract class Action implements ActionContract, MassActionContract
+abstract class Action implements ActionContract, MoonShineRenderable
 {
     use Makeable;
     use WithView;
@@ -55,6 +57,7 @@ abstract class Action implements ActionContract, MassActionContract
             $query = array_merge(request()->query(), $query);
         }
 
+        return '';
         return $this->resource()
             ->route('actions.index', query: $query);
     }
@@ -86,7 +89,7 @@ abstract class Action implements ActionContract, MassActionContract
         return $this;
     }
 
-    public function render(): string
+    public function render(): View|Closure|string
     {
         return view(
             $this->getView() !== '' ? $this->getView()
@@ -94,6 +97,11 @@ abstract class Action implements ActionContract, MassActionContract
             [
                 'action' => $this,
             ]
-        )->render();
+        );
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->render();
     }
 }

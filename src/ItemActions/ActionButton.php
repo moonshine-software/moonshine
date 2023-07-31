@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\ItemActions;
 
 use Closure;
-use MoonShine\Contracts\Actions\ItemActionContract;
+use MoonShine\Contracts\Actions\ActionButtonContract;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\Makeable;
@@ -14,7 +14,7 @@ use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithModal;
 
-final class ItemAction implements ItemActionContract
+final class ActionButton implements ActionButtonContract
 {
     use Makeable;
     use WithIcon;

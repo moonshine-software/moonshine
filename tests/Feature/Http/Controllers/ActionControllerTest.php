@@ -5,7 +5,7 @@ use MoonShine\Actions\FiltersAction;
 use MoonShine\Actions\ImportAction;
 use MoonShine\BulkActions\BulkAction;
 use MoonShine\FormActions\FormAction;
-use MoonShine\ItemActions\ItemAction;
+use MoonShine\ItemActions\ActionButton;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -28,7 +28,7 @@ beforeEach(function (): void {
             BulkAction::make('Delete', static fn ($item) => $item->delete()),
         ])
         ->setTestItemActions([
-            ItemAction::make('Delete', static fn ($item) => $item->delete()),
+            ActionButton::make('Delete', static fn ($item) => $item->delete()),
         ])
         ->setTestFormActions([
             FormAction::make('Delete', static fn ($item) => $item->delete()),

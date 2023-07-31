@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages\Crud;
 
-use App\Http\Livewire\LiveWireTestComponent;
-use App\View\Components\HelloWorldComponent;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Actions\ExportAction;
+use MoonShine\Actions\FiltersAction;
+use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Decorations\Button;
 use MoonShine\Decorations\Column;
+use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
-use MoonShine\Decorations\Heading;
 use MoonShine\Fields\Hidden;
-use MoonShine\ItemActions\ItemAction;
-use MoonShine\Metrics\LineChartMetric;
+use MoonShine\Fields\Text;
+use MoonShine\ItemActions\ActionButton;
+use MoonShine\Metrics\ValueMetric;
 use MoonShine\Pages\Page;
 
 class IndexPage extends Page
@@ -26,38 +29,61 @@ class IndexPage extends Page
         return [
             Grid::make([
                 Column::make([
-                    Heading::make('Left'),
-                    new HelloWorldComponent(),
-                    new LiveWireTestComponent(),
-                    TableBuilder::make(),
-                    LineChartMetric::make(''),
+                    ValueMetric::make('Metric 1')->value(200),
                 ])->columnSpan(6),
 
                 Column::make([
-                    Heading::make('Right'),
-                    TableBuilder::make(),
+                    ValueMetric::make('Metric 2')->value(300),
                 ])->columnSpan(6),
+
+                Column::make([
+                    Flex::make([
+                        Button::make('Добавить', $this->route())
+                            ->icon('heroicons.outline.plus'),
+
+                        ActionGroup::make([
+                            ExportAction::make('Export')
+                                ->setResource($this->getResource())
+                                ->showInDropdown()
+                        ]),
+                    ])->justifyAlign('start'),
+
+                    ActionGroup::make([
+                        FiltersAction::make('Filters')
+                            ->filters([
+                                Text::make('Test')
+                            ])
+                            ->setResource($this->getResource())
+                            ->showInLine()
+                    ]),
+
+                ])->customAttributes([
+                    'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap'
+                ]),
             ]),
             TableBuilder::make()->fields($this->getResource()->getFields()->onlyFields()->toArray())
-                ->cast($this->getResource()->getModel()::class)
+                ->cast(get_class($this->getResource()->getModel()))
                 ->items($items->items())
                 ->paginator($items)
-                ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
-                    $index === 0 && $data->getKey() === 2,
-                    fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                        'class' => 'bgc-purple',
-                    ])
-                ))
-                ->tdAttributes(fn ($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
-                    $index === 1 && $cell === 0 && $data->getKey() === 1,
-                    fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                        'class' => 'bgc-red',
-                    ])
-                ))
+                ->trAttributes(function ($data, int $index, ComponentAttributeBag $attributes) {
+                    return $attributes->when(
+                        $index === 0 && $data->getKey() === 2,
+                        fn (ComponentAttributeBag $attr) => $attr->merge([
+                            'class' => 'bgc-purple',
+                        ])
+                    );
+                })
+                ->tdAttributes(function ($data, int $cell, int $index, ComponentAttributeBag $attributes) {
+                    return $attributes->when(
+                        $index === 1 && $cell === 0 && $data->getKey() === 1,
+                        fn (ComponentAttributeBag $attr) => $attr->merge([
+                            'class' => 'bgc-red',
+                        ])
+                    );
+                })
                 ->buttons([
-                    ItemAction::make(
-                        '',
-                        url: fn ($data): string => route('moonshine.page', [
+                    ActionButton::make(
+                        '', url: fn ($data) => route('moonshine.page', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'pageUri' => 'form-page',
                         'item' => $data->getKey(),
@@ -68,9 +94,8 @@ class IndexPage extends Page
                         ->showInLine(),
 
 
-                    ItemAction::make(
-                        '',
-                        url: fn ($data): string => route('moonshine.crud.destroy', [
+                    ActionButton::make(
+                        '', url: fn ($data) => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => $data->getKey(),
                     ])
@@ -81,9 +106,8 @@ class IndexPage extends Page
                         ->showInLine(),
 
 
-                    ItemAction::make(
-                        '',
-                        url: fn (): string => route('moonshine.crud.destroy', [
+                    ActionButton::make(
+                        '', url: fn () => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'item' => 0,
                     ])
@@ -95,9 +119,11 @@ class IndexPage extends Page
                             'Delete',
                             (string) FormBuilder::make()
                                 ->fields([
-                                    Hidden::make('ids'),
+                                    Hidden::make('ids')->customAttributes([
+                                        'class' => 'actionsCheckedIds'
+                                    ])
                                 ])
-                                ->submit('Delete', ['class' => 'btn-red'])
+                                ->submit('Delete', ['class' => 'btn-pink'])
                         )
                         ->showInLine(),
 

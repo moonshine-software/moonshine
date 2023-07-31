@@ -27,11 +27,11 @@
                 />
             </div>
 
-            <x-slot:button type="submit">
-                {{ trans('moonshine::ui.search') }}
-            </x-slot:button>
-
             <x-slot:buttons>
+                <x-moonshine::form.button type="submit">
+                    {{ trans('moonshine::ui.search') }}
+                </x-moonshine::form.button>
+
                 @if(request('filters'))
                     <x-moonshine::link href="{{ $resource->currentRoute(query: ['reset' => true]) }}">
                         {{ trans('moonshine::ui.reset') }}

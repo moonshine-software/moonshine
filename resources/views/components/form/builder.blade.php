@@ -6,22 +6,24 @@
         :components="$fields"
     />
 
-    <x-slot:button class="form_submit_button">
-        <x-moonshine::spinner
-            color="pink"
-            class="form_submit_button_loader"
-            style="display: none;"
-        />
+    <x-slot:buttons>
+        <x-moonshine::form.button
+                :attributes="$submitAttributes->merge([
+                'class' => 'form_submit_button',
+                'type' => 'submit'
+            ])"
+        >
+            <x-moonshine::spinner
+                    color="pink"
+                    class="form_submit_button_loader"
+                    style="display: none;"
+            />
 
-        {{ $submitLabel }}
-    </x-slot:button>
+            {{ $submitLabel }}
+        </x-moonshine::form.button>
 
-    @if($buttons->isNotEmpty())
-        <x-slot:buttons>
-            @include('moonshine::crud.shared.item-actions', [
-                'actions' => $buttons,
-            ])
-        </x-slot:buttons>
-    @endif
-
+        @includeWhen($buttons->isNotEmpty(), 'moonshine::crud.shared.item-actions', [
+            'actions' => $buttons,
+        ])
+    </x-slot:buttons>
 </x-moonshine::form>
