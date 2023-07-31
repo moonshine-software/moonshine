@@ -40,10 +40,10 @@ class FormPage extends Page
                         ->toArray()
                 )
                 ->fill($this->getResource()->getItem()?->toArray() ?? [])
-                ->cast(get_class($this->getResource()->getModel()))
+                ->cast($this->getResource()->getModel()::class)
                 ->submit('Go')
                 ->buttons([
-                    ActionButton::make('Yo', url: fn ($data) => '/' . $data->title),
+                    ActionButton::make('Yo', url: fn ($data): string => '/' . $data->title),
                 ]),
         ];
     }

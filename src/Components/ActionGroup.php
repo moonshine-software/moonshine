@@ -43,7 +43,7 @@ final class ActionGroup extends Component implements MoonShineRenderable
         ]);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }

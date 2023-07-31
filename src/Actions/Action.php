@@ -58,8 +58,6 @@ abstract class Action implements ActionContract, MoonShineRenderable
         }
 
         return '';
-        return $this->resource()
-            ->route('actions.index', query: $query);
     }
 
     public function resource(): ?ResourceContract
