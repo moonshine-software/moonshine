@@ -1,6 +1,7 @@
 <x-moonshine::column
     :colSpan="$element->columnSpanValue()"
     :adaptiveColSpan="$element->adaptiveColumnSpanValue()"
+    :attributes="$element->attributes()"
 >
     <x-moonshine::fields-group
         :components="$element->getFields()"

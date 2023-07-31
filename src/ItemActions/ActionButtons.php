@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace MoonShine\ItemActions;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Actions\ItemActionContract;
+use MoonShine\Contracts\Actions\ActionButtonContract;
 
-final class ItemActions extends Collection
+final class ActionButtons extends Collection
 {
     public function fillItem(mixed $item): self
     {
         return $this->map(
-            fn (ItemActionContract $action) => clone $action->setItem($item)
+            fn (ActionButtonContract $action) => clone $action->setItem($item)
         );
     }
 
     public function onlyVisible(mixed $item): self
     {
         return $this->filter(
-            fn (ItemActionContract $action) => $action->isSee($item)
+            fn (ActionButtonContract $action) => $action->isSee($item)
         );
     }
 
@@ -27,7 +27,7 @@ final class ItemActions extends Collection
     {
         return $this->filter(
             static fn (
-                ItemActionContract $action
+                ActionButtonContract $action
             ): bool => $action->isBulk()
         );
     }
@@ -36,7 +36,7 @@ final class ItemActions extends Collection
     {
         return $this->filter(
             static fn (
-                ItemActionContract $action
+                ActionButtonContract $action
             ): bool => !$action->isBulk()
         );
     }
@@ -45,7 +45,7 @@ final class ItemActions extends Collection
     {
         return $this->filter(
             static fn (
-                ItemActionContract $action
+                ActionButtonContract $action
             ): bool => ! $action->inDropdown()
         );
     }
@@ -53,7 +53,7 @@ final class ItemActions extends Collection
     public function inDropdown(): self
     {
         return $this->filter(
-            static fn (ItemActionContract $action) => $action->inDropdown()
+            static fn (ActionButtonContract $action) => $action->inDropdown()
         );
     }
 }

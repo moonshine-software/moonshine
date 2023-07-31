@@ -18,7 +18,7 @@
         @endforeach
 
         <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + 1) }}>
-            @include('moonshine::crud.shared.item-actions', [
+            @include('moonshine::crud.shared.table-row-actions', [
                 'actions' => $row->getActions()
             ])
         </td>

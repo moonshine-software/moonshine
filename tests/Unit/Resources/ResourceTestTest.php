@@ -1,16 +1,16 @@
 <?php
 
 use Illuminate\Database\Eloquent\Builder;
+use MoonShine\Actions\Actions;
 use MoonShine\Actions\ExportAction;
-use MoonShine\Actions\MassActions;
 use MoonShine\BulkActions\BulkAction;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\Filters;
 use MoonShine\Filters\TextFilter;
 use MoonShine\FormActions\FormAction;
-use MoonShine\ItemActions\ItemAction;
-use MoonShine\ItemActions\ItemActions;
+use MoonShine\ItemActions\ActionButton;
+use MoonShine\ItemActions\ActionButtons;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
@@ -101,21 +101,21 @@ it('resource actions', function (): void {
     ]);
 
     expect($this->resource->getActions())
-        ->toBeInstanceOf(MassActions::class)
+        ->toBeInstanceOf(Actions::class)
         ->toHaveCount(2)
         ->first()->toBeInstanceOf(ExportAction::class);
 });
 
 it('resource item actions', function (): void {
-    $action = ItemAction::make('Label', static fn (): string => '');
+    $action = ActionButton::make('Label', static fn (): string => '');
     $this->resource->setTestItemActions([
         $action,
     ]);
 
     expect($this->resource->itemActionsCollection())
-        ->toBeInstanceOf(ItemActions::class)
+        ->toBeInstanceOf(ActionButtons::class)
         ->toHaveCount(1)
-        ->first()->toBeInstanceOf(ItemAction::class);
+        ->first()->toBeInstanceOf(ActionButton::class);
 });
 
 it('resource form actions', function (): void {
@@ -125,7 +125,7 @@ it('resource form actions', function (): void {
     ]);
 
     expect($this->resource->formActionsCollection())
-        ->toBeInstanceOf(ItemActions::class)
+        ->toBeInstanceOf(ActionButtons::class)
         ->toHaveCount(1)
         ->first()->toBeInstanceOf(FormAction::class);
 });
@@ -137,7 +137,7 @@ it('resource bulk actions', function (): void {
     ]);
 
     expect($this->resource->bulkActionsCollection())
-        ->toBeInstanceOf(MassActions::class)
+        ->toBeInstanceOf(Actions::class)
         ->toHaveCount(1)
         ->first()->toBeInstanceOf(BulkAction::class);
 });

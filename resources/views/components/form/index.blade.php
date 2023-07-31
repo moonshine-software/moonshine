@@ -1,5 +1,4 @@
 @props([
-    'button',
     'buttons',
     'errors' => false,
     'raw' => false
@@ -22,12 +21,6 @@
         <x-moonshine::grid>
             <x-moonshine::column>
                 <div class="mt-3 flex w-full flex-wrap justify-start gap-2">
-                    @if($button ?? false)
-                        <x-moonshine::form.button :attributes="$button->attributes->merge(['type' => 'submit'])">
-                            {{ $button }}
-                        </x-moonshine::form.button>
-                    @endif
-
                     {{ $buttons ?? '' }}
                 </div>
             </x-moonshine::column>

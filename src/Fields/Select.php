@@ -51,6 +51,6 @@ class Select extends Field implements
                 ->implode(',');
         }
 
-        return (string) ($this->values()[$this->value()] ?? '');
+        return (string) ($this->flattenValues()[$this->value()] ?? '');
     }
 }

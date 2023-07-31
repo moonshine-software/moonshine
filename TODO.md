@@ -4,3 +4,6 @@
 - [ ] TableBuilder BulkActions (Perhaps ItemAction with method bulk)
 - [ ] PageComponents: Actions, QueryTags
 - [ ] Rename Renderable
+- [ ] Modal and offcanvas decoration
+- [ ] Actions with offcanvas mode
+- [ ] Decorations with html attributes

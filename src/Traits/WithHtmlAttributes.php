@@ -39,8 +39,7 @@ trait WithHtmlAttributes
 
         return (new ComponentAttributeBag(
             $this->customAttributes + $resolveAttributes->toArray()
-        )
-        );
+        ));
     }
 
     public function removeAttribute(string $name): static

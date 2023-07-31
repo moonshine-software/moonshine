@@ -12,7 +12,7 @@ use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
 /**
- * @method static static make(string $label, Builder|Closure $builder)
+ * @method static static make(string $label, Closure $builder)
  */
 final class QueryTag
 {

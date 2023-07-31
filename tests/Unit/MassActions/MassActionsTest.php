@@ -1,12 +1,12 @@
 <?php
 
+use MoonShine\Actions\Actions;
 use MoonShine\Actions\ExportAction;
-use MoonShine\Actions\MassActions;
 
 uses()->group('mass-actions');
 
 beforeEach(function (): void {
-    $this->actions = MassActions::make();
+    $this->actions = Actions::make();
 });
 
 it('merge if not exists', function (): void {

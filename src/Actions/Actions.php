@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace MoonShine\Actions;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Actions\MassActionContract;
+use MoonShine\Contracts\Actions\ActionContract;
 use MoonShine\MoonShineRequest;
 
-final class MassActions extends Collection
+final class Actions extends Collection
 {
-    public function mergeIfNotExists(MassActionContract $new): self
+    public function mergeIfNotExists(ActionContract $new): self
     {
         return $this->when(
             ! $this->first(
                 static fn (
-                    Action $action
+                    ActionContract $action
                 ): bool => $action::class === $new::class
             ),
             static fn (
-                MassActions $actions
-            ): MassActions => $actions->add($new)
+                Actions $actions
+            ): Actions => $actions->add($new)
         );
     }
 
     public function onlyVisible(): self
     {
         return $this->filter(
-            static fn (MassActionContract $action) => $action->isSee(
+            static fn (ActionContract $action) => $action->isSee(
                 app(MoonShineRequest::class)
             )
         );
@@ -37,7 +37,7 @@ final class MassActions extends Collection
     {
         return $this->filter(
             static fn (
-                MassActionContract $action
+                ActionContract $action
             ): bool => ! $action->inDropdown()
         );
     }
@@ -45,7 +45,7 @@ final class MassActions extends Collection
     public function inDropdown(): self
     {
         return $this->filter(
-            static fn (MassActionContract $action) => $action->inDropdown()
+            static fn (ActionContract $action) => $action->inDropdown()
         );
     }
 }

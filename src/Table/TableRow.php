@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
-use MoonShine\ItemActions\ItemActions;
+use MoonShine\ItemActions\ActionButtons;
 use MoonShine\Traits\Makeable;
 use Throwable;
 
@@ -19,7 +19,7 @@ final class TableRow
     public function __construct(
         protected mixed $data,
         protected Fields $fields,
-        protected ItemActions $actions,
+        protected ActionButtons $actions,
         protected ?Closure $trAttributes = null,
         protected ?Closure $tdAttributes = null,
     ) {
@@ -40,7 +40,7 @@ final class TableRow
         return $this->fields;
     }
 
-    public function getActions(): ItemActions
+    public function getActions(): ActionButtons
     {
         return $this->actions;
     }

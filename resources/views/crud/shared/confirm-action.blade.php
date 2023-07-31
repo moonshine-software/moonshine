@@ -4,6 +4,7 @@
     </div>
 
     <x-moonshine::link
+        :attributes="$action->attributes()"
         :href="$action->url()"
         :icon="$action->iconValue()"
     >
@@ -12,6 +13,7 @@
 
     <x-slot name="outerHtml">
         <x-moonshine::link
+            :attributes="$action->attributes()"
             :icon="$action->iconValue()"
             @click.prevent="toggleModal"
         >

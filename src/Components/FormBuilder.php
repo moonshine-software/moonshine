@@ -11,15 +11,16 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Form\FormContract;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Fields;
-use MoonShine\ItemActions\ItemActions;
+use MoonShine\ItemActions\ActionButtons;
 use MoonShine\Traits\Makeable;
+use Throwable;
 
 /**
  * @method static static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
  */
-final class FormBuilder extends Component implements FormContract, Renderable
+final class FormBuilder extends Component implements FormContract, MoonShineRenderable
 {
     use Makeable;
     use Macroable;
@@ -120,7 +121,7 @@ final class FormBuilder extends Component implements FormContract, Renderable
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getFields(): Fields
     {
@@ -159,7 +160,9 @@ final class FormBuilder extends Component implements FormContract, Renderable
     public function submit(string $label, array $attributes = []): self
     {
         $this->submitLabel = $label;
-        $this->submitAttributes->merge($attributes);
+        $this->submitAttributes->setAttributes(
+            $attributes + $this->submitAttributes->getAttributes()
+        );
 
         return $this;
     }
@@ -176,9 +179,9 @@ final class FormBuilder extends Component implements FormContract, Renderable
         return $this;
     }
 
-    public function getButtons(): ItemActions
+    public function getButtons(): ActionButtons
     {
-        return ItemActions::make($this->buttons)
+        return ActionButtons::make($this->buttons)
             ->onlyVisible($this->getCastedValues())
             ->fillItem($this->getCastedValues());
     }

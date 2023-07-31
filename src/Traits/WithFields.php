@@ -11,7 +11,7 @@ use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\Relationships\HasRelationship;
 use MoonShine\Contracts\Fields\Relationships\HasResourceMode;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
@@ -23,7 +23,7 @@ use MoonShine\Filters\Filter;
 use Throwable;
 
 /**
- * @mixin Renderable
+ * @mixin MoonShineRenderable
  */
 trait WithFields
 {
@@ -156,7 +156,7 @@ trait WithFields
                     }
 
                     foreach ($fields as $field) {
-                        $values[$index][$field->field()] = $field->indexViewValue($data, false);
+                        $values[$index][$field->field()] = $field->indexViewValue($data, true);
                     }
                 }
             }

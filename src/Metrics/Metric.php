@@ -7,7 +7,7 @@ namespace MoonShine\Metrics;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasAssets;
-use MoonShine\Contracts\Renderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithColumnSpan;
@@ -19,7 +19,7 @@ use MoonShine\Utilities\AssetManager;
 /**
  * @method static static make(string $label)
  */
-abstract class Metric implements Renderable, HasAssets
+abstract class Metric implements MoonShineRenderable, HasAssets
 {
     use Makeable;
     use WithAssets;

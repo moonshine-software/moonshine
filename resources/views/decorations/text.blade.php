@@ -1,5 +1,8 @@
-@includeWhen($element->label(), 'moonshine::layouts.shared.title', [
-    'title' => $element->label()
-])
+<div {{ $element->attributes() }}>
+    @includeWhen($element->label(), 'moonshine::layouts.shared.title', [
+        'title' => $element->label()
+    ])
 
-{!! $element->text() !!}
+    {!! $element->text() !!}
+</div>
+

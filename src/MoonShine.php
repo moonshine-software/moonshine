@@ -11,7 +11,6 @@ use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Menu\MenuSection;
-use MoonShine\Resources\CustomPage;
 use MoonShine\Resources\Resource;
 
 class MoonShine
@@ -21,8 +20,6 @@ class MoonShine
     public const NAMESPACE = 'App\MoonShine';
 
     protected static ?Collection $resources = null;
-
-    protected static ?Collection $pages = null;
 
     protected static ?Collection $menu = null;
 
@@ -70,7 +67,6 @@ class MoonShine
     public static function menu(array $data): void
     {
         self::$resources = self::getResources();
-        self::$pages = self::getPages();
         self::$menu = collect();
 
         collect($data)->each(function ($item): void {
@@ -79,33 +75,16 @@ class MoonShine
             if ($item instanceof Resource) {
                 self::$resources->add($item);
                 self::$menu->add(new MenuItem($item->title(), $item));
-            } elseif ($item instanceof CustomPage) {
-                self::$pages->add($item);
-                self::$menu->add(new MenuItem($item->label(), $item));
             } elseif ($item instanceof MenuElement) {
                 self::$resources->when(
                     $item->resource(),
                     fn ($r): Collection => $r->add($item->resource())
-                );
-                self::$pages->when(
-                    $item->page(),
-                    fn ($r): Collection => $r->add($item->page())
                 );
                 self::$menu->add($item);
             } elseif ($item instanceof MenuGroup) {
                 self::$menu->add($item);
 
                 $item->items()->each(function ($subItem) use ($item): void {
-                    self::$pages->when(
-                        $subItem->page(),
-                        function ($r) use ($subItem, $item): void {
-                            $r->add(
-                                $subItem->page()->breadcrumbs([
-                                    $item->url() => $item->label(),
-                                ])
-                            );
-                        }
-                    );
                     self::$resources->when(
                         $subItem->resource(),
                         fn ($r): Collection => $r->add($subItem->resource())
@@ -114,27 +93,9 @@ class MoonShine
             }
         });
 
-        self::$pages->add(
-            CustomPage::make(
-                __('moonshine::ui.profile'),
-                'profile',
-                'moonshine::profile'
-            )
-        );
-
         app(Menu::class)->register(self::$menu);
 
-        //self::resolveResourcesRoutes();
-    }
-
-    /**
-     * Get collection of registered pages
-     *
-     * @return Collection<CustomPage>
-     */
-    public static function getPages(): Collection
-    {
-        return self::$pages ?? collect();
+        self::resolveResourcesRoutes();
     }
 
     /**
