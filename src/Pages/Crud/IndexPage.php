@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Pages\Crud;
 
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\FiltersAction;
 use MoonShine\Components\ActionGroup;
@@ -16,7 +17,6 @@ use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Text;
-use MoonShine\ItemActions\ActionButton;
 use MoonShine\Metrics\ValueMetric;
 use MoonShine\Pages\Page;
 

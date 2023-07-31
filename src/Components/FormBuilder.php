@@ -10,10 +10,10 @@ use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Form\FormContract;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Fields;
-use MoonShine\ItemActions\ActionButtons;
 use MoonShine\Traits\Makeable;
 use Throwable;
 

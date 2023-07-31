@@ -2,10 +2,10 @@
 
 namespace MoonShine\Pages\Crud;
 
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Hidden;
 use MoonShine\Http\Controllers\CrudController;
-use MoonShine\ItemActions\ActionButton;
 use MoonShine\Pages\Page;
 
 class FormPage extends Page

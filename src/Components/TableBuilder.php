@@ -11,10 +11,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Fields\Fields;
-use MoonShine\ItemActions\ActionButtons;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\Makeable;
 

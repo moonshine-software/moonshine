@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\ItemActions;
+namespace MoonShine\ActionButtons;
 
 use Closure;
 use MoonShine\Contracts\Actions\ActionButtonContract;

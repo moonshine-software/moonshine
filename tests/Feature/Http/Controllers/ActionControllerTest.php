@@ -1,11 +1,11 @@
 <?php
 
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\FiltersAction;
 use MoonShine\Actions\ImportAction;
 use MoonShine\BulkActions\BulkAction;
 use MoonShine\FormActions\FormAction;
-use MoonShine\ItemActions\ActionButton;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 

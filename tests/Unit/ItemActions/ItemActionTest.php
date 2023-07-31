@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\ItemActions\ActionButton;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Models\MoonshineUser;
 
 uses()->group('item-actions');

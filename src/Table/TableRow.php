@@ -6,9 +6,9 @@ namespace MoonShine\Table;
 
 use Closure;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
-use MoonShine\ItemActions\ActionButtons;
 use MoonShine\Traits\Makeable;
 use Throwable;
 

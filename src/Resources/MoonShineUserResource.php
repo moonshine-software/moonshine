@@ -6,6 +6,7 @@ namespace MoonShine\Resources;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Heading;
@@ -21,7 +22,6 @@ use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\TextFilter;
 use MoonShine\Http\Controllers\PermissionController;
-use MoonShine\ItemActions\ActionButton;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
