@@ -25,7 +25,7 @@ final class Fields extends FormElements
      */
     public function fillValues(array $rawValues = [], mixed $castedValues = null): self
     {
-        return $this->onlyFields()->map(fn (Field $field): Field => clone $field->resolveValue($rawValues, $castedValues));
+        return $this->onlyFields()->map(fn (Field $field): Field => (clone $field)->resolveValue($rawValues, $castedValues));
     }
 
     public function requestValues(string $prefix = null): Fields
