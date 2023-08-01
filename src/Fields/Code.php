@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Code extends Textarea
 {
     protected static string $view = 'moonshine::fields.code';
@@ -28,9 +26,9 @@ class Code extends Textarea
         return $this;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function resolvePreview(): string
     {
-        return (string) str($item->{$this->column()})
+        return (string) str($this->getValue())
             ->before('<pre>')
             ->after('</pre>')
             ->stripTags();

@@ -21,6 +21,8 @@ abstract class Field extends FormElement
 
     protected mixed $value = null;
 
+    protected ?Closure $previewCallback = null;
+
     protected bool $sortable = false;
 
     protected bool $required = false;
@@ -196,9 +198,34 @@ abstract class Field extends FormElement
         return $this->getValue() ?? $default;
     }
 
+    public function changePreview(Closure $closure): static
+    {
+        $this->previewCallback = $closure;
+
+        return $this;
+    }
+
+    public function isPreviewChanged(): bool
+    {
+        return !is_null($this->previewCallback);
+    }
+
     public function preview(): string
     {
-        return (string) ($this->value() ?? '');
+        if($this->isPreviewChanged()) {
+            return (string) call_user_func(
+                $this->previewCallback,
+                $this->getValue(),
+                $this->resolvePreview(),
+            );
+        }
+
+        return $this->resolvePreview();
+    }
+
+    protected function resolvePreview(): string
+    {
+        return (string) ($this->getValue() ?? '');
     }
 
     public function canSave(mixed $condition = null): static

@@ -11,7 +11,7 @@ final class Pages extends Collection
 {
     public function setResource(Resource $resource): Pages
     {
-        return $this->each(fn (Page $page): Page => $page->resource($resource));
+        return $this->each(fn (Page $page): Page => $page->setResource($resource));
     }
 
     public function findByUri(

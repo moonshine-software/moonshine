@@ -6,25 +6,22 @@ namespace MoonShine\Pages;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Exceptions\PageException;
 use MoonShine\MoonShineRouter;
-use MoonShine\Resources\Resource;
+use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithView;
-use Throwable;
 
-abstract class Page implements MoonShineRenderable
+abstract class Page implements MoonShineRenderable, HasResourceContract
 {
-    use WithUriKey;
     use Makeable;
+    use HasResource;
+    use WithUriKey;
     use WithView;
 
     protected string $subtitle = '';
-
-    protected ?ResourceContract $resource = null;
 
     public function __construct(
         protected string $title
@@ -56,23 +53,6 @@ abstract class Page implements MoonShineRenderable
         $this->subtitle = $subtitle;
 
         return $this;
-    }
-
-    public function resource(Resource $resource): static
-    {
-        $this->resource = $resource;
-
-        return $this;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getResource(): Resource
-    {
-        throw_if(is_null($this->resource), new PageException('Resource is required'));
-
-        return $this->resource;
     }
 
     public function route(array $params = []): string

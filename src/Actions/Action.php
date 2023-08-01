@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\Actions;
 
 use MoonShine\Contracts\Actions\ActionContract;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Exceptions\ActionException;
+use MoonShine\Traits\HasResource;
+use Throwable;
 
 /**
  * @method static static make(string $label = '')
  */
-abstract class Action extends AbstractAction implements ActionContract
+abstract class Action extends AbstractAction implements ActionContract, HasResourceContract
 {
-    protected ?ResourceContract $resource = null;
+    use HasResource;
 
     protected ?string $triggerKey = null;
 
@@ -27,11 +29,11 @@ abstract class Action extends AbstractAction implements ActionContract
     abstract public function handle(): mixed;
 
     /**
-     * @throws ActionException
+     * @throws ActionException|Throwable
      */
     public function url(): string
     {
-        if (is_null($this->resource())) {
+        if (! $this->hasResource()) {
             throw new ActionException('Resource is required for action');
         }
 
@@ -41,13 +43,8 @@ abstract class Action extends AbstractAction implements ActionContract
             $query = array_merge(request()->query(), $query);
         }
 
-        return $this->resource()
+        return $this->getResource()
             ->route('actions.index', query: $query);
-    }
-
-    public function resource(): ?ResourceContract
-    {
-        return $this->resource;
     }
 
     public function getTriggerKey(): string
@@ -63,12 +60,5 @@ abstract class Action extends AbstractAction implements ActionContract
     public function isTriggered(): bool
     {
         return request()->has($this->getTriggerKey());
-    }
-
-    public function setResource(ResourceContract $resource): static
-    {
-        $this->resource = $resource;
-
-        return $this;
     }
 }

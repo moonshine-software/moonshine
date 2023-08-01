@@ -64,7 +64,7 @@ abstract class FormElements extends Collection
     /**
      * @throws Throwable
      */
-    public function withCurrentResource(
+    public function withResource(
         ResourceContract $resource
     ): FormElements {
         return $this->onlyFields()->map(

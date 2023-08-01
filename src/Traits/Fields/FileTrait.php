@@ -236,13 +236,4 @@ trait FileTrait
 
         return $item->{$this->column()} ?? '';
     }
-
-    public function exportViewValue(Model $item): string
-    {
-        if ($this->isMultiple()) {
-            return collect($item->{$this->column()})->implode(';');
-        }
-
-        return $item->{$this->column()} ?? '';
-    }
 }

@@ -38,7 +38,7 @@ class File extends Field implements Fileable, RemovableContract
         return $this;
     }
 
-    public function preview(): string
+    protected function resolvePreview(): string
     {
         if (! $this->value()) {
             return '';

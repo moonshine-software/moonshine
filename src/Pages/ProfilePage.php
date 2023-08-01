@@ -3,6 +3,7 @@
 namespace MoonShine\Pages;
 
 use MoonShine\Components\FormBuilder;
+use MoonShine\Decorations\TextBlock;
 use MoonShine\Http\Controllers\ProfileController;
 
 class ProfilePage extends Page
@@ -23,6 +24,13 @@ class ProfilePage extends Page
                 ->submit(__('moonshine::ui.save'), [
                     'class' => 'btn-lg btn-primary',
                 ]),
+
+            TextBlock::make(
+                '', view('moonshine::ui.social-auth', [
+                    'title' => trans('moonshine::ui.resource.link_socialite'),
+                    'attached' => true
+                ])->render()
+            )
         ];
     }
 }

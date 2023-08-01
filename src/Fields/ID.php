@@ -14,14 +14,10 @@ class ID extends Text
 
     protected string $type = 'hidden';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function resolvePreview(): string
     {
-        if (! $container) {
-            return parent::indexViewValue($item, $container);
-        }
-
         return view('moonshine::ui.badge', [
-            'value' => parent::indexViewValue($item, $container),
+            'value' => $this->getValue(),
             'color' => 'purple',
         ])->render();
     }

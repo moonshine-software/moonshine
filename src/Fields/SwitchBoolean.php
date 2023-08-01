@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use MoonShine\Contracts\Fields\HasCurrentResource;
+use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Helpers\Condition;
 
-class SwitchBoolean extends Checkbox implements HasCurrentResource
+class SwitchBoolean extends Checkbox implements HasResourceContract
 {
     protected static string $view = 'moonshine::fields.switch';
 
@@ -28,12 +28,10 @@ class SwitchBoolean extends Checkbox implements HasCurrentResource
         return $this;
     }
 
-    public function preview(): string
+    public function resolvePreview(): string
     {
-        $container = true;
-
-        if (! $this->autoUpdate || ! $container) {
-            return parent::preview($container);
+        if (! $this->autoUpdate) {
+            return parent::resolvePreview();
         }
 
         return view('moonshine::fields.switch', [

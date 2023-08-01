@@ -44,11 +44,10 @@ class StackFields extends Field implements HasFields
         return $item;
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function resolvePreview(): string
     {
         return view($this->getView(), [
             'element' => $this,
-            'item' => $item,
             'indexView' => true,
         ])->render();
     }

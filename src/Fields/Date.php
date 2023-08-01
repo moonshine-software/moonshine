@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use MoonShine\Traits\Fields\DateTrait;
 
@@ -14,9 +13,9 @@ class Date extends Text
 
     protected string $type = 'date';
 
-    public function formViewValue(Model $item): mixed
+    public function value(): mixed
     {
-        $value = parent::formViewValue($item);
+        $value = parent::value();
 
         if (! $value) {
             return $this->isNullable() ? null : '';
@@ -29,9 +28,9 @@ class Date extends Text
         return date($this->inputFormat, strtotime((string) $value));
     }
 
-    public function indexViewValue(Model $item, bool $container = false): string
+    public function resolvePreview(): string
     {
-        $value = parent::indexViewValue($item, $container);
+        $value = parent::resolvePreview();
 
         return $value !== '' && $value !== '0'
             ? date($this->format, strtotime($value))

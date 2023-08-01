@@ -18,7 +18,7 @@ final class MoonShineNotification
         string $message,
         array $button = [],
         array $ids = [],
-        string $color = 'green'
+        ?string $color = null
     ): void {
         if (config('moonshine.use_notifications', true)) {
             Notification::sendNow(

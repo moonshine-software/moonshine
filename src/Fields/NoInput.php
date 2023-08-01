@@ -137,9 +137,4 @@ class NoInput extends Field
 
         return $value;
     }
-
-    public function exportViewValue(Model $item): string
-    {
-        return (string) $this->getValue($item);
-    }
 }

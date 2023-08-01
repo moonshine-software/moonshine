@@ -18,12 +18,12 @@ class Password extends Text
         'required',
     ];
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function resolvePreview(): string
     {
         return '***';
     }
 
-    public function formViewValue(Model $item): string
+    public function value(): string
     {
         return '';
     }

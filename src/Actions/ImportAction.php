@@ -72,7 +72,7 @@ class ImportAction extends Action
             return back();
         }
 
-        if (is_null($this->resource())) {
+        if (!$this->hasResource()) {
             throw new ActionException('Resource is required for action');
         }
 
@@ -89,7 +89,7 @@ class ImportAction extends Action
 
         if ($this->isQueue()) {
             ImportActionJob::dispatch(
-                $this->resource()::class,
+                $this->getResource()::class,
                 $path,
                 $this->deleteAfter,
                 $this->getDelimiter()
@@ -104,7 +104,7 @@ class ImportAction extends Action
 
         self::process(
             $path,
-            $this->resource(),
+            $this->getResource(),
             $this->deleteAfter,
             $this->getDelimiter()
         );

@@ -57,7 +57,7 @@ class ExportAction extends Action
      */
     public function handle(): RedirectResponse|BinaryFileResponse
     {
-        if (is_null($this->resource())) {
+        if (!$this->hasResource()) {
             throw new ActionException('Resource is required for action');
         }
 
@@ -65,12 +65,12 @@ class ExportAction extends Action
 
         $path = Storage::disk($this->getDisk())
             ->path(
-                "{$this->getDir()}/{$this->resource()->uriKey()}." . ($this->isCsv() ? 'csv' : 'xlsx')
+                "{$this->getDir()}/{$this->getResource()->uriKey()}." . ($this->isCsv() ? 'csv' : 'xlsx')
             );
 
         if ($this->isQueue()) {
             ExportActionJob::dispatch(
-                $this->resource()::class,
+                $this->getResource()::class,
                 $path,
                 $this->getDisk(),
                 $this->getDir(),
@@ -87,7 +87,7 @@ class ExportAction extends Action
         return response()->download(
             self::process(
                 $path,
-                $this->resource(),
+                $this->getResource(),
                 $this->getDisk(),
                 $this->getDir(),
                 $this->getDelimiter()

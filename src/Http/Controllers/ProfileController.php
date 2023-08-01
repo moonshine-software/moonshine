@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
 use MoonShine\Http\Requests\ProfileFormFormRequest;
+use MoonShine\MoonShineUI;
 
 class ProfileController extends BaseController
 {
@@ -45,6 +46,11 @@ class ProfileController extends BaseController
         }
 
         $request->user()->update($resultData);
+
+        MoonShineUI::toast(
+            __('moonshine::ui.saved'),
+            'success'
+        );
 
         return back();
     }

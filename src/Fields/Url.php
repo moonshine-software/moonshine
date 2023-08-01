@@ -4,25 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Url extends Text
 {
     protected string $type = 'url';
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    public function resolvePreview(): string
     {
-        $value = parent::indexViewValue(
-            $item,
-            $container
-        );
+        $value = parent::resolvePreview();
 
         if ($value === '0' || $value === '') {
             return '';
-        }
-
-        if (! $container) {
-            return $value;
         }
 
         return view('moonshine::ui.url', [
