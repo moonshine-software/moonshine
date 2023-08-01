@@ -19,7 +19,7 @@ final class MoonShineDatabaseNotification extends Notification
     public function __construct(
         protected string $message,
         protected array $button = [],
-        protected string $color = 'green'
+        protected string $color
     ) {
         //
     }
@@ -31,7 +31,7 @@ final class MoonShineDatabaseNotification extends Notification
 
 
     /**
-     * @return array{message: string, button: array}
+     * @return array{message: string, button: array, color: string}
      */
     public function toArray($notifiable): array
     {

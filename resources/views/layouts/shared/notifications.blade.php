@@ -24,7 +24,7 @@
                         <x-moonshine::icon icon="heroicons.x-mark" />
                     </a>
 
-                    <div class="notifications-category badge-{{ $notification->data['color'] }}">
+                    <div class="notifications-category badge-{{ $notification->data['color'] ?? 'green' }}">
                         <x-moonshine::icon icon="heroicons.information-circle" />
                     </div>
 
