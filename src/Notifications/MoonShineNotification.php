@@ -11,14 +11,15 @@ use MoonShine\MoonShineAuth;
 final class MoonShineNotification
 {
     /**
-     * @param  array{'link': string, 'label': string}  $button
-     * @param  array<int>  $ids
+     * @param  array {'link': string, 'label': string}  $button
+     * @param  array <int> $ids
+     * @param string $color
      */
     public static function send(
         string $message,
         array $button = [],
         array $ids = [],
-        string $color
+        ?string $color = null
     ): void {
         if (config('moonshine.use_notifications', true)) {
             Notification::sendNow(
