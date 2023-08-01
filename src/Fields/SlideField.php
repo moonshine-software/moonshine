@@ -17,6 +17,7 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
 
     public function resolvePreview(): string
     {
+        $item = null;
         $from = $item->{$this->fromField};
         $to = $item->{$this->toField};
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use MoonShine\ActionButtons\ActionButton;
@@ -55,11 +57,9 @@ class MoonShineUserResource extends ModelResource
                             ->showOnExport(),
 
                         Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
-                            ->changePreview(function ($value, $resolvedValue) {
-                                return view('moonshine::ui.image', [
-                                    'value' => $resolvedValue
-                                ]);
-                            })
+                            ->changePreview(fn($value, $resolvedValue): Factory|View => view('moonshine::ui.image', [
+                                'value' => $resolvedValue
+                            ]))
                             ->showOnExport()
                             ->disk('public')
                             ->dir('moonshine_users')
