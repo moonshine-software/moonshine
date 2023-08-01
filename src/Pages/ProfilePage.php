@@ -12,7 +12,7 @@ class ProfilePage extends Page
         return [
             FormBuilder::make(action([ProfileController::class, 'store']))
                 ->customAttributes([
-                    'enctype' => 'multipart/form-data'
+                    'enctype' => 'multipart/form-data',
                 ])
                 ->fields(
                     $this->getResource()
@@ -21,7 +21,7 @@ class ProfilePage extends Page
                 )
                 ->cast($this->getResource()->getModel()::class)
                 ->submit(__('moonshine::ui.save'), [
-                    'class' => 'btn-lg btn-primary'
+                    'class' => 'btn-lg btn-primary',
                 ]),
         ];
     }

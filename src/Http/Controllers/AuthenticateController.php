@@ -22,7 +22,7 @@ class AuthenticateController extends BaseController
         }
 
         return view('moonshine::auth.login', [
-            'form' => new LoginForm
+            'form' => new LoginForm(),
         ]);
     }
 

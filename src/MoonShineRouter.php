@@ -25,13 +25,13 @@ final class MoonShineRouter
     {
         $resource = $resource instanceof Resource
             ? $resource
-            : new $resource;
+            : new $resource();
 
         $route = $resource->getPages()
             ->when(
                 is_null($page),
-                static fn(Pages $pages) => $pages->first(),
-                static fn(Pages $pages): ?Page => $pages->findByUri(
+                static fn (Pages $pages) => $pages->first(),
+                static fn (Pages $pages): ?Page => $pages->findByUri(
                     $page instanceof Page
                         ? $page->uriKey()
                         : self::uriKey($page)

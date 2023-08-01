@@ -85,7 +85,7 @@ class MoonShineProfileResource extends ModelResource
     public function pages(): array
     {
         return [
-            ProfilePage::make('Профиль')
+            ProfilePage::make('Профиль'),
         ];
     }
 }
