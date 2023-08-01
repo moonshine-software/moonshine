@@ -43,7 +43,7 @@ class Actions extends Collection
     public function inDropdown(): self
     {
         return $this->filter(
-            static fn (AbstractAction $action) => $action->inDropdown()
+            static fn (AbstractAction $action): bool => $action->inDropdown()
         );
     }
 }

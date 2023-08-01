@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Closure;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\LinkTrait;
@@ -78,7 +79,7 @@ abstract class Field extends FormElement
             : $this->attributes()->get('type', '');
     }
 
-    public function required($condition = null): static
+    public function required(Closure|bool|null $condition = null): static
     {
         $this->required = Condition::boolean($condition, true);
         $this->setAttribute('required', $this->required);
@@ -91,7 +92,7 @@ abstract class Field extends FormElement
         return $this->required;
     }
 
-    public function disabled($condition = null): static
+    public function disabled(Closure|bool|null $condition = null): static
     {
         $this->disabled = Condition::boolean($condition, true);
         $this->setAttribute('disabled', $this->disabled);
@@ -104,7 +105,7 @@ abstract class Field extends FormElement
         return $this->disabled;
     }
 
-    public function hidden($condition = null): static
+    public function hidden(Closure|bool|null $condition = null): static
     {
         $this->hidden = Condition::boolean($condition, true);
 
@@ -117,7 +118,7 @@ abstract class Field extends FormElement
             || $this->attributes()->get('type') === 'hidden';
     }
 
-    public function readonly($condition = null): static
+    public function readonly(Closure|bool|null $condition = null): static
     {
         $this->readonly = Condition::boolean($condition, true);
         $this->setAttribute('readonly', $this->readonly);

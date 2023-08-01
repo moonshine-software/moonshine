@@ -30,9 +30,7 @@ final class Fields extends FormElements
 
     public function requestValues(string $prefix = null): Fields
     {
-        return $this->onlyFields()->mapWithKeys(function (Field $field) use($prefix) {
-            return [$field->column() => $field->requestValue($prefix)];
-        })->filter();
+        return $this->onlyFields()->mapWithKeys(fn(Field $field): array => [$field->column() => $field->requestValue($prefix)])->filter();
     }
 
     /**
