@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
@@ -27,6 +29,18 @@ abstract class ModelResource extends Resource
     protected string $routeAfterSave = 'index';
 
     abstract public function fields(): array;
+
+    public function pages(): array
+    {
+        return [
+            IndexPage::make($this->title),
+            FormPage::make(
+                request('crudItem')
+                    ? 'Редактировать'
+                    : 'Добавить'
+            ),
+        ];
+    }
 
     public function getFields(): Fields
     {
