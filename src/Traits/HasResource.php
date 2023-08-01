@@ -21,7 +21,7 @@ trait HasResource
 
     public function hasResource(): bool
     {
-        return !is_null($this->resource);
+        return ! is_null($this->resource);
     }
 
     /**
@@ -30,7 +30,7 @@ trait HasResource
     public function getResource(): ResourceContract
     {
         throw_if(
-            !$this->hasResource(),
+            ! $this->hasResource(),
             new ResourceException('Resource is required')
         );
 

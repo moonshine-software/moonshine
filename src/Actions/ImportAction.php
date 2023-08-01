@@ -72,7 +72,7 @@ class ImportAction extends Action
             return back();
         }
 
-        if (!$this->hasResource()) {
+        if (! $this->hasResource()) {
             throw new ActionException('Resource is required for action');
         }
 

@@ -57,8 +57,8 @@ class MoonShineUserResource extends ModelResource
                             ->showOnExport(),
 
                         Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
-                            ->changePreview(fn($value, $resolvedValue): Factory|View => view('moonshine::ui.image', [
-                                'value' => $resolvedValue
+                            ->changePreview(fn ($value, $resolvedValue): Factory|View => view('moonshine::ui.image', [
+                                'value' => $resolvedValue,
                             ]))
                             ->showOnExport()
                             ->disk('public')

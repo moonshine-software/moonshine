@@ -207,7 +207,7 @@ abstract class Field extends FormElement
 
     public function isPreviewChanged(): bool
     {
-        return !is_null($this->previewCallback);
+        return ! is_null($this->previewCallback);
     }
 
     public function preview(): string

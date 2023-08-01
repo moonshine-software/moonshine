@@ -57,7 +57,7 @@ class ExportAction extends Action
      */
     public function handle(): RedirectResponse|BinaryFileResponse
     {
-        if (!$this->hasResource()) {
+        if (! $this->hasResource()) {
             throw new ActionException('Resource is required for action');
         }
 

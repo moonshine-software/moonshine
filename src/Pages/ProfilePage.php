@@ -26,11 +26,12 @@ class ProfilePage extends Page
                 ]),
 
             TextBlock::make(
-                '', view('moonshine::ui.social-auth', [
+                '',
+                view('moonshine::ui.social-auth', [
                     'title' => trans('moonshine::ui.resource.link_socialite'),
-                    'attached' => true
+                    'attached' => true,
                 ])->render()
-            )
+            ),
         ];
     }
 }
