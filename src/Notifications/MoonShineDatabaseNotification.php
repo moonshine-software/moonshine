@@ -38,7 +38,7 @@ final class MoonShineDatabaseNotification extends Notification
         return [
             'message' => $this->message,
             'button' => $this->button,
-            'color' => $this->color
+            'color' => $this->color,
         ];
     }
 }
