@@ -1,7 +1,7 @@
 @extends("moonshine::layouts.login")
 
 @section('content')
-    <div class="authentication" xmlns:x-slot="http://www.w3.org/1999/html">
+    <div class="authentication">
         <div class="authentication-logo">
             <a href="/" rel="home">
                 <img class="h-16"
@@ -18,74 +18,7 @@
                 </p>
             </div>
 
-            <x-moonshine::form
-                class="authentication-form"
-                action="{{ route('moonshine.authenticate') }}"
-                method="POST"
-                :errors="false"
-            >
-                <div class="form-flex-col">
-                    <x-moonshine::form.input-wrapper
-                        name="username"
-                        label="{{ trans('moonshine::ui.login.username') }}"
-                        required
-                    >
-                        <x-moonshine::form.input
-                            id="username"
-                            type="username"
-                            name="username"
-                            @class(['form-invalid' => $errors->has('username')])
-                            placeholder="{{ trans('moonshine::ui.login.username') }}"
-                            required
-                            autofocus
-                            value="{{ old('username') }}"
-                            autocomplete="username"
-                        />
-                    </x-moonshine::form.input-wrapper>
-
-                    <x-moonshine::form.input-wrapper
-                        name="password"
-                        label="{{ trans('moonshine::ui.login.password') }}"
-                        required
-                        autocomplete="current-password"
-                    >
-                        <x-moonshine::form.input
-                            id="password"
-                            type="password"
-                            name="password"
-                            @class(['form-invalid' => $errors->has('password')])
-                            placeholder="{{ trans('moonshine::ui.login.password') }}"
-                            required
-                        />
-                    </x-moonshine::form.input-wrapper>
-
-                    <x-moonshine::form.input-wrapper
-                        name="remember_me"
-                        class="form-group-inline"
-                        label="{{ trans('moonshine::ui.login.remember_me') }}"
-                        :beforeLabel="true"
-                    >
-                        <x-moonshine::form.input
-                            id="remember_me"
-                            type="checkbox"
-                            name="remember"
-                            value="1"
-                        />
-
-                        <x-moonshine::form.input
-                            type="hidden"
-                            name="remember"
-                            value="0"
-                        />
-                    </x-moonshine::form.input-wrapper>
-                </div>
-
-                <x-slot:buttons>
-                    <x-moonshine::form.button type="submit" class="btn-primary btn-lg w-full">
-                        {{ trans('moonshine::ui.login.login') }}
-                    </x-moonshine::form.button>
-                </x-slot:buttons>
-            </x-moonshine::form>
+            {!! $form() !!}
 
             <p class="text-center text-2xs">
                 {!! config('moonshine.auth.footer', '') !!}

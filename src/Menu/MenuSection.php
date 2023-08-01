@@ -71,16 +71,6 @@ abstract class MenuSection
             return false;
         }
 
-        if ($this->resource() instanceof Resource && request()->route('page')) {
-            return str_contains($this->url(), request()->route('page'));
-        }
-
-        if ($this->resource() instanceof Resource) {
-            return ! is_null(
-                request()->route('resourceUri', $this->resource()->uriKey())
-            );
-        }
-
         $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
 
         if ($path === '/') {

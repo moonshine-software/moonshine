@@ -21,13 +21,13 @@ class DateRangeFilter extends DateFilter implements DefaultCanBeArray
         return $query
             ->when($values['from'] ?? null, function ($query, $fromDate): void {
                 $query->whereDate(
-                    $this->field(),
+                    $this->column(),
                     '>=',
                     Carbon::parse($fromDate)
                 );
             })
             ->when($values['to'] ?? null, function ($query, $toDate): void {
-                $query->whereDate($this->field(), '<=', Carbon::parse($toDate));
+                $query->whereDate($this->column(), '<=', Carbon::parse($toDate));
             });
     }
 }

@@ -22,8 +22,10 @@
             {{ $submitLabel }}
         </x-moonshine::form.button>
 
-        @includeWhen($buttons->isNotEmpty(), 'moonshine::crud.shared.item-actions', [
-            'actions' => $buttons,
-        ])
+        @if($buttons->isNotEmpty())
+            <x-moonshine::action-group
+                :actions="$buttons"
+            />
+        @endif
     </x-slot:buttons>
 </x-moonshine::form>

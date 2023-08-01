@@ -11,10 +11,11 @@ use MoonShine\Actions\FiltersAction;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
-use MoonShine\Decorations\Button;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
+use MoonShine\Decorations\Modal;
+use MoonShine\Decorations\Offcanvas;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Text;
 use MoonShine\Metrics\ValueMetric;
@@ -38,7 +39,25 @@ class IndexPage extends Page
 
                 Column::make([
                     Flex::make([
-                        Button::make('Добавить', $this->route())
+                        ActionButton::make('Добавить', $this->route())
+                            ->customAttributes(['class' => 'btn btn-primary'])
+                            ->icon('heroicons.outline.plus'),
+
+                        Modal::make('Добавить No Async')
+                            ->content('Title', 'Hello world')
+                            ->customAttributes(['class' => 'btn btn-primary'])
+                            ->icon('heroicons.outline.plus'),
+
+                        Modal::make('Добавить Async')
+                            ->async($this->route())
+                            ->wide()
+                            ->content('Title', 'Hello world')
+                            ->customAttributes(['class' => 'btn btn-primary'])
+                            ->icon('heroicons.outline.plus'),
+
+                        Offcanvas::make('Offcanvas')
+                            ->content('Title', 'Hello world')
+                            ->customAttributes(['class' => 'btn btn-primary'])
                             ->icon('heroicons.outline.plus'),
 
                         ActionGroup::make([
@@ -83,7 +102,7 @@ class IndexPage extends Page
                         url: fn ($data): string => route('moonshine.page', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'pageUri' => 'form-page',
-                        'item' => $data->getKey(),
+                        'crudItem' => $data->getKey(),
                     ])
                     )
                         ->customAttributes(['class' => 'btn-purple'])
@@ -95,7 +114,7 @@ class IndexPage extends Page
                         '',
                         url: fn ($data): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
-                        'item' => $data->getKey(),
+                        'crudItem' => $data->getKey(),
                     ])
                     )
                         ->customAttributes(['class' => 'btn-pink'])
@@ -108,7 +127,7 @@ class IndexPage extends Page
                         '',
                         url: fn (): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
-                        'item' => 0,
+                        'crudItem' => 0,
                     ])
                     )
                         ->bulk()

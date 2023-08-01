@@ -65,7 +65,7 @@ abstract class Filter extends FormElement implements HasFormViewValue
             );
         }
 
-        return $query->where($this->field(), $this->requestValue());
+        return $query->where($this->column(), $this->requestValue());
     }
 
     public function name(string $index = null): string

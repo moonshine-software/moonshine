@@ -50,8 +50,8 @@ trait ResourceModelCrudRouter
         unset($query['change-moonshine-locale'], $query['reset']);
 
         return MoonShineRouter::to(
-            'crud.' . $name,
-            $key ? array_merge(['item' => $key], $query) : $query
+            str($name)->contains('.') ? $name : 'crud.' . $name,
+            $key ? array_merge(['crudItem' => $key], $query) : $query
         );
     }
 

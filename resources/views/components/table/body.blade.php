@@ -1,3 +1,6 @@
+@props([
+    'rows',
+])
 @foreach($rows as $row)
     <tr {{ $row->trAttributes($loop->index) }}>
         <td {{ $row->tdAttributes($loop->index, 0)
@@ -18,9 +21,9 @@
         @endforeach
 
         <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + 1) }}>
-            @include('moonshine::crud.shared.table-row-actions', [
-                'actions' => $row->getActions()
-            ])
+            <x-moonshine::table.actions
+                :actions="$row->getActions()"
+            />
         </td>
     </tr>
 @endforeach

@@ -18,7 +18,6 @@ use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
-use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\TextFilter;
 use MoonShine\Http\Controllers\PermissionController;
@@ -44,12 +43,12 @@ class MoonShineUserResource extends ModelResource
                             ->sortable()
                             ->showOnExport(),
 
-                        BelongsTo::make(
+                        /*BelongsTo::make(
                             trans('moonshine::ui.resource.role'),
                             'moonshine_user_role_id',
                             new MoonShineUserRoleResource()
                         )
-                            ->showOnExport(),
+                            ->showOnExport(),*/
 
                         Text::make(trans('moonshine::ui.resource.name'), 'name')
                             ->required()
@@ -160,7 +159,7 @@ class MoonShineUserResource extends ModelResource
             IndexPage::make('Пользователи'),
 
             FormPage::make(
-                request('item')
+                request('crudItem')
                     ? 'Редактировать'
                     : 'Добавить'
             ),

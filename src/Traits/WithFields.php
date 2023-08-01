@@ -63,7 +63,7 @@ trait WithFields
         }
 
         $value = $item->{$this instanceof HasRelationship ? $this->relation()
-            : $this->field()};
+            : $this->column()};
 
 
         if ($value instanceof Model) {
@@ -144,7 +144,7 @@ trait WithFields
                                 $data = array_merge(
                                     $data,
                                     $field->extractValues(
-                                        $data[$field->field()]
+                                        $data[$field->column()]
                                     )
                                 );
                             }
@@ -156,7 +156,7 @@ trait WithFields
                     }
 
                     foreach ($fields as $field) {
-                        $values[$index][$field->field()] = $field->indexViewValue($data, true);
+                        $values[$index][$field->column()] = $field->indexViewValue($data, true);
                     }
                 }
             }

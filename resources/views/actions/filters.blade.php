@@ -1,4 +1,4 @@
-@if($filters->isNotEmpty())
+@if($action->getFilters()->isNotEmpty())
     <x-moonshine::offcanvas
         title="{{ $action->label() ?? trans('moonshine::ui.filters') }}"
         :left="false"
@@ -15,7 +15,7 @@
                 ({{ $action->activeCount() }})
             @endif
         </x-slot:toggler>
-        <x-moonshine::form action="{{ $resource->currentRoute() }}" method="get">
+        <x-moonshine::form action="{{ $action->resource()->currentRoute() }}" method="get">
             @if(request('order.field'))
                 <x-moonshine::form.input type="hidden" name="order[type]" value="{{ request('order.type') }}" />
                 <x-moonshine::form.input type="hidden" name="order[field]" value="{{ request('order.field') }}" />
@@ -23,7 +23,7 @@
 
             <div class="form-flex-col">
                 <x-moonshine::fields-group
-                    :components="$filters"
+                    :components="$action->getFilters()"
                 />
             </div>
 
@@ -33,7 +33,7 @@
                 </x-moonshine::form.button>
 
                 @if(request('filters'))
-                    <x-moonshine::link href="{{ $resource->currentRoute(query: ['reset' => true]) }}">
+                    <x-moonshine::link href="{{ $action->resource()->currentRoute(query: ['reset' => true]) }}">
                         {{ trans('moonshine::ui.reset') }}
                     </x-moonshine::link>
                 @endif

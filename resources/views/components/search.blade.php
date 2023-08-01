@@ -1,6 +1,10 @@
-<!-- Search -->
-<div class="search" x-data="{ toggleSearch: false }">
-    <form action="{{ $resource->currentRoute() }}"
+@props([
+    'action' => '',
+    'key' => 'search',
+    'placeholder' => __('moonshine::ui.search') . ' (Ctrl+K)'
+])
+<div {{ $attributes->class(['search']) }} x-data="{ toggleSearch: false }">
+    <form action="{{ $action }}"
           x-ref="searchForm"
           class="search-form hidden md:block"
           :class="toggleSearch && '_is-toggled'"
@@ -13,8 +17,8 @@
             @keyup.ctrl.period.window="$refs.searchInput.focus()"
             type="search"
             class="search-form-field"
-            value="{{ request('search', '') }}"
-            placeholder="{{ trans('moonshine::ui.search') }} (Ctrl+K)"
+            value="{{ request($key, '') }}"
+            placeholder="{{ $placeholder }}"
         />
 
         <svg @click.prevent="$refs.searchForm.submit()" class="search-form-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -27,6 +31,7 @@
             </svg>
         </button>
     </form>
+
     <div class="inline-flex items-center md:hidden">
         <button type="button" @click.prevent="toggleSearch = ! toggleSearch" class="text-slate-600 hover:text-pink">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
@@ -35,4 +40,3 @@
         </button>
     </div>
 </div>
-<!-- END: Search -->

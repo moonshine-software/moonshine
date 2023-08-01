@@ -75,12 +75,12 @@ abstract class Page implements MoonShineRenderable
         return $this->resource;
     }
 
-    public function route(): string
+    public function route(array $params = []): string
     {
         return MoonShineRouter::to('page', [
             'resourceUri' => $this->getResource()->uriKey(),
             'pageUri' => $this->uriKey(),
-        ]);
+        ] + $params);
     }
 
     public function render(): View|Closure|string

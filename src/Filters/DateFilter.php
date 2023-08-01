@@ -17,6 +17,6 @@ class DateFilter extends TextFilter
 
     protected function resolveQuery(Builder $query): Builder
     {
-        return $query->whereDate($this->field(), '=', $this->requestValue());
+        return $query->whereDate($this->column(), '=', $this->requestValue());
     }
 }

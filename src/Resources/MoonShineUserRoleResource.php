@@ -65,7 +65,7 @@ class MoonShineUserRoleResource extends ModelResource
             IndexPage::make('Роли'),
 
             FormPage::make(
-                request('item')
+                request('crudItem')
                     ? 'Редактировать'
                     : 'Добавить'
             ),

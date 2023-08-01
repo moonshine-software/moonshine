@@ -15,7 +15,7 @@ class UpdateColumnController extends BaseController
     public function __invoke(UpdateColumnFormFormRequest $request): Response
     {
         $request->merge([
-            $request->field()->field() => $request->get('value'),
+            $request->field()->column() => $request->get('value'),
         ]);
 
         try {

@@ -43,7 +43,7 @@ trait WithJsonValues
                     $defaultValue = $field->getDefault();
                 }
 
-                $values[$field->field()] = $defaultValue;
+                $values[$field->column()] = $defaultValue;
             }
 
             return $values;
@@ -71,7 +71,7 @@ trait WithJsonValues
                             $fieldValue = $fieldValue->pluck($data->getKeyName());
                         }
 
-                        $values[$index][$field->field()] = $fieldValue;
+                        $values[$index][$field->column()] = $fieldValue;
                     }
                 }
             }

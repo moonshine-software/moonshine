@@ -5,7 +5,7 @@
     :toValue="$element->value()[$element->toField] ?? $element->max"
     fromName="{{ $element->name() }}[{{ $element->fromField }}]"
     toName="{{ $element->name() }}[{{ $element->toField }}]"
-    fromField="{{ $element->field() }}.{{ $element->fromField }}"
-    toField="{{ $element->field() }}.{{ $element->toField }}"
+    fromField="{{ $element->column() }}.{{ $element->fromField }}"
+    toField="{{ $element->column() }}.{{ $element->toField }}"
     @class(['form-invalid' => $errors->has($element->name())])
 />

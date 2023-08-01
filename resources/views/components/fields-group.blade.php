@@ -5,9 +5,9 @@
 @foreach($components as $fieldOrDecoration)
     @if($fieldOrDecoration instanceof Field && $fieldOrDecoration->hasFieldContainer())
         <x-moonshine::field-container :field="$fieldOrDecoration">
-            {!! $fieldOrDecoration !!}
+            {{ $fieldOrDecoration->render() }}
         </x-moonshine::field-container>
     @else
-        {!! $fieldOrDecoration !!}
+        {{ $fieldOrDecoration->render() }}
     @endif
 @endforeach

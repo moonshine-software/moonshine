@@ -28,6 +28,13 @@ final class Fields extends FormElements
         return $this->onlyFields()->map(fn (Field $field): Field => clone $field->resolveValue($rawValues, $castedValues));
     }
 
+    public function requestValues(string $prefix = null): Fields
+    {
+        return $this->onlyFields()->mapWithKeys(function (Field $field) use($prefix) {
+            return [$field->column() => $field->requestValue($prefix)];
+        })->filter();
+    }
+
     /**
      * @throws Throwable
      */

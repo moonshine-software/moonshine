@@ -1,7 +1,7 @@
 <x-moonshine::table
     x-data="tableFields({{
     $element->attributes()->get('x-model-has-fields')
-            ? 'item.'.$element->field()
+            ? 'item.'.$element->column()
             : json_encode($element->jsonValues())
     }})"
     data-empty="{{ json_encode($element->jsonValues()) }}"
@@ -36,7 +36,7 @@
 
                     @foreach($element->getFields() as $subField)
                         <td class="space-y-3">
-                            {!! $subField !!}
+                            {{ $subField->render() }}
                         </td>
                     @endforeach
 
@@ -53,7 +53,7 @@
                     <td class="space-y-3">
                         @foreach($element->getFields() as $subField)
                             <x-moonshine::field-container :field="$subField">
-                                {!! $subField !!}
+                                {{ $subField->render() }}
                             </x-moonshine::field-container>
                         @endforeach
                     </td>

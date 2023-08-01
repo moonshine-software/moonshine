@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Exceptions\DecorationException;
-use MoonShine\Resources\Resource;
 use Throwable;
 
 /**
@@ -52,15 +50,11 @@ class Tabs extends Decoration
         );
     }
 
-    public function contentWithHtml(
-        Resource $resource,
-        ?Model $item = null
-    ): Collection {
+    public function contentWithHtml(): Collection
+    {
         return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [
-            $tab->id() => view('moonshine::components.resource-renderable', [
+            $tab->id() => view('moonshine::components.fields-group', [
                 'components' => $tab->getFields(),
-                'item' => $item,
-                'resource' => $resource,
             ])->render(),
         ]);
     }

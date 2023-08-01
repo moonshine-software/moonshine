@@ -9,7 +9,7 @@
         @class(['form-invalid' => $errors->has($element->name())])
         :asyncRoute="(method_exists($element, 'isAsyncSearch') && $element->isAsyncSearch()) ?
             route('moonshine.search.relations', [
-                    'column' => $element->field(),
+                    'column' => $element->column(),
                 ]) : null"
 
 >

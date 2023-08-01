@@ -28,6 +28,7 @@ class ImportAction extends Action
 
     protected static string $view = 'moonshine::actions.import';
     public string $inputName = 'import_file';
+
     protected ?string $icon = 'heroicons.outline.paper-clip';
     protected bool $deleteAfter = false;
 
@@ -142,7 +143,7 @@ class ImportAction extends Action
             $data = collect($line)->mapWithKeys(
                 function ($value, $key) use ($resource) {
                     $field = $resource->getFields()->importFields()->first(
-                        fn ($field): bool => $field->field() === $key || $field->label() === $key
+                        fn (Field $field): bool => $field->column() === $key || $field->label() === $key
                     );
 
                     if (! $field instanceof Field) {
@@ -155,7 +156,7 @@ class ImportAction extends Action
                             : ($field->isNullable() ? null : $value);
                     }
 
-                    return [$field->field() => $value];
+                    return [$field->column() => $value];
                 }
             )->toArray();
 

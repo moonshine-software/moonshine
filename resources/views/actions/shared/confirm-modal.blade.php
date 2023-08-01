@@ -4,9 +4,9 @@
     </div>
 
     <x-moonshine::link
-        :attributes="$action->attributes()"
-        :href="$action->url()"
-        :icon="$action->iconValue()"
+            :attributes="$action->attributes()"
+            :href="$action->url()"
+            :icon="$action->iconValue()"
     >
         {{ $action->modal()->getConfirmButtonText() }}
     </x-moonshine::link>

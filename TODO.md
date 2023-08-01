@@ -1,9 +1,10 @@
 - [x] Dashboard to Decorations
 - [x] Decorations with PageComponents
 - [x] Use BladeComponents, Livewire components in PageComponents
-- [ ] TableBuilder BulkActions (Perhaps ItemAction with method bulk)
+- [x] TableBuilder BulkActions (Perhaps ItemAction with method bulk)
 - [ ] PageComponents: Actions, QueryTags
-- [ ] Rename Renderable
+- [x] Rename Renderable
 - [ ] Modal and offcanvas decoration
 - [ ] Actions with offcanvas mode
-- [ ] Decorations with html attributes
+- [x] Decorations with html attributes
+- [ ] Field RangeField

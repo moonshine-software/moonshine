@@ -5,25 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\ActionButtons;
 
 use Closure;
+use MoonShine\Actions\AbstractAction;
 use MoonShine\Contracts\Actions\ActionButtonContract;
-use MoonShine\Traits\HasCanSee;
-use MoonShine\Traits\InDropdownOrLine;
-use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithHtmlAttributes;
-use MoonShine\Traits\WithIcon;
-use MoonShine\Traits\WithLabel;
-use MoonShine\Traits\WithModal;
 
-final class ActionButton implements ActionButtonContract
+class ActionButton extends AbstractAction implements ActionButtonContract
 {
-    use Makeable;
-    use WithIcon;
-    use WithHtmlAttributes;
-    use WithLabel;
-    use HasCanSee;
-    use InDropdownOrLine;
-    use WithModal;
-
     protected bool $isBulk = false;
 
     public function __construct(
@@ -59,5 +45,4 @@ final class ActionButton implements ActionButtonContract
             ? call_user_func($this->url, $this->item)
             : $this->url;
     }
-
 }

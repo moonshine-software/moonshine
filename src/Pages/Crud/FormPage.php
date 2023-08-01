@@ -14,7 +14,7 @@ class FormPage extends Page
     {
         $breadcrumbs = parent::breadcrumbs();
 
-        if(request('item')) {
+        if(request('crudItem')) {
             $breadcrumbs[$this->route() . '/1'] = $this->getResource()->getItem()?->getKey();
         }
 
@@ -27,7 +27,7 @@ class FormPage extends Page
             [CrudController::class, 'update'],
             [
                 'resourceUri' => $this->getResource()->uriKey(),
-                'item' => $this->getResource()->getItem()?->getKey(),
+                'crudItem' => $this->getResource()->getItem()?->getKey(),
             ]
         );
 

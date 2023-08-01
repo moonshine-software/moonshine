@@ -1,6 +1,6 @@
 <div x-data="{morphType: '{{ $element->formTypeValue($item) }}'}">
     <x-moonshine::form.select
-        :name="str($element->name())->replace($element->field(), $element->getMorphType($item))"
+        :name="str($element->name())->replace($element->column(), $element->getMorphType($item))"
         x-model="morphType"
         required="required"
         :values="$element->getTypes()"
@@ -22,7 +22,7 @@
         :values="$element->values()"
         :asyncRoute="route('moonshine.search.relations', [
             'resource' => $resource->uriKey(),
-            'column' => $element->field(),
+            'column' => $element->column(),
         ])"
     >
     </x-moonshine::form.select>

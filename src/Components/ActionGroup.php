@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Actions\Actions;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
@@ -26,13 +27,15 @@ final class ActionGroup extends Component implements MoonShineRenderable
         'getActions',
     ];
 
-    public function __construct(protected array $actions = [])
+    public function __construct(protected array|ActionButtons $actions = [])
     {
     }
 
     public function getActions(): Actions
     {
-        return Actions::make($this->actions);
+        return is_array($this->actions)
+            ? Actions::make($this->actions)
+            : $this->actions;
     }
 
     public function render(): View|Closure|string

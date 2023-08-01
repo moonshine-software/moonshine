@@ -10,7 +10,7 @@ class IsNotEmptyFilter extends SwitchBooleanFilter
 {
     public function name(string $index = null): string
     {
-        return "filters[is_not_empty_{$this->field()}]";
+        return "filters[is_not_empty_{$this->column()}]";
     }
 
     protected function resolveQuery(Builder $query): Builder
@@ -18,8 +18,8 @@ class IsNotEmptyFilter extends SwitchBooleanFilter
         return $this->requestValue()
             ? $query->where(
                 fn (Builder $query): Builder => $query->whereNotNull(
-                    $this->field()
-                )->orWhereNot($this->field(), '')->orWhereNot($this->field(), 0)
+                    $this->column()
+                )->orWhereNot($this->column(), '')->orWhereNot($this->column(), 0)
             )
             : $query;
     }

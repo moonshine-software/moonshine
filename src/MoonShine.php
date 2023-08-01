@@ -11,6 +11,7 @@ use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Menu\MenuSection;
+use MoonShine\Resources\MoonShineProfileResource;
 use MoonShine\Resources\Resource;
 
 class MoonShine
@@ -94,6 +95,8 @@ class MoonShine
         });
 
         app(Menu::class)->register(self::$menu);
+
+        self::$resources->add(new MoonShineProfileResource());
 
         self::resolveResourcesRoutes();
     }

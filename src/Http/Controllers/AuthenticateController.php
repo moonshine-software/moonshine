@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Validation\ValidationException;
+use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Requests\LoginFormFormRequest;
 use MoonShine\MoonShineAuth;
 
@@ -20,7 +21,9 @@ class AuthenticateController extends BaseController
             return to_route(config('moonshine.route.index_route', 'moonshine.index'));
         }
 
-        return view('moonshine::auth.login');
+        return view('moonshine::auth.login', [
+            'form' => new LoginForm
+        ]);
     }
 
     /**

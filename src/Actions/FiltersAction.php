@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Actions;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use MoonShine\Filters\Filters;
 
 final class FiltersAction extends Action
 {
-    protected static string $view = 'moonshine::crud.shared.filters';
+    protected static string $view = 'moonshine::actions.filters';
 
     protected ?string $icon = 'heroicons.outline.adjustments-horizontal';
 
@@ -52,12 +50,8 @@ final class FiltersAction extends Action
             ->count();
     }
 
-    public function render(): View|Closure|string
+    public function getFilters(): Filters
     {
-        return view($this->getView(), [
-            'action' => $this,
-            'filters' => Filters::make($this->filters),
-            'resource' => $this->resource(),
-        ]);
+        return Filters::make($this->filters);
     }
 }

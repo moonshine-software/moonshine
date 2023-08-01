@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static static make(string $message, array $button = [])
+ * @method static static make(string $message, array $button = [], string $color = 'green')
  */
 final class MoonShineDatabaseNotification extends Notification
 {
@@ -18,7 +18,8 @@ final class MoonShineDatabaseNotification extends Notification
 
     public function __construct(
         protected string $message,
-        protected array $button = []
+        protected array $button = [],
+        protected string $color = 'green'
     ) {
         //
     }

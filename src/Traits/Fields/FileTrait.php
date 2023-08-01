@@ -199,7 +199,7 @@ trait FileTrait
 
         if ($this->isDeleteFiles()) {
             $this->checkAndDelete(
-                $item->{$this->field()},
+                $item->{$this->column()},
                 $oldValues->toArray()
             );
         }
@@ -223,26 +223,26 @@ trait FileTrait
             }
         }
 
-        $item->{$this->field()} = $saveValue;
+        $item->{$this->column()} = $saveValue;
 
         return $item;
     }
 
     public function formViewValue(Model $item): Collection|string
     {
-        if ($this->isMultiple() && ! $item->{$this->field()} instanceof Collection) {
-            return collect($item->{$this->field()});
+        if ($this->isMultiple() && ! $item->{$this->column()} instanceof Collection) {
+            return collect($item->{$this->column()});
         }
 
-        return $item->{$this->field()} ?? '';
+        return $item->{$this->column()} ?? '';
     }
 
     public function exportViewValue(Model $item): string
     {
         if ($this->isMultiple()) {
-            return collect($item->{$this->field()})->implode(';');
+            return collect($item->{$this->column()})->implode(';');
         }
 
-        return $item->{$this->field()} ?? '';
+        return $item->{$this->column()} ?? '';
     }
 }

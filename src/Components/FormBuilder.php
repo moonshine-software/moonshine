@@ -60,11 +60,18 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
         ]);
     }
 
+    public function customAttributes(array $attributes): static
+    {
+        $this->attributes = $this->attributes->merge($attributes);
+
+        return $this;
+    }
+
     public function action(string $action): self
     {
         $this->action = $action;
 
-        $this->attributes->merge(['action' => $this->action]);
+        $this->customAttributes(['action' => $this->action]);
 
         return $this;
     }
@@ -103,7 +110,7 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
     {
         $this->method = $method;
 
-        $this->attributes->merge(['method' => $this->method]);
+        $this->customAttributes(['method' => $this->method]);
 
         return $this;
     }

@@ -3,6 +3,6 @@
         :attributes="$element->attributes()->class(['mb-4'])"
         id="tabs_{{ $element->id() }}"
         :tabs="$element->tabsWithHtml()->toArray()"
-        :contents="$element->contentWithHtml($resource, $item)->toArray()"
+        :contents="$element->contentWithHtml()->toArray()"
     />
 @endif

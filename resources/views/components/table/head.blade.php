@@ -1,3 +1,6 @@
+@props([
+    'fields'
+])
 <th class="w-10 text-center">
     <x-moonshine::form.input type="checkbox"
          @change="actions('all')"

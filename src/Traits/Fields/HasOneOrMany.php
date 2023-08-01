@@ -42,17 +42,17 @@ trait HasOneOrMany
 
                 foreach ($this->getFields()->onlyFields() as $field) {
                     if (! $this instanceof HasOne && $field instanceof ID) {
-                        $identity = $values[$field->field()] ?? null;
+                        $identity = $values[$field->column()] ?? null;
                         $currentIdentities[$identity] = $identity;
                     }
 
                     if ($field instanceof Fileable) {
                         $field->setParentRequestValueKey(
-                            $this->field() . "." . $index
+                            $this->column() . "." . $index
                         );
 
-                        $values[$field->field()] = $field->hasManyOrOneSave(
-                            $values[$field->field()] ?? null
+                        $values[$field->column()] = $field->hasManyOrOneSave(
+                            $values[$field->column()] ?? null
                         );
 
                         if ($field->isDeleteFiles()) {
@@ -60,24 +60,24 @@ trait HasOneOrMany
                                 ? $item->{$this->relation()}
                                 : $item->{$this->relation()}[$index] ?? null;
 
-                            $storedValues = $model?->{$field->field()};
+                            $storedValues = $model?->{$field->column()};
 
                             $field->checkAndDelete(
                                 $storedValues,
-                                $values[$field->field()]
+                                $values[$field->column()]
                             );
                         }
                     }
 
                     if ($field instanceof SlideField) {
-                        $values[$field->fromField] = $values[$field->field()][$field->fromField] ?? '';
-                        $values[$field->toField] = $values[$field->field()][$field->toField] ?? '';
-                        unset($values[$field->field()]);
+                        $values[$field->fromField] = $values[$field->column()][$field->fromField] ?? '';
+                        $values[$field->toField] = $values[$field->column()][$field->toField] ?? '';
+                        unset($values[$field->column()]);
                     }
 
                     if ($field instanceof Json && $field->isKeyOrOnlyValue()) {
-                        $values[$field->field()] = collect(
-                            $values[$field->field()] ?? []
+                        $values[$field->column()] = collect(
+                            $values[$field->column()] ?? []
                         )
                             ->mapWithKeys(
                                 static fn (
@@ -113,9 +113,9 @@ trait HasOneOrMany
             }
         } elseif ($this instanceof HasOne) {
             foreach ($this->getFields()->onlyDeletableFileFields() as $field) {
-                if (! empty($item->{$this->relation()}?->{$field->field()})) {
+                if (! empty($item->{$this->relation()}?->{$field->column()})) {
                     $field->deleteFile(
-                        $item->{$this->relation()}->{$field->field()}
+                        $item->{$this->relation()}->{$field->column()}
                     );
                 }
             }
@@ -129,11 +129,11 @@ trait HasOneOrMany
                 foreach ($item->{$this->relation()} as $value) {
                     if (in_array($value->{$primaryKey}, $ids)) {
                         if ($field->isMultiple()) {
-                            foreach ($value->{$field->field()} as $fileItem) {
+                            foreach ($value->{$field->column()} as $fileItem) {
                                 $field->deleteFile($fileItem);
                             }
                         } else {
-                            $field->deleteFile($value->{$field->field()});
+                            $field->deleteFile($value->{$field->column()});
                         }
                     }
                 }

@@ -84,21 +84,21 @@ abstract class ModelResource extends Resource
     {
         return $this->getModel()
             ->newQuery()
-            ->find(request('item'));
+            ->find(request('crudItem'));
     }
 
     public function getItemOrInstance(): Model
     {
         return $this->getModel()
             ->newQuery()
-            ->findOrNew(request('item'));
+            ->findOrNew(request('crudItem'));
     }
 
     public function getItemOrFail(): Model
     {
         return $this->getModel()
             ->newQuery()
-            ->findOrFail(request('item'));
+            ->findOrFail(request('crudItem'));
     }
 
     /**

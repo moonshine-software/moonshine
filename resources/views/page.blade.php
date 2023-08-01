@@ -11,10 +11,11 @@
         'items' => $breadcrumbs
     ])
 
-    @includeWhen(
-        $resource->search(),
-        'moonshine::crud.shared.search'
-    )
+    @if(method_exists($resource, 'search') && $resource->search())
+       <x-moonshine::search
+           :action="$resource->currentRoute()"
+       />
+    @endif
 @endsection
 
 @section('content')

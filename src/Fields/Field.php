@@ -22,6 +22,14 @@ abstract class Field extends FormElement
 
     protected bool $sortable = false;
 
+    protected bool $required = false;
+
+    protected bool $disabled = false;
+
+    protected bool $readonly = false;
+
+    protected bool $hidden = false;
+
     protected bool $canSave = true;
 
     public function setValue(mixed $value = null): self
@@ -56,6 +64,70 @@ abstract class Field extends FormElement
         $this->setValue($value);
 
         return $this;
+    }
+
+    public function isFile(): bool
+    {
+        return $this->type() === 'file';
+    }
+
+    public function type(): string
+    {
+        return $this->hidden
+            ? 'hidden'
+            : $this->attributes()->get('type', '');
+    }
+
+    public function required($condition = null): static
+    {
+        $this->required = Condition::boolean($condition, true);
+        $this->setAttribute('required', $this->required);
+
+        return $this;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->required;
+    }
+
+    public function disabled($condition = null): static
+    {
+        $this->disabled = Condition::boolean($condition, true);
+        $this->setAttribute('disabled', $this->disabled);
+
+        return $this;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    public function hidden($condition = null): static
+    {
+        $this->hidden = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isHidden(): bool
+    {
+        return $this->hidden
+            || $this->attributes()->get('type') === 'hidden';
+    }
+
+    public function readonly($condition = null): static
+    {
+        $this->readonly = Condition::boolean($condition, true);
+        $this->setAttribute('readonly', $this->readonly);
+
+        return $this;
+    }
+
+    public function isReadonly(): bool
+    {
+        return $this->readonly;
     }
 
     /**

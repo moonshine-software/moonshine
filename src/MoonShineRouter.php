@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
+use MoonShine\Pages\Page;
+use MoonShine\Pages\Pages;
+use MoonShine\Resources\Resource;
+
 final class MoonShineRouter
 {
     public static function to(string $name, array $params = []): string
@@ -15,6 +19,28 @@ final class MoonShineRouter
                 ->value(),
             $params
         );
+    }
+
+    public static function to_page(string|Resource $resource, string|Page|null $page = null, bool $redirect = false, array $params = []): RedirectResponse|string
+    {
+        $resource = $resource instanceof Resource
+            ? $resource
+            : new $resource;
+
+        $route = $resource->getPages()
+            ->when(
+                is_null($page),
+                static fn(Pages $pages) => $pages->first(),
+                static fn(Pages $pages) => $pages->findByUri(
+                    $page instanceof Page
+                        ? $page->uriKey()
+                        : self::uriKey($page)
+                ),
+            )->route($params);
+
+        return $redirect
+            ? redirect($route)
+            : $route;
     }
 
     public static function uriKey(string $class): string

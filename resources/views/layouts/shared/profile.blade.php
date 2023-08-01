@@ -1,7 +1,6 @@
-<!-- User menu -->
 <div class="mt-2 border-t border-dark-200">
     <div class="menu-profile">
-        <a href="{{ route('moonshine.custom_page', 'profile') }}" class="menu-profile-main">
+        <a href="{{ to_page(MoonShine\Resources\MoonShineProfileResource::class) }}" class="menu-profile-main">
             <div class="menu-profile-photo">
                 <img class="h-full w-full object-cover"
                      src="{{ auth()->user()->{config('moonshine.auth.fields.avatar', 'avatar')}
@@ -18,9 +17,9 @@
 
         <a href="{{ route('moonshine.logout') }}" class="menu-profile-exit" title="Logout">
             <x-moonshine::icon
-                icon="heroicons.power"
-                color="gray"
-                size="6"
+                    icon="heroicons.power"
+                    color="gray"
+                    size="6"
             />
         </a>
     </div>
