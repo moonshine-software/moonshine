@@ -26,8 +26,6 @@ abstract class ModelResource extends Resource
 
     public string $model;
 
-    protected string $routeAfterSave = 'index';
-
     abstract public function fields(): array;
 
     public function pages(): array
@@ -123,7 +121,7 @@ abstract class ModelResource extends Resource
         ?Collection $fields = null,
         ?array $saveData = null
     ): Model {
-        $fields ??= $this->getFields()->formFields()->fillValues($item->toArray(), $item);
+        $fields ??= $this->getFields()->formFields()->fillManyValues($item->toArray(), $item);
 
         try {
             $fields->each(fn (Field $field) => $field->beforeSave());

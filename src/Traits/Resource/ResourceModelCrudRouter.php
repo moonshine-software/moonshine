@@ -14,6 +14,8 @@ use MoonShine\MoonShineRouter;
  */
 trait ResourceModelCrudRouter
 {
+    public string $pageAfterSave = 'index-page';
+
     public function resolveRoutes(): void
     {
         Route::prefix('resource')->group(function (): void {
@@ -55,14 +57,11 @@ trait ResourceModelCrudRouter
         );
     }
 
-    public function getRouteAfterSave(): string
+    public function getPageAfterSave(): string
     {
-        return match ($this->routeAfterSave) {
-            'show', 'edit' => $this->route(
-                $this->item ? $this->routeAfterSave : 'index',
-                $this?->item?->getKey()
-            ),
-            default => $this->route('index')
-        };
+        return route('moonshine.page', [
+            'resourceUri' => $this->uriKey(),
+            'pageUri' => $this->pageAfterSave
+        ]);
     }
 }

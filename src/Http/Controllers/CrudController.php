@@ -221,7 +221,7 @@ class CrudController extends BaseController
             );
 
             return $request->redirectRoute(
-                $resource->getRouteAfterSave()
+                $resource->getPageAfterSave()
             );
         }
 
