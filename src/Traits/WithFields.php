@@ -56,13 +56,13 @@ trait WithFields
     /**
      * @throws Throwable
      */
-    public function indexViewValue(Model $item, bool $container = true): string
+    protected function resolvePreview(): string
     {
         if (! $this instanceof FormElement) {
             return '';
         }
 
-        $value = $item->{$this instanceof HasRelationship ? $this->relation()
+        $value = $this->toValue()->{$this instanceof HasRelationship ? $this->relation()
             : $this->column()};
 
 
@@ -80,7 +80,7 @@ trait WithFields
             && ! $this instanceof HasOne
             && $this->inLine
         ) {
-            return $value?->implode(function ($item) use ($container) {
+            return $value?->implode(function ($item) {
                 $implodeValue = $item->{$this->resourceTitleField()} ?? false;
 
                 if ($this->inLineBadge) {
@@ -89,7 +89,7 @@ trait WithFields
                         '',
                     );
 
-                    return $container ? view('moonshine::ui.badge', [
+                    return !$this->isRawMode() ? view('moonshine::ui.badge', [
                         'color' => 'purple',
                         'link' => $link,
                         'value' => $implodeValue,
@@ -165,7 +165,7 @@ trait WithFields
             $values = [];
         }
 
-        if (! $container) {
+        if ($this->rawMode()) {
             return '';
         }
 

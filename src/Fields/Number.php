@@ -37,11 +37,11 @@ class Number extends Text implements DefaultCanBeNumeric
         return $this->stars;
     }
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
-        if ($this->withStars()) {
+        if (!$this->isRawMode() && $this->withStars()) {
             return view('moonshine::ui.rating', [
-                'value' => $this->getValue(),
+                'value' => $this->toValue(),
             ])->render();
         }
 

@@ -15,9 +15,14 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
 
     protected static string $view = 'moonshine::fields.slide';
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
         $item = null;
+
+        if ($this->isRawMode()) {
+            return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
+        }
+
         $from = $item->{$this->fromField};
         $to = $item->{$this->toField};
 
@@ -34,12 +39,7 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
         return "$from - $to";
     }
 
-    public function exportViewValue(Model $item): string
-    {
-        return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
-    }
-
-    public function formViewValue(Model $item): array
+    protected function resolveValue(): array
     {
         return $this->extractValues($item->toArray());
     }

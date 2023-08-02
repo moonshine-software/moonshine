@@ -26,9 +26,9 @@ class Code extends Textarea
         return $this;
     }
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
-        return (string) str($this->getValue())
+        return (string) str($this->toValue())
             ->before('<pre>')
             ->after('</pre>')
             ->stripTags();

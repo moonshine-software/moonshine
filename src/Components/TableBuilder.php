@@ -83,7 +83,7 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
 
             return TableRow::make(
                 $castedValues,
-                $this->getFields()->fillManyValues($data, $castedValues),
+                $this->getFields()->fillClonedValues($data, $castedValues),
                 $this->getButtons($data),
                 $this->trAttributes,
                 $this->tdAttributes

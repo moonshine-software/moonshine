@@ -77,14 +77,13 @@ class NoInput extends Field
         return $item;
     }
 
-    public function formViewValue(Model $item): string
+    protected function resolvePreview(): string
     {
-        return $this->indexViewValue($item);
-    }
+        $value = $this->toValue();
 
-    public function indexViewValue(Model $item, bool $container = true): string
-    {
-        $value = $this->getValue($item, $container);
+        if ($this->isRawMode()) {
+            return $value;
+        }
 
         if ($this->isBoolean) {
             return view('moonshine::ui.boolean', [
@@ -103,7 +102,7 @@ class NoInput extends Field
             $href = $this->linkHref;
 
             if (is_callable($href)) {
-                $href = $href($item);
+                $href = $href($value);
             }
 
             return view('moonshine::ui.url', [
@@ -116,14 +115,14 @@ class NoInput extends Field
         return (string) $value;
     }
 
-    public function getValue(Model $item = null, bool $container = true): string|bool
+    protected function resolveValue(): string|bool
     {
-        $value = parent::indexViewValue($item, $container);
+        $value = $this->toValue();
 
         if ($this->isBadge && is_callable($this->badgeColorCallback)) {
             $this->badgeColor = call_user_func(
                 $this->badgeColorCallback,
-                $item
+                $value
             );
         }
 

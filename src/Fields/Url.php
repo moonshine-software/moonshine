@@ -8,9 +8,13 @@ class Url extends Text
 {
     protected string $type = 'url';
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
-        $value = parent::resolvePreview();
+        $value = $this->toValue();
+
+        if ($this->isRawMode()) {
+            return $value;
+        }
 
         if ($value === '0' || $value === '') {
             return '';

@@ -23,9 +23,9 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function fillManyValues(array $rawValues = [], mixed $castedValues = null): self
+    public function fillClonedValues(array $rawValues = [], mixed $castedValues = null): self
     {
-        return $this->onlyFields()->map(fn (Field $field): Field => (clone $field)->resolveValue($rawValues, $castedValues));
+        return $this->onlyFields()->map(fn (Field $field): Field => (clone $field)->fillValues($rawValues, $castedValues));
     }
 
     /**
@@ -33,7 +33,7 @@ final class Fields extends FormElements
      */
     public function fillValues(array $rawValues = [], mixed $castedValues = null): void
     {
-        $this->onlyFields()->map(fn (Field $field): Field => $field->resolveValue($rawValues, $castedValues));
+        $this->onlyFields()->map(fn (Field $field): Field => $field->fillValues($rawValues, $castedValues));
     }
 
     public function requestValues(string $prefix = null): Fields

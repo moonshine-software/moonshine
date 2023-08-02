@@ -13,9 +13,9 @@ class Date extends Text
 
     protected string $type = 'date';
 
-    public function value(): mixed
+    protected function resolveValue(): mixed
     {
-        $value = parent::value();
+        $value = $this->toValue();
 
         if (! $value) {
             return $this->isNullable() ? null : '';
@@ -28,7 +28,7 @@ class Date extends Text
         return date($this->inputFormat, strtotime((string) $value));
     }
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
         $value = parent::resolvePreview();
 

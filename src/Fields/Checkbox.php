@@ -26,10 +26,16 @@ class Checkbox extends Field implements
 
     protected string $type = 'checkbox';
 
-    public function exportViewValue(): string
+    protected function resolvePreview(): string
     {
-        return (string) ($this->value()
-            ? $this->onValue
-            : $this->offValue);
+        if ($this->isRawMode()) {
+            return (string) ($this->toValue(false)
+                ? $this->onValue
+                : $this->offValue);
+        }
+
+        return view('moonshine::ui.boolean', [
+            'value' => (bool) $this->toValue(false),
+        ])->render();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
@@ -30,7 +31,7 @@ class Select extends Field implements
     /**
      * @throws JsonException
      */
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
         if ($this->isMultiple()) {
             $value = is_string($this->value()) ?
@@ -38,11 +39,14 @@ class Select extends Field implements
                 : $this->value();
 
             return collect($value)
-                ->map(
-                    fn ($v): string => view('moonshine::ui.badge', [
-                        'color' => 'purple',
-                        'value' => $this->values()[$v] ?? false,
-                    ])->render()
+                ->when(
+                    !$this->isRawMode(),
+                    fn($collect): Collection => $collect->map(
+                        fn ($v): string => view('moonshine::ui.badge', [
+                            'color' => 'purple',
+                            'value' => $this->values()[$v] ?? false,
+                        ])->render()
+                    )
                 )
                 ->implode(',');
         }

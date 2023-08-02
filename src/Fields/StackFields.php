@@ -44,7 +44,7 @@ class StackFields extends Field implements HasFields
         return $item;
     }
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
         return view($this->getView(), [
             'element' => $this,

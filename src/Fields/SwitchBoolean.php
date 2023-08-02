@@ -28,9 +28,9 @@ class SwitchBoolean extends Checkbox implements HasResourceContract
         return $this;
     }
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
-        if (! $this->autoUpdate) {
+        if ($this->isRawMode() && ! $this->autoUpdate) {
             return parent::resolvePreview();
         }
 

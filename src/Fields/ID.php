@@ -14,10 +14,10 @@ class ID extends Text
 
     protected string $type = 'hidden';
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
         return view('moonshine::ui.badge', [
-            'value' => $this->getValue(),
+            'value' => $this->toValue(),
             'color' => 'purple',
         ])->render();
     }

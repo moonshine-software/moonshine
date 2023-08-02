@@ -61,6 +61,8 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     protected ?string $name = null;
 
+    protected ?string $wrapName = null;
+
     protected ?string $id = null;
 
     public function __construct(
@@ -169,8 +171,17 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return $this->prepareName($index);
     }
 
+    public function wrapName(string $wrapName): static
+    {
+        $this->wrapName = $wrapName;
+
+        return $this;
+    }
+
     protected function prepareName($index = null, $wrap = null): string
     {
+        $wrap = $wrap ?? $this->wrapName;
+
         if ($this->name) {
             return $this->name;
         }

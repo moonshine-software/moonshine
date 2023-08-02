@@ -19,6 +19,8 @@ abstract class Field extends FormElement
 
     protected mixed $rawValue = null;
 
+    protected bool $rawMode = false;
+
     protected mixed $value = null;
 
     protected ?Closure $previewCallback = null;
@@ -35,6 +37,46 @@ abstract class Field extends FormElement
 
     protected bool $canSave = true;
 
+    /**
+     * Define whether if index page can be sorted by this field
+     *
+     * @return $this
+     */
+    public function sortable(): static
+    {
+        $this->sortable = true;
+
+        return $this;
+    }
+
+    public function isSortable(): bool
+    {
+        return $this->sortable;
+    }
+
+    public function sortQuery(): string
+    {
+        return request()->fullUrlWithQuery([
+            'order' => [
+                'field' => $this->column(),
+                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc'
+                    : 'asc',
+            ],
+        ]);
+    }
+
+    public function sortActive(): bool
+    {
+        return request()->has('order.field')
+            && request('order.field') === $this->column();
+    }
+
+    public function sortType(string $type): bool
+    {
+        return request()->has('order.type')
+            && request('order.type') === strtolower($type);
+    }
+
     public function setValue(mixed $value = null): self
     {
         $this->value = $value;
@@ -42,12 +84,12 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    public function setRawValue(mixed $value = null): void
+    protected function setRawValue(mixed $value = null): void
     {
         $this->rawValue = $value;
     }
 
-    public function resolveValue(array $rawValues = [], mixed $castedValues = null): self
+    public function fillValues(array $rawValues = [], mixed $castedValues = null): self
     {
         if($this->value) {
             return $this;
@@ -69,9 +111,88 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    public function isFile(): bool
+    public function rawMode(Closure|bool|null $condition = null): static
     {
-        return $this->type() === 'file';
+        $this->rawMode = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isRawMode(): bool
+    {
+        return $this->rawMode;
+    }
+
+    public function toRawValue(): mixed
+    {
+        return $this->rawValue;
+    }
+
+    public function toValue(bool $withDefault = true): mixed
+    {
+        $default = $withDefault && $this instanceof HasDefaultValue
+            ? $this->getDefault()
+            : null;
+
+        return $this->value ?? $default;
+    }
+
+    public function value(): mixed
+    {
+        $old = old($this->nameDot());
+
+        if ($old) {
+            return $old;
+        }
+
+        return $this->resolveValue();
+    }
+
+    protected function resolveValue(): mixed
+    {
+        return $this->toValue();
+    }
+
+    public function changePreview(Closure $closure): static
+    {
+        $this->previewCallback = $closure;
+
+        return $this;
+    }
+
+    public function isPreviewChanged(): bool
+    {
+        return ! is_null($this->previewCallback);
+    }
+
+    public function preview(): string
+    {
+        if($this->isPreviewChanged()) {
+            return (string) call_user_func(
+                $this->previewCallback,
+                $this->toValue(),
+                $this->resolvePreview(),
+            );
+        }
+
+        return $this->resolvePreview();
+    }
+
+    protected function resolvePreview(): string
+    {
+        return (string) ($this->toValue() ?? '');
+    }
+
+    public function canSave(mixed $condition = null): static
+    {
+        $this->canSave = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isCanSave(): bool
+    {
+        return $this->canSave;
     }
 
     public function type(): string
@@ -79,6 +200,11 @@ abstract class Field extends FormElement
         return $this->hidden
             ? 'hidden'
             : $this->attributes()->get('type', '');
+    }
+
+    public function isFile(): bool
+    {
+        return $this->type() === 'file';
     }
 
     public function required(Closure|bool|null $condition = null): static
@@ -131,113 +257,6 @@ abstract class Field extends FormElement
     public function isReadonly(): bool
     {
         return $this->readonly;
-    }
-
-    /**
-     * Define whether if index page can be sorted by this field
-     *
-     * @return $this
-     */
-    public function sortable(): static
-    {
-        $this->sortable = true;
-
-        return $this;
-    }
-
-    public function isSortable(): bool
-    {
-        return $this->sortable;
-    }
-
-    public function sortQuery(): string
-    {
-        return request()->fullUrlWithQuery([
-            'order' => [
-                'field' => $this->column(),
-                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc'
-                    : 'asc',
-            ],
-        ]);
-    }
-
-    public function sortActive(): bool
-    {
-        return request()->has('order.field')
-            && request('order.field') === $this->column();
-    }
-
-    public function sortType(string $type): bool
-    {
-        return request()->has('order.type')
-            && request('order.type') === strtolower($type);
-    }
-
-    public function toRawValue(): mixed
-    {
-        return $this->rawValue;
-    }
-
-    public function getValue(): mixed
-    {
-        return $this->value;
-    }
-
-    public function value(): mixed
-    {
-        $old = old($this->nameDot());
-
-        if ($old) {
-            return $old;
-        }
-
-        $default = $this instanceof HasDefaultValue
-            ? $this->getDefault()
-            : null;
-
-        return $this->getValue() ?? $default;
-    }
-
-    public function changePreview(Closure $closure): static
-    {
-        $this->previewCallback = $closure;
-
-        return $this;
-    }
-
-    public function isPreviewChanged(): bool
-    {
-        return ! is_null($this->previewCallback);
-    }
-
-    public function preview(): string
-    {
-        if($this->isPreviewChanged()) {
-            return (string) call_user_func(
-                $this->previewCallback,
-                $this->getValue(),
-                $this->resolvePreview(),
-            );
-        }
-
-        return $this->resolvePreview();
-    }
-
-    protected function resolvePreview(): string
-    {
-        return (string) ($this->getValue() ?? '');
-    }
-
-    public function canSave(mixed $condition = null): static
-    {
-        $this->canSave = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function isCanSave(): bool
-    {
-        return $this->canSave;
     }
 
     public function beforeSave(): void

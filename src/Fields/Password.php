@@ -18,12 +18,12 @@ class Password extends Text
         'required',
     ];
 
-    public function resolvePreview(): string
+    protected function resolvePreview(): string
     {
         return '***';
     }
 
-    public function value(): string
+    protected function resolveValue(): string
     {
         return '';
     }

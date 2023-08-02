@@ -92,9 +92,9 @@ final class TinyMce extends Textarea
         return $this;
     }
 
-    public function value(): string
+    protected function resolveValue(): string
     {
-        return str(parent::value())->replace(
+        return str($this->toValue())->replace(
             ['&amp;', '&lt;', '&gt;', '&nbsp;', '&quot;'],
             ['&amp;amp;', '&amp;lt;', '&amp;gt;', '&amp;nbsp;', '&amp;quot;']
         )->value();

@@ -156,10 +156,10 @@ class Json extends Field implements
         return $this->keyValue || $this->onlyValue;
     }
 
-    public function formViewValue(Model $item): mixed
+    protected function resolveValue(): mixed
     {
         if ($this->isKeyOrOnlyValue()) {
-            return collect(parent::formViewValue($item))
+            return collect($this->toValue())
                 ->map(
                     fn ($data, $index): array => $this->extractValues(
                         $this->isOnlyValue() ? [$data] : [$index => $data]
@@ -169,7 +169,7 @@ class Json extends Field implements
                 ->toArray();
         }
 
-        return parent::formViewValue($item);
+        return parent::resolveValue();
     }
 
     public function extractValues(array $data): array

@@ -38,7 +38,7 @@ class File extends Field implements Fileable, RemovableContract
         return $this;
     }
 
-    protected function resolvePreview(): string
+    protected function prepareForView(): string
     {
         if (! $this->value()) {
             return '';
@@ -51,6 +51,13 @@ class File extends Field implements Fileable, RemovableContract
             : [$this->pathWithDir($this->value())];
 
         return implode(';', array_filter($files));
+    }
+
+    protected function resolvePreview(): string
+    {
+        return view('moonshine::ui.file', [
+            'value' => $this->prepareForView()
+        ])->render();
     }
 
     public function afterDelete(): void
