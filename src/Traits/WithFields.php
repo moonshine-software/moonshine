@@ -89,12 +89,12 @@ trait WithFields
                         '',
                     );
 
-                    return !$this->isRawMode() ? view('moonshine::ui.badge', [
+                    return $this->isRawMode() ? $implodeValue : view('moonshine::ui.badge', [
                         'color' => 'purple',
                         'link' => $link,
                         'value' => $implodeValue,
                         'margin' => true,
-                    ])->render() : $implodeValue;
+                    ])->render();
                 }
 
                 return $implodeValue;
