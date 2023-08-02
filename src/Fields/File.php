@@ -56,7 +56,7 @@ class File extends Field implements Fileable, RemovableContract
     protected function resolvePreview(): string
     {
         return view('moonshine::ui.file', [
-            'value' => $this->prepareForView()
+            'value' => $this->prepareForView(),
         ])->render();
     }
 

@@ -42,6 +42,7 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
     protected function resolveValue(): array
     {
         $item = null;
+
         return $this->extractValues($item->toArray());
     }
 

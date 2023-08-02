@@ -40,8 +40,8 @@ class Select extends Field implements
 
             return collect($value)
                 ->when(
-                    !$this->isRawMode(),
-                    fn($collect): Collection => $collect->map(
+                    ! $this->isRawMode(),
+                    fn ($collect): Collection => $collect->map(
                         fn ($v): string => view('moonshine::ui.badge', [
                             'color' => 'purple',
                             'value' => $this->values()[$v] ?? false,

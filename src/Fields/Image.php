@@ -11,7 +11,7 @@ class Image extends File
     protected function resolvePreview(): string
     {
         return view('moonshine::ui.image', [
-            'value' => $this->prepareForView()
+            'value' => $this->prepareForView(),
         ])->render();
     }
 }
