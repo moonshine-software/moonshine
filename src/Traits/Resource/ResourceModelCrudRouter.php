@@ -61,7 +61,7 @@ trait ResourceModelCrudRouter
     {
         return route('moonshine.page', [
             'resourceUri' => $this->uriKey(),
-            'pageUri' => $this->pageAfterSave
+            'pageUri' => $this->pageAfterSave,
         ]);
     }
 }
