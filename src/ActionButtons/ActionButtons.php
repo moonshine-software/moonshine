@@ -12,7 +12,7 @@ final class ActionButtons extends Actions
     public function fillItem(mixed $item): self
     {
         return $this->map(
-            fn (ActionButtonContract $action) => clone $action->setItem($item)
+            fn (ActionButtonContract $action) => (clone $action)->setItem($item)
         );
     }
 
