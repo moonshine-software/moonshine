@@ -27,6 +27,8 @@ class MoonShine
 
     protected static ?Collection $menu = null;
 
+    protected static ?Collection $customItems = null;
+
     public static function path(string $path = ''): string
     {
         return realpath(
@@ -82,7 +84,7 @@ class MoonShine
         self::$pages = self::getPages();
         self::$menu = collect();
 
-        collect($data)->each(function ($item): void {
+        collect($data)->merge(self::getCustomItems())->each(function ($item): void {
             $item = is_string($item) ? new $item() : $item;
 
             if ($item instanceof Resource) {
@@ -192,5 +194,21 @@ class MoonShine
         $middlewares = request()?->route()?->gatherMiddleware() ?? [];
 
         return in_array('auth.moonshine', $middlewares);
+    }
+
+    /**
+     * Get custom menu items for automatic registration
+     */
+    public static function getCustomItems(): Collection
+    {
+        return self::$customItems ?? collect();
+    }
+
+    /**
+     * Set custom menu items to register them automatically later.
+     */
+    public static function customItems(array $items): void
+    {
+        self::$customItems = self::getCustomItems()->merge(collect($items));
     }
 }
