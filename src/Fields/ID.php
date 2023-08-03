@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-
 class ID extends Text
 {
     protected string $field = 'id';

@@ -43,7 +43,7 @@ abstract class ModelResource extends Resource
 
     public function onSave(): Closure
     {
-        return function (Field $field, Model $item) {
+        return function (Field $field, Model $item): Model {
             if ($field->requestValue()) {
                 $item->{$field->column()} = $field->requestValue();
             }
