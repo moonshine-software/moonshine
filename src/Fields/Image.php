@@ -6,7 +6,7 @@ namespace MoonShine\Fields;
 
 class Image extends File
 {
-    protected static string $view = 'moonshine::fields.image';
+    protected string $view = 'moonshine::fields.image';
 
     protected function resolvePreview(): string
     {

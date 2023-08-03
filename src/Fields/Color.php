@@ -6,5 +6,5 @@ namespace MoonShine\Fields;
 
 class Color extends Text
 {
-    protected static string $view = 'moonshine::fields.color';
+    protected string $view = 'moonshine::fields.color';
 }

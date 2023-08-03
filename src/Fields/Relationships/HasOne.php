@@ -6,5 +6,29 @@ namespace MoonShine\Fields\Relationships;
 
 class HasOne extends HasMany
 {
-    protected static string $view = 'moonshine::fields.has-one';
+    protected string $view = 'moonshine::fields.relationships.has-one';
+
+    protected function resolvePreview(): string
+    {
+        if (is_null($this->toValue())) {
+            return '';
+        }
+
+        $this->setValue(
+            collect([
+                $this->toValue(),
+            ])
+        );
+
+        return parent::resolvePreview();
+
+        $value = $this->toValue();
+        $column = $this->getResource()->column();
+
+        if ($value) {
+            return (string) $value->{$column};
+        }
+
+        return '';
+    }
 }

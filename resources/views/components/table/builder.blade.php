@@ -1,6 +1,7 @@
 <div x-data="crudTable">
     <x-moonshine::table
             :crudMode="true"
+            :notfound="true"
             :attributes="$attributes"
     >
         <x-slot:thead>
@@ -9,11 +10,13 @@
             />
         </x-slot:thead>
 
-        <x-slot:tbody>
-            <x-moonshine::table.body
-                :rows="$rows"
-            />
-        </x-slot:tbody>
+        @if($rows->isNotEmpty())
+            <x-slot:tbody>
+                <x-moonshine::table.body
+                    :rows="$rows"
+                />
+            </x-slot:tbody>
+        @endif
 
         <x-slot:tfoot x-ref="foot" ::class="actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'">
             <x-moonshine::table.foot

@@ -17,7 +17,7 @@ class SlideFilter extends Filter implements
     use SlideTrait;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::filters.slide';
+    protected string $view = 'moonshine::filters.slide';
     public string $type = 'number';
     protected array $attributes = [
         'type',

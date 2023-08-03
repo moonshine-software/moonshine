@@ -22,7 +22,7 @@ class Checkbox extends Field implements
     use BooleanTrait;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::fields.checkbox';
+    protected string $view = 'moonshine::fields.checkbox';
 
     protected string $type = 'checkbox';
 

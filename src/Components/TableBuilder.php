@@ -19,7 +19,8 @@ use MoonShine\Table\TableRow;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static static make(array $fields = [], array $values = [])
+ * @method static static make(array $fields = [], array $values = [], ?LengthAwarePaginator $paginator = null)
+ TODO CrudMode, BlockMode, PreviewMode
  */
 final class TableBuilder extends Component implements MoonShineRenderable, TableContract
 {
@@ -73,7 +74,8 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     public function getItems(): Collection
     {
         return collect($this->items)
-            ->map(fn ($item) => $item->toArray());
+            # TODO[Cast]
+            ->map(fn ($item) => $item->attributesToArray());
     }
 
     public function rows(): Collection
@@ -118,6 +120,7 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     public function castValues(array $data): mixed
     {
         return $this->typeCast
+            # TODO[Cast]
             ? (new $this->typeCast())->forceFill($data)
             : $data;
     }

@@ -6,7 +6,7 @@ namespace MoonShine\InputExtensions;
 
 final class InputLock extends InputExtension
 {
-    protected static string $view = 'moonshine::form.input-extensions.lock';
+    protected string $view = 'moonshine::form.input-extensions.lock';
 
     protected array $xInit = [
         '$refs.extensionInput.readOnly=true',

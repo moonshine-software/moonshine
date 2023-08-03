@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-class ID extends Text
+class ID extends Hidden
 {
     protected string $field = 'id';
 
     protected string $label = 'ID';
-
-    protected string $type = 'hidden';
 
     protected function resolvePreview(): string
     {

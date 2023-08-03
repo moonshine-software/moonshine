@@ -3,5 +3,5 @@
         x-html="{{ $element->attributes()->get('x-model-field') }}"
     @endif
 >
-    {!! (string) $element->value() ?? '' !!}
+    {!! $element->value() ?? '' !!}
 </div>

@@ -19,6 +19,21 @@ trait FieldActionTrait
         return $this->onSave;
     }
 
+    protected function resolveBeforeSave(mixed $item): void
+    {
+        //
+    }
+
+    protected function resolveAfterSave(mixed $item): void
+    {
+        //
+    }
+
+    protected function resolveAfterDelete(mixed $item): void
+    {
+        //
+    }
+
     public function onSave(Closure $onSave): static
     {
         $this->onSave = $onSave;
@@ -61,9 +76,9 @@ trait FieldActionTrait
         return $this;
     }
 
-    public function onAfterSave(Closure $onAferSave): static
+    public function onAfterSave(Closure $onAfterSave): static
     {
-        $this->onAfterSave = $onAferSave;
+        $this->onAfterSave = $onAfterSave;
 
         return $this;
     }
@@ -73,17 +88,5 @@ trait FieldActionTrait
         $this->onAfterDelete = $onAfterDelete;
 
         return $this;
-    }
-
-    protected function resolveBeforeSave(mixed $item): void
-    {
-    }
-
-    protected function resolveAfterSave(mixed $item): void
-    {
-    }
-
-    protected function resolveAfterDelete(mixed $item): void
-    {
     }
 }

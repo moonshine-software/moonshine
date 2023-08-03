@@ -18,7 +18,7 @@ class File extends Field implements Fileable, RemovableContract
     use FileDeletable;
     use Removable;
 
-    protected static string $view = 'moonshine::fields.file';
+    protected string $view = 'moonshine::fields.file';
 
     protected string $type = 'file';
 
@@ -60,18 +60,18 @@ class File extends Field implements Fileable, RemovableContract
         ])->render();
     }
 
-    public function afterDelete(): void
+    protected function resolveAfterDelete(mixed $item): void
     {
         if (! $this->isDeleteFiles()) {
             return;
         }
 
         if ($this->isMultiple()) {
-            foreach ($this->value() as $value) {
+            foreach ($this->toValue() as $value) {
                 $this->deleteFile($value);
             }
-        } elseif (! empty($this->value())) {
-            $this->deleteFile($this->value());
+        } elseif (! empty($this->toValue())) {
+            $this->deleteFile($this->toValue());
         }
 
         $this->deleteDir();

@@ -8,7 +8,7 @@ use Closure;
 
 class DonutChartMetric extends Metric
 {
-    protected static string $view = 'moonshine::metrics.donut-chart';
+    protected string $view = 'moonshine::metrics.donut-chart';
 
     protected array $values = [];
 

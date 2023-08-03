@@ -6,9 +6,9 @@ namespace MoonShine\Traits;
 
 use Illuminate\View\ComponentAttributeBag;
 
-trait WithHtmlAttributes
+trait WithComponentAttributes
 {
-    protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
+    protected array $attributes = [];
 
     protected array $customAttributes = [];
 
@@ -17,20 +17,12 @@ trait WithHtmlAttributes
         return $this->attributes()->get($name);
     }
 
-    public function attributes(): ComponentAttributeBag
+    public function setAttribute(string $name, string|bool $value): static
     {
-        $resolveAttributes = collect($this->attributes)->mapWithKeys(
-            function ($attr) {
-                $property = (string) str($attr)->camel();
+        $this->attributes[] = $name;
+        $this->customAttributes[$name] = $value;
 
-                return isset($this->{$property}) ? [$attr => $this->{$property}]
-                    : [];
-            }
-        );
-
-        return (new ComponentAttributeBag(
-            $this->customAttributes + $resolveAttributes->toArray()
-        ));
+        return $this;
     }
 
     public function removeAttribute(string $name): static
@@ -54,11 +46,19 @@ trait WithHtmlAttributes
         return $this;
     }
 
-    public function setAttribute(string $name, string|bool $value): static
+    public function attributes(): ComponentAttributeBag
     {
-        $this->attributes[] = $name;
-        $this->customAttributes[$name] = $value;
+        $resolveAttributes = collect($this->attributes)->mapWithKeys(
+            function ($attr) {
+                $property = (string) str($attr)->camel();
 
-        return $this;
+                return isset($this->{$property}) ? [$attr => $this->{$property}]
+                    : [];
+            }
+        );
+
+        return (new ComponentAttributeBag(
+            $this->customAttributes + $resolveAttributes->toArray()
+        ));
     }
 }

@@ -13,7 +13,7 @@ final class TextBlock extends Decoration
 {
     use WithUniqueId;
 
-    protected static string $view = 'moonshine::decorations.text';
+    protected string $view = 'moonshine::decorations.text';
 
     public function __construct(
         string $label,

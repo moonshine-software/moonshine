@@ -4,45 +4,43 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
-use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\Relationships\BelongsToRelation;
-use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
-use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Fields\Select;
+use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
+use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Fields\WithRelatedValues;
 
-class BelongsTo extends Select implements
-    HasRelationship,
+class BelongsTo extends ModelRelationField implements
     HasRelatedValues,
-    BelongsToRelation,
-    HasAsyncSearch
+    HasDefaultValue,
+    DefaultCanBeString,
+    DefaultCanBeNumeric
 {
     use WithRelatedValues;
     use WithAsyncSearch;
+    use Searchable;
+    use WithDefaultValue;
 
-    public function isMultiple(): bool
+    protected string $view = 'moonshine::fields.select';
+
+    protected function resolvePreview(): string
     {
-        return false;
+        return view('moonshine::ui.badge', [
+            'color' => 'purple',
+            'value' => parent::resolvePreview(),
+        ])->render();
     }
 
-    public function save(Model $item): Model
+    protected function resolveValue(): mixed
     {
-        if ($this->requestValue() === false) {
-            if ($this->isNullable()) {
-                return $item->{$this->relation()}()
-                    ->dissociate();
-            }
+        return $this->toFormattedValue();
+    }
 
-            return $item;
-        }
-
-        $value = $item->{$this->relation()}()
-            ->getRelated()
-            ->findOrFail($this->requestValue());
-
-        return $item->{$this->relation()}()
-            ->associate($value);
+    public function isSelected(string $value): bool
+    {
+        return (string) $this->toValue()->getKey() === $value;
     }
 }

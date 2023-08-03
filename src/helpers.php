@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
+use MoonShine\Components\FormBuilder;
+use MoonShine\Components\TableBuilder;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
@@ -48,5 +51,26 @@ if (! function_exists('moonshineAssets')) {
     function moonshineAssets(): AssetManager
     {
         return app(AssetManager::class);
+    }
+}
+
+if (! function_exists('form')) {
+    function form(
+        string $action = '',
+        string $method = 'POST',
+        array $fields = [],
+        array $values = []
+    ): FormBuilder {
+        return FormBuilder::make($action, $method, $fields, $values);
+    }
+}
+
+if (! function_exists('table')) {
+    function table(
+        array $fields = [],
+        iterable $items = [],
+        ?LengthAwarePaginator $paginator = null
+    ): TableBuilder {
+        return TableBuilder::make($fields, $items, $paginator);
     }
 }

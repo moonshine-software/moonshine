@@ -6,7 +6,7 @@ namespace MoonShine\InputExtensions;
 
 final class InputEye extends InputExtension
 {
-    protected static string $view = 'moonshine::form.input-extensions.eye';
+    protected string $view = 'moonshine::form.input-extensions.eye';
 
     protected array $xInit = [
         '$refs.extensionInput.type=`password`',

@@ -6,7 +6,7 @@ namespace MoonShine\Fields;
 
 final class TinyMce extends Textarea
 {
-    protected static string $view = 'moonshine::fields.tinymce';
+    protected string $view = 'moonshine::fields.tinymce';
 
     public string $plugins = 'anchor autolink autoresize charmap codesample code emoticons image link lists advlist media searchreplace table visualblocks wordcount directionality fullscreen help nonbreaking pagebreak preview visualblocks visualchars';
 

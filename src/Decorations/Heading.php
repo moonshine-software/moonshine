@@ -6,5 +6,5 @@ namespace MoonShine\Decorations;
 
 class Heading extends Decoration
 {
-    protected static string $view = 'moonshine::decorations.heading';
+    protected string $view = 'moonshine::decorations.heading';
 }

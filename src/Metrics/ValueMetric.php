@@ -8,7 +8,7 @@ use Closure;
 
 class ValueMetric extends Metric
 {
-    protected static string $view = 'moonshine::metrics.value';
+    protected string $view = 'moonshine::metrics.value';
 
     public int|float $value = 0;
     public int|float $target = 0;

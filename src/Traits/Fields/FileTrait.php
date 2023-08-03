@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -137,9 +136,9 @@ trait FileTrait
     {
         return str('hidden_')
             ->when(
-                $this->parentRequestValueKey(),
+                $this->requestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->append(
-                    $this->parentRequestValueKey() . "."
+                    $this->requestKeyPrefix() . "."
                 )
             )
             ->append($this->field())
@@ -188,52 +187,52 @@ trait FileTrait
         return $this->allowedExtensions;
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function save(Model $item): Model
+
+    protected function resolveOnSave(): ?Closure
     {
-        $requestValue = $this->requestValue();
-        $oldValues = request()
-            ->collect($this->hiddenOldValuesKey());
+        return function ($item) {
+            $requestValue = $this->requestValue();
+            $oldValues = request()
+                ->collect($this->hiddenOldValuesKey());
 
-        if ($this->isDeleteFiles()) {
-            $this->checkAndDelete(
-                $item->{$this->column()},
-                $oldValues->toArray()
-            );
-        }
-
-        $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
-
-        if ($requestValue !== false) {
-            if ($this->isMultiple()) {
-                $paths = [];
-
-                foreach ($requestValue as $file) {
-                    $paths[] = $this->store($file);
-                }
-
-                $saveValue = $saveValue->merge($paths)
-                    ->values()
-                    ->unique()
-                    ->toArray();
-            } else {
-                $saveValue = $this->store($requestValue);
+            if ($this->isDeleteFiles()) {
+                $this->checkAndDelete(
+                    $item->{$this->column()},
+                    $oldValues->toArray()
+                );
             }
-        }
 
-        $item->{$this->column()} = $saveValue;
+            $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
 
-        return $item;
+            if ($requestValue !== false) {
+                if ($this->isMultiple()) {
+                    $paths = [];
+
+                    foreach ($requestValue as $file) {
+                        $paths[] = $this->store($file);
+                    }
+
+                    $saveValue = $saveValue->merge($paths)
+                        ->values()
+                        ->unique()
+                        ->toArray();
+                } else {
+                    $saveValue = $this->store($requestValue);
+                }
+            }
+
+            $item->{$this->column()} = $saveValue;
+
+            return $item;
+        };
     }
 
-    public function formViewValue(Model $item): Collection|string
+    protected function resolveValue(): mixed
     {
-        if ($this->isMultiple() && ! $item->{$this->column()} instanceof Collection) {
-            return collect($item->{$this->column()});
+        if ($this->isMultiple() && ! $this->toValue() instanceof Collection) {
+            return collect($this->toValue());
         }
 
-        return $item->{$this->column()} ?? '';
+        return parent::resolveValue();
     }
 }

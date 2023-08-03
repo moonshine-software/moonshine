@@ -10,7 +10,7 @@ class Offcanvas extends Decoration
 {
     use WithIcon;
 
-    protected static string $view = 'moonshine::decorations.offcanvas';
+    protected string $view = 'moonshine::decorations.offcanvas';
 
     protected bool $isLeft = false;
 

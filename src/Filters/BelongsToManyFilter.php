@@ -26,7 +26,7 @@ class BelongsToManyFilter extends SelectFilter implements
     use WithPivot;
     use WithRelatedValues;
 
-    protected static string $view = 'moonshine::filters.belongs-to-many';
+    protected string $view = 'moonshine::filters.belongs-to-many';
 
-    protected bool $group = true;
+    protected bool $isGroup = true;
 }

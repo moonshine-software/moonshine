@@ -10,8 +10,7 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
-use MoonShine\Contracts\Fields\Relationships\HasRelationship;
-use MoonShine\Fields\Select;
+use MoonShine\Fields\ID;
 use MoonShine\Traits\Fields\CheckboxTrait;
 use MoonShine\Traits\Fields\SelectTransform;
 use MoonShine\Traits\Fields\WithAsyncSearch;
@@ -20,8 +19,7 @@ use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
-class BelongsToMany extends Select implements
-    HasRelationship,
+class BelongsToMany extends ModelRelationField implements
     HasRelatedValues,
     HasPivot,
     HasFields,
@@ -34,9 +32,9 @@ class BelongsToMany extends Select implements
     use SelectTransform;
     use WithAsyncSearch;
 
-    protected static string $view = 'moonshine::fields.belongs-to-many';
+    protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
-    protected bool $group = true;
+    protected bool $isGroup = true;
 
     protected bool $tree = false;
 
@@ -44,6 +42,31 @@ class BelongsToMany extends Select implements
 
     protected string $treeParentColumn = '';
 
+    protected bool $onlyCount = false;
+
+    protected bool $inLine = false;
+
+    protected string $inLineSeparator = '';
+
+    protected bool $inLineBadge = false;
+
+    public function onlyCount(): static
+    {
+        $this->onlyCount = true;
+
+        return $this;
+    }
+
+    public function inLine(string $separator = '', bool $badge = false): static
+    {
+        $this->inLine = true;
+        $this->inLineSeparator = $separator;
+        $this->inLineBadge = $badge;
+
+        return $this;
+    }
+
+    # TODO[refactor(tree)]
     public function tree(string $treeParentColumn): static
     {
         $this->treeParentColumn = $treeParentColumn;
@@ -57,9 +80,10 @@ class BelongsToMany extends Select implements
         return $this->tree;
     }
 
-    public function buildTreeHtml(Model $item): string
+    public function buildTreeHtml(): string
     {
-        $related = $this->getRelated($item);
+        $query = $this->getRelatedModel()->{$this->getRelation()}();
+        $related = $query->getRelated();
         $query = $related->newModelQuery();
 
         if (is_callable($this->valuesQuery)) {
@@ -101,7 +125,7 @@ class BelongsToMany extends Select implements
                             'class' => 'form-group-inline',
                         ]),
                         'beforeLabel' => true,
-                        'label' => $item->{$this->resourceTitleField()},
+                        'label' => $item->{$this->getResource()->column()},
                     ]
                 );
 
@@ -143,32 +167,42 @@ class BelongsToMany extends Select implements
     /**
      * @throws Throwable
      */
-    public function save(Model $item): Model
+    protected function resolvePreview(): string
     {
-        $values = $this->requestValue() ?: [];
-        $sync = [];
+        $values = $this->toValue();
+        $column = $this->getResource()->column();
 
-        if ($this->hasFields()) {
-            foreach ($values as $index => $value) {
-                foreach ($this->getFields() as $field) {
-                    $sync[$value][$field->column()] = $field->requestValue(
-                        $index
-                    );
-                }
-            }
-        } else {
-            $sync = $values;
+        if ($this->isRawMode()) {
+            return $values
+                ->map(fn (Model $item) => $item->{$column})
+                ->implode(';');
         }
 
-        $item->{$this->relation()}()->sync($sync);
+        if ($this->onlyCount) {
+            return (string) $values->count();
+        }
 
-        return $item;
-    }
+        if ($this->inLine) {
+            return $values->implode(function (Model $item) use ($column) {
+                $value = $item->{$column} ?? false;
 
-    public function exportViewValue(Model $item): string
-    {
-        return collect($item->{$this->relation()})
-            ->map(fn ($item) => $item->{$this->resourceTitleField()})
-            ->implode(';');
+                if ($this->inLineBadge) {
+                    return view('moonshine::ui.badge', [
+                        'color' => 'purple',
+                        'value' => $value,
+                        'margin' => true,
+                    ])->render();
+                }
+
+                return $value;
+            }, $this->inLineSeparator) ?? '';
+        }
+
+        $fields = $this->getFields()
+            ->indexFields()
+            ->prepend(ID::make())
+            ->toArray();
+
+        return (string) table($fields, $values);
     }
 }

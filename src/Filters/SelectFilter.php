@@ -24,5 +24,5 @@ class SelectFilter extends Filter implements
     use SelectTrait;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::filters.select';
+    protected string $view = 'moonshine::filters.select';
 }

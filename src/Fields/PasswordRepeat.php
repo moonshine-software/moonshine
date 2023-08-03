@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
+use Closure;
 
 class PasswordRepeat extends Password
 {
-    public function save(Model $item): Model
+    protected function resolveOnSave(): ?Closure
     {
-        return $item;
+        return static fn ($item) => $item;
     }
 }

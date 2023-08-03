@@ -7,11 +7,10 @@ namespace MoonShine\Filters;
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\HasFormViewValue;
 use MoonShine\Fields\FormElement;
 use MoonShine\Traits\Fields\LinkTrait;
 
-abstract class Filter extends FormElement implements HasFormViewValue
+abstract class Filter extends FormElement
 {
     use LinkTrait;
 

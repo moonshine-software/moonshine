@@ -10,9 +10,9 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 
 class DateRangeFilter extends DateFilter implements DefaultCanBeArray
 {
-    protected static string $view = 'moonshine::filters.date-range';
+    protected string $view = 'moonshine::filters.date-range';
 
-    protected bool $group = true;
+    protected bool $isGroup = true;
 
     protected function resolveQuery(Builder $query): Builder
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 trait WithRelatedValues
@@ -14,16 +13,6 @@ trait WithRelatedValues
 
     protected ?Closure $valuesQuery = null;
 
-    public function setValues(array $values): void
-    {
-        $this->values = $values;
-    }
-
-    public function values(): array
-    {
-        return $this->values;
-    }
-
     public function valuesQuery(Closure $callback): self
     {
         $this->valuesQuery = $callback;
@@ -31,9 +20,24 @@ trait WithRelatedValues
         return $this;
     }
 
-    public function relatedValues(Model $item): array
+    public function setValues(array $values): void
     {
-        $related = $this->getRelated($item);
+        $this->values = $values;
+    }
+
+    public function values(): array
+    {
+        if (! empty($this->values)) {
+            return $this->values;
+        }
+
+        if (is_null($this->getRelatedModel())) {
+            return $this->values;
+        }
+
+        # TODO[refactor]
+        $query = $this->getRelatedModel()->{$this->getRelation()}();
+        $related = $query->getRelated();
         $query = $related->newModelQuery();
 
         if (is_callable($this->valuesQuery)) {
@@ -43,18 +47,19 @@ trait WithRelatedValues
         if (is_callable($this->valueCallback())) {
             $values = $query->get()
                 ->mapWithKeys(
-                    fn ($relatedItem): array => [
-                        $relatedItem->getKey() => ($this->valueCallback())(
-                            $relatedItem
+                    fn ($item): array => [
+                        $item->getKey() => ($this->valueCallback())(
+                            $item
                         ),
                     ]
                 );
         } else {
-            $tableName = DB::getTablePrefix() . $related->getTable();
-            $values = $query->selectRaw(
-                "$tableName.{$related->getKeyName()}, $tableName.{$this->resourceTitleField()}"
-            )
-                ->pluck($this->resourceTitleField(), $related->getKeyName());
+            $table = DB::getTablePrefix() . $related->getTable();
+            $key = "$table.{$related->getKeyName()}";
+            $column = "$table.{$this->getResource()->column()}";
+
+            $values = $query->selectRaw("$key, $column")
+                ->pluck($this->getResource()->column(), $related->getKeyName());
         }
 
         return $values->toArray();

@@ -6,7 +6,7 @@ namespace MoonShine\Decorations;
 
 class Flex extends Decoration
 {
-    protected static string $view = 'moonshine::decorations.flex';
+    protected string $view = 'moonshine::decorations.flex';
 
     protected string $itemsAlign = 'center';
 

@@ -10,7 +10,6 @@ use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\FiltersAction;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
@@ -80,18 +79,18 @@ class IndexPage extends Page
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),
             ]),
-            TableBuilder::make()->fields($this->getResource()->getFields()->onlyFields()->toArray())
+            table()->fields($this->getResource()->getFields()->onlyFields()->toArray())
                 ->cast($this->getResource()->getModel()::class)
                 ->items($items->items())
                 ->paginator($items)
                 ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
-                    $index === 0 && $data->getKey() === 2,
+                    $index === 0,
                     fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                         'class' => 'bgc-purple',
                     ])
                 ))
                 ->tdAttributes(fn ($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
-                    $index === 1 && $cell === 0 && $data->getKey() === 1,
+                    $index === 1 && $cell === 0,
                     fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                         'class' => 'bgc-red',
                     ])

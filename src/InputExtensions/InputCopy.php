@@ -6,7 +6,7 @@ namespace MoonShine\InputExtensions;
 
 final class InputCopy extends InputExtension
 {
-    protected static string $view = 'moonshine::form.input-extensions.copy';
+    protected string $view = 'moonshine::form.input-extensions.copy';
 
     protected array $xData = [
         'copy() { navigator.clipboard.writeText($refs.extensionInput.value);  }',

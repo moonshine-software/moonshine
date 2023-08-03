@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class MorphTo extends BelongsTo
 {
-    protected static string $view = 'moonshine::fields.morph-to';
+    protected string $view = 'moonshine::fields.relationships.morph-to';
 
     protected array $types = [];
 
@@ -46,34 +47,38 @@ class MorphTo extends BelongsTo
         return $this;
     }
 
-    public function save(Model $item): Model
+    protected function resolveOnSave(): ?Closure
     {
-        $item->{$this->getMorphType($item)} = $this->requestTypeValue($item);
-        $item->{$this->getMorphKey($item)} = $this->requestValue();
+        return function (Model $item) {
+            $item->{$this->getMorphType()} = $this->requestTypeValue();
+            $item->{$this->getMorphKey()} = $this->requestValue();
 
-        return $item;
+            return $item;
+        };
     }
 
-    public function getMorphType(Model $model): string
+    public function getMorphType(): string
     {
-        return $model->{$this->relation()}()->getMorphType();
+        return $this->getRelatedModel()
+            ->{$this->getRelation()}()
+            ->getMorphType();
     }
 
-    public function requestTypeValue(Model $item): string
+    public function requestTypeValue(): string
     {
         return request(
             (string) str($this->nameDot())->replace(
                 $this->column(),
-                $this->getMorphType($item)
+                $this->getMorphType()
             ),
-            $this->formTypeValue($item)
+            $this->toValue()
         );
     }
 
-    public function formTypeValue(Model $item): string
+    protected function resolveValue(): string
     {
         return addslashes(
-            $item->{$this->getMorphType($item)}
+            $this->getRelatedModel()->{$this->getMorphType()}
             ?? Arr::first(array_keys($this->getTypes()))
         );
     }
@@ -83,16 +88,20 @@ class MorphTo extends BelongsTo
         return $this->types;
     }
 
-    public function getMorphKey(Model $model): string
+    public function getMorphKey(): string
     {
-        return $model->{$this->relation()}()->getForeignKeyName();
+        return $this->getRelatedModel()
+            ->{$this->getRelation()}()
+            ->getForeignKeyName();
     }
 
-    public function indexViewValue(Model $item, bool $container = true): string
+    protected function resolvePreview(): string
     {
-        return str($item->{$this->getMorphType($item)})
+        $item = $this->getRelatedModel();
+
+        return str($item?->{$this->getMorphType()})
             ->append('(')
-            ->append($item->{$this->getMorphKey($item)})
+            ->append($item?->{$this->getMorphKey()})
             ->append(')')
             ->value();
     }

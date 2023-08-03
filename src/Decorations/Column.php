@@ -10,5 +10,5 @@ class Column extends Decoration
 {
     use WithColumnSpan;
 
-    protected static string $view = 'moonshine::decorations.column';
+    protected string $view = 'moonshine::decorations.column';
 }

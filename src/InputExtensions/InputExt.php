@@ -6,5 +6,5 @@ namespace MoonShine\InputExtensions;
 
 final class InputExt extends InputExtension
 {
-    protected static string $view = 'moonshine::form.input-extensions.ext';
+    protected string $view = 'moonshine::form.input-extensions.ext';
 }

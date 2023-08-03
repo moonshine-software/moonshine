@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Helpers\Condition;
 
 class NoInput extends Field
 {
-    protected static string $view = 'moonshine::fields.no-input';
+    protected string $view = 'moonshine::fields.no-input';
 
     protected bool $isBadge = false;
 
@@ -72,11 +71,6 @@ class NoInput extends Field
         return $this;
     }
 
-    public function save(Model $item): Model
-    {
-        return $item;
-    }
-
     protected function resolvePreview(): string
     {
         $value = $this->toValue();
@@ -117,7 +111,7 @@ class NoInput extends Field
 
     protected function resolveValue(): string|bool
     {
-        $value = $this->toValue();
+        $value = $this->toFormattedValue();
 
         if ($this->isBadge && is_callable($this->badgeColorCallback)) {
             $this->badgeColor = call_user_func(

@@ -1,5 +1,5 @@
 @if(method_exists($element, 'isTree') && $element->isTree())
-    @include('moonshine::fields.tree', [
+    @include('moonshine::fields.shared.tree', [
         'element' => $element,
     ])
 @else
@@ -42,17 +42,18 @@
                     >
                         @if($element->getFields()->isNotEmpty())
                             @foreach($element->getFields() as $pivotField)
-                                {{ $resource->renderComponent(
-                                        $pivotField->setAttribute(
+                                {{
+                                    $pivotField
+                                        ->setAttribute(
                                             'x-bind:name',
                                             '`'.(preg_replace(
                                                     '/\[\]$/',
                                                     '[${item.key}]'.($pivotField->attributes()->get('multiple') ? '[]' : ''),
                                                     $pivotField->name()).'`'
                                                 )
-                                        ),
-                                        $element->pivotValue($item, null)
-                                ) }}
+                                        )
+                                        ->render()
+                                }}
                             @endforeach
                         @endif
                     </x-moonshine::form.pivot>
@@ -68,22 +69,24 @@
                 name="{{ $element->name($optionValue) }}"
                 label="{{ $optionName }}"
                 value="{{ $optionValue }}"
-                :checked="$element->isChecked($item, $optionValue)"
+                :checked="$element->isChecked($optionValue)"
                 :withFields="$element->getFields()->isNotEmpty()"
                 :attributes="$element->attributes()"
             >
                 @if($element->getFields()->isNotEmpty())
                     @foreach($element->getFields() as $pivotField)
-                        {{ $resource->renderComponent(
-                                $pivotField->clearXModel()->setName(
+                        {{
+                            $pivotField
+                                ->clearXModel()
+                                ->setName(
                                     preg_replace(
                                         '/\[\]$/',
                                         "[$optionValue]".($pivotField->attributes()->get('multiple') ? '[]' : ''),
                                         $pivotField->name()
                                     )
-                                ),
-                                $element->pivotValue($item, $optionValue)
-                        ) }}
+                                )
+                                ->render()
+                        }}
                     @endforeach
                 @endif
             </x-moonshine::form.pivot>

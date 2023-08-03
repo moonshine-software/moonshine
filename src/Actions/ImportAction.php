@@ -26,7 +26,7 @@ class ImportAction extends Action
     use WithStorage;
     use WithQueue;
 
-    protected static string $view = 'moonshine::actions.import';
+    protected string $view = 'moonshine::actions.import';
     public string $inputName = 'import_file';
 
     protected ?string $icon = 'heroicons.outline.paper-clip';

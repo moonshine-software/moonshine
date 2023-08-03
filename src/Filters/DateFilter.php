@@ -11,7 +11,7 @@ class DateFilter extends TextFilter
 {
     use DateTrait;
 
-    protected static string $view = 'moonshine::filters.date';
+    protected string $view = 'moonshine::filters.date';
 
     public string $type = 'date';
 

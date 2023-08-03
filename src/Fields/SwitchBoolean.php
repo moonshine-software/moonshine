@@ -10,7 +10,7 @@ use MoonShine\Helpers\Condition;
 
 class SwitchBoolean extends Checkbox implements HasResourceContract
 {
-    protected static string $view = 'moonshine::fields.switch';
+    protected string $view = 'moonshine::fields.switch';
 
     protected bool $autoUpdate = true;
 

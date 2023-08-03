@@ -32,7 +32,7 @@ trait XModel
     {
         return (string) str($variable)
             ->whenNotEmpty(fn ($f) => $f->append('.'))
-            ->append($this->field());
+            ->append($this->column());
     }
 
     public function isXModelField(): bool

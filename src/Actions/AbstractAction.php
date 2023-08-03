@@ -10,7 +10,7 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithHtmlAttributes;
+use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithModal;
@@ -25,7 +25,7 @@ abstract class AbstractAction implements MoonShineRenderable
     use WithModal;
     use HasCanSee;
     use InDropdownOrLine;
-    use WithHtmlAttributes;
+    use WithComponentAttributes;
 
     public function render(): View|Closure|string
     {

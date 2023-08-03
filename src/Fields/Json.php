@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
+use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -35,13 +35,13 @@ class Json extends Field implements
     use Removable;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::fields.json';
+    protected string $view = 'moonshine::fields.json';
 
     protected bool $keyValue = false;
 
     protected bool $onlyValue = false;
 
-    protected bool $group = true;
+    protected bool $isGroup = true;
 
     /**
      * @throws Throwable
@@ -81,34 +81,33 @@ class Json extends Field implements
         return $this;
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function save(Model $item): Model
+    protected function resolveOnSave(): ?Closure
     {
-        if ($this->requestValue() === false) {
-            $item->{$this->column()} = [];
+        return function ($item) {
+            if ($this->requestValue() === false) {
+                $item->{$this->column()} = [];
+
+                return $item;
+            }
+
+            $requestValues = $this->requestValue();
+
+            foreach ($requestValues as $index => $values) {
+                foreach ($this->getFields()->onlyFileFields() as $field) {
+                    $field->setRequestKeyPrefix(
+                        $this->column() . "." . $index
+                    );
+
+                    $requestValues[$index][$field->column()] = $field->hasManyOrOneSave(
+                        $values[$field->column()] ?? null
+                    );
+                }
+            }
+
+            $item->{$this->column()} = $this->mapKeyValue(collect($requestValues));
 
             return $item;
-        }
-
-        $requestValues = $this->requestValue();
-
-        foreach ($requestValues as $index => $values) {
-            foreach ($this->getFields()->onlyFileFields() as $field) {
-                $field->setParentRequestValueKey(
-                    $this->column() . "." . $index
-                );
-
-                $requestValues[$index][$field->column()] = $field->hasManyOrOneSave(
-                    $values[$field->column()] ?? null
-                );
-            }
-        }
-
-        $item->{$this->column()} = $this->mapKeyValue(collect($requestValues));
-
-        return $item;
+        };
     }
 
     /**

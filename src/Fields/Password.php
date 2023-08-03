@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
+use Closure;
 
 class Password extends Text
 {
@@ -28,12 +28,14 @@ class Password extends Text
         return '';
     }
 
-    public function save(Model $item): Model
+    protected function resolveOnSave(): ?Closure
     {
-        if ($this->requestValue()) {
-            $item->{$this->column()} = bcrypt($this->requestValue());
-        }
+        return function ($item) {
+            if ($this->requestValue()) {
+                $item->{$this->column()} = bcrypt($this->requestValue());
+            }
 
-        return $item;
+            return $item;
+        };
     }
 }

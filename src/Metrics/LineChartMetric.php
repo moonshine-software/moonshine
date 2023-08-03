@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 class LineChartMetric extends Metric
 {
-    protected static string $view = 'moonshine::metrics.line-chart';
+    protected string $view = 'moonshine::metrics.line-chart';
 
     protected array $lines = [];
 

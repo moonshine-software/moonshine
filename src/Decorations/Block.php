@@ -6,5 +6,5 @@ namespace MoonShine\Decorations;
 
 class Block extends Decoration
 {
-    protected static string $view = 'moonshine::decorations.block';
+    protected string $view = 'moonshine::decorations.block';
 }

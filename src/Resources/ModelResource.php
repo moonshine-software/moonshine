@@ -16,6 +16,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
+use MoonShine\Traits\Resource\ResourceModelEvents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
 
@@ -24,21 +25,36 @@ abstract class ModelResource extends Resource
     use ResourceModelPolicy;
     use ResourceModelQuery;
     use ResourceModelCrudRouter;
+    use ResourceModelEvents;
 
     public string $model;
+
+    public string $title = '';
+
+    public string $column = 'id';
 
     abstract public function fields(): array;
 
     public function pages(): array
     {
         return [
-            IndexPage::make($this->title),
+            IndexPage::make($this->title()),
             FormPage::make(
                 request('crudItem')
                     ? 'Редактировать'
                     : 'Добавить'
             ),
         ];
+    }
+
+    public function title(): string
+    {
+        return $this->title;
+    }
+
+    public function column(): string
+    {
+        return $this->column;
     }
 
     public function onSave(): Closure
@@ -138,12 +154,12 @@ abstract class ModelResource extends Resource
         try {
             $fields->each(fn (Field $field) => $field->beforeSave($item));
 
-            if (! $item->exists && method_exists($this, 'beforeCreating')) {
-                $this->beforeCreating($item);
+            if (! $item->exists) {
+                $item = $this->beforeCreating($item);
             }
 
-            if ($item->exists && method_exists($this, 'beforeUpdating')) {
-                $this->beforeUpdating($item);
+            if ($item->exists) {
+                $item = $this->beforeUpdating($item);
             }
 
             foreach ($fields as $field) {
@@ -165,18 +181,12 @@ abstract class ModelResource extends Resource
 
                 $fields->each(fn (Field $field) => $field->afterSave($item));
 
-                if ($wasRecentlyCreated && method_exists(
-                    $this,
-                    'afterCreated'
-                )) {
-                    $this->afterCreated($item);
+                if ($wasRecentlyCreated) {
+                    $item = $this->afterCreated($item);
                 }
 
-                if (! $wasRecentlyCreated && method_exists(
-                    $this,
-                    'afterUpdated'
-                )) {
-                    $this->afterUpdated($item);
+                if (! $wasRecentlyCreated) {
+                    $item = $this->afterUpdated($item);
                 }
 
                 //$this->setItem($item);

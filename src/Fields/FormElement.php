@@ -6,7 +6,6 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
@@ -15,29 +14,26 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\ShowWhen;
-use MoonShine\Traits\Fields\WithRelatedValues;
-use MoonShine\Traits\Fields\WithResourceMode;
+use MoonShine\Traits\Fields\WithFormElementAttributes;
 use MoonShine\Traits\Fields\XModel;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
+use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithHint;
-use MoonShine\Traits\WithHtmlAttributes;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 use MoonShine\Utilities\AssetManager;
 
 /**
- * @method static static make(string|null $label = null, string|null $column = null, ?Closure $valueCallback = null)
- *
- * @mixin WithResourceMode
- * @mixin WithRelatedValues
+ * @method static make(string|null $label = null, string|null $column = null, ?Closure $valueCallback = null)
  */
 abstract class FormElement implements MoonShineRenderable, HasAssets
 {
     use Makeable;
     use WithLabel;
-    use WithHtmlAttributes;
+    use WithFormElementAttributes;
+    use WithComponentAttributes;
     use WithView;
     use WithHint;
     use WithAssets;
@@ -48,22 +44,15 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     protected string $column;
 
-    protected ?Field $parent = null;
-    protected bool $group = false;
+    protected ?FormElement $parent = null;
+
+    protected bool $isGroup = false;
 
     protected ?Closure $valueCallback = null;
 
-    protected bool $nullable = false;
+    protected ?string $requestKeyPrefix = null;
 
-    protected bool $fieldContainer = true;
-
-    protected ?string $parentRequestValueKey = null;
-
-    protected ?string $name = null;
-
-    protected ?string $wrapName = null;
-
-    protected ?string $id = null;
+    protected bool $withWrapper = true;
 
     public function __construct(
         ?string $label = null,
@@ -77,6 +66,13 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
         if (! is_null($valueCallback)) {
             $this->setValueCallback($valueCallback);
+        }
+    }
+
+    protected function afterMake(): void
+    {
+        if ($this->getAssets()) {
+            app(AssetManager::class)->add($this->getAssets());
         }
     }
 
@@ -102,26 +98,14 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return $this->valueCallback;
     }
 
-    public function nullable(Closure|bool|null $condition = null): static
-    {
-        $this->nullable = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function isNullable(): bool
-    {
-        return $this->nullable;
-    }
-
-    public function parent(): ?Field
+    public function parent(): ?FormElement
     {
         return $this->parent;
     }
 
     public function hasParent(): bool
     {
-        return $this->parent instanceof self;
+        return ! is_null($this->parent);
     }
 
     public function setParents(): static
@@ -141,98 +125,40 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return $this;
     }
 
-    protected function setParent(Field $field): static
+    protected function setParent(FormElement $field): static
     {
         $this->parent = $field;
 
         return $this;
     }
 
-    public function id(string $index = null): string
+    protected function group(): static
     {
-        if ($this->id) {
-            return $this->id;
-        }
-
-        return (string) str($this->name ?? $this->name())
-            ->replace(['[', ']'], '_')
-            ->replaceMatches('/\${index\d+}/', '')
-            ->replaceMatches('/_{2,}/', '_')
-            ->trim('_')
-            ->snake()
-            ->when(
-                ! is_null($index),
-                fn (Stringable $str): Stringable => $str->append("_$index")
-            );
-    }
-
-    public function name(string $index = null): string
-    {
-        return $this->prepareName($index);
-    }
-
-    public function wrapName(string $wrapName): static
-    {
-        $this->wrapName = $wrapName;
+        $this->isGroup = true;
 
         return $this;
-    }
-
-    protected function prepareName($index = null, $wrap = null): string
-    {
-        $wrap ??= $this->wrapName;
-
-        if ($this->name) {
-            return $this->name;
-        }
-
-        return (string) str($this->column())
-            ->when(
-                ! is_null($wrap),
-                fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")
-            )
-            ->when(
-                $this->isGroup() || $this->getAttribute('multiple'),
-                fn (Stringable $str): Stringable => $str->append(
-                    "[" . ($index ?? '') . "]"
-                )
-            );
     }
 
     public function isGroup(): bool
     {
-        return $this->group;
+        return $this->isGroup;
     }
 
-    public function setName(string $name): static
+    public function withoutWrapper(mixed $condition = null): static
     {
-        $this->name = $name;
+        $this->withWrapper = Condition::boolean($condition, false);
 
         return $this;
     }
 
-    public function setId(string $id): static
+    public function hasWrapper(): bool
     {
-        $this->id = (string) str($id)->remove(['[', ']'])->snake();
-
-        return $this;
+        return $this->withWrapper;
     }
 
-    public function fieldContainer(mixed $condition = null): static
+    public function setRequestKeyPrefix(?string $key): static
     {
-        $this->fieldContainer = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function hasFieldContainer(): bool
-    {
-        return $this->fieldContainer;
-    }
-
-    public function setParentRequestValueKey(?string $key): static
-    {
-        $this->parentRequestValueKey = $key;
+        $this->requestKeyPrefix = $key;
 
         return $this;
     }
@@ -243,9 +169,9 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
             $this->isXModelField() ? $this->column() : $this->nameDot()
         )
             ->when(
-                $this->parentRequestValueKey(),
+                $this->requestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->prepend(
-                    "{$this->parentRequestValueKey()}."
+                    "{$this->requestKeyPrefix()}."
                 )
             )
             ->when(
@@ -260,36 +186,9 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return request($nameDot, $default) ?? false;
     }
 
-    protected function nameDot(): string
+    public function requestKeyPrefix(): ?string
     {
-        $name = (string) str($this->name())->replace('[]', '');
-
-        parse_str($name, $array);
-
-        $result = collect(Arr::dot(array_filter($array)));
-
-        return $result->isEmpty()
-            ? $name
-            : (string) str($result->keys()->first());
-    }
-
-    public function parentRequestValueKey(): ?string
-    {
-        return $this->parentRequestValueKey;
-    }
-
-    protected function afterMake(): void
-    {
-        if ($this->getAssets()) {
-            app(AssetManager::class)->add($this->getAssets());
-        }
-    }
-
-    protected function group(): static
-    {
-        $this->group = true;
-
-        return $this;
+        return $this->requestKeyPrefix;
     }
 
     public function render(): View|Closure|string

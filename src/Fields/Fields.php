@@ -10,6 +10,7 @@ use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
 /**
@@ -25,7 +26,7 @@ final class Fields extends FormElements
      */
     public function fillClonedValues(array $rawValues = [], mixed $castedValues = null): self
     {
-        return $this->onlyFields()->map(fn (Field $field): Field => (clone $field)->fillValues($rawValues, $castedValues));
+        return $this->onlyFields()->map(fn (Field $field): Field => (clone $field)->resolveFill($rawValues, $castedValues));
     }
 
     /**
@@ -33,7 +34,7 @@ final class Fields extends FormElements
      */
     public function fillValues(array $rawValues = [], mixed $castedValues = null): void
     {
-        $this->onlyFields()->map(fn (Field $field): Field => $field->fillValues($rawValues, $castedValues));
+        $this->onlyFields()->map(fn (Field $field): Field => $field->resolveFill($rawValues, $castedValues));
     }
 
     public function requestValues(string $prefix = null): Fields
@@ -48,7 +49,7 @@ final class Fields extends FormElements
     {
         return $this->map(function (Field $field) use ($parent): Field|NoInput {
             throw_if(
-                $parent instanceof Json && $field->hasRelationship(),
+                $parent instanceof Json && $field instanceof ModelRelationField,
                 new FieldException(
                     'Relationship fields in JSON field unavailable. Use resourceMode'
                 )
@@ -56,14 +57,13 @@ final class Fields extends FormElements
 
             if ($parent instanceof HasPivot) {
                 return $field->setName(
-                    "{$parent->relation()}_{$field->column()}[]"
+                    "{$parent->getRelation()}_{$field->column()}[]"
                 );
             }
 
             if ($field instanceof HasFields
-                && $field->hasRelationship()
-                && $field->isNowOnForm()
-                && ! $parent->isResourceModeField()) {
+                && $field instanceof ModelRelationField
+                && $field->isNowOnForm()) {
                 return NoInput::make(
                     $field->label(),
                     $field->column(),

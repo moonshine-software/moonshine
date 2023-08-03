@@ -18,6 +18,6 @@ class TextFilter extends Filter implements
     use WithInputExtensions;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::filters.text';
+    protected string $view = 'moonshine::filters.text';
     public string $type = 'text';
 }

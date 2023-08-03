@@ -128,7 +128,10 @@ class ExportAction extends Action
             $row = [];
 
             foreach ($fields as $field) {
-                $row[$field->label()] = $field->exportViewValue($item);
+                $row[$field->label()] = $field
+                    ->setValue($item->toArray(), $item)
+                    ->rawMode()
+                    ->preview();
             }
 
             $data->add($row);

@@ -20,6 +20,6 @@ class SwitchBooleanFilter extends Filter implements
     use BooleanTrait;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::filters.switch';
+    protected string $view = 'moonshine::filters.switch';
     public string $type = 'checkbox';
 }

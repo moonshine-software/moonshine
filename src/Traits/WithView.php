@@ -6,12 +6,12 @@ namespace MoonShine\Traits;
 
 trait WithView
 {
-    protected static string $view = '';
+    protected string $view = '';
     protected ?string $customView = null;
 
     public function getView(): string
     {
-        return $this->customView ?? static::$view;
+        return $this->customView ?? $this->view;
     }
 
     public function customView(string $customView): self

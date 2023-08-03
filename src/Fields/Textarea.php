@@ -12,7 +12,7 @@ class Textarea extends Field implements HasDefaultValue, DefaultCanBeString
 {
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::fields.textarea';
+    protected string $view = 'moonshine::fields.textarea';
 
     protected array $attributes = [
         'rows',

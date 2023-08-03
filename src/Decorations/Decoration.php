@@ -9,8 +9,8 @@ use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithFields;
-use MoonShine\Traits\WithHtmlAttributes;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithUniqueId;
 use MoonShine\Traits\WithView;
@@ -25,7 +25,7 @@ abstract class Decoration implements MoonShineRenderable, FieldsDecoration
     use WithLabel;
     use WithFields;
     use WithUniqueId;
-    use WithHtmlAttributes;
+    use WithComponentAttributes;
 
     public function __construct(
         string|array $labelOrFields = '',

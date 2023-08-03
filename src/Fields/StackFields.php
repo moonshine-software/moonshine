@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
+use Closure;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
-use Throwable;
 
 class StackFields extends Field implements HasFields
 {
     use WithFields;
 
-    protected static string $view = 'moonshine::fields.stack';
-    protected bool $fieldContainer = false;
+    protected string $view = 'moonshine::fields.stack';
+    protected bool $withWrapper = false;
 
     protected bool $withLabels = false;
 
@@ -30,18 +29,20 @@ class StackFields extends Field implements HasFields
         return $this->withLabels;
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function save(Model $item): Model
+    protected function resolveOnSave(): ?Closure
     {
-        $this->getFields()->onlyFields()->each(
-            static function ($field) use (&$item): void {
-                $item = $field->save($item);
-            }
-        );
+        return function ($item) {
+            $this->getFields()->onlyFields()->each(
+                static function (Field $field) use (&$item): void {
+                    $item = $field->save(
+                        fn($item) => $item,
+                        $item
+                    );
+                }
+            );
 
-        return $item;
+            return $item;
+        };
     }
 
     protected function resolvePreview(): string
@@ -52,15 +53,12 @@ class StackFields extends Field implements HasFields
         ])->render();
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function afterSave(Model $item = null): void
+    protected function resolveAfterSave(mixed $item): void
     {
-        parent::afterSave($item);
+        parent::resolveAfterSave($item);
 
         $this->getFields()
             ->onlyFields()
-            ->each(fn (FormElement $field) => $field->afterSave());
+            ->each(fn (FormElement $field) => $field->afterSave($item));
     }
 }

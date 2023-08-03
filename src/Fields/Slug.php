@@ -2,6 +2,7 @@
 
 namespace MoonShine\Fields;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -35,17 +36,19 @@ class Slug extends Text
         return $this;
     }
 
-    public function save(Model $item): Model
+    protected function resolveOnSave(): ?Closure
     {
-        $item->{$this->column()} = $this->requestValue() !== false ?
-            $this->requestValue()
-            : $this->generateSlug($item->{$this->getFrom()});
+        return function ($item) {
+            $item->{$this->column()} = $this->requestValue() !== false ?
+                $this->requestValue()
+                : $this->generateSlug($item->{$this->getFrom()});
 
-        if ($this->isUnique()) {
-            $item->{$this->column()} = $this->makeSlugUnique($item);
-        }
+            if ($this->isUnique()) {
+                $item->{$this->column()} = $this->makeSlugUnique($item);
+            }
 
-        return $item;
+            return $item;
+        };
     }
 
     private function generateSlug(string $value): string

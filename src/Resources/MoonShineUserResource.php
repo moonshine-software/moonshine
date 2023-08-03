@@ -18,10 +18,12 @@ use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
+use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\TextFilter;
 use MoonShine\Http\Controllers\PermissionController;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 
@@ -29,7 +31,9 @@ class MoonShineUserResource extends ModelResource
 {
     public string $model = MoonshineUser::class;
 
-    public string $titleField = 'name';
+    public string $title = 'MoonshineUsers';
+
+    public string $column = 'name';
 
     public static bool $withPolicy = true;
 
@@ -43,12 +47,12 @@ class MoonShineUserResource extends ModelResource
                             ->sortable()
                             ->showOnExport(),
 
-                        /*BelongsTo::make(
+                        BelongsTo::make(
                             trans('moonshine::ui.resource.role'),
-                            'moonshine_user_role_id',
-                            new MoonShineUserRoleResource()
-                        )
-                            ->showOnExport(),*/
+                            'moonshineUserRole',
+                            new MoonShineUserRoleResource(),
+                            static fn(MoonshineUserRole $model) => $model->name
+                        ),
 
                         Text::make(trans('moonshine::ui.resource.name'), 'name')
                             ->required()

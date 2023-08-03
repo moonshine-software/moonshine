@@ -19,25 +19,23 @@ abstract class Field extends FormElement
     use WithIsNowOnRoute;
     use FieldActionTrait;
 
-    protected mixed $rawValue = null;
-
     protected bool $rawMode = false;
 
+    protected mixed $rawValue = null;
+
     protected mixed $value = null;
+
+    protected mixed $formattedValue = null;
 
     protected ?Closure $previewCallback = null;
 
     protected bool $sortable = false;
 
-    protected bool $required = false;
-
-    protected bool $disabled = false;
-
-    protected bool $readonly = false;
-
-    protected bool $hidden = false;
-
     protected bool $canSave = true;
+
+    protected bool $nullable = false;
+
+    protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
 
     /**
      * Define whether if index page can be sorted by this field
@@ -91,9 +89,14 @@ abstract class Field extends FormElement
         $this->rawValue = $value;
     }
 
-    public function fillValues(array $rawValues = [], mixed $castedValues = null): self
+    protected function setFormattedValue(mixed $value = null): void
     {
-        if($this->value) {
+        $this->formattedValue = $value;
+    }
+
+    public function resolveFill(array $rawValues = [], mixed $castedValues = null): self
+    {
+        if ($this->value) {
             return $this;
         }
 
@@ -102,9 +105,11 @@ abstract class Field extends FormElement
         $this->setRawValue($value);
 
         if (is_callable($this->valueCallback())) {
-            $value = call_user_func(
-                $this->valueCallback(),
-                empty($castedValues) ? $rawValues : $castedValues
+            $this->setFormattedValue(
+                call_user_func(
+                    $this->valueCallback(),
+                    !empty($castedValues) ? $castedValues : $this->toRawValue()
+                )
             );
         }
 
@@ -155,6 +160,11 @@ abstract class Field extends FormElement
         return $this->toValue();
     }
 
+    public function toFormattedValue(): mixed
+    {
+        return $this->formattedValue ?? $this->toValue();
+    }
+
     public function changePreview(Closure $closure): static
     {
         $this->previewCallback = $closure;
@@ -169,11 +179,11 @@ abstract class Field extends FormElement
 
     public function preview(): string
     {
-        if($this->isPreviewChanged()) {
+        if ($this->isPreviewChanged()) {
             return (string) call_user_func(
                 $this->previewCallback,
                 $this->toValue(),
-                $this->resolvePreview(),
+                $this->toRawValue(),
             );
         }
 
@@ -182,7 +192,7 @@ abstract class Field extends FormElement
 
     protected function resolvePreview(): string
     {
-        return (string) ($this->toValue() ?? '');
+        return (string) ($this->toFormattedValue() ?? '');
     }
 
     public function canSave(mixed $condition = null): static
@@ -197,67 +207,15 @@ abstract class Field extends FormElement
         return $this->canSave;
     }
 
-    public function type(): string
+    public function nullable(Closure|bool|null $condition = null): static
     {
-        return $this->hidden
-            ? 'hidden'
-            : $this->attributes()->get('type', '');
-    }
-
-    public function isFile(): bool
-    {
-        return $this->type() === 'file';
-    }
-
-    public function required(Closure|bool|null $condition = null): static
-    {
-        $this->required = Condition::boolean($condition, true);
-        $this->setAttribute('required', $this->required);
+        $this->nullable = Condition::boolean($condition, true);
 
         return $this;
     }
 
-    public function isRequired(): bool
+    public function isNullable(): bool
     {
-        return $this->required;
-    }
-
-    public function disabled(Closure|bool|null $condition = null): static
-    {
-        $this->disabled = Condition::boolean($condition, true);
-        $this->setAttribute('disabled', $this->disabled);
-
-        return $this;
-    }
-
-    public function isDisabled(): bool
-    {
-        return $this->disabled;
-    }
-
-    public function hidden(Closure|bool|null $condition = null): static
-    {
-        $this->hidden = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function isHidden(): bool
-    {
-        return $this->hidden
-            || $this->attributes()->get('type') === 'hidden';
-    }
-
-    public function readonly(Closure|bool|null $condition = null): static
-    {
-        $this->readonly = Condition::boolean($condition, true);
-        $this->setAttribute('readonly', $this->readonly);
-
-        return $this;
-    }
-
-    public function isReadonly(): bool
-    {
-        return $this->readonly;
+        return $this->nullable;
     }
 }

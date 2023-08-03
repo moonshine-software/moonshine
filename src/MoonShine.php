@@ -7,12 +7,12 @@ namespace MoonShine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Menu\MenuElement;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Menu\MenuSection;
 use MoonShine\Resources\MoonShineProfileResource;
-use MoonShine\Resources\Resource;
 
 class MoonShine
 {
@@ -42,18 +42,18 @@ class MoonShine
         return (config('moonshine.namespace') ?? static::NAMESPACE) . $path;
     }
 
-    public static function getResourceFromUriKey(string $uri): ?Resource
+    public static function getResourceFromUriKey(string $uri): ?ResourceContract
     {
         return self::getResources()
             ->first(
-                fn (Resource $resource): bool => $resource->uriKey() === $uri
+                fn (ResourceContract $resource): bool => $resource->uriKey() === $uri
             );
     }
 
     /**
      * Get collection of registered resources
      *
-     * @return Collection<Resource>
+     * @return Collection<ResourceContract>
      */
     public static function getResources(): Collection
     {
@@ -63,7 +63,7 @@ class MoonShine
     /**
      * Register Menu with resources and pages in the system
      *
-     * @param  array<string|MenuSection|Resource>  $data
+     * @param  array<string|MenuSection|ResourceContract>  $data
      */
     public static function menu(array $data): void
     {
@@ -73,7 +73,7 @@ class MoonShine
         collect($data)->each(function ($item): void {
             $item = is_string($item) ? new $item() : $item;
 
-            if ($item instanceof Resource) {
+            if ($item instanceof ResourceContract) {
                 self::$resources->add($item);
                 self::$menu->add(new MenuItem($item->title(), $item));
             } elseif ($item instanceof MenuElement) {
@@ -115,7 +115,7 @@ class MoonShine
             ->middleware($middlewares)
             ->as('moonshine.')->group(function (): void {
                 self::getResources()->each(
-                    function (Resource $resource): void {
+                    function (ResourceContract $resource): void {
                         $resource->resolveRoutes();
                     }
                 );
@@ -125,7 +125,7 @@ class MoonShine
     /**
      * Register resources in the system
      *
-     * @param  array<Resource>  $data
+     * @param  array<ResourceContract>  $data
      */
     public static function resources(array $data): void
     {

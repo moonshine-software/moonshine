@@ -3,7 +3,6 @@
 namespace MoonShine\Pages\Crud;
 
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Hidden;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Pages\Page;
@@ -32,14 +31,14 @@ class FormPage extends Page
         );
 
         return [
-            FormBuilder::make($action, 'POST')
+            form($action)
                 ->fields(
                     $this->getResource()
                         ->getFields()
                         ->push(Hidden::make('_method')->setValue('PUT'))
                         ->toArray()
                 )
-                ->fill($this->getResource()->getItem()?->toArray() ?? [])
+                ->fill($this->getResource()->getItem()?->attributesToArray() ?? [])
                 ->cast($this->getResource()->getModel()::class)
                 ->submit('Go')
                 ->buttons([

@@ -10,7 +10,7 @@ class Modal extends Decoration
 {
     use WithIcon;
 
-    protected static string $view = 'moonshine::decorations.modal';
+    protected string $view = 'moonshine::decorations.modal';
 
     protected string $title = '';
 

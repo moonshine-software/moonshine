@@ -16,7 +16,7 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString
     use WithMask;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::fields.input';
+    protected string $view = 'moonshine::fields.input';
 
     protected string $type = 'text';
 }

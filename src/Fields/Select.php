@@ -26,7 +26,7 @@ class Select extends Field implements
     use SelectTrait;
     use WithDefaultValue;
 
-    protected static string $view = 'moonshine::fields.select';
+    protected string $view = 'moonshine::fields.select';
 
     /**
      * @throws JsonException

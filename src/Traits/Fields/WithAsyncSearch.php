@@ -6,7 +6,6 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
-use MoonShine\MoonShineRequest;
 
 trait WithAsyncSearch
 {
@@ -59,18 +58,14 @@ trait WithAsyncSearch
         $this->asyncSearchValueCallback = $asyncSearchValueCallback;
 
         $this->valuesQuery = function (Builder $query) {
-            if ($this->parent() && $this->parent()->resource()) {
-                return $this->getRelated(
-                    $this->parent()
-                        ->resource()
-                        ->getModel()
-                )->newModelQuery();
+            if ($this->parent()?->hasResource()) {
+                return $this->getRelatedModel()
+                    ->{$this->getRelation()}
+                    ->newModelQuery();
             }
 
-            $request = app(MoonShineRequest::class);
-
-            if ($request->getId()) {
-                return $request->getItem()->{$this->relation()}();
+            if ($this->getRelatedModel()) {
+                return $this->getRelatedModel()->{$this->getRelation()}();
             }
 
             return $query->whereRaw('1=0');

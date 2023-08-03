@@ -6,7 +6,7 @@ namespace MoonShine\Fields;
 
 class Code extends Textarea
 {
-    protected static string $view = 'moonshine::fields.code';
+    protected string $view = 'moonshine::fields.code';
 
     public string $language = 'php';
 

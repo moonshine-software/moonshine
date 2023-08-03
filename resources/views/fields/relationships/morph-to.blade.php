@@ -1,6 +1,6 @@
-<div x-data="{morphType: '{{ $element->formTypeValue($item) }}'}">
+<div x-data="{morphType: '{{ $element->formTypeValue() }}'}">
     <x-moonshine::form.select
-        :name="str($element->name())->replace($element->column(), $element->getMorphType($item))"
+        :name="str($element->name())->replace($element->column(), $element->getMorphType())"
         x-model="morphType"
         required="required"
         :values="$element->getTypes()"

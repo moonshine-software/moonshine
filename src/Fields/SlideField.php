@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Illuminate\Database\Eloquent\Model;
+use Closure;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Traits\Fields\SlideTrait;
@@ -13,7 +13,7 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
 {
     use SlideTrait;
 
-    protected static string $view = 'moonshine::fields.slide';
+    protected string $view = 'moonshine::fields.slide';
 
     protected function resolvePreview(): string
     {
@@ -54,17 +54,19 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
         ];
     }
 
-    public function save(Model $item): Model
+    protected function resolveOnSave(): ?Closure
     {
-        $values = $this->requestValue();
+        return function ($item) {
+            $values = $this->requestValue();
 
-        if ($values === false) {
+            if ($values === false) {
+                return $item;
+            }
+
+            $item->{$this->fromField} = $values[$this->fromField] ?? '';
+            $item->{$this->toField} = $values[$this->toField] ?? '';
+
             return $item;
-        }
-
-        $item->{$this->fromField} = $values[$this->fromField] ?? '';
-        $item->{$this->toField} = $values[$this->toField] ?? '';
-
-        return $item;
+        };
     }
 }

@@ -9,7 +9,7 @@ use MoonShine\Filters\Filters;
 
 final class FiltersAction extends Action
 {
-    protected static string $view = 'moonshine::actions.filters';
+    protected string $view = 'moonshine::actions.filters';
 
     protected ?string $icon = 'heroicons.outline.adjustments-horizontal';
 
