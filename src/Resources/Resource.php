@@ -440,7 +440,7 @@ abstract class Resource implements ResourceContract
     {
         return in_array(
             SoftDeletes::class,
-            class_uses_recursive(static::$model),
+            class_uses_recursive(get_class($this->getModel())),
             true
         );
     }

@@ -12,6 +12,7 @@ use MoonShine\FormActions\FormAction;
 use MoonShine\ItemActions\ItemAction;
 use MoonShine\ItemActions\ItemActions;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Models\SoftDeleteMoonshineUser;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -167,9 +168,19 @@ it('resource authorization', function (): void {
         ->toBeFalse();
 });
 
-it('soft deletes', function (): void {
+it('does not soft deleted', function (): void {
     expect($this->resource->softDeletes())
         ->toBeFalse();
+});
+
+it('soft deleted', function (): void {
+    $resource = TestResourceBuilder::new(
+        SoftDeleteMoonshineUser::class,
+        true
+    );
+
+    expect($resource->softDeletes())
+        ->toBeTrue();
 });
 
 it('precognition mode', function (): void {
