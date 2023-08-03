@@ -47,6 +47,7 @@ abstract class ModelResource extends Resource
             if ($field->requestValue()) {
                 $item->{$field->column()} = $field->requestValue();
             }
+
             return $item;
         };
     }
