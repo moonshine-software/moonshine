@@ -15,7 +15,6 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
-     * @return void
      * @throws Throwable
      */
     public function boot(): void
@@ -26,8 +25,6 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register(): void
     {

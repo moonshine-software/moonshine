@@ -86,7 +86,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
-            AssetManager::add($this->getAssets());
+            (new AssetManager())->add($this->getAssets());
         }
     }
 

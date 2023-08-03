@@ -108,7 +108,7 @@ abstract class Field extends FormElement
             $this->setFormattedValue(
                 call_user_func(
                     $this->valueCallback(),
-                    !empty($castedValues) ? $castedValues : $this->toRawValue()
+                    empty($castedValues) ? $this->toRawValue() : $castedValues
                 )
             );
         }

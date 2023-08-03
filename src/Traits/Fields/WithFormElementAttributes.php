@@ -55,7 +55,7 @@ trait WithFormElementAttributes
 
     protected function prepareName($index = null, $wrap = null): string
     {
-        $wrap = $wrap ?? $this->wrapName;
+        $wrap ??= $this->wrapName;
 
         if ($this->name) {
             return $this->name;

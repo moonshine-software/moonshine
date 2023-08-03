@@ -49,7 +49,7 @@ class MorphTo extends BelongsTo
 
     protected function resolveOnSave(): ?Closure
     {
-        return function (Model $item) {
+        return function (Model $item): Model {
             $item->{$this->getMorphType()} = $this->requestTypeValue();
             $item->{$this->getMorphKey()} = $this->requestValue();
 

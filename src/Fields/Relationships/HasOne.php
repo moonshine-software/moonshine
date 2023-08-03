@@ -21,14 +21,5 @@ class HasOne extends HasMany
         );
 
         return parent::resolvePreview();
-
-        $value = $this->toValue();
-        $column = $this->getResource()->column();
-
-        if ($value) {
-            return (string) $value->{$column};
-        }
-
-        return '';
     }
 }
