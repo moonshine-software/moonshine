@@ -7,6 +7,7 @@ namespace MoonShine\Fields;
 use Closure;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Helpers\Condition;
+use MoonShine\Traits\Fields\FieldActionTrait;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
@@ -16,6 +17,7 @@ abstract class Field extends FormElement
     use ShowOrHide;
     use LinkTrait;
     use WithIsNowOnRoute;
+    use FieldActionTrait;
 
     protected mixed $rawValue = null;
 
@@ -257,20 +259,5 @@ abstract class Field extends FormElement
     public function isReadonly(): bool
     {
         return $this->readonly;
-    }
-
-    public function beforeSave(): void
-    {
-        //
-    }
-
-    public function afterSave(): void
-    {
-        //
-    }
-
-    public function afterDelete(): void
-    {
-        //
     }
 }

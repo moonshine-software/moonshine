@@ -21,13 +21,4 @@ class ID extends Text
             'color' => 'purple',
         ])->render();
     }
-
-    public function save(Model $item): Model
-    {
-        if ($this->requestValue()) {
-            $item->{$this->column()} = $this->requestValue();
-        }
-
-        return $item;
-    }
 }
