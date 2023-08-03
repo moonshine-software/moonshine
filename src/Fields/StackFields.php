@@ -35,7 +35,7 @@ class StackFields extends Field implements HasFields
             $this->getFields()->onlyFields()->each(
                 static function (Field $field) use (&$item): void {
                     $item = $field->save(
-                        fn($item) => $item,
+                        fn ($item) => $item,
                         $item
                     );
                 }

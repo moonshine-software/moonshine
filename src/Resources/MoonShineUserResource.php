@@ -51,7 +51,7 @@ class MoonShineUserResource extends ModelResource
                             trans('moonshine::ui.resource.role'),
                             'moonshineUserRole',
                             new MoonShineUserRoleResource(),
-                            static fn(MoonshineUserRole $model) => $model->name
+                            static fn (MoonshineUserRole $model) => $model->name
                         ),
 
                         Text::make(trans('moonshine::ui.resource.name'), 'name')

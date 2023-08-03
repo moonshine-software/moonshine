@@ -33,7 +33,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         $this->setLabel($label);
         $this->setResource($resource);
 
-        if (!is_null($valueCallback)) {
+        if (! is_null($valueCallback)) {
             $this->setValueCallback($valueCallback);
         }
     }
