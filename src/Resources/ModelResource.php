@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use Closure;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
@@ -38,6 +39,16 @@ abstract class ModelResource extends Resource
                     : 'Добавить'
             ),
         ];
+    }
+
+    public function onSave(): Closure
+    {
+        return function (Field $field, Model $item) {
+            if ($field->requestValue()) {
+                $item->{$field->column()} = $field->requestValue();
+            }
+            return $item;
+        };
     }
 
     public function getFields(): Fields
@@ -121,10 +132,10 @@ abstract class ModelResource extends Resource
         ?Collection $fields = null,
         ?array $saveData = null
     ): Model {
-        $fields ??= $this->getFields()->formFields()->fillManyValues($item->toArray(), $item);
+        $fields ??= $this->getFields()->formFields()->fillClonedValues($item->toArray(), $item);
 
         try {
-            $fields->each(fn (Field $field) => $field->beforeSave());
+            $fields->each(fn (Field $field) => $field->beforeSave($item));
 
             if (! $item->exists && method_exists($this, 'beforeCreating')) {
                 $this->beforeCreating($item);
@@ -151,7 +162,7 @@ abstract class ModelResource extends Resource
 
                 $item->save();
 
-                $fields->each(fn (Field $field) => $field->afterSave());
+                $fields->each(fn (Field $field) => $field->afterSave($item));
 
                 if ($wasRecentlyCreated && method_exists(
                     $this,
@@ -186,7 +197,7 @@ abstract class ModelResource extends Resource
         }
 
         if (is_null($saveData)) {
-            $item->{$field->column()} = $field->requestValue();
+            $field->save($this->onSave(), $item);
 
             return $item;
         }
