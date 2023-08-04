@@ -21,10 +21,15 @@ class MoonShineProfileResource extends ModelResource
 {
     public string $model = MoonshineUser::class;
 
+    public function title(): string
+    {
+        return __('moonshine::ui.profile');
+    }
+
     public function fields(): array
     {
         return [
-            Block::make('', [
+            Block::make([
                 Tabs::make([
                     Tab::make('Main', [
                         ID::make()
@@ -85,7 +90,7 @@ class MoonShineProfileResource extends ModelResource
     public function pages(): array
     {
         return [
-            ProfilePage::make('Профиль'),
+            ProfilePage::make($this->title()),
         ];
     }
 }

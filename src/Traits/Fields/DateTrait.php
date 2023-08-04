@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
-use MoonShine\Fields\Field;
-use MoonShine\Filters\Filter;
-
-/**
- * @mixin Field|Filter
- */
 trait DateTrait
 {
     protected string $format = 'Y-m-d H:i:s';

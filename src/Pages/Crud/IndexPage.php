@@ -80,7 +80,7 @@ class IndexPage extends Page
                 ]),
             ]),
             table()->fields($this->getResource()->getFields()->onlyFields()->toArray())
-                ->cast(ModelCast::make($this->getResource()->getModel()::class))
+                ->cast(ModelCast::make(get_class($this->getResource()->getModel())))
                 ->items($items->items())
                 ->paginator($items)
                 ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
@@ -101,7 +101,7 @@ class IndexPage extends Page
                         url: fn ($data): string => route('moonshine.page', [
                         'resourceUri' => $this->getResource()->uriKey(),
                         'pageUri' => 'form-page',
-                        'crudItem' => $data->getKey(),
+                        'resourceItem' => $data->getKey(),
                     ])
                     )
                         ->customAttributes(['class' => 'btn-purple'])
@@ -113,7 +113,7 @@ class IndexPage extends Page
                         '',
                         url: fn ($data): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
-                        'crudItem' => $data->getKey(),
+                        'resourceItem' => $data->getKey(),
                     ])
                     )
                         ->customAttributes(['class' => 'btn-pink'])
@@ -126,7 +126,7 @@ class IndexPage extends Page
                         '',
                         url: fn (): string => route('moonshine.crud.destroy', [
                         'resourceUri' => $this->getResource()->uriKey(),
-                        'crudItem' => 0,
+                        'resourceItem' => 0,
                     ])
                     )
                         ->bulk()

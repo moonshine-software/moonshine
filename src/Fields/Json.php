@@ -39,6 +39,8 @@ class Json extends Field implements
 
     protected bool $isGroup = true;
 
+    protected bool $isVertical = false;
+
     /**
      * @throws Throwable
      */
@@ -138,6 +140,18 @@ class Json extends Field implements
         }
 
         return $data;
+    }
+
+    public function vertical(): self
+    {
+        $this->isVertical = true;
+
+        return $this;
+    }
+
+    public function isVertical(): bool
+    {
+        return $this->isVertical;
     }
 
     protected function resolvePreview(): string

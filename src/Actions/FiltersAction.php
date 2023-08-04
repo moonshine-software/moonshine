@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Actions;
 
 use Illuminate\Support\Arr;
-use MoonShine\Filters\Filters;
+use MoonShine\Fields\Fields;
 
 final class FiltersAction extends Action
 {
@@ -50,8 +50,8 @@ final class FiltersAction extends Action
             ->count();
     }
 
-    public function getFilters(): Filters
+    public function getFilters(): Fields
     {
-        return Filters::make($this->filters);
+        return Fields::make($this->filters);
     }
 }

@@ -7,10 +7,7 @@ namespace MoonShine\Resources;
 use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
-use MoonShine\Filters\TextFilter;
 use MoonShine\Models\MoonshineUserRole;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
 
 class MoonShineUserRoleResource extends ModelResource
 {
@@ -49,26 +46,11 @@ class MoonShineUserRoleResource extends ModelResource
 
     public function filters(): array
     {
-        return [
-            TextFilter::make(trans('moonshine::ui.resource.role_name'), 'name'),
-        ];
+        return [];
     }
 
     public function actions(): array
     {
         return [];
-    }
-
-    public function pages(): array
-    {
-        return [
-            IndexPage::make('Роли'),
-
-            FormPage::make(
-                request('crudItem')
-                    ? 'Редактировать'
-                    : 'Добавить'
-            ),
-        ];
     }
 }

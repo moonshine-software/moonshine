@@ -24,8 +24,6 @@ class HasMany extends ModelRelationField implements
     use HasOneOrMany;
     use Removable;
 
-    protected string $view = 'moonshine::fields.relationships.has-many';
-
     protected bool $isGroup = true;
 
     protected function resolvePreview(): string
@@ -47,5 +45,13 @@ class HasMany extends ModelRelationField implements
         return (string) table($fields, $values)
             ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
             ->preview();
+    }
+
+    protected function resolveValue(): mixed
+    {
+        return table($this->getFields()->toArray(), $this->toValue())
+            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
+            ->preview()
+            ->render();
     }
 }

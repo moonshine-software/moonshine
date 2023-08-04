@@ -105,7 +105,7 @@ it('relatable fields', function (): void {
         Fields::make([
             Text::make('Field 1'),
             HasMany::make('Field 2', resource: TestResourceBuilder::new())->resourceMode(),
-        ])->relatable()
+        ])->onlyRelationFields()
     )->toHaveCount(1)->each->toBeInstanceOf(HasMany::class);
 });
 
@@ -123,7 +123,7 @@ it('without relatable fields', function (): void {
         Fields::make([
             Text::make('Field 1'),
             HasMany::make('Field 2', resource: TestResourceBuilder::new())->resourceMode(),
-        ])->withoutRelatable()
+        ])->withoutRelationFields()
     )->toHaveCount(1)->each->toBeInstanceOf(Text::class);
 });
 

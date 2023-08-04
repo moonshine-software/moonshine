@@ -9,7 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use MoonShine\Filters\Filter;
+use MoonShine\Fields\Field;
 use Throwable;
 
 trait ResourceModelQuery
@@ -79,7 +79,7 @@ trait ResourceModelQuery
             $this->getFilters()
                 ->onlyFields()
                 ->each(
-                    fn (Filter $filter): Builder => $filter->getQuery($query)
+                    fn (Field $filter): Builder => $filter->save(fn() => $query, $query)
                 );
         }
 

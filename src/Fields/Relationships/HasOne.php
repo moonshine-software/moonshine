@@ -9,8 +9,6 @@ use MoonShine\Fields\ID;
 
 class HasOne extends HasMany
 {
-    protected string $view = 'moonshine::fields.relationships.has-one';
-
     protected function resolvePreview(): string
     {
         if (is_null($this->toValue())) {
@@ -41,5 +39,14 @@ class HasOne extends HasMany
             ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
             ->vertical()
             ->preview();
+    }
+
+    protected function resolveValue(): mixed
+    {
+        return form()
+            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
+            ->fill($this->toValue()?->toArray() ?? [])
+            ->fields($this->getFields()->toArray())
+            ->render();
     }
 }

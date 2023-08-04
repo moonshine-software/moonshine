@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
@@ -34,6 +35,8 @@ abstract class ModelResource extends Resource
 
     protected string $column = 'id';
 
+    protected ?Model $item = null;
+
     abstract public function fields(): array;
 
     /**
@@ -48,7 +51,7 @@ abstract class ModelResource extends Resource
         return [
             IndexPage::make($this->title()),
             FormPage::make(
-                request('crudItem')
+                $this->getItemID()
                     ? 'Редактировать'
                     : 'Добавить'
             ),
@@ -121,36 +124,81 @@ abstract class ModelResource extends Resource
     {
     }
 
+    public function getItemID(): int|string|null
+    {
+        return request('resourceItem');
+    }
+
     public function getItem(): ?Model
     {
-        return $this->getModel()
+        if ($this->item) {
+            return $this->item;
+        }
+
+        $this->item = $this->getModel()
             ->newQuery()
-            ->find(request('crudItem'));
+            ->find($this->getItemID());
+
+        return $this->item;
     }
 
     public function getItemOrInstance(): Model
     {
-        return $this->getModel()
+        if ($this->item) {
+            return $this->item;
+        }
+
+        $this->item = $this->getModel()
             ->newQuery()
-            ->findOrNew(request('crudItem'));
+            ->findOrNew($this->getItemID());
+
+        return $this->item;
     }
 
     public function getItemOrFail(): Model
     {
-        return $this->getModel()
+        if ($this->item) {
+            return $this->item;
+        }
+
+        $this->item = $this->getModel()
             ->newQuery()
-            ->findOrFail(request('crudItem'));
+            ->findOrFail($this->getItemID());
+
+        return $this->item;
+    }
+
+    public function massDelete(array $ids): void
+    {
+        $this->beforeMassDeleting($ids);
+
+        $this->getModel()
+            ->newModelQuery()
+            ->whereIn($this->getModel()->getKeyName(), $ids)
+            ->get()
+            ->each(fn (Model $item) => $item->delete());
+
+        $this->afterMassDeleted($ids);
+    }
+
+    public function delete(Model $item): bool
+    {
+        $this->beforeDeleting($item);
+
+        $this->getFields()->formFields()->each(fn (Field $field) => $field->afterDelete($item));
+
+        return tap($item->delete(), function () use ($item): void {
+            $this->afterDeleted($item);
+        });
     }
 
     /**
      * @throws ResourceException|Throwable
      */
-    public function save(
-        Model $item,
-        ?Collection $fields = null,
-        ?array $saveData = null
-    ): Model {
-        $fields ??= $this->getFields()->formFields()->fillClonedValues($item->toArray(), $item);
+    public function save(Model $item, ?Collection $fields = null): Model {
+        $fields ??= $this->getFields()
+            ->formFields()
+            ->fillClonedValues($item->toArray(), $item);
 
         try {
             $fields->each(fn (Field $field) => $field->beforeSave($item));
@@ -163,20 +211,13 @@ abstract class ModelResource extends Resource
                 $item = $this->beforeUpdating($item);
             }
 
-            foreach ($fields as $field) {
-                //if (! $field->hasRelationship() || $field->belongToOne()) {
-                $item = $this->saveItem($item, $field, $saveData);
-                //}
-            }
+            $fields->each(fn (Field $field) => $field->save($this->onSave(), $item));
 
             if ($item->save()) {
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-                foreach ($fields as $field) {
-                    //if ($field->hasRelationship() && ! $field->belongToOne()) {
-                    $item = $this->saveItem($item, $field, $saveData);
-                    //}
-                }
+                $fields->onlyRelationFields()
+                    ->each(fn (ModelRelationField $field) => $field->save($this->onSave(), $item));
 
                 $item->save();
 
@@ -189,33 +230,9 @@ abstract class ModelResource extends Resource
                 if (! $wasRecentlyCreated) {
                     $item = $this->afterUpdated($item);
                 }
-
-                //$this->setItem($item);
             }
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
-        }
-
-        return $item;
-    }
-
-    protected function saveItem(
-        Model $item,
-        Field $field,
-        ?array $saveData = null
-    ): Model {
-        if (! $field->isCanSave()) {
-            return $item;
-        }
-
-        if (is_null($saveData)) {
-            $field->save($this->onSave(), $item);
-
-            return $item;
-        }
-
-        if (isset($saveData[$field->column()])) {
-            $item->{$field->column()} = $saveData[$field->column()];
         }
 
         return $item;

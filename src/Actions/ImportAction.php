@@ -172,12 +172,11 @@ class ImportAction extends Action
                 ? $resource->getModel()
                     ->newModelQuery()
                     ->findOrNew($data[$resource->getModel()->getKeyName()])
-                : $resource->getModel();
+                : $resource->getModel()->forceFill($data);
 
             return $resource->save(
                 $item,
                 fields: $resource->getFields()->importFields(),
-                saveData: $data
             );
         });
 

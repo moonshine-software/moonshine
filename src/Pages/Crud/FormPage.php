@@ -14,7 +14,7 @@ class FormPage extends Page
     {
         $breadcrumbs = parent::breadcrumbs();
 
-        if(request('crudItem')) {
+        if($this->getResource()->getItemID()) {
             $breadcrumbs[$this->route()] = $this->getResource()
                 ?->getItem()
                 ?->{$this->getResource()->column()};
@@ -27,12 +27,12 @@ class FormPage extends Page
 
     public function components(): array
     {
-        if(request('crudItem')) {
+        if($this->getResource()->getItemID()) {
             $action = action(
                 [CrudController::class, 'update'],
                 [
                     'resourceUri' => $this->getResource()->uriKey(),
-                    'crudItem' => $this->getResource()->getItem()?->getKey(),
+                    'resourceItem' => $this->getResource()->getItem()?->getKey(),
                 ]
             );
         } else {
@@ -50,7 +50,7 @@ class FormPage extends Page
                     $this->getResource()
                         ->getFields()
                         ->when(
-                            request('crudItem'),
+                            $this->getResource()->getItemID(),
                             fn (Fields $fields): Fields => $fields->push(Hidden::make('_method')->setValue('PUT'))
                         )
                         ->toArray()

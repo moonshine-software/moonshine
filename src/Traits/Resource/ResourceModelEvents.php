@@ -40,10 +40,12 @@ trait ResourceModelEvents
 
     protected function beforeMassDeleting(array $ids): void
     {
+        // Logic here
     }
 
     protected function afterMassDeleted(array $ids): void
     {
+        // Logic here
     }
 
     protected function beforeForceDeleting(Model $item): Model

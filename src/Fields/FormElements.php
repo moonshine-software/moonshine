@@ -11,7 +11,6 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Exceptions\FieldsException;
-use MoonShine\Filters\Filter;
 use ReflectionClass;
 use ReflectionException;
 use Throwable;
@@ -31,7 +30,7 @@ abstract class FormElements extends Collection
     }
 
     /**
-     * @return FormElements<Field|Filter>
+     * @return FormElements<Field>
      * @throws Throwable
      */
     public function onlyFields(): FormElements
@@ -132,7 +131,7 @@ abstract class FormElements extends Collection
     }
 
     /**
-     * @return FormElements<Field|Filter>
+     * @return FormElements<Field>
      * @throws Throwable
      */
     public function whenFields(): FormElements

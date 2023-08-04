@@ -7,7 +7,6 @@ namespace MoonShine\Fields;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -26,7 +25,10 @@ final class Fields extends FormElements
      */
     public function fillClonedValues(array $rawValues = [], mixed $castedValues = null): self
     {
-        return $this->onlyFields()->map(fn (Field $field): Field => (clone $field)->resolveFill($rawValues, $castedValues));
+        return $this->onlyFields()->map(
+            fn (Field $field): Field => (clone $field)
+                ->resolveFill($rawValues, $castedValues)
+        );
     }
 
     /**
@@ -34,12 +36,24 @@ final class Fields extends FormElements
      */
     public function fillValues(array $rawValues = [], mixed $castedValues = null): void
     {
-        $this->onlyFields()->map(fn (Field $field): Field => $field->resolveFill($rawValues, $castedValues));
+        $this->onlyFields()->map(
+            fn (Field $field): Field => $field
+                ->resolveFill($rawValues, $castedValues)
+        );
     }
 
     public function requestValues(string $prefix = null): Fields
     {
-        return $this->onlyFields()->mapWithKeys(fn (Field $field): array => [$field->column() => $field->requestValue($prefix)])->filter();
+        return $this->onlyFields()->mapWithKeys(
+            fn (Field $field): array => [$field->column() => $field->requestValue($prefix)]
+        )->filter();
+    }
+
+    public function getValues(): Fields
+    {
+        return $this->onlyFields()->mapWithKeys(
+            fn (Field $field): array => [$field->column() => $field->value()]
+        )->filter();
     }
 
     /**
@@ -51,7 +65,7 @@ final class Fields extends FormElements
             throw_if(
                 $parent instanceof Json && $field instanceof ModelRelationField,
                 new FieldException(
-                    'Relationship fields in JSON field unavailable. Use resourceMode'
+                    'Relationship fields in JSON field unavailable'
                 )
             );
 
@@ -59,16 +73,6 @@ final class Fields extends FormElements
                 return $field->setName(
                     "{$parent->getRelationName()}_{$field->column()}[]"
                 );
-            }
-
-            if ($field instanceof HasFields
-                && $field instanceof ModelRelationField
-                && $field->isNowOnForm()) {
-                return NoInput::make(
-                    $field->label(),
-                    $field->column(),
-                    static fn (): string => 'Relationship fields with fields unavailable. Use resourceMode'
-                )->badge('red');
             }
 
             return $field->setName(
@@ -104,39 +108,28 @@ final class Fields extends FormElements
 
 
     /**
-     * @return Fields<Field>
+     * @return Fields<ModelRelationField>
      * @throws Throwable
      */
-    public function relatable(): Fields
+    public function onlyRelationFields(): Fields
     {
         return $this->onlyFields()
             ->filter(
-                static fn (Field $field): bool => $field->isResourceModeField()
+                static fn (Field $field): bool => $field instanceof ModelRelationField
             )
             ->values()
             ->map(fn (Field $field): Field => $field->setParents());
     }
 
     /**
+     * @return Fields<ModelRelationField>
      * @throws Throwable
      */
-    public function withoutCanBeRelatable(): Fields
+    public function withoutRelationFields(): Fields
     {
         return $this->onlyFields()
             ->filter(
-                static fn (Field $field): bool => ! $field->canBeResourceMode()
-            )
-            ->values();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function withoutRelatable(): Fields
-    {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => ! $field->isResourceModeField()
+                static fn (Field $field): bool => ! $field instanceof ModelRelationField
             )
             ->values();
     }

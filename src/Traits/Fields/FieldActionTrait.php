@@ -19,19 +19,19 @@ trait FieldActionTrait
         return $this->onSave;
     }
 
-    protected function resolveBeforeSave(mixed $item): void
+    protected function resolveBeforeSave(mixed $data): void
     {
-        //
+        // Logic here
     }
 
-    protected function resolveAfterSave(mixed $item): void
+    protected function resolveAfterSave(mixed $data): void
     {
-        //
+        // Logic here
     }
 
-    protected function resolveAfterDelete(mixed $item): void
+    protected function resolveAfterDelete(mixed $data): void
     {
-        //
+        // Logic here
     }
 
     public function onSave(Closure $onSave): static
@@ -41,32 +41,32 @@ trait FieldActionTrait
         return $this;
     }
 
-    public function save(Closure $default, mixed $item): mixed
+    public function save(Closure $default, mixed $data): mixed
     {
         return is_callable($this->resolveOnSave())
-            ? call_user_func($this->resolveOnSave(), $this, $item)
-            : $default($this, $item);
+            ? call_user_func($this->resolveOnSave(), $this, $data)
+            : $default($this, $data);
     }
 
-    public function beforeSave(mixed $item): void
+    public function beforeSave(mixed $data): void
     {
         is_callable($this->onBeforeSave)
-            ? call_user_func($this->onBeforeSave, $this, $item)
-            : $this->resolveBeforeSave($item);
+            ? call_user_func($this->onBeforeSave, $this, $data)
+            : $this->resolveBeforeSave($data);
     }
 
-    public function afterSave(mixed $item): void
+    public function afterSave(mixed $data): void
     {
         is_callable($this->onAfterSave)
-            ? call_user_func($this->onAfterSave, $this, $item)
-            : $this->resolveAfterSave($item);
+            ? call_user_func($this->onAfterSave, $this, $data)
+            : $this->resolveAfterSave($data);
     }
 
-    public function afterDelete(mixed $item): void
+    public function afterDelete(mixed $data): void
     {
         is_callable($this->onAfterDelete)
-            ? call_user_func($this->onAfterDelete, $this, $item)
-            : $this->resolveAfterDelete($item);
+            ? call_user_func($this->onAfterDelete, $this, $data)
+            : $this->resolveAfterDelete($data);
     }
 
     public function onBeforeSave(Closure $onBeforeSave): static

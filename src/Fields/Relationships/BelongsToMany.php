@@ -51,6 +51,19 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $inLineBadge = false;
 
+    public function getView(): string
+    {
+        if ($this->isTree()) {
+            return 'moonshine::fields.shared.tree';
+        }
+
+        if ($this->isSelect()) {
+            return 'moonshine::fields.select';
+        }
+
+        return parent::getView();
+    }
+
     public function onlyCount(): static
     {
         $this->onlyCount = true;

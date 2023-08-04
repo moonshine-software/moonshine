@@ -20,12 +20,9 @@ use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
 use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
-use MoonShine\Filters\TextFilter;
 use MoonShine\Http\Controllers\PermissionController;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
 
 class MoonShineUserResource extends ModelResource
 {
@@ -132,9 +129,7 @@ class MoonShineUserResource extends ModelResource
 
     public function filters(): array
     {
-        return [
-            TextFilter::make(trans('moonshine::ui.resource.name'), 'name'),
-        ];
+        return [];
     }
 
     public function actions(): array
@@ -155,18 +150,5 @@ class MoonShineUserResource extends ModelResource
             )
                 ->name("permissions");
         });
-    }
-
-    public function pages(): array
-    {
-        return [
-            IndexPage::make('Пользователи'),
-
-            FormPage::make(
-                request('crudItem')
-                    ? 'Редактировать'
-                    : 'Добавить'
-            ),
-        ];
     }
 }

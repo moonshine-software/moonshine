@@ -53,7 +53,7 @@ trait ResourceModelCrudRouter
 
         return MoonShineRouter::to(
             str($name)->contains('.') ? $name : 'crud.' . $name,
-            $key ? array_merge(['crudItem' => $key], $query) : $query
+            $key ? array_merge(['resourceItem' => $key], $query) : $query
         );
     }
 
