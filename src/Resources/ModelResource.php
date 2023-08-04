@@ -195,7 +195,8 @@ abstract class ModelResource extends Resource
     /**
      * @throws ResourceException|Throwable
      */
-    public function save(Model $item, ?Collection $fields = null): Model {
+    public function save(Model $item, ?Collection $fields = null): Model
+    {
         $fields ??= $this->getFields()
             ->formFields()
             ->fillClonedValues($item->toArray(), $item);

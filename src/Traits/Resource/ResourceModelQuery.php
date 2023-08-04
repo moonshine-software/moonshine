@@ -79,7 +79,7 @@ trait ResourceModelQuery
             $this->getFilters()
                 ->onlyFields()
                 ->each(
-                    fn (Field $filter): Builder => $filter->save(fn() => $query, $query)
+                    fn (Field $filter): Builder => $filter->save(fn () => $query, $query)
                 );
         }
 
