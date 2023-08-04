@@ -1,5 +1,7 @@
-@include('moonshine::fields.table-fields', [
-    'element' => $element,
-    'level' => $level ?? 0,
-    'toOne' => false,
-])
+{!!
+table($element->getFields()->toArray(), $element->value())
+    ->preview()
+    ->editable()
+    ->creatable()
+    ->removable()
+!!}

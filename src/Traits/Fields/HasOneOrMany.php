@@ -26,13 +26,13 @@ trait HasOneOrMany
             }
 
             $related = $this->getRelated($item);
-            $foreignKeyName = $item->{$this->getRelation()}()->getForeignKeyName();
+            $foreignKeyName = $item->{$this->getRelationName()}()->getForeignKeyName();
             $primaryKey = $related->getKeyName();
 
             $currentIdentities = [];
             $prevIdentities = $this instanceof HasOne
                 ? []
-                : $item->{$this->getRelation()}
+                : $item->{$this->getRelationName()}
                     ->pluck($primaryKey)
                     ->toArray();
 
@@ -152,11 +152,11 @@ trait HasOneOrMany
     protected function resolveAfterDelete(mixed $item): void
     {
         foreach ($this->getFields()->onlyFileFields() as $field) {
-            if (! empty($item->{$this->getRelation()})) {
+            if (! empty($item->{$this->getRelationName()})) {
                 if ($this instanceof HasOne) {
                     $field->afterDelete($item->{$this->relation()});
                 } else {
-                    $item->{$this->getRelation()}->each(
+                    $item->{$this->getRelationName()}->each(
                         fn ($itemRelation) => $field->afterDelete($itemRelation)
                     );
                 }

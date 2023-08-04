@@ -193,6 +193,10 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     public function render(): View|Closure|string
     {
+        if ($this instanceof Field && empty($this->getView())) {
+            return $this->value();
+        }
+
         return view($this->getView(), [
             'element' => $this,
         ]);

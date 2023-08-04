@@ -6,18 +6,28 @@ namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Http\Requests\MoonshineFormRequest;
 
-final class DeleteFormFormRequest extends MoonshineFormRequest
+final class PermissionFormRequest extends MoonshineFormRequest
 {
     public function authorize(): bool
     {
         if (! in_array(
-            'delete',
+            'edit',
             $this->getResource()->getActiveActions(),
             true
         )) {
             return false;
         }
 
-        return $this->getResource()->can('delete');
+        return $this->getResource()->can('update');
+    }
+
+    /**
+     * @return array{permissions: string[]}
+     */
+    public function rules(): array
+    {
+        return [
+            'permissions' => ['array'],
+        ];
     }
 }

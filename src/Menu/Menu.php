@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Menu;
 
 use Illuminate\Support\Collection;
-use MoonShine\Http\Requests\MoonshineFormRequest;
 
 //use MoonShine\MoonShineRequest;
 
@@ -20,18 +19,16 @@ class Menu
 
     public static function all(): ?Collection
     {
-        $request = app(MoonshineFormRequest::class);
-
-        return self::$menu?->filter(function ($item) use ($request) {
+        return self::$menu?->filter(function ($item) {
             if ($item->isGroup()) {
                 $item->setItems(
                     $item->items()->filter(
-                        fn ($subItem) => $subItem->isSee($request)
+                        fn ($subItem) => $subItem->isSee(moonshineRequest())
                     )
                 );
             }
 
-            return $item->isSee($request);
+            return $item->isSee(moonshineRequest());
         });
     }
 }

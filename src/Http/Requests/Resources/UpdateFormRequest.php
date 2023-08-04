@@ -6,7 +6,7 @@ namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Http\Requests\MoonshineFormRequest;
 
-final class EditFormFormRequest extends MoonshineFormRequest
+final class UpdateFormRequest extends MoonshineFormRequest
 {
     public function authorize(): bool
     {
@@ -23,6 +23,8 @@ final class EditFormFormRequest extends MoonshineFormRequest
 
     public function rules(): array
     {
-        return [];
+        return $this->getResource()->rules(
+            $this->getResource()->getItemOrFail()
+        );
     }
 }

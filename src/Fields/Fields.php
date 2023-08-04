@@ -57,7 +57,7 @@ final class Fields extends FormElements
 
             if ($parent instanceof HasPivot) {
                 return $field->setName(
-                    "{$parent->getRelation()}_{$field->column()}[]"
+                    "{$parent->getRelationName()}_{$field->column()}[]"
                 );
             }
 

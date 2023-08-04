@@ -6,19 +6,19 @@ namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Http\Requests\MoonshineFormRequest;
 
-final class CreateFormFormRequest extends MoonshineFormRequest
+final class ViewFormRequest extends MoonshineFormRequest
 {
     public function authorize(): bool
     {
         if (! in_array(
-            'create',
+            'show',
             $this->getResource()->getActiveActions(),
             true
         )) {
             return false;
         }
 
-        return $this->getResource()->can('create');
+        return $this->getResource()->can('view');
     }
 
     public function rules(): array

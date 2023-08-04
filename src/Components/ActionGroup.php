@@ -15,7 +15,7 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static static make(array $actions = [])
+ * @method static make(array $actions = [])
  */
 final class ActionGroup extends Component implements MoonShineRenderable
 {

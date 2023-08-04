@@ -54,4 +54,13 @@ class MoonShineRequest extends Request
     {
         return $this->route('pageUri');
     }
+
+    public function isMoonShineRequest(): bool
+    {
+        return in_array(
+            'auth.moonshine',
+            $this->route()?->gatherMiddleware() ?? [],
+            true
+        );
+    }
 }

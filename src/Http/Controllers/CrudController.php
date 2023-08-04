@@ -12,14 +12,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Http\Requests\MoonshineFormRequest;
-use MoonShine\Http\Requests\Resources\CreateFormFormRequest;
-use MoonShine\Http\Requests\Resources\DeleteFormFormRequest;
-use MoonShine\Http\Requests\Resources\EditFormFormRequest;
-use MoonShine\Http\Requests\Resources\MassDeleteFormFormRequest;
-use MoonShine\Http\Requests\Resources\StoreFormFormRequest;
-use MoonShine\Http\Requests\Resources\UpdateFormFormRequest;
-use MoonShine\Http\Requests\Resources\ViewAnyFormFormRequest;
-use MoonShine\Http\Requests\Resources\ViewFormFormRequest;
+use MoonShine\Http\Requests\Resources\CreateFormRequest;
+use MoonShine\Http\Requests\Resources\DeleteFormRequest;
+use MoonShine\Http\Requests\Resources\EditFormRequest;
+use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
+use MoonShine\Http\Requests\Resources\StoreFormRequest;
+use MoonShine\Http\Requests\Resources\UpdateFormRequest;
+use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
+use MoonShine\Http\Requests\Resources\ViewFormRequest;
 use MoonShine\MoonShineUI;
 use MoonShine\QueryTags\QueryTag;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -36,7 +36,7 @@ class CrudController extends BaseController
     /**
      * @throws AuthorizationException|Throwable
      */
-    public function index(ViewAnyFormFormRequest $request): View|string
+    public function index(ViewAnyFormRequest $request): View|string
     {
         $resource = $request->getResource();
 
@@ -110,7 +110,7 @@ class CrudController extends BaseController
      * @throws Throwable
      */
     public function create(
-        CreateFormFormRequest $request
+        CreateFormRequest $request
     ): string|View|RedirectResponse {
         return $this->createOrEditView($request);
     }
@@ -139,7 +139,7 @@ class CrudController extends BaseController
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function edit(EditFormFormRequest $request): string|View|RedirectResponse
+    public function edit(EditFormRequest $request): string|View|RedirectResponse
     {
         return $this->createOrEditView($request);
     }
@@ -147,7 +147,7 @@ class CrudController extends BaseController
     /**
      * @throws Throwable
      */
-    public function show(ViewFormFormRequest $request): string|View|RedirectResponse
+    public function show(ViewFormRequest $request): string|View|RedirectResponse
     {
         return $this->viewOrFragment(
             view($request->getResource()->baseShowView(), [
@@ -162,7 +162,7 @@ class CrudController extends BaseController
      * @throws Throwable
      */
     public function update(
-        UpdateFormFormRequest $request
+        UpdateFormRequest $request
     ): JsonResponse|View|RedirectResponse {
         return $this->updateOrCreate($request);
     }
@@ -233,12 +233,12 @@ class CrudController extends BaseController
      * @throws Throwable
      */
     public function store(
-        StoreFormFormRequest $request
+        StoreFormRequest $request
     ): JsonResponse|View|RedirectResponse {
         return $this->updateOrCreate($request);
     }
 
-    public function destroy(DeleteFormFormRequest $request): RedirectResponse
+    public function destroy(DeleteFormRequest $request): RedirectResponse
     {
         $request->getResource()->delete($request->getItem());
 
@@ -252,7 +252,7 @@ class CrudController extends BaseController
         );
     }
 
-    public function massDelete(MassDeleteFormFormRequest $request): RedirectResponse
+    public function massDelete(MassDeleteFormRequest $request): RedirectResponse
     {
         try {
             $request->getResource()->massDelete($request->get('ids'));

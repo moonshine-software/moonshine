@@ -14,16 +14,18 @@ use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Form\FormContract;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Fields;
+use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\Makeable;
 use Throwable;
 
 /**
- * @method static static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
+ * @method static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
  */
 final class FormBuilder extends Component implements FormContract, MoonShineRenderable
 {
     use Makeable;
     use Macroable;
+    use HasDataCast;
     use Conditionable;
 
     protected $except = [
@@ -37,8 +39,6 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
     protected bool $isAsync = false;
 
     protected array $buttons = [];
-
-    protected ?string $typeCast = null;
 
     protected ?string $submitLabel = null;
 
@@ -57,6 +57,8 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
         $this->withAttributes([
             'action' => $this->action,
             'method' => $this->method,
+            'enctype' => 'multipart/form-data',
+            'x-data' => 'formBuilder',
         ]);
     }
 
@@ -133,7 +135,10 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
     public function getFields(): Fields
     {
         $fields = Fields::make($this->fields);
-        $fields->fillValues($this->getValues(), $this->getCastedValues());
+        $fields->fillValues(
+            $this->getValues(),
+            $this->getCastedData()
+        );
 
         return $fields;
     }
@@ -150,19 +155,11 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
         return $this->values;
     }
 
-    public function cast(string $cast): self
+    public function getCastedData(): mixed
     {
-        $this->typeCast = $cast;
-
-        return $this;
-    }
-
-    public function getCastedValues(): mixed
-    {
-        return $this->typeCast
-            # TODO[Cast]
-            ? (new $this->typeCast())->forceFill($this->values)
-            : $this->values;
+        return $this->hasCast()
+            ? $this->getCast()->hydrate($this->getValues())
+            : $this->getValues();
     }
 
     public function submit(string $label, array $attributes = []): self
@@ -189,16 +186,33 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
 
     public function getButtons(): ActionButtons
     {
+        $casted = $this->getCastedData();
+
         return ActionButtons::make($this->buttons)
-            ->onlyVisible($this->getCastedValues())
-            ->fillItem($this->getCastedValues());
+            ->onlyVisible($casted)
+            ->fillItem($casted);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function render(): View|Closure|string
     {
+        $fields = $this->getFields();
+        $xInit = json_encode([
+            'whenFields' => array_values($fields->whenFieldsConditions()->toArray())
+        ], JSON_THROW_ON_ERROR);
+
+        $this->customAttributes([
+            'x-on:submit.prevent' => $this->isPrecognitive()
+                ? 'precognition($event.target)'
+                : '$event.target.submit()',
+            'x-init' => "init($xInit)"
+        ]);
+
         return view('moonshine::components.form.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'fields' => $this->getFields(),
+            'fields' => $fields,
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes,

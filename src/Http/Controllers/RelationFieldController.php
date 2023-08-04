@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Fields\Field;
 use MoonShine\Http\Requests\MoonshineFormRequest;
-use MoonShine\Http\Requests\Resources\ViewAnyFormFormRequest;
+use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use MoonShine\Resources\Resource;
 use Throwable;
 
@@ -23,7 +23,7 @@ class RelationFieldController extends BaseController
     /**
      * @throws Throwable
      */
-    public function index(ViewAnyFormFormRequest $request): View
+    public function index(ViewAnyFormRequest $request): View
     {
         $this->resolveFieldData($request);
 
@@ -71,7 +71,7 @@ class RelationFieldController extends BaseController
     /**
      * @throws Throwable
      */
-    public function form(ViewAnyFormFormRequest $request): View
+    public function form(ViewAnyFormRequest $request): View
     {
         $this->resolveFieldData($request);
 

@@ -23,6 +23,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
     ->as('moonshine.')->group(static function () {
         Route::middleware('auth.moonshine')->group(function (): void {
             Route::get('/resource/{resourceUri}/{pageUri}', PageController::class)->name('page');
+            Route::delete('/resource/{resourceUri}/crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
             Route::resource('/resource/{resourceUri}/crud', CrudController::class)
                 ->parameter('crud', 'crudItem');
 

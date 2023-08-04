@@ -11,7 +11,7 @@ use Illuminate\Support\Stringable;
 use Illuminate\Validation\ValidationException;
 use MoonShine\MoonShineAuth;
 
-class LoginFormFormRequest extends MoonshineFormRequest
+class LoginFormRequest extends MoonshineFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\RemovableContract;
@@ -43,6 +44,8 @@ class HasMany extends ModelRelationField implements
             ->prepend(ID::make())
             ->toArray();
 
-        return (string) table($fields, $values);
+        return (string) table($fields, $values)
+            ->cast(ModelCast::make(get_class($this->getRelation()->getRelated())))
+            ->preview();
     }
 }

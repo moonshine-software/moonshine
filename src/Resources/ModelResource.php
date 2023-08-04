@@ -19,6 +19,7 @@ use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
+use Throwable;
 
 abstract class ModelResource extends Resource
 {
@@ -27,13 +28,20 @@ abstract class ModelResource extends Resource
     use ResourceModelCrudRouter;
     use ResourceModelEvents;
 
-    public string $model;
+    protected string $model;
 
-    public string $title = '';
+    protected string $title = '';
 
-    public string $column = 'id';
+    protected string $column = 'id';
 
     abstract public function fields(): array;
+
+    /**
+     * Get an array of validation rules for resource related model
+     *
+     * @see https://laravel.com/docs/validation#available-validation-rules
+     */
+    abstract public function rules(Model $item): array;
 
     public function pages(): array
     {
@@ -59,7 +67,7 @@ abstract class ModelResource extends Resource
 
     public function onSave(): Closure
     {
-        return function (Field $field, Model $item): Model {
+        return static function (Field $field, Model $item): Model {
             if ($field->requestValue()) {
                 $item->{$field->column()} = $field->requestValue();
             }
@@ -73,7 +81,7 @@ abstract class ModelResource extends Resource
         return Fields::make($this->fields());
     }
 
-    public function getActiveActions()
+    public function getActiveActions(): array
     {
         return ['edit'];
     }
@@ -82,13 +90,6 @@ abstract class ModelResource extends Resource
     {
         return new $this->model();
     }
-
-    /**
-     * Get an array of validation rules for resource related model
-     *
-     * @see https://laravel.com/docs/validation#available-validation-rules
-     */
-    abstract public function rules(Model $item): array;
 
     /**
      * Get custom messages for validator errors

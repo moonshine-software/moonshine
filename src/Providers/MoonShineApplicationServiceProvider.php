@@ -6,6 +6,7 @@ namespace MoonShine\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuSection;
 use MoonShine\MoonShine;
 use Throwable;
@@ -21,6 +22,10 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     {
         MoonShine::resources($this->resources());
         MoonShine::menu($this->menu());
+
+        Menu::register(MoonShine::getMenu());
+
+        MoonShine::resolveRoutes();
     }
 
     /**
@@ -43,6 +48,11 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      * @return array<MenuSection>
      */
     protected function menu(): array
+    {
+        return [];
+    }
+
+    protected function theme(): array
     {
         return [];
     }

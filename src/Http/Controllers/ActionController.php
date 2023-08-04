@@ -6,8 +6,8 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\MoonshineFormRequest;
-use MoonShine\Http\Requests\Resources\EditFormFormRequest;
-use MoonShine\Http\Requests\Resources\ViewAnyFormFormRequest;
+use MoonShine\Http\Requests\Resources\EditFormRequest;
+use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use MoonShine\MoonShineUI;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -15,7 +15,7 @@ use Throwable;
 
 final class ActionController extends BaseController
 {
-    public function index(ViewAnyFormFormRequest $request): mixed
+    public function index(ViewAnyFormRequest $request): mixed
     {
         $actions = $request->getResource()->getActions();
 
@@ -32,7 +32,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function item(ViewAnyFormFormRequest $request): RedirectResponse
+    public function item(ViewAnyFormRequest $request): RedirectResponse
     {
         return $this->itemActionProcess(
             $request->getResource()->itemActions(),
@@ -40,7 +40,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function form(EditFormFormRequest $request): RedirectResponse
+    public function form(EditFormRequest $request): RedirectResponse
     {
         return $this->itemActionProcess(
             $request->getResource()->formActions(),
@@ -49,7 +49,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function bulk(ViewAnyFormFormRequest $request): RedirectResponse
+    public function bulk(ViewAnyFormRequest $request): RedirectResponse
     {
         $redirectRoute = $request->redirectRoute(
             $request->getResource()->route('index')

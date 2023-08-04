@@ -16,16 +16,19 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
+use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\Table\TableStates;
 
 /**
- * @method static static make(array $fields = [], array $values = [], ?LengthAwarePaginator $paginator = null)
- TODO CrudMode, BlockMode, PreviewMode
+ * @method static make(array $fields = [], array $values = [], ?LengthAwarePaginator $paginator = null)
  */
 final class TableBuilder extends Component implements MoonShineRenderable, TableContract
 {
     use Makeable;
     use Macroable;
+    use TableStates;
+    use HasDataCast;
     use Conditionable;
 
     protected $except = [
@@ -39,8 +42,6 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
 
     protected array $buttons = [];
 
-    protected ?string $typeCast = null;
-
     protected ?Closure $trAttributes = null;
 
     protected ?Closure $tdAttributes = null;
@@ -50,6 +51,14 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
         protected iterable $items = [],
         protected ?LengthAwarePaginator $paginator = null
     ) {
+        $this->withAttributes([]);
+    }
+
+    public function customAttributes(array $attributes): static
+    {
+        $this->attributes = $this->attributes->merge($attributes);
+
+        return $this;
     }
 
     public function fields(array $fields): self
@@ -74,18 +83,20 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     public function getItems(): Collection
     {
         return collect($this->items)
-            # TODO[Cast]
-            ->map(fn ($item) => $item->attributesToArray());
+            ->map(fn ($item) => $this->hasCast()
+                ? $this->getCast()->dehydrate($item)
+                : (array) $item
+            );
     }
 
     public function rows(): Collection
     {
         return $this->getItems()->map(function (array $data): TableRow {
-            $castedValues = $this->castValues($data);
+            $casted = $this->castData($data);
 
             return TableRow::make(
-                $castedValues,
-                $this->getFields()->fillClonedValues($data, $castedValues),
+                $casted,
+                $this->getFields()->fillClonedValues($data, $casted),
                 $this->getButtons($data),
                 $this->trAttributes,
                 $this->tdAttributes
@@ -110,21 +121,6 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
         return ! is_null($this->paginator);
     }
 
-    public function cast(string $cast): self
-    {
-        $this->typeCast = $cast;
-
-        return $this;
-    }
-
-    public function castValues(array $data): mixed
-    {
-        return $this->typeCast
-            # TODO[Cast]
-            ? (new $this->typeCast())->forceFill($data)
-            : $data;
-    }
-
     public function buttons(array $buttons = []): self
     {
         $this->buttons = $buttons;
@@ -134,9 +130,11 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
 
     public function getButtons(array $data): ActionButtons
     {
+        $casted = $this->castData($data);
+
         return ActionButtons::make($this->buttons)
-            ->onlyVisible($this->castValues($data))
-            ->fillItem($this->castValues($data))
+            ->onlyVisible($casted)
+            ->fillItem($casted)
             ->withoutBulk();
     }
 
@@ -162,13 +160,23 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
 
     public function render(): View|Closure|string
     {
+        $this->customAttributes([
+            'x-data' => "tableBuilder({$this->isAsync()})"
+        ]);
+
         return view('moonshine::components.table.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
             'rows' => $this->rows(),
             'fields' => $this->getFields(),
-            'bulkButtons' => $this->getBulkButtons(),
             'hasPaginator' => $this->hasPaginator(),
             'paginator' => $this->getPaginator(),
+            'bulkButtons' => $this->getBulkButtons(),
+            'vertical' => $this->isVertical(),
+            'preview' => $this->isPreview(),
+            'creatable' => $this->isCreatable(),
+            'editable' => $this->isEditable(),
+            'removable' => $this->isRemovable(),
+            'notfound' => $this->hasNotFound(),
         ]);
     }
 

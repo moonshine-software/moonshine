@@ -36,8 +36,8 @@ trait WithRelatedValues
         }
 
         # TODO[refactor]
-        $query = $this->getRelatedModel()->{$this->getRelation()}();
-        $related = $query->getRelated();
+        $relation = $this->getRelation();
+        $related = $relation->getRelated();
         $query = $related->newModelQuery();
 
         if (is_callable($this->valuesQuery)) {

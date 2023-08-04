@@ -6,7 +6,7 @@
 <div {{ $attributes->merge(['class' => "alert alert-$type"]) }}
     @if($removable)
     x-init="setTimeout(function() {$refs.alert.remove()}, 2000)"
-    x-data=""
+    x-data
     x-ref="alert"
     @endif
 >

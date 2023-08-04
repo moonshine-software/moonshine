@@ -6,7 +6,7 @@ namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Http\Requests\MoonshineFormRequest;
 
-final class MassDeleteFormFormRequest extends MoonshineFormRequest
+final class MassDeleteFormRequest extends MoonshineFormRequest
 {
     public function authorize(): bool
     {

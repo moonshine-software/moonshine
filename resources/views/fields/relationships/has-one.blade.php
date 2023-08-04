@@ -1,4 +1,4 @@
 {!!
     form(fields: $element->getFields()->toArray())
-        ->fill($element->value()->toArray())
+        ->fill($element->value()?->toArray() ?? [])
 !!}

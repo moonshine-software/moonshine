@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use MoonShine\Casts\ModelCast;
+use MoonShine\Fields\ID;
+
 class HasOne extends HasMany
 {
     protected string $view = 'moonshine::fields.relationships.has-one';
@@ -20,6 +23,23 @@ class HasOne extends HasMany
             ])
         );
 
-        return parent::resolvePreview();
+        $values = $this->toValue();
+        $column = $this->getResource()->column();
+
+        if ($this->isRawMode()) {
+            return $values
+                ->map(fn (Model $item) => $item->{$column})
+                ->implode(';');
+        }
+
+        $fields = $this->getFields()
+            ->indexFields()
+            ->prepend(ID::make())
+            ->toArray();
+
+        return (string) table($fields, $values)
+            ->cast(ModelCast::make(get_class($this->getRelation()->getRelated())))
+            ->vertical()
+            ->preview();
     }
 }

@@ -18,7 +18,7 @@ class MoonShineUserRoleResource extends ModelResource
 
     public string $titleField = 'name';
 
-    public static bool $withPolicy = true;
+    public bool $withPolicy = true;
 
     public function fields(): array
     {

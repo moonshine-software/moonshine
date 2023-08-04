@@ -6,6 +6,7 @@ namespace MoonShine\Fields\Relationships;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Fields\Field;
 use MoonShine\Resources\ModelResource;
@@ -46,8 +47,8 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         $this->setRelatedModel($castedValues);
 
-        $data = $castedValues->{$this->getRelation()};
-        $relation = $castedValues->{$this->getRelation()}();
+        $data = $castedValues->{$this->getRelationName()};
+        $relation = $castedValues->{$this->getRelationName()}();
 
         if ($this instanceof BelongsTo) {
             $this->setColumn(
@@ -59,7 +60,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
         } else {
             $this->setColumn(
-                $this->getRelation()
+                $this->getRelationName()
             );
         }
 
@@ -90,7 +91,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
     }
 
-    public function getRelation(): string
+    public function getRelationName(): string
     {
         return $this->relation;
     }
@@ -103,5 +104,11 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     public function getRelatedModel(): ?Model
     {
         return $this->relatedModel;
+    }
+
+    public function getRelation(): Relation
+    {
+        return $this->getRelatedModel()
+            ?->{$this->getRelationName()}();
     }
 }

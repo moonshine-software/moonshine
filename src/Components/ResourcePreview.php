@@ -16,7 +16,7 @@ use MoonShine\Traits\WithUniqueId;
 use Throwable;
 
 /**
- * @method static static make(Resource $resource, string $label = '', Builder|Closure|null $query = null)
+ * @method static make(Resource $resource, string $label = '', Builder|Closure|null $query = null)
  */
 final class ResourcePreview extends Component implements MoonShineRenderable
 {

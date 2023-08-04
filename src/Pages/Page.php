@@ -34,7 +34,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
     public function breadcrumbs(): array
     {
         return [
-            $this->route() => $this->title(),
+            to_page($this->getResource()) => $this->getResource()->title(),
         ];
     }
 

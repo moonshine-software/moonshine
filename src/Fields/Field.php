@@ -57,9 +57,9 @@ abstract class Field extends FormElement
     public function sortQuery(): string
     {
         return request()->fullUrlWithQuery([
-            'order' => [
-                'field' => $this->column(),
-                'type' => $this->sortActive() && $this->sortType('asc') ? 'desc'
+            'sort' => [
+                'column' => $this->column(),
+                'direction' => $this->sortActive() && $this->sortDirection('asc') ? 'desc'
                     : 'asc',
             ],
         ]);
@@ -67,14 +67,12 @@ abstract class Field extends FormElement
 
     public function sortActive(): bool
     {
-        return request()->has('order.field')
-            && request('order.field') === $this->column();
+        return request('sort.column') === $this->column();
     }
 
-    public function sortType(string $type): bool
+    public function sortDirection(string $type): bool
     {
-        return request()->has('order.type')
-            && request('order.type') === strtolower($type);
+        return request('sort.direction') === strtolower($type);
     }
 
     public function setValue(mixed $value = null): self

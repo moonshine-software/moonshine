@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Forms\LoginForm;
-use MoonShine\Http\Requests\LoginFormFormRequest;
+use MoonShine\Http\Requests\LoginFormRequest;
 use MoonShine\MoonShineAuth;
 
 class AuthenticateController extends BaseController
@@ -29,7 +29,7 @@ class AuthenticateController extends BaseController
     /**
      * @throws ValidationException
      */
-    public function authenticate(LoginFormFormRequest $request): RedirectResponse
+    public function authenticate(LoginFormRequest $request): RedirectResponse
     {
         $request->authenticate();
 

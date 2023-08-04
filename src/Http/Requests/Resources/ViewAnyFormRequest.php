@@ -6,7 +6,7 @@ namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Http\Requests\MoonshineFormRequest;
 
-final class ViewAnyFormFormRequest extends MoonshineFormRequest
+final class ViewAnyFormRequest extends MoonshineFormRequest
 {
     public function authorize(): bool
     {

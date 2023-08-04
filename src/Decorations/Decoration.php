@@ -16,7 +16,7 @@ use MoonShine\Traits\WithUniqueId;
 use MoonShine\Traits\WithView;
 
 /**
- * @method static static make(string|array $labelOrFields = '', array $fields = [])
+ * @method static make(string|array $labelOrFields = '', array $fields = [])
  */
 abstract class Decoration implements MoonShineRenderable, FieldsDecoration
 {

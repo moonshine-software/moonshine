@@ -8,8 +8,8 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\FiltersAction;
+use MoonShine\Casts\ModelCast;
 use MoonShine\Components\ActionGroup;
-use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
@@ -38,7 +38,7 @@ class IndexPage extends Page
 
                 Column::make([
                     Flex::make([
-                        ActionButton::make('Добавить', $this->route())
+                        ActionButton::make('Добавить', to_page($this->getResource(), FormPage::class))
                             ->customAttributes(['class' => 'btn btn-primary'])
                             ->icon('heroicons.outline.plus'),
 
@@ -80,7 +80,7 @@ class IndexPage extends Page
                 ]),
             ]),
             table()->fields($this->getResource()->getFields()->onlyFields()->toArray())
-                ->cast($this->getResource()->getModel()::class)
+                ->cast(ModelCast::make(get_class($this->getResource()->getModel())))
                 ->items($items->items())
                 ->paginator($items)
                 ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
@@ -134,8 +134,9 @@ class IndexPage extends Page
                         ->icon('heroicons.outline.trash')
                         ->withConfirm(
                             'Delete',
-                            (string) FormBuilder::make()
+                            (string) form($this->getResource()->route('massDelete'))
                                 ->fields([
+                                    Hidden::make('_method')->setValue('DELETE'),
                                     Hidden::make('ids')->customAttributes([
                                         'class' => 'actionsCheckedIds',
                                     ]),

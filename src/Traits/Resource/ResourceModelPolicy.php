@@ -11,7 +11,7 @@ use MoonShine\Traits\Models\HasMoonShinePermissions;
 
 trait ResourceModelPolicy
 {
-    public static bool $withPolicy = false;
+    protected bool $withPolicy = false;
 
     public function gateAbilities(): array
     {
@@ -76,6 +76,6 @@ trait ResourceModelPolicy
 
     public function isWithPolicy(): bool
     {
-        return static::$withPolicy;
+        return $this->withPolicy;
     }
 }

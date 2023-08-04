@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Menu\MenuElement;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Menu\MenuSection;
@@ -51,6 +50,16 @@ class MoonShine
     }
 
     /**
+     * Register resources in the system
+     *
+     * @param  array<ResourceContract>  $data
+     */
+    public static function resources(array $data): void
+    {
+        self::$resources = collect($data);
+    }
+
+    /**
      * Get collection of registered resources
      *
      * @return Collection<ResourceContract>
@@ -61,6 +70,16 @@ class MoonShine
     }
 
     /**
+     * Get collection of registered menu
+     *
+     * @return Collection<MenuSection>
+     */
+    public static function getMenu(): Collection
+    {
+        return self::$menu ?? collect();
+    }
+
+    /**
      * Register Menu with resources and pages in the system
      *
      * @param  array<string|MenuSection|ResourceContract>  $data
@@ -68,7 +87,9 @@ class MoonShine
     public static function menu(array $data): void
     {
         self::$resources = self::getResources();
-        self::$menu = collect();
+        self::$menu = self::getMenu();
+
+        self::$resources->add(new MoonShineProfileResource());
 
         collect($data)->each(function ($item): void {
             $item = is_string($item) ? new $item() : $item;
@@ -85,7 +106,7 @@ class MoonShine
             } elseif ($item instanceof MenuGroup) {
                 self::$menu->add($item);
 
-                $item->items()->each(function ($subItem) use ($item): void {
+                $item->items()->each(function ($subItem): void {
                     self::$resources->when(
                         $subItem->resource(),
                         fn ($r): Collection => $r->add($subItem->resource())
@@ -93,18 +114,12 @@ class MoonShine
                 });
             }
         });
-
-        app(Menu::class)->register(self::$menu);
-
-        self::$resources->add(new MoonShineProfileResource());
-
-        self::resolveResourcesRoutes();
     }
 
     /**
      * Register moonshine routes and resources routes in the system
      */
-    protected static function resolveResourcesRoutes(): void
+    public static function resolveRoutes(): void
     {
         $middlewares = collect(config('moonshine.route.middleware'))
             ->reject(fn ($middleware): bool => $middleware === 'web')
@@ -120,32 +135,5 @@ class MoonShine
                     }
                 );
             });
-    }
-
-    /**
-     * Register resources in the system
-     *
-     * @param  array<ResourceContract>  $data
-     */
-    public static function resources(array $data): void
-    {
-        self::$resources = collect($data);
-    }
-
-    /**
-     * Get collection of registered menu
-     *
-     * @return Collection<MenuSection>
-     */
-    public static function getMenu(): Collection
-    {
-        return self::$menu;
-    }
-
-    public static function isMoonShineRequest(): bool
-    {
-        $middlewares = request()?->route()?->gatherMiddleware() ?? [];
-
-        return in_array('auth.moonshine', $middlewares);
     }
 }

@@ -59,8 +59,7 @@ class MorphTo extends BelongsTo
 
     public function getMorphType(): string
     {
-        return $this->getRelatedModel()
-            ->{$this->getRelation()}()
+        return $this->getRelation()
             ->getMorphType();
     }
 
@@ -90,8 +89,7 @@ class MorphTo extends BelongsTo
 
     public function getMorphKey(): string
     {
-        return $this->getRelatedModel()
-            ->{$this->getRelation()}()
+        return $this->getRelation()
             ->getForeignKeyName();
     }
 

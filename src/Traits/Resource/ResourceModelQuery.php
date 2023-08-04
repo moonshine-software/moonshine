@@ -14,15 +14,15 @@ use Throwable;
 
 trait ResourceModelQuery
 {
-    public static array $with = [];
+    protected array $with = [];
 
-    public static string $orderField = '';
+    protected string $sortColumn = '';
 
-    public static string $orderType = 'DESC';
+    protected string $sortDirection = 'DESC';
 
-    public static int $itemsPerPage = 25;
+    protected int $itemsPerPage = 25;
 
-    public static bool $simplePaginate = false;
+    protected bool $simplePaginate = false;
 
     protected bool $usePagination = true;
 
@@ -35,12 +35,12 @@ trait ResourceModelQuery
     {
         return $this->resolveQuery()
             ->when(
-                static::$simplePaginate,
+                $this->simplePaginate,
                 fn (Builder $query): Paginator => $query->simplePaginate(
-                    static::$itemsPerPage
+                    $this->itemsPerPage
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    static::$itemsPerPage
+                    $this->itemsPerPage
                 ),
             )
             ->appends(request()->except('page'));
@@ -59,22 +59,20 @@ trait ResourceModelQuery
             }
         }
 
-        if (request()->has('search') && count($this->search())) {
-            $query = $query->where(function (Builder $q): void {
-                foreach ($this->search() as $field) {
-                    $q->orWhere(
-                        $field,
-                        'LIKE',
-                        '%' . request('search') . '%'
-                    );
-                }
+        if (!empty($this->search()) && request()->has('search')) {
+            request()->str('search')->explode(' ')->filter()->each(function ($term) use ($query) {
+                $query->where(function ($q) use ($term) {
+                    foreach ($this->search() as $column) {
+                        $q->orWhere($column, 'LIKE', $term.'%');
+                    }
+                });
             });
         }
 
         $query = $this->performOrder(
             $query,
-            request('order.field', $this->sortColumn()),
-            request('order.type', $this->sortDirection())
+            request('sort.column', $this->sortColumn()),
+            request('sort.direction', $this->sortDirection())
         );
 
         if (request()->has('filters') && count($this->filters())) {
@@ -118,23 +116,23 @@ trait ResourceModelQuery
 
     public function hasWith(): bool
     {
-        return static::$with !== [];
+        return $this->with !== [];
     }
 
     public function getWith(): array
     {
-        return static::$with;
+        return $this->with;
     }
 
     public function sortColumn(): string
     {
-        return static::$orderField ?: $this->getModel()->getKeyName();
+        return $this->sortColumn ?: $this->getModel()->getKeyName();
     }
 
     public function sortDirection(): string
     {
-        return in_array(strtolower(static::$orderType), ['asc', 'desc'])
-            ? static::$orderType
+        return in_array(strtolower($this->sortDirection), ['asc', 'desc'])
+            ? $this->sortDirection
             : 'DESC';
     }
 

@@ -17,7 +17,7 @@ use MoonShine\Traits\WithView;
 use MoonShine\Utilities\AssetManager;
 
 /**
- * @method static static make(string $label)
+ * @method static make(string $label)
  */
 abstract class Metric implements MoonShineRenderable, HasAssets
 {

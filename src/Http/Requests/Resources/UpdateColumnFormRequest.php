@@ -8,7 +8,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use Throwable;
 
-final class UpdateColumnFormFormRequest extends MoonshineFormRequest
+final class UpdateColumnFormRequest extends MoonshineFormRequest
 {
     public function authorize(): bool
     {

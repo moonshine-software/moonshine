@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static static make(string $message, array $button = [], string $color = 'green')
+ * @method static make(string $message, array $button = [], string $color = 'green')
  */
 final class MoonShineDatabaseNotification extends Notification
 {

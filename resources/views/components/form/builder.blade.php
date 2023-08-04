@@ -1,6 +1,5 @@
 <x-moonshine::form
     :attributes="$attributes"
-    x-data="crudForm()"
 >
     <x-moonshine::fields-group
         :components="$fields"

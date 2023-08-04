@@ -59,13 +59,11 @@ trait WithAsyncSearch
 
         $this->valuesQuery = function (Builder $query) {
             if ($this->parent()?->hasResource()) {
-                return $this->getRelatedModel()
-                    ->{$this->getRelation()}
-                    ->newModelQuery();
+                return $this->getRelation();
             }
 
             if ($this->getRelatedModel()) {
-                return $this->getRelatedModel()->{$this->getRelation()}();
+                return $this->getRelatedModel()->{$this->getRelationName()}();
             }
 
             return $query->whereRaw('1=0');

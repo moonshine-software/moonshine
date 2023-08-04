@@ -6,6 +6,7 @@ namespace MoonShine\Fields\Relationships;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
@@ -82,8 +83,8 @@ class BelongsToMany extends ModelRelationField implements
 
     public function buildTreeHtml(): string
     {
-        $query = $this->getRelatedModel()->{$this->getRelation()}();
-        $related = $query->getRelated();
+        $relation = $this->getRelation();
+        $related = $relation->getRelated();
         $query = $related->newModelQuery();
 
         if (is_callable($this->valuesQuery)) {
@@ -203,6 +204,7 @@ class BelongsToMany extends ModelRelationField implements
             ->prepend(ID::make())
             ->toArray();
 
-        return (string) table($fields, $values);
+        return (string) table($fields, $values)
+            ->cast(ModelCast::make(get_class($this->getRelation()->getRelated())));
     }
 }

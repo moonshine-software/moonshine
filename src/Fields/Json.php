@@ -9,12 +9,10 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasFullPageMode;
 use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\WithDefaultValue;
-use MoonShine\Traits\Fields\WithFullPageMode;
 use MoonShine\Traits\Fields\WithJsonValues;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
@@ -23,7 +21,6 @@ use Throwable;
 class Json extends Field implements
     HasFields,
     HasJsonValues,
-    HasFullPageMode,
     RemovableContract,
     HasValueExtraction,
     HasDefaultValue,
@@ -31,7 +28,6 @@ class Json extends Field implements
 {
     use WithJsonValues;
     use WithFields;
-    use WithFullPageMode;
     use Removable;
     use WithDefaultValue;
 
@@ -64,6 +60,11 @@ class Json extends Field implements
         return $this;
     }
 
+    public function isKeyValue(): bool
+    {
+        return $this->keyValue;
+    }
+
     /**
      * @throws Throwable
      */
@@ -81,33 +82,14 @@ class Json extends Field implements
         return $this;
     }
 
-    protected function resolveOnSave(): ?Closure
+    public function isOnlyValue(): bool
     {
-        return function ($item) {
-            if ($this->requestValue() === false) {
-                $item->{$this->column()} = [];
+        return $this->onlyValue;
+    }
 
-                return $item;
-            }
-
-            $requestValues = $this->requestValue();
-
-            foreach ($requestValues as $index => $values) {
-                foreach ($this->getFields()->onlyFileFields() as $field) {
-                    $field->setRequestKeyPrefix(
-                        $this->column() . "." . $index
-                    );
-
-                    $requestValues[$index][$field->column()] = $field->hasManyOrOneSave(
-                        $values[$field->column()] ?? null
-                    );
-                }
-            }
-
-            $item->{$this->column()} = $this->mapKeyValue(collect($requestValues));
-
-            return $item;
-        };
+    public function isKeyOrOnlyValue(): bool
+    {
+        return $this->keyValue || $this->onlyValue;
     }
 
     /**
@@ -140,37 +122,6 @@ class Json extends Field implements
         )->toArray();
     }
 
-    public function isKeyValue(): bool
-    {
-        return $this->keyValue;
-    }
-
-    public function isOnlyValue(): bool
-    {
-        return $this->onlyValue;
-    }
-
-    public function isKeyOrOnlyValue(): bool
-    {
-        return $this->keyValue || $this->onlyValue;
-    }
-
-    protected function resolveValue(): mixed
-    {
-        if ($this->isKeyOrOnlyValue()) {
-            return collect($this->toValue())
-                ->map(
-                    fn ($data, $index): array => $this->extractValues(
-                        $this->isOnlyValue() ? [$data] : [$index => $data]
-                    )
-                )
-                ->values()
-                ->toArray();
-        }
-
-        return parent::resolveValue();
-    }
-
     public function extractValues(array $data): array
     {
         if ($this->isKeyValue()) {
@@ -187,5 +138,62 @@ class Json extends Field implements
         }
 
         return $data;
+    }
+
+    protected function resolvePreview(): string
+    {
+        if ($this->isRawMode()) {
+            return (string) $this->toValue();
+        }
+
+        return (string) table(
+            $this->getFields()->indexFields()->toArray(),
+            $this->toValue()
+        )->preview();
+    }
+
+    protected function resolveValue(): mixed
+    {
+        if ($this->isKeyOrOnlyValue()) {
+            return collect($this->toValue())
+                ->map(
+                    fn ($data, $index): array => $this->extractValues(
+                        $this->isOnlyValue() ? [$data] : [$index => $data]
+                    )
+                )
+                ->values()
+                ->toArray();
+        }
+
+        return parent::resolveValue() ?? [];
+    }
+
+    protected function resolveOnSave(): ?Closure
+    {
+        return function ($item) {
+            if ($this->requestValue() === false) {
+                $item->{$this->column()} = [];
+
+                return $item;
+            }
+
+            $requestValues = $this->requestValue();
+
+            foreach ($requestValues as $index => $values) {
+                foreach ($this->getFields()->onlyFileFields() as $field) {
+                    $field->setRequestKeyPrefix(
+                        $this->column() . "." . $index
+                    );
+
+                    $requestValues[$index][$field->column()] = $field->hasManyOrOneSave(
+                        $values[$field->column()] ?? null
+                    );
+                }
+            }
+
+            $item->{$this->column()} = $this->mapKeyValue(collect($requestValues));
+
+            return $item;
+        };
     }
 }

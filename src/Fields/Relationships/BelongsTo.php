@@ -41,6 +41,10 @@ class BelongsTo extends ModelRelationField implements
 
     public function isSelected(string $value): bool
     {
+        if (!$this->toValue()) {
+            return false;
+        }
+
         return (string) $this->toValue()->getKey() === $value;
     }
 }

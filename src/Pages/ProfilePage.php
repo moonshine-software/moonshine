@@ -2,6 +2,7 @@
 
 namespace MoonShine\Pages;
 
+use MoonShine\Casts\ModelCast;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Http\Controllers\ProfileController;
@@ -20,7 +21,7 @@ class ProfilePage extends Page
                         ->getFields()
                         ->toArray()
                 )
-                ->cast($this->getResource()->getModel()::class)
+                ->cast(ModelCast::make(get_class($this->getResource()->getModel())))
                 ->submit(__('moonshine::ui.save'), [
                     'class' => 'btn-lg btn-primary',
                 ]),
