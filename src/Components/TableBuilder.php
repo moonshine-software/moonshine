@@ -83,7 +83,8 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     public function getItems(): Collection
     {
         return collect($this->items)
-            ->map(fn ($item): array => $this->hasCast()
+            ->map(
+                fn ($item): array => $this->hasCast()
                 ? $this->getCast()->dehydrate($item)
                 : (array) $item
             );
@@ -161,7 +162,7 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     public function render(): View|Closure|string
     {
         $this->customAttributes([
-            'x-data' => "tableBuilder({$this->isAsync()})"
+            'x-data' => "tableBuilder({$this->isAsync()})",
         ]);
 
         return view('moonshine::components.table.builder', [

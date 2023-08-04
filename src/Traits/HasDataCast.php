@@ -12,7 +12,7 @@ trait HasDataCast
 
     public function hasCast(): bool
     {
-        return !is_null($this->cast);
+        return ! is_null($this->cast);
     }
 
     public function cast(MoonShineDataCast $cast): self

@@ -200,14 +200,14 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
     {
         $fields = $this->getFields();
         $xInit = json_encode([
-            'whenFields' => array_values($fields->whenFieldsConditions()->toArray())
+            'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
         ], JSON_THROW_ON_ERROR);
 
         $this->customAttributes([
             'x-on:submit.prevent' => $this->isPrecognitive()
                 ? 'precognition($event.target)'
                 : '$event.target.submit()',
-            'x-init' => "init($xInit)"
+            'x-init' => "init($xInit)",
         ]);
 
         return view('moonshine::components.form.builder', [

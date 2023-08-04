@@ -39,7 +39,7 @@ class FormPage extends Page
             $action = action(
                 [CrudController::class, 'store'],
                 [
-                    'resourceUri' => $this->getResource()->uriKey()
+                    'resourceUri' => $this->getResource()->uriKey(),
                 ]
             );
         }
@@ -51,7 +51,7 @@ class FormPage extends Page
                         ->getFields()
                         ->when(
                             request('crudItem'),
-                            fn(Fields $fields): Fields => $fields->push(Hidden::make('_method')->setValue('PUT'))
+                            fn (Fields $fields): Fields => $fields->push(Hidden::make('_method')->setValue('PUT'))
                         )
                         ->toArray()
                 )
