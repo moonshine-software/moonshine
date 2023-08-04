@@ -60,8 +60,8 @@ trait ResourceModelQuery
         }
 
         if (!empty($this->search()) && request()->has('search')) {
-            request()->str('search')->explode(' ')->filter()->each(function ($term) use ($query) {
-                $query->where(function ($q) use ($term) {
+            request()->str('search')->explode(' ')->filter()->each(function ($term) use ($query): void {
+                $query->where(function ($q) use ($term): void {
                     foreach ($this->search() as $column) {
                         $q->orWhere($column, 'LIKE', $term.'%');
                     }

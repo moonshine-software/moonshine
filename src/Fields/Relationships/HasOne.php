@@ -38,7 +38,7 @@ class HasOne extends HasMany
             ->toArray();
 
         return (string) table($fields, $values)
-            ->cast(ModelCast::make(get_class($this->getRelation()->getRelated())))
+            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
             ->vertical()
             ->preview();
     }

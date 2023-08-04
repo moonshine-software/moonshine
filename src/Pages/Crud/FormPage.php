@@ -51,12 +51,12 @@ class FormPage extends Page
                         ->getFields()
                         ->when(
                             request('crudItem'),
-                            fn(Fields $fields) => $fields->push(Hidden::make('_method')->setValue('PUT'))
+                            fn(Fields $fields): Fields => $fields->push(Hidden::make('_method')->setValue('PUT'))
                         )
                         ->toArray()
                 )
                 ->fill($this->getResource()->getItem()?->attributesToArray() ?? [])
-                ->cast(ModelCast::make(get_class($this->getResource()->getModel()))),
+                ->cast(ModelCast::make($this->getResource()->getModel()::class)),
         ];
     }
 }

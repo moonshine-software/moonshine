@@ -21,7 +21,7 @@ class ProfilePage extends Page
                         ->getFields()
                         ->toArray()
                 )
-                ->cast(ModelCast::make(get_class($this->getResource()->getModel())))
+                ->cast(ModelCast::make($this->getResource()->getModel()::class))
                 ->submit(__('moonshine::ui.save'), [
                     'class' => 'btn-lg btn-primary',
                 ]),

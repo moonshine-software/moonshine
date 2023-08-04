@@ -45,7 +45,7 @@ class HasMany extends ModelRelationField implements
             ->toArray();
 
         return (string) table($fields, $values)
-            ->cast(ModelCast::make(get_class($this->getRelation()->getRelated())))
+            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
             ->preview();
     }
 }

@@ -83,7 +83,7 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     public function getItems(): Collection
     {
         return collect($this->items)
-            ->map(fn ($item) => $this->hasCast()
+            ->map(fn ($item): array => $this->hasCast()
                 ? $this->getCast()->dehydrate($item)
                 : (array) $item
             );
