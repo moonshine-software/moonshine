@@ -131,7 +131,7 @@ abstract class ModelResource extends Resource
 
     public function getItem(): ?Model
     {
-        if ($this->item) {
+        if ($this->item instanceof Model) {
             return $this->item;
         }
 
@@ -144,7 +144,7 @@ abstract class ModelResource extends Resource
 
     public function getItemOrInstance(): Model
     {
-        if ($this->item) {
+        if ($this->item instanceof Model) {
             return $this->item;
         }
 
@@ -157,7 +157,7 @@ abstract class ModelResource extends Resource
 
     public function getItemOrFail(): Model
     {
-        if ($this->item) {
+        if ($this->item instanceof Model) {
             return $this->item;
         }
 
@@ -176,7 +176,7 @@ abstract class ModelResource extends Resource
             ->newModelQuery()
             ->whereIn($this->getModel()->getKeyName(), $ids)
             ->get()
-            ->each(fn (Model $item) => $item->delete());
+            ->each(fn (Model $item): ?bool => $item->delete());
 
         $this->afterMassDeleted($ids);
     }

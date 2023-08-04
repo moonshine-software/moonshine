@@ -80,7 +80,7 @@ class IndexPage extends Page
                 ]),
             ]),
             table()->fields($this->getResource()->getFields()->onlyFields()->toArray())
-                ->cast(ModelCast::make(get_class($this->getResource()->getModel())))
+                ->cast(ModelCast::make($this->getResource()->getModel()::class))
                 ->items($items->items())
                 ->paginator($items)
                 ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(

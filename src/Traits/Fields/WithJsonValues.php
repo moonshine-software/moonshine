@@ -21,8 +21,6 @@ trait WithJsonValues
         return table(
             $this->getFields()->toArray(),
             $this->value()
-        )->rows()->map(function ($row) {
-            return $row->getFields()->getValues()->toArray();
-        })->toArray();
+        )->rows()->map(fn($row) => $row->getFields()->getValues()->toArray())->toArray();
     }
 }
