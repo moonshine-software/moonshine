@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\FieldActionTrait;
 use MoonShine\Traits\Fields\LinkTrait;
@@ -99,6 +100,10 @@ abstract class Field extends FormElement
         }
 
         $value = $rawValues[$this->column()] ?? null;
+
+        if($this instanceof HasValueExtraction && $this->extractOnFill()) {
+            $value = $this->extractValues($rawValues);
+        }
 
         $this->setRawValue($value);
 

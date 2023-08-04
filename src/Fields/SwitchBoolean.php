@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Helpers\Condition;
 
-class SwitchBoolean extends Checkbox implements HasResourceContract
+class SwitchBoolean extends Checkbox
 {
     protected string $view = 'moonshine::fields.switch';
 

@@ -124,6 +124,11 @@ class Json extends Field implements
         )->toArray();
     }
 
+    public function extractOnFill(): bool
+    {
+        return false;
+    }
+
     public function extractValues(array $data): array
     {
         if ($this->isKeyValue()) {

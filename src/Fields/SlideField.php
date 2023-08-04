@@ -17,14 +17,14 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
 
     protected function resolvePreview(): string
     {
-        $item = null;
+        $value = $this->value();
 
         if ($this->isRawMode()) {
-            return "{$item->{$this->fromField}} - {$item->{$this->toField}}";
+            return "{$value[$this->fromField]} - {$value[$this->toField]}";
         }
 
-        $from = $item->{$this->fromField};
-        $to = $item->{$this->toField};
+        $from = $value[$this->fromField];
+        $to = $value[$this->toField];
 
         if ($this->withStars()) {
             $from = view('moonshine::ui.rating', [
@@ -39,11 +39,9 @@ class SlideField extends Number implements HasValueExtraction, DefaultCanBeArray
         return "$from - $to";
     }
 
-    protected function resolveValue(): array
+    public function extractOnFill(): bool
     {
-        $item = null;
-
-        return $this->extractValues($item->toArray());
+        return true;
     }
 
     public function extractValues(array $data): array
