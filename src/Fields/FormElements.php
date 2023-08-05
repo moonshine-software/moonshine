@@ -151,7 +151,7 @@ abstract class FormElements extends Collection
         ModelRelationField $default = null
     ): ?ModelRelationField {
         return $this->onlyRelationFields()->first(
-            static fn (ModelRelationField $field): bool => get_class($field->getResource()) === $resource,
+            static fn (ModelRelationField $field): bool => $field->getResource()::class === $resource,
             $default
         );
     }
