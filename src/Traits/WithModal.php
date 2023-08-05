@@ -45,7 +45,7 @@ trait WithModal
                     ->icon('heroicons.outline.trash')
                     ->showInLine(),
             ]
-            );
+        );
 
         return $this;
     }
