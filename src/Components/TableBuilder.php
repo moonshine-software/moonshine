@@ -18,6 +18,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\StringRendeable;
 use MoonShine\Traits\Table\TableStates;
 
 /**
@@ -30,6 +31,7 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     use TableStates;
     use HasDataCast;
     use Conditionable;
+    use StringRendeable;
 
     protected $except = [
         'rows',
@@ -179,10 +181,5 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
             'removable' => $this->isRemovable(),
             'notfound' => $this->hasNotFound(),
         ]);
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->render();
     }
 }

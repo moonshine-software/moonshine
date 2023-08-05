@@ -16,6 +16,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Pages\Crud\ShowPage;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
@@ -55,6 +56,7 @@ abstract class ModelResource extends Resource
                     ? 'Редактировать'
                     : 'Добавить'
             ),
+            ShowPage::make('')
         ];
     }
 

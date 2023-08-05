@@ -96,6 +96,18 @@ class IndexPage extends Page
                     ])
                 ))
                 ->buttons([
+
+                    ActionButton::make(
+                        '',
+                        url: fn ($data): string => route('moonshine.page', [
+                            'resourceUri' => $this->getResource()->uriKey(),
+                            'pageUri' => 'show-page',
+                            'resourceItem' => $data->getKey(),
+                        ])
+                    )
+                        ->icon('heroicons.outline.eye')
+                        ->showInLine(),
+
                     ActionButton::make(
                         '',
                         url: fn ($data): string => route('moonshine.page', [
