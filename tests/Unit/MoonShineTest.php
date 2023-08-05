@@ -54,7 +54,7 @@ it('registers custom single menu item', function (): void {
 it('registers custom group menu item', function (): void {
     MoonShine::customItems([
         MenuGroup::make('Permission', [
-            MenuItem::make('Roles', new MoonShineUserRoleResource())
+            MenuItem::make('Roles', new MoonShineUserRoleResource()),
         ]),
     ]);
 
