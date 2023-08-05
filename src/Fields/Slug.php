@@ -36,7 +36,7 @@ class Slug extends Text
         return $this;
     }
 
-    protected function resolveOnSave(): ?Closure
+    protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
             $item->{$this->column()} = $this->requestValue() !== false ?

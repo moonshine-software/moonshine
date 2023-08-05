@@ -1,4 +1,4 @@
-<x-moonshine::form.range
+<x-moonshine::form.slide-range
     :uniqueId="$element->id()"
     :attributes="$element->attributes()"
     :fromValue="$element->value()[$element->fromField] ?? $element->min"

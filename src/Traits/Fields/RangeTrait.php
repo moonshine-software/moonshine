@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
-trait SlideTrait
+trait RangeTrait
 {
     public string $fromField = 'from';
 

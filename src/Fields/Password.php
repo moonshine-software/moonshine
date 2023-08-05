@@ -28,7 +28,7 @@ class Password extends Text
         return '';
     }
 
-    protected function resolveOnSave(): ?Closure
+    protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
             if ($this->requestValue()) {

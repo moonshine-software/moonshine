@@ -8,7 +8,7 @@ use Closure;
 
 class PasswordRepeat extends Password
 {
-    protected function resolveOnSave(): ?Closure
+    protected function resolveOnApply(): ?Closure
     {
         return static fn ($item) => $item;
     }

@@ -29,12 +29,12 @@ class StackFields extends Field implements HasFields
         return $this->withLabels;
     }
 
-    protected function resolveOnSave(): ?Closure
+    protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
             $this->getFields()->onlyFields()->each(
                 static function (Field $field) use (&$item): void {
-                    $item = $field->save(
+                    $item = $field->apply(
                         fn ($item) => $item,
                         $item
                     );
@@ -53,9 +53,9 @@ class StackFields extends Field implements HasFields
         ])->render();
     }
 
-    protected function resolveAfterSave(mixed $item): void
+    protected function resolveAfterApply(mixed $item): void
     {
-        parent::resolveAfterSave($item);
+        parent::resolveAfterApply($item);
 
         $this->getFields()
             ->onlyFields()

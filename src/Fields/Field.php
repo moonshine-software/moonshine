@@ -6,9 +6,8 @@ namespace MoonShine\Fields;
 
 use Closure;
 use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Helpers\Condition;
-use MoonShine\Traits\Fields\FieldActionTrait;
+use MoonShine\Traits\Fields\ActionEvents;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\WithIsNowOnRoute;
@@ -18,7 +17,7 @@ abstract class Field extends FormElement
     use ShowOrHide;
     use LinkTrait;
     use WithIsNowOnRoute;
-    use FieldActionTrait;
+    use ActionEvents;
 
     protected bool $rawMode = false;
 
@@ -83,14 +82,31 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    protected function setRawValue(mixed $value = null): void
+    protected function setRawValue(mixed $value = null): self
     {
         $this->rawValue = $value;
+
+        return $this;
     }
 
-    protected function setFormattedValue(mixed $value = null): void
+    protected function setFormattedValue(mixed $value = null): self
     {
         $this->formattedValue = $value;
+
+        return $this;
+    }
+
+    public function reset(): self
+    {
+        return $this
+            ->setValue()
+            ->setRawValue()
+            ->setFormattedValue();
+    }
+
+    protected function prepareFill(array $rawValues = [], mixed $castedValues = null): mixed
+    {
+        return $rawValues[$this->column()] ?? null;
     }
 
     public function resolveFill(array $rawValues = [], mixed $castedValues = null): self
@@ -99,11 +115,7 @@ abstract class Field extends FormElement
             return $this;
         }
 
-        $value = $rawValues[$this->column()] ?? null;
-
-        if($this instanceof HasValueExtraction && $this->extractOnFill()) {
-            $value = $this->extractValues($rawValues);
-        }
+        $value = $this->prepareFill($rawValues, $castedValues);
 
         $this->setRawValue($value);
 

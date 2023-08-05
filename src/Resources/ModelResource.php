@@ -89,6 +89,11 @@ abstract class ModelResource extends Resource
         return ['edit'];
     }
 
+    public function search(): array
+    {
+        return ['id'];
+    }
+
     public function getModel(): Model
     {
         return new $this->model();
@@ -185,7 +190,7 @@ abstract class ModelResource extends Resource
     {
         $this->beforeDeleting($item);
 
-        $this->getFields()->formFields()->each(fn (Field $field) => $field->afterDelete($item));
+        $this->getFields()->formFields()->each(fn (Field $field) => $field->afterDestroy($item));
 
         return tap($item->delete(), function () use ($item): void {
             $this->afterDeleted($item);
@@ -202,7 +207,7 @@ abstract class ModelResource extends Resource
             ->fillClonedValues($item->toArray(), $item);
 
         try {
-            $fields->each(fn (Field $field) => $field->beforeSave($item));
+            $fields->each(fn (Field $field) => $field->beforeApply($item));
 
             if (! $item->exists) {
                 $item = $this->beforeCreating($item);
@@ -212,17 +217,17 @@ abstract class ModelResource extends Resource
                 $item = $this->beforeUpdating($item);
             }
 
-            $fields->each(fn (Field $field) => $field->save($this->onSave(), $item));
+            $fields->each(fn (Field $field) => $field->apply($this->onSave(), $item));
 
             if ($item->save()) {
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 $fields->onlyRelationFields()
-                    ->each(fn (ModelRelationField $field) => $field->save($this->onSave(), $item));
+                    ->each(fn (ModelRelationField $field) => $field->apply($this->onSave(), $item));
 
                 $item->save();
 
-                $fields->each(fn (Field $field) => $field->afterSave($item));
+                $fields->each(fn (Field $field) => $field->afterApply($item));
 
                 if ($wasRecentlyCreated) {
                     $item = $this->afterCreated($item);

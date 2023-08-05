@@ -56,10 +56,17 @@ final class Fields extends FormElements
         )->filter();
     }
 
+    public function reset(): void
+    {
+        $this->onlyFields()->map(
+            fn (Field $field): Field => $field->reset()
+        );
+    }
+
     /**
      * @throws Throwable
      */
-    public function resolveChildFields(Field $parent): Fields
+    public function resolveSiblings(Field $parent): Fields
     {
         return $this->map(function (Field $field) use ($parent): Field|NoInput {
             throw_if(

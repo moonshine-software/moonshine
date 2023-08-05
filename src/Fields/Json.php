@@ -124,11 +124,6 @@ class Json extends Field implements
         )->toArray();
     }
 
-    public function extractOnFill(): bool
-    {
-        return false;
-    }
-
     public function extractValues(array $data): array
     {
         if ($this->isKeyValue()) {
@@ -187,7 +182,7 @@ class Json extends Field implements
         return parent::resolveValue() ?? [];
     }
 
-    protected function resolveOnSave(): ?Closure
+    protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
             if ($this->requestValue() === false) {

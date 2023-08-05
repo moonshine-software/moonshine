@@ -154,10 +154,10 @@ trait HasOneOrMany
         foreach ($this->getFields()->onlyFileFields() as $field) {
             if (! empty($item->{$this->getRelationName()})) {
                 if ($this instanceof HasOne) {
-                    $field->afterDelete($item->{$this->relation()});
+                    $field->afterDestroy($item->{$this->relation()});
                 } else {
                     $item->{$this->getRelationName()}->each(
-                        fn ($itemRelation) => $field->afterDelete($itemRelation)
+                        fn ($itemRelation) => $field->afterDestroy($itemRelation)
                     );
                 }
             }

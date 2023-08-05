@@ -44,7 +44,7 @@ trait WithFields
 
         return Fields::make($this->fields)->when(
             $this instanceof HasJsonValues || $this instanceof HasPivot,
-            fn (Fields $fields): Fields => $fields->resolveChildFields($this)
+            fn (Fields $fields): Fields => $fields->resolveSiblings($this)
         );
     }
 

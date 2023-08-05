@@ -16,7 +16,7 @@ uses()->group('fields');
 it('resolved child fields / names', function (): void {
     $parent = HasMany::make('Has many');
 
-    expect(exampleFields()->resolveChildFields($parent))
+    expect(exampleFields()->resolveSiblings($parent))
         ->toBeIterable()
         ->each(
             fn ($field, $index) => $field->name()->toBe("hasMany[field" . ($index + 1) . "]")
@@ -30,14 +30,14 @@ it('resolved child fields / json with exception ', function (): void {
         HasMany::make('Child'),
     ]);
 
-    $relationFields->resolveChildFields($json);
+    $relationFields->resolveSiblings($json);
 })->throws(FieldException::class);
 
 it('resolved child fields / pivot', function (): void {
     $field = BelongsToMany::make('Field')
         ->fields(exampleFields()->toArray());
 
-    expect(exampleFields()->resolveChildFields($field))
+    expect(exampleFields()->resolveSiblings($field))
         ->toBeIterable()
         ->each(
             fn ($field, $index) => $field->name()->toBe("field_field" . ($index + 1) . "[]")
@@ -53,7 +53,7 @@ it('resolved child fields / child is related field on form', function (): void {
         HasMany::make('Child'),
     ]);
 
-    expect($fields->resolveChildFields($parent))
+    expect($fields->resolveSiblings($parent))
         ->toBeIterable()
         ->each->toBeInstanceOf(NoInput::class);
 });
@@ -66,7 +66,7 @@ it('resolved child fields / multiple', function (): void {
             ->multiple(),
     ]);
 
-    expect($fields->resolveChildFields($parent))
+    expect($fields->resolveSiblings($parent))
         ->toBeIterable()
         ->each(
             fn ($field, $index) => $field->name()->toBe("parent[child][]")
@@ -83,7 +83,7 @@ it('resolved child fields / x-model', function (): void {
             ->multiple(),
     ]);
 
-    expect($fields->resolveChildFields($parent))
+    expect($fields->resolveSiblings($parent))
         ->toBeIterable()
         ->each(
             fn ($field, $index) => $field->name()->toBe("parent[\${index0}][child][]")

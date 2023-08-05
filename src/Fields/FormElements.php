@@ -7,10 +7,10 @@ namespace MoonShine\Fields;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Exceptions\FieldsException;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use ReflectionClass;
 use ReflectionException;
 use Throwable;
@@ -37,7 +37,7 @@ abstract class FormElements extends Collection
     {
         $fieldsOrDecorations = [];
 
-        $this->withdrawFields($this->toArray(), $fieldsOrDecorations);
+        $this->extractFields($this->toArray(), $fieldsOrDecorations);
 
         return self::make($fieldsOrDecorations);
     }
@@ -45,32 +45,19 @@ abstract class FormElements extends Collection
     /**
      * @throws Throwable
      */
-    private function withdrawFields($fieldsOrDecorations, array &$fields): void
+    private function extractFields($fieldsOrDecorations, array &$fields): void
     {
         foreach ($fieldsOrDecorations as $fieldOrDecoration) {
             if ($fieldOrDecoration instanceof FormElement) {
                 $fields[] = $fieldOrDecoration;
             } elseif ($fieldOrDecoration instanceof Tabs) {
                 foreach ($fieldOrDecoration->tabs() as $tab) {
-                    $this->withdrawFields($tab->getFields(), $fields);
+                    $this->extractFields($tab->getFields(), $fields);
                 }
             } elseif ($fieldOrDecoration instanceof Decoration) {
-                $this->withdrawFields($fieldOrDecoration->getFields(), $fields);
+                $this->extractFields($fieldOrDecoration->getFields(), $fields);
             }
         }
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function withResource(
-        ResourceContract $resource
-    ): FormElements {
-        return $this->onlyFields()->map(
-            static fn (
-                FormElement $formElement
-            ): FormElement => $formElement->setResources($resource)
-        );
     }
 
     /**
@@ -156,30 +143,29 @@ abstract class FormElements extends Collection
 
 
     /**
-     * @param  ?FormElement  $default
+     * @param  ?ModelRelationField  $default
      * @throws Throwable
      */
     public function findByResourceClass(
         string $resource,
-        FormElement $default = null
-    ): ?FormElement {
-        return $this->onlyFields()->first(
-            static fn (FormElement $field): bool => $field->resource()
-                && $field->resource()::class === $resource,
+        ModelRelationField $default = null
+    ): ?ModelRelationField {
+        return $this->onlyRelationFields()->first(
+            static fn (ModelRelationField $field): bool => get_class($field->getResource()) === $resource,
             $default
         );
     }
 
     /**
-     * @param  ?FormElement  $default
+     * @param  ?ModelRelationField  $default
      * @throws Throwable
      */
     public function findByRelation(
         string $relation,
-        FormElement $default = null
-    ): ?FormElement {
-        return $this->onlyFields()->first(
-            static fn (FormElement $field): bool => $field->relation() === $relation,
+        ModelRelationField $default = null
+    ): ?ModelRelationField {
+        return $this->onlyRelationFields()->first(
+            static fn (ModelRelationField $field): bool => $field->getRelationName() === $relation,
             $default
         );
     }
