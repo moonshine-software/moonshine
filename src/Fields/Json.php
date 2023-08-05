@@ -9,24 +9,20 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\WithDefaultValue;
-use MoonShine\Traits\Fields\WithJsonValues;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
 class Json extends Field implements
     HasFields,
-    HasJsonValues,
     RemovableContract,
     HasValueExtraction,
     HasDefaultValue,
     DefaultCanBeArray
 {
-    use WithJsonValues;
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -180,6 +176,15 @@ class Json extends Field implements
         }
 
         return table($this->getFields()->toArray(), $this->toValue() ?? []);
+    }
+
+    public function jsonValues(): array
+    {
+        # TODO[removeme]
+        return $this->value()
+            ->rows()
+            ->map(fn ($row) => $row->getFields()->getValues()->toArray())
+            ->toArray();
     }
 
     protected function resolveOnApply(): ?Closure

@@ -6,25 +6,23 @@ namespace MoonShine\Fields\Relationships;
 
 use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Fields\ID;
 use MoonShine\Traits\Fields\HasOneOrMany;
-use MoonShine\Traits\Fields\WithJsonValues;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
 
 class HasMany extends ModelRelationField implements
     HasFields,
-    HasJsonValues,
     RemovableContract
 {
     use WithFields;
-    use WithJsonValues;
     use HasOneOrMany;
     use Removable;
 
     protected bool $isGroup = true;
+
+    protected bool $toComponent = true;
 
     protected function resolvePreview(): string
     {

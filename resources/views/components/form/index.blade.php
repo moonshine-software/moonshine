@@ -1,6 +1,7 @@
 @props([
     'buttons',
     'errors' => false,
+    'precognitive' => false,
     'raw' => false
 ])
 
@@ -25,9 +26,11 @@
                 </div>
             </x-moonshine::column>
 
-            <x-moonshine::column>
-                <div class="precognition_errors mb-6"></div>
-            </x-moonshine::column>
+            @if($precognitive)
+                <x-moonshine::column>
+                    <div class="precognition_errors mb-6"></div>
+                </x-moonshine::column>
+            @endif
         </x-moonshine::grid>
     @endif
 </form>

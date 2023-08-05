@@ -11,7 +11,6 @@ use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Fields\Field;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasResource;
-use MoonShine\Utilities\AssetManager;
 
 /**
  * @method static make(string $label, string $relation, ModelResource $resource, ?Closure $valueCallback = null)
@@ -21,6 +20,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     use HasResource;
 
     protected ?Model $relatedModel = null;
+
+    protected bool $toComponent = false;
+
+    protected bool $toOne = false;
 
     public function __construct(
         string $label,
@@ -39,6 +42,11 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
     }
 
+    protected function prepareFill(array $rawValues = [], mixed $castedValues = null): mixed
+    {
+        return $castedValues->{$this->getRelationName()};
+    }
+
     public function resolveFill(array $rawValues = [], mixed $castedValues = null): Field
     {
         if ($this->value) {
@@ -47,27 +55,19 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         $this->setRelatedModel($castedValues);
 
-        $data = $castedValues->{$this->getRelationName()};
-        $relation = $castedValues->{$this->getRelationName()}();
+        $data = $this->prepareFill($rawValues, $castedValues);
 
-        # TODO BelongsTo to interface ToOne
-        if ($this instanceof BelongsTo) {
+        $this->setValue($data);
+
+        if ($this->toOne()) {
             $this->setColumn(
-                $relation->getForeignKeyName()
+                $this->getRelation()?->getForeignKeyName() ?? ''
             );
 
             $this->setRawValue(
                 $rawValues[$this->column()] ?? null
             );
-        } else {
-            $this->setColumn(
-                $this->getRelationName()
-            );
-        }
 
-        $this->setValue($data);
-
-        if ($this instanceof BelongsTo) {
             $this->setFormattedValue(
                 $data?->{$this->getResource()->column()}
             );
@@ -80,6 +80,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                     )
                 );
             }
+        } else {
+            $this->setColumn(
+                $this->getRelationName()
+            );
         }
 
         return $this;
@@ -88,8 +92,18 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
-            (new AssetManager())->add($this->getAssets());
+            moonshineAssets()->add($this->getAssets());
         }
+    }
+
+    public function toComponent(): bool
+    {
+        return $this->toComponent;
+    }
+
+    public function toOne(): bool
+    {
+        return $this->toOne;
     }
 
     public function getRelationName(): string

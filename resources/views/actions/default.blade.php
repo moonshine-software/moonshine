@@ -1,8 +1,26 @@
-@if($action->isConfirmed())
-    @include('moonshine::actions.shared.confirm-modal', [
-        'action' => $action,
-        'url' => $action->url()
-    ])
+@if($action->isInModal())
+    <x-moonshine::modal title="{{ $action->modal()->title() }}">
+        <div class="mb-4">
+            {!! $action->modal()->content() !!}
+        </div>
+
+        @if($action->modal()->getButtons()->isNotEmpty())
+            <x-moonshine::action-group
+                :actions="$action->modal()->getButtons()"
+            />
+        @endif
+
+        <x-slot name="outerHtml">
+            <x-moonshine::link
+                :attributes="$action->attributes()"
+                :icon="$action->iconValue()"
+                @click.prevent="toggleModal"
+            >
+                {{ $action->label() }}
+            </x-moonshine::link>
+        </x-slot>
+
+    </x-moonshine::modal>
 @else
     <x-dynamic-component
             :attributes="$action->attributes()"

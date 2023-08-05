@@ -9,6 +9,10 @@ use MoonShine\Fields\ID;
 
 class HasOne extends HasMany
 {
+    protected bool $toOne = true;
+
+    protected bool $toComponent = true;
+
     protected function resolvePreview(): string
     {
         if (is_null($this->toValue())) {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits;
 
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
@@ -43,7 +42,7 @@ trait WithFields
         }
 
         return Fields::make($this->fields)->when(
-            $this instanceof HasJsonValues || $this instanceof HasPivot,
+            $this instanceof HasFields,
             fn (Fields $fields): Fields => $fields->resolveSiblings($this)
         );
     }

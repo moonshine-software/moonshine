@@ -13,6 +13,7 @@ use MoonShine\Components\ActionGroup;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
+use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Modal;
 use MoonShine\Decorations\Offcanvas;
 use MoonShine\Fields\Hidden;
@@ -140,6 +141,7 @@ class IndexPage extends Page
                                     Hidden::make('ids')->customAttributes([
                                         'class' => 'actionsCheckedIds',
                                     ]),
+                                    Heading::make(__('moonshine::ui.confirm_delete'))
                                 ])
                                 ->submit('Delete', ['class' => 'btn-pink'])
                         )

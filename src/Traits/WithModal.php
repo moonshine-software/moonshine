@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
-use MoonShine\Modals\ConfirmActionModal;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Modals\Modal;
 
 trait WithModal
 {
-    protected bool $isConfirmed = false;
-
     protected ?Modal $modal = null;
-
-    public function isConfirmed(): bool
-    {
-        return $this->isConfirmed;
-    }
 
     public function isInModal(): bool
     {
@@ -26,12 +19,10 @@ trait WithModal
     public function inModal(
         string $title = null,
         string $content = null,
-        string $confirmButtonText = null
+        array $buttons = []
     ): self {
-        $this->isConfirmed = true;
-
-        $this->modal = ConfirmActionModal::make($title, $content)
-            ->confirmButtonText($confirmButtonText ?? $this->label());
+        $this->modal = Modal::make($title, $content)
+            ->buttons($buttons);
 
         return $this;
     }
@@ -39,12 +30,22 @@ trait WithModal
     public function withConfirm(
         string $title = null,
         string $content = null,
-        string $confirmButtonText = null
+        ?array $buttons = null
     ): self {
-        $this->isConfirmed = true;
-
-        $this->modal = ConfirmActionModal::make($title, $content)
-            ->confirmButtonText($confirmButtonText ?? $this->label());
+        $this->modal = Modal::make(
+            $title ?? __('moonshine::ui.confirm'),
+            $content ?? __('moonshine::ui.confirm_message')
+        )->buttons(
+            $buttons ?? [
+                ActionButton::make(
+                    $title ?? __('moonshine::ui.confirm'),
+                    '#'
+                )
+                    ->customAttributes(['class' => 'btn-pink'])
+                    ->icon('heroicons.outline.trash')
+                    ->showInLine(),
+            ]
+            );
 
         return $this;
     }

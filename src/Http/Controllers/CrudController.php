@@ -46,7 +46,7 @@ class CrudController extends BaseController
                     fn (QueryTag $tag): bool => $tag->uri() === $request->getQueryTag()
                 );
 
-            $resource->customBuilder($queryTag->builder(
+            $resource->customBuilder($queryTag->apply(
                 $resource->query()
             ));
         }

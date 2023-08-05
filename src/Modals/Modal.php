@@ -2,13 +2,14 @@
 
 namespace MoonShine\Modals;
 
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Traits\Makeable;
 
-abstract class Modal
+class Modal
 {
     use Makeable;
 
-    protected ?string $confirmButtonText = null;
+    protected array $buttons = [];
 
     public function __construct(
         protected ?string $title,
@@ -26,15 +27,15 @@ abstract class Modal
         return $this->content;
     }
 
-    public function getConfirmButtonText(): ?string
+    public function buttons(array $buttons): self
     {
-        return $this->confirmButtonText;
-    }
-
-    public function confirmButtonText(string $confirmButtonText): Modal
-    {
-        $this->confirmButtonText = $confirmButtonText;
+        $this->buttons = $buttons;
 
         return $this;
+    }
+
+    public function getButtons(): ActionButtons
+    {
+        return ActionButtons::make($this->buttons);
     }
 }

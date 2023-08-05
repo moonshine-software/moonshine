@@ -26,6 +26,8 @@ class BelongsTo extends ModelRelationField implements
 
     protected string $view = 'moonshine::fields.select';
 
+    protected bool $toOne = true;
+
     protected function resolvePreview(): string
     {
         return view('moonshine::ui.badge', [
