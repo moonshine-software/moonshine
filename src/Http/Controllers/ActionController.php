@@ -45,7 +45,7 @@ final class ActionController extends BaseController
         return $this->itemActionProcess(
             $request->getResource()->formActions(),
             $request,
-            $request->getResource()->getPageAfterSave()
+            $request->getResource()->getRedirectRoute()
         );
     }
 

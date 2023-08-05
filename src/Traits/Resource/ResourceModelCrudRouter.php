@@ -57,11 +57,11 @@ trait ResourceModelCrudRouter
         );
     }
 
-    public function getPageAfterSave(): string
+    public function getRedirectRoute(): string
     {
         return route('moonshine.page', [
             'resourceUri' => $this->uriKey(),
-            'pageUri' => $this->pageAfterSave,
+            'pageUri' => 'index-page',
         ]);
     }
 }
