@@ -19,10 +19,8 @@ trait WithPivot
 
     public function pivotItem(Model $item, $id): ?Model
     {
-        $value = $this->formViewValue($item);
-
-        return $value->isNotEmpty()
-            ? $value->firstWhere($value->first()->getKeyName(), '=', $id)
+        return $item->isNotEmpty()
+            ? $item->firstWhere($item->first()->getKeyName(), '=', $id)
             : null;
     }
 

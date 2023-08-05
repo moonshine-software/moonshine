@@ -18,9 +18,8 @@ trait WithJsonValues
     public function jsonValues(): array
     {
         # TODO[refactor]
-        return table(
-            $this->getFields()->toArray(),
-            $this->value()
-        )->rows()->map(fn ($row) => $row->getFields()->getValues()->toArray())->toArray();
+        return $this->value()
+            ->rows()
+            ->map(fn ($row) => $row->getFields()->getValues()->toArray())->toArray();
     }
 }

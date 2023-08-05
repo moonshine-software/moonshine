@@ -162,7 +162,7 @@ class Json extends Field implements
 
         return (string) table(
             $this->getFields()->indexFields()->toArray(),
-            $this->toValue()
+            $this->toValue() ?? []
         )->preview();
     }
 
@@ -179,7 +179,7 @@ class Json extends Field implements
                 ->toArray();
         }
 
-        return parent::resolveValue() ?? [];
+        return table($this->getFields()->toArray(), $this->toValue() ?? []);
     }
 
     protected function resolveOnApply(): ?Closure

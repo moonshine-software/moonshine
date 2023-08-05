@@ -47,10 +47,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         $this->setRelatedModel($castedValues);
 
-        # TODO[query(dublicates)]
         $data = $castedValues->{$this->getRelationName()};
         $relation = $castedValues->{$this->getRelationName()}();
 
+        # TODO BelongsTo to interface ToOne
         if ($this instanceof BelongsTo) {
             $this->setColumn(
                 $relation->getForeignKeyName()
