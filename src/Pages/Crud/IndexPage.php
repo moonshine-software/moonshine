@@ -159,7 +159,7 @@ class IndexPage extends Page
                                     Hidden::make('ids')->customAttributes([
                                         'class' => 'actionsCheckedIds',
                                     ]),
-                                    Heading::make(__('moonshine::ui.confirm_delete'))
+                                    Heading::make(__('moonshine::ui.confirm_delete')),
                                 ])
                                 ->submit('Delete', ['class' => 'btn-pink'])
                         )
