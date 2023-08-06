@@ -48,12 +48,12 @@ class ActionButton extends AbstractAction implements ActionButtonContract
     {
         $event = 'x-on:click';
 
-        if (!is_null($modifier)) {
+        if (! is_null($modifier)) {
             $event .= ".$modifier";
         }
 
         $this->customAttributes([
-            $event => $onClick($this->getItem())
+            $event => $onClick($this->getItem()),
         ]);
 
         return $this;
