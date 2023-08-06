@@ -106,11 +106,9 @@ class IndexPage extends Page
                         'resourceItem' => $data->getKey(),
                     ])
                     )
-                        ->onClick(function () {
-                            return <<<'JS'
+                        ->onClick(fn(): string => <<<'JS'
                               alert('Hello')
-                            JS;
-                        }, 'prevent')
+                            JS, 'prevent')
 
                         ->customAttributes(['class' => 'btn-purple'])
                         ->icon('heroicons.outline.pencil')
@@ -127,16 +125,14 @@ class IndexPage extends Page
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
                         ->inModal(
-                            fn() => __('moonshine::ui.delete'),
-                            function(ActionButton $action) {
-                                return (string) form(
-                                    $action->url(),
-                                    fields: [
-                                        Hidden::make('_method')->setValue('DELETE'),
-                                        TextBlock::make('', __('moonshine::ui.confirm_delete'))
-                                    ]
-                                )->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink']);
-                            }
+                            fn(): array|string|null => __('moonshine::ui.delete'),
+                            fn(ActionButton $action): string => (string) form(
+                                $action->url(),
+                                fields: [
+                                    Hidden::make('_method')->setValue('DELETE'),
+                                    TextBlock::make('', __('moonshine::ui.confirm_delete'))
+                                ]
+                            )->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
                         )
                         ->showInLine(),
 
@@ -152,8 +148,8 @@ class IndexPage extends Page
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
                         ->inModal(
-                            fn() => 'Delete',
-                            fn() => (string) form($this->getResource()->route('massDelete'))
+                            fn(): string => 'Delete',
+                            fn(): string => (string) form($this->getResource()->route('massDelete'))
                                 ->fields([
                                     Hidden::make('_method')->setValue('DELETE'),
                                     Hidden::make('ids')->customAttributes([
