@@ -86,7 +86,7 @@ abstract class ModelResource extends Resource
 
     public function getActiveActions(): array
     {
-        return ['edit'];
+        return ['create', 'show', 'edit', 'delete'];
     }
 
     public function search(): array

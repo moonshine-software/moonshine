@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use Closure;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Modals\Modal;
 
@@ -17,8 +18,8 @@ trait WithModal
     }
 
     public function inModal(
-        string $title = null,
-        string $content = null,
+        ?Closure $title = null,
+        ?Closure $content = null,
         array $buttons = []
     ): self {
         $this->modal = Modal::make($title, $content)
@@ -27,25 +28,16 @@ trait WithModal
         return $this;
     }
 
-    public function withConfirm(
-        string $title = null,
-        string $content = null,
-        ?array $buttons = null
-    ): self {
+    public function withConfirm(): self {
         $this->modal = Modal::make(
-            $title ?? __('moonshine::ui.confirm'),
-            $content ?? __('moonshine::ui.confirm_message')
-        )->buttons(
-            $buttons ?? [
-                ActionButton::make(
-                    $title ?? __('moonshine::ui.confirm'),
-                    '#'
-                )
-                    ->customAttributes(['class' => 'btn-pink'])
-                    ->icon('heroicons.outline.trash')
-                    ->showInLine(),
-            ]
-            );
+            static fn() => __('moonshine::ui.confirm'),
+            static fn() => __('moonshine::ui.confirm_message')
+        )->buttons([
+            ActionButton::make(
+                __('moonshine::ui.confirm'),
+                '#'
+            )->showInLine(),
+        ]);
 
         return $this;
     }

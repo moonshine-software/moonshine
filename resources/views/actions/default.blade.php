@@ -1,7 +1,7 @@
 @if($action->isInModal())
-    <x-moonshine::modal title="{{ $action->modal()->title() }}">
+    <x-moonshine::modal title="{{ $action->modal()->title($action) }}">
         <div class="mb-4">
-            {!! $action->modal()->content() !!}
+            {!! $action->modal()->content($action) !!}
         </div>
 
         @if($action->modal()->getButtons()->isNotEmpty())

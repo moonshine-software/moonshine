@@ -19,11 +19,6 @@ class MoonshineFormRequest extends FormRequest
         return [];
     }
 
-    public function getItemOrInstance()
-    {
-        return $this->getResource()->getItemOrInstance();
-    }
-
     public function getResource(): Resource
     {
         return moonshineRequest()->getResource();

@@ -120,8 +120,8 @@ class CrudController extends BaseController
      */
     protected function createOrEditView(MoonshineFormRequest $request): View|string
     {
-        $item = $request->getItemOrInstance();
         $resource = $request->getResource();
+        $item = $resource->getItemOrInstance();
 
         if (request()->ajax()) {
             $resource->precognitionMode();
@@ -149,10 +149,13 @@ class CrudController extends BaseController
      */
     public function show(ViewFormRequest $request): string|View|RedirectResponse
     {
+        $resource = $request->getResource();
+        $item = $resource->getItemOrFail();
+
         return $this->viewOrFragment(
             view($request->getResource()->baseShowView(), [
-                'resource' => $request->getResource(),
-                'item' => $request->getItem(),
+                'resource' => $resource,
+                'item' => $item,
             ])
         );
     }
@@ -173,8 +176,9 @@ class CrudController extends BaseController
     protected function updateOrCreate(
         MoonshineFormRequest $request
     ): JsonResponse|View|RedirectResponse {
-        $item = $request->getItemOrInstance();
         $resource = $request->getResource();
+        $item = $resource->getItemOrInstance();
+
 
         if ($request->isMethod('post') || $request->isMethod('put')) {
             $redirectRoute = $request->redirectRoute(
@@ -240,7 +244,9 @@ class CrudController extends BaseController
 
     public function destroy(DeleteFormRequest $request): RedirectResponse
     {
-        $request->getResource()->delete($request->getItem());
+        $request->getResource()->delete(
+            $request->getResource()->getItemOrFail()
+        );
 
         MoonShineUI::toast(
             __('moonshine::ui.deleted'),

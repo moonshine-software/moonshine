@@ -32,6 +32,11 @@ class ActionButton extends AbstractAction implements ActionButtonContract
         return $this->isBulk;
     }
 
+    public function getItem(): mixed
+    {
+        return $this->item;
+    }
+
     public function setItem(mixed $item): self
     {
         $this->item = $item;
@@ -39,10 +44,25 @@ class ActionButton extends AbstractAction implements ActionButtonContract
         return $this;
     }
 
+    public function onClick(Closure $onClick, ?string $modifier = null): self
+    {
+        $event = 'x-on:click';
+
+        if (!is_null($modifier)) {
+            $event .= ".$modifier";
+        }
+
+        $this->customAttributes([
+            $event => $onClick($this->getItem())
+        ]);
+
+        return $this;
+    }
+
     public function url(): string
     {
         return is_callable($this->url)
-            ? call_user_func($this->url, $this->item)
+            ? call_user_func($this->url, $this->getItem())
             : $this->url;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace MoonShine\Modals;
 
+use Closure;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Traits\Makeable;
 
@@ -12,19 +13,19 @@ class Modal
     protected array $buttons = [];
 
     public function __construct(
-        protected ?string $title,
-        protected ?string $content
+        protected ?Closure $title,
+        protected ?Closure $content
     ) {
     }
 
-    public function title(): ?string
+    public function title(mixed $data = null): ?string
     {
-        return $this->title;
+        return call_user_func($this->title, $data);
     }
 
-    public function content(): ?string
+    public function content(mixed $data = null): ?string
     {
-        return $this->content;
+        return call_user_func($this->content, $data);
     }
 
     public function buttons(array $buttons): self

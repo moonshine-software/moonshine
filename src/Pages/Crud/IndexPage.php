@@ -16,6 +16,7 @@ use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Modal;
 use MoonShine\Decorations\Offcanvas;
+use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Text;
 use MoonShine\Metrics\ValueMetric;
@@ -105,6 +106,12 @@ class IndexPage extends Page
                         'resourceItem' => $data->getKey(),
                     ])
                     )
+                        ->onClick(function () {
+                            return <<<'JS'
+                              alert('Hello')
+                            JS;
+                        }, 'prevent')
+
                         ->customAttributes(['class' => 'btn-purple'])
                         ->icon('heroicons.outline.pencil')
                         ->showInLine(),
@@ -119,7 +126,18 @@ class IndexPage extends Page
                     )
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
-                        ->withConfirm()
+                        ->inModal(
+                            fn() => __('moonshine::ui.delete'),
+                            function(ActionButton $action) {
+                                return (string) form(
+                                    $action->url(),
+                                    fields: [
+                                        Hidden::make('_method')->setValue('DELETE'),
+                                        TextBlock::make('', __('moonshine::ui.confirm_delete'))
+                                    ]
+                                )->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink']);
+                            }
+                        )
                         ->showInLine(),
 
 
@@ -133,9 +151,9 @@ class IndexPage extends Page
                         ->bulk()
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
-                        ->withConfirm(
-                            'Delete',
-                            (string) form($this->getResource()->route('massDelete'))
+                        ->inModal(
+                            fn() => 'Delete',
+                            fn() => (string) form($this->getResource()->route('massDelete'))
                                 ->fields([
                                     Hidden::make('_method')->setValue('DELETE'),
                                     Hidden::make('ids')->customAttributes([
