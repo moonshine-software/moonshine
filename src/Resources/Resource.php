@@ -438,11 +438,7 @@ abstract class Resource implements ResourceContract
      */
     public function softDeletes(): bool
     {
-        return in_array(
-            SoftDeletes::class,
-            class_uses_recursive($this->getModel()::class),
-            true
-        );
+        return isset(class_uses_recursive($this->getModel())[SoftDeletes::class]);
     }
 
     public function relatable(): self
