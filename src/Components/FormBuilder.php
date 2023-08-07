@@ -8,29 +8,18 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\View\Component;
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Contracts\Form\FormContract;
-use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Traits\ComponentButtons;
-use MoonShine\Traits\Fields\FieldValues;
-use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\Makeable;
-use MoonShine\Traits\StringRendeable;
 use Throwable;
 
 /**
  * @method static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
  */
-final class FormBuilder extends Component implements FormContract, MoonShineRenderable
+final class FormBuilder extends RowComponent
 {
     use Makeable;
     use Macroable;
-    use HasDataCast;
     use Conditionable;
-    use FieldValues;
-    use StringRendeable;
-    use ComponentButtons;
 
     protected $except = [
         'fields',
@@ -140,13 +129,6 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
     public function submitLabel(): string
     {
         return $this->submitLabel ?? __('moonshine::ui.save');
-    }
-
-    public function getCastedData(): mixed
-    {
-        return $this->hasCast()
-            ? $this->getCast()->hydrate($this->getValues())
-            : $this->getValues();
     }
 
     /**

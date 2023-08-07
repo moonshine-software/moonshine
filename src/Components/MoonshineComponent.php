@@ -1,10 +1,13 @@
 <?php
 
-namespace MoonShine\Traits;
+declare(strict_types=1);
 
+namespace MoonShine\Components;
+
+use Illuminate\View\Component;
 use Throwable;
 
-trait StringRendeable
+abstract class MoonshineComponent extends Component
 {
     /**
      * @throws Throwable

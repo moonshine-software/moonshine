@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Resources\Resource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
@@ -18,7 +17,7 @@ use Throwable;
 /**
  * @method static make(Resource $resource, string $label = '', Builder|Closure|null $query = null)
  */
-final class ResourcePreview extends Component implements MoonShineRenderable
+final class ResourcePreview extends MoonshineComponent
 {
     use Makeable;
     use WithUniqueId;
@@ -76,10 +75,5 @@ final class ResourcePreview extends Component implements MoonShineRenderable
         return view('moonshine::components.resource-preview', [
             'element' => $this,
         ]);
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->render();
     }
 }

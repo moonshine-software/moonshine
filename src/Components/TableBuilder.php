@@ -10,28 +10,18 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\View\Component;
 use MoonShine\ActionButtons\ActionButtons;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Table\TableContract;
-use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
-use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\Makeable;
-use MoonShine\Traits\StringRendeable;
 use MoonShine\Traits\Table\TableStates;
 
-/**
- * @method static make(array $fields = [], array $values = [], ?LengthAwarePaginator $paginator = null)
- */
-final class TableBuilder extends Component implements MoonShineRenderable, TableContract
+final class TableBuilder extends IterableComponent implements TableContract
 {
     use Makeable;
     use Macroable;
     use TableStates;
-    use HasDataCast;
     use Conditionable;
-    use StringRendeable;
 
     protected $except = [
         'rows',
@@ -41,8 +31,6 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     ];
 
     protected array $rows = [];
-
-    protected array $buttons = [];
 
     protected ?Closure $trAttributes = null;
 
@@ -56,40 +44,21 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
         $this->withAttributes([]);
     }
 
-    public function customAttributes(array $attributes): static
-    {
-        $this->attributes = $this->attributes->merge($attributes);
-
-        return $this;
-    }
-
-    public function fields(array $fields): self
-    {
-        $this->fields = $fields;
-
-        return $this;
-    }
-
-    public function getFields(): Fields
-    {
-        return Fields::make($this->fields);
-    }
-
-    public function items(iterable $items = []): self
-    {
-        $this->items = $items;
-
-        return $this;
-    }
-
     public function getItems(): Collection
     {
         return collect($this->items)
             ->map(
                 fn ($item): array => $this->hasCast()
-                ? $this->getCast()->dehydrate($item)
-                : (array) $item
+                    ? $this->getCast()->dehydrate($item)
+                    : (array) $item
             );
+    }
+
+    public function customAttributes(array $attributes): static
+    {
+        $this->attributes = $this->attributes->merge($attributes);
+
+        return $this;
     }
 
     public function rows(): Collection
@@ -122,23 +91,6 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
     public function hasPaginator(): bool
     {
         return ! is_null($this->paginator);
-    }
-
-    public function buttons(array $buttons = []): self
-    {
-        $this->buttons = $buttons;
-
-        return $this;
-    }
-
-    public function getButtons(array $data): ActionButtons
-    {
-        $casted = $this->castData($data);
-
-        return ActionButtons::make($this->buttons)
-            ->onlyVisible($casted)
-            ->fillItem($casted)
-            ->withoutBulk();
     }
 
     public function getBulkButtons(): ActionButtons
