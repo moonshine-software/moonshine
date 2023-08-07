@@ -28,10 +28,11 @@ trait WithModal
         return $this;
     }
 
-    public function withConfirm(): self {
+    public function withConfirm(): self
+    {
         $this->modal = Modal::make(
-            static fn() => __('moonshine::ui.confirm'),
-            static fn() => __('moonshine::ui.confirm_message')
+            static fn (): array|string|null => __('moonshine::ui.confirm'),
+            static fn (): array|string|null => __('moonshine::ui.confirm_message')
         )->buttons([
             ActionButton::make(
                 __('moonshine::ui.confirm'),
