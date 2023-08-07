@@ -120,16 +120,14 @@ class IndexPage extends Page
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
                         ->inModal(
-                            fn() => __('moonshine::ui.delete'),
-                            function(ActionButton $action) {
-                                return (string) form(
-                                    $action->url(),
-                                    fields: [
-                                        Hidden::make('_method')->setValue('DELETE'),
-                                        TextBlock::make('', __('moonshine::ui.confirm_delete'))
-                                    ]
-                                )->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink']);
-                            }
+                            fn(): array|string|null => __('moonshine::ui.delete'),
+                            fn(ActionButton $action): string => (string) form(
+                                $action->url(),
+                                fields: [
+                                    Hidden::make('_method')->setValue('DELETE'),
+                                    TextBlock::make('', __('moonshine::ui.confirm_delete'))
+                                ]
+                            )->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
                         )
                         ->showInLine(),
 
@@ -145,8 +143,8 @@ class IndexPage extends Page
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
                         ->inModal(
-                            fn() => 'Delete',
-                            fn() => (string) form($this->getResource()->route('massDelete'))
+                            fn(): string => 'Delete',
+                            fn(): string => (string) form($this->getResource()->route('massDelete'))
                                 ->fields([
                                     Hidden::make('_method')->setValue('DELETE'),
                                     Hidden::make('ids')->customAttributes([

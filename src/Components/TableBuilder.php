@@ -172,7 +172,7 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
                     '',
                     '#'
                 )
-                    ->onClick(fn() => 'remove()', 'prevent')
+                    ->onClick(fn(): string => 'remove()', 'prevent')
                     ->icon('heroicons.outline.trash')
                     ->showInLine()
             ]);

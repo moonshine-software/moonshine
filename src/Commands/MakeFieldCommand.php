@@ -47,12 +47,12 @@ class MakeFieldCommand extends MoonShineCommand
             'Extends',
             collect(File::files(__DIR__ . '/../Fields'))
                 ->mapWithKeys(
-                    fn (SplFileInfo $file) => [
+                    fn (SplFileInfo $file): array => [
                         $file->getFilenameWithoutExtension() => $file->getFilenameWithoutExtension(),
                     ]
                 )
                 ->except(['Field', 'Fields', 'FormElement', 'FormElements'])
-                ->mapWithKeys(fn ($file) => [('MoonShine\Fields\\' . $file) => $file])
+                ->mapWithKeys(fn ($file): array => [('MoonShine\Fields\\' . $file) => $file])
                 ->prepend('Base', Field::class)
                 ->toArray(),
             Field::class

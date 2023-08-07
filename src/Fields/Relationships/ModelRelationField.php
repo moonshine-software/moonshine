@@ -119,7 +119,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
     public function getModelCast(): ModelCast
     {
-        return ModelCast::make(get_class($this->getRelation()?->getRelated()));
+        return ModelCast::make($this->getRelation()?->getRelated()::class);
     }
 
     public function getRelatedModel(): ?Model

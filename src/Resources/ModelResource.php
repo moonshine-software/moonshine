@@ -63,9 +63,9 @@ abstract class ModelResource extends Resource
     public function getIndexFields(): Fields
     {
         return Fields::make(
-            !empty($this->indexFields())
-                ? $this->indexFields()
-                : $this->fields()
+            empty($this->indexFields())
+                ? $this->fields()
+                : $this->indexFields()
         )->indexFields();
     }
 
@@ -77,18 +77,18 @@ abstract class ModelResource extends Resource
     public function getFormFields(): Fields
     {
         return Fields::make(
-            !empty($this->formFields())
-                ? $this->formFields()
-                : $this->fields()
+            empty($this->formFields())
+                ? $this->fields()
+                : $this->formFields()
         )->formFields()->withoutOutside();
     }
 
     public function getOutsideFields(): Fields
     {
         return Fields::make(
-            !empty($this->formFields())
-                ? $this->formFields()
-                : $this->fields()
+            empty($this->formFields())
+                ? $this->fields()
+                : $this->formFields()
         )->onlyOutside();
     }
 
@@ -100,9 +100,9 @@ abstract class ModelResource extends Resource
     public function getDetailFields(): Fields
     {
         return Fields::make(
-            !empty($this->detailFields())
-                ? $this->detailFields()
-                : $this->fields()
+            empty($this->detailFields())
+                ? $this->fields()
+                : $this->detailFields()
         )->detailFields();
     }
 

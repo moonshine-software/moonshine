@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Fields\ID;
@@ -51,7 +52,7 @@ class HasMany extends ModelRelationField implements
         return table($this->getFields()->toArray(), $this->toValue() ?? [])
             ->when(
                 $this->getRelation(),
-                fn ($table) => $table->cast($this->getModelCast())
+                fn ($table): TableBuilder => $table->cast($this->getModelCast())
             )
             ->withNotFound()
             ->preview();

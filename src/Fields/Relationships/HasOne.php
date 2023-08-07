@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\ID;
 
 class HasOne extends HasMany
@@ -40,9 +41,7 @@ class HasOne extends HasMany
 
         return (string) table($fields, $values)
             ->cast($this->getModelCast())
-            ->trAttributes(function ($data, $row, $attr) {
-                return $attr;
-            })
+            ->trAttributes(fn($data, $row, $attr) => $attr)
             ->tdAttributes(function ($data, $row, $cell, $attr) {
                 if ($cell === 0) {
                     return $attr->merge([
@@ -67,7 +66,7 @@ class HasOne extends HasMany
         return form()
             ->when(
                 $this->getRelation(),
-                fn ($table) => $table->cast($this->getModelCast())
+                fn ($table): FormBuilder => $table->cast($this->getModelCast())
             )
             ->fill($this->toValue()?->toArray() ?? [])
             ->fields($this->getFields()->toArray());
