@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Table\TableContract;
@@ -97,7 +98,7 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
 
             return TableRow::make(
                 $casted,
-                $this->getFields()->fillClonedValues($data, $casted),
+                $this->getFields()->fillCloned($data, $casted),
                 $this->getButtons($data),
                 $this->trAttributes,
                 $this->tdAttributes
@@ -164,6 +165,18 @@ final class TableBuilder extends Component implements MoonShineRenderable, Table
         $this->customAttributes([
             'x-data' => "tableBuilder({$this->isAsync()})",
         ]);
+
+        if($this->isRemovable()) {
+            $this->buttons([
+                ActionButton::make(
+                    '',
+                    '#'
+                )
+                    ->onClick(fn() => 'remove()', 'prevent')
+                    ->icon('heroicons.outline.trash')
+                    ->showInLine()
+            ]);
+        }
 
         return view('moonshine::components.table.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),

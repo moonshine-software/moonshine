@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
-use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Fields\ID;
@@ -20,9 +19,11 @@ class HasMany extends ModelRelationField implements
     use HasOneOrMany;
     use Removable;
 
+    protected string $view = 'moonshine::fields.relationships.has-many';
+
     protected bool $isGroup = true;
 
-    protected bool $toComponent = true;
+    protected bool $outsideComponent = true;
 
     protected function resolvePreview(): string
     {
@@ -41,15 +42,18 @@ class HasMany extends ModelRelationField implements
             ->toArray();
 
         return (string) table($fields, $values)
-            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
+            ->cast($this->getModelCast())
             ->preview();
     }
 
     protected function resolveValue(): mixed
     {
-        return table($this->getFields()->toArray(), $this->toValue())
-            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
-            ->preview()
-            ->render();
+        return table($this->getFields()->toArray(), $this->toValue() ?? [])
+            ->when(
+                $this->getRelation(),
+                fn ($table) => $table->cast($this->getModelCast())
+            )
+            ->withNotFound()
+            ->preview();
     }
 }

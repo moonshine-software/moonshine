@@ -27,7 +27,7 @@ class Json extends Field implements
     use Removable;
     use WithDefaultValue;
 
-    protected string $view = 'moonshine::fields.json';
+    //protected string $view = 'moonshine::fields.json';
 
     protected bool $keyValue = false;
 
@@ -175,7 +175,12 @@ class Json extends Field implements
                 ->toArray();
         }
 
-        return table($this->getFields()->toArray(), $this->toValue() ?? []);
+        return table($this->getFields()->toArray(), $this->toValue() ?? [])
+            ->preview()
+            ->removable()
+            ->editable()
+            ->creatable()
+            ->render();
     }
 
     public function jsonValues(): array

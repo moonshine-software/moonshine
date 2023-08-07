@@ -11,6 +11,11 @@ use MoonShine\Resources\MoonShineUserRoleResource;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
+    protected function resources(): array
+    {
+        return [];
+    }
+
     protected function menu(): array
     {
         return [
@@ -26,5 +31,10 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             MenuItem::make('Documentation', 'https://laravel.com')
                ->badge(fn() => 'Check'),
         ];
+    }
+
+    protected function theme(): array
+    {
+        return [];
     }
 }

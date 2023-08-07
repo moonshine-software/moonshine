@@ -7,6 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Fields\Field;
 use MoonShine\Resources\ModelResource;
@@ -21,7 +22,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
     protected ?Model $relatedModel = null;
 
-    protected bool $toComponent = false;
+    protected bool $outsideComponent = false;
 
     protected bool $toOne = false;
 
@@ -42,20 +43,20 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
     }
 
-    protected function prepareFill(array $rawValues = [], mixed $castedValues = null): mixed
+    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        return $castedValues->{$this->getRelationName()};
+        return $casted->{$this->getRelationName()};
     }
 
-    public function resolveFill(array $rawValues = [], mixed $castedValues = null): Field
+    public function resolveFill(array $raw = [], mixed $casted = null): Field
     {
         if ($this->value) {
             return $this;
         }
 
-        $this->setRelatedModel($castedValues);
+        $this->setRelatedModel($casted);
 
-        $data = $this->prepareFill($rawValues, $castedValues);
+        $data = $this->prepareFill($raw, $casted);
 
         $this->setValue($data);
 
@@ -65,7 +66,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
 
             $this->setRawValue(
-                $rawValues[$this->column()] ?? null
+                $raw[$this->column()] ?? null
             );
 
             $this->setFormattedValue(
@@ -96,9 +97,9 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
     }
 
-    public function toComponent(): bool
+    public function outsideComponent(): bool
     {
-        return $this->toComponent;
+        return $this->outsideComponent;
     }
 
     public function toOne(): bool
@@ -116,12 +117,17 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         $this->relatedModel = $model;
     }
 
+    public function getModelCast(): ModelCast
+    {
+        return ModelCast::make(get_class($this->getRelation()?->getRelated()));
+    }
+
     public function getRelatedModel(): ?Model
     {
         return $this->relatedModel;
     }
 
-    public function getRelation(): Relation
+    public function getRelation(): ?Relation
     {
         return $this->getRelatedModel()
             ?->{$this->getRelationName()}();

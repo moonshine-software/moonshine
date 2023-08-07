@@ -135,7 +135,7 @@ final class FormBuilder extends Component implements FormContract, MoonShineRend
     public function getFields(): Fields
     {
         $fields = Fields::make($this->fields);
-        $fields->fillValues(
+        $fields->fill(
             $this->getValues(),
             $this->getCastedData()
         );

@@ -1,3 +1,13 @@
+@props([
+    'rows',
+    'fields',
+    'bulkButtons',
+    'preview' => false,
+    'notfound' => false,
+    'vertical' => false,
+    'editable' => false,
+    'creatable' => false,
+])
 <div>
     <x-moonshine::table
             :classic="!$preview"
@@ -30,10 +40,9 @@
                     <x-moonshine::link
                         class="w-full"
                         icon="heroicons.plus-circle"
-                        :x-show="$toOne ?? false ? 'items.length == 0' : 'true'"
                         @click.prevent="add()"
                     >
-                        @lang('moonshine::ui.' . ($toOne ?? false ? 'create' : 'add'))
+                        @lang('moonshine::ui.add')
                     </x-moonshine::link>
                 </td>
             </x-slot:tfoot>

@@ -8,7 +8,6 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\FiltersAction;
-use MoonShine\Casts\ModelCast;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
@@ -81,8 +80,8 @@ class IndexPage extends Page
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),
             ]),
-            table()->fields($this->getResource()->getFields()->onlyFields()->toArray())
-                ->cast(ModelCast::make($this->getResource()->getModel()::class))
+            table()->fields($this->getResource()->getIndexFields()->toArray())
+                ->cast($this->getResource()->getModelCast())
                 ->items($items->items())
                 ->paginator($items)
                 ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
@@ -106,12 +105,6 @@ class IndexPage extends Page
                         'resourceItem' => $data->getKey(),
                     ])
                     )
-                        ->onClick(function () {
-                            return <<<'JS'
-                              alert('Hello')
-                            JS;
-                        }, 'prevent')
-
                         ->customAttributes(['class' => 'btn-purple'])
                         ->icon('heroicons.outline.pencil')
                         ->showInLine(),

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
-use MoonShine\Casts\ModelCast;
 use MoonShine\Fields\ID;
 
 class HasOne extends HasMany
 {
-    protected bool $toOne = true;
+    protected string $view = 'moonshine::fields.relationships.has-one';
 
-    protected bool $toComponent = true;
+    protected bool $toOne = true;
 
     protected function resolvePreview(): string
     {
@@ -40,7 +39,25 @@ class HasOne extends HasMany
             ->toArray();
 
         return (string) table($fields, $values)
-            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
+            ->cast($this->getModelCast())
+            ->trAttributes(function ($data, $row, $attr) {
+                return $attr;
+            })
+            ->tdAttributes(function ($data, $row, $cell, $attr) {
+                if ($cell === 0) {
+                    return $attr->merge([
+                        'class' => 'bgc-red',
+                    ]);
+                }
+
+                if ($cell === 1) {
+                    return $attr->merge([
+                        'class' => 'bgc-green',
+                    ]);
+                }
+
+                return $attr;
+            })
             ->vertical()
             ->preview();
     }
@@ -48,9 +65,11 @@ class HasOne extends HasMany
     protected function resolveValue(): mixed
     {
         return form()
-            ->cast(ModelCast::make($this->getRelation()->getRelated()::class))
+            ->when(
+                $this->getRelation(),
+                fn ($table) => $table->cast($this->getModelCast())
+            )
             ->fill($this->toValue()?->toArray() ?? [])
-            ->fields($this->getFields()->toArray())
-            ->render();
+            ->fields($this->getFields()->toArray());
     }
 }

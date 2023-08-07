@@ -1,0 +1,33 @@
+<?php
+
+namespace {namespace};
+
+use {extend};
+use Closure;
+
+class DummyField extends {extendShort}
+{
+    protected string $view = '{view}';
+
+    protected function prepareFill(array $rawValues = [], mixed $castedValues = null): mixed
+    {
+        return parent::prepareFill($rawValues, $castedValues);
+    }
+
+    protected function resolveValue(): mixed
+    {
+        return $this->toValue();
+    }
+
+    protected function resolvePreview(): string
+    {
+        return $this->toFormattedValue();
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return function ($item) {
+            return $item;
+        };
+    }
+}

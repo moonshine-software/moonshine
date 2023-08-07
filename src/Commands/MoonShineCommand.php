@@ -7,7 +7,7 @@ namespace MoonShine\Commands;
 use Leeto\PackageCommand\Command;
 use MoonShine\MoonShine;
 
-class MoonShineCommand extends Command
+abstract class MoonShineCommand extends Command
 {
     protected string $stubsDir = __DIR__ . '/../../stubs';
 

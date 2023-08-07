@@ -6,8 +6,8 @@ use MoonShine\Dashboard\DashboardScreen;
 
 class Dashboard extends DashboardScreen
 {
-	public function blocks(): array
-	{
-		return [];
-	}
+    public function components(): array
+    {
+        return [];
+    }
 }

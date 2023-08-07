@@ -104,18 +104,18 @@ abstract class Field extends FormElement
             ->setFormattedValue();
     }
 
-    protected function prepareFill(array $rawValues = [], mixed $castedValues = null): mixed
+    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        return $rawValues[$this->column()] ?? null;
+        return $raw[$this->column()] ?? null;
     }
 
-    public function resolveFill(array $rawValues = [], mixed $castedValues = null): self
+    public function resolveFill(array $raw = [], mixed $casted = null): self
     {
         if ($this->value) {
             return $this;
         }
 
-        $value = $this->prepareFill($rawValues, $castedValues);
+        $value = $this->prepareFill($raw, $casted);
 
         $this->setRawValue($value);
 
@@ -123,7 +123,7 @@ abstract class Field extends FormElement
             $this->setFormattedValue(
                 call_user_func(
                     $this->valueCallback(),
-                    empty($castedValues) ? $this->toRawValue() : $castedValues
+                    empty($casted) ? $this->toRawValue() : $casted
                 )
             );
         }

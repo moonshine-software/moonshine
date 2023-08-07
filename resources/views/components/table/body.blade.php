@@ -20,18 +20,29 @@
         @endif
 
         @foreach($row->getFields() as $index => $field)
-            @if($vertical) <tr {{ $row->trAttributes($loop->index) }}> <td>{{$field->label()}}</td> @endif
-                <td {{ $row->tdAttributes($loop->parent->index, $index + 1) }}>
+                @if($vertical) <tr {{ $row->trAttributes($index) }}>
+                    <td {{ $row->tdAttributes($index, 0) }}>
+                        {{$field->label()}}
+                    </td>
+                @endif
+
+                <td {{ $vertical
+                        ? $row->tdAttributes($index, 1)
+                        : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
+                >
                     {!! $field->isSee($field->value())
-                        ? ($editable ? $field->render() : $field->preview())
+                        ? $field->{$editable ? 'render' : 'preview'}()
                         : ''
                     !!}
                 </td>
-            @if($vertical) </tr> @endif
+
+                @if($vertical)
+                    </tr>
+                @endif
         @endforeach
 
         @if(!$vertical)
-            <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + 1) }}>
+            <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + $actions->isNotEmpty()) }}>
                 <x-moonshine::table.actions
                     :actions="$row->getActions()"
                 />
