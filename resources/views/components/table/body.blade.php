@@ -19,16 +19,30 @@
             </td>
         @endif
 
-        @foreach($row->getFields() as $index => $field)
-            @if($vertical) <tr {{ $row->trAttributes($loop->index) }}> <td>{{$field->label()}}</td> @endif
-                <td {{ $row->tdAttributes($loop->parent->index, $index + 1) }}>
+        @if(!$vertical)
+            @foreach($row->getFields() as $cell => $field)
+                <td {{ $row->tdAttributes($loop->parent->index, $cell + 1) }}>
                     {!! $field->isSee($field->value())
                         ? ($editable ? $field->render() : $field->preview())
                         : ''
                     !!}
                 </td>
-            @if($vertical) </tr> @endif
-        @endforeach
+            @endforeach
+        @else
+            @php $i = 0; @endphp
+            @foreach($row->getFields() as $cell => $field)
+                <tr {{ $row->trAttributes($loop->index) }}>
+                    <td {{ $row->tdAttributes($loop->parent->index, $cell + $i) }}>{{$field->label()}}</td>
+                    @php $i++; @endphp
+                    <td {{ $row->tdAttributes($loop->parent->index, $cell + $i) }}>
+                        {!! $field->isSee($field->value())
+                            ? ($editable ? $field->render() : $field->preview())
+                            : ''
+                        !!}
+                    </td>
+                </tr>
+            @endforeach
+        @endif
 
         @if(!$vertical)
             <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + 1) }}>
