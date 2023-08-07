@@ -135,7 +135,7 @@ final class Fields extends FormElements
     {
         return $this->onlyFields()
             ->filter(
-                static fn (Field $field): bool => $field instanceof ModelRelationField && !$field->outsideComponent()
+                static fn (Field $field): bool => $field instanceof ModelRelationField && ! $field->outsideComponent()
             )
             ->values();
     }

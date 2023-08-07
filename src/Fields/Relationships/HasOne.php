@@ -41,7 +41,7 @@ class HasOne extends HasMany
 
         return (string) table($fields, $values)
             ->cast($this->getModelCast())
-            ->trAttributes(fn($data, $row, $attr) => $attr)
+            ->trAttributes(fn ($data, $row, $attr) => $attr)
             ->tdAttributes(function ($data, $row, $cell, $attr) {
                 if ($cell === 0) {
                     return $attr->merge([

@@ -2,9 +2,10 @@
 
 use MoonShine\Commands\MakeResourceCommand;
 use MoonShine\MoonShine;
-use Symfony\Component\Console\Command\Command;
 
 use function Pest\Laravel\artisan;
+
+use Symfony\Component\Console\Command\Command;
 
 uses()->group('commands');
 
