@@ -13,7 +13,7 @@ use MoonShine\Actions\Actions;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static make(array $actions = [])
+ * @method static static make(array $actions = [])
  */
 final class ActionGroup extends MoonshineComponent
 {

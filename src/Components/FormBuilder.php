@@ -13,7 +13,7 @@ use MoonShine\Traits\Makeable;
 use Throwable;
 
 /**
- * @method static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
+ * @method static static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
  */
 final class FormBuilder extends RowComponent
 {

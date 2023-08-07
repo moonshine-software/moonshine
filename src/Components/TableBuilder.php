@@ -16,6 +16,9 @@ use MoonShine\Table\TableRow;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\Table\TableStates;
 
+/**
+ * @method static static make(array $fields = [], array $values = [], ?LengthAwarePaginator $paginator = null)
+ */
 final class TableBuilder extends IterableComponent implements TableContract
 {
     use Makeable;
