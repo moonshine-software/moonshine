@@ -8,12 +8,9 @@ use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Traits\Conditionable;
-use Illuminate\Support\Traits\Macroable;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Table\TableRow;
-use MoonShine\Traits\Makeable;
 use MoonShine\Traits\Table\TableStates;
 
 /**
@@ -21,10 +18,7 @@ use MoonShine\Traits\Table\TableStates;
  */
 final class TableBuilder extends IterableComponent implements TableContract
 {
-    use Makeable;
-    use Macroable;
     use TableStates;
-    use Conditionable;
 
     protected $except = [
         'rows',

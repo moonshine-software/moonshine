@@ -6,10 +6,7 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Traits\Conditionable;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Traits\Makeable;
 use Throwable;
 
 /**
@@ -17,10 +14,6 @@ use Throwable;
  */
 final class FormBuilder extends RowComponent
 {
-    use Makeable;
-    use Macroable;
-    use Conditionable;
-
     protected $except = [
         'fields',
         'buttons',
