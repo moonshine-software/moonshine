@@ -7,7 +7,7 @@ namespace MoonShine\Commands;
 use Illuminate\Support\Facades\Hash;
 use MoonShine\MoonShineAuth;
 
-class UserCommand extends MoonShineCommand
+class MakeUserCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:user';
 

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use MoonShine\Casts\ModelCast;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -38,14 +39,73 @@ abstract class ModelResource extends Resource
 
     protected ?Model $item = null;
 
-    abstract public function fields(): array;
-
     /**
      * Get an array of validation rules for resource related model
      *
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
     abstract public function rules(Model $item): array;
+
+    public function fields(): array
+    {
+        return [];
+    }
+
+    public function getFields(): Fields
+    {
+        return Fields::make($this->fields());
+    }
+
+    public function indexFields(): array
+    {
+        return [];
+    }
+
+    public function getIndexFields(): Fields
+    {
+        return Fields::make(
+            empty($this->indexFields())
+                ? $this->fields()
+                : $this->indexFields()
+        )->indexFields();
+    }
+
+    public function formFields(): array
+    {
+        return [];
+    }
+
+    public function getFormFields(): Fields
+    {
+        return Fields::make(
+            empty($this->formFields())
+                ? $this->fields()
+                : $this->formFields()
+        )->formFields()->withoutOutside();
+    }
+
+    public function getOutsideFields(): Fields
+    {
+        return Fields::make(
+            empty($this->formFields())
+                ? $this->fields()
+                : $this->formFields()
+        )->onlyOutside();
+    }
+
+    public function detailFields(): array
+    {
+        return [];
+    }
+
+    public function getDetailFields(): Fields
+    {
+        return Fields::make(
+            empty($this->detailFields())
+                ? $this->fields()
+                : $this->detailFields()
+        )->detailFields();
+    }
 
     public function pages(): array
     {
@@ -81,14 +141,9 @@ abstract class ModelResource extends Resource
         };
     }
 
-    public function getFields(): Fields
-    {
-        return Fields::make($this->fields());
-    }
-
     public function getActiveActions(): array
     {
-        return ['edit'];
+        return ['create', 'show', 'edit', 'delete'];
     }
 
     public function search(): array
@@ -99,6 +154,11 @@ abstract class ModelResource extends Resource
     public function getModel(): Model
     {
         return new $this->model();
+    }
+
+    public function getModelCast(): ModelCast
+    {
+        return ModelCast::make($this->model);
     }
 
     /**
@@ -206,7 +266,7 @@ abstract class ModelResource extends Resource
     {
         $fields ??= $this->getFields()
             ->formFields()
-            ->fillClonedValues($item->toArray(), $item);
+            ->fillCloned($item->toArray(), $item);
 
         try {
             $fields->each(fn (Field $field) => $field->beforeApply($item));

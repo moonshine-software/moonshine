@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Commands\UserCommand;
+use MoonShine\Commands\MakeUserCommand;
 
 use function Pest\Laravel\artisan;
 
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 uses()->group('commands');
 
 it('reports progress', function (): void {
-    artisan(UserCommand::class)
+    artisan(MakeUserCommand::class)
         ->expectsQuestion(
             'Username(' . config('moonshine.auth.fields.username', 'email') . ')',
             'example@example.com'

@@ -31,8 +31,8 @@ final class FormBuilder extends RowComponent
     public function __construct(
         protected string $action = '',
         protected string $method = 'POST',
-        array $fields = [],
-        array $values = []
+        protected array $fields = [],
+        protected array $values = []
     ) {
         $this->submitAttributes = $this->newAttributeBag([
             'type' => 'submit',
@@ -44,9 +44,6 @@ final class FormBuilder extends RowComponent
             'enctype' => 'multipart/form-data',
             'x-data' => 'formBuilder',
         ]);
-
-        $this->fields = $fields;
-        $this->values = $values;
     }
 
     public function customAttributes(array $attributes): static

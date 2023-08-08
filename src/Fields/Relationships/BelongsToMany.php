@@ -6,7 +6,6 @@ namespace MoonShine\Fields\Relationships;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
@@ -218,6 +217,6 @@ class BelongsToMany extends ModelRelationField implements
             ->toArray();
 
         return (string) table($fields, $values)
-            ->cast(ModelCast::make($this->getRelation()->getRelated()::class));
+            ->cast($this->getModelCast());
     }
 }

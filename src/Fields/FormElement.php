@@ -23,7 +23,6 @@ use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
-use MoonShine\Utilities\AssetManager;
 
 /**
  * @method static make(string|null $label = null, string|null $column = null, ?Closure $valueCallback = null)
@@ -72,7 +71,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
-            app(AssetManager::class)->add($this->getAssets());
+            moonshineAssets()->add($this->getAssets());
         }
     }
 

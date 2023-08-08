@@ -40,7 +40,7 @@ export function showWhenVisibilityChange(fieldName, inputs, field) {
     return
   }
 
-  //TODO in resources/views/components/resource-renderable.blade.php put a field in a container
+  // TODO in resources/views/components/fields-group.blade.php put a field in a container
   let fieldContainer = inputElement.closest('.moonshine-field')
   if (fieldContainer === null) {
     fieldContainer = inputElement.closest('.form-group')

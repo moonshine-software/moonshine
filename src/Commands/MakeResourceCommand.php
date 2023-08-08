@@ -7,7 +7,7 @@ namespace MoonShine\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use MoonShine\MoonShine;
 
-class ResourceCommand extends MoonShineCommand
+class MakeResourceCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=} {--s|singleton} {--id=}';
 

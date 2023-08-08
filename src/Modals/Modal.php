@@ -2,39 +2,41 @@
 
 namespace MoonShine\Modals;
 
+use Closure;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Traits\Makeable;
 
-abstract class Modal
+class Modal
 {
     use Makeable;
 
-    protected ?string $confirmButtonText = null;
+    protected array $buttons = [];
 
     public function __construct(
-        protected ?string $title,
-        protected ?string $content
+        protected ?Closure $title,
+        protected ?Closure $content
     ) {
     }
 
-    public function title(): ?string
+    public function title(mixed $data = null): ?string
     {
-        return $this->title;
+        return call_user_func($this->title, $data);
     }
 
-    public function content(): ?string
+    public function content(mixed $data = null): ?string
     {
-        return $this->content;
+        return call_user_func($this->content, $data);
     }
 
-    public function getConfirmButtonText(): ?string
+    public function buttons(array $buttons): self
     {
-        return $this->confirmButtonText;
-    }
-
-    public function confirmButtonText(string $confirmButtonText): Modal
-    {
-        $this->confirmButtonText = $confirmButtonText;
+        $this->buttons = $buttons;
 
         return $this;
+    }
+
+    public function getButtons(): ActionButtons
+    {
+        return ActionButtons::make($this->buttons);
     }
 }

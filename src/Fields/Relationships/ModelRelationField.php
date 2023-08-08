@@ -7,11 +7,11 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Fields\Field;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasResource;
-use MoonShine\Utilities\AssetManager;
 
 /**
  * @method static make(string $label, string $relation, ModelResource $resource, ?Closure $valueCallback = null)
@@ -21,6 +21,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     use HasResource;
 
     protected ?Model $relatedModel = null;
+
+    protected bool $outsideComponent = false;
+
+    protected bool $toOne = false;
 
     public function __construct(
         string $label,
@@ -39,35 +43,32 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
     }
 
-    public function resolveFill(array $rawValues = [], mixed $castedValues = null): Field
+    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    {
+        return $casted->{$this->getRelationName()};
+    }
+
+    public function resolveFill(array $raw = [], mixed $casted = null): Field
     {
         if ($this->value) {
             return $this;
         }
 
-        $this->setRelatedModel($castedValues);
+        $this->setRelatedModel($casted);
 
-        $data = $castedValues->{$this->getRelationName()};
-        $relation = $castedValues->{$this->getRelationName()}();
-
-        # TODO BelongsTo to interface ToOne
-        if ($this instanceof BelongsTo) {
-            $this->setColumn(
-                $relation->getForeignKeyName()
-            );
-
-            $this->setRawValue(
-                $rawValues[$this->column()] ?? null
-            );
-        } else {
-            $this->setColumn(
-                $this->getRelationName()
-            );
-        }
+        $data = $this->prepareFill($raw, $casted);
 
         $this->setValue($data);
 
-        if ($this instanceof BelongsTo) {
+        if ($this->toOne()) {
+            $this->setColumn(
+                $this->getRelation()?->getForeignKeyName() ?? ''
+            );
+
+            $this->setRawValue(
+                $raw[$this->column()] ?? null
+            );
+
             $this->setFormattedValue(
                 $data?->{$this->getResource()->column()}
             );
@@ -80,6 +81,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                     )
                 );
             }
+        } else {
+            $this->setColumn(
+                $this->getRelationName()
+            );
         }
 
         return $this;
@@ -88,8 +93,18 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
-            (new AssetManager())->add($this->getAssets());
+            moonshineAssets()->add($this->getAssets());
         }
+    }
+
+    public function outsideComponent(): bool
+    {
+        return $this->outsideComponent;
+    }
+
+    public function toOne(): bool
+    {
+        return $this->toOne;
     }
 
     public function getRelationName(): string
@@ -102,12 +117,17 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         $this->relatedModel = $model;
     }
 
+    public function getModelCast(): ModelCast
+    {
+        return ModelCast::make($this->getRelation()?->getRelated()::class);
+    }
+
     public function getRelatedModel(): ?Model
     {
         return $this->relatedModel;
     }
 
-    public function getRelation(): Relation
+    public function getRelation(): ?Relation
     {
         return $this->getRelatedModel()
             ?->{$this->getRelationName()}();

@@ -23,22 +23,22 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function fillClonedValues(array $rawValues = [], mixed $castedValues = null): self
+    public function fillCloned(array $raw = [], mixed $casted = null): self
     {
         return $this->onlyFields()->map(
             fn (Field $field): Field => (clone $field)
-                ->resolveFill($rawValues, $castedValues)
+                ->resolveFill($raw, $casted)
         );
     }
 
     /**
      * @throws Throwable
      */
-    public function fillValues(array $rawValues = [], mixed $castedValues = null): void
+    public function fill(array $raw = [], mixed $casted = null): void
     {
         $this->onlyFields()->map(
             fn (Field $field): Field => $field
-                ->resolveFill($rawValues, $castedValues)
+                ->resolveFill($raw, $casted)
         );
     }
 
@@ -124,8 +124,33 @@ final class Fields extends FormElements
             ->filter(
                 static fn (Field $field): bool => $field instanceof ModelRelationField
             )
-            ->values()
-            ->map(fn (Field $field): Field => $field->setParents());
+            ->values();
+    }
+
+    /**
+     * @return Fields<Field>
+     * @throws Throwable
+     */
+    public function withoutOutside(): Fields
+    {
+        return $this->onlyFields()
+            ->filter(
+                static fn (Field $field): bool => $field instanceof ModelRelationField && ! $field->outsideComponent()
+            )
+            ->values();
+    }
+
+    /**
+     * @return Fields<ModelRelationField>
+     * @throws Throwable
+     */
+    public function onlyOutside(): Fields
+    {
+        return $this->onlyFields()
+            ->filter(
+                static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
+            )
+            ->values();
     }
 
     /**

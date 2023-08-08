@@ -2,7 +2,6 @@
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Casts\ModelCast;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Http\Controllers\CrudController;
@@ -14,7 +13,7 @@ class FormPage extends Page
     {
         $breadcrumbs = parent::breadcrumbs();
 
-        if($this->getResource()->getItemID()) {
+        if ($this->getResource()->getItemID()) {
             $breadcrumbs[$this->route()] = $this->getResource()
                 ?->getItem()
                 ?->{$this->getResource()->column()};
@@ -27,12 +26,14 @@ class FormPage extends Page
 
     public function components(): array
     {
-        if($this->getResource()->getItemID()) {
+        $item = $this->getResource()->getItem();
+
+        if (! is_null($item)) {
             $action = action(
                 [CrudController::class, 'update'],
                 [
                     'resourceUri' => $this->getResource()->uriKey(),
-                    'resourceItem' => $this->getResource()->getItem()?->getKey(),
+                    'resourceItem' => $item->getKey(),
                 ]
             );
         } else {
@@ -44,19 +45,30 @@ class FormPage extends Page
             );
         }
 
-        return [
+        $components = [
             form($action)
                 ->fields(
                     $this->getResource()
-                        ->getFields()
+                        ->getFormFields()
                         ->when(
-                            $this->getResource()->getItemID(),
-                            fn (Fields $fields): Fields => $fields->push(Hidden::make('_method')->setValue('PUT'))
+                            ! is_null($item),
+                            fn (Fields $fields): Fields => $fields->push(
+                                Hidden::make('_method')->setValue('PUT')
+                            )
                         )
                         ->toArray()
                 )
-                ->fill($this->getResource()->getItem()?->attributesToArray() ?? [])
-                ->cast(ModelCast::make($this->getResource()->getModel()::class)),
+                ->fill($item?->attributesToArray() ?? [])
+                ->cast($this->getResource()->getModelCast()),
         ];
+
+        foreach ($this->getResource()->getOutsideFields() as $field) {
+            $components[] = $field->resolveFill(
+                $item?->attributesToArray() ?? [],
+                $item
+            );
+        }
+
+        return $components;
     }
 }

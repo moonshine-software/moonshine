@@ -14,7 +14,6 @@ use MoonShine\Traits\WithColumnSpan;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
-use MoonShine\Utilities\AssetManager;
 
 /**
  * @method static make(string $label)
@@ -43,7 +42,7 @@ abstract class Metric implements MoonShineRenderable, HasAssets
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
-            app(AssetManager::class)->add($this->getAssets());
+            moonshineAssets()->add($this->getAssets());
         }
     }
 

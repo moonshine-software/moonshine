@@ -19,33 +19,30 @@
             </td>
         @endif
 
-        @if(!$vertical)
-            @foreach($row->getFields() as $cell => $field)
-                <td {{ $row->tdAttributes($loop->parent->index, $cell + 1) }}>
+        @foreach($row->getFields() as $index => $field)
+                @if($vertical) <tr {{ $row->trAttributes($index) }}>
+                    <td {{ $row->tdAttributes($index, 0) }}>
+                        {{$field->label()}}
+                    </td>
+                @endif
+
+                <td {{ $vertical
+                        ? $row->tdAttributes($index, 1)
+                        : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
+                >
                     {!! $field->isSee($field->value())
-                        ? ($editable ? $field->render() : $field->preview())
+                        ? $field->{$editable ? 'render' : 'preview'}()
                         : ''
                     !!}
                 </td>
-            @endforeach
-        @else
-            @php $i = 0; @endphp
-            @foreach($row->getFields() as $cell => $field)
-                <tr {{ $row->trAttributes($loop->index) }}>
-                    <td {{ $row->tdAttributes($loop->parent->index, $cell + $i) }}>{{$field->label()}}</td>
-                    @php $i++; @endphp
-                    <td {{ $row->tdAttributes($loop->parent->index, $cell + $i) }}>
-                        {!! $field->isSee($field->value())
-                            ? ($editable ? $field->render() : $field->preview())
-                            : ''
-                        !!}
-                    </td>
-                </tr>
-            @endforeach
-        @endif
+
+                @if($vertical)
+                    </tr>
+                @endif
+        @endforeach
 
         @if(!$vertical)
-            <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + 1) }}>
+            <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + $actions->isNotEmpty()) }}>
                 <x-moonshine::table.actions
                     :actions="$row->getActions()"
                 />

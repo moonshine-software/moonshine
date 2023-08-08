@@ -33,10 +33,10 @@ final class QueryTag
         return str($this->label())->slug()->value();
     }
 
-    public function builder(Builder $builder): Builder
+    public function apply(Builder $builder): Builder
     {
         return is_callable($this->builder)
             ? call_user_func($this->builder, $builder)
-            : $this->builder;
+            : $builder;
     }
 }

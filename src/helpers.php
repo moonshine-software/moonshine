@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
@@ -34,8 +35,12 @@ if (! function_exists('moonshine')) {
 }
 
 if (! function_exists('to_page')) {
-    function to_page(string|Resource $resource, string|Page|null $page = null, bool $redirect = false, array $params = []): RedirectResponse|string
-    {
+    function to_page(
+        string|Resource $resource,
+        string|Page|null $page = null,
+        bool $redirect = false,
+        array $params = []
+    ): RedirectResponse|string {
         return MoonShineRouter::to_page($resource, $page, $redirect, $params);
     }
 }
@@ -51,6 +56,13 @@ if (! function_exists('moonshineAssets')) {
     function moonshineAssets(): AssetManager
     {
         return app(AssetManager::class);
+    }
+}
+
+if (! function_exists('moonshineMenu')) {
+    function moonshineMenu(): Menu
+    {
+        return app(Menu::class);
     }
 }
 

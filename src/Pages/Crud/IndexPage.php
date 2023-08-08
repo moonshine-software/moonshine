@@ -8,13 +8,14 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\FiltersAction;
-use MoonShine\Casts\ModelCast;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
+use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Modal;
 use MoonShine\Decorations\Offcanvas;
+use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Text;
 use MoonShine\Metrics\ValueMetric;
@@ -79,8 +80,8 @@ class IndexPage extends Page
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),
             ]),
-            table()->fields($this->getResource()->getFields()->onlyFields()->toArray())
-                ->cast(ModelCast::make($this->getResource()->getModel()::class))
+            table()->fields($this->getResource()->getIndexFields()->toArray())
+                ->cast($this->getResource()->getModelCast())
                 ->items($items->items())
                 ->paginator($items)
                 ->trAttributes(fn ($data, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
@@ -130,7 +131,16 @@ class IndexPage extends Page
                     )
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
-                        ->withConfirm()
+                        ->inModal(
+                            fn (): array|string|null => __('moonshine::ui.delete'),
+                            fn (ActionButton $action): string => (string) form(
+                                $action->url(),
+                                fields: [
+                                    Hidden::make('_method')->setValue('DELETE'),
+                                    TextBlock::make('', __('moonshine::ui.confirm_delete')),
+                                ]
+                            )->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
+                        )
                         ->showInLine(),
 
 
@@ -144,14 +154,15 @@ class IndexPage extends Page
                         ->bulk()
                         ->customAttributes(['class' => 'btn-pink'])
                         ->icon('heroicons.outline.trash')
-                        ->withConfirm(
-                            'Delete',
-                            (string) form($this->getResource()->route('massDelete'))
+                        ->inModal(
+                            fn (): string => 'Delete',
+                            fn (): string => (string) form($this->getResource()->route('massDelete'))
                                 ->fields([
                                     Hidden::make('_method')->setValue('DELETE'),
                                     Hidden::make('ids')->customAttributes([
                                         'class' => 'actionsCheckedIds',
                                     ]),
+                                    Heading::make(__('moonshine::ui.confirm_delete')),
                                 ])
                                 ->submit('Delete', ['class' => 'btn-pink'])
                         )

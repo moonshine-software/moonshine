@@ -41,21 +41,21 @@ final class TableBuilder extends IterableComponent implements TableContract
         $this->withAttributes([]);
     }
 
-    public function getItems(): Collection
-    {
-        return collect($this->items)
-            ->map(
-                fn ($item): array => $this->hasCast()
-                    ? $this->getCast()->dehydrate($item)
-                    : (array) $item
-            );
-    }
-
     public function customAttributes(array $attributes): static
     {
         $this->attributes = $this->attributes->merge($attributes);
 
         return $this;
+    }
+
+    public function getItems(): Collection
+    {
+        return collect($this->items)
+            ->map(
+                fn ($item): array => $this->hasCast()
+                ? $this->getCast()->dehydrate($item)
+                : (array) $item
+            );
     }
 
     public function rows(): Collection
@@ -65,7 +65,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             return TableRow::make(
                 $casted,
-                $this->getFields()->fillClonedValues($data, $casted),
+                $this->getFields()->fillCloned($data, $casted),
                 $this->getButtons($data),
                 $this->trAttributes,
                 $this->tdAttributes
@@ -115,6 +115,18 @@ final class TableBuilder extends IterableComponent implements TableContract
         $this->customAttributes([
             'x-data' => "tableBuilder({$this->isAsync()})",
         ]);
+
+        if($this->isRemovable()) {
+            $this->buttons([
+                ActionButton::make(
+                    '',
+                    '#'
+                )
+                    ->onClick(fn (): string => 'remove()', 'prevent')
+                    ->icon('heroicons.outline.trash')
+                    ->showInLine(),
+            ]);
+        }
 
         return view('moonshine::components.table.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),

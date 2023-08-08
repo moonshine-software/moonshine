@@ -5,42 +5,24 @@ namespace {namespace};
 use Illuminate\Database\Eloquent\Model;
 use {model-namespace};
 
-use MoonShine\Resources\Resource;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Fields\ID;
-use MoonShine\Actions\FiltersAction;
 
-class DummyResource extends Resource
+class DummyResource extends ModelResource
 {
-	public static string $model = {model}::class;
+    protected string $model = {model}::class;
 
-	public static string $title = 'DummyTitle';
+    protected string $title = 'DummyTitle';
 
-	public function fields(): array
-	{
-		return [
-		    ID::make()->sortable(),
-        ];
-	}
-
-	public function rules(Model $item): array
-	{
-	    return [];
-    }
-
-    public function search(): array
-    {
-        return ['id'];
-    }
-
-    public function filters(): array
-    {
-        return [];
-    }
-
-    public function actions(): array
+    public function fields(): array
     {
         return [
-            FiltersAction::make(trans('moonshine::ui.filters')),
+            ID::make()->sortable(),
         ];
+    }
+
+    public function rules(Model $item): array
+    {
+        return [];
     }
 }

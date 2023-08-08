@@ -45,7 +45,7 @@ final class TableRow
         return $this->actions;
     }
 
-    public function trAttributes(int $index): ComponentAttributeBag
+    public function trAttributes(int $row): ComponentAttributeBag
     {
         $attributes = new ComponentAttributeBag();
 
@@ -53,10 +53,10 @@ final class TableRow
             return $attributes;
         }
 
-        return call_user_func($this->trAttributes, $this->data, $index, $attributes);
+        return call_user_func($this->trAttributes, $this->data, $row, $attributes);
     }
 
-    public function tdAttributes(int $index, int $cell): ComponentAttributeBag
+    public function tdAttributes(int $row, int $cell): ComponentAttributeBag
     {
         $attributes = new ComponentAttributeBag();
 
@@ -64,6 +64,6 @@ final class TableRow
             return $attributes;
         }
 
-        return call_user_func($this->tdAttributes, $this->data, $cell, $index, $attributes);
+        return call_user_func($this->tdAttributes, $this->data, $row, $cell, $attributes);
     }
 }

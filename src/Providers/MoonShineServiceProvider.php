@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use MoonShine\Commands\InstallCommand;
-use MoonShine\Commands\ResourceCommand;
-use MoonShine\Commands\UserCommand;
+use MoonShine\Commands\MakeFieldCommand;
+use MoonShine\Commands\MakeResourceCommand;
+use MoonShine\Commands\MakeUserCommand;
 use MoonShine\Dashboard\Dashboard;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Http\Middleware\ChangeLocale;
@@ -30,8 +31,9 @@ class MoonShineServiceProvider extends ServiceProvider
 {
     protected array $commands = [
         InstallCommand::class,
-        ResourceCommand::class,
-        UserCommand::class,
+        MakeResourceCommand::class,
+        MakeFieldCommand::class,
+        MakeUserCommand::class,
     ];
 
     protected array $middlewareGroups = [
