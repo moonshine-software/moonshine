@@ -25,9 +25,7 @@ class Actions extends Collection
     public function onlyVisible(mixed $item = null): self
     {
         return $this->filter(
-            fn (AbstractAction $action) => $item
-                ? $action->isSee($item)
-                : moonshineRequest()
+            fn (AbstractAction $action) => $action->isSee($item ?? moonshineRequest())
         );
     }
 

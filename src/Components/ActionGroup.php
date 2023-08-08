@@ -40,7 +40,7 @@ final class ActionGroup extends MoonshineComponent
     {
         return view('moonshine::components.action-group', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'actions' => $this->getActions(),
+            'actions' => $this->getActions()->onlyVisible(),
         ]);
     }
 }

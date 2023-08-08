@@ -8,7 +8,7 @@ use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\WithIcon;
 
 /**
- * @method static make(string $label, string $link, bool $blank = false)
+ * @method static static make(string $label, string $link, bool $blank = false)
  */
 class Button extends Decoration
 {

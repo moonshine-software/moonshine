@@ -7,6 +7,7 @@ namespace MoonShine\Decorations;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithComponentAttributes;
@@ -16,9 +17,9 @@ use MoonShine\Traits\WithUniqueId;
 use MoonShine\Traits\WithView;
 
 /**
- * @method static make(string|array $labelOrFields = '', array $fields = [])
+ * @method static static make(string|array $labelOrFields = '', array $fields = [])
  */
-abstract class Decoration implements MoonShineRenderable, FieldsDecoration
+abstract class Decoration implements MoonShineRenderable, FieldsDecoration, HasFields
 {
     use Makeable;
     use WithView;

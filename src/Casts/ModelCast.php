@@ -8,7 +8,7 @@ use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static make(string $class)
+ * @method static static make(string $class)
  */
 final class ModelCast implements MoonShineDataCast
 {

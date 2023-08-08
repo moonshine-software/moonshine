@@ -9,7 +9,7 @@ use MoonShine\Exceptions\DecorationException;
 use Throwable;
 
 /**
- * @method static make(array $tabs = [])
+ * @method static static make(array $tabs = [])
  */
 class Tabs extends Decoration
 {

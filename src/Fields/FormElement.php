@@ -25,7 +25,7 @@ use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 
 /**
- * @method static make(string|null $label = null, string|null $column = null, ?Closure $valueCallback = null)
+ * @method static static make(string|null $label = null, string|null $column = null, ?Closure $valueCallback = null)
  */
 abstract class FormElement implements MoonShineRenderable, HasAssets
 {
