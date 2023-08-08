@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+
+use function Laravel\Prompts\confirm;
+
+use function Laravel\Prompts\text;
+
 use MoonShine\MoonShine;
 
 class MakeResourceCommand extends MoonShineCommand
@@ -26,12 +31,19 @@ class MakeResourceCommand extends MoonShineCommand
      */
     public function createResource(): void
     {
-        $name = str($this->argument('name') ?? $this->ask('Name'));
+        $name = str(
+            text(
+                'Name',
+                'ArticleResource',
+                $this->argument('name') ?? '',
+                required: true,
+            )
+        );
+
         $id = null;
 
-        if ($this->option('singleton')) {
-            $id = $this->option('id')
-                ?? $this->ask('Item id', 1);
+        if ($isSingleton = confirm('Singleton?', required: true)) {
+            $id = text('Item id', default: $this->option('id') ?? '', required: true);
         }
 
         $name = $name->ucfirst()
@@ -40,12 +52,12 @@ class MakeResourceCommand extends MoonShineCommand
 
         $model = $this->qualifyModel($this->option('model') ?? $name);
         $title = $this->option('title') ??
-            ($this->option('singleton') ? $name
+            ($isSingleton ? $name
                 : str($name)->singular()->plural()->value());
 
         $resource = $this->getDirectory() . "/Resources/{$name}Resource.php";
 
-        $stub = $this->option('singleton')
+        $stub = $isSingleton
             ? 'SingletonResource'
             : 'Resource';
 

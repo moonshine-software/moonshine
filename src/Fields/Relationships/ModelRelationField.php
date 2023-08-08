@@ -45,7 +45,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        return $casted->{$this->getRelationName()};
+        return $casted?->{$this->getRelationName()};
     }
 
     public function resolveFill(array $raw = [], mixed $casted = null): Field
@@ -112,7 +112,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->relation;
     }
 
-    public function setRelatedModel(Model $model): void
+    public function setRelatedModel(?Model $model = null): void
     {
         $this->relatedModel = $model;
     }
