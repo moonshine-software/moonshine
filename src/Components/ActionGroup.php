@@ -8,16 +8,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\View\Component;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Actions\Actions;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static make(array $actions = [])
+ * @method static static make(array $actions = [])
  */
-final class ActionGroup extends Component implements MoonShineRenderable
+final class ActionGroup extends MoonshineComponent
 {
     use Makeable;
     use Macroable;
@@ -44,10 +42,5 @@ final class ActionGroup extends Component implements MoonShineRenderable
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
             'actions' => $this->getActions(),
         ]);
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->render();
     }
 }

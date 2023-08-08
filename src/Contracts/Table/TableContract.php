@@ -20,8 +20,6 @@ interface TableContract
 
     public function hasPaginator(): bool;
 
-    public function getButtons(array $data): ActionButtons;
-
     public function getBulkButtons(): ActionButtons;
 
     public function trAttributes(Closure $closure): self;
