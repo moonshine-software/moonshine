@@ -147,7 +147,7 @@ final class Fields extends FormElements
     public function withoutOutside(): Fields
     {
         return $this->exceptFields(
-            fn($element) => $element instanceof ModelRelationField && $element->outsideComponent()
+            fn($element): bool => $element instanceof ModelRelationField && $element->outsideComponent()
         );
     }
 
@@ -169,13 +169,13 @@ final class Fields extends FormElements
     public function withoutRelationFields(): Fields
     {
         return $this->exceptFields(
-            fn($element) => $element instanceof ModelRelationField
+            fn($element): bool => $element instanceof ModelRelationField
         );
     }
 
     public function exceptFields(Closure $except): Fields
     {
-        return $this->map(function (FormElement|Decoration $element) use ($except) {
+        return $this->map(function (FormElement|Decoration $element) use ($except): null|FormElement|Decoration {
             if ($except($element) === true) {
                 return null;
             }
@@ -205,7 +205,7 @@ final class Fields extends FormElements
     public function formFields(): Fields
     {
         return $this->exceptFields(
-            fn ($element) => $element instanceof Field && ! $element->isOnForm()
+            fn ($element): bool => $element instanceof Field && ! $element->isOnForm()
         );
     }
 
