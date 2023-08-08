@@ -2,12 +2,10 @@
 
 namespace MoonShine\Pages\Crud;
 
-use App\Models\Hotel;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Casts\ModelCast;
 use MoonShine\Components\ActionGroup;
-use MoonShine\Components\DetailCardBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
 use MoonShine\Pages\Page;
