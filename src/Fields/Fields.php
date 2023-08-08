@@ -147,7 +147,7 @@ final class Fields extends FormElements
     public function withoutOutside(): Fields
     {
         return $this->exceptFields(
-            fn($element): bool => $element instanceof ModelRelationField && $element->outsideComponent()
+            fn ($element): bool => $element instanceof ModelRelationField && $element->outsideComponent()
         );
     }
 
@@ -169,7 +169,7 @@ final class Fields extends FormElements
     public function withoutRelationFields(): Fields
     {
         return $this->exceptFields(
-            fn($element): bool => $element instanceof ModelRelationField
+            fn ($element): bool => $element instanceof ModelRelationField
         );
     }
 

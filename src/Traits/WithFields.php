@@ -43,7 +43,7 @@ trait WithFields
         }
 
         return Fields::make($this->fields)->when(
-            $this instanceof HasFields && !$this instanceof Decoration,
+            $this instanceof HasFields && ! $this instanceof Decoration,
             fn (Fields $fields): Fields => $fields->resolveSiblings($this)
         );
     }
