@@ -29,7 +29,7 @@ class ShowPage extends Page
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                             'class' => 'font-semibold',
                     ])
-                )),
+                    )),
                 ActionGroup::make([
                     ActionButton::make(
                         '',
@@ -42,8 +42,8 @@ class ShowPage extends Page
                         ->customAttributes(['class' => 'btn-purple'])
                         ->icon('heroicons.outline.pencil')
                         ->showInLine(),
-                ])
-            ])
+                ]),
+            ]),
         ];
     }
 }

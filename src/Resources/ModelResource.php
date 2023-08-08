@@ -116,7 +116,7 @@ abstract class ModelResource extends Resource
                     ? 'Редактировать'
                     : 'Добавить'
             ),
-            ShowPage::make('')
+            ShowPage::make(''),
         ];
     }
 
