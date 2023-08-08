@@ -51,7 +51,7 @@ abstract class RowComponent extends MoonshineComponent
     public function getFields(): Fields
     {
         $fields = Fields::make($this->fields);
-        $fields->fillValues(
+        $fields->fill(
             $this->getValues(),
             $this->castData($this->values)
         );

@@ -25,7 +25,7 @@ class ShowPage extends Page
                     ->items([$this->getResource()->getItem()])
                     ->vertical()
                     ->tdAttributes(fn ($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
-                        $cell % 2 === 0,
+                        $index === 0,
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                             'class' => 'font-semibold',
                     ])
