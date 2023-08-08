@@ -8,6 +8,7 @@ use MoonShine\Casts\ModelCast;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Divider;
 use MoonShine\Pages\Page;
 use Throwable;
 
@@ -24,12 +25,21 @@ class ShowPage extends Page
                     ->cast(ModelCast::make($this->getResource()->getModel()::class))
                     ->items([$this->getResource()->getItem()])
                     ->vertical()
-                    ->tdAttributes(fn ($data, int $cell, int $index, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->when(
-                        $index === 0,
+                    ->preview()
+                    ->tdAttributes(fn (
+                        $data,
+                        int $row,
+                        int $cell,
+                        ComponentAttributeBag $attributes
+                    ): ComponentAttributeBag => $attributes->when(
+                        $cell === 0,
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                             'class' => 'font-semibold',
-                    ])
+                        ])
                     )),
+
+                Divider::make(),
+
                 ActionGroup::make([
                     ActionButton::make(
                         '',
