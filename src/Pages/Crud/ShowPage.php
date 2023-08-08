@@ -46,7 +46,7 @@ class ShowPage extends Page
                         $cell === 0,
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                             'class' => 'font-semibold',
-                            'width' => '20%'
+                            'width' => '20%',
                         ])
                     )),
 
@@ -62,12 +62,12 @@ class ShowPage extends Page
                                 'resourceItem' => request('resourceItem'),
                             ])
                         )
-                            ->canSee(fn() => $this->getResource()->can('update'))
+                            ->canSee(fn () => $this->getResource()->can('update'))
                             ->customAttributes(['class' => 'btn-purple'])
                             ->icon('heroicons.outline.pencil')
                             ->showInLine(),
                     ]),
-                ])->justifyAlign('end')
+                ])->justifyAlign('end'),
             ]),
         ];
     }
