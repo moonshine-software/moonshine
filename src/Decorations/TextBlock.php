@@ -7,7 +7,7 @@ namespace MoonShine\Decorations;
 use MoonShine\Traits\WithUniqueId;
 
 /**
- * @method static make(string $label, string $text)
+ * @method static static make(string $label, string $text)
  */
 final class TextBlock extends Decoration
 {

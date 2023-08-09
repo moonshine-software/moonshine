@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
+use MoonShine\Decorations\Decoration;
+use MoonShine\Decorations\Tabs;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
@@ -42,6 +46,9 @@ final class Fields extends FormElements
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function requestValues(string $prefix = null): Fields
     {
         return $this->onlyFields()->mapWithKeys(
@@ -49,6 +56,9 @@ final class Fields extends FormElements
         )->filter();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getValues(): Fields
     {
         return $this->onlyFields()->mapWithKeys(
@@ -56,6 +66,9 @@ final class Fields extends FormElements
         )->filter();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function reset(): void
     {
         $this->onlyFields()->map(
@@ -133,11 +146,9 @@ final class Fields extends FormElements
      */
     public function withoutOutside(): Fields
     {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field instanceof ModelRelationField && ! $field->outsideComponent()
-            )
-            ->values();
+        return $this->exceptFields(
+            fn ($element): bool => $element instanceof ModelRelationField && $element->outsideComponent()
+        );
     }
 
     /**
@@ -146,11 +157,9 @@ final class Fields extends FormElements
      */
     public function onlyOutside(): Fields
     {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
-            )
-            ->values();
+        return $this->onlyFields()->filter(
+            static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
+        )->values();
     }
 
     /**
@@ -159,11 +168,34 @@ final class Fields extends FormElements
      */
     public function withoutRelationFields(): Fields
     {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => ! $field instanceof ModelRelationField
-            )
-            ->values();
+        return $this->exceptFields(
+            fn ($element): bool => $element instanceof ModelRelationField
+        );
+    }
+
+    public function exceptFields(Closure $except): Fields
+    {
+        return $this->map(function (FormElement|Decoration $element) use ($except): null|FormElement|Decoration {
+            if ($except($element) === true) {
+                return null;
+            }
+
+            if ($element instanceof Tabs) {
+                foreach ($element->tabs() as $tab) {
+                    $tab->fields(
+                        $tab->getFields()->exceptFields($except)->toArray()
+                    );
+                }
+            }
+
+            if ($element instanceof HasFields) {
+                $element->fields(
+                    $element->getFields()->exceptFields($except)->toArray()
+                );
+            }
+
+            return $element;
+        })->filter()->values();
     }
 
     /**
@@ -172,9 +204,9 @@ final class Fields extends FormElements
      */
     public function formFields(): Fields
     {
-        return $this->onlyFields()
-            ->filter(static fn (Field $field): bool => $field->isOnForm())
-            ->values();
+        return $this->exceptFields(
+            fn ($element): bool => $element instanceof Field && ! $element->isOnForm()
+        );
     }
 
     /**
@@ -197,7 +229,7 @@ final class Fields extends FormElements
     {
         return $this->onlyFileFields()
             ->filter(
-                static fn (Field $field): bool => $field->isDeleteFiles() === $isDeleteFiles
+                static fn (Fileable $field): bool => $field->isDeleteFiles() === $isDeleteFiles
             )
             ->values();
     }

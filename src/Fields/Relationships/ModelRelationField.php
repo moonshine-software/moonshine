@@ -14,7 +14,7 @@ use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasResource;
 
 /**
- * @method static make(string $label, string $relation, ModelResource $resource, ?Closure $valueCallback = null)
+ * @method static static make(string $label, string $relation, ModelResource $resource, ?Closure $valueCallback = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {

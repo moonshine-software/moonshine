@@ -7,6 +7,7 @@ namespace MoonShine\Traits;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Decorations\Decoration;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
@@ -42,7 +43,7 @@ trait WithFields
         }
 
         return Fields::make($this->fields)->when(
-            $this instanceof HasFields,
+            $this instanceof HasFields && ! $this instanceof Decoration,
             fn (Fields $fields): Fields => $fields->resolveSiblings($this)
         );
     }
