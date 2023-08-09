@@ -28,6 +28,11 @@ trait ResourceModelQuery
 
     protected ?Builder $customBuilder = null;
 
+    public static function getItemsPerPage(): int
+    {
+        return static::$itemsPerPage;
+    }
+
     /**
      * @throws Throwable
      */
@@ -37,10 +42,10 @@ trait ResourceModelQuery
             ->when(
                 static::$simplePaginate,
                 fn (Builder $query): Paginator => $query->simplePaginate(
-                    static::$itemsPerPage
+                    static::getItemsPerPage()
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    static::$itemsPerPage
+                    static::getItemsPerPage()
                 ),
             )
             ->appends(request()->except('page'));
