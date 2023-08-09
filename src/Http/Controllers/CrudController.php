@@ -254,7 +254,10 @@ class CrudController extends BaseController
         );
 
         return $request->redirectRoute(
-            $request->getResource()->route('index')
+            route('moonshine.page', [
+                'resourceUri' => $request->getResource()->uriKey(),
+                'pageUri' => 'index-page',
+            ])
         );
     }
 
