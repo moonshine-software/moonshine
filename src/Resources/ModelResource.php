@@ -113,10 +113,10 @@ abstract class ModelResource extends Resource
             IndexPage::make($this->title()),
             FormPage::make(
                 $this->getItemID()
-                    ? 'Редактировать'
-                    : 'Добавить'
+                    ? __('moonshine::ui.edit')
+                    : __('moonshine::ui.add')
             ),
-            ShowPage::make(''),
+            ShowPage::make('Просмотр'),
         ];
     }
 
@@ -252,7 +252,7 @@ abstract class ModelResource extends Resource
     {
         $this->beforeDeleting($item);
 
-        $this->getFields()->formFields()->each(fn (Field $field) => $field->afterDestroy($item));
+        $this->getFields()->onlyFields()->each(fn (Field $field) => $field->afterDestroy($item));
 
         return tap($item->delete(), function () use ($item): void {
             $this->afterDeleted($item);
