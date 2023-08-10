@@ -38,10 +38,10 @@ if (! function_exists('to_page')) {
     function to_page(
         string|Resource $resource,
         string|Page|null $page = null,
+        array $params = [],
         bool $redirect = false,
-        array $params = []
     ): RedirectResponse|string {
-        return MoonShineRouter::to_page($resource, $page, $redirect, $params);
+        return MoonShineRouter::to_page($resource, $page, $params, $redirect);
     }
 }
 

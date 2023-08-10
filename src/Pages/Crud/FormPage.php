@@ -26,29 +26,21 @@ class FormPage extends Page
 
     public function components(): array
     {
-        $item = $this->getResource()->getItem();
+        $resource = $this->getResource();
 
-        if (! is_null($item)) {
-            $action = action(
-                [CrudController::class, 'update'],
-                [
-                    'resourceUri' => $this->getResource()->uriKey(),
-                    'resourceItem' => $item->getKey(),
-                ]
-            );
-        } else {
-            $action = action(
-                [CrudController::class, 'store'],
-                [
-                    'resourceUri' => $this->getResource()->uriKey(),
-                ]
-            );
-        }
+        $item = $resource->getItem();
+
+        $action = action(
+            [CrudController::class, is_null($item) ? 'store' : 'update'],
+            is_null($item)
+                ? ['resourceUri' => $resource->uriKey()]
+                : ['resourceUri' => $resource->uriKey(), 'resourceItem' => $item->getKey()]
+        );
 
         $components = [
             form($action)
                 ->fields(
-                    $this->getResource()
+                    $resource
                         ->getFormFields()
                         ->when(
                             ! is_null($item),
@@ -59,10 +51,10 @@ class FormPage extends Page
                         ->toArray()
                 )
                 ->fill($item?->attributesToArray() ?? [])
-                ->cast($this->getResource()->getModelCast()),
+                ->cast($resource->getModelCast()),
         ];
 
-        foreach ($this->getResource()->getOutsideFields() as $field) {
+        foreach ($resource->getOutsideFields() as $field) {
             $components[] = $field->resolveFill(
                 $item?->attributesToArray() ?? [],
                 $item

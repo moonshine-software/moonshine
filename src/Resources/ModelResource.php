@@ -46,7 +46,30 @@ abstract class ModelResource extends Resource
      */
     abstract public function rules(Model $item): array;
 
+    public function pages(): array
+    {
+        return [
+            IndexPage::make($this->title()),
+            FormPage::make(
+                $this->getItemID()
+                    ? __('moonshine::ui.edit')
+                    : __('moonshine::ui.add')
+            ),
+            ShowPage::make(__('moonshine::ui.show')),
+        ];
+    }
+
     public function fields(): array
+    {
+        return [];
+    }
+
+    public function filters(): array
+    {
+        return [];
+    }
+
+    public function actions(): array
     {
         return [];
     }
@@ -105,19 +128,6 @@ abstract class ModelResource extends Resource
                 ? $this->fields()
                 : $this->detailFields()
         )->detailFields();
-    }
-
-    public function pages(): array
-    {
-        return [
-            IndexPage::make($this->title()),
-            FormPage::make(
-                $this->getItemID()
-                    ? 'Редактировать'
-                    : 'Добавить'
-            ),
-            ShowPage::make(''),
-        ];
     }
 
     public function title(): string
@@ -252,7 +262,7 @@ abstract class ModelResource extends Resource
     {
         $this->beforeDeleting($item);
 
-        $this->getFields()->formFields()->each(fn (Field $field) => $field->afterDestroy($item));
+        $this->getFields()->onlyFields()->each(fn (Field $field) => $field->afterDestroy($item));
 
         return tap($item->delete(), function () use ($item): void {
             $this->afterDeleted($item);
