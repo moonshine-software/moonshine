@@ -215,7 +215,7 @@ class Json extends Field implements
             ->rows()
             ->map(
                 fn ($row) => $row->getFields()
-                    ->when($empty, fn(Fields $fields) => $fields->reset())
+                    ->when($empty, fn (Fields $fields) => $fields->reset())
                     ->getValues()
                     ->toArray()
             )

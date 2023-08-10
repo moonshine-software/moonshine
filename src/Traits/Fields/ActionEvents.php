@@ -57,7 +57,7 @@ trait ActionEvents
 
     public function apply(Closure $default, mixed $data): mixed
     {
-        if (!$this->isCanApply()) {
+        if (! $this->isCanApply()) {
             return $data;
         }
 
