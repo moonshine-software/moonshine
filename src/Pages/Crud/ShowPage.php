@@ -3,7 +3,6 @@
 namespace MoonShine\Pages\Crud;
 
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\ShowPage\FormButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
