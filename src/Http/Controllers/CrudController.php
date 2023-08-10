@@ -93,11 +93,12 @@ class CrudController extends BaseController
      */
     protected function updateOrCreate(
         MoonshineFormRequest $request
-    ):JsonResponse|RedirectResponse {
+    ): JsonResponse|RedirectResponse {
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 
-        $redirectRoute = $request->redirectRoute(to_page(
+        $redirectRoute = $request->redirectRoute(
+            to_page(
                 $request->getResource(),
                 FormPage::class,
                 $item->exists ? ['resourceItem' => $item] : []
