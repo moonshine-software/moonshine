@@ -3,9 +3,9 @@
 namespace MoonShine\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\RedirectResponse;
 use MoonShine\Pages\Page;
-use MoonShine\Resources\Resource;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use MoonShine\Resources\ModelResource;
 
 class MoonshineFormRequest extends FormRequest
 {
@@ -19,7 +19,7 @@ class MoonshineFormRequest extends FormRequest
         return [];
     }
 
-    public function getResource(): Resource
+    public function getResource(): ModelResource
     {
         return moonshineRequest()->getResource();
     }

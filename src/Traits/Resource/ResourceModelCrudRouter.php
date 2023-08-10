@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Http\Controllers\ActionController;
@@ -14,8 +15,6 @@ use MoonShine\MoonShineRouter;
  */
 trait ResourceModelCrudRouter
 {
-    public string $pageAfterSave = 'index-page';
-
     public function resolveRoutes(): void
     {
         Route::prefix('resource')->group(function (): void {
@@ -57,11 +56,18 @@ trait ResourceModelCrudRouter
         );
     }
 
-    public function getRedirectRoute(): string
+    public function redirectAfterSave(): string
     {
-        return route('moonshine.page', [
-            'resourceUri' => $this->uriKey(),
-            'pageUri' => 'index-page',
-        ]);
+        return $this->defaultRedirect();
+    }
+
+    public function redirectAfterDelete(): string
+    {
+        return $this->defaultRedirect();
+    }
+
+    protected function defaultRedirect(): string
+    {
+        return to_page($this, 'index-page');
     }
 }
