@@ -3,9 +3,9 @@
 namespace MoonShine\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\RedirectResponse;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class MoonshineFormRequest extends FormRequest
 {

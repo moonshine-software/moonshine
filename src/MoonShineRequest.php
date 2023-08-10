@@ -20,7 +20,10 @@ class MoonShineRequest extends Request
         return str($this->url())->contains('resource/');
     }
 
-    public function getResource(): ModelResource
+    /**
+     * @return ModelResource|Resource
+     */
+    public function getResource(): Resource
     {
         if ($this->resource instanceof Resource) {
             return $this->resource;

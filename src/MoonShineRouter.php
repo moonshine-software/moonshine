@@ -7,6 +7,7 @@ namespace MoonShine;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Resources\Resource;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class MoonShineRouter
 {

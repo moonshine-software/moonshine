@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Http\Controllers\ActionController;
@@ -14,8 +15,6 @@ use MoonShine\MoonShineRouter;
  */
 trait ResourceModelCrudRouter
 {
-    public string $pageAfterSave = 'index-page';
-
     public function resolveRoutes(): void
     {
         Route::prefix('resource')->group(function (): void {
