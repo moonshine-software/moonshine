@@ -3,9 +3,12 @@
 namespace MoonShine\Traits\Fields;
 
 use Closure;
+use MoonShine\Helpers\Condition;
 
 trait ActionEvents
 {
+    protected bool $canApply = true;
+
     protected ?Closure $onApply = null;
 
     protected ?Closure $onBeforeApply = null;
@@ -14,6 +17,17 @@ trait ActionEvents
 
     protected ?Closure $onAfterDestroy = null;
 
+    public function canApply(mixed $condition = null): static
+    {
+        $this->canApply = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isCanApply(): bool
+    {
+        return $this->canApply;
+    }
     protected function resolveOnApply(): ?Closure
     {
         return $this->onApply;
@@ -43,29 +57,33 @@ trait ActionEvents
 
     public function apply(Closure $default, mixed $data): mixed
     {
+        if (!$this->isCanApply()) {
+            return $data;
+        }
+
         return is_callable($this->resolveOnApply())
-            ? call_user_func($this->resolveOnApply(), $this, $data)
-            : $default($this, $data);
+            ? call_user_func($this->resolveOnApply(), $data)
+            : $default($data);
     }
 
     public function beforeApply(mixed $data): void
     {
         is_callable($this->onBeforeApply)
-            ? call_user_func($this->onBeforeApply, $this, $data)
+            ? call_user_func($this->onBeforeApply, $data)
             : $this->resolveBeforeApply($data);
     }
 
     public function afterApply(mixed $data): void
     {
         is_callable($this->onAfterApply)
-            ? call_user_func($this->onAfterApply, $this, $data)
+            ? call_user_func($this->onAfterApply, $data)
             : $this->resolveAfterApply($data);
     }
 
     public function afterDestroy(mixed $data): void
     {
         is_callable($this->onAfterDestroy)
-            ? call_user_func($this->onAfterDestroy, $this, $data)
+            ? call_user_func($this->onAfterDestroy, $data)
             : $this->resolveAfterDestroy($data);
     }
 

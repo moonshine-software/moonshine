@@ -43,24 +43,24 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     protected string $column;
 
+    protected ?Closure $valueCallback = null;
+
     protected ?FormElement $parent = null;
 
     protected bool $isGroup = false;
 
-    protected ?Closure $valueCallback = null;
+    protected bool $withWrapper = true;
 
     protected ?string $requestKeyPrefix = null;
-
-    protected bool $withWrapper = true;
 
     public function __construct(
         ?string $label = null,
         ?string $column = null,
         ?Closure $valueCallback = null
     ) {
-        $this->setLabel(trim($label ?? (string) str($this->label)->ucfirst()));
+        $this->setLabel($label ?? $this->label());
         $this->setColumn(
-            trim($column ?? (string) str($this->label)->lower()->snake())
+            trim($column ?? str($this->label)->lower()->snake()->value())
         );
 
         if (! is_null($valueCallback)) {
@@ -193,7 +193,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     public function render(): View|Closure|string
     {
         if ($this instanceof Field && empty($this->getView())) {
-            return $this->value();
+            return $this->toValue();
         }
 
         return view($this->getView(), [

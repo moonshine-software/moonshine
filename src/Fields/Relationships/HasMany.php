@@ -6,25 +6,38 @@ namespace MoonShine\Fields\Relationships;
 
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\RemovableContract;
+use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
-use MoonShine\Traits\Fields\HasOneOrMany;
-use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
+use Throwable;
 
-class HasMany extends ModelRelationField implements
-    HasFields,
-    RemovableContract
+class HasMany extends ModelRelationField implements HasFields
 {
     use WithFields;
-    use HasOneOrMany;
-    use Removable;
 
     protected string $view = 'moonshine::fields.relationships.has-many';
 
     protected bool $isGroup = true;
 
     protected bool $outsideComponent = true;
+
+    /**
+     * @throws Throwable
+     */
+    protected function prepareFields(Fields $fields): Fields
+    {
+        if ($fields->isEmpty()) {
+            $this->fields(
+                $this->getResource()
+                    ?->getIndexFields()
+                    ?->toArray() ?? []
+            );
+
+            return Fields::make($this->fields);
+        }
+
+        return $fields;
+    }
 
     protected function resolvePreview(): string
     {

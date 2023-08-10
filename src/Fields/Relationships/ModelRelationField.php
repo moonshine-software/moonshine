@@ -7,11 +7,15 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Stringable;
 use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\HasResourceContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Fields\Field;
+use MoonShine\MoonShine;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasResource;
+use Throwable;
 
 /**
  * @method static static make(string $label, string $relation, ModelResource $resource, ?Closure $valueCallback = null)
@@ -19,6 +23,8 @@ use MoonShine\Traits\HasResource;
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
     use HasResource;
+
+    protected string $relationName;
 
     protected ?Model $relatedModel = null;
 
@@ -28,19 +34,47 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
     public function __construct(
         string $label,
-        protected string $relation,
-        ModelResource $resource,
+        ?string $relationName = null,
+        ?ModelResource $resource = null,
         ?Closure $valueCallback = null
     ) {
-        parent::__construct();
+        parent::__construct($label, $relationName, $valueCallback);
 
-        $this->setColumn($relation);
-        $this->setLabel($label);
-        $this->setResource($resource);
-
-        if (! is_null($valueCallback)) {
-            $this->setValueCallback($valueCallback);
+        if (is_null($relationName)) {
+            $relationName = str($label)
+                ->camel()
+                ->when(
+                    $this->toOne(),
+                    fn (Stringable $str) => $str->singular(),
+                    fn (Stringable $str) => $str->plural(),
+                )->value();
         }
+
+        $this->setRelationName($relationName);
+
+        if (is_null($resource)) {
+            $resource = $this->findResource();
+        }
+
+        $this->setResource($resource);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function findResource(): ResourceContract
+    {
+        if ($this->hasResource()) {
+            return $this->getResource();
+        }
+
+        return MoonShine::getResourceFromUriKey(
+            str($this->getRelationName())
+                ->singular()
+                ->append('Resource')
+                ->kebab()
+                ->value()
+        );
     }
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
@@ -81,10 +115,6 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                     )
                 );
             }
-        } else {
-            $this->setColumn(
-                $this->getRelationName()
-            );
         }
 
         return $this;
@@ -107,9 +137,14 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->toOne;
     }
 
+    public function setRelationName(string $relationName): void
+    {
+        $this->relationName = $relationName;
+    }
+
     public function getRelationName(): string
     {
-        return $this->relation;
+        return $this->relationName;
     }
 
     public function setRelatedModel(?Model $model = null): void

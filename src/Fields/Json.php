@@ -6,11 +6,14 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\RemovableContract;
+use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
@@ -27,7 +30,7 @@ class Json extends Field implements
     use Removable;
     use WithDefaultValue;
 
-    //protected string $view = 'moonshine::fields.json';
+    protected string $view = 'moonshine::fields.json';
 
     protected bool $keyValue = false;
 
@@ -150,16 +153,44 @@ class Json extends Field implements
         return $this->isVertical;
     }
 
+    protected function prepareFields(Fields $fields): Fields
+    {
+        return $fields->map(function (Field $field): Field {
+            throw_if(
+                $field instanceof ModelRelationField,
+                new FieldException(
+                    'Relationship fields in JSON field unavailable'
+                )
+            );
+
+            $name = str($this->name());
+
+            return $field->setName(
+                $name
+                    ->append('[${index' . $name->substrCount('$') . '}]')
+                    ->append("[{$field->column()}]")
+                    ->replace('[]', '')
+                    ->when(
+                        $field->getAttribute('multiple') || $field->isGroup(),
+                        static fn (Stringable $str): Stringable => $str->append('[]')
+                    )
+                    ->value()
+            )->xModel();
+        });
+    }
+
     protected function resolvePreview(): string
     {
         if ($this->isRawMode()) {
-            return (string) $this->toValue();
+            return (string) $this->toFormattedValue();
         }
 
-        return (string) table(
+        return table(
             $this->getFields()->indexFields()->toArray(),
             $this->toValue() ?? []
-        )->preview();
+        )
+            ->preview()
+            ->render();
     }
 
     protected function resolveValue(): mixed
@@ -175,20 +206,19 @@ class Json extends Field implements
                 ->toArray();
         }
 
-        return table($this->getFields()->toArray(), $this->toValue() ?? [])
-            ->preview()
-            ->removable()
-            ->editable()
-            ->creatable()
-            ->render();
+        return table($this->getFields()->toArray(), $this->toValue());
     }
 
-    public function jsonValues(): array
+    public function tableData(bool $empty = false): array
     {
-        # TODO[removeme]
-        return $this->value()
+        return $this->resolveValue()
             ->rows()
-            ->map(fn ($row) => $row->getFields()->getValues()->toArray())
+            ->map(
+                fn ($row) => $row->getFields()
+                    ->when($empty, fn(Fields $fields) => $fields->reset())
+                    ->getValues()
+                    ->toArray()
+            )
             ->toArray();
     }
 

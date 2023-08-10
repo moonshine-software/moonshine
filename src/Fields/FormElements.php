@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Exceptions\FieldsException;
@@ -58,6 +60,31 @@ abstract class FormElements extends Collection
                 $this->extractFields($fieldOrDecoration->getFields(), $fields);
             }
         }
+    }
+
+    public function exceptElements(Closure $except): Fields
+    {
+        return $this->map(function (FormElement|Decoration $element) use ($except): null|FormElement|Decoration {
+            if ($except($element) === true) {
+                return null;
+            }
+
+            if ($element instanceof Tabs) {
+                foreach ($element->tabs() as $tab) {
+                    $tab->fields(
+                        $tab->getFields()->exceptElements($except)->toArray()
+                    );
+                }
+            }
+
+            if ($element instanceof HasFields) {
+                $element->fields(
+                    $element->getFields()->exceptElements($except)->toArray()
+                );
+            }
+
+            return $element;
+        })->filter()->values();
     }
 
     /**

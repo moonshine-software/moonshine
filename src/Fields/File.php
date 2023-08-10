@@ -60,7 +60,7 @@ class File extends Field implements Fileable, RemovableContract
         ])->render();
     }
 
-    protected function resolveAfterDestroy(mixed $item): void
+    protected function resolveAfterDestroy(mixed $data): void
     {
         if (! $this->isDeleteFiles()) {
             return;

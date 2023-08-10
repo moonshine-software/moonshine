@@ -39,6 +39,11 @@ final class TableBuilder extends IterableComponent implements TableContract
         protected iterable $items = [],
         protected ?LengthAwarePaginator $paginator = null
     ) {
+        if ($items instanceof LengthAwarePaginator) {
+            $this->paginator($items);
+            $this->items($items->items());
+        }
+
         $this->withAttributes([]);
     }
 

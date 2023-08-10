@@ -73,6 +73,7 @@
                     {{
                         $pivotField
                             ->clearXModel()
+                            ->setValue($element->getPivotValue($optionValue, $pivotField))
                             ->setName(
                                 preg_replace(
                                     '/\[\]$/',

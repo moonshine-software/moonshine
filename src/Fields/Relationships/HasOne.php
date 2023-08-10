@@ -5,13 +5,33 @@ declare(strict_types=1);
 namespace MoonShine\Fields\Relationships;
 
 use MoonShine\Components\FormBuilder;
+use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
+use Throwable;
 
 class HasOne extends HasMany
 {
     protected string $view = 'moonshine::fields.relationships.has-one';
 
     protected bool $toOne = true;
+
+    /**
+     * @throws Throwable
+     */
+    protected function prepareFields(Fields $fields): Fields
+    {
+        if ($fields->isEmpty()) {
+            $this->fields(
+                $this->getResource()
+                    ?->getFormFields()
+                    ?->toArray() ?? []
+            );
+
+            return Fields::make($this->fields);
+        }
+
+        return $fields;
+    }
 
     protected function resolvePreview(): string
     {

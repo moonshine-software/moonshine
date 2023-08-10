@@ -73,7 +73,7 @@ class NoInput extends Field
 
     protected function resolvePreview(): string
     {
-        $value = $this->toValue();
+        $value = $this->toFormattedValue();
 
         if ($this->isRawMode()) {
             return $value;
@@ -109,7 +109,7 @@ class NoInput extends Field
         return (string) $value;
     }
 
-    protected function resolveValue(): string|bool
+    protected function resolveValue(): mixed
     {
         $value = $this->toFormattedValue();
 

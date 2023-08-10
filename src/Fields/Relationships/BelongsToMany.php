@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Fields\Field;
+use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Traits\Fields\CheckboxTrait;
 use MoonShine\Traits\Fields\SelectTransform;
 use MoonShine\Traits\Fields\WithAsyncSearch;
-use MoonShine\Traits\Fields\WithPivot;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
 use Throwable;
@@ -26,7 +28,6 @@ class BelongsToMany extends ModelRelationField implements
     HasAsyncSearch
 {
     use WithFields;
-    use WithPivot;
     use WithRelatedValues;
     use CheckboxTrait;
     use SelectTransform;
@@ -177,6 +178,39 @@ class BelongsToMany extends ModelRelationField implements
         return $this->treeHtml;
     }
 
+    protected function prepareFields(Fields $fields): Fields
+    {
+        return $fields->map(function (Field $field): Field {
+            return $field->setName(
+                "{$this->getRelationName()}_{$field->column()}[]"
+            );
+        });
+    }
+
+    protected function resolveValue(): mixed
+    {
+        return $this->toValue()->mapWithKeys(function (Model $value) {
+            return [
+                $value->getKey() => $value->{$this->getRelation()->getPivotAccessor()},
+            ];
+        });
+    }
+
+    public function getPivotValue(int|string $key, Field $field): mixed
+    {
+        $field->reset();
+        $value = $this->resolveValue();
+
+        if (isset($value[$key])) {
+            return $field->resolveFill(
+                $value[$key]->toArray(),
+                $value[$key]
+            )->toValue();
+        }
+
+        return $field->toValue();
+    }
+
     /**
      * @throws Throwable
      */
@@ -217,6 +251,26 @@ class BelongsToMany extends ModelRelationField implements
             ->toArray();
 
         return (string) table($fields, $values)
+            ->preview()
             ->cast($this->getModelCast());
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return function ($item) {
+            $values = $this->requestValue() ?: [];
+            $sync = [];
+
+            foreach ($values as $index => $key) {
+                # TODO[refactor] requestValues change to apply
+                $sync[$key] = $this->getFields()
+                    ->requestValues((string) $index)
+                    ->toArray();
+            }
+
+            $item->{$this->getRelation()}()->sync($sync);
+
+            return $item;
+        };
     }
 }

@@ -10,7 +10,7 @@ class Url extends Text
 
     protected function resolvePreview(): string
     {
-        $value = $this->toValue();
+        $value = parent::resolvePreview();
 
         if ($this->isRawMode()) {
             return $value;

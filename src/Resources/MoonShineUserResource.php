@@ -37,7 +37,7 @@ class MoonShineUserResource extends ModelResource
     public function fields(): array
     {
         return [
-            Block::make('', [
+            Block::make([
                 Tabs::make([
                     Tab::make('Main', [
                         ID::make()

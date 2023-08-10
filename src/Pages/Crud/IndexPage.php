@@ -45,11 +45,9 @@ class IndexPage extends Page
                 ]),
             ]),
 
-            TableBuilder::make()
+            TableBuilder::make(items: $items)
                 ->fields($resource->getIndexFields()->toArray())
                 ->cast($resource->getModelCast())
-                ->items($items->items())
-                ->paginator($items)
                 ->buttons([
                     ShowButton::for($resource),
                     FormButton::for($resource),

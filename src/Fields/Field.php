@@ -31,8 +31,6 @@ abstract class Field extends FormElement
 
     protected bool $sortable = false;
 
-    protected bool $canSave = true;
-
     protected bool $nullable = false;
 
     protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
@@ -208,18 +206,6 @@ abstract class Field extends FormElement
     protected function resolvePreview(): string
     {
         return (string) ($this->toFormattedValue() ?? '');
-    }
-
-    public function canSave(mixed $condition = null): static
-    {
-        $this->canSave = Condition::boolean($condition, true);
-
-        return $this;
-    }
-
-    public function isCanSave(): bool
-    {
-        return $this->canSave;
     }
 
     public function nullable(Closure|bool|null $condition = null): static

@@ -13,7 +13,9 @@ class MoonShineUserRoleResource extends ModelResource
 {
     public string $model = MoonshineUserRole::class;
 
-    public string $titleField = 'name';
+    protected string $title = 'Roles';
+
+    public string $column = 'name';
 
     public bool $withPolicy = true;
 

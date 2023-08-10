@@ -63,7 +63,7 @@ trait WithAsyncSearch
             }
 
             if ($this->getRelatedModel()) {
-                return $this->getRelatedModel()->{$this->getRelationName()}();
+                return $this->getRelation();
             }
 
             return $query->whereRaw('1=0');

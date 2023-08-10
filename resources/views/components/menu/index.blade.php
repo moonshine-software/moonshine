@@ -1,7 +1,7 @@
 @if($data)
     <ul {{ $attributes->class(['menu-inner', 'grow']) }}
         @if(!request()->routeIs('moonshine.index') && !request()->routeIs('moonshine.custom_page'))
-            x-init="$nextTick(() => document.querySelector('.menu-inner-item._is-active').scrollIntoView())"
+            x-init="$nextTick(() => document.querySelector('.menu-inner-item._is-active')?.scrollIntoView())"
         @endif
     >
         @foreach($data as $item)

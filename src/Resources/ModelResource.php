@@ -140,9 +140,9 @@ abstract class ModelResource extends Resource
         return $this->column;
     }
 
-    public function onSave(): Closure
+    public function onSave(Field $field): Closure
     {
-        return static function (Field $field, Model $item): Model {
+        return static function (Model $item) use ($field): Model {
             if ($field->requestValue()) {
                 $item->{$field->column()} = $field->requestValue();
             }
@@ -289,13 +289,14 @@ abstract class ModelResource extends Resource
                 $item = $this->beforeUpdating($item);
             }
 
-            $fields->each(fn (Field $field) => $field->apply($this->onSave(), $item));
+            $fields->withoutRelationFields()
+                ->each(fn (Field $field) => $field->apply($this->onSave($field), $item));
 
             if ($item->save()) {
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 $fields->onlyRelationFields()
-                    ->each(fn (ModelRelationField $field) => $field->apply($this->onSave(), $item));
+                    ->each(fn (ModelRelationField $field) => $field->apply($this->onSave($field), $item));
 
                 $item->save();
 

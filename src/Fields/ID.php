@@ -13,7 +13,7 @@ class ID extends Hidden
     protected function resolvePreview(): string
     {
         return view('moonshine::ui.badge', [
-            'value' => $this->toValue(),
+            'value' => parent::resolvePreview(),
             'color' => 'purple',
         ])->render();
     }
