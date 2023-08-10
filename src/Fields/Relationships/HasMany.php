@@ -7,7 +7,6 @@ namespace MoonShine\Fields\Relationships;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Fields;
-use MoonShine\Fields\ID;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -52,7 +51,6 @@ class HasMany extends ModelRelationField implements HasFields
 
         $fields = $this->getFields()
             ->indexFields()
-            ->prepend(ID::make())
             ->toArray();
 
         return (string) table($fields, $values)

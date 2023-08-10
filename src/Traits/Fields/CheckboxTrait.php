@@ -10,7 +10,7 @@ trait CheckboxTrait
 {
     public function isChecked(string|bool $value): bool
     {
-        $formValue = $this->value();
+        $formValue = $this->toValue();
 
         if (is_scalar($formValue)) {
             return $formValue === $value;

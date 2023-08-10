@@ -31,4 +31,3 @@
 @endforeach
 
 <th></th>
-

@@ -5,8 +5,6 @@
     'preview' => false,
     'notfound' => false,
     'vertical' => false,
-    'editable' => false,
-    'creatable' => false,
 ])
 <div>
     <x-moonshine::table
@@ -28,35 +26,20 @@
                 <x-moonshine::table.body
                     :rows="$rows"
                     :vertical="$vertical"
-                    :editable="$editable"
                     :actions="$bulkButtons"
                 />
             </x-slot:tbody>
         @endif
 
-        @if($creatable)
-            <x-slot:tfoot>
-                <td colspan="{{ $fields->count() + 2 }}">
-                    <x-moonshine::link
-                        class="w-full"
-                        icon="heroicons.plus-circle"
-                        @click.prevent="add()"
-                    >
-                        @lang('moonshine::ui.add')
-                    </x-moonshine::link>
-                </td>
-            </x-slot:tfoot>
-        @else
-            <x-slot:tfoot
-                x-ref="foot"
-                ::class="actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
-            >
-                <x-moonshine::table.foot
-                    :rows="$rows"
-                    :actions="$bulkButtons"
-                />
-            </x-slot:tfoot>
-        @endif
+        <x-slot:tfoot
+            x-ref="foot"
+            ::class="actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
+        >
+            <x-moonshine::table.foot
+                :rows="$rows"
+                :actions="$bulkButtons"
+            />
+        </x-slot:tfoot>
     </x-moonshine::table>
 
     @if($hasPaginator)

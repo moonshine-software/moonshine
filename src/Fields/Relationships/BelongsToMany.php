@@ -264,7 +264,7 @@ class BelongsToMany extends ModelRelationField implements
                     ->toArray();
             }
 
-            $item->{$this->getRelation()}()->sync($sync);
+            $item->{$this->getRelationName()}()->sync($sync);
 
             return $item;
         };

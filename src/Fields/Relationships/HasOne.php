@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Fields;
-use MoonShine\Fields\ID;
 use Throwable;
 
 class HasOne extends HasMany
@@ -56,27 +56,22 @@ class HasOne extends HasMany
 
         $fields = $this->getFields()
             ->indexFields()
-            ->prepend(ID::make())
             ->toArray();
 
         return (string) table($fields, $values)
             ->cast($this->getModelCast())
-            ->trAttributes(fn ($data, $row, $attr) => $attr)
-            ->tdAttributes(function ($data, $row, $cell, $attr) {
-                if ($cell === 0) {
-                    return $attr->merge([
-                        'class' => 'bgc-red',
-                    ]);
-                }
-
-                if ($cell === 1) {
-                    return $attr->merge([
-                        'class' => 'bgc-green',
-                    ]);
-                }
-
-                return $attr;
-            })
+            ->tdAttributes(fn (
+                $data,
+                int $row,
+                int $cell,
+                ComponentAttributeBag $attributes
+            ): ComponentAttributeBag => $attributes->when(
+                $cell === 0,
+                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                    'class' => 'font-semibold',
+                    'width' => '20%',
+                ])
+            ))
             ->vertical()
             ->preview();
     }

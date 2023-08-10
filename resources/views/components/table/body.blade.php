@@ -1,6 +1,5 @@
 @props([
     'vertical' => false,
-    'editable' => false,
     'rows',
     'actions',
 ])
@@ -31,7 +30,7 @@
                         : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
                 >
                     {!! $field->isSee($field->value())
-                        ? $field->{$editable ? 'render' : 'preview'}()
+                        ? $field->preview()
                         : ''
                     !!}
                 </td>

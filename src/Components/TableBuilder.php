@@ -8,14 +8,13 @@ use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\Table\TableStates;
 
 /**
- * @method static static make(array $fields = [], array $values = [], ?LengthAwarePaginator $paginator = null)
+ * @method static static make(array $fields = [], array $items = [], ?LengthAwarePaginator $paginator = null)
  */
 final class TableBuilder extends IterableComponent implements TableContract
 {
@@ -122,18 +121,6 @@ final class TableBuilder extends IterableComponent implements TableContract
             'x-data' => "tableBuilder({$this->isAsync()})",
         ]);
 
-        if($this->isRemovable()) {
-            $this->buttons([
-                ActionButton::make(
-                    '',
-                    '#'
-                )
-                    ->onClick(fn (): string => 'remove()', 'prevent')
-                    ->icon('heroicons.outline.trash')
-                    ->showInLine(),
-            ]);
-        }
-
         return view('moonshine::components.table.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
             'rows' => $this->rows(),
@@ -143,9 +130,6 @@ final class TableBuilder extends IterableComponent implements TableContract
             'bulkButtons' => $this->getBulkButtons(),
             'vertical' => $this->isVertical(),
             'preview' => $this->isPreview(),
-            'creatable' => $this->isCreatable(),
-            'editable' => $this->isEditable(),
-            'removable' => $this->isRemovable(),
             'notfound' => $this->hasNotFound(),
         ]);
     }
