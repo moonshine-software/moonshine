@@ -225,7 +225,7 @@ class CrudController extends BaseController
             );
 
             return $request->redirectRoute(
-                $resource->getRedirectRoute()
+                $resource->redirectAfterSave()
             );
         }
 
@@ -254,10 +254,7 @@ class CrudController extends BaseController
         );
 
         return $request->redirectRoute(
-            route('moonshine.page', [
-                'resourceUri' => $request->getResource()->uriKey(),
-                'pageUri' => 'index-page',
-            ])
+            $request->getResource()->redirectAfterDelete()
         );
     }
 
@@ -281,7 +278,7 @@ class CrudController extends BaseController
         }
 
         return $request->redirectRoute(
-            $request->getResource()->route('index')
+            $request->getResource()->redirectAfterDelete()
         );
     }
 }

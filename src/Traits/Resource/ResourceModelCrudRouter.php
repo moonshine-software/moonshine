@@ -57,7 +57,17 @@ trait ResourceModelCrudRouter
         );
     }
 
-    public function getRedirectRoute(): string
+    public function redirectAfterSave(): string
+    {
+        return $this->defaultRedirect();
+    }
+
+    public function redirectAfterDelete(): string
+    {
+        return $this->defaultRedirect();
+    }
+
+    protected function defaultRedirect(): string
     {
         return route('moonshine.page', [
             'resourceUri' => $this->uriKey(),

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-class ID extends Hidden
+class ID extends Text
 {
     protected string $field = 'id';
 
