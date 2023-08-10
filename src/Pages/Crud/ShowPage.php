@@ -56,7 +56,7 @@ class ShowPage extends Page
 
                 Flex::make([
                     ActionGroup::make([
-                        FormButton::for($resource)
+                        FormButton::for($resource),
                     ]),
                 ])->justifyAlign('end'),
             ]),
