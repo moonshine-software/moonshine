@@ -34,130 +34,13 @@ class CrudController extends BaseController
     }
 
     /**
-     * @throws AuthorizationException|Throwable
-     */
-    public function index(ViewAnyFormRequest $request): View|string
-    {
-        $resource = $request->getResource();
-
-        if ($request->hasQueryTag() && $resource->queryTags()) {
-            $queryTag = collect($resource->queryTags())
-                ->first(
-                    fn (QueryTag $tag): bool => $tag->uri() === $request->getQueryTag()
-                );
-
-            $resource->customBuilder($queryTag->apply(
-                $resource->query()
-            ));
-        }
-
-        if (request()->ajax()) {
-            abort_if(
-                ! $request->isRelatableMode(),
-                ResponseAlias::HTTP_NOT_FOUND
-            );
-
-            $resource->relatable();
-        }
-
-        $actions = $resource->getActions();
-
-        try {
-            $resources = $resource->isPaginationUsed()
-                ? $resource->paginate()
-                : $resource->items();
-
-            return $this->viewOrFragment(
-                view($resource->baseIndexView(), [
-                    'resource' => $resource,
-                    'resources' => $resources,
-                    'filters' => $resource->filters(),
-                    'dropdownActions' => $actions->inDropdown(),
-                    'lineActions' => $actions->inLine(),
-                    'metrics' => $resource->metrics(),
-                ])
-            );
-        } catch (Throwable $e) {
-            throw_if(! app()->isProduction(), $e);
-            report_if(app()->isProduction(), $e);
-
-            return view('moonshine::components.alert', [
-                'type' => 'error',
-                'slot' => app()->isProduction()
-                    ? trans('moonshine::ui.saved_error')
-                    : $e->getMessage(),
-            ]);
-        }
-    }
-
-    protected function viewOrFragment(View $view): View|string
-    {
-        if (request()->hasHeader('X-Fragment')) {
-            return $view->fragment(request()->header('X-Fragment'));
-        }
-
-        if (request()->ajax()) {
-            $sections = $view->renderSections();
-
-            return $sections['content'] ?? '';
-        }
-
-        return $view;
-    }
-
-    /**
      * @throws AuthorizationException
      * @throws Throwable
      */
-    public function create(
-        CreateFormRequest $request
-    ): string|View|RedirectResponse {
-        return $this->createOrEditView($request);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    protected function createOrEditView(MoonshineFormRequest $request): View|string
-    {
-        $resource = $request->getResource();
-        $item = $resource->getItemOrInstance();
-
-        if (request()->ajax()) {
-            $resource->precognitionMode();
-        }
-
-        return $this->viewOrFragment(
-            view($resource->baseEditView(), [
-                'resource' => $resource,
-                'item' => $item,
-            ])
-        );
-    }
-
-    /**
-     * @throws AuthorizationException
-     * @throws Throwable
-     */
-    public function edit(EditFormRequest $request): string|View|RedirectResponse
-    {
-        return $this->createOrEditView($request);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function show(ViewFormRequest $request): string|View|RedirectResponse
-    {
-        $resource = $request->getResource();
-        $item = $resource->getItemOrFail();
-
-        return $this->viewOrFragment(
-            view($request->getResource()->baseShowView(), [
-                'resource' => $resource,
-                'item' => $item,
-            ])
-        );
+    public function store(
+        StoreFormRequest $request
+    ): JsonResponse|View|RedirectResponse {
+        return $this->updateOrCreate($request);
     }
 
     /**
@@ -166,78 +49,6 @@ class CrudController extends BaseController
      */
     public function update(
         UpdateFormRequest $request
-    ): JsonResponse|View|RedirectResponse {
-        return $this->updateOrCreate($request);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    protected function updateOrCreate(
-        MoonshineFormRequest $request
-    ): JsonResponse|View|RedirectResponse {
-        $resource = $request->getResource();
-        $item = $resource->getItemOrInstance();
-
-
-        if ($request->isMethod('post') || $request->isMethod('put')) {
-            $redirectRoute = $request->redirectRoute(
-                $resource->route(
-                    $item->exists ? 'edit' : 'create',
-                    $item->getKey()
-                )
-            );
-
-            $validator = $resource->validate($item);
-
-            if ($request->isAttemptingPrecognition()) {
-                return response()->json(
-                    $validator->errors(),
-                    $validator->fails()
-                        ? ResponseAlias::HTTP_UNPROCESSABLE_ENTITY
-                        : ResponseAlias::HTTP_OK
-                );
-            }
-
-            if ($validator->fails()) {
-                return $redirectRoute
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            try {
-                $resource->save($item);
-            } catch (ResourceException $e) {
-                throw_if(! app()->isProduction(), $e);
-                report_if(app()->isProduction(), $e);
-
-                MoonShineUI::toast(
-                    __('moonshine::ui.saved_error'),
-                    'error'
-                );
-
-                return $redirectRoute;
-            }
-
-            MoonShineUI::toast(
-                __('moonshine::ui.saved'),
-                'success'
-            );
-
-            return $request->redirectRoute(
-                $resource->redirectAfterSave()
-            );
-        }
-
-        return $this->createOrEditView($request);
-    }
-
-    /**
-     * @throws AuthorizationException
-     * @throws Throwable
-     */
-    public function store(
-        StoreFormRequest $request
     ): JsonResponse|View|RedirectResponse {
         return $this->updateOrCreate($request);
     }
@@ -279,6 +90,65 @@ class CrudController extends BaseController
 
         return $request->redirectRoute(
             $request->getResource()->redirectAfterDelete()
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function updateOrCreate(
+        MoonshineFormRequest $request
+    ): JsonResponse|View|RedirectResponse {
+        $resource = $request->getResource();
+        $item = $resource->getItemOrInstance();
+
+        $routeData = [
+            'resourceUri' => $resource->uriKey(),
+            'pageUri' => 'form-page',
+        ];
+        if($item->exists) {
+            $routeData['resourceItem'] = $item;
+        }
+        $redirectRoute = $request->redirectRoute(route('moonshine.page', $routeData));
+
+        $validator = $resource->validate($item);
+
+        if ($request->isAttemptingPrecognition()) {
+            return response()->json(
+                $validator->errors(),
+                $validator->fails()
+                    ? ResponseAlias::HTTP_UNPROCESSABLE_ENTITY
+                    : ResponseAlias::HTTP_OK
+            );
+        }
+
+        if ($validator->fails()) {
+            return $redirectRoute
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            $resource->save($item);
+        } catch (ResourceException $e) {
+            throw_if(! app()->isProduction(), $e);
+            report_if(app()->isProduction(), $e);
+
+            MoonShineUI::toast(
+                __('moonshine::ui.saved_error'),
+                'error'
+            );
+
+            return $redirectRoute;
+        }
+
+        MoonShineUI::toast(
+            __('moonshine::ui.saved'),
+            'success'
+        );
+
+        return $request->redirectRoute(
+            $resource->redirectAfterSave()
         );
     }
 }

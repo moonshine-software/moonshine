@@ -25,10 +25,10 @@ Route::prefix(config('moonshine.route.prefix', ''))
             Route::delete('/resource/{resourceUri}/crud', [CrudController::class, 'massDelete'])
                 ->name('crud.massDelete');
             Route::resource('/resource/{resourceUri}/crud', CrudController::class)
-                ->parameter('crud', 'resourceItem');
+                ->parameter('crud', 'resourceItem')->only(['store', 'update', 'destroy']);
 
-            Route::any('/resource/{resourceUri}/actions', [ActionController::class, 'index'])
-                ->name('actions.index');
+            Route::any('/resource/{resourceUri}/actions', ActionController::class)
+                ->name('actions');
 
             Route::get('/resource/{resourceUri}/{pageUri}', PageController::class)->name('page');
 

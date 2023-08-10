@@ -46,6 +46,19 @@ abstract class ModelResource extends Resource
      */
     abstract public function rules(Model $item): array;
 
+    public function pages(): array
+    {
+        return [
+            IndexPage::make($this->title()),
+            FormPage::make(
+                $this->getItemID()
+                    ? __('moonshine::ui.edit')
+                    : __('moonshine::ui.add')
+            ),
+            ShowPage::make(__('moonshine::ui.show')),
+        ];
+    }
+
     public function fields(): array
     {
         return [];
@@ -105,19 +118,6 @@ abstract class ModelResource extends Resource
                 ? $this->fields()
                 : $this->detailFields()
         )->detailFields();
-    }
-
-    public function pages(): array
-    {
-        return [
-            IndexPage::make($this->title()),
-            FormPage::make(
-                $this->getItemID()
-                    ? __('moonshine::ui.edit')
-                    : __('moonshine::ui.add')
-            ),
-            ShowPage::make('Просмотр'),
-        ];
     }
 
     public function title(): string

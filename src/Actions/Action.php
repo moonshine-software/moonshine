@@ -44,7 +44,7 @@ abstract class Action extends AbstractAction implements ActionContract, HasResou
         }
 
         return $this->getResource()
-            ->route('actions.index', query: $query);
+            ->route('actions', query: $query);
     }
 
     public function getTriggerKey(): string
