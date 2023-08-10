@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Pages\Crud;
 
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Actions\ExportAction;
 use MoonShine\Actions\FiltersAction;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
@@ -13,12 +12,8 @@ use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\Heading;
-use MoonShine\Decorations\Modal;
-use MoonShine\Decorations\Offcanvas;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Hidden;
-use MoonShine\Fields\Text;
-use MoonShine\Metrics\ValueMetric;
 use MoonShine\Pages\Page;
 
 class IndexPage extends Page
@@ -31,17 +26,14 @@ class IndexPage extends Page
             Grid::make([
                 Column::make([
                     Flex::make([
-                        ActionButton::make(__('moonshine::ui.create'), to_page($this->getResource(), FormPage::class))
+                        ActionButton::make(__('moonshine::ui.create'), to_page($this->getResource(), 'form-page'))
                             ->customAttributes(['class' => 'btn btn-primary'])
                             ->icon('heroicons.outline.plus'),
                     ])->justifyAlign('start'),
 
                     ActionGroup::make([
                         FiltersAction::make(__('moonshine::ui.filters'))
-                            ->filters([
-                                Text::make('Отель', 'name'),
-                                Text::make('Домен', 'domain'),
-                            ])
+                            ->filters($this->getResource()->filters())
                             ->setResource($this->getResource())
                             ->showInLine(),
                     ]),
@@ -59,22 +51,22 @@ class IndexPage extends Page
 
                     ActionButton::make(
                         '',
-                        url: fn ($data): string => route('moonshine.page', [
-                            'resourceUri' => $this->getResource()->uriKey(),
-                            'pageUri' => 'show-page',
-                            'resourceItem' => $data->getKey(),
-                        ])
+                        url: fn ($data): string => to_page(
+                            $this->getResource(),
+                            'show-page',
+                            ['resourceItem' => $data->getKey()]
+                        )
                     )
                         ->icon('heroicons.outline.eye')
                         ->showInLine(),
 
                     ActionButton::make(
                         '',
-                        url: fn ($data): string => route('moonshine.page', [
-                        'resourceUri' => $this->getResource()->uriKey(),
-                        'pageUri' => 'form-page',
-                        'resourceItem' => $data->getKey(),
-                    ])
+                        url: fn ($data): string => to_page(
+                            $this->getResource(),
+                            'form-page',
+                            ['resourceItem' => $data->getKey()]
+                        )
                     )
                         ->customAttributes(['class' => 'btn-purple'])
                         ->icon('heroicons.outline.pencil')

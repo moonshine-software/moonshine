@@ -5,23 +5,18 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Http\Requests\MoonshineFormRequest;
-use MoonShine\Http\Requests\Resources\CreateFormRequest;
 use MoonShine\Http\Requests\Resources\DeleteFormRequest;
-use MoonShine\Http\Requests\Resources\EditFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
-use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use MoonShine\Http\Requests\Resources\ViewFormRequest;
 use MoonShine\MoonShineUI;
-use MoonShine\QueryTags\QueryTag;
+use MoonShine\Pages\Crud\FormPage;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -39,7 +34,7 @@ class CrudController extends BaseController
      */
     public function store(
         StoreFormRequest $request
-    ): JsonResponse|View|RedirectResponse {
+    ): JsonResponse|RedirectResponse {
         return $this->updateOrCreate($request);
     }
 
@@ -49,7 +44,7 @@ class CrudController extends BaseController
      */
     public function update(
         UpdateFormRequest $request
-    ): JsonResponse|View|RedirectResponse {
+    ): JsonResponse|RedirectResponse {
         return $this->updateOrCreate($request);
     }
 
@@ -98,18 +93,16 @@ class CrudController extends BaseController
      */
     protected function updateOrCreate(
         MoonshineFormRequest $request
-    ): JsonResponse|View|RedirectResponse {
+    ):JsonResponse|RedirectResponse {
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 
-        $routeData = [
-            'resourceUri' => $resource->uriKey(),
-            'pageUri' => 'form-page',
-        ];
-        if($item->exists) {
-            $routeData['resourceItem'] = $item;
-        }
-        $redirectRoute = $request->redirectRoute(route('moonshine.page', $routeData));
+        $redirectRoute = $request->redirectRoute(to_page(
+                $request->getResource(),
+                FormPage::class,
+                $item->exists ? ['resourceItem' => $item] : []
+            )
+        );
 
         $validator = $resource->validate($item);
 

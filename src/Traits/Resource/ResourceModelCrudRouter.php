@@ -69,9 +69,6 @@ trait ResourceModelCrudRouter
 
     protected function defaultRedirect(): string
     {
-        return route('moonshine.page', [
-            'resourceUri' => $this->uriKey(),
-            'pageUri' => 'index-page',
-        ]);
+        return to_page($this, 'index-page');
     }
 }

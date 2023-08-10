@@ -64,6 +64,16 @@ abstract class ModelResource extends Resource
         return [];
     }
 
+    public function filters(): array
+    {
+        return [];
+    }
+
+    public function actions(): array
+    {
+        return [];
+    }
+
     public function getFields(): Fields
     {
         return Fields::make($this->fields());

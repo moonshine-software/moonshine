@@ -6,6 +6,7 @@ namespace MoonShine;
 
 use Illuminate\Http\Request;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\Resource;
 
 class MoonShineRequest extends Request
@@ -19,7 +20,7 @@ class MoonShineRequest extends Request
         return str($this->url())->contains('resource/');
     }
 
-    public function getResource(): Resource
+    public function getResource(): ModelResource
     {
         if ($this->resource instanceof Resource) {
             return $this->resource;
