@@ -4,6 +4,7 @@ namespace MoonShine\Pages\Crud;
 
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Buttons\ShowPage\FormButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
@@ -30,11 +31,13 @@ class ShowPage extends Page
      */
     public function components(): array
     {
+        $resource = $this->getResource();
+
         return [
             Block::make([
-                TableBuilder::make($this->getResource()->getFields()->onlyFields()->toArray())
-                    ->cast($this->getResource()->getModelCast())
-                    ->items([$this->getResource()->getItem()])
+                TableBuilder::make($resource->getFields()->onlyFields()->toArray())
+                    ->cast($resource->getModelCast())
+                    ->items([$resource->getItem()])
                     ->vertical()
                     ->preview()
                     ->tdAttributes(fn (
@@ -54,18 +57,7 @@ class ShowPage extends Page
 
                 Flex::make([
                     ActionGroup::make([
-                        ActionButton::make(
-                            '',
-                            url: fn (): string => route('moonshine.page', [
-                                'resourceUri' => $this->getResource()->uriKey(),
-                                'pageUri' => 'form-page',
-                                'resourceItem' => request('resourceItem'),
-                            ])
-                        )
-                            ->canSee(fn () => $this->getResource()->can('update'))
-                            ->customAttributes(['class' => 'btn-purple'])
-                            ->icon('heroicons.outline.pencil')
-                            ->showInLine(),
+                        FormButton::for($resource)
                     ]),
                 ])->justifyAlign('end'),
             ]),
