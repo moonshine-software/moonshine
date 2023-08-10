@@ -6,6 +6,7 @@ return [
     'add' => 'Add',
     'create' => 'Create',
     'edit' => 'Edit',
+    'show' => 'Show',
     'save' => 'Save',
     'saved' => 'Saved',
     'saved_error' => 'Error',
