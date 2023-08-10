@@ -180,14 +180,14 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function prepareFields(Fields $fields): Fields
     {
-        return $fields->map(fn(Field $field): Field => $field->setName(
+        return $fields->map(fn (Field $field): Field => $field->setName(
             "{$this->getRelationName()}_{$field->column()}[]"
         ));
     }
 
     protected function resolveValue(): mixed
     {
-        return $this->toValue()->mapWithKeys(fn(Model $value): array => [
+        return $this->toValue()->mapWithKeys(fn (Model $value): array => [
             $value->getKey() => $value->{$this->getRelation()->getPivotAccessor()},
         ]);
     }
