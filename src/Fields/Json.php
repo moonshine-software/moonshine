@@ -197,7 +197,7 @@ class Json extends Field implements
     protected function resolveValue(): mixed
     {
         return table($this->getFields()->toArray(), $this->toValue() ?? [])
-            ->when($this->isVertical(), fn (TableBuilder $table) => $table->vertical());
+            ->when($this->isVertical(), fn (TableBuilder $table): TableBuilder => $table->vertical());
     }
 
     /**

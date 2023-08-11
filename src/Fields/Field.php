@@ -53,8 +53,6 @@ abstract class Field extends FormElement
         ?string $column = null,
         ?Closure $formattedValueCallback = null
     ) {
-        parent::__construct();
-
         $this->setLabel($label ?? $this->label());
         $this->setColumn(
             trim($column ?? str($this->label)->lower()->snake()->value())
