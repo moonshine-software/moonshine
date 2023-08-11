@@ -207,7 +207,7 @@ final class Fields extends FormElements
     public function onlyValueExtraction(): Fields
     {
         return $this->exceptElements(
-            fn ($element): bool => !$element instanceof HasValueExtraction
+            fn ($element): bool => ! $element instanceof HasValueExtraction
         );
     }
 }
