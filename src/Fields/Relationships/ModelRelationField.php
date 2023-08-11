@@ -18,7 +18,7 @@ use MoonShine\Traits\HasResource;
 use Throwable;
 
 /**
- * @method static static make(string $label, string $relation, ModelResource $resource, ?Closure $valueCallback = null)
+ * @method static static make(string $label, ?string $relationName, ?ModelResource $resource, ?Closure $formattedValueCallback = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
@@ -36,9 +36,9 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         string $label,
         ?string $relationName = null,
         ?ModelResource $resource = null,
-        ?Closure $valueCallback = null
+        ?Closure $formattedValueCallback = null
     ) {
-        parent::__construct($label, $relationName, $valueCallback);
+        parent::__construct($label, $relationName, $formattedValueCallback);
 
         if (is_null($relationName)) {
             $relationName = str($label)
@@ -104,13 +104,13 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
 
             $this->setFormattedValue(
-                $data?->{$this->getResource()->column()}
+                $data?->{$this->getResourceColumn()}
             );
 
-            if (is_callable($this->valueCallback())) {
+            if (is_callable($this->formattedValueCallback())) {
                 $this->setFormattedValue(
                     call_user_func(
-                        $this->valueCallback(),
+                        $this->formattedValueCallback(),
                         $data
                     )
                 );
@@ -118,13 +118,6 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
 
         return $this;
-    }
-
-    protected function afterMake(): void
-    {
-        if ($this->getAssets()) {
-            moonshineAssets()->add($this->getAssets());
-        }
     }
 
     public function outsideComponent(): bool
@@ -137,7 +130,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->toOne;
     }
 
-    public function setRelationName(string $relationName): void
+    protected function setRelationName(string $relationName): void
     {
         $this->relationName = $relationName;
     }
@@ -147,22 +140,30 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->relationName;
     }
 
-    public function setRelatedModel(?Model $model = null): void
+    protected function setRelatedModel(?Model $model = null): void
     {
         $this->relatedModel = $model;
     }
 
-    public function getModelCast(): ModelCast
+    protected function getModelCast(): ModelCast
     {
         return ModelCast::make($this->getRelation()?->getRelated()::class);
     }
 
-    public function getRelatedModel(): ?Model
+    /**
+     * @throws Throwable
+     */
+    protected function getResourceColumn(): string
+    {
+        return $this->getResource()?->column() ?? 'id';
+    }
+
+    protected function getRelatedModel(): ?Model
     {
         return $this->relatedModel;
     }
 
-    public function getRelation(): ?Relation
+    protected function getRelation(): ?Relation
     {
         return $this->getRelatedModel()
             ?->{$this->getRelationName()}();

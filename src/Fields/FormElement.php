@@ -10,40 +10,24 @@ use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Helpers\Condition;
-use MoonShine\Traits\Fields\ShowWhen;
 use MoonShine\Traits\Fields\WithFormElementAttributes;
 use MoonShine\Traits\Fields\XModel;
 use MoonShine\Traits\HasCanSee;
-use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithComponentAttributes;
-use MoonShine\Traits\WithHint;
-use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
 
-/**
- * @method static static make(string|null $label = null, string|null $column = null, ?Closure $valueCallback = null)
- */
 abstract class FormElement implements MoonShineRenderable, HasAssets
 {
-    use Makeable;
-    use WithLabel;
     use WithFormElementAttributes;
     use WithComponentAttributes;
     use WithView;
-    use WithHint;
     use WithAssets;
-    use ShowWhen;
     use HasCanSee;
-    use XModel;
     use Conditionable;
-
-    protected string $column;
-
-    protected ?Closure $valueCallback = null;
+    use XModel;
 
     protected ?FormElement $parent = null;
 
@@ -53,19 +37,8 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     protected ?string $requestKeyPrefix = null;
 
-    public function __construct(
-        ?string $label = null,
-        ?string $column = null,
-        ?Closure $valueCallback = null
-    ) {
-        $this->setLabel($label ?? $this->label());
-        $this->setColumn(
-            trim($column ?? str($this->label)->lower()->snake()->value())
-        );
-
-        if (! is_null($valueCallback)) {
-            $this->setValueCallback($valueCallback);
-        }
+    public function __construct()
+    {
     }
 
     protected function afterMake(): void
@@ -73,28 +46,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         if ($this->getAssets()) {
             moonshineAssets()->add($this->getAssets());
         }
-    }
-
-    public function setColumn(string $column): static
-    {
-        $this->column = $column;
-
-        return $this;
-    }
-
-    public function column(): string
-    {
-        return $this->column;
-    }
-
-    protected function setValueCallback(Closure $valueCallback): void
-    {
-        $this->valueCallback = $valueCallback;
-    }
-
-    public function valueCallback(): ?Closure
-    {
-        return $this->valueCallback;
     }
 
     public function parent(): ?FormElement
@@ -105,23 +56,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     public function hasParent(): bool
     {
         return ! is_null($this->parent);
-    }
-
-    public function setParents(): static
-    {
-        if ($this instanceof HasFields) {
-            $fields = [];
-
-            foreach ($this->getFields() as $field) {
-                $field = $field->setParents();
-
-                $fields[] = $field->setParent($this);
-            }
-
-            $this->fields($fields);
-        }
-
-        return $this;
     }
 
     protected function setParent(FormElement $field): static

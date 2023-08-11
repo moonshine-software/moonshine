@@ -29,8 +29,6 @@ class BelongsToMany extends ModelRelationField implements
 {
     use WithFields;
     use WithRelatedValues;
-    use CheckboxTrait;
-    use SelectTransform;
     use WithAsyncSearch;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
@@ -57,10 +55,6 @@ class BelongsToMany extends ModelRelationField implements
             return 'moonshine::fields.shared.tree';
         }
 
-        if ($this->isSelect()) {
-            return 'moonshine::fields.select';
-        }
-
         return parent::getView();
     }
 
@@ -80,54 +74,36 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    # TODO[refactor(tree)]
-    public function tree(string $treeParentColumn): static
+    public function tree(string $parentColumn): static
     {
-        $this->treeParentColumn = $treeParentColumn;
+        $this->treeParentColumn = $parentColumn;
         $this->tree = true;
 
         return $this;
     }
 
-    public function isTree(): bool
+    protected function isTree(): bool
     {
         return $this->tree;
     }
 
-    public function buildTreeHtml(): string
+    public function toTreeHtml(): string
     {
-        $relation = $this->getRelation();
-        $related = $relation->getRelated();
-        $query = $related->newModelQuery();
+        $data = $this->resolveValuesQuery()
+            ->get()
+            ->map(fn($item) => $item->setAttribute($this->treeParentColumn, $item->{$this->treeParentColumn} ?? 0))
+            ->groupBy($this->treeParentColumn)
+            ->map(fn ($items) => $items->keyBy($items->first()->getKeyName()));
 
-        if (is_callable($this->valuesQuery)) {
-            $query = call_user_func($this->valuesQuery, $query);
-        }
+        $this->treeHtml = '';
 
-        $data = $query->get();
-
-        $this->treePerformHtml($data);
-
-        return $this->treeHtml();
+        return $this->buildTree($data);
     }
 
-    private function treePerformHtml(Collection $data): void
+    protected function buildTree(Collection $data, int|string $parentKey = 0, int $offset = 0): string
     {
-        $this->makeTree($this->treePerformData($data));
-
-        $this->treeHtml = (string) str($this->treeHtml())->wrap(
-            "<ul class='tree-list'>",
-            "</ul>"
-        );
-    }
-
-    private function makeTree(
-        array $performedData,
-        int|string $parent_id = 0,
-        int $offset = 0
-    ): void {
-        if (isset($performedData[$parent_id])) {
-            foreach ($performedData[$parent_id] as $item) {
+        if ($data->has($parentKey)) {
+            foreach ($data->get($parentKey) as $item) {
                 $element = view(
                     'moonshine::components.form.input-composition',
                     [
@@ -139,7 +115,7 @@ class BelongsToMany extends ModelRelationField implements
                             'class' => 'form-group-inline',
                         ]),
                         'beforeLabel' => true,
-                        'label' => $item->{$this->getResource()->column()},
+                        'label' => $item->{$this->getResourceColumn()},
                     ]
                 );
 
@@ -148,34 +124,19 @@ class BelongsToMany extends ModelRelationField implements
                     "</li>"
                 );
 
-                $this->makeTree($performedData, $item->getKey(), $offset + 1);
+                $this->buildTree($data, $item->getKey(), $offset + 1);
             }
         }
+
+        return str($this->treeHtml)->wrap(
+            "<ul class='tree-list'>",
+            "</ul>"
+        )->value();
     }
 
-    private function treePerformData(Collection $data): array
+    public function isChecked(string $value): bool
     {
-        $performData = [];
-
-        foreach ($data as $item) {
-            $parent = is_null($item->{$this->treeParentColumn()})
-                ? 0
-                : $item->{$this->treeParentColumn()};
-
-            $performData[$parent][$item->getKey()] = $item;
-        }
-
-        return $performData;
-    }
-
-    public function treeParentColumn(): string
-    {
-        return $this->treeParentColumn;
-    }
-
-    public function treeHtml(): string
-    {
-        return $this->treeHtml;
+        return collect($this->value())->has($value);
     }
 
     protected function prepareFields(Fields $fields): Fields
@@ -213,7 +174,7 @@ class BelongsToMany extends ModelRelationField implements
     protected function resolvePreview(): string
     {
         $values = $this->toValue();
-        $column = $this->getResource()->column();
+        $column = $this->getResourceColumn();
 
         if ($this->isRawMode()) {
             return $values

@@ -5,26 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use MoonShine\ActionButtons\ActionButtons;
-use MoonShine\Fields\Fields;
 use MoonShine\Traits\HasDataCast;
-use Throwable;
+use MoonShine\Traits\WithFields;
 
 abstract class IterableComponent extends MoonshineComponent
 {
     use HasDataCast;
-
-    protected array $fields = [];
+    use WithFields;
 
     protected iterable $items = [];
 
     protected array $buttons = [];
-
-    public function fields(array $fields): static
-    {
-        $this->fields = $fields;
-
-        return $this;
-    }
 
     public function items(iterable $items = []): self
     {
@@ -38,14 +29,6 @@ abstract class IterableComponent extends MoonshineComponent
         $this->buttons = $buttons;
 
         return $this;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getFields(): Fields
-    {
-        return Fields::make($this->fields);
     }
 
     public function getButtons(array $data): ActionButtons

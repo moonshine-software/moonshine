@@ -27,15 +27,20 @@ class SwitchBoolean extends Checkbox
         return $this;
     }
 
+    public function isAutoUpdate(): bool
+    {
+        return $this->autoUpdate;
+    }
+
     protected function resolvePreview(): string
     {
-        if ($this->isRawMode() && ! $this->autoUpdate) {
+        if (! $this->isAutoUpdate() && $this->isRawMode()) {
             return parent::resolvePreview();
         }
 
         return view('moonshine::fields.switch', [
             'element' => $this,
-            'autoUpdate' => $this->autoUpdate,
+            'autoUpdate' => $this->isAutoUpdate(),
         ])->render();
     }
 }

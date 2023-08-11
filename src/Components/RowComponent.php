@@ -7,24 +7,16 @@ namespace MoonShine\Components;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Fields\Fields;
 use MoonShine\Traits\HasDataCast;
-use Throwable;
+use MoonShine\Traits\WithFields;
 
 abstract class RowComponent extends MoonshineComponent
 {
     use HasDataCast;
-
-    protected array $fields = [];
+    use WithFields;
 
     protected array $values = [];
 
     protected array $buttons = [];
-
-    public function fields(array $fields): static
-    {
-        $this->fields = $fields;
-
-        return $this;
-    }
 
     public function fill(array $values = []): static
     {
@@ -45,12 +37,8 @@ abstract class RowComponent extends MoonshineComponent
         return $this;
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function getFields(): Fields
+    protected function prepareFields(Fields $fields): Fields
     {
-        $fields = Fields::make($this->fields);
         $fields->fill(
             $this->getValues(),
             $this->castData($this->values)

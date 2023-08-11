@@ -22,47 +22,24 @@ abstract class FormElements extends Collection
     /**
      * @throws Throwable
      */
-    public function withParents(): FormElements
-    {
-        return $this->onlyFields()->map(
-            static fn (
-                FormElement $formElement
-            ): FormElement => $formElement->setParents()
-        );
-    }
-
-    /**
-     * @return FormElements<Field>
-     * @throws Throwable
-     */
-    public function onlyFields(): FormElements
-    {
-        $fieldsOrDecorations = [];
-
-        $this->extractFields($this->toArray(), $fieldsOrDecorations);
-
-        return self::make($fieldsOrDecorations);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    private function extractFields($fieldsOrDecorations, array &$fields): void
+    protected function extractFields($fieldsOrDecorations, array &$fields): void
     {
         foreach ($fieldsOrDecorations as $fieldOrDecoration) {
-            if ($fieldOrDecoration instanceof FormElement) {
-                $fields[] = $fieldOrDecoration;
+            if ($fieldOrDecoration instanceof StackFields) {
+                $this->extractFields($fieldOrDecoration->getFields(), $fields);
             } elseif ($fieldOrDecoration instanceof Tabs) {
                 foreach ($fieldOrDecoration->tabs() as $tab) {
                     $this->extractFields($tab->getFields(), $fields);
                 }
             } elseif ($fieldOrDecoration instanceof Decoration) {
                 $this->extractFields($fieldOrDecoration->getFields(), $fields);
+            } elseif ($fieldOrDecoration instanceof FormElement) {
+                $fields[] = $fieldOrDecoration;
             }
         }
     }
 
-    public function exceptElements(Closure $except): Fields
+    protected function exceptElements(Closure $except): Fields
     {
         return $this->map(function (FormElement|Decoration $element) use ($except): null|FormElement|Decoration {
             if ($except($element) === true) {
@@ -85,6 +62,19 @@ abstract class FormElements extends Collection
 
             return $element;
         })->filter()->values();
+    }
+
+    /**
+     * @return FormElements<Field>
+     * @throws Throwable
+     */
+    public function onlyFields(): FormElements
+    {
+        $fieldsOrDecorations = [];
+
+        $this->extractFields($this->toArray(), $fieldsOrDecorations);
+
+        return self::make($fieldsOrDecorations);
     }
 
     /**
@@ -115,11 +105,11 @@ abstract class FormElements extends Collection
     {
         return $this->onlyFields()
             ->filter(
-                static fn (FormElement $field): bool => $field->hasShowWhen()
+                static fn (Field $field): bool => $field->hasShowWhen()
             )
             ->map(
                 static fn (
-                    FormElement $field
+                    Field $field
                 ): array => $field->showWhenCondition()
             );
     }
@@ -138,7 +128,7 @@ abstract class FormElements extends Collection
     public function whenFieldNames(): FormElements
     {
         return $this->whenFields()->mapWithKeys(
-            static fn (FormElement $field): array => [
+            static fn (Field $field): array => [
                 $field->showWhenCondition()['changeField'] => $field->showWhenCondition()['changeField'],
             ]
         );
@@ -152,7 +142,7 @@ abstract class FormElements extends Collection
     {
         return $this->onlyFields()
             ->filter(
-                static fn (FormElement $field): bool => $field->hasShowWhen()
+                static fn (Field $field): bool => $field->hasShowWhen()
             )
             ->values();
     }

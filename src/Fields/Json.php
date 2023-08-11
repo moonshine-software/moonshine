@@ -7,6 +7,7 @@ namespace MoonShine\Fields;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
@@ -93,34 +94,16 @@ class Json extends Field implements
         return $this->keyValue || $this->onlyValue;
     }
 
-    /**
-     * @throws Throwable
-     */
-    protected function mapKeyValue(Collection $collection): array
+    public function vertical(): self
     {
-        if ($this->hasFields()) {
-            $fields = $this->getFields()->formFields();
-            $collection = $collection->map(function ($data) use ($fields) {
-                foreach ($fields as $field) {
-                    if ($field instanceof Json && $field->isKeyOrOnlyValue()) {
-                        $data[$field->column()] = $field->mapKeyValue(
-                            collect($data[$field->column()] ?? [])
-                        );
-                    }
-                }
+        $this->isVertical = true;
 
-                return $data;
-            });
-        }
+        return $this;
+    }
 
-        return $collection->when(
-            $this->isKeyOrOnlyValue(),
-            fn ($data): Collection => $data->mapWithKeys(
-                fn ($data, $key): array => $this->isOnlyValue()
-                    ? [$key => $data['value']]
-                    : [$data['key'] => $data['value']]
-            )
-        )->toArray();
+    public function isVertical(): bool
+    {
+        return $this->isVertical;
     }
 
     public function extractValues(array $data): array
@@ -141,16 +124,17 @@ class Json extends Field implements
         return $data;
     }
 
-    public function vertical(): self
+    public function tableData(bool $empty = false): array
     {
-        $this->isVertical = true;
-
-        return $this;
-    }
-
-    public function isVertical(): bool
-    {
-        return $this->isVertical;
+        return $this->resolveValue()
+            ->rows()
+            ->map(
+                fn ($row) => $row->getFields()
+                    ->when($empty, fn (Fields $fields) => $fields->reset())
+                    ->getValues()
+                    ->toArray()
+            )
+            ->toArray();
     }
 
     protected function prepareFields(Fields $fields): Fields
@@ -175,7 +159,10 @@ class Json extends Field implements
                         static fn (Stringable $str): Stringable => $str->append('[]')
                     )
                     ->value()
-            )->xModel();
+            )
+                ->setParent($this)
+                ->xModel()
+            ;
         });
     }
 
@@ -185,53 +172,77 @@ class Json extends Field implements
             return (string) $this->toFormattedValue();
         }
 
-        return table(
-            $this->getFields()->indexFields()->toArray(),
-            $this->toValue() ?? []
-        )
-            ->preview()
-            ->render();
+        return (string) $this->resolveValue()
+            ->preview();
+    }
+
+    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    {
+        $values = $raw[$this->column()] ?? [];
+
+        foreach ($this->getFields()->onlyValueExtraction() as $field) {
+            foreach ($values as $index => $value) {
+                $values[$index][$field->column()] = collect($value[$field->column()])
+                    ->map(fn($data, $key) => $field->extractValues(
+                        $field->isOnlyValue() ? [$data] : [$key => $data]
+                    ))
+                    ->values()
+                    ->toArray();
+            }
+        }
+
+        return $values;
     }
 
     protected function resolveValue(): mixed
     {
-        if ($this->isKeyOrOnlyValue()) {
-            return collect($this->toValue())
-                ->map(
-                    fn ($data, $index): array => $this->extractValues(
-                        $this->isOnlyValue() ? [$data] : [$index => $data]
-                    )
-                )
-                ->values()
-                ->toArray();
-        }
-
-        return table($this->getFields()->toArray(), $this->toValue());
+        return table($this->getFields()->toArray(), $this->toValue() ?? [])
+            ->when($this->isVertical(), fn(TableBuilder $table) => $table->vertical());
     }
 
-    public function tableData(bool $empty = false): array
+    /**
+     * @throws Throwable
+     */
+    protected function prepareOnApply(iterable $collection): array
     {
-        return $this->resolveValue()
-            ->rows()
-            ->map(
-                fn ($row) => $row->getFields()
-                    ->when($empty, fn (Fields $fields) => $fields->reset())
-                    ->getValues()
-                    ->toArray()
+        $collection = collect($collection);
+
+        if ($this->hasFields()) {
+            $fields = $this->getFields()->onlyFields();
+
+            $collection = $collection->map(function ($data) use ($fields) {
+                foreach ($fields as $field) {
+                    if ($field instanceof Json && $field->isKeyOrOnlyValue()) {
+                        $data[$field->column()] = $field->prepareOnApply(
+                            collect($data[$field->column()] ?? [])
+                        );
+                    }
+                }
+
+                return $data;
+            });
+        }
+
+        return $collection->when(
+            $this->isKeyOrOnlyValue(),
+            fn ($data): Collection => $data->mapWithKeys(
+                fn ($data, $key): array => $this->isOnlyValue()
+                    ? [$key => $data['value']]
+                    : [$data['key'] => $data['value']]
             )
-            ->toArray();
+        )->toArray();
     }
 
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            if ($this->requestValue() === false) {
+            $requestValues = $this->requestValue();
+
+            if ($requestValues === false) {
                 $item->{$this->column()} = [];
 
                 return $item;
             }
-
-            $requestValues = $this->requestValue();
 
             foreach ($requestValues as $index => $values) {
                 foreach ($this->getFields()->onlyFileFields() as $field) {
@@ -245,7 +256,8 @@ class Json extends Field implements
                 }
             }
 
-            $item->{$this->column()} = $this->mapKeyValue(collect($requestValues));
+
+            $item->{$this->column()} = $this->prepareOnApply($requestValues);
 
             return $item;
         };

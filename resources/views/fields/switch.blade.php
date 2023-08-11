@@ -14,6 +14,6 @@
             : $element->attributes()->get('x-on:change')
         )"
         :value="($element->getOnValue() == $element->value() ? $element->getOnValue() : $element->getOffValue())"
-        :checked="$element->getOnValue() == $element->value()"
+        :checked="$element->isChecked()"
     />
 </div>

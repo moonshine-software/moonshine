@@ -10,6 +10,8 @@
     }})"
     data-empty="{{ json_encode($element->tableData(true)) }}"
     data-input-table="{{ str_replace('[]', '', $element->name()) }}"
+    x-id="['table-field']"
+    ::id="$id('table-field')"
 >
     <x-slot:thead>
         @if(!$element->isVertical())

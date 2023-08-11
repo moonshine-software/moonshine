@@ -41,7 +41,7 @@ class HasMany extends ModelRelationField implements HasFields
     protected function resolvePreview(): string
     {
         $values = $this->toValue();
-        $column = $this->getResource()->column();
+        $column = $this->getResourceColumn();
 
         if ($this->isRawMode()) {
             return $values

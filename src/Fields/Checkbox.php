@@ -9,7 +9,6 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Traits\Fields\BooleanTrait;
-use MoonShine\Traits\Fields\CheckboxTrait;
 use MoonShine\Traits\Fields\WithDefaultValue;
 
 class Checkbox extends Field implements
@@ -18,13 +17,17 @@ class Checkbox extends Field implements
     DefaultCanBeString,
     DefaultCanBeBool
 {
-    use CheckboxTrait;
     use BooleanTrait;
     use WithDefaultValue;
 
     protected string $view = 'moonshine::fields.checkbox';
 
     protected string $type = 'checkbox';
+
+    public function isChecked(): bool
+    {
+        return (bool) $this->getOnValue() === $this->value();
+    }
 
     protected function resolvePreview(): string
     {

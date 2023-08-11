@@ -8,12 +8,9 @@ use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButtons;
-use MoonShine\Fields\Fields;
 
 interface TableContract
 {
-    public function getFields(): Fields;
-
     public function rows(): Collection;
 
     public function getPaginator(): ?LengthAwarePaginator;

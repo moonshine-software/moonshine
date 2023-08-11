@@ -46,7 +46,7 @@ class HasOne extends HasMany
         );
 
         $values = $this->toValue();
-        $column = $this->getResource()->column();
+        $column = $this->getResourceColumn();
 
         if ($this->isRawMode()) {
             return $values

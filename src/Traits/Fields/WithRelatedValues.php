@@ -25,18 +25,18 @@ trait WithRelatedValues
         $this->values = $values;
     }
 
-    public function values(): array
+    protected function resolveValuesQuery()
     {
         if (! empty($this->values)) {
             return $this->values;
         }
 
-        if (is_null($this->getRelatedModel())) {
+        $relation = $this->getRelation();
+
+        if (is_null($relation)) {
             return $this->values;
         }
 
-        # TODO[refactor]
-        $relation = $this->getRelation();
         $related = $relation->getRelated();
         $query = $related->newModelQuery();
 
@@ -44,11 +44,20 @@ trait WithRelatedValues
             $query = call_user_func($this->valuesQuery, $query);
         }
 
-        if (is_callable($this->valueCallback())) {
+        return $query;
+    }
+
+    public function values(): array
+    {
+        $query = $this->resolveValuesQuery();
+        $related = $query->getModel();
+
+        if (is_callable($this->formattedValueCallback())) {
             $values = $query->get()
                 ->mapWithKeys(
                     fn ($item): array => [
-                        $item->getKey() => ($this->valueCallback())(
+                        $item->getKey() => call_user_func(
+                            $this->formattedValueCallback(),
                             $item
                         ),
                     ]
@@ -56,10 +65,10 @@ trait WithRelatedValues
         } else {
             $table = DB::getTablePrefix() . $related->getTable();
             $key = "$table.{$related->getKeyName()}";
-            $column = "$table.{$this->getResource()->column()}";
+            $column = "$table.{$this->getResourceColumn()}";
 
             $values = $query->selectRaw("$key, $column")
-                ->pluck($this->getResource()->column(), $related->getKeyName());
+                ->pluck($this->getResourceColumn(), $related->getKeyName());
         }
 
         return $values->toArray();

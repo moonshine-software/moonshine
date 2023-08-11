@@ -10,22 +10,35 @@ use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\ActionEvents;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
+use MoonShine\Traits\Fields\ShowWhen;
+use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
+use MoonShine\Traits\WithLabel;
 
+/**
+ * @method static static make(?string $label = null, ?string $column = null, ?Closure $formattedValueCallback = null)
+ */
 abstract class Field extends FormElement
 {
+    use Makeable;
+    use WithLabel;
+    use WithHint;
+    use ShowWhen;
     use ShowOrHide;
     use LinkTrait;
     use WithIsNowOnRoute;
     use ActionEvents;
 
+    protected string $column;
     protected bool $rawMode = false;
 
     protected mixed $rawValue = null;
 
     protected mixed $value = null;
-
     protected mixed $formattedValue = null;
+
+    protected ?Closure $formattedValueCallback = null;
 
     protected ?Closure $previewCallback = null;
 
@@ -34,6 +47,45 @@ abstract class Field extends FormElement
     protected bool $nullable = false;
 
     protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
+
+    public function __construct(
+        ?string $label = null,
+        ?string $column = null,
+        ?Closure $formattedValueCallback = null
+    ) {
+        parent::__construct();
+
+        $this->setLabel($label ?? $this->label());
+        $this->setColumn(
+            trim($column ?? str($this->label)->lower()->snake()->value())
+        );
+
+        if (! is_null($formattedValueCallback)) {
+            $this->setFormattedValueCallback($formattedValueCallback);
+        }
+    }
+
+    public function column(): string
+    {
+        return $this->column;
+    }
+
+    public function setColumn(string $column): static
+    {
+        $this->column = $column;
+
+        return $this;
+    }
+
+    protected function setFormattedValueCallback(Closure $formattedValueCallback): void
+    {
+        $this->formattedValueCallback = $formattedValueCallback;
+    }
+
+    public function formattedValueCallback(): ?Closure
+    {
+        return $this->formattedValueCallback;
+    }
 
     /**
      * Define whether if index page can be sorted by this field
@@ -117,10 +169,10 @@ abstract class Field extends FormElement
 
         $this->setRawValue($value);
 
-        if (is_callable($this->valueCallback())) {
+        if (is_callable($this->formattedValueCallback())) {
             $this->setFormattedValue(
                 call_user_func(
-                    $this->valueCallback(),
+                    $this->formattedValueCallback(),
                     empty($casted) ? $this->toRawValue() : $casted
                 )
             );
@@ -157,11 +209,11 @@ abstract class Field extends FormElement
         return $this->value ?? $default;
     }
 
-    public function value(): mixed
+    public function value(bool $withOld = true): mixed
     {
         $old = old($this->nameDot());
 
-        if ($old) {
+        if ($withOld && $old) {
             return $old;
         }
 
