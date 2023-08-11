@@ -14,8 +14,6 @@ use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
-use MoonShine\Traits\Fields\CheckboxTrait;
-use MoonShine\Traits\Fields\SelectTransform;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
