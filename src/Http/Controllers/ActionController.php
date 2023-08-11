@@ -32,7 +32,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function item(ViewAnyFormRequest $request): RedirectResponse
+    public function item(ViewAnyFormRequest $request): ResponseAlias
     {
         return $this->itemActionProcess(
             $request->getResource()->itemActions(),
@@ -40,7 +40,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function form(EditFormRequest $request): RedirectResponse
+    public function form(EditFormRequest $request): ResponseAlias
     {
         return $this->itemActionProcess(
             $request->getResource()->formActions(),
@@ -49,7 +49,7 @@ final class ActionController extends BaseController
         );
     }
 
-    public function bulk(ViewAnyFormRequest $request): RedirectResponse
+    public function bulk(ViewAnyFormRequest $request): ResponseAlias
     {
         $redirectRoute = $request->redirectRoute(
             $request->getResource()->route('index')
@@ -95,7 +95,7 @@ final class ActionController extends BaseController
         array $actions,
         MoonShineRequest $request,
         ?string $route = null
-    ): RedirectResponse {
+    ): ResponseAlias {
         abort_if(
             ! $action = $actions[$request->getIndexParameter()] ?? false,
             ResponseAlias::HTTP_NOT_FOUND
@@ -110,15 +110,20 @@ final class ActionController extends BaseController
 
             if ($callback instanceof RedirectResponse) {
                 $redirectRoute = $callback;
+            } elseif ($callback instanceof ResponseAlias) {
+                return $callback;
             }
 
             MoonShineUI::toast($action->message());
         } catch (Throwable $e) {
-            throw_if(! app()->isProduction(), $e);
-            report_if(app()->isProduction(), $e);
+            report($e);
+
+            $message = app()->isProduction()
+                ? __('moonshine::ui.saved_error')
+                : $e->getMessage();
 
             MoonShineUI::toast(
-                $action->getErrorMessage() ?? __('moonshine::ui.saved_error'),
+                $action->getErrorMessage() ?: $message,
                 'error'
             );
 
