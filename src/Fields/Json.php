@@ -183,7 +183,7 @@ class Json extends Field implements
         foreach ($this->getFields()->onlyValueExtraction() as $field) {
             foreach ($values as $index => $value) {
                 $values[$index][$field->column()] = collect($value[$field->column()])
-                    ->map(fn($data, $key) => $field->extractValues(
+                    ->map(fn ($data, $key) => $field->extractValues(
                         $field->isOnlyValue() ? [$data] : [$key => $data]
                     ))
                     ->values()
@@ -197,7 +197,7 @@ class Json extends Field implements
     protected function resolveValue(): mixed
     {
         return table($this->getFields()->toArray(), $this->toValue() ?? [])
-            ->when($this->isVertical(), fn(TableBuilder $table) => $table->vertical());
+            ->when($this->isVertical(), fn (TableBuilder $table) => $table->vertical());
     }
 
     /**

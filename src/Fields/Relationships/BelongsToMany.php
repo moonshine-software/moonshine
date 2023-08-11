@@ -14,8 +14,6 @@ use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
-use MoonShine\Traits\Fields\CheckboxTrait;
-use MoonShine\Traits\Fields\SelectTransform;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
@@ -91,7 +89,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $data = $this->resolveValuesQuery()
             ->get()
-            ->map(fn($item) => $item->setAttribute($this->treeParentColumn, $item->{$this->treeParentColumn} ?? 0))
+            ->map(fn ($item) => $item->setAttribute($this->treeParentColumn, $item->{$this->treeParentColumn} ?? 0))
             ->groupBy($this->treeParentColumn)
             ->map(fn ($items) => $items->keyBy($items->first()->getKeyName()));
 
