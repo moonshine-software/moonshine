@@ -41,21 +41,21 @@ abstract class FormElements extends Collection
 
     protected function exceptElements(Closure $except): Fields
     {
-        return $this->map(function (FormElement|Decoration $element) use ($except): null|FormElement|Decoration {
+        return clone $this->map(function (FormElement|Decoration $element) use ($except): null|FormElement|Decoration {
             if ($except($element) === true) {
                 return null;
             }
 
             if ($element instanceof Tabs) {
                 foreach ($element->tabs() as $tab) {
-                    $tab->fields(
+                    (clone $tab)->fields(
                         $tab->getFields()->exceptElements($except)->toArray()
                     );
                 }
             }
 
             if ($element instanceof HasFields) {
-                $element->fields(
+                (clone $element)->fields(
                     $element->getFields()->exceptElements($except)->toArray()
                 );
             }
