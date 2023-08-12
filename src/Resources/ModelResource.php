@@ -144,7 +144,7 @@ abstract class ModelResource extends Resource
     {
         return static function (Model $item) use ($field): Model {
             if ($field->requestValue()) {
-                $item->{$field->column()} = $field->requestValue();
+                data_set($item, $field->column(), $field->requestValue());
             }
 
             return $item;
@@ -213,7 +213,8 @@ abstract class ModelResource extends Resource
         }
 
         $this->item = $this->getModel()
-            ->newQuery()
+            ->newModelQuery()
+            ->with($this->getWith())
             ->find($this->getItemID());
 
         return $this->item;
@@ -226,7 +227,8 @@ abstract class ModelResource extends Resource
         }
 
         $this->item = $this->getModel()
-            ->newQuery()
+            ->newModelQuery()
+            ->with($this->getWith())
             ->findOrNew($this->getItemID());
 
         return $this->item;
@@ -239,7 +241,8 @@ abstract class ModelResource extends Resource
         }
 
         $this->item = $this->getModel()
-            ->newQuery()
+            ->newModelQuery()
+            ->with($this->getWith())
             ->findOrFail($this->getItemID());
 
         return $this->item;

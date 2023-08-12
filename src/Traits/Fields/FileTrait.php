@@ -141,7 +141,7 @@ trait FileTrait
                     $this->requestKeyPrefix() . "."
                 )
             )
-            ->append($this->field())
+            ->append($this->column())
             ->value();
     }
 
@@ -188,7 +188,7 @@ trait FileTrait
     }
 
 
-    protected function resolveOnSave(): ?Closure
+    protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
             $requestValue = $this->requestValue();
@@ -221,7 +221,7 @@ trait FileTrait
                 }
             }
 
-            $item->{$this->column()} = $saveValue;
+            data_set($item, $this->column(), $saveValue);
 
             return $item;
         };

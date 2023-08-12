@@ -6,7 +6,6 @@ namespace MoonShine\Fields;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
@@ -198,16 +197,5 @@ final class Fields extends FormElements
         return $this->onlyFields()
             ->filter(static fn (Field $field): bool => $field->isOnImport())
             ->values();
-    }
-
-    /**
-     * @return Fields<Field>
-     * @throws Throwable
-     */
-    public function onlyValueExtraction(): Fields
-    {
-        return $this->exceptElements(
-            fn ($element): bool => ! $element instanceof HasValueExtraction
-        );
     }
 }

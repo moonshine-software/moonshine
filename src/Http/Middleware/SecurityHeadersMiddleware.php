@@ -28,7 +28,7 @@ class SecurityHeadersMiddleware
         $response = $next($request);
 
         foreach ($this->removeHeaders as $header) {
-            header_remove($header);
+            //header_remove($header);
             $response->headers->remove($header);
         }
 

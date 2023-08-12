@@ -5,15 +5,20 @@ declare(strict_types=1);
 namespace MoonShine\Fields\Relationships;
 
 use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
+use MoonShine\Fields\NoInput;
+use MoonShine\Fields\Text;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
@@ -134,44 +139,68 @@ class BelongsToMany extends ModelRelationField implements
 
     public function isChecked(string $value): bool
     {
-        return collect($this->value())->has($value);
+        return collect($this->toValue())->has($value);
+    }
+
+    protected function getPivotAs(): string
+    {
+        return $this->getRelation()?->getPivotAccessor() ?? 'pivot';
     }
 
     protected function prepareFields(Fields $fields): Fields
     {
-        return $fields->map(fn (Field $field): Field => $field->setName(
-            "{$this->getRelationName()}_{$field->column()}[]"
-        ));
+        if (!is_null($this->preparedFields)) {
+            return $this->preparedFields;
+        }
+
+        if(is_null($this->getRelation())) {
+            return $fields;
+        }
+
+        $this->preparedFields = $fields->map(fn (Field $field): Field => $field
+            ->setColumn("{$this->getPivotAs()}.{$field->column()}")
+            ->setName(
+                "{$this->getRelationName()}_{$field->column()}[]"
+            ));
+
+        return $this->preparedFields;
     }
 
     protected function resolveValue(): mixed
     {
-        return $this->toValue()->mapWithKeys(fn (Model $value): array => [
-            $value->getKey() => $value->{$this->getRelation()->getPivotAccessor()},
-        ]);
-    }
+        $column = $this->getResourceColumn();
 
-    public function getPivotValue(int|string $key, Field $field): mixed
-    {
-        $field->reset();
-        $value = $this->resolveValue();
+        $fields = $this->getFields()
+            ->onlyFields()
+            ->prepend(NoInput::make($column))
+            ->prepend(Checkbox::make('#', '_checked'))
+            ->toArray();
 
-        if (isset($value[$key])) {
-            return $field->resolveFill(
-                $value[$key]->toArray(),
-                $value[$key]
-            )->toValue();
-        }
+        $values = $this->resolveValuesQuery()->get();
+        $values = $values->map(function ($value) {
+            if($this->isChecked((string) $value->getKey())) {
+                return collect($this->toValue())
+                    ->firstWhere($value->getKeyName(), $value->getKey())
+                    ->setAttribute('_checked', true);
+            }
 
-        return $field->toValue();
+            return $value;
+        });
+
+        return TableBuilder::make(items: $values)
+            ->fields($fields)
+            ->cast($this->getModelCast())
+            ->preview()
+            ->editable()
+            ->withNotFound();
     }
 
     /**
      * @throws Throwable
      */
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
-        $values = $this->toValue();
+        $values = $this->toValue() ?? [];
         $column = $this->getResourceColumn();
 
         if ($this->isRawMode()) {
@@ -188,6 +217,13 @@ class BelongsToMany extends ModelRelationField implements
             return $values->implode(function (Model $item) use ($column) {
                 $value = $item->{$column} ?? false;
 
+                if (is_callable($this->formattedValueCallback())) {
+                    $value = call_user_func(
+                        $this->formattedValueCallback(),
+                        $item
+                    );
+                }
+
                 if ($this->inLineBadge) {
                     return view('moonshine::ui.badge', [
                         'color' => 'purple',
@@ -200,14 +236,18 @@ class BelongsToMany extends ModelRelationField implements
             }, $this->inLineSeparator) ?? '';
         }
 
+        # TODO Pivot values
+
         $fields = $this->getFields()
             ->indexFields()
+            ->prepend(Text::make('#', $column))
             ->prepend(ID::make())
             ->toArray();
 
-        return (string) table($fields, $values)
+        return TableBuilder::make($fields, $values)
             ->preview()
-            ->cast($this->getModelCast());
+            ->cast($this->getModelCast())
+            ->render();
     }
 
     protected function resolveOnApply(): ?Closure

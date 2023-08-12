@@ -1,17 +1,13 @@
-@php
-    $level = 0;
-@endphp
-
 <x-moonshine::table
     x-data="tableFields({{
     $element->attributes()->get('x-model-has-fields')
             ? 'item.'.$element->column()
-            : json_encode($element->tableData())
+            : json_encode($element->values())
     }})"
-    data-empty="{{ json_encode($element->tableData(true)) }}"
+    data-empty="{{ json_encode($element->values(empty: true)) }}"
     data-input-table="{{ str_replace('[]', '', $element->name()) }}"
-    x-id="['table-field']"
-    ::id="$id('table-field')"
+    x-id="['{{ $element->id('table-field') }}']"
+    ::id="$id('{{ $element->id('table-field') }}')"
 >
     <x-slot:thead>
         @if(!$element->isVertical())
@@ -29,12 +25,12 @@
 
     <x-slot:tbody>
         <template
-            x-for="(item, index{{ $level }}) in items"
-            :key="key(item, index{{ $level }})"
+            x-for="(item, index{{ $element->level() }}) in items"
+            :key="key(item, index{{ $element->level() }})"
         >
-            <tr :data-id="key(item, index{{ $level }})" class="table_fields_{{ $element->id() }}">
+            <tr :data-id="key(item, index{{ $element->level() }})" class="table_fields_{{ $element->id() }}">
                 @if(!$element->isVertical())
-                    <td class="text-center" scope="row" x-text="index{{ $level }} + 1"></td>
+                    <td class="text-center" x-text="index{{ $element->level() }} + 1"></td>
 
                     @foreach($element->getFields() as $subField)
                         <td class="space-y-3">
@@ -44,11 +40,11 @@
 
                     @if($element->isRemovable())
                         <td>
-                            <button type="button" @click.prevent="remove(index{{ $level }})" class="badge badge-red">&times;</button>
+                            <button type="button" @click.prevent="remove(index{{ $element->level() }})" class="badge badge-red">&times;</button>
                         </td>
                     @endif
                 @else
-                    <th width="5%" class="text-center" x-text="index{{ $level }} + 1"></th>
+                    <td width="5%" class="text-center" x-text="index{{ $element->level() }} + 1"></td>
 
                     <td class="space-y-3">
                         @foreach($element->getFields() as $subField)
@@ -60,7 +56,7 @@
 
                     @if($element->isRemovable())
                         <td width="5%" class="text-center">
-                            <button type="button" @click.prevent="remove(index{{ $level }})" class="badge badge-red">&times;</button>
+                            <button type="button" @click.prevent="remove(index{{ $element->level() }})" class="badge badge-red">&times;</button>
                         </td>
                     @endif
                 @endif

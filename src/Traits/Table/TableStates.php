@@ -12,6 +12,8 @@ trait TableStates
 
     protected bool $isVertical = false;
 
+    protected bool $isEditable = false;
+
     protected bool $withNotFound = false;
 
     public function hasNotFound(): bool
@@ -48,6 +50,18 @@ trait TableStates
     public function isPreview(): bool
     {
         return $this->isPreview;
+    }
+
+    public function editable(): self
+    {
+        $this->isEditable = true;
+
+        return $this;
+    }
+
+    public function isEditable(): bool
+    {
+        return $this->isEditable;
     }
 
     public function vertical(): self

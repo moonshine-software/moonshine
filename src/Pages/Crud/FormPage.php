@@ -51,7 +51,8 @@ class FormPage extends Page
                         ->toArray()
                 )
                 ->fill($item?->attributesToArray() ?? [])
-                ->cast($resource->getModelCast()),
+                ->cast($resource->getModelCast())
+                ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
         ];
 
         foreach ($resource->getOutsideFields() as $field) {

@@ -41,6 +41,8 @@ class Json extends Field implements
 
     protected bool $isVertical = false;
 
+    protected int $level = 0;
+
     /**
      * @throws Throwable
      */
@@ -124,7 +126,7 @@ class Json extends Field implements
         return $data;
     }
 
-    public function tableData(bool $empty = false): array
+    public function values(bool $empty = false): array
     {
         return $this->resolveValue()
             ->rows()
@@ -135,6 +137,18 @@ class Json extends Field implements
                     ->toArray()
             )
             ->toArray();
+    }
+
+    public function incrementLevel(): self
+    {
+        ++$this->level;
+
+        return $this;
+    }
+
+    public function level(): int
+    {
+        return $this->level;
     }
 
     protected function prepareFields(Fields $fields): Fields
@@ -148,6 +162,10 @@ class Json extends Field implements
             );
 
             $name = str($this->name());
+
+            if ($field instanceof Json) {
+                $field = $field->incrementLevel();
+            }
 
             return $field->setName(
                 $name
@@ -180,14 +198,16 @@ class Json extends Field implements
     {
         $values = $raw[$this->column()] ?? [];
 
-        foreach ($this->getFields()->onlyValueExtraction() as $field) {
-            foreach ($values as $index => $value) {
-                $values[$index][$field->column()] = collect($value[$field->column()])
-                    ->map(fn ($data, $key) => $field->extractValues(
-                        $field->isOnlyValue() ? [$data] : [$key => $data]
-                    ))
-                    ->values()
-                    ->toArray();
+        foreach ($this->getFields() as $field) {
+            if ($field instanceof HasValueExtraction) {
+                foreach ($values as $index => $value) {
+                    $values[$index][$field->column()] = collect($value[$field->column()])
+                        ->map(fn ($data, $key) => $field->extractValues(
+                            $field->isOnlyValue() ? [$data] : [$key => $data]
+                        ))
+                        ->values()
+                        ->toArray();
+                }
             }
         }
 
@@ -256,8 +276,7 @@ class Json extends Field implements
                 }
             }
 
-
-            $item->{$this->column()} = $this->prepareOnApply($requestValues);
+            data_set($item, $this->column(), $this->prepareOnApply($requestValues));
 
             return $item;
         };

@@ -1,4 +1,4 @@
-<div>
+<div x-data>
     <x-moonshine::form.input
         type="hidden"
         name="{{ $element->name() }}"

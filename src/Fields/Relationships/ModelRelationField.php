@@ -18,7 +18,7 @@ use MoonShine\Traits\HasResource;
 use Throwable;
 
 /**
- * @method static static make(string $label, ?string $relationName, ?ModelResource $resource, ?Closure $formattedValueCallback = null)
+ * @method static static make(string $label, ?string $relationName = null, ?ModelResource $resource = null, ?Closure $formattedValueCallback = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
@@ -84,11 +84,11 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
     public function resolveFill(array $raw = [], mixed $casted = null): Field
     {
+        $this->setRelatedModel($casted);
+
         if ($this->value) {
             return $this;
         }
-
-        $this->setRelatedModel($casted);
 
         $data = $this->prepareFill($raw, $casted);
 
@@ -111,7 +111,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                 $this->setFormattedValue(
                     call_user_func(
                         $this->formattedValueCallback(),
-                        $data
+                        $data ?? $this->getRelation()?->getModel()
                     )
                 );
             }

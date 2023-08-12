@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\ActionEvents;
@@ -154,7 +155,7 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        return $raw[$this->column()] ?? null;
+        return data_get($casted ?? $raw, $this->column());
     }
 
     public function resolveFill(array $raw = [], mixed $casted = null): self
@@ -240,7 +241,7 @@ abstract class Field extends FormElement
         return ! is_null($this->previewCallback);
     }
 
-    public function preview(): string
+    public function preview(): View|string
     {
         if ($this->isPreviewChanged()) {
             return (string) call_user_func(
@@ -253,7 +254,7 @@ abstract class Field extends FormElement
         return $this->resolvePreview();
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         return (string) ($this->toFormattedValue() ?? '');
     }

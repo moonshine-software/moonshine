@@ -48,14 +48,14 @@ abstract class FormElements extends Collection
 
             if ($element instanceof Tabs) {
                 foreach ($element->tabs() as $tab) {
-                    (clone $tab)->fields(
+                    $tab->fields(
                         $tab->getFields()->exceptElements($except)->toArray()
                     );
                 }
             }
 
             if ($element instanceof HasFields) {
-                (clone $element)->fields(
+                $element->fields(
                     $element->getFields()->exceptElements($except)->toArray()
                 );
             }

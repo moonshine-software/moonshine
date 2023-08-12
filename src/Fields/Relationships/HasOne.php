@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\Hidden;
 use Throwable;
 
 class HasOne extends HasMany
@@ -33,57 +33,25 @@ class HasOne extends HasMany
         return $fields;
     }
 
-    protected function resolvePreview(): string
-    {
-        if (is_null($this->toValue())) {
-            return '';
-        }
-
-        $this->setValue(
-            collect([
-                $this->toValue(),
-            ])
-        );
-
-        $values = $this->toValue();
-        $column = $this->getResourceColumn();
-
-        if ($this->isRawMode()) {
-            return $values
-                ->map(fn (Model $item) => $item->{$column})
-                ->implode(';');
-        }
-
-        $fields = $this->getFields()
-            ->indexFields()
-            ->toArray();
-
-        return (string) table($fields, $values)
-            ->cast($this->getModelCast())
-            ->tdAttributes(fn (
-                $data,
-                int $row,
-                int $cell,
-                ComponentAttributeBag $attributes
-            ): ComponentAttributeBag => $attributes->when(
-                $cell === 0,
-                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                    'class' => 'font-semibold',
-                    'width' => '20%',
-                ])
-            ))
-            ->vertical()
-            ->preview();
-    }
-
     protected function resolveValue(): mixed
     {
-        return form()
-            ->when(
-                $this->getRelation(),
-                fn ($table): FormBuilder => $table->cast($this->getModelCast())
+        $item = $this->toValue();
+        $resource = $this->getResource();
+        $fields = $this->hasFields()
+            ? $this->getFields()->formFields()
+            : $resource->getFormFields();
+
+        return FormBuilder::make()
+            ->fields(
+                $fields->when(
+                    ! is_null($item),
+                    fn (Fields $fields): Fields => $fields->push(
+                        Hidden::make('_method')->setValue('PUT')
+                    )
+                )->toArray()
             )
-            ->fill($this->toValue()?->toArray() ?? [])
-            ->fields($this->getFields()->toArray());
+            ->fill($item?->attributesToArray() ?? [])
+            ->cast($resource->getModelCast())
+            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
 }

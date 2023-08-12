@@ -1,7 +1,8 @@
 @props([
-    'vertical' => false,
     'rows',
     'actions',
+    'vertical' => false,
+    'editable' => false,
 ])
 @foreach($rows as $row)
     @if(!$vertical) <tr {{ $row->trAttributes($loop->index) }}> @endif
@@ -29,8 +30,8 @@
                         ? $row->tdAttributes($index, 1)
                         : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
                 >
-                    {!! $field->isSee($field->value())
-                        ? $field->preview()
+                    {!! $field->isSee($field->toValue())
+                        ? $field->{$editable ? 'render' : 'preview'}()
                         : ''
                     !!}
                 </td>

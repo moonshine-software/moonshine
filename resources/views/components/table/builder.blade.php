@@ -2,11 +2,13 @@
     'rows',
     'fields',
     'bulkButtons',
+    'async' => false,
     'preview' => false,
+    'editable' => false,
     'notfound' => false,
     'vertical' => false,
 ])
-<div>
+<div x-data="tableBuilder({{ $async }})">
     <x-moonshine::table
             :classic="!$preview"
             :notfound="$notfound"
@@ -26,6 +28,7 @@
                 <x-moonshine::table.body
                     :rows="$rows"
                     :vertical="$vertical"
+                    :editable="$editable"
                     :actions="$bulkButtons"
                 />
             </x-slot:tbody>

@@ -16,6 +16,8 @@ trait WithFields
 {
     protected array $fields = [];
 
+    protected ?Fields $preparedFields = null;
+
     protected function prepareFields(Fields $fields): Fields
     {
         return $fields;

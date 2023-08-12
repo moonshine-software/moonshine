@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 trait WithRelatedValues
 {
     protected array $values = [];
+
+    protected ?Collection $memoizeValues = null;
 
     protected ?Closure $valuesQuery = null;
 
@@ -49,6 +52,10 @@ trait WithRelatedValues
 
     public function values(): array
     {
+        if (!is_null($this->memoizeValues)) {
+            return $this->memoizeValues->toArray();
+        }
+
         $query = $this->resolveValuesQuery();
         $related = $query->getModel();
 
@@ -71,6 +78,8 @@ trait WithRelatedValues
                 ->pluck($this->getResourceColumn(), $related->getKeyName());
         }
 
-        return $values->toArray();
+        $this->memoizeValues = $values;
+
+        return $this->memoizeValues->toArray();
     }
 }

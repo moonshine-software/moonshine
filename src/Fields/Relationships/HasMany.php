@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
+use MoonShine\Buttons\IndexPage\DeleteButton;
+use MoonShine\Buttons\IndexPage\FormButton;
+use MoonShine\Buttons\IndexPage\MassDeleteButton;
+use MoonShine\Buttons\IndexPage\ShowButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Fields;
@@ -38,34 +44,54 @@ class HasMany extends ModelRelationField implements HasFields
         return $fields;
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
-        $values = $this->toValue();
-        $column = $this->getResourceColumn();
+        $items = $this->toValue() ?? [];
+
+        if($this->toOne()) {
+            $items = Arr::wrap($items);
+        }
 
         if ($this->isRawMode()) {
-            return $values
-                ->map(fn (Model $item) => $item->{$column})
+            return $items
+                ->map(fn (Model $item) => $item->{$this->getResourceColumn()})
                 ->implode(';');
         }
 
-        $fields = $this->getFields()
-            ->indexFields()
-            ->toArray();
+        $resource = $this->getResource();
+        $fields = $this->hasFields()
+            ? $this->getFields()->indexFields()
+            : $resource->getIndexFields();
 
-        return (string) table($fields, $values)
-            ->cast($this->getModelCast())
-            ->preview();
+        return TableBuilder::make(items: $items)
+            ->fields($fields->toArray())
+            ->cast($resource->getModelCast())
+            ->preview()
+            ->withNotFound()
+            ->when(
+                $this->toOne(),
+                static fn(TableBuilder $table) => $table->vertical()
+            )
+            ->render();
     }
 
     protected function resolveValue(): mixed
     {
-        return table($this->getFields()->toArray(), $this->toValue() ?? [])
-            ->when(
-                $this->getRelation(),
-                fn ($table): TableBuilder => $table->cast($this->getModelCast())
-            )
+        $items = $this->toValue() ?? [];
+        $resource = $this->getResource();
+        $fields = $this->hasFields()
+            ? $this->getFields()->indexFields()
+            : $resource->getIndexFields();
+
+        return TableBuilder::make(items: $items)
+            ->fields($fields->toArray())
+            ->cast($resource->getModelCast())
             ->withNotFound()
-            ->preview();
+            ->buttons([
+                ShowButton::for($resource),
+                FormButton::for($resource),
+                DeleteButton::for($resource),
+                MassDeleteButton::for($resource),
+            ]);
     }
 }

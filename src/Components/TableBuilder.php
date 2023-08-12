@@ -34,10 +34,12 @@ final class TableBuilder extends IterableComponent implements TableContract
     protected ?Closure $tdAttributes = null;
 
     public function __construct(
-        protected array $fields = [],
+        array $fields = [],
         protected iterable $items = [],
         protected ?LengthAwarePaginator $paginator = null
     ) {
+        $this->fields($fields);
+
         if ($items instanceof LengthAwarePaginator) {
             $this->paginator($items);
             $this->items($items->items());
@@ -117,10 +119,6 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function render(): View|Closure|string
     {
-        $this->customAttributes([
-            'x-data' => "tableBuilder({$this->isAsync()})",
-        ]);
-
         return view('moonshine::components.table.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
             'rows' => $this->rows(),
@@ -128,7 +126,9 @@ final class TableBuilder extends IterableComponent implements TableContract
             'hasPaginator' => $this->hasPaginator(),
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),
+            'async' => $this->isAsync(),
             'vertical' => $this->isVertical(),
+            'editable' => $this->isEditable(),
             'preview' => $this->isPreview(),
             'notfound' => $this->hasNotFound(),
         ]);

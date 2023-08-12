@@ -31,9 +31,11 @@ final class FormBuilder extends RowComponent
     public function __construct(
         protected string $action = '',
         protected string $method = 'POST',
-        protected array $fields = [],
+        array $fields = [],
         protected array $values = []
     ) {
+        $this->fields($fields);
+
         $this->submitAttributes = $this->newAttributeBag([
             'type' => 'submit',
         ]);
