@@ -31,7 +31,7 @@ class HasMany extends ModelRelationField implements HasFields
      */
     protected function preparedFields(): Fields
     {
-        if (!$this->hasFields()) {
+        if (! $this->hasFields()) {
             $fields = $this->toOne()
                 ? $this->getResource()->getFormFields()
                 : $this->getResource()->getIndexFields();
@@ -43,8 +43,8 @@ class HasMany extends ModelRelationField implements HasFields
 
         return $this->getFields()->when(
             $this->toOne(),
-            static fn(Fields $fields): Fields => $fields->formFields(),
-            static fn(Fields $fields): Fields => $fields->indexFields()
+            static fn (Fields $fields): Fields => $fields->formFields(),
+            static fn (Fields $fields): Fields => $fields->indexFields()
         );
     }
 

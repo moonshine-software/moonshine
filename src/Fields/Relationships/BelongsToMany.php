@@ -144,7 +144,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function preparedFields(): Fields
     {
-        return $this->getFields()->map(fn(Field $field): Field => (clone $field)
+        return $this->getFields()->map(fn (Field $field): Field => (clone $field)
             ->setColumn("{$this->getPivotAs()}.{$field->column()}")
             ->setName(
                 "{$this->getRelationName()}_{$field->column()}[]"
@@ -164,13 +164,13 @@ class BelongsToMany extends ModelRelationField implements
 
         $values = $this->resolveValuesQuery()->get();
 
-        $values = $values->map(function ($value) use($checkedColumn) {
+        $values = $values->map(function ($value) use ($checkedColumn) {
             $checked = $this->toValue()
                 ->first(fn ($item): bool => $item->getKey() === $value->getKey());
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations())
-                ->setAttribute($checkedColumn, !is_null($checked));
+                ->setAttribute($checkedColumn, ! is_null($checked));
         });
 
         return TableBuilder::make(items: $values)
