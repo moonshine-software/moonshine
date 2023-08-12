@@ -182,7 +182,7 @@ class Json extends Field implements
                 ->setParent($this)
                 # TODO remove
                 //->xModel()
-                ;
+            ;
         });
     }
 

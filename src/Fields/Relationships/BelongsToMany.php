@@ -166,13 +166,13 @@ class BelongsToMany extends ModelRelationField implements
 
         $values = $this->resolveValuesQuery()->get();
 
-        $values = $values->map(function ($value) use($checkedColumn) {
+        $values = $values->map(function ($value) use ($checkedColumn) {
             $checked = $this->toValue()
                 ->first(fn ($item) => $item->getKey() === $value->getKey());
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations())
-                ->setAttribute($checkedColumn, !is_null($checked));
+                ->setAttribute($checkedColumn, ! is_null($checked));
         });
 
         return TableBuilder::make(items: $values)
