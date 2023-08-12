@@ -52,7 +52,7 @@ trait WithRelatedValues
 
     public function values(): array
     {
-        if (!is_null($this->memoizeValues)) {
+        if (! is_null($this->memoizeValues)) {
             return $this->memoizeValues->toArray();
         }
 

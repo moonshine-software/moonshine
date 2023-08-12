@@ -149,7 +149,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function prepareFields(Fields $fields): Fields
     {
-        if (!is_null($this->preparedFields)) {
+        if (! is_null($this->preparedFields)) {
             return $this->preparedFields;
         }
 
