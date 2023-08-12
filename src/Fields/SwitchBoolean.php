@@ -24,9 +24,9 @@ class SwitchBoolean extends Checkbox
 
     public function autoUpdate(?Closure $url = null, mixed $condition = null): static
     {
-        $this->updateUrl = !is_null($url)
-            ? $url($this)
-            : '';
+        $this->updateUrl = is_null($url)
+            ? ''
+            : $url($this);
 
         $this->autoUpdate = Condition::boolean($condition, true);
 
