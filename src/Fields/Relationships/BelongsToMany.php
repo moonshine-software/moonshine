@@ -137,54 +137,42 @@ class BelongsToMany extends ModelRelationField implements
         )->value();
     }
 
-    public function isChecked(string $value): bool
-    {
-        return collect($this->toValue())->has($value);
-    }
-
     protected function getPivotAs(): string
     {
         return $this->getRelation()?->getPivotAccessor() ?? 'pivot';
     }
 
-    protected function prepareFields(Fields $fields): Fields
+    protected function preparedFields(): Fields
     {
-        if (! is_null($this->preparedFields)) {
-            return $this->preparedFields;
-        }
-
-        if(is_null($this->getRelation())) {
-            return $fields;
-        }
-
-        $this->preparedFields = $fields->map(fn (Field $field): Field => $field
-            ->setColumn("{$this->getPivotAs()}.{$field->column()}")
-            ->setName(
-                "{$this->getRelationName()}_{$field->column()}[]"
-            ));
-
-        return $this->preparedFields;
+        return $this->getFields()->map(function (Field $field): Field {
+            return (clone $field)
+                ->setColumn("{$this->getPivotAs()}.{$field->column()}")
+                ->setName(
+                    "{$this->getRelationName()}_{$field->column()}[]"
+                );
+        });
     }
 
     protected function resolveValue(): mixed
     {
-        $column = $this->getResourceColumn();
+        $titleColumn = $this->getResourceColumn();
+        $checkedColumn = $this->getRelationName() . '_' . $this->getRelation()->getRelated()->getForeignKey();
 
-        $fields = $this->getFields()
+        $fields = $this->preparedFields()
             ->onlyFields()
-            ->prepend(NoInput::make($column))
-            ->prepend(Checkbox::make('#', '_checked'))
+            ->prepend(NoInput::make($titleColumn))
+            ->prepend(Checkbox::make('#', $checkedColumn)->setName($checkedColumn . '[]'))
             ->toArray();
 
         $values = $this->resolveValuesQuery()->get();
-        $values = $values->map(function ($value) {
-            if($this->isChecked((string) $value->getKey())) {
-                return collect($this->toValue())
-                    ->firstWhere($value->getKeyName(), $value->getKey())
-                    ->setAttribute('_checked', true);
-            }
 
-            return $value;
+        $values = $values->map(function ($value) use($checkedColumn) {
+            $checked = $this->toValue()
+                ->first(fn ($item) => $item->getKey() === $value->getKey());
+
+            return $value
+                ->setRelations($checked?->getRelations() ?? $value->getRelations())
+                ->setAttribute($checkedColumn, !is_null($checked));
         });
 
         return TableBuilder::make(items: $values)
@@ -236,10 +224,8 @@ class BelongsToMany extends ModelRelationField implements
             }, $this->inLineSeparator) ?? '';
         }
 
-        # TODO Pivot values
-
-        $fields = $this->getFields()
-            ->indexFields()
+        $fields = $this->preparedFields()
+            ->onlyFields()
             ->prepend(Text::make('#', $column))
             ->prepend(ID::make())
             ->toArray();

@@ -29,19 +29,23 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function prepareFields(Fields $fields): Fields
+    protected function preparedFields(): Fields
     {
-        if ($fields->isEmpty()) {
-            $this->fields(
-                $this->getResource()
-                    ?->getIndexFields()
-                    ?->toArray() ?? []
-            );
+        if (!$this->hasFields()) {
+            $fields = $this->toOne()
+                ? $this->getResource()->getFormFields()
+                : $this->getResource()->getIndexFields();
+
+            $this->fields($fields->toArray());
 
             return Fields::make($this->fields);
         }
 
-        return $fields;
+        return $this->getFields()->when(
+            $this->toOne(),
+            static fn(Fields $fields) => $fields->formFields(),
+            static fn(Fields $fields) => $fields->indexFields()
+        );
     }
 
     protected function resolvePreview(): View|string
@@ -59,12 +63,9 @@ class HasMany extends ModelRelationField implements HasFields
         }
 
         $resource = $this->getResource();
-        $fields = $this->hasFields()
-            ? $this->getFields()->indexFields()
-            : $resource->getIndexFields();
 
         return TableBuilder::make(items: $items)
-            ->fields($fields->toArray())
+            ->fields($this->preparedFields()->toArray())
             ->cast($resource->getModelCast())
             ->preview()
             ->withNotFound()
@@ -79,12 +80,9 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $items = $this->toValue() ?? [];
         $resource = $this->getResource();
-        $fields = $this->hasFields()
-            ? $this->getFields()->indexFields()
-            : $resource->getIndexFields();
 
         return TableBuilder::make(items: $items)
-            ->fields($fields->toArray())
+            ->fields($this->preparedFields()->toArray())
             ->cast($resource->getModelCast())
             ->withNotFound()
             ->buttons([

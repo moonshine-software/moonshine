@@ -91,47 +91,6 @@ trait FileTrait
             ->value();
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function hasManyOrOneSave(
-        array|UploadedFile|null $valueOrValues = null
-    ): array|string|null {
-        if ($this->isMultiple()) {
-            throw_if(
-                ! is_null($valueOrValues) && ! is_array($valueOrValues),
-                new FieldException('Files must be an array')
-            );
-
-            $saveValues = request()
-                ->collect($this->hiddenOldValuesKey())
-                ->reject(fn ($v): bool => is_numeric($v));
-
-            if ($valueOrValues) {
-                foreach ($valueOrValues as $value) {
-                    $saveValues = $saveValues->merge([
-                        $this->store($value),
-                    ]);
-                }
-            }
-
-
-            $valueOrValues = $saveValues->values()
-                ->filter()
-                ->unique()
-                ->toArray();
-        } elseif ($valueOrValues instanceof UploadedFile) {
-            $valueOrValues = $this->store($valueOrValues);
-        } elseif (empty($valueOrValues)) {
-            $valueOrValues = request(
-                $this->hiddenOldValuesKey(),
-                $this->isNullable() ? null : ''
-            );
-        }
-
-        return $valueOrValues;
-    }
-
     public function hiddenOldValuesKey(): string
     {
         return str('hidden_')
@@ -187,7 +146,6 @@ trait FileTrait
         return $this->allowedExtensions;
     }
 
-
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
@@ -197,7 +155,7 @@ trait FileTrait
 
             if ($this->isDeleteFiles()) {
                 $this->checkAndDelete(
-                    $item->{$this->column()},
+                    data_get($item, $this->column()),
                     $oldValues->toArray()
                 );
             }
@@ -221,9 +179,7 @@ trait FileTrait
                 }
             }
 
-            data_set($item, $this->column(), $saveValue);
-
-            return $item;
+            return data_set($item, $this->column(), $saveValue);
         };
     }
 

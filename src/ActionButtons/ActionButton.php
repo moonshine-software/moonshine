@@ -8,6 +8,9 @@ use Closure;
 use MoonShine\Actions\AbstractAction;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 
+/**
+ * @method static static make(string $label, Closure|string|null $url = null, mixed $item = null)
+ */
 class ActionButton extends AbstractAction implements ActionButtonContract
 {
     protected bool $isBulk = false;

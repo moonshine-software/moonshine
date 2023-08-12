@@ -7,7 +7,7 @@
         :offValue="$element->getOffValue()"
         :@change="(($autoUpdate ?? false)
             ? 'updateColumn(
-                ``,
+                `'.$element->getUpdateUrl().'`,
                 `'.$element->column().'`,
                 $event.target.checked ? `'.$element->getOnValue().'` : `'.$element->getOffValue().'`
             )'

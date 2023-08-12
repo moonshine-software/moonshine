@@ -126,6 +126,7 @@ class Json extends Field implements
         return $data;
     }
 
+    # TODO remove
     public function values(bool $empty = false): array
     {
         return $this->resolveValue()
@@ -139,7 +140,7 @@ class Json extends Field implements
             ->toArray();
     }
 
-    public function incrementLevel(): self
+    protected function incrementLevel(): self
     {
         ++$this->level;
 
@@ -151,9 +152,9 @@ class Json extends Field implements
         return $this->level;
     }
 
-    protected function prepareFields(Fields $fields): Fields
+    protected function preparedFields(): Fields
     {
-        return $fields->map(function (Field $field): Field {
+        return $this->getFields()->map(function (Field $field): Field {
             throw_if(
                 $field instanceof ModelRelationField,
                 new FieldException(
@@ -164,7 +165,7 @@ class Json extends Field implements
             $name = str($this->name());
 
             if ($field instanceof Json) {
-                $field = $field->incrementLevel();
+                $field->incrementLevel();
             }
 
             return $field->setName(
@@ -179,8 +180,9 @@ class Json extends Field implements
                     ->value()
             )
                 ->setParent($this)
-                ->xModel()
-            ;
+                # TODO remove
+                //->xModel()
+                ;
         });
     }
 
@@ -216,8 +218,11 @@ class Json extends Field implements
 
     protected function resolveValue(): mixed
     {
-        return table($this->getFields()->toArray(), $this->toValue() ?? [])
-            ->when($this->isVertical(), fn (TableBuilder $table): TableBuilder => $table->vertical());
+        return TableBuilder::make($this->preparedFields()->toArray(), $this->toValue() ?? [])
+            ->when(
+                $this->isVertical(),
+                fn (TableBuilder $table): TableBuilder => $table->vertical()
+            );
     }
 
     /**
@@ -259,26 +264,27 @@ class Json extends Field implements
             $requestValues = $this->requestValue();
 
             if ($requestValues === false) {
-                $item->{$this->column()} = [];
-
-                return $item;
+                return data_set($item, $this->column(), []);
             }
 
             foreach ($requestValues as $index => $values) {
-                foreach ($this->getFields()->onlyFileFields() as $field) {
+                foreach ($this->getFields() as $field) {
                     $field->setRequestKeyPrefix(
                         $this->column() . "." . $index
                     );
 
-                    $requestValues[$index][$field->column()] = $field->hasManyOrOneSave(
-                        $values[$field->column()] ?? null
+                    $requestValues[$index] = $field->apply(
+                        fn ($data) => data_set($data, $field->column(), $values),
+                        $values
                     );
                 }
             }
 
-            data_set($item, $this->column(), $this->prepareOnApply($requestValues));
-
-            return $item;
+            return data_set(
+                $item,
+                $this->column(),
+                $this->prepareOnApply($requestValues)
+            );
         };
     }
 }

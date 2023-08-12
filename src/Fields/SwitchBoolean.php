@@ -13,15 +13,21 @@ class SwitchBoolean extends Checkbox
 
     protected bool $autoUpdate = true;
 
+    protected string $updateUrl = '';
+
     public function readonly(Closure|bool|null $condition = null): static
     {
-        $this->autoUpdate(false);
+        $this->autoUpdate(condition: false);
 
         return parent::readonly($condition);
     }
 
-    public function autoUpdate(mixed $condition = null): static
+    public function autoUpdate(?Closure $url = null, mixed $condition = null): static
     {
+        $this->updateUrl = !is_null($url)
+            ? $url($this)
+            : '';
+
         $this->autoUpdate = Condition::boolean($condition, true);
 
         return $this;
@@ -30,6 +36,11 @@ class SwitchBoolean extends Checkbox
     public function isAutoUpdate(): bool
     {
         return $this->autoUpdate;
+    }
+
+    public function getUpdateUrl(): string
+    {
+        return $this->updateUrl;
     }
 
     protected function resolvePreview(): string

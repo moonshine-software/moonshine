@@ -7,7 +7,6 @@ namespace MoonShine\Fields\Relationships;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
-use Throwable;
 
 class HasOne extends HasMany
 {
@@ -15,31 +14,11 @@ class HasOne extends HasMany
 
     protected bool $toOne = true;
 
-    /**
-     * @throws Throwable
-     */
-    protected function prepareFields(Fields $fields): Fields
-    {
-        if ($fields->isEmpty()) {
-            $this->fields(
-                $this->getResource()
-                    ?->getFormFields()
-                    ?->toArray() ?? []
-            );
-
-            return Fields::make($this->fields);
-        }
-
-        return $fields;
-    }
-
     protected function resolveValue(): mixed
     {
         $item = $this->toValue();
         $resource = $this->getResource();
-        $fields = $this->hasFields()
-            ? $this->getFields()->formFields()
-            : $resource->getFormFields();
+        $fields = $this->preparedFields();
 
         return FormBuilder::make()
             ->fields(

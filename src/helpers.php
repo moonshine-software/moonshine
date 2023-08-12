@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Menu\Menu;
@@ -84,5 +85,15 @@ if (! function_exists('table')) {
         ?LengthAwarePaginator $paginator = null
     ): TableBuilder {
         return TableBuilder::make($fields, $items, $paginator);
+    }
+}
+
+if (! function_exists('actionBtn')) {
+    function actionBtn(
+        string $label,
+        Closure|string|null $url = null,
+        mixed $item = null
+    ): ActionButton {
+        return ActionButton::make($label, $url, $item);
     }
 }

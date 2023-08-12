@@ -128,7 +128,8 @@ final class FormBuilder extends RowComponent
      */
     public function render(): View|Closure|string
     {
-        $fields = $this->getFields();
+        $fields = $this->preparedFields();
+
         $xInit = json_encode([
             'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
         ], JSON_THROW_ON_ERROR);

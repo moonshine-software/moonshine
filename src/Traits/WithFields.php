@@ -16,22 +16,13 @@ trait WithFields
 {
     protected array $fields = [];
 
-    protected ?Fields $preparedFields = null;
-
-    protected function prepareFields(Fields $fields): Fields
-    {
-        return $fields;
-    }
-
     /**
      * @return Fields<Field>
      * @throws Throwable
      */
     public function getFields(): Fields
     {
-        return $this->prepareFields(
-            Fields::make($this->fields)
-        );
+        return Fields::make($this->fields);
     }
 
     public function hasFields(): bool

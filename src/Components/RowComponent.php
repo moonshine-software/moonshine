@@ -37,14 +37,14 @@ abstract class RowComponent extends MoonshineComponent
         return $this;
     }
 
-    protected function prepareFields(Fields $fields): Fields
+    protected function preparedFields(): Fields
     {
-        $fields->fill(
+        $this->getFields()->fill(
             $this->getValues(),
             $this->castData($this->values)
         );
 
-        return $fields;
+        return $this->getFields();
     }
 
     public function getButtons(): ActionButtons
