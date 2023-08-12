@@ -43,8 +43,8 @@ class HasMany extends ModelRelationField implements HasFields
 
         return $this->getFields()->when(
             $this->toOne(),
-            static fn (Fields $fields) => $fields->formFields(),
-            static fn (Fields $fields) => $fields->indexFields()
+            static fn (Fields $fields): Fields => $fields->formFields(),
+            static fn (Fields $fields): Fields => $fields->indexFields()
         );
     }
 

@@ -274,7 +274,7 @@ class Json extends Field implements
                     );
 
                     $requestValues[$index] = $field->apply(
-                        fn ($data) => data_set($data, $field->column(), $values),
+                        fn ($data): mixed => data_set($data, $field->column(), $values),
                         $values
                     );
                 }
