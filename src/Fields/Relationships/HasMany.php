@@ -70,7 +70,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->withNotFound()
             ->when(
                 $this->toOne(),
-                static fn(TableBuilder $table) => $table->vertical()
+                static fn(TableBuilder $table): TableBuilder => $table->vertical()
             )
             ->render();
     }

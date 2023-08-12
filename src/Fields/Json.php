@@ -202,7 +202,7 @@ class Json extends Field implements
             if ($field instanceof HasValueExtraction) {
                 foreach ($values as $index => $value) {
                     $values[$index][$field->column()] = collect($value[$field->column()])
-                        ->map(fn ($data, $key) => $field->extractValues(
+                        ->map(fn ($data, $key): array => $field->extractValues(
                             $field->isOnlyValue() ? [$data] : [$key => $data]
                         ))
                         ->values()
