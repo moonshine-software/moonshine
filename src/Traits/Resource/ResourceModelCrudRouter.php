@@ -32,7 +32,7 @@ trait ResourceModelCrudRouter
     {
         return str(request()->url())->when(
             $query,
-            static fn (Stringable $str) => $str
+            static fn (Stringable $str): Stringable => $str
                 ->append('?')
                 ->append(Arr::query($query))
         )->value();

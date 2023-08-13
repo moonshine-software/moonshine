@@ -209,7 +209,7 @@ abstract class ModelResource extends Resource
             ->onlyFields()
             ->each(fn (Field $field) => $field->afterDestroy($item));
 
-        return tap($item->delete(), fn () => $this->afterDeleted($item));
+        return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
     }
 
     protected function onSave(Field $field): Closure
