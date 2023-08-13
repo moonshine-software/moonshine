@@ -37,14 +37,32 @@ abstract class ModelResource extends Resource
 
     protected string $column = 'id';
 
-    protected ?Model $item = null;
-
     /**
      * Get an array of validation rules for resource related model
      *
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
     abstract public function rules(Model $item): array;
+
+    public function getModel(): Model
+    {
+        return new $this->model();
+    }
+
+    public function getModelCast(): ModelCast
+    {
+        return ModelCast::make($this->model);
+    }
+
+    public function title(): string
+    {
+        return $this->title;
+    }
+
+    public function column(): string
+    {
+        return $this->column;
+    }
 
     public function pages(): array
     {
@@ -60,16 +78,6 @@ abstract class ModelResource extends Resource
     }
 
     public function fields(): array
-    {
-        return [];
-    }
-
-    public function filters(): array
-    {
-        return [];
-    }
-
-    public function actions(): array
     {
         return [];
     }
@@ -130,25 +138,14 @@ abstract class ModelResource extends Resource
         )->detailFields();
     }
 
-    public function title(): string
+    public function filters(): array
     {
-        return $this->title;
+        return [];
     }
 
-    public function column(): string
+    public function actions(): array
     {
-        return $this->column;
-    }
-
-    public function onSave(Field $field): Closure
-    {
-        return static function (Model $item) use ($field): Model {
-            if ($field->requestValue()) {
-                data_set($item, $field->column(), $field->requestValue());
-            }
-
-            return $item;
-        };
+        return [];
     }
 
     public function getActiveActions(): array
@@ -159,16 +156,6 @@ abstract class ModelResource extends Resource
     public function search(): array
     {
         return ['id'];
-    }
-
-    public function getModel(): Model
-    {
-        return new $this->model();
-    }
-
-    public function getModelCast(): ModelCast
-    {
-        return ModelCast::make($this->model);
     }
 
     /**
@@ -201,53 +188,6 @@ abstract class ModelResource extends Resource
     {
     }
 
-    public function getItemID(): int|string|null
-    {
-        return request('resourceItem');
-    }
-
-    public function getItem(): ?Model
-    {
-        if ($this->item instanceof Model) {
-            return $this->item;
-        }
-
-        $this->item = $this->getModel()
-            ->newModelQuery()
-            ->with($this->getWith())
-            ->find($this->getItemID());
-
-        return $this->item;
-    }
-
-    public function getItemOrInstance(): Model
-    {
-        if ($this->item instanceof Model) {
-            return $this->item;
-        }
-
-        $this->item = $this->getModel()
-            ->newModelQuery()
-            ->with($this->getWith())
-            ->findOrNew($this->getItemID());
-
-        return $this->item;
-    }
-
-    public function getItemOrFail(): Model
-    {
-        if ($this->item instanceof Model) {
-            return $this->item;
-        }
-
-        $this->item = $this->getModel()
-            ->newModelQuery()
-            ->with($this->getWith())
-            ->findOrFail($this->getItemID());
-
-        return $this->item;
-    }
-
     public function massDelete(array $ids): void
     {
         $this->beforeMassDeleting($ids);
@@ -263,13 +203,24 @@ abstract class ModelResource extends Resource
 
     public function delete(Model $item): bool
     {
-        $this->beforeDeleting($item);
+        $item = $this->beforeDeleting($item);
 
-        $this->getFields()->onlyFields()->each(fn (Field $field) => $field->afterDestroy($item));
+        $this->getFields()
+            ->onlyFields()
+            ->each(fn (Field $field) => $field->afterDestroy($item));
 
-        return tap($item->delete(), function () use ($item): void {
-            $this->afterDeleted($item);
-        });
+        return tap($item->delete(), fn () => $this->afterDeleted($item));
+    }
+
+    protected function onSave(Field $field): Closure
+    {
+        return static function (Model $item) use ($field): Model {
+            if ($field->requestValue()) {
+                data_set($item, $field->column(), $field->requestValue());
+            }
+
+            return $item;
+        };
     }
 
     /**

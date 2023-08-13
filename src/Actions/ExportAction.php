@@ -120,7 +120,7 @@ class ExportAction extends Action
     ): string {
         $fields = $resource->getFields()->exportFields();
 
-        $items = $resource->resolveQuery()->get();
+        $items = $resource->items();
 
         $data = collect();
 

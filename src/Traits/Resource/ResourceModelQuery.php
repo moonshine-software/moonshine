@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Fields\Field;
@@ -14,6 +16,8 @@ use Throwable;
 
 trait ResourceModelQuery
 {
+    protected ?Model $item = null;
+
     protected array $with = [];
 
     protected string $sortColumn = '';
@@ -22,11 +26,59 @@ trait ResourceModelQuery
 
     protected int $itemsPerPage = 25;
 
-    protected bool $simplePaginate = false;
-
     protected bool $usePagination = true;
 
+    protected bool $simplePaginate = false;
+
     protected ?Builder $customBuilder = null;
+
+    public function getItemID(): int|string|null
+    {
+        return request('resourceItem');
+    }
+
+    protected function itemOr(Closure $closure): ?Model
+    {
+        if (! is_null($this->item)) {
+            return $this->item;
+        }
+
+        $this->item = $closure();
+
+        return $this->item;
+    }
+
+    protected function resolveItemQuery(): Builder
+    {
+        return $this->getModel()->newQuery();
+    }
+
+    public function getItem(): ?Model
+    {
+        return $this->itemOr(
+            fn () => $this
+                ->resolveItemQuery()
+                ->find($this->getItemID())
+        );
+    }
+
+    public function getItemOrInstance(): Model
+    {
+        return $this->itemOr(
+            fn () => $this
+                ->resolveItemQuery()
+                ->findOrNew($this->getItemID())
+        );
+    }
+
+    public function getItemOrFail(): Model
+    {
+        return $this->itemOr(
+            fn () => $this
+                ->resolveItemQuery()
+                ->findOrFail($this->getItemID())
+        );
+    }
 
     /**
      * @throws Throwable
@@ -69,7 +121,7 @@ trait ResourceModelQuery
             });
         }
 
-        $query = $this->performOrder(
+        $query = $this->resolveOrder(
             $query,
             request('sort.column', $this->sortColumn()),
             request('sort.direction', $this->sortDirection())
@@ -93,12 +145,7 @@ trait ResourceModelQuery
         return $query;
     }
 
-    public function scopes(): array
-    {
-        return [];
-    }
-
-    public function query(): Builder
+    protected function query(): Builder
     {
         $query = $this->customBuilder ?? $this->getModel()->query();
 
@@ -109,7 +156,12 @@ trait ResourceModelQuery
         return $query;
     }
 
-    public function performOrder(Builder $query, string $column, string $direction): Builder
+    public function scopes(): array
+    {
+        return [];
+    }
+
+    protected function resolveOrder(Builder $query, string $column, string $direction): Builder
     {
         return $query->orderBy($column, $direction);
     }

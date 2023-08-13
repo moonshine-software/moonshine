@@ -22,8 +22,12 @@ final class MoonShineRouter
         );
     }
 
-    public static function to_page(string|Resource $resource, string|Page|null $page = null, array $params = [], bool $redirect = false): RedirectResponse|string
-    {
+    public static function to_page(
+        string|Resource $resource,
+        string|Page|null $page = null,
+        array $params = [],
+        bool $redirect = false
+    ): RedirectResponse|string {
         $resource = $resource instanceof Resource
             ? $resource
             : new $resource();
@@ -46,7 +50,8 @@ final class MoonShineRouter
 
     public static function uriKey(string $class): string
     {
-        return str(class_basename($class))
+        return str($class)
+            ->classBasename()
             ->kebab()
             ->value();
     }

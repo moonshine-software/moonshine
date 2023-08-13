@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Http\Controllers\ActionController;
 use MoonShine\MoonShineRouter;
@@ -22,19 +23,19 @@ trait ResourceModelCrudRouter
                 ->prefix($this->uriKey())
                 ->as("actions.")
                 ->group(function (): void {
-
+                    //
                 });
         });
     }
 
     public function currentRoute(array $query = []): string
     {
-        return str(request()->url())
-            ->when(
-                $query,
-                static fn ($str) => $str->append('?')
-                    ->append(Arr::query($query))
-            )->value();
+        return str(request()->url())->when(
+            $query,
+            static fn (Stringable $str) => $str
+                ->append('?')
+                ->append(Arr::query($query))
+        )->value();
     }
 
     public function route(
@@ -48,7 +49,7 @@ trait ResourceModelCrudRouter
 
         $query['resourceUri'] = $this->uriKey();
 
-        unset($query['change-moonshine-locale'], $query['reset']);
+        data_forget($query, ['change-moonshine-locale', 'reset']);
 
         return MoonShineRouter::to(
             str($name)->contains('.') ? $name : 'crud.' . $name,
