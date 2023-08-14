@@ -117,7 +117,7 @@ trait ResourceModelQuery
 
     public function hasWith(): bool
     {
-        return static::$with !== [];
+        return $this->getWith() !== [];
     }
 
     public function getWith(): array
