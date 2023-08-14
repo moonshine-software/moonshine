@@ -37,10 +37,10 @@ trait ResourceModelQuery
             ->when(
                 static::$simplePaginate,
                 fn (Builder $query): Paginator => $query->simplePaginate(
-                    static::$itemsPerPage
+                    $this->getItemsPerPage()
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    static::$itemsPerPage
+                    $this->getItemsPerPage()
                 ),
             )
             ->appends(request()->except('page'));
@@ -167,5 +167,10 @@ trait ResourceModelQuery
     public function isPaginationUsed(): bool
     {
         return $this->usePagination;
+    }
+
+    protected function getItemsPerPage(): int
+    {
+        return static::$itemsPerPage;
     }
 }
