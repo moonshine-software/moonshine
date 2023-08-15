@@ -223,7 +223,7 @@ class Json extends Field implements
         $values = collect($this->toValue())
             ->when(
                 $this->isNowOnForm(),
-                static fn($values) => $values->push([])
+                static fn($values): Collection => $values->push([])
             );
 
         return TableBuilder::make($this->preparedFields()->toArray(), $values)
@@ -279,7 +279,7 @@ class Json extends Field implements
                 foreach ($this->getFields() as $field) {
                     $field->when(
                         $field instanceof Fileable,
-                        fn($field) => $field->setRequestKeyPrefix(
+                        fn($field): Field => $field->setRequestKeyPrefix(
                             $this->column() . "." . $index
                         )
                     );

@@ -127,6 +127,9 @@ trait TableStates
         return $this->isSimple;
     }
 
+    /**
+     * @return array{async: mixed, vertical: mixed, editable: mixed, preview: mixed, notfound: mixed, creatable: mixed, reindex: mixed, sortable: mixed, simple: mixed}
+     */
     public function statesToArray(): array
     {
         return [
