@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasValueExtraction;
@@ -126,23 +127,16 @@ class Json extends Field implements
         return $data;
     }
 
-    # TODO remove
-    public function values(bool $empty = false): array
-    {
-        return $this->resolveValue()
-            ->rows()
-            ->map(
-                fn ($row) => $row->getFields()
-                    ->when($empty, fn (Fields $fields) => $fields->reset())
-                    ->getValues()
-                    ->toArray()
-            )
-            ->toArray();
-    }
-
     protected function incrementLevel(): self
     {
         ++$this->level;
+
+        return $this;
+    }
+
+    public function setLevel(int $level): self
+    {
+        $this->level = $level;
 
         return $this;
     }
@@ -163,25 +157,28 @@ class Json extends Field implements
             );
 
             $name = str($this->name());
+            $level = $name->substrCount('$');
 
             if ($field instanceof Json) {
-                $field->incrementLevel();
+                $field->setLevel($level);
             }
 
-            return $field->setName(
-                $name
-                    ->append('[${index' . $name->substrCount('$') . '}]')
-                    ->append("[{$field->column()}]")
-                    ->replace('[]', '')
-                    ->when(
-                        $field->getAttribute('multiple') || $field->isGroup(),
-                        static fn (Stringable $str): Stringable => $str->append('[]')
-                    )
-                    ->value()
-            )
+            $name = $name
+                ->append('[${index' . $level . '}]')
+                ->append("[{$field->column()}]")
+                ->replace('[]', '')
+                ->when(
+                    $field->getAttribute('multiple') || $field->isGroup(),
+                    static fn (Stringable $str): Stringable => $str->append('[]')
+                )
+                ->value();
+
+            return $field->setName($name)
+                ->customAttributes([
+                    'data-name' => $name,
+                    'data-level' => $level
+                ])
                 ->setParent($this)
-                # TODO remove
-                //->xModel()
             ;
         });
     }
@@ -193,6 +190,7 @@ class Json extends Field implements
         }
 
         return (string) $this->resolveValue()
+            ->simple()
             ->preview();
     }
 
@@ -203,12 +201,16 @@ class Json extends Field implements
         foreach ($this->getFields() as $field) {
             if ($field instanceof HasValueExtraction) {
                 foreach ($values as $index => $value) {
-                    $values[$index][$field->column()] = collect($value[$field->column()])
-                        ->map(fn ($data, $key): array => $field->extractValues(
-                            $field->isOnlyValue() ? [$data] : [$key => $data]
-                        ))
-                        ->values()
-                        ->toArray();
+                    data_set(
+                        $values[$index],
+                        $field->column(),
+                        collect($value[$field->column()] ?? [])
+                            ->map(fn ($data, $key): array => $field->extractValues(
+                                $field->isOnlyValue() ? [$data] : [$key => $data]
+                            ))
+                            ->values()
+                            ->toArray()
+                    );
                 }
             }
         }
@@ -218,7 +220,13 @@ class Json extends Field implements
 
     protected function resolveValue(): mixed
     {
-        return TableBuilder::make($this->preparedFields()->toArray(), $this->toValue() ?? [])
+        $values = collect($this->toValue())
+            ->when(
+                $this->isNowOnForm(),
+                static fn($values) => $values->push([])
+            );
+
+        return TableBuilder::make($this->preparedFields()->toArray(), $values)
             ->when(
                 $this->isVertical(),
                 fn (TableBuilder $table): TableBuilder => $table->vertical()
@@ -269,12 +277,15 @@ class Json extends Field implements
 
             foreach ($requestValues as $index => $values) {
                 foreach ($this->getFields() as $field) {
-                    $field->setRequestKeyPrefix(
-                        $this->column() . "." . $index
+                    $field->when(
+                        $field instanceof Fileable,
+                        fn($field) => $field->setRequestKeyPrefix(
+                            $this->column() . "." . $index
+                        )
                     );
 
                     $requestValues[$index] = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values),
+                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
                         $values
                     );
                 }

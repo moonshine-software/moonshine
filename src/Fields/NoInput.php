@@ -130,4 +130,9 @@ class NoInput extends Field
 
         return $value;
     }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return static fn ($item) => $item;
+    }
 }

@@ -1,23 +1,16 @@
 <div x-id="['json']" :id="$id('json')">
-    {{ $element->value()
+    {{ $element->value(withOld: false)
             ->editable()
             ->buttons([
                 actionBtn('', '#')
                     ->icon('heroicons.outline.trash')
-                    ->onClick(fn($action) => '$el.closest("tr").remove()', 'prevent')
+                    ->onClick(fn($action) => 'remove()', 'prevent')
                     ->customAttributes(['class' => 'btn-pink'])
                     ->showInLine(),
             ])
-            ->preview()
+            ->simple()
+            ->creatable()
+            ->sortable()
             ->render()
     }}
-
-    <x-moonshine::divider />
-
-    <x-moonshine::link
-        class="w-full"
-        icon="heroicons.plus-circle"
-    >
-        @lang('moonshine::ui.add')
-    </x-moonshine::link>
 </div>

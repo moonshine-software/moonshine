@@ -68,6 +68,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->fields($this->preparedFields()->toArray())
             ->cast($resource->getModelCast())
             ->preview()
+            ->simple()
             ->withNotFound()
             ->when(
                 $this->toOne(),

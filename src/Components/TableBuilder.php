@@ -67,12 +67,12 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function rows(): Collection
     {
-        return $this->getItems()->map(function (array $data): TableRow {
+        return $this->getItems()->map(function (array $data, $index): TableRow {
             $casted = $this->castData($data);
 
             return TableRow::make(
                 $casted,
-                $this->getFields()->fillCloned($data, $casted),
+                $this->getFields()->fillCloned($data, $casted, $index),
                 $this->getButtons($data),
                 $this->trAttributes,
                 $this->tdAttributes
@@ -126,11 +126,6 @@ final class TableBuilder extends IterableComponent implements TableContract
             'hasPaginator' => $this->hasPaginator(),
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),
-            'async' => $this->isAsync(),
-            'vertical' => $this->isVertical(),
-            'editable' => $this->isEditable(),
-            'preview' => $this->isPreview(),
-            'notfound' => $this->hasNotFound(),
-        ]);
+        ] + $this->statesToArray());
     }
 }

@@ -3,10 +3,11 @@
     'actions',
     'vertical' => false,
     'editable' => false,
+    'preview' => false,
 ])
 @foreach($rows as $row)
     @if(!$vertical) <tr {{ $row->trAttributes($loop->index) }}> @endif
-        @if(!$vertical && $actions->isNotEmpty())
+        @if(!$preview && !$vertical && $actions->isNotEmpty())
             <td {{ $row->tdAttributes($loop->index, 0)
                 ->merge(['class' => 'w-10 text-center']) }}
             >
@@ -41,7 +42,7 @@
                 @endif
         @endforeach
 
-        @if(!$vertical)
+        @if(!$vertical && !$preview)
             <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + $actions->isNotEmpty()) }}>
                 <x-moonshine::table.actions
                     :actions="$row->getActions()"

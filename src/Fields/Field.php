@@ -158,7 +158,7 @@ abstract class Field extends FormElement
         return data_get($casted ?? $raw, $this->column());
     }
 
-    public function resolveFill(array $raw = [], mixed $casted = null): self
+    public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): self
     {
         if ($this->value) {
             return $this;
@@ -172,7 +172,8 @@ abstract class Field extends FormElement
             $this->setFormattedValue(
                 call_user_func(
                     $this->formattedValueCallback(),
-                    empty($casted) ? $this->toRawValue() : $casted
+                    empty($casted) ? $this->toRawValue() : $casted,
+                    $index
                 )
             );
         }

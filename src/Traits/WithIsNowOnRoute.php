@@ -8,16 +8,12 @@ trait WithIsNowOnRoute
 {
     public function isNowOnIndex(): bool
     {
-        return request()?->routeIs(
-            '*.query-tag',
-            '*.index',
-            '*.relation-field-items'
-        );
+        return request()?->route('pageUri') === 'index-page';
     }
 
     public function isNowOnDetail(): bool
     {
-        return request()?->routeIs('*.show');
+        return request()?->route('pageUri') === 'show-page';
     }
 
     public function isNowOnForm(): bool
@@ -28,19 +24,13 @@ trait WithIsNowOnRoute
 
     public function isNowOnCreateForm(): bool
     {
-        return request()?->routeIs(
-            '*.create',
-            '*.store',
-            '*.relation-field-form'
-        );
+        return is_null(request()?->route('resourceItem'))
+            && request()?->route('pageUri') === 'form-page';
     }
 
     public function isNowOnUpdateForm(): bool
     {
-        return request()?->routeIs(
-            '*.edit',
-            '*.update',
-            '*.relation-field-form'
-        );
+        return ! is_null(request()?->route('resourceItem'))
+            && request()?->route('pageUri') === 'form-page';
     }
 }

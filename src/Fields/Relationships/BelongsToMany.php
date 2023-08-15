@@ -13,11 +13,11 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
-use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\NoInput;
+use MoonShine\Fields\SwitchBoolean;
 use MoonShine\Fields\Text;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
@@ -159,7 +159,7 @@ class BelongsToMany extends ModelRelationField implements
         $fields = $this->preparedFields()
             ->onlyFields()
             ->prepend(NoInput::make($titleColumn))
-            ->prepend(Checkbox::make('#', $checkedColumn)->setName($checkedColumn . '[]'))
+            ->prepend(SwitchBoolean::make('#', $checkedColumn)->setName($checkedColumn . '[]'))
             ->toArray();
 
         $values = $this->resolveValuesQuery()->get();
@@ -177,6 +177,7 @@ class BelongsToMany extends ModelRelationField implements
             ->fields($fields)
             ->cast($this->getModelCast())
             ->preview()
+            ->simple()
             ->editable()
             ->withNotFound();
     }
@@ -230,6 +231,7 @@ class BelongsToMany extends ModelRelationField implements
 
         return TableBuilder::make($fields, $values)
             ->preview()
+            ->simple()
             ->cast($this->getModelCast())
             ->render();
     }

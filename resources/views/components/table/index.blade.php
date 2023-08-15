@@ -1,5 +1,5 @@
 @props([
-    'classic' => false,
+    'simple' => false,
     'values' => false,
     'columns' => false,
     'notfound' => false,
@@ -11,7 +11,9 @@
 @if(isset($tbody) || (is_iterable($values) && count($values)))
     <!-- Table -->
     <div @if ($responsive) class="table-responsive" @endif>
-        <table {{ $attributes->merge(['class' => 'table' . ($classic ? '-list' : '')]) }}>
+        <table {{ $attributes
+                ->merge(['class' => 'table' . (!$simple ? '-list' : '')])
+        }}>
             <thead {{ isset($thead) ? $thead?->attributes : '' }}>
             <tr>
                 @if(is_array($columns))
