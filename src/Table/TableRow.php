@@ -35,6 +35,14 @@ final class TableRow
             ?->value() ?? '';
     }
 
+    /**
+     * @throws Throwable
+     */
+    public function hasKey(): bool
+    {
+        return !empty($this->getKey());
+    }
+
     public function getFields(): Fields
     {
         return $this->fields;

@@ -24,9 +24,9 @@ class RangeField extends Number implements HasValueExtraction, DefaultCanBeArray
         return $this;
     }
 
-    protected function prepareFill(array $rawValues = [], mixed $castedValues = null): array
+    protected function prepareFill(array $raw = [], mixed $casted = null, int $index = 0): array
     {
-        return $this->extractValues($rawValues);
+        return $this->extractValues($raw);
     }
 
     protected function resolvePreview(): string

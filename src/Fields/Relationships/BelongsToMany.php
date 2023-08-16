@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
@@ -113,7 +114,7 @@ class BelongsToMany extends ModelRelationField implements
                         'attributes' => $this->attributes()->merge([
                             'type' => 'checkbox',
                             'id' => $this->id((string) $item->getKey()),
-                            'name' => $this->name(),
+                            'name' => $this->name((string) $item->getKey()),
                             'value' => $item->getKey(),
                             'class' => 'form-group-inline',
                         ]),
@@ -144,22 +145,36 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function preparedFields(): Fields
     {
+        $column = fn (
+            Field $field,
+            string $index = ''
+        ) => "{$this->getRelationName()}_pivot[{$field->column()}][$index]";
+
         return $this->getFields()->map(fn (Field $field): Field => (clone $field)
             ->setColumn("{$this->getPivotAs()}.{$field->column()}")
-            ->setName(
-                "{$this->getRelationName()}_{$field->column()}[]"
-            ));
+            ->setName($column($field))
+            ->customAttributes([
+                'data-name' => $column($field, '${index0}'),
+                'data-level' => 0,
+            ])
+        );
     }
 
     protected function resolveValue(): mixed
     {
         $titleColumn = $this->getResourceColumn();
-        $checkedColumn = $this->getRelationName() . '_' . $this->getRelation()->getRelated()->getForeignKey();
+        $checkedColumn = "{$this->getRelationName()}[\${index0}]";
+        $identityField = SwitchBoolean::make('#', $checkedColumn)
+            ->setName($checkedColumn)
+            ->customAttributes([
+                'data-name' => $checkedColumn,
+                'data-level' => 0,
+            ]);
 
         $fields = $this->preparedFields()
             ->onlyFields()
             ->prepend(NoInput::make($titleColumn))
-            ->prepend(SwitchBoolean::make('#', $checkedColumn)->setName($checkedColumn . '[]'))
+            ->prepend($identityField)
             ->toArray();
 
         $values = $this->resolveValuesQuery()->get();
@@ -176,9 +191,15 @@ class BelongsToMany extends ModelRelationField implements
         return TableBuilder::make(items: $values)
             ->fields($fields)
             ->cast($this->getModelCast())
+            ->trAttributes(function (Model $data, int $row, ComponentAttributeBag $attributes) {
+                return $attributes->merge([
+                    'data-key' => $data->getKey(),
+                ]);
+            })
             ->preview()
             ->simple()
             ->editable()
+            ->reindex()
             ->withNotFound();
     }
 
@@ -239,14 +260,20 @@ class BelongsToMany extends ModelRelationField implements
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            $values = $this->requestValue() ?: [];
+            $values = array_filter($this->requestValue() ?: []);
             $sync = [];
 
-            foreach ($values as $index => $key) {
-                # TODO[refactor] requestValues change to apply
-                $sync[$key] = $this->getFields()
-                    ->requestValues((string) $index)
-                    ->toArray();
+            foreach ($values as $key => $checked) {
+                data_set(
+                    $sync,
+                    $key,
+                    $this->preparedFields()
+                        ->requestValues(
+                            (string) $key,
+                            fn(Field $field) => str_replace("{$this->getPivotAs()}.", "", $field->column())
+                        )
+                        ->toArray()
+                );
             }
 
             $item->{$this->getRelationName()}()->sync($sync);

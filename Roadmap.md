@@ -4,7 +4,7 @@
 - [x] Make MoonShine FormRequests
 - [x] Get resources from uri
 - [x] Increased test coverage and transition to PEST
-- [ ] Isolate fields from models
-- [ ] Isolate resource from models
-- [ ] Form/Table builder
+- [x] Isolate fields from models
+- [x] Isolate resource from models
+- [x] Form/Table builder
 - [ ] Ability to customize design

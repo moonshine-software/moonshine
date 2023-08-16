@@ -2,7 +2,7 @@
     <x-moonshine::form.input
         type="hidden"
         name="{{ $element->name() }}"
-        :attributes="$element->attributes()->only(['x-bind:name'])"
+        :attributes="$element->attributes()->except(['class', 'id', 'type', 'checked', 'value'])"
         value="{{ $element->getOffValue() }}"
     />
 

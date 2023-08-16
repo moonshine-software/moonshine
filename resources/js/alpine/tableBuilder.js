@@ -67,8 +67,7 @@ export default (
       tr.querySelectorAll(`[data-level="${level}"]`).forEach(function(input) {
         let row = input.closest('tr')
         let name = input.dataset.name
-
-        prev['${index' + level + '}'] = row.rowIndex
+        prev['${index' + level + '}'] = row.dataset.key ?? row.rowIndex
 
         Object.entries(prev).forEach(function([key, value]) {
           name = name.replace(key, value)

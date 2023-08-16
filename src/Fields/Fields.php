@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -42,20 +43,24 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function requestValues(string $index = null): Fields
+    public function requestValues(int|string|null $index = null, ?Closure $column = null): Fields
     {
         return $this->onlyFields()->mapWithKeys(
-            fn (Field $field): array => [$field->column() => $field->requestValue($index)]
+            fn (Field $field): array => [
+                !is_null($column) ? $column($field) : $field->column() => $field->requestValue($index)
+            ]
         )->filter();
     }
 
     /**
      * @throws Throwable
      */
-    public function getValues(): Fields
+    public function getValues(?Closure $column = null): Fields
     {
         return $this->onlyFields()->mapWithKeys(
-            fn (Field $field): array => [$field->column() => $field->toValue()]
+            fn (Field $field): array => [
+                !is_null($column) ? $column($field) : $field->column() => $field->toValue()
+            ]
         );
     }
 

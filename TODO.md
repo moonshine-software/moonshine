@@ -4,7 +4,7 @@
 - [x] TableBuilder BulkActions (Perhaps ItemAction with method bulk)
 - [ ] PageComponents: Actions, QueryTags
 - [x] Rename Renderable
-- [ ] Modal and offcanvas decoration
+- [x] Modal and offcanvas decoration
 - [ ] Actions with offcanvas mode
 - [x] Decorations with html attributes
-- [ ] Field RangeField
+- [x] Field RangeField

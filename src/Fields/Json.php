@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasValueExtraction;
@@ -170,16 +169,17 @@ class Json extends Field implements
                 ->when(
                     $field->getAttribute('multiple') || $field->isGroup(),
                     static fn (Stringable $str): Stringable => $str->append('[]')
-                )
-                ->value();
+                )->value();
 
-            return $field->setName($name)
+            return $field
+                ->setName(
+                    $name
+                )
                 ->customAttributes([
                     'data-name' => $name,
                     'data-level' => $level,
                 ])
-                ->setParent($this)
-            ;
+                ->setParent($this);
         });
     }
 
@@ -271,17 +271,15 @@ class Json extends Field implements
         return function ($item) {
             $requestValues = $this->requestValue();
 
+
             if ($requestValues === false) {
                 return data_set($item, $this->column(), []);
             }
 
             foreach ($requestValues as $index => $values) {
-                foreach ($this->getFields() as $field) {
-                    $field->when(
-                        $field instanceof Fileable,
-                        fn ($field): Field => $field->setRequestKeyPrefix(
-                            $this->column() . "." . $index
-                        )
+                foreach ($this->getFields()->onlyFileFields() as $field) {
+                    $field->setRequestKeyPrefix(
+                        $this->column() . "." . $index
                     );
 
                     $requestValues[$index] = $field->apply(

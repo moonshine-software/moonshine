@@ -97,6 +97,12 @@ trait TableStates
         return $this->isCreatable;
     }
 
+    public function reindex(): self
+    {
+        $this->isReindex = true;
+
+        return $this;
+    }
 
     public function isReindex(): bool
     {
