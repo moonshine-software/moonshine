@@ -10,13 +10,15 @@ use JsonException;
 use MoonShine\Fields\Enum;
 use UnitEnum;
 
+use Closure;
+
 trait SelectTrait
 {
     protected array $options = [];
 
-    public function options(array $data): static
+    public function options(array|Closure $data): static
     {
-        $this->options = $data;
+        $this->options = is_callable($data) ? call_user_func($data) : $data;
 
         return $this;
     }
