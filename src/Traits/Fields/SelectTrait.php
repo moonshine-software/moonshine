@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Fields\Enum;
-use UnitEnum;
 
-use Closure;
+use UnitEnum;
 
 trait SelectTrait
 {
