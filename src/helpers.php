@@ -7,11 +7,15 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Contracts\ApplyContract;
+use MoonShine\Fields\Field;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
+use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\Resource;
 use MoonShine\Utilities\AssetManager;
 
@@ -32,6 +36,13 @@ if (! function_exists('moonshine')) {
     function moonshine(): MoonShine
     {
         return app(MoonShine::class);
+    }
+}
+
+if (! function_exists('moonshineRegister')) {
+    function moonshineRegister(): MoonShineRegister
+    {
+        return app(MoonShineRegister::class);
     }
 }
 
@@ -95,5 +106,21 @@ if (! function_exists('actionBtn')) {
         mixed $item = null
     ): ActionButton {
         return ActionButton::make($label, $url, $item);
+    }
+}
+
+if (! function_exists('modelApplyFilter')) {
+    function modelApplyFilter(Field $filter): ?ApplyContract
+    {
+        $filterApplyClass = moonshineRegister()
+            ->filters()
+            ->for(ModelResource::class)
+            ->get(get_class($filter));
+
+        return
+            !is_null($filterApplyClass)
+            && class_exists($filterApplyClass)
+            ? new $filterApplyClass()
+            : null;
     }
 }

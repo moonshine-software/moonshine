@@ -11,6 +11,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use MoonShine\Actions\FiltersAction;
 use MoonShine\Fields\Field;
 use Throwable;
 
@@ -129,10 +130,17 @@ trait ResourceModelQuery
 
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
-                ->onlyFields()
-                ->each(
-                    fn (Field $filter): Builder => $filter->apply(fn () => $query, $query)
-                );
+                ->each(function (Field $filter) use ($query) {
+                    if(empty($filter->requestValue())) {
+                        return;
+                    }
+
+                    if($filterApply = modelApplyFilter($filter)) {
+                        $filter->onApply($filterApply->apply($filter));
+                    }
+
+                    $filter->apply($this->filterApply($filter), $query);
+                });
         }
 
         Cache::forget($this->queryCacheKey());
@@ -209,5 +217,10 @@ trait ResourceModelQuery
     public function isPaginationUsed(): bool
     {
         return $this->usePagination;
+    }
+
+    public function filterApply(Field $filter): Closure
+    {
+        return fn(Builder $query) => $query->where($filter->column(), $filter->requestValue());
     }
 }

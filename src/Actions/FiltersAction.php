@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Actions;
 
 use Illuminate\Support\Arr;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 
 final class FiltersAction extends Action
@@ -52,6 +53,6 @@ final class FiltersAction extends Action
 
     public function getFilters(): Fields
     {
-        return Fields::make($this->filters);
+        return $this->getResource()->getFilters();
     }
 }

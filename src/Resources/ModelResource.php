@@ -168,6 +168,15 @@ abstract class ModelResource extends Resource
         return [];
     }
 
+    public function getFilters(): Fields
+    {
+        $filters = Fields::make($this->filters())->onlyFields();
+
+        $filters->each(fn(Field $field) => $field->wrapName('filters'));
+
+        return $filters;
+    }
+
     /**
      * @throws Throwable
      */
