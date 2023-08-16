@@ -24,6 +24,7 @@ use MoonShine\Http\Middleware\ChangeLocale;
 use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
+use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\Utilities\AssetManager;
 
@@ -155,5 +156,6 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(Menu::class);
         $this->app->singleton(Dashboard::class);
         $this->app->singleton(AssetManager::class);
+        $this->app->singleton(MoonShineRegister::class);
     }
 }

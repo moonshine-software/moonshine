@@ -28,6 +28,7 @@ trait ActionEvents
     {
         return $this->canApply;
     }
+
     protected function resolveOnApply(): ?Closure
     {
         return $this->onApply;
@@ -61,8 +62,12 @@ trait ActionEvents
             return $data;
         }
 
-        return is_callable($this->resolveOnApply())
-            ? call_user_func($this->resolveOnApply(), $data)
+        $applyFunction = is_callable($this->onApply)
+            ? $this->onApply
+            : $this->resolveOnApply();
+
+        return is_callable($applyFunction)
+            ? call_user_func($applyFunction, $data)
             : $default($data);
     }
 
