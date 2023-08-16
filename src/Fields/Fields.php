@@ -47,7 +47,7 @@ final class Fields extends FormElements
     {
         return $this->onlyFields()->mapWithKeys(
             fn (Field $field): array => [
-                !is_null($column) ? $column($field) : $field->column() => $field->requestValue($index)
+                is_null($column) ? $field->column() : $column($field) => $field->requestValue($index)
             ]
         )->filter();
     }
@@ -59,7 +59,7 @@ final class Fields extends FormElements
     {
         return $this->onlyFields()->mapWithKeys(
             fn (Field $field): array => [
-                !is_null($column) ? $column($field) : $field->column() => $field->toValue()
+                is_null($column) ? $field->column() : $column($field) => $field->toValue()
             ]
         );
     }

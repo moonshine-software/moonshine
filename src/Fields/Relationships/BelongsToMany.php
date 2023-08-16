@@ -191,11 +191,9 @@ class BelongsToMany extends ModelRelationField implements
         return TableBuilder::make(items: $values)
             ->fields($fields)
             ->cast($this->getModelCast())
-            ->trAttributes(function (Model $data, int $row, ComponentAttributeBag $attributes) {
-                return $attributes->merge([
-                    'data-key' => $data->getKey(),
-                ]);
-            })
+            ->trAttributes(fn(Model $data, int $row, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->merge([
+                'data-key' => $data->getKey(),
+            ]))
             ->preview()
             ->simple()
             ->editable()
@@ -270,7 +268,7 @@ class BelongsToMany extends ModelRelationField implements
                     $this->preparedFields()
                         ->requestValues(
                             (string) $key,
-                            fn(Field $field) => str_replace("{$this->getPivotAs()}.", "", $field->column())
+                            fn(Field $field): string => str_replace("{$this->getPivotAs()}.", "", $field->column())
                         )
                         ->toArray()
                 );
