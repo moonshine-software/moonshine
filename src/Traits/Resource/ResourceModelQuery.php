@@ -31,6 +31,8 @@ trait ResourceModelQuery
 
     protected bool $simplePaginate = false;
 
+    protected ?Builder $query = null;
+
     protected ?Builder $customBuilder = null;
 
     public function getItemID(): int|string|null
@@ -104,36 +106,13 @@ trait ResourceModelQuery
      */
     public function resolveQuery(): Builder
     {
-        $query = $this->query();
-
-        if ($this->scopes()) {
-            foreach ($this->scopes() as $scope) {
-                $query = $query->withGlobalScope($scope::class, $scope);
-            }
-        }
-
-        $query = $this->resolveSearch($query);
-
-        $query = $this->resolveOrder(
-            $query,
-            request('sort.column', $this->sortColumn()),
-            request('sort.direction', $this->sortDirection())
-        );
-
-        if (request()->has('filters') && count($this->filters())) {
-            $this->getFilters()
-                ->each(function (Field $filter) use ($query): void {
-                    if (empty($filter->requestValue())) {
-                        return;
-                    }
-
-                    if (($filterApply = modelApplyFilter($filter)) instanceof ApplyContract) {
-                        $filter->onApply($filterApply->apply($filter));
-                    }
-
-                    $filter->apply($this->filterApply($filter), $query);
-                });
-        }
+        $this->resolveScopes()
+            ->resolveSearch()
+            ->resolveFilters()
+            ->resolveOrder(
+                request('sort.column', $this->sortColumn()),
+                request('sort.direction', $this->sortDirection())
+            );
 
         Cache::forget($this->queryCacheKey());
         Cache::remember(
@@ -142,18 +121,22 @@ trait ResourceModelQuery
             static fn () => request()->getQueryString()
         );
 
-        return $query;
+        return $this->query();
     }
 
     protected function query(): Builder
     {
-        $query = $this->customBuilder ?? $this->getModel()->query();
-
-        if ($this->hasWith()) {
-            $query->with($this->getWith());
+        if(!is_null($this->query)) {
+            return $this->query;
         }
 
-        return $query;
+        $this->query = $this->customBuilder ?? $this->getModel()->query();
+
+        if ($this->hasWith()) {
+            $this->query->with($this->getWith());
+        }
+
+        return $this->query;
     }
 
     public function scopes(): array
@@ -161,11 +144,22 @@ trait ResourceModelQuery
         return [];
     }
 
-    protected function resolveSearch(Builder $query): Builder
+    protected function resolveScopes(): self
+    {
+        if ($this->scopes()) {
+            foreach ($this->scopes() as $scope) {
+                $this->query()->withGlobalScope($scope::class, $scope);
+            }
+        }
+
+        return $this;
+    }
+
+    protected function resolveSearch(): self
     {
         if (! empty($this->search()) && request()->has('search')) {
             request()->str('search')->explode(' ')->filter()->each(function ($term) use ($query): void {
-                $query->where(function ($q) use ($term): void {
+                $this->query()->where(function ($q) use ($term): void {
                     foreach ($this->search() as $column) {
                         $q->orWhere($column, 'LIKE', $term . '%');
                     }
@@ -173,12 +167,42 @@ trait ResourceModelQuery
             });
         }
 
-        return $query;
+        return $this;
     }
 
-    protected function resolveOrder(Builder $query, string $column, string $direction): Builder
+    protected function resolveOrder(string $column, string $direction): self
     {
-        return $query->orderBy($column, $direction);
+        $this->query()->orderBy($column, $direction);
+
+        return $this;
+    }
+
+    protected function resolveFilters(): self
+    {
+        if (request()->has('filters') && count($this->filters())) {
+            $this->getFilters()
+                ->each(function (Field $filter): void {
+                    if (empty($filter->requestValue())) {
+                        return;
+                    }
+
+                    if (($filterApply = modelApplyFilter($filter)) instanceof ApplyContract) {
+                        $filter->onApply($filterApply->apply($filter));
+                    }
+
+                    $filter->apply($this->filterApply($filter), $this->query());
+                });
+        }
+
+        return $this;
+    }
+
+    protected function filterApply(Field $filter): Closure
+    {
+        return static fn (Builder $query): Builder => $query->where(
+            $filter->column(),
+            $filter->requestValue()
+        );
     }
 
     public function hasWith(): bool
@@ -224,13 +248,5 @@ trait ResourceModelQuery
     public function isPaginationUsed(): bool
     {
         return $this->usePagination;
-    }
-
-    protected function filterApply(Field $filter): Closure
-    {
-        return static fn (Builder $query): Builder => $query->where(
-            $filter->column(),
-            $filter->requestValue()
-        );
     }
 }
