@@ -14,7 +14,7 @@ class RangeModelApply implements ApplyContract
 {
     public function apply(Field $field): Closure
     {
-        return function (Builder $query) use ($field) {
+        return function (Builder $query) use ($field): void {
             $values = $field->requestValue();
 
             $query->when(

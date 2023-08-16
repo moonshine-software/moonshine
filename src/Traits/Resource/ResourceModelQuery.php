@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use MoonShine\Contracts\ApplyContract;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -11,7 +12,6 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use MoonShine\Actions\FiltersAction;
 use MoonShine\Fields\Field;
 use Throwable;
 
@@ -130,12 +130,12 @@ trait ResourceModelQuery
 
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
-                ->each(function (Field $filter) use ($query) {
+                ->each(function (Field $filter) use ($query): void {
                     if(empty($filter->requestValue())) {
                         return;
                     }
 
-                    if($filterApply = modelApplyFilter($filter)) {
+                    if(($filterApply = modelApplyFilter($filter)) instanceof ApplyContract) {
                         $filter->onApply($filterApply->apply($filter));
                     }
 
@@ -221,6 +221,6 @@ trait ResourceModelQuery
 
     public function filterApply(Field $filter): Closure
     {
-        return fn(Builder $query) => $query->where($filter->column(), $filter->requestValue());
+        return fn(Builder $query): \Illuminate\Database\Eloquent\Builder => $query->where($filter->column(), $filter->requestValue());
     }
 }

@@ -115,7 +115,7 @@ if (! function_exists('modelApplyFilter')) {
         $filterApplyClass = moonshineRegister()
             ->filters()
             ->for(ModelResource::class)
-            ->get(get_class($filter));
+            ->get($filter::class);
 
         return
             !is_null($filterApplyClass)
