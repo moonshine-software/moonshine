@@ -17,26 +17,29 @@ final class MoonShineRegister
     private array $options = [
         'filters' => [
             ModelResource::class => [
-                RangeField::class => RangeModelApply::class
-            ]
-        ]
+                RangeField::class => RangeModelApply::class,
+            ],
+        ],
     ];
 
     public function activeOption(string $activeOption): MoonShineRegister
     {
         $this->activeOption = $activeOption;
+
         return $this;
     }
 
     public function for(string $activeSection): MoonShineRegister
     {
         $this->activeSection = $activeSection;
+
         return $this;
     }
 
     public function filters(): MoonShineRegister
     {
         $this->activeOption('filters');
+
         return $this;
     }
 
@@ -46,7 +49,7 @@ final class MoonShineRegister
             return $this;
         }
 
-        if(!empty($this->options[$this->activeOption][$this->activeSection][$key])) {
+        if(! empty($this->options[$this->activeOption][$this->activeSection][$key])) {
             return $this;
         }
 
@@ -57,7 +60,7 @@ final class MoonShineRegister
 
     public function get(string $key): mixed
     {
-        if(!$this->issetOption()) {
+        if(! $this->issetOption()) {
             return null;
         }
 

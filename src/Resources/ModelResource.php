@@ -172,7 +172,7 @@ abstract class ModelResource extends Resource
     {
         $filters = Fields::make($this->filters())->onlyFields();
 
-        $filters->each(fn(Field $field): Field => $field->wrapName('filters'));
+        $filters->each(fn (Field $field): Field => $field->wrapName('filters'));
 
         return $filters;
     }

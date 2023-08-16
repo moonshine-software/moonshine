@@ -118,7 +118,7 @@ if (! function_exists('modelApplyFilter')) {
             ->get($filter::class);
 
         return
-            !is_null($filterApplyClass)
+            ! is_null($filterApplyClass)
             && class_exists($filterApplyClass)
             ? new $filterApplyClass()
             : null;
