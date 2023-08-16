@@ -40,7 +40,7 @@ final class TableRow
      */
     public function hasKey(): bool
     {
-        return !empty($this->getKey());
+        return ! empty($this->getKey());
     }
 
     public function getFields(): Fields

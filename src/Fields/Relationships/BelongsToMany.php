@@ -150,7 +150,8 @@ class BelongsToMany extends ModelRelationField implements
             string $index = ''
         ) => "{$this->getRelationName()}_pivot[{$field->column()}][$index]";
 
-        return $this->getFields()->map(fn (Field $field): Field => (clone $field)
+        return $this->getFields()->map(
+            fn (Field $field): Field => (clone $field)
             ->setColumn("{$this->getPivotAs()}.{$field->column()}")
             ->setName($column($field))
             ->customAttributes([
@@ -191,7 +192,7 @@ class BelongsToMany extends ModelRelationField implements
         return TableBuilder::make(items: $values)
             ->fields($fields)
             ->cast($this->getModelCast())
-            ->trAttributes(fn(Model $data, int $row, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->merge([
+            ->trAttributes(fn (Model $data, int $row, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->merge([
                 'data-key' => $data->getKey(),
             ]))
             ->preview()
@@ -268,7 +269,7 @@ class BelongsToMany extends ModelRelationField implements
                     $this->preparedFields()
                         ->requestValues(
                             (string) $key,
-                            fn(Field $field): string => str_replace("{$this->getPivotAs()}.", "", $field->column())
+                            fn (Field $field): string => str_replace("{$this->getPivotAs()}.", "", $field->column())
                         )
                         ->toArray()
                 );
