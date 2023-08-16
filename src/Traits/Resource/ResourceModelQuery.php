@@ -126,7 +126,7 @@ trait ResourceModelQuery
 
     protected function query(): Builder
     {
-        if(!is_null($this->query)) {
+        if(! is_null($this->query)) {
             return $this->query;
         }
 
