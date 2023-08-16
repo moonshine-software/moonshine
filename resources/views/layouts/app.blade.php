@@ -2,24 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data>
     <head>
         @include('moonshine::layouts.shared.head')
-
-        {!! moonshineAssets()->css() !!}
-
-        @yield('after-styles')
-
-        @stack('styles')
-
-        {!! moonshineAssets()->js() !!}
-
-        @yield('after-scripts')
-
-        <style>
-            [x-cloak] { display: none !important; }
-        </style>
-
-        <script>
-            const translates = @js(__('moonshine::ui'));
-        </script>
+        @moonShineAssets
     </head>
     <body x-cloak x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }">
         <div class="layout-wrapper" :class="minimizedMenu && 'layout-wrapper-short'">

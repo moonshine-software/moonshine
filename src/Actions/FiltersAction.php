@@ -52,6 +52,12 @@ final class FiltersAction extends Action
 
     public function getFilters(): Fields
     {
-        return $this->getResource()->getFilters();
+        $filters = !empty($this->filters)
+            ? Fields::make($this->filters)->wrapNames('filters')
+            : $this->getResource()->getFilters();
+
+        $filters->fill(request('filters', []));
+
+        return $filters;
     }
 }

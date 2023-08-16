@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Support\Facades\Hash;
 
 class Password extends Text
 {
@@ -32,7 +33,7 @@ class Password extends Text
     {
         return function ($item) {
             if ($this->requestValue()) {
-                $item->{$this->column()} = bcrypt($this->requestValue());
+                data_set($item, $this->column(), Hash::make($this->requestValue()));
             }
 
             return $item;

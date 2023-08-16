@@ -112,15 +112,7 @@ trait ResourceModelQuery
             }
         }
 
-        if (! empty($this->search()) && request()->has('search')) {
-            request()->str('search')->explode(' ')->filter()->each(function ($term) use ($query): void {
-                $query->where(function ($q) use ($term): void {
-                    foreach ($this->search() as $column) {
-                        $q->orWhere($column, 'LIKE', $term . '%');
-                    }
-                });
-            });
-        }
+        $query = $this->resolveSearch($query);
 
         $query = $this->resolveOrder(
             $query,
@@ -131,11 +123,11 @@ trait ResourceModelQuery
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
                 ->each(function (Field $filter) use ($query): void {
-                    if(empty($filter->requestValue())) {
+                    if (empty($filter->requestValue())) {
                         return;
                     }
 
-                    if(($filterApply = modelApplyFilter($filter)) instanceof ApplyContract) {
+                    if (($filterApply = modelApplyFilter($filter)) instanceof ApplyContract) {
                         $filter->onApply($filterApply->apply($filter));
                     }
 
@@ -167,6 +159,21 @@ trait ResourceModelQuery
     public function scopes(): array
     {
         return [];
+    }
+
+    protected function resolveSearch(Builder $query): Builder
+    {
+        if (! empty($this->search()) && request()->has('search')) {
+            request()->str('search')->explode(' ')->filter()->each(function ($term) use ($query): void {
+                $query->where(function ($q) use ($term): void {
+                    foreach ($this->search() as $column) {
+                        $q->orWhere($column, 'LIKE', $term . '%');
+                    }
+                });
+            });
+        }
+
+        return $query;
     }
 
     protected function resolveOrder(Builder $query, string $column, string $direction): Builder
@@ -219,8 +226,11 @@ trait ResourceModelQuery
         return $this->usePagination;
     }
 
-    public function filterApply(Field $filter): Closure
+    protected function filterApply(Field $filter): Closure
     {
-        return fn (Builder $query): \Illuminate\Database\Eloquent\Builder => $query->where($filter->column(), $filter->requestValue());
+        return static fn (Builder $query): Builder => $query->where(
+            $filter->column(),
+            $filter->requestValue()
+        );
     }
 }

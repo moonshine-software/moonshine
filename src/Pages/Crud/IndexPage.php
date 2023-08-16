@@ -48,6 +48,7 @@ class IndexPage extends Page
             TableBuilder::make(items: $items)
                 ->fields($resource->getIndexFields()->toArray())
                 ->cast($resource->getModelCast())
+                ->withNotFound()
                 ->buttons([
                     ShowButton::for($resource),
                     FormButton::for($resource),

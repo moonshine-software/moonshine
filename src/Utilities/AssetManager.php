@@ -26,11 +26,12 @@ class AssetManager
     public function js(): string
     {
         return collect($this->assets)
+            ->prepend('/vendor/moonshine/js/moonshine.js')
             ->filter(
                 fn ($asset): int|bool => preg_match('/\.js$/', (string) $asset)
             )
             ->map(
-                fn ($asset): string => "<script src='" . asset(
+                fn ($asset): string => "<script defer src='" . asset(
                     $asset
                 ) . "'></script>"
             )->implode(PHP_EOL);
@@ -39,6 +40,7 @@ class AssetManager
     public function css(): string
     {
         return collect($this->assets)
+            ->prepend('/vendor/moonshine/css/moonshine.css')
             ->filter(
                 fn ($asset): int|bool => preg_match('/\.css$/', (string) $asset)
             )

@@ -152,6 +152,10 @@ class MoonShineServiceProvider extends ServiceProvider
             fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );
 
+        Blade::directive('moonShineAssets', static function () {
+            return "<?php echo view('moonshine::layouts.shared.assets') ?>";
+        });
+
         $this->app->singleton(MoonShine::class);
         $this->app->singleton(Menu::class);
         $this->app->singleton(Dashboard::class);

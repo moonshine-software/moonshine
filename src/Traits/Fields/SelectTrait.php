@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
+use Closure;
 use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Fields\Enum;
@@ -13,9 +14,11 @@ trait SelectTrait
 {
     protected array $options = [];
 
-    public function options(array $data): static
+    public function options(Closure|array $data): static
     {
-        $this->options = $data;
+        $this->options = is_callable($data)
+            ? $data($this)
+            : $data;
 
         return $this;
     }

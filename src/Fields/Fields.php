@@ -64,6 +64,14 @@ final class Fields extends FormElements
         );
     }
 
+    public function wrapNames(string $name): Fields
+    {
+        $fields = $this->onlyFields();
+        $fields->each(fn (Field $field): Field => $field->wrapName($name));
+
+        return $fields;
+    }
+
     /**
      * @throws Throwable
      */

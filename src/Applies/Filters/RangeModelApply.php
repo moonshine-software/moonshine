@@ -14,15 +14,13 @@ class RangeModelApply implements ApplyContract
 {
     public function apply(Field $field): Closure
     {
-        return function (Builder $query) use ($field): void {
+        return static function (Builder $query) use ($field): Builder {
             $values = $field->requestValue();
 
             $query->when(
                 $values['from'] ?? null,
                 function ($query, $from) use ($field): void {
-                    $type = $field->attributes()->get('type');
-
-                    if ($type == 'date') {
+                    if ($field->attributes()->get('type') === 'date') {
                         $query->whereDate(
                             $field->column(),
                             '>=',
@@ -36,9 +34,7 @@ class RangeModelApply implements ApplyContract
                 ->when(
                     $values['to'] ?? null,
                     function ($query, $to) use ($field): void {
-                        $type = $field->attributes()->get('type');
-
-                        if ($type == 'date') {
+                        if ($field->attributes()->get('type') === 'date') {
                             $query->whereDate(
                                 $field->column(),
                                 '<=',
@@ -49,6 +45,8 @@ class RangeModelApply implements ApplyContract
                         }
                     }
                 );
+
+            return $query;
         };
     }
 }
