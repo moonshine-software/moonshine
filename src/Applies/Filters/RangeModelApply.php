@@ -7,9 +7,10 @@ namespace MoonShine\Applies\Filters;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
 
-class RangeModelApply implements ApplyModelContract
+class RangeModelApply implements ApplyContract
 {
     public function apply(Field $field): Closure
     {

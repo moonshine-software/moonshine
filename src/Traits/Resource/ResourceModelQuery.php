@@ -129,9 +129,7 @@ trait ResourceModelQuery
         );
 
         if (request()->has('filters') && count($this->filters())) {
-            FiltersAction::make()
-                ->filters($this->filters())
-                ->getFilters()
+            $this->getFilters()
                 ->each(function (Field $filter) use ($query) {
                     if(empty($filter->requestValue())) {
                         return;

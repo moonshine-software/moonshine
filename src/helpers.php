@@ -5,9 +5,9 @@ declare(strict_types=1);
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Applies\Filters\ApplyModelContract;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
@@ -39,8 +39,8 @@ if (! function_exists('moonshine')) {
     }
 }
 
-if (! function_exists('register')) {
-    function register(): MoonShineRegister
+if (! function_exists('moonshineRegister')) {
+    function moonshineRegister(): MoonShineRegister
     {
         return app(MoonShineRegister::class);
     }
@@ -110,9 +110,9 @@ if (! function_exists('actionBtn')) {
 }
 
 if (! function_exists('modelApplyFilter')) {
-    function modelApplyFilter(Field $filter): ?ApplyModelContract
+    function modelApplyFilter(Field $filter): ?ApplyContract
     {
-        $filterApplyClass = register()
+        $filterApplyClass = moonshineRegister()
             ->filters()
             ->for(ModelResource::class)
             ->get(get_class($filter));

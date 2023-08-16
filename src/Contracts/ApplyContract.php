@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Applies\Filters;
+namespace MoonShine\Contracts;
 
 use Closure;
 use MoonShine\Fields\Field;
 
-interface ApplyModelContract
+interface ApplyContract
 {
     public function apply(Field $field): Closure;
 }
