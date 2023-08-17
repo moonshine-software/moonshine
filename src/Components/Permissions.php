@@ -34,8 +34,7 @@ final class Permissions extends MoonshineComponent
         string $label,
         ModelResource $resource,
         Model $item
-    )
-    {
+    ) {
         $this->setItem($item);
         $this->setResource($resource);
         $this->setLabel($label);
@@ -70,8 +69,8 @@ final class Permissions extends MoonshineComponent
 
                 $checkboxes[] = Checkbox::make(
                     $ability,
-                    "permissions.".$resource::class.".$ability"
-                )->setName("permissions[".$resource::class."][$ability]");
+                    "permissions." . $resource::class . ".$ability"
+                )->setName("permissions[" . $resource::class . "][$ability]");
             }
 
             $elements[] = Flex::make($checkboxes);
@@ -90,7 +89,7 @@ final class Permissions extends MoonshineComponent
             'label' => $this->label(),
             'form' => $this->getForm(),
             'item' => $this->getItem(),
-            'resource' => $this->getResource()
+            'resource' => $this->getResource(),
         ]);
     }
 }

@@ -60,8 +60,8 @@ class AssetManager
             )
             ->map(
                 fn ($asset): string => "<script defer src='" . asset(
-                        $asset
-                    ) . "?v={$this->getVersion()}'></script>"
+                    $asset
+                ) . "?v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
     }
 
@@ -74,8 +74,8 @@ class AssetManager
             )
             ->map(
                 fn ($asset): string => "<link href='" . asset(
-                        $asset
-                    ) . "?v={$this->getVersion()}' rel='stylesheet'>"
+                    $asset
+                ) . "?v={$this->getVersion()}' rel='stylesheet'>"
             )->implode(PHP_EOL);
     }
 
@@ -93,7 +93,7 @@ class AssetManager
         $colors = [];
 
         foreach ($this->colors as $name => $shades) {
-            if(!is_array($shades)) {
+            if(! is_array($shades)) {
                 $colors[$name] = $shades;
             } else {
                 foreach ($shades as $shade => $color) {

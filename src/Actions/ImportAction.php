@@ -206,7 +206,7 @@ class ImportAction extends Action
         return FormBuilder::make($this->url())
             ->fields([
                 Hidden::make(column: $this->getTriggerKey())->setValue(1),
-                File::make(column: $this->inputName)->required()
+                File::make(column: $this->inputName)->required(),
             ])
             ->submit(__('moonshine::ui.confirm'));
     }
