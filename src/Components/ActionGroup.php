@@ -6,21 +6,14 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Traits\Conditionable;
-use Illuminate\Support\Traits\Macroable;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Actions\Actions;
-use MoonShine\Traits\Makeable;
 
 /**
  * @method static static make(array $actions = [])
  */
 final class ActionGroup extends MoonshineComponent
 {
-    use Makeable;
-    use Macroable;
-    use Conditionable;
-
     protected $except = [
         'getActions',
     ];

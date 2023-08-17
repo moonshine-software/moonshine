@@ -155,6 +155,7 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
+        //if($this)
         return data_get($casted ?? $raw, $this->column());
     }
 

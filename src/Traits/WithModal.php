@@ -6,7 +6,7 @@ namespace MoonShine\Traits;
 
 use Closure;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Modals\Modal;
+use MoonShine\UI\Modal;
 
 trait WithModal
 {

@@ -5,30 +5,35 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Closure;
-use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use MoonShine\Resources\Resource;
-use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithLabel;
-use MoonShine\Traits\WithUniqueId;
+use MoonShine\Traits\HasResource;
 use Throwable;
 
 /**
- * @method static static make(Resource $resource, string $label = '', Builder|Closure|null $query = null)
+ * @method static static make(Resource $resource, ?Closure $query = null)
  */
 final class ResourcePreview extends MoonshineComponent
 {
-    use Makeable;
-    use WithUniqueId;
-    use WithLabel;
+    use HasResource;
+
+    protected ?Closure $query = null;
 
     public function __construct(
-        protected Resource $resource,
-        string $label = '',
-        protected ?Closure $query = null,
+        Resource $resource,
+        ?Closure $query = null,
     ) {
-        $this->setLabel($label);
+        $this->setResource($resource);
+
+        if (! is_null($query)) {
+            $this->getResource()
+                ->customBuilder(
+                    $query(
+                        $this->getResource()->query()
+                    )
+                );
+        }
     }
 
     /**
@@ -36,44 +41,19 @@ final class ResourcePreview extends MoonshineComponent
      */
     public function items(): Collection
     {
-        $collections = $this->resource()
+        return $this->getResource()
             ->resolveQuery()
-            ->when($this->getQuery(), fn (): ?Builder => $this->getQuery())
             ->get();
-
-        return $this->resource()
-            ->transformToResources($collections);
-    }
-
-    public function resource(): Resource
-    {
-        return $this->resource
-            ->previewMode();
-    }
-
-    protected function getQuery(): ?Builder
-    {
-        return is_callable($this->query)
-            ? call_user_func($this->query)
-            : $this->query;
-    }
-
-    public function id(string $index = null): string
-    {
-        return str($this->resource()->uriKey())
-            ->prepend('resource_preview_')
-            ->slug('_');
-    }
-
-    public function label(): string
-    {
-        return $this->label ?? $this->resource->title();
     }
 
     public function render(): View|Closure|string
     {
-        return view('moonshine::components.resource-preview', [
-            'element' => $this,
-        ]);
+        return TableBuilder::make(
+            $this->getResource()->getIndexFields(),
+            $this->items()
+        )
+            ->cast($this->getResource()->getModelCast())
+            ->preview()
+            ->render();
     }
 }

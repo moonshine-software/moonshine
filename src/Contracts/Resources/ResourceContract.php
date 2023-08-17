@@ -11,4 +11,6 @@ interface ResourceContract
     public function uriKey(): string;
 
     public function getPages(): Pages;
+
+    public function routes(): void;
 }

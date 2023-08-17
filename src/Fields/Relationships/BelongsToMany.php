@@ -175,8 +175,7 @@ class BelongsToMany extends ModelRelationField implements
         $fields = $this->preparedFields()
             ->onlyFields()
             ->prepend(NoInput::make($titleColumn))
-            ->prepend($identityField)
-            ->toArray();
+            ->prepend($identityField);
 
         $values = $this->resolveValuesQuery()->get();
 
@@ -246,8 +245,7 @@ class BelongsToMany extends ModelRelationField implements
         $fields = $this->preparedFields()
             ->onlyFields()
             ->prepend(Text::make('#', $column))
-            ->prepend(ID::make())
-            ->toArray();
+            ->prepend(ID::make());
 
         return TableBuilder::make($fields, $values)
             ->preview()

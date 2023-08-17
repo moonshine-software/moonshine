@@ -53,6 +53,19 @@ trait WithFormElementAttributes
         return $this;
     }
 
+    protected function nameUnDot(string $name): string
+    {
+        $parts = explode('.', $name);
+        $count = count($parts);
+        $result = $parts[0];
+
+        for ($i = 1; $i < $count; $i++) {
+            $result .= "[" . $parts[$i] . "]";
+        }
+
+        return $result;
+    }
+
     protected function prepareName($index = null, $wrap = null): string
     {
         $wrap ??= $this->wrapName;
@@ -61,7 +74,7 @@ trait WithFormElementAttributes
             return $this->name;
         }
 
-        return (string) str($this->column())
+        return (string) str($this->nameUnDot($this->column()))
             ->when(
                 ! is_null($wrap),
                 fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")

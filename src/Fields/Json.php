@@ -226,7 +226,7 @@ class Json extends Field implements
                 static fn ($values): Collection => $values->push([])
             );
 
-        return TableBuilder::make($this->preparedFields()->toArray(), $values)
+        return TableBuilder::make($this->preparedFields(), $values)
             ->when(
                 $this->isVertical(),
                 fn (TableBuilder $table): TableBuilder => $table->vertical()

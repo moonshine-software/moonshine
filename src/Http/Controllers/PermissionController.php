@@ -14,7 +14,9 @@ class PermissionController extends BaseController
 {
     public function __invoke(PermissionFormRequest $request): RedirectResponse
     {
-        $item = $request->getItem();
+        $item = $request
+            ->getResource()
+            ->getItem();
 
         if (! $request->has('permissions')) {
             $item->moonshineUserPermission()->delete();

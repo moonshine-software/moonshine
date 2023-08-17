@@ -7,10 +7,13 @@ namespace MoonShine\Actions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\File;
+use MoonShine\Fields\Hidden;
 use MoonShine\Jobs\ImportActionJob;
 use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
@@ -196,5 +199,15 @@ class ImportAction extends Action
         $this->deleteAfter = true;
 
         return $this;
+    }
+
+    public function getForm(): FormBuilder
+    {
+        return FormBuilder::make($this->url())
+            ->fields([
+                Hidden::make(column: $this->getTriggerKey())->setValue(1),
+                File::make(column: $this->inputName)->required()
+            ])
+            ->submit(__('moonshine::ui.confirm'));
     }
 }

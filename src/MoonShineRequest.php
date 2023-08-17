@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Illuminate\Http\Request;
+use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\Resource;
@@ -62,7 +63,7 @@ class MoonShineRequest extends Request
     public function isMoonShineRequest(): bool
     {
         return in_array(
-            'auth.moonshine',
+            Authenticate::class,
             $this->route()?->gatherMiddleware() ?? [],
             true
         );

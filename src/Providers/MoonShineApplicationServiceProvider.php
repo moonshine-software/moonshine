@@ -9,6 +9,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\Menu;
 use MoonShine\Menu\MenuSection;
 use MoonShine\MoonShine;
+use MoonShine\Utilities\AssetManager;
 use Throwable;
 
 class MoonShineApplicationServiceProvider extends ServiceProvider
@@ -26,6 +27,16 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
         Menu::register(MoonShine::getMenu());
 
         MoonShine::resolveRoutes();
+
+        $theme = $this->theme();
+
+        moonshineAssets()->when(
+            !empty($theme['css']),
+            static fn(AssetManager $assets) => $assets->mainCss($theme['css'])
+        )->when(
+            !empty($theme['colors']),
+            static fn(AssetManager $assets) => $assets->colors($theme['colors'])
+        );
     }
 
     /**

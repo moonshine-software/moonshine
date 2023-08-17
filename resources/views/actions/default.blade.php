@@ -1,4 +1,20 @@
-@if($action->isInModal())
+@if($action->isInOffCanvas())
+    <x-moonshine::offcanvas
+        title="{{ $action->offCanvas()->title($action) }}"
+        :left="$action->offCanvas()->isLeft()"
+    >
+        <x-slot:toggler :class="$action->attributes()->get('class')">
+            <x-moonshine::icon
+                :icon="$action->iconValue()"
+                size="6"
+            />
+
+            {{ $action->label() }}
+        </x-slot:toggler>
+
+        {!! $action->offCanvas()->content($action) !!}
+    </x-moonshine::offcanvas>
+@elseif($action->isInModal())
     <x-moonshine::modal title="{{ $action->modal()->title($action) }}">
         <div class="mb-4">
             {!! $action->modal()->content($action) !!}

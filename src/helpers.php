@@ -9,13 +9,13 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Fields;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
-use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\Resource;
 use MoonShine\Utilities\AssetManager;
 
@@ -82,7 +82,7 @@ if (! function_exists('form')) {
     function form(
         string $action = '',
         string $method = 'POST',
-        array $fields = [],
+        Fields|array $fields = [],
         array $values = []
     ): FormBuilder {
         return FormBuilder::make($action, $method, $fields, $values);
@@ -91,7 +91,7 @@ if (! function_exists('form')) {
 
 if (! function_exists('table')) {
     function table(
-        array $fields = [],
+        Fields|array $fields = [],
         iterable $items = [],
         ?LengthAwarePaginator $paginator = null
     ): TableBuilder {
@@ -109,18 +109,18 @@ if (! function_exists('actionBtn')) {
     }
 }
 
-if (! function_exists('modelApplyFilter')) {
-    function modelApplyFilter(Field $filter): ?ApplyContract
+if (! function_exists('findFieldApply')) {
+    function findFieldApply(Field $field, string $type, string $for): ?ApplyContract
     {
-        $filterApplyClass = moonshineRegister()
-            ->filters()
-            ->for(ModelResource::class)
-            ->get($filter::class);
+        $applyClass = moonshineRegister()
+            ->{$type}()
+            ->for($for)
+            ->get($field::class);
 
         return
-            ! is_null($filterApplyClass)
-            && class_exists($filterApplyClass)
-            ? new $filterApplyClass()
+            ! is_null($applyClass)
+            && class_exists($applyClass)
+            ? new $applyClass()
             : null;
     }
 }

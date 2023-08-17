@@ -4,9 +4,12 @@
     'toggler'
 ])
 <div x-data="offcanvas">
-    <button type="button" @click.prevent="toggleCanvas" {{ $toggler->attributes->merge(['class' => 'btn']) }}>
+    <x-moonshine::link
+        :attributes="$toggler->attributes"
+        @click.prevent="toggleCanvas"
+    >
         {{ $toggler }}
-    </button>
+    </x-moonshine::link>
 
     <template x-teleport="body">
         <div class="offcanvas-template">

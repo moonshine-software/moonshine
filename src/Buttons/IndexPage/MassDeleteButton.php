@@ -25,7 +25,7 @@ final class MassDeleteButton
             ->icon('heroicons.outline.trash')
             ->inModal(
                 fn (): string => 'Delete',
-                fn (): string => (string) form($resource->route('massDelete'))
+                fn (): string => (string) form($resource->route('crud.massDelete'))
                     ->fields([
                         Hidden::make('_method')->setValue('DELETE'),
                         Hidden::make('ids')->customAttributes([

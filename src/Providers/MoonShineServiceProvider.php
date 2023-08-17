@@ -19,9 +19,7 @@ use MoonShine\Commands\MakeFieldCommand;
 use MoonShine\Commands\MakeResourceCommand;
 use MoonShine\Commands\MakeUserCommand;
 use MoonShine\Dashboard\Dashboard;
-use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Http\Middleware\ChangeLocale;
-use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
 use MoonShine\Menu\Menu;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
@@ -47,12 +45,7 @@ class MoonShineServiceProvider extends ServiceProvider
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             ChangeLocale::class,
-            SecurityHeadersMiddleware::class,
         ],
-    ];
-
-    protected array $middlewareAliases = [
-        'auth.moonshine' => Authenticate::class,
     ];
 
     /**
@@ -84,15 +77,9 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     protected function registerRouteMiddleware(): void
     {
-        // register route middleware.
-        foreach ($this->middlewareAliases as $key => $middleware) {
-            app('router')->aliasMiddleware($key, $middleware);
-        }
-
-        // register middleware group.
         $this->middlewareGroups['moonshine'] = array_merge(
             $this->middlewareGroups['moonshine'],
-            config('moonshine.middlewares', [])
+            config('moonshine.route.middlewares', [])
         );
 
         foreach ($this->middlewareGroups as $key => $middleware) {
@@ -152,7 +139,10 @@ class MoonShineServiceProvider extends ServiceProvider
             fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );
 
-        Blade::directive('moonShineAssets', static fn (): string => "<?php echo view('moonshine::layouts.shared.assets') ?>");
+        Blade::directive(
+            'moonShineAssets',
+            static fn (): string => "<?php echo view('moonshine::layouts.shared.assets') ?>"
+        );
 
         $this->app->singleton(MoonShine::class);
         $this->app->singleton(Menu::class);

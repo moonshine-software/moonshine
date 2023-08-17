@@ -4,7 +4,6 @@ namespace MoonShine\Pages\Crud;
 
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
-use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Pages\Page;
 
 class FormPage extends Page
@@ -30,11 +29,9 @@ class FormPage extends Page
 
         $item = $resource->getItem();
 
-        $action = action(
-            [CrudController::class, is_null($item) ? 'store' : 'update'],
-            is_null($item)
-                ? ['resourceUri' => $resource->uriKey()]
-                : ['resourceUri' => $resource->uriKey(), 'resourceItem' => $item->getKey()]
+        $action = $this->getResource()->route(
+            is_null($item) ? 'crud.store' : 'crud.update',
+            $item?->getKey()
         );
 
         $components = [

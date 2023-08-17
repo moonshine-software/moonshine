@@ -65,11 +65,10 @@ class HasMany extends ModelRelationField implements HasFields
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
-            ->fields($this->preparedFields()->toArray())
+            ->fields($this->preparedFields())
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
-            ->withNotFound()
             ->when(
                 $this->toOne(),
                 static fn (TableBuilder $table): TableBuilder => $table->vertical()
@@ -83,9 +82,12 @@ class HasMany extends ModelRelationField implements HasFields
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
-            ->fields($this->preparedFields()->toArray())
+            ->fields($this->preparedFields())
             ->cast($resource->getModelCast())
-            ->withNotFound()
+            ->when(
+                $this->isNowOnForm(),
+                fn(TableBuilder $table) => $table->withNotFound()
+            )
             ->buttons([
                 ShowButton::for($resource),
                 FormButton::for($resource),

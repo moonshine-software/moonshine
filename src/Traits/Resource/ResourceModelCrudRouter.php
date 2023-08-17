@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Http\Controllers\ActionController;
 use MoonShine\MoonShineRouter;
 
 /**
@@ -16,18 +14,6 @@ use MoonShine\MoonShineRouter;
  */
 trait ResourceModelCrudRouter
 {
-    public function resolveRoutes(): void
-    {
-        Route::prefix('resource')->group(function (): void {
-            Route::controller(ActionController::class)
-                ->prefix($this->uriKey())
-                ->as("actions.")
-                ->group(function (): void {
-                    //
-                });
-        });
-    }
-
     public function currentRoute(array $query = []): string
     {
         return str(request()->url())->when(
@@ -52,7 +38,7 @@ trait ResourceModelCrudRouter
         data_forget($query, ['change-moonshine-locale', 'reset']);
 
         return MoonShineRouter::to(
-            str($name)->contains('.') ? $name : 'crud.' . $name,
+            $name,
             $key ? array_merge(['resourceItem' => $key], $query) : $query
         );
     }

@@ -7,10 +7,11 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Fields\Fields;
 use Throwable;
 
 /**
- * @method static static make(string $action = '', string $method = 'POST', array $fields = [], array $values = [])
+ * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], array $values = [])
  */
 final class FormBuilder extends RowComponent
 {
@@ -31,7 +32,7 @@ final class FormBuilder extends RowComponent
     public function __construct(
         protected string $action = '',
         protected string $method = 'POST',
-        array $fields = [],
+        Fields|array $fields = [],
         protected array $values = []
     ) {
         $this->fields($fields);

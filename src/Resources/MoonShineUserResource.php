@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Actions\ExportAction;
@@ -20,19 +19,19 @@ use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
 use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
-use MoonShine\Http\Controllers\PermissionController;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
+use MoonShine\Traits\Resource\WithUserPermissions;
 
 class MoonShineUserResource extends ModelResource
 {
+    use WithUserPermissions;
+
     public string $model = MoonshineUser::class;
 
     public string $title = 'MoonshineUsers';
 
     public string $column = 'name';
-
-    public bool $withPolicy = true;
 
     public function fields(): array
     {
@@ -137,18 +136,5 @@ class MoonShineUserResource extends ModelResource
         return [
             ExportAction::make(trans('moonshine::ui.export')),
         ];
-    }
-
-    public function resolveRoutes(): void
-    {
-        parent::resolveRoutes();
-
-        Route::prefix('resource')->group(function (): void {
-            Route::post(
-                "{$this->uriKey()}/{item}/permissions",
-                PermissionController::class
-            )
-                ->name("permissions");
-        });
     }
 }

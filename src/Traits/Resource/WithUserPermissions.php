@@ -9,15 +9,11 @@ use MoonShine\Http\Controllers\PermissionController;
 
 trait WithUserPermissions
 {
-    public function resolveRoutes(): void
+    protected function resolveRoutes(): void
     {
-        parent::resolveRoutes();
-
-        Route::prefix('resource')->group(function (): void {
-            Route::post(
-                "{$this->uriKey()}/{item}/permissions",
-                PermissionController::class
-            )->name("permissions");
-        });
+        Route::post(
+            'permissions/{resourceItem}',
+            PermissionController::class
+        )->name('permissions');
     }
 }

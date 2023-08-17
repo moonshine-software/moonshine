@@ -34,7 +34,7 @@ class ShowPage extends Page
 
         return [
             Block::make([
-                TableBuilder::make($resource->getFields()->onlyFields()->toArray())
+                TableBuilder::make($resource->getFields()->onlyFields())
                     ->cast($resource->getModelCast())
                     ->items([$resource->getItem()])
                     ->vertical()

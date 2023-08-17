@@ -10,11 +10,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
+use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\Table\TableStates;
 
 /**
- * @method static static make(array $fields = [], array $items = [], ?LengthAwarePaginator $paginator = null)
+ * @method static static make(Fields|array $fields = [], iterable $items = [], ?LengthAwarePaginator $paginator = null)
  */
 final class TableBuilder extends IterableComponent implements TableContract
 {
@@ -34,7 +35,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     protected ?Closure $tdAttributes = null;
 
     public function __construct(
-        array $fields = [],
+        Fields|array $fields = [],
         protected iterable $items = [],
         protected ?LengthAwarePaginator $paginator = null
     ) {

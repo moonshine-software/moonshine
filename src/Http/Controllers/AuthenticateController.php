@@ -21,8 +21,10 @@ class AuthenticateController extends BaseController
             return to_route(config('moonshine.route.index_route', 'moonshine.index'));
         }
 
+        $form = config('moonshine.forms.login', LoginForm::class);
+
         return view('moonshine::auth.login', [
-            'form' => new LoginForm(),
+            'form' => new $form(),
         ]);
     }
 

@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
+use MoonShine\Resources\ModelResource;
 use Throwable;
 
 trait ResourceModelQuery
@@ -37,7 +38,10 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
-        return request('resourceItem');
+        return request(
+            'resourceItem',
+            request()->route('resourceItem')
+        );
     }
 
     protected function itemOr(Closure $closure): ?Model
@@ -124,9 +128,9 @@ trait ResourceModelQuery
         return $this->query();
     }
 
-    protected function query(): Builder
+    public function query(): Builder
     {
-        if(! is_null($this->query)) {
+        if (! is_null($this->query)) {
             return $this->query;
         }
 
@@ -158,7 +162,7 @@ trait ResourceModelQuery
     protected function resolveSearch(): self
     {
         if (! empty($this->search()) && request()->has('search')) {
-            request()->str('search')->explode(' ')->filter()->each(function ($term) use ($query): void {
+            request()->str('search')->explode(' ')->filter()->each(function ($term): void {
                 $this->query()->where(function ($q) use ($term): void {
                     foreach ($this->search() as $column) {
                         $q->orWhere($column, 'LIKE', $term . '%');
@@ -181,28 +185,33 @@ trait ResourceModelQuery
     {
         if (request()->has('filters') && count($this->filters())) {
             $this->getFilters()
+                ->onlyFields()
                 ->each(function (Field $filter): void {
                     if (empty($filter->requestValue())) {
                         return;
                     }
 
-                    if (($filterApply = modelApplyFilter($filter)) instanceof ApplyContract) {
+                    $filterApply = findFieldApply(
+                        $filter,
+                        'filters',
+                        ModelResource::class
+                    );
+
+                    if ($filterApply instanceof ApplyContract) {
                         $filter->onApply($filterApply->apply($filter));
                     }
 
-                    $filter->apply($this->filterApply($filter), $this->query());
+                    $filter->apply(
+                        static fn (Builder $query): Builder => $query->where(
+                            $filter->column(),
+                            $filter->requestValue()
+                        ),
+                        $this->query()
+                    );
                 });
         }
 
         return $this;
-    }
-
-    protected function filterApply(Field $filter): Closure
-    {
-        return static fn (Builder $query): Builder => $query->where(
-            $filter->column(),
-            $filter->requestValue()
-        );
     }
 
     public function hasWith(): bool

@@ -15,3 +15,11 @@
 <script>
     const translates = @js(__('moonshine::ui'));
 </script>
+
+<style>
+    :root {
+        @foreach (moonshineAssets()->getColors() as $name => $value)
+        --{{ $name }}:{{ $value }};
+        @endforeach
+    }
+</style>

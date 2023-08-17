@@ -121,17 +121,12 @@ class MoonShine
      */
     public static function resolveRoutes(): void
     {
-        $middlewares = collect(config('moonshine.route.middleware'))
-            ->reject(fn ($middleware): bool => $middleware === 'web')
-            ->push('auth.moonshine')
-            ->toArray();
-
         Route::prefix(config('moonshine.route.prefix', ''))
-            ->middleware($middlewares)
+            ->middleware('moonshine')
             ->as('moonshine.')->group(function (): void {
                 self::getResources()->each(
-                    function (ResourceContract $resource): void {
-                        $resource->resolveRoutes();
+                    static function (ResourceContract $resource): void {
+                        $resource->routes();
                     }
                 );
             });

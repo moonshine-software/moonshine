@@ -22,7 +22,7 @@ final class ActionController extends BaseController
         }
 
         return $request->redirectRoute(
-            $request->getResource()->route('index')
+            $request->getResource()->route('crud.index')
         );
     }
 }

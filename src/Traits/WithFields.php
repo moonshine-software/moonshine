@@ -33,9 +33,11 @@ trait WithFields
     /**
      * @return $this
      */
-    public function fields(array $fields): static
+    public function fields(Fields|array $fields): static
     {
-        $this->fields = $fields;
+        $this->fields = $fields instanceof Fields
+            ? $fields->toArray()
+            : $fields;
 
         return $this;
     }

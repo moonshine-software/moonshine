@@ -15,29 +15,7 @@
                 ({{ $action->activeCount() }})
             @endif
         </x-slot:toggler>
-        <x-moonshine::form action="{{ $action->getResource()->currentRoute() }}" method="get">
-            @if(request('order.field'))
-                <x-moonshine::form.input type="hidden" name="order[type]" value="{{ request('order.type') }}" />
-                <x-moonshine::form.input type="hidden" name="order[field]" value="{{ request('order.field') }}" />
-            @endif
 
-            <div class="form-flex-col">
-                <x-moonshine::fields-group
-                    :components="$action->getFilters()"
-                />
-            </div>
-
-            <x-slot:buttons>
-                <x-moonshine::form.button type="submit">
-                    {{ trans('moonshine::ui.search') }}
-                </x-moonshine::form.button>
-
-                @if(request('filters'))
-                    <x-moonshine::link href="{{ $action->getResource()->currentRoute(query: ['reset' => true]) }}">
-                        {{ trans('moonshine::ui.reset') }}
-                    </x-moonshine::link>
-                @endif
-            </x-slot:buttons>
-        </x-moonshine::form>
+        {{ $action->getForm()->render() }}
     </x-moonshine::offcanvas>
 @endif

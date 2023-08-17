@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonShine\Modals;
+namespace MoonShine\UI;
 
 use Closure;
 use MoonShine\ActionButtons\ActionButtons;

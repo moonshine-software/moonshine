@@ -14,14 +14,10 @@ use MoonShine\Http\Controllers\ProfileController;
 use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
 
-$middlewares = collect(config('moonshine.route.middleware'))
-    ->reject(static fn($middleware): bool => $middleware === 'web')
-    ->toArray();
-
 Route::prefix(config('moonshine.route.prefix', ''))
-    ->middleware($middlewares)
+    ->middleware('moonshine')
     ->as('moonshine.')->group(static function () {
-        Route::middleware('auth.moonshine')->group(function (): void {
+        Route::middleware(config('moonshine.auth.middleware'))->group(function (): void {
             Route::delete('/resource/{resourceUri}/crud', [CrudController::class, 'massDelete'])
                 ->name('crud.massDelete');
             Route::resource('/resource/{resourceUri}/crud', CrudController::class)
@@ -48,7 +44,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
 
 
             Route::get(
-                config('moonshine.route.custom_page_slug', 'custom_page').'/{alias}',
+                config('moonshine.route.custom_page_slug', 'custom_page') . '/{alias}',
                 CustomPageController::class
             )->name('custom_page');
         });
@@ -70,7 +66,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 });
 
             Route::post('/profile', [ProfileController::class, 'store'])
-                ->middleware('auth.moonshine')
+                ->middleware(config('moonshine.auth.middleware'))
                 ->name('profile.store');
         }
 

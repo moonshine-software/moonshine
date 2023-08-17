@@ -1,27 +1,21 @@
 <!-- Footer -->
-@if(!empty(config('moonshine.footer.copyright')) || !empty(config('moonshine.footer.nav')))
-    <footer class="layout-footer">
-        <div class="flex flex-col flex-wrap items-center justify-between gap-y-4 gap-x-8 md:flex-row">
-            @if(!empty(config('moonshine.footer.copyright')))
-                <div class="text-center text-2xs text-slate-500 md:text-left">
-                    &copy; 2021-{{ date('Y') }}. {!! config('moonshine.footer.copyright') !!}
-                </div>
-            @endif
-            @if(!empty(config('moonshine.footer.nav')))
-                @if(is_string(config('moonshine.footer.nav')))
-                    <nav class="text-center text-2xs text-slate-500 md:text-left">
-                        {!! config('moonshine.footer.nav') !!}
-                    </nav>
-                @elseif(is_iterable(config('moonshine.footer.nav')))
-                    <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start lg:gap-x-6">
-                        @foreach(config('moonshine.footer.nav') as $url => $text)
-                            <a href="{{ $url }}" class="text-2xs text-slate-500 hover:text-purple"
-                               target="_blank">{!! $text !!}</a>
-                        @endforeach
-                    </nav>
-                @endif
-            @endif
+<footer class="layout-footer">
+    <div class="flex flex-col flex-wrap items-center justify-between gap-y-4 gap-x-8 md:flex-row">
+        <div class="text-center text-2xs text-slate-500 md:text-left">
+            &copy; 2021-{{ date('Y') }}. Made with ❤️ by
+            <a href="https://cutcode.dev" class="font-semibold text-purple hover:text-pink" target="_blank">CutCode</a>
         </div>
-    </footer>
-@endif
+
+        <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start lg:gap-x-6">
+            <a href="https://github.com/moonshine-software/moonshine" class="text-2xs text-slate-500 hover:text-purple"
+               target="_blank">
+                Documentation
+            </a>
+            <a href="https://moonshine.cutcode.dev" class="text-2xs text-slate-500 hover:text-purple"
+               target="_blank">
+                GitHub
+            </a>
+        </nav>
+    </div>
+</footer>
 <!-- END: Footer -->

@@ -4,7 +4,10 @@
 
     @show
 
-    @includeWhen(config('moonshine.header'), config('moonshine.header'))
+    @includeWhen(
+        config('moonshine.templates.header-inner'),
+        config('moonshine.templates.header-inner')
+    )
 
     @includeWhen(
         config('moonshine.auth.enable', true),
