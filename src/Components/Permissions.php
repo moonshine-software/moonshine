@@ -66,12 +66,12 @@ final class Permissions extends MoonshineComponent
             $checkboxes = [];
 
             foreach($resource->gateAbilities() as $ability) {
-                $values['permissions'][get_class($resource)][$ability] = $resource->isHaveUserPermission($this->getItem(), $ability);
+                $values['permissions'][$resource::class][$ability] = $resource->isHaveUserPermission($this->getItem(), $ability);
 
                 $checkboxes[] = Checkbox::make(
                     $ability,
-                    "permissions.".get_class($resource).".$ability"
-                )->setName("permissions[".get_class($resource)."][$ability]");
+                    "permissions.".$resource::class.".$ability"
+                )->setName("permissions[".$resource::class."][$ability]");
             }
 
             $elements[] = Flex::make($checkboxes);

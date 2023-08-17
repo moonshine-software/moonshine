@@ -68,7 +68,7 @@ final class FiltersAction extends Action
                     ->getFilters()
                     ->when(
                         request('sort.column'),
-                        static fn ($fields) => $fields
+                        static fn ($fields): Fields => $fields
                             ->prepend(Hidden::make(column: 'sort.direction')->setValue(request('sort.direction')))
                             ->prepend(Hidden::make(column: 'sort.column')->setValue(request('sort.column')))
                     )
@@ -78,7 +78,7 @@ final class FiltersAction extends Action
             ->submit(__('moonshine::ui.search'))
             ->when(
                 request('filters'),
-                static fn ($fields) => $fields->buttons([
+                static fn ($fields): FormBuilder => $fields->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
                         $this->getResource()->currentRoute(query: ['reset' => true])

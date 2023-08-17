@@ -86,7 +86,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->cast($resource->getModelCast())
             ->when(
                 $this->isNowOnForm(),
-                fn(TableBuilder $table) => $table->withNotFound()
+                fn(TableBuilder $table): TableBuilder => $table->withNotFound()
             )
             ->buttons([
                 ShowButton::for($resource),

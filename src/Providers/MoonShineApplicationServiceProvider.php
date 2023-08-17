@@ -32,10 +32,10 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
 
         moonshineAssets()->when(
             !empty($theme['css']),
-            static fn(AssetManager $assets) => $assets->mainCss($theme['css'])
+            static fn(AssetManager $assets): AssetManager => $assets->mainCss($theme['css'])
         )->when(
             !empty($theme['colors']),
-            static fn(AssetManager $assets) => $assets->colors($theme['colors'])
+            static fn(AssetManager $assets): AssetManager => $assets->colors($theme['colors'])
         );
     }
 
