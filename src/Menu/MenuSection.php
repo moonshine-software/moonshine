@@ -6,23 +6,20 @@ namespace MoonShine\Menu;
 
 use Closure;
 use Illuminate\Support\Collection;
-use MoonShine\Resources\CustomPage;
-use MoonShine\Resources\Resource;
 use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\HasResource;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
+use Throwable;
 
 abstract class MenuSection
 {
     use WithIcon;
     use HasCanSee;
     use WithLabel;
+    use HasResource;
 
     protected Collection $items;
-
-    protected ?Resource $resource = null;
-
-    protected ?CustomPage $page = null;
 
     protected ?Closure $badge = null;
 
@@ -77,6 +74,11 @@ abstract class MenuSection
             return request()->path() === $path;
         }
 
+        if($this->hasResource()) {
+            return request()->route('resourceUri')
+                === $this->getResource()->uriKey();
+        }
+
         return request()->fullUrlIs($this->url() . '*');
     }
 
@@ -90,16 +92,9 @@ abstract class MenuSection
         return $this->items;
     }
 
-    public function resource(): ?Resource
-    {
-        return $this->resource;
-    }
-
-    public function page(): ?CustomPage
-    {
-        return $this->page;
-    }
-
+    /**
+     * @throws Throwable
+     */
     public function url(): string
     {
         if ($this->link) {
@@ -108,8 +103,8 @@ abstract class MenuSection
                 : $this->link;
         }
 
-        return $this->resource()
-            ?->getPages()
+        return $this->getResource()
+            ->getPages()
             ->first()
             ->route();
     }

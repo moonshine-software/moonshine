@@ -6,7 +6,6 @@ use MoonShine\Http\Controllers\ActionController;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
-use MoonShine\Http\Controllers\CustomPageController;
 use MoonShine\Http\Controllers\DashboardController;
 use MoonShine\Http\Controllers\NotificationController;
 use MoonShine\Http\Controllers\PageController;
@@ -18,15 +17,19 @@ Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware('moonshine')
     ->as('moonshine.')->group(static function () {
         Route::middleware(config('moonshine.auth.middleware'))->group(function (): void {
-            Route::delete('/resource/{resourceUri}/crud', [CrudController::class, 'massDelete'])
-                ->name('crud.massDelete');
-            Route::resource('/resource/{resourceUri}/crud', CrudController::class)
-                ->parameter('crud', 'resourceItem')->only(['store', 'update', 'destroy']);
 
-            Route::any('/resource/{resourceUri}/actions', ActionController::class)
-                ->name('actions');
+            Route::prefix('resource/{resourceUri}')->group(function () {
+                Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
 
-            Route::get('/resource/{resourceUri}/{pageUri}', PageController::class)->name('page');
+                Route::resource('crud', CrudController::class)
+                    ->parameter('crud', 'resourceItem')
+                    ->only(['store', 'update', 'destroy']);
+
+                Route::any('actions', ActionController::class)->name('actions');
+
+                Route::get('{pageUri}', PageController::class)->name('page');
+            });
+
 
             Route::get('/', DashboardController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');
@@ -41,12 +44,6 @@ Route::prefix(config('moonshine.route.prefix', ''))
                     Route::get('/', 'readAll')->name('readAll');
                     Route::get('/{notification}', 'read')->name('read');
                 });
-
-
-            Route::get(
-                config('moonshine.route.custom_page_slug', 'custom_page') . '/{alias}',
-                CustomPageController::class
-            )->name('custom_page');
         });
 
         if (config('moonshine.auth.enable', true)) {

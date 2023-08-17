@@ -33,6 +33,12 @@ final class QueryTag
         return str($this->label())->slug()->value();
     }
 
+    public function isActive(): bool
+    {
+        return request()->routeIs('*.query-tag')
+            && request()->route('queryTag') === $this->uri();
+    }
+
     public function apply(Builder $builder): Builder
     {
         return is_callable($this->builder)

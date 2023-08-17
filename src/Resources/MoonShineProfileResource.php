@@ -89,8 +89,10 @@ class MoonShineProfileResource extends ModelResource
 
     public function pages(): array
     {
+        $page = config('moonshine.pages.profile', ProfilePage::class);
+
         return [
-            ProfilePage::make($this->title()),
+            $page::make($this->title()),
         ];
     }
 }

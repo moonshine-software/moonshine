@@ -99,17 +99,17 @@ class MoonShine
                 self::$menu->add(new MenuItem($item->title(), $item));
             } elseif ($item instanceof MenuElement) {
                 self::$resources->when(
-                    $item->resource(),
-                    fn ($r): Collection => $r->add($item->resource())
+                    $item->hasResource(),
+                    fn ($r): Collection => $r->add($item->getResource())
                 );
                 self::$menu->add($item);
             } elseif ($item instanceof MenuGroup) {
                 self::$menu->add($item);
 
-                $item->items()->each(function ($subItem): void {
+                $item->items()->each(function (MenuSection $subItem): void {
                     self::$resources->when(
-                        $subItem->resource(),
-                        fn ($r): Collection => $r->add($subItem->resource())
+                        $subItem->hasResource(),
+                        fn ($r): Collection => $r->add($subItem->getResource())
                     );
                 });
             }

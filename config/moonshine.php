@@ -5,6 +5,7 @@ use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Pages\ProfilePage;
 
 return [
     'dir' => 'app/MoonShine',
@@ -36,6 +37,10 @@ return [
 
     'forms' => [
         'login' => LoginForm::class
+    ],
+
+    'pages' => [
+        'profile' => ProfilePage::class
     ],
 
     'auth' => [

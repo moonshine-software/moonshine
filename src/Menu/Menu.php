@@ -6,8 +6,6 @@ namespace MoonShine\Menu;
 
 use Illuminate\Support\Collection;
 
-//use MoonShine\MoonShineRequest;
-
 class Menu
 {
     protected static ?Collection $menu = null;

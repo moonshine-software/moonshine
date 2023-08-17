@@ -6,19 +6,20 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Fields\Field;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
-use MoonShine\Resources\Resource;
+use MoonShine\MoonShineRequest;
 use Throwable;
 
 class RelationFieldController extends BaseController
 {
-    protected ?Field $field = null;
+    protected ?ModelRelationField $field = null;
 
     protected bool $fieldNotFound = false;
 
-    protected ?Resource $fieldResource = null;
+    protected ?ResourceContract $fieldResource = null;
 
     /**
      * @throws Throwable
@@ -42,20 +43,21 @@ class RelationFieldController extends BaseController
     /**
      * @throws Throwable
      */
-    public function resolveFieldData(MoonshineFormRequest $request): void
+    public function resolveFieldData(MoonShineRequest $request): void
     {
-        $this->field = $request->getResource()
+        $resource = $request->getResource();
+
+        $this->field = $resource
             ->getFields()
-            ->relatable()
             ->findByRelation($request->get('_field_relation', ''));
 
-        if (is_null($this->field) || ! $this->field->resource()) {
+        if (is_null($this->field) || ! $this->field->hasResource()) {
             $this->fieldNotFound = true;
         } else {
-            $this->fieldResource = $this->field->resource()->relatable();
+            $this->fieldResource = $this->field->getResource();
 
             $this->fieldResource->customBuilder(
-                $request->getItemOrInstance()->{$this->field->relation()}()
+                $resource->getItemOrInstance()->{$this->field->getRelationName()}()
             );
         }
     }

@@ -6,12 +6,12 @@ namespace MoonShine\Menu;
 
 use Closure;
 use MoonShine\Contracts\Menu\MenuElement;
-use MoonShine\Resources\CustomPage;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Resources\Resource;
 use MoonShine\Traits\Makeable;
 
 /**
- * @method static static make(string $label, Resource|CustomPage|Closure|string $resource, string $icon = null)
+ * @method static static make(string $label, ResourceContract|Closure|string $resource, string $icon = null)
  */
 class MenuItem extends MenuSection implements MenuElement
 {
@@ -19,21 +19,17 @@ class MenuItem extends MenuSection implements MenuElement
 
     final public function __construct(
         string $label,
-        Resource|CustomPage|Closure|string $resource,
+        ResourceContract|Closure|string $resource,
         string $icon = null
     ) {
         $this->setLabel($label);
 
         if ($resource instanceof Resource) {
-            $this->resource = $resource;
-        }
-
-        if ($resource instanceof CustomPage) {
-            $this->page = $resource;
+            $this->setResource($resource);
         }
 
         if (is_string($resource) && class_exists($resource)) {
-            $this->resource = new $resource();
+            $this->setResource(new $resource());
         }
 
         if (is_null($this->resource) && (is_string($resource) || is_callable(
