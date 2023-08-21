@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use App\Models\Hotel;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Http\Requests\Relations\RelationRequest;
+use MoonShine\Http\Requests\Relations\RelationStoreRequest;
+use MoonShine\Http\Requests\Relations\RelationUpateRequest;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class RelationController extends BaseController
 {
-    public function store(MoonshineFormRequest $request)
+    public function store(RelationStoreRequest $request)
     {
         return $this->updateOrCreate($request);
     }
 
-    public function update(MoonshineFormRequest $request)
+    public function update(RelationUpateRequest $request)
     {
         return $this->updateOrCreate($request);
     }
@@ -27,17 +28,13 @@ class RelationController extends BaseController
     }
 
     protected function updateOrCreate(
-        MoonshineFormRequest $request
+        RelationRequest $request
     ) {
-        $parentResource = $request->getResource();
+        $resource = $request->relationResource();
 
-        $parentItem = $parentResource->getItem();
+        $parentResource = $request->parentResource();
 
-        $fields = $parentResource->getOutsideFields()->onlyFields();
-
-        $field = $fields->findByRelation(request('_relation'));
-
-        $resource = $field->getResource();
+        $parentItem = $request->parentItem();
 
         if($request->isMethod('POST')) {
             $relation = $parentItem->{request('_relation')}();
@@ -64,12 +61,14 @@ class RelationController extends BaseController
 
         if ($validator->fails()) {
             return $redirectRoute
-                ->withErrors($validator)
+                ->withErrors($validator, request('_relation'))
                 ->withInput();
         }
 
-        $resource->save($item, $field->getFields());
+        $resource->save($item, $request->relationField()->getFields());
 
-        return $redirectRoute;
+        return $request->redirectRoute(
+            $parentResource->redirectAfterDelete()
+        );
     }
 }
