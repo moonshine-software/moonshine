@@ -20,13 +20,22 @@ class HasOne extends HasMany
         $resource = $this->getResource();
         $fields = $this->preparedFields();
 
-        return FormBuilder::make()
+        $parentResource = moonshineRequest()->getResource();
+
+        return FormBuilder::make($parentResource->route(
+                name: is_null($item)
+                        ? 'relation.store'
+                        : 'relation.update',
+                query: ['resourceUri' => $parentResource->uriKey(), 'resourceItem' => $parentResource->getItemID()]
+            ))
             ->fields(
                 $fields->when(
                     ! is_null($item),
                     fn (Fields $fields): Fields => $fields->push(
-                        Hidden::make('_method')->setValue('PUT')
+                        Hidden::make('_method')->setValue('PUT'),
                     )
+                )->push(
+                    Hidden::make('_relation')->setValue($this->getRelationName()),
                 )->toArray()
             )
             ->fill($item?->attributesToArray() ?? [])
