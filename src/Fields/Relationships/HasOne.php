@@ -38,6 +38,7 @@ class HasOne extends HasMany
                     Hidden::make('_relation')->setValue($this->getRelationName()),
                 )->toArray()
             )
+            ->formName($this->getRelationName())
             ->fill($item?->attributesToArray() ?? [])
             ->cast($resource->getModelCast())
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);

@@ -16,7 +16,7 @@
     ])"
         :nullable="false"
         :searchable="true"
-        @class(['form-invalid' => $errors->has($element->name())])
+        @class(['form-invalid' => $errors->{$element->getForm()}->has($element->name())])
         x-bind:data-async-extra="morphType"
         :value="$element->value()"
         :values="$element->values()"

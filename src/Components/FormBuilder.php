@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\FormElement;
 use Throwable;
 
 /**
@@ -28,6 +29,8 @@ final class FormBuilder extends RowComponent
     protected ?string $submitLabel = null;
 
     protected ComponentAttributeBag $submitAttributes;
+
+    protected string $formName = 'default';
 
     public function __construct(
         protected string $action = '',
@@ -109,6 +112,15 @@ final class FormBuilder extends RowComponent
         return $this->method;
     }
 
+    public function formName(string $formName): self
+    {
+        $this->formName = $formName;
+
+        $this->getFields()->onlyFields()->each(fn(FormElement $field) => $field->form($formName));
+
+        return $this;
+    }
+
     public function submit(string $label, array $attributes = []): self
     {
         $this->submitLabel = $label;
@@ -144,6 +156,7 @@ final class FormBuilder extends RowComponent
 
         return view('moonshine::components.form.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
+            'formName' => $this->formName,
             'fields' => $fields,
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),

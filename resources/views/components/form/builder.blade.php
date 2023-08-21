@@ -1,5 +1,6 @@
 <x-moonshine::form
     :attributes="$attributes"
+    :formName="$formName"
 >
     <x-moonshine::fields-group
         :components="$fields"

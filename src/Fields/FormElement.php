@@ -37,6 +37,8 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     protected ?string $requestKeyPrefix = null;
 
+    protected string $form = 'default';
+
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
@@ -118,6 +120,17 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     public function requestKeyPrefix(): ?string
     {
         return $this->requestKeyPrefix;
+    }
+
+    public function form(string $formName): static
+    {
+        $this->form = $formName;
+        return $this;
+    }
+
+    public function getForm()
+    {
+        return $this->form;
     }
 
     public function render(): View|Closure|string

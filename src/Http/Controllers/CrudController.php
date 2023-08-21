@@ -118,7 +118,7 @@ class CrudController extends BaseController
 
         if ($validator->fails()) {
             return $redirectRoute
-                ->withErrors($validator)
+                ->withErrors($validator, 'crud')
                 ->withInput();
         }
 

@@ -18,6 +18,6 @@ if($element->isFile()) {
         'name' => $element->name(),
         'value' => $value
     ])"
-        @class(['form-invalid' => $errors->has($element->name())])
+        @class(['form-invalid' => $errors->{$element->getForm()}->has($element->name())])
     />
 </x-moonshine::form.input-extensions>

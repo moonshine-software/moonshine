@@ -47,6 +47,7 @@ class FormPage extends Page
                         )
                         ->toArray()
                 )
+                ->formName('crud')
                 ->fill($item?->attributesToArray() ?? [])
                 ->cast($resource->getModelCast())
                 ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
