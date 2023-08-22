@@ -5,7 +5,7 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use MoonShine\Helpers\Condition;
 
-trait ActionEvents
+trait Applies
 {
     protected bool $canApply = true;
 

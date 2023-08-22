@@ -1,7 +1,3 @@
-<div
-    @if($element->attributes()->get('x-model-field'))
-        x-html="{{ $element->attributes()->get('x-model-field') }}"
-    @endif
->
+<div>
     {!! $element->value() ?? '' !!}
 </div>

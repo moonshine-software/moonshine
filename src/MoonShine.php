@@ -12,6 +12,7 @@ use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Menu\MenuSection;
 use MoonShine\Resources\MoonShineProfileResource;
+use Throwable;
 
 class MoonShine
 {
@@ -83,6 +84,7 @@ class MoonShine
      * Register Menu with resources and pages in the system
      *
      * @param  array<string|MenuSection|ResourceContract>  $data
+     * @throws Throwable
      */
     public static function menu(array $data): void
     {

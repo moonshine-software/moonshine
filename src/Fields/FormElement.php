@@ -13,7 +13,6 @@ use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\WithFormElementAttributes;
-use MoonShine\Traits\Fields\XModel;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithComponentAttributes;
@@ -27,7 +26,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     use WithAssets;
     use HasCanSee;
     use Conditionable;
-    use XModel;
 
     protected ?FormElement $parent = null;
 
@@ -96,9 +94,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     public function requestValue(string|int|null $index = null): mixed
     {
-        $nameDot = str(
-            $this->isXModelField() ? $this->column() : $this->nameDot()
-        )
+        $nameDot = str($this->nameDot())
             ->when(
                 $this->requestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->prepend(

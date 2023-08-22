@@ -27,7 +27,7 @@
                 {{ $thead ?? '' }}
             </tr>
             </thead>
-            <tbody  {{ isset($tbody) ? $tbody?->attributes : '' }}>
+            <tbody  {{ $tbody?->attributes ?? '' }}>
             @if(is_iterable($values))
                 @foreach($values as $index => $data)
                     <tr>
@@ -42,11 +42,12 @@
 
             {{ $tbody ?? '' }}
             </tbody>
+
             @if($tfoot ?? false)
-                <tfoot  {{ $tfoot->attributes }}>
-                <tr>
-                    {{ $tfoot }}
-                </tr>
+                <tfoot {{ $tfoot->attributes }}>
+                    <tr>
+                        {{ $tfoot }}
+                    </tr>
                 </tfoot>
             @endif
         </table>

@@ -143,21 +143,20 @@ class BelongsToMany extends ModelRelationField implements
         return $this->getRelation()?->getPivotAccessor() ?? 'pivot';
     }
 
+    protected function getPivotName(): string
+    {
+        return "{$this->getRelationName()}_pivot";
+    }
+
     protected function preparedFields(): Fields
     {
-        $column = fn (
-            Field $field,
-            string $index = ''
-        ) => "{$this->getRelationName()}_pivot[{$field->column()}][$index]";
-
-        return $this->getFields()->map(
+        return $this->getFields()->onlyFields()->map(
             fn (Field $field): Field => (clone $field)
-            ->setColumn("{$this->getPivotAs()}.{$field->column()}")
-            ->setName($column($field))
-            ->customAttributes([
-                'data-name' => $column($field, '${index0}'),
-                'data-level' => 0,
-            ])
+                ->setColumn("{$this->getPivotAs()}.{$field->column()}")
+                ->setName(
+                    "{$this->getPivotName()}[\${index0}][{$field->column()}]"
+                )
+                ->iterableAttributes()
         );
     }
 
@@ -167,10 +166,7 @@ class BelongsToMany extends ModelRelationField implements
         $checkedColumn = "{$this->getRelationName()}[\${index0}]";
         $identityField = SwitchBoolean::make('#', $checkedColumn)
             ->setName($checkedColumn)
-            ->customAttributes([
-                'data-name' => $checkedColumn,
-                'data-level' => 0,
-            ]);
+            ->iterableAttributes();
 
         $fields = $this->preparedFields()
             ->onlyFields()
@@ -191,9 +187,15 @@ class BelongsToMany extends ModelRelationField implements
         return TableBuilder::make(items: $values)
             ->fields($fields)
             ->cast($this->getModelCast())
-            ->trAttributes(fn (Model $data, int $row, ComponentAttributeBag $attributes): ComponentAttributeBag => $attributes->merge([
-                'data-key' => $data->getKey(),
-            ]))
+            ->trAttributes(
+                fn (
+                    Model $data,
+                    int $row,
+                    ComponentAttributeBag $attributes
+                ): ComponentAttributeBag => $attributes->merge([
+                    'data-key' => $data->getKey(),
+                ])
+            )
             ->preview()
             ->simple()
             ->editable()
@@ -261,14 +263,13 @@ class BelongsToMany extends ModelRelationField implements
             $sync = [];
 
             foreach ($values as $key => $checked) {
+                # TODO apply fields
                 data_set(
                     $sync,
                     $key,
-                    $this->preparedFields()
-                        ->requestValues(
-                            (string) $key,
-                            fn (Field $field): string => str_replace("{$this->getPivotAs()}.", "", $field->column())
-                        )
+                    $this->getFields()
+                        ->each(fn (Field $field): Field => $field->setRequestKeyPrefix("{$this->getPivotName()}.$key"))
+                        ->requestValues()
                         ->toArray()
                 );
             }

@@ -46,6 +46,15 @@ trait WithComponentAttributes
         return $this;
     }
 
+    public function iterableAttributes(int $level = 0): static
+    {
+        return $this->customAttributes([
+            'data-name' => $this->name(),
+            'data-column' => str($this->column())->explode('.')->last(),
+            'data-level' => $level,
+        ]);
+    }
+
     public function attributes(): ComponentAttributeBag
     {
         $resolveAttributes = collect($this->attributes)->mapWithKeys(

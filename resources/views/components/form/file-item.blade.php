@@ -8,38 +8,27 @@
 ])
 @php
     $fileWithDir = str($file)->remove($dir)
-                        ->prepend($dir)
-                        ->prepend($path)
-                        ->value();
+        ->prepend($dir)
+        ->prepend($path)
+        ->value();
 
-    $xValueExpr = "xValue";
-
-    if($path || $dir) {
-        $xValueExpr = "xValue && xValue.length ? ('$path') + '$dir' + (!xValue.replace('$dir', '').startsWith('/') ? '/' : '') + xValue.replace('$dir', '') : ''";
-    }
+    $hiddenName = str($attributes->get('data-name'))
+        ->replaceLast($attributes->get('data-column'), 'hidden_' . $attributes->get('data-column'))
+        ->value();
 @endphp
-
 <div
-    id="hidden_parent_{{ $attributes->get('id')  }}"
     class="x-removeable dropzone-item zoom-in @if(!$imageable) dropzone-item-file @endif"
 >
     <x-moonshine::form.input
         type="hidden"
         :name="'hidden_' . $attributes->get('name')"
-        {{ $attributes->merge(array_merge([
-            'x-ref' => 'hidden_' . $attributes->get('id'),
-        ], $attributes->has('x-model-field') ? [
-           ':name' => '`hidden_`+' . $attributes->get('x-bind:name'),
-           ':value' => 'xValue',
-        ] : ['value' => $file]))->except(['type', 'id', 'name', 'x-bind:name', 'x-model', 'x-model.lazy', 'x-bind:id', 'accept', 'multiple']) }}
+        :attributes="$attributes->only(['data-level'])->merge(['data-name' => $hiddenName])"
+        :value="$file"
     />
 
     @if(!$imageable)
         @include('moonshine::ui.file', [
             'value' => $fileWithDir,
-            'xValue' => $attributes->has('x-model-field')
-                ? $xValueExpr
-                : null,
             'download' => $download
         ])
     @endif
@@ -48,19 +37,17 @@
         <button
             class="dropzone-remove"
             type="button"
-            @click.prevent="$event.target.closest('#hidden_parent_{{ $attributes->get('id')  }}').remove()"
+            @click.prevent="$event.target.closest('.x-removeable').remove()"
         >
-            <x-moonshine::icon icon="heroicons.x-mark"/>
+            <x-moonshine::icon
+                icon="heroicons.x-mark"
+            />
         </button>
     @endif
 
     @if($imageable)
-        <img
-            @if($attributes->has('x-model-field'))
-                :src="{{ $xValueExpr }}"
-            @else
-                src="{{ $fileWithDir }}"
-            @endif
-        >
+        @include('moonshine::ui.image', [
+            'value' => $fileWithDir,
+        ])
     @endif
 </div>

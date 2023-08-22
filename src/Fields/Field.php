@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Helpers\Condition;
-use MoonShine\Traits\Fields\ActionEvents;
+use MoonShine\Traits\Fields\Applies;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
@@ -29,7 +29,7 @@ abstract class Field extends FormElement
     use ShowOrHide;
     use LinkTrait;
     use WithIsNowOnRoute;
-    use ActionEvents;
+    use Applies;
 
     protected string $column;
     protected bool $rawMode = false;
@@ -155,7 +155,6 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        //if($this)
         return data_get($casted ?? $raw, $this->column());
     }
 

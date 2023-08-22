@@ -1,4 +1,4 @@
-@extends('moonshine::layouts.app')
+@extends($layout)
 
 @section('sidebar-inner')
     @parent
@@ -7,7 +7,7 @@
 @section('header-inner')
     @parent
 
-    @include('moonshine::layouts.shared.breadcrumbs', [
+    @includeWhen($withBreadcrumbs, 'moonshine::layouts.shared.breadcrumbs', [
         'items' => $breadcrumbs
     ])
 
