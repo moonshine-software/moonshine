@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests\Relations;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Resources\ModelResource;
-use Illuminate\Database\Eloquent\Model;
 
 class RelationRequest extends MoonshineFormRequest
 {
@@ -22,7 +22,7 @@ class RelationRequest extends MoonshineFormRequest
 
     public function relationResource(): ModelResource
     {
-        if(!is_null($this->relationResource)) {
+        if(! is_null($this->relationResource)) {
             return $this->relationResource;
         }
 
@@ -33,7 +33,7 @@ class RelationRequest extends MoonshineFormRequest
 
     public function relationField(): ?ModelRelationField
     {
-        if(!is_null($this->relationField)) {
+        if(! is_null($this->relationField)) {
             return $this->relationField;
         }
 
@@ -46,7 +46,7 @@ class RelationRequest extends MoonshineFormRequest
 
     public function parentResource(): ModelResource
     {
-        if(!is_null($this->parentResource)) {
+        if(! is_null($this->parentResource)) {
             return $this->parentResource;
         }
 
@@ -57,7 +57,7 @@ class RelationRequest extends MoonshineFormRequest
 
     public function parentItem(): Model
     {
-        if(!is_null($this->parentItem)) {
+        if(! is_null($this->parentItem)) {
             return $this->parentItem;
         }
 

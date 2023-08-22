@@ -25,11 +25,11 @@ class HasOne extends HasMany
         $parentResource = moonshineRequest()->getResource();
 
         return FormBuilder::make(
-                $parentResource->route(
-                    is_null($item) ? 'relation.store' : 'relation.update',
-                    $parentResource->getItemID()
-                )
+            $parentResource->route(
+                is_null($item) ? 'relation.store' : 'relation.update',
+                $parentResource->getItemID()
             )
+        )
             ->fields(
                 $fields->when(
                     ! is_null($item),
@@ -62,9 +62,9 @@ class HasOne extends HasMany
                             ]
                         )
                             ->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
-                            ->redirect(to_page($parentResource, 'form-page', ['resourceItem' =>  $parentResource->getItem()]))
+                            ->redirect(to_page($parentResource, 'form-page', ['resourceItem' => $parentResource->getItem()]))
                     )
-                    ->showInLine()
+                    ->showInLine(),
             ])
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
