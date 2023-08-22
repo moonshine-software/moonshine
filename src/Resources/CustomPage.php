@@ -4,36 +4,37 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
-use Closure;
-use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
 
-/**
- * @method static static make(string $label, string $alias, string|Closure $view, Closure|null $viewData = null)
- */
-final class CustomPage
+abstract class CustomPage
 {
-    use Makeable;
     use WithLabel;
 
     protected string $layout = 'moonshine::layouts.app';
 
     protected bool $withTitle = true;
 
+    public static string $title = '';
+
+    public static string $alias = '';
+
+    public static string $view = '';
+
     protected array $breadcrumbs = [];
 
-    public function __construct(
-        string $label,
-        protected string $alias,
-        protected string|Closure $view,
-        protected ?Closure $viewData = null,
-    ) {
-        $this->setLabel($label);
+    public function __construct()
+    {
+        $this->setLabel($this->title());
+    }
+
+    public function title(): string
+    {
+        return static::$title;
     }
 
     public function alias(): string
     {
-        return $this->alias;
+        return static::$alias;
     }
 
     public function layout(string $layout): self
@@ -76,17 +77,19 @@ final class CustomPage
 
     public function getView(): string
     {
-        if (is_callable($this->view)) {
-            return call_user_func($this->view);
-        }
-
-        return $this->view;
+        return static::$view;
     }
+
+    /**
+     * Get an array of datas
+     *
+     * @return array<mixed>
+     */
+    abstract public function datas(): array;
 
     public function getViewData(): array
     {
-        return is_callable($this->viewData) ? call_user_func($this->viewData)
-            : [];
+        return $this->datas();
     }
 
     public function url(): string
@@ -95,7 +98,7 @@ final class CustomPage
             (string) str('moonshine')
                 ->append('.')
                 ->append('custom_page'),
-            $this->alias
+            static::$alias
         );
     }
 }
