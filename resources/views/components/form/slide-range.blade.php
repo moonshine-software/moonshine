@@ -8,7 +8,7 @@
     'toField' => $toName
 ])
 <div {{ $attributes->class(['form-group-range'])->only('class') }}>
-    <div x-data="range({{ $attributes->get('x-model-field') ? 'item.'.$fromField.',item.'.$toField : '`'.$fromValue.'`,`'.$toValue.'`' }})"
+    <div x-data="range({{ '`'.$fromValue.'`,`'.$toValue.'`' }})"
          x-init="mintrigger(); maxtrigger()"
          data-min="{{ $attributes->get('min', 0) }}"
          data-max="{{ $attributes->get('max', 1000) }}"

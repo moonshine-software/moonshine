@@ -40,15 +40,9 @@ trait RangeTrait
         return $this->toAttributes ?? $this->attributes();
     }
 
-    public function fromField(string $fromField): static
+    public function fromTo(string $fromField, string $toField): static
     {
         $this->fromField = $fromField;
-
-        return $this;
-    }
-
-    public function toField(string $toField): static
-    {
         $this->toField = $toField;
 
         return $this;

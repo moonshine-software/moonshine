@@ -1,4 +1,4 @@
-<div x-data="{ color: '{!! (string) $element->value() ?? "#000000" !!}' }">
+<div x-data="{ color: '{!! $element->value() ?? "#000000" !!}' }">
     <div class="flex flex-row justify-start items-center">
         <div class="relative -mr-10 ml-2 w-8 h-8 rounded-full overflow-hidden">
             <x-moonshine::form.input

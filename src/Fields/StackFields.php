@@ -7,12 +7,14 @@ namespace MoonShine\Fields;
 use Closure;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
+use Throwable;
 
 class StackFields extends Field implements HasFields
 {
     use WithFields;
 
     protected string $view = 'moonshine::fields.stack';
+
     protected bool $withWrapper = false;
 
     protected bool $withLabels = false;
@@ -53,12 +55,13 @@ class StackFields extends Field implements HasFields
         ])->render();
     }
 
-    protected function resolveAfterApply(mixed $item): void
+    /**
+     * @throws Throwable
+     */
+    protected function resolveAfterApply(mixed $data): void
     {
-        parent::resolveAfterApply($item);
-
         $this->getFields()
             ->onlyFields()
-            ->each(fn (FormElement $field) => $field->afterSave($item));
+            ->each(fn (Field $field) => $field->afterApply($data));
     }
 }

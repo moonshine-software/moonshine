@@ -23,6 +23,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
 
     protected string $subtitle = '';
 
+    protected string $layout = 'moonshine::layouts.app';
+
+    protected bool $withBreadcrumbs = true;
+
     public function __construct(
         protected string $title
     ) {
@@ -38,6 +42,11 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
         ];
     }
 
+    public function withBreadcrumbs(): bool
+    {
+        return $this->withBreadcrumbs;
+    }
+
     public function getComponents(): PageComponents
     {
         return PageComponents::make($this->components());
@@ -48,11 +57,14 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
         return $this->title;
     }
 
-    public function subtitle(string $subtitle): static
+    public function subtitle(): string
     {
-        $this->subtitle = $subtitle;
+        return $this->subtitle;
+    }
 
-        return $this;
+    public function layout(): string
+    {
+        return $this->layout;
     }
 
     public function route(array $params = []): string
@@ -66,10 +78,12 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
     public function render(): View|Closure|string
     {
         return view($this->getView(), [
-            'title' => $this->title,
-            'subtitle' => $this->subtitle,
+            'layout' => $this->layout(),
+            'title' => $this->title(),
+            'subtitle' => $this->subtitle(),
             'resource' => $this->getResource(),
             'breadcrumbs' => $this->breadcrumbs(),
+            'withBreadcrumbs' => $this->withBreadcrumbs(),
             'components' => $this->getComponents(),
         ]);
     }

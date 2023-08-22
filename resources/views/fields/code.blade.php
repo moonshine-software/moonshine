@@ -11,6 +11,6 @@
     type="hidden"
     id="{{ $element->id() }}"
     name="{{ $element->name() }}"
-    :attributes="$element->attributes()->only(['x-bind:name'])"
+    :attributes="$element->attributes()"
     value="{{ $element->value() ?? '' }}"
 />

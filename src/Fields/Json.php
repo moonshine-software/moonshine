@@ -172,13 +172,8 @@ class Json extends Field implements
                 )->value();
 
             return $field
-                ->setName(
-                    $name
-                )
-                ->customAttributes([
-                    'data-name' => $name,
-                    'data-level' => $level,
-                ])
+                ->setName($name)
+                ->iterableAttributes($level)
                 ->setParent($this);
         });
     }
@@ -199,6 +194,7 @@ class Json extends Field implements
         $values = $raw[$this->column()] ?? [];
 
         foreach ($this->getFields() as $field) {
+            # TODO change to prepareFill
             if ($field instanceof HasValueExtraction) {
                 foreach ($values as $index => $value) {
                     data_set(
@@ -240,22 +236,6 @@ class Json extends Field implements
     {
         $collection = collect($collection);
 
-        if ($this->hasFields()) {
-            $fields = $this->getFields()->onlyFields();
-
-            $collection = $collection->map(function ($data) use ($fields) {
-                foreach ($fields as $field) {
-                    if ($field instanceof Json && $field->isKeyOrOnlyValue()) {
-                        $data[$field->column()] = $field->prepareOnApply(
-                            collect($data[$field->column()] ?? [])
-                        );
-                    }
-                }
-
-                return $data;
-            });
-        }
-
         return $collection->when(
             $this->isKeyOrOnlyValue(),
             fn ($data): Collection => $data->mapWithKeys(
@@ -263,28 +243,40 @@ class Json extends Field implements
                     ? [$key => $data['value']]
                     : [$data['key'] => $data['value']]
             )
-        )->toArray();
+        )->filter()->toArray();
     }
 
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            $requestValues = $this->requestValue();
+            $this->resolveFill((array) $item, $item);
 
+            $requestValues = $this->requestValue();
+            $applyValues = [];
 
             if ($requestValues === false) {
                 return data_set($item, $this->column(), []);
             }
 
             foreach ($requestValues as $index => $values) {
-                foreach ($this->getFields()->onlyFileFields() as $field) {
+                foreach ($this->getFields() as $field) {
                     $field->setRequestKeyPrefix(
-                        $this->column() . "." . $index
+                        str("{$this->column()}.$index")->when(
+                            $this->requestKeyPrefix(),
+                            fn ($str) => $str->prepend("{$this->requestKeyPrefix()}.")
+                        )->value()
                     );
 
-                    $requestValues[$index] = $field->apply(
+                    $apply = $field->apply(
                         fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
                         $values
+                    );
+
+                    #  TODO if isGroup
+                    data_set(
+                        $applyValues[$index],
+                        $field->column(),
+                        data_get($apply, $field->column())
                     );
                 }
             }
@@ -292,7 +284,7 @@ class Json extends Field implements
             return data_set(
                 $item,
                 $this->column(),
-                $this->prepareOnApply($requestValues)
+                $this->prepareOnApply($applyValues)
             );
         };
     }

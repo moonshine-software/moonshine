@@ -93,14 +93,14 @@ trait FileTrait
 
     public function hiddenOldValuesKey(): string
     {
-        return str('hidden_')
+        return str('')
             ->when(
                 $this->requestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->append(
                     $this->requestKeyPrefix() . "."
                 )
             )
-            ->append($this->column())
+            ->append('hidden_' . $this->column())
             ->value();
     }
 
@@ -153,9 +153,11 @@ trait FileTrait
             $oldValues = request()
                 ->collect($this->hiddenOldValuesKey());
 
-            if ($this->isDeleteFiles()) {
+            data_forget($item, 'hidden_' . $this->column());
+
+            if ($this->isDeleteFiles() && $this->toValue(false)) {
                 $this->checkAndDelete(
-                    data_get($item, $this->column()),
+                    $this->toValue(false),
                     $oldValues->toArray()
                 );
             }
