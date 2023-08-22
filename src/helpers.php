@@ -133,11 +133,11 @@ if (! function_exists('formErrors')) {
         ViewErrorBag|bool $errors,
         ?string $name = null
     ): ViewErrorBag|MessageBag {
-        if(!$errors) {
+        if(! $errors) {
             return new ViewErrorBag();
         }
 
-        if(is_null($name) || !$errors->hasBag($name)) {
+        if(is_null($name) || ! $errors->hasBag($name)) {
             return $errors;
         }
 
