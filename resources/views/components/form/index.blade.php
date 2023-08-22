@@ -6,8 +6,8 @@
     'raw' => false
 ])
 
-@if($errors->{$name})
-    <x-moonshine::form.all-errors :errors="$errors->{$name}" />
+@if(formErrors($errors, $name)->isNotEmpty())
+    <x-moonshine::form.all-errors :errors="formErrors($errors, $name)" />
 @endif
 
 <form

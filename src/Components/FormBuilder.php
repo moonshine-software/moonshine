@@ -31,7 +31,7 @@ final class FormBuilder extends RowComponent
 
     protected ComponentAttributeBag $submitAttributes;
 
-    protected string $name = 'default';
+    protected ?string $name = null;
 
     public function __construct(
         protected string $action = '',

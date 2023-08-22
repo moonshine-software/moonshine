@@ -37,7 +37,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     protected ?string $requestKeyPrefix = null;
 
-    protected string $formName = 'default';
+    protected ?string $formName = null;
 
     protected function afterMake(): void
     {

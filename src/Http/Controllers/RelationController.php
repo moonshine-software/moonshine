@@ -7,7 +7,6 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Http\Requests\Relations\RelationDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationRequest;
 use MoonShine\Http\Requests\Relations\RelationStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationUpateRequest;
