@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Resources\ModelResource;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +31,7 @@ class RelationRequest extends MoonshineFormRequest
         return $this->relationResource;
     }
 
-    public function relationField(): ?Field
+    public function relationField(): ?ModelRelationField
     {
         if(!is_null($this->relationField)) {
             return $this->relationField;

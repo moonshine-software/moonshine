@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Fields\Relationships;
 
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Fields;

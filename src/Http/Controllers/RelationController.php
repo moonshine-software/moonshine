@@ -11,7 +11,6 @@ use MoonShine\Http\Requests\Relations\RelationDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationRequest;
 use MoonShine\Http\Requests\Relations\RelationStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationUpateRequest;
-use MoonShine\MoonShineUI;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class RelationController extends BaseController
