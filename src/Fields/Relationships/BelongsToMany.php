@@ -268,7 +268,7 @@ class BelongsToMany extends ModelRelationField implements
                     $sync,
                     $key,
                     $this->getFields()
-                        ->each(fn (Field $field) => $field->setRequestKeyPrefix("{$this->getPivotName()}.$key"))
+                        ->each(fn (Field $field): Field => $field->setRequestKeyPrefix("{$this->getPivotName()}.$key"))
                         ->requestValues()
                         ->toArray()
                 );
