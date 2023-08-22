@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests\Relations;
 
-class RelationUpateRequest extends RelationRequest
+final class RelationModelFieldStoreRequest extends RelationModelFieldRequest
 {
     public function authorize(): bool
     {
         if (! in_array(
-            'edit',
+            'create',
             $this->relationResource()->getActiveActions(),
             true
         )) {
             return false;
         }
 
-        return $this->relationResource()->can('update');
+        return $this->relationResource()->can('create');
     }
 
     public function rules(): array
     {
-        $this->errorBag = request('_relation');
+        $this->errorBag = $this->getRelationName();
 
         $relationResource = $this->relationResource();
 
-        return $relationResource->rules($relationResource->getModel());
+        return $relationResource->rules(
+            $relationResource->getModel()
+        );
     }
 }

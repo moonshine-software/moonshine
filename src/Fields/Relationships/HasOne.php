@@ -46,10 +46,7 @@ class HasOne extends HasMany
             ->buttons(is_null($item) ? [] : [
                 ActionButton::make(
                     __('moonshine::ui.delete'),
-                    url: fn ($data): string => route('moonshine.crud.destroy', [
-                        'resourceUri' => $resource->uriKey(),
-                        'resourceItem' => $data->getKey(),
-                    ])
+                    url: fn ($data): string => $resource->route('crud.destroy', $data->getKey())
                 )
                     ->customAttributes(['class' => 'btn-pink btn-lg'])
                     ->inModal(
@@ -62,7 +59,13 @@ class HasOne extends HasMany
                             ]
                         )
                             ->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
-                            ->redirect(to_page($parentResource, 'form-page', ['resourceItem' =>  $parentResource->getItem()]))
+                            ->redirect(
+                                to_page(
+                                    $parentResource,
+                                    'form-page',
+                                    ['resourceItem' =>  $parentResource->getItem()]
+                                )
+                            )
                     )
                     ->showInLine()
             ])

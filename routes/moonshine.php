@@ -10,7 +10,7 @@ use MoonShine\Http\Controllers\DashboardController;
 use MoonShine\Http\Controllers\NotificationController;
 use MoonShine\Http\Controllers\PageController;
 use MoonShine\Http\Controllers\ProfileController;
-use MoonShine\Http\Controllers\RelationController;
+use MoonShine\Http\Controllers\RelationModelFieldController;
 use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
 
@@ -31,8 +31,8 @@ Route::prefix(config('moonshine.route.prefix', ''))
             });
 
             Route::prefix('relation/{resourceUri}')->group(function (): void {
-                Route::post('{resourceItem}', [RelationController::class, 'store'])->name('relation.store');
-                Route::put('{resourceItem}', [RelationController::class, 'update'])->name('relation.update');
+                Route::post('{resourceItem}', [RelationModelFieldController::class, 'store'])->name('relation.store');
+                Route::put('{resourceItem}', [RelationModelFieldController::class, 'update'])->name('relation.update');
             });
 
             Route::get('/', DashboardController::class)->name('index');

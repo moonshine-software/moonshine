@@ -235,7 +235,7 @@ abstract class ModelResource extends Resource
     public function save(Model $item, ?Collection $fields = null): Model
     {
         $fields ??= $this->getFields()
-            ->formFields()
+            ->onlyFields()
             ->fillCloned($item->toArray(), $item);
 
         try {

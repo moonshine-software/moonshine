@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Resources\ModelResource;
 
-class RelationRequest extends MoonshineFormRequest
+class RelationModelFieldRequest extends MoonshineFormRequest
 {
     protected ?ModelResource $relationResource = null;
 
-    protected ?Field $relationField = null;
-
     protected ?ModelResource $parentResource = null;
+
+    protected ?ModelRelationField $relationField = null;
 
     protected ?Model $parentItem = null;
 
@@ -26,9 +25,15 @@ class RelationRequest extends MoonshineFormRequest
             return $this->relationResource;
         }
 
-        $this->relationResource = $this->relationField()->getResource();
+        $this->relationResource = $this->relationField()
+            ->getResource();
 
         return $this->relationResource;
+    }
+
+    public function getRelationName(): string
+    {
+        return request('_relation');
     }
 
     public function relationField(): ?ModelRelationField
@@ -39,7 +44,9 @@ class RelationRequest extends MoonshineFormRequest
 
         $fields = $this->parentResource()->getOutsideFields()->onlyFields();
 
-        $this->relationField = $fields->findByRelation(request('_relation'));
+        $this->relationField = $fields->findByRelation(
+            $this->getRelationName()
+        );
 
         return $this->relationField;
     }

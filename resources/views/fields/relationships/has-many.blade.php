@@ -2,5 +2,5 @@
     <x-moonshine::divider />
     <x-moonshine::divider :label="$element->label()" />
 
-    {{ $element->value()->render() }}
+    {{ $element->value(withOld: false)->render() }}
 </div>

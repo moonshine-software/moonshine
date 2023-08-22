@@ -20,6 +20,8 @@ class File extends Field implements Fileable, RemovableContract
 
     protected string $view = 'moonshine::fields.file';
 
+    protected string $itemView = 'moonshine::ui.file';
+
     protected string $type = 'file';
 
     protected string $accept = '*/*';
@@ -38,26 +40,37 @@ class File extends Field implements Fileable, RemovableContract
         return $this;
     }
 
-    protected function prepareForView(): string
+    protected function prepareForView(): array
     {
         if (! $this->value()) {
-            return '';
+            return [];
         }
 
-        $files = $this->isMultiple()
+        return $this->isMultiple()
             ? collect($this->value())
                 ->map(fn ($value): string => $this->pathWithDir($value))
                 ->toArray()
             : [$this->pathWithDir($this->value())];
+    }
 
-        return implode(';', array_filter($files));
+    protected function itemView(): string
+    {
+        return $this->itemView;
     }
 
     protected function resolvePreview(): string
     {
-        return view('moonshine::ui.file', [
-            'value' => $this->prepareForView(),
-        ])->render();
+        $values = $this->prepareForView();
+
+        if($this->isRawMode()) {
+            return implode(';', array_filter($values));
+        }
+
+        return collect($values)->implode(
+            fn(string $value) => view($this->itemView(), [
+                'value' => $value,
+            ])->render()
+        );
     }
 
     protected function resolveAfterDestroy(mixed $data): void

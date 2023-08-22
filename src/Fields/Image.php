@@ -8,10 +8,5 @@ class Image extends File
 {
     protected string $view = 'moonshine::fields.image';
 
-    protected function resolvePreview(): string
-    {
-        return view('moonshine::ui.image', [
-            'value' => $this->prepareForView(),
-        ])->render();
-    }
+    protected string $itemView = 'moonshine::ui.image';
 }

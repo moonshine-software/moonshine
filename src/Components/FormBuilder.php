@@ -142,6 +142,11 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
+    public function submitAttributes(): ComponentAttributeBag
+    {
+        return $this->submitAttributes;
+    }
+
     public function submitLabel(): string
     {
         return $this->submitLabel ?? __('moonshine::ui.save');
@@ -154,8 +159,10 @@ final class FormBuilder extends RowComponent
     {
         $fields = $this->preparedFields();
 
-        if(! is_null($this->name)) {
-            $fields->onlyFields()->each(fn (FormElement $field): FormElement => $field->formName($this->name));
+        if (! is_null($this->getName())) {
+            $fields->onlyFields()->each(
+                fn (FormElement $field): FormElement => $field->formName($this->getName())
+            );
         }
 
         $xInit = json_encode([
@@ -175,7 +182,7 @@ final class FormBuilder extends RowComponent
             'fields' => $fields,
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
-            'submitAttributes' => $this->submitAttributes,
+            'submitAttributes' => $this->submitAttributes(),
         ]);
     }
 }
