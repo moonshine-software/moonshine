@@ -25,12 +25,12 @@ class HasOne extends HasMany
 
         $parentResource = moonshineRequest()->getResource();
 
-        return FormBuilder::make($parentResource->route(
-                name: is_null($item)
-                        ? 'relation.store'
-                        : 'relation.update',
-                query: ['resourceItem' => $parentResource->getItemID()]
-            ))
+        return FormBuilder::make(
+                $parentResource->route(
+                    is_null($item) ? 'relation.store' : 'relation.update',
+                    $parentResource->getItemID()
+                )
+            )
             ->fields(
                 $fields->when(
                     ! is_null($item),

@@ -33,7 +33,6 @@ Route::prefix(config('moonshine.route.prefix', ''))
             Route::prefix('relation/{resourceUri}')->group(function (): void {
                 Route::post('{resourceItem}', [RelationController::class, 'store'])->name('relation.store');
                 Route::put('{resourceItem}', [RelationController::class, 'update'])->name('relation.update');
-                Route::delete('{resourceItem}', [RelationController::class, 'destroy'])->name('relation.destroy');
             });
 
             Route::get('/', DashboardController::class)->name('index');

@@ -8,8 +8,6 @@ use MoonShine\Http\Requests\MoonshineFormRequest;
 
 final class UpdateFormRequest extends MoonshineFormRequest
 {
-    protected $errorBag = 'crud';
-
     public function authorize(): bool
     {
         if (! in_array(

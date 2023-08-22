@@ -9,6 +9,8 @@ use MoonShine\Resources\ModelResource;
 
 class MoonshineFormRequest extends FormRequest
 {
+    protected $errorBag = 'crud';
+
     public function authorize(): bool
     {
         return true;

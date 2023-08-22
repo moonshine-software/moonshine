@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Http\Requests\Relations\RelationDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationRequest;
 use MoonShine\Http\Requests\Relations\RelationStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationUpateRequest;
+use MoonShine\MoonShineUI;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class RelationController extends BaseController
 {
-    public function store(RelationStoreRequest $request)
+    public function store(RelationStoreRequest $request): JsonResponse|RedirectResponse
     {
         return $this->updateOrCreate($request);
     }
 
-    public function update(RelationUpateRequest $request)
+    public function update(RelationUpateRequest $request): JsonResponse|RedirectResponse
     {
         return $this->updateOrCreate($request);
-    }
-
-    public function destroy($resourceItem = null)
-    {
-
     }
 
     protected function updateOrCreate(
         RelationRequest $request
-    ) {
+    ): JsonResponse|RedirectResponse {
         $resource = $request->relationResource();
 
         $parentResource = $request->parentResource();
