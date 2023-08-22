@@ -4,37 +4,41 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use Closure;
+use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
 
-abstract class CustomPage
+/**
+ * @method static static make(string $title, string $alias, string|Closure $view, Closure|null $viewData = null)
+ */
+class CustomPage
 {
+    use Makeable;
     use WithLabel;
 
     protected string $layout = 'moonshine::layouts.app';
 
     protected bool $withTitle = true;
 
-    public static string $title = '';
-
-    public static string $alias = '';
-
-    public static string $view = '';
-
     protected array $breadcrumbs = [];
 
-    public function __construct()
-    {
+    public function __construct(
+        public string $title,
+        protected string $alias,
+        protected string|Closure $view,
+        protected ?Closure $viewData = null,
+    ) {
         $this->setLabel($this->title());
     }
 
     public function title(): string
     {
-        return static::$title;
+        return $this->title;
     }
 
     public function alias(): string
     {
-        return static::$alias;
+        return $this->alias;
     }
 
     public function layout(string $layout): self
@@ -77,7 +81,10 @@ abstract class CustomPage
 
     public function getView(): string
     {
-        return static::$view;
+        if (is_callable($this->view)) {
+            return call_user_func($this->view);
+        }
+        return $this->view;
     }
 
     /**
@@ -85,11 +92,15 @@ abstract class CustomPage
      *
      * @return array<mixed>
      */
-    abstract public function datas(): array;
+    public function datas(): array
+    {
+        return [];
+    }
 
     public function getViewData(): array
     {
-        return $this->datas();
+        return is_callable($this->viewData) ? call_user_func($this->viewData)
+            : $this->datas();
     }
 
     public function url(): string
@@ -98,7 +109,7 @@ abstract class CustomPage
             (string) str('moonshine')
                 ->append('.')
                 ->append('custom_page'),
-            static::$alias
+            $this->alias
         );
     }
 }
