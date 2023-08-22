@@ -154,8 +154,8 @@ final class FormBuilder extends RowComponent
     {
         $fields = $this->preparedFields();
 
-        if(!is_null($this->name)) {
-            $fields->onlyFields()->each(fn(FormElement $field): FormElement => $field->formName($this->name));
+        if(! is_null($this->name)) {
+            $fields->onlyFields()->each(fn (FormElement $field): FormElement => $field->formName($this->name));
         }
 
         $xInit = json_encode([
