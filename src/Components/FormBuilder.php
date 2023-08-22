@@ -126,6 +126,11 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
     public function submit(string $label, array $attributes = []): self
     {
         $this->submitLabel = $label;
@@ -165,7 +170,7 @@ final class FormBuilder extends RowComponent
 
         return view('moonshine::components.form.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'name' => $this->name,
+            'name' => $this->getName(),
             'fields' => $fields,
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
