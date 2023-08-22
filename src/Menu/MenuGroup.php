@@ -37,12 +37,8 @@ class MenuGroup extends MenuSection
                 )
             );
 
-            if ($item instanceof Resource) {
+            if ($item instanceof Resource || $item instanceof CustomPage) {
                 return new MenuItem($item->title(), $item);
-            }
-
-            if ($item instanceof CustomPage) {
-                return new MenuItem($item->label(), $item);
             }
 
             return $item;
