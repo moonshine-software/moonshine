@@ -63,11 +63,11 @@ class HasOne extends HasMany
                                 to_page(
                                     $parentResource,
                                     'form-page',
-                                    ['resourceItem' =>  $parentResource->getItem()]
+                                    ['resourceItem' => $parentResource->getItem()]
                                 )
                             )
                     )
-                    ->showInLine()
+                    ->showInLine(),
             ])
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }

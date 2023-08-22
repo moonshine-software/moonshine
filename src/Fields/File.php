@@ -67,7 +67,7 @@ class File extends Field implements Fileable, RemovableContract
         }
 
         return collect($values)->implode(
-            fn(string $value): string => view($this->itemView(), [
+            fn (string $value): string => view($this->itemView(), [
                 'value' => $value,
             ])->render()
         );
