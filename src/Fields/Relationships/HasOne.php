@@ -43,7 +43,7 @@ class HasOne extends HasMany
             ->name($this->getRelationName())
             ->fill($item?->attributesToArray() ?? [])
             ->cast($resource->getModelCast())
-            ->buttons(!is_null($item) ? [
+            ->buttons(is_null($item) ? [] : [
                 ActionButton::make(
                     __('moonshine::ui.delete'),
                     url: fn ($data): string => route('moonshine.crud.destroy', [
@@ -65,7 +65,7 @@ class HasOne extends HasMany
                             ->redirect(to_page($parentResource, 'form-page', ['resourceItem' =>  $parentResource->getItem()]))
                     )
                     ->showInLine()
-            ] : [])
+            ])
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
 }
