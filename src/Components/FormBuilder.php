@@ -123,8 +123,6 @@ final class FormBuilder extends RowComponent
     {
         $this->name = $name;
 
-        $this->getFields()->onlyFields()->each(fn(FormElement $field) => $field->formName($name));
-
         return $this;
     }
 
@@ -149,6 +147,10 @@ final class FormBuilder extends RowComponent
     public function render(): View|Closure|string
     {
         $fields = $this->preparedFields();
+
+        if(!is_null($this->name)) {
+            $fields->onlyFields()->each(fn(FormElement $field) => $field->formName($this->name));
+        }
 
         $xInit = json_encode([
             'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
