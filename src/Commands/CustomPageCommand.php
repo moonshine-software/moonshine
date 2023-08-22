@@ -28,15 +28,13 @@ class CustomPageCommand extends MoonShineCommand
     {
         $name = str($this->argument('name') ?? $this->ask('Name'));
 
-        $name = $name->ucfirst()
-            ->replace(['customPage', 'CustomPage'], '')
-            ->value();
+        $plular = $name->singular()->plural();
 
-        $title = $this->option('title') ?? str($name)->singular()->plural()->value();
+        $title = $this->option('title') ?? $plular->value();
 
-        $alias = $this->option('alias') ?? str($name)->singular()->plural()->kebab()->lower()->value();
+        $alias = $this->option('alias') ?? $plular->kebab()->lower()->value();
 
-        $view = $this->option('view') ?? str($name)->singular()->plural()->snake()->lower()->value();
+        $view = $this->option('view') ?? $plular->snake()->lower()->value();
 
         $resource = $this->getDirectory() . "/Resources/{$name}CustomPage.php";
 
