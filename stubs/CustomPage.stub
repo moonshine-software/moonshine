@@ -1,0 +1,19 @@
+<?php
+
+namespace {namespace};
+
+use MoonShine\Resources\CustomPage;
+
+class DummyCustomPage extends CustomPage
+{
+	public static string $title = 'DummyTitle';
+
+	public static string $alias = 'DummyAlias';
+
+	public static string $view = 'DummyView';
+
+	public function datas(): array
+	{
+		return [];
+	}
+}
