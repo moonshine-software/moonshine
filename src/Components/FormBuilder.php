@@ -163,7 +163,7 @@ final class FormBuilder extends RowComponent
 
         return view('moonshine::components.form.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'formName' => $this->name,
+            'name' => $this->name,
             'fields' => $fields,
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
