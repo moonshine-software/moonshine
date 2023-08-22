@@ -6,7 +6,7 @@
     ])"
         :nullable="$element->isNullable()"
         :searchable="$element->isSearchable()"
-        @class(['form-invalid' => $errors->{$element->getForm()}->has($element->name())])
+        @class(['form-invalid' => $errors->{$element->getFormName()}->has($element->name())])
         :asyncRoute="(method_exists($element, 'isAsyncSearch') && $element->isAsyncSearch()) ?
             route('moonshine.search.relations', [
                     'column' => $element->column(),

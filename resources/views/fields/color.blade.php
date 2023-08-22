@@ -19,7 +19,7 @@
             ])"
             style="padding-left: 50px;"
             x-model:value="color"
-            @class(['form-invalid' => $errors->{$element->getForm()}->has($element->name())])
+            @class(['form-invalid' => $errors->{$element->getFormName()}->has($element->name())])
         />
     </div>
 </div>

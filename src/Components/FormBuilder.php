@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\FormElement;
+use MoonShine\Fields\Hidden;
 use Throwable;
 
 /**
@@ -30,7 +31,7 @@ final class FormBuilder extends RowComponent
 
     protected ComponentAttributeBag $submitAttributes;
 
-    protected string $formName = 'default';
+    protected string $name = 'default';
 
     public function __construct(
         protected string $action = '',
@@ -107,16 +108,22 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
+    public function redirect(string $uri): self
+    {
+        $this->fields[] = Hidden::make('_redirect')->setValue($uri);
+        return $this;
+    }
+
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    public function formName(string $formName): self
+    public function name(string $name): self
     {
-        $this->formName = $formName;
+        $this->name = $name;
 
-        $this->getFields()->onlyFields()->each(fn(FormElement $field) => $field->form($formName));
+        $this->getFields()->onlyFields()->each(fn(FormElement $field) => $field->formName($name));
 
         return $this;
     }
@@ -156,7 +163,7 @@ final class FormBuilder extends RowComponent
 
         return view('moonshine::components.form.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'formName' => $this->formName,
+            'formName' => $this->name,
             'fields' => $fields,
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),

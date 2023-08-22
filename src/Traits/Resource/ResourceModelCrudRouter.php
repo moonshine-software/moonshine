@@ -55,6 +55,6 @@ trait ResourceModelCrudRouter
 
     protected function defaultRedirect(): string
     {
-        return to_page($this, 'index-page');
+        return request('_redirect') ?? to_page($this, 'index-page');
     }
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 
@@ -26,7 +29,7 @@ class HasOne extends HasMany
                 name: is_null($item)
                         ? 'relation.store'
                         : 'relation.update',
-                query: ['resourceUri' => $parentResource->uriKey(), 'resourceItem' => $parentResource->getItemID()]
+                query: ['resourceItem' => $parentResource->getItemID()]
             ))
             ->fields(
                 $fields->when(
@@ -38,9 +41,32 @@ class HasOne extends HasMany
                     Hidden::make('_relation')->setValue($this->getRelationName()),
                 )->toArray()
             )
-            ->formName($this->getRelationName())
+            ->name($this->getRelationName())
             ->fill($item?->attributesToArray() ?? [])
             ->cast($resource->getModelCast())
+            ->buttons(!is_null($item) ? [
+                ActionButton::make(
+                    __('moonshine::ui.delete'),
+                    url: fn ($data): string => route('moonshine.crud.destroy', [
+                        'resourceUri' => $resource->uriKey(),
+                        'resourceItem' => $data->getKey(),
+                    ])
+                )
+                    ->customAttributes(['class' => 'btn-pink btn-lg'])
+                    ->inModal(
+                        fn (): array|string|null => __('moonshine::ui.delete'),
+                        fn (ActionButton $action): string => (string) form(
+                            $action->url(),
+                            fields: [
+                                Hidden::make('_method')->setValue('DELETE'),
+                                TextBlock::make('', __('moonshine::ui.confirm_message')),
+                            ]
+                        )
+                            ->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
+                            ->redirect(to_page($parentResource, 'form-page', ['resourceItem' =>  $parentResource->getItem()]))
+                    )
+                    ->showInLine()
+            ] : [])
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
 }
