@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
@@ -122,5 +124,23 @@ if (! function_exists('findFieldApply')) {
             && class_exists($applyClass)
             ? new $applyClass()
             : null;
+    }
+}
+
+
+if (! function_exists('formErrors')) {
+    function formErrors(
+        ViewErrorBag|bool $errors,
+        ?string $name = null
+    ): ViewErrorBag|MessageBag {
+        if(!$errors) {
+            return new ViewErrorBag();
+        }
+
+        if(is_null($name) || !$errors->hasBag($name)) {
+            return $errors;
+        }
+
+        return $errors->{$name};
     }
 }

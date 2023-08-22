@@ -7,5 +7,5 @@
     toName="{{ $element->name() }}[{{ $element->toField }}]"
     fromField="{{ $element->column() }}.{{ $element->fromField }}"
     toField="{{ $element->column() }}.{{ $element->toField }}"
-    @class(['form-invalid' => $errors->has($element->name())])
+    @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
 />

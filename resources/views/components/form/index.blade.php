@@ -1,12 +1,13 @@
 @props([
     'buttons',
+    'name',
     'errors' => false,
     'precognitive' => false,
     'raw' => false
 ])
 
-@if($errors)
-    <x-moonshine::form.all-errors :errors="$errors" />
+@if(formErrors($errors, $name)->isNotEmpty())
+    <x-moonshine::form.all-errors :errors="formErrors($errors, $name)" />
 @endif
 
 <form

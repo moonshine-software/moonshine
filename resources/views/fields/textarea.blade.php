@@ -5,5 +5,5 @@
         'aria-label' => $element->label() ?? '',
         'name' => $element->name(),
     ])"
-    @class(['form-invalid' => $errors->has($element->name())])
+    @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
 >{!! $element->value() ?? '' !!}</x-moonshine::form.textarea>

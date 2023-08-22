@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\FormElement;
+use MoonShine\Fields\Hidden;
 use Throwable;
 
 /**
@@ -28,6 +30,8 @@ final class FormBuilder extends RowComponent
     protected ?string $submitLabel = null;
 
     protected ComponentAttributeBag $submitAttributes;
+
+    protected ?string $name = null;
 
     public function __construct(
         protected string $action = '',
@@ -104,9 +108,27 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
+    public function redirect(string $uri): self
+    {
+        $this->fields[] = Hidden::make('_redirect')->setValue($uri);
+        return $this;
+    }
+
     public function getMethod(): string
     {
         return $this->method;
+    }
+
+    public function name(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     public function submit(string $label, array $attributes = []): self
@@ -131,6 +153,10 @@ final class FormBuilder extends RowComponent
     {
         $fields = $this->preparedFields();
 
+        if(!is_null($this->name)) {
+            $fields->onlyFields()->each(fn(FormElement $field) => $field->formName($this->name));
+        }
+
         $xInit = json_encode([
             'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
         ], JSON_THROW_ON_ERROR);
@@ -144,6 +170,7 @@ final class FormBuilder extends RowComponent
 
         return view('moonshine::components.form.builder', [
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
+            'name' => $this->getName(),
             'fields' => $fields,
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
