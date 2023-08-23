@@ -11,7 +11,6 @@ use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -23,7 +22,6 @@ use Throwable;
 class Json extends Field implements
     HasFields,
     RemovableContract,
-    HasValueExtraction,
     HasDefaultValue,
     DefaultCanBeArray
 {
@@ -108,24 +106,6 @@ class Json extends Field implements
         return $this->isVertical;
     }
 
-    public function extractValues(array $data): array
-    {
-        if ($this->isKeyValue()) {
-            return [
-                'key' => key($data) ?? '',
-                'value' => $data[key($data)] ?? '',
-            ];
-        }
-
-        if ($this->isOnlyValue()) {
-            return [
-                'value' => $data[key($data)] ?? '',
-            ];
-        }
-
-        return $data;
-    }
-
     protected function incrementLevel(): self
     {
         ++$this->level;
@@ -189,29 +169,33 @@ class Json extends Field implements
             ->preview();
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    protected function reformatFilledValue(mixed $data): mixed
     {
-        $values = $raw[$this->column()] ?? [];
-
-        foreach ($this->getFields() as $field) {
-            # TODO change to prepareFill
-            if ($field instanceof HasValueExtraction) {
-                foreach ($values as $index => $value) {
-                    data_set(
-                        $values[$index],
-                        $field->column(),
-                        collect($value[$field->column()] ?? [])
-                            ->map(fn ($data, $key): array => $field->extractValues(
-                                $field->isOnlyValue() ? [$data] : [$key => $data]
-                            ))
-                            ->values()
-                            ->toArray()
-                    );
-                }
-            }
+        if ($this->isKeyOrOnlyValue()) {
+            return collect($data)->map(fn ($data, $key): array => $this->extractKeyValue(
+                $this->isOnlyValue() ? [$data] : [$key => $data]
+            ))->values()->toArray();
         }
 
-        return $values;
+        return $data;
+    }
+
+    protected function extractKeyValue(array $data): array
+    {
+        if ($this->isKeyValue()) {
+            return [
+                'key' => key($data) ?? '',
+                'value' => $data[key($data)] ?? '',
+            ];
+        }
+
+        if ($this->isOnlyValue()) {
+            return [
+                'value' => $data[key($data)] ?? '',
+            ];
+        }
+
+        return $data;
     }
 
     protected function resolveValue(): mixed

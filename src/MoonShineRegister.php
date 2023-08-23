@@ -20,6 +20,7 @@ final class MoonShineRegister
                 RangeField::class => RangeModelApply::class,
             ],
         ],
+        'fields' => []
     ];
 
     public function activeOption(string $activeOption): MoonShineRegister
@@ -39,6 +40,13 @@ final class MoonShineRegister
     public function filters(): MoonShineRegister
     {
         $this->activeOption('filters');
+
+        return $this;
+    }
+
+    public function fields(): MoonShineRegister
+    {
+        $this->activeOption('fields');
 
         return $this;
     }

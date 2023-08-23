@@ -1,5 +1,7 @@
 @props([
     'uniqueId' => 'slider',
+    'fromAttributes' => $attributes,
+    'toAttributes' => $attributes,
     'fromName',
     'toName',
     'fromValue',
@@ -23,9 +25,11 @@
                 x-bind:max="max"
                 x-on:input="mintrigger"
                 x-model="minValue"
-                class="form-range-input"
-                x-bind:name="`{{ $fromName }}`"
                 x-on:change="onChangeField($event)"
+                :attributes="$fromAttributes->merge([
+                    'name' => $fromName,
+                    'class' => 'form-range-input'
+                ])"
             />
 
             <x-moonshine::form.input
@@ -35,9 +39,11 @@
                 x-bind:max="max"
                 x-on:input="maxtrigger"
                 x-model="maxValue"
-                class="form-range-input"
-                x-bind:name="`{{ $toName }}`"
                 x-on:change="onChangeField($event)"
+                :attributes="$toAttributes->merge([
+                    'name' => $toName,
+                    'class' => 'form-range-input'
+                ])"
             />
 
             <div class="form-range-slider">
@@ -50,29 +56,31 @@
 
         <div class="form-group-range-fields">
             <x-moonshine::form.input
-                name="{{ $fromName }}"
-                x-bind:name="`{{ $fromName }}`"
+                type="number"
+                maxlength="5"
                 step="{{ $attributes->get('step', 1) }}"
                 x-bind:min="min"
                 x-bind:max="max"
-                type="number"
-                maxlength="5"
                 x-on:input="mintrigger"
                 x-model="minValue"
                 x-on:change="onChangeField($event)"
+                :attributes="$fromAttributes->merge([
+                    'name' => $fromName,
+                ])"
             />
 
             <x-moonshine::form.input
-                name="{{ $toName }}"
-                x-bind:name="`{{ $toName }}`"
+                type="number"
                 step="{{ $attributes->get('step', 1) }}"
+                maxlength="5"
                 x-bind:min="min"
                 x-bind:max="max"
-                type="number"
-                maxlength="5"
                 x-on:input="maxtrigger"
                 x-model="maxValue"
                 x-on:change="onChangeField($event)"
+                :attributes="$toAttributes->merge([
+                    'name' => $toName,
+                ])"
             />
         </div>
     </div>

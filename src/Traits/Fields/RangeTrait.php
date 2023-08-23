@@ -23,9 +23,25 @@ trait RangeTrait
         return $this;
     }
 
+    protected function reformatAttributes(
+        ?ComponentAttributeBag $attributes = null,
+        string $name = ''
+    ): ComponentAttributeBag {
+        $dataName = $this->attributes()->get('data-name');
+
+        return ($attributes ?? $this->attributes())
+            ->except(['data-name'])
+            ->when(
+                $dataName,
+                fn (ComponentAttributeBag $attr) => $attr->merge([
+                    'data-name' => str($dataName)->replaceLast('[]', "[$name]"),
+                ])
+            );
+    }
+
     public function getFromAttributes(): ComponentAttributeBag
     {
-        return $this->fromAttributes ?? $this->attributes();
+        return $this->reformatAttributes($this->fromAttributes, $this->fromField);
     }
 
     public function toAttributes(array $attributes): static
@@ -37,7 +53,7 @@ trait RangeTrait
 
     public function getToAttributes(): ComponentAttributeBag
     {
-        return $this->toAttributes ?? $this->attributes();
+        return $this->reformatAttributes($this->toAttributes, $this->toField);
     }
 
     public function fromTo(string $fromField, string $toField): static

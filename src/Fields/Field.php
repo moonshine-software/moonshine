@@ -158,6 +158,11 @@ abstract class Field extends FormElement
         return data_get($casted ?? $raw, $this->column());
     }
 
+    protected function reformatFilledValue(mixed $data): mixed
+    {
+        return $data;
+    }
+
     public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): self
     {
         if ($this->value) {
@@ -165,6 +170,7 @@ abstract class Field extends FormElement
         }
 
         $value = $this->prepareFill($raw, $casted);
+        $value = $this->reformatFilledValue($value);
 
         $this->setRawValue($value);
 

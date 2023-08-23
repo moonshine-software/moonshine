@@ -6,7 +6,7 @@
 >
     <x-moonshine::form.input
         :attributes="$element->getFromAttributes()->merge([
-            'name' => $element->name($element->fromField)
+            'name' => $element->name($element->fromField),
         ])"
         x-bind:max="range_to_{{ $element->id() }}"
         x-model="range_from_{{ $element->id() }}"

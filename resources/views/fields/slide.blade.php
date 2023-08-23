@@ -1,6 +1,8 @@
 <x-moonshine::form.slide-range
     :uniqueId="$element->id()"
     :attributes="$element->attributes()"
+    :fromAttributes="$element->getFromAttributes()"
+    :toAttributes="$element->getToAttributes()"
     :fromValue="$element->value()[$element->fromField] ?? $element->min"
     :toValue="$element->value()[$element->toField] ?? $element->max"
     fromName="{{ $element->name() }}[{{ $element->fromField }}]"

@@ -3,6 +3,7 @@
 namespace MoonShine\Traits\Fields;
 
 use Closure;
+use MoonShine\Fields\Field;
 use MoonShine\Helpers\Condition;
 
 trait Applies
@@ -62,12 +63,26 @@ trait Applies
             return $data;
         }
 
+        if (! is_callable($this->onApply)) {
+            $classApply = findFieldApply(
+                $this,
+                'fields',
+                'all',
+            );
+
+            $this->when(
+                ! is_null($classApply),
+                fn (Field $field) => $field->onApply($classApply->apply($field))
+            );
+        }
+
+
         $applyFunction = is_callable($this->onApply)
             ? $this->onApply
             : $this->resolveOnApply();
 
         return is_callable($applyFunction)
-            ? call_user_func($applyFunction, $data)
+            ? $applyFunction($data)
             : $default($data);
     }
 

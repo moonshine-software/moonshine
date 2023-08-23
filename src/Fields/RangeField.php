@@ -6,10 +6,9 @@ namespace MoonShine\Fields;
 
 use Closure;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\HasValueExtraction;
 use MoonShine\Traits\Fields\RangeTrait;
 
-class RangeField extends Number implements HasValueExtraction, DefaultCanBeArray
+class RangeField extends Number implements DefaultCanBeArray
 {
     use RangeTrait;
 
@@ -24,13 +23,24 @@ class RangeField extends Number implements HasValueExtraction, DefaultCanBeArray
         return $this;
     }
 
+    protected function reformatFilledValue(mixed $data): mixed
+    {
+        return $this->extractFromTo($data);
+    }
+
+    protected function extractFromTo(array $data): array
+    {
+        return [
+            $this->fromField => $data[$this->fromField] ?? $this->min,
+            $this->toField => $data[$this->toField] ?? $this->max,
+        ];
+    }
+
     protected function prepareFill(array $raw = [], mixed $casted = null, int $index = 0): array
     {
-        $data = is_array($raw[$this->column()] ?? false)
+        return is_array($raw[$this->column()] ?? false)
             ? $raw[$this->column()]
             : $raw;
-
-        return $this->extractValues($data);
     }
 
     protected function resolvePreview(): string
@@ -57,14 +67,6 @@ class RangeField extends Number implements HasValueExtraction, DefaultCanBeArray
         return "$from - $to";
     }
 
-    public function extractValues(array $data): array
-    {
-        return [
-            $this->fromField => $data[$this->fromField] ?? $this->min,
-            $this->toField => $data[$this->toField] ?? $this->max,
-        ];
-    }
-
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
@@ -74,8 +76,8 @@ class RangeField extends Number implements HasValueExtraction, DefaultCanBeArray
                 return $item;
             }
 
-            $item->{$this->fromField} = $values[$this->fromField] ?? '';
-            $item->{$this->toField} = $values[$this->toField] ?? '';
+            data_set($item, $this->fromField, $values[$this->fromField] ?? '');
+            data_set($item, $this->toField, $values[$this->toField] ?? '');
 
             return $item;
         };

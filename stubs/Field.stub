@@ -9,9 +9,14 @@ class DummyField extends {extendShort}
 {
     protected string $view = '{view}';
 
-    protected function prepareFill(array $rawValues = [], mixed $castedValues = null): mixed
+    protected function reformatFilledValue(mixed $data): mixed
     {
-        return parent::prepareFill($rawValues, $castedValues);
+        return parent::reformatFilledValue($data);
+    }
+
+    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    {
+        return parent::prepareFill($raw, $casted);
     }
 
     protected function resolveValue(): mixed
