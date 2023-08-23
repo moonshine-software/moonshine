@@ -28,18 +28,16 @@ class CustomPageCommand extends MoonShineCommand
     {
         $name = str($this->argument('name') ?? $this->ask('Name'));
 
-        $plular = $name->singular()->plural();
+        $title = $this->option('title') ?? $name->singular()->plural()->value();
 
-        $title = $this->option('title') ?? $plular->value();
+        $alias = $this->option('alias') ?? $name->kebab()->lower()->value();
 
-        $alias = $this->option('alias') ?? $plular->kebab()->lower()->value();
+        $view = $this->option('view') ?? $name->snake()->lower()->value();
 
-        $view = $this->option('view') ?? $plular->snake()->lower()->value();
-
-        $resource = $this->getDirectory() . "/Resources/{$name}.php";
+        $resource = $this->getDirectory() . "/Pages/{$name}.php";
 
         $this->copyStub('CustomPage', $resource, [
-            '{namespace}' => MoonShine::namespace('\Resources'),
+            '{namespace}' => MoonShine::namespace('\Pages'),
             'DummyTitle' => $title,
             'DummyAlias' => $alias,
             'DummyView' => $view,
