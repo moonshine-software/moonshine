@@ -36,7 +36,7 @@ class CustomPageCommand extends MoonShineCommand
 
         $view = $this->option('view') ?? $plular->snake()->lower()->value();
 
-        $resource = $this->getDirectory() . "/Resources/{$name}CustomPage.php";
+        $resource = $this->getDirectory() . "/Resources/{$name}.php";
 
         $this->copyStub('CustomPage', $resource, [
             '{namespace}' => MoonShine::namespace('\Resources'),
