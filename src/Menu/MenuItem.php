@@ -37,7 +37,7 @@ class MenuItem extends MenuElement
 
     protected function resolveMenuFiller(MenuFiller $filler): void
     {
-        $this->setUrl(fn () => $filler->url());
+        $this->setUrl(fn (): string => $filler->url());
 
         if(method_exists($filler, 'getBadge')) {
             $this->badge(fn () => $filler->getBadge());
