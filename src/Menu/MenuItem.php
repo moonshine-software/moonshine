@@ -40,7 +40,7 @@ class MenuItem extends MenuElement
         $this->setUrl(fn () => $filler->url());
 
         if(method_exists($filler, 'getBadge')) {
-            $this->badge(fn() => $filler->getBadge());
+            $this->badge(fn () => $filler->getBadge());
         }
 
         if(empty($this->iconValue()) && method_exists($filler, 'getIcon')) {

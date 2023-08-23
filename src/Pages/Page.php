@@ -28,8 +28,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     protected string $layout = 'moonshine::layouts.app';
 
-    public function __construct(?string $title = null) {
-        if (!is_null($title)) {
+    public function __construct(?string $title = null)
+    {
+        if (! is_null($title)) {
             $this->setTitle($title);
         }
 
