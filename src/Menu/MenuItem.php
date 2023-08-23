@@ -5,41 +5,87 @@ declare(strict_types=1);
 namespace MoonShine\Menu;
 
 use Closure;
-use MoonShine\Contracts\Menu\MenuElement;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Resources\Resource;
-use MoonShine\Traits\Makeable;
+use MoonShine\Contracts\Menu\MenuFiller;
+use Throwable;
 
 /**
- * @method static static make(string $label, ResourceContract|Closure|string $resource, string $icon = null)
+ * @method static static make(Closure|string $label, string $icon = null)
  */
-class MenuItem extends MenuSection implements MenuElement
+class MenuItem extends MenuElement
 {
-    use Makeable;
+    protected Closure|string|null $url = null;
+
+    protected ?Closure $badge = null;
 
     final public function __construct(
-        string $label,
-        ResourceContract|Closure|string $resource,
+        Closure|string $label,
+        protected Closure|MenuFiller|string $filler,
         string $icon = null
     ) {
         $this->setLabel($label);
 
-        if ($resource instanceof Resource) {
-            $this->setResource($resource);
-        }
-
-        if (is_string($resource) && class_exists($resource)) {
-            $this->setResource(new $resource());
-        }
-
-        if (is_null($this->resource) && (is_string($resource) || is_callable(
-            $resource
-        ))) {
-            $this->link = $resource;
-        }
-
         if ($icon) {
             $this->icon($icon);
         }
+
+        if ($filler instanceof MenuFiller) {
+            $this->resolveMenuFiller($filler);
+        } else {
+            $this->setUrl($filler);
+        }
+    }
+
+    protected function resolveMenuFiller(MenuFiller $filler): void
+    {
+        $this->setUrl(fn () => $filler->url());
+
+        if(method_exists($filler, 'getBadge')) {
+            $this->badge(fn() => $filler->getBadge());
+        }
+
+        if(empty($this->iconValue()) && method_exists($filler, 'getIcon')) {
+            $this->icon($filler->getIcon());
+        }
+    }
+
+    public function getFiller(): MenuFiller|string
+    {
+        return is_closure($this->filler)
+            ? call_user_func($this->filler)
+            : $this->filler;
+    }
+
+    public function badge(Closure $callback): static
+    {
+        $this->badge = $callback;
+
+        return $this;
+    }
+
+    public function hasBadge(): bool
+    {
+        return ! is_null($this->badge);
+    }
+
+    public function getBadge(): ?string
+    {
+        return call_user_func($this->badge);
+    }
+
+    public function setUrl(string|Closure|null $url): static
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function url(): string
+    {
+        return is_closure($this->url)
+            ? call_user_func($this->url)
+            : $this->url;
     }
 }

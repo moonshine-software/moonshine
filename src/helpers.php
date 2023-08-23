@@ -12,7 +12,7 @@ use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Menu\Menu;
+use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
@@ -50,7 +50,7 @@ if (! function_exists('moonshineRegister')) {
 
 if (! function_exists('to_page')) {
     function to_page(
-        string|Resource $resource,
+        string|Resource|null $resource,
         string|Page|null $page = null,
         array $params = [],
         bool $redirect = false,
@@ -66,6 +66,13 @@ if (! function_exists('moonshineRequest')) {
     }
 }
 
+if (! function_exists('is_closure')) {
+    function is_closure(mixed $variable): bool
+    {
+        return $variable instanceof Closure;
+    }
+}
+
 if (! function_exists('moonshineAssets')) {
     function moonshineAssets(): AssetManager
     {
@@ -74,9 +81,9 @@ if (! function_exists('moonshineAssets')) {
 }
 
 if (! function_exists('moonshineMenu')) {
-    function moonshineMenu(): Menu
+    function moonshineMenu(): MenuManager
     {
-        return app(Menu::class);
+        return app(MenuManager::class);
     }
 }
 
@@ -103,7 +110,7 @@ if (! function_exists('table')) {
 
 if (! function_exists('actionBtn')) {
     function actionBtn(
-        string $label,
+        Closure|string $label,
         Closure|string|null $url = null,
         mixed $item = null
     ): ActionButton {

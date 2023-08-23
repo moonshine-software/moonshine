@@ -5,46 +5,34 @@ declare(strict_types=1);
 namespace MoonShine\Menu;
 
 use Closure;
-use MoonShine\Contracts\Menu\MenuElement;
-use MoonShine\Exceptions\MenuException;
-use MoonShine\Resources\Resource;
-use MoonShine\Traits\Makeable;
+use Illuminate\Support\Collection;
 
 /**
- * @method static static make(string $label, array $items, string|null $icon = null, string|Closure|null $link = null)
+ * @method static static make(Closure|string $label, iterable $items, string|null $icon = null)
  */
-class MenuGroup extends MenuSection
+class MenuGroup extends MenuElement
 {
-    use Makeable;
-
-    final public function __construct(
-        string $label,
-        array $items,
+    public function __construct(
+        Closure|string $label,
+        protected iterable $items,
         string $icon = null,
-        string|Closure|null $link = null
     ) {
         $this->setLabel($label);
-        $this->setLink($link);
-
-        $this->items = collect($items)->map(function ($item) {
-            $item = is_string($item) ? new $item() : $item;
-
-            throw_if(
-                ! $item instanceof MenuElement && ! $item instanceof Resource,
-                new MenuException(
-                    'An object of the MenuItem|Resource class is required'
-                )
-            );
-
-            if ($item instanceof Resource) {
-                return new MenuItem($item->title(), $item);
-            }
-
-            return $item;
-        });
 
         if ($icon) {
             $this->icon($icon);
         }
+    }
+
+    public function setItems(iterable $items): static
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    public function items(): Collection
+    {
+        return collect($this->items);
     }
 }

@@ -6,7 +6,7 @@ namespace MoonShine\Menu;
 
 use Illuminate\Support\Collection;
 
-class Menu
+class MenuManager
 {
     protected static ?Collection $menu = null;
 
@@ -17,11 +17,11 @@ class Menu
 
     public static function all(): ?Collection
     {
-        return self::$menu?->filter(function ($item) {
+        return self::$menu?->filter(function (MenuElement $item) {
             if ($item->isGroup()) {
                 $item->setItems(
                     $item->items()->filter(
-                        fn ($subItem) => $subItem->isSee(moonshineRequest())
+                        fn (MenuElement $child) => $child->isSee(moonshineRequest())
                     )
                 );
             }

@@ -63,7 +63,7 @@ trait Applies
             return $data;
         }
 
-        if (! is_callable($this->onApply)) {
+        if (! is_closure($this->onApply)) {
             $classApply = findFieldApply(
                 $this,
                 'fields',
@@ -77,32 +77,32 @@ trait Applies
         }
 
 
-        $applyFunction = is_callable($this->onApply)
+        $applyFunction = is_closure($this->onApply)
             ? $this->onApply
             : $this->resolveOnApply();
 
-        return is_callable($applyFunction)
+        return is_closure($applyFunction)
             ? $applyFunction($data)
             : $default($data);
     }
 
     public function beforeApply(mixed $data): void
     {
-        is_callable($this->onBeforeApply)
+        is_closure($this->onBeforeApply)
             ? call_user_func($this->onBeforeApply, $data)
             : $this->resolveBeforeApply($data);
     }
 
     public function afterApply(mixed $data): void
     {
-        is_callable($this->onAfterApply)
+        is_closure($this->onAfterApply)
             ? call_user_func($this->onAfterApply, $data)
             : $this->resolveAfterApply($data);
     }
 
     public function afterDestroy(mixed $data): void
     {
-        is_callable($this->onAfterDestroy)
+        is_closure($this->onAfterDestroy)
             ? call_user_func($this->onAfterDestroy, $data)
             : $this->resolveAfterDestroy($data);
     }

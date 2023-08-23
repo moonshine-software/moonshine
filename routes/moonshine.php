@@ -27,11 +27,16 @@ Route::prefix(config('moonshine.route.prefix', ''))
                     ->only(['store', 'update', 'destroy']);
 
                 Route::any('actions', ActionController::class)->name('actions');
-                Route::get('{pageUri}', PageController::class)->name('page');
+                Route::get('{pageUri}', PageController::class)->name('resource.page');
             });
 
+            Route::get(
+                config('moonshine.route.single_page_prefix', 'page') . "/{pageUri}",
+                PageController::class
+            )->name('page');
+
             Route::prefix('relation/{resourceUri}')->group(function (): void {
-                Route::post('{resourceItem}', [RelationModelFieldController::class, 'store'])->name('relation.store');
+                Route::post('{resourceItem?}', [RelationModelFieldController::class, 'store'])->name('relation.store');
                 Route::put('{resourceItem}', [RelationModelFieldController::class, 'update'])->name('relation.update');
             });
 

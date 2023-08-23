@@ -39,7 +39,7 @@ trait LinkTrait
         string|Closure $link,
         bool $blank = false
     ): static {
-        if (is_callable($link)) {
+        if (is_closure($link)) {
             $link = $link();
         }
 

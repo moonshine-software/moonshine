@@ -41,7 +41,7 @@ class SearchController extends BaseController
 
             $query = $related->newModelQuery();
 
-            if (is_callable($field->asyncSearchQuery())) {
+            if (is_closure($field->asyncSearchQuery())) {
                 $query = call_user_func(
                     $field->asyncSearchQuery(),
                     $query,
@@ -55,7 +55,7 @@ class SearchController extends BaseController
                 "%$requestQuery%"
             )->limit($field->asyncSearchCount());
 
-            if (is_callable($field->asyncSearchValueCallback())) {
+            if (is_closure($field->asyncSearchValueCallback())) {
                 $values = $query->get()->mapWithKeys(
                     fn ($relatedItem): array => [
                         $relatedItem->getKey() => ($field->asyncSearchValueCallback())($relatedItem),

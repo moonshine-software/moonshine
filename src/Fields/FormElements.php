@@ -230,7 +230,7 @@ abstract class FormElements extends Collection
      */
     public function wrapIntoDecoration(
         string $class,
-        string $label
+        Closure|string $label
     ): FormElements {
         $reflectionClass = new ReflectionClass($class);
 

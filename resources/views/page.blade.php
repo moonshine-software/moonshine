@@ -7,11 +7,11 @@
 @section('header-inner')
     @parent
 
-    @includeWhen($withBreadcrumbs, 'moonshine::layouts.shared.breadcrumbs', [
+    @includeWhen(!empty($breadcrumbs), 'moonshine::layouts.shared.breadcrumbs', [
         'items' => $breadcrumbs
     ])
 
-    @if(method_exists($resource, 'search') && $resource->search())
+    @if(!is_null($resource) && method_exists($resource, 'search') && $resource->search())
        <x-moonshine::search
            :action="$resource->currentRoute()"
        />
@@ -19,7 +19,7 @@
 @endsection
 
 @section('content')
-    @include('moonshine::layouts.shared.title', [
+    @includeWhen($title, 'moonshine::layouts.shared.title', [
         'title' => $title,
         'subTitle' => $subtitle
     ])

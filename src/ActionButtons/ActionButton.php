@@ -9,14 +9,14 @@ use MoonShine\Actions\AbstractAction;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 
 /**
- * @method static static make(string $label, Closure|string|null $url = null, mixed $item = null)
+ * @method static static make(Closure|string $label, Closure|string|null $url = null, mixed $item = null)
  */
 class ActionButton extends AbstractAction implements ActionButtonContract
 {
     protected bool $isBulk = false;
 
     public function __construct(
-        string $label,
+        Closure|string $label,
         protected Closure|string|null $url = null,
         protected mixed $item = null
     ) {
@@ -64,7 +64,7 @@ class ActionButton extends AbstractAction implements ActionButtonContract
 
     public function url(): string
     {
-        return is_callable($this->url)
+        return is_closure($this->url)
             ? call_user_func($this->url, $this->getItem())
             : $this->url;
     }

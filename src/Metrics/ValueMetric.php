@@ -20,7 +20,7 @@ class ValueMetric extends Metric
 
     public function valueFormat(string|Closure $value): static
     {
-        $this->valueFormat = is_callable($value) ? $value() : $value;
+        $this->valueFormat = is_closure($value) ? $value() : $value;
 
         return $this;
     }
@@ -50,7 +50,7 @@ class ValueMetric extends Metric
 
     public function value(int|string|float|Closure $value): static
     {
-        $this->value = is_callable($value) ? $value() : $value;
+        $this->value = is_closure($value) ? $value() : $value;
 
         return $this;
     }
@@ -62,7 +62,7 @@ class ValueMetric extends Metric
         }
 
         $this->progress = true;
-        $this->target = is_callable($target) ? $target() : $target;
+        $this->target = is_closure($target) ? $target() : $target;
 
         return $this;
     }

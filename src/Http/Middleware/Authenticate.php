@@ -22,6 +22,7 @@ class Authenticate extends Middleware
         }
 
         $this->auth->shouldUse(MoonShineAuth::guardName());
+
     }
 
     protected function redirectTo($request): string

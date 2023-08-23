@@ -23,11 +23,17 @@ final class MoonShineRouter
     }
 
     public static function to_page(
-        string|Resource $resource,
+        string|Resource|null $resource,
         string|Page|null $page = null,
         array $params = [],
         bool $redirect = false
     ): RedirectResponse|string {
+        if(is_null($resource)) {
+            return MoonShine::getPageFromUriKey(
+                is_string($page) ? $page : $page->uriKey()
+            )->url();
+        }
+
         $resource = $resource instanceof Resource
             ? $resource
             : new $resource();

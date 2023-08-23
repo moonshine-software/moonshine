@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use Closure;
+
 trait WithLabel
 {
-    protected string $label = '';
+    protected Closure|string $label = '';
 
     protected bool $translatable = false;
 
@@ -14,6 +16,10 @@ trait WithLabel
 
     public function label(): string
     {
+        $this->label = is_closure($this->label)
+            ? call_user_func($this->label)
+            : $this->label;
+
         if ($this->translatable) {
             return __(
                 str($this->label)->when(
@@ -26,7 +32,7 @@ trait WithLabel
         return $this->label;
     }
 
-    public function setLabel(string $label): static
+    public function setLabel(Closure|string $label): static
     {
         $this->label = $label;
 

@@ -137,4 +137,14 @@ class MoonShineUserResource extends ModelResource
             ExportAction::make(trans('moonshine::ui.export')),
         ];
     }
+
+    public function getBadge(): string
+    {
+        return (string) $this->resolveQuery()->count();
+    }
+
+    public function getIcon(): string
+    {
+        return 'heroicons.outline.users';
+    }
 }

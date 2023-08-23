@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Actions;
 
+use Closure;
 use MoonShine\Contracts\Actions\ActionContract;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Exceptions\ActionException;
@@ -11,7 +12,7 @@ use MoonShine\Traits\HasResource;
 use Throwable;
 
 /**
- * @method static static make(string $label = '')
+ * @method static static make(Closure|string $label = '')
  */
 abstract class Action extends AbstractAction implements ActionContract, HasResourceContract
 {
@@ -21,7 +22,7 @@ abstract class Action extends AbstractAction implements ActionContract, HasResou
 
     protected bool $withQuery = false;
 
-    final public function __construct(string $label = '')
+    final public function __construct(Closure|string $label = '')
     {
         $this->setLabel($label);
     }

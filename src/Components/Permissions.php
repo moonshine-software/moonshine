@@ -15,7 +15,7 @@ use MoonShine\Traits\HasResource;
 use MoonShine\Traits\WithLabel;
 
 /**
- * @method static static make(string $label, ModelResource $resource, Model $item)
+ * @method static static make(Closure|string $label, ModelResource $resource, Model $item)
  */
 final class Permissions extends MoonshineComponent
 {
@@ -31,7 +31,7 @@ final class Permissions extends MoonshineComponent
     ];
 
     public function __construct(
-        string $label,
+        Closure|string $label,
         ModelResource $resource,
         Model $item
     ) {

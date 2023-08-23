@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
+use Closure;
 use MoonShine\Traits\WithUniqueId;
 
 /**
- * @method static static make(string $label, string $text)
+ * @method static static make(Closure|string $label, string $text)
  */
 final class TextBlock extends Decoration
 {
@@ -16,7 +17,7 @@ final class TextBlock extends Decoration
     protected string $view = 'moonshine::decorations.text';
 
     public function __construct(
-        string $label,
+        Closure|string $label,
         protected string $text
     ) {
         parent::__construct($label);

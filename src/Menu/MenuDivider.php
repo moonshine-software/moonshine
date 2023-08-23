@@ -4,23 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\Menu;
 
-use MoonShine\Contracts\Menu\MenuElement;
-use MoonShine\Traits\Makeable;
+use Closure;
 
 /**
- * @method static static make(string $label = '')
+ * @method static static make(Closure|string $label = '')
  */
-class MenuDivider extends MenuSection implements MenuElement
+class MenuDivider extends MenuElement
 {
-    use Makeable;
-
-    final public function __construct(string $label = '')
+    final public function __construct(Closure|string $label = '')
     {
         $this->setLabel($label);
-    }
-
-    public function isActive(): bool
-    {
-        return false;
     }
 }

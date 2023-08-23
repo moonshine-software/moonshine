@@ -17,7 +17,7 @@ use MoonShine\Traits\WithUniqueId;
 use MoonShine\Traits\WithView;
 
 /**
- * @method static static make(string|array $labelOrFields = '', array $fields = [])
+ * @method static static make(Closure|string|array $labelOrFields = '', array $fields = [])
  */
 abstract class Decoration implements MoonShineRenderable, FieldsDecoration, HasFields
 {
@@ -29,7 +29,7 @@ abstract class Decoration implements MoonShineRenderable, FieldsDecoration, HasF
     use WithComponentAttributes;
 
     public function __construct(
-        string|array $labelOrFields = '',
+        Closure|string|array $labelOrFields = '',
         array $fields = []
     ) {
         if (is_array($labelOrFields)) {

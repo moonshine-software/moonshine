@@ -26,9 +26,9 @@ class LineChartMetric extends Metric
         array|Closure $line,
         string|array|Closure $color = '#7843E9'
     ): static {
-        $this->lines[] = is_callable($line) ? $line() : $line;
+        $this->lines[] = is_closure($line) ? $line() : $line;
 
-        $color = is_callable($color) ? $color() : $color;
+        $color = is_closure($color) ? $color() : $color;
 
         if (is_string($color)) {
             $this->colors[] = $color;

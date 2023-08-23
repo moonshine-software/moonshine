@@ -18,7 +18,7 @@ use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
 
 /**
- * @method static static make(?string $label = null, ?string $column = null, ?Closure $formattedValueCallback = null)
+ * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formattedValueCallback = null)
  */
 abstract class Field extends FormElement
 {
@@ -50,13 +50,13 @@ abstract class Field extends FormElement
     protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
 
     public function __construct(
-        ?string $label = null,
+        Closure|string|null $label = null,
         ?string $column = null,
         ?Closure $formattedValueCallback = null
     ) {
         $this->setLabel($label ?? $this->label());
         $this->setColumn(
-            trim($column ?? str($this->label)->lower()->snake()->value())
+            trim($column ?? str($this->label())->lower()->snake()->value())
         );
 
         if (! is_null($formattedValueCallback)) {
@@ -170,11 +170,12 @@ abstract class Field extends FormElement
         }
 
         $value = $this->prepareFill($raw, $casted);
-        $value = $this->reformatFilledValue($value);
 
         $this->setRawValue($value);
 
-        if (is_callable($this->formattedValueCallback())) {
+        $value = $this->reformatFilledValue($value);
+
+        if (is_closure($this->formattedValueCallback())) {
             $this->setFormattedValue(
                 call_user_func(
                     $this->formattedValueCallback(),

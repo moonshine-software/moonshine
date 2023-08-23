@@ -7,6 +7,7 @@ namespace MoonShine\Pages;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\HasResourceContract;
+use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\MoonShineRouter;
 use MoonShine\Traits\HasResource;
@@ -14,22 +15,24 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithView;
 
-abstract class Page implements MoonShineRenderable, HasResourceContract
+abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFiller
 {
     use Makeable;
     use HasResource;
     use WithUriKey;
     use WithView;
 
+    protected string $title = '';
+
     protected string $subtitle = '';
 
     protected string $layout = 'moonshine::layouts.app';
 
-    protected bool $withBreadcrumbs = true;
+    public function __construct(?string $title = null) {
+        if (!is_null($title)) {
+            $this->setTitle($title);
+        }
 
-    public function __construct(
-        protected string $title
-    ) {
         $this->customView('moonshine::page');
     }
 
@@ -37,19 +40,25 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
 
     public function breadcrumbs(): array
     {
+        if (! $this->hasResource()) {
+            return [];
+        }
+
         return [
             to_page($this->getResource()) => $this->getResource()->title(),
         ];
     }
 
-    public function withBreadcrumbs(): bool
-    {
-        return $this->withBreadcrumbs;
-    }
-
     public function getComponents(): PageComponents
     {
         return PageComponents::make($this->components());
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
     public function title(): string
@@ -69,10 +78,26 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
 
     public function route(array $params = []): string
     {
+        return MoonShineRouter::to(
+            'resource.page',
+            [
+                'resourceUri' => $this->getResource()->uriKey(),
+                'pageUri' => $this->uriKey(),
+            ] + $params
+        );
+    }
+
+    public function url(): string
+    {
         return MoonShineRouter::to('page', [
-            'resourceUri' => $this->getResource()->uriKey(),
             'pageUri' => $this->uriKey(),
-        ] + $params);
+        ]);
+    }
+
+    public function isActive(): bool
+    {
+        return moonshineRequest()->getPageUri()
+            === $this->uriKey();
     }
 
     public function render(): View|Closure|string
@@ -81,9 +106,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract
             'layout' => $this->layout(),
             'title' => $this->title(),
             'subtitle' => $this->subtitle(),
-            'resource' => $this->getResource(),
+            'resource' => $this->hasResource()
+                ? $this->getResource()
+                : null,
             'breadcrumbs' => $this->breadcrumbs(),
-            'withBreadcrumbs' => $this->withBreadcrumbs(),
             'components' => $this->getComponents(),
         ]);
     }

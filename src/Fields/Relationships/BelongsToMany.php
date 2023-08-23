@@ -225,7 +225,7 @@ class BelongsToMany extends ModelRelationField implements
             return $values->implode(function (Model $item) use ($column) {
                 $value = $item->{$column} ?? false;
 
-                if (is_callable($this->formattedValueCallback())) {
+                if (is_closure($this->formattedValueCallback())) {
                     $value = call_user_func(
                         $this->formattedValueCallback(),
                         $item
@@ -259,22 +259,34 @@ class BelongsToMany extends ModelRelationField implements
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            $values = array_filter($this->requestValue() ?: []);
-            $sync = [];
+            $requestValues = array_filter($this->requestValue() ?: []);
+            $applyValues = [];
 
-            foreach ($values as $key => $checked) {
-                # TODO apply fields
-                data_set(
-                    $sync,
-                    $key,
-                    $this->getFields()
-                        ->each(fn (Field $field): Field => $field->setRequestKeyPrefix("{$this->getPivotName()}.$key"))
-                        ->requestValues()
-                        ->toArray()
-                );
+            foreach ($requestValues as $key => $checked) {
+                foreach ($this->getFields() as $field) {
+                    $field->setRequestKeyPrefix(
+                        str("{$this->getPivotName()}.$key")->when(
+                            $this->requestKeyPrefix(),
+                            fn ($str) => $str->prepend("{$this->requestKeyPrefix()}.")
+                        )->value()
+                    );
+
+                    $values = request($field->requestKeyPrefix());
+
+                    $apply = $field->apply(
+                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                        $values
+                    );
+
+                    data_set(
+                        $applyValues[$key],
+                        $field->column(),
+                        data_get($apply, $field->column())
+                    );
+                }
             }
 
-            $item->{$this->getRelationName()}()->sync($sync);
+            $item->{$this->getRelationName()}()->sync($applyValues);
 
             return $item;
         };

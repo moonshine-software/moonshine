@@ -20,7 +20,7 @@ use MoonShine\Commands\MakeResourceCommand;
 use MoonShine\Commands\MakeUserCommand;
 use MoonShine\Dashboard\Dashboard;
 use MoonShine\Http\Middleware\ChangeLocale;
-use MoonShine\Menu\Menu;
+use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
@@ -96,10 +96,6 @@ class MoonShineServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
         }
 
-        $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
-        $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
-        $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
-
         $this->publishes([
             MoonShine::path('/config/moonshine.php') => config_path(
                 'moonshine.php'
@@ -110,6 +106,10 @@ class MoonShineServiceProvider extends ServiceProvider
             MoonShine::path('/config/moonshine.php'),
             'moonshine'
         );
+
+        $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
+        $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
+        $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
 
         $this->publishes([
             MoonShine::path('/public') => public_path('vendor/moonshine'),
@@ -145,7 +145,7 @@ class MoonShineServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(MoonShine::class);
-        $this->app->singleton(Menu::class);
+        $this->app->singleton(MenuManager::class);
         $this->app->singleton(Dashboard::class);
         $this->app->singleton(AssetManager::class);
         $this->app->singleton(MoonShineRegister::class);

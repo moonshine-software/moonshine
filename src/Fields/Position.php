@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Closure;
+
 /**
- * @method static static make(?string $label = null, ?string $column = null)
+ * @method static static make(Closure|string|null $label = null, ?string $column = null)
  */
 class Position extends NoInput
 {

@@ -43,9 +43,15 @@ class MoonShineRequest extends Request
             return $this->page;
         }
 
-        $this->page = $this->getResource()
-            ->getPages()
-            ->findByUri($this->getPageUri());
+        if($this->hasResource()) {
+            $this->page = $this->getResource()
+                ->getPages()
+                ->findByUri($this->getPageUri());
+        } else {
+            $this->page = MoonShine::getPageFromUriKey(
+                $this->getPageUri()
+            );
+        }
 
         return $this->page;
     }

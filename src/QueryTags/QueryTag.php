@@ -12,7 +12,7 @@ use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
 /**
- * @method static static make(string $label, Closure $builder)
+ * @method static static make(Closure|string $label, Closure $builder)
  */
 final class QueryTag
 {
@@ -22,7 +22,7 @@ final class QueryTag
     use WithLabel;
 
     public function __construct(
-        string $label,
+        Closure|string $label,
         protected Closure $builder,
     ) {
         $this->setLabel($label);
@@ -41,7 +41,7 @@ final class QueryTag
 
     public function apply(Builder $builder): Builder
     {
-        return is_callable($this->builder)
+        return is_closure($this->builder)
             ? call_user_func($this->builder, $builder)
             : $builder;
     }

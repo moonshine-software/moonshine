@@ -22,7 +22,7 @@ class DonutChartMetric extends Metric
      */
     public function values(array|Closure $values): self
     {
-        $this->values = is_callable($values)
+        $this->values = is_closure($values)
             ? $values()
             : $values;
 

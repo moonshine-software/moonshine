@@ -6,8 +6,8 @@ namespace MoonShine\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Menu\Menu;
-use MoonShine\Menu\MenuSection;
+use MoonShine\Menu\MenuElement;
+use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\Utilities\AssetManager;
 use Throwable;
@@ -24,7 +24,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
         MoonShine::resources($this->resources());
         MoonShine::menu($this->menu());
 
-        Menu::register(MoonShine::getMenu());
+        MenuManager::register(MoonShine::getMenu());
 
         MoonShine::resolveRoutes();
 
@@ -56,7 +56,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return array<MenuSection>
+     * @return array<MenuElement>
      */
     protected function menu(): array
     {

@@ -233,14 +233,8 @@ class Json extends Field implements
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            $this->resolveFill((array) $item, $item);
-
-            $requestValues = $this->requestValue();
+            $requestValues = array_filter($this->requestValue() ?: []);
             $applyValues = [];
-
-            if ($requestValues === false) {
-                return data_set($item, $this->column(), []);
-            }
 
             foreach ($requestValues as $index => $values) {
                 foreach ($this->getFields() as $field) {
@@ -256,7 +250,6 @@ class Json extends Field implements
                         $values
                     );
 
-                    #  TODO if isGroup
                     data_set(
                         $applyValues[$index],
                         $field->column(),

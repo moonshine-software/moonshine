@@ -43,7 +43,7 @@ trait WithRelatedValues
         $related = $relation->getRelated();
         $query = $related->newModelQuery();
 
-        if (is_callable($this->valuesQuery)) {
+        if (is_closure($this->valuesQuery)) {
             $query = call_user_func($this->valuesQuery, $query);
         }
 
@@ -59,7 +59,7 @@ trait WithRelatedValues
         $query = $this->resolveValuesQuery();
         $related = $query->getModel();
 
-        if (is_callable($this->formattedValueCallback())) {
+        if (is_closure($this->formattedValueCallback())) {
             $values = $query->get()
                 ->mapWithKeys(
                     fn ($item): array => [

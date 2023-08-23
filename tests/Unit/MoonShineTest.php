@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Menu\MenuSection;
+use MoonShine\Menu\MenuElement;
 use MoonShine\MoonShine;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -28,5 +28,5 @@ it('menu', function (): void {
         ->toBeCollection()
         ->toHaveCount(1)
         ->first()
-        ->toBeInstanceOf(MenuSection::class);
+        ->toBeInstanceOf(MenuElement::class);
 });

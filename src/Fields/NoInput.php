@@ -30,7 +30,7 @@ class NoInput extends Field
 
     public function badge(string|Closure|null $color = null): static
     {
-        if (is_callable($color)) {
+        if (is_closure($color)) {
             $this->badgeColorCallback = $color;
         } elseif (! is_null($color)) {
             $this->badgeColor = $color;
@@ -95,7 +95,7 @@ class NoInput extends Field
         if ($this->isLink) {
             $href = $this->linkHref;
 
-            if (is_callable($href)) {
+            if (is_closure($href)) {
                 $href = $href($value);
             }
 
@@ -113,7 +113,7 @@ class NoInput extends Field
     {
         $value = $this->toFormattedValue();
 
-        if ($this->isBadge && is_callable($this->badgeColorCallback)) {
+        if ($this->isBadge && is_closure($this->badgeColorCallback)) {
             $this->badgeColor = call_user_func(
                 $this->badgeColorCallback,
                 $value

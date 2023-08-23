@@ -6,11 +6,11 @@ namespace MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use MoonShine\Contracts\Menu\MenuElement;
+use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Menu\MenuGroup;
-use MoonShine\Menu\MenuItem;
-use MoonShine\Menu\MenuSection;
+use MoonShine\Menu\MenuElement;
+use MoonShine\Pages\Page;
+use MoonShine\Pages\Pages;
 use MoonShine\Resources\MoonShineProfileResource;
 use Throwable;
 
@@ -21,6 +21,8 @@ class MoonShine
     public const NAMESPACE = 'App\MoonShine';
 
     protected static ?Collection $resources = null;
+
+    protected static ?Pages $pages = null;
 
     protected static ?Collection $menu = null;
 
@@ -50,6 +52,11 @@ class MoonShine
             );
     }
 
+    public static function getPageFromUriKey(string $uri): ?Page
+    {
+        return self::getPages()->findByUri($uri);
+    }
+
     /**
      * Register resources in the system
      *
@@ -71,9 +78,29 @@ class MoonShine
     }
 
     /**
+     * Register pages in the system
+     *
+     * @param  array<Page>  $data
+     */
+    public static function pages(array $data): void
+    {
+        self::$pages = Pages::make($data);
+    }
+
+    /**
+     * Get collection of registered pages
+     *
+     * @return Pages<Page>
+     */
+    public static function getPages(): Pages
+    {
+        return self::$pages ?? Pages::make();
+    }
+
+    /**
      * Get collection of registered menu
      *
-     * @return Collection<MenuSection>
+     * @return Collection<MenuFiller>
      */
     public static function getMenu(): Collection
     {
@@ -83,40 +110,44 @@ class MoonShine
     /**
      * Register Menu with resources and pages in the system
      *
-     * @param  array<string|MenuSection|ResourceContract>  $data
+     * @param  array<MenuFiller>  $data
      * @throws Throwable
      */
     public static function menu(array $data): void
     {
-        self::$resources = self::getResources();
         self::$menu = self::getMenu();
+        self::$pages = self::getPages();
+        self::$resources = self::getResources();
+
+        collect($data)->each(
+            function (MenuElement $item): void {
+                self::$menu->add($item);
+                self::resolveMenuItem($item);
+            }
+        );
 
         self::$resources->add(new MoonShineProfileResource());
-
-        collect($data)->each(function ($item): void {
-            $item = is_string($item) ? new $item() : $item;
-
-            if ($item instanceof ResourceContract) {
-                self::$resources->add($item);
-                self::$menu->add(new MenuItem($item->title(), $item));
-            } elseif ($item instanceof MenuElement) {
-                self::$resources->when(
-                    $item->hasResource(),
-                    fn ($r): Collection => $r->add($item->getResource())
-                );
-                self::$menu->add($item);
-            } elseif ($item instanceof MenuGroup) {
-                self::$menu->add($item);
-
-                $item->items()->each(function (MenuSection $subItem): void {
-                    self::$resources->when(
-                        $subItem->hasResource(),
-                        fn ($r): Collection => $r->add($subItem->getResource())
-                    );
-                });
-            }
-        });
     }
+
+    private static function resolveMenuItem(MenuElement $element): void
+    {
+        if ($element->isGroup()) {
+            $element->items()->each(
+                fn (MenuElement $item) => self::resolveMenuItem($item)
+            );
+        } elseif($element->isItem()) {
+            $filler = $element->getFiller();
+
+            if ($filler instanceof Page) {
+                self::$pages->add($filler);
+            }
+
+            if ($filler instanceof ResourceContract) {
+                self::$resources->add($filler);
+            }
+        }
+    }
+
 
     /**
      * Register moonshine routes and resources routes in the system

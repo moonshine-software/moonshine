@@ -16,7 +16,7 @@ trait SelectTrait
 
     public function options(Closure|array $data): static
     {
-        $this->options = is_callable($data)
+        $this->options = is_closure($data)
             ? $data($this)
             : $data;
 

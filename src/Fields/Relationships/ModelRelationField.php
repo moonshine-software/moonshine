@@ -18,7 +18,7 @@ use MoonShine\Traits\HasResource;
 use Throwable;
 
 /**
- * @method static static make(string $label, ?string $relationName = null, ?ModelResource $resource = null, ?Closure $formattedValueCallback = null)
+ * @method static static make(Closure|string $label, ?string $relationName = null, ?ModelResource $resource = null, ?Closure $formattedValueCallback = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
@@ -33,7 +33,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected bool $toOne = false;
 
     public function __construct(
-        string $label,
+        Closure|string $label,
         ?string $relationName = null,
         ?ModelResource $resource = null,
         ?Closure $formattedValueCallback = null
@@ -41,7 +41,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         parent::__construct($label, $relationName, $formattedValueCallback);
 
         if (is_null($relationName)) {
-            $relationName = str($label)
+            $relationName = str($this->label())
                 ->camel()
                 ->when(
                     $this->toOne(),
@@ -107,7 +107,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                 $data?->{$this->getResourceColumn()}
             );
 
-            if (is_callable($this->formattedValueCallback())) {
+            if (is_closure($this->formattedValueCallback())) {
                 $this->setFormattedValue(
                     call_user_func(
                         $this->formattedValueCallback(),
