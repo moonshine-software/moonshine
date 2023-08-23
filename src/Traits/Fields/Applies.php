@@ -72,7 +72,7 @@ trait Applies
 
             $this->when(
                 ! is_null($classApply),
-                fn (Field $field) => $field->onApply($classApply->apply($field))
+                fn (Field $field): Field => $field->onApply($classApply->apply($field))
             );
         }
 

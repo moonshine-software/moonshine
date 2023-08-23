@@ -33,7 +33,7 @@ trait RangeTrait
             ->except(['data-name'])
             ->when(
                 $dataName,
-                fn (ComponentAttributeBag $attr) => $attr->merge([
+                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
                     'data-name' => str($dataName)->replaceLast('[]', "[$name]"),
                 ])
             );
