@@ -79,7 +79,7 @@
                     :files="[auth()->user()
                             ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null]"
                     dir="moonshine_users"
-                    :path="Storage::disk('public')->url('/')"
+                    :path="Storage::disk(config('filesystems.default'))->url('/')"
                     :removable="true"
                     :imageable="true"
                 />
