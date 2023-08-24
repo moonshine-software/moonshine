@@ -25,6 +25,7 @@ export default (
 
     if(this.creatable) {
       this.lastRow = tbody.lastElementChild.cloneNode(true)
+      tbody.lastElementChild.remove()
     }
 
     if(this.reindex) {
