@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Support\Facades\Hash;
-use MoonShine\MoonShineAuth;
 
 use function Laravel\Prompts\password;
+
 use function Laravel\Prompts\text;
+
+use MoonShine\MoonShineAuth;
 
 class MakeUserCommand extends MoonShineCommand
 {
