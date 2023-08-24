@@ -7,8 +7,9 @@
 @if(!$preview && $actions->isNotEmpty())
     <th class="w-10 text-center">
         <x-moonshine::form.input type="checkbox"
-             @change="actions('all')"
+             @change="actions('all', $id('table-component'))"
              class="actionsAllChecked"
+             ::class="$id('table-component') + '-actionsAllChecked'"
              value="1"
         />
     </th>

@@ -126,14 +126,14 @@ export default (
       //
     })
   },
-  actions(type) {
-    let all = this.$root.querySelector('.actionsAllChecked')
+  actions(type, id) {
+    let all = this.$root.querySelector('.'+id+'-actionsAllChecked')
 
     if (all === null) {
       return
     }
 
-    let checkboxes = this.$root.querySelectorAll('.tableActionRow')
+    let checkboxes = this.$root.querySelectorAll('.'+id+'-tableActionRow')
     let ids = document.querySelectorAll('.actionsCheckedIds')
 
     let values = []

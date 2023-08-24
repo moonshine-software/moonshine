@@ -11,12 +11,4 @@ class ID extends Hidden
     protected string $field = 'id';
 
     protected Closure|string $label = 'ID';
-
-    protected function resolvePreview(): string
-    {
-        return view('moonshine::ui.badge', [
-            'value' => parent::resolvePreview(),
-            'color' => 'purple',
-        ])->render();
-    }
 }

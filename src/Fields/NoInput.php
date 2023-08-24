@@ -11,37 +11,15 @@ class NoInput extends Field
 {
     protected string $view = 'moonshine::fields.no-input';
 
-    protected bool $isBadge = false;
-
     protected bool $isBoolean = false;
 
     protected bool $isLink = false;
-
-    protected string $badgeColor = 'gray';
-
-    protected ?Closure $badgeColorCallback = null;
 
     protected bool $hideTrue = false;
 
     protected bool $hideFalse = false;
 
     protected string|Closure $linkHref = '';
-
-
-    public function badge(string|Closure|null $color = null): static
-    {
-        if (is_closure($color)) {
-            $this->badgeColorCallback = $color;
-        } elseif (! is_null($color)) {
-            $this->badgeColor = $color;
-        }
-
-        $this->isBadge = true;
-        $this->isBoolean = false;
-        $this->isLink = false;
-
-        return $this;
-    }
 
     public function boolean(
         mixed $hideTrue = null,
@@ -50,9 +28,7 @@ class NoInput extends Field
         $this->hideTrue = Condition::boolean($hideTrue, false);
         $this->hideFalse = Condition::boolean($hideFalse, false);
 
-        $this->isBadge = false;
         $this->isBoolean = true;
-        $this->isLink = false;
 
         return $this;
     }
@@ -61,8 +37,6 @@ class NoInput extends Field
         string|Closure $link = '#',
         bool $blank = false
     ): static {
-        $this->isBadge = false;
-        $this->isBoolean = false;
         $this->isLink = true;
 
         $this->linkHref = $link;
@@ -81,13 +55,6 @@ class NoInput extends Field
 
         if ($this->isBoolean) {
             return view('moonshine::ui.boolean', [
-                'value' => $value,
-            ])->render();
-        }
-
-        if ($this->isBadge) {
-            return view('moonshine::ui.badge', [
-                'color' => $this->badgeColor,
                 'value' => $value,
             ])->render();
         }
@@ -112,13 +79,6 @@ class NoInput extends Field
     protected function resolveValue(): mixed
     {
         $value = $this->toFormattedValue();
-
-        if ($this->isBadge && is_closure($this->badgeColorCallback)) {
-            $this->badgeColor = call_user_func(
-                $this->badgeColorCallback,
-                $value
-            );
-        }
 
         if ($this->isBoolean) {
             if ((! $value && $this->hideFalse) || ($value && $this->hideTrue)) {

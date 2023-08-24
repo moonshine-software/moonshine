@@ -8,13 +8,13 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
-use MoonShine\Casts\ModelCast;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Fields\Field;
 use MoonShine\MoonShine;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasResource;
+use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 /**

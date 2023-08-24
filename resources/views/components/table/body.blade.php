@@ -13,9 +13,10 @@
                 @if($vertical) width="5%" @endif
             >
                 <x-moonshine::form.input type="checkbox"
-                     @change="actions('row')"
+                     @change="actions('row', $id('table-component'))"
                      name="items[{{ $row->getKey() }}]"
                      class="tableActionRow"
+                     ::class="$id('table-component') + '-tableActionRow'"
                      value="{{ $row->getKey() }}"
                 />
             </td>

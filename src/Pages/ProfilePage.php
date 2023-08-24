@@ -2,10 +2,10 @@
 
 namespace MoonShine\Pages;
 
-use MoonShine\Casts\ModelCast;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Http\Controllers\ProfileController;
+use MoonShine\TypeCasts\ModelCast;
 
 class ProfilePage extends Page
 {

@@ -1,11 +1,12 @@
 @props([
     'tabs',
-    'contents'
+    'contents',
+    'active',
 ])
 @if($tabs)
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
-         x-data="{ activeTab: '{{ array_key_first($tabs) }}'}"
+         x-data="{ activeTab: '{{ $active ?? array_key_first($tabs) }}'}"
     >
         <!-- Tabs Buttons -->
         <ul class="tabs-list">

@@ -12,6 +12,7 @@ use MoonShine\Traits\Fields\Applies;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
+use MoonShine\Traits\Fields\WithBadge;
 use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
@@ -26,6 +27,7 @@ abstract class Field extends FormElement
     use ShowWhen;
     use ShowOrHide;
     use LinkTrait;
+    use WithBadge;
     use WithIsNowOnRoute;
     use Applies;
 
@@ -257,7 +259,16 @@ abstract class Field extends FormElement
             );
         }
 
-        return $this->resolvePreview();
+        $preview = $this->resolvePreview();
+
+        if ($this->isBadge()) {
+            return view('moonshine::ui.badge', [
+                'color' => $this->badgeColor($this->toValue()),
+                'value' => $preview,
+            ])->render();
+        }
+
+        return $preview;
     }
 
     protected function resolvePreview(): View|string

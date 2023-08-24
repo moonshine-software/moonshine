@@ -15,9 +15,23 @@ class Tabs extends Decoration
 {
     protected string $view = 'moonshine::decorations.tabs';
 
+    protected string|int|null $active = null;
+
     public function __construct(protected array $tabs = [])
     {
         parent::__construct(uniqid('', true));
+    }
+
+    public function active(string|int $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function getActive(): string|int|null
+    {
+        return $this->active;
     }
 
     /**

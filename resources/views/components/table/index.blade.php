@@ -13,7 +13,7 @@
     <div @if ($responsive) class="table-responsive" @endif>
         <table {{ $attributes
                 ->merge(['class' => 'table' . (!$simple ? '-list' : '')])
-        }}>
+        }} x-id="['table-component']" :id="$id('table-component')">
             <thead {{ isset($thead) ? $thead?->attributes : '' }}>
             <tr>
                 @if(is_array($columns))

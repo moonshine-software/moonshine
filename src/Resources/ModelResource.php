@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
-use MoonShine\Casts\ModelCast;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -22,6 +21,7 @@ use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
+use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 abstract class ModelResource extends Resource

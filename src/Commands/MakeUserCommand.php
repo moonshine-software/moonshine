@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Support\Facades\Hash;
+use MoonShine\MoonShineAuth;
 
 use function Laravel\Prompts\password;
-
 use function Laravel\Prompts\text;
-
-use MoonShine\MoonShineAuth;
 
 class MakeUserCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:user';
+    protected $signature = 'moonshine:user {--u|username=} {--N|name=} {--p|password=}';
 
     protected $description = 'Create user';
 
     public function handle(): void
     {
-        $username = text(
+        $username = $this->option('username') ?? text(
             'Username(' . config(
                 'moonshine.auth.fields.username',
                 'email'
@@ -28,8 +26,8 @@ class MakeUserCommand extends MoonShineCommand
             required: true
         );
 
-        $name = text('Name', default: $username);
-        $password = password('Password');
+        $name = $this->option('name') ?? text('Name', default: $username);
+        $password = $this->option('password') ?? password('Password');
 
         if ($username && $name && $password) {
             MoonShineAuth::model()->query()->create([

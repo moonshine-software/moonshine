@@ -33,24 +33,23 @@ class Select extends Field implements
      */
     protected function resolvePreview(): string
     {
+        $value = $this->toFormattedValue();
+
         if ($this->isMultiple()) {
-            $value = is_string($this->value()) ?
-                json_decode($this->value(), true, 512, JSON_THROW_ON_ERROR)
-                : $this->value();
+            $value = is_string($value) ?
+                json_decode($value, true, 512, JSON_THROW_ON_ERROR)
+                : $value;
 
             return collect($value)
                 ->when(
                     ! $this->isRawMode(),
                     fn ($collect): Collection => $collect->map(
-                        fn ($v): string => view('moonshine::ui.badge', [
-                            'color' => 'purple',
-                            'value' => $this->values()[$v] ?? false,
-                        ])->render()
+                        fn ($v): string => (string) data_get($this->flattenValues(), $v, '')
                     )
                 )
                 ->implode(',');
         }
 
-        return (string) ($this->flattenValues()[$this->value()] ?? '');
+        return (string) data_get($this->flattenValues(), $value, '');
     }
 }

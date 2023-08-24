@@ -1,5 +1,9 @@
 <a href="{{ $href ?? '#' }}" class="inline-flex items-center gap-1" @if(!empty($blank)) target="_blank" @endif>
-    <x-moonshine::icon icon="heroicons.link" />
+    @if(($withoutIcon ?? false) === false)
+        <x-moonshine::icon
+            :icon="$icon ?? 'heroicons.link'"
+        />
+    @endif
 
     {{ $value ?? null }}
 </a>

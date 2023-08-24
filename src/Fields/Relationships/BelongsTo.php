@@ -8,6 +8,7 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithDefaultValue;
@@ -30,10 +31,15 @@ class BelongsTo extends ModelRelationField implements
 
     protected function resolvePreview(): string
     {
-        return view('moonshine::ui.badge', [
-            'color' => 'purple',
+        return $this->toValue() ? view('moonshine::ui.url', [
+            'href' => to_page(
+                $this->getResource(),
+                FormPage::class,
+                ['resourceItem' => $this->toValue()->getKey()]
+            ),
+            'withoutIcon' => true,
             'value' => parent::resolvePreview(),
-        ])->render();
+        ])->render() : parent::resolvePreview();
     }
 
     protected function resolveValue(): mixed

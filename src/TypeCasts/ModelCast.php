@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Casts;
+namespace MoonShine\TypeCasts;
 
 use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Traits\Makeable;

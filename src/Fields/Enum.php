@@ -24,12 +24,12 @@ class Enum extends Select implements DefaultCanBeEnum
 
     protected function resolvePreview(): string
     {
-        $value = $this->value();
+        $value = $this->toFormattedValue();
 
-        if (isset($this->values()[$value?->value])) {
-            return (string) ($this->values()[$value->value] ?? '');
+        if(method_exists($value, 'getColor')) {
+            $this->badge($value->getColor());
         }
 
-        return parent::resolvePreview();
+        return data_get($this->values(), $value?->value, '');
     }
 }
