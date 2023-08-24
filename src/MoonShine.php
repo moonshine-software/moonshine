@@ -14,6 +14,7 @@ use MoonShine\Menu\MenuItem;
 use MoonShine\Menu\MenuSection;
 use MoonShine\Resources\CustomPage;
 use MoonShine\Resources\Resource;
+use MoonShine\Resources\MoonShineProfileCustomPage;
 
 class MoonShine
 {
@@ -125,13 +126,7 @@ class MoonShine
             }
         });
 
-        self::$pages->add(
-            CustomPage::make(
-                __('moonshine::ui.profile'),
-                'profile',
-                'moonshine::profile'
-            )
-        );
+        self::$pages->add(new MoonShineProfileCustomPage());
 
         app(Menu::class)->register(self::$menu);
 

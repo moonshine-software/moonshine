@@ -9,9 +9,9 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithLabel;
 
 /**
- * @method static static make(string $label, string $alias, string|Closure $view, Closure|null $viewData = null)
+ * @method static static make(string $title, string $alias, string|Closure $view, Closure|null $viewData = null)
  */
-final class CustomPage
+class CustomPage
 {
     use Makeable;
     use WithLabel;
@@ -23,12 +23,17 @@ final class CustomPage
     protected array $breadcrumbs = [];
 
     public function __construct(
-        string $label,
+        public string $title,
         protected string $alias,
         protected string|Closure $view,
         protected ?Closure $viewData = null,
     ) {
-        $this->setLabel($label);
+        $this->setLabel($this->title());
+    }
+
+    public function title(): string
+    {
+        return $this->title;
     }
 
     public function alias(): string
@@ -79,14 +84,23 @@ final class CustomPage
         if (is_callable($this->view)) {
             return call_user_func($this->view);
         }
-
         return $this->view;
+    }
+
+    /**
+     * Get an array of datas
+     *
+     * @return array<mixed>
+     */
+    public function datas(): array
+    {
+        return [];
     }
 
     public function getViewData(): array
     {
         return is_callable($this->viewData) ? call_user_func($this->viewData)
-            : [];
+            : $this->datas();
     }
 
     public function url(): string
