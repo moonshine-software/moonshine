@@ -14,12 +14,14 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\WithFormElementAttributes;
 use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithView;
 
 abstract class FormElement implements MoonShineRenderable, HasAssets
 {
+    use Makeable;
     use WithFormElementAttributes;
     use WithComponentAttributes;
     use WithView;
