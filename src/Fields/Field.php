@@ -12,7 +12,6 @@ use MoonShine\Traits\Fields\Applies;
 use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
-use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
@@ -22,7 +21,6 @@ use MoonShine\Traits\WithLabel;
  */
 abstract class Field extends FormElement
 {
-    use Makeable;
     use WithLabel;
     use WithHint;
     use ShowWhen;
