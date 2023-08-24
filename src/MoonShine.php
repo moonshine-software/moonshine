@@ -13,8 +13,8 @@ use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Menu\MenuSection;
 use MoonShine\Resources\CustomPage;
-use MoonShine\Resources\Resource;
 use MoonShine\Resources\MoonShineProfileCustomPage;
+use MoonShine\Resources\Resource;
 
 class MoonShine
 {

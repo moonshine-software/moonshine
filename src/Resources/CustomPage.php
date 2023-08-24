@@ -84,6 +84,7 @@ class CustomPage
         if (is_callable($this->view)) {
             return call_user_func($this->view);
         }
+
         return $this->view;
     }
 
