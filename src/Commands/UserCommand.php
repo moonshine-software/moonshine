@@ -21,8 +21,8 @@ class UserCommand extends MoonShineCommand
                 'email'
             ) . ')'
         );
-        $name =  $this->option('name') ?: $this->ask('Name');
-        $password =  $this->option('password') ?: $this->secret('Password');
+        $name = $this->option('name') ?: $this->ask('Name');
+        $password = $this->option('password') ?: $this->secret('Password');
 
         if ($username && $name && $password) {
             MoonShineAuth::model()->query()->create([
