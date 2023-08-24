@@ -9,8 +9,6 @@
                     ->showInLine(),
             ])
             ->simple()
-            ->creatable()
-            ->sortable()
             ->render()
     }}
 </div>

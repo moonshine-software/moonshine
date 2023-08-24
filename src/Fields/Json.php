@@ -14,6 +14,7 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
@@ -40,6 +41,10 @@ class Json extends Field implements
     protected bool $isVertical = false;
 
     protected int $level = 0;
+
+    protected bool $asRelation = false;
+
+    protected ?ModelResource $asRelationResource = null;
 
     /**
      * @throws Throwable
@@ -125,6 +130,31 @@ class Json extends Field implements
         return $this->level;
     }
 
+    /**
+     * @throws Throwable
+     */
+    public function asRelation(ModelResource $resource): self
+    {
+        $this->asRelation = true;
+        $this->asRelationResource = $resource;
+
+        $this->fields(
+            $resource->getFormFields()->onlyFields()
+        );
+
+        return $this;
+    }
+
+    public function isAsRelation(): bool
+    {
+        return $this->asRelation;
+    }
+
+    public function asRelationResource(): ?ModelResource
+    {
+        return $this->asRelationResource;
+    }
+
     protected function preparedFields(): Fields
     {
         return $this->getFields()->map(function (Field $field): Field {
@@ -200,16 +230,34 @@ class Json extends Field implements
 
     protected function resolveValue(): mixed
     {
-        $values = collect($this->toValue())
-            ->when(
-                $this->isNowOnForm(),
-                static fn ($values): Collection => $values->push([])
-            );
+        $emptyRow = $this->isAsRelation()
+            ? $this->asRelationResource()?->getModel()
+            : [];
+
+        $iterable = is_iterable($this->toValue());
+        $values = $iterable
+            ? $this->toValue()
+            : [$this->toValue() ?? $emptyRow];
+
+        $values = collect($values)->when(
+            $this->isNowOnForm() && $iterable,
+            static fn ($values): Collection => $values->push($emptyRow)
+        );
 
         return TableBuilder::make($this->preparedFields(), $values)
             ->when(
+                $this->isAsRelation(),
+                fn (TableBuilder $table): TableBuilder => $table->cast($this->asRelationResource()?->getModelCast())
+            )
+            ->when(
                 $this->isVertical(),
                 fn (TableBuilder $table): TableBuilder => $table->vertical()
+            )
+            ->when(
+                $this->isNowOnForm() && $iterable,
+                fn (TableBuilder $table): TableBuilder => $table
+                    ->creatable()
+                    ->sortable()
             );
     }
 
@@ -256,6 +304,15 @@ class Json extends Field implements
                         data_get($apply, $field->column())
                     );
                 }
+            }
+
+            if ($this->isAsRelation()) {
+                $item->{$this->column()}()->upsert(
+                    $this->prepareOnApply($applyValues),
+                    $item->{$this->column()}()->getLocalKeyName()
+                );
+
+                return $item;
             }
 
             return data_set(

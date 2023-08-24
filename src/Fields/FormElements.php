@@ -65,10 +65,10 @@ abstract class FormElements extends Collection
     }
 
     /**
-     * @return FormElements<Field>
+     * @return Fields<Field>
      * @throws Throwable
      */
-    public function onlyFields(): FormElements
+    public function onlyFields(): Fields
     {
         $fieldsOrDecorations = [];
 

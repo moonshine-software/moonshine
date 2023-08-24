@@ -15,7 +15,7 @@ trait HasDataCast
         return ! is_null($this->cast);
     }
 
-    public function cast(MoonShineDataCast $cast): self
+    public function cast(MoonShineDataCast $cast): static
     {
         $this->cast = $cast;
 
