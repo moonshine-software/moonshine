@@ -12,6 +12,8 @@ final class TinyMce extends Textarea
 
     public string $addedPlugins = '';
 
+    public string $menubar = 'file edit insert view format table tools';
+
     public string $toolbar = 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table tabledelete hr nonbreaking pagebreak | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | codesample | ltr rtl | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | fullscreen preview print visualblocks visualchars code | help';
 
     public string $addedToolbar = '';
@@ -60,6 +62,13 @@ final class TinyMce extends Textarea
     public function plugins(string $plugins): self
     {
         $this->plugins = $plugins;
+
+        return $this;
+    }
+
+    public function menubar(string $menubar): self
+    {
+        $this->menubar = $menubar;
 
         return $this;
     }
