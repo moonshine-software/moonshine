@@ -9,20 +9,20 @@ use MoonShine\MoonShineAuth;
 
 class UserCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:user';
+    protected $signature = 'moonshine:user {--username=} {--name=} {--password=}';
 
     protected $description = 'Create user';
 
     public function handle(): void
     {
-        $username = $this->ask(
+        $username = $this->option('username') ?: $this->ask(
             'Username(' . config(
                 'moonshine.auth.fields.username',
                 'email'
             ) . ')'
         );
-        $name = $this->ask('Name');
-        $password = $this->secret('Password');
+        $name =  $this->option('name') ?: $this->ask('Name');
+        $password =  $this->option('password') ?: $this->secret('Password');
 
         if ($username && $name && $password) {
             MoonShineAuth::model()->query()->create([
