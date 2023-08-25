@@ -6,7 +6,6 @@ namespace MoonShine;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Pages\Page;
@@ -100,7 +99,7 @@ class MoonShine
     /**
      * Get collection of registered menu
      *
-     * @return Collection<MenuFiller>
+     * @return Collection<MenuElement>
      */
     public static function getMenu(): Collection
     {
@@ -110,7 +109,7 @@ class MoonShine
     /**
      * Register Menu with resources and pages in the system
      *
-     * @param  array<MenuFiller>  $data
+     * @param  array<MenuElement>  $data
      * @throws Throwable
      */
     public static function menu(array $data): void

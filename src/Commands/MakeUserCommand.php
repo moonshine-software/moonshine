@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Support\Facades\Hash;
-
-use function Laravel\Prompts\password;
-
-use function Laravel\Prompts\text;
-
 use MoonShine\MoonShineAuth;
+
+use function Laravel\Prompts\{error, info, password, text};
 
 class MakeUserCommand extends MoonShineCommand
 {
@@ -41,9 +38,9 @@ class MakeUserCommand extends MoonShineCommand
                 ) => Hash::make($password),
             ]);
 
-            $this->components->info('User is created');
+            info('User is created');
         } else {
-            $this->components->error('All params is required');
+            error('All params is required');
         }
     }
 }

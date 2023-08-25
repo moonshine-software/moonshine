@@ -9,7 +9,7 @@ use MoonShine\Contracts\Menu\MenuFiller;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $label, string $icon = null)
+ * @method static static make(Closure|string $label, Closure|MenuFiller|string $filler, string $icon = null)
  */
 class MenuItem extends MenuElement
 {

@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-
-use function Laravel\Prompts\confirm;
-
-use function Laravel\Prompts\text;
-
 use MoonShine\MoonShine;
+
+use function Laravel\Prompts\{confirm, info, outro, text};
 
 class MakeResourceCommand extends MoonShineCommand
 {
@@ -22,14 +19,6 @@ class MakeResourceCommand extends MoonShineCommand
      * @throws FileNotFoundException
      */
     public function handle(): void
-    {
-        $this->createResource();
-    }
-
-    /**
-     * @throws FileNotFoundException
-     */
-    public function createResource(): void
     {
         $name = str(
             text(
@@ -70,13 +59,14 @@ class MakeResourceCommand extends MoonShineCommand
             'Dummy' => $name,
         ]);
 
-        $this->components->info(
+        info(
             "{$name}Resource file was created: " . str_replace(
                 base_path(),
                 '',
                 $resource
             )
         );
-        $this->components->info('Now register resource in menu');
+
+        outro('Now register resource in menu');
     }
 }

@@ -9,6 +9,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
+use MoonShine\Pages\Page;
 use MoonShine\Utilities\AssetManager;
 use Throwable;
 
@@ -22,6 +23,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     public function boot(): void
     {
         MoonShine::resources($this->resources());
+        MoonShine::pages($this->pages());
         MoonShine::menu($this->menu());
 
         MenuManager::register(MoonShine::getMenu());
@@ -48,9 +50,17 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return array<ResourceContract|string>
+     * @return array<ResourceContract>
      */
     protected function resources(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Page>
+     */
+    protected function pages(): array
     {
         return [];
     }

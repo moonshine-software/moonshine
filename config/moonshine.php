@@ -41,6 +41,7 @@ return [
     ],
 
     'pages' => [
+        'dashboard' => '',
         'profile' => ProfilePage::class
     ],
 

@@ -16,9 +16,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeFieldCommand;
+use MoonShine\Commands\MakePageCommand;
 use MoonShine\Commands\MakeResourceCommand;
 use MoonShine\Commands\MakeUserCommand;
-use MoonShine\Dashboard\Dashboard;
 use MoonShine\Http\Middleware\ChangeLocale;
 use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
@@ -32,6 +32,7 @@ class MoonShineServiceProvider extends ServiceProvider
         InstallCommand::class,
         MakeResourceCommand::class,
         MakeFieldCommand::class,
+        MakePageCommand::class,
         MakeUserCommand::class,
     ];
 
@@ -146,7 +147,6 @@ class MoonShineServiceProvider extends ServiceProvider
 
         $this->app->singleton(MoonShine::class);
         $this->app->singleton(MenuManager::class);
-        $this->app->singleton(Dashboard::class);
         $this->app->singleton(AssetManager::class);
         $this->app->singleton(MoonShineRegister::class);
     }

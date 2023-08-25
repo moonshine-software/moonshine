@@ -6,14 +6,15 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Dashboard\Dashboard;
+use MoonShine\Pages\Page;
 
 class DashboardController extends BaseController
 {
     public function __invoke(): View
     {
-        return view('moonshine::dashboard', [
-            'components' => app(Dashboard::class)->getComponents(),
-        ]);
+        /* @var Page $page */
+        $page = config('moonshine.pages.dashboard');
+
+        return $page::make()->render();
     }
 }
