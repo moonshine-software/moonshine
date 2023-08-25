@@ -63,8 +63,7 @@ final class FormBuilder extends RowComponent
     public function action(string $action): self
     {
         $this->action = $action;
-
-        $this->customAttributes(['action' => $this->action]);
+        $this->attributes['action'] = $this->action;
 
         return $this;
     }
@@ -102,8 +101,7 @@ final class FormBuilder extends RowComponent
     public function method(string $method): self
     {
         $this->method = $method;
-
-        $this->customAttributes(['method' => $this->method]);
+        $this->attributes['method'] = $this->method;
 
         return $this;
     }

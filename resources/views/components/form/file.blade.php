@@ -14,7 +14,10 @@
 
     @if(array_filter((array) $files))
         <div class="dropzone">
-            <div class="dropzone-items">
+            <div class="dropzone-items"
+                 x-data="sortable"
+                 data-handle=".dropzone-item"
+            >
                 @foreach($files as $index => $file)
                     <x-moonshine::form.file-item
                         :attributes="$attributes"

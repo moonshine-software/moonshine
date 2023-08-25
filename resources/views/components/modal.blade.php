@@ -1,10 +1,11 @@
 @props([
     'wide' => false,
+    'open' => false,
     'auto' => false,
     'title' => '',
     'outerHtml' => ''
 ])
-<div x-data="modal">
+<div x-data="modal({{ $open }})">
     <template x-teleport="body">
     <div class="modal-template">
         <div
@@ -24,7 +25,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ $title ?? '' }}</h5>
-                        <button type="button" class="btn btn-close" @click.stop="open=false" aria-label="Close">
+                        <button type="button"
+                                class="btn btn-close"
+                                @click.stop="open=false"
+                                aria-label="Close"
+                        >
                             <x-moonshine::icon
                                 icon="heroicons.x-mark"
                                 size="6"

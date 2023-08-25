@@ -9,6 +9,7 @@
             <img {{ $attributes->merge(['class' => 'h-full w-full object-cover']) }}
                  src="{{ $value }}"
                  alt="{{ $alt }}"
+                 @click.stop="$dispatch('img-popup', {open: true, src: '{{ $value }}' })"
             >
         </div>
     </div>
@@ -19,6 +20,7 @@
                 <img {{ $attributes->merge(['class' => 'h-full w-full object-cover']) }}
                      src="{{ $value }}"
                      alt="{{ $alt }}"
+                     @click.stop="$dispatch('img-popup', {open: true, src: '{{ $value }}' })"
                 />
             </div>
         @endforeach

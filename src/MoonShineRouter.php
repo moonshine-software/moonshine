@@ -30,7 +30,7 @@ final class MoonShineRouter
     ): RedirectResponse|string {
         if(is_null($resource)) {
             return MoonShine::getPageFromUriKey(
-                is_string($page) ? $page : $page->uriKey()
+                is_string($page) ? self::uriKey($page) : $page->uriKey()
             )->url();
         }
 

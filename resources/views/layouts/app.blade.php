@@ -32,5 +32,7 @@
         </div>
 
         @stack('scripts')
+
+        @include('moonshine::ui.img-popup')
     </body>
 </html>

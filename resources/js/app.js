@@ -24,11 +24,13 @@ import range from './alpine/range'
 import code from './alpine/code'
 import tree from './alpine/tree'
 import charts from './alpine/charts'
+import sortable from './alpine/sortable'
 
 Alpine.data('formBuilder', formBuilder)
 Alpine.data('tableBuilder', tableBuilder)
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
+Alpine.data('sortable', sortable)
 Alpine.data('offcanvas', offcanvas)
 Alpine.data('select', select)
 Alpine.data('toasts', toasts)

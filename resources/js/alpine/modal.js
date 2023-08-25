@@ -1,7 +1,7 @@
 /* Modal */
 
-export default () => ({
-  open: false,
+export default (open = false) => ({
+  open: open,
 
   init() {
     Alpine.bind('dismissModal', () => ({

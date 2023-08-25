@@ -110,8 +110,7 @@ trait ResourceModelQuery
      */
     public function resolveQuery(): Builder
     {
-        $this->resolveScopes()
-            ->resolveSearch()
+        $this->resolveSearch()
             ->resolveFilters()
             ->resolveOrder(
                 request('sort.column', $this->sortColumn()),
@@ -141,22 +140,6 @@ trait ResourceModelQuery
         }
 
         return $this->query;
-    }
-
-    public function scopes(): array
-    {
-        return [];
-    }
-
-    protected function resolveScopes(): self
-    {
-        if ($this->scopes()) {
-            foreach ($this->scopes() as $scope) {
-                $this->query()->withGlobalScope($scope::class, $scope);
-            }
-        }
-
-        return $this;
     }
 
     protected function resolveSearch(): self

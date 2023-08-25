@@ -46,8 +46,9 @@
     @endif
 
     @if($imageable)
-        @include('moonshine::ui.image', [
-            'value' => $fileWithDir,
-        ])
+        <img src="{{ $fileWithDir }}"
+             @click.stop="$dispatch('img-popup', {open: true, src: '{{ $fileWithDir }}' })"
+             alt=""
+        />
     @endif
 </div>
