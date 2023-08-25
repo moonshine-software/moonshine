@@ -23,7 +23,7 @@ class InstallCommand extends MoonShineCommand
     {
         intro('MoonShine installation ...');
 
-        spin(function () {
+        spin(function (): void {
             $this->initVendorPublish();
             $this->initStorage();
             $this->initServiceProvider();
