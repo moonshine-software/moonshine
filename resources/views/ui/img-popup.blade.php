@@ -18,7 +18,7 @@
                 role="dialog"
                 @click.self="open=false"
             >
-                <div class="modal-dialog modal-dialog-auto" x-bind="dismissModal">
+                <div class="modal-dialog modal-dialog-auto">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title"></h5>
