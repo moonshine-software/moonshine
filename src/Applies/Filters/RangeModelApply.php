@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Applies\Filters;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;

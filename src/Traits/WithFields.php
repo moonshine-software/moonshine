@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use Closure;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -16,25 +17,37 @@ trait WithFields
 {
     protected array $fields = [];
 
+    protected ?Closure $fieldsClosure = null;
+
     /**
      * @return Fields<Field>
      * @throws Throwable
      */
-    public function getFields(): Fields
+    public function getFields(mixed $data = null): Fields
     {
+        if(!is_null($this->fieldsClosure)) {
+            $this->fields = call_user_func($this->fieldsClosure, $data);
+        }
+
         return Fields::make($this->fields);
     }
 
     public function hasFields(): bool
     {
-        return count($this->fields) > 0;
+        return $this->getFields()->isNotEmpty();
     }
 
     /**
      * @return $this
      */
-    public function fields(Fields|array $fields): static
+    public function fields(Fields|Closure|array $fields): static
     {
+        if(is_closure($fields)) {
+            $this->fieldsClosure = $fields;
+
+            return $this;
+        }
+
         $this->fields = $fields instanceof Fields
             ? $fields->toArray()
             : $fields;

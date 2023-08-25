@@ -153,17 +153,17 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     /**
      * @throws Throwable
      */
-    protected function getResourceColumn(): string
+    public function getResourceColumn(): string
     {
         return $this->getResource()?->column() ?? 'id';
     }
 
-    protected function getRelatedModel(): ?Model
+    public function getRelatedModel(): ?Model
     {
         return $this->relatedModel;
     }
 
-    protected function getRelation(): ?Relation
+    public function getRelation(): ?Relation
     {
         return $this->getRelatedModel()
             ?->{$this->getRelationName()}();

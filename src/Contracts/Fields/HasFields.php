@@ -12,5 +12,5 @@ interface HasFields
 
     public function hasFields(): bool;
 
-    public function getFields(): Fields;
+    public function getFields(mixed $data = null): Fields;
 }

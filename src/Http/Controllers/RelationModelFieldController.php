@@ -7,7 +7,9 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Exceptions\ResourceException;
+use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
@@ -16,6 +18,66 @@ use Throwable;
 
 class RelationModelFieldController extends BaseController
 {
+    /**
+     * @throws Throwable
+     */
+    public function search(RelationModelFieldRequest $request): JsonResponse
+    {
+        $requestQuery = $request->get('query');
+
+        $resource = $request->relationResource();
+        $field = $request->relationField();
+
+        if (!$field instanceof HasAsyncSearch || empty($requestQuery)) {
+            return response()->json();
+        }
+
+        $field->resolveFill(
+            $request->parentItem()->toArray(),
+            $request->parentItem()
+        );
+
+        $related = $field->getRelatedModel();
+        $searchColumn = $field->asyncSearchColumn() ?? $resource->column();
+
+        if ($field instanceof MorphTo) {
+            $morphClass = request('extra');
+            $related = new $morphClass();
+            $searchColumn = $field->getSearchColumn($morphClass);
+        }
+
+        $query = $field->resolveValuesQuery();
+
+        if (is_closure($field->asyncSearchQuery())) {
+            $query = call_user_func(
+                $field->asyncSearchQuery(),
+                $query,
+                $request
+            );
+        }
+
+        $query = $query->where(
+            $searchColumn,
+            'LIKE',
+            "%$requestQuery%"
+        )->limit($field->asyncSearchCount());
+
+        if (is_closure($field->asyncSearchValueCallback())) {
+            $values = $query->get()->mapWithKeys(
+                fn ($relatedItem): array => [
+                    $relatedItem->getKey() => ($field->asyncSearchValueCallback())($relatedItem),
+                ]
+            );
+        } else {
+            $values = $query->pluck(
+                $searchColumn,
+                $related->getKeyName()
+            );
+        }
+
+        return response()->json($values->toArray());
+    }
+
     public function store(RelationModelFieldStoreRequest $request): JsonResponse|RedirectResponse
     {
         return $this->updateOrCreate($request);

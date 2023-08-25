@@ -13,13 +13,9 @@ class NoInput extends Field
 
     protected bool $isBoolean = false;
 
-    protected bool $isLink = false;
-
     protected bool $hideTrue = false;
 
     protected bool $hideFalse = false;
-
-    protected string|Closure $linkHref = '';
 
     public function boolean(
         mixed $hideTrue = null,
@@ -29,18 +25,6 @@ class NoInput extends Field
         $this->hideFalse = Condition::boolean($hideFalse, false);
 
         $this->isBoolean = true;
-
-        return $this;
-    }
-
-    public function link(
-        string|Closure $link = '#',
-        bool $blank = false
-    ): static {
-        $this->isLink = true;
-
-        $this->linkHref = $link;
-        $this->linkBlank = $blank;
 
         return $this;
     }
@@ -56,20 +40,6 @@ class NoInput extends Field
         if ($this->isBoolean) {
             return view('moonshine::ui.boolean', [
                 'value' => $value,
-            ])->render();
-        }
-
-        if ($this->isLink) {
-            $href = $this->linkHref;
-
-            if (is_closure($href)) {
-                $href = $href($value);
-            }
-
-            return view('moonshine::ui.url', [
-                'value' => $value,
-                'href' => $href,
-                'blank' => $this->linkBlank,
             ])->render();
         }
 
