@@ -11,7 +11,6 @@ use MoonShine\Http\Controllers\NotificationController;
 use MoonShine\Http\Controllers\PageController;
 use MoonShine\Http\Controllers\ProfileController;
 use MoonShine\Http\Controllers\RelationModelFieldController;
-use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
 
 Route::prefix(config('moonshine.route.prefix', ''))
