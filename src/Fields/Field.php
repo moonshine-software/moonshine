@@ -278,7 +278,7 @@ abstract class Field extends FormElement
                 'href' => $href,
                 'blank' => $this->isLinkBlank(),
                 'icon' => $this->getLinkIcon(),
-                'withoutIcon' => $this->isWithoutIcon()
+                'withoutIcon' => $this->isWithoutIcon(),
             ])->render();
         }
 

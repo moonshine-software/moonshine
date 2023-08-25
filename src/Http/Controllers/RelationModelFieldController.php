@@ -28,7 +28,7 @@ class RelationModelFieldController extends BaseController
         $resource = $request->relationResource();
         $field = $request->relationField();
 
-        if (!$field instanceof HasAsyncSearch || empty($requestQuery)) {
+        if (! $field instanceof HasAsyncSearch || empty($requestQuery)) {
             return response()->json();
         }
 

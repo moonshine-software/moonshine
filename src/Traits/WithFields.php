@@ -25,7 +25,7 @@ trait WithFields
      */
     public function getFields(mixed $data = null): Fields
     {
-        if(!is_null($this->fieldsClosure)) {
+        if(! is_null($this->fieldsClosure)) {
             $this->fields = call_user_func($this->fieldsClosure, $data);
         }
 
