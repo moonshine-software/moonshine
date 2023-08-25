@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-
-use function Laravel\Prompts\{confirm, info, outro, text};
-
 use MoonShine\MoonShine;
+
+use function Laravel\Prompts\{info, outro, text};
 
 class MakeResourceCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=} {--s|singleton} {--id=}';
+    protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=}';
 
     protected $description = 'Create resource';
 
@@ -30,32 +29,19 @@ class MakeResourceCommand extends MoonShineCommand
             )
         );
 
-        $id = null;
-
-        if ($isSingleton = confirm('Singleton?', required: true)) {
-            $id = text('Item id', default: $this->option('id') ?? '', required: true);
-        }
-
         $name = $name->ucfirst()
             ->replace(['resource', 'Resource'], '')
             ->value();
 
         $model = $this->qualifyModel($this->option('model') ?? $name);
-        $title = $this->option('title') ??
-            ($isSingleton ? $name
-                : str($name)->singular()->plural()->value());
+        $title = $this->option('title') ?? str($name)->singular()->plural()->value();
 
         $resource = $this->getDirectory() . "/Resources/{$name}Resource.php";
 
-        $stub = $isSingleton
-            ? 'SingletonResource'
-            : 'Resource';
-
-        $this->copyStub($stub, $resource, [
+        $this->copyStub('Resource', $resource, [
             '{namespace}' => MoonShine::namespace('\Resources'),
             '{model-namespace}' => $model,
             '{model}' => class_basename($model),
-            '{id}' => $id,
             'DummyTitle' => $title,
             'Dummy' => $name,
         ]);
