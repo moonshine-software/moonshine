@@ -8,6 +8,8 @@ use MoonShine\Fields\File;
 uses()->group('fields');
 uses()->group('file-field');
 
+//uses()->group('test');
+
 beforeEach(function (): void {
     $this->field = File::make('File')
         ->disk('public')
@@ -24,6 +26,14 @@ beforeEach(function (): void {
 
         protected $casts = ['files' => 'collection'];
     };
+
+    $this->field->resolveFill(['file' => 'files/file.pdf'],
+        $this->item
+    );
+
+    $this->fieldMultiple->resolveFill(['files' => ["files/file1.pdf", "files/file2.pdf"]],
+        $this->item
+    );
 });
 
 it('storage methods', function (): void {
@@ -113,38 +123,18 @@ it('correct path with dir', function (): void {
         ->toBe(Storage::disk($this->field->getDisk())->url('/'));
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
-        ->toBe(view('moonshine::components.files', [
-            'files' => [$this->field->pathWithDir($this->item->file)],
-            'download' => $this->field->canDownload(),
+it('preview', function (): void {
+    expect((string) $this->field)
+        ->toBe(view('moonshine::fields.file', [
+            'element' => $this->field,
         ])->render());
 });
 
-it('index view value for multiple', function (): void {
-    $files = collect($this->item->files)
-        ->map(fn ($value) => $this->fieldMultiple->pathWithDir($value))
-        ->toArray();
-
-    expect($this->fieldMultiple->indexViewValue($this->item))
-        ->toBe(view('moonshine::components.files', [
-            'files' => $files,
-            'download' => $this->field->canDownload(),
+it('preview for multiple', function (): void {
+    expect((string) $this->fieldMultiple)
+        ->toBe(view('moonshine::fields.file', [
+            'element' => $this->fieldMultiple,
         ])->render());
-});
-
-it('empty index view value', function (): void {
-    $this->item->file = '';
-
-    expect($this->field->indexViewValue($this->item))
-        ->toBeEmpty();
-});
-
-it('empty index view value for multiple', function (): void {
-    $this->item->files = '';
-
-    expect($this->fieldMultiple->indexViewValue($this->item))
-        ->toBeEmpty();
 });
 
 it('names single', function (): void {

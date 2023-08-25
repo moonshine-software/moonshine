@@ -5,6 +5,7 @@ use MoonShine\Fields\Text;
 
 uses()->group('fields');
 
+
 beforeEach(function (): void {
     $this->field = Color::make('Color');
 });

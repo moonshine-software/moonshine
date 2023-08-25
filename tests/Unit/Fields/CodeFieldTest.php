@@ -8,9 +8,6 @@ uses()->group('fields');
 
 beforeEach(function (): void {
     $this->field = Code::make('Code');
-    $this->item = new class () extends Model {
-        public string $code = 'echo 1;';
-    };
 });
 
 it('textarea is parent', function (): void {
@@ -20,7 +17,7 @@ it('textarea is parent', function (): void {
 
 it('type', function (): void {
     expect($this->field->type())
-        ->toBeEmpty();
+        ->toBe('text');
 });
 
 it('view', function (): void {

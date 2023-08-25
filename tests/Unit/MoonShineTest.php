@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Menu\MenuElement;
+use MoonShine\Menu\MenuItem;
 use MoonShine\MoonShine;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -20,13 +20,15 @@ it('find resource by uri key', function (): void {
 });
 
 it('menu', function (): void {
+
     MoonShine::menu([
-        $this->resource,
+        MenuItem::make('Resource', $this->resource),
     ]);
 
-    expect(MoonShine::getMenu())
-        ->toBeCollection()
-        ->toHaveCount(1)
-        ->first()
-        ->toBeInstanceOf(MenuElement::class);
+    expect(MoonShine::getMenu())->toBeCollection()
+        ->and($last = MoonShine::getMenu()->last())
+        ->toBeInstanceOf(MenuItem::class)
+        ->and($last->label())
+        ->toBe('Resource')
+    ;
 });

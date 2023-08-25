@@ -11,13 +11,7 @@ beforeEach(function (): void {
     $this->field = Enum::make('Enum')
         ->attach(TestEnumColor::class);
 
-    $this->item = new class () extends Model {
-        public TestEnumColor $enum = TestEnumColor::Red;
-
-        protected $casts = [
-            'enum' => TestEnumColor::class,
-        ];
-    };
+    $this->field->resolveFill(['enum' => TestEnumColor::Red]);
 });
 
 it('select field is parent', function (): void {
@@ -27,7 +21,7 @@ it('select field is parent', function (): void {
 
 it('type', function (): void {
     expect($this->field->type())
-        ->toBeEmpty();
+        ->toBe("text");
 });
 
 it('view', function (): void {
@@ -35,7 +29,7 @@ it('view', function (): void {
         ->toBe('moonshine::fields.select');
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
+it('preview', function (): void {
+    expect($this->field->preview())
         ->toBe('Red');
 });

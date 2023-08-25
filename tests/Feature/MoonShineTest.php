@@ -1,21 +1,20 @@
 <?php
 
-use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShine;
+use MoonShine\MoonShineRequest;
 
 uses()->group('core');
 
 it('recognizes internal request as MoonShine request', function (): void {
-    $user = MoonshineUser::factory()->create();
+
     $resource = $this->moonShineUserResource();
-    $resource->setItem($user);
 
     asAdmin()
-        ->get($resource->route('edit', $user->getKey()))
+        ->get($resource->route('resource.page', query: ['pageUri' => 'index-page']))
         ->assertOk();
 
-    expect(MoonShine::isMoonShineRequest())
+    expect(app(MoonShineRequest::class)->isMoonShineRequest())
         ->toBeTrue();
+
 });
 
 it('recognizes external request as non MoonShine request', function (): void {
@@ -24,6 +23,6 @@ it('recognizes external request as non MoonShine request', function (): void {
         ['username' => $this->adminUser()->email, 'password' => 'test']
     )->assertValid();
 
-    expect(MoonShine::isMoonShineRequest())
+    expect(app(MoonShineRequest::class)->isMoonShineRequest())
         ->toBeFalse();
 });

@@ -44,33 +44,44 @@ it('with time', function (): void {
         ->toBe('datetime-local');
 });
 
-it('index view value', function (): void {
+it('preview', function (): void {
     $item = MoonshineUser::factory()->create();
 
-    expect($this->field->indexViewValue($item))
+    $this->field->resolveFill($item->toArray());
+
+    expect($this->field->preview())
         ->toBe($item->created_at->format('Y-m-d H:i:s'))
         ->and($this->field->format('d.m'))
-        ->indexViewValue($item)
+        ->preview()
         ->toBe($item->created_at->format('d.m'))
     ;
+
 });
 
-it('form view value', function (): void {
+it('value', function (): void {
     $item = MoonshineUser::factory()->create();
+
+    $this->field->resolveFill($item->toArray());
+
     $itemDateNull = MoonshineUser::factory()->create([
         'created_at' => null,
     ]);
 
-    expect($this->field->formViewValue($item))
+    expect($this->field->value())
         ->toBe($item->created_at->format('Y-m-d'))
         ->and($this->field->nullable())
-        ->formViewValue($itemDateNull)
+        ->reset()
+        ->resolveFill($itemDateNull->toArray())
+        ->value()
         ->toBeEmpty()
-        ->and($this->field->default('2000-01-12'))
-        ->formViewValue($itemDateNull)
+        ->and($this->field->reset())
+        ->default('2000-01-12')
+        ->value()
         ->toBe('2000-01-12')
-        ->and($this->field->withTime())
-        ->formViewValue($item)
+        ->and($this->field->reset())
+        ->resolveFill($item->toArray())
+        ->withTime()
+        ->value()
         ->toBe($item->created_at->format('Y-m-d\TH:i'))
     ;
 });

@@ -22,15 +22,16 @@ it('view', function (): void {
         ->toBe('moonshine::fields.checkbox');
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
-        ->toBe(
-            view('moonshine::ui.boolean', ['value' => true])->render()
-        );
+it('preview', function (): void {
+    expect((string) $this->field)
+        ->toBe(view('moonshine::fields.checkbox', ['element' => $this->field])->render());
 });
 
 it('correct is checked value', function (): void {
-    expect($this->field->isChecked($this->item, true))
+
+    $this->field->resolveFill(['active' => true]);
+
+    expect($this->field->isChecked())
         ->toBeTrue();
 });
 
