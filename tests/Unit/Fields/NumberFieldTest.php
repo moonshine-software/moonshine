@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Text;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -11,6 +12,8 @@ beforeEach(function (): void {
     $this->item = new class () extends Model {
         public int $rating = 3;
     };
+
+    fillFromModel($this->field, $this->item);
 });
 
 it('text field is parent', function (): void {
@@ -45,14 +48,34 @@ it('number methods', function (): void {
     ;
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
+it('preview value', function (): void {
+    expect($this->field->preview())
         ->toBe('3');
 });
 
-it('index view value with stars', function (): void {
-    expect($this->field->stars()->indexViewValue($this->item))
+it('preview with stars', function (): void {
+    expect($this->field->stars()->preview())
         ->toBe(view('moonshine::ui.rating', [
             'value' => '3',
         ])->render());
+});
+
+it('apply', function (): void {
+    $data = ['rating' => 5];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'rating'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->rating
+        ->toBe($data['rating'])
+    ;
 });

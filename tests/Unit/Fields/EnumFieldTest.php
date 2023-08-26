@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Enum;
 use MoonShine\Fields\Select;
 use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -11,13 +12,7 @@ beforeEach(function (): void {
     $this->field = Enum::make('Enum')
         ->attach(TestEnumColor::class);
 
-    $this->item = new class () extends Model {
-        public TestEnumColor $enum = TestEnumColor::Red;
-
-        protected $casts = [
-            'enum' => TestEnumColor::class,
-        ];
-    };
+    $this->field->resolveFill(['enum' => TestEnumColor::Red]);
 });
 
 it('select field is parent', function (): void {
@@ -35,7 +30,27 @@ it('view', function (): void {
         ->toBe('moonshine::fields.select');
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
+it('preview', function (): void {
+    expect($this->field->preview())
         ->toBe('Red');
+});
+
+it('apply', function (): void {
+    $data = ['enum' => TestEnumColor::Red->value];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'enum'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->enum
+        ->toBe($data['enum'])
+    ;
 });

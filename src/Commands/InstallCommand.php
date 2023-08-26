@@ -111,6 +111,8 @@ class InstallCommand extends MoonShineCommand
      */
     protected function initDashboard(): void
     {
+        $this->makeDir($this->getDirectory() . '/Pages');
+
         $this->call(MakePageCommand::class, [
             'className' => 'Dashboard',
         ]);

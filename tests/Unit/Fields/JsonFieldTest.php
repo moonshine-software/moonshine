@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasFullPageMode;
-use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Fields\Json;
 use MoonShine\Fields\Text;
@@ -11,13 +11,18 @@ use MoonShine\Fields\Text;
 uses()->group('fields');
 uses()->group('json-field');
 
+uses()->group('test');
+
 beforeEach(function (): void {
     $this->field = Json::make('Json')
         ->fields(exampleFields()->toArray());
+
     $this->fieldKeyValue = Json::make('Key value')
         ->keyValue();
+
     $this->fieldOnlyValue = Json::make('Only value')
         ->onlyValue();
+
     $this->item = new class () extends Model {
         public array $key_value = [
             'key1' => 'value1',
@@ -33,6 +38,21 @@ beforeEach(function (): void {
             ['field1' => 'field1_value', 'field2' => 'field2_value'],
         ];
     };
+
+    $this->field->resolveFill(['json' =>[
+        'field1' => 'field1_value',
+        'field2' => 'field2_value',
+    ]], $this->item);
+
+    $this->fieldKeyValue->resolveFill(['key_value' =>[
+        'key1' => 'value1',
+        'key2' => 'value2',
+    ]], $this->item);
+
+    $this->fieldOnlyValue->resolveFill(['only_value' =>[
+        'value1',
+        'value2',
+    ]], $this->item);
 });
 
 it('names', function (): void {
@@ -43,12 +63,14 @@ it('names', function (): void {
         ->toBe('json[1]');
 });
 
+
 it('correct interfaces', function (): void {
     expect($this->field)
         ->toBeInstanceOf(HasFields::class)
-        ->toBeInstanceOf(HasJsonValues::class)
         ->toBeInstanceOf(RemovableContract::class)
-        ->toBeInstanceOf(HasFullPageMode::class);
+        ->toBeInstanceOf(HasDefaultValue::class)
+        ->toBeInstanceOf(DefaultCanBeArray::class)
+    ;
 });
 
 it('type', function (): void {
@@ -75,15 +97,6 @@ it('removable methods', function (): void {
         ->toBeTrue();
 });
 
-it('full page mode', function (): void {
-    expect($this->field)
-        ->isFullPage()
-        ->toBeFalse()
-        ->and($this->field->fullPage())
-        ->isFullPage()
-        ->toBeTrue();
-});
-
 it('has fields', function (): void {
     expect($this->field->getFields())
         ->hasFields(exampleFields()->toArray())
@@ -92,9 +105,9 @@ it('has fields', function (): void {
 
             $field->toBeInstanceOf(Text::class)
                 ->name()
-                ->toBe('json[${index0}][field' . $key . ']')
+                ->toBe('field'.$key)
                 ->id()
-                ->toBe('json_field' . $key);
+                ->toBe('field'.$key);
         });
 });
 
@@ -109,53 +122,10 @@ it('has fields key value', function (): void {
 
             $field->toBeInstanceOf(Text::class)
                 ->name()
-                ->toBe('key_value[${index0}][' . $name . ']')
+                ->toBe($name)
                 ->id()
-                ->toBe('key_value_' . $name);
+                ->toBe($name);
         });
 });
 
-it('json values', function (): void {
-    expect($this->field->jsonValues())
-        ->toBeArray()
-        ->toBe(
-            exampleFields()
-                ->mapWithKeys(fn ($f) => [$f->field() => ''])
-                ->toArray()
-        )
-        ->and($this->field->jsonValues($this->item))
-            ->toBe($this->item->json)
-    ;
-});
-
-it('json values key value', function (): void {
-    expect($this->fieldKeyValue->jsonValues())
-        ->toBeArray()
-        ->toBe(
-            exampleFields()
-                ->mapWithKeys(fn ($f, $k) => [$k === 0 ? 'key' : 'value' => ''])
-                ->toArray()
-        )
-        ->and($this->fieldKeyValue->jsonValues($this->item))
-        ->toBe([
-            ['key' => 'key1', 'value' => 'value1'],
-            ['key' => 'key2', 'value' => 'value2'],
-        ])
-    ;
-});
-
-it('json values only value', function (): void {
-    expect($this->fieldOnlyValue->jsonValues())
-        ->toBeArray()
-        ->toBe(
-            exampleFields()
-                ->mapWithKeys(fn ($f, $k) => ['value' => ''])
-                ->toArray()
-        )
-        ->and($this->fieldOnlyValue->jsonValues($this->item))
-        ->toBe([
-            ['value' => 'value1'],
-            ['value' => 'value2'],
-        ])
-    ;
-});
+// TODO Json values tests

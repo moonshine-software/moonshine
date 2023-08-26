@@ -13,7 +13,7 @@
                 'value' => $element->getOnValue(),
                 'checked' => $element->isChecked()
             ])"
-        @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
+        @class(['form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->name())])
         x-bind:checked="$el.checked"
         x-on:change="$el.checked ? $el.value = '{{ $element->getOnValue() }}' : $el.value = '{{ $element->getOffValue() }}'"
     />

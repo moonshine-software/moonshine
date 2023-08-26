@@ -14,9 +14,9 @@ use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\MoonShine;
 use MoonShine\Providers\MoonShineServiceProvider;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Resources\MoonShineUserRoleResource;
-use MoonShine\Resources\Resource;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -25,7 +25,7 @@ class TestCase extends Orchestra
 
     protected Authenticatable|MoonshineUser $adminUser;
 
-    protected Resource $moonShineUserResource;
+    protected ModelResource $moonShineUserResource;
 
     protected function setUp(): void
     {
@@ -100,14 +100,13 @@ class TestCase extends Orchestra
         ]);
 
         MoonShine::menu([
-            MenuItem::make('Admins', $this->moonShineUserResource()),
-            MoonShineUserRoleResource::class,
+            MenuItem::make('Admins', $this->moonShineUserResource())
         ]);
 
         return $this;
     }
 
-    public function moonShineUserResource(): Resource
+    public function moonShineUserResource(): ModelResource
     {
         return $this->moonShineUserResource;
     }

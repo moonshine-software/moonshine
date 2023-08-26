@@ -13,11 +13,12 @@ use MoonShine\Fields\Image;
 use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\Relationships\MorphMany;
 use MoonShine\Fields\Text;
+use MoonShine\MoonShine;
 use MoonShine\Tests\Fixtures\Models\Category;
 
 class TestResourceBuilder
 {
-    public static function new(string $model = null, bool $addRoutes = false): TestResource
+    public static function new(string $model = null): TestResource
     {
         $resource = new TestResource();
 
@@ -25,9 +26,7 @@ class TestResourceBuilder
             $resource->setTestModel($model);
         }
 
-        if ($addRoutes) {
-            $resource->addRoutes();
-        }
+        MoonShine::addResource($resource);
 
         return $resource;
     }

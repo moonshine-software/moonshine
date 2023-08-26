@@ -1,10 +1,12 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\FormElement;
 use MoonShine\Fields\Text;
 use MoonShine\InputExtensions\InputExtension;
 use MoonShine\InputExtensions\InputEye;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -41,4 +43,24 @@ it('extension', function (): void {
         ->toHaveCount(1)
         ->getExtensions()
         ->each->toBeInstanceOf(InputExtension::class);
+});
+
+it('apply', function (): void {
+    $data = ['field_name' => 'test'];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'field_name'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->field_name
+        ->toBe($data['field_name'])
+    ;
 });

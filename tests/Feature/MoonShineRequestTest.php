@@ -8,14 +8,14 @@ uses()->group('core');
 
 beforeEach(function (): void {
     $this->item = MoonshineUser::factory()->create();
-    $this->resource = TestResourceBuilder::new(
-        MoonshineUser::class,
-        true
-    );
+    $this->resource = TestResourceBuilder::new(MoonshineUser::class);
 });
 
 it('find resource', function (): void {
-    fakeRequest($this->resource->route('index'));
+    asAdmin()
+        ->get($this->resource->route('resource.page', query: ['pageUri' => 'index-page']))
+        ->assertOk();
+
 
     $request = app(MoonShineRequest::class);
 
@@ -25,8 +25,5 @@ it('find resource', function (): void {
         ->toBeTrue()
         ->and($request->getResourceUri())
         ->toBe($this->resource->uriKey())
-        ->and($request->getItem())
-        ->toBeNull()
-        ->and($request->getId())
-        ->toBeNull();
+    ;
 });

@@ -6,7 +6,7 @@
     ])"
         :nullable="$element->isNullable()"
         :searchable="$element->isSearchable()"
-        @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
+        @class(['form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->name())])
 >
     <x-slot:options>
         @if($element->isNullable())

@@ -218,7 +218,7 @@ abstract class ModelResource extends Resource
         return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
     }
 
-    protected function onSave(Field $field): Closure
+    public function onSave(Field $field): Closure
     {
         return static function (Model $item) use ($field): Model {
             if ($field->requestValue()) {

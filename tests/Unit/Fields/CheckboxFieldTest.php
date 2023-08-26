@@ -2,14 +2,12 @@
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Checkbox;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
     $this->field = Checkbox::make('Active');
-    $this->item = new class () extends Model {
-        public bool $active = true;
-    };
 });
 
 it('type', function (): void {
@@ -22,15 +20,16 @@ it('view', function (): void {
         ->toBe('moonshine::fields.checkbox');
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
-        ->toBe(
-            view('moonshine::ui.boolean', ['value' => true])->render()
-        );
+it('preview', function (): void {
+    expect((string) $this->field)
+        ->toBe(view('moonshine::fields.checkbox', ['element' => $this->field])->render());
 });
 
 it('correct is checked value', function (): void {
-    expect($this->field->isChecked($this->item, true))
+
+    $this->field->resolveFill(['active' => true]);
+
+    expect($this->field->isChecked())
         ->toBeTrue();
 });
 
@@ -40,4 +39,25 @@ it('on/off values', function (): void {
         ->toBe('yes')
         ->getOffValue()
         ->toBe('no');
+});
+
+it('apply', function (): void {
+    $data = ['active' => 'false'];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'active'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->active
+        ->toBe($data['active'])
+    ;
+
 });

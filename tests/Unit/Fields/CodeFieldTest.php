@@ -3,14 +3,12 @@
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Code;
 use MoonShine\Fields\Textarea;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
     $this->field = Code::make('Code');
-    $this->item = new class () extends Model {
-        public string $code = 'echo 1;';
-    };
 });
 
 it('textarea is parent', function (): void {
@@ -34,4 +32,24 @@ it('methods', function (): void {
         ->toBe('js')
         ->lineNumbers
         ->toBeTrue();
+});
+
+it('apply', function (): void {
+    $data = ['code' => 'this is code'];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'code'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->code
+        ->toBe($data['code'])
+    ;
 });

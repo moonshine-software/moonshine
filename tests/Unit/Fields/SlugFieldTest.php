@@ -14,6 +14,8 @@ beforeEach(function (): void {
         public string $title = 'Title';
         public string $slug = 'title';
     };
+
+    fillFromModel($this->field, $this->item);
 });
 
 it('type', function (): void {
@@ -31,13 +33,13 @@ it('view', function (): void {
         ->toBe('moonshine::fields.input');
 });
 
-it('save', function (): void {
+it('apply', function (): void {
     $this->item->title = 'Hello world';
 
-    expect($this->field->save($this->item))
+    expect($this->field->apply(fn() => null, $this->item))
         ->slug
         ->toBe('hello-world')
-        ->and($this->field->separator('_')->save($this->item))
+        ->and($this->field->separator('_')->apply(fn() => null, $this->item))
             ->slug
             ->toBe('hello_world')
     ;
