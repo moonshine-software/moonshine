@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use MoonShine\Exceptions\FieldException;
+use Throwable;
 
 trait WithRelatedValues
 {
@@ -28,17 +31,17 @@ trait WithRelatedValues
         $this->values = $values;
     }
 
-    protected function resolveValuesQuery()
+    /**
+     * @throws Throwable
+     */
+    public function resolveValuesQuery(): Builder
     {
-        if (! empty($this->values)) {
-            return $this->values;
-        }
-
         $relation = $this->getRelation();
 
-        if (is_null($relation)) {
-            return $this->values;
-        }
+        throw_if(
+            is_null($relation),
+            new FieldException('Relation is required')
+        );
 
         $related = $relation->getRelated();
         $query = $related->newModelQuery();
@@ -50,6 +53,9 @@ trait WithRelatedValues
         return $query;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function values(): array
     {
         if (! is_null($this->memoizeValues)) {

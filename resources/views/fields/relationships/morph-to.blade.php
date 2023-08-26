@@ -6,7 +6,7 @@
         :values="$element->getTypes()"
     />
 
-    <hr class="divider" />
+    <hr class="divider"/>
 
     <x-moonshine::form.select
         :attributes="$element->attributes()->merge([
@@ -20,10 +20,12 @@
         x-bind:data-async-extra="morphType"
         :value="$element->value()"
         :values="$element->values()"
-        :asyncRoute="route('moonshine.search.relations', [
-            'resource' => $resource->uriKey(),
-            'column' => $element->column(),
-        ])"
+        :asyncRoute="$element->isAsyncSearch() && $element->isNowOnForm() ?
+        moonshineRequest()->getResource()->route(
+            'relation.search',
+            moonshineRequest()->getResource()->getItemID(),
+            query: ['_relation' => $element->getRelationName()]
+        ) : null"
     >
     </x-moonshine::form.select>
 </div>

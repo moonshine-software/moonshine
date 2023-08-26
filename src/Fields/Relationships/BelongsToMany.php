@@ -97,7 +97,7 @@ class BelongsToMany extends ModelRelationField implements
             ->get()
             ->map(fn ($item) => $item->setAttribute($this->treeParentColumn, $item->{$this->treeParentColumn} ?? 0))
             ->groupBy($this->treeParentColumn)
-            ->map(fn ($items) => $items->keyBy($items->first()->getKeyName()));
+            ->map(fn ($items): Collection => $items->keyBy($items->first()->getKeyName()));
 
         $this->treeHtml = '';
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Decorations;
 
 use Closure;
-use MoonShine\Traits\Fields\LinkTrait;
+use MoonShine\Traits\Fields\WithLink;
 use MoonShine\Traits\WithIcon;
 
 /**
@@ -14,7 +14,7 @@ use MoonShine\Traits\WithIcon;
 class Button extends Decoration
 {
     use WithIcon;
-    use LinkTrait;
+    use WithLink;
 
     protected string $view = 'moonshine::decorations.button';
 

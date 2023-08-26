@@ -42,7 +42,9 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             return $this->relationField;
         }
 
-        $fields = $this->parentResource()->getOutsideFields()->onlyFields();
+        $fields = $this->parentResource()
+            ->getFormFields()
+            ->onlyRelationFields();
 
         $this->relationField = $fields->findByRelation(
             $this->getRelationName()

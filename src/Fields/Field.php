@@ -9,10 +9,10 @@ use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\Applies;
-use MoonShine\Traits\Fields\LinkTrait;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
 use MoonShine\Traits\Fields\WithBadge;
+use MoonShine\Traits\Fields\WithLink;
 use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
@@ -26,7 +26,7 @@ abstract class Field extends FormElement
     use WithHint;
     use ShowWhen;
     use ShowOrHide;
-    use LinkTrait;
+    use WithLink;
     use WithBadge;
     use WithIsNowOnRoute;
     use Applies;
@@ -261,14 +261,35 @@ abstract class Field extends FormElement
 
         $preview = $this->resolvePreview();
 
-        if ($this->isBadge()) {
-            return view('moonshine::ui.badge', [
-                'color' => $this->badgeColor($this->toValue()),
-                'value' => $preview,
+        return $this->previewDecoration($preview);
+    }
+
+    private function previewDecoration(View|string $value): View|string
+    {
+        if($value instanceof View) {
+            return  $value;
+        }
+
+        if ($this->hasLink()) {
+            $href = $this->getLinkValue($value);
+
+            $value = view('moonshine::ui.url', [
+                'value' => $value,
+                'href' => $href,
+                'blank' => $this->isLinkBlank(),
+                'icon' => $this->getLinkIcon(),
+                'withoutIcon' => $this->isWithoutIcon(),
             ])->render();
         }
 
-        return $preview;
+        if ($this->isBadge()) {
+            return view('moonshine::ui.badge', [
+                'color' => $this->badgeColor($this->toValue()),
+                'value' => $value,
+            ])->render();
+        }
+
+        return $value;
     }
 
     protected function resolvePreview(): View|string

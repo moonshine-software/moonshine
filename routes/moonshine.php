@@ -11,7 +11,6 @@ use MoonShine\Http\Controllers\NotificationController;
 use MoonShine\Http\Controllers\PageController;
 use MoonShine\Http\Controllers\ProfileController;
 use MoonShine\Http\Controllers\RelationModelFieldController;
-use MoonShine\Http\Controllers\SearchController;
 use MoonShine\Http\Controllers\SocialiteController;
 
 Route::prefix(config('moonshine.route.prefix', ''))
@@ -35,16 +34,14 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 PageController::class
             )->name('page');
 
-            Route::prefix('relation/{resourceUri}')->group(function (): void {
-                Route::post('{resourceItem?}', [RelationModelFieldController::class, 'store'])->name('relation.store');
-                Route::put('{resourceItem}', [RelationModelFieldController::class, 'update'])->name('relation.update');
+            Route::prefix('relation/{resourceUri}')->controller(RelationModelFieldController::class)->group(function (): void {
+                Route::get('search/{resourceItem?}', 'search')->name('relation.search');;
+                Route::post('{resourceItem?}', 'store')->name('relation.store');
+                Route::put('{resourceItem}', 'update')->name('relation.update');
             });
 
             Route::get('/', DashboardController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');
-
-            Route::get('/search/relations', [SearchController::class, 'relations'])
-                ->name('search.relations');
 
             Route::controller(NotificationController::class)
                 ->prefix('notifications')
