@@ -28,7 +28,7 @@ class MoonshineFormRequest extends FormRequest
 
     public function hasResource(): bool
     {
-        return !is_null($this->getResource());
+        return ! is_null($this->getResource());
     }
 
     public function getPage(): Page

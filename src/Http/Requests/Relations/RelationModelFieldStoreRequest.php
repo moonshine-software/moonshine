@@ -8,7 +8,7 @@ final class RelationModelFieldStoreRequest extends RelationModelFieldRequest
 {
     public function authorize(): bool
     {
-        if(!$this->hasResource()) {
+        if(! $this->hasResource()) {
             return false;
         }
 
@@ -27,7 +27,7 @@ final class RelationModelFieldStoreRequest extends RelationModelFieldRequest
     {
         $this->errorBag = $this->getRelationName();
 
-        if(!$this->hasResource()) {
+        if(! $this->hasResource()) {
             return [];
         }
 
