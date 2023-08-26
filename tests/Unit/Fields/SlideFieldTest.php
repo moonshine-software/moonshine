@@ -3,7 +3,6 @@
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\SlideField;
-use MoonShine\Resources\ModelResource;
 
 uses()->group('fields');
 
@@ -61,14 +60,15 @@ it('apply', function (): void {
 
     expect(
         $this->field->apply(
-            fn() => null,
+            fn () => null,
             new class () extends Model {
                 protected $fillable = [
                     'from',
-                    'to'
+                    'to',
                 ];
-            })
+            }
         )
+    )
         ->from
         ->toBe(100)
         ->to

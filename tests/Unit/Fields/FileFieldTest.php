@@ -25,11 +25,13 @@ beforeEach(function (): void {
         protected $casts = ['files' => 'collection'];
     };
 
-    $this->field->resolveFill(['file' => 'files/file.pdf'],
+    $this->field->resolveFill(
+        ['file' => 'files/file.pdf'],
         $this->item
     );
 
-    $this->fieldMultiple->resolveFill(['files' => ["files/file1.pdf", "files/file2.pdf"]],
+    $this->fieldMultiple->resolveFill(
+        ['files' => ["files/file1.pdf", "files/file2.pdf"]],
         $this->item
     );
 });

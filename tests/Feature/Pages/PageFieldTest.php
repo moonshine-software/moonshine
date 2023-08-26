@@ -2,8 +2,8 @@
 
 use MoonShine\Fields\Email;
 use MoonShine\Fields\NoInput;
-use MoonShine\Fields\Text;
 use MoonShine\Fields\Password;
+use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Pages\Crud\FormPage;
@@ -27,13 +27,14 @@ beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(
         MoonShineUser::class
     )
-        ->setTestFields([
+        ->setTestFields(
+            [
             Text::make('Name'),
             Email::make('Email'),
             Password::make('Password'),
-            NoInput::make('Badge')->badge(fn() => 'red'),
+            NoInput::make('Badge')->badge(fn () => 'red'),
         ]
-    );
+        );
 });
 
 it('it fields on index', function () {

@@ -79,6 +79,7 @@ class MoonShine
     {
         if(is_null(self::$resources)) {
             self::$resources = collect([$resource]);
+
             return;
         }
 

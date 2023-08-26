@@ -85,10 +85,10 @@ it('apply', function (): void {
     expect(
         $this->field->apply(
             TestResourceBuilder::new()->onSave($this->field),
-            $item)
+            $item
         )
+    )
         ->toBe($item)
     ;
 
 });
-

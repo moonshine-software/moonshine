@@ -36,10 +36,11 @@ it('apply', function (): void {
             TestResourceBuilder::new()->onSave($this->field),
             new class () extends Model {
                 protected $fillable = [
-                    'phone'
+                    'phone',
                 ];
-            })
+            }
         )
+    )
         ->toBeInstanceOf(Model::class)
         ->phone
         ->toBe($data['phone'])

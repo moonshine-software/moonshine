@@ -24,11 +24,13 @@ beforeEach(function (): void {
         protected $casts = ['images' => 'collection'];
     };
 
-    $this->field->resolveFill(['image' => 'images/image.png'],
+    $this->field->resolveFill(
+        ['image' => 'images/image.png'],
         $this->item
     );
 
-    $this->fieldMultiple->resolveFill(['images' => ["images/image1.png", "images/image2.png"]],
+    $this->fieldMultiple->resolveFill(
+        ['images' => ["images/image1.png", "images/image2.png"]],
         $this->item
     );
 });
@@ -62,7 +64,7 @@ it('preview for multiple', function (): void {
     expect((string)$this->fieldMultiple)
         ->toBe(
             view('moonshine::fields.image', [
-                'element' => $this->fieldMultiple
+                'element' => $this->fieldMultiple,
             ])->render()
         );
 });

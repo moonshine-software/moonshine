@@ -45,10 +45,11 @@ it('apply', function (): void {
             TestResourceBuilder::new()->onSave($this->field),
             new class () extends Model {
                 protected $fillable = [
-                    'enum'
+                    'enum',
                 ];
-            })
+            }
         )
+    )
         ->toBeInstanceOf(Model::class)
         ->enum
         ->toBe($data['enum'])

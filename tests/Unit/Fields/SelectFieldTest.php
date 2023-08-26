@@ -47,7 +47,7 @@ it('preview', function (): void {
         ->toBe('2')
         ->and((string) $this->fieldMultiple)
         ->toBe(view('moonshine::fields.select', [
-            'element' => $this->fieldMultiple
+            'element' => $this->fieldMultiple,
         ])->render());
 });
 
@@ -111,9 +111,10 @@ it('apply', function (): void {
             TestResourceBuilder::new()->onSave($this->field),
             new class () extends Model {
                 protected $fillable = [
-                    'select'
+                    'select',
                 ];
-            })
+            }
+        )
     )
         ->toBeInstanceOf(Model::class)
         ->select
@@ -131,10 +132,11 @@ it('apply multiple', function (): void {
             TestResourceBuilder::new()->onSave($this->field),
             new class () extends Model {
                 protected $fillable = [
-                    'select'
+                    'select',
                 ];
-            })
+            }
         )
+    )
         ->toBeInstanceOf(Model::class)
         ->select
         ->toBe($data['select'])

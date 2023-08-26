@@ -46,10 +46,11 @@ it('apply', function (): void {
             TestResourceBuilder::new()->onSave($this->field),
             new class () extends Model {
                 protected $fillable = [
-                    'password'
+                    'password',
                 ];
-            })
+            }
         )
+    )
         ->toBeInstanceOf(Model::class)
         ->and(Hash::check($data['password'], $item->password))
         ->toBeTrue()

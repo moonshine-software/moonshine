@@ -24,9 +24,10 @@ class TestResource extends ModelResource
 
     public function pages(): array
     {
-        if(!empty($this->testPages)) {
+        if(! empty($this->testPages)) {
             return $this->testPages;
         }
+
         return parent::pages();
     }
 

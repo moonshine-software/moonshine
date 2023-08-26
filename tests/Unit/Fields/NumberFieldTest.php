@@ -70,10 +70,11 @@ it('apply', function (): void {
             TestResourceBuilder::new()->onSave($this->field),
             new class () extends Model {
                 protected $fillable = [
-                    'rating'
+                    'rating',
                 ];
-            })
+            }
         )
+    )
         ->toBeInstanceOf(Model::class)
         ->rating
         ->toBe($data['rating'])

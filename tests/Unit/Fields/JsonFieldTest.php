@@ -39,17 +39,17 @@ beforeEach(function (): void {
         ];
     };
 
-    $this->field->resolveFill(['json' =>[
+    $this->field->resolveFill(['json' => [
         'field1' => 'field1_value',
         'field2' => 'field2_value',
     ]], $this->item);
 
-    $this->fieldKeyValue->resolveFill(['key_value' =>[
+    $this->fieldKeyValue->resolveFill(['key_value' => [
         'key1' => 'value1',
         'key2' => 'value2',
     ]], $this->item);
 
-    $this->fieldOnlyValue->resolveFill(['only_value' =>[
+    $this->fieldOnlyValue->resolveFill(['only_value' => [
         'value1',
         'value2',
     ]], $this->item);
@@ -105,9 +105,9 @@ it('has fields', function (): void {
 
             $field->toBeInstanceOf(Text::class)
                 ->name()
-                ->toBe('field'.$key)
+                ->toBe('field' . $key)
                 ->id()
-                ->toBe('field'.$key);
+                ->toBe('field' . $key);
         });
 });
 

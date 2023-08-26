@@ -96,8 +96,9 @@ it('apply', function (): void {
     expect(
         $this->field->apply(
             TestResourceBuilder::new()->onSave($this->field),
-            new class () extends Model {})
+            new class () extends Model {}
         )
+    )
         ->toBeInstanceOf(Model::class)
         ->created_at
         ->format('Y-m-d H:i:s')

@@ -45,9 +45,10 @@ it('apply', function (): void {
             TestResourceBuilder::new()->onSave($this->field),
             new class () extends Model {
                 protected $fillable = [
-                    'url'
+                    'url',
                 ];
-            })
+            }
+        )
     )
         ->toBeInstanceOf(Model::class)
         ->url

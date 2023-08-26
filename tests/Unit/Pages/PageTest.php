@@ -11,7 +11,7 @@ beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new();
 });
 
-it('page urls' , function () {
+it('page urls', function () {
     expect($this->resource->getPages())
         ->findByUri('index-page')
         ->toBeInstanceOf(IndexPage::class)
@@ -27,9 +27,10 @@ it('to page index', function () {
         app('router')
             ->getRoutes()
             ->match(
-                app('request')->create(to_page($this->resource, IndexPage::class)
+                app('request')->create(
+                    to_page($this->resource, IndexPage::class)
+                )
             )
-        )
     )
         ->getName()
         ->toBe('moonshine.resource.page')
@@ -51,8 +52,9 @@ it('to page form', function () {
     expect(
         app('router')
             ->getRoutes()
-            ->match(app('request')->create($url)
-        )
+            ->match(
+                app('request')->create($url)
+            )
     )
         ->getName()
         ->toBe('moonshine.resource.page')
@@ -79,7 +81,7 @@ it('to page show', function () {
             ->getRoutes()
             ->match(
                 app('request')->create($url)
-        )
+            )
     )
         ->getName()
         ->toBe('moonshine.resource.page')

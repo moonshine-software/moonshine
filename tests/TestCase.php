@@ -100,7 +100,7 @@ class TestCase extends Orchestra
         ]);
 
         MoonShine::menu([
-            MenuItem::make('Admins', $this->moonShineUserResource())
+            MenuItem::make('Admins', $this->moonShineUserResource()),
         ]);
 
         return $this;
