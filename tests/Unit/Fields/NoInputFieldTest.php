@@ -67,7 +67,6 @@ it('link value', function (): void {
         ->toBe(view('moonshine::ui.url', [
             'value' => $this->item->no_input,
             'href' => '/',
-            'blank' => true,
         ])->render());
 });
 
