@@ -7,8 +7,10 @@ namespace MoonShine\Fields\Relationships;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
+use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use Throwable;
 
 class HasOne extends HasMany
 {
@@ -16,22 +18,30 @@ class HasOne extends HasMany
 
     protected bool $toOne = true;
 
+    /**
+     * @throws FieldException
+     * @throws Throwable
+     */
     protected function resolveValue(): mixed
     {
         $item = $this->toValue();
         $resource = $this->getResource();
         $parentResource = moonshineRequest()->getResource();
+
+        if(is_null($parentResource)) {
+            throw new FieldException('Parent resource is required');
+        }
+
+        $parentItem = $parentResource->getItemOrInstance();
+
         $fields = $this->preparedFields();
 
-        return FormBuilder::make(
-            $resource->route(
-                is_null($item) ? 'relation.store' : 'relation.update',
-                $this->getRelatedModel()?->getKey(),
-                [
-                    'pageUri' => moonshineRequest()?->getPageUri(),
-                ]
-            )
-        )
+        $action = to_relation_route(
+            is_null($item) ? 'store' : 'update',
+            $this->getRelatedModel()?->getKey(),
+        );
+
+        return FormBuilder::make($action)
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(
@@ -41,8 +51,6 @@ class HasOne extends HasMany
                     )
                 )->push(
                     Hidden::make('_relation')->setValue($this->getRelationName()),
-                    Hidden::make('_form')->setValue($this->getFormName()),
-                    Hidden::make('_parent')->setValue($parentResource->uriKey())
                 )->toArray()
             )
             ->fill($item?->attributesToArray() ?? [])
@@ -67,7 +75,7 @@ class HasOne extends HasMany
                                 to_page(
                                     $parentResource,
                                     'form-page',
-                                    ['resourceItem' => $parentResource->getItem()]
+                                    ['resourceItem' => $parentItem->getKey()]
                                 )
                             )
                     )

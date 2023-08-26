@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Illuminate\Http\Request;
+use MoonShine\Components\MoonshineComponent;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Pages\Page;
+use Throwable;
 
 class MoonShineRequest extends Request
 {
     protected ?ResourceContract $resource = null;
 
     protected ?Page $page = null;
-
-    public function onResourceRoute(): bool
-    {
-        return str($this->url())->contains('resource/');
-    }
 
     public function hasResource(): bool
     {
@@ -57,14 +54,29 @@ class MoonShineRequest extends Request
         return $this->page;
     }
 
+    /**
+     * @throws Throwable
+     */
+    public function getPageComponent(string $name): ?MoonshineComponent
+    {
+        return $this->getPage()
+            ->getComponents()
+            ->findByName($name);
+    }
+
     public function getResourceUri(): ?string
     {
-        return $this->route('resourceUri', request('_resourceUri'));
+        return $this->route('resourceUri');
     }
 
     public function getPageUri(): ?string
     {
         return $this->route('pageUri');
+    }
+
+    public function onResourceRoute(): bool
+    {
+        return str($this->url())->contains('resource/');
     }
 
     public function isMoonShineRequest(): bool

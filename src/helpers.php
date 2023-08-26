@@ -59,6 +59,27 @@ if (! function_exists('to_page')) {
     }
 }
 
+if (! function_exists('to_relation_route')) {
+    function to_relation_route(
+        string $action,
+        int|string|null $resourceItem = null,
+        ?string $component = null,
+        ?string $relation = null
+    ): string {
+        $data = [
+            '_component_name' => $component,
+            '_relation' => $relation,
+            'resourceItem' => $resourceItem
+        ];
+
+        return MoonShineRouter::to("relation.$action", [
+            'pageUri' => moonshineRequest()->getPageUri(),
+            'resourceUri' => moonshineRequest()->getResourceUri(),
+            ...array_filter($data)
+        ]);
+    }
+}
+
 if (! function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest
     {

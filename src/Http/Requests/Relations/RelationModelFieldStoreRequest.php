@@ -8,30 +8,24 @@ final class RelationModelFieldStoreRequest extends RelationModelFieldRequest
 {
     public function authorize(): bool
     {
-        if(! $this->hasResource()) {
-            return false;
-        }
+        $resource = $this->getField()->getResource();
 
         if (! in_array(
             'create',
-            $this->getResource()->getActiveActions(),
+            $resource->getActiveActions(),
             true
         )) {
             return false;
         }
 
-        return $this->getResource()->can('create');
+        return $resource->can('create');
     }
 
     public function rules(): array
     {
         $this->errorBag = $this->getRelationName();
 
-        if(! $this->hasResource()) {
-            return [];
-        }
-
-        $resource = $this->getResource();
+        $resource = $this->getField()->getResource();
 
         return $resource->rules($resource->getModel());
     }

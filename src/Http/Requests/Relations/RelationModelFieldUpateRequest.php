@@ -8,31 +8,25 @@ class RelationModelFieldUpateRequest extends RelationModelFieldRequest
 {
     public function authorize(): bool
     {
-        if(! $this->hasResource()) {
-            return false;
-        }
+        $resource = $this->getField()->getResource();
 
         if (! in_array(
             'edit',
-            $this->getResource()->getActiveActions(),
+            $resource->getActiveActions(),
             true
         )) {
             return false;
         }
 
-        return $this->getResource()->can('update');
+        return $resource->can('update');
     }
 
     public function rules(): array
     {
         $this->errorBag = $this->getRelationName();
 
-        if(! $this->hasResource()) {
-            return [];
-        }
+        $resource = $this->getField()->getResource();
 
-        $resource = $this->getResource();
-
-        return $resource->rules($resource->getModel());
+        return $resource->rules($resource->getItem());
     }
 }

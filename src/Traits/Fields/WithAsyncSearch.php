@@ -46,16 +46,13 @@ trait WithAsyncSearch
 
     public function asyncSearchUrl(?string $formName = null)
     {
-        return $this->getResource()->route(
-            'relation.search',
-            query: [
-                'pageUri' => moonshineRequest()?->getPageUri(),
-                '_form' => $formName,
-                '_relation' => $this->getRelationName(),
-                '_resourceUri' => moonshineRequest()?->getResourceUri(),
-            ]
+        return to_relation_route(
+            'search',
+            component: $formName,
+            relation: $this->getRelationName()
         );
     }
+
     public function asyncSearch(
         string $asyncSearchColumn = null,
         int $asyncSearchCount = 15,

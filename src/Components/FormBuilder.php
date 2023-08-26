@@ -147,6 +147,10 @@ final class FormBuilder extends RowComponent
             $fields->onlyFields()->each(
                 fn (Field $field): Field => $field->formName($this->getName())
             );
+
+            $fields->prepend(
+                Hidden::make('_component_name')->setValue($this->getName())
+            );
         }
 
         $xInit = json_encode([

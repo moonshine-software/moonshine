@@ -2,6 +2,7 @@
 
 namespace MoonShine\Pages\Crud;
 
+use MoonShine\Decorations\Divider;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
@@ -54,10 +55,11 @@ class FormPage extends Page
         ];
 
         foreach ($resource->getOutsideFields() as $field) {
+            $components[] = Divider::make($field->label());
             $components[] = $field->resolveFill(
                 $item?->attributesToArray() ?? [],
                 $item
-            );
+            )->value(withOld: false);
         }
 
         return $components;

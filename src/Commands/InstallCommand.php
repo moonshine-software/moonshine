@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
-
-use MoonShine\MoonShine;
-
-use MoonShine\Providers\MoonShineServiceProvider;
 
 class InstallCommand extends MoonShineCommand
 {
@@ -111,8 +109,6 @@ class InstallCommand extends MoonShineCommand
      */
     protected function initDashboard(): void
     {
-        $this->makeDir($this->getDirectory() . '/Pages');
-
         $this->call(MakePageCommand::class, [
             'className' => 'Dashboard',
         ]);

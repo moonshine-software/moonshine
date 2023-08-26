@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Exceptions\FieldException;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
@@ -17,6 +16,7 @@ use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
+# TODO refactor me
 class RelationModelFieldController extends BaseController
 {
     /**
@@ -27,7 +27,7 @@ class RelationModelFieldController extends BaseController
         $term = $request->get('query');
         $extra = $request->get('extra');
 
-        $field = $request->getField();
+        $field = $request->getComponentField();
 
         if (! $field instanceof HasAsyncSearch || empty($term)) {
             return response()->json();
@@ -94,27 +94,25 @@ class RelationModelFieldController extends BaseController
     protected function updateOrCreate(
         RelationModelFieldRequest $request
     ): JsonResponse|RedirectResponse {
-        $parentResource = $request->getParentResource();
-        $resource = $request->getResource();
+        $parentResource = $request->getResource();
+        $parentItem = $parentResource->getItemOrInstance();
 
-        if (is_null($parentResource) || is_null($resource)) {
-            throw new FieldException('Resources is required');
-        }
+        $field = $request->getField()->resolveFill(
+            $parentItem->toArray(),
+            $parentItem
+        );
 
-        $relationName = $request->getRelationName();
+        $resource = $field->getResource();
 
-        $parentItem = $request->getParentItem();
-        $relation = $parentItem->{$relationName}();
+        $relation = $field->getRelation();
 
         if ($request->isMethod('POST')) {
-            $item = $resource->getItemOrInstance();
-
-            $item->{$relation->getForeignKeyName()} = $parentResource->getItemID();
+            $item = $resource->getModel();
+            $item->{$relation->getForeignKeyName()} = $parentItem->getKey();
         } else {
             $item = $resource->getModel()
                 ->newModelQuery()
-                ->where($resource->getModel()->getKeyName(), request($resource->getModel()->getKeyName()))
-                ->first();
+                ->findOrFail(request($resource->getModel()->getKeyName()));
         }
 
         $validator = $resource->validate($item);
@@ -123,7 +121,7 @@ class RelationModelFieldController extends BaseController
             to_page(
                 $parentResource,
                 'form-page',
-                ['resourceItem' => $parentResource->getItem()?->getKey()]
+                ['resourceItem' => $parentItem->getKey()]
             )
         );
 
@@ -138,15 +136,9 @@ class RelationModelFieldController extends BaseController
 
         if ($validator->fails()) {
             return $redirectRoute
-                ->withErrors($validator, $relationName)
+                ->withErrors($validator, $field->getRelationName())
                 ->withInput();
         }
-
-
-        /* @var HasFields $field */
-        $field = $parentResource
-            ->getOutsideFields()
-            ->findByRelation($request->getRelationName());
 
         $fields = $field->getFields();
 

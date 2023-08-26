@@ -16,7 +16,7 @@ use MoonShine\Http\Controllers\SocialiteController;
 Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware('moonshine')
     ->as('moonshine.')->group(static function () {
-        Route::middleware(config('moonshine.auth.middleware'))->group(function (): void {
+        Route::middleware(config('moonshine.auth.middleware', []))->group(function (): void {
             Route::prefix('resource/{resourceUri}')->group(function (): void {
                 Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
 
@@ -35,9 +35,9 @@ Route::prefix(config('moonshine.route.prefix', ''))
 
             Route::prefix('relation/{pageUri}')->controller(RelationModelFieldController::class)->group(
                 function (): void {
-                    Route::get('{resourceItem?}', 'search')->name('relation.search');
-                    Route::post('{resourceItem?}/{resourceUri?}', 'store')->name('relation.store');
-                    Route::put('{resourceItem}/{resourceUri?}', 'update')->name('relation.update');
+                    Route::get('{resourceUri?}/{resourceItem?}', 'search')->name('relation.search');
+                    Route::post('{resourceUri}/{resourceItem?}', 'store')->name('relation.store');
+                    Route::put('{resourceUri}/{resourceItem}', 'update')->name('relation.update');
                 }
             );
 
@@ -70,7 +70,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 });
 
             Route::post('/profile', [ProfileController::class, 'store'])
-                ->middleware(config('moonshine.auth.middleware'))
+                ->middleware(config('moonshine.auth.middleware', []))
                 ->name('profile.store');
         }
 
