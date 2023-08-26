@@ -69,13 +69,13 @@ if (! function_exists('to_relation_route')) {
         $data = [
             '_component_name' => $component,
             '_relation' => $relation,
-            'resourceItem' => $resourceItem
+            'resourceItem' => $resourceItem,
         ];
 
         return MoonShineRouter::to("relation.$action", [
             'pageUri' => moonshineRequest()->getPageUri(),
             'resourceUri' => moonshineRequest()->getResourceUri(),
-            ...array_filter($data)
+            ...array_filter($data),
         ]);
     }
 }
