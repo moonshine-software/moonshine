@@ -4,8 +4,6 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasFullPageMode;
-use MoonShine\Contracts\Fields\HasJsonValues;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Fields\Json;
 use MoonShine\Fields\Text;
@@ -130,48 +128,4 @@ it('has fields key value', function (): void {
         });
 });
 
-it('json values', function (): void {
-//    expect($this->field->jsonValues())
-//        ->toBeArray()
-//        ->toBe(
-//            exampleFields()
-//                ->mapWithKeys(fn ($f) => [$f->field() => ''])
-//                ->toArray()
-//        )
-//        ->and($this->field->jsonValues($this->item))
-//            ->toBe($this->item->json)
-//    ;
-});
-
-it('json values key value', function (): void {
-
-//    expect($this->fieldKeyValue->toRawValue())
-//        ->toBeArray()
-//        ->toBe(
-//            exampleFields()
-//                ->mapWithKeys(fn ($f, $k) => [$k === 0 ? 'key' : 'value' => ''])
-//                ->toArray()
-//        )
-//        ->and($this->fieldKeyValue->jsonValues($this->item))
-//        ->toBe([
-//            ['key' => 'key1', 'value' => 'value1'],
-//            ['key' => 'key2', 'value' => 'value2'],
-//        ])
-//    ;
-});
-
-it('json values only value', function (): void {
-//    expect($this->fieldOnlyValue->jsonValues())
-//        ->toBeArray()
-//        ->toBe(
-//            exampleFields()
-//                ->mapWithKeys(fn ($f, $k) => ['value' => ''])
-//                ->toArray()
-//        )
-//        ->and($this->fieldOnlyValue->jsonValues($this->item))
-//        ->toBe([
-//            ['value' => 'value1'],
-//            ['value' => 'value2'],
-//        ])
-//    ;
-});
+// TODO Json values tests

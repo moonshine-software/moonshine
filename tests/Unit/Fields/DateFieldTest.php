@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -83,5 +85,22 @@ it('value', function (): void {
         ->withTime()
         ->value()
         ->toBe($item->created_at->format('Y-m-d\TH:i'))
+    ;
+});
+
+it('apply', function (): void {
+    $data = ['created_at' => now()->format('Y-m-d H:i:s')];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {})
+        )
+        ->toBeInstanceOf(Model::class)
+        ->created_at
+        ->format('Y-m-d H:i:s')
+        ->toBe($data['created_at'])
     ;
 });

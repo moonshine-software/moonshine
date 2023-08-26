@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Select;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -98,4 +99,44 @@ it('names multiple', function (): void {
         ->toBe('select_multiple[]')
         ->name('1')
         ->toBe('select_multiple[1]');
+});
+
+it('apply', function (): void {
+    $data = ['select' => 1];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'select'
+                ];
+            })
+    )
+        ->toBeInstanceOf(Model::class)
+        ->select
+        ->toBe($data['select'])
+    ;
+});
+
+it('apply multiple', function (): void {
+    $data = ['select' => [1,2]];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'select'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->select
+        ->toBe($data['select'])
+    ;
 });

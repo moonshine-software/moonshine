@@ -51,7 +51,7 @@ it('preview', function (): void {
         ->toBe("{$this->item->from} - {$this->item->to}");
 });
 
-it('save', function (): void {
+it('apply', function (): void {
     fakeRequest(parameters: [
         'slide' => [
             'from' => 100,
@@ -59,7 +59,16 @@ it('save', function (): void {
         ],
     ]);
 
-    expect($this->field->apply(fn() => null, []))
+    expect(
+        $this->field->apply(
+            fn() => null,
+            new class () extends Model {
+                protected $fillable = [
+                    'from',
+                    'to'
+                ];
+            })
+        )
         ->from
         ->toBe(100)
         ->to

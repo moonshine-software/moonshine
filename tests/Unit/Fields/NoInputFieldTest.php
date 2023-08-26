@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\NoInput;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -69,3 +70,26 @@ it('link value', function (): void {
             'blank' => true,
         ])->render());
 });
+
+it('apply', function (): void {
+    $data = ['data' => 'data'];
+
+    fakeRequest(parameters: $data);
+
+    $item = new class () extends Model {
+        protected $fillable = [
+            'name',
+            'body',
+        ];
+    };
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            $item)
+        )
+        ->toBe($item)
+    ;
+
+});
+

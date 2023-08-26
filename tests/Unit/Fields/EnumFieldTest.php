@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Enum;
 use MoonShine\Fields\Select;
 use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -32,4 +33,24 @@ it('view', function (): void {
 it('preview', function (): void {
     expect($this->field->preview())
         ->toBe('Red');
+});
+
+it('apply', function (): void {
+    $data = ['enum' => TestEnumColor::Red->value];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'enum'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->enum
+        ->toBe($data['enum'])
+    ;
 });

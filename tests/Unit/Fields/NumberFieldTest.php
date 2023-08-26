@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Text;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -57,4 +58,24 @@ it('preview with stars', function (): void {
         ->toBe(view('moonshine::ui.rating', [
             'value' => '3',
         ])->render());
+});
+
+it('apply', function (): void {
+    $data = ['rating' => 5];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'rating'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->rating
+        ->toBe($data['rating'])
+    ;
 });

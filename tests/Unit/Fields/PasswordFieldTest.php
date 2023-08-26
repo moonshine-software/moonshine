@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Password;
 use MoonShine\Fields\Text;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -35,10 +36,22 @@ it('preview value', function (): void {
         ->toBe('***');
 });
 
-it('save', function (): void {
-    fakeRequest(parameters: ['password' => 12345]);
+it('apply', function (): void {
+    $data = ['password' => 12345];
 
-    expect($this->field->apply(fn() => $this->item, ['password' => 12345]))
-        ->password
-        ->toBeString();
+    fakeRequest(parameters: $data);
+
+    expect(
+        $item = $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'password'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->and(Hash::check($data['password'], $item->password))
+        ->toBeTrue()
+    ;
 });

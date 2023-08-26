@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\SwitchBoolean;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -49,4 +50,24 @@ it('preview with auto update', function (): void {
                 'item' => $this->item,
             ])->render()
         );
+});
+
+it('apply', function (): void {
+    $data = ['active' => 1];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'active'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->active
+        ->toBe($data['active'])
+    ;
 });

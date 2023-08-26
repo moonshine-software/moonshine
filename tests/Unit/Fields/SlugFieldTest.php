@@ -33,7 +33,7 @@ it('view', function (): void {
         ->toBe('moonshine::fields.input');
 });
 
-it('save', function (): void {
+it('apply', function (): void {
     $this->item->title = 'Hello world';
 
     expect($this->field->apply(fn() => null, $this->item))

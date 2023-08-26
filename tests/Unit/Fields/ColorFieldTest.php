@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Color;
 use MoonShine\Fields\Text;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -23,4 +25,24 @@ it('type', function (): void {
 it('view', function (): void {
     expect($this->field->getView())
         ->toBe('moonshine::fields.color');
+});
+
+it('apply', function (): void {
+    $data = ['color' => '#FFF'];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'color'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->color
+        ->toBe($data['color'])
+    ;
 });

@@ -2,14 +2,12 @@
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Checkbox;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
     $this->field = Checkbox::make('Active');
-    $this->item = new class () extends Model {
-        public bool $active = true;
-    };
 });
 
 it('type', function (): void {
@@ -41,4 +39,25 @@ it('on/off values', function (): void {
         ->toBe('yes')
         ->getOffValue()
         ->toBe('no');
+});
+
+it('apply', function (): void {
+    $data = ['active' => 'false'];
+
+    fakeRequest(parameters: $data);
+
+    expect(
+        $this->field->apply(
+            TestResourceBuilder::new()->onSave($this->field),
+            new class () extends Model {
+                protected $fillable = [
+                    'active'
+                ];
+            })
+        )
+        ->toBeInstanceOf(Model::class)
+        ->active
+        ->toBe($data['active'])
+    ;
+
 });
