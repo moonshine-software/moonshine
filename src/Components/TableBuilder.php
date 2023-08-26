@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\Table\TableStates;
@@ -61,8 +62,8 @@ final class TableBuilder extends IterableComponent implements TableContract
         return collect($this->items)
             ->map(
                 fn ($item): array => $this->hasCast()
-                ? $this->getCast()->dehydrate($item)
-                : (array) $item
+                    ? $this->getCast()->dehydrate($item)
+                    : (array) $item
             );
     }
 
@@ -71,9 +72,17 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this->getItems()->map(function (array $data, $index): TableRow {
             $casted = $this->castData($data);
 
+            $fields = $this->getFields();
+
+            if (! is_null($this->getName())) {
+                $fields->onlyFields()->each(
+                    fn (Field $field): Field => $field->formName($this->getName())
+                );
+            }
+
             return TableRow::make(
                 $casted,
-                $this->getFields()->fillCloned($data, $casted, $index),
+                $fields->fillCloned($data, $casted, $index),
                 $this->getButtons($data),
                 $this->trAttributes,
                 $this->tdAttributes
@@ -120,13 +129,16 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function render(): View|Closure|string
     {
-        return view('moonshine::components.table.builder', [
-            'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'rows' => $this->rows(),
-            'fields' => $this->getFields(),
-            'hasPaginator' => $this->hasPaginator(),
-            'paginator' => $this->getPaginator(),
-            'bulkButtons' => $this->getBulkButtons(),
-        ] + $this->statesToArray());
+        return view(
+            'moonshine::components.table.builder',
+            [
+                'attributes' => $this->attributes ?: $this->newAttributeBag(),
+                'rows' => $this->rows(),
+                'fields' => $this->getFields(),
+                'hasPaginator' => $this->hasPaginator(),
+                'paginator' => $this->getPaginator(),
+                'bulkButtons' => $this->getBulkButtons(),
+            ] + $this->statesToArray()
+        );
     }
 }

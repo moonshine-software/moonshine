@@ -6,84 +6,37 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Decorations\Decoration;
-use MoonShine\Decorations\Tabs;
 use MoonShine\Exceptions\FieldsException;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use ReflectionClass;
 use ReflectionException;
 use Throwable;
 
-abstract class FormElements extends Collection
+abstract class FormElements extends MoonShineRenderElements
 {
-    /**
-     * @throws Throwable
-     */
-    protected function extractFields($fieldsOrDecorations, array &$fields): void
-    {
-        foreach ($fieldsOrDecorations as $fieldOrDecoration) {
-            if ($fieldOrDecoration instanceof StackFields) {
-                $this->extractFields($fieldOrDecoration->getFields(), $fields);
-            } elseif ($fieldOrDecoration instanceof Tabs) {
-                foreach ($fieldOrDecoration->tabs() as $tab) {
-                    $this->extractFields($tab->getFields(), $fields);
-                }
-            } elseif ($fieldOrDecoration instanceof Decoration) {
-                $this->extractFields($fieldOrDecoration->getFields(), $fields);
-            } elseif ($fieldOrDecoration instanceof FormElement) {
-                $fields[] = $fieldOrDecoration;
-            }
-        }
-    }
-
-    protected function exceptElements(Closure $except): Fields
-    {
-        return clone $this->map(function (FormElement|Decoration $element) use ($except): null|FormElement|Decoration {
-            if ($except($element) === true) {
-                return null;
-            }
-
-            if ($element instanceof Tabs) {
-                foreach ($element->tabs() as $tab) {
-                    $tab->fields(
-                        $tab->getFields()->exceptElements($except)->toArray()
-                    );
-                }
-            }
-
-            if ($element instanceof HasFields) {
-                $element->fields(
-                    $element->getFields()->exceptElements($except)->toArray()
-                );
-            }
-
-            return $element;
-        })->filter()->values();
-    }
-
     /**
      * @return Fields<Field>
      * @throws Throwable
      */
     public function onlyFields(): Fields
     {
-        $fieldsOrDecorations = [];
+        $data = [];
 
-        $this->extractFields($this->toArray(), $fieldsOrDecorations);
+        $this->extractOnly($this->toArray(), Field::class, $data);
 
-        return self::make($fieldsOrDecorations);
+        return self::make($data);
     }
 
     /**
      * @throws Throwable
      */
-    public function prepareAttributes(): FormElements
+    public function prepareAttributes(): Fields
     {
         return $this->onlyFields()->map(
-            static function (FormElement $formElement): FormElement {
+            static function (Field $formElement): Field {
                 $formElement->when(
                     ! $formElement instanceof Fileable,
                     function ($field): void {
@@ -101,7 +54,7 @@ abstract class FormElements extends Collection
     /**
      * @throws Throwable
      */
-    public function whenFieldsConditions(): FormElements
+    public function whenFieldsConditions(): Fields
     {
         return $this->onlyFields()
             ->filter(
@@ -125,7 +78,7 @@ abstract class FormElements extends Collection
     /**
      * @throws Throwable
      */
-    public function whenFieldNames(): FormElements
+    public function whenFieldNames(): Fields
     {
         return $this->whenFields()->mapWithKeys(
             static fn (Field $field): array => [
@@ -135,10 +88,10 @@ abstract class FormElements extends Collection
     }
 
     /**
-     * @return FormElements<Field>
+     * @return Fields<Field>
      * @throws Throwable
      */
-    public function whenFields(): FormElements
+    public function whenFields(): Fields
     {
         return $this->onlyFields()
             ->filter(
@@ -160,7 +113,6 @@ abstract class FormElements extends Collection
 
 
     /**
-     * @param  ?ModelRelationField  $default
      * @throws Throwable
      */
     public function findByResourceClass(
@@ -174,7 +126,6 @@ abstract class FormElements extends Collection
     }
 
     /**
-     * @param  ?ModelRelationField  $default
      * @throws Throwable
      */
     public function findByRelation(
@@ -188,29 +139,27 @@ abstract class FormElements extends Collection
     }
 
     /**
-     * @param  ?FormElement  $default
      * @throws Throwable
      */
     public function findByColumn(
         string $column,
-        FormElement $default = null
-    ): ?FormElement {
+        Field $default = null
+    ): ?Field {
         return $this->onlyFields()->first(
-            static fn (FormElement $field): bool => $field->column() === $column,
+            static fn (Field $field): bool => $field->column() === $column,
             $default
         );
     }
 
     /**
-     * @param  ?FormElement  $default
      * @throws Throwable
      */
     public function findByClass(
         string $class,
-        FormElement $default = null
-    ): ?FormElement {
+        Field $default = null
+    ): ?Field {
         return $this->onlyFields()->first(
-            static fn (FormElement $field): bool => $field::class === $class,
+            static fn (Field $field): bool => $field::class === $class,
             $default
         );
     }
@@ -218,10 +167,10 @@ abstract class FormElements extends Collection
     /**
      * @throws Throwable
      */
-    public function onlyColumns(): FormElements
+    public function onlyColumns(): Fields
     {
         return $this->onlyFields()->transform(
-            static fn (FormElement $field): string => $field->column()
+            static fn (Field $field): string => $field->column()
         );
     }
 
@@ -241,20 +190,18 @@ abstract class FormElements extends Collection
         return self::make([new $class($label, $this->toArray())]);
     }
 
-    public function unwrapFields(string $class): FormElements
+    public function unwrapElements(string $class): FormElements
     {
         $modified = self::make();
 
         $this->each(
-            static function ($fieldOrDecoration) use ($class, $modified): void {
-                if ($fieldOrDecoration instanceof $class) {
-                    $fieldOrDecoration
-                        ->getFields()
-                        ->each(
-                            fn ($inner): Collection => $modified->push($inner)
-                        );
+            static function ($element) use ($class, $modified): void {
+                if ($element instanceof $class) {
+                    $element->getFields()->each(
+                        fn ($inner): Collection => $modified->push($inner)
+                    );
                 } else {
-                    $modified->push($fieldOrDecoration);
+                    $modified->push($element);
                 }
             }
         );

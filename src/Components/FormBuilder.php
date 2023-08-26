@@ -7,8 +7,8 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Fields\FormElement;
 use MoonShine\Fields\Hidden;
 use Throwable;
 
@@ -30,8 +30,6 @@ final class FormBuilder extends RowComponent
     protected ?string $submitLabel = null;
 
     protected ComponentAttributeBag $submitAttributes;
-
-    protected ?string $name = null;
 
     public function __construct(
         protected string $action = '',
@@ -118,18 +116,6 @@ final class FormBuilder extends RowComponent
         return $this->method;
     }
 
-    public function name(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
     public function submit(string $label, array $attributes = []): self
     {
         $this->submitLabel = $label;
@@ -159,7 +145,7 @@ final class FormBuilder extends RowComponent
 
         if (! is_null($this->getName())) {
             $fields->onlyFields()->each(
-                fn (FormElement $field): FormElement => $field->formName($this->getName())
+                fn (Field $field): Field => $field->formName($this->getName())
             );
         }
 

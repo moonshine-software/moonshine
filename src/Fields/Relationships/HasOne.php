@@ -20,16 +20,19 @@ class HasOne extends HasMany
     {
         $item = $this->toValue();
         $resource = $this->getResource();
+        $parentResource = moonshineRequest()->getResource();
         $fields = $this->preparedFields();
 
-        $parentResource = moonshineRequest()->getResource();
-
         return FormBuilder::make(
-            $parentResource->route(
+            $resource->route(
                 is_null($item) ? 'relation.store' : 'relation.update',
-                $parentResource->getItemID()
+                $this->getRelatedModel()?->getKey(),
+                [
+                    'pageUri' => moonshineRequest()?->getPageUri(),
+                ]
             )
         )
+            ->name($this->getRelationName())
             ->fields(
                 $fields->when(
                     ! is_null($item),
@@ -38,9 +41,10 @@ class HasOne extends HasMany
                     )
                 )->push(
                     Hidden::make('_relation')->setValue($this->getRelationName()),
+                    Hidden::make('_form')->setValue($this->getFormName()),
+                    Hidden::make('_parent')->setValue($parentResource->uriKey())
                 )->toArray()
             )
-            ->name($this->getRelationName())
             ->fill($item?->attributesToArray() ?? [])
             ->cast($resource->getModelCast())
             ->buttons(is_null($item) ? [] : [

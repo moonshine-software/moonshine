@@ -103,6 +103,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function render(): View|Closure|string
     {
+        request()
+            ?->route()
+            ?->setParameter('pageUri', $this->uriKey());
+
         return view($this->getView(), [
             'layout' => $this->layout(),
             'title' => $this->title(),

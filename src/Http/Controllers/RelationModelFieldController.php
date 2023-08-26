@@ -7,7 +7,9 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Exceptions\FieldException;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
@@ -23,30 +25,28 @@ class RelationModelFieldController extends BaseController
      */
     public function search(RelationModelFieldRequest $request): JsonResponse
     {
-        $requestQuery = $request->get('query');
+        $term = $request->get('query');
+        $extra = $request->get('extra');
 
-        $resource = $request->relationResource();
-        $field = $request->relationField();
+        $field = $request->getField();
 
-        if (! $field instanceof HasAsyncSearch || empty($requestQuery)) {
+        if (! $field instanceof HasAsyncSearch || empty($term)) {
             return response()->json();
         }
 
-        $field->resolveFill(
-            $request->parentItem()->toArray(),
-            $request->parentItem()
-        );
+        $resource = $field->getResource();
 
-        $related = $field->getRelatedModel();
+        $model = $resource->getModel();
+
         $searchColumn = $field->asyncSearchColumn() ?? $resource->column();
 
         if ($field instanceof MorphTo) {
-            $morphClass = request('extra');
-            $related = new $morphClass();
+            $morphClass = $extra;
+            $model = new $morphClass();
             $searchColumn = $field->getSearchColumn($morphClass);
         }
 
-        $query = $field->resolveValuesQuery();
+        $query = $model->newModelQuery();
 
         if (is_closure($field->asyncSearchQuery())) {
             $query = call_user_func(
@@ -59,7 +59,7 @@ class RelationModelFieldController extends BaseController
         $query = $query->where(
             $searchColumn,
             'LIKE',
-            "%$requestQuery%"
+            "%$term%"
         )->limit($field->asyncSearchCount());
 
         if (is_closure($field->asyncSearchValueCallback())) {
@@ -71,7 +71,7 @@ class RelationModelFieldController extends BaseController
         } else {
             $values = $query->pluck(
                 $searchColumn,
-                $related->getKeyName()
+                $model->getKeyName()
             );
         }
 
@@ -95,11 +95,16 @@ class RelationModelFieldController extends BaseController
     protected function updateOrCreate(
         RelationModelFieldRequest $request
     ): JsonResponse|RedirectResponse {
-        $parentResource = $request->parentResource();
-        $resource = $request->relationResource();
+        $parentResource = $request->getParentResource();
+        $resource = $request->getResource();
+
+        if (is_null($parentResource) || is_null($resource)) {
+            throw new FieldException('Resources is required');
+        }
+
         $relationName = $request->getRelationName();
 
-        $parentItem = $request->parentItem();
+        $parentItem = $request->getParentItem();
         $relation = $parentItem->{$relationName}();
 
         if ($request->isMethod('POST')) {
@@ -119,7 +124,7 @@ class RelationModelFieldController extends BaseController
             to_page(
                 $parentResource,
                 'form-page',
-                ['resourceItem' => $parentResource->getItem()->getKey()]
+                ['resourceItem' => $parentResource->getItem()?->getKey()]
             )
         );
 
@@ -138,9 +143,15 @@ class RelationModelFieldController extends BaseController
                 ->withInput();
         }
 
-        $fields = $request->relationField()->getFields();
 
-        if($fields->isEmpty()) {
+        /* @var HasFields $field */
+        $field = $parentResource
+            ->getOutsideFields()
+            ->findByRelation($request->getRelationName());
+
+        $fields = $field->getFields();
+
+        if ($fields->isEmpty()) {
             $fields = $resource->getFormFields();
         }
 

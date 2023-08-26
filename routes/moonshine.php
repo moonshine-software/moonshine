@@ -17,7 +17,6 @@ Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware('moonshine')
     ->as('moonshine.')->group(static function () {
         Route::middleware(config('moonshine.auth.middleware'))->group(function (): void {
-
             Route::prefix('resource/{resourceUri}')->group(function (): void {
                 Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
 
@@ -34,11 +33,13 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 PageController::class
             )->name('page');
 
-            Route::prefix('relation/{resourceUri}')->controller(RelationModelFieldController::class)->group(function (): void {
-                Route::get('search/{resourceItem?}', 'search')->name('relation.search');;
-                Route::post('{resourceItem?}', 'store')->name('relation.store');
-                Route::put('{resourceItem}', 'update')->name('relation.update');
-            });
+            Route::prefix('relation/{pageUri}')->controller(RelationModelFieldController::class)->group(
+                function (): void {
+                    Route::get('{resourceItem?}', 'search')->name('relation.search');
+                    Route::post('{resourceItem?}/{resourceUri?}', 'store')->name('relation.store');
+                    Route::put('{resourceItem}/{resourceUri?}', 'update')->name('relation.update');
+                }
+            );
 
             Route::get('/', DashboardController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');

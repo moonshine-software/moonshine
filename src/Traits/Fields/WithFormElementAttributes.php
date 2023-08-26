@@ -119,7 +119,7 @@ trait WithFormElementAttributes
 
     public function type(): string
     {
-        return $this->attributes()->get('type', 'text');
+        return $this->attributes()->get('type', '');
     }
 
     public function required(Closure|bool|null $condition = null): static
@@ -163,7 +163,7 @@ trait WithFormElementAttributes
 
     public function isHidden(): bool
     {
-        return $this->attributes()->get('type') === 'hidden';
+        return $this->type() === 'hidden';
     }
 
     public function isFile(): bool

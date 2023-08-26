@@ -21,9 +21,14 @@ class MoonshineFormRequest extends FormRequest
         return [];
     }
 
-    public function getResource(): ModelResource
+    public function getResource(): ?ModelResource
     {
         return moonshineRequest()->getResource();
+    }
+
+    public function hasResource(): bool
+    {
+        return !is_null($this->getResource());
     }
 
     public function getPage(): Page

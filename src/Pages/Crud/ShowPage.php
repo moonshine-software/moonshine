@@ -48,8 +48,8 @@ class ShowPage extends Page
                     ): ComponentAttributeBag => $attributes->when(
                         $cell === 0,
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                            //'class' => 'font-semibold',
-                            //'width' => '20%',
+                            'class' => 'font-semibold',
+                            'width' => '20%',
                         ])
                     )),
 

@@ -5,28 +5,32 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Illuminate\Http\Request;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Pages\Page;
-use MoonShine\Resources\ModelResource;
-use MoonShine\Resources\Resource;
 
 class MoonShineRequest extends Request
 {
-    protected ?Resource $resource = null;
+    protected ?ResourceContract $resource = null;
 
     protected ?Page $page = null;
 
-    public function hasResource(): bool
+    public function onResourceRoute(): bool
     {
         return str($this->url())->contains('resource/');
     }
 
-    /**
-     * @return ModelResource|Resource
-     */
-    public function getResource(): Resource
+    public function hasResource(): bool
     {
-        if ($this->resource instanceof Resource) {
+        return ! is_null($this->getResource());
+    }
+
+    /**
+     * @return ResourceContract|null
+     */
+    public function getResource(): ?ResourceContract
+    {
+        if ($this->resource instanceof ResourceContract) {
             return $this->resource;
         }
 
@@ -43,10 +47,10 @@ class MoonShineRequest extends Request
             return $this->page;
         }
 
-        if($this->hasResource()) {
+        if ($this->hasResource()) {
             $this->page = $this->getResource()
-                ->getPages()
-                ->findByUri($this->getPageUri());
+                ?->getPages()
+                ?->findByUri($this->getPageUri());
         } else {
             $this->page = MoonShine::getPageFromUriKey(
                 $this->getPageUri()
@@ -58,7 +62,7 @@ class MoonShineRequest extends Request
 
     public function getResourceUri(): ?string
     {
-        return $this->route('resourceUri');
+        return $this->route('resourceUri', request('_resourceUri'));
     }
 
     public function getPageUri(): ?string

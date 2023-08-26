@@ -43,16 +43,24 @@ class MoonShine
         return (config('moonshine.namespace') ?? static::NAMESPACE) . $path;
     }
 
-    public static function getResourceFromUriKey(string $uri): ?ResourceContract
+    public static function getResourceFromUriKey(?string $uri): ?ResourceContract
     {
+        if(is_null($uri)) {
+            return null;
+        }
+
         return self::getResources()
             ->first(
                 fn (ResourceContract $resource): bool => $resource->uriKey() === $uri
             );
     }
 
-    public static function getPageFromUriKey(string $uri): ?Page
+    public static function getPageFromUriKey(?string $uri): ?Page
     {
+        if(is_null($uri)) {
+            return null;
+        }
+
         return self::getPages()->findByUri($uri);
     }
 
@@ -126,6 +134,7 @@ class MoonShine
         );
 
         self::$resources->add(new MoonShineProfileResource());
+        self::$pages->add(new (config('moonshine.pages.dashboard'))());
     }
 
     private static function resolveMenuItem(MenuElement $element): void

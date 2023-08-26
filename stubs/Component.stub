@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {namespace};
+
+use Closure;
+use Illuminate\Contracts\View\View;
+use MoonShine\Components\MoonshineComponent;
+
+/**
+ * @method static static make()
+ */
+final class DummyClass extends MoonshineComponent
+{
+    public function __construct()
+    {
+        //
+    }
+
+    public function render(): View|Closure|string
+    {
+        return view('{view}', [
+            'attributes' => $this->attributes ?: $this->newAttributeBag(),
+        ]);
+    }
+}

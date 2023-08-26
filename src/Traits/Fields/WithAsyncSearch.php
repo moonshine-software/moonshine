@@ -44,6 +44,18 @@ trait WithAsyncSearch
         return $this->asyncSearchValueCallback;
     }
 
+    public function asyncSearchUrl(?string $formName = null)
+    {
+        return $this->getResource()->route(
+            'relation.search',
+            query: [
+                'pageUri' => moonshineRequest()?->getPageUri(),
+                '_form' => $formName,
+                '_relation' => $this->getRelationName(),
+                '_resourceUri' => moonshineRequest()?->getResourceUri(),
+            ]
+        );
+    }
     public function asyncSearch(
         string $asyncSearchColumn = null,
         int $asyncSearchCount = 15,
@@ -58,10 +70,6 @@ trait WithAsyncSearch
         $this->asyncSearchValueCallback = $asyncSearchValueCallback;
 
         $this->valuesQuery = function (Builder $query) {
-            if ($this->parent()?->hasResource()) {
-                return $this->getRelation();
-            }
-
             if ($this->getRelatedModel()) {
                 return $this->getRelation();
             }

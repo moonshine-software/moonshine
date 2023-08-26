@@ -64,6 +64,9 @@ final class Fields extends FormElements
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function wrapNames(string $name): Fields
     {
         $this

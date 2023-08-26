@@ -7,28 +7,25 @@ namespace MoonShine\Http\Requests\Relations;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\MoonShine;
 use MoonShine\Resources\ModelResource;
+use Throwable;
 
 class RelationModelFieldRequest extends MoonshineFormRequest
 {
-    protected ?ModelResource $relationResource = null;
+    protected ?ModelResource $resource = null;
 
     protected ?ModelResource $parentResource = null;
 
-    protected ?ModelRelationField $relationField = null;
+    protected ?ModelRelationField $field = null;
+
+    protected ?Model $item = null;
 
     protected ?Model $parentItem = null;
 
-    public function relationResource(): ModelResource
+    public function getResourceUri(): ?string
     {
-        if(! is_null($this->relationResource)) {
-            return $this->relationResource;
-        }
-
-        $this->relationResource = $this->relationField()
-            ->getResource();
-
-        return $this->relationResource;
+        return $this->route('_resourceUri');
     }
 
     public function getRelationName(): string
@@ -36,41 +33,57 @@ class RelationModelFieldRequest extends MoonshineFormRequest
         return request('_relation');
     }
 
-    public function relationField(): ?ModelRelationField
+    /**
+     * @throws Throwable
+     */
+    public function getField(): ?ModelRelationField
     {
-        if(! is_null($this->relationField)) {
-            return $this->relationField;
+        if (! is_null($this->field)) {
+            return $this->field;
         }
 
-        $fields = $this->parentResource()
-            ->getFormFields()
-            ->onlyRelationFields();
+        $form = $this->getPage()
+            ->getComponents()
+            ->findForm(request('_form'));
 
-        $this->relationField = $fields->findByRelation(
-            $this->getRelationName()
-        );
+        $this->field = $form->getFields()
+            ->onlyRelationFields()
+            ->findByRelation($this->getRelationName());
 
-        return $this->relationField;
+        return $this->field;
     }
 
-    public function parentResource(): ModelResource
+    public function getParentResource(): ?ModelResource
     {
-        if(! is_null($this->parentResource)) {
+        if (! is_null($this->parentResource)) {
             return $this->parentResource;
         }
 
-        $this->parentResource = $this->getResource();
+        $this->parentResource = MoonShine::getResourceFromUriKey(
+            $this->get('_parent')
+        );
 
         return $this->parentResource;
     }
 
-    public function parentItem(): Model
+    public function getItem(): Model
     {
-        if(! is_null($this->parentItem)) {
+        if (! is_null($this->item)) {
+            return $this->item;
+        }
+
+        $this->item = $this->getResource()->getItemOrInstance();
+
+        return $this->item;
+    }
+
+    public function getParentItem(): Model
+    {
+        if (! is_null($this->parentItem)) {
             return $this->parentItem;
         }
 
-        $this->parentItem = $this->parentResource()->getItem();
+        $this->parentItem = $this->getParentResource()->getItemOrInstance();
 
         return $this->parentItem;
     }

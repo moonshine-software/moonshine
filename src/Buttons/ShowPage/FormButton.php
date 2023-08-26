@@ -11,11 +11,11 @@ final class FormButton
     {
         return ActionButton::make(
             '',
-            url: fn (): string => route('moonshine.page', [
-                'resourceUri' => $resource->uriKey(),
-                'pageUri' => 'form-page',
-                'resourceItem' => request('resourceItem'),
-            ])
+            url: fn (): string => to_page(
+                $resource,
+                'form-page',
+                ['resourceItem' => request('resourceItem')]
+            )
         )
             ->canSee(fn (): bool => $resource->can('update'))
             ->customAttributes(['class' => 'btn-purple'])

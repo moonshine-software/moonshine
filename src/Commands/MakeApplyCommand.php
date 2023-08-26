@@ -10,11 +10,11 @@ use MoonShine\MoonShine;
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\text;
 
-class MakePageCommand extends MoonShineCommand
+class MakeApplyCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?}';
+    protected $signature = 'moonshine:apply {className?}';
 
-    protected $description = 'Create page';
+    protected $description = 'Create apply for Field';
 
     /**
      * @throws FileNotFoundException
@@ -26,21 +26,20 @@ class MakePageCommand extends MoonShineCommand
             required: true
         );
 
-        $page = $this->getDirectory() . "/Pages/$className.php";
+        $apply = $this->getDirectory() . "/Applies/$className.php";
 
-        $this->makeDir($this->getDirectory() . '/Pages');
+        $this->makeDir($this->getDirectory() . '/Applies');
 
-        $this->copyStub('Page', $page, [
-            '{namespace}' => MoonShine::namespace('\Pages'),
-            'DummyPage' => $className,
-            'DummyTitle' => $className,
+        $this->copyStub('Apply', $apply, [
+            '{namespace}' => MoonShine::namespace('\Applies'),
+            'DummyClass' => $className,
         ]);
 
         outro(
             "$className was created: " . str_replace(
                 base_path(),
                 '',
-                $page
+                $apply
             )
         );
     }
