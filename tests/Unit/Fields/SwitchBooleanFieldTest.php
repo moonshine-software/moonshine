@@ -11,6 +11,8 @@ beforeEach(function (): void {
     $this->item = new class () extends Model {
         public bool $active = true;
     };
+
+    fillFromModel($this->field, $this->item);
 });
 
 it('type', function (): void {
@@ -28,17 +30,18 @@ it('view', function (): void {
         ->toBe('moonshine::fields.switch');
 });
 
-it('index view value with not auto update', function (): void {
-    expect($this->field->autoUpdate(false)->indexViewValue($this->item))
+it('preview with not auto update', function (): void {
+
+    expect($this->field->autoUpdate(null, false)->preview())
         ->toBe(
-            view('moonshine::ui.boolean', [
-                'value' => $this->item->active,
+            view('moonshine::fields.switch', [
+                'element' => $this->field,
             ])->render()
         );
 });
 
-it('index view value with auto update', function (): void {
-    expect($this->field->indexViewValue($this->item))
+it('preview with auto update', function (): void {
+    expect($this->field->preview())
         ->toBe(
             view('moonshine::fields.switch', [
                 'element' => $this->field,

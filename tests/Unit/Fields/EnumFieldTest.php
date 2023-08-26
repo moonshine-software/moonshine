@@ -21,7 +21,7 @@ it('select field is parent', function (): void {
 
 it('type', function (): void {
     expect($this->field->type())
-        ->toBe("text");
+        ->toBeEmpty();
 });
 
 it('view', function (): void {

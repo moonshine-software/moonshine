@@ -8,8 +8,6 @@ use MoonShine\Fields\File;
 uses()->group('fields');
 uses()->group('file-field');
 
-//uses()->group('test');
-
 beforeEach(function (): void {
     $this->field = File::make('File')
         ->disk('public')

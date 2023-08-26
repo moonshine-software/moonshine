@@ -11,6 +11,7 @@ beforeEach(function (): void {
     $this->item = new class () extends Model {
         public string $url = 'https://cutcode.dev';
     };
+    fillFromModel($this->field, $this->item);
 });
 
 it('text is parent', function (): void {
@@ -24,7 +25,7 @@ it('type', function (): void {
 });
 
 it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
+    expect($this->field->preview())
         ->toBe(
             view('moonshine::ui.url', [
                 'href' => 'https://cutcode.dev',

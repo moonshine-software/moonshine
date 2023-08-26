@@ -23,6 +23,14 @@ beforeEach(function (): void {
 
         protected $casts = ['images' => 'collection'];
     };
+
+    $this->field->resolveFill(['image' => 'images/image.png'],
+        $this->item
+    );
+
+    $this->fieldMultiple->resolveFill(['images' => ["images/image1.png", "images/image2.png"]],
+        $this->item
+    );
 });
 
 
@@ -41,38 +49,20 @@ it('view', function (): void {
         ->toBe('moonshine::fields.image');
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
+it('preview', function (): void {
+    expect((string)$this->field)
         ->toBe(
-            view('moonshine::ui.image', [
-                'value' => $this->field->pathWithDir($this->item->image),
+            view('moonshine::fields.image', [
+                'element' => $this->field,
             ])->render()
         );
 });
 
-it('index view value for multiple', function (): void {
-    $files = collect($this->item->images)
-        ->map(fn ($value) => $this->fieldMultiple->pathWithDir($value))
-        ->toArray();
-
-    expect($this->fieldMultiple->indexViewValue($this->item))
+it('preview for multiple', function (): void {
+    expect((string)$this->fieldMultiple)
         ->toBe(
-            view('moonshine::ui.image', [
-                'values' => $files,
+            view('moonshine::fields.image', [
+                'element' => $this->fieldMultiple
             ])->render()
         );
-});
-
-it('empty index view value', function (): void {
-    $this->item->image = '';
-
-    expect($this->field->indexViewValue($this->item))
-        ->toBeEmpty();
-});
-
-it('empty index view value for multiple', function (): void {
-    $this->item->images = '';
-
-    expect($this->fieldMultiple->indexViewValue($this->item))
-        ->toBeEmpty();
 });

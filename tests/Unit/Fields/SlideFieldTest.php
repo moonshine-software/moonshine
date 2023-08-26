@@ -3,17 +3,19 @@
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\SlideField;
+use MoonShine\Resources\ModelResource;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
     $this->field = SlideField::make('Slide')
-        ->toField('to')
-        ->fromField('from');
+    ;
     $this->item = new class () extends Model {
         public int $from = 10;
         public int $to = 20;
     };
+
+    $this->field->resolveFill(['slide' => ['from' => 10, 'to' => 20]]);
 });
 
 it('type', function (): void {
@@ -31,7 +33,7 @@ it('view', function (): void {
         ->toBe('moonshine::fields.slide');
 });
 
-it('index view value with stars', function (): void {
+it('preview with stars', function (): void {
     $from = view('moonshine::ui.rating', [
         'value' => $this->item->from,
     ])->render();
@@ -40,12 +42,12 @@ it('index view value with stars', function (): void {
         'value' => $this->item->to,
     ])->render();
 
-    expect($this->field->stars()->indexViewValue($this->item))
+    expect($this->field->stars()->preview())
         ->toBe("$from - $to");
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
+it('preview', function (): void {
+    expect($this->field->preview())
         ->toBe("{$this->item->from} - {$this->item->to}");
 });
 
@@ -57,7 +59,7 @@ it('save', function (): void {
         ],
     ]);
 
-    expect($this->field->save($this->item))
+    expect($this->field->apply(fn() => null, []))
         ->from
         ->toBe(100)
         ->to

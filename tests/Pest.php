@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
@@ -29,6 +31,11 @@ function fakeRequest(string $url = '/', string $method = 'GET', array $parameter
 function asAdmin(): TestCase
 {
     return actingAs(MoonshineUser::query()->find(1), 'moonshine');
+}
+
+function fillFromModel(Field $field, Model $model)
+{
+    $field->resolveFill($model->toArray(), $model);
 }
 
 function exampleFields(): Fields

@@ -17,7 +17,7 @@ it('text is parent', function (): void {
 
 it('type', function (): void {
     expect($this->field->type())
-        ->toBe('text');
+        ->toBe("text");
 });
 
 it('view', function (): void {

@@ -17,6 +17,7 @@ beforeEach(function (): void {
     $this->fieldMultiple = Select::make('Select multiple')
         ->options($this->selectOptions)
         ->multiple();
+
     $this->item = new class () extends Model {
         public int $select = 1;
         public array $select_multiple = [1];
@@ -25,6 +26,9 @@ beforeEach(function (): void {
             'select_multiple' => 'json',
         ];
     };
+
+    fillFromModel($this->field, $this->item);
+    fillFromModel($this->fieldMultiple, $this->item);
 });
 
 it('type', function (): void {
@@ -37,13 +41,12 @@ it('view', function (): void {
         ->toBe('moonshine::fields.select');
 });
 
-it('index view value', function (): void {
-    expect($this->field->indexViewValue($this->item))
+it('preview', function (): void {
+    expect($this->field->preview())
         ->toBe('2')
-        ->and($this->fieldMultiple->indexViewValue($this->item))
-        ->toBe(view('moonshine::ui.badge', [
-            'color' => 'purple',
-            'value' => '2',
+        ->and((string) $this->fieldMultiple)
+        ->toBe(view('moonshine::fields.select', [
+            'element' => $this->fieldMultiple
         ])->render());
 });
 
@@ -71,7 +74,7 @@ it('options', function (): void {
 
 it('is selected correctly', function (): void {
     expect($this->fieldMultiple)
-        ->isSelected($this->item, '1')
+        ->isSelected('1')
         ->toBeTrue();
 });
 

@@ -119,7 +119,7 @@ trait WithFormElementAttributes
 
     public function type(): string
     {
-        return $this->attributes()->get('type', 'text');
+        return $this->attributes()->get('type', '');
     }
 
     public function required(Closure|bool|null $condition = null): static
