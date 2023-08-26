@@ -25,9 +25,6 @@ class MoonShineRequest extends Request
         return ! is_null($this->getResource());
     }
 
-    /**
-     * @return ResourceContract|null
-     */
     public function getResource(): ?ResourceContract
     {
         if ($this->resource instanceof ResourceContract) {

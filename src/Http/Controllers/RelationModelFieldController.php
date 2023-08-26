@@ -7,7 +7,6 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Exceptions\ResourceException;
