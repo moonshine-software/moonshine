@@ -44,7 +44,7 @@ trait WithAsyncSearch
         return $this->asyncSearchValueCallback;
     }
 
-    public function asyncSearchUrl(?string $formName = null)
+    public function asyncSearchUrl(?string $formName = null): string
     {
         return to_relation_route(
             'search',
