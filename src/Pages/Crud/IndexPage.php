@@ -65,7 +65,7 @@ class IndexPage extends Page
                         DeleteButton::for($resource),
                         MassDeleteButton::for($resource),
                     ]),
-            ])->withName('table')
+            ])->withName('table'),
         ];
     }
 }
