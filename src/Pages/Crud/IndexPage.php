@@ -42,7 +42,7 @@ class IndexPage extends Page
                             ->icon('heroicons.outline.plus')
                             ->inModal(
                                 fn (): array|string|null => __('moonshine::ui.create'),
-                                fn(): string => '',
+                                fn (): string => '',
                                 async: true
                             ),
 
