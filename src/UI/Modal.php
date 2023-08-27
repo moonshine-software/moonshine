@@ -14,7 +14,8 @@ class Modal
 
     public function __construct(
         protected ?Closure $title,
-        protected ?Closure $content
+        protected ?Closure $content,
+        protected bool $async = false
     ) {
     }
 
@@ -31,6 +32,18 @@ class Modal
     public function buttons(array $buttons): self
     {
         $this->buttons = $buttons;
+
+        return $this;
+    }
+
+    public function isAsync(): bool
+    {
+        return $this->async;
+    }
+
+    public function async(): self
+    {
+        $this->async = true;
 
         return $this;
     }

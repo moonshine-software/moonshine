@@ -3,12 +3,11 @@
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Routing\Controller as BaseController;
 use MoonShine\MoonShineRequest;
 
-class PageController extends BaseController
+class PageController extends MoonShineController
 {
-    public function __invoke(MoonShineRequest $request): View
+    public function __invoke(MoonShineRequest $request): View|string
     {
         return $request->getPage()->render();
     }

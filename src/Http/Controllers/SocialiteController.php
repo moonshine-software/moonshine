@@ -6,16 +6,13 @@ namespace MoonShine\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller as BaseController;
 use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\Facades\Socialite;
 use MoonShine\Exceptions\AuthException;
 use MoonShine\Models\MoonshineSocialite;
-use MoonShine\MoonShineAuth;
-use MoonShine\MoonShineUI;
 use RuntimeException;
 
-class SocialiteController extends BaseController
+class SocialiteController extends MoonShineController
 {
     /**
      * @throws AuthException
@@ -76,12 +73,12 @@ class SocialiteController extends BaseController
             ->where('identity', $socialiteUser->getId())
             ->first();
 
-        if (MoonShineAuth::guard()->check()) {
+        if ($this->auth()->check()) {
             return $this->bindAccount($socialiteUser, $driver, $account);
         }
 
         if (! $account) {
-            MoonShineUI::toast(
+            $this->toast(
                 __('moonshine::auth.failed'),
                 'error'
             );
@@ -91,10 +88,11 @@ class SocialiteController extends BaseController
             ]);
         }
 
-        MoonShineAuth::guard()
-            ->loginUsingId($account->moonshine_user_id);
+        $this->auth()->loginUsingId($account->moonshine_user_id);
 
-        return to_route(config('moonshine.route.index_route', 'moonshine.index'));
+        return to_route(
+            config('moonshine.route.index_route', 'moonshine.index')
+        );
     }
 
     private function bindAccount(
@@ -103,17 +101,17 @@ class SocialiteController extends BaseController
         ?MoonshineSocialite $account
     ): RedirectResponse {
         if ($account instanceof MoonshineSocialite) {
-            MoonShineUI::toast(
+            $this->toast(
                 __('moonshine::auth.socialite.link_exists')
             );
         } else {
             MoonshineSocialite::query()->create([
-                'moonshine_user_id' => MoonShineAuth::guard()->id(),
+                'moonshine_user_id' => $this->auth()->id(),
                 'driver' => $driver,
                 'identity' => $socialiteUser->getId(),
             ]);
 
-            MoonShineUI::toast(
+            $this->toast(
                 __('moonshine::auth.socialite.link_success'),
                 'success'
             );

@@ -8,19 +8,17 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
-use MoonShine\MoonShineUI;
 use MoonShine\Pages\Crud\FormPage;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
-class CrudController extends BaseController
+class CrudController extends MoonShineController
 {
     public function __construct()
     {
@@ -54,7 +52,7 @@ class CrudController extends BaseController
             $request->getResource()->getItemOrFail()
         );
 
-        MoonShineUI::toast(
+        $this->toast(
             __('moonshine::ui.deleted'),
             'success'
         );
@@ -69,7 +67,7 @@ class CrudController extends BaseController
         try {
             $request->getResource()->massDelete($request->get('ids'));
 
-            MoonShineUI::toast(
+            $this->toast(
                 __('moonshine::ui.deleted'),
                 'success'
             );
@@ -77,7 +75,7 @@ class CrudController extends BaseController
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
-            MoonShineUI::toast(
+            $this->toast(
                 __('moonshine::ui.saved_error'),
                 'error'
             );
@@ -128,7 +126,7 @@ class CrudController extends BaseController
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
 
-            MoonShineUI::toast(
+            $this->toast(
                 __('moonshine::ui.saved_error'),
                 'error'
             );
@@ -136,7 +134,7 @@ class CrudController extends BaseController
             return $redirectRoute;
         }
 
-        MoonShineUI::toast(
+        $this->toast(
             __('moonshine::ui.saved'),
             'success'
         );

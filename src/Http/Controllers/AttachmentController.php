@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Storage;
 
-class AttachmentController extends BaseController
+class AttachmentController extends MoonShineController
 {
     public function __invoke(Request $request): array
     {

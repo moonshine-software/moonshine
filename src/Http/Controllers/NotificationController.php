@@ -6,14 +6,12 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Routing\Controller as BaseController;
-use MoonShine\MoonShineAuth;
 
-class NotificationController extends BaseController
+class NotificationController extends MoonShineController
 {
     public function readAll(): RedirectResponse
     {
-        MoonShineAuth::guard()->user()
+        $this->auth()->user()
             ->unreadNotifications
             ->markAsRead();
 

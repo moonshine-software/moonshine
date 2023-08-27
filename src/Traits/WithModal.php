@@ -20,9 +20,10 @@ trait WithModal
     public function inModal(
         ?Closure $title = null,
         ?Closure $content = null,
-        array $buttons = []
+        array $buttons = [],
+        bool $async = false
     ): self {
-        $this->modal = Modal::make($title, $content)
+        $this->modal = Modal::make($title, $content, $async)
             ->buttons($buttons);
 
         return $this;

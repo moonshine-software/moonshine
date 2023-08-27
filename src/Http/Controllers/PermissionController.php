@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\Resources\PermissionFormRequest;
 use MoonShine\Models\MoonshineUserPermission;
-use MoonShine\MoonShineUI;
 
-class PermissionController extends BaseController
+class PermissionController extends MoonShineController
 {
     public function __invoke(PermissionFormRequest $request): RedirectResponse
     {
@@ -29,7 +27,7 @@ class PermissionController extends BaseController
             );
         }
 
-        MoonShineUI::toast(
+        $this->toast(
             __('moonshine::ui.saved'),
             'success'
         );

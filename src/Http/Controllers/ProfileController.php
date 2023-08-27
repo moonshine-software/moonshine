@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
 use MoonShine\Http\Requests\ProfileFormRequest;
-use MoonShine\MoonShineUI;
 
-class ProfileController extends BaseController
+class ProfileController extends MoonShineController
 {
     public function store(ProfileFormRequest $request): RedirectResponse
     {
@@ -47,7 +45,7 @@ class ProfileController extends BaseController
 
         $request->user()->update($resultData);
 
-        MoonShineUI::toast(
+        $this->toast(
             __('moonshine::ui.saved'),
             'success'
         );

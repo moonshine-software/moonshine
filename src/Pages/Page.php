@@ -116,7 +116,11 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
                 : null,
             'breadcrumbs' => $this->breadcrumbs(),
             'components' => $this->getComponents(),
-        ]);
+        ])
+            ->fragmentIf(
+                request('_fragment-load'),
+                request('_fragment-load')
+            );
     }
 
     public function __toString(): string

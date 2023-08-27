@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Pages\Crud;
 
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Actions\FiltersAction;
 use MoonShine\Buttons\IndexPage\DeleteButton;
+use MoonShine\Buttons\IndexPage\FiltersButton;
 use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Buttons\IndexPage\ShowButton;
@@ -29,16 +29,24 @@ class IndexPage extends Page
             Grid::make([
                 Column::make([
                     Flex::make([
+
+                        ActionButton::make(__('moonshine::ui.create'), to_page($resource, 'form-page', ['_fragment-load' => 'form']))
+                            ->customAttributes(['class' => 'btn btn-primary'])
+                            ->icon('heroicons.outline.plus')
+                            ->inModal(
+                                fn () => __('moonshine::ui.create'),
+                                fn () => '',
+                                async: true
+                            ),
+
+
                         ActionButton::make(__('moonshine::ui.create'), to_page($resource, 'form-page'))
                             ->customAttributes(['class' => 'btn btn-primary'])
                             ->icon('heroicons.outline.plus'),
                     ])->justifyAlign('start'),
 
                     ActionGroup::make([
-                        FiltersAction::make(__('moonshine::ui.filters'))
-                            ->filters($resource->filters())
-                            ->setResource($resource)
-                            ->showInLine(),
+                        FiltersButton::for($resource),
                     ]),
                 ])->customAttributes([
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',

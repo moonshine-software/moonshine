@@ -7,18 +7,18 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Requests\LoginFormRequest;
-use MoonShine\MoonShineAuth;
 
-class AuthenticateController extends BaseController
+class AuthenticateController extends MoonShineController
 {
     public function login(): View|RedirectResponse
     {
-        if (MoonShineAuth::guard()->check()) {
-            return to_route(config('moonshine.route.index_route', 'moonshine.index'));
+        if ($this->auth()->check()) {
+            return to_route(
+                config('moonshine.route.index_route', 'moonshine.index')
+            );
         }
 
         $form = config('moonshine.forms.login', LoginForm::class);
@@ -41,7 +41,7 @@ class AuthenticateController extends BaseController
 
     public function logout(Request $request): RedirectResponse
     {
-        MoonShineAuth::guard()->logout();
+        $this->auth()->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

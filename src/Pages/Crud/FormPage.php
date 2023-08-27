@@ -3,6 +3,7 @@
 namespace MoonShine\Pages\Crud;
 
 use MoonShine\Decorations\Divider;
+use MoonShine\Decorations\Fragment;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
@@ -35,7 +36,9 @@ class FormPage extends Page
             $item?->getKey()
         );
 
-        $components = [
+        $components = [];
+
+        $components[] = Fragment::make([
             form($action)
                 ->fields(
                     $resource
@@ -52,7 +55,7 @@ class FormPage extends Page
                 ->fill($item?->attributesToArray() ?? [])
                 ->cast($resource->getModelCast())
                 ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
-        ];
+        ])->withName('form');
 
         foreach ($resource->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());

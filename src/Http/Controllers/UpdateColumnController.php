@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
 use MoonShine\Http\Requests\Resources\UpdateColumnFormRequest;
 
-class UpdateColumnController extends BaseController
+class UpdateColumnController extends MoonShineController
 {
     public function __invoke(UpdateColumnFormRequest $request): Response
     {

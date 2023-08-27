@@ -6,7 +6,6 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Relationships\MorphTo;
@@ -16,8 +15,7 @@ use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
-# TODO refactor me
-class RelationModelFieldController extends BaseController
+class RelationModelFieldController extends MoonShineController
 {
     /**
      * @throws Throwable

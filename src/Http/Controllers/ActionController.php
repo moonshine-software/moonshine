@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 
-final class ActionController extends BaseController
+final class ActionController extends MoonShineController
 {
     public function __invoke(ViewAnyFormRequest $request): mixed
     {
