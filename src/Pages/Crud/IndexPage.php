@@ -34,8 +34,8 @@ class IndexPage extends Page
                             ->customAttributes(['class' => 'btn btn-primary'])
                             ->icon('heroicons.outline.plus')
                             ->inModal(
-                                fn () => __('moonshine::ui.create'),
-                                fn () => '',
+                                fn (): array|string|null => __('moonshine::ui.create'),
+                                fn (): string => '',
                                 async: true
                             ),
 

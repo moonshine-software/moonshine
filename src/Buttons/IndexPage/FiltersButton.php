@@ -20,8 +20,8 @@ final class FiltersButton
             ->customAttributes(['class' => 'btn btn-pink'])
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
-                fn () => __('moonshine::ui.filters'),
-                fn () => FormBuilder::make($resource->currentRoute(), 'GET')
+                fn (): array|string|null => __('moonshine::ui.filters'),
+                fn (): FormBuilder => FormBuilder::make($resource->currentRoute(), 'GET')
                     ->fields(
                         $resource
                             ->getFilters()
@@ -61,7 +61,7 @@ final class FiltersButton
             ->count();
 
         return str(__('moonshine::ui.filters'))
-            ->when($count, fn(Stringable $str) => $str->append("($count)"))
+            ->when($count, fn(Stringable $str): Stringable => $str->append("($count)"))
             ->value();
     }
 }
