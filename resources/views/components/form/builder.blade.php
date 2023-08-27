@@ -1,6 +1,7 @@
 <x-moonshine::form
     :attributes="$attributes"
     :name="$name"
+    :precognitive="$precognitive"
 >
     <x-moonshine::fields-group
         :components="$fields"

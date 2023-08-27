@@ -42,6 +42,8 @@ class HasOne extends HasMany
         );
 
         return FormBuilder::make($action)
+            ->precognitive()
+            ->async()
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(

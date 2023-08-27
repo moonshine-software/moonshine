@@ -16,12 +16,11 @@ final class FormButton
             url: fn ($data): string => to_page(
                 $resource,
                 'form-page',
-                ['resourceItem' => $data->getKey(), '_fragment-load' => 'form']
+                ['resourceItem' => $data->getKey()]
             )
         )
             ->customAttributes(['class' => 'btn-purple'])
             ->icon('heroicons.outline.pencil')
-            ->inModal(fn (): string => '', fn (): string => '', async: true)
             ->showInLine();
     }
 }

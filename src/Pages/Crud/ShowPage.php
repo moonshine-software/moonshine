@@ -9,6 +9,7 @@ use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Flex;
+use MoonShine\Decorations\Fragment;
 use MoonShine\Pages\Page;
 use Throwable;
 
@@ -34,24 +35,26 @@ class ShowPage extends Page
 
         return [
             Block::make([
-                TableBuilder::make($resource->getFields()->onlyFields())
-                    ->cast($resource->getModelCast())
-                    ->items([$resource->getItem()])
-                    ->vertical()
-                    ->simple()
-                    ->preview()
-                    ->tdAttributes(fn (
-                        $data,
-                        int $row,
-                        int $cell,
-                        ComponentAttributeBag $attributes
-                    ): ComponentAttributeBag => $attributes->when(
-                        $cell === 0,
-                        fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                            'class' => 'font-semibold',
-                            'width' => '20%',
-                        ])
-                    )),
+                Fragment::make([
+                    TableBuilder::make($resource->getFields()->onlyFields())
+                        ->cast($resource->getModelCast())
+                        ->items([$resource->getItem()])
+                        ->vertical()
+                        ->simple()
+                        ->preview()
+                        ->tdAttributes(fn (
+                            $data,
+                            int $row,
+                            int $cell,
+                            ComponentAttributeBag $attributes
+                        ): ComponentAttributeBag => $attributes->when(
+                            $cell === 0,
+                            fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                                'class' => 'font-semibold',
+                                'width' => '20%',
+                            ])
+                        )),
+                ])->withName('show-table'),
 
                 Divider::make(),
 

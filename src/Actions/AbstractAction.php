@@ -6,6 +6,7 @@ namespace MoonShine\Actions;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
@@ -28,6 +29,7 @@ abstract class AbstractAction implements MoonShineRenderable
     use HasCanSee;
     use InDropdownOrLine;
     use WithComponentAttributes;
+    use Conditionable;
 
     public function render(): View|Closure|string
     {

@@ -2,6 +2,7 @@
 
 namespace MoonShine\Pages\Crud;
 
+use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Fields\Fields;
@@ -40,6 +41,10 @@ class FormPage extends Page
 
         $components[] = Fragment::make([
             form($action)
+                ->when(
+                    request('_fragment-load'),
+                    fn(FormBuilder $form) => $form->precognitive()
+                )
                 ->fields(
                     $resource
                         ->getFormFields()
@@ -59,10 +64,12 @@ class FormPage extends Page
 
         foreach ($resource->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());
-            $components[] = $field->resolveFill(
-                $item?->attributesToArray() ?? [],
-                $item
-            )->value(withOld: false);
+            $components[] = Fragment::make([
+                $field->resolveFill(
+                    $item?->attributesToArray() ?? [],
+                    $item
+                )->value(withOld: false)
+            ])->withName($field->toOne() ? 'form' : 'table');
         }
 
         return $components;

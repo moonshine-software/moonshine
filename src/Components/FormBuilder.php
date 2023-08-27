@@ -168,6 +168,8 @@ final class FormBuilder extends RowComponent
             'attributes' => $this->attributes ?: $this->newAttributeBag(),
             'name' => $this->getName(),
             'fields' => $fields,
+            'precognitive' => $this->isPrecognitive(),
+            'async' => $this->isAsync(),
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),

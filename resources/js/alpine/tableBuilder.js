@@ -117,11 +117,8 @@ export default (
 
     this.loading = true
 
-    axios.get(url, {
-      headers: {
-        'X-Fragment': 'crud-table',
-      },
-    }).then(response => response.data).then(html => {
+    axios.get(url + "&_fragment-load=table")
+    .then(response => response.data).then(html => {
       this.$root.outerHTML = html
     }).catch(error => {
       //

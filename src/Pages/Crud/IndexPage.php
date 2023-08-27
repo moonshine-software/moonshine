@@ -14,6 +14,7 @@ use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
+use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Pages\Page;
 
@@ -53,16 +54,18 @@ class IndexPage extends Page
                 ]),
             ]),
 
-            TableBuilder::make(items: $items)
-                ->fields($resource->getIndexFields())
-                ->cast($resource->getModelCast())
-                ->withNotFound()
-                ->buttons([
-                    ShowButton::for($resource),
-                    FormButton::for($resource),
-                    DeleteButton::for($resource),
-                    MassDeleteButton::for($resource),
-                ]),
+            Fragment::make([
+                TableBuilder::make(items: $items)
+                    ->fields($resource->getIndexFields())
+                    ->cast($resource->getModelCast())
+                    ->withNotFound()
+                    ->buttons([
+                        ShowButton::for($resource),
+                        FormButton::for($resource),
+                        DeleteButton::for($resource),
+                        MassDeleteButton::for($resource),
+                    ]),
+            ])->withName('table')
         ];
     }
 }
