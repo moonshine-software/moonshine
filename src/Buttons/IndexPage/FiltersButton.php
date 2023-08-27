@@ -61,7 +61,7 @@ final class FiltersButton
             ->count();
 
         return str(__('moonshine::ui.filters'))
-            ->when($count, fn(Stringable $str): Stringable => $str->append("($count)"))
+            ->when($count, fn (Stringable $str): Stringable => $str->append("($count)"))
             ->value();
     }
 }

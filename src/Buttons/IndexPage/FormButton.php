@@ -21,7 +21,7 @@ final class FormButton
         )
             ->customAttributes(['class' => 'btn-purple'])
             ->icon('heroicons.outline.pencil')
-            ->inModal(fn(): string => '', fn(): string => '', async: true)
+            ->inModal(fn (): string => '', fn (): string => '', async: true)
             ->showInLine();
     }
 }
