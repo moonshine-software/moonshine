@@ -15,13 +15,13 @@
     "file": "fonts/Gilroy-Regular.woff2",
     "src": "resources/fonts/Gilroy-Regular.woff2"
   },
-  "resources/images/logo-small.svg": {
-    "file": "assets/logo-small.svg",
-    "src": "resources/images/logo-small.svg"
-  },
   "resources/fonts/Gilroy-SemiBold.woff2": {
     "file": "fonts/Gilroy-SemiBold.woff2",
     "src": "resources/fonts/Gilroy-SemiBold.woff2"
+  },
+  "resources/images/logo-small.svg": {
+    "file": "assets/logo-small.svg",
+    "src": "resources/images/logo-small.svg"
   },
   "resources/images/logo.svg": {
     "file": "assets/logo.svg",
