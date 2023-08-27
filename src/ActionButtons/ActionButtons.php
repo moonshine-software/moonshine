@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\ActionButtons;
 
-use MoonShine\Actions\Actions;
+use Illuminate\Support\Collection;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 
-final class ActionButtons extends Actions
+/**
+ * @template TKey of array-key
+ * @template ActionButtonContract
+ *
+ * @extends  Collection<TKey, ActionButtonContract>
+ */
+final class ActionButtons extends Collection
 {
     public function fillItem(mixed $item): self
     {
@@ -31,6 +37,43 @@ final class ActionButtons extends Actions
             static fn (
                 ActionButtonContract $action
             ): bool => ! $action->isBulk()
+        );
+    }
+
+    public function mergeIfNotExists(ActionButtonContract $new): self
+    {
+        return $this->when(
+            ! $this->first(
+                static fn (
+                    ActionButtonContract $action
+                ): bool => $action::class === $new::class
+            ),
+            static fn (
+                self $actions
+            ): self => $actions->add($new)
+        );
+    }
+
+    public function onlyVisible(mixed $item = null): self
+    {
+        return $this->filter(
+            fn (ActionButtonContract $action) => $action->isSee($item ?? moonshineRequest())
+        );
+    }
+
+    public function inLine(): self
+    {
+        return $this->filter(
+            static fn (
+                ActionButtonContract $action
+            ): bool => ! $action->inDropdown()
+        );
+    }
+
+    public function inDropdown(): self
+    {
+        return $this->filter(
+            static fn (ActionButtonContract $action): bool => $action->inDropdown()
         );
     }
 }

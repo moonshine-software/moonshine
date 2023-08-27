@@ -30,13 +30,19 @@ class IndexPage extends Page
             Grid::make([
                 Column::make([
                     Flex::make([
-
-                        ActionButton::make(__('moonshine::ui.create'), to_page($resource, 'form-page', ['_fragment-load' => 'form']))
+                        ActionButton::make(
+                            __('moonshine::ui.create'),
+                            to_page(
+                                $resource,
+                                'form-page',
+                                ['_fragment-load' => 'crud-form']
+                            )
+                        )
                             ->customAttributes(['class' => 'btn btn-primary'])
                             ->icon('heroicons.outline.plus')
                             ->inModal(
                                 fn (): array|string|null => __('moonshine::ui.create'),
-                                fn (): string => '',
+                                fn() => '',
                                 async: true
                             ),
 
@@ -65,7 +71,7 @@ class IndexPage extends Page
                         DeleteButton::for($resource),
                         MassDeleteButton::for($resource),
                     ]),
-            ])->withName('table')
+            ])->withName('crud-table'),
         ];
     }
 }

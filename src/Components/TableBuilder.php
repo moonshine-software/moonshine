@@ -135,6 +135,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 'attributes' => $this->attributes ?: $this->newAttributeBag(),
                 'rows' => $this->rows(),
                 'fields' => $this->getFields(),
+                'name' => $this->getName(),
                 'hasPaginator' => $this->hasPaginator(),
                 'paginator' => $this->getPaginator(),
                 'bulkButtons' => $this->getBulkButtons(),

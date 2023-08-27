@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\ActionButtons;
 
 use Closure;
-use MoonShine\Actions\AbstractAction;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 
 /**

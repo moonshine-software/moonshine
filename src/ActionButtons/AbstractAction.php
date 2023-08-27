@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Actions;
+namespace MoonShine\ActionButtons;
 
 use Closure;
 use Illuminate\Contracts\View\View;

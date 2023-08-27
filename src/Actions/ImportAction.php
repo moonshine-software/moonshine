@@ -17,6 +17,7 @@ use MoonShine\Fields\Hidden;
 use MoonShine\Jobs\ImportActionJob;
 use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
+use MoonShine\Traits\HasResource;
 use MoonShine\Traits\WithQueue;
 use MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\IOException;
@@ -24,10 +25,11 @@ use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Reader\Exception\ReaderNotOpenedException;
 use Rap2hpoutre\FastExcel\FastExcel;
 
-class ImportAction extends Action
+class ImportAction
 {
     use WithStorage;
     use WithQueue;
+    use HasResource;
 
     protected string $view = 'moonshine::actions.import';
     public string $inputName = 'import_file';

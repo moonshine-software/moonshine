@@ -83,6 +83,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return TableBuilder::make(items: $items)
             ->async()
+            ->name($this->getRelationName())
             ->fields($this->preparedFields())
             ->cast($resource->getModelCast())
             ->when(

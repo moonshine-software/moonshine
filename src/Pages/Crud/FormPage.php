@@ -60,7 +60,7 @@ class FormPage extends Page
                 ->fill($item?->attributesToArray() ?? [])
                 ->cast($resource->getModelCast())
                 ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
-        ])->withName('form');
+        ])->withName('crud-form');
 
         foreach ($resource->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());
@@ -69,7 +69,7 @@ class FormPage extends Page
                     $item?->attributesToArray() ?? [],
                     $item
                 )->value(withOld: false)
-            ])->withName($field->toOne() ? 'form' : 'table');
+            ])->withName($field->getRelationName());
         }
 
         return $components;

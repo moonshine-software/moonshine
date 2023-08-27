@@ -117,7 +117,7 @@ export default (
 
     this.loading = true
 
-    axios.get(url + "&_fragment-load=table")
+    axios.get(url + "&_fragment-load=" + (this.table.dataset?.name ?? 'crud-table'))
     .then(response => response.data).then(html => {
       this.$root.outerHTML = html
     }).catch(error => {

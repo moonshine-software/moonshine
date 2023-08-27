@@ -41,6 +41,7 @@
                 :notfound="$notfound"
                 :attributes="$attributes"
                 :creatable="$creatable"
+                data-name="{{ $name }}"
         >
             @if(!$vertical)
                 <x-slot:thead>

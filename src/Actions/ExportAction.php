@@ -11,6 +11,7 @@ use MoonShine\Exceptions\ActionException;
 use MoonShine\Jobs\ExportActionJob;
 use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
+use MoonShine\Traits\HasResource;
 use MoonShine\Traits\WithQueue;
 use MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
@@ -21,10 +22,11 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
-class ExportAction extends Action
+class ExportAction
 {
     use WithStorage;
     use WithQueue;
+    use HasResource;
 
     protected ?string $icon = 'heroicons.outline.table-cells';
 

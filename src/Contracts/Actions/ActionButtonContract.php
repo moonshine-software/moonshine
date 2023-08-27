@@ -6,4 +6,5 @@ namespace MoonShine\Contracts\Actions;
 
 interface ActionButtonContract
 {
+    public function url(): string;
 }

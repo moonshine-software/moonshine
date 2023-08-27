@@ -7,7 +7,6 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\ActionButtons\ActionButtons;
-use MoonShine\Actions\Actions;
 
 /**
  * @method static static make(array $actions = [])
@@ -22,10 +21,10 @@ final class ActionGroup extends MoonshineComponent
     {
     }
 
-    public function getActions(): Actions
+    public function getActions(): ActionButtons
     {
         return is_array($this->actions)
-            ? Actions::make($this->actions)
+            ? ActionButtons::make($this->actions)
             : $this->actions;
     }
 

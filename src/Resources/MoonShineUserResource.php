@@ -6,7 +6,6 @@ namespace MoonShine\Resources;
 
 use Illuminate\Validation\Rule;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Actions\ExportAction;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Tab;
@@ -133,9 +132,7 @@ class MoonShineUserResource extends ModelResource
 
     public function actions(): array
     {
-        return [
-            ExportAction::make(trans('moonshine::ui.export')),
-        ];
+        return [];
     }
 
     public function getBadge(): string

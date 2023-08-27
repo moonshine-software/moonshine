@@ -54,7 +54,7 @@ class ShowPage extends Page
                                 'width' => '20%',
                             ])
                         )),
-                ])->withName('show-table'),
+                ])->withName('crud-show-table'),
 
                 Divider::make(),
 
