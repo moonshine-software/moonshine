@@ -46,7 +46,7 @@ class MoonShine
 
     public static function getResourceFromUriKey(?string $uri): ?ResourceContract
     {
-        if(is_null($uri)) {
+        if (is_null($uri)) {
             return null;
         }
 
@@ -58,7 +58,7 @@ class MoonShine
 
     public static function getPageFromUriKey(?string $uri): ?Page
     {
-        if(is_null($uri)) {
+        if (is_null($uri)) {
             return null;
         }
 
@@ -77,7 +77,7 @@ class MoonShine
 
     public static function addResource(Resource $resource): void
     {
-        if(is_null(self::$resources)) {
+        if (is_null(self::$resources)) {
             self::$resources = collect([$resource]);
 
             return;
@@ -146,7 +146,10 @@ class MoonShine
         );
 
         self::$resources->add(new MoonShineProfileResource());
-        self::$pages->add(new (config('moonshine.pages.dashboard'))());
+
+        if (class_exists(config('moonshine.pages.dashboard'))) {
+            self::$pages->add(new (config('moonshine.pages.dashboard'))());
+        }
     }
 
     private static function resolveMenuItem(MenuElement $element): void
@@ -155,7 +158,7 @@ class MoonShine
             $element->items()->each(
                 fn (MenuElement $item) => self::resolveMenuItem($item)
             );
-        } elseif($element->isItem()) {
+        } elseif ($element->isItem()) {
             $filler = $element->getFiller();
 
             if ($filler instanceof Page) {
