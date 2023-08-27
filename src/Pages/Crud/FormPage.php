@@ -43,7 +43,7 @@ class FormPage extends Page
             form($action)
                 ->when(
                     request('_fragment-load'),
-                    fn(FormBuilder $form) => $form->precognitive()
+                    fn(FormBuilder $form): FormBuilder => $form->precognitive()
                 )
                 ->fields(
                     $resource
