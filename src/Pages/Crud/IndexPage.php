@@ -57,35 +57,40 @@ class IndexPage extends Page
                             ->icon('heroicons.outline.plus'),
                     ])->justifyAlign('start'),
 
-                    ActionGroup::make([
-                        ActionButton::make(
-                            $export->label(),
-                            $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
-                        )
-                            ->customAttributes(['class' => 'btn btn-primary'])
-                            ->icon($export->iconValue()),
-
-                        ActionButton::make(
-                            $import->label(),
-                            '#'
-                        )
-                            ->customAttributes(['class' => 'btn btn-primary'])
-                            ->icon($import->iconValue())
-                            ->inOffCanvas(
-                                fn () => $import->label(),
-                                fn (): FormBuilder => FormBuilder::make(
-                                    $resource->route('handler', query: ['handlerUri' => $import->uriKey()])
-                                )
-                                    ->fields([
-                                        File::make(column: $import->getInputName())->required(),
-                                    ])
-                                    ->submit(__('moonshine::ui.confirm'))
+                    ActionGroup::make()->when(
+                        ! empty($resource->filters()),
+                        fn (ActionGroup $group) => $group->add(FiltersButton::for($resource))
+                    )->when(
+                        ! is_null($export),
+                        fn (ActionGroup $group) => $group->add(
+                            ActionButton::make(
+                                $export->label(),
+                                $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
                             )
-                        ,
-
-
-                        FiltersButton::for($resource),
-                    ]),
+                                ->customAttributes(['class' => 'btn btn-primary'])
+                                ->icon($export->iconValue())
+                        ),
+                    )->when(
+                        ! is_null($import),
+                        fn (ActionGroup $group) => $group->add(
+                            ActionButton::make(
+                                $import->label(),
+                                '#'
+                            )
+                                ->customAttributes(['class' => 'btn btn-primary'])
+                                ->icon($import->iconValue())
+                                ->inOffCanvas(
+                                    fn () => $import->label(),
+                                    fn (): FormBuilder => FormBuilder::make(
+                                        $resource->route('handler', query: ['handlerUri' => $import->uriKey()])
+                                    )
+                                        ->fields([
+                                            File::make(column: $import->getInputName())->required(),
+                                        ])
+                                        ->submit(__('moonshine::ui.confirm'))
+                                )
+                        ),
+                    ),
                 ])->customAttributes([
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),

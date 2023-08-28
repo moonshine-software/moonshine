@@ -5,29 +5,30 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use Closure;
-use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Handlers\ExportHandler;
-use MoonShine\Handlers\ImportHandler;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Pages\Crud\ShowPage;
+use MoonShine\Traits\Resource\ResourceModelActions;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
+use MoonShine\Traits\Resource\ResourceModelValidation;
+use MoonShine\Traits\Resource\ResourceWithFields;
 use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 abstract class ModelResource extends Resource
 {
+    use ResourceWithFields;
+    use ResourceModelValidation;
+    use ResourceModelActions;
     use ResourceModelPolicy;
     use ResourceModelQuery;
     use ResourceModelCrudRouter;
@@ -39,12 +40,18 @@ abstract class ModelResource extends Resource
 
     protected string $column = 'id';
 
-    /**
-     * Get an array of validation rules for resource related model
-     *
-     * @see https://laravel.com/docs/validation#available-validation-rules
-     */
-    abstract public function rules(Model $item): array;
+    protected function pages(): array
+    {
+        return [
+            IndexPage::make($this->title()),
+            FormPage::make(
+                $this->getItemID()
+                    ? __('moonshine::ui.edit')
+                    : __('moonshine::ui.add')
+            ),
+            ShowPage::make(__('moonshine::ui.show')),
+        ];
+    }
 
     public function getModel(): Model
     {
@@ -66,163 +73,9 @@ abstract class ModelResource extends Resource
         return $this->column;
     }
 
-    protected function pages(): array
-    {
-        return [
-            IndexPage::make($this->title()),
-            FormPage::make(
-                $this->getItemID()
-                    ? __('moonshine::ui.edit')
-                    : __('moonshine::ui.add')
-            ),
-            ShowPage::make(__('moonshine::ui.show')),
-        ];
-    }
-
-    public function fields(): array
-    {
-        return [];
-    }
-
-    public function getFields(): Fields
-    {
-        return Fields::make($this->fields());
-    }
-
-    public function indexFields(): array
-    {
-        return [];
-    }
-
-    public function getIndexFields(): Fields
-    {
-        return Fields::make(
-            empty($this->indexFields())
-                ? $this->fields()
-                : $this->indexFields()
-        )->indexFields();
-    }
-
-    public function formFields(): array
-    {
-        return [];
-    }
-
-    public function getFormFields(): Fields
-    {
-        return Fields::make(
-            empty($this->formFields())
-                ? $this->fields()
-                : $this->formFields()
-        )->formFields()->withoutOutside();
-    }
-
-    public function getOutsideFields(): Fields
-    {
-        return Fields::make(
-            empty($this->formFields())
-                ? $this->fields()
-                : $this->formFields()
-        )->onlyOutside();
-    }
-
-    public function detailFields(): array
-    {
-        return [];
-    }
-
-    public function getDetailFields(): Fields
-    {
-        return Fields::make(
-            empty($this->detailFields())
-                ? $this->fields()
-                : $this->detailFields()
-        )->detailFields();
-    }
-
-    public function filters(): array
-    {
-        return [];
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getFilters(): Fields
-    {
-        return Fields::make($this->filters())
-            ->wrapNames('filters');
-    }
-
-    public function getActiveActions(): array
-    {
-        return ['create', 'show', 'edit', 'delete'];
-    }
-
-    public function actions(): array
-    {
-        return [];
-    }
-
-    public function getActions(): ActionButtons
-    {
-        return ActionButtons::make($this->actions());
-    }
-
-    public function export(): ?ExportHandler
-    {
-        return ExportHandler::make(__('moonshine::ui.export'))
-            ->csv()
-            ->queue();
-    }
-
-    public function import(): ?ImportHandler
-    {
-        return ImportHandler::make(__('moonshine::ui.import'));
-    }
-
-    protected function handlers(): array
-    {
-        return array_filter([
-            $this->export(),
-            $this->import(),
-        ]);
-    }
-
     public function search(): array
     {
         return ['id'];
-    }
-
-    /**
-     * Get custom messages for validator errors
-     *
-     * @return array<string, string|array<string, string>>
-     */
-    public function validationMessages(): array
-    {
-        return [];
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function validate(Model $item): ValidatorContract
-    {
-        return Validator::make(
-            moonshineRequest()->all(),
-            $this->rules($item),
-            array_merge(
-                trans('moonshine::validation'),
-                $this->validationMessages()
-            ),
-            $this->getFields()->extractLabels()
-        );
-    }
-
-    public function prepareForValidation(): void
-    {
-        //
     }
 
     /**

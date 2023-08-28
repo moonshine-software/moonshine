@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Handlers;
 
 use Closure;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithIcon;
@@ -24,6 +25,7 @@ abstract class Handler
     use WithIcon;
     use WithUriKey;
     use WithLabel;
+    use Conditionable;
 
     public function __construct(Closure|string $label)
     {

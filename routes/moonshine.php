@@ -12,6 +12,7 @@ use MoonShine\Http\Controllers\PageController;
 use MoonShine\Http\Controllers\ProfileController;
 use MoonShine\Http\Controllers\RelationModelFieldController;
 use MoonShine\Http\Controllers\SocialiteController;
+use MoonShine\Http\Controllers\UpdateColumnController;
 
 Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware('moonshine')
@@ -26,6 +27,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
 
                 Route::any('handler/{handlerUri}', HandlerController::class)->name('handler');
                 Route::get('{pageUri}', PageController::class)->name('resource.page');
+                Route::put('/{resourceItem}', UpdateColumnController::class)->name('resource.update-column');
             });
 
             Route::get(

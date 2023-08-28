@@ -13,14 +13,12 @@ class UpdateColumnController extends MoonShineController
 {
     public function __invoke(UpdateColumnFormRequest $request): Response
     {
-        $request->merge([
-            $request->field()->column() => $request->get('value'),
-        ]);
+        $resource = $request->getResource();
 
         try {
-            $request->getResource()->save(
-                $request->getItemOrFail(),
-                Fields::make([$request->field()])
+            $resource->save(
+                $resource->getItemOrFail(),
+                Fields::make([$request->getField()])
             );
         } catch (ResourceException $e) {
             throw_if(! app()->isProduction(), $e);

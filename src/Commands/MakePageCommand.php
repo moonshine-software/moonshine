@@ -21,7 +21,7 @@ class MakePageCommand extends MoonShineCommand
      */
     public function handle(): void
     {
-        $dir = $this->option('dir', 'Pages');
+        $dir = $this->option('dir') ?? 'Pages';
 
         $className = $this->argument('className') ?? text(
             'Class name',

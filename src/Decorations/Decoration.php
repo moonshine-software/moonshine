@@ -6,6 +6,7 @@ namespace MoonShine\Decorations;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
@@ -27,6 +28,7 @@ abstract class Decoration implements MoonShineRenderable, FieldsDecoration, HasF
     use WithFields;
     use WithUniqueId;
     use WithComponentAttributes;
+    use Conditionable;
 
     public function __construct(
         Closure|string|array $labelOrFields = '',

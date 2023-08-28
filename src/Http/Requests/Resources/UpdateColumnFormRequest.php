@@ -12,28 +12,31 @@ final class UpdateColumnFormRequest extends MoonshineFormRequest
 {
     public function authorize(): bool
     {
+        $resource = $this->getResource();
+
+        if (is_null($resource) || is_null($this->getField())) {
+            return false;
+        }
+
         if (! in_array(
             'edit',
-            $this->getResource()->getActiveActions(),
+            $resource->getActiveActions(),
             true
         )) {
             return false;
         }
 
-        if (! $this->field() instanceof Field) {
-            return false;
-        }
-
-        return $this->getResource()->can('update');
+        return $resource->can('update');
     }
 
     /**
      * @throws Throwable
      */
-    public function field(): ?Field
+    public function getField(): ?Field
     {
         return $this->getResource()
-            ->getField(request('field', ''));
+            ?->getIndexFields()
+            ?->findByColumn($this->get('field'));
     }
 
     /**
@@ -45,5 +48,12 @@ final class UpdateColumnFormRequest extends MoonshineFormRequest
             'field' => ['required'],
             'value' => ['required'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            $this->get('field') => $this->get('value'),
+        ]);
     }
 }
