@@ -185,7 +185,7 @@ abstract class ModelResource extends Resource
     {
         return array_filter([
             $this->export(),
-            $this->import()
+            $this->import(),
         ]);
     }
 

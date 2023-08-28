@@ -13,7 +13,7 @@ final class HandlerController extends MoonShineController
     public function __invoke(string $resourceUri, string $handlerUri, MoonShineRequest $request): Response
     {
         throw_if(
-            !$request->hasResource(),
+            ! $request->hasResource(),
             new ResourceException('Resource is required')
         );
 
