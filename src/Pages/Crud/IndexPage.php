@@ -40,7 +40,7 @@ class IndexPage extends Page
                             to_page(
                                 $resource,
                                 'form-page',
-                                ['_fragment-load' => 'crud-form']
+                                fragment: 'crud-form'
                             )
                         )
                             ->customAttributes(['class' => 'btn btn-primary'])
@@ -95,6 +95,31 @@ class IndexPage extends Page
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),
             ]),
+
+            ActionGroup::make()->when(
+                ! empty($resource->queryTags()),
+                function (ActionGroup $group) use ($resource) {
+                    foreach ($resource->queryTags() as $tag) {
+                        $group->add(
+                            ActionButton::make(
+                                $tag->label(),
+                                to_page($resource, IndexPage::class, params: ['queryTag' => $tag->uri()])
+                            )
+                                ->showInLine()
+                                ->icon($tag->iconValue())
+                                ->canSee(fn() => $tag->isSee(moonshineRequest()))
+                                ->when(
+                                    $tag->isActive(),
+                                    fn (ActionButton $btn) => $btn->customAttributes([
+                                        'class' => 'bg-purple',
+                                    ])
+                                )
+                        );
+                    }
+
+                    return $group;
+                }
+            ),
 
             Fragment::make([
                 TableBuilder::make(items: $items)

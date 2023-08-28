@@ -54,7 +54,12 @@ if (! function_exists('to_page')) {
         string|Page|null $page = null,
         array $params = [],
         bool $redirect = false,
+        ?string $fragment = null
     ): RedirectResponse|string {
+        if (!empty($fragment)) {
+            $params += ['_fragment-load' => $fragment];
+        }
+
         return MoonShineRouter::to_page($resource, $page, $params, $redirect);
     }
 }
@@ -150,8 +155,8 @@ if (! function_exists('findFieldApply')) {
         return
             ! is_null($applyClass)
             && class_exists($applyClass)
-            ? new $applyClass()
-            : null;
+                ? new $applyClass()
+                : null;
     }
 }
 
@@ -161,11 +166,11 @@ if (! function_exists('formErrors')) {
         ViewErrorBag|bool $errors,
         ?string $name = null
     ): ViewErrorBag|MessageBag {
-        if(! $errors) {
+        if (! $errors) {
             return new ViewErrorBag();
         }
 
-        if(is_null($name) || ! $errors->hasBag($name)) {
+        if (is_null($name) || ! $errors->hasBag($name)) {
             return $errors;
         }
 

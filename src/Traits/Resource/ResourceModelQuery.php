@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
+use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
 use Throwable;
 
@@ -88,6 +89,16 @@ trait ResourceModelQuery
     }
 
     /**
+     * Get an array of custom form actions
+     *
+     * @return array<int, QueryTag>
+     */
+    public function queryTags(): array
+    {
+        return [];
+    }
+
+    /**
      * @throws Throwable
      */
     public function paginate(): Paginator
@@ -110,7 +121,8 @@ trait ResourceModelQuery
      */
     public function resolveQuery(): Builder
     {
-        $this->resolveSearch()
+        $this->resolveTags()
+            ->resolveSearch()
             ->resolveFilters()
             ->resolveOrder(
                 request('sort.column', $this->sortColumn()),
@@ -140,6 +152,25 @@ trait ResourceModelQuery
         }
 
         return $this->query;
+    }
+
+    protected function resolveTags(): self
+    {
+        if ($tagUri = request('queryTag')) {
+            $tag = collect($this->queryTags())
+                ->first(
+                    fn (QueryTag $tag): bool => $tag->uri() === $tagUri
+                );
+
+            if($tag) {
+                $this->customBuilder($tag->apply(
+                    $this->query()
+                ));
+            }
+
+        }
+
+        return $this;
     }
 
     protected function resolveSearch(): self

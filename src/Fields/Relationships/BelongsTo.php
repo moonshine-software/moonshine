@@ -49,7 +49,7 @@ class BelongsTo extends ModelRelationField implements
 
     protected function resolveValue(): mixed
     {
-        return $this->toValue()->getKey();
+        return $this->toValue()?->getKey();
     }
 
     public function isSelected(string $value): bool
