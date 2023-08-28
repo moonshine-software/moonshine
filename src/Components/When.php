@@ -24,12 +24,12 @@ class When extends MoonshineComponent
     {
         $components = ($this->components)();
 
-        if(!($this->condition)()) {
+        if(! ($this->condition)()) {
             $components = is_null($this->default) ? [] : ($this->default)();
         }
 
         return $this->view('moonshine::components.empty', [
-            'components' => $components
+            'components' => $components,
         ]);
     }
 }
