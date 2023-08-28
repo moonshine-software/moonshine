@@ -4,7 +4,7 @@ namespace {namespace};
 
 use MoonShine\Resources\CustomPage;
 
-class DummyCustomPage extends CustomPage
+class Dummy extends CustomPage
 {
 	public string $title = 'DummyTitle';
 
