@@ -4,27 +4,19 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use Illuminate\Database\Eloquent\Model;
-use {model-namespace};
+use MoonShine\Resources\Resource;
 
-use MoonShine\Resources\ModelResource;
-use MoonShine\Fields\ID;
-
-class DummyResource extends ModelResource
+class DummyResource extends Resource
 {
-    protected string $model = {model}::class;
-
-    protected string $title = 'DummyTitle';
-
-    public function fields(): array
+    public function pages(): array
     {
         return [
-            ID::make()->sortable(),
+            //
         ];
     }
 
-    public function rules(Model $item): array
+    protected function resolveRoutes(): void
     {
-        return [];
+        //
     }
 }

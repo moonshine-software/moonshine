@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-
-use function Laravel\Prompts\{info, outro, text};
-
 use MoonShine\MoonShine;
+
+use function Laravel\Prompts\{info, outro, select, text};
 
 class MakeResourceCommand extends MoonShineCommand
 {
@@ -30,6 +29,10 @@ class MakeResourceCommand extends MoonShineCommand
             )
         );
 
+        $dir = $name->ucfirst()
+            ->remove('Resource', false)
+            ->value();
+
         $name = $name->ucfirst()
             ->replace(['resource', 'Resource'], '')
             ->value();
@@ -39,13 +42,47 @@ class MakeResourceCommand extends MoonShineCommand
 
         $resource = $this->getDirectory() . "/Resources/{$name}Resource.php";
 
-        $this->copyStub('Resource', $resource, [
+        $stub = select('Resource type', [
+            'ModelResourceDefault' => 'Default model resource',
+            'ModelResourceSeparate' => 'Separate model resource',
+            'ModelResourceWithPages' => 'Model resource with pages',
+            'Resource' => 'Empty resource',
+        ], 'ModelResourceDefault');
+
+        $replaceData = [
             '{namespace}' => MoonShine::namespace('\Resources'),
             '{model-namespace}' => $model,
             '{model}' => class_basename($model),
             'DummyTitle' => $title,
             'Dummy' => $name,
-        ]);
+        ];
+
+        if($stub === 'ModelResourceWithPages') {
+            $pageDir = "Pages/$dir";
+            $pageData = fn(string $name) => [
+                'className' => "$dir$name",
+                '--dir' => $pageDir
+            ];
+
+            $this->call(MakePageCommand::class, $pageData('IndexPage'));
+            $this->call(MakePageCommand::class, $pageData('FormPage'));
+            $this->call(MakePageCommand::class, $pageData('ShowPage'));
+
+            $pageNamespace = fn(string $name) => MoonShine::namespace(
+                str_replace('/', '\\', "\\$pageDir\\$dir$name")
+            );
+
+            $replaceData = [
+                '{indexPage}' => "{$dir}IndexPage",
+                '{formPage}' => "{$dir}FormPage",
+                '{showPage}' => "{$dir}ShowPage",
+                '{index-page-namespace}' => $pageNamespace('IndexPage'),
+                '{form-page-namespace}' => $pageNamespace('FormPage'),
+                '{show-page-namespace}' => $pageNamespace('ShowPage')
+            ] + $replaceData;
+        }
+
+        $this->copyStub($stub, $resource, $replaceData);
 
         info(
             "{$name}Resource file was created: " . str_replace(
