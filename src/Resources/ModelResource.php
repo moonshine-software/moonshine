@@ -141,13 +141,13 @@ abstract class ModelResource extends Resource
             }
 
             $fields->withoutRelationFields()
-                ->each(fn (Field $field) => $field->apply($this->onSave($field), $item));
+                ->each(fn (Field $field): mixed => $field->apply($this->onSave($field), $item));
 
             if ($item->save()) {
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
                 $fields->onlyRelationFields()
-                    ->each(fn (ModelRelationField $field) => $field->apply($this->onSave($field), $item));
+                    ->each(fn (ModelRelationField $field): mixed => $field->apply($this->onSave($field), $item));
 
                 $item->save();
 

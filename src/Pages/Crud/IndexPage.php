@@ -59,10 +59,10 @@ class IndexPage extends Page
 
                     ActionGroup::make()->when(
                         ! empty($resource->filters()),
-                        fn (ActionGroup $group) => $group->add(FiltersButton::for($resource))
+                        fn (ActionGroup $group): ActionGroup => $group->add(FiltersButton::for($resource))
                     )->when(
                         ! is_null($export),
-                        fn (ActionGroup $group) => $group->add(
+                        fn (ActionGroup $group): ActionGroup => $group->add(
                             ActionButton::make(
                                 $export->label(),
                                 $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
@@ -72,7 +72,7 @@ class IndexPage extends Page
                         ),
                     )->when(
                         ! is_null($import),
-                        fn (ActionGroup $group) => $group->add(
+                        fn (ActionGroup $group): ActionGroup => $group->add(
                             ActionButton::make(
                                 $import->label(),
                                 '#'

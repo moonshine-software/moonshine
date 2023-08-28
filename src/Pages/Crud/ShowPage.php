@@ -19,8 +19,7 @@ class ShowPage extends Page
     {
         $breadcrumbs = parent::breadcrumbs();
 
-        $breadcrumbs[$this->route()] = $this->getResource()
-            ?->getItem()
+        $breadcrumbs[$this->route()] = $this->getResource()->getItem()
             ?->{$this->getResource()->column()};
 
         return $breadcrumbs;

@@ -43,7 +43,7 @@ class MenuItem extends MenuElement
             $this->badge(fn () => $filler->getBadge());
         }
 
-        if(empty($this->iconValue()) && method_exists($filler, 'getIcon')) {
+        if($this->iconValue() === '' && method_exists($filler, 'getIcon')) {
             $this->icon($filler->getIcon());
         }
     }
