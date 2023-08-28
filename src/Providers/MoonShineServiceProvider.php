@@ -14,6 +14,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use MoonShine\Commands\CustomPageCommand;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\ResourceCommand;
 use MoonShine\Commands\UserCommand;
@@ -31,6 +32,7 @@ class MoonShineServiceProvider extends ServiceProvider
         InstallCommand::class,
         ResourceCommand::class,
         UserCommand::class,
+        CustomPageCommand::class,
     ];
 
     protected array $middlewareGroups = [

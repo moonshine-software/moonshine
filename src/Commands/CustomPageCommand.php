@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\File;
 use MoonShine\MoonShine;
 
 class CustomPageCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:custom {name?} {--a|alias=} {--t|title=} {--view=}';
+    protected $signature = 'moonshine:page {name?} {--a|alias=} {--t|title=} {--view=}';
 
     protected $description = 'Create custom page';
 
@@ -32,9 +33,11 @@ class CustomPageCommand extends MoonShineCommand
 
         $alias = $this->option('alias') ?? $name->kebab()->lower()->value();
 
-        $view = $this->option('view') ?? $name->snake()->lower()->value();
+        $view = $this->option('view') ?? '';
 
         $resource = $this->getDirectory() . "/Pages/{$name}.php";
+
+        File::ensureDirectoryExists(dirname($resource));
 
         $this->copyStub('CustomPage', $resource, [
             '{namespace}' => MoonShine::namespace('\Pages'),
@@ -45,12 +48,12 @@ class CustomPageCommand extends MoonShineCommand
         ]);
 
         $this->components->info(
-            "{$name}CustomPage file was created: " . str_replace(
+            "{$name} file was created: " . str_replace(
                 base_path(),
                 '',
                 $resource
             )
         );
-        $this->components->info('Now register custom page in menu');
+        $this->components->info('Now register page in menu');
     }
 }
