@@ -59,7 +59,7 @@ class MakeResourceCommand extends MoonShineCommand
 
         if($stub === 'ModelResourceWithPages') {
             $pageDir = "Pages/$dir";
-            $pageData = fn(string $name) => [
+            $pageData = fn(string $name): array => [
                 'className' => "$dir$name",
                 '--dir' => $pageDir
             ];
@@ -68,7 +68,7 @@ class MakeResourceCommand extends MoonShineCommand
             $this->call(MakePageCommand::class, $pageData('FormPage'));
             $this->call(MakePageCommand::class, $pageData('ShowPage'));
 
-            $pageNamespace = fn(string $name) => MoonShine::namespace(
+            $pageNamespace = fn(string $name): string => MoonShine::namespace(
                 str_replace('/', '\\', "\\$pageDir\\$dir$name")
             );
 
