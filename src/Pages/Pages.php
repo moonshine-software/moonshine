@@ -7,6 +7,11 @@ namespace MoonShine\Pages;
 use Illuminate\Support\Collection;
 use MoonShine\Resources\Resource;
 
+/**
+ * @template TKey of array-key
+ *
+ * @implements  Collection<TKey, Page>
+ */
 final class Pages extends Collection
 {
     public function setResource(Resource $resource): Pages

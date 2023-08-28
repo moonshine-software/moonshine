@@ -2,11 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use MoonShine\Exceptions\MoonShineNotFoundException;
-use MoonShine\Http\Controllers\ActionController;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Http\Controllers\DashboardController;
+use MoonShine\Http\Controllers\HandlerController;
 use MoonShine\Http\Controllers\NotificationController;
 use MoonShine\Http\Controllers\PageController;
 use MoonShine\Http\Controllers\ProfileController;
@@ -24,7 +24,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                     ->parameter('crud', 'resourceItem')
                     ->only(['store', 'update', 'destroy']);
 
-                Route::any('actions', ActionController::class)->name('actions');
+                Route::any('handler/{handlerUri}', HandlerController::class)->name('handler');
                 Route::get('{pageUri}', PageController::class)->name('resource.page');
             });
 

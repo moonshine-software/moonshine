@@ -7,6 +7,7 @@ namespace MoonShine\Resources;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Handlers\Handlers;
 use MoonShine\Pages\Pages;
 use MoonShine\Traits\WithUriKey;
 
@@ -14,7 +15,7 @@ abstract class Resource implements ResourceContract, MenuFiller
 {
     use WithUriKey;
 
-    abstract public function pages(): array;
+    abstract protected function pages(): array;
 
     public function getPages(): Pages
     {
@@ -29,9 +30,26 @@ abstract class Resource implements ResourceContract, MenuFiller
         });
     }
 
+    protected function resolveRoutes(): void
+    {
+        //
+    }
+
+    protected function handlers(): array
+    {
+        return [];
+    }
+
+    public function getHandlers(): Handlers
+    {
+        return Handlers::make($this->handlers());
+    }
+
+    // MenuFiller methods
     public function url(): string
     {
-        return $this->getPages()
+        return $this
+            ->getPages()
             ->first()
             ->route();
     }
@@ -40,10 +58,5 @@ abstract class Resource implements ResourceContract, MenuFiller
     {
         return moonshineRequest()->getResourceUri()
             === $this->uriKey();
-    }
-
-    protected function resolveRoutes(): void
-    {
-        //
     }
 }

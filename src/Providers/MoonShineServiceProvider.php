@@ -17,6 +17,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeApplyCommand;
 use MoonShine\Commands\MakeComponentCommand;
+use MoonShine\Commands\MakeControllerCommand;
 use MoonShine\Commands\MakeFieldCommand;
 use MoonShine\Commands\MakePageCommand;
 use MoonShine\Commands\MakeResourceCommand;
@@ -33,6 +34,7 @@ class MoonShineServiceProvider extends ServiceProvider
     protected array $commands = [
         InstallCommand::class,
         MakeResourceCommand::class,
+        MakeControllerCommand::class,
         MakeFieldCommand::class,
         MakePageCommand::class,
         MakeUserCommand::class,

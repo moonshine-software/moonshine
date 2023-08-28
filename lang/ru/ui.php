@@ -19,6 +19,7 @@ return [
     'deleting' => 'Удаление',
     'download' => 'Скачать',
     'export' => 'Экспорт',
+    'import' => 'Импорт',
     'cancel' => 'Отмена',
     'confirm' => 'Подтвердить',
     'close' => 'Закрыть',

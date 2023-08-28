@@ -8,12 +8,14 @@ use Closure;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Handlers\ExportHandler;
+use MoonShine\Handlers\ImportHandler;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Pages\Crud\ShowPage;
@@ -64,7 +66,7 @@ abstract class ModelResource extends Resource
         return $this->column;
     }
 
-    public function pages(): array
+    protected function pages(): array
     {
         return [
             IndexPage::make($this->title()),
@@ -143,14 +145,48 @@ abstract class ModelResource extends Resource
         return [];
     }
 
-    public function actions(): array
+    /**
+     * @throws Throwable
+     */
+    public function getFilters(): Fields
     {
-        return [];
+        return Fields::make($this->filters())
+            ->wrapNames('filters');
     }
 
     public function getActiveActions(): array
     {
         return ['create', 'show', 'edit', 'delete'];
+    }
+
+    public function actions(): array
+    {
+        return [];
+    }
+
+    public function getActions(): ActionButtons
+    {
+        return ActionButtons::make($this->actions());
+    }
+
+    public function export(): ?ExportHandler
+    {
+        return ExportHandler::make(__('moonshine::ui.export'))
+            ->csv()
+            ->queue();
+    }
+
+    public function import(): ?ImportHandler
+    {
+        return ImportHandler::make(__('moonshine::ui.import'));
+    }
+
+    protected function handlers(): array
+    {
+        return array_filter([
+            $this->export(),
+            $this->import()
+        ]);
     }
 
     public function search(): array
@@ -166,12 +202,6 @@ abstract class ModelResource extends Resource
     public function validationMessages(): array
     {
         return [];
-    }
-
-    public function getFilters(): Fields
-    {
-        return Fields::make($this->filters())
-            ->wrapNames('filters');
     }
 
     /**
@@ -192,8 +222,12 @@ abstract class ModelResource extends Resource
 
     public function prepareForValidation(): void
     {
+        //
     }
 
+    /**
+     * @param array<int|string> $ids
+     */
     public function massDelete(array $ids): void
     {
         $this->beforeMassDeleting($ids);
@@ -207,6 +241,9 @@ abstract class ModelResource extends Resource
         $this->afterMassDeleted($ids);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function delete(Model $item): bool
     {
         $item = $this->beforeDeleting($item);
@@ -232,7 +269,7 @@ abstract class ModelResource extends Resource
     /**
      * @throws ResourceException|Throwable
      */
-    public function save(Model $item, ?Collection $fields = null): Model
+    public function save(Model $item, ?Fields $fields = null): Model
     {
         $fields ??= $this->getFields()
             ->onlyFields();

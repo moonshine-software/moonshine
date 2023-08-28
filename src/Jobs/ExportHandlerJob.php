@@ -9,12 +9,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use MoonShine\Actions\ImportAction;
+use MoonShine\Handlers\ExportHandler;
+use OpenSpout\Common\Exception\InvalidArgumentException;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
-use OpenSpout\Reader\Exception\ReaderNotOpenedException;
+use OpenSpout\Writer\Exception\WriterNotOpenedException;
+use Throwable;
 
-class ImportActionJob implements ShouldQueue
+class ExportHandlerJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -24,22 +26,25 @@ class ImportActionJob implements ShouldQueue
     public function __construct(
         protected string $resource,
         protected string $path,
-        protected bool $deleteAfter,
+        protected string $disk,
+        protected string $dir,
         protected string $delimiter = ','
     ) {
     }
 
     /**
      * @throws IOException
+     * @throws WriterNotOpenedException
      * @throws UnsupportedTypeException
-     * @throws ReaderNotOpenedException
+     * @throws InvalidArgumentException|Throwable
      */
     public function handle(): void
     {
-        ImportAction::process(
+        ExportHandler::process(
             $this->path,
             new $this->resource(),
-            $this->deleteAfter,
+            $this->disk,
+            $this->dir,
             $this->delimiter
         );
     }

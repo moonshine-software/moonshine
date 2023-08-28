@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
-
-use MoonShine\MoonShine;
 
 class MakeComponentCommand extends MoonShineCommand
 {
@@ -43,7 +41,9 @@ class MakeComponentCommand extends MoonShineCommand
 
         $component = $this->getDirectory() . "/Components/$className.php";
 
-        $this->makeDir($this->getDirectory() . '/Components');
+        if(! is_dir($this->getDirectory() . '/Components')) {
+            $this->makeDir($this->getDirectory() . '/Components');
+        }
 
         $this->copyStub('Component', $component, [
             '{namespace}' => MoonShine::namespace('\Components'),

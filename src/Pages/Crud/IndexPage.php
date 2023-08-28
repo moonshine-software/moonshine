@@ -11,11 +11,13 @@ use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Buttons\IndexPage\ShowButton;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
+use MoonShine\Fields\File;
 use MoonShine\Pages\Page;
 
 class IndexPage extends Page
@@ -25,6 +27,9 @@ class IndexPage extends Page
         $resource = $this->getResource();
 
         $items = $resource->paginate();
+
+        $export = $resource->export();
+        $import = $resource->import();
 
         return [
             Grid::make([
@@ -53,6 +58,32 @@ class IndexPage extends Page
                     ])->justifyAlign('start'),
 
                     ActionGroup::make([
+                        ActionButton::make(
+                            $export->label(),
+                            $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+                        )
+                            ->customAttributes(['class' => 'btn btn-primary'])
+                            ->icon($export->iconValue()),
+
+                        ActionButton::make(
+                            $import->label(),
+                            '#'
+                        )
+                            ->customAttributes(['class' => 'btn btn-primary'])
+                            ->icon($import->iconValue())
+                            ->inOffCanvas(
+                                fn () => $import->label(),
+                                fn () => FormBuilder::make(
+                                    $resource->route('handler', query: ['handlerUri' => $import->uriKey()])
+                                )
+                                    ->fields([
+                                        File::make(column: $import->getInputName())->required(),
+                                    ])
+                                    ->submit(__('moonshine::ui.confirm'))
+                            )
+                        ,
+
+
                         FiltersButton::for($resource),
                     ]),
                 ])->customAttributes([

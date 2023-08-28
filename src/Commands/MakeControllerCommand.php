@@ -10,11 +10,11 @@ use MoonShine\MoonShine;
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\text;
 
-class MakeApplyCommand extends MoonShineCommand
+class MakeControllerCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:apply {className?}';
+    protected $signature = 'moonshine:controller {className?}';
 
-    protected $description = 'Create apply for Field';
+    protected $description = 'Create controller';
 
     /**
      * @throws FileNotFoundException
@@ -26,14 +26,14 @@ class MakeApplyCommand extends MoonShineCommand
             required: true
         );
 
-        $apply = $this->getDirectory() . "/Applies/$className.php";
+        $controller = $this->getDirectory() . "/Controllers/$className.php";
 
-        if(! is_dir($this->getDirectory() . '/Applies')) {
-            $this->makeDir($this->getDirectory() . '/Applies');
+        if(! is_dir($this->getDirectory() . '/Controllers')) {
+            $this->makeDir($this->getDirectory() . '/Controllers');
         }
 
-        $this->copyStub('Apply', $apply, [
-            '{namespace}' => MoonShine::namespace('\Applies'),
+        $this->copyStub('Controller', $controller, [
+            '{namespace}' => MoonShine::namespace('\Controllers'),
             'DummyClass' => $className,
         ]);
 
@@ -41,7 +41,7 @@ class MakeApplyCommand extends MoonShineCommand
             "$className was created: " . str_replace(
                 base_path(),
                 '',
-                $apply
+                $controller
             )
         );
     }

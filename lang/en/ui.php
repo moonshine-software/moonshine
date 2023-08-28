@@ -19,6 +19,7 @@ return [
     'deleting' => 'Deleting',
     'download' => 'Download',
     'export' => 'Export',
+    'import' => 'Import',
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
     'close' => 'Close',
