@@ -73,7 +73,7 @@ class IndexPage extends Page
                             ->icon($import->iconValue())
                             ->inOffCanvas(
                                 fn () => $import->label(),
-                                fn () => FormBuilder::make(
+                                fn (): FormBuilder => FormBuilder::make(
                                     $resource->route('handler', query: ['handlerUri' => $import->uriKey()])
                                 )
                                     ->fields([
