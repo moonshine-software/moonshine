@@ -98,7 +98,7 @@ class IndexPage extends Page
 
             ActionGroup::make()->when(
                 ! empty($resource->queryTags()),
-                function (ActionGroup $group) use ($resource) {
+                function (ActionGroup $group) use ($resource): ActionGroup {
                     foreach ($resource->queryTags() as $tag) {
                         $group->add(
                             ActionButton::make(
@@ -110,7 +110,7 @@ class IndexPage extends Page
                                 ->canSee(fn() => $tag->isSee(moonshineRequest()))
                                 ->when(
                                     $tag->isActive(),
-                                    fn (ActionButton $btn) => $btn->customAttributes([
+                                    fn (ActionButton $btn): ActionButton => $btn->customAttributes([
                                         'class' => 'bg-purple',
                                     ])
                                 )

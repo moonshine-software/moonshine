@@ -56,7 +56,7 @@ if (! function_exists('to_page')) {
         bool $redirect = false,
         ?string $fragment = null
     ): RedirectResponse|string {
-        if (!empty($fragment)) {
+        if ($fragment !== null && $fragment !== '') {
             $params += ['_fragment-load' => $fragment];
         }
 
