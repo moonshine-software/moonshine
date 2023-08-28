@@ -107,7 +107,7 @@ class IndexPage extends Page
                             )
                                 ->showInLine()
                                 ->icon($tag->iconValue())
-                                ->canSee(fn() => $tag->isSee(moonshineRequest()))
+                                ->canSee(fn () => $tag->isSee(moonshineRequest()))
                                 ->when(
                                     $tag->isActive(),
                                     fn (ActionButton $btn): ActionButton => $btn->customAttributes([
