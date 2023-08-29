@@ -70,7 +70,7 @@ class MenuItem extends MenuElement
 
         $badge = $this->getBadge();
 
-        return  $badge !== false && !is_null($badge);
+        return  $badge !== false && ! is_null($badge);
     }
 
     public function getBadge(): ?string
