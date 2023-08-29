@@ -15,7 +15,7 @@ use MoonShine\Http\Controllers\UpdateColumnController;
 
 Route::prefix(config('moonshine.route.prefix', ''))
     ->middleware('moonshine')
-    ->as('moonshine.')->group(static function () {
+    ->as('moonshine.')->group(static function (): void {
         Route::middleware(config('moonshine.auth.middleware', []))->group(function (): void {
             Route::prefix('resource/{resourceUri}')->group(function (): void {
                 Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
