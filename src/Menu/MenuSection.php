@@ -43,7 +43,7 @@ abstract class MenuSection
 
         $badge = $this->getBadge();
 
-        return !is_null($badge) && $badge !== false;
+        return ! is_null($badge) && $badge !== false;
     }
 
     public function getBadge()
