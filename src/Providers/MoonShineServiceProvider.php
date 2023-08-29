@@ -14,6 +14,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use MoonShine\AssetManager;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeApplyCommand;
 use MoonShine\Commands\MakeComponentCommand;
@@ -27,7 +28,6 @@ use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
-use MoonShine\Utilities\AssetManager;
 
 class MoonShineServiceProvider extends ServiceProvider
 {

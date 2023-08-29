@@ -9,8 +9,11 @@ use MoonShine\Models\MoonshineUserRole;
 final class CrudRequestFactory
 {
     protected string $name = 'Danil Shutsky';
+
     protected int $moonshine_user_role_id = MoonshineUserRole::DEFAULT_ROLE_ID;
+
     protected string $email = 'example@example.com';
+
     protected string $password = '123456';
     protected string $password_repeat = '123456';
 

@@ -20,7 +20,7 @@
             @if(is_array($label))
                 <optgroup label="{{ $value }}">
                     @foreach($label as $oValue => $oName)
-                        <option @selected($oValue == $attributes->get('value', ''))
+                        <option @selected(is_selected_option($attributes->get('value', ''), $oValue))
                                 value="{{ $oValue }}"
                         >
                             {{ $oName }}
@@ -28,7 +28,7 @@
                     @endforeach
                 </optgroup>
             @else
-                <option @selected($value == $attributes->get('value', ''))
+                <option @selected(is_selected_option($attributes->get('value', ''), $value))
                         value="{{ $value }}"
                 >
                     {{ $label }}

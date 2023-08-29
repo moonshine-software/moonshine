@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
@@ -107,10 +108,12 @@ class RelationModelFieldController extends MoonShineController
         if ($request->isMethod('POST')) {
             $item = $resource->getModel();
             $item->{$relation->getForeignKeyName()} = $parentItem->getKey();
+
+            if ($relation instanceof MorphOneOrMany) {
+                $item->{$relation->getQualifiedMorphType()} = get_class($parentItem);
+            }
         } else {
-            $item = $resource->getModel()
-                ->newModelQuery()
-                ->findOrFail(request($resource->getModel()->getKeyName()));
+            $item = $request->getFieldItemOrFail();
         }
 
         $validator = $resource->validate($item);

@@ -27,6 +27,6 @@ class RelationModelFieldUpateRequest extends RelationModelFieldRequest
 
         $resource = $this->getField()->getResource();
 
-        return $resource->rules($resource->getItem());
+        return $resource->rules($this->getFieldItemOrFail());
     }
 }

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use MoonShine\AssetManager;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\Pages\Page;
-use MoonShine\Utilities\AssetManager;
 use Throwable;
 
 class MoonShineApplicationServiceProvider extends ServiceProvider

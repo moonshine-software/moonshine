@@ -6,9 +6,13 @@ use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
+use Throwable;
 
 final class HasManyCreateButton
 {
+    /**
+     * @throws Throwable
+     */
     public static function for(HasMany $field, int $resourceId): ActionButton
     {
         $action = to_relation_route(

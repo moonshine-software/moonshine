@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Utilities;
+namespace MoonShine;
 
 use Composer\InstalledVersions;
 use Illuminate\Support\Traits\Conditionable;

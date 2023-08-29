@@ -7,6 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\AssetManager;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
@@ -19,7 +20,7 @@ use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\Resource;
-use MoonShine\Utilities\AssetManager;
+use MoonShine\Utilities\SelectOptions;
 
 if (! function_exists('tryOrReturn')) {
     function tryOrReturn(Closure $tryCallback, mixed $default = false): mixed
@@ -175,5 +176,12 @@ if (! function_exists('formErrors')) {
         }
 
         return $errors->{$name};
+    }
+}
+
+if (! function_exists('is_selected_option')) {
+    function is_selected_option(mixed $current, string $value): bool
+    {
+        return SelectOptions::isSelected($current, $value);
     }
 }

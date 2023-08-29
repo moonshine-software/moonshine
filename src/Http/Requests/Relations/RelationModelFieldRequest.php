@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests\Relations;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Resources\ModelResource;
@@ -52,5 +53,15 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             ->findByRelation($this->getRelationName());
 
         return $this->field;
+    }
+
+    public function getFieldItemOrFail(): Model
+    {
+        $resource = $this->getField()->getResource();
+
+        return $resource
+            ->getModel()
+            ->newModelQuery()
+            ->findOrFail(request($resource->getModel()->getKeyName()));
     }
 }

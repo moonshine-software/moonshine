@@ -14,11 +14,11 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\NoInput;
-use MoonShine\Fields\SwitchBoolean;
 use MoonShine\Fields\Text;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
@@ -53,6 +53,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $inLineBadge = false;
 
+    protected bool $selectMode = false;
+
     public function getView(): string
     {
         if ($this->isTree()) {
@@ -76,6 +78,18 @@ class BelongsToMany extends ModelRelationField implements
         $this->inLineBadge = $badge;
 
         return $this;
+    }
+
+    public function selectMode(): self
+    {
+        $this->selectMode = true;
+
+        return $this;
+    }
+
+    public function isSelectMode(): bool
+    {
+        return $this->selectMode;
     }
 
     public function tree(string $parentColumn): static
@@ -148,11 +162,19 @@ class BelongsToMany extends ModelRelationField implements
         return "{$this->getRelationName()}_pivot";
     }
 
+    public function selectedKeys(): Collection
+    {
+        return $this->toValue()
+            ?->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id')
+            ?? collect();
+    }
+
     protected function preparedFields(): Fields
     {
         return $this->getFields()->onlyFields()->map(
             fn (Field $field): Field => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->column()}")
+                ->setAttribute('class', 'pivotField')
                 ->setName(
                     "{$this->getPivotName()}[\${index0}][{$field->column()}]"
                 )
@@ -164,7 +186,8 @@ class BelongsToMany extends ModelRelationField implements
     {
         $titleColumn = $this->getResourceColumn();
         $checkedColumn = "{$this->getRelationName()}[\${index0}]";
-        $identityField = SwitchBoolean::make('#', $checkedColumn)
+        $identityField = Checkbox::make('#', $checkedColumn)
+            ->setAttribute('class', 'pivotChecker')
             ->setName($checkedColumn)
             ->iterableAttributes();
 
@@ -261,6 +284,12 @@ class BelongsToMany extends ModelRelationField implements
         return function ($item) {
             $requestValues = array_filter($this->requestValue() ?: []);
             $applyValues = [];
+
+            if($this->isSelectMode()) {
+                $item->{$this->getRelationName()}()->sync($requestValues);
+
+                return $item;
+            }
 
             foreach ($requestValues as $key => $checked) {
                 foreach ($this->getFields() as $field) {
