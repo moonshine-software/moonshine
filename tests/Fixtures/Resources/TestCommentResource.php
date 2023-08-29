@@ -16,14 +16,14 @@ class TestCommentResource extends ModelResource
     {
         return [
             ID::make(),
-            Text::make('Comment title', 'content')
+            Text::make('Comment title', 'content'),
         ];
     }
 
     public function rules(Model $item): array
     {
         return  [
-            'content' => 'required'
+            'content' => 'required',
         ];
     }
 }

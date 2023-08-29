@@ -12,7 +12,7 @@ class Cover extends Model
 
     protected $fillable = [
         'image',
-        'item_id'
+        'item_id',
     ];
 
     public function category(): BelongsTo

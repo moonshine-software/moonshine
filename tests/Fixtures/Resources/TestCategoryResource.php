@@ -44,7 +44,7 @@ class TestCategoryResource extends ModelResource
                     ->hideOnIndex()
                     ->showWhen('is_public', 1)
                     ->withTime(),
-            ])
+            ]),
         ];
     }
 

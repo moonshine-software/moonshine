@@ -26,7 +26,8 @@ final class HasManyCreateButton
                 fn (ActionButton $action): string => (string) FormBuilder::make($action->url())
                     ->precognitive()
                     ->name($field->getRelationName())
-                    ->fields($fields
+                    ->fields(
+                        $fields
                         ->push(Hidden::make('_relation')->setValue($field->getRelationName()))
                         ->toArray()
                     )
