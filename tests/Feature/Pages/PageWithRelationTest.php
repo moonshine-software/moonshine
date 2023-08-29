@@ -1,5 +1,6 @@
 <?php
 
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
