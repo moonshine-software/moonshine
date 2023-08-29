@@ -55,6 +55,10 @@ trait ResourceModelCrudRouter
 
     protected function defaultRedirect(): string
     {
-        return request('_redirect') ?? to_page($this, 'index-page');
+        return request('_redirect') ?? to_page(
+            $this,
+            'form-page',
+            is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()->getKey()]
+        );
     }
 }
