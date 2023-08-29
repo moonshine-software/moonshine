@@ -6,6 +6,7 @@ namespace MoonShine\Collections;
 
 use Closure;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
@@ -15,6 +16,8 @@ use Throwable;
 
 abstract class MoonShineRenderElements extends Collection
 {
+    use Conditionable;
+
     /**
      * @throws Throwable
      */

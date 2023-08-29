@@ -62,7 +62,9 @@ class MakeFieldCommand extends MoonShineCommand
 
         $field = $this->getDirectory() . "/Fields/$className.php";
 
-        $this->makeDir($this->getDirectory() . '/Fields');
+        if(! is_dir($this->getDirectory() . '/Fields')) {
+            $this->makeDir($this->getDirectory() . '/Fields');
+        }
 
         $this->copyStub('Field', $field, [
             '{namespace}' => MoonShine::namespace('\Fields'),

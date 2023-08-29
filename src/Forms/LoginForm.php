@@ -11,7 +11,7 @@ use MoonShine\Fields\Text;
 
 final class LoginForm
 {
-    public function __invoke()
+    public function __invoke(): FormBuilder
     {
         return FormBuilder::make()
             ->customAttributes([

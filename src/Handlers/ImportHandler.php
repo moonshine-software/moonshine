@@ -2,34 +2,27 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Actions;
+namespace MoonShine\Handlers;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Components\FormBuilder;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Fields\Field;
-use MoonShine\Fields\File;
-use MoonShine\Fields\Hidden;
-use MoonShine\Jobs\ImportActionJob;
+use MoonShine\Jobs\ImportHandlerJob;
 use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
-use MoonShine\Traits\HasResource;
-use MoonShine\Traits\WithQueue;
 use MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Reader\Exception\ReaderNotOpenedException;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Symfony\Component\HttpFoundation\Response;
 
-class ImportAction
+class ImportHandler extends Handler
 {
     use WithStorage;
-    use WithQueue;
-    use HasResource;
 
     protected string $view = 'moonshine::actions.import';
     public string $inputName = 'import_file';
@@ -38,6 +31,11 @@ class ImportAction
     protected bool $deleteAfter = false;
 
     protected string $csvDelimiter = ',';
+
+    public function getInputName(): string
+    {
+        return $this->inputName;
+    }
 
     public function delimiter(string $value): static
     {
@@ -52,9 +50,9 @@ class ImportAction
      * @throws ReaderNotOpenedException
      * @throws UnsupportedTypeException
      */
-    public function handle(): RedirectResponse
+    public function handle(): Response
     {
-        if (! request()->hasFile($this->inputName)) {
+        if (! request()->hasFile($this->getInputName())) {
             MoonShineUI::toast(
                 __('moonshine::ui.resource.import.file_required'),
                 'error'
@@ -63,7 +61,7 @@ class ImportAction
             return back();
         }
 
-        $requestFile = request()->file($this->inputName);
+        $requestFile = request()->file($this->getInputName());
 
         if (! in_array(
             $requestFile->getClientOriginalExtension(),
@@ -83,7 +81,7 @@ class ImportAction
 
         $this->resolveStorage();
 
-        $path = request()->file($this->inputName)->storeAs(
+        $path = request()->file($this->getInputName())->storeAs(
             $this->getDir(),
             str_replace('.txt', '.csv', (string) $requestFile->hashName()),
             $this->getDisk()
@@ -93,7 +91,7 @@ class ImportAction
             ->path($path);
 
         if ($this->isQueue()) {
-            ImportActionJob::dispatch(
+            ImportHandlerJob::dispatch(
                 $this->getResource()::class,
                 $path,
                 $this->deleteAfter,
@@ -201,15 +199,5 @@ class ImportAction
         $this->deleteAfter = true;
 
         return $this;
-    }
-
-    public function getForm(): FormBuilder
-    {
-        return FormBuilder::make($this->url())
-            ->fields([
-                Hidden::make(column: $this->getTriggerKey())->setValue(1),
-                File::make(column: $this->inputName)->required(),
-            ])
-            ->submit(__('moonshine::ui.confirm'));
     }
 }

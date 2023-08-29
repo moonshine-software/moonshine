@@ -13,9 +13,8 @@ use Throwable;
 
 /**
  * @template TKey of array-key
- * @template MoonShineComponent
  *
- * @extends  Collection<TKey, MoonShineComponent>
+ * @implements   Collection<TKey, MoonShineComponent>
  */
 final class PageComponents extends MoonShineRenderElements
 {

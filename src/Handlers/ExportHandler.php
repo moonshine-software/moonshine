@@ -2,31 +2,26 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Actions;
+namespace MoonShine\Handlers;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
-use MoonShine\Jobs\ExportActionJob;
+use MoonShine\Jobs\ExportHandlerJob;
 use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
-use MoonShine\Traits\HasResource;
-use MoonShine\Traits\WithQueue;
 use MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Writer\Exception\WriterNotOpenedException;
 use Rap2hpoutre\FastExcel\FastExcel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-class ExportAction
+class ExportHandler extends Handler
 {
     use WithStorage;
-    use WithQueue;
-    use HasResource;
 
     protected ?string $icon = 'heroicons.outline.table-cells';
 
@@ -57,7 +52,7 @@ class ExportAction
      * @throws UnsupportedTypeException
      * @throws InvalidArgumentException|Throwable
      */
-    public function handle(): RedirectResponse|BinaryFileResponse
+    public function handle(): Response
     {
         if (! $this->hasResource()) {
             throw new ActionException('Resource is required for action');
@@ -71,7 +66,7 @@ class ExportAction
             );
 
         if ($this->isQueue()) {
-            ExportActionJob::dispatch(
+            ExportHandlerJob::dispatch(
                 $this->getResource()::class,
                 $path,
                 $this->getDisk(),

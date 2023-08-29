@@ -30,7 +30,9 @@ class MakeApplyCommand extends MoonShineCommand
 
         $apply = $this->getDirectory() . "/Applies/$className.php";
 
-        $this->makeDir($this->getDirectory() . '/Applies');
+        if(! is_dir($this->getDirectory() . '/Applies')) {
+            $this->makeDir($this->getDirectory() . '/Applies');
+        }
 
         $this->copyStub('Apply', $apply, [
             '{namespace}' => MoonShine::namespace('\Applies'),

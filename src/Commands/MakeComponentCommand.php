@@ -43,7 +43,9 @@ class MakeComponentCommand extends MoonShineCommand
 
         $component = $this->getDirectory() . "/Components/$className.php";
 
-        $this->makeDir($this->getDirectory() . '/Components');
+        if(! is_dir($this->getDirectory() . '/Components')) {
+            $this->makeDir($this->getDirectory() . '/Components');
+        }
 
         $this->copyStub('Component', $component, [
             '{namespace}' => MoonShine::namespace('\Components'),

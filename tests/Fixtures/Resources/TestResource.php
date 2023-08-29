@@ -3,7 +3,7 @@
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Actions\FiltersAction;
+use MoonShine\Handlers\FiltersAction;
 use MoonShine\Resources\ModelResource;
 
 class TestResource extends ModelResource

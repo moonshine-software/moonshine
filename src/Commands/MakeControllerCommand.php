@@ -12,41 +12,38 @@ use function Laravel\Prompts\text;
 
 use MoonShine\MoonShine;
 
-class MakePageCommand extends MoonShineCommand
+class MakeControllerCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?} {--dir=}';
+    protected $signature = 'moonshine:controller {className?}';
 
-    protected $description = 'Create page';
+    protected $description = 'Create controller';
 
     /**
      * @throws FileNotFoundException
      */
     public function handle(): void
     {
-        $dir = $this->option('dir') ?? 'Pages';
-
         $className = $this->argument('className') ?? text(
             'Class name',
             required: true
         );
 
-        $page = $this->getDirectory() . "/$dir/$className.php";
+        $controller = $this->getDirectory() . "/Controllers/$className.php";
 
-        if(! is_dir($this->getDirectory() . "/$dir")) {
-            $this->makeDir($this->getDirectory() . "/$dir");
+        if(! is_dir($this->getDirectory() . '/Controllers')) {
+            $this->makeDir($this->getDirectory() . '/Controllers');
         }
 
-        $this->copyStub('Page', $page, [
-            '{namespace}' => MoonShine::namespace('\\' . str_replace('/', '\\', $dir)),
-            'DummyPage' => $className,
-            'DummyTitle' => $className,
+        $this->copyStub('Controller', $controller, [
+            '{namespace}' => MoonShine::namespace('\Controllers'),
+            'DummyClass' => $className,
         ]);
 
         outro(
             "$className was created: " . str_replace(
                 base_path(),
                 '',
-                $page
+                $controller
             )
         );
     }

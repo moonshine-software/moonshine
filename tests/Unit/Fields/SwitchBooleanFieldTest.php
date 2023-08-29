@@ -33,7 +33,7 @@ it('view', function (): void {
 
 it('preview with not auto update', function (): void {
 
-    expect($this->field->autoUpdate(null, false)->preview())
+    expect($this->field->updateOnPreview(null, false)->preview())
         ->toBe(
             view('moonshine::fields.switch', [
                 'element' => $this->field,
@@ -46,7 +46,7 @@ it('preview with auto update', function (): void {
         ->toBe(
             view('moonshine::fields.switch', [
                 'element' => $this->field,
-                'autoUpdate' => true,
+                'updateOnPreview' => true,
                 'item' => $this->item,
             ])->render()
         );

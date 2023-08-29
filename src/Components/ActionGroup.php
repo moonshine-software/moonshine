@@ -6,6 +6,7 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
 
 /**
@@ -23,9 +24,27 @@ final class ActionGroup extends MoonshineComponent
 
     public function getActions(): ActionButtons
     {
-        return is_array($this->actions)
+        return (is_array($this->actions)
             ? ActionButtons::make($this->actions)
-            : $this->actions;
+            : $this->actions)->filter();
+    }
+
+    public function add(ActionButton $item): self
+    {
+        $this->actions = $this->getActions();
+
+        $this->actions->add($item);
+
+        return $this;
+    }
+
+    public function prepend(ActionButton $item): self
+    {
+        $this->actions = $this->getActions();
+
+        $this->actions->prepend($item);
+
+        return $this;
     }
 
     public function render(): View|Closure|string

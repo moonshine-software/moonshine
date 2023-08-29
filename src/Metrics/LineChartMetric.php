@@ -53,7 +53,7 @@ class LineChartMetric extends Metric
     {
         return collect($this->lines())
             ->collapse()
-            ->mapWithKeys(fn ($item) => $item)
+            ->mapWithKeys(fn ($item): mixed => $item)
             ->when(! $this->isWithoutSortKeys(), fn ($items): Collection => $items->sortKeys())
             ->keys()
             ->toArray();

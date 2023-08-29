@@ -9,9 +9,8 @@ use MoonShine\Contracts\Actions\ActionButtonContract;
 
 /**
  * @template TKey of array-key
- * @template ActionButtonContract
  *
- * @extends  Collection<TKey, ActionButtonContract>
+ * @implements  Collection<TKey, ActionButtonContract>
  */
 final class ActionButtons extends Collection
 {

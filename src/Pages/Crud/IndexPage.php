@@ -11,11 +11,13 @@ use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Buttons\IndexPage\ShowButton;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
+use MoonShine\Fields\File;
 use MoonShine\Pages\Page;
 
 class IndexPage extends Page
@@ -26,6 +28,9 @@ class IndexPage extends Page
 
         $items = $resource->paginate();
 
+        $export = $resource->export();
+        $import = $resource->import();
+
         return [
             Grid::make([
                 Column::make([
@@ -35,7 +40,7 @@ class IndexPage extends Page
                             to_page(
                                 $resource,
                                 'form-page',
-                                ['_fragment-load' => 'crud-form']
+                                fragment: 'crud-form'
                             )
                         )
                             ->customAttributes(['class' => 'btn btn-primary'])
@@ -52,13 +57,69 @@ class IndexPage extends Page
                             ->icon('heroicons.outline.plus'),
                     ])->justifyAlign('start'),
 
-                    ActionGroup::make([
-                        FiltersButton::for($resource),
-                    ]),
+                    ActionGroup::make()->when(
+                        ! empty($resource->filters()),
+                        fn (ActionGroup $group): ActionGroup => $group->add(FiltersButton::for($resource))
+                    )->when(
+                        ! is_null($export),
+                        fn (ActionGroup $group): ActionGroup => $group->add(
+                            ActionButton::make(
+                                $export->label(),
+                                $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+                            )
+                                ->customAttributes(['class' => 'btn btn-primary'])
+                                ->icon($export->iconValue())
+                        ),
+                    )->when(
+                        ! is_null($import),
+                        fn (ActionGroup $group): ActionGroup => $group->add(
+                            ActionButton::make(
+                                $import->label(),
+                                '#'
+                            )
+                                ->customAttributes(['class' => 'btn btn-primary'])
+                                ->icon($import->iconValue())
+                                ->inOffCanvas(
+                                    fn () => $import->label(),
+                                    fn (): FormBuilder => FormBuilder::make(
+                                        $resource->route('handler', query: ['handlerUri' => $import->uriKey()])
+                                    )
+                                        ->fields([
+                                            File::make(column: $import->getInputName())->required(),
+                                        ])
+                                        ->submit(__('moonshine::ui.confirm'))
+                                )
+                        ),
+                    ),
                 ])->customAttributes([
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),
             ]),
+
+            ActionGroup::make()->when(
+                ! empty($resource->queryTags()),
+                function (ActionGroup $group) use ($resource): ActionGroup {
+                    foreach ($resource->queryTags() as $tag) {
+                        $group->add(
+                            ActionButton::make(
+                                $tag->label(),
+                                to_page($resource, IndexPage::class, params: ['queryTag' => $tag->uri()])
+                            )
+                                ->showInLine()
+                                ->icon($tag->iconValue())
+                                ->canSee(fn () => $tag->isSee(moonshineRequest()))
+                                ->when(
+                                    $tag->isActive(),
+                                    fn (ActionButton $btn): ActionButton => $btn->customAttributes([
+                                        'class' => 'bg-purple',
+                                    ])
+                                )
+                        );
+                    }
+
+                    return $group;
+                }
+            ),
 
             Fragment::make([
                 TableBuilder::make(items: $items)

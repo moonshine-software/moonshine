@@ -5,9 +5,9 @@
         :name="$element->name()"
         :onValue="$element->getOnValue()"
         :offValue="$element->getOffValue()"
-        :@change="(($autoUpdate ?? false)
+        :@change="(($updateOnPreview ?? false)
             ? 'updateColumn(
-                `'.$element->getUpdateUrl().'`,
+                `'.$element->getUpdateOnPreviewUrl().'`,
                 `'.$element->column().'`,
                 $event.target.checked ? `'.$element->getOnValue().'` : `'.$element->getOffValue().'`
             )'

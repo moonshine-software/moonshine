@@ -58,7 +58,7 @@ trait WithComponentAttributes
     public function attributes(): ComponentAttributeBag
     {
         $resolveAttributes = collect($this->attributes)->mapWithKeys(
-            function ($attr) {
+            function ($attr): array {
                 $property = (string) str($attr)->camel();
 
                 return isset($this->{$property}) ? [$attr => $this->{$property}]
