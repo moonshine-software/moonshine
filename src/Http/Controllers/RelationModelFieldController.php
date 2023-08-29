@@ -149,6 +149,11 @@ class RelationModelFieldController extends MoonShineController
             $fields->onlyFields()
         );
 
+        $this->toast(
+            __('moonshine::ui.saved'),
+            'success'
+        );
+
         return $request->redirectRoute(
             $parentResource->redirectAfterDelete()
         );
