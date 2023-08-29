@@ -27,22 +27,22 @@ trait WithIsNowOnRoute
     public function isNowOnCreateForm(): bool
     {
         return (
-                is_null(request()?->route('resourceItem'))
-                && request()?->route('pageUri') === 'form-page'
-            ) || (
-                is_null(request('resourceItem'))
-                && request('pageUri') === 'form-page'
-            );
+            is_null(request()?->route('resourceItem'))
+            && request()?->route('pageUri') === 'form-page'
+        ) || (
+            is_null(request('resourceItem'))
+            && request('pageUri') === 'form-page'
+        );
     }
 
     public function isNowOnUpdateForm(): bool
     {
         return (
-                ! is_null(request()?->route('resourceItem'))
-                && request()?->route('pageUri') === 'form-page'
-            ) || (
-                ! is_null(request('resourceItem'))
-                && request('pageUri') === 'form-page'
-            );
+            ! is_null(request()?->route('resourceItem'))
+            && request()?->route('pageUri') === 'form-page'
+        ) || (
+            ! is_null(request('resourceItem'))
+            && request('pageUri') === 'form-page'
+        );
     }
 }

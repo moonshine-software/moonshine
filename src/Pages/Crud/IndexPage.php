@@ -98,7 +98,7 @@ class IndexPage extends Page
             ]),
 
             LineBreak::make(),
-            
+
             ActionGroup::make()->when(
                 ! empty($resource->queryTags()),
                 function (ActionGroup $group) use ($resource): ActionGroup {
