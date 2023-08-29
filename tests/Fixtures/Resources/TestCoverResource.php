@@ -22,7 +22,7 @@ class TestCoverResource extends ModelResource
         return [
             ID::make('ID'),
             Image::make('Image title', 'image'),
-            BelongsTo::make('Category title', 'category', 'name', new TestCategoryResource())
+            BelongsTo::make('Category title', 'category', 'name', new TestCategoryResource()),
         ];
     }
 

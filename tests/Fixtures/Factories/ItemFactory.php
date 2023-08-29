@@ -2,7 +2,6 @@
 
 namespace MoonShine\Tests\Fixtures\Factories;
 
-
 use Illuminate\Database\Eloquent\Factories\Factory;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
