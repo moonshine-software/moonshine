@@ -17,6 +17,11 @@ use MoonShine\Providers\MoonShineServiceProvider;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Resources\MoonShineUserRoleResource;
+use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
+use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
+use MoonShine\Tests\Fixtures\Resources\TestCoverResource;
+use MoonShine\Tests\Fixtures\Resources\TestImageResource;
+use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -96,6 +101,13 @@ class TestCase extends Orchestra
     {
         MoonShine::resources([
             $this->moonShineUserResource(),
+            new MoonShineUserRoleResource(),
+            new TestCategoryResource(),
+            new TestCoverResource(),
+            new TestItemResource(),
+            new TestCommentResource(),
+            new TestImageResource(),
+
             new MoonShineUserRoleResource(),
         ]);
 
