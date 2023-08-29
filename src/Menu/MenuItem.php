@@ -39,11 +39,11 @@ class MenuItem extends MenuElement
     {
         $this->setUrl(fn (): string => $filler->url());
 
-        if(method_exists($filler, 'getBadge')) {
+        if (method_exists($filler, 'getBadge')) {
             $this->badge(fn () => $filler->getBadge());
         }
 
-        if($this->iconValue() === '' && method_exists($filler, 'getIcon')) {
+        if ($this->iconValue() === '' && method_exists($filler, 'getIcon')) {
             $this->icon($filler->getIcon());
         }
     }
@@ -64,7 +64,13 @@ class MenuItem extends MenuElement
 
     public function hasBadge(): bool
     {
-        return ! is_null($this->badge);
+        if (is_null($this->badge)) {
+            return false;
+        }
+
+        $badge = $this->getBadge();
+
+        return  $badge !== false && !is_null($badge);
     }
 
     public function getBadge(): ?string
