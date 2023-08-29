@@ -8,6 +8,7 @@ use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Pages\Crud\ShowPage;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('pages-feature');
@@ -37,7 +38,7 @@ beforeEach(function (): void {
         );
 });
 
-it('it fields on index', function () {
+it('fields on index', function () {
     asAdmin()->get(
         to_page($this->resource, IndexPage::class)
     )
@@ -51,7 +52,7 @@ it('it fields on index', function () {
     ;
 });
 
-it('it fields on form', function () {
+it('fields on form', function () {
     asAdmin()->get(
         to_page($this->resource, FormPage::class, ['resourceItem' => 12])
     )
@@ -65,9 +66,9 @@ it('it fields on form', function () {
     ;
 });
 
-it('it fields on show', function () {
+it('fields on show', function () {
     asAdmin()->get(
-        to_page($this->resource, FormPage::class, ['resourceItem' => 12])
+        to_page($this->resource, ShowPage::class, ['resourceItem' => 12])
     )
         ->assertOk()
         ->assertSee('Name')
