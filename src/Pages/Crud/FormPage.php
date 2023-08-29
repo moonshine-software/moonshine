@@ -32,6 +32,10 @@ class FormPage extends Page
 
         $item = $resource->getItem();
 
+        if (is_null($item) && $resource->isNowOnUpdateForm()) {
+            oops404();
+        }
+
         $action = $this->getResource()->route(
             is_null($item) ? 'crud.store' : 'crud.update',
             $item?->getKey()
@@ -62,14 +66,14 @@ class FormPage extends Page
                 ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
         ])->withName('crud-form');
 
-        if(empty($item)) {
+        if (empty($item)) {
             return $components;
         }
 
         foreach ($resource->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());
 
-            if(! $field->toOne()) {
+            if (! $field->toOne()) {
                 $components[] = HasManyCreateButton::for($field, $item->getKey());
                 $components[] = Divider::make();
             }

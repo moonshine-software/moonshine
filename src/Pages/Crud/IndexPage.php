@@ -17,6 +17,7 @@ use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
+use MoonShine\Decorations\LineBreak;
 use MoonShine\Fields\File;
 use MoonShine\Pages\Page;
 
@@ -96,6 +97,8 @@ class IndexPage extends Page
                 ]),
             ]),
 
+            LineBreak::make(),
+            
             ActionGroup::make()->when(
                 ! empty($resource->queryTags()),
                 function (ActionGroup $group) use ($resource): ActionGroup {
@@ -111,7 +114,7 @@ class IndexPage extends Page
                                 ->when(
                                     $tag->isActive(),
                                     fn (ActionButton $btn): ActionButton => $btn->customAttributes([
-                                        'class' => 'bg-purple',
+                                        'class' => 'btn-primary',
                                     ])
                                 )
                         );
@@ -120,6 +123,8 @@ class IndexPage extends Page
                     return $group;
                 }
             ),
+
+            LineBreak::make(),
 
             Fragment::make([
                 TableBuilder::make(items: $items)

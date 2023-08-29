@@ -16,9 +16,9 @@ use Throwable;
 
 class MoonShine
 {
-    public const DIR = 'app/MoonShine';
+    final public const DIR = 'app/MoonShine';
 
-    public const NAMESPACE = 'App\MoonShine';
+    final public const NAMESPACE = 'App\MoonShine';
 
     protected static ?Collection $resources = null;
 
@@ -29,8 +29,7 @@ class MoonShine
     public static function path(string $path = ''): string
     {
         return realpath(
-            dirname(__DIR__) . ($path !== '' && $path !== '0'
-                ? DIRECTORY_SEPARATOR . $path : $path)
+            dirname(__DIR__) . ($path ? DIRECTORY_SEPARATOR . $path : $path)
         );
     }
 

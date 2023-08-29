@@ -31,13 +31,18 @@ class ShowPage extends Page
     public function components(): array
     {
         $resource = $this->getResource();
+        $item = $resource->getItem();
+
+        if (is_null($item)) {
+            oops404();
+        }
 
         return [
             Block::make([
                 Fragment::make([
                     TableBuilder::make($resource->getFields()->onlyFields())
                         ->cast($resource->getModelCast())
-                        ->items([$resource->getItem()])
+                        ->items([$item])
                         ->vertical()
                         ->simple()
                         ->preview()

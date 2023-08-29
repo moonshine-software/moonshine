@@ -11,6 +11,7 @@ use MoonShine\AssetManager;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
+use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Menu\MenuManager;
@@ -183,5 +184,17 @@ if (! function_exists('is_selected_option')) {
     function is_selected_option(mixed $current, string $value): bool
     {
         return SelectOptions::isSelected($current, $value);
+    }
+}
+
+if (! function_exists('oops404')) {
+    function oops404(): never
+    {
+        $handler = config(
+            'moonshine.route.notFoundHandler',
+            MoonShineNotFoundException::class
+        );
+
+        throw new $handler();
     }
 }

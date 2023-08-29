@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
@@ -76,12 +75,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 ->name('profile.store');
         }
 
-        Route::fallback(static function () {
-            $handler = config(
-                'moonshine.route.notFoundHandler',
-                MoonShineNotFoundException::class
-            );
-
-            throw new $handler();
+        Route::fallback(static function (): never {
+            oops404();
         });
     });

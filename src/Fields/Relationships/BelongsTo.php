@@ -33,7 +33,7 @@ class BelongsTo extends ModelRelationField implements
 
     protected function resolvePreview(): string
     {
-        if($this->toValue()) {
+        if ($this->toValue()) {
             $this->link(
                 to_page(
                     $this->getResource(),

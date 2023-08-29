@@ -31,7 +31,7 @@ trait WithIcon
             array_merge([
                 'size' => $size,
                 'class' => $class,
-            ], $color !== '' && $color !== '0' ? ['color' => $color] : [])
+            ], $color ? ['color' => $color] : [])
         );
     }
 

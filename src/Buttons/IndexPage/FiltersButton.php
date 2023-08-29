@@ -22,6 +22,7 @@ final class FiltersButton
             ->inOffCanvas(
                 fn (): array|string|null => __('moonshine::ui.filters'),
                 fn (): FormBuilder => FormBuilder::make($resource->currentRoute(), 'GET')
+                    ->cast($resource->getModelCast())
                     ->fields(
                         $resource
                             ->getFilters()

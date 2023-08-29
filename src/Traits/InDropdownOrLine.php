@@ -6,7 +6,7 @@ namespace MoonShine\Traits;
 
 trait InDropdownOrLine
 {
-    protected bool $inDropdown = true;
+    protected bool $inDropdown = false;
 
     public function inDropdown(): bool
     {

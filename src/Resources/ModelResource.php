@@ -21,6 +21,7 @@ use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
 use MoonShine\Traits\Resource\ResourceModelValidation;
 use MoonShine\Traits\Resource\ResourceWithFields;
+use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
@@ -33,6 +34,7 @@ abstract class ModelResource extends Resource
     use ResourceModelQuery;
     use ResourceModelCrudRouter;
     use ResourceModelEvents;
+    use WithIsNowOnRoute;
 
     protected string $model;
 

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class ChangeLocale
 {
-    public const KEY = 'change-moonshine-locale';
+    final public const KEY = 'change-moonshine-locale';
 
     public function handle(Request $request, Closure $next)
     {

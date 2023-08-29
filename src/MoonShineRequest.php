@@ -51,6 +51,10 @@ class MoonShineRequest extends Request
             );
         }
 
+        if(is_null($this->page)) {
+            oops404();
+        }
+
         return $this->page;
     }
 

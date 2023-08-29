@@ -32,7 +32,7 @@ class Date extends Text
     {
         $value = parent::resolvePreview();
 
-        return $value !== '' && $value !== '0'
+        return $value
             ? date($this->format, strtotime($value))
             : '';
     }
