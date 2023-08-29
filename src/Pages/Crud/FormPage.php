@@ -2,6 +2,7 @@
 
 namespace MoonShine\Pages\Crud;
 
+use MoonShine\Buttons\HasOneField\HasManyCreateButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Fragment;
@@ -62,8 +63,18 @@ class FormPage extends Page
                 ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
         ])->withName('crud-form');
 
+        if(empty($item)) {
+            return $components;
+        }
+
         foreach ($resource->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());
+
+            if(!$field->toOne()) {
+                $components[] = HasManyCreateButton::for($field, $item->getKey());
+                $components[] = Divider::make();
+            }
+
             $components[] = Fragment::make([
                 $field->resolveFill(
                     $item?->attributesToArray() ?? [],
