@@ -15,13 +15,12 @@ final class DeleteButton
     {
         return ActionButton::make(
             '',
-            url: fn ($data): string => route(
-                'moonshine.crud.destroy',
-                $redirectAfterDelete ?
+            url: fn ($data): string => route('moonshine.crud.destroy',
+                $redirectAfterDelete !== '' && $redirectAfterDelete !== '0' ?
                 [
                     'resourceUri' => $resource->uriKey(),
                     'resourceItem' => $data->getKey(),
-                    '_redirect' => $redirectAfterDelete,
+                    '_redirect' => $redirectAfterDelete
                 ] :
                 [
                     'resourceUri' => $resource->uriKey(),
