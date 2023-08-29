@@ -29,7 +29,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function preparedFields(): Fields
+    public function preparedFields(): Fields
     {
         if (! $this->hasFields()) {
             $fields = $this->toOne()
@@ -93,7 +93,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->buttons([
                 ShowButton::for($resource),
                 FormButton::for($resource),
-                DeleteButton::for($resource),
+                DeleteButton::for($resource, request()->getUri()),
                 MassDeleteButton::for($resource),
             ]);
     }

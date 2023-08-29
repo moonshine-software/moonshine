@@ -2,9 +2,11 @@
 
 namespace MoonShine\Tests\Fixtures\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Models\Traits\MorphRelationTrait;
 use MoonShine\Tests\Fixtures\Models\Traits\UserHasOneTrait;
 
@@ -13,6 +15,8 @@ class Category extends Model
     use UserHasOneTrait;
 
     use MorphRelationTrait;
+
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -28,8 +32,13 @@ class Category extends Model
         return $this->hasMany(Item::class, 'category_id');
     }
 
-    public function image(): HasOne
+    public function cover(): HasOne
     {
-        return $this->hasOne(CategoryImage::class, 'category_id');
+        return $this->hasOne(Cover::class, 'category_id');
+    }
+
+    protected static function newFactory()
+    {
+        return new CategoryFactory();
     }
 }

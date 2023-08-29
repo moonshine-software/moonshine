@@ -48,7 +48,7 @@
                     <x-moonshine::link
                         :attributes="$action->attributes()"
                         :icon="$action->iconValue()"
-                        @click.prevent="toggleModa;"
+                        @click.prevent="toggleModal;"
                     >
                         {{ $action->label() }}
                     </x-moonshine::link>

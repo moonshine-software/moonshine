@@ -45,15 +45,14 @@ trait ResourceModelCrudRouter
 
     public function redirectAfterSave(): string
     {
-        return $this->defaultRedirect();
+        return request('_redirect') ?? to_page(
+            $this,
+            'form-page',
+            is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()->getKey()]
+        );
     }
 
     public function redirectAfterDelete(): string
-    {
-        return $this->defaultRedirect();
-    }
-
-    protected function defaultRedirect(): string
     {
         return request('_redirect') ?? to_page($this, 'index-page');
     }

@@ -18,7 +18,7 @@ use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $label, ?string $relationName = null, ?ModelResource $resource = null, ?Closure $formattedValueCallback = null)
+ * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formattedValueCallback = null, ?ModelResource $resource = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
@@ -35,9 +35,13 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     public function __construct(
         Closure|string $label,
         ?string $relationName = null,
+        Closure|string|null $formattedValueCallback = null,
         ?ModelResource $resource = null,
-        ?Closure $formattedValueCallback = null
     ) {
+        if(is_string($formattedValueCallback)) {
+            $formattedValueCallback = fn($item) => $item->{$formattedValueCallback};
+        }
+
         parent::__construct($label, $relationName, $formattedValueCallback);
 
         if (is_null($relationName)) {
