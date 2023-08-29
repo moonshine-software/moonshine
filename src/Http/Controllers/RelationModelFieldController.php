@@ -110,7 +110,7 @@ class RelationModelFieldController extends MoonShineController
             $item->{$relation->getForeignKeyName()} = $parentItem->getKey();
 
             if ($relation instanceof MorphOneOrMany) {
-                $item->{$relation->getQualifiedMorphType()} = get_class($parentItem);
+                $item->{$relation->getQualifiedMorphType()} = $parentItem::class;
             }
         } else {
             $item = $request->getFieldItemOrFail();

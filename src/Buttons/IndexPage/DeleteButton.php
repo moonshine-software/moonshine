@@ -20,7 +20,7 @@ final class DeleteButton
                 array_filter([
                     'resourceUri' => $resource->uriKey(),
                     'resourceItem' => $data->getKey(),
-                    ...$redirectAfterDelete
+                    ...$redirectAfterDelete !== '' && $redirectAfterDelete !== '0'
                         ? ['_redirect' => $redirectAfterDelete]
                         : [],
                 ])
