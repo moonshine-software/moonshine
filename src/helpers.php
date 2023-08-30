@@ -130,7 +130,8 @@ if (! function_exists('form')) {
 }
 
 if (! function_exists('moonshineLayout')) {
-    function moonshineLayout(): View {
+    function moonshineLayout(): View
+    {
         /* @var MoonShineLayoutContract $class */
         $class = config('moonshine.layout', MoonShineLayout::class);
 
