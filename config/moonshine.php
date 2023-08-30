@@ -5,6 +5,7 @@ use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\MoonShineLayout;
 use MoonShine\Pages\ProfilePage;
 
 return [
@@ -14,14 +15,6 @@ return [
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
     'logo' => env('MOONSHINE_LOGO'),
     'logo_small' => env('MOONSHINE_LOGO_SMALL'),
-
-    // blade paths
-    'templates' => [
-        'header' => 'moonshine::layouts.shared.header',
-        'header-inner' => null,
-        'sidebar' => 'moonshine::layouts.shared.sidebar',
-        'footer' => 'moonshine::layouts.shared.footer',
-    ],
 
     'route' => [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
@@ -35,6 +28,8 @@ return [
 
     'use_migrations' => true,
     'use_notifications' => true,
+
+    'layout' => MoonShineLayout::class,
 
     'forms' => [
         'login' => LoginForm::class

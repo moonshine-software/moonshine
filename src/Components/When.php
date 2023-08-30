@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Closure;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\View\View;
 
 /**
  * @method static static make(Closure $condition, Closure $components, ?Closure $default = null)
  */
 class When extends MoonshineComponent
 {
+    protected string $view = 'moonshine::components.components';
+
     public function __construct(
         protected Closure $condition,
         protected Closure $components,
@@ -20,16 +20,16 @@ class When extends MoonshineComponent
     ) {
     }
 
-    public function render(): View|Htmlable|string|Closure
+    protected function viewData(): array
     {
         $components = ($this->components)();
 
-        if(! ($this->condition)()) {
+        if (! ($this->condition)()) {
             $components = is_null($this->default) ? [] : ($this->default)();
         }
 
-        return $this->view('moonshine::components.empty', [
+        return [
             'components' => $components,
-        ]);
+        ];
     }
 }

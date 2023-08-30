@@ -1,13 +1,16 @@
-<!-- Navigation -->
-<div class="layout-navigation">
+@props([
+    'components' => []
+])
+<div {{ $attributes->merge(['class' => 'layout-navigation']) }}>
     @section("header-inner")
 
     @show
 
-    @includeWhen(
-        config('moonshine.templates.header-inner'),
-        config('moonshine.templates.header-inner')
-    )
+    <x-moonshine::components
+        :components="$components"
+    />
+
+    {{ $slot ?? '' }}
 
     @includeWhen(
         config('moonshine.auth.enable', true),
@@ -19,4 +22,3 @@
         'moonshine::layouts.shared.locales'
     )
 </div>
-<!-- END: Navigation -->

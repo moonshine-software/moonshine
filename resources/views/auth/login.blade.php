@@ -10,9 +10,16 @@
                 >
             </a>
         </div>
+
         <div class="authentication-content">
             <div class="authentication-header">
-                <h1 class="title">@lang('moonshine::ui.login.title', ['moonshine_title' => config('moonshine.title')])</h1>
+                <h1 class="title">
+                    @lang(
+                        'moonshine::ui.login.title',
+                        ['moonshine_title' => config('moonshine.title')]
+                    )
+                </h1>
+
                 <p class="description">
                     @lang('moonshine::ui.login.description')
                 </p>

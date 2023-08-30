@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use Illuminate\Validation\Rule;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Tab;
@@ -87,15 +86,6 @@ class MoonShineUserResource extends ModelResource
                     ]),
                 ]),
             ]),
-        ];
-    }
-
-    public function itemActions(): array
-    {
-        return [
-            ActionButton::make('Login as', function (MoonshineUser $item): void {
-                auth(config('moonshine.auth.guard'))->login($item);
-            }, 'Success')->icon('users'),
         ];
     }
 

@@ -6,7 +6,6 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
@@ -21,6 +20,8 @@ use MoonShine\Traits\Table\TableStates;
 final class TableBuilder extends IterableComponent implements TableContract
 {
     use TableStates;
+
+    protected string $view = 'moonshine::components.table.builder';
 
     protected $except = [
         'rows',
@@ -48,13 +49,6 @@ final class TableBuilder extends IterableComponent implements TableContract
         }
 
         $this->withAttributes([]);
-    }
-
-    public function customAttributes(array $attributes): static
-    {
-        $this->attributes = $this->attributes->merge($attributes);
-
-        return $this;
     }
 
     public function getItems(): Collection
@@ -127,19 +121,15 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
-    public function render(): View|Closure|string
+    protected function viewData(): array
     {
-        return view(
-            'moonshine::components.table.builder',
-            [
-                'attributes' => $this->attributes ?: $this->newAttributeBag(),
-                'rows' => $this->rows(),
-                'fields' => $this->getFields(),
-                'name' => $this->getName(),
-                'hasPaginator' => $this->hasPaginator(),
-                'paginator' => $this->getPaginator(),
-                'bulkButtons' => $this->getBulkButtons(),
-            ] + $this->statesToArray()
-        );
+        return [
+            'rows' => $this->rows(),
+            'fields' => $this->getFields(),
+            'name' => $this->getName(),
+            'hasPaginator' => $this->hasPaginator(),
+            'paginator' => $this->getPaginator(),
+            'bulkButtons' => $this->getBulkButtons(),
+        ] + $this->statesToArray();
     }
 }

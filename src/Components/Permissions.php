@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Heading;
@@ -21,6 +20,8 @@ final class Permissions extends MoonshineComponent
 {
     use HasResource;
     use WithLabel;
+
+    protected string $view = 'moonshine::components.permissions';
 
     protected Model $item;
 
@@ -82,14 +83,13 @@ final class Permissions extends MoonshineComponent
             ->submit(__('moonshine::ui.save'));
     }
 
-    public function render(): View|Closure|string
+    protected function viewData(): array
     {
-        return view('moonshine::components.permissions', [
-            'attributes' => $this->attributes ?: $this->newAttributeBag(),
+        return [
             'label' => $this->label(),
             'form' => $this->getForm(),
             'item' => $this->getItem(),
             'resource' => $this->getResource(),
-        ]);
+        ];
     }
 }

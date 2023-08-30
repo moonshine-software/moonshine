@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
-use Throwable;
 
 /**
  * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], array $values = [])
  */
 final class FormBuilder extends RowComponent
 {
+    protected string $view = 'moonshine::components.form.builder';
+
     protected $except = [
         'fields',
         'buttons',
@@ -49,13 +48,6 @@ final class FormBuilder extends RowComponent
             'enctype' => 'multipart/form-data',
             'x-data' => 'formBuilder',
         ]);
-    }
-
-    public function customAttributes(array $attributes): static
-    {
-        $this->attributes = $this->attributes->merge($attributes);
-
-        return $this;
     }
 
     public function action(string $action): self
@@ -136,10 +128,7 @@ final class FormBuilder extends RowComponent
         return $this->submitLabel ?? __('moonshine::ui.save');
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function render(): View|Closure|string
+    protected function viewData(): array
     {
         $fields = $this->preparedFields();
 
@@ -164,15 +153,13 @@ final class FormBuilder extends RowComponent
             'x-init' => "init($xInit)",
         ]);
 
-        return view('moonshine::components.form.builder', [
-            'attributes' => $this->attributes ?: $this->newAttributeBag(),
-            'name' => $this->getName(),
+        return [
             'fields' => $fields,
             'precognitive' => $this->isPrecognitive(),
             'async' => $this->isAsync(),
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
-        ]);
+        ];
     }
 }

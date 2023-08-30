@@ -29,10 +29,10 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             MenuGroup::make('moonshine::ui.resource.system', [
                MenuItem::make('moonshine::ui.resource.admins_title', new MoonShineUserResource())
                    ->translatable()
-                   ->icon('users'),
+                   ->icon('heroicons.users'),
                MenuItem::make('moonshine::ui.resource.role_title', new MoonShineUserRoleResource())
                    ->translatable()
-                   ->icon('bookmark'),
+                   ->icon('heroicons.bookmark'),
             ])->translatable(),
 
             MenuItem::make('Documentation', 'https://laravel.com')

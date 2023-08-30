@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
 
@@ -14,6 +12,8 @@ use MoonShine\ActionButtons\ActionButtons;
  */
 final class ActionGroup extends MoonshineComponent
 {
+    protected string $view = 'moonshine::components.action-group';
+
     protected $except = [
         'getActions',
     ];
@@ -47,11 +47,10 @@ final class ActionGroup extends MoonshineComponent
         return $this;
     }
 
-    public function render(): View|Closure|string
+    protected function viewData(): array
     {
-        return view('moonshine::components.action-group', [
-            'attributes' => $this->attributes ?: $this->newAttributeBag(),
+        return [
             'actions' => $this->getActions()->onlyVisible(),
-        ]);
+        ];
     }
 }

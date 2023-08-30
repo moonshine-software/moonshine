@@ -1,9 +1,5 @@
 @extends($layout)
 
-@section('sidebar-inner')
-    @parent
-@endsection
-
 @section('header-inner')
     @parent
 
@@ -24,7 +20,5 @@
         'subTitle' => $subtitle
     ])
 
-    @foreach($components as $component)
-        {{ $component->render() }}
-    @endforeach
+    <x-moonshine::components :components="$components" />
 @endsection

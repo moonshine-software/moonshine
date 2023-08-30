@@ -1,5 +1,9 @@
-<!-- Menu -->
-<aside class="layout-menu" :class="minimizedMenu && '_is-minimized'">
+@props([
+    'components' => []
+])
+<aside {{ $attributes->merge(['class' => 'layout-menu']) }}
+       :class="minimizedMenu && '_is-minimized'"
+>
     <div class="menu-heading">
         <div class="menu-heading-logo">
             @include('moonshine::layouts.shared.logo')
@@ -23,12 +27,10 @@
         </div>
     </div>
 
-    @section("sidebar-inner")
-    @show
-
     <nav class="menu" :class="asideMenuOpen && '_is-opened'">
-        <!-- Main menu -->
-        <x-moonshine::menu-component class="mt-4" />
+        <x-moonshine::components
+            :components="$components"
+        />
 
         @includeWhen(
             config('moonshine.auth.enable', true),
@@ -55,4 +57,3 @@
         </div>
     </nav>
 </aside>
-<!-- END: Menu -->

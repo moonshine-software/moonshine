@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
@@ -11,11 +12,13 @@ use MoonShine\AssetManager;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
+use MoonShine\Contracts\MoonShineLayoutContract;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
+use MoonShine\MoonShineLayout;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
@@ -123,6 +126,15 @@ if (! function_exists('form')) {
         array $values = []
     ): FormBuilder {
         return FormBuilder::make($action, $method, $fields, $values);
+    }
+}
+
+if (! function_exists('moonshineLayout')) {
+    function moonshineLayout(): View {
+        /* @var MoonShineLayoutContract $class */
+        $class = config('moonshine.layout', MoonShineLayout::class);
+
+        return $class::build()->render();
     }
 }
 

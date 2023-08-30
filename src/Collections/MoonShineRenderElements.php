@@ -10,7 +10,6 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
-use MoonShine\Fields\Fields;
 use MoonShine\Fields\StackFields;
 use Throwable;
 
@@ -38,7 +37,7 @@ abstract class MoonShineRenderElements extends Collection
         }
     }
 
-    protected function exceptElements(Closure $except): Fields
+    protected function exceptElements(Closure $except): self
     {
         return clone $this->map(function ($element) use ($except) {
             if ($except($element) === true) {

@@ -1,7 +1,9 @@
 @props([
+    'async' => false,
     'wide' => false,
     'open' => false,
     'auto' => false,
+    'asyncUrl' => '',
     'title' => '',
     'outerHtml' => ''
 ])
@@ -21,7 +23,10 @@
             role="dialog"
             @click.self="open=false"
         >
-            <div class="modal-dialog @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif" x-bind="dismissModal">
+            <div class="modal-dialog
+            @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif"
+                 x-bind="dismissModal"
+            >
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ $title ?? '' }}</h5>
@@ -37,6 +42,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        @if($async)
+                            <div :id="id">
+                                <x-moonshine::loader />
+                            </div>
+                        @endif
+
                         {{ $slot ?? '' }}
                     </div>
                 </div>
@@ -46,5 +57,15 @@
     </div>
     </template>
 
-    {{ $outerHtml ?? '' }}
+    @if($async)
+        <div x-data="asyncData">
+            <div @click.prevent="toggleModal;load('{!! str_replace('&amp;', '&', $asyncUrl) !!}', id);">
+                {{ $outerHtml ?? '' }}
+            </div>
+        </div>
+    @else
+        <div @click.prevent="toggleModal">
+            {{ $outerHtml ?? '' }}
+        </div>
+    @endif
 </div>
