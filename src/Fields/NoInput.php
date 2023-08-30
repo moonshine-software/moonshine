@@ -48,17 +48,7 @@ class NoInput extends Field
 
     protected function resolveValue(): mixed
     {
-        $value = $this->toFormattedValue();
-
-        if ($this->isBoolean) {
-            if ((! $value && $this->hideFalse) || ($value && $this->hideTrue)) {
-                return '';
-            }
-
-            return (bool) $value;
-        }
-
-        return $value;
+        return $this->preview();
     }
 
     protected function resolveOnApply(): ?Closure
