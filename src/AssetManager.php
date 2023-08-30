@@ -160,9 +160,9 @@ class AssetManager
         if($value->contains('#')) {
             $dec = hexdec((string) $value->remove('#')->value());
             $rgb = [
-                'red'   => 0xFF & ($dec >> 0x10),
+                'red' => 0xFF & ($dec >> 0x10),
                 'green' => 0xFF & ($dec >> 0x8),
-                'blue'  => 0xFF & $dec
+                'blue' => 0xFF & $dec,
             ];
 
             return implode(',', $rgb);
