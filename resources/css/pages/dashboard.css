@@ -5,7 +5,7 @@
   &-heading {
     @apply flex items-center justify-between;
     > svg {
-      @apply h-6 w-6 text-pink;
+      @apply h-6 w-6 text-secondary;
     }
   }
 

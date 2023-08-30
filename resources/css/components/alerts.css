@@ -1,38 +1,44 @@
 /* Alerts */
 .alert {
-  @apply mb-2.5 flex w-full items-center gap-4 rounded-lg border border-gray-200 bg-slate-100 px-4 py-3 dark:border-dark-200 dark:bg-dark-700;
+	@apply mb-2.5 flex w-full items-center gap-4 rounded-lg border border-gray-200 bg-slate-100 px-4 py-3 dark:border-dark-200 dark:bg-dark-700;
 
-  &-info {
-    @apply border-purple bg-purple text-white dark:border-purple dark:bg-purple dark:text-white;
-  }
-  &-success {
-    @apply border-green-600 bg-green-600 text-white dark:border-green-700 dark:bg-green-800 dark:text-green-300;
-  }
-  &-warning {
-    @apply border-yellow-200 bg-yellow-200 text-yellow-800 dark:border-yellow-700 dark:bg-yellow-800 dark:text-yellow-300;
-  }
-  &-error {
-    @apply border-pink bg-pink text-white dark:border-pink dark:bg-pink dark:text-white;
-  }
+	&-primary {
+		@apply border-primary bg-primary text-white dark:border-primary dark:bg-primary/30 dark:text-white;
+	}
+	&-secondary {
+		@apply border-secondary bg-secondary text-white dark:border-secondary dark:bg-secondary/30 dark:text-white;
+	}
+	&-success {
+		@apply border-success-bg bg-success-bg text-success-text dark:border-success-bg dark:bg-success-bg/30 dark:text-success-text;
+	}
+	&-warning {
+		@apply border-warning-bg bg-warning-bg text-warning-text dark:border-warning-bg dark:bg-warning-bg/30 dark:text-warning-text;
+	}
+	&-error {
+		@apply border-error-bg bg-error-bg text-error-text dark:border-error-bg dark:bg-error-bg/30 dark:text-error-text;
+	}
+	&-info {
+		@apply border-info-bg bg-info-bg text-info-text dark:border-info-bg dark:bg-info-bg/30 dark:text-info-text;
+	}
 
-  &-icon {
-    > svg {
-      @apply h-6 w-6;
-    }
-  }
+	&-icon {
+		> svg {
+			@apply h-6 w-6;
+		}
+	}
 
-  &-content {
-    @apply grow text-2xs font-medium;
+	&-content {
+		@apply grow text-2xs font-medium;
 
-    > a {
-      @apply font-medium text-inherit underline opacity-100 hover:text-inherit hover:no-underline hover:opacity-70;
-    }
-  }
+		> a {
+			@apply font-medium underline underline-offset-2 text-inherit opacity-100 hover:text-inherit hover:opacity-70;
+		}
+	}
 
-  &-remove {
-    @apply text-inherit opacity-70 hover:text-inherit hover:opacity-100;
-    > svg {
-      @apply h-4 w-4;
-    }
-  }
+	&-remove {
+		@apply text-inherit opacity-70 hover:text-inherit hover:opacity-100;
+		> svg {
+			@apply h-4 w-4;
+		}
+	}
 }

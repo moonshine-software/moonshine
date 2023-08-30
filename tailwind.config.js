@@ -63,25 +63,56 @@ module.exports = {
         },
         extend: {
             colors: {
-                purple: {
-                    DEFAULT: "#7843E9",
+                primary: {
+                    DEFAULT: 'rgba(var(--primary), <alpha-value>)',
                 },
-                pink: {
-                    DEFAULT: "#EC4176",
+                secondary: {
+                    DEFAULT: 'rgba(var(--secondary), <alpha-value>)',
                 },
-                body: "#1b253b",
-                darkblue: "#1E1F43",
+                body: 'rgba(var(--body), <alpha-value>)',
                 dark: {
-                    50: '#576784',
-                    100: '#4a5a79',
-                    200: '#415172',
-                    300: '#354567',
-                    400: '#303d5d',
-                    500: '#293552',
-                    600: '#28334e',
-                    700: '#232d45',
-                    800: '#1b253b',
-                    900: '#0f172a',
+                    DEFAULT: 'rgba(var(--dark), <alpha-value>)',
+                    50: 'rgba(var(--dark-50), <alpha-value>)',
+                    100: 'rgba(var(--dark-100), <alpha-value>)',
+                    200: 'rgba(var(--dark-200), <alpha-value>)',
+                    300: 'rgba(var(--dark-300), <alpha-value>)',
+                    400: 'rgba(var(--dark-400), <alpha-value>)',
+                    500: 'rgba(var(--dark-500), <alpha-value>)',
+                    600: 'rgba(var(--dark-600), <alpha-value>)',
+                    700: 'rgba(var(--dark-700), <alpha-value>)',
+                    800: 'rgba(var(--dark-800), <alpha-value>)',
+                    900: 'rgba(var(--dark-900), <alpha-value>)',
+                },
+                info: {
+                    bg: 'rgba(var(--info-bg), <alpha-value>)',
+                    text: 'rgba(var(--info-text), <alpha-value>)',
+                },
+                success: {
+                    bg: 'rgba(var(--success-bg), <alpha-value>)',
+                    text: 'rgba(var(--success-text), <alpha-value>)',
+                },
+                warning: {
+                    bg: 'rgba(var(--warning-bg), <alpha-value>)',
+                    text: 'rgba(var(--warning-text), <alpha-value>)',
+                },
+                error: {
+                    bg: 'rgba(var(--error-bg), <alpha-value>)',
+                    text: 'rgba(var(--error-text), <alpha-value>)',
+                },
+                menu: {
+                    link: 'rgba(var(--menu-link-color, 255, 255, 255), <alpha-value>)',
+                    hover: 'rgba(var(--menu-hover-color, var(--secondary)), <alpha-value>)',
+                    active: {
+                        bg: 'rgba(var(--menu-active-bg, var(--primary)), <alpha-value>)',
+                        color: 'rgba(var(--menu-active-color, 255, 255, 255), <alpha-value>)',
+                    },
+                    current: {
+                        bg: 'rgba(var(--menu-current-bg, 248, 250, 252), <alpha-value>)',
+                        color: 'rgba(var(--menu-current-color, 0, 0, 0), <alpha-value>)',
+                    },
+                    dropdown: {
+                        bg: 'rgba(var(--menu-dropdown-bg, var(--dark-600)), <alpha-value>)',
+                    },
                 },
             },
             borderWidth: {

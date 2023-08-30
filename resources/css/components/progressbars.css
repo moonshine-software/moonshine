@@ -1,128 +1,122 @@
 /* Progress bars */
 .progress {
-  @apply flex h-4 rounded-lg bg-slate-100 dark:bg-dark-300;
+	@apply flex h-4 rounded-lg bg-slate-100 dark:bg-dark-300;
 
-  &-bar {
-    @apply flex items-center justify-center overflow-hidden rounded-lg bg-slate-500 text-3xs font-medium leading-none text-white dark:bg-dark-50 dark:text-white;
+	&-bar {
+		@apply flex items-center justify-center overflow-hidden rounded-lg bg-slate-500 text-3xs font-medium leading-none text-white dark:bg-dark-50 dark:text-white;
 
-    /* Themes */
-    &--pink {
-      @apply bg-pink text-white dark:bg-pink dark:text-white;
-    }
-    &--purple {
-      @apply bg-purple text-white dark:bg-purple dark:text-white;
-    }
-    &--green {
-      @apply bg-green-200 text-green-800 dark:bg-green-700 dark:text-white;
-    }
-    &--yellow {
-      @apply bg-yellow-200 text-green-800 dark:bg-yellow-700 dark:text-white;
-    }
-    &--red {
-      @apply bg-red-200 text-red-800 dark:bg-red-700 dark:text-white;
-    }
-    &--blue {
-      @apply bg-blue-200 text-green-800 dark:bg-blue-700 dark:text-white;
-    }
-  }
+		/* Themes */
+		&--primary {
+			@apply bg-primary text-white dark:bg-primary dark:text-white;
+		}
+		&--secondary {
+			@apply bg-secondary text-white dark:bg-secondary dark:text-white;
+		}
+		&--success {
+			@apply bg-success-bg text-success-text dark:bg-success-bg dark:text-success-text;
+		}
+		&--warning {
+			@apply bg-warning-bg text-warning-text dark:bg-warning-bg dark:text-warning-text;
+		}
+		&--error {
+			@apply bg-error-bg text-error-text dark:bg-error-bg dark:text-error-text;
+		}
+		&--info {
+			@apply bg-info-bg text-info-text dark:bg-info-bg dark:text-info-text;
+		}
+	}
 }
 
 /* Radial Progress bars */
 .radial-progress {
-  --value: 0;
-  --size: 6rem;
-  --thickness: 6px;
+	--value: 0;
+	--size: 6rem;
+	--thickness: 6px;
 
-  @apply relative box-content flex items-center justify-center rounded-full bg-transparent text-center text-slate-500 before:pointer-events-none before:absolute before:inset-0 before:rounded-full after:pointer-events-none after:absolute after:rounded-full;
-  width: var(--size);
-  height: var(--size);
-  box-shadow: inset 0 0 0 var(--thickness) theme(colors.slate.100);
+	@apply relative box-content flex items-center justify-center rounded-full bg-transparent text-center text-slate-500 before:pointer-events-none before:absolute before:inset-0 before:rounded-full after:pointer-events-none after:absolute after:rounded-full;
+	width: var(--size);
+	height: var(--size);
+	box-shadow: inset 0 0 0 var(--thickness) theme(colors.slate.100);
 
-  /* Progress circle */
-  &::before {
-    background: radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0))
-        top/var(--thickness) var(--thickness) no-repeat,
-      conic-gradient(currentColor calc(var(--value) * 1%), rgba(0, 0, 0, 0) 0);
-    mask: radial-gradient(
-      farthest-side,
-      rgba(0, 0, 0, 0) calc(99% - var(--thickness)),
-      #000 calc(100% - var(--thickness))
-    );
-  }
-  &::after {
-    inset: calc(50% - var(--thickness) / 2);
-    background-color: currentColor;
-    transform: rotate(calc(var(--value) * 3.6deg - 90deg)) translate(calc(var(--size) / 2 - 50%));
-  }
+	/* Progress circle */
+	&::before {
+		background: radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0)) top/var(--thickness) var(--thickness) no-repeat, conic-gradient(currentColor calc(var(--value) * 1%), rgba(0, 0, 0, 0) 0);
+		mask: radial-gradient(farthest-side, rgba(0, 0, 0, 0) calc(99% - var(--thickness)), #000 calc(100% - var(--thickness)));
+	}
+	&::after {
+		inset: calc(50% - var(--thickness) / 2);
+		background-color: currentColor;
+		transform: rotate(calc(var(--value) * 3.6deg - 90deg)) translate(calc(var(--size) / 2 - 50%));
+	}
 
-  /* Label */
-  > span {
-    @apply font-bold;
-    font-size: clamp(0.875rem, calc(var(--size) / 4), calc(var(--size) / 2));
-  }
+	/* Label */
+	> span {
+		@apply font-bold;
+		font-size: clamp(0.875rem, calc(var(--size) / 4), calc(var(--size) / 2));
+	}
 
-  /* Sizes */
-  &-sm {
-    --size: 3rem;
-    --thickness: 4px;
-  }
-  &-md {
-    --size: 6rem;
-    --thickness: 6px;
-  }
-  &-lg {
-    --size: 7.5rem;
-    --thickness: 6px;
-  }
-  &-xl {
-    --size: 9rem;
-    --thickness: 6px;
-  }
+	/* Sizes */
+	&-sm {
+		--size: 3rem;
+		--thickness: 4px;
+	}
+	&-md {
+		--size: 6rem;
+		--thickness: 6px;
+	}
+	&-lg {
+		--size: 7.5rem;
+		--thickness: 6px;
+	}
+	&-xl {
+		--size: 9rem;
+		--thickness: 6px;
+	}
 
-  /* Themes */
-  &--pink {
-    @apply text-pink;
-  }
-  &--purple {
-    @apply text-purple;
-  }
-  &--green {
-    @apply text-green-500;
-  }
-  &--yellow {
-    @apply text-yellow-500;
-  }
-  &--red {
-    @apply text-red-500;
-  }
-  &--blue {
-    @apply text-blue-500;
-  }
+	/* Themes */
+	&--primary {
+		@apply text-primary;
+	}
+	&--secondary {
+		@apply text-secondary;
+	}
+	&--success {
+		@apply text-success-bg;
+	}
+	&--warning {
+		@apply text-warning-bg;
+	}
+	&--error {
+		@apply text-error-bg;
+	}
+	&--info {
+		@apply text-info-bg;
+	}
 
-  @media (min-width: 1024px) {
-    --size: 9rem;
-    --thickness: 8px;
+	@media (min-width: 1024px) {
+		--size: 9rem;
+		--thickness: 8px;
 
-    /* Sizes */
-    &-sm {
-      --size: 3rem;
-      --thickness: 4px;
-    }
-    &-md {
-      --size: 6rem;
-      --thickness: 6px;
-    }
-    &-lg {
-      --size: 9rem;
-      --thickness: 8px;
-    }
-    &-xl {
-      --size: 12rem;
-      --thickness: 10px;
-    }
-  }
+		/* Sizes */
+		&-sm {
+			--size: 3rem;
+			--thickness: 4px;
+		}
+		&-md {
+			--size: 6rem;
+			--thickness: 6px;
+		}
+		&-lg {
+			--size: 9rem;
+			--thickness: 8px;
+		}
+		&-xl {
+			--size: 12rem;
+			--thickness: 10px;
+		}
+	}
 }
 
 .dark .radial-progress {
-  box-shadow: inset 0 0 0 var(--thickness) theme(colors.dark.200);
+	box-shadow: inset 0 0 0 var(--thickness) theme(colors.dark.200);
 }
