@@ -38,6 +38,9 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
         )->when(
             ! empty($theme['colors']),
             static fn (AssetManager $assets): AssetManager => $assets->colors($theme['colors'])
+        )->when(
+            ! empty($theme['darkColors']),
+            static fn (AssetManager $assets): AssetManager => $assets->darkColors($theme['darkColors'])
         );
     }
 
@@ -73,6 +76,9 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
         return [];
     }
 
+    /**
+     * @return array{css: string, colors: array, darkColors: array}
+     */
     protected function theme(): array
     {
         return [];

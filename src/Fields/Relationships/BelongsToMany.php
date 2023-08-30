@@ -257,7 +257,7 @@ class BelongsToMany extends ModelRelationField implements
 
                 if ($this->inLineBadge) {
                     return view('moonshine::ui.badge', [
-                        'color' => 'purple',
+                        'color' => 'primary',
                         'value' => $value,
                         'margin' => true,
                     ])->render();

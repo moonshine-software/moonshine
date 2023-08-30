@@ -26,20 +26,21 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     protected function menu(): array
     {
         return [
-            MenuGroup::make('moonshine::ui.resource.system', [
-               MenuItem::make('moonshine::ui.resource.admins_title', new MoonShineUserResource())
-                   ->translatable()
+            MenuGroup::make(fn() => __('moonshine::ui.resource.system'), [
+               MenuItem::make(fn() => __('moonshine::ui.resource.admins_title'), new MoonShineUserResource())
                    ->icon('heroicons.users'),
-               MenuItem::make('moonshine::ui.resource.role_title', new MoonShineUserRoleResource())
-                   ->translatable()
+               MenuItem::make(fn() => __('moonshine::ui.resource.role_title'), new MoonShineUserRoleResource())
                    ->icon('heroicons.bookmark'),
-            ])->translatable(),
+            ]),
 
-            MenuItem::make('Documentation', 'https://laravel.com')
+            MenuItem::make('Documentation', 'https://moonshine.cutcode.dev')
                ->badge(fn() => 'Check'),
         ];
     }
 
+    /**
+     * @return array{css: string, colors: array, darkColors: array}
+     */
     protected function theme(): array
     {
         return [];

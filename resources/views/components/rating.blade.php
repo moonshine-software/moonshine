@@ -5,7 +5,7 @@
 ])
 <div {{ $attributes->merge(['class' => 'flex items-center gap-x-1']) }}>
     @for($star = $min; $star <= $max; $star++)
-        <svg class="w-4 h-4 fill-current @if($star <= $value) text-pink @else text-gray-400 @endif"
+        <svg class="w-4 h-4 fill-current @if($star <= $value) text-secondary @else text-gray-400 @endif"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 20 20"
         >

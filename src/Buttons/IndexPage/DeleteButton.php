@@ -26,7 +26,7 @@ final class DeleteButton
                 ])
             )
         )
-            ->customAttributes(['class' => 'btn-pink'])
+            ->customAttributes(['class' => 'btn-secondary'])
             ->icon('heroicons.outline.trash')
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.delete'),
@@ -36,7 +36,7 @@ final class DeleteButton
                         Hidden::make('_method')->setValue('DELETE'),
                         TextBlock::make('', __('moonshine::ui.confirm_message')),
                     ]
-                )->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
+                )->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )
             ->showInLine();
     }

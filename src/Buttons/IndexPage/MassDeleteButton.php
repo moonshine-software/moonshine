@@ -21,7 +21,7 @@ final class MassDeleteButton
             ])
         )
             ->bulk()
-            ->customAttributes(['class' => 'btn-pink'])
+            ->customAttributes(['class' => 'btn-secondary'])
             ->icon('heroicons.outline.trash')
             ->inModal(
                 fn (): string => 'Delete',
@@ -33,7 +33,7 @@ final class MassDeleteButton
                         ]),
                         Heading::make(__('moonshine::ui.confirm_message')),
                     ])
-                    ->submit('Delete', ['class' => 'btn-pink'])
+                    ->submit('Delete', ['class' => 'btn-secondary'])
             )
             ->showInLine();
     }

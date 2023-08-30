@@ -85,6 +85,7 @@ trait ResourceWithFields
     {
         return Fields::make($this->filters())
             ->filter()
+            ->withoutOutside()
             ->wrapNames('filters');
     }
 }

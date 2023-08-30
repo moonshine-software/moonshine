@@ -16,7 +16,7 @@
     }
 
     &:first-child > a {
-      @apply text-secondary hover:text-purple dark:text-secondary dark:hover:text-white;
+      @apply text-secondary hover:text-primary dark:text-secondary dark:hover:text-white;
     }
 
     & > a {

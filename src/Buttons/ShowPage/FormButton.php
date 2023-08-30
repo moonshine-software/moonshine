@@ -18,7 +18,7 @@ final class FormButton
             )
         )
             ->canSee(fn (): bool => $resource->can('update'))
-            ->customAttributes(['class' => 'btn-purple'])
+            ->customAttributes(['class' => 'btn-primary'])
             ->icon('heroicons.outline.pencil')
             ->showInLine();
     }

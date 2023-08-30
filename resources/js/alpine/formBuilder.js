@@ -43,7 +43,7 @@ export default () => ({
         let errors = ''
         let errorsData = errorResponse.response.data.errors
         for (const error in errorsData) {
-          errors = errors + '<div class="mt-2 text-pink">' + errorsData[error] + '</div>'
+          errors = errors + '<div class="mt-2 text-secondary">' + errorsData[error] + '</div>'
         }
 
         form.querySelector('.precognition_errors').innerHTML = errors

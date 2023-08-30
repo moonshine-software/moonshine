@@ -7,12 +7,12 @@
     >
         <div class="report-card">
             <div class="report-card-heading">
-                {!! $element->getIcon(6, 'pink') !!}
+                {!! $element->getIcon(6, 'secondary') !!}
             </div>
 
             @if($element->isProgress())
                 <x-moonshine::progress-bar
-                    color="purple"
+                    color="primary"
                     :radial="false"
                     :value="$element->valueResult()"
                 >

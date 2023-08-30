@@ -40,7 +40,7 @@ class Tabs extends Decoration
     public function tabsWithHtml(): Collection
     {
         return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [
-            $tab->id() => $tab->getIcon(6, 'pink') . PHP_EOL
+            $tab->id() => $tab->getIcon(6, 'secondary') . PHP_EOL
                 . $tab->label(),
         ]);
     }

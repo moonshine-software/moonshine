@@ -62,7 +62,7 @@ class HasOne extends HasMany
                     __('moonshine::ui.delete'),
                     url: fn ($data): string => $resource->route('crud.destroy', $data->getKey())
                 )
-                    ->customAttributes(['class' => 'btn-pink btn-lg'])
+                    ->customAttributes(['class' => 'btn-secondary btn-lg'])
                     ->inModal(
                         fn (): array|string|null => __('moonshine::ui.delete'),
                         fn (ActionButton $action): string => (string) form(
@@ -72,7 +72,7 @@ class HasOne extends HasMany
                                 TextBlock::make('', __('moonshine::ui.confirm_message')),
                             ]
                         )
-                            ->submit(__('moonshine::ui.delete'), ['class' => 'btn-pink'])
+                            ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
                             ->redirect(
                                 to_page(
                                     $parentResource,

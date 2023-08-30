@@ -15,7 +15,7 @@
             ])"
         >
             <x-moonshine::spinner
-                    color="pink"
+                    color="secondary"
                     class="form_submit_button_loader"
                     style="display: none;"
             />

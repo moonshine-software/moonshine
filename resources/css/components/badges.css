@@ -4,6 +4,24 @@ a.badge {
 	@apply inline-block rounded-md px-2.5 py-0.5 text-3xs;
 
 	/* Badges themes */
+	&-primary {
+		@apply bg-primary text-white;
+	}
+	&-secondary {
+		@apply bg-secondary text-white;
+	}
+	&-success {
+		@apply bg-success-bg text-success-text;
+	}
+	&-warning {
+		@apply bg-warning-bg text-warning-text;
+	}
+	&-error {
+		@apply bg-error-bg text-error-text;
+	}
+	&-info {
+		@apply bg-info-bg text-info-text;
+	}
 	&-purple {
 		@apply bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300;
 	}

@@ -21,7 +21,7 @@
                 <tr>
                     <td>
                         @include('moonshine::ui.badge', [
-                            'color' => 'purple',
+                            'color' => 'primary',
                             'value' => $log->moonshineUser->name
                         ])
                     </td>

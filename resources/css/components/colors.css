@@ -1,4 +1,22 @@
 /* Background colors */
+.bgc-primary {
+	@apply !bg-primary text-white;
+}
+.bgc-secondary {
+	@apply !bg-secondary text-white;
+}
+.bgc-success {
+	@apply !bg-success-bg text-success-text;
+}
+.bgc-warning {
+	@apply !bg-warning-bg text-warning-text;
+}
+.bgc-error {
+	@apply !bg-error-bg text-error-text;
+}
+.bgc-info {
+	@apply !bg-info-bg text-info-text;
+}
 .bgc-purple {
 	@apply !bg-purple-100/50 text-purple-800 dark:!bg-purple-900/50 dark:text-purple-300;
 }

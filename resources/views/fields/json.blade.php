@@ -5,7 +5,7 @@
                 actionBtn('', '#')
                     ->icon('heroicons.outline.trash')
                     ->onClick(fn($action) => 'remove()', 'prevent')
-                    ->customAttributes(['class' => 'btn-pink'])
+                    ->customAttributes(['class' => 'btn-secondary'])
                     ->showInLine(),
             ])
             ->simple()

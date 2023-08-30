@@ -17,11 +17,12 @@ final class FiltersButton
     public static function for(ModelResource $resource): ActionButton
     {
         return ActionButton::make(self::title(), '#')
-            ->customAttributes(['class' => 'btn btn-pink'])
+            ->customAttributes(['class' => 'btn btn-secondary'])
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
                 fn (): array|string|null => __('moonshine::ui.filters'),
                 fn (): FormBuilder => FormBuilder::make($resource->currentRoute(), 'GET')
+                    ->name('filters-form')
                     ->cast($resource->getModelCast())
                     ->fields(
                         $resource
