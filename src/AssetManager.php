@@ -158,7 +158,7 @@ class AssetManager
         $value = str($value);
 
         if($value->contains('#')) {
-            $dec = hexdec($value->remove('#')->value());
+            $dec = hexdec((string) $value->remove('#')->value());
             $rgb = [
                 'red'   => 0xFF & ($dec >> 0x10),
                 'green' => 0xFF & ($dec >> 0x8),
