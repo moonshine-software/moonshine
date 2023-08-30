@@ -16,7 +16,8 @@
     top: 37px;
     left: 19px;
     transform: translate(-18px, -18px);
-    animation: dotRect var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+    animation: dotRect var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86)
+      infinite;
   }
   svg {
     display: block;
@@ -34,7 +35,8 @@
     polygon {
       stroke-dasharray: 145 (221 - 145) 145 (221 - 145);
       stroke-dashoffset: 0;
-      animation: pathTriangle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+      animation: pathTriangle var(--duration)
+        cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
     }
     rect {
       stroke-dasharray: (256 / 4 * 3) (256 / 4) (256 / 4 * 3) (256 / 4);
@@ -44,7 +46,8 @@
     circle {
       stroke-dasharray: (200 / 4 * 3) (200 / 4) (200 / 4 * 3) (200 / 4);
       stroke-dashoffset: 75;
-      animation: pathCircle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+      animation: pathCircle var(--duration)
+        cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
     }
   }
   &.triangle {
@@ -52,7 +55,8 @@
     &:before {
       left: 21px;
       transform: translate(-10px, -18px);
-      animation: dotTriangle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+      animation: dotTriangle var(--duration)
+        cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
     }
   }
 }
@@ -129,16 +133,4 @@
 .loader {
   display: inline-block;
   margin: 0 16px;
-}
-
-html {
-  -webkit-font-smoothing: antialiased;
-}
-
-* {
-  box-sizing: border-box;
-  &:before,
-  &:after {
-    box-sizing: border-box;
-  }
 }

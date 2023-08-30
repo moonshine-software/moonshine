@@ -1,30 +1,42 @@
 /* Buttons */
 .btn {
-  @apply inline-flex h-10 cursor-pointer items-center justify-center gap-x-2 whitespace-nowrap rounded-md border bg-white py-2 px-3 text-3xs font-medium text-slate-600 hover:bg-gray-50 hover:text-slate-600 focus:ring focus:ring-gray-400 focus:ring-opacity-20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70 dark:border-dark-200 dark:bg-dark-500 dark:text-slate-300 dark:hover:bg-dark-400 dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
-  > svg {
-    @apply h-4 w-4;
-  }
+	@apply inline-flex h-10 cursor-pointer items-center justify-center gap-x-2 whitespace-nowrap rounded-md border bg-white py-2 px-3 text-3xs font-medium text-slate-600 hover:bg-gray-50 hover:text-slate-600 focus:ring focus:ring-gray-400 focus:ring-opacity-20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70 dark:border-dark-200 dark:bg-dark-500 dark:text-slate-300 dark:hover:bg-dark-400 dark:focus:ring-dark-100 dark:focus:ring-opacity-30;
+	> svg {
+		@apply h-4 w-4;
+	}
 
-  &.btn-lg {
-    @apply h-12 px-4;
-    > svg {
-      @apply h-5 w-5;
-    }
-  }
+	&.btn-lg {
+		@apply h-12 px-4;
+		> svg {
+			@apply h-5 w-5;
+		}
+	}
 }
 
 /* Button themes */
 .btn.btn-primary {
-  @apply border-purple bg-purple text-white hover:bg-purple/90 hover:text-white focus:ring-purple focus:ring-opacity-20 dark:focus:ring-opacity-40;
+	@apply border-primary bg-primary text-white hover:bg-primary/80 hover:text-white focus:ring-primary focus:ring-opacity-20 dark:focus:ring-opacity-40;
 }
-.btn.btn-pink {
-  @apply border-pink bg-pink text-white hover:bg-pink/90 hover:text-white focus:ring-pink focus:ring-opacity-20 dark:focus:ring-opacity-40;
+.btn.btn-secondary {
+	@apply border-secondary bg-secondary text-white hover:bg-secondary/80 hover:text-white focus:ring-secondary focus:ring-opacity-20 dark:focus:ring-opacity-40;
+}
+.btn.btn-success {
+	@apply border-success-bg bg-success-bg text-success-text hover:bg-success-bg/80 hover:text-success-text focus:ring-success-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
+}
+.btn.btn-warning {
+	@apply border-warning-bg bg-warning-bg text-warning-text hover:bg-warning-bg/80 hover:text-warning-text focus:ring-warning-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
+}
+.btn.btn-error {
+	@apply border-error-bg bg-error-bg text-error-text hover:bg-error-bg/80 hover:text-error-text focus:ring-error-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
+}
+.btn.btn-info {
+	@apply border-info-bg bg-info-bg text-info-text hover:bg-info-bg/80 hover:text-info-text focus:ring-info-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
 }
 
 /* Button variants */
 .btn-close {
-  @apply h-10 w-10 p-0;
-  > svg {
-    @apply h-5 w-5;
-  }
+	@apply h-10 w-10 p-0;
+	> svg {
+		@apply h-5 w-5;
+	}
 }
