@@ -118,8 +118,8 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
             'components' => $this->getComponents(),
         ])
             ->fragmentIf(
-                request('_fragment-load'),
-                request('_fragment-load')
+                moonshineRequest()->isFragmentLoad(),
+                moonshineRequest()->getFragmentLoad()
             );
     }
 

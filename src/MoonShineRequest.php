@@ -51,7 +51,7 @@ class MoonShineRequest extends Request
             );
         }
 
-        if(is_null($this->page)) {
+        if (is_null($this->page)) {
             oops404();
         }
 
@@ -81,6 +81,22 @@ class MoonShineRequest extends Request
     public function onResourceRoute(): bool
     {
         return str($this->url())->contains('resource/');
+    }
+
+    public function getFragmentLoad(): ?string
+    {
+        return $this->get('_fragment-load');
+    }
+
+    public function isFragmentLoad(?string $name = null): bool
+    {
+        $fragment = $this->getFragmentLoad();
+
+        if (! is_null($fragment) && ! is_null($name)) {
+            return $fragment === $name;
+        }
+
+        return ! is_null($fragment);
     }
 
     public function isMoonShineRequest(): bool
