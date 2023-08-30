@@ -42,15 +42,17 @@ class File extends Field implements Fileable, RemovableContract
 
     protected function prepareForView(): array
     {
-        if (! $this->value()) {
+        $values = $this->value(withOld: false);
+
+        if (! $values) {
             return [];
         }
 
         return $this->isMultiple()
-            ? collect($this->value())
+            ? collect($values)
                 ->map(fn ($value): string => $this->pathWithDir($value))
                 ->toArray()
-            : [$this->pathWithDir($this->value())];
+            : [$this->pathWithDir($values)];
     }
 
     protected function itemView(): string

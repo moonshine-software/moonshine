@@ -20,8 +20,6 @@ class HasMany extends ModelRelationField implements HasFields
 {
     use WithFields;
 
-    protected string $view = 'moonshine::fields.relationships.has-many';
-
     protected bool $isGroup = true;
 
     protected bool $outsideComponent = true;

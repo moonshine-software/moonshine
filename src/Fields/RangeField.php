@@ -45,7 +45,7 @@ class RangeField extends Number implements DefaultCanBeArray
 
     protected function resolvePreview(): string
     {
-        $value = $this->value();
+        $value = $this->value(withOld: false);
 
         if ($this->isRawMode()) {
             return "{$value[$this->fromField]} - {$value[$this->toField]}";

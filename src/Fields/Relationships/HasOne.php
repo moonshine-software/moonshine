@@ -14,8 +14,6 @@ use Throwable;
 
 class HasOne extends HasMany
 {
-    protected string $view = 'moonshine::fields.relationships.has-one';
-
     protected bool $toOne = true;
 
     /**
