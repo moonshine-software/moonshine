@@ -17,7 +17,7 @@ final class Colors
 
         return $value
             ->explode(',')
-            ->map(function ($v) {
+            ->map(function ($v): string {
                 $v = dechex((int) trim($v));
 
                 if (strlen($v) < 2) {

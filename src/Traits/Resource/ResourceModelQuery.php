@@ -177,7 +177,10 @@ trait ResourceModelQuery
         return $this;
     }
 
-    public function getAttributes(Reflector $reflection)
+    /**
+     * @return mixed[]
+     */
+    public function getAttributes(Reflector $reflection): array
     {
         $attributes = $reflection->getAttributes();
         $result = [];

@@ -140,9 +140,9 @@ class AssetManager
     {
         $data = $dark ? $this->darkColors : $this->colors;
         $value = $data[$name];
-        $value = ! is_null($shade)
-            ? $value[$shade]
-            : $value;
+        $value = is_null($shade)
+            ? $value
+            : $value[$shade];
 
         return $hex ? Colors::toHEX($value) : $value;
     }
