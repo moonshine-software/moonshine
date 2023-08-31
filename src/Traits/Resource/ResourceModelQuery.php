@@ -187,6 +187,7 @@ trait ResourceModelQuery
         foreach ($attributes as $attribute) {
             $result[$attribute->getName()] = $attribute->getArguments();
         }
+
         return $result;
     }
 

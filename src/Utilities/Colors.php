@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Utilities;
 
-
 final class Colors
 {
     public static function toHEX(string $value): string
