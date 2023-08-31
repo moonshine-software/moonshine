@@ -190,6 +190,15 @@ abstract class Field extends FormElement
         return $this;
     }
 
+    public function fill(mixed $value, mixed $casted = null): static
+    {
+        return $this->resolveFill([
+            $this->column() => $value
+        ], [
+            $this->column() => $casted ?? $value
+        ]);
+    }
+
     public function rawMode(Closure|bool|null $condition = null): static
     {
         $this->rawMode = Condition::boolean($condition, true);
