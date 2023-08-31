@@ -17,7 +17,6 @@ use MoonShine\Fields\Field;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Utilities\Attributes;
-use Reflector;
 use Throwable;
 
 trait ResourceModelQuery
@@ -175,20 +174,6 @@ trait ResourceModelQuery
         }
 
         return $this;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getAttributes(Reflector $reflection): array
-    {
-        $attributes = $reflection->getAttributes();
-        $result = [];
-        foreach ($attributes as $attribute) {
-            $result[$attribute->getName()] = $attribute->getArguments();
-        }
-
-        return $result;
     }
 
     protected function resolveSearch(): self
