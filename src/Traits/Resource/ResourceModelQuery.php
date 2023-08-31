@@ -11,10 +11,13 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use MoonShine\Attributes\SearchUsingFullText;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Utilities\Attributes;
+use Reflector;
 use Throwable;
 
 trait ResourceModelQuery
@@ -162,27 +165,48 @@ trait ResourceModelQuery
                     fn (QueryTag $tag): bool => $tag->uri() === $tagUri
                 );
 
-            if($tag) {
-                $this->customBuilder($tag->apply(
-                    $this->query()
-                ));
+            if ($tag) {
+                $this->customBuilder(
+                    $tag->apply(
+                        $this->query()
+                    )
+                );
             }
-
         }
 
         return $this;
     }
 
+    public function getAttributes(Reflector $reflection)
+    {
+        $attributes = $reflection->getAttributes();
+        $result = [];
+        foreach ($attributes as $attribute) {
+            $result[$attribute->getName()] = $attribute->getArguments();
+        }
+        return $result;
+    }
+
     protected function resolveSearch(): self
     {
         if (! empty($this->search()) && request()->has('search')) {
-            request()->str('search')->explode(' ')->filter()->each(function ($term): void {
-                $this->query()->where(function ($q) use ($term): void {
-                    foreach ($this->search() as $column) {
-                        $q->orWhere($column, 'LIKE', $term . '%');
-                    }
+            $fullTextColumns = Attributes::for($this)
+                ->method('search')
+                ->attribute(SearchUsingFullText::class)
+                ->attributeProperty('columns')
+                ->get();
+
+            if (! is_null($fullTextColumns)) {
+                $this->query()->whereFullText($fullTextColumns, request()->str('search')->squish());
+            } else {
+                request()->str('search')->explode(' ')->filter()->each(function ($term): void {
+                    $this->query()->where(function (Builder $q) use ($term): void {
+                        foreach ($this->search() as $column) {
+                            $q->orWhere($column, 'LIKE', $term . '%');
+                        }
+                    });
                 });
-            });
+            }
         }
 
         return $this;

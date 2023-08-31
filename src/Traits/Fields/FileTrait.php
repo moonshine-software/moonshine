@@ -43,8 +43,9 @@ trait FileTrait
     public function allowedExtensions(array $allowedExtensions): static
     {
         $this->allowedExtensions = $allowedExtensions;
+
         if ($allowedExtensions !== []) {
-            $this->setAttribute("accept", $this->acceptExtension());
+            $this->setAttribute('accept', $this->acceptExtension());
         }
 
         return $this;

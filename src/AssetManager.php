@@ -6,6 +6,7 @@ namespace MoonShine;
 
 use Composer\InstalledVersions;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Utilities\Colors;
 
 class AssetManager
 {
@@ -98,8 +99,8 @@ class AssetManager
             )
             ->map(
                 fn ($asset): string => "<script defer src='" . asset(
-                    $asset
-                ) . "?v={$this->getVersion()}'></script>"
+                        $asset
+                    ) . "?v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
     }
 
@@ -112,8 +113,8 @@ class AssetManager
             )
             ->map(
                 fn ($asset): string => "<link href='" . asset(
-                    $asset
-                ) . "?v={$this->getVersion()}' rel='stylesheet'>"
+                        $asset
+                    ) . "?v={$this->getVersion()}' rel='stylesheet'>"
             )->implode(PHP_EOL);
     }
 
@@ -135,45 +136,33 @@ class AssetManager
         return $this;
     }
 
+    public function getColor(string $name, ?int $shade = null, bool $dark = false, bool $hex = true): string
+    {
+        $data = $dark ? $this->darkColors : $this->colors;
+        $value = $data[$name];
+        $value = ! is_null($shade)
+            ? $value[$shade]
+            : $value;
+
+        return $hex ? Colors::toHEX($value) : $value;
+    }
+
     public function getColors(bool $dark = false): array
     {
         $colors = [];
         $data = $dark ? $this->darkColors : $this->colors;
 
         foreach ($data as $name => $shades) {
-            if(! is_array($shades)) {
-                $colors[$name] = $this->colorToRgb($shades);
+            if (! is_array($shades)) {
+                $colors[$name] = Colors::toRGB($shades);
             } else {
                 foreach ($shades as $shade => $color) {
-                    $colors["$name-$shade"] = $this->colorToRgb($color);
+                    $colors["$name-$shade"] = Colors::toRGB($color);
                 }
             }
         }
 
         return $colors;
-    }
-
-    protected function colorToRgb(string $value): string
-    {
-        $value = str($value);
-
-        if($value->contains('#')) {
-            $dec = hexdec((string) $value->remove('#')->value());
-            $rgb = [
-                'red' => 0xFF & ($dec >> 0x10),
-                'green' => 0xFF & ($dec >> 0x8),
-                'blue' => 0xFF & $dec,
-            ];
-
-            return implode(',', $rgb);
-        }
-
-        if($value->contains('rgb')) {
-            return $value->remove(['rgb', '(', ')'])
-                ->value();
-        }
-
-        return $value->value();
     }
 
     public function getVersion(): string

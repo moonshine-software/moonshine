@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -25,6 +26,8 @@ class MoonShine
     protected static ?Pages $pages = null;
 
     protected static ?Collection $menu = null;
+
+    protected static array $authorization = [];
 
     public static function path(string $path = ''): string
     {
@@ -185,5 +188,15 @@ class MoonShine
                     }
                 );
             });
+    }
+
+    public static function authorizationRules(): Collection
+    {
+        return collect(self::$authorization);
+    }
+
+    public static function defineAuthorization(Closure $rule): void
+    {
+        self::$authorization[] = $rule;
     }
 }

@@ -5,7 +5,7 @@ namespace MoonShine\Attributes;
 use Attribute;
 use Illuminate\Support\Arr;
 
-#[Attribute]
+#[Attribute(Attribute::TARGET_METHOD)]
 class SearchUsingFullText
 {
     public array $columns = [];

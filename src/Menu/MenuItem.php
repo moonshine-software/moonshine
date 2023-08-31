@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Menu;
 
 use Closure;
+use MoonShine\Attributes\Icon;
 use MoonShine\Contracts\Menu\MenuFiller;
+use MoonShine\Utilities\Attributes;
 use Throwable;
 
 /**
@@ -39,12 +41,17 @@ class MenuItem extends MenuElement
     {
         $this->setUrl(fn (): string => $filler->url());
 
+        $icon = Attributes::for($filler)
+            ->attribute(Icon::class)
+            ->attributeProperty('icon')
+            ->get();
+
         if (method_exists($filler, 'getBadge')) {
             $this->badge(fn () => $filler->getBadge());
         }
 
-        if ($this->iconValue() === '' && method_exists($filler, 'getIcon')) {
-            $this->icon($filler->getIcon());
+        if ($this->iconValue() === '' && ! is_null($icon)) {
+            $this->icon($icon);
         }
     }
 
@@ -70,7 +77,7 @@ class MenuItem extends MenuElement
 
         $badge = $this->getBadge();
 
-        return  $badge !== false && ! is_null($badge);
+        return $badge !== false && ! is_null($badge);
     }
 
     public function getBadge(): ?string
