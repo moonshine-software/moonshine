@@ -98,28 +98,31 @@ export default (
       })
     })
   },
-  canBeAsync() {
+  searchItems() {
     this.$event.preventDefault()
 
     const isForm = this.$el.tagName === 'FORM'
-    const url = isForm
-      ? this.$el.getAttribute('action') + '?' +
-      crudFormQuery(this.$el.querySelectorAll('[name]'))
-      : this.$el.href
 
-    if (!async && isForm) {
-      this.$el.submit()
+    console.log('isForm', isForm)
+    console.log('action', this.$el.getAttribute('action'))
+    console.log('crudFormQuery', crudFormQuery(this.$el.querySelectorAll('[name]')))
+    console.log('OR href', this.$el.href)
+
+    let url = this.$el.href;
+
+    if(isForm) {
+      const urlObject = new URL(this.$el.getAttribute('action'))
+      let urlSeparator = urlObject.search === '' ? '?' : '&';
+      url = urlObject.href + urlSeparator + crudFormQuery(this.$el.querySelectorAll('[name]'))
     }
 
-    if (!async) {
-      window.location = url
-    }
+    console.log('url', url)
 
     this.loading = true
 
-    axios.get(url + "&_fragment-load=" + (this.table.dataset?.name ?? 'crud-table'))
-    .then(response => response.data).then(html => {
-      this.$root.outerHTML = html
+    axios.get(url + "&_relation=" + (this.table.dataset?.name ?? 'crud-table'))
+    .then(response => {
+      this.$root.outerHTML = response.data
     }).catch(error => {
       //
     })

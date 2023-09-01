@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use App\Models\Item;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -74,6 +75,41 @@ class RelationModelFieldController extends MoonShineController
         }
 
         return response()->json($values->toArray());
+    }
+
+    public function searchRelations(RelationModelFieldRequest $request)
+    {
+        $parentResource = $request->getResource();
+
+        /**
+         * @var Item $parentItem
+         */
+        $parentItem = $parentResource->getItemOrInstance();
+
+        $field = $request->getField();
+
+        $relation = $request->getRelationName();
+
+        $resource = $field->getResource();
+
+        $queryResource = $resource->resolveQuery();
+
+        $relationItems = $parentItem
+            ->{$relation}()
+            ->mergeWheres(
+                $queryResource->getQuery()->wheres,
+                $queryResource->getBindings()
+            )
+            ->get();
+
+        $parentItem->setRelation($relation, $relationItems);
+
+        $field->resolveFill(
+            $parentItem->toArray(),
+            $parentItem
+        );
+
+        return $field->value();
     }
 
     public function store(RelationModelFieldStoreRequest $request): JsonResponse|RedirectResponse
@@ -158,7 +194,7 @@ class RelationModelFieldController extends MoonShineController
         );
 
         return $request->redirectRoute(
-            $parentResource->redirectAfterDelete()
+            $parentResource->redirectAfterSave()
         );
     }
 }

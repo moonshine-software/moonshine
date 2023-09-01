@@ -21,8 +21,12 @@
 )">
     @if($async)
         <div class="flex items-center gap-2">
-            <form action="{{ request()->fullUrlWithQuery([]) }}"
-                  @submit.prevent="canBeAsync"
+            <form action="{{ route('moonshine.relation.search-relations', [
+                'resourceItem' => request('resourceItem'),
+                'pageUri' => request('pageUri'),
+                'resourceUri' => request('resourceUri'),
+            ]) }}"
+                  @submit.prevent="searchItems"
             >
                 <x-moonshine::form.input
                     name="search"
