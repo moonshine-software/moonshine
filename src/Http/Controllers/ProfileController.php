@@ -36,7 +36,7 @@ class ProfileController extends BaseController
                 'moonshine.auth.fields.avatar',
                 'avatar'
             )] = $request->file('avatar')
-                ->store('moonshine_users', 'public');
+                ->store('moonshine_users', config('filesystems.default'));
         } else {
             $resultData[config(
                 'moonshine.auth.fields.avatar',
