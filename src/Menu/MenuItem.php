@@ -47,7 +47,8 @@ class MenuItem extends MenuElement
             ->get();
 
         if (method_exists($filler, 'getBadge')) {
-            $this->badge(fn () => $filler->getBadge());
+            $countUsers = $filler->getBadge();
+            $this->badge(fn () => $countUsers);
         }
 
         if ($this->iconValue() === '' && ! is_null($icon)) {
