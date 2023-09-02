@@ -6,6 +6,7 @@ use MoonShine\Models\MoonshineUser;
 return [
     'dir' => 'app/MoonShine',
     'namespace' => 'App\MoonShine',
+    'disk' => env('MOONSHINE_DISK', 'public'),
 
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
     'logo' => env('MOONSHINE_LOGO'),

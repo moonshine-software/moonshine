@@ -5,7 +5,7 @@
             <div class="menu-profile-photo">
                 <img class="h-full w-full object-cover"
                      src="{{ auth()->user()->{config('moonshine.auth.fields.avatar', 'avatar')}
-                        ? (Storage::disk(config('filesystems.default'))->url(auth()->user()->{config('moonshine.auth.fields.avatar', 'avatar')}))
+                        ? (Storage::disk(config('moonshine.disk', 'public'))->url(auth()->user()->{config('moonshine.auth.fields.avatar', 'avatar')}))
                         : ("https://ui-avatars.com/api/?name=" . auth()->user()->{config('moonshine.auth.fields.name', 'name')}) }}"
                      alt="{{ auth()->user()->{config('moonshine.auth.fields.name', 'name')} }}"
                 />
