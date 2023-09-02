@@ -2,6 +2,7 @@
     'rows',
     'fields',
     'bulkButtons',
+    'asyncUrl',
     'async' => false,
     'preview' => false,
     'simple' => false,
@@ -21,12 +22,8 @@
 )">
     @if($async)
         <div class="flex items-center gap-2">
-            <form action="{{ route('moonshine.relation.search-relations', [
-                'resourceItem' => request('resourceItem'),
-                'pageUri' => request('pageUri'),
-                'resourceUri' => request('resourceUri'),
-            ]) }}"
-                  @submit.prevent="searchItems"
+            <form action="{{ $asyncUrl }}"
+                  @submit.prevent="asyncQuery"
             >
                 <x-moonshine::form.input
                     name="search"
@@ -52,6 +49,7 @@
                     <x-moonshine::table.head
                         :fields="$fields"
                         :actions="$bulkButtons"
+                        :asyncUrl="$asyncUrl"
                         :preview="$preview"
                     />
                 </x-slot:thead>

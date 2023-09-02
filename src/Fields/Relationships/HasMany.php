@@ -76,11 +76,16 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolveValue(): mixed
     {
-        $items = $this->toValue() ?? [];
         $resource = $this->getResource();
 
+        $items = $resource->paginate();
+
         return TableBuilder::make(items: $items)
-            ->async()
+            ->async(route('moonshine.relation.search-relations', [
+                'resourceItem' => request('resourceItem'),
+                'pageUri' => request('pageUri'),
+                'resourceUri' => request('resourceUri'),
+            ]))
             ->name($this->getRelationName())
             ->fields($this->preparedFields())
             ->cast($resource->getModelCast())

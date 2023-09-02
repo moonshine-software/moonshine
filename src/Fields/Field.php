@@ -103,15 +103,21 @@ abstract class Field extends FormElement
         return $this->sortable;
     }
 
-    public function sortQuery(): string
+    public function sortQuery(string $url): string
     {
-        return request()->fullUrlWithQuery([
+        $sortData = [
             'sort' => [
                 'column' => $this->column(),
                 'direction' => $this->sortActive() && $this->sortDirection('asc') ? 'desc'
                     : 'asc',
             ],
-        ]);
+        ];
+
+        if(empty($url)) {
+            return request()->fullUrlWithQuery($sortData);
+        }
+
+        return $url . "?" . http_build_query($sortData);
     }
 
     public function sortActive(): bool

@@ -30,11 +30,17 @@ final class TableBuilder extends IterableComponent implements TableContract
         'paginator',
     ];
 
+    protected bool $isAsync = false;
+
+    protected ?string $asyncUrl = null;
+
     protected array $rows = [];
 
     protected ?Closure $trAttributes = null;
 
     protected ?Closure $tdAttributes = null;
+
+    protected ?string $tableUrl = null;
 
     public function __construct(
         Fields|array $fields = [],
@@ -49,6 +55,25 @@ final class TableBuilder extends IterableComponent implements TableContract
         }
 
         $this->withAttributes([]);
+    }
+
+    public function isAsync(): bool
+    {
+        return $this->isAsync;
+    }
+
+    public function async(string $asyncUrl): self
+    {
+        $this->isAsync = true;
+
+        $this->asyncUrl = $asyncUrl;
+
+        return $this;
+    }
+
+    public function getAsyncUrl(): string
+    {
+        return $this->asyncUrl ?? '';
     }
 
     public function getItems(): Collection
@@ -121,15 +146,30 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
+
+    public function tableUrl(string $tableUrl): self
+    {
+        $this->tableUrl = $tableUrl;
+        return $this;
+    }
+
+    public function getTableUrl(): ?string
+    {
+        return $this->tableUrl;
+    }
+
     protected function viewData(): array
     {
         return [
             'rows' => $this->rows(),
             'fields' => $this->getFields(),
             'name' => $this->getName(),
+            'tableUrl' => $this->getTableUrl(),
             'hasPaginator' => $this->hasPaginator(),
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),
+            'async' => $this->isAsync(),
+            'asyncUrl' => $this->getAsyncUrl(),
         ] + $this->statesToArray();
     }
 }

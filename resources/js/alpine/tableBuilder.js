@@ -98,7 +98,7 @@ export default (
       })
     })
   },
-  searchItems() {
+  asyncQuery() {
     this.$event.preventDefault()
 
     const isForm = this.$el.tagName === 'FORM'
