@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use App\MoonShine\Resources\CommentResource;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use MoonShine\Buttons\IndexPage\DeleteButton;
@@ -76,16 +78,25 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolveValue(): mixed
     {
+        /**
+         * @var CommentResource $resource
+         */
         $resource = $this->getResource();
 
-        $items = $resource->paginate();
+        $asyncUrl = route('moonshine.relation.search-relations', [
+            'resourceItem' => request('resourceItem'),
+            'pageUri' => request('pageUri'),
+            'resourceUri' => request('resourceUri'),
+        ]);
+
+        $items = $this->toValue() ?? [];
+
+        if(!empty($items) && !$items instanceof Paginator) {
+            $items = $resource->paginateItems($items, $asyncUrl);
+        }
 
         return TableBuilder::make(items: $items)
-            ->async(route('moonshine.relation.search-relations', [
-                'resourceItem' => request('resourceItem'),
-                'pageUri' => request('pageUri'),
-                'resourceUri' => request('resourceUri'),
-            ]))
+            ->async($asyncUrl)
             ->name($this->getRelationName())
             ->fields($this->preparedFields())
             ->cast($resource->getModelCast())

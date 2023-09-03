@@ -111,6 +111,7 @@ abstract class Field extends FormElement
                 'direction' => $this->sortActive() && $this->sortDirection('asc') ? 'desc'
                     : 'asc',
             ],
+            'page' =>  request('page', 1)
         ];
 
         if(empty($url)) {

@@ -1,9 +1,11 @@
 @props([
     'simple' => false,
     'system' => false,
+    'async' => false,
     'paginator',
     'elements' => []
 ])
+
 @if ($paginator->hasPages())
     @if($simple)
         <ul class="pagination-list simple">
@@ -15,6 +17,7 @@
                     </span>
                 @else
                     <a href="{{ $paginator->previousPageUrl() }}"
+                       @if($async) @click.prevent="asyncQuery" @endif
                        class="pagination-simple"
                     >
                         {!! __('moonshine::pagination.previous') !!}
@@ -26,6 +29,7 @@
             <li>
                 @if ($paginator->hasMorePages())
                     <a href="{{ $paginator->nextPageUrl() }}"
+                       @if($async) @click.prevent="asyncQuery" @endif
                        class="pagination-simple"
                     >
                         {!! __('moonshine::pagination.next') !!}
@@ -44,6 +48,7 @@
             @if (!$paginator->onFirstPage())
                 <li class="pagination-item">
                     <a href="{{ $paginator->previousPageUrl() }}"
+                       @if($async) @click.prevent="asyncQuery" @endif
                        class="pagination-first"
                        title="{!! __('moonshine::pagination.previous') !!}"
                     >
@@ -68,6 +73,7 @@
                     @foreach ($element as $page => $url)
                         <li class="pagination-item">
                             <a href="{{ $url }}"
+                               @if($async) @click.prevent="asyncQuery" @endif
                                class="pagination-page
                                @if ($page == $paginator->currentPage()) _is-active @endif"
                             >
@@ -81,6 +87,7 @@
             @if ($paginator->hasMorePages())
                 <li class="pagination-item">
                     <a href="{{ $paginator->nextPageUrl() }}"
+                       @if($async) @click.prevent="asyncQuery" @endif
                        class="pagination-last"
                        title="{!! __('moonshine::pagination.next') !!}"
                     >

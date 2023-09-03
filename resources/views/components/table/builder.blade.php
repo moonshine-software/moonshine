@@ -93,7 +93,7 @@
         @endif
 
         @if(!$preview && $hasPaginator)
-            {{ $paginator->links('moonshine::ui.pagination') }}
+            {{ $paginator->links('moonshine::ui.pagination', ['async' => $async]) }}
         @endif
     </div>
 </div>
