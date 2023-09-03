@@ -26,7 +26,7 @@
                 x-on:input="mintrigger"
                 x-model="minValue"
                 x-on:change="onChangeField($event)"
-                :attributes="$fromAttributes->merge([
+                :attributes="$fromAttributes->except(['type'])->merge([
                     'name' => $fromName,
                     'class' => 'form-range-input'
                 ])"
@@ -40,7 +40,7 @@
                 x-on:input="maxtrigger"
                 x-model="maxValue"
                 x-on:change="onChangeField($event)"
-                :attributes="$toAttributes->merge([
+                :attributes="$toAttributes->except(['type'])->merge([
                     'name' => $toName,
                     'class' => 'form-range-input'
                 ])"
