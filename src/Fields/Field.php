@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Helpers\Condition;
 use MoonShine\Traits\Fields\Applies;
@@ -118,7 +119,7 @@ abstract class Field extends FormElement
             return request()->fullUrlWithQuery($sortData);
         }
 
-        return $url . "?" . http_build_query($sortData);
+        return $url . '?' . Arr::query($sortData);
     }
 
     public function sortActive(): bool

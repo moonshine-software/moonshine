@@ -78,7 +78,6 @@ class FormPage extends Page
                 $components[] = Divider::make();
             }
 
-            //TODO выполнить наполнение элементов HasMany через пагинацию
             $components[] = Fragment::make([
                 $field->resolveFill(
                     $item?->attributesToArray() ?? [],

@@ -64,18 +64,7 @@ class HasMany extends ModelRelationField implements HasFields
             )
             ->paginate();
 
-        $url = route('moonshine.relation.search-relations', [
-            'resourceItem' => request('resourceItem'),
-            'pageUri' => request('pageUri'),
-            'resourceUri' => request('resourceUri'),
-        ]);
-
-        $requestInputs = request()->input();
-        if(isset($requestInputs['page'])) {
-            unset($requestInputs['page']);
-        }
-
-        $relationItems->setPath($url.'?'.http_build_query($requestInputs));
+        $relationItems->setPath(to_relation_search_route(request()->input()));
 
         $casted->setRelation($this->getRelationName(), $relationItems);
 
@@ -139,11 +128,7 @@ class HasMany extends ModelRelationField implements HasFields
          */
         $resource = $this->getResource();
 
-        $asyncUrl = route('moonshine.relation.search-relations', [
-            'resourceItem' => request('resourceItem'),
-            'pageUri' => request('pageUri'),
-            'resourceUri' => request('resourceUri'),
-        ]);
+        $asyncUrl = to_relation_route('search-relations', request('resourceItem'));
 
         $items = $this->toValue() ?? [];
 

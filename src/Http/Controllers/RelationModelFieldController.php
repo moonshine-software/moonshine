@@ -104,11 +104,7 @@ class RelationModelFieldController extends MoonShineController
             )
             ->paginate();
 
-        $requestInputs = $request->input();
-        if(isset($requestInputs['page'])) {
-            unset($requestInputs['page']);
-        }
-        $relationItems->setPath($request->url().'?'.http_build_query($requestInputs));
+        $relationItems->setPath(to_relation_search_route($request->input()));
 
         $parentItem->setRelation($relation, $relationItems);
 

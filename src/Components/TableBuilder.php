@@ -40,8 +40,6 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected ?Closure $tdAttributes = null;
 
-    protected ?string $tableUrl = null;
-
     public function __construct(
         Fields|array $fields = [],
         protected iterable $items = [],
@@ -146,25 +144,12 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
-
-    public function tableUrl(string $tableUrl): self
-    {
-        $this->tableUrl = $tableUrl;
-        return $this;
-    }
-
-    public function getTableUrl(): ?string
-    {
-        return $this->tableUrl;
-    }
-
     protected function viewData(): array
     {
         return [
             'rows' => $this->rows(),
             'fields' => $this->getFields(),
             'name' => $this->getName(),
-            'tableUrl' => $this->getTableUrl(),
             'hasPaginator' => $this->hasPaginator(),
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),

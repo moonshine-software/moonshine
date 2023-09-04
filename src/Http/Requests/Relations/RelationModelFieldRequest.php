@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Pages\Crud\ShowPage;
 use MoonShine\Resources\ModelResource;
 use Throwable;
 
@@ -50,10 +53,10 @@ class RelationModelFieldRequest extends MoonshineFormRequest
 
         $resource = $this->getResource();
 
-        $fields = match($this->getPage()->uriKey()) {
-            'index-page' => $resource->getIndexFields(),
-            'show-page' => $resource->getDetailFields(),
-            'form-page' => Fields::make(
+        $fields = match(get_class($this->getPage())) {
+            IndexPage::class => $resource->getIndexFields(),
+            ShowPage::class => $resource->getDetailFields(),
+            FormPage::class => Fields::make(
                     empty($resource->formFields())
                         ? $resource->fields()
                         : $resource->formFields()

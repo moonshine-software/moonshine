@@ -90,6 +90,20 @@ if (! function_exists('to_relation_route')) {
     }
 }
 
+if (! function_exists('to_relation_search_route')) {
+    function to_relation_search_route(array $inputs = []): string
+    {
+        $url = to_relation_route('search-relations', request('resourceItem'));
+        if(isset($inputs['page'])) {
+            unset($inputs['page']);
+        }
+        if(empty($inputs)) {
+            return $url;
+        }
+        return $url . '?' . Arr::query($inputs);
+    }
+}
+
 if (! function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest
     {
