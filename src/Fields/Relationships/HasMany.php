@@ -7,6 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use App\MoonShine\Resources\CommentResource;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\FormButton;
@@ -14,6 +15,7 @@ use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Buttons\IndexPage\ShowButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Traits\WithFields;
 use Throwable;
@@ -25,6 +27,60 @@ class HasMany extends ModelRelationField implements HasFields
     protected bool $isGroup = true;
 
     protected bool $outsideComponent = true;
+
+    public function resolveFill(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0
+    ): Field {
+
+        if(!$this->toOne()) {
+            $casted = $this->resolveCasted($casted);
+        }
+
+        return parent::resolveFill(
+            $raw,
+            $casted,
+            $index
+        );
+    }
+
+    protected function resolveCasted(mixed $casted): mixed
+    {
+        if(is_null($casted)) {
+            return null;
+        }
+
+        if(!$casted instanceof Model) {
+            return $casted;
+        }
+
+        $relationItems = $this
+            ->getResource()
+            ->resolveQuery()
+            ->where(
+                $casted->{$this->getRelationName()}()->getForeignKeyName(),
+                $casted->{$casted->getKeyName()}
+            )
+            ->paginate();
+
+        $url = route('moonshine.relation.search-relations', [
+            'resourceItem' => request('resourceItem'),
+            'pageUri' => request('pageUri'),
+            'resourceUri' => request('resourceUri'),
+        ]);
+
+        $requestInputs = request()->input();
+        if(isset($requestInputs['page'])) {
+            unset($requestInputs['page']);
+        }
+
+        $relationItems->setPath($url.'?'.http_build_query($requestInputs));
+
+        $casted->setRelation($this->getRelationName(), $relationItems);
+
+        return $casted;
+    }
 
     /**
      * @throws Throwable
