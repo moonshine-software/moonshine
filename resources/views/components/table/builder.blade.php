@@ -2,6 +2,7 @@
     'rows',
     'fields',
     'bulkButtons',
+    'asyncUrl',
     'async' => false,
     'preview' => false,
     'simple' => false,
@@ -21,8 +22,8 @@
 )">
     @if($async)
         <div class="flex items-center gap-2">
-            <form action="{{ request()->fullUrlWithQuery([]) }}"
-                  @submit.prevent="canBeAsync"
+            <form action="{{ $asyncUrl }}"
+                  @submit.prevent="asyncRequest"
             >
                 <x-moonshine::form.input
                     name="search"
@@ -48,6 +49,7 @@
                     <x-moonshine::table.head
                         :fields="$fields"
                         :actions="$bulkButtons"
+                        :asyncUrl="$asyncUrl"
                         :preview="$preview"
                     />
                 </x-slot:thead>
@@ -91,7 +93,7 @@
         @endif
 
         @if(!$preview && $hasPaginator)
-            {{ $paginator->links('moonshine::ui.pagination') }}
+            {{ $paginator->links('moonshine::ui.pagination', ['async' => $async]) }}
         @endif
     </div>
 </div>

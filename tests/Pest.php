@@ -7,6 +7,8 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Tests\Fixtures\Factories\CommentFactory;
+use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\TestCase;
 use Pest\Expectation;
 
@@ -36,6 +38,18 @@ function asAdmin(): TestCase
 function fillFromModel(Field $field, Model $model)
 {
     $field->resolveFill($model->toArray(), $model);
+}
+
+
+function createItem(int $countItems = 1, int $countComments = 3)
+{
+    return ItemFactory::new()
+        ->count($countItems)
+        ->has(
+            CommentFactory::new()->count($countComments)
+        )
+        ->create()
+        ->first();
 }
 
 function exampleFields(): Fields

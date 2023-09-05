@@ -42,6 +42,12 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 }
             );
 
+            Route::prefix('relations/{pageUri}')->controller(RelationModelFieldController::class)->group(
+                function (): void {
+                    Route::get('/{resourceUri?}/{resourceItem?}', 'searchRelations')->name('relation.search-relations');
+                }
+            );
+
             Route::get('/', DashboardController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');
 

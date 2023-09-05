@@ -30,6 +30,8 @@ final class TableBuilder extends IterableComponent implements TableContract
         'paginator',
     ];
 
+    protected ?string $asyncUrl = null;
+
     protected array $rows = [];
 
     protected ?Closure $trAttributes = null;
@@ -49,6 +51,23 @@ final class TableBuilder extends IterableComponent implements TableContract
         }
 
         $this->withAttributes([]);
+    }
+
+    public function isAsync(): bool
+    {
+        return !is_null($this->asyncUrl);
+    }
+
+    public function async(string $asyncUrl): self
+    {
+        $this->asyncUrl = $asyncUrl;
+
+        return $this;
+    }
+
+    public function getAsyncUrl(): string
+    {
+        return $this->asyncUrl ?? '';
     }
 
     public function getItems(): Collection
@@ -130,6 +149,8 @@ final class TableBuilder extends IterableComponent implements TableContract
             'hasPaginator' => $this->hasPaginator(),
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),
+            'async' => $this->isAsync(),
+            'asyncUrl' => $this->getAsyncUrl(),
         ] + $this->statesToArray();
     }
 }

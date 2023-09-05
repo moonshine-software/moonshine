@@ -6,8 +6,6 @@ namespace MoonShine\Traits\Table;
 
 trait TableStates
 {
-    protected bool $isAsync = false;
-
     protected bool $isPreview = false;
 
     protected bool $isVertical = false;
@@ -34,18 +32,6 @@ trait TableStates
         $this->withNotFound = true;
 
         return $this;
-    }
-
-    public function async(): self
-    {
-        $this->isAsync = true;
-
-        return $this;
-    }
-
-    public function isAsync(): bool
-    {
-        return $this->isAsync;
     }
 
     public function preview(): self
@@ -139,7 +125,6 @@ trait TableStates
     public function statesToArray(): array
     {
         return [
-            'async' => $this->isAsync(),
             'vertical' => $this->isVertical(),
             'editable' => $this->isEditable(),
             'preview' => $this->isPreview(),

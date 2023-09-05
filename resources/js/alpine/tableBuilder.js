@@ -98,28 +98,29 @@ export default (
       })
     })
   },
-  canBeAsync() {
+  asyncRequest() {
     this.$event.preventDefault()
 
     const isForm = this.$el.tagName === 'FORM'
-    const url = isForm
-      ? this.$el.getAttribute('action') + '?' +
-      crudFormQuery(this.$el.querySelectorAll('[name]'))
-      : this.$el.href
 
-    if (!async && isForm) {
-      this.$el.submit()
-    }
+    let url = this.$el.href;
 
-    if (!async) {
-      window.location = url
+    if(isForm) {
+      const urlObject = new URL(this.$el.getAttribute('action'))
+      let urlSeparator = urlObject.search === '' ? '?' : '&';
+      url = urlObject.href + urlSeparator + crudFormQuery(this.$el.querySelectorAll('[name]'))
     }
 
     this.loading = true
 
-    axios.get(url + "&_fragment-load=" + (this.table.dataset?.name ?? 'crud-table'))
-    .then(response => response.data).then(html => {
-      this.$root.outerHTML = html
+    const resultUrl = new URL(url);
+
+    if(resultUrl._relation === undefined) {
+      url = url + "&_relation=" + (this.table.dataset?.name ?? 'crud-table')
+    }
+
+    axios.get(url).then(response => {
+      this.$root.outerHTML = response.data
     }).catch(error => {
       //
     })

@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Pages\Crud\ShowPage;
 use MoonShine\Resources\ModelResource;
 use Throwable;
 
@@ -31,7 +35,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
         }
 
         $this->field = $this->getPageComponent(request('_component_name'))
-            ->getFields()
+            ->getFields($this->getPage()->uriKey())
             ->onlyRelationFields()
             ->findByRelation($this->getRelationName());
 
@@ -47,8 +51,21 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             return $this->field;
         }
 
-        $this->field = $this->getResource()
-            ->getFields()
+        $resource = $this->getResource();
+
+        $fields = match(get_class($this->getPage())) {
+            IndexPage::class => $resource->getIndexFields(),
+            ShowPage::class => $resource->getDetailFields(),
+            FormPage::class => Fields::make(
+                    empty($resource->formFields())
+                        ? $resource->fields()
+                        : $resource->formFields()
+            )->filter()->formFields(),
+            default => Fields::make($this->fields())
+        };
+
+        $this->field = $fields
+            ->filter()
             ->onlyRelationFields()
             ->findByRelation($this->getRelationName());
 

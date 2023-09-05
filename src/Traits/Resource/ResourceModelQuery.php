@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pagination\Paginator as PaginatorObject;
+use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginatorObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -116,6 +118,22 @@ trait ResourceModelQuery
                 ),
             )
             ->appends(request()->except('page'));
+    }
+
+    public function paginateItems(Collection $items, string $url): Paginator
+    {
+        if($this->simplePaginate) {
+            return (new PaginatorObject($items, $this->itemsPerPage))
+                ->appends(request()->except('page'));
+        }
+
+        return (new LengthAwarePaginatorObject(
+            $items->forPage(1, $this->itemsPerPage),
+            count($items),
+            $this->itemsPerPage,
+            1,
+            [ 'path' => $url ]
+        ))->appends(request()->except('page'));
     }
 
     /**
