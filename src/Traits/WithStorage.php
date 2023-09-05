@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 trait WithStorage
 {
-    protected string $disk = 'public';
+    protected ?string $disk = null;
 
     protected string $dir = '/';
 
@@ -35,7 +35,7 @@ trait WithStorage
 
     public function getDisk(): string
     {
-        return $this->disk;
+        return $this->disk ?? config('moonshine.disk', 'public');
     }
 
     public function getDir(): string

@@ -50,5 +50,5 @@ it('avatar uploaded', function (): void {
         ])
         ->assertValid();
 
-    Storage::disk(config('moonshine.disk', 'public'))->assertExists('moonshine_users/' . $avatar->hashName());
+    Storage::disk('public')->assertExists('moonshine_users/' . $avatar->hashName());
 });
