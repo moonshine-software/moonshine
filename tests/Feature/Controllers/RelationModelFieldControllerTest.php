@@ -14,7 +14,7 @@ it('search relations with pagination', function () {
     $item = createItem();
 
     $lastComment = $item->comments[count($item->comments) - 1];
-    $firstComment= $item->comments[0];
+    $firstComment = $item->comments[0];
 
     asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
         'pageUri' => 'form-page',
@@ -45,7 +45,7 @@ it('pagination has many with page', function () {
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
         '_relation' => 'comments',
-        'page' => 2
+        'page' => 2,
     ]))
         ->assertOk()
         ->assertSee('asyncRequest')
@@ -62,7 +62,7 @@ it('pagination has many sort', function () {
     $item = createItem();
 
     $lastComment = $item->comments[count($item->comments) - 1];
-    $firstComment= $item->comments[0];
+    $firstComment = $item->comments[0];
 
     asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
         'pageUri' => 'form-page',
@@ -72,7 +72,7 @@ it('pagination has many sort', function () {
         'sort' => [
             'column' => 'id',
             'direction' => 'asc',
-        ]
+        ],
     ]))
         ->assertOk()
         ->assertSee('asyncRequest')
@@ -94,7 +94,7 @@ it('search relations empty result', function () {
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
         '_relation' => 'comments',
-        'search' => 'test_with_time_'.time(),
+        'search' => 'test_with_time_' . time(),
     ]))
         ->assertOk()
         ->assertSee('asyncRequest')

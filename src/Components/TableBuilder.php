@@ -55,7 +55,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function isAsync(): bool
     {
-        return !is_null($this->asyncUrl);
+        return ! is_null($this->asyncUrl);
     }
 
     public function async(string $asyncUrl): self

@@ -57,7 +57,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             IndexPage::class => $resource->getIndexFields(),
             ShowPage::class => $resource->getDetailFields(),
             FormPage::class => Fields::make(
-                    empty($resource->formFields())
+                empty($resource->formFields())
                         ? $resource->fields()
                         : $resource->formFields()
             )->filter()->formFields(),
