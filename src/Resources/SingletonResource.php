@@ -14,6 +14,8 @@ abstract class SingletonResource extends Resource
 {
     protected string $routeAfterSave = 'edit';
 
+    protected string $redirectRoute = 'edit'; // show, edit
+
     public function resolveRoutes(): void
     {
         Route::prefix('resource')->group(function (): void {
@@ -37,7 +39,7 @@ abstract class SingletonResource extends Resource
             Route::get(
                 "{$this->uriKey()}/{$this->getId()}/redirect",
                 fn (): RedirectResponse|Redirector => redirect(
-                    $this->route('edit', $this->getId())
+                    $this->route($this->redirectRoute(), $this->getId())
                 )
             )->name("{$this->routeNameAlias()}.index");
         });
@@ -58,5 +60,10 @@ abstract class SingletonResource extends Resource
     public function actions(): array
     {
         return [];
+    }
+
+    public function redirectRoute(): string
+    {
+        return $this->redirectRoute;
     }
 }
