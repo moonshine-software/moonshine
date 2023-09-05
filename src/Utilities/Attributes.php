@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Utilities;
 
 use Illuminate\Support\Arr;
+use ReflectionAttribute;
 use ReflectionClass;
 
 final class Attributes

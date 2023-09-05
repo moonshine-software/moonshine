@@ -17,11 +17,11 @@ it('has one dont see', function () {
     asAdmin()->get(
         to_page($this->categoryResource, FormPage::class)
     )
+        ->assertOk()
         ->assertSee('Name title')
         ->assertSee('Content title')
         ->assertSee('Public at title')
         ->assertDontSee('Cover title')
-        ->assertOk()
     ;
 });
 
@@ -31,11 +31,11 @@ it('has one see', function () {
     asAdmin()->get(
         to_page($this->categoryResource, FormPage::class, ['resourceItem' => $category->id])
     )
+        ->assertOk()
         ->assertSee('Name title')
         ->assertSee('Content title')
         ->assertSee('Public at title')
         ->assertSee('Cover title')
-        ->assertOk()
     ;
 });
 
@@ -44,12 +44,12 @@ it('has many dont see', function () {
     asAdmin()->get(
         to_page($this->itemResource, FormPage::class)
     )
+        ->assertOk()
         ->assertSee('Name title')
         ->assertSee('Category title')
         ->assertSee('Content title')
         ->assertDontSee('Comments title')
         ->assertDontSee('Images title')
-        ->assertOk()
     ;
 });
 
@@ -63,6 +63,7 @@ it('has many see', function () {
     asAdmin()->get(
         to_page($this->itemResource, FormPage::class, ['resourceItem' => $item->id])
     )
+        ->assertOk()
         ->assertSee('Name title')
         ->assertSee('Category title')
         ->assertSee('Content title')
@@ -74,6 +75,5 @@ it('has many see', function () {
         ->assertSee('pagination-list')
         ->assertSee($lastComment->content)
         ->assertDontSee($firstComment->content)
-        ->assertOk()
     ;
 });

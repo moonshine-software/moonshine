@@ -13,7 +13,7 @@ trait HasAsync
         return ! is_null($this->asyncUrl);
     }
 
-    public function async(string $asyncUrl): self
+    public function async(?string $asyncUrl = null): self
     {
         $this->asyncUrl = $asyncUrl;
 

@@ -75,6 +75,13 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
+    public function async(?string $asyncUrl = null): self
+    {
+        $this->asyncUrl = $asyncUrl ?? $this->getAction();
+
+        return $this;
+    }
+
     public function method(string $method): self
     {
         $this->method = $method;

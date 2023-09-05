@@ -4,19 +4,24 @@ namespace MoonShine\UI;
 
 use Closure;
 use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Makeable;
 
 class Modal
 {
     use Makeable;
+    use HasAsync;
 
     protected array $buttons = [];
 
     public function __construct(
         protected ?Closure $title,
         protected ?Closure $content,
-        protected bool $async = false
+        bool $async = false
     ) {
+        if ($async) {
+            $this->async('#');
+        }
     }
 
     public function title(mixed $data = null): ?string
@@ -32,18 +37,6 @@ class Modal
     public function buttons(array $buttons): self
     {
         $this->buttons = $buttons;
-
-        return $this;
-    }
-
-    public function isAsync(): bool
-    {
-        return $this->async;
-    }
-
-    public function async(): self
-    {
-        $this->async = true;
 
         return $this;
     }
