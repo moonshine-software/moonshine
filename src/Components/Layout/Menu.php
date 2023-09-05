@@ -28,7 +28,7 @@ class Menu extends MoonshineComponent
     {
         return [
             'data' => moonshineMenu()->all(),
-            'top' => $this->isTop()
+            'top' => $this->isTop(),
         ];
     }
 }

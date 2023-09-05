@@ -42,7 +42,7 @@ final class Profile extends MoonshineComponent
             'avatar' => $avatar,
             'nameOfUser' => $nameOfUser,
             'username' => $username,
-            'withBorder' => $this->isWithBorder()
+            'withBorder' => $this->isWithBorder(),
         ];
     }
 }
