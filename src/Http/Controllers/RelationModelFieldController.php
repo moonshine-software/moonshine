@@ -8,7 +8,6 @@ use App\Models\Item;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Pagination\LengthAwarePaginator;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Relationships\MorphTo;
@@ -88,25 +87,6 @@ class RelationModelFieldController extends MoonShineController
         $parentItem = $parentResource->getItemOrInstance();
 
         $field = $request->getField();
-
-        $relation = $request->getRelationName();
-
-        $resource = $field->getResource();
-
-        /**
-         * @var LengthAwarePaginator $relationItems
-         */
-        $relationItems = $resource
-            ->resolveQuery()
-            ->where(
-                $parentItem->{$relation}()->getForeignKeyName(),
-                $parentItem->{$parentItem->getKeyName()}
-            )
-            ->paginate();
-
-        $relationItems->setPath(to_relation_search_route($request->input()));
-
-        $parentItem->setRelation($relation, $relationItems);
 
         $field->resolveFill(
             $parentItem->toArray(),

@@ -55,14 +55,14 @@ class HasMany extends ModelRelationField implements HasFields
             return $casted;
         }
 
-        $relationItems = $this
-            ->getResource()
+        $this->getResource()
             ->resolveQuery()
             ->where(
                 $casted->{$this->getRelationName()}()->getForeignKeyName(),
                 $casted->{$casted->getKeyName()}
-            )
-            ->paginate();
+            );
+
+        $relationItems = $this->getResource()->paginate();
 
         $relationItems->setPath(to_relation_search_route(request()->input()));
 
