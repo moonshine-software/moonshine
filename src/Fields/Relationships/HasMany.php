@@ -34,7 +34,7 @@ class HasMany extends ModelRelationField implements HasFields
         int $index = 0
     ): Field {
 
-        if(!$this->toOne()) {
+        if(! $this->toOne()) {
             $casted = $this->resolveCasted($casted);
         }
 
@@ -51,7 +51,7 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        if(!$casted instanceof Model) {
+        if(! $casted instanceof Model) {
             return $casted;
         }
 
@@ -132,7 +132,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         $items = $this->toValue() ?? [];
 
-        if(!empty($items) && !$items instanceof Paginator) {
+        if(! empty($items) && ! $items instanceof Paginator) {
             $items = $resource->paginateItems($items, $asyncUrl);
         }
 

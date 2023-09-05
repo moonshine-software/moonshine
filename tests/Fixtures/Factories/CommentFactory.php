@@ -14,7 +14,7 @@ class CommentFactory extends Factory
     {
         return [
             'content' => $this->faker->words(10, true),
-            'user_id' => MoonshineUser::factory()
+            'user_id' => MoonshineUser::factory(),
         ];
     }
 }
