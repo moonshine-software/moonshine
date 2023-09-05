@@ -53,7 +53,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
 
         $resource = $this->getResource();
 
-        $fields = match(get_class($this->getPage())) {
+        $fields = match($this->getPage()::class) {
             IndexPage::class => $resource->getIndexFields(),
             ShowPage::class => $resource->getDetailFields(),
             FormPage::class => Fields::make(
