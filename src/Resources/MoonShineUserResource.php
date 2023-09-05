@@ -72,7 +72,6 @@ class MoonShineUserResource extends Resource
                             )
                                 ->removable()
                                 ->showOnExport()
-                                ->disk(config('filesystems.default'))
                                 ->dir('moonshine_users')
                                 ->allowedExtensions(
                                     ['jpg', 'png', 'jpeg', 'gif']
