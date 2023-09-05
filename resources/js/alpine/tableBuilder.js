@@ -98,15 +98,10 @@ export default (
       })
     })
   },
-  asyncQuery() {
+  asyncRequest() {
     this.$event.preventDefault()
 
     const isForm = this.$el.tagName === 'FORM'
-
-    console.log('isForm', isForm)
-    console.log('action', this.$el.getAttribute('action'))
-    console.log('crudFormQuery', crudFormQuery(this.$el.querySelectorAll('[name]')))
-    console.log('OR href', this.$el.href)
 
     let url = this.$el.href;
 
@@ -116,12 +111,15 @@ export default (
       url = urlObject.href + urlSeparator + crudFormQuery(this.$el.querySelectorAll('[name]'))
     }
 
-    console.log('url', url)
-
     this.loading = true
 
-    axios.get(url + "&_relation=" + (this.table.dataset?.name ?? 'crud-table'))
-    .then(response => {
+    const resultUrl = new URL(url);
+
+    if(resultUrl._relation === undefined) {
+      url = url + "&_relation=" + (this.table.dataset?.name ?? 'crud-table')
+    }
+
+    axios.get(url).then(response => {
       this.$root.outerHTML = response.data
     }).catch(error => {
       //

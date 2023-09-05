@@ -23,7 +23,7 @@
     @if($async)
         <div class="flex items-center gap-2">
             <form action="{{ $asyncUrl }}"
-                  @submit.prevent="asyncQuery"
+                  @submit.prevent="asyncRequest"
             >
                 <x-moonshine::form.input
                     name="search"

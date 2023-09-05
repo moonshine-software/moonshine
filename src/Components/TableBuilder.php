@@ -30,8 +30,6 @@ final class TableBuilder extends IterableComponent implements TableContract
         'paginator',
     ];
 
-    protected bool $isAsync = false;
-
     protected ?string $asyncUrl = null;
 
     protected array $rows = [];
@@ -57,13 +55,11 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function isAsync(): bool
     {
-        return $this->isAsync;
+        return !is_null($this->asyncUrl);
     }
 
     public function async(string $asyncUrl): self
     {
-        $this->isAsync = true;
-
         $this->asyncUrl = $asyncUrl;
 
         return $this;

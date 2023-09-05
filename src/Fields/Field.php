@@ -104,7 +104,7 @@ abstract class Field extends FormElement
         return $this->sortable;
     }
 
-    public function sortQuery(string $url): string
+    public function sortQuery(?string $url = null): string
     {
         $sortData = [
             'sort' => [
@@ -115,7 +115,7 @@ abstract class Field extends FormElement
             'page' =>  request('page', 1)
         ];
 
-        if(empty($url)) {
+        if(is_null($url)) {
             return request()->fullUrlWithQuery($sortData);
         }
 

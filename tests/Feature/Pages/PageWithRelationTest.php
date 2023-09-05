@@ -70,7 +70,7 @@ it('has many see', function () {
         ->assertSee('Images title')
         ->assertSee('page=1')
         ->assertSee('page=2')
-        ->assertSee('asyncQuery')
+        ->assertSee('asyncRequest')
         ->assertSee('pagination-list')
         ->assertSee($lastComment->content)
         ->assertDontSee($firstComment->content)

@@ -2,5 +2,4 @@
     :paginator="$paginator"
     :elements="$elements"
     :async="$async"
-    :system="true"
 />

@@ -25,7 +25,7 @@ it('search relations with pagination', function () {
         ->assertOk()
         ->assertSee('page=1')
         ->assertSee('page=2')
-        ->assertSee('asyncQuery')
+        ->assertSee('asyncRequest')
         ->assertSee('pagination-list')
         ->assertSee(__('moonshine::ui.search'))
         ->assertSee($lastComment->content)
@@ -48,7 +48,7 @@ it('pagination has many with page', function () {
         'page' => 2
     ]))
         ->assertOk()
-        ->assertSee('asyncQuery')
+        ->assertSee('asyncRequest')
         ->assertSee('page=1')
         ->assertSee('page=2')
         ->assertSee('page=3')
@@ -75,7 +75,7 @@ it('pagination has many sort', function () {
         ]
     ]))
         ->assertOk()
-        ->assertSee('asyncQuery')
+        ->assertSee('asyncRequest')
         ->assertSee('page=1')
         ->assertSee('page=2')
         ->assertSee('pagination-list')
@@ -97,7 +97,7 @@ it('search relations empty result', function () {
         'search' => 'test_with_time_'.time(),
     ]))
         ->assertOk()
-        ->assertSee('asyncQuery')
+        ->assertSee('asyncRequest')
         ->assertSee('Records not found')
     ;
 });
