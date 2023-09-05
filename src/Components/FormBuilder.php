@@ -8,12 +8,15 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Traits\HasAsync;
 
 /**
  * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], array $values = [])
  */
 final class FormBuilder extends RowComponent
 {
+    use HasAsync;
+
     protected string $view = 'moonshine::components.form.builder';
 
     protected $except = [
@@ -23,9 +26,6 @@ final class FormBuilder extends RowComponent
     ];
 
     protected bool $isPrecognitive = false;
-
-    protected bool $isAsync = false;
-
     protected ?string $submitLabel = null;
 
     protected ComponentAttributeBag $submitAttributes;
@@ -74,19 +74,6 @@ final class FormBuilder extends RowComponent
     {
         return $this->isPrecognitive;
     }
-
-    public function async(): self
-    {
-        $this->isAsync = true;
-
-        return $this;
-    }
-
-    public function isAsync(): bool
-    {
-        return $this->isAsync;
-    }
-
 
     public function method(string $method): self
     {
@@ -157,6 +144,7 @@ final class FormBuilder extends RowComponent
             'fields' => $fields,
             'precognitive' => $this->isPrecognitive(),
             'async' => $this->isAsync(),
+            'asyncUrl' => $this->asyncUrl(),
             'buttons' => $this->getButtons(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),

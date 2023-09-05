@@ -12,6 +12,7 @@ use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
+use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Table\TableStates;
 
 /**
@@ -20,6 +21,7 @@ use MoonShine\Traits\Table\TableStates;
 final class TableBuilder extends IterableComponent implements TableContract
 {
     use TableStates;
+    use HasAsync;
 
     protected string $view = 'moonshine::components.table.builder';
 
@@ -29,8 +31,6 @@ final class TableBuilder extends IterableComponent implements TableContract
         'hasPaginator',
         'paginator',
     ];
-
-    protected ?string $asyncUrl = null;
 
     protected array $rows = [];
 
@@ -51,23 +51,6 @@ final class TableBuilder extends IterableComponent implements TableContract
         }
 
         $this->withAttributes([]);
-    }
-
-    public function isAsync(): bool
-    {
-        return ! is_null($this->asyncUrl);
-    }
-
-    public function async(string $asyncUrl): self
-    {
-        $this->asyncUrl = $asyncUrl;
-
-        return $this;
-    }
-
-    public function getAsyncUrl(): string
-    {
-        return $this->asyncUrl ?? '';
     }
 
     public function getItems(): Collection
@@ -150,7 +133,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),
             'async' => $this->isAsync(),
-            'asyncUrl' => $this->getAsyncUrl(),
+            'asyncUrl' => $this->asyncUrl(),
         ] + $this->statesToArray();
     }
 }

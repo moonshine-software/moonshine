@@ -14,6 +14,7 @@ use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTrait;
 use MoonShine\Traits\Fields\WithDefaultValue;
+use MoonShine\Traits\HasAsync;
 
 class Select extends Field implements
     HasDefaultValue,
@@ -25,6 +26,7 @@ class Select extends Field implements
     use Searchable;
     use SelectTrait;
     use WithDefaultValue;
+    use HasAsync;
 
     protected string $view = 'moonshine::fields.select';
 

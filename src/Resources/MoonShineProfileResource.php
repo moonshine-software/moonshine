@@ -49,7 +49,7 @@ class MoonShineProfileResource extends ModelResource
                         Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
                             ->setValue(auth()->user()
                                 ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null)
-                            ->disk('public')
+                            ->disk(config('moonshine.disk', 'public'))
                             ->dir('moonshine_users')
                             ->removable()
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),

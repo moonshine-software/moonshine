@@ -45,6 +45,7 @@
       @apply pointer-events-auto visible translate-y-0 opacity-100;
     }
 
+    /* Heading */
     &-heading {
       @apply pointer-events-auto fixed top-0 left-0 right-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 py-3 px-6 backdrop-blur-sm md:px-10 lg:static lg:z-auto lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:py-3 lg:px-0 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:py-4 xl:px-4;
 
@@ -68,8 +69,10 @@
       }
     }
 
+    /* Main navigation */
     &-inner {
       @apply flex flex-col gap-y-2;
+
       &-item {
         @apply relative rounded-lg text-white transition-all current:font-medium current:dark:font-normal current:opacity-100 current:transition-none lg:rounded-l-lg lg:rounded-r-none current:bg-menu-current-bg current:text-menu-current-color current:lg:bg-slate-50 current:lg:text-black dark:current:lg:bg-dark-700 current:dark:lg:text-white;
         &._is-active {
@@ -196,6 +199,227 @@
         @apply text-white/30 hover:text-secondary;
         > svg {
           @apply h-6 w-6;
+        }
+      }
+    }
+  }
+}
+
+/* Aside horizontal navigation */
+.layout-menu-horizontal {
+  @apply fixed inset-x-0 top-0 z-[100] flex items-center h-[4.5rem] lg:h-24 gap-x-5 px-6 md:px-10 bg-body/80 backdrop-blur-sm transition-colors;
+
+  /* Opened menu state */
+  &._is-opened {
+    @apply bg-body;
+
+    .menu-navigation {
+      @apply pointer-events-auto visible opacity-100 translate-y-0;
+    }
+  }
+
+  .menu {
+    /* Logotype */
+    &-logo {
+      @apply shrink-0;
+    }
+
+    /* Main navigation */
+    &-navigation {
+      @apply block lg:grow lg:overflow-x-auto lg:overflow-y-hidden;
+    }
+
+    &-inner {
+      @apply flex gap-x-0.5 lg:gap-x-1.5 overflow-x-auto;
+
+      &-item {
+        @apply relative rounded-lg text-white transition-all current:font-medium current:dark:font-normal current:opacity-100 current:transition-none current:bg-menu-current-bg current:text-menu-current-color current:lg:bg-slate-50 current:lg:text-black dark:current:lg:bg-dark-700 current:dark:lg:text-white;
+
+        &._is-active {
+          .menu-inner-link {
+            @apply text-menu-current-color hover:text-menu-current-color lg:text-inherit lg:hover:text-inherit;
+          }
+        }
+      }
+      &-link,
+      &-button {
+        @apply relative flex items-center font-normal gap-x-2.5 rounded-lg p-3 text-2xs text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
+        &._is-active {
+          @apply bg-menu-active-bg text-menu-active-color;
+          .menu-inner-arrow {
+            @apply scale-y-[-1];
+          }
+        }
+        > svg {
+          @apply h-6 w-6;
+        }
+      }
+      &-link {
+        &::after {
+          content: "";
+          @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
+        }
+      }
+      &-button {
+        @apply w-full;
+      }
+      &-text {
+        @apply grow truncate text-left;
+      }
+      &-counter {
+        @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white absolute top-0.5 -right-1 z-1 max-w-[64px] scale-90 lg:static lg:max-w-[120px] lg:scale-100;
+      }
+      &-arrow {
+        @apply transition-transform;
+        > svg {
+          @apply h-4 w-4;
+        }
+      }
+      &-text,
+      &-arrow {
+        @apply hidden lg:block;
+      }
+
+      /* Dropdown Menu */
+      &-dropdown {
+        @apply md:min-w-[190px] lg:max-h-72 lg:overflow-y-auto lg:min-w-[240px] flex flex-col gap-y-1 rounded-lg bg-menu-dropdown-bg py-1.5 px-1 shadow-lg border border-dark-300;
+
+        .menu-inner-item {
+          &::before,
+          &::after {
+            @apply -right-6;
+          }
+        }
+        .menu-inner-link,
+        .menu-inner-button {
+          &::after {
+            @apply -right-6 w-6;
+          }
+          @apply px-3.5 text-2xs;
+          > svg {
+            @apply h-5 w-5;
+          }
+        }
+        .menu-inner-text {
+          @apply block;
+        }
+        .menu-inner-counter {
+          @apply h-5 bg-secondary text-[11px] leading-5 top-0.5 right-0 max-w-[48px] xl:right-1 xl:max-w-[120px];
+        }
+        .menu-inner-divider {
+          @apply my-2 -ml-3.5 pl-4 pr-0.5 before:min-w-[16px] before:h-[1px] before:bg-slate-400;
+          > span {
+            @apply block;
+          }
+        }
+      }
+
+      /* Divider */
+      &-divider {
+        @apply relative flex items-center mx-2 text-slate-400 before:grow before:min-w-[1px] before:h-[16px] before:bg-white/30;
+        > span {
+          @apply hidden relative z-1 w-full truncate pl-2.5;
+        }
+      }
+    }
+
+    /* Actions buttons */
+    &-actions {
+      @apply ml-auto flex items-center justify-end gap-x-2 sm:gap-x-3 shrink-0;
+
+      .menu-inner-divider {
+        @apply mx-1;
+      }
+    }
+
+    /* User Profile */
+    &-profile {
+      @apply flex flex-row items-center gap-y-4 gap-x-2;
+
+      &-main {
+        @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
+        &:hover {
+          .menu-profile-info > .name {
+            @apply text-secondary;
+          }
+        }
+      }
+
+      &-photo {
+        @apply h-8 w-8 lg:h-10 lg:w-10 shrink-0 overflow-hidden rounded-full;
+      }
+
+      &-info {
+        @apply min-w-0 grow hidden 2xl:block;
+        > .name {
+          @apply block truncate font-medium text-white transition-colors;
+        }
+        > .email {
+          @apply block truncate text-3xs text-slate-400;
+        }
+      }
+
+      &-exit {
+        @apply text-white/30 hover:text-secondary;
+        > svg {
+          @apply h-6 w-6;
+        }
+      }
+    }
+
+    /* Light/Dark mode button */
+    &-mode {
+      @apply inline-flex items-center justify-center;
+      &-btn {
+        @apply h-6 w-6 overflow-hidden text-white/30 hover:text-white;
+        > svg {
+          @apply h-6 w-6;
+        }
+      }
+    }
+
+    /* Settings button */
+    &-settings {
+      @apply inline-flex items-center;
+    }
+
+    /* Burger button */
+    &-burger {
+      @apply inline-flex items-center lg:hidden;
+    }
+  }
+
+  @media (max-width: 1023.98px) {
+    .menu {
+      &-navigation {
+        @apply opacity-0 pointer-events-none invisible overflow-x-auto absolute inset-x-0 top-[4.5rem] px-3 md:px-7 pb-8 bg-body transition-all -translate-y-2;
+        height: calc(100vh - 5rem);
+      }
+
+      &-inner {
+        @apply flex-col gap-y-0.5 overflow-x-hidden;
+
+        .menu-inner-text,
+        .menu-inner-arrow {
+          @apply block;
+        }
+
+        .menu-inner-counter {
+          @apply static scale-100 max-w-[120px];
+        }
+
+        .menu-inner-divider {
+          @apply before:min-w-[16px] before:h-[1px];
+        }
+        > .menu-inner-divider {
+          @apply my-1;
+        }
+
+        .menu-inner-button._is-active ~ .menu-inner-dropdown {
+          @apply !block;
+        }
+        .menu-inner-dropdown {
+          @apply !static !transform-none !hidden !mt-2;
         }
       }
     }

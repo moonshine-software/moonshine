@@ -1,5 +1,8 @@
+@props([
+    'top' => false
+])
 <button @click.prevent="$store.darkMode.toggle()"
-        class="menu-heading-mode-btn"
+        {{ $attributes->class(['menu-heading-mode-btn' => !$top, 'menu-mode-btn' => $top]) }}
         type="button"
         title="Toggle Dark/Light Mode"
 >

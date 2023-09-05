@@ -19,8 +19,8 @@
 <link rel="manifest" href="{{ asset('vendor/moonshine/site.webmanifest') }}">
 <link rel="mask-icon"
       href="{{ asset('vendor/moonshine/safari-pinned-tab.svg') }}"
-      color="{{ moonshineAssets()->getColor('primary') }}"
+      color="{{ moonshineAssets()->getColor('body') }}"
 >
 
-<meta name="msapplication-TileColor" content="{{ moonshineAssets()->getColor('primary') }}">
-<meta name="theme-color" content="{{ moonshineAssets()->getColor('primary') }}">
+<meta name="msapplication-TileColor" content="{{ moonshineAssets()->getColor('body') }}">
+<meta name="theme-color" content="{{ moonshineAssets()->getColor('body') }}">

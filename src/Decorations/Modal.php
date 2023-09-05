@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
+use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\WithIcon;
 
 class Modal extends Decoration
 {
     use WithIcon;
+    use HasAsync;
 
     protected string $view = 'moonshine::decorations.modal';
 
@@ -17,10 +19,6 @@ class Modal extends Decoration
     protected string $content = '';
 
     protected bool $isWide = false;
-
-    protected bool $isAsync = false;
-
-    protected ?string $asyncUrl = null;
 
     public function wide(): self
     {
@@ -32,24 +30,6 @@ class Modal extends Decoration
     public function isWide(): bool
     {
         return $this->isWide;
-    }
-
-    public function async(string $url): self
-    {
-        $this->isAsync = true;
-        $this->asyncUrl = $url;
-
-        return $this;
-    }
-
-    public function isAsync(): bool
-    {
-        return $this->isAsync;
-    }
-
-    public function asyncUrl(): string
-    {
-        return $this->asyncUrl ?? '';
     }
 
     public function content(string $title, string $content): self

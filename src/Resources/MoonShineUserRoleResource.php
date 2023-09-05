@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use MoonShine\Attributes\Icon;
 use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUserRole;
 
+#[Icon('heroicons.outline.bookmark')]
 class MoonShineUserRoleResource extends ModelResource
 {
     public string $model = MoonshineUserRole::class;

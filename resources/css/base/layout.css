@@ -6,6 +6,10 @@
     &-short {
       @apply lg:pl-[6rem];
     }
+
+    &--top-menu {
+      @apply flex-col pt-[4.5rem] lg:pt-24 px-3 md:px-5 pb-6 transition-none;
+    }
   }
 
   &-menu {

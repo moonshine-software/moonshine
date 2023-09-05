@@ -1,5 +1,6 @@
 @props([
-    'item'
+    'item',
+    'top' => false,
 ])
 @if($item instanceof MoonShine\Menu\MenuDivider)
     <li class="menu-inner-divider">

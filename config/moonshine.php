@@ -31,6 +31,8 @@ return [
 
     'layout' => MoonShineLayout::class,
 
+    'disk' => 'public',
+
     'forms' => [
         'login' => LoginForm::class
     ],

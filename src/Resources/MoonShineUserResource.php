@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use Illuminate\Validation\Rule;
+use MoonShine\Attributes\Icon;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Tab;
@@ -21,6 +22,7 @@ use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Traits\Resource\WithUserPermissions;
 
+#[Icon('heroicons.outline.users')]
 class MoonShineUserResource extends ModelResource
 {
     use WithUserPermissions;
@@ -54,7 +56,7 @@ class MoonShineUserResource extends ModelResource
 
                         Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
                             ->showOnExport()
-                            ->disk('public')
+                            ->disk(config('moonshine.disk', 'public'))
                             ->dir('moonshine_users')
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
@@ -128,10 +130,5 @@ class MoonShineUserResource extends ModelResource
     public function getBadge(): string
     {
         return (string) $this->getModel()->newModelQuery()->count();
-    }
-
-    public function getIcon(): string
-    {
-        return 'heroicons.outline.users';
     }
 }
