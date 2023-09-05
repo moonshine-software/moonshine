@@ -2,7 +2,6 @@
 
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Tests\Fixtures\Models\Category;
-use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 
@@ -56,7 +55,10 @@ it('has many dont see', function () {
 
 it('has many see', function () {
 
-    $item = Item::factory()->count(1)->create()->first();
+    $item = createItem();
+
+    $lastComment = $item->comments[count($item->comments) - 1];
+    $firstComment= $item->comments[0];
 
     asAdmin()->get(
         to_page($this->itemResource, FormPage::class, ['resourceItem' => $item->id])
@@ -66,6 +68,12 @@ it('has many see', function () {
         ->assertSee('Content title')
         ->assertSee('Comments title')
         ->assertSee('Images title')
+        ->assertSee('page=1')
+        ->assertSee('page=2')
+        ->assertSee('asyncQuery')
+        ->assertSee('pagination-list')
+        ->assertSee($lastComment->content)
+        ->assertDontSee($firstComment->content)
         ->assertOk()
     ;
 });

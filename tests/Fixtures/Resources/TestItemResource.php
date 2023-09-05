@@ -43,7 +43,8 @@ class TestItemResource extends ModelResource
                 ,
 
                 HasMany::make('Comments title', 'comments', resource: new TestCommentResource())->fields([
-                    Text::make('Comment title', 'content'),
+                    ID::make()->sortable(),
+                    Text::make('Comment title', 'content')->sortable(),
                 ]),
 
                 MorphMany::make('Images title', 'images', resource: new TestImageResource())

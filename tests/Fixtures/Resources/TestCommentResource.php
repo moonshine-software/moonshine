@@ -12,11 +12,13 @@ class TestCommentResource extends ModelResource
 {
     protected string $model = Comment::class;
 
+    protected int $itemsPerPage = 2;
+
     public function fields(): array
     {
         return [
-            ID::make(),
-            Text::make('Comment title', 'content'),
+            ID::make()->sortable(),
+            Text::make('Comment title', 'content')->sortable(),
         ];
     }
 

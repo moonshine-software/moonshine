@@ -5,6 +5,7 @@ namespace MoonShine\Tests\Fixtures\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 
 class Comment extends Model
 {
@@ -19,5 +20,10 @@ class Comment extends Model
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class, 'item_id');
+    }
+
+    protected static function newFactory()
+    {
+        return new CommentFactory();
     }
 }
