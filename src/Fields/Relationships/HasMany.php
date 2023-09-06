@@ -27,6 +27,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $outsideComponent = true;
 
+    protected int $limit = 15;
+
     public function resolveFill(
         array $raw = [],
         mixed $casted = null,
@@ -66,7 +68,7 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $casted = $this->getRelatedModel();
 
-        $items = $casted->{$this->getRelationName()};
+        $items = $casted->{$this->getRelationName()}->slice(0, $this->getLimit());
 
         if($this->toOne()) {
             $items = Arr::wrap($items);
@@ -129,5 +131,16 @@ class HasMany extends ModelRelationField implements HasFields
                 DeleteButton::for($resource, request()->getUri()),
                 MassDeleteButton::for($resource),
             ]);
+    }
+
+    public function limit(int $limit): static
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
+    public function getLimit(): int
+    {
+        return $this->limit;
     }
 }
