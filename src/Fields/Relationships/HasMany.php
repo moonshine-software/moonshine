@@ -68,7 +68,11 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $casted = $this->getRelatedModel();
 
-        $items = $casted->{$this->getRelationName()}->slice(0, $this->getLimit());
+        $items = $casted->{$this->getRelationName()};
+
+        if(!empty($items) && !$this->toOne()) {
+            $items = $items->slice(0, $this->getLimit());
+        }
 
         if($this->toOne()) {
             $items = Arr::wrap($items);
