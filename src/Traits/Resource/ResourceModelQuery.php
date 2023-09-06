@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Filters\Filter;
 use Throwable;
+use Illuminate\Support\Str;
 
 trait ResourceModelQuery
 {
@@ -112,7 +113,10 @@ trait ResourceModelQuery
 
     public function performOrder(Builder $query, string $column, string $direction): Builder
     {
-        return $query->orderBy($column, $direction);
+        return $query->orderBy(
+            Str::wrap('.', $this->getModel()->getTable(), $column),
+            $direction
+        );
     }
 
     public function hasWith(): bool
