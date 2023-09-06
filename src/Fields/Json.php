@@ -254,7 +254,7 @@ class Json extends Field implements
             : [$this->toValue() ?? $emptyRow];
 
         $values = collect($values)->when(
-            !$this->isPreviewMode() && $iterable,
+            ! $this->isPreviewMode() && $iterable,
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
