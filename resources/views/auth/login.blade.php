@@ -66,16 +66,16 @@
                         :beforeLabel="true"
                     >
                         <x-moonshine::form.input
+                            type="hidden"
+                            name="remember"
+                            value="0"
+                        />
+
+                        <x-moonshine::form.input
                             id="remember_me"
                             type="checkbox"
                             name="remember"
                             value="1"
-                        />
-
-                        <x-moonshine::form.input
-                            type="hidden"
-                            name="remember"
-                            value="0"
                         />
                     </x-moonshine::form.input-wrapper>
                 </div>
