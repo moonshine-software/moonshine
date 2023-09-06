@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Fields\Relationships;
 
 use App\MoonShine\Resources\CommentResource;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -34,41 +33,11 @@ class HasMany extends ModelRelationField implements HasFields
         int $index = 0
     ): Field {
 
-        if(! $this->toOne()) {
-            $casted = $this->resolveCasted($casted);
+        if ($casted instanceof Model) {
+            $this->setRelatedModel($casted);
         }
 
-        return parent::resolveFill(
-            $raw,
-            $casted,
-            $index
-        );
-    }
-
-    protected function resolveCasted(mixed $casted): mixed
-    {
-        if(is_null($casted)) {
-            return null;
-        }
-
-        if(! $casted instanceof Model) {
-            return $casted;
-        }
-
-        $this->getResource()
-            ->resolveQuery()
-            ->where(
-                $casted->{$this->getRelationName()}()->getForeignKeyName(),
-                $casted->{$casted->getKeyName()}
-            );
-
-        $relationItems = $this->getResource()->paginate();
-
-        $relationItems->setPath(to_relation_route('search-relations', request('resourceItem')));
-
-        $casted->setRelation($this->getRelationName(), $relationItems);
-
-        return $casted;
+        return $this;
     }
 
     /**
@@ -95,7 +64,9 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolvePreview(): View|string
     {
-        $items = $this->toValue() ?? [];
+        $casted = $this->getRelatedModel();
+
+        $items = $casted->{$this->getRelationName()};
 
         if($this->toOne()) {
             $items = Arr::wrap($items);
@@ -130,11 +101,18 @@ class HasMany extends ModelRelationField implements HasFields
 
         $asyncUrl = to_relation_route('search-relations', request('resourceItem'));
 
-        $items = $this->toValue() ?? [];
+        $casted = $this->getRelatedModel();
 
-        if(! empty($items) && ! $items instanceof Paginator) {
-            $items = $resource->paginateItems($items, $asyncUrl);
-        }
+        $this->getResource()
+            ->resolveQuery()
+            ->where(
+                $casted->{$this->getRelationName()}()->getForeignKeyName(),
+                $casted->{$casted->getKeyName()}
+            );
+
+        $items = $this->getResource()->paginate();
+
+        $items->setPath(to_relation_route('search-relations', request('resourceItem')));
 
         return TableBuilder::make(items: $items)
             ->async($asyncUrl)
