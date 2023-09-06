@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\NoInput;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
@@ -63,7 +65,7 @@ it('boolean value', function (): void {
 });
 
 it('link value', function (): void {
-    expect($this->field->link('/', true)->preview())
+    expect($this->field->link('/')->preview())
         ->toBe(view('moonshine::ui.url', [
             'value' => $this->item->no_input,
             'href' => '/',

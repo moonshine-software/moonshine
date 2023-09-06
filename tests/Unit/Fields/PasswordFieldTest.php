@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Password;
 use MoonShine\Fields\Text;
@@ -37,7 +39,7 @@ it('preview value', function (): void {
 });
 
 it('apply', function (): void {
-    $data = ['password' => 12345];
+    $data = ['password' => '12345'];
 
     fakeRequest(parameters: $data);
 

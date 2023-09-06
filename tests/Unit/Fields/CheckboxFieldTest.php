@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
