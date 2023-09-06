@@ -205,7 +205,7 @@ trait ResourceModelQuery
 
             if (! is_null($fullTextColumns)) {
                 $this->query()->whereFullText($fullTextColumns, request()->str('search')->squish());
-            } elseif (!empty($terms = request()->str('search')->explode(' ')->filter())) {
+            } elseif (! empty($terms = request()->str('search')->explode(' ')->filter())) {
                 $this->query()->where(function (Builder $q) use ($terms): void {
                     foreach ($terms as $term) {
                         foreach ($this->search() as $column) {

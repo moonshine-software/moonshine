@@ -136,6 +136,7 @@ class HasMany extends ModelRelationField implements HasFields
     public function limit(int $limit): static
     {
         $this->limit = $limit;
+
         return $this;
     }
 
