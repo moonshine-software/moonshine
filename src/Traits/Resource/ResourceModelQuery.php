@@ -113,8 +113,11 @@ trait ResourceModelQuery
 
     public function performOrder(Builder $query, string $column, string $direction): Builder
     {
+        if(!Str::contains($column, '.'))
+            $column = Str::wrap('.', $this->getModel()->getTable(), $column);
+
         return $query->orderBy(
-            Str::wrap('.', $this->getModel()->getTable(), $column),
+            $column,
             $direction
         );
     }
