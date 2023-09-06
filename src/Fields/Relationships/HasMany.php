@@ -106,7 +106,7 @@ class HasMany extends ModelRelationField implements HasFields
         $casted = $this->getRelatedModel();
 
         $this->getResource()
-            ->resolveQuery()
+            ->query()
             ->where(
                 $casted->{$this->getRelationName()}()->getForeignKeyName(),
                 $casted->{$casted->getKeyName()}
