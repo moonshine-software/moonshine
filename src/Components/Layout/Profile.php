@@ -28,9 +28,9 @@ final class Profile extends MoonshineComponent
     {
         $user = auth()->user();
 
-        $avatar = $user->{config('moonshine.auth.fields.avatar', 'avatar')};
-        $nameOfUser = $user->{config('moonshine.auth.fields.name', 'name')};
-        $username = $user->{config('moonshine.auth.fields.username', 'email')};
+        $avatar = $user?->{config('moonshine.auth.fields.avatar', 'avatar')};
+        $nameOfUser = $user?->{config('moonshine.auth.fields.name', 'name')};
+        $username = $user?->{config('moonshine.auth.fields.username', 'email')};
 
         $avatar = $avatar
             ? Storage::disk(config('moonshine.disk', 'public'))

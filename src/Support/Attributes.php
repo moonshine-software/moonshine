@@ -2,23 +2,28 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Utilities;
+namespace MoonShine\Support;
 
 use Illuminate\Support\Arr;
+use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionException;
 
+/**
+ * @template AttributeClass
+ */
 final class Attributes
 {
     protected ?string $currentMethod = null;
 
     protected ?string $currentProperty = null;
 
-    protected ?string $currentAttribute = null;
-
     protected ?string $currentAttributeProperty = null;
 
-    public function __construct(protected object $class)
-    {
+    public function __construct(
+        protected object $class,
+        protected ?string $currentAttribute = null
+    ) {
     }
 
     public static function for(object $class): self
@@ -40,11 +45,14 @@ final class Attributes
         return $this;
     }
 
+    /**
+     * @template T
+     * @param  class-string<T>  $attribute
+     * @return self<T>
+     */
     public function attribute(string $attribute): self
     {
-        $this->currentAttribute = $attribute;
-
-        return $this;
+        return new Attributes($this->class, $attribute);
     }
 
     public function attributeProperty(string $property): self
@@ -54,6 +62,10 @@ final class Attributes
         return $this;
     }
 
+    /**
+     * @return AttributeClass
+     * @throws ReflectionException
+     */
     public function get(): mixed
     {
         $reflection = new ReflectionClass($this->class);

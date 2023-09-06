@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Helpers;
+namespace MoonShine\Support;
 
 use Closure;
 
@@ -18,8 +18,12 @@ final class Condition
         Closure|bool|null $condition,
         bool $default
     ): bool {
-        return is_null($condition)
-            ? $default
-            : ($condition instanceof Closure ? $condition() : $condition);
+        if (is_null($condition)) {
+            return $default;
+        }
+
+        return is_closure($condition)
+            ? $condition()
+            : $condition;
     }
 }

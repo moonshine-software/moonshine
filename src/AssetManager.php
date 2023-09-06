@@ -6,7 +6,7 @@ namespace MoonShine;
 
 use Composer\InstalledVersions;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Utilities\Colors;
+use MoonShine\Support\Colors;
 
 class AssetManager
 {

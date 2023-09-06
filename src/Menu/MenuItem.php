@@ -7,7 +7,7 @@ namespace MoonShine\Menu;
 use Closure;
 use MoonShine\Attributes\Icon;
 use MoonShine\Contracts\Menu\MenuFiller;
-use MoonShine\Utilities\Attributes;
+use MoonShine\Support\Attributes;
 use Throwable;
 
 /**

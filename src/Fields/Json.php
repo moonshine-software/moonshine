@@ -40,6 +40,8 @@ class Json extends Field implements
 
     protected bool $isVertical = false;
 
+    protected bool $isCreatable = false;
+
     protected int $level = 0;
 
     protected bool $asRelation = false;
@@ -109,6 +111,18 @@ class Json extends Field implements
     public function isVertical(): bool
     {
         return $this->isVertical;
+    }
+
+    public function creatable(): self
+    {
+        $this->isCreatable = true;
+
+        return $this;
+    }
+
+    public function isCreatable(): bool
+    {
+        return $this->isCreatable;
     }
 
     protected function incrementLevel(): self
@@ -240,24 +254,20 @@ class Json extends Field implements
             : [$this->toValue() ?? $emptyRow];
 
         $values = collect($values)->when(
-            $this->isNowOnForm() && $iterable,
+            !$this->isPreviewMode() && $iterable,
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
         return TableBuilder::make($this->preparedFields(), $values)
             ->when(
                 $this->isAsRelation(),
-                fn (TableBuilder $table): TableBuilder => $table->cast($this->asRelationResource()?->getModelCast())
+                fn (TableBuilder $table): TableBuilder => $table
+                    ->preview()
+                    ->cast($this->asRelationResource()?->getModelCast())
             )
             ->when(
                 $this->isVertical(),
                 fn (TableBuilder $table): TableBuilder => $table->vertical()
-            )
-            ->when(
-                $this->isNowOnForm() && $iterable,
-                fn (TableBuilder $table): TableBuilder => $table
-                    ->creatable()
-                    ->sortable()
             );
     }
 

@@ -4,7 +4,7 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use MoonShine\Fields\Field;
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 
 trait Applies
 {

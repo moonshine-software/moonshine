@@ -25,6 +25,8 @@
             :components="$components"
         />
 
+        {{ $slot ?? '' }}
+
         @if(config('moonshine.auth.enable', true))
             <x-moonshine::layout.profile :with-border="true" />
         @endif

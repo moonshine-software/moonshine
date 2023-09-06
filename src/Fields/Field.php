@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\Applies;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
@@ -33,7 +33,10 @@ abstract class Field extends FormElement
     use Applies;
 
     protected string $column;
+
     protected bool $rawMode = false;
+
+    protected bool $previewMode = false;
 
     protected mixed $rawValue = null;
 
@@ -235,6 +238,8 @@ abstract class Field extends FormElement
 
     public function value(bool $withOld = true): mixed
     {
+        $this->previewMode = false;
+
         $old = old($this->nameDot());
 
         if ($withOld && $old) {
@@ -266,8 +271,15 @@ abstract class Field extends FormElement
         return ! is_null($this->previewCallback);
     }
 
+    public function isPreviewMode(): bool
+    {
+        return $this->previewMode;
+    }
+
     public function preview(): View|string
     {
+        $this->previewMode = true;
+
         if ($this->isPreviewChanged()) {
             return (string) call_user_func(
                 $this->previewCallback,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Utilities;
+namespace MoonShine\Support;
 
 final class Colors
 {

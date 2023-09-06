@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Utilities;
+namespace MoonShine\Support;
 
 use Illuminate\Support\Collection;
 use JsonException;

@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Stringable;
 use MoonShine\Exceptions\FieldException;
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\WithStorage;
 use Throwable;
 

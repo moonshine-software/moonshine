@@ -24,7 +24,7 @@ use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\Resource;
-use MoonShine\Utilities\SelectOptions;
+use MoonShine\Support\SelectOptions;
 
 if (! function_exists('tryOrReturn')) {
     function tryOrReturn(Closure $tryCallback, mixed $default = false): mixed

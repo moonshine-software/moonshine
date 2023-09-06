@@ -7,7 +7,7 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 
 trait WithFormElementAttributes
 {

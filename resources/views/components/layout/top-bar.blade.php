@@ -13,6 +13,8 @@
         <x-moonshine::components
             :components="$components"
         />
+
+        {{ $slot ?? '' }}
     </nav>
 
     <div class="menu-actions">

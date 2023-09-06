@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 
 trait UpdateOnPreview
 {

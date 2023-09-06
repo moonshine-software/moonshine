@@ -6,10 +6,17 @@
     @apply lg:hidden;
   }
 
+  .menu-inner-item-char {
+    @apply hidden;
+  }
+
   &._is-minimized {
     @apply lg:pointer-events-auto lg:!w-[4.75rem];
     .menu-heading {
       @apply lg:flex-col lg:px-0;
+    }
+    .menu-inner-item-char {
+      @apply block;
     }
     .menu-inner-text,
     .menu-inner-arrow {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 
 class NoInput extends Field
 {

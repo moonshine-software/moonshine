@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 
 trait ShowOrHide
 {

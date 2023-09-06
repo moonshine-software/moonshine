@@ -18,7 +18,7 @@ use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
-use MoonShine\Utilities\Attributes;
+use MoonShine\Support\Attributes;
 use Throwable;
 
 trait ResourceModelQuery

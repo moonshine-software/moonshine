@@ -28,7 +28,13 @@
         @endif
         type="button"
     >
-        {!! $item->getIcon(6, 'white') !!}
+        @if($item->iconValue())
+            {!! $item->getIcon(6) !!}
+        @else
+            <span class="menu-inner-item-char">
+                {{ str($item->label())->limit(2) }}
+            </span>
+        @endif
 
         <span class="menu-inner-text">{{ $item->label() }}</span>
         <span class="menu-inner-arrow">

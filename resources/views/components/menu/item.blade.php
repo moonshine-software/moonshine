@@ -9,7 +9,13 @@
 @else
     <li class="menu-inner-item {{ $item->isActive() ? '_is-active' : '' }}">
         <a href="{{ $item->url() }}" class="menu-inner-link" x-data="navTooltip" @mouseenter="toggleTooltip()">
-            {!! $item->getIcon(6) !!}
+            @if($item->iconValue())
+                {!! $item->getIcon(6) !!}
+            @else
+                <span class="menu-inner-item-char">
+                    {{ str($item->label())->limit(2) }}
+                </span>
+            @endif
 
             <span class="menu-inner-text">{{ $item->label() }}</span>
 

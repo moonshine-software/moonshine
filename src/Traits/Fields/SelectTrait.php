@@ -6,7 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use JsonException;
-use MoonShine\Utilities\SelectOptions;
+use MoonShine\Support\SelectOptions;
 
 trait SelectTrait
 {

@@ -11,7 +11,7 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Helpers\Condition;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\WithFormElementAttributes;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;

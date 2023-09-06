@@ -7,4 +7,6 @@
     <x-moonshine::components
         :components="$components"
     />
+
+    {{ $slot ?? '' }}
 </div>
