@@ -108,15 +108,18 @@ export default (
     if(isForm) {
       const urlObject = new URL(this.$el.getAttribute('action'))
       let urlSeparator = urlObject.search === '' ? '?' : '&';
-      url = urlObject.href + urlSeparator + crudFormQuery(this.$el.querySelectorAll('[name]'))
+      url = urlObject.href
+          + urlSeparator
+          + crudFormQuery(this.$el.querySelectorAll('[name]'))
+          + "&_relation=" + this.$el.getAttribute('data-name')
     }
 
     this.loading = true
 
     const resultUrl = new URL(url);
 
-    if(resultUrl._relation === undefined) {
-      url = url + "&_relation=" + (this.table.dataset?.name ?? 'crud-table')
+    if(resultUrl.searchParams.get('_relation') === null) {
+      url = url + "&_relation_relation=" + (this.table?.dataset?.name ?? 'crud-table')
     }
 
     axios.get(url).then(response => {
