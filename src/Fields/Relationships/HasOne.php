@@ -22,7 +22,10 @@ class HasOne extends HasMany
      */
     protected function resolveValue(): mixed
     {
-        $item = $this->toValue();
+        $casted = $this->getRelatedModel();
+
+        $item = $casted->{$this->getRelationName()};
+
         $resource = $this->getResource();
         $parentResource = moonshineRequest()->getResource();
 

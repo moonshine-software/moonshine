@@ -206,13 +206,15 @@ trait ResourceModelQuery
             if (! is_null($fullTextColumns)) {
                 $this->query()->whereFullText($fullTextColumns, request()->str('search')->squish());
             } else {
-                request()->str('search')->explode(' ')->filter()->each(function ($term): void {
-                    $this->query()->where(function (Builder $q) use ($term): void {
-                        foreach ($this->search() as $column) {
-                            $q->orWhere($column, 'LIKE', $term . '%');
+                if(!empty($terms = request()->str('search')->explode(' ')->filter())) {
+                    $this->query()->where(function (Builder $q) use ($terms): void {
+                        foreach ($terms as $term) {
+                            foreach ($this->search() as $column) {
+                                $q->orWhere($column, 'LIKE', $term . '%');
+                            }
                         }
                     });
-                });
+                }
             }
         }
 
