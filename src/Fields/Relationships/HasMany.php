@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields\Relationships;
 
 use App\MoonShine\Resources\CommentResource;
+use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -147,5 +148,10 @@ class HasMany extends ModelRelationField implements HasFields
     public function getLimit(): int
     {
         return $this->limit;
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return static fn ($item) => $item;
     }
 }

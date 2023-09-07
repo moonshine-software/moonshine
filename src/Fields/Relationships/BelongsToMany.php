@@ -281,43 +281,46 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function resolveOnApply(): ?Closure
     {
-        return function ($item) {
-            $requestValues = array_filter($this->requestValue() ?: []);
-            $applyValues = [];
+        return static fn ($item) => $item;
+    }
 
-            if($this->isSelectMode()) {
-                $item->{$this->getRelationName()}()->sync($requestValues);
+    protected function resolveAfterApply(mixed $data): void
+    {
+        /* @var Model $item */
+        $item = $data;
+        $requestValues = array_filter($this->requestValue() ?: []);
+        $applyValues = [];
 
-                return $item;
+        if($this->isSelectMode()) {
+            $item->{$this->getRelationName()}()->sync($requestValues);
+
+            return;
+        }
+
+        foreach ($requestValues as $key => $checked) {
+            foreach ($this->getFields() as $field) {
+                $field->setRequestKeyPrefix(
+                    str("{$this->getPivotName()}.$key")->when(
+                        $this->requestKeyPrefix(),
+                        fn ($str) => $str->prepend("{$this->requestKeyPrefix()}.")
+                    )->value()
+                );
+
+                $values = request($field->requestKeyPrefix());
+
+                $apply = $field->apply(
+                    fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                    $values
+                );
+
+                data_set(
+                    $applyValues[$key],
+                    $field->column(),
+                    data_get($apply, $field->column())
+                );
             }
+        }
 
-            foreach ($requestValues as $key => $checked) {
-                foreach ($this->getFields() as $field) {
-                    $field->setRequestKeyPrefix(
-                        str("{$this->getPivotName()}.$key")->when(
-                            $this->requestKeyPrefix(),
-                            fn ($str) => $str->prepend("{$this->requestKeyPrefix()}.")
-                        )->value()
-                    );
-
-                    $values = request($field->requestKeyPrefix());
-
-                    $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
-                        $values
-                    );
-
-                    data_set(
-                        $applyValues[$key],
-                        $field->column(),
-                        data_get($apply, $field->column())
-                    );
-                }
-            }
-
-            $item->{$this->getRelationName()}()->sync($applyValues);
-
-            return $item;
-        };
+        $item->{$this->getRelationName()}()->sync($applyValues);
     }
 }

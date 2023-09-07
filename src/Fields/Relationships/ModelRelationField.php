@@ -39,7 +39,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         ?ModelResource $resource = null,
     ) {
         if(is_string($formattedValueCallback)) {
-            $formattedValueCallback = fn ($item) => $item->{$formattedValueCallback};
+            $formattedValueCallback = static fn ($item) => $item->{$formattedValueCallback};
         }
 
         parent::__construct($label, $relationName, $formattedValueCallback);

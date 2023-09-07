@@ -10,7 +10,6 @@ use Illuminate\Database\QueryException;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Pages\Crud\ShowPage;
@@ -142,18 +141,15 @@ abstract class ModelResource extends Resource
                 $item = $this->beforeUpdating($item);
             }
 
-            $fields->withoutRelationFields()
+            $fields->withoutOutside()
                 ->each(fn (Field $field): mixed => $field->apply($this->onSave($field), $item));
 
             if ($item->save()) {
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-                $fields->onlyRelationFields()
-                    ->each(fn (ModelRelationField $field): mixed => $field->apply($this->onSave($field), $item));
+                $fields->each(fn (Field $field) => $field->afterApply($item));
 
                 $item->save();
-
-                $fields->each(fn (Field $field) => $field->afterApply($item));
 
                 if ($wasRecentlyCreated) {
                     $item = $this->afterCreated($item);
