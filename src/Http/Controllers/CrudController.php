@@ -139,7 +139,7 @@ class CrudController extends MoonShineController
                 'message' => __('moonshine::ui.saved'),
                 'redirect' => $item->wasRecentlyCreated
                     ? $resource->redirectAfterSave()
-                    : null
+                    : null,
             ]);
         }
 

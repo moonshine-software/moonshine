@@ -146,13 +146,13 @@ final class FormBuilder extends RowComponent
 
         if($this->isPrecognitive()) {
             $this->customAttributes([
-                'x-on:submit.prevent' => 'precognition($event.target)'
+                'x-on:submit.prevent' => 'precognition($event.target)',
             ]);
         }
 
         if($this->isAsync()) {
             $this->customAttributes([
-                'x-on:submit.prevent' => 'async($event.target)'
+                'x-on:submit.prevent' => 'async($event.target)',
             ]);
         }
 
