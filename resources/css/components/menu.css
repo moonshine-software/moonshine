@@ -7,7 +7,7 @@
   }
 
   .menu-inner-item-char {
-    @apply hidden;
+    @apply xl:hidden;
   }
 
   &._is-minimized {

@@ -30,7 +30,7 @@
     >
         @if($item->iconValue())
             {!! $item->getIcon(6) !!}
-        @else
+        @elseif(!$top)
             <span class="menu-inner-item-char">
                 {{ str($item->label())->limit(2) }}
             </span>
