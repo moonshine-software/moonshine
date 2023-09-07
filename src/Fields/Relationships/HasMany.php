@@ -71,7 +71,7 @@ class HasMany extends ModelRelationField implements HasFields
         $items = $casted->{$this->getRelationName()};
 
         if(!empty($items) && !$this->toOne()) {
-            $items = $items->slice(0, $this->getLimit());
+            $items = $items->take($this->getLimit());
         }
 
         if($this->toOne()) {
