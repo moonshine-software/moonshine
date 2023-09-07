@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use MoonShine\Http\Requests\ProfileFormRequest;
 
 class ProfileController extends MoonShineController
 {
-    public function store(ProfileFormRequest $request): RedirectResponse
+    public function store(ProfileFormRequest $request): JsonResponse|RedirectResponse
     {
         $data = $request->validated();
         $resultData = [
@@ -44,6 +45,13 @@ class ProfileController extends MoonShineController
         }
 
         $request->user()->update($resultData);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => __('moonshine::ui.saved'),
+                'redirect' => null,
+            ]);
+        }
 
         $this->toast(
             __('moonshine::ui.saved'),

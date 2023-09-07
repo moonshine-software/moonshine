@@ -45,7 +45,6 @@ class FormPage extends Page
 
         $components[] = Fragment::make([
             form($action)
-                ->async()
                 ->when(
                     moonshineRequest()->isFragmentLoad('crud-form'),
                     fn (FormBuilder $form): FormBuilder => $form->precognitive()
