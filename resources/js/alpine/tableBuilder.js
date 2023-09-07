@@ -119,7 +119,7 @@ export default (
     const resultUrl = new URL(url);
 
     if(resultUrl.searchParams.get('_relation') === null) {
-      url = url + "&_relation_relation=" + (this.table?.dataset?.name ?? 'crud-table')
+      url = url + "&_relation=" + (this.table?.dataset?.name ?? 'crud-table')
     }
 
     axios.get(url).then(response => {
