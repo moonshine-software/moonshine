@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use MoonShine\Menu\MenuItem;
 use MoonShine\MoonShine;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;

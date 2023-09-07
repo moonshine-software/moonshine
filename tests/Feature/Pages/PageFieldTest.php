@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use MoonShine\Fields\Email;
 use MoonShine\Fields\NoInput;
 use MoonShine\Fields\Password;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Contracts\Auth\Guard;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShineAuth;

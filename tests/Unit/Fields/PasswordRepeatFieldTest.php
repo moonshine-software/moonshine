@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
 

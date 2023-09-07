@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Handlers\FiltersAction;
 use MoonShine\Resources\ModelResource;
 
 class TestResource extends ModelResource
@@ -19,6 +20,8 @@ class TestResource extends ModelResource
     private array $testFilters = [];
 
     private array $testSearch = [];
+
+    private array $testActions = [];
 
     private ?string $testUriKey = null;
 
@@ -129,7 +132,7 @@ class TestResource extends ModelResource
     {
         if ($this->testActions === []) {
             return [
-                FiltersAction::make(trans('moonshine::ui.filters')),
+                //FiltersAction::make(trans('moonshine::ui.filters')),
             ];
         }
 

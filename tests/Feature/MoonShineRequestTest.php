@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShineRequest;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
