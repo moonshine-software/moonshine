@@ -141,11 +141,20 @@ final class FormBuilder extends RowComponent
         ], JSON_THROW_ON_ERROR);
 
         $this->customAttributes([
-            'x-on:submit.prevent' => $this->isPrecognitive()
-                ? 'precognition($event.target)'
-                : '$event.target.submit()',
             'x-init' => "init($xInit)",
         ]);
+
+        if($this->isPrecognitive()) {
+            $this->customAttributes([
+                'x-on:submit.prevent' => 'precognition($event.target)'
+            ]);
+        }
+
+        if($this->isAsync()) {
+            $this->customAttributes([
+                'x-on:submit.prevent' => 'async($event.target)'
+            ]);
+        }
 
         return [
             'fields' => $fields,

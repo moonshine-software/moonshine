@@ -9,8 +9,12 @@
     x-cloak
     x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }"
 >
+
 {{ moonshineLayout() }}
-@stack('scripts')
+
 @include('moonshine::ui.img-popup')
+@include('moonshine::ui.toasts')
+
+@stack('scripts')
 </body>
 </html>

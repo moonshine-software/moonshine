@@ -134,6 +134,15 @@ class CrudController extends MoonShineController
             return $redirectRoute;
         }
 
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => __('moonshine::ui.saved'),
+                'redirect' => $item->wasRecentlyCreated
+                    ? $resource->redirectAfterSave()
+                    : null
+            ]);
+        }
+
         $this->toast(
             __('moonshine::ui.saved'),
             'success'
