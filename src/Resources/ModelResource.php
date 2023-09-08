@@ -134,7 +134,7 @@ abstract class ModelResource extends Resource
      */
     public function save(Model $item, ?Fields $fields = null): Model
     {
-        $fields ??= $this->getFields()
+        $fields ??= $this->getFormFields()
             ->onlyFields();
 
         $fields->fill($item->toArray(), $item);
@@ -168,6 +168,7 @@ abstract class ModelResource extends Resource
                     $item = $this->afterUpdated($item);
                 }
             }
+
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }
