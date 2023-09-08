@@ -121,7 +121,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         $items->setPath(to_relation_route('search-relations', request('resourceItem')));
         $fields = $this->preparedFields();
-        $fields->onlyFields()->each(fn(Field $field) => $field->setParent($this));
+        $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
         return TableBuilder::make(items: $items)
             ->async($asyncUrl)
