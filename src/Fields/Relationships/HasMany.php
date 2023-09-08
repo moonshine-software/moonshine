@@ -120,11 +120,13 @@ class HasMany extends ModelRelationField implements HasFields
         $items = $this->getResource()->paginate();
 
         $items->setPath(to_relation_route('search-relations', request('resourceItem')));
+        $fields = $this->preparedFields();
+        $fields->onlyFields()->each(fn(Field $field) => $field->setParent($this));
 
         return TableBuilder::make(items: $items)
             ->async($asyncUrl)
             ->name($this->getRelationName())
-            ->fields($this->preparedFields())
+            ->fields($fields)
             ->cast($resource->getModelCast())
             ->when(
                 $this->isNowOnForm(),

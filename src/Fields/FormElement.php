@@ -56,7 +56,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return ! is_null($this->parent);
     }
 
-    protected function setParent(FormElement $field): static
+    public function setParent(FormElement $field): static
     {
         $this->parent = $field;
 

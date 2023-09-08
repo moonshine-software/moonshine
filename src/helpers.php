@@ -74,7 +74,9 @@ if (! function_exists('to_relation_route')) {
         string $action,
         int|string|null $resourceItem = null,
         ?string $component = null,
-        ?string $relation = null
+        ?string $relation = null,
+        ?string $resourceUri = null,
+        ?string $pageUri = null,
     ): string {
         $data = [
             '_component_name' => $component,
@@ -83,8 +85,8 @@ if (! function_exists('to_relation_route')) {
         ];
 
         return MoonShineRouter::to("relation.$action", [
-            'pageUri' => moonshineRequest()->getPageUri(),
-            'resourceUri' => moonshineRequest()->getResourceUri(),
+            'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
+            'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
             ...array_filter($data),
         ]);
     }

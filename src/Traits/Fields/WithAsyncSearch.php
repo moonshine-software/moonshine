@@ -6,10 +6,13 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
+use MoonShine\Fields\Relationships\ModelRelationField;
 
 trait WithAsyncSearch
 {
     protected bool $asyncSearch = false;
+
+    protected ?string $asyncUrl = null;
 
     protected ?string $asyncSearchColumn = null;
 
@@ -46,10 +49,24 @@ trait WithAsyncSearch
 
     public function asyncSearchUrl(?string $formName = null): string
     {
+        if (! is_null($this->asyncUrl)) {
+            return $this->asyncUrl;
+        }
+
+        $resourceUri = moonshineRequest()->getResourceUri();
+
+        if ($this->hasParent() && $this->parent() instanceof ModelRelationField) {
+            $formName = $this->parent()->getFormName() ?? 'crud';
+            $resourceUri = $this->parent()
+                ->getResource()
+                ->uriKey();
+        }
+
         return to_relation_route(
             'search',
             component: $formName,
-            relation: $this->getRelationName()
+            relation: $this->getRelationName(),
+            resourceUri: $resourceUri
         );
     }
 
@@ -57,7 +74,8 @@ trait WithAsyncSearch
         string $asyncSearchColumn = null,
         int $asyncSearchCount = 15,
         ?Closure $asyncSearchQuery = null,
-        ?Closure $asyncSearchValueCallback = null
+        ?Closure $asyncSearchValueCallback = null,
+        ?string $url = null,
     ): static {
         $this->asyncSearch = true;
         $this->searchable = true;
@@ -65,6 +83,7 @@ trait WithAsyncSearch
         $this->asyncSearchCount = $asyncSearchCount;
         $this->asyncSearchQuery = $asyncSearchQuery;
         $this->asyncSearchValueCallback = $asyncSearchValueCallback;
+        $this->asyncUrl = $url;
 
         $this->valuesQuery = function (Builder $query) {
             if ($this->getRelatedModel()) {

@@ -178,6 +178,7 @@ class BelongsToMany extends ModelRelationField implements
                 ->setName(
                     "{$this->getPivotName()}[\${index0}][{$field->column()}]"
                 )
+                ->setParent($this)
                 ->iterableAttributes()
         );
     }
