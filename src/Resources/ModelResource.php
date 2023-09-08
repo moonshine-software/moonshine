@@ -7,6 +7,7 @@ namespace MoonShine\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -52,6 +53,14 @@ abstract class ModelResource extends Resource
             ),
             ShowPage::make(__('moonshine::ui.show')),
         ];
+    }
+
+    /**
+     * @return array<ActionButton>
+     */
+    public function buttons(): array
+    {
+        return [];
     }
 
     public function getModel(): Model
