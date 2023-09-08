@@ -36,7 +36,7 @@ class IndexPage extends Page
 
         return [
             Block::make([
-                (new FiltersForm)($resource),
+                (new FiltersForm())($resource),
             ])->customAttributes(['class' => 'hidden']),
 
             Grid::make([
