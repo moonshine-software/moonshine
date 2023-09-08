@@ -8,8 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Fields\Fields;
-use MoonShine\Fields\Hidden;
+use MoonShine\Forms\FiltersForm;
 use MoonShine\Resources\ModelResource;
 
 final class FiltersButton
@@ -21,33 +20,7 @@ final class FiltersButton
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
                 fn (): array|string|null => __('moonshine::ui.filters'),
-                fn (): FormBuilder => FormBuilder::make($resource->currentRoute(), 'GET')
-                    ->name('filters-form')
-                    ->cast($resource->getModelCast())
-                    ->fields(
-                        $resource
-                            ->getFilters()
-                            ->when(
-                                request('sort.column'),
-                                static fn ($fields): Fields => $fields
-                                    ->prepend(
-                                        Hidden::make(column: 'sort.direction')->setValue(request('sort.direction'))
-                                    )
-                                    ->prepend(Hidden::make(column: 'sort.column')->setValue(request('sort.column')))
-                            )
-                            ->toArray()
-                    )
-                    ->fill(request('filters', []))
-                    ->submit(__('moonshine::ui.search'))
-                    ->when(
-                        request('filters'),
-                        static fn ($fields): FormBuilder => $fields->buttons([
-                            ActionButton::make(
-                                __('moonshine::ui.reset'),
-                                $resource->currentRoute(query: ['reset' => true])
-                            )->showInLine(),
-                        ])
-                    )
+                fn (): FormBuilder => (new FiltersForm)($resource)
             )
             ->showInLine();
     }

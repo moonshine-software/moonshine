@@ -13,12 +13,14 @@ use MoonShine\Buttons\IndexPage\ShowButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Fields\File;
+use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 
 class IndexPage extends Page
@@ -33,6 +35,10 @@ class IndexPage extends Page
         $import = $resource->import();
 
         return [
+            Block::make([
+                (new FiltersForm)($resource),
+            ])->customAttributes(['class' => 'hidden']),
+
             Grid::make([
                 Column::make([
                     Flex::make([
