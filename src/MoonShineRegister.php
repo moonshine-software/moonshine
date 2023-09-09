@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
+use MoonShine\Applies\Filters\DateModelApply;
 use MoonShine\Applies\Filters\RangeModelApply;
+use MoonShine\Fields\Date;
 use MoonShine\Fields\RangeField;
 use MoonShine\Resources\ModelResource;
 
@@ -17,6 +19,7 @@ final class MoonShineRegister
     private array $options = [
         'filters' => [
             ModelResource::class => [
+                Date::class => DateModelApply::class,
                 RangeField::class => RangeModelApply::class,
             ],
         ],
