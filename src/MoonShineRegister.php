@@ -6,8 +6,10 @@ namespace MoonShine;
 
 use MoonShine\Applies\Filters\DateModelApply;
 use MoonShine\Applies\Filters\RangeModelApply;
+use MoonShine\Applies\Filters\SlideModelApply;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\RangeField;
+use MoonShine\Fields\SlideField;
 use MoonShine\Resources\ModelResource;
 
 final class MoonShineRegister
@@ -21,6 +23,7 @@ final class MoonShineRegister
             ModelResource::class => [
                 Date::class => DateModelApply::class,
                 RangeField::class => RangeModelApply::class,
+                SlideField::class => SlideModelApply::class,
             ],
         ],
         'fields' => [],
