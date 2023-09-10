@@ -27,9 +27,9 @@ final class FiltersForm
                         ->prepend(Hidden::make(column: 'sort.column')->setValue(request('sort.column')))
                 )
                 ->when(
-                    request('queryTag'),
+                    request('query-tag'),
                     static fn ($fields): Fields => $fields
-                        ->prepend(Hidden::make(column: 'queryTag')->setValue(request('queryTag')))
+                        ->prepend(Hidden::make(column: 'query-tag')->setValue(request('query-tag')))
                 )
                 ->toArray()
         )
