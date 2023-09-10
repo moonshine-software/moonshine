@@ -3,8 +3,12 @@
 namespace MoonShine\Pages\Crud;
 
 use MoonShine\Buttons\HasOneField\HasManyCreateButton;
+use MoonShine\Buttons\IndexPage\DeleteButton;
+use MoonShine\Buttons\IndexPage\DetailButton;
+use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Divider;
+use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
@@ -69,6 +73,20 @@ class FormPage extends Page
         if (empty($item)) {
             return $components;
         }
+
+        $components[] = Flex::make([
+                ActionGroup::make([
+                    DetailButton::for($resource),
+                    DeleteButton::for($resource),
+                    ...$resource->getFormButtons()
+                ])
+                    ->setItem($item)
+                    ->customAttributes([
+                        'style' => 'position: relative; bottom: 50px'
+                    ])
+                ,
+            ])->justifyAlign('end')
+        ;
 
         foreach ($resource->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());

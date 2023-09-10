@@ -13,7 +13,7 @@ use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\ImportButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Buttons\IndexPage\QueryTagButton;
-use MoonShine\Buttons\IndexPage\ShowButton;
+use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
@@ -92,11 +92,11 @@ class IndexPage extends Page
                     ->cast($resource->getModelCast())
                     ->withNotFound()
                     ->buttons([
-                        ShowButton::for($resource),
+                        DetailButton::for($resource),
                         FormButton::for($resource),
                         DeleteButton::for($resource),
                         MassDeleteButton::for($resource),
-                        ...$resource->buttons()
+                        ...$resource->getIndexButtons()
                     ]),
             ])->withName('crud-table'),
         ];

@@ -22,6 +22,13 @@ final class ActionGroup extends MoonshineComponent
     {
     }
 
+    public function setItem(mixed $item): self
+    {
+        $this->getActions()->each(fn(ActionButton $button) => $button->setItem($item));
+
+        return $this;
+    }
+
     public function getActions(): ActionButtons
     {
         return (is_array($this->actions)

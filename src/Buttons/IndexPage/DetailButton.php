@@ -7,7 +7,7 @@ namespace MoonShine\Buttons\IndexPage;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
-final class ShowButton
+final class DetailButton
 {
     public static function for(ModelResource $resource): ActionButton
     {

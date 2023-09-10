@@ -7,7 +7,6 @@ namespace MoonShine\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -20,6 +19,7 @@ use MoonShine\Traits\Resource\ResourceModelEvents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
 use MoonShine\Traits\Resource\ResourceModelValidation;
+use MoonShine\Traits\Resource\ResourceWithButtons;
 use MoonShine\Traits\Resource\ResourceWithFields;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\TypeCasts\ModelCast;
@@ -28,6 +28,7 @@ use Throwable;
 abstract class ModelResource extends Resource
 {
     use ResourceWithFields;
+    use ResourceWithButtons;
     use ResourceModelValidation;
     use ResourceModelActions;
     use ResourceModelPolicy;
@@ -53,14 +54,6 @@ abstract class ModelResource extends Resource
             ),
             ShowPage::make(__('moonshine::ui.show')),
         ];
-    }
-
-    /**
-     * @return array<ActionButton>
-     */
-    public function buttons(): array
-    {
-        return [];
     }
 
     public function getModel(): Model

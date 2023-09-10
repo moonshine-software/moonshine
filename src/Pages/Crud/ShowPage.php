@@ -3,6 +3,7 @@
 namespace MoonShine\Pages\Crud;
 
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\ShowPage\FormButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
@@ -40,7 +41,7 @@ class ShowPage extends Page
         return [
             Block::make([
                 Fragment::make([
-                    TableBuilder::make($resource->getFields()->onlyFields())
+                    TableBuilder::make($resource->getDetailFields()->onlyFields())
                         ->cast($resource->getModelCast())
                         ->items([$item])
                         ->vertical()
@@ -65,7 +66,10 @@ class ShowPage extends Page
                 Flex::make([
                     ActionGroup::make([
                         FormButton::for($resource),
-                    ]),
+                        DeleteButton::for($resource),
+                        ...$resource->getDetailButtons()
+                    ])
+                    ->setItem($item),
                 ])->justifyAlign('end'),
             ]),
         ];
