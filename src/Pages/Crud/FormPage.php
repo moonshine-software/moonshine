@@ -47,7 +47,7 @@ class FormPage extends Page
 
         $components = [];
 
-        if (!empty($item)) {
+        if (! empty($item)) {
             $components[] = Flex::make([
                 ActionGroup::make([
                     ...$resource->getFormButtons(),

@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
-use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Resources\ModelResource;
 use Throwable;
 
