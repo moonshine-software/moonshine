@@ -23,10 +23,13 @@ final class FiltersForm
                 ->when(
                     request('sort.column'),
                     static fn ($fields): Fields => $fields
-                        ->prepend(
-                            Hidden::make(column: 'sort.direction')->setValue(request('sort.direction'))
-                        )
+                        ->prepend(Hidden::make(column: 'sort.direction')->setValue(request('sort.direction')))
                         ->prepend(Hidden::make(column: 'sort.column')->setValue(request('sort.column')))
+                )
+                ->when(
+                    request('query-tag'),
+                    static fn ($fields): Fields => $fields
+                        ->prepend(Hidden::make(column: 'query-tag')->setValue(request('query-tag')))
                 )
                 ->toArray()
         )

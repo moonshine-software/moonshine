@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Buttons\IndexPage\AsyncCreateButton;
+use MoonShine\Buttons\IndexPage\CreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
+use MoonShine\Buttons\IndexPage\ExportButton;
 use MoonShine\Buttons\IndexPage\FiltersButton;
 use MoonShine\Buttons\IndexPage\FormButton;
+use MoonShine\Buttons\IndexPage\ImportButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
-use MoonShine\Buttons\IndexPage\ShowButton;
+use MoonShine\Buttons\IndexPage\QueryTagButton;
+use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Components\ActionGroup;
-use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
@@ -19,7 +22,6 @@ use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
-use MoonShine\Fields\File;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 
@@ -42,60 +44,24 @@ class IndexPage extends Page
             Grid::make([
                 Column::make([
                     Flex::make([
-                        ActionButton::make(
-                            __('moonshine::ui.create'),
-                            to_page(
-                                $resource,
-                                'form-page',
-                                fragment: 'crud-form'
-                            )
-                        )
-                            ->customAttributes(['class' => 'btn btn-primary'])
-                            ->icon('heroicons.outline.plus')
-                            ->inModal(
-                                fn (): array|string|null => __('moonshine::ui.create'),
-                                fn (): string => '',
-                                async: true
-                            ),
-
-
-                        ActionButton::make(__('moonshine::ui.create'), to_page($resource, 'form-page'))
-                            ->customAttributes(['class' => 'btn btn-primary'])
-                            ->icon('heroicons.outline.plus'),
+                        AsyncCreateButton::for($resource),
+                        CreateButton::for($resource),
                     ])->justifyAlign('start'),
 
                     ActionGroup::make()->when(
                         ! empty($resource->filters()),
-                        fn (ActionGroup $group): ActionGroup => $group->add(FiltersButton::for($resource))
+                        fn (ActionGroup $group): ActionGroup => $group->add(
+                            FiltersButton::for($resource)
+                        )
                     )->when(
                         ! is_null($export),
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            ActionButton::make(
-                                $export->label(),
-                                $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
-                            )
-                                ->customAttributes(['class' => 'btn btn-primary'])
-                                ->icon($export->iconValue())
+                            ExportButton::for($resource, $export)
                         ),
                     )->when(
                         ! is_null($import),
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            ActionButton::make(
-                                $import->label(),
-                                '#'
-                            )
-                                ->customAttributes(['class' => 'btn btn-primary'])
-                                ->icon($import->iconValue())
-                                ->inOffCanvas(
-                                    fn () => $import->label(),
-                                    fn (): FormBuilder => FormBuilder::make(
-                                        $resource->route('handler', query: ['handlerUri' => $import->uriKey()])
-                                    )
-                                        ->fields([
-                                            File::make(column: $import->getInputName())->required(),
-                                        ])
-                                        ->submit(__('moonshine::ui.confirm'))
-                                )
+                            ImportButton::for($resource, $import)
                         ),
                     ),
                 ])->customAttributes([
@@ -110,19 +76,7 @@ class IndexPage extends Page
                 function (ActionGroup $group) use ($resource): ActionGroup {
                     foreach ($resource->queryTags() as $tag) {
                         $group->add(
-                            ActionButton::make(
-                                $tag->label(),
-                                to_page($resource, IndexPage::class, params: ['query-tag' => $tag->uri()])
-                            )
-                                ->showInLine()
-                                ->icon($tag->iconValue())
-                                ->canSee(fn () => $tag->isSee(moonshineRequest()))
-                                ->when(
-                                    $tag->isActive(),
-                                    fn (ActionButton $btn): ActionButton => $btn->customAttributes([
-                                        'class' => 'btn-primary',
-                                    ])
-                                )
+                            QueryTagButton::for($resource, $tag)
                         );
                     }
 
@@ -138,7 +92,8 @@ class IndexPage extends Page
                     ->cast($resource->getModelCast())
                     ->withNotFound()
                     ->buttons([
-                        ShowButton::for($resource),
+                        ...$resource->getIndexButtons(),
+                        DetailButton::for($resource),
                         FormButton::for($resource),
                         DeleteButton::for($resource),
                         MassDeleteButton::for($resource),

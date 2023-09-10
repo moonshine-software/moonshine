@@ -67,7 +67,7 @@ class MakeResourceCommand extends MoonShineCommand
 
             $this->call(MakePageCommand::class, $pageData('IndexPage'));
             $this->call(MakePageCommand::class, $pageData('FormPage'));
-            $this->call(MakePageCommand::class, $pageData('ShowPage'));
+            $this->call(MakePageCommand::class, $pageData('DetailPage'));
 
             $pageNamespace = fn (string $name): string => MoonShine::namespace(
                 str_replace('/', '\\', "\\$pageDir\\$dir$name")
@@ -76,10 +76,10 @@ class MakeResourceCommand extends MoonShineCommand
             $replaceData = [
                 '{indexPage}' => "{$dir}IndexPage",
                 '{formPage}' => "{$dir}FormPage",
-                '{showPage}' => "{$dir}ShowPage",
+                '{detailPage}' => "{$dir}DetailPage",
                 '{index-page-namespace}' => $pageNamespace('IndexPage'),
                 '{form-page-namespace}' => $pageNamespace('FormPage'),
-                '{show-page-namespace}' => $pageNamespace('ShowPage'),
+                '{detail-page-namespace}' => $pageNamespace('DetailPage'),
             ] + $replaceData;
         }
 

@@ -29,9 +29,8 @@ trait ResourceModelCrudRouter
         int|string $key = null,
         array $query = []
     ): string {
-        if ($query === [] && cache()->has($this->queryCacheKey())) {
-            parse_str(cache()->get($this->queryCacheKey(), ''), $query);
-        }
+
+        //TODO cache repair
 
         $query['resourceUri'] = $this->uriKey();
 

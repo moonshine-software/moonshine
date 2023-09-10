@@ -12,13 +12,14 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
-use MoonShine\Pages\Crud\ShowPage;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Traits\Resource\ResourceModelActions;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
 use MoonShine\Traits\Resource\ResourceModelValidation;
+use MoonShine\Traits\Resource\ResourceWithButtons;
 use MoonShine\Traits\Resource\ResourceWithFields;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\TypeCasts\ModelCast;
@@ -27,6 +28,7 @@ use Throwable;
 abstract class ModelResource extends Resource
 {
     use ResourceWithFields;
+    use ResourceWithButtons;
     use ResourceModelValidation;
     use ResourceModelActions;
     use ResourceModelPolicy;
@@ -50,7 +52,7 @@ abstract class ModelResource extends Resource
                     ? __('moonshine::ui.edit')
                     : __('moonshine::ui.add')
             ),
-            ShowPage::make(__('moonshine::ui.show')),
+            DetailPage::make(__('moonshine::ui.show')),
         ];
     }
 
@@ -125,7 +127,7 @@ abstract class ModelResource extends Resource
      */
     public function save(Model $item, ?Fields $fields = null): Model
     {
-        $fields ??= $this->getFields()
+        $fields ??= $this->getFormFields()
             ->onlyFields();
 
         $fields->fill($item->toArray(), $item);
@@ -159,6 +161,7 @@ abstract class ModelResource extends Resource
                     $item = $this->afterUpdated($item);
                 }
             }
+
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }

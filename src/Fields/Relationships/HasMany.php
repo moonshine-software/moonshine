@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
-use MoonShine\Buttons\IndexPage\ShowButton;
+use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Field;
@@ -133,7 +133,7 @@ class HasMany extends ModelRelationField implements HasFields
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
             ->buttons([
-                ShowButton::for($resource),
+                DetailButton::for($resource),
                 FormButton::for($resource),
                 DeleteButton::for($resource, request()->getUri()),
                 MassDeleteButton::for($resource),

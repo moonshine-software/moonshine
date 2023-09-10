@@ -10,7 +10,7 @@ use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
-use MoonShine\Pages\Crud\ShowPage;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Resources\ModelResource;
 use Throwable;
 
@@ -55,7 +55,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
 
         $fields = match($this->getPage()::class) {
             IndexPage::class => $resource->getIndexFields(),
-            ShowPage::class => $resource->getDetailFields(),
+            DetailPage::class => $resource->getDetailFields(),
             FormPage::class => Fields::make(
                 empty($resource->formFields())
                         ? $resource->fields()

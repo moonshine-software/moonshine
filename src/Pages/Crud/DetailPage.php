@@ -3,7 +3,8 @@
 namespace MoonShine\Pages\Crud;
 
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Buttons\ShowPage\FormButton;
+use MoonShine\Buttons\IndexPage\DeleteButton;
+use MoonShine\Buttons\DetailPage\FormButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
@@ -13,7 +14,7 @@ use MoonShine\Decorations\Fragment;
 use MoonShine\Pages\Page;
 use Throwable;
 
-class ShowPage extends Page
+class DetailPage extends Page
 {
     public function breadcrumbs(): array
     {
@@ -40,7 +41,7 @@ class ShowPage extends Page
         return [
             Block::make([
                 Fragment::make([
-                    TableBuilder::make($resource->getFields()->onlyFields())
+                    TableBuilder::make($resource->getDetailFields()->onlyFields())
                         ->cast($resource->getModelCast())
                         ->items([$item])
                         ->vertical()
@@ -64,8 +65,11 @@ class ShowPage extends Page
 
                 Flex::make([
                     ActionGroup::make([
+                        ...$resource->getDetailButtons(),
                         FormButton::for($resource),
-                    ]),
+                        DeleteButton::for($resource),
+                    ])
+                    ->setItem($item),
                 ])->justifyAlign('end'),
             ]),
         ];

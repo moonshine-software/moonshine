@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonShine\Buttons\ShowPage;
+namespace MoonShine\Buttons\DetailPage;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;

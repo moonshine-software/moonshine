@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use {model-namespace};
 use {index-page-namespace};
 use {form-page-namespace};
-use {show-page-namespace};
+use {detail-page-namespace};
 
 use MoonShine\Resources\ModelResource;
 
@@ -27,7 +27,7 @@ class DummyResource extends ModelResource
                     ? __('moonshine::ui.edit')
                     : __('moonshine::ui.add')
             ),
-            {showPage}::make(__('moonshine::ui.show')),
+            {detailPage}::make(__('moonshine::ui.show')),
         ];
     }
 
