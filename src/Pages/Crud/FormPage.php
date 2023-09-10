@@ -47,6 +47,21 @@ class FormPage extends Page
 
         $components = [];
 
+        if (!empty($item)) {
+            $components[] = Flex::make([
+                ActionGroup::make([
+                    ...$resource->getFormButtons(),
+                    DetailButton::for($resource),
+                    DeleteButton::for($resource),
+                ])
+                    ->setItem($item)
+                ,
+            ])
+                ->customAttributes(['class' => 'mb-4'])
+                ->justifyAlign('end')
+            ;
+        }
+
         $components[] = Fragment::make([
             form($action)
                 ->when(
@@ -73,20 +88,6 @@ class FormPage extends Page
         if (empty($item)) {
             return $components;
         }
-
-        $components[] = Flex::make([
-                ActionGroup::make([
-                    ...$resource->getFormButtons(),
-                    DetailButton::for($resource),
-                    DeleteButton::for($resource),
-                ])
-                    ->setItem($item)
-                    ->customAttributes([
-                        'style' => 'position: relative; bottom: 50px'
-                    ])
-                ,
-            ])->justifyAlign('end')
-        ;
 
         foreach ($resource->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());
