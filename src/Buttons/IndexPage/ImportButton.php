@@ -19,7 +19,7 @@ final class ImportButton
             ->customAttributes(['class' => 'btn btn-primary'])
             ->icon($import->iconValue())
             ->inOffCanvas(
-                fn () => $import->label(),
+                fn (): string => $import->label(),
                 fn (): FormBuilder => FormBuilder::make(
                     $resource->route('handler', query: ['handlerUri' => $import->uriKey()])
                 )

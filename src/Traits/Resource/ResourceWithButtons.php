@@ -39,7 +39,7 @@ trait ResourceWithButtons
     protected function withoutBulk(array $buttonsType = []): array
     {
         return ActionButtons::make(
-            empty($buttonsType)
+            $buttonsType === []
                 ? $this->buttons()
                 : $buttonsType
         )
