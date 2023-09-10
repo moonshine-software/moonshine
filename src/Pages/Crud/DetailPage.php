@@ -65,9 +65,9 @@ class DetailPage extends Page
 
                 Flex::make([
                     ActionGroup::make([
+                        ...$resource->getDetailButtons(),
                         FormButton::for($resource),
                         DeleteButton::for($resource),
-                        ...$resource->getDetailButtons()
                     ])
                     ->setItem($item),
                 ])->justifyAlign('end'),

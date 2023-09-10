@@ -76,9 +76,9 @@ class FormPage extends Page
 
         $components[] = Flex::make([
                 ActionGroup::make([
+                    ...$resource->getFormButtons(),
                     DetailButton::for($resource),
                     DeleteButton::for($resource),
-                    ...$resource->getFormButtons()
                 ])
                     ->setItem($item)
                     ->customAttributes([

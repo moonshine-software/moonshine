@@ -92,11 +92,11 @@ class IndexPage extends Page
                     ->cast($resource->getModelCast())
                     ->withNotFound()
                     ->buttons([
+                        ...$resource->getIndexButtons(),
                         DetailButton::for($resource),
                         FormButton::for($resource),
                         DeleteButton::for($resource),
                         MassDeleteButton::for($resource),
-                        ...$resource->getIndexButtons()
                     ]),
             ])->withName('crud-table'),
         ];
