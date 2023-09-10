@@ -33,7 +33,7 @@ class Checkbox extends Field implements
     {
         $this->beforeLabel();
         $this->customWrapperAttributes([
-            'class' => 'form-group-inline'
+            'class' => 'form-group-inline',
         ]);
 
         return parent::resolveValue();
