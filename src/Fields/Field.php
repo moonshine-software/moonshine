@@ -53,6 +53,10 @@ abstract class Field extends FormElement
 
     protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
 
+    protected bool $isBeforeLabel = false;
+
+    protected bool $isInLabel = false;
+
     public function __construct(
         Closure|string|null $label = null,
         ?string $column = null,
@@ -66,6 +70,30 @@ abstract class Field extends FormElement
         if (! is_null($formattedValueCallback)) {
             $this->setFormattedValueCallback($formattedValueCallback);
         }
+    }
+
+    public function inLabel(): self
+    {
+        $this->isInLabel = true;
+
+        return $this;
+    }
+
+    public function isInLabel(): bool
+    {
+        return $this->isInLabel;
+    }
+
+    public function beforeLabel(): self
+    {
+        $this->isBeforeLabel = true;
+
+        return $this;
+    }
+
+    public function isBeforeLabel(): bool
+    {
+        return $this->isBeforeLabel;
     }
 
     public function column(): string

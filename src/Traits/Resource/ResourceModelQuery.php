@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Attributes\SearchUsingFullText;
@@ -129,14 +130,9 @@ trait ResourceModelQuery
             ->resolveOrder(
                 request('sort.column', $this->sortColumn()),
                 request('sort.direction', $this->sortDirection())
-            );
-
-        Cache::forget($this->queryCacheKey());
-        Cache::remember(
-            $this->queryCacheKey(),
-            now()->addHours(2),
-            static fn () => request()->getQueryString()
-        );
+            )
+            ->resolveCachedBackRequest()
+        ;
 
         return $this->query();
     }
@@ -156,9 +152,22 @@ trait ResourceModelQuery
         return $this->query;
     }
 
+    protected function resolveCachedBackRequest(): self
+    {
+        Cache::forget($this->queryCacheKey());
+
+        Cache::remember(
+            $this->queryCacheKey(),
+            now()->addHours(2),
+            static fn () => Arr::query(request()->only(['sort', 'filters', 'query-tag']))
+        );
+
+        return $this;
+    }
+
     protected function resolveTags(): self
     {
-        if ($tagUri = request('queryTag')) {
+        if ($tagUri = request('query-tag')) {
             $tag = collect($this->queryTags())
                 ->first(
                     fn (QueryTag $tag): bool => $tag->uri() === $tagUri

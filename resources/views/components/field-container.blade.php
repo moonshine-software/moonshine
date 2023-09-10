@@ -1,13 +1,17 @@
 @props([
     'field',
+    'beforeLabel' => false,
+    'inLabel' => false,
 ])
 @if($field->isHidden())
     <div class="hidden">{{ $slot }}</div>
 @else
     <x-moonshine::form.input-wrapper
-        :attributes="$field->attributes()"
+        :attributes="$field->wrapperAttributes()"
         label="{{ $field->label() }}"
         name="{{ $field->name() }}"
+        :beforeLabel="$field->isBeforeLabel()"
+        :inLabel="$field->isInLabel()"
     >
         @if($field->hasLink())
             <x-slot:beforeSlot>

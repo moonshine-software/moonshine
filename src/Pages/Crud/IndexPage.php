@@ -112,7 +112,7 @@ class IndexPage extends Page
                         $group->add(
                             ActionButton::make(
                                 $tag->label(),
-                                to_page($resource, IndexPage::class, params: ['queryTag' => $tag->uri()])
+                                to_page($resource, IndexPage::class, params: ['query-tag' => $tag->uri()])
                             )
                                 ->showInLine()
                                 ->icon($tag->iconValue())

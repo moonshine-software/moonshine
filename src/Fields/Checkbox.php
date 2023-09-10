@@ -29,6 +29,16 @@ class Checkbox extends Field implements
         return (bool) $this->getOnValue() === $this->value();
     }
 
+    protected function resolveValue(): mixed
+    {
+        $this->beforeLabel();
+        $this->customWrapperAttributes([
+            'class' => 'form-group-inline',
+        ]);
+
+        return parent::resolveValue();
+    }
+
     protected function resolvePreview(): string
     {
         if ($this->isRawMode()) {
