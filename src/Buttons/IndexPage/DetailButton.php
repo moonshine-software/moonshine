@@ -15,7 +15,7 @@ final class DetailButton
             '',
             url: fn ($data): string => to_page(
                 $resource,
-                'show-page',
+                'detail-page',
                 ['resourceItem' => $data->getKey()]
             )
         )

@@ -12,7 +12,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
-use MoonShine\Pages\Crud\ShowPage;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Traits\Resource\ResourceModelActions;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
@@ -52,7 +52,7 @@ abstract class ModelResource extends Resource
                     ? __('moonshine::ui.edit')
                     : __('moonshine::ui.add')
             ),
-            ShowPage::make(__('moonshine::ui.show')),
+            DetailPage::make(__('moonshine::ui.show')),
         ];
     }
 

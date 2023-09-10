@@ -14,8 +14,8 @@ trait WithIsNowOnRoute
 
     public function isNowOnDetail(): bool
     {
-        return request()?->route('pageUri') === 'show-page'
-            || request('pageUri') === 'show-page';
+        return request()?->route('pageUri') === 'detail-page'
+            || request('pageUri') === 'detail-page';
     }
 
     public function isNowOnForm(): bool

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
-use MoonShine\Pages\Crud\ShowPage;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('pages');
@@ -19,8 +19,8 @@ it('page urls', function () {
         ->toBeInstanceOf(IndexPage::class)
         ->findByUri('form-page')
         ->toBeInstanceOf(FormPage::class)
-        ->findByUri('show-page')
-        ->toBeInstanceOf(ShowPage::class)
+        ->findByUri('detail-page')
+        ->toBeInstanceOf(DetailPage::class)
     ;
 });
 
@@ -76,7 +76,7 @@ it('to page form', function () {
 
 it('to page show', function () {
 
-    $url = to_page($this->resource, ShowPage::class, ['resourceItem' => 1]);
+    $url = to_page($this->resource, DetailPage::class, ['resourceItem' => 1]);
 
     expect(
         app('router')
@@ -94,7 +94,7 @@ it('to page show', function () {
         ->parameter('resourceUri')
         ->toBe('test-resource')
         ->parameter('pageUri')
-        ->toBe('show-page')
+        ->toBe('detail-page')
         ->and(parse_url($url))
         ->query
         ->toBe('resourceItem=1')

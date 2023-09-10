@@ -10,7 +10,7 @@ use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
-use MoonShine\Pages\Crud\ShowPage;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('pages-feature');
@@ -70,7 +70,7 @@ it('fields on form', function () {
 
 it('fields on show', function () {
     asAdmin()->get(
-        to_page($this->resource, ShowPage::class, ['resourceItem' => 12])
+        to_page($this->resource, DetailPage::class, ['resourceItem' => 12])
     )
         ->assertOk()
         ->assertSee('Name')
