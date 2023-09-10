@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\MoonShineRenderable;
@@ -38,6 +39,8 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     protected ?string $requestKeyPrefix = null;
 
     protected ?string $formName = null;
+
+    protected array $wrapperAttributes = [];
 
     protected function afterMake(): void
     {
@@ -85,6 +88,20 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     public function hasWrapper(): bool
     {
         return $this->withWrapper;
+    }
+
+    public function customWrapperAttributes(array $attributes): self
+    {
+        $this->wrapperAttributes = array_merge($attributes, $this->wrapperAttributes);
+
+        return $this;
+    }
+
+    public function wrapperAttributes(): ComponentAttributeBag
+    {
+        return new ComponentAttributeBag(
+            $this->wrapperAttributes
+        );
     }
 
     public function setRequestKeyPrefix(?string $key): static

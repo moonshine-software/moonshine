@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Forms;
 
 use MoonShine\Components\FormBuilder;
-use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Password;
+use MoonShine\Fields\SwitchBoolean;
 use MoonShine\Fields\Text;
 
 final class LoginForm
@@ -29,7 +29,7 @@ final class LoginForm
                 Password::make(__('moonshine::ui.login.password'), 'password')
                     ->required(),
 
-                Checkbox::make(__('moonshine::ui.login.remember_me'), 'remember'),
+                SwitchBoolean::make(__('moonshine::ui.login.remember_me'), 'remember'),
             ])->submit(__('moonshine::ui.login.login'), [
                 'class' => 'btn-primary btn-lg w-full',
             ]);
