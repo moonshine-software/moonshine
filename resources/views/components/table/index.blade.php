@@ -17,7 +17,7 @@
                 @if(is_array($columns))
                     @foreach($columns as $name => $label)
                         <th>
-                            {{ $label }}
+                            {!! $label !!}
                         </th>
                     @endforeach
                 @endif
