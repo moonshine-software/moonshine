@@ -28,6 +28,6 @@ final class DetailButton
         )
             ->icon('heroicons.outline.eye')
             ->showInLine()
-            ;
+        ;
     }
 }

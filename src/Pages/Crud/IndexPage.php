@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\IndexPage\AsyncCreateButton;
 use MoonShine\Buttons\IndexPage\CreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
@@ -54,13 +53,14 @@ class IndexPage extends Page
 
             $this->table($resource),
 
-            ...$this->afterComponents()
+            ...$this->afterComponents(),
         ]);
     }
 
     protected function metrics(ModelResource $resource): ?MoonshineComponent
     {
         $metrics = $resource->metrics();
+
         return $metrics
             ? LayoutBlock::make($metrics)
                 ->customAttributes(['class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6'])
@@ -72,7 +72,7 @@ class IndexPage extends Page
     {
         return [
             Block::make([(new FiltersForm())($resource)])
-                ->customAttributes(['class' => 'hidden'])
+                ->customAttributes(['class' => 'hidden']),
         ];
     }
 
@@ -125,7 +125,7 @@ class IndexPage extends Page
                     return $group;
                 }
             ),
-            LineBreak::make()
+            LineBreak::make(),
         ];
     }
 
