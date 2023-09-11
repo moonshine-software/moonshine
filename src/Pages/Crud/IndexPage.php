@@ -39,7 +39,7 @@ class IndexPage extends Page
     {
         $resource = $this->getResource();
 
-        $components = [];
+        $components = $this->beforeComponents();
 
         if($metrics = $this->metrics($resource)) {
             $components[] = $metrics;
@@ -52,7 +52,9 @@ class IndexPage extends Page
 
             ...$this->queryTags($resource),
 
-            $this->table($resource)
+            $this->table($resource),
+
+            ...$this->afterComponents()
         ]);
     }
 

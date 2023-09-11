@@ -38,40 +38,44 @@ class DetailPage extends Page
             oops404();
         }
 
-        return [
-            Block::make([
-                Fragment::make([
-                    TableBuilder::make($resource->getDetailFields()->onlyFields())
-                        ->cast($resource->getModelCast())
-                        ->items([$item])
-                        ->vertical()
-                        ->simple()
-                        ->preview()
-                        ->tdAttributes(fn (
-                            $data,
-                            int $row,
-                            int $cell,
-                            ComponentAttributeBag $attributes
-                        ): ComponentAttributeBag => $attributes->when(
-                            $cell === 0,
-                            fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                                'class' => 'font-semibold',
-                                'width' => '20%',
-                            ])
-                        )),
-                ])->withName('crud-show-table'),
+        return array_merge(
+            $this->beforeComponents(),
+            [
+                Block::make([
+                    Fragment::make([
+                        TableBuilder::make($resource->getDetailFields()->onlyFields())
+                            ->cast($resource->getModelCast())
+                            ->items([$item])
+                            ->vertical()
+                            ->simple()
+                            ->preview()
+                            ->tdAttributes(fn (
+                                $data,
+                                int $row,
+                                int $cell,
+                                ComponentAttributeBag $attributes
+                            ): ComponentAttributeBag => $attributes->when(
+                                $cell === 0,
+                                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                                    'class' => 'font-semibold',
+                                    'width' => '20%',
+                                ])
+                            )),
+                    ])->withName('crud-show-table'),
 
-                Divider::make(),
+                    Divider::make(),
 
-                Flex::make([
-                    ActionGroup::make([
-                        ...$resource->getDetailButtons(),
-                        FormButton::for($resource),
-                        DeleteButton::for($resource),
-                    ])
-                    ->setItem($item),
-                ])->justifyAlign('end'),
-            ]),
-        ];
+                    Flex::make([
+                        ActionGroup::make([
+                            ...$resource->getDetailButtons(),
+                            FormButton::for($resource),
+                            DeleteButton::for($resource),
+                        ])
+                        ->setItem($item),
+                    ])->justifyAlign('end'),
+                ]),
+            ],
+            $this->afterComponents()
+        );
     }
 }

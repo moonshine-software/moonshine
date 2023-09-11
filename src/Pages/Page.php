@@ -39,6 +39,16 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     abstract public function components(): array;
 
+    public function beforeComponents(): array
+    {
+        return [];
+    }
+
+    public function afterComponents(): array
+    {
+        return [];
+    }
+
     public function breadcrumbs(): array
     {
         if (! $this->hasResource()) {
