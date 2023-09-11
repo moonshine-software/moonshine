@@ -11,7 +11,7 @@
 @foreach($resource->getFields()->indexFields() as $field)
     <th>
         <div class="flex items-baseline gap-x-1">
-            {{ $field->label() }}
+            {!! $field->label() !!}
 
             @if(!$resource->isPreviewMode() && $field->isSortable())
                 <a href="{{ $field->sortQuery() }}" class="shrink-0" @click.prevent="canBeAsync">
