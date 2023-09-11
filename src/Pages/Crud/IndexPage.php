@@ -43,10 +43,11 @@ class IndexPage extends Page
 
             Grid::make([
                 Column::make([
-                    Flex::make([
-                        AsyncCreateButton::for($resource),
-                        CreateButton::for($resource),
-                    ])->justifyAlign('start'),
+                    Flex::make($resource->isCreateInModal()
+                        ? [AsyncCreateButton::for($resource)]
+                        : [CreateButton::for($resource)]
+                    )
+                        ->justifyAlign('start'),
 
                     ActionGroup::make()->when(
                         ! empty($resource->filters()),
