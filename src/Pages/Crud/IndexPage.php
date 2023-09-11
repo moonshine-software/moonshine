@@ -87,7 +87,7 @@ class IndexPage extends Page
                     Flex::make([CreateButton::forMode($resource)])->justifyAlign('start'),
 
                     ActionGroup::make()->when(
-                        ! empty($resource->filters()),
+                        $resource->filters() !== [],
                         fn (ActionGroup $group): ActionGroup => $group->add(
                             FiltersButton::for($resource)
                         )
@@ -114,7 +114,7 @@ class IndexPage extends Page
     {
         return [
             ActionGroup::make()->when(
-                ! empty($resource->queryTags()),
+                $resource->queryTags() !== [],
                 function (ActionGroup $group) use ($resource): ActionGroup {
                     foreach ($resource->queryTags() as $tag) {
                         $group->add(
