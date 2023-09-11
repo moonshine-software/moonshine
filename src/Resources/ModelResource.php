@@ -83,6 +83,11 @@ abstract class ModelResource extends Resource
         return $this->createInModal;
     }
 
+    public function metrics(): array
+    {
+        return [];
+    }
+
     public function search(): array
     {
         return ['id'];

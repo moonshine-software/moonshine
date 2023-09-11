@@ -93,7 +93,7 @@ class AssetManager
     public function js(): string
     {
         return collect($this->assets)
-            ->prepend($this->getMainJs())
+            ->push($this->getMainJs())
             ->filter(
                 fn ($asset): int|bool => preg_match('/\.js$/', (string) $asset)
             )
@@ -107,7 +107,7 @@ class AssetManager
     public function css(): string
     {
         return collect($this->assets)
-            ->prepend($this->getMainCss())
+            ->push($this->getMainCss())
             ->filter(
                 fn ($asset): int|bool => preg_match('/\.css$/', (string) $asset)
             )
