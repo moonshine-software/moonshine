@@ -81,13 +81,10 @@ class IndexPage extends Page
         $export = $resource->export();
         $import = $resource->import();
 
-        return [Grid::make([
+        return [
+            Grid::make([
                 Column::make([
-                    Flex::make($resource->isCreateInModal()
-                        ? [AsyncCreateButton::for($resource)]
-                        : [CreateButton::for($resource)]
-                    )
-                        ->justifyAlign('start'),
+                    Flex::make([CreateButton::forMode($resource)])->justifyAlign('start'),
 
                     ActionGroup::make()->when(
                         ! empty($resource->filters()),
@@ -146,8 +143,8 @@ class IndexPage extends Page
                 ->withNotFound()
                 ->buttons([
                     ...$resource->getIndexButtons(),
-                    DetailButton::for($resource),
-                    FormButton::for($resource),
+                    DetailButton::forMode($resource),
+                    FormButton::forMode($resource),
                     DeleteButton::for($resource),
                     MassDeleteButton::for($resource),
                 ]),
