@@ -15,38 +15,76 @@ use MoonShine\Buttons\IndexPage\ImportButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Buttons\IndexPage\QueryTagButton;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\Layout\LayoutBlock;
+use MoonShine\Components\MoonshineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
+use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
+use Throwable;
 
 class IndexPage extends Page
 {
+    /**
+     * @throws Throwable
+     */
     public function components(): array
     {
         $resource = $this->getResource();
 
-        $items = $resource->paginate();
+        $components = $this->beforeComponents();
 
+        if($metrics = $this->metrics($resource)) {
+            $components[] = $metrics;
+        }
+
+        return array_merge($components, [
+            ...$this->filtersForm($resource),
+
+            ...$this->actionButtons($resource),
+
+            ...$this->queryTags($resource),
+
+            $this->table($resource),
+
+            ...$this->afterComponents()
+        ]);
+    }
+
+    protected function metrics(ModelResource $resource): ?MoonshineComponent
+    {
+        $metrics = $resource->metrics();
+        return $metrics
+            ? LayoutBlock::make($metrics)
+                ->customAttributes(['class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6'])
+            : null
+        ;
+    }
+
+    protected function filtersForm(ModelResource $resource): array
+    {
+        return [
+            Block::make([(new FiltersForm())($resource)])
+                ->customAttributes(['class' => 'hidden'])
+        ];
+    }
+
+    protected function actionButtons(ModelResource $resource): array
+    {
         $export = $resource->export();
         $import = $resource->import();
 
         return [
-            Block::make([
-                (new FiltersForm())($resource),
-            ])->customAttributes(['class' => 'hidden']),
-
             Grid::make([
                 Column::make([
-                    Flex::make([
-                        AsyncCreateButton::for($resource),
-                        CreateButton::for($resource),
-                    ])->justifyAlign('start'),
+                    Flex::make([CreateButton::forMode($resource)])->justifyAlign('start'),
 
                     ActionGroup::make()->when(
                         ! empty($resource->filters()),
@@ -68,9 +106,13 @@ class IndexPage extends Page
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
                 ]),
             ]),
-
             LineBreak::make(),
+        ];
+    }
 
+    protected function queryTags(ModelResource $resource): array
+    {
+        return [
             ActionGroup::make()->when(
                 ! empty($resource->queryTags()),
                 function (ActionGroup $group) use ($resource): ActionGroup {
@@ -83,22 +125,29 @@ class IndexPage extends Page
                     return $group;
                 }
             ),
-
-            LineBreak::make(),
-
-            Fragment::make([
-                TableBuilder::make(items: $items)
-                    ->fields($resource->getIndexFields())
-                    ->cast($resource->getModelCast())
-                    ->withNotFound()
-                    ->buttons([
-                        ...$resource->getIndexButtons(),
-                        DetailButton::for($resource),
-                        FormButton::for($resource),
-                        DeleteButton::for($resource),
-                        MassDeleteButton::for($resource),
-                    ]),
-            ])->withName('crud-table'),
+            LineBreak::make()
         ];
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function table(ModelResource $resource): Decoration
+    {
+        $items = $resource->paginate();
+
+        return Fragment::make([
+            TableBuilder::make(items: $items)
+                ->fields($resource->getIndexFields())
+                ->cast($resource->getModelCast())
+                ->withNotFound()
+                ->buttons([
+                    ...$resource->getIndexButtons(),
+                    DetailButton::forMode($resource),
+                    FormButton::forMode($resource),
+                    DeleteButton::for($resource),
+                    MassDeleteButton::for($resource),
+                ]),
+        ])->withName('crud-table');
     }
 }

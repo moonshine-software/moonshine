@@ -7,15 +7,8 @@ namespace MoonShine\Buttons\IndexPage;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
-final class FormButton
+final class AsyncEditButton
 {
-    public static function forMode(ModelResource $resource): ActionButton
-    {
-        return $resource->isEditInModal()
-            ? AsyncEditButton::for($resource)
-            : FormButton::for($resource);
-    }
-
     public static function for(ModelResource $resource): ActionButton
     {
         return ActionButton::make(
@@ -23,11 +16,18 @@ final class FormButton
             url: fn ($data): string => to_page(
                 $resource,
                 'form-page',
-                ['resourceItem' => $data->getKey()]
+                ['resourceItem' => $data->getKey()],
+                fragment: 'crud-form'
             )
         )
-            ->customAttributes(['class' => 'btn-primary'])
+            ->customAttributes(['class' => 'btn btn-primary'])
             ->icon('heroicons.outline.pencil')
-            ->showInLine();
+            ->inModal(
+                fn (): array|string|null => __('moonshine::ui.create'),
+                fn (): string => '',
+                async: true
+            )
+            ->showInLine()
+        ;
     }
 }

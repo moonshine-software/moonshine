@@ -43,6 +43,12 @@ abstract class ModelResource extends Resource
 
     protected string $column = 'id';
 
+    protected bool $createInModal = false;
+
+    protected bool $editInModal = false;
+
+    protected bool $detailInModal = false;
+
     protected function pages(): array
     {
         return [
@@ -74,6 +80,26 @@ abstract class ModelResource extends Resource
     public function column(): string
     {
         return $this->column;
+    }
+
+    public function isCreateInModal(): bool
+    {
+        return $this->createInModal;
+    }
+
+    public function isEditInModal(): bool
+    {
+        return $this->createInModal;
+    }
+
+    public function isDetailInModal(): bool
+    {
+        return $this->createInModal;
+    }
+
+    public function metrics(): array
+    {
+        return [];
     }
 
     public function search(): array

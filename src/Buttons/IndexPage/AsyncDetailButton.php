@@ -7,15 +7,8 @@ namespace MoonShine\Buttons\IndexPage;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
-final class DetailButton
+class AsyncDetailButton
 {
-    public static function forMode(ModelResource $resource): ActionButton
-    {
-        return $resource->isDetailInModal()
-            ? AsyncDetailButton::for($resource)
-            : DetailButton::for($resource);
-    }
-
     public static function for(ModelResource $resource): ActionButton
     {
         return ActionButton::make(
@@ -23,11 +16,16 @@ final class DetailButton
             url: fn ($data): string => to_page(
                 $resource,
                 'detail-page',
-                ['resourceItem' => $data->getKey()]
+                ['resourceItem' => $data->getKey()],
+                fragment: 'crud-show-table'
             )
         )
             ->icon('heroicons.outline.eye')
-            ->showInLine()
-            ;
+            ->inModal(
+                fn (): array|string|null => __('moonshine::ui.create'),
+                fn (): string => '',
+                async: true
+            )
+            ->showInLine();
     }
 }
