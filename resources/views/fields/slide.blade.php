@@ -5,8 +5,8 @@
     :toAttributes="$element->getToAttributes()"
     :fromValue="$element->value()[$element->fromField] ?? $element->min"
     :toValue="$element->value()[$element->toField] ?? $element->max"
-    fromName="{{ $element->name() }}[{{ $element->fromField }}]"
-    toName="{{ $element->name() }}[{{ $element->toField }}]"
+    fromName="{{ $element->name($element->fromField) }}"
+    toName="{{ $element->name($element->toField) }}"
     fromField="{{ $element->column() }}.{{ $element->fromField }}"
     toField="{{ $element->column() }}.{{ $element->toField }}"
     @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])

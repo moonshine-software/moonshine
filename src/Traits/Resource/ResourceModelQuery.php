@@ -219,33 +219,36 @@ trait ResourceModelQuery
 
     protected function resolveFilters(): self
     {
-        if (request()->has('filters') && count($this->filters())) {
-            $this->getFilters()
-                ->onlyFields()
-                ->each(function (Field $filter): void {
-                    if (empty($filter->requestValue())) {
-                        return;
-                    }
+        $filters = $this->getFilters()->onlyFields();
 
-                    $filterApply = findFieldApply(
-                        $filter,
-                        'filters',
-                        ModelResource::class
-                    );
+        $filters->fill(
+            request('filters', $this->getModel()->toArray()),
+            $this->getModel()
+        );
 
-                    if ($filterApply instanceof ApplyContract) {
-                        $filter->onApply($filterApply->apply($filter));
-                    }
+        $filters->each(function (Field $filter): void {
+            if (empty($filter->requestValue())) {
+                return;
+            }
 
-                    $filter->apply(
-                        static fn (Builder $query): Builder => $query->where(
-                            $filter->column(),
-                            $filter->requestValue()
-                        ),
-                        $this->query()
-                    );
-                });
-        }
+            $filterApply = findFieldApply(
+                $filter,
+                'filters',
+                ModelResource::class
+            );
+
+            if ($filterApply instanceof ApplyContract) {
+                $filter->onApply($filterApply->apply($filter));
+            }
+
+            $filter->apply(
+                static fn (Builder $query): Builder => $query->where(
+                    $filter->column(),
+                    $filter->requestValue()
+                ),
+                $this->query()
+            );
+        });
 
         return $this;
     }

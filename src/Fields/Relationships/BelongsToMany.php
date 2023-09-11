@@ -164,9 +164,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function selectedKeys(): Collection
     {
-        return $this->toValue()
-            ?->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id')
-            ?? collect();
+        return collect($this->toValue())->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id');
     }
 
     protected function preparedFields(): Fields

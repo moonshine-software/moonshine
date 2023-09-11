@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
+use MoonShine\Applies\Filters\BelongsToManyModelApply;
+use MoonShine\Applies\Filters\DateModelApply;
 use MoonShine\Applies\Filters\RangeModelApply;
+use MoonShine\Applies\Filters\SlideModelApply;
+use MoonShine\Fields\Date;
 use MoonShine\Fields\RangeField;
+use MoonShine\Fields\Relationships\BelongsToMany;
+use MoonShine\Fields\SlideField;
 use MoonShine\Resources\ModelResource;
 
 final class MoonShineRegister
@@ -17,7 +23,10 @@ final class MoonShineRegister
     private array $options = [
         'filters' => [
             ModelResource::class => [
+                Date::class => DateModelApply::class,
                 RangeField::class => RangeModelApply::class,
+                SlideField::class => SlideModelApply::class,
+                BelongsToMany::class => BelongsToManyModelApply::class,
             ],
         ],
         'fields' => [],
