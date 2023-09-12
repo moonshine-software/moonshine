@@ -18,6 +18,7 @@ use Throwable;
 abstract class MoonshineComponent extends Component implements MoonShineRenderable
 {
     use Makeable;
+    use Macroable;
     use Conditionable;
     use Macroable;
     use WithView;

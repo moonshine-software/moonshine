@@ -1,12 +1,14 @@
 <div x-id="['belongs-to-many']" :id="$id('belongs-to-many')">
-    {{
-        actionBtn(__('moonshine::ui.add'), to_page($element->getResource(), 'form-page', fragment: 'crud-form'))
-            ->inModal(fn() => __('moonshine::ui.add'), fn() => '', async: true)
-            ->showInLine()
-            ->render()
-    }}
+    @if($element->isCreatable())
+        {{
+            actionBtn(__('moonshine::ui.add'), to_page($element->getResource(), 'form-page', fragment: 'crud-form'))
+                ->inModal(fn() => __('moonshine::ui.add'), fn() => '', async: true)
+                ->showInLine()
+                ->render()
+        }}
 
-    <x-moonshine::divider />
+        <x-moonshine::divider />
+    @endif
 
     @if($element->isSelectMode())
         <x-moonshine::form.select
@@ -54,9 +56,9 @@
 
                 </template>
             </div>
-        @endif
 
-        <x-moonshine::divider />
+            <x-moonshine::divider />
+        @endif
 
         <div x-data="pivot" x-init="autoCheck">
             {{ $element->value(withOld: false)->render() }}

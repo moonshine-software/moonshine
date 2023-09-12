@@ -20,6 +20,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\NoInput;
 use MoonShine\Fields\Text;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
@@ -55,6 +56,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $selectMode = false;
 
+    protected bool $isCreatable = false;
+
     public function getView(): string
     {
         if ($this->isTree()) {
@@ -85,6 +88,18 @@ class BelongsToMany extends ModelRelationField implements
         $this->selectMode = true;
 
         return $this;
+    }
+
+    public function creatable(Closure|bool|null $condition = null): static
+    {
+        $this->isCreatable = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isCreatable(): bool
+    {
+        return $this->isCreatable;
     }
 
     public function isSelectMode(): bool

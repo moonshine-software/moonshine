@@ -20,13 +20,10 @@ use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
-use MoonShine\Traits\Resource\WithUserPermissions;
 
 #[Icon('heroicons.outline.users')]
 class MoonShineUserResource extends ModelResource
 {
-    use WithUserPermissions;
-
     public string $model = MoonshineUser::class;
 
     public string $title = 'MoonshineUsers';

@@ -8,14 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use MoonShine\Traits\Models\HasMoonShineChangeLog;
-use MoonShine\Traits\Models\HasMoonShinePermissions;
 use MoonShine\Traits\Models\HasMoonShineSocialite;
 
 class MoonshineUser extends Authenticatable
 {
-    use HasMoonShineChangeLog;
-    use HasMoonShinePermissions;
     use HasMoonShineSocialite;
     use HasFactory;
     use Notifiable;

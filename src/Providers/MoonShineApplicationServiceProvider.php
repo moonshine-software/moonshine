@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Providers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\AssetManager;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -12,7 +11,6 @@ use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\Pages\Page;
-use MoonShine\Traits\Models\HasMoonShinePermissions;
 use Throwable;
 
 class MoonShineApplicationServiceProvider extends ServiceProvider
@@ -43,26 +41,6 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
         )->when(
             isset($theme['darkColors']) && $theme['darkColors'] !== [],
             static fn (AssetManager $assets): AssetManager => $assets->darkColors($theme['darkColors'])
-        );
-
-        MoonShine::defineAuthorization(
-            static function (ResourceContract $resource, Model $user, string $ability, Model $item): bool {
-                $hasUserPermissions = in_array(
-                    HasMoonShinePermissions::class,
-                    class_uses_recursive($user),
-                    true
-                );
-
-                if (! $hasUserPermissions) {
-                    return true;
-                }
-
-                if (! $user->moonshineUserPermission) {
-                    return true;
-                }
-
-                return isset($user->moonshineUserPermission->permissions[$resource::class][$ability]);
-            }
         );
     }
 

@@ -6,6 +6,7 @@ namespace MoonShine\Metrics;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Traits\Macroable;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
@@ -21,6 +22,7 @@ use MoonShine\Traits\WithView;
 abstract class Metric implements MoonShineRenderable, HasAssets
 {
     use Makeable;
+    use Macroable;
     use WithAssets;
     use WithView;
     use WithColumnSpan;

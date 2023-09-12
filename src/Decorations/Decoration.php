@@ -7,6 +7,7 @@ namespace MoonShine\Decorations;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\Macroable;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
@@ -23,6 +24,7 @@ use MoonShine\Traits\WithView;
 abstract class Decoration implements MoonShineRenderable, FieldsDecoration, HasFields
 {
     use Makeable;
+    use Macroable;
     use WithView;
     use WithLabel;
     use WithFields;

@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -23,6 +24,7 @@ use MoonShine\Traits\WithView;
 abstract class FormElement implements MoonShineRenderable, HasAssets
 {
     use Makeable;
+    use Macroable;
     use WithFormElementAttributes;
     use WithComponentAttributes;
     use WithView;

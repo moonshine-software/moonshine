@@ -29,8 +29,6 @@ return [
     'all_sections' => 'All sections',
     'file' => 'File',
     'user' => 'User',
-    'changes' => 'Changes',
-    'last_changes' => 'Last 5 changes',
     'date' => 'Date',
     'field' => 'Field',
     'before' => 'Before',

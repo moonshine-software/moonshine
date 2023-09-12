@@ -7,6 +7,7 @@ namespace MoonShine\ActionButtons;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\Macroable;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
@@ -21,6 +22,7 @@ use MoonShine\Traits\WithView;
 abstract class AbstractAction implements MoonShineRenderable
 {
     use Makeable;
+    use Macroable;
     use WithView;
     use WithLabel;
     use WithIcon;
