@@ -179,14 +179,14 @@ class BelongsToMany extends ModelRelationField implements
 
     public function selectedKeys(): Collection
     {
-        return ! $this->isValueWithModels()
-            ? collect($this->toValue())
-            : collect($this->toValue())->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id');
+        return $this->isValueWithModels()
+            ? collect($this->toValue())->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id')
+            : collect($this->toValue());
     }
 
     protected function isValueWithModels(): bool
     {
-        return collect($this->toValue())->every(fn ($item) => $item instanceof Model);
+        return collect($this->toValue())->every(fn ($item): bool => $item instanceof Model);
     }
 
     protected function preparedFields(): Fields
