@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use MoonShine\Fields\Email;
-use MoonShine\Fields\NoInput;
-use MoonShine\Fields\Password;
-use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Pages\Crud\DetailPage;
@@ -27,17 +23,7 @@ beforeEach(function (): void {
         'password' => bcrypt('test'),
     ]);
 
-    $this->resource = TestResourceBuilder::new(
-        MoonShineUser::class
-    )
-        ->setTestFields(
-            [
-            Text::make('Name'),
-            Email::make('Email'),
-            Password::make('Password'),
-            NoInput::make('Badge')->badge(fn () => 'red'),
-        ]
-        );
+    $this->resource = TestResourceBuilder::testResourceWithAllFeatures();
 });
 
 it('fields on index', function () {
@@ -51,6 +37,13 @@ it('fields on index', function () {
         ->assertSee('Password')
         ->assertSee('Badge')
         ->assertSee('badge-red')
+        ->assertSee('Item #1 Query Tag')
+        ->assertSee('Test button')
+        ->assertSee('TestValueMetric')
+        ->assertSee('TestLineChartMetric')
+        ->assertSee('TestDonutChartMetric')
+        ->assertSee('data-test-td-attr')
+        ->assertSee('data-test-tr-attr')
     ;
 });
 

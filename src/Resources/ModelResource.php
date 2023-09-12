@@ -102,6 +102,16 @@ abstract class ModelResource extends Resource
         return [];
     }
 
+    public function trAttributes(): ?Closure
+    {
+        return null;
+    }
+
+    public function tdAttributes(): ?Closure
+    {
+        return null;
+    }
+
     public function search(): array
     {
         return ['id'];
