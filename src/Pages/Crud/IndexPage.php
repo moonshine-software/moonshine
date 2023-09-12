@@ -141,11 +141,13 @@ class IndexPage extends Page
                 ->fields($resource->getIndexFields())
                 ->cast($resource->getModelCast())
                 ->withNotFound()
-                ->when(! is_null($resource->trAttributes()),
-                    fn(TableBuilder $table) => $table->trAttributes($resource->trAttributes())
+                ->when(
+                    ! is_null($resource->trAttributes()),
+                    fn (TableBuilder $table) => $table->trAttributes($resource->trAttributes())
                 )
-                ->when(! is_null($resource->tdAttributes()),
-                    fn(TableBuilder $table) => $table->tdAttributes($resource->tdAttributes())
+                ->when(
+                    ! is_null($resource->tdAttributes()),
+                    fn (TableBuilder $table) => $table->tdAttributes($resource->tdAttributes())
                 )
                 ->buttons([
                     ...$resource->getIndexButtons(),

@@ -46,14 +46,14 @@ class TestResourceBuilder
             ->setTestQueryTags([
                 QueryTag::make(
                     'Item #1 Query Tag',
-                    fn($query) => $query->where('id', 1) // Query builder
-                )
+                    fn ($query) => $query->where('id', 1) // Query builder
+                ),
             ])
             ->setTestButtons([
                 ActionButton::make(
                     'Test button',
                     url: fn (): string => '/'
-                )->showInLine()
+                )->showInLine(),
             ])
             ->setTestMetrics([
                 ValueMetric::make('TestValueMetric')->value(MoonshineUser::query()->count()),
@@ -67,7 +67,7 @@ class TestResourceBuilder
                 ?ComponentAttributeBag $attr = null
             ): ComponentAttributeBag {
                 $attr->setAttributes([
-                    'data-test-td-attr' => 'success'
+                    'data-test-td-attr' => 'success',
                 ]);
 
                 return $attr;
@@ -78,7 +78,7 @@ class TestResourceBuilder
             ): ComponentAttributeBag {
                 if($row == 1) {
                     $attr->setAttributes([
-                        'data-test-tr-attr' => 'success'
+                        'data-test-tr-attr' => 'success',
                     ]);
                 }
 
