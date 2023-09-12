@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Resources\ModelResource;
 
@@ -21,7 +22,15 @@ class TestResource extends ModelResource
 
     private array $testSearch = [];
 
-    private array $testActions = [];
+    private array $testButtons = [];
+
+    private array $testQueryTags = [];
+
+    private array $testMetrics = [];
+
+    private ?Closure $testTdAttributes = null;
+
+    private ?Closure $testTrAttributes = null;
 
     private ?string $testUriKey = null;
 
@@ -104,6 +113,41 @@ class TestResource extends ModelResource
         return $this;
     }
 
+    public function setTestButtons(array $buttons): static
+    {
+        $this->testButtons = $buttons;
+
+        return $this;
+    }
+
+    public function setTestQueryTags(array $queryTags): static
+    {
+        $this->testQueryTags = $queryTags;
+
+        return $this;
+    }
+
+    public function setTestTdAttributes(Closure $fn): static
+    {
+        $this->testTdAttributes = $fn;
+
+        return $this;
+    }
+
+    public function setTestTrAttributes(Closure $fn): static
+    {
+        $this->testTrAttributes = $fn;
+
+        return $this;
+    }
+
+    public function setTestMetrics(array $metrics): static
+    {
+        $this->testMetrics = $metrics;
+
+        return $this;
+    }
+
     public function rules(Model $item): array
     {
         return $this->testRules;
@@ -128,15 +172,14 @@ class TestResource extends ModelResource
         return $this->testFilters;
     }
 
-    public function actions(): array
+    public function queryTags(): array
     {
-        if ($this->testActions === []) {
-            return [
-                //FiltersAction::make(trans('moonshine::ui.filters')),
-            ];
-        }
+        return $this->testQueryTags;
+    }
 
-        return $this->testActions;
+    public function buttons(): array
+    {
+        return $this->testButtons;
     }
 
     public function search(): array
@@ -151,5 +194,20 @@ class TestResource extends ModelResource
         }
 
         return parent::uriKey();
+    }
+
+    public function metrics(): array
+    {
+        return $this->testMetrics;
+    }
+
+    public function trAttributes(): ?Closure
+    {
+        return $this->testTrAttributes;
+    }
+
+    public function tdAttributes(): ?Closure
+    {
+        return $this->testTdAttributes;
     }
 }
