@@ -20,11 +20,13 @@ class BelongsToManyModelApply implements ApplyContract
                     $table = $field->getRelation()->getTable();
                     $id = $field->getRelation()->getRelatedPivotKeyName();
 
+                    $values = array_filter($field->requestValue());
+
                     return $q->whereIn(
                         "$table.$id",
-                        is_array($field->requestValue())
-                            ? $field->requestValue()
-                            : [$field->requestValue()]
+                        $field->isSelectMode()
+                            ? $values
+                            : array_keys($values)
                     );
                 }
             );

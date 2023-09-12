@@ -179,7 +179,14 @@ class BelongsToMany extends ModelRelationField implements
 
     public function selectedKeys(): Collection
     {
-        return collect($this->toValue())->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id');
+        return ! $this->isValueWithModels()
+            ? collect($this->toValue())
+            : collect($this->toValue())->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id');
+    }
+
+    protected function isValueWithModels(): bool
+    {
+        return collect($this->toValue())->every(fn ($item) => $item instanceof Model);
     }
 
     protected function preparedFields(): Fields
@@ -199,7 +206,7 @@ class BelongsToMany extends ModelRelationField implements
     protected function resolveValue(): mixed
     {
         $titleColumn = $this->getResourceColumn();
-        $checkedColumn = "{$this->getRelationName()}[\${index0}]";
+        $checkedColumn = $this->name('${index0}');
         $identityField = Checkbox::make('#', $checkedColumn)
             ->setAttribute('class', 'pivotChecker')
             ->setName($checkedColumn)
@@ -213,8 +220,16 @@ class BelongsToMany extends ModelRelationField implements
         $values = $this->resolveValuesQuery()->get();
 
         $values = $values->map(function ($value) use ($checkedColumn) {
-            $checked = $this->toValue()
-                ->first(fn ($item): bool => $item->getKey() === $value->getKey());
+            if ($this->isValueWithModels()) {
+                $checked = $this->toValue()
+                    ->first(fn ($item): bool => $item->getKey() === $value->getKey());
+            } else {
+                $data = $this->toValue();
+
+                return $value
+                    ->setRelations($value->getRelations())
+                    ->setAttribute($checkedColumn, isset($data[$value->getKey()]) && $data[$value->getKey()]);
+            }
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations())
@@ -305,7 +320,7 @@ class BelongsToMany extends ModelRelationField implements
         $requestValues = array_filter($this->requestValue() ?: []);
         $applyValues = [];
 
-        if($this->isSelectMode()) {
+        if ($this->isSelectMode()) {
             $item->{$this->getRelationName()}()->sync($requestValues);
 
             return;
