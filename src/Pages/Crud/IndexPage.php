@@ -143,11 +143,11 @@ class IndexPage extends Page
                 ->withNotFound()
                 ->when(
                     ! is_null($resource->trAttributes()),
-                    fn (TableBuilder $table) => $table->trAttributes($resource->trAttributes())
+                    fn (TableBuilder $table): TableBuilder => $table->trAttributes($resource->trAttributes())
                 )
                 ->when(
                     ! is_null($resource->tdAttributes()),
-                    fn (TableBuilder $table) => $table->tdAttributes($resource->tdAttributes())
+                    fn (TableBuilder $table): TableBuilder => $table->tdAttributes($resource->tdAttributes())
                 )
                 ->buttons([
                     ...$resource->getIndexButtons(),
