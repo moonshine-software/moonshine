@@ -79,6 +79,12 @@ class FormPage extends Page
                         )
                         ->toArray()
                 )
+                ->when($resource->isAsync(),
+                    fn(FormBuilder $formBuilder) => $formBuilder->async()
+                )
+                ->when($resource->isPrecognitive(),
+                    fn(FormBuilder $formBuilder) => $formBuilder->precognitive()
+                )
                 ->name('crud')
                 ->fill($item?->attributesToArray() ?? [])
                 ->cast($resource->getModelCast())

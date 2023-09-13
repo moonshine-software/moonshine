@@ -49,6 +49,10 @@ abstract class ModelResource extends Resource
 
     protected bool $detailInModal = false;
 
+    protected bool $isAsync = false;
+
+    protected bool $isPrecognitive = false;
+
     protected function pages(): array
     {
         return [
@@ -95,6 +99,16 @@ abstract class ModelResource extends Resource
     public function isDetailInModal(): bool
     {
         return $this->createInModal;
+    }
+
+    public function isAsync(): bool
+    {
+        return $this->isAsync;
+    }
+
+    public function isPrecognitive(): bool
+    {
+        return $this->isPrecognitive;
     }
 
     public function metrics(): array
