@@ -39,7 +39,7 @@ class DetailPage extends Page
         }
 
         return array_merge(
-            $this->beforeComponents(),
+            $this->topComponents(),
             [
                 Block::make([
                     Fragment::make([
@@ -75,7 +75,7 @@ class DetailPage extends Page
                     ])->justifyAlign('end'),
                 ]),
             ],
-            $this->afterComponents()
+            $this->bottomComponents()
         );
     }
 }

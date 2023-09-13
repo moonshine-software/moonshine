@@ -38,7 +38,7 @@ class IndexPage extends Page
     {
         $resource = $this->getResource();
 
-        $components = $this->beforeComponents();
+        $components = $this->topComponents();
 
         if($metrics = $this->metrics($resource)) {
             $components[] = $metrics;
@@ -53,7 +53,7 @@ class IndexPage extends Page
 
             $this->table($resource),
 
-            ...$this->afterComponents(),
+            ...$this->bottomComponents(),
         ]);
     }
 

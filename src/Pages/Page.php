@@ -39,12 +39,12 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     abstract public function components(): array;
 
-    public function beforeComponents(): array
+    public function topComponents(): array
     {
         return [];
     }
 
-    public function afterComponents(): array
+    public function bottomComponents(): array
     {
         return [];
     }
