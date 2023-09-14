@@ -15,7 +15,7 @@ class ItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company,
+            'name' => $this->faker->word(),
             'content' => $this->faker->words(5, true),
             'category_id' => Category::query()->inRandomOrder()->value('id'),
             'created_at' => now(),

@@ -201,13 +201,13 @@ class TestResource extends ModelResource
         return $this->testMetrics;
     }
 
-    public function trAttributes(): ?Closure
+    public function trAttributes(): Closure
     {
-        return $this->testTrAttributes;
+        return $this->testTrAttributes ?? parent::trAttributes();
     }
 
-    public function tdAttributes(): ?Closure
+    public function tdAttributes(): Closure
     {
-        return $this->testTdAttributes;
+        return $this->testTdAttributes ?? parent::tdAttributes();
     }
 }
