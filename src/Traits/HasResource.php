@@ -6,7 +6,6 @@ namespace MoonShine\Traits;
 
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ResourceException;
-use MoonShine\Resources\ModelResource;
 use Throwable;
 
 trait HasResource
@@ -25,9 +24,6 @@ trait HasResource
         return ! is_null($this->resource);
     }
 
-    /**
-     * @return ResourceContract | ModelResource
-     */
     public function getResource(): ResourceContract
     {
         return $this->resource;

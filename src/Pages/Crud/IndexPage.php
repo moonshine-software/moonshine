@@ -17,17 +17,14 @@ use MoonShine\Components\ActionGroup;
 use MoonShine\Components\Layout\LayoutBlock;
 use MoonShine\Components\MoonshineComponent;
 use MoonShine\Components\TableBuilder;
-use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
-use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
-use MoonShine\Resources\ModelResource;
 use Throwable;
 
 class IndexPage extends Page

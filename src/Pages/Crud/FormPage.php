@@ -80,10 +80,10 @@ class FormPage extends Page
                         ->toArray()
                 )
                 ->when($resource->isAsync(),
-                    fn(FormBuilder $formBuilder) => $formBuilder->async()
+                    fn(FormBuilder $formBuilder): FormBuilder => $formBuilder->async()
                 )
                 ->when($resource->isPrecognitive(),
-                    fn(FormBuilder $formBuilder) => $formBuilder->precognitive()
+                    fn(FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
                 )
                 ->name('crud')
                 ->fill($item?->attributesToArray() ?? [])
