@@ -45,7 +45,7 @@ class FormPage extends Page
             $item?->getKey()
         );
 
-        $components = $this->topComponents();
+        $components = $this->topLayer();
 
         if (! empty($item)) {
             $components[] = Flex::make([
@@ -92,7 +92,7 @@ class FormPage extends Page
         ])->withName('crud-form');
 
         if (empty($item)) {
-            return array_merge($components, $this->bottomComponents());
+            return array_merge($components, $this->bottomLayer());
         }
 
         foreach ($resource->getOutsideFields() as $field) {
@@ -111,6 +111,6 @@ class FormPage extends Page
             ])->withName($field->getRelationName());
         }
 
-        return array_merge($components, $this->bottomComponents());
+        return array_merge($components, $this->bottomLayer());
     }
 }

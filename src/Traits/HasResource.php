@@ -29,11 +29,19 @@ trait HasResource
      */
     public function getResource(): ResourceContract
     {
+        $this->validateResource();
+
+        return $this->resource;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function validateResource(): void
+    {
         throw_if(
             ! $this->hasResource(),
             new ResourceException('Resource is required')
         );
-
-        return $this->resource;
     }
 }
