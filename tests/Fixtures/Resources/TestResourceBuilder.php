@@ -61,10 +61,10 @@ class TestResourceBuilder
                 DonutChartMetric::make('TestDonutChartMetric')->values(['CutCode' => 10000, 'Apple' => 9999]),
             ])
             ->setTestTdAttributes(function (
-                mixed $data = null,
-                ?int $row = null,
-                ?int $cell = null,
-                ?ComponentAttributeBag $attr = null
+                mixed $data,
+                int $row,
+                int $cell,
+                ComponentAttributeBag $attr
             ): ComponentAttributeBag {
                 $attr->setAttributes([
                     'data-test-td-attr' => 'success',
@@ -72,16 +72,15 @@ class TestResourceBuilder
 
                 return $attr;
             })->setTestTrAttributes(function (
-                mixed $data = null,
-                ?int $row = null,
-                ?ComponentAttributeBag $attr = null
+                mixed $data,
+                int $row,
+                ComponentAttributeBag $attr
             ): ComponentAttributeBag {
                 if($row == 1) {
                     $attr->setAttributes([
                         'data-test-tr-attr' => 'success',
                     ]);
                 }
-
                 return $attr;
             })
         ;

@@ -7,6 +7,7 @@ namespace MoonShine\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -116,14 +117,27 @@ abstract class ModelResource extends Resource
         return [];
     }
 
-    public function trAttributes(): ?Closure
+    public function trAttributes(): Closure
     {
-        return null;
+        return function (
+            mixed $data,
+            int $row,
+            ComponentAttributeBag $attr
+        ): ComponentAttributeBag {
+            return $attr;
+        };
     }
 
-    public function tdAttributes(): ?Closure
+    public function tdAttributes(): Closure
     {
-        return null;
+        return function (
+            mixed $data,
+            int $row,
+            int $cell,
+            ComponentAttributeBag $attr
+        ): ComponentAttributeBag {
+            return $attr;
+        };
     }
 
     public function search(): array
