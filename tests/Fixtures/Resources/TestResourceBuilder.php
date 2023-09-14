@@ -81,6 +81,7 @@ class TestResourceBuilder
                         'data-test-tr-attr' => 'success',
                     ]);
                 }
+
                 return $attr;
             })
         ;

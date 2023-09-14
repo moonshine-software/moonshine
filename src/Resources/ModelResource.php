@@ -119,12 +119,12 @@ abstract class ModelResource extends Resource
 
     public function trAttributes(): Closure
     {
-        return fn(mixed $data, int $row, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
+        return fn (mixed $data, int $row, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
     }
 
     public function tdAttributes(): Closure
     {
-        return fn(mixed $data, int $row, int $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
+        return fn (mixed $data, int $row, int $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
     }
 
     public function search(): array

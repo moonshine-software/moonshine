@@ -38,15 +38,10 @@ class IndexPage extends Page
 
         return array_merge(
             $this->topLayer(),
-
             $this->filtersForm(),
-
             $this->actionButtons(),
-
             $this->queryTags(),
-
             $this->table(),
-
             $this->bottomLayer(),
         );
     }
@@ -57,6 +52,7 @@ class IndexPage extends Page
         if($metrics = $this->metrics()) {
             $componetns[] = $metrics;
         }
+
         return $componetns;
     }
 
@@ -155,7 +151,7 @@ class IndexPage extends Page
                         DeleteButton::for($this->getResource()),
                         MassDeleteButton::for($this->getResource()),
                     ]),
-            ])->withName('crud-table')
+            ])->withName('crud-table'),
         ];
     }
 }
