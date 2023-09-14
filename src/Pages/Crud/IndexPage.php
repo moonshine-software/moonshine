@@ -33,11 +33,6 @@ use Throwable;
 class IndexPage extends Page
 {
     /**
-     * @var ResourceContract|ModelResource|null
-     */
-    protected ResourceContract|ModelResource|null $resource = null;
-
-    /**
      * @throws Throwable
      */
     public function components(): array
@@ -70,7 +65,7 @@ class IndexPage extends Page
 
     protected function metrics(): ?MoonshineComponent
     {
-        $metrics = $this->resource->metrics();
+        $metrics = $this->getResource()->metrics();
 
         return $metrics
             ? LayoutBlock::make($metrics)
@@ -82,7 +77,7 @@ class IndexPage extends Page
     protected function filtersForm(): array
     {
         return [
-            Block::make([(new FiltersForm())($this->resource)])
+            Block::make([(new FiltersForm())($this->getResource())])
                 ->customAttributes(['class' => 'hidden']),
         ];
     }
@@ -92,22 +87,22 @@ class IndexPage extends Page
         return [
             Grid::make([
                 Column::make([
-                    Flex::make([CreateButton::forMode($this->resource)])->justifyAlign('start'),
+                    Flex::make([CreateButton::forMode($this->getResource())])->justifyAlign('start'),
 
                     ActionGroup::make()->when(
-                        $this->resource->filters() !== [],
+                        $this->getResource()->filters() !== [],
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            FiltersButton::for($this->resource)
+                            FiltersButton::for($this->getResource())
                         )
                     )->when(
-                        ! is_null($export = $this->resource->export()),
+                        ! is_null($export = $this->getResource()->export()),
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            ExportButton::for($this->resource, $export)
+                            ExportButton::for($this->getResource(), $export)
                         ),
                     )->when(
-                        ! is_null($import = $this->resource->import()),
+                        ! is_null($import = $this->getResource()->import()),
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            ImportButton::for($this->resource, $import)
+                            ImportButton::for($this->getResource(), $import)
                         ),
                     ),
                 ])->customAttributes([
@@ -120,15 +115,13 @@ class IndexPage extends Page
 
     protected function queryTags(): array
     {
-        $resource = $this->resource;
-
         return [
             ActionGroup::make()->when(
-                $this->resource->queryTags() !== [],
-                function (ActionGroup $group) use ($resource): ActionGroup {
-                    foreach ($resource->queryTags() as $tag) {
+                $this->getResource()->queryTags() !== [],
+                function (ActionGroup $group): ActionGroup {
+                    foreach ($this->getResource()->queryTags() as $tag) {
                         $group->add(
-                            QueryTagButton::for($this->resource, $tag)
+                            QueryTagButton::for($this->getResource(), $tag)
                         );
                     }
 
@@ -146,24 +139,24 @@ class IndexPage extends Page
     {
         return [
             Fragment::make([
-                TableBuilder::make(items: $this->resource->paginate())
-                    ->fields($this->resource->getIndexFields())
-                    ->cast($this->resource->getModelCast())
+                TableBuilder::make(items: $this->getResource()->paginate())
+                    ->fields($this->getResource()->getIndexFields())
+                    ->cast($this->getResource()->getModelCast())
                     ->withNotFound()
                     ->when(
-                        ! is_null($this->resource->trAttributes()),
-                        fn (TableBuilder $table): TableBuilder => $table->trAttributes($this->resource->trAttributes())
+                        ! is_null($this->getResource()->trAttributes()),
+                        fn (TableBuilder $table): TableBuilder => $table->trAttributes($this->getResource()->trAttributes())
                     )
                     ->when(
-                        ! is_null($this->resource->tdAttributes()),
-                        fn (TableBuilder $table): TableBuilder => $table->tdAttributes($this->resource->tdAttributes())
+                        ! is_null($this->getResource()->tdAttributes()),
+                        fn (TableBuilder $table): TableBuilder => $table->tdAttributes($this->getResource()->tdAttributes())
                     )
                     ->buttons([
-                        ...$this->resource->getIndexButtons(),
-                        DetailButton::forMode($this->resource),
-                        FormButton::forMode($this->resource),
-                        DeleteButton::for($this->resource),
-                        MassDeleteButton::for($this->resource),
+                        ...$this->getResource()->getIndexButtons(),
+                        DetailButton::forMode($this->getResource()),
+                        FormButton::forMode($this->getResource()),
+                        DeleteButton::for($this->getResource()),
+                        MassDeleteButton::for($this->getResource()),
                     ]),
             ])->withName('crud-table')
         ];
