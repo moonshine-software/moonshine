@@ -1,6 +1,7 @@
 @props([
     'fields',
     'actions',
+    'rows',
     'asyncUrl' => null,
     'preview' => false,
 ])
@@ -33,6 +34,6 @@
     </th>
 @endforeach
 
-@if(!$preview)
+@if(!$preview && $rows?->first()?->getActions()?->isNotEmpty())
 <th></th>
 @endif

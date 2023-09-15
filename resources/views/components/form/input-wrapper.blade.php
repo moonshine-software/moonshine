@@ -8,7 +8,7 @@
 ])
 <div {{ $attributes->merge(['class' => 'form-group moonshine-field'])
     ->only(['class', 'x-show']) }}
-    id="wrapper_{{ $attributes->get('id') }}"
+     x-id="['input-wrapper']" :id="$id('input-wrapper')"
 >
     {{ $beforeLabel && !$inLabel ? $slot : '' }}
 

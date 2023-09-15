@@ -159,6 +159,8 @@ class ImportHandler extends Handler
                             : ($field->isNullable() ? null : $value);
                     }
 
+                    $value = str($value)->isJson() ? json_decode($value) : $value;
+
                     return [$field->column() => $value];
                 }
             )->toArray();
@@ -175,12 +177,11 @@ class ImportHandler extends Handler
                 ? $resource->getModel()
                     ->newModelQuery()
                     ->findOrNew($data[$resource->getModel()->getKeyName()])
-                : $resource->getModel()->forceFill($data);
+                : $resource->getModel();
 
-            return $resource->save(
-                $item,
-                fields: $resource->getFields()->importFields(),
-            );
+            $item->forceFill($data);
+
+            return $item->save();
         });
 
         if ($deleteAfter) {

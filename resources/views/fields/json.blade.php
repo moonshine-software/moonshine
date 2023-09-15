@@ -2,7 +2,7 @@
     {{ $element->value(withOld: false)
             ->editable()
             ->when(
-                $element->isCreatable() || is_iterable($element->toValue()),
+                $element->isCreatable(),
                 fn($table) => $table->creatable()
             )
             ->when(

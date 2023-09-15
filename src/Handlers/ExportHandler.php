@@ -118,7 +118,6 @@ class ExportHandler extends Handler
         $fields = $resource->getFields()->exportFields();
 
         $items = $resource->items();
-
         $data = collect();
 
         foreach ($items as $item) {
@@ -126,7 +125,7 @@ class ExportHandler extends Handler
 
             foreach ($fields as $field) {
                 $row[$field->label()] = $field
-                    ->setValue($item->toArray(), $item)
+                    ->resolveFill($item->toArray(), $item)
                     ->rawMode()
                     ->preview();
             }

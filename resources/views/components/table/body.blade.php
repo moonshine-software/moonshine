@@ -45,7 +45,7 @@
                             : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
                     >
                         {!! $field->isSee($field->toValue())
-                            ? $field->{$editable ? 'render' : 'preview'}()
+                            ? $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}()
                             : ''
                         !!}
                     </td>
@@ -56,7 +56,7 @@
             @endforeach
         @endif
 
-        @if(!$preview)
+        @if(!$preview && $row->getActions()->isNotEmpty())
             <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + $actions->isNotEmpty()) }}
                 @if($vertical) width="5%" @endif
             >

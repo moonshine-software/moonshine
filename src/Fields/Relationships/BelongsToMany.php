@@ -313,7 +313,7 @@ class BelongsToMany extends ModelRelationField implements
         return static fn ($item) => $item;
     }
 
-    protected function resolveAfterApply(mixed $data): void
+    protected function resolveAfterApply(mixed $data): mixed
     {
         /* @var Model $item */
         $item = $data;
@@ -323,7 +323,7 @@ class BelongsToMany extends ModelRelationField implements
         if ($this->isSelectMode()) {
             $item->{$this->getRelationName()}()->sync($requestValues);
 
-            return;
+            return $data;
         }
 
         foreach ($requestValues as $key => $checked) {
@@ -351,5 +351,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         $item->{$this->getRelationName()}()->sync($applyValues);
+
+        return $data;
     }
 }

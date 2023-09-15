@@ -35,26 +35,19 @@ trait Applies
         return $this->onApply;
     }
 
-    protected function resolveBeforeApply(mixed $data): void
+    protected function resolveBeforeApply(mixed $data): mixed
     {
-        // Logic here
+        return $data;
     }
 
-    protected function resolveAfterApply(mixed $data): void
+    protected function resolveAfterApply(mixed $data): mixed
     {
-        // Logic here
+        return $data;
     }
 
-    protected function resolveAfterDestroy(mixed $data): void
+    protected function resolveAfterDestroy(mixed $data): mixed
     {
-        // Logic here
-    }
-
-    public function onApply(Closure $onApply): static
-    {
-        $this->onApply = $onApply;
-
-        return $this;
+        return $data;
     }
 
     public function apply(Closure $default, mixed $data): mixed
@@ -76,7 +69,6 @@ trait Applies
             );
         }
 
-
         $applyFunction = is_closure($this->onApply)
             ? $this->onApply
             : $this->resolveOnApply();
@@ -86,25 +78,40 @@ trait Applies
             : $default($data);
     }
 
-    public function beforeApply(mixed $data): void
+    public function beforeApply(mixed $data): mixed
     {
-        is_closure($this->onBeforeApply)
+        if (! $this->isCanApply()) {
+            return $data;
+        }
+
+        return is_closure($this->onBeforeApply)
             ? call_user_func($this->onBeforeApply, $data)
             : $this->resolveBeforeApply($data);
     }
 
-    public function afterApply(mixed $data): void
+    public function afterApply(mixed $data): mixed
     {
-        is_closure($this->onAfterApply)
+        if (! $this->isCanApply()) {
+            return $data;
+        }
+
+        return is_closure($this->onAfterApply)
             ? call_user_func($this->onAfterApply, $data)
             : $this->resolveAfterApply($data);
     }
 
-    public function afterDestroy(mixed $data): void
+    public function afterDestroy(mixed $data): mixed
     {
-        is_closure($this->onAfterDestroy)
+        return is_closure($this->onAfterDestroy)
             ? call_user_func($this->onAfterDestroy, $data)
             : $this->resolveAfterDestroy($data);
+    }
+
+    public function onApply(Closure $onApply): static
+    {
+        $this->onApply = $onApply;
+
+        return $this;
     }
 
     public function onBeforeApply(Closure $onBeforeApply): static

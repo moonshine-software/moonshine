@@ -38,6 +38,8 @@ abstract class Field extends FormElement
 
     protected bool $previewMode = false;
 
+    protected bool $isForcePreview = false;
+
     protected mixed $rawValue = null;
 
     protected mixed $value = null;
@@ -146,7 +148,7 @@ abstract class Field extends FormElement
             'page' => request('page', 1),
         ];
 
-        if(is_null($url)) {
+        if (is_null($url)) {
             return request()->fullUrlWithQuery($sortData);
         }
 
@@ -261,7 +263,7 @@ abstract class Field extends FormElement
             ? $this->getDefault()
             : null;
 
-        return $this->value ?? $default;
+        return empty($this->value) ? $default : $this->value;
     }
 
     public function value(bool $withOld = true): mixed
@@ -284,7 +286,7 @@ abstract class Field extends FormElement
 
     public function toFormattedValue(): mixed
     {
-        return $this->formattedValue ?? $this->toValue();
+        return $this->formattedValue ?? $this->toValue(withDefault: false);
     }
 
     public function changePreview(Closure $closure): static
@@ -304,6 +306,18 @@ abstract class Field extends FormElement
         return $this->previewMode;
     }
 
+    public function forcePreview(): self
+    {
+        $this->isForcePreview = true;
+
+        return $this;
+    }
+
+    public function isForcePreview(): bool
+    {
+        return $this->isForcePreview;
+    }
+
     public function preview(): View|string
     {
         $this->previewMode = true;
@@ -318,13 +332,17 @@ abstract class Field extends FormElement
 
         $preview = $this->resolvePreview();
 
+        if($this->isRawMode()) {
+            return $preview;
+        }
+
         return $this->previewDecoration($preview);
     }
 
     private function previewDecoration(View|string $value): View|string
     {
-        if($value instanceof View) {
-            return  $value;
+        if ($value instanceof View) {
+            return $value;
         }
 
         if ($this->hasLink()) {

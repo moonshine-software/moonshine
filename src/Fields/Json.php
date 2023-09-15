@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Components\TableBuilder;
@@ -173,7 +174,7 @@ class Json extends Field implements
     {
         return $this->getFields()->map(function (Field $field): Field {
             throw_if(
-                $field instanceof ModelRelationField,
+                !$this->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
                     'Relationship fields in JSON field unavailable'
                 )
@@ -187,7 +188,11 @@ class Json extends Field implements
             }
 
             $name = $name
-                ->append('[${index' . $level . '}]')
+                ->when(
+                    $this->isCreatable(),
+                    static fn (Stringable $str): Stringable => $str->append('[${index' . $level . '}]'),
+                    static fn (Stringable $str): Stringable => $str->append('[' . $level . ']')
+                )
                 ->append("[{$field->column()}]")
                 ->replace('[]', '')
                 ->when(
@@ -248,13 +253,17 @@ class Json extends Field implements
             ? $this->asRelationResource()?->getModel()
             : [];
 
-        $iterable = is_iterable($this->toValue());
+        $value = $this->isPreviewMode()
+            ? $this->toFormattedValue()
+            : $this->toValue();
+
+        $iterable = is_iterable($value);
         $values = $iterable
-            ? $this->toValue()
-            : [$this->toValue() ?? $emptyRow];
+            ? $value
+            : [$value ?? $emptyRow];
 
         $values = collect($values)->when(
-            ! $this->isPreviewMode() && $iterable,
+            ! $this->isPreviewMode() && $iterable && $this->isCreatable(),
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
@@ -262,7 +271,6 @@ class Json extends Field implements
             ->when(
                 $this->isAsRelation(),
                 fn (TableBuilder $table): TableBuilder => $table
-                    ->preview()
                     ->cast($this->asRelationResource()?->getModelCast())
             )
             ->when(
@@ -317,9 +325,26 @@ class Json extends Field implements
             }
 
             if ($this->isAsRelation()) {
+                $items = collect($this->prepareOnApply($applyValues));
+
+                $ids = $items
+                    ->pluck($item->{$this->column()}()->getLocalKeyName())
+                    ->filter()
+                    ->toArray();
+
+                $localKey = $item->{$this->column()}()->getLocalKeyName();
+
+                $item->{$this->column()}()->when(
+                    !empty($ids),
+                    fn(Builder $q) => $q->whereNotIn(
+                        $localKey,
+                        $ids
+                    )->delete()
+                );
+
                 $item->{$this->column()}()->upsert(
-                    $this->prepareOnApply($applyValues),
-                    $item->{$this->column()}()->getLocalKeyName()
+                    $items->toArray(),
+                    $localKey
                 );
 
                 return $item;

@@ -48,6 +48,7 @@
             @if(!$vertical)
                 <x-slot:thead>
                     <x-moonshine::table.head
+                        :rows="$rows"
                         :fields="$fields"
                         :actions="$bulkButtons"
                         :asyncUrl="$asyncUrl"

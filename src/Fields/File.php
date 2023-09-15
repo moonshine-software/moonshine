@@ -75,10 +75,10 @@ class File extends Field implements Fileable, RemovableContract
         );
     }
 
-    protected function resolveAfterDestroy(mixed $data): void
+    protected function resolveAfterDestroy(mixed $data): mixed
     {
         if (! $this->isDeleteFiles()) {
-            return;
+            return $data;
         }
 
         if ($this->isMultiple()) {
@@ -90,5 +90,7 @@ class File extends Field implements Fileable, RemovableContract
         }
 
         $this->deleteDir();
+
+        return $data;
     }
 }

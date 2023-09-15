@@ -28,8 +28,7 @@ trait ResourceModelActions
     public function export(): ?ExportHandler
     {
         return ExportHandler::make(__('moonshine::ui.export'))
-            ->csv()
-            ->queue();
+            ->csv();
     }
 
     public function import(): ?ImportHandler

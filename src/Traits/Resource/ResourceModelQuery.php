@@ -131,8 +131,7 @@ trait ResourceModelQuery
                 request('sort.column', $this->sortColumn()),
                 request('sort.direction', $this->sortDirection())
             )
-            ->resolveCachedBackRequest()
-        ;
+            ->resolveCachedBackRequest();
 
         return $this->query();
     }
@@ -194,20 +193,54 @@ trait ResourceModelQuery
                 ->attributeProperty('columns')
                 ->get();
 
+            $terms = request()
+                ->str('search')
+                ->squish()
+                ->value();
+
             if (! is_null($fullTextColumns)) {
-                $this->query()->whereFullText($fullTextColumns, request()->str('search')->squish());
-            } elseif (! empty($terms = request()->str('search')->explode(' ')->filter())) {
-                $this->query()->where(function (Builder $q) use ($terms): void {
-                    foreach ($terms as $term) {
-                        foreach ($this->search() as $column) {
-                            $q->orWhere($column, 'LIKE', $term . '%');
-                        }
-                    }
-                });
+                $this->query()->whereFullText($fullTextColumns, $terms);
+            } else {
+                $this->searchQuery($terms);
             }
         }
 
         return $this;
+    }
+
+    protected function searchQuery(string $terms): void
+    {
+        $this->query()->where(function (Builder $builder) use ($terms): void {
+            foreach ($this->search() as $key => $column) {
+                if (is_string($column) && str($column)->contains('.')) {
+                    $column = str($column)
+                        ->explode('.')
+                        ->tap(function (Collection $data) use (&$key) {
+                            $key = $data->first();
+                        })
+                        ->slice(-1)
+                        ->values()
+                        ->toArray();
+                }
+
+                if (is_array($column)) {
+                    $builder->when(
+                        method_exists($this->getModel(), $key),
+                        fn (Builder $query) => $query->orWhereHas(
+                            $key,
+                            fn (Builder $q) => collect($column)->each(fn ($item) => $q->where(
+                                fn (Builder $qq) => $qq->orWhere($item, 'LIKE', "%$terms%")
+                            ))
+                        ),
+                        fn (Builder $query) => collect($column)->each(fn ($item) => $query->where(
+                            fn (Builder $qq) => $qq->orWhereJsonContains("$key->$item", $terms)
+                        ))
+                    );
+                } else {
+                    $builder->orWhere($column, 'LIKE', "%$terms%");
+                }
+            }
+        });
     }
 
     protected function resolveOrder(string $column, string $direction): self
