@@ -174,7 +174,7 @@ class Json extends Field implements
     {
         return $this->getFields()->map(function (Field $field): Field {
             throw_if(
-                !$this->isAsRelation() && $field instanceof ModelRelationField,
+                ! $this->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
                     'Relationship fields in JSON field unavailable'
                 )
@@ -335,8 +335,8 @@ class Json extends Field implements
                 $localKey = $item->{$this->column()}()->getLocalKeyName();
 
                 $item->{$this->column()}()->when(
-                    !empty($ids),
-                    fn(Builder $q) => $q->whereNotIn(
+                    ! empty($ids),
+                    fn (Builder $q) => $q->whereNotIn(
                         $localKey,
                         $ids
                     )->delete()
