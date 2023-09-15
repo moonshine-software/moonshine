@@ -44,6 +44,8 @@ abstract class RowComponent extends MoonshineComponent
             $this->castData($this->values)
         );
 
+        $this->getFields()->prepareAttributes();
+
         return $this->getFields();
     }
 
