@@ -65,12 +65,27 @@ trait ResourceModelQuery
 
         if (request()->has('search') && count($this->search())) {
             $query = $query->where(function (Builder $q): void {
-                foreach ($this->search() as $field) {
-                    $q->orWhere(
-                        $field,
-                        'LIKE',
-                        '%' . request('search') . '%'
-                    );
+                $search = request('search');
+                foreach ($this->search() as $relation => $field) {
+                    if(is_array($field)) {
+                        $q->orWhere(function ($subquery) use ($search, $field, $relation) {
+                            foreach ($field as $column) {
+                                $subquery->orWhereHas($relation, function (Builder $rq) use ($search, $column) {
+                                    $rq->where(
+                                        $column,
+                                        'LIKE',
+                                        '%' . $search . '%'
+                                    );
+                                });
+                            }
+                        });
+                    } else {
+                        $q->orWhere(
+                            $field,
+                            'LIKE',
+                            '%' . $search . '%'
+                        );
+                    }
                 }
             });
         }
