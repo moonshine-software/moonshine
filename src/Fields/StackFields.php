@@ -62,7 +62,7 @@ class StackFields extends Field implements HasFields
     {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field) => $field->afterApply($data));
+            ->each(fn (Field $field): mixed => $field->afterApply($data));
 
         return $data;
     }

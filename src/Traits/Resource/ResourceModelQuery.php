@@ -215,7 +215,7 @@ trait ResourceModelQuery
                 if (is_string($column) && str($column)->contains('.')) {
                     $column = str($column)
                         ->explode('.')
-                        ->tap(function (Collection $data) use (&$key) {
+                        ->tap(function (Collection $data) use (&$key): void {
                             $key = $data->first();
                         })
                         ->slice(-1)
