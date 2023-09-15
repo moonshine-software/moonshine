@@ -22,8 +22,7 @@ final class MoonShineLayout implements MoonShineLayoutContract
                 Flash::make(),
                 Header::make(),
                 Content::make(),
-                Footer::make()->copyright(function () {
-                    return <<<'HTML'
+                Footer::make()->copyright(fn(): string => <<<'HTML'
                         &copy; 2021-2023 Made with ❤️ by
                         <a href="https://cutcode.dev"
                             class="font-semibold text-primary hover:text-secondary"
@@ -31,8 +30,7 @@ final class MoonShineLayout implements MoonShineLayoutContract
                         >
                             CutCode
                         </a>
-                    HTML;
-                })->menu([
+                    HTML)->menu([
                     'https://moonshine.cutcode.dev' => 'Documentation',
                 ]),
             ])->customAttributes(['class' => 'layout-page']),

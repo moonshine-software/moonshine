@@ -157,7 +157,7 @@ abstract class ModelResource extends Resource
 
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field) => $field->afterDestroy($item));
+            ->each(fn (Field $field): mixed => $field->afterDestroy($item));
 
         return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
     }
@@ -184,7 +184,7 @@ abstract class ModelResource extends Resource
         $fields->fill($item->toArray(), $item);
 
         try {
-            $fields->each(fn (Field $field) => $field->beforeApply($item));
+            $fields->each(fn (Field $field): mixed => $field->beforeApply($item));
 
             if (! $item->exists) {
                 $item = $this->beforeCreating($item);
@@ -200,7 +200,7 @@ abstract class ModelResource extends Resource
             if ($item->save()) {
                 $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-                $fields->each(fn (Field $field) => $field->afterApply($item));
+                $fields->each(fn (Field $field): mixed => $field->afterApply($item));
 
                 $item->save();
 

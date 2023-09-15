@@ -18,7 +18,7 @@ class JsonModelApply implements ApplyContract
                 ->filter();
 
             if ($values->isNotEmpty()) {
-                $query->where(function (Builder $q) use ($values, $field) {
+                $query->where(function (Builder $q) use ($values, $field): void {
                     foreach ($values->first() as $key => $value) {
                         if (! empty($value)) {
                             $q->whereJsonContains("{$field->column()}->$key", $value);
