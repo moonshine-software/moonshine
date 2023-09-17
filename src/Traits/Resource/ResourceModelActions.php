@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
-use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
 
@@ -15,14 +15,12 @@ trait ResourceModelActions
         return ['create', 'show', 'edit', 'delete'];
     }
 
+    /**
+     * @return array<ActionButton>
+     */
     public function actions(): array
     {
         return [];
-    }
-
-    public function getActions(): ActionButtons
-    {
-        return ActionButtons::make($this->actions());
     }
 
     public function export(): ?ExportHandler

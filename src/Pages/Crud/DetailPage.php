@@ -31,51 +31,56 @@ class DetailPage extends Page
      */
     public function components(): array
     {
-        $resource = $this->getResource();
-        $item = $resource->getItem();
-
-        if (is_null($item)) {
+        if (is_null($this->getResource()->getItem())) {
             oops404();
         }
 
         return array_merge(
             $this->topLayer(),
-            [
-                Block::make([
-                    Fragment::make([
-                        TableBuilder::make($resource->getDetailFields()->onlyFields())
-                            ->cast($resource->getModelCast())
-                            ->items([$item])
-                            ->vertical()
-                            ->simple()
-                            ->preview()
-                            ->tdAttributes(fn (
-                                $data,
-                                int $row,
-                                int $cell,
-                                ComponentAttributeBag $attributes
-                            ): ComponentAttributeBag => $attributes->when(
-                                $cell === 0,
-                                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                                    'class' => 'font-semibold',
-                                    'width' => '20%',
-                                ])
-                            )),
-                    ])->withName('crud-show-table'),
-
-                    Divider::make(),
-
-                    Flex::make([
-                        ActionGroup::make([
-                            ...$resource->getDetailButtons(),
-                            FormButton::for($resource),
-                            DeleteButton::for($resource),
-                        ])
-                        ->setItem($item),
-                    ])->justifyAlign('end'),
-                ]),
-            ],
-            $this->bottomLayer()
+            $this->mainLayer(),
+            $this->bottomLayer(),
         );
+    }
+
+    public function mainLayer(): array
+    {
+        $resource = $this->getResource();
+        $item = $resource->getItem();
+
+        return [
+            Block::make([
+                Fragment::make([
+                    TableBuilder::make($resource->getDetailFields()->onlyFields())
+                        ->cast($resource->getModelCast())
+                        ->items([$item])
+                        ->vertical()
+                        ->simple()
+                        ->preview()
+                        ->tdAttributes(fn (
+                            $data,
+                            int $row,
+                            int $cell,
+                            ComponentAttributeBag $attributes
+                        ): ComponentAttributeBag => $attributes->when(
+                            $cell === 0,
+                            fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                                'class' => 'font-semibold',
+                                'width' => '20%',
+                            ])
+                        )),
+                ])->withName('crud-show-table'),
+
+                Divider::make(),
+
+                Flex::make([
+                    ActionGroup::make([
+                        ...$resource->getDetailButtons(),
+                        FormButton::for($resource),
+                        DeleteButton::for($resource),
+                    ])
+                        ->setItem($item),
+                ])->justifyAlign('end'),
+            ]),
+        ];
     }
 }
