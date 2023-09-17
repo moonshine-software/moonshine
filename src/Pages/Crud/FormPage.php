@@ -63,6 +63,7 @@ class FormPage extends Page
                 ->justifyAlign('end')
             ;
         }
+
         return $components;
     }
 
@@ -105,7 +106,7 @@ class FormPage extends Page
                     ->fill($item?->attributesToArray() ?? [])
                     ->cast($this->getResource()->getModelCast())
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
-            ])->withName('crud-form')
+            ])->withName('crud-form'),
         ];
     }
 
