@@ -105,6 +105,10 @@ abstract class Field extends FormElement
 
     public function setColumn(string $column): static
     {
+        if($this->showWhenState) {
+            $this->showWhenCondition['showField'] = $column;
+        }
+
         $this->column = $column;
 
         return $this;

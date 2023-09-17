@@ -10,13 +10,18 @@ export default () => ({
     if (initData !== undefined && initData.whenFields !== undefined) {
       this.whenFields = initData.whenFields
 
-      const inputs = this.getInputs()
+      let formId = this.$id('form');
+      if(formId === undefined) {
+        formId = this.$el.getAttribute('id')
+      }
+
+      const inputs = this.getInputs(formId)
 
       this.whenFields.forEach(field => {
         if (inputs[field.changeField] === undefined) {
           return
         }
-        this.showWhenVisibilityChange(field.changeField, inputs, field)
+        this.showWhenVisibilityChange(field.changeField, inputs, field, formId)
       })
     }
   },
@@ -87,7 +92,7 @@ export default () => ({
   },
 
   onChangeField(event) {
-    this.showWhenChange(event.target.getAttribute('name'))
+    this.showWhenChange(event.target.getAttribute('name'), event.target.closest('form').getAttribute('id'))
   },
 
   showWhenChange,

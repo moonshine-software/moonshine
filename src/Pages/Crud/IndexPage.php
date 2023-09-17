@@ -48,12 +48,12 @@ class IndexPage extends Page
 
     protected function topLayer(): array
     {
-        $componetns = [];
+        $components = [];
         if($metrics = $this->metrics()) {
-            $componetns[] = $metrics;
+            $components[] = $metrics;
         }
 
-        return $componetns;
+        return $components;
     }
 
     protected function metrics(): ?MoonshineComponent

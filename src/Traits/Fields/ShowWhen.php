@@ -56,7 +56,7 @@ trait ShowWhen
         $this->showWhenState = true;
 
         $this->showWhenCondition = [
-            'showField' => str_replace('[]', '', $this->name()),
+            'showField' => str_replace('[]', '', $this->column()),
             'changeField' => $column,
             'operator' => $operator,
             'value' => $value,

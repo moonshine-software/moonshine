@@ -1,10 +1,10 @@
-export function getInputs() {
+export function getInputs(formId) {
   const inputs = {}
-  document.querySelectorAll('#moonshine-form [name]').forEach(element => {
+  document.querySelectorAll('#' + formId + ' [name]').forEach(element => {
     inputs[inputFieldName(element.getAttribute('name'))] = inputGeValue(element)
   })
 
-  document.querySelectorAll('#moonshine-form [data-input-table]').forEach(element => {
+  document.querySelectorAll('#' + formId + ' [data-input-table]').forEach(element => {
     inputs[inputFieldName(element.getAttribute('data-input-table'))] =
       element.getAttribute('data-input-table')
   })
@@ -12,27 +12,26 @@ export function getInputs() {
   return inputs
 }
 
-export function showWhenChange(fieldName) {
+export function showWhenChange(fieldName, formId) {
   fieldName = inputFieldName(fieldName)
-
   this.whenFields.forEach(field => {
     if (fieldName != field.changeField) {
       return
     }
-    this.showWhenVisibilityChange(fieldName, this.getInputs(), field)
+    this.showWhenVisibilityChange(fieldName, this.getInputs(formId), field, formId)
   })
 }
 
-export function showWhenVisibilityChange(fieldName, inputs, field) {
+export function showWhenVisibilityChange(fieldName, inputs, field, formId) {
   if (inputs[field.showField] === undefined) {
     return
   }
 
-  let inputElement = document.querySelector('#moonshine-form [name=' + field.showField + ']')
+  let inputElement = document.querySelector('#' + formId + ' [name=' + field.showField + ']')
 
   if (inputElement === null) {
     inputElement = document.querySelector(
-      '#moonshine-form [data-input-table=' + field.showField + ']'
+      '#' + formId + ' [data-input-table=' + field.showField + ']'
     )
   }
 
