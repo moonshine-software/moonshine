@@ -12,6 +12,9 @@
 
 <form
     {{ $attributes->merge(['class' => 'form', 'method' => 'POST']) }}
+    @if(empty($attributes->get('id')))
+        x-id="['form']" :id="$id('form')"
+    @endif
 >
     @if(strtolower($attributes->get('method', '')) !== 'get')
         @csrf

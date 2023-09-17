@@ -38,24 +38,30 @@ class IndexPage extends Page
 
         return array_merge(
             $this->topLayer(),
-            $this->filtersForm(),
-            $this->actionButtons(),
-            $this->queryTags(),
-            $this->table(),
+            $this->mainLayer(),
             $this->bottomLayer(),
         );
     }
 
     protected function topLayer(): array
     {
-        $componetns = [];
+        $components = [];
         if($metrics = $this->metrics()) {
-            $componetns[] = $metrics;
+            $components[] = $metrics;
         }
 
-        return $componetns;
+        return $components;
     }
 
+    protected function mainLayer(): array
+    {
+        return array_merge(
+            $this->filtersForm(),
+            $this->actionButtons(),
+            $this->queryTags(),
+            $this->table(),
+        );
+    }
     protected function metrics(): ?MoonshineComponent
     {
         $metrics = $this->getResource()->metrics();
@@ -80,7 +86,10 @@ class IndexPage extends Page
         return [
             Grid::make([
                 Column::make([
-                    Flex::make([CreateButton::forMode($this->getResource())])->justifyAlign('start'),
+                    Flex::make([
+                        CreateButton::forMode($this->getResource()),
+                        ...$this->getResource()->actions(),
+                    ])->justifyAlign('start'),
 
                     ActionGroup::make()->when(
                         $this->getResource()->filters() !== [],

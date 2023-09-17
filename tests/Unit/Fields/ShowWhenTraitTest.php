@@ -14,6 +14,11 @@ beforeEach(function (): void {
         {
             return 'field1';
         }
+
+        public function column(): string
+        {
+            return 'field1';
+        }
     };
 });
 

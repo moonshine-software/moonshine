@@ -32,27 +32,29 @@ class FormPage extends Page
 
     public function components(): array
     {
-        $resource = $this->getResource();
-
-        $item = $resource->getItem();
-
-        if (is_null($item) && $resource->isNowOnUpdateForm()) {
+        if (
+            is_null($this->getResource()->getItem())
+            && $this->getResource()->isNowOnUpdateForm()
+        ) {
             oops404();
         }
 
-        $action = $this->getResource()->route(
-            is_null($item) ? 'crud.store' : 'crud.update',
-            $item?->getKey()
+        return array_merge(
+            $this->topLayer(),
+            $this->mainLayer(),
+            $this->bottomLayer(),
         );
+    }
 
-        $components = $this->topLayer();
-
-        if (! empty($item)) {
+    public function topLayer(): array
+    {
+        $components = [];
+        if (! empty($item = $this->getResource()->getItem())) {
             $components[] = Flex::make([
                 ActionGroup::make([
-                    ...$resource->getFormButtons(),
-                    DetailButton::for($resource),
-                    DeleteButton::for($resource),
+                    ...$this->getResource()->getFormButtons(),
+                    DetailButton::for($this->getResource()),
+                    DeleteButton::for($this->getResource()),
                 ])
                     ->setItem($item)
                 ,
@@ -62,42 +64,61 @@ class FormPage extends Page
             ;
         }
 
-        $components[] = Fragment::make([
-            form($action)
-                ->when(
-                    moonshineRequest()->isFragmentLoad('crud-form'),
-                    fn (FormBuilder $form): FormBuilder => $form->precognitive()
-                )
-                ->fields(
-                    $resource
-                        ->getFormFields()
-                        ->when(
-                            ! is_null($item),
-                            fn (Fields $fields): Fields => $fields->push(
-                                Hidden::make('_method')->setValue('PUT')
-                            )
-                        )
-                        ->toArray()
-                )
-                ->when(
-                    $resource->isAsync(),
-                    fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async()
-                )
-                ->when(
-                    $resource->isPrecognitive(),
-                    fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
-                )
-                ->name('crud')
-                ->fill($item?->attributesToArray() ?? [])
-                ->cast($resource->getModelCast())
-                ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
-        ])->withName('crud-form');
+        return $components;
+    }
 
-        if (empty($item)) {
-            return array_merge($components, $this->bottomLayer());
+    public function mainLayer(): array
+    {
+        $item = $this->getResource()->getItem();
+
+        $action = $this->getResource()->route(
+            is_null($item) ? 'crud.store' : 'crud.update',
+            $item?->getKey()
+        );
+
+        return [
+            Fragment::make([
+                form($action)
+                    ->when(
+                        moonshineRequest()->isFragmentLoad('crud-form'),
+                        fn (FormBuilder $form): FormBuilder => $form->precognitive()
+                    )
+                    ->fields(
+                        $this->getResource()
+                            ->getFormFields()
+                            ->when(
+                                ! is_null($item),
+                                fn (Fields $fields): Fields => $fields->push(
+                                    Hidden::make('_method')->setValue('PUT')
+                                )
+                            )
+                            ->toArray()
+                    )
+                    ->when(
+                        $this->getResource()->isAsync(),
+                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async()
+                    )
+                    ->when(
+                        $this->getResource()->isPrecognitive(),
+                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
+                    )
+                    ->name('crud')
+                    ->fill($item?->attributesToArray() ?? [])
+                    ->cast($this->getResource()->getModelCast())
+                    ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
+            ])->withName('crud-form'),
+        ];
+    }
+
+    public function bottomLayer(): array
+    {
+        $components = [];
+
+        if (empty($item = $this->getResource()->getItem())) {
+            return $components;
         }
 
-        foreach ($resource->getOutsideFields() as $field) {
+        foreach ($this->getResource()->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());
 
             if (! $field->toOne()) {
@@ -113,6 +134,6 @@ class FormPage extends Page
             ])->withName($field->getRelationName());
         }
 
-        return array_merge($components, $this->bottomLayer());
+        return $components;
     }
 }
