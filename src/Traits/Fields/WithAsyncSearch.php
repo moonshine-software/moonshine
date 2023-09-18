@@ -71,7 +71,7 @@ trait WithAsyncSearch
             return collect();
         }
 
-        return $this->getMemoizeValues()->mapWithKeys(function (Model $item) use ($onlyCustom) {
+        return $this->getMemoizeValues()->mapWithKeys(function (Model $item) use ($onlyCustom): array {
             $properties = $this->asyncResponseData($item);
             return [
                 $item->getKey() => $onlyCustom
@@ -131,7 +131,7 @@ trait WithAsyncSearch
 
     public function asyncResponseData(Model $model, ?string $searchColumn = null): array
     {
-        $searchColumn = $searchColumn ?? $this->asyncSearchColumn();
+        $searchColumn ??= $this->asyncSearchColumn();
 
         return [
             'label' => is_closure($this->asyncSearchValueCallback())
