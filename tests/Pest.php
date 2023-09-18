@@ -12,9 +12,10 @@ use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\TestCase;
 use Pest\Expectation;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 use function Pest\Laravel\actingAs;
+
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 uses(TestCase::class)
     ->in(__DIR__);

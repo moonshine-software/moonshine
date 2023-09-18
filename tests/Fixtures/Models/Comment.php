@@ -21,7 +21,7 @@ class Comment extends Model
     ];
 
     protected $casts = [
-        'data' => 'collection'
+        'data' => 'collection',
     ];
 
     public function item(): BelongsTo

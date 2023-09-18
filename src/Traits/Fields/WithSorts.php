@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 
 trait WithSorts
 {
-
     protected bool $sortable = false;
 
     /**

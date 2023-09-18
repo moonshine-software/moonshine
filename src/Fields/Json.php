@@ -342,7 +342,7 @@ class Json extends Field implements
                     )->delete()
                 );
 
-                $items->each(fn($data) => $item->{$this->column()}()->updateOrCreate(
+                $items->each(fn ($data) => $item->{$this->column()}()->updateOrCreate(
                     [$localKey => $data[$localKey] ?? null],
                     $data
                 ));

@@ -73,6 +73,7 @@ trait WithAsyncSearch
 
         return $this->getMemoizeValues()->mapWithKeys(function (Model $item) use ($onlyCustom): array {
             $properties = $this->asyncResponseData($item);
+
             return [
                 $item->getKey() => $onlyCustom
                     ? data_get($properties, 'customProperties')
