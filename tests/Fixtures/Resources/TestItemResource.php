@@ -30,8 +30,8 @@ class TestItemResource extends ModelResource
     public function fields(): array
     {
         return [
-            Block::make('', [
-                ID::make()->sortable(),
+            Block::make([
+                ID::make()->sortable()->useOnImport()->showOnExport(),
 
                 Text::make('Name title', 'name')->sortable(),
 

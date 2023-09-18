@@ -320,7 +320,7 @@ class BelongsToMany extends ModelRelationField implements
         $requestValues = array_filter($this->requestValue() ?: []);
         $applyValues = [];
 
-        if ($this->isSelectMode()) {
+        if ($this->isSelectMode() || $this->isTree()) {
             $item->{$this->getRelationName()}()->sync($requestValues);
 
             return $data;

@@ -13,6 +13,7 @@ use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTrait;
+use MoonShine\Traits\Fields\UpdateOnPreview;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\HasAsync;
 
@@ -27,6 +28,7 @@ class Select extends Field implements
     use SelectTrait;
     use WithDefaultValue;
     use HasAsync;
+    use UpdateOnPreview;
 
     protected string $view = 'moonshine::fields.select';
 

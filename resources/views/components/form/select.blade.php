@@ -2,6 +2,7 @@
     'searchable' => false,
     'nullable' => false,
     'values' => [],
+    'customProperties' => [],
     'options' => false,
     'asyncRoute' => null
 ])
@@ -22,6 +23,7 @@
                     @foreach($label as $oValue => $oName)
                         <option @selected(is_selected_option($attributes->get('value', ''), $oValue))
                                 value="{{ $oValue }}"
+                                data-custom-properties='@json($customProperties[$oValue] ?? [])'
                         >
                             {{ $oName }}
                         </option>
@@ -30,6 +32,7 @@
             @else
                 <option @selected(is_selected_option($attributes->get('value', ''), $value))
                         value="{{ $value }}"
+                        data-custom-properties='@json($customProperties[$value] ?? [])'
                 >
                     {{ $label }}
                 </option>

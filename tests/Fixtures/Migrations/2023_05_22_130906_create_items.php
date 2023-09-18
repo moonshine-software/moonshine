@@ -17,6 +17,8 @@ return new class () extends Migration {
 
             $table->string('name');
 
+            $table->json('data')->nullable();
+
             $table->text('content');
 
             $table->foreignIdFor(MoonshineUser::class)

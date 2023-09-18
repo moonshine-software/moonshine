@@ -43,6 +43,15 @@ class TestCase extends Orchestra
             ->registerTestResource();
     }
 
+    protected function getEnvironmentSetUp($app): void
+    {
+        $app['config']->set('app.debug', 'true');
+
+        $app['config']->set('database.default', 'mysql');
+        $app['config']->set('database.connections.mysql.database', 'moonshine_tests');
+        $app['config']->set('database.connections.mysql.username', 'root');
+    }
+
     protected function performApplication(): static
     {
         $this->artisan('moonshine:install');

@@ -19,6 +19,20 @@ trait WithRelatedValues
 
     protected ?Closure $valuesQuery = null;
 
+    protected array $relatedColumns = [];
+
+    protected function relatedColumns(array $relatedColumns): self
+    {
+        $this->relatedColumns = $relatedColumns;
+
+        return $this;
+    }
+
+    protected function getMemoizeValues(): Collection
+    {
+        return $this->memoizeValues ?? collect();
+    }
+
     public function valuesQuery(Closure $callback): self
     {
         $this->valuesQuery = $callback;
@@ -58,34 +72,36 @@ trait WithRelatedValues
      */
     public function values(): array
     {
-        if (! is_null($this->memoizeValues)) {
-            return $this->memoizeValues->toArray();
-        }
-
         $query = $this->resolveValuesQuery();
         $related = $query->getModel();
 
         if (is_closure($this->formattedValueCallback())) {
-            $values = $query->get()
-                ->mapWithKeys(
-                    fn ($item): array => [
-                        $item->getKey() => call_user_func(
-                            $this->formattedValueCallback(),
-                            $item
-                        ),
-                    ]
-                );
+            $values = $this->memoizeValues ?? $query->get();
+            $this->memoizeValues = $values;
+
+            $values = $values->mapWithKeys(
+                fn ($item): array => [
+                    $item->getKey() => call_user_func(
+                        $this->formattedValueCallback(),
+                        $item
+                    ),
+                ]
+            );
         } else {
             $table = DB::getTablePrefix() . $related->getTable();
             $key = "$table.{$related->getKeyName()}";
             $column = "$table.{$this->getResourceColumn()}";
 
-            $values = $query->selectRaw("$key, $column")
-                ->pluck($this->getResourceColumn(), $related->getKeyName());
+            $values = $this->memoizeValues
+                ?? $query->selectRaw(
+                    implode(',', [$key, $column, ...$this->relatedColumns])
+                )->get();
+
+            $this->memoizeValues = $values;
+
+            $values = $values->pluck($this->getResourceColumn(), $related->getKeyName());
         }
 
-        $this->memoizeValues = $values;
-
-        return $this->memoizeValues->toArray();
+        return $values->toArray();
     }
 }

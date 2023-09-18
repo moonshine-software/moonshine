@@ -6,7 +6,6 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\Applies;
@@ -14,6 +13,7 @@ use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
 use MoonShine\Traits\Fields\WithBadge;
 use MoonShine\Traits\Fields\WithLink;
+use MoonShine\Traits\Fields\WithSorts;
 use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
@@ -24,6 +24,7 @@ use MoonShine\Traits\WithLabel;
 abstract class Field extends FormElement
 {
     use WithLabel;
+    use WithSorts;
     use WithHint;
     use ShowWhen;
     use ShowOrHide;
@@ -34,22 +35,21 @@ abstract class Field extends FormElement
 
     protected string $column;
 
+    protected mixed $value = null;
+
     protected bool $rawMode = false;
+
+    protected mixed $rawValue = null;
 
     protected bool $previewMode = false;
 
     protected bool $isForcePreview = false;
 
-    protected mixed $rawValue = null;
+    protected ?Closure $previewCallback = null;
 
-    protected mixed $value = null;
     protected mixed $formattedValue = null;
 
     protected ?Closure $formattedValueCallback = null;
-
-    protected ?Closure $previewCallback = null;
-
-    protected bool $sortable = false;
 
     protected bool $nullable = false;
 
@@ -74,30 +74,6 @@ abstract class Field extends FormElement
         }
     }
 
-    public function inLabel(): self
-    {
-        $this->isInLabel = true;
-
-        return $this;
-    }
-
-    public function isInLabel(): bool
-    {
-        return $this->isInLabel;
-    }
-
-    public function beforeLabel(): self
-    {
-        $this->isBeforeLabel = true;
-
-        return $this;
-    }
-
-    public function isBeforeLabel(): bool
-    {
-        return $this->isBeforeLabel;
-    }
-
     public function column(): string
     {
         return $this->column;
@@ -112,90 +88,6 @@ abstract class Field extends FormElement
         $this->column = $column;
 
         return $this;
-    }
-
-    protected function setFormattedValueCallback(Closure $formattedValueCallback): void
-    {
-        $this->formattedValueCallback = $formattedValueCallback;
-    }
-
-    public function formattedValueCallback(): ?Closure
-    {
-        return $this->formattedValueCallback;
-    }
-
-    /**
-     * Define whether if index page can be sorted by this field
-     *
-     * @return $this
-     */
-    public function sortable(): static
-    {
-        $this->sortable = true;
-
-        return $this;
-    }
-
-    public function isSortable(): bool
-    {
-        return $this->sortable;
-    }
-
-    public function sortQuery(?string $url = null): string
-    {
-        $sortData = [
-            'sort' => [
-                'column' => $this->column(),
-                'direction' => $this->sortActive() && $this->sortDirection('asc') ? 'desc'
-                    : 'asc',
-            ],
-            'page' => request('page', 1),
-        ];
-
-        if (is_null($url)) {
-            return request()->fullUrlWithQuery($sortData);
-        }
-
-        return $url . '?' . Arr::query($sortData);
-    }
-
-    public function sortActive(): bool
-    {
-        return request('sort.column') === $this->column();
-    }
-
-    public function sortDirection(string $type): bool
-    {
-        return request('sort.direction') === strtolower($type);
-    }
-
-    public function setValue(mixed $value = null): self
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    protected function setRawValue(mixed $value = null): self
-    {
-        $this->rawValue = $value;
-
-        return $this;
-    }
-
-    protected function setFormattedValue(mixed $value = null): self
-    {
-        $this->formattedValue = $value;
-
-        return $this;
-    }
-
-    public function reset(): self
-    {
-        return $this
-            ->setValue()
-            ->setRawValue()
-            ->setFormattedValue();
     }
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
@@ -261,6 +153,13 @@ abstract class Field extends FormElement
         return $this->rawValue;
     }
 
+    protected function setRawValue(mixed $value = null): self
+    {
+        $this->rawValue = $value;
+
+        return $this;
+    }
+
     public function toValue(bool $withDefault = true): mixed
     {
         $default = $withDefault && $this instanceof HasDefaultValue
@@ -283,9 +182,33 @@ abstract class Field extends FormElement
         return $this->resolveValue();
     }
 
+    public function setValue(mixed $value = null): self
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
     protected function resolveValue(): mixed
     {
         return $this->toValue();
+    }
+
+    protected function setFormattedValue(mixed $value = null): self
+    {
+        $this->formattedValue = $value;
+
+        return $this;
+    }
+
+    protected function setFormattedValueCallback(Closure $formattedValueCallback): void
+    {
+        $this->formattedValueCallback = $formattedValueCallback;
+    }
+
+    public function formattedValueCallback(): ?Closure
+    {
+        return $this->formattedValueCallback;
     }
 
     public function toFormattedValue(): mixed
@@ -343,6 +266,11 @@ abstract class Field extends FormElement
         return $this->previewDecoration($preview);
     }
 
+    protected function resolvePreview(): View|string
+    {
+        return (string) ($this->toFormattedValue() ?? '');
+    }
+
     private function previewDecoration(View|string $value): View|string
     {
         if ($value instanceof View) {
@@ -371,9 +299,12 @@ abstract class Field extends FormElement
         return $value;
     }
 
-    protected function resolvePreview(): View|string
+    public function reset(): self
     {
-        return (string) ($this->toFormattedValue() ?? '');
+        return $this
+            ->setValue()
+            ->setRawValue()
+            ->setFormattedValue();
     }
 
     public function nullable(Closure|bool|null $condition = null): static
@@ -386,5 +317,29 @@ abstract class Field extends FormElement
     public function isNullable(): bool
     {
         return $this->nullable;
+    }
+
+    public function inLabel(): self
+    {
+        $this->isInLabel = true;
+
+        return $this;
+    }
+
+    public function isInLabel(): bool
+    {
+        return $this->isInLabel;
+    }
+
+    public function beforeLabel(): self
+    {
+        $this->isBeforeLabel = true;
+
+        return $this;
+    }
+
+    public function isBeforeLabel(): bool
+    {
+        return $this->isBeforeLabel;
     }
 }

@@ -13,6 +13,7 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Contracts\MoonShineLayoutContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -23,7 +24,6 @@ use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
-use MoonShine\Resources\Resource;
 use MoonShine\Support\SelectOptions;
 
 if (! function_exists('tryOrReturn')) {
@@ -55,7 +55,7 @@ if (! function_exists('moonshineRegister')) {
 
 if (! function_exists('to_page')) {
     function to_page(
-        string|Resource|null $resource,
+        string|ResourceContract|null $resource,
         string|Page|null $page = null,
         array $params = [],
         bool $redirect = false,

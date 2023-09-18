@@ -28,7 +28,7 @@ class TestCategoryResource extends ModelResource
     public function fields(): array
     {
         return [
-            Block::make('', [
+            Block::make([
                 ID::make()->sortable(),
 
                 Text::make('Name title', 'name')

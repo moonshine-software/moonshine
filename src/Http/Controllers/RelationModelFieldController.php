@@ -61,20 +61,11 @@ class RelationModelFieldController extends MoonShineController
             "%$term%"
         )->limit($field->asyncSearchCount());
 
-        if (is_closure($field->asyncSearchValueCallback())) {
-            $values = $query->get()->mapWithKeys(
-                fn ($relatedItem): array => [
-                    $relatedItem->getKey() => ($field->asyncSearchValueCallback())($relatedItem),
-                ]
-            );
-        } else {
-            $values = $query->pluck(
-                $searchColumn,
-                $model->getKeyName()
-            );
-        }
-
-        return response()->json($values->toArray());
+        return response()->json(
+            $query->get()->map(
+                fn ($model): array => $field->asyncResponseData($model, $searchColumn)
+            )->toArray()
+        );
     }
 
     public function searchRelations(RelationModelFieldRequest $request)

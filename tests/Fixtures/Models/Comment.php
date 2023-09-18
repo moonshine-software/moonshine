@@ -17,6 +17,11 @@ class Comment extends Model
         'content',
         'user_id',
         'item_id',
+        'data',
+    ];
+
+    protected $casts = [
+        'data' => 'collection'
     ];
 
     public function item(): BelongsTo

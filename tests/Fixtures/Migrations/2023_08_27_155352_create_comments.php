@@ -15,6 +15,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('item_id');
             $table->text('content');
+            $table->json('data')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('moonshine_users')->cascadeOnDelete();

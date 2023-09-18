@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use MoonShine\Fields\Field;
@@ -11,16 +12,15 @@ use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\TestCase;
 use Pest\Expectation;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 use function Pest\Laravel\actingAs;
-
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 uses(TestCase::class)
     ->in(__DIR__);
 
-uses(RefreshDatabase::class)
-    ->in('Feature');
+uses(DatabaseMigrations::class, RefreshDatabase::class)
+    ->in('Feature', 'Unit');
 
 function fakeRequest(string $url = '/', string $method = 'GET', array $parameters = []): void
 {

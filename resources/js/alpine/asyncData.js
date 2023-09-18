@@ -23,7 +23,11 @@ export default () => ({
     }
   },
 
-  async updateColumn(route, column, value) {
+  async updateColumn(route, column, value = null) {
+    if(value === null) {
+      value = this.$el.value
+    }
+
     const response = await axios.put(route, {
       value: value,
       field: column,

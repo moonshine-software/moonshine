@@ -26,8 +26,13 @@ class Item extends Model
         'category_id',
         'moonshine_user_id',
         'public_at',
+        'data',
         'created_at',
         'updated_at',
+    ];
+
+    protected $casts = [
+        'data' => 'collection'
     ];
 
     public function category(): BelongsTo

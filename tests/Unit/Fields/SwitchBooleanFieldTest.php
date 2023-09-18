@@ -34,22 +34,20 @@ it('view', function (): void {
 });
 
 it('preview with not auto update', function (): void {
-
-    expect($this->field->updateOnPreview(null, false)->preview())
+    expect($this->field->preview())
         ->toBe(
-            view('moonshine::fields.switch', [
-                'element' => $this->field,
+            view('moonshine::ui.boolean', [
+                'value' => (bool) $this->field->toValue(false),
             ])->render()
         );
 });
 
 it('preview with auto update', function (): void {
-    expect($this->field->preview())
+    expect($this->field->updateOnPreview(fn() => '/')->preview())
         ->toBe(
             view('moonshine::fields.switch', [
                 'element' => $this->field,
                 'updateOnPreview' => true,
-                'item' => $this->item,
             ])->render()
         );
 });

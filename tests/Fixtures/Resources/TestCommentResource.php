@@ -6,6 +6,7 @@ namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\ID;
+use MoonShine\Fields\Number;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Comment;
@@ -20,6 +21,7 @@ class TestCommentResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
+            Number::make('User id'),
             Text::make('Comment title', 'content')->sortable(),
         ];
     }

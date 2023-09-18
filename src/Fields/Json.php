@@ -342,10 +342,10 @@ class Json extends Field implements
                     )->delete()
                 );
 
-                $item->{$this->column()}()->upsert(
-                    $items->toArray(),
-                    $localKey
-                );
+                $items->each(fn($data) => $item->{$this->column()}()->updateOrCreate(
+                    [$localKey => $data[$localKey] ?? null],
+                    $data
+                ));
 
                 return $item;
             }

@@ -11,6 +11,6 @@ trait MorphRelationTrait
 {
     public function images(): MorphMany
     {
-        return $this->morphMany(ImageModel::class, 'imageable')->orderBy('sort_number');
+        return $this->morphMany(ImageModel::class, 'imageable');
     }
 }

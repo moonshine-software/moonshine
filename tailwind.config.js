@@ -1,7 +1,9 @@
 const plugin = require('tailwindcss/plugin');
 
 module.exports = {
+    important: true,
     content: [
+        './resources/js/**/*.js',
         './resources/views/**/*.blade.php',
     ],
     safelist: [

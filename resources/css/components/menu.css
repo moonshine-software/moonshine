@@ -216,6 +216,10 @@
 .layout-menu-horizontal {
   @apply fixed inset-x-0 top-0 z-[100] flex items-center h-[4.5rem] lg:h-24 gap-x-5 px-6 md:px-10 bg-body/80 backdrop-blur-sm transition-colors;
 
+  .menu-inner-item-char {
+    @apply hidden;
+  }
+
   /* Opened menu state */
   &._is-opened {
     @apply bg-body;

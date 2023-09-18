@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
-
-use MoonShine\MoonShine;
-
-use MoonShine\Providers\MoonShineServiceProvider;
 
 class InstallCommand extends MoonShineCommand
 {
@@ -33,6 +31,10 @@ class InstallCommand extends MoonShineCommand
             $this->initDashboard();
             $this->initMigrations();
         }, 'Installation completed');
+
+        if (confirm('Create super user ?')) {
+            $this->call(MakeUserCommand::class);
+        }
 
         if (! app()->runningUnitTests()) {
             confirm('Can you quickly star our GitHub repository? 🙏🏻', true);
@@ -126,7 +128,7 @@ class InstallCommand extends MoonShineCommand
 
     protected function initMigrations(): void
     {
-        if (config('moonshine.use_migrations', true)) {
+        if (config('moonshine.use_migrations', true) && confirm('Install migrations?')) {
             $this->call('migrate');
 
             $this->components->task('Tables migrated');

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\Support\Condition;
 
 trait UpdateOnPreview
 {
-    protected bool $updateOnPreview = true;
+    protected bool $updateOnPreview = false;
 
     protected mixed $updateOnPreviewData = null;
 
@@ -49,10 +50,10 @@ trait UpdateOnPreview
             : '';
     }
 
-    protected function resolvePreview(): string
+    public function preview(): View|string
     {
-        if (! $this->isUpdateOnPreview() && $this->isRawMode()) {
-            return parent::resolvePreview();
+        if (! $this->isUpdateOnPreview() || $this->isRawMode()) {
+            return parent::preview();
         }
 
         return view($this->getView(), [

@@ -23,7 +23,10 @@
         @endif
 
         @if($vertical && !$preview)
-            <td {{ $row->tdAttributes($loop->parent->index, 0 + $actions->isNotEmpty())->merge(['class' => 'space-y-3']) }}>
+            <td
+                {{ $row->tdAttributes($loop->parent->index, 0 + $actions->isNotEmpty())->merge(['class' => 'space-y-3']) }}
+                x-data="asyncData"
+            >
                 @foreach($row->getFields() as $index => $field)
                     @if($field->isSee($field->toValue()))
                         <x-moonshine::field-container :field="$field">
@@ -43,6 +46,7 @@
                     <td {{ $vertical
                             ? $row->tdAttributes($index, 1)
                             : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
+                        x-data="asyncData"
                     >
                         {!! $field->isSee($field->toValue())
                             ? $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}()

@@ -6,6 +6,9 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use MoonShine\Fields\Relationships\ModelRelationField;
 
 trait WithAsyncSearch
@@ -21,6 +24,62 @@ trait WithAsyncSearch
     protected ?Closure $asyncSearchQuery = null;
 
     protected ?Closure $asyncSearchValueCallback = null;
+
+    protected array $withImage = [];
+
+    public function withImage(string $column, string $disk = 'public', string $dir = ''): self
+    {
+        $this->withImage = [
+            'column' => $column,
+            'disk' => $disk,
+            'dir' => $dir,
+        ];
+
+        $this->relatedColumns([$column]);
+
+        return $this;
+    }
+
+    protected function isWithImage(): bool
+    {
+        return ! empty($this->withImage['column']);
+    }
+
+    public function getImageUrl(Model $item): ?string
+    {
+        if (! $this->isWithImage()) {
+            return null;
+        }
+
+        if (empty($item->{$this->withImage['column']})) {
+            return null;
+        }
+
+        $value = str($item->{$this->withImage['column']})
+            ->replaceFirst($this->withImage['dir'], '')
+            ->trim('/')
+            ->prepend($this->withImage['dir'] . '/')
+            ->value();
+
+        return Storage::disk($this->withImage['disk'])
+            ->url($value);
+    }
+
+    public function valuesWithProperties(bool $onlyCustom = false): Collection
+    {
+        if (! $this->isWithImage()) {
+            return collect();
+        }
+
+        return $this->getMemoizeValues()->mapWithKeys(function (Model $item) use ($onlyCustom) {
+            $properties = $this->asyncResponseData($item);
+            return [
+                $item->getKey() => $onlyCustom
+                    ? data_get($properties, 'customProperties')
+                    : $properties,
+            ];
+        });
+    }
 
     public function isAsyncSearch(): bool
     {
@@ -68,6 +127,21 @@ trait WithAsyncSearch
             relation: $this->getRelationName(),
             resourceUri: $resourceUri
         );
+    }
+
+    public function asyncResponseData(Model $model, ?string $searchColumn = null): array
+    {
+        $searchColumn = $searchColumn ?? $this->asyncSearchColumn();
+
+        return [
+            'label' => is_closure($this->asyncSearchValueCallback())
+                ? ($this->asyncSearchValueCallback())($model)
+                : $model->{$searchColumn},
+            'value' => $model->getKey(),
+            'customProperties' => [
+                'image' => $this->getImageUrl($model),
+            ],
+        ];
     }
 
     public function asyncSearch(

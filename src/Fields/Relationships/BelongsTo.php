@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Closure;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -59,5 +61,25 @@ class BelongsTo extends ModelRelationField implements
         }
 
         return (string) $this->toValue()->getKey() === $value;
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return function (Model $item) {
+            $value = $this->requestValue();
+
+            if ($value === false && ! $this->isNullable()) {
+                return $item;
+            }
+
+            if ($value === false && $this->isNullable()) {
+                return $item
+                    ->{$this->getRelationName()}()
+                    ->dissociate();
+            }
+
+            return $item->{$this->getRelationName()}()
+                ->associate($value);
+        };
     }
 }
