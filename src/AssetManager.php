@@ -95,12 +95,12 @@ class AssetManager
         return collect($this->assets)
             ->push($this->getMainJs())
             ->filter(
-                fn ($asset): int|bool => preg_match('/\.js$/', (string) $asset)
+                fn ($asset): int|bool => preg_match('/\.js/', (string) $asset)
             )
             ->map(
                 fn ($asset): string => "<script defer src='" . asset(
                     $asset
-                ) . "?v={$this->getVersion()}'></script>"
+                ) . (str_contains($asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
     }
 
@@ -109,12 +109,12 @@ class AssetManager
         return collect($this->assets)
             ->push($this->getMainCss())
             ->filter(
-                fn ($asset): int|bool => preg_match('/\.css$/', (string) $asset)
+                fn ($asset): int|bool => preg_match('/\.css/', (string) $asset)
             )
             ->map(
                 fn ($asset): string => "<link href='" . asset(
                     $asset
-                ) . "?v={$this->getVersion()}' rel='stylesheet'>"
+                ) . (str_contains($asset, '?') ? '&' : '?') . "v={$this->getVersion()}' rel='stylesheet'>"
             )->implode(PHP_EOL);
     }
 
