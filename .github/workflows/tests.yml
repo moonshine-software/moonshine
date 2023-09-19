@@ -23,7 +23,7 @@ jobs:
         env:
           DB_USERNAME: root
           DB_PASSWORD: root
-          DB_DATABASE: moonshine
+          DB_DATABASE: moonshine_tests
         run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USERNAME }} -p${{ env.DB_PASSWORD }}
