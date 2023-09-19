@@ -7,12 +7,12 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use MoonShine\Resources\Resource;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Traits\HasResource;
 use Throwable;
 
 /**
- * @method static static make(Resource $resource, ?Closure $query = null)
+ * @method static static make(ResourceContract $resource, ?Closure $query = null)
  */
 final class ResourcePreview extends MoonshineComponent
 {
@@ -21,7 +21,7 @@ final class ResourcePreview extends MoonshineComponent
     protected ?Closure $query = null;
 
     public function __construct(
-        Resource $resource,
+        ResourceContract $resource,
         ?Closure $query = null,
     ) {
         $this->setResource($resource);

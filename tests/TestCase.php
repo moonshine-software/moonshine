@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
+use MoonShine\Commands\InstallCommand;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
@@ -54,7 +55,10 @@ class TestCase extends Orchestra
 
     protected function performApplication(): static
     {
-        $this->artisan('moonshine:install');
+        $this->artisan(InstallCommand::class, [
+            '--without-user' => true,
+            '--without-migrations' => true
+        ]);
 
         $this->artisan('config:clear');
         $this->artisan('view:clear');

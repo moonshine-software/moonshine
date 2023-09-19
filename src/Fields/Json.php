@@ -303,6 +303,12 @@ class Json extends Field implements
             $applyValues = [];
 
             foreach ($requestValues as $index => $values) {
+                if ($this->isAsRelation()) {
+                    $values = $this->asRelationResource()
+                        ?->getModel()
+                        ?->forceFill($values) ?? $values;
+                }
+
                 foreach ($this->getFields() as $field) {
                     $field->setRequestKeyPrefix(
                         str("{$this->column()}.$index")->when(

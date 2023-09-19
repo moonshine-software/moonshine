@@ -12,7 +12,6 @@ use MoonShine\Menu\MenuElement;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Resources\MoonShineProfileResource;
-use MoonShine\Resources\Resource;
 use Throwable;
 
 class MoonShine
@@ -77,7 +76,7 @@ class MoonShine
         self::$resources = collect($data);
     }
 
-    public static function addResource(Resource $resource): void
+    public static function addResource(ResourceContract $resource): void
     {
         if (is_null(self::$resources)) {
             self::$resources = collect([$resource]);

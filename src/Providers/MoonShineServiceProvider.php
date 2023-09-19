@@ -128,12 +128,6 @@ class MoonShineServiceProvider extends ServiceProvider
             ),
         ]);
 
-        $this->publishes([
-            MoonShine::path('/stubs/MoonShineServiceProvider.stub') => app_path(
-                'Providers/MoonShineServiceProvider.php'
-            ),
-        ], 'moonshine-provider');
-
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
         }

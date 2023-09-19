@@ -2,6 +2,10 @@
     {{ $element->value(withOld: false)
             ->editable()
             ->when(
+                !$element->isAsRelation(),
+                fn($table) => $table->sortable()
+            )
+            ->when(
                 $element->isCreatable(),
                 fn($table) => $table->creatable()
             )

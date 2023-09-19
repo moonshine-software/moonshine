@@ -94,7 +94,7 @@ trait ResourceModelQuery
     /**
      * Get an array of custom form actions
      *
-     * @return array<int, QueryTag>
+     * @return array<QueryTag>
      */
     public function queryTags(): array
     {

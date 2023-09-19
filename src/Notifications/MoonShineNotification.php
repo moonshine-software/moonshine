@@ -12,7 +12,7 @@ final class MoonShineNotification
 {
     /**
      * @param  array{'link': string, 'label': string}  $button
-     * @param  array<int>  $ids
+     * @param  array<int|string>  $ids
      */
     public static function send(
         string $message,

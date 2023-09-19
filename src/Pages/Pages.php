@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Pages;
 
 use Illuminate\Support\Collection;
-use MoonShine\Resources\Resource;
+use MoonShine\Contracts\Resources\ResourceContract;
 
 /**
  * @template TKey of array-key
@@ -14,7 +14,7 @@ use MoonShine\Resources\Resource;
  */
 final class Pages extends Collection
 {
-    public function setResource(Resource $resource): Pages
+    public function setResource(ResourceContract $resource): Pages
     {
         return $this->each(fn (Page $page): Page => $page->setResource($resource));
     }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
-use MoonShine\Resources\Resource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class MoonShineRouter
@@ -23,7 +23,7 @@ final class MoonShineRouter
     }
 
     public static function to_page(
-        string|Resource|null $resource,
+        string|ResourceContract|null $resource,
         string|Page|null $page = null,
         array $params = [],
         bool $redirect = false
@@ -34,7 +34,7 @@ final class MoonShineRouter
             )->url();
         }
 
-        $resource = $resource instanceof Resource
+        $resource = $resource instanceof ResourceContract
             ? $resource
             : new $resource();
 

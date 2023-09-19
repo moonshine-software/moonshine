@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\File;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
-use MoonShine\MoonShine;
-
-use MoonShine\Providers\MoonShineServiceProvider;
-
 class InstallCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:install';
+    protected $signature = 'moonshine:install {--u|without-user} {--m|without-migrations}';
 
     protected $description = 'Install the moonshine package';
 
@@ -34,7 +33,7 @@ class InstallCommand extends MoonShineCommand
             $this->initMigrations();
         }, 'Installation completed');
 
-        if (confirm('Create super user ?')) {
+        if (!$this->option('without-user') && confirm('Create super user ?')) {
             $this->call(MakeUserCommand::class);
         }
 
@@ -77,16 +76,18 @@ class InstallCommand extends MoonShineCommand
         $this->comment('Publishing MoonShine Service Provider...');
         $this->call('vendor:publish', ['--tag' => 'moonshine-provider']);
 
-        $this->copyStub(
-            'MoonShineServiceProvider',
-            app_path('Providers/MoonShineServiceProvider.php')
-        );
+        if (! File::exists(app_path('Providers/MoonShineServiceProvider.php'))) {
+            $this->copyStub(
+                'MoonShineServiceProvider',
+                app_path('Providers/MoonShineServiceProvider.php')
+            );
 
-        if (! app()->runningUnitTests()) {
-            $this->registerServiceProvider();
+            if (! app()->runningUnitTests()) {
+                $this->registerServiceProvider();
+            }
+
+            $this->components->task('Service Provider created');
         }
-
-        $this->components->task('Service Provider created');
     }
 
     protected function registerServiceProvider(): void
@@ -130,7 +131,9 @@ class InstallCommand extends MoonShineCommand
 
     protected function initMigrations(): void
     {
-        if (config('moonshine.use_migrations', true) && confirm('Install migrations?')) {
+        $confirm = $this->option('without-migrations') || confirm('Install migrations?');
+
+        if (config('moonshine.use_migrations', true) && $confirm) {
             $this->call('migrate');
 
             $this->components->task('Tables migrated');
