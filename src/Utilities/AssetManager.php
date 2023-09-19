@@ -27,7 +27,7 @@ class AssetManager
     {
         return collect($this->assets)
             ->filter(
-                fn ($asset): int|bool => preg_match('/\.js$/', (string) $asset)
+                fn ($asset): int|bool => str_contains((string) $asset, '.js')
             )
             ->map(
                 fn ($asset): string => "<script src='" . asset(
@@ -40,7 +40,7 @@ class AssetManager
     {
         return collect($this->assets)
             ->filter(
-                fn ($asset): int|bool => preg_match('/\.css$/', (string) $asset)
+                fn ($asset): int|bool => str_contains((string) $asset, '.css')
             )
             ->map(
                 fn ($asset): string => "<link href='" . asset(
