@@ -10,7 +10,6 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Tabs;
-use MoonShine\Fields\StackFields;
 use Throwable;
 
 abstract class MoonShineRenderElements extends Collection

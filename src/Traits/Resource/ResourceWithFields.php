@@ -90,9 +90,9 @@ trait ResourceWithFields
             ->withoutOutside()
             ->wrapNames('filters');
 
-        $filters->each(function ($filter) {
-            if(in_array(get_class($filter), Filters::NO_FILTERS)) {
-                throw new FilterException("You can't use ".get_class($filter)." inside filters.");
+        $filters->each(function ($filter): void {
+            if(in_array($filter::class, Filters::NO_FILTERS)) {
+                throw new FilterException("You can't use ".$filter::class." inside filters.");
             }
         });
 

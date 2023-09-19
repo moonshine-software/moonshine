@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
 use Throwable;
@@ -39,7 +38,7 @@ class StackFields extends Field implements HasFields
     ): Field {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field) => $field->resolveFill($raw, $casted, $index));
+            ->each(fn (Field $field): Field => $field->resolveFill($raw, $casted, $index));
 
         return $this;
     }

@@ -18,7 +18,7 @@ use MoonShine\Fields\StackFields;
 
 final class Filters
 {
-    const NO_FILTERS = [
+    public const NO_FILTERS = [
         HasOne::class,
         HasMany::class,
         HasManyThrough::class,
