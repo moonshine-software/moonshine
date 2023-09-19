@@ -62,6 +62,7 @@ class IndexPage extends Page
             $this->table(),
         );
     }
+
     protected function metrics(): ?MoonshineComponent
     {
         $metrics = $this->getResource()->metrics();
