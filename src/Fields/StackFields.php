@@ -69,6 +69,18 @@ class StackFields extends Field implements HasFields
     /**
      * @throws Throwable
      */
+    protected function resolveBeforeApply(mixed $data): mixed
+    {
+        $this->getFields()
+            ->onlyFields()
+            ->each(fn (Field $field): mixed => $field->beforeApply($data));
+
+        return $data;
+    }
+
+    /**
+     * @throws Throwable
+     */
     protected function resolveAfterApply(mixed $data): mixed
     {
         $this->getFields()
