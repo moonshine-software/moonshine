@@ -36,9 +36,10 @@ class StackFields extends Field implements HasFields
         mixed $casted = null,
         int $index = 0
     ): Field {
-        foreach ($this->fields as $field) {
-            $field->resolveFill($raw, $casted, $index);
-        }
+        $this->getFields()
+            ->onlyFields()
+            ->each(fn (Field $field) => $field->resolveFill($raw, $casted, $index));
+
         return $this;
     }
 
@@ -46,11 +47,10 @@ class StackFields extends Field implements HasFields
     {
         return function ($item) {
             $this->getFields()->onlyFields()->each(
-                static function (Field $field) use (&$item): void {
-                    $item = $field->apply(
-                        fn ($item) => $item,
-                        $item
-                    );
+                static function (Field $field) use ($item): void {
+                    if ($field->requestValue() !== false) {
+                        data_set($item, $field->column(), $field->requestValue());
+                    }
                 }
             );
 
