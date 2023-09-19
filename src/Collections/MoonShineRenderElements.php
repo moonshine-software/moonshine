@@ -20,17 +20,17 @@ abstract class MoonShineRenderElements extends Collection
     /**
      * @throws Throwable
      */
-    protected function extractOnly($elements, string $type, array &$data): void
+    protected function extractOnly($elements, string $type, array &$data, bool $isExtractConcat = true): void
     {
         foreach ($elements as $element) {
-            if ($element instanceof StackFields) {
-                $this->extractOnly($element->getFields(), $type, $data);
+            if ($element instanceof StackFields && $isExtractConcat) {
+                $this->extractOnly($element->getFields(), $type, $data, $isExtractConcat);
             } elseif ($element instanceof Tabs) {
                 foreach ($element->tabs() as $tab) {
-                    $this->extractOnly($tab->getFields(), $type, $data);
+                    $this->extractOnly($tab->getFields(), $type, $data, $isExtractConcat);
                 }
             } elseif ($element instanceof Decoration) {
-                $this->extractOnly($element->getFields(), $type, $data);
+                $this->extractOnly($element->getFields(), $type, $data, $isExtractConcat);
             } elseif ($element instanceof $type) {
                 $data[] = $element;
             }

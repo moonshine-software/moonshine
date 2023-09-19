@@ -31,6 +31,17 @@ class StackFields extends Field implements HasFields
         return $this->withLabels;
     }
 
+    public function resolveFill(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0
+    ): Field {
+        foreach ($this->fields as $field) {
+            $field->resolveFill($raw, $casted, $index);
+        }
+        return $this;
+    }
+
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {

@@ -21,11 +21,11 @@ abstract class FormElements extends MoonShineRenderElements
      * @return Fields<Field>
      * @throws Throwable
      */
-    public function onlyFields(): Fields
+    public function onlyFields(bool $isExtractConcat = true): Fields
     {
         $data = [];
 
-        $this->extractOnly($this->toArray(), Field::class, $data);
+        $this->extractOnly($this->toArray(), Field::class, $data, $isExtractConcat);
 
         return self::make($data);
     }
