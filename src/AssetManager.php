@@ -100,7 +100,7 @@ class AssetManager
             ->map(
                 fn ($asset): string => "<script defer src='" . asset(
                     $asset
-                ) . (str_contains($asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
+                ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
     }
 
@@ -114,7 +114,7 @@ class AssetManager
             ->map(
                 fn ($asset): string => "<link href='" . asset(
                     $asset
-                ) . (str_contains($asset, '?') ? '&' : '?') . "v={$this->getVersion()}' rel='stylesheet'>"
+                ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}' rel='stylesheet'>"
             )->implode(PHP_EOL);
     }
 
