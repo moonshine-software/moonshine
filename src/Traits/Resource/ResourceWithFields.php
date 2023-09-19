@@ -92,7 +92,7 @@ trait ResourceWithFields
 
         $filters->each(function ($filter): void {
             if(in_array($filter::class, Filters::NO_FILTERS)) {
-                throw new FilterException("You can't use ".$filter::class." inside filters.");
+                throw new FilterException("You can't use " . $filter::class . " inside filters.");
             }
         });
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Applies\Filters;
 
 use Closure;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class TextModelApply implements ApplyContract
 {
