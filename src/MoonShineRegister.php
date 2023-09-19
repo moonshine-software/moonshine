@@ -9,11 +9,14 @@ use MoonShine\Applies\Filters\DateModelApply;
 use MoonShine\Applies\Filters\JsonModelApply;
 use MoonShine\Applies\Filters\RangeModelApply;
 use MoonShine\Applies\Filters\SlideModelApply;
+use MoonShine\Applies\Filters\TextModelApply;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\Json;
 use MoonShine\Fields\RangeField;
 use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\Fields\SlideField;
+use MoonShine\Fields\Text;
+use MoonShine\Fields\Textarea;
 use MoonShine\Resources\ModelResource;
 
 final class MoonShineRegister
@@ -30,6 +33,8 @@ final class MoonShineRegister
                 SlideField::class => SlideModelApply::class,
                 BelongsToMany::class => BelongsToManyModelApply::class,
                 Json::class => JsonModelApply::class,
+                Text::class => TextModelApply::class,
+                Textarea::class => TextModelApply::class,
             ],
         ],
         'fields' => [],
