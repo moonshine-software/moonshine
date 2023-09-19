@@ -71,7 +71,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             $fields = $this->getFields();
 
             if (! is_null($this->getName())) {
-                $fields->onlyFields(false)->each(
+                $fields->onlyFields()->each(
                     fn (Field $field): Field => $field->formName($this->getName())
                 );
             }

@@ -168,6 +168,7 @@ abstract class ModelResource extends Resource
             if ($field->requestValue() !== false) {
                 data_set($item, $field->column(), $field->requestValue());
             }
+
             return $item;
         };
     }

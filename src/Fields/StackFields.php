@@ -89,4 +89,12 @@ class StackFields extends Field implements HasFields
 
         return $data;
     }
+
+    public function __clone()
+    {
+        foreach ($this->fields as $index => $field) {
+            $this->fields[$index] = clone $field;
+        }
+    }
+
 }
