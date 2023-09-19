@@ -98,6 +98,18 @@ class StackFields extends Field implements HasFields
         return $data;
     }
 
+    /**
+     * @throws Throwable
+     */
+    protected function resolveAfterDestroy(mixed $data): mixed
+    {
+        $this->getFields()
+            ->onlyFields()
+            ->each(fn (Field $field): mixed => $field->afterDestroy($data));
+
+        return $data;
+    }
+
     public function __clone()
     {
         foreach ($this->fields as $index => $field) {
