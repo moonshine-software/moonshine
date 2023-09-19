@@ -78,7 +78,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                 ->append('Resource')
                 ->kebab()
                 ->value()
-        );
+        ) ?? MoonShine::getResourceFromUriKey(moonshineRequest()->getResourceUri());
     }
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
