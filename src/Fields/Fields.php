@@ -22,7 +22,7 @@ final class Fields extends FormElements
      */
     public function fillCloned(array $raw = [], mixed $casted = null, int $index = 0): self
     {
-        return $this->onlyFields(isExtractConcat: false)->map(
+        return $this->onlyFields()->map(
             fn (Field $field): Field => (clone $field)
                 ->resolveFill($raw, $casted, $index)
         );
@@ -91,7 +91,7 @@ final class Fields extends FormElements
      */
     public function indexFields(): Fields
     {
-        return $this->onlyFields(isExtractConcat: false)
+        return $this->onlyFields()
             ->filter(static fn (Field $field): bool => $field->isOnIndex())
             ->values();
     }
