@@ -57,7 +57,7 @@ class TestCase extends Orchestra
     {
         $this->artisan(InstallCommand::class, [
             '--without-user' => true,
-            '--without-migrations' => true
+            '--without-migrations' => true,
         ]);
 
         $this->artisan('config:clear');
