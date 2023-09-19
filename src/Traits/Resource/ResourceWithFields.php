@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use MoonShine\Exceptions\FilterException;
 use MoonShine\Fields\Fields;
+use MoonShine\Support\Filters;
 use Throwable;
 
 trait ResourceWithFields
@@ -83,9 +85,17 @@ trait ResourceWithFields
      */
     public function getFilters(): Fields
     {
-        return Fields::make($this->filters())
+        $filters = Fields::make($this->filters())
             ->filter()
             ->withoutOutside()
             ->wrapNames('filters');
+
+        $filters->each(function ($filter) {
+            if(in_array(get_class($filter), Filters::NO_FILTERS)) {
+                throw new FilterException("You can't use ".get_class($filter)." inside filters.");
+            }
+        });
+
+        return $filters;
     }
 }
