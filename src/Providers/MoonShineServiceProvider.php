@@ -113,11 +113,14 @@ class MoonShineServiceProvider extends ServiceProvider
             ),
         ]);
 
+        $this->mergeConfigFrom(
+            MoonShine::path('/config/moonshine.php'),
+            'moonshine'
+        );
+
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
         }
-
-        $this->loadAuthConfig();
 
         $this->registerRouteMiddleware();
 
@@ -138,5 +141,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(MenuManager::class);
         $this->app->singleton(AssetManager::class);
         $this->app->singleton(MoonShineRegister::class);
+
+        $this->loadAuthConfig();
     }
 }
