@@ -74,8 +74,8 @@ trait Applies
             : $this->resolveOnApply();
 
         return is_closure($applyFunction)
-            ? $applyFunction($data)
-            : $default($data);
+            ? $applyFunction($data, $this->requestValue())
+            : $default($data, $this->requestValue());
     }
 
     public function beforeApply(mixed $data): mixed
@@ -85,7 +85,7 @@ trait Applies
         }
 
         return is_closure($this->onBeforeApply)
-            ? call_user_func($this->onBeforeApply, $data)
+            ? call_user_func($this->onBeforeApply, $data, $this->requestValue())
             : $this->resolveBeforeApply($data);
     }
 
@@ -96,7 +96,7 @@ trait Applies
         }
 
         return is_closure($this->onAfterApply)
-            ? call_user_func($this->onAfterApply, $data)
+            ? call_user_func($this->onAfterApply, $data, $this->requestValue())
             : $this->resolveAfterApply($data);
     }
 
@@ -104,7 +104,7 @@ trait Applies
     {
         return is_closure($this->onAfterDestroy)
             ? call_user_func($this->onAfterDestroy, $data)
-            : $this->resolveAfterDestroy($data);
+            : $this->resolveAfterDestroy($data, $this->requestValue());
     }
 
     public function onApply(Closure $onApply): static

@@ -2,7 +2,9 @@
          range_from_{{ $element->id() }}: '{{ $element->value()[$element->fromField] ?? '' }}',
          range_to_{{ $element->id() }}: '{{ $element->value()[$element->toField] ?? '' }}'
      }"
-     class="form-group form-group-inline"
+    {{ $element->attributes()
+        ->except('x-on:change')
+        ->merge(['class' => 'form-group form-group-inline']) }}
 >
     <x-moonshine::form.input
         :attributes="$element->getFromAttributes()->merge([

@@ -3,7 +3,10 @@
         @if($element->hasLabels())
             <x-moonshine::divider :label="$field->label()" />
         @endif
-        <div class="my-2">
+        <div {{ $element->attributes()
+                ->except('x-on:change')
+                ->merge(['class' => 'my-2']) }}
+        >
             {!! $field->preview() !!}
         </div>
     @endforeach

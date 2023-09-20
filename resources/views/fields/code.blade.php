@@ -4,7 +4,10 @@
         language: '{{ $element->language ?? 'js' }}',
         readonly: {{ $element->isReadonly() ? 'true' : 'false' }},
     })"
-    class="w-100 min-h-[300px] relative">
+    {{ $element->attributes()
+        ->except('x-on:change')
+        ->merge(['class' => 'w-100 min-h-[300px] relative']) }}
+>
 </div>
 
 <x-moonshine::form.input

@@ -6,12 +6,10 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
-
-use MoonShine\MoonShine;
-
-use MoonShine\Providers\MoonShineServiceProvider;
 
 class InstallCommand extends MoonShineCommand
 {
@@ -133,7 +131,7 @@ class InstallCommand extends MoonShineCommand
 
     protected function initMigrations(): void
     {
-        $confirm = $this->option('without-migrations') || confirm('Install migrations?');
+        $confirm = !$this->option('without-migrations') && confirm('Install migrations?');
 
         if (config('moonshine.use_migrations', true) && $confirm) {
             $this->call('migrate');

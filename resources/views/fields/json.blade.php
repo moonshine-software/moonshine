@@ -1,4 +1,4 @@
-<div x-id="['json']" :id="$id('json')">
+<div x-id="['json']" :id="$id('json')" {{ $element->attributes()->except('x-on:change') }}>
     {{ $element->value(withOld: false)
             ->editable()
             ->when(
