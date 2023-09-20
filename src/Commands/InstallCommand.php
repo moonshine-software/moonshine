@@ -133,11 +133,10 @@ class InstallCommand extends MoonShineCommand
 
     protected function initMigrations(): void
     {
-        $confirm = $this->option('without-migrations') || confirm('Install migrations?');
+        $confirm = !$this->option('without-migrations') && confirm('Install migrations?');
 
         if (config('moonshine.use_migrations', true) && $confirm) {
             $this->call('migrate');
-
             $this->components->task('Tables migrated');
         } else {
             $this->components->task('Installed without default migrations');
