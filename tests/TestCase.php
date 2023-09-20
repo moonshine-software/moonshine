@@ -144,7 +144,7 @@ class TestCase extends Orchestra
     {
         return [
             MoonShineServiceProvider::class,
-            TestServiceProvider::class
+            TestServiceProvider::class,
         ];
     }
 }
