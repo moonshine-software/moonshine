@@ -58,7 +58,7 @@ describe('basic methods', function () {
     });
 
     it('formatted value', function () {
-        $field = Json::make('Json', formattedValueCallback: static fn () => ['changed'])
+        $field = Json::make('Json', formatted: static fn () => ['changed'])
             ->fields(exampleFields()->toArray())
             ->fill([]);
 

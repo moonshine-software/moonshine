@@ -19,7 +19,7 @@ use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formattedValueCallback = null)
+ * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
  */
 abstract class Field extends FormElement
 {
@@ -62,15 +62,15 @@ abstract class Field extends FormElement
     public function __construct(
         Closure|string|null $label = null,
         ?string $column = null,
-        ?Closure $formattedValueCallback = null
+        ?Closure $formatted = null
     ) {
         $this->setLabel($label ?? $this->label());
         $this->setColumn(
             trim($column ?? str($this->label())->lower()->snake()->value())
         );
 
-        if (! is_null($formattedValueCallback)) {
-            $this->setFormattedValueCallback($formattedValueCallback);
+        if (! is_null($formatted)) {
+            $this->setFormattedValueCallback($formatted);
         }
     }
 
