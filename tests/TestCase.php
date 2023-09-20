@@ -38,15 +38,13 @@ class TestCase extends Orchestra
 
     protected function setUp(): void
     {
-        $this->afterApplicationCreated(function () {
-            $this->performApplication()
-                ->resolveFactories()
-                ->resolveSuperUser()
-                ->resolveMoonShineUserResource()
-                ->registerTestResource();
-        });
-
         parent::setUp();
+
+        $this->performApplication()
+            ->resolveFactories()
+            ->resolveSuperUser()
+            ->resolveMoonShineUserResource()
+            ->registerTestResource();
     }
 
     protected function defineEnvironment($app): void
