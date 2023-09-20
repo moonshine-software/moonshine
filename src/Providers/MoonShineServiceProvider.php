@@ -56,16 +56,6 @@ class MoonShineServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register services.
-     */
-    public function register(): void
-    {
-        $this->loadAuthConfig();
-
-        $this->registerRouteMiddleware();
-    }
-
-    /**
      * Setup auth configuration.
      */
     protected function loadAuthConfig(): void
@@ -109,11 +99,6 @@ class MoonShineServiceProvider extends ServiceProvider
             ),
         ]);
 
-        $this->mergeConfigFrom(
-            MoonShine::path('/config/moonshine.php'),
-            'moonshine'
-        );
-
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
         $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
@@ -131,6 +116,10 @@ class MoonShineServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
         }
+
+        $this->loadAuthConfig();
+
+        $this->registerRouteMiddleware();
 
         Blade::withoutDoubleEncoding();
         Blade::componentNamespace('MoonShine\Components', 'moonshine');

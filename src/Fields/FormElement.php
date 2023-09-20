@@ -44,6 +44,10 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
 
     protected array $wrapperAttributes = [];
 
+    protected ?Closure $beforeRender = null;
+
+    protected ?Closure $afterRender = null;
+
     protected function afterMake(): void
     {
         if ($this->getAssets()) {
@@ -149,6 +153,34 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     public function getFormName()
     {
         return $this->formName;
+    }
+
+    public function beforeRender(Closure $closure): self
+    {
+        $this->beforeRender = $closure;
+
+        return $this;
+    }
+
+    public function afterRender(Closure $closure): self
+    {
+        $this->afterRender = $closure;
+
+        return $this;
+    }
+
+    public function getBeforeRender(): View|string
+    {
+        return is_null($this->beforeRender)
+            ? ''
+            : call_user_func($this->beforeRender, $this);
+    }
+
+    public function getAfterRender(): View|string
+    {
+        return is_null($this->afterRender)
+            ? ''
+            : call_user_func($this->afterRender, $this);
     }
 
     public function render(): View|Closure|string

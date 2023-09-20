@@ -103,8 +103,8 @@ trait Applies
     public function afterDestroy(mixed $data): mixed
     {
         return is_closure($this->onAfterDestroy)
-            ? call_user_func($this->onAfterDestroy, $data)
-            : $this->resolveAfterDestroy($data, $this->requestValue());
+            ? call_user_func($this->onAfterDestroy, $data, $this->requestValue())
+            : $this->resolveAfterDestroy($data);
     }
 
     public function onApply(Closure $onApply): static

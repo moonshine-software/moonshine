@@ -15,4 +15,11 @@ trait WithAssets
     {
         return $this->assets;
     }
+
+    public function addAssets(array $assets): self
+    {
+        moonshineAssets()->add($assets);
+
+        return $this;
+    }
 }

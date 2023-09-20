@@ -30,7 +30,6 @@ use Orchestra\Testbench\TestCase as Orchestra;
 class TestCase extends Orchestra
 {
     use InteractsWithViews;
-
     use RefreshDatabase;
 
     protected Authenticatable|MoonshineUser $adminUser;
@@ -39,22 +38,20 @@ class TestCase extends Orchestra
 
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->afterApplicationCreated(function () {
+            $this->performApplication()
+                ->resolveFactories()
+                ->resolveSuperUser()
+                ->resolveMoonShineUserResource()
+                ->registerTestResource();
+        });
 
-        $this->performApplication()
-            ->resolveFactories()
-            ->resolveSuperUser()
-            ->resolveMoonShineUserResource()
-            ->registerTestResource();
+        parent::setUp();
     }
 
-    protected function getEnvironmentSetUp($app): void
+    protected function defineEnvironment($app): void
     {
         $app['config']->set('app.debug', 'true');
-
-        $app['config']->set('database.default', 'mysql');
-        $app['config']->set('database.connections.mysql.database', 'moonshine_tests');
-        $app['config']->set('database.connections.mysql.username', 'root');
     }
 
     protected function performApplication(): static
