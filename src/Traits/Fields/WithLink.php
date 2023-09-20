@@ -36,8 +36,8 @@ trait WithLink
 
     public function getLinkName(mixed $value = null): string
     {
-        if (is_closure($this->linkValue)) {
-            return call_user_func($this->linkValue, $value);
+        if (is_closure($this->linkName)) {
+            return call_user_func($this->linkName, $value);
         }
 
         return $this->linkName;
