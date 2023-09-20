@@ -20,9 +20,6 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 uses(TestCase::class)
     ->in(__DIR__);
 
-uses(DatabaseMigrations::class, RefreshDatabase::class)
-    ->in('Feature', 'Unit');
-
 function fakeRequest(string $url = '/', string $method = 'GET', array $parameters = []): void
 {
     app()->instance(

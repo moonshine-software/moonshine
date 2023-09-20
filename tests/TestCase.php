@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Models\MoonshineUser;
@@ -23,11 +24,14 @@ use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestCoverResource;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\TestServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
     use InteractsWithViews;
+
+    use RefreshDatabase;
 
     protected Authenticatable|MoonshineUser $adminUser;
 
@@ -63,11 +67,6 @@ class TestCase extends Orchestra
         $this->artisan('config:clear');
         $this->artisan('view:clear');
         $this->artisan('cache:clear');
-
-        $this->refreshApplication();
-        $this->loadLaravelMigrations();
-        $this->loadMigrationsFrom(realpath('./database/migrations'));
-        $this->loadMigrationsFrom(realpath('./tests/Fixtures/Migrations'));
 
         return $this;
     }
@@ -145,6 +144,7 @@ class TestCase extends Orchestra
     {
         return [
             MoonShineServiceProvider::class,
+            TestServiceProvider::class
         ];
     }
 }
