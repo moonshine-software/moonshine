@@ -6,3 +6,4 @@ node_modules
 .php-cs-fixer.cache
 app
 reports
+phpunit.xml.dist
