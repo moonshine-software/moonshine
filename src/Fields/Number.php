@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Traits\Fields\NumberTrait;
 
@@ -37,12 +38,12 @@ class Number extends Text implements DefaultCanBeNumeric
         return $this->stars;
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         if (! $this->isRawMode() && $this->withStars()) {
             return view('moonshine::ui.rating', [
                 'value' => parent::resolvePreview(),
-            ])->render();
+            ]);
         }
 
         return parent::resolvePreview();

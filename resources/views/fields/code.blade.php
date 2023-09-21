@@ -5,7 +5,7 @@
         readonly: {{ $element->isReadonly() ? 'true' : 'false' }},
     })"
     {{ $element->attributes()
-        ->except('x-on:change')
+        ->only('class')
         ->merge(['class' => 'w-100 min-h-[300px] relative']) }}
 >
 </div>

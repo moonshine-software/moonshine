@@ -274,7 +274,7 @@ abstract class Field extends FormElement
     private function previewDecoration(View|string $value): View|string
     {
         if ($value instanceof View) {
-            return $value;
+            return $value->render();
         }
 
         if ($this->hasLink()) {

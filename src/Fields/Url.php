@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
+
 class Url extends Text
 {
     protected string $type = 'url';
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         $value = parent::resolvePreview();
 
@@ -24,6 +26,6 @@ class Url extends Text
             'href' => $value,
             'value' => $value,
             'blank' => $this->isLinkBlank(),
-        ])->render();
+        ]);
     }
 }

@@ -106,6 +106,13 @@ if (! function_exists('is_closure')) {
     }
 }
 
+if (! function_exists('is_field')) {
+    function is_field(mixed $variable): bool
+    {
+        return $variable instanceof Field;
+    }
+}
+
 if (! function_exists('moonshineAssets')) {
     function moonshineAssets(): AssetManager
     {

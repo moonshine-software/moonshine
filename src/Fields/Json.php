@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Components\TableBuilder;
@@ -207,15 +208,16 @@ class Json extends Field implements
         });
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         if ($this->isRawMode()) {
             return (string) $this->toFormattedValue();
         }
 
-        return (string) $this->resolveValue()
+        return $this->resolveValue()
             ->simple()
-            ->preview();
+            ->preview()
+            ->render();
     }
 
     protected function reformatFilledValue(mixed $data): mixed

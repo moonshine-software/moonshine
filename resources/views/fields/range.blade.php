@@ -3,7 +3,7 @@
          range_to_{{ $element->id() }}: '{{ $element->value()[$element->toField] ?? '' }}'
      }"
     {{ $element->attributes()
-        ->except('x-on:change')
+        ->only('class')
         ->merge(['class' => 'form-group form-group-inline']) }}
 >
     <x-moonshine::form.input

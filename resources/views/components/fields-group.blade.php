@@ -1,9 +1,5 @@
-@php
-    use MoonShine\Fields\Field;
-@endphp
-
 @foreach($components as $fieldOrDecoration)
-    @if($fieldOrDecoration instanceof Field && $fieldOrDecoration->hasWrapper())
+    @if(is_field($fieldOrDecoration) && $fieldOrDecoration->hasWrapper())
         <x-moonshine::field-container :field="$fieldOrDecoration">
             {!! $fieldOrDecoration->getBeforeRender() !!}
             {{ $fieldOrDecoration->render() }}

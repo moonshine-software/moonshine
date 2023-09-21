@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
 use Throwable;
@@ -65,12 +66,12 @@ class StackFields extends Field implements HasFields
         };
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         return view($this->getView(), [
             'element' => $this,
             'indexView' => true,
-        ])->render();
+        ]);
     }
 
     /**

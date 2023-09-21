@@ -12,9 +12,8 @@ uses()->group('fields');
 
 beforeEach(function (): void {
     $this->field = Enum::make('Enum')
+        ->fill(TestEnumColor::Red)
         ->attach(TestEnumColor::class);
-
-    $this->field->resolveFill(['enum' => TestEnumColor::Red]);
 });
 
 it('select field is parent', function (): void {
@@ -34,7 +33,7 @@ it('view', function (): void {
 
 it('preview', function (): void {
     expect($this->field->preview())
-        ->toBe('Red');
+        ->toBe('R');
 });
 
 it('apply', function (): void {

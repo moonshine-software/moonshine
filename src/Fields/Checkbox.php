@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\View\View;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
@@ -39,7 +40,7 @@ class Checkbox extends Field implements
         return parent::resolveValue();
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         if ($this->isRawMode()) {
             return (string) ($this->toValue(false)
@@ -49,6 +50,6 @@ class Checkbox extends Field implements
 
         return view('moonshine::ui.boolean', [
             'value' => (bool) $this->toValue(false),
-        ])->render();
+        ]);
     }
 }

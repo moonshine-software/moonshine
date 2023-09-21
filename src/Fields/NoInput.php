@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\Support\Condition;
 
 class NoInput extends Field
@@ -29,7 +30,7 @@ class NoInput extends Field
         return $this;
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         $value = $this->toFormattedValue();
 
@@ -40,7 +41,7 @@ class NoInput extends Field
         if ($this->isBoolean) {
             return view('moonshine::ui.boolean', [
                 'value' => $value,
-            ])->render();
+            ]);
         }
 
         return (string) $value;

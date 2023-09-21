@@ -25,6 +25,6 @@ class Button extends Decoration
     ) {
         parent::__construct($label);
 
-        $this->addLink($this->label(), $link, $blank);
+        $this->link($link, $this->label(), blank: $blank);
     }
 }

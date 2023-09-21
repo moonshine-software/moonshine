@@ -4,7 +4,7 @@
             <x-moonshine::divider :label="$field->label()" />
         @endif
         <div {{ $element->attributes()
-                ->except('x-on:change')
+                ->only('class')
                 ->merge(['class' => 'my-2']) }}
         >
             {!! $field->preview() !!}
