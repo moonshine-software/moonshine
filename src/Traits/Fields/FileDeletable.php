@@ -31,7 +31,9 @@ trait FileDeletable
         array|string $inputValues
     ): void {
         if ($storedValues instanceof Collection) {
-            $storedValues = $storedValues->toArray();
+            $storedValues = $storedValues
+                ->filter()
+                ->toArray();
         }
 
         if (empty($storedValues)) {

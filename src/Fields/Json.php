@@ -319,6 +319,10 @@ class Json extends Field implements
                         )->value()
                     );
 
+                    if ($this->isAsRelation()) {
+                        $field->resolveFill($values->toArray(), $values);
+                    }
+
                     $apply = $field->apply(
                         fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
                         $values

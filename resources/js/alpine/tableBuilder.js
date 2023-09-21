@@ -65,16 +65,20 @@ export default (
   },
   resolveReindex() {
     function reindexLevel(tr, level, prev) {
-      tr.querySelectorAll(`[data-level="${level}"]`).forEach(function(input) {
-        let row = input.closest('tr')
-        let name = input.dataset.name
+      tr.querySelectorAll(`[data-level="${level}"]`).forEach(function(field) {
+        let row = field.closest('tr')
+        let name = field.dataset.name
         prev['${index' + level + '}'] = row.dataset.key ?? row.rowIndex
 
         Object.entries(prev).forEach(function([key, value]) {
           name = name.replace(key, value)
         })
 
-        input.setAttribute('name', name)
+        field.setAttribute('name', name)
+
+        if(field.dataset?.incrementPosition) {
+          field.innerHTML = row.rowIndex
+        }
 
         reindexLevel(row, level + 1, prev)
       })
