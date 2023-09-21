@@ -16,7 +16,7 @@ class Position extends NoInput
         parent::__construct($label ?? '#', $column, static fn ($item, $index): int|float => $index + 1);
 
         $this->customAttributes([
-            'data-increment-position' => true
+            'data-increment-position' => true,
         ]);
     }
 }
