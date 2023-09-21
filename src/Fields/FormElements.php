@@ -35,7 +35,9 @@ abstract class FormElements extends MoonShineRenderElements
      */
     public function prepareAttributes(): Fields
     {
-        return $this->onlyFields()->map(
+        return $this->onlyFields()
+            ->unwrapElements(StackFields::class)
+            ->map(
             static function (Field $formElement): Field {
                 $formElement->when(
                     ! $formElement instanceof Fileable,
@@ -57,6 +59,7 @@ abstract class FormElements extends MoonShineRenderElements
     public function whenFieldsConditions(): Fields
     {
         return $this->onlyFields()
+            ->unwrapElements(StackFields::class)
             ->filter(
                 static fn (Field $field): bool => $field->hasShowWhen()
             )
