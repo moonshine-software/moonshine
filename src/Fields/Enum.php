@@ -18,13 +18,11 @@ class Enum extends Select implements DefaultCanBeEnum
         $values = collect($class::cases());
 
         $this->options(
-            $values->mapWithKeys(function($value) {
-                return [
-                    $value->name => method_exists($value, 'toString')
-                        ? $value->toString()
-                        : $value->value
-                ];
-            })->toArray()
+            $values->mapWithKeys(fn($value): array => [
+                $value->name => method_exists($value, 'toString')
+                    ? $value->toString()
+                    : $value->value
+            ])->toArray()
         );
 
         return $this;
