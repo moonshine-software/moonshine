@@ -29,7 +29,6 @@ final class ModelCast implements MoonShineDataCast
     }
 
     /**
-     * @param  array  $data
      * @return T
      */
     public function hydrate(array $data): mixed
