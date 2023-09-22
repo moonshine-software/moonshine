@@ -26,9 +26,13 @@ final class ModelCast implements MoonShineDataCast
 
     public function hydrate(array $data): mixed
     {
-        return (new $this->class())
+        $value = (new $this->class())
             ->setRelations($data['_relations'] ?? [])
             ->forceFill($data);
+
+        $value->exists = true;
+
+        return $value;
     }
 
     public function dehydrate(mixed $data): array
