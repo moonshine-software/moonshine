@@ -81,7 +81,7 @@ class MorphTo extends BelongsTo
 
     public function getTypes(): array
     {
-        if(empty($this->types)) {
+        if($this->types === []) {
             throw new FieldException('Morph types is required');
         }
 
@@ -108,7 +108,7 @@ class MorphTo extends BelongsTo
 
         if(is_null($this->formattedValueCallback())) {
             $this->setFormattedValueCallback(
-                fn($v) => $v->{$this->getSearchColumn(get_class($v))}
+                fn($v) => $v->{$this->getSearchColumn($v::class)}
             );
         }
 
@@ -132,7 +132,7 @@ class MorphTo extends BelongsTo
             ->append(
                 $item
                     ->{$this->getRelationName()}
-                    ->{$this->getSearchColumn(get_class($item->{$this->getRelationName()}))}
+                    ->{$this->getSearchColumn($item->{$this->getRelationName()}::class)}
             )
             ->append(')')
             ->value();
