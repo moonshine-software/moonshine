@@ -110,7 +110,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
 
             $this->setFormattedValue(
-                $data?->{$this->getResourceColumn()}
+                data_get($data, $this->getResourceColumn())
             );
 
             if (is_closure($this->formattedValueCallback())) {

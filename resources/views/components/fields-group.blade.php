@@ -1,11 +1,21 @@
 @foreach($components as $fieldOrDecoration)
     @if(is_field($fieldOrDecoration) && $fieldOrDecoration->hasWrapper())
         <x-moonshine::field-container :field="$fieldOrDecoration">
-            {!! $fieldOrDecoration->getBeforeRender() !!}
-            {{ $fieldOrDecoration->render() }}
-            {!! $fieldOrDecoration->getAfterRender() !!}
+            {!! is_field($fieldOrDecoration) ? $fieldOrDecoration->getBeforeRender() : '' !!}
+            {{ $fieldOrDecoration
+                    ->{is_field($fieldOrDecoration) && $fieldOrDecoration->isForcePreview()
+                        ? 'preview'
+                        : 'render'}()
+            }}
+            {!! is_field($fieldOrDecoration) ? $fieldOrDecoration->getAfterRender() : '' !!}
         </x-moonshine::field-container>
     @else
-        {{ $fieldOrDecoration->render() }}
+        {!! is_field($fieldOrDecoration) ? $fieldOrDecoration->getBeforeRender() : '' !!}
+        {{ $fieldOrDecoration
+                ->{is_field($fieldOrDecoration) && $fieldOrDecoration->isForcePreview()
+                    ? 'preview'
+                    : 'render'}()
+        }}
+        {!! is_field($fieldOrDecoration) ? $fieldOrDecoration->getAfterRender() : '' !!}
     @endif
 @endforeach

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\CanBeMultiple;
@@ -19,8 +20,6 @@ class File extends Field implements Fileable, RemovableContract
     use Removable;
 
     protected string $view = 'moonshine::fields.file';
-
-    protected string $itemView = 'moonshine::ui.file';
 
     protected string $type = 'file';
 
@@ -55,24 +54,18 @@ class File extends Field implements Fileable, RemovableContract
             : [$this->pathWithDir($values)];
     }
 
-    protected function itemView(): string
-    {
-        return $this->itemView;
-    }
-
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
         $values = $this->prepareForView();
 
-        if($this->isRawMode()) {
+        if ($this->isRawMode()) {
             return implode(';', array_filter($values));
         }
 
-        return collect($values)->implode(
-            fn (string $value): string => view($this->itemView(), [
-                'value' => $value,
-            ])->render()
-        );
+        return view('moonshine::components.files', [
+            'files' => $values,
+            'download' => $this->canDownload(),
+        ]);
     }
 
     protected function resolveAfterDestroy(mixed $data): mixed
