@@ -189,7 +189,7 @@ class Json extends Field implements
             }
 
             if ($field instanceof ID) {
-                $field->beforeRender(fn(ID $id) => $id->preview());
+                $field->beforeRender(fn(ID $id): View|string => $id->preview());
             }
 
             $name = $name
