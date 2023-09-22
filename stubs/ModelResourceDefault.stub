@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use {model-namespace};
 
 use MoonShine\Resources\ModelResource;
+use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
 
 class DummyResource extends ModelResource
@@ -19,7 +20,9 @@ class DummyResource extends ModelResource
     public function fields(): array
     {
         return [
-            ID::make()->sortable(),
+            Block::make([
+                ID::make()->sortable(),
+            ]),
         ];
     }
 

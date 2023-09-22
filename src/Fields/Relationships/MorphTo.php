@@ -7,6 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use MoonShine\Exceptions\FieldException;
 
 class MorphTo extends BelongsTo
 {
@@ -21,6 +22,10 @@ class MorphTo extends BelongsTo
         return $this->searchColumns[$key];
     }
 
+    /**
+     * @param  array<string, string>  $types
+     * @return $this
+     */
     public function types(array $types): self
     {
         $this->asyncSearch()
@@ -74,16 +79,12 @@ class MorphTo extends BelongsTo
         );
     }
 
-    protected function resolveValue(): string
-    {
-        return addslashes(
-            $this->getRelatedModel()->{$this->getMorphType()}
-            ?? Arr::first(array_keys($this->getTypes()))
-        );
-    }
-
     public function getTypes(): array
     {
+        if(empty($this->types)) {
+            throw new FieldException('Morph types is required');
+        }
+
         return $this->types;
     }
 
@@ -93,14 +94,55 @@ class MorphTo extends BelongsTo
             ->getForeignKeyName();
     }
 
+    public function values(): array
+    {
+        $item = $this->getRelatedModel();
+
+        if ($item instanceof Model && !$item->getKey()) {
+            return [];
+        }
+
+        if(is_null($item)) {
+            return [];
+        }
+
+        if(is_null($this->formattedValueCallback())) {
+            $this->setFormattedValueCallback(
+                fn($v) => $v->{$this->getSearchColumn(get_class($v))}
+            );
+        }
+
+        return parent::values();
+    }
+
     protected function resolvePreview(): string
     {
         $item = $this->getRelatedModel();
 
-        return str($item?->{$this->getMorphType()})
+        if ($item instanceof Model && !$item->getKey()) {
+            return '';
+        }
+
+        if(is_null($item)) {
+            return '';
+        }
+
+        return str($item->{$this->getMorphType()})
             ->append('(')
-            ->append($item?->{$this->getMorphKey()})
+            ->append(
+                $item
+                    ->{$this->getRelationName()}
+                    ->{$this->getSearchColumn(get_class($item->{$this->getRelationName()}))}
+            )
             ->append(')')
             ->value();
+    }
+
+    protected function resolveValue(): string
+    {
+        return addslashes(
+            $this->getRelatedModel()->{$this->getMorphType()}
+            ?? Arr::first(array_keys($this->getTypes()))
+        );
     }
 }

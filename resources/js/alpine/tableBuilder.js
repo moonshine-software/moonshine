@@ -23,10 +23,10 @@ export default (
     this.table = this.$root.querySelector('table')
     const tbody = this.table?.querySelector('tbody')
 
-    this.lastRow = tbody.lastElementChild.cloneNode(true)
+    this.lastRow = tbody?.lastElementChild?.cloneNode(true)
 
     if(this.creatable) {
-      tbody.lastElementChild.remove()
+      tbody?.lastElementChild?.remove()
     }
 
     if(this.reindex) {

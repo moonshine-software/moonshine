@@ -42,10 +42,19 @@
                                 <template x-for="(item, key) in match">
                                     <li class="dropdown-item">
                                         <a href="#"
-                                           class="dropdown-menu-link"
-                                           x-text="item.label"
+                                           class="dropdown-menu-link flex gap-x-2 items-center"
                                            @click.prevent="select(item)"
-                                        />
+                                        >
+                                            <div x-show="item?.customProperties?.image"
+                                                 class="zoom-in h-10 w-10 overflow-hidden rounded-md"
+                                            >
+                                                <img class="h-full w-full object-cover"
+                                                      :src="item.customProperties.image"
+                                                      alt=""
+                                                >
+                                            </div>
+                                            <span x-text="item.label" />
+                                        </a>
                                     </li>
                                 </template>
                             </ul>
