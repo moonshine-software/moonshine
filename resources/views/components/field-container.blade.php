@@ -12,6 +12,7 @@
         name="{{ $field->name() }}"
         :beforeLabel="$field->isBeforeLabel()"
         :inLabel="$field->isInLabel()"
+        :formName="$field->getFormName()"
     >
         @if($field->hasLink())
             <x-slot:beforeSlot>

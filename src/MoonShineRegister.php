@@ -89,7 +89,18 @@ final class MoonShineRegister
             return null;
         }
 
-        return $this->options[$this->activeOption][$this->activeSection][$key] ?? null;
+        if(
+            (! $result = $this->options[$this->activeOption][$this->activeSection][$key] ?? null)
+            && class_exists($key)
+        ) {
+            foreach ($this->options[$this->activeOption][$this->activeSection] as $fieldApply => $applyClasse) {
+                if(is_subclass_of($key, $fieldApply)) {
+                    $result = $applyClasse;
+                    break;
+                }
+            }
+        }
+        return $result ?? null;
     }
 
     private function issetOption(): bool

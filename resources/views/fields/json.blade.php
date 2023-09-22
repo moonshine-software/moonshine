@@ -1,4 +1,4 @@
-<div x-id="['json']" :id="$id('json')" {{ $element->attributes()->only('class') }}>
+<div x-id="['json']" :id="$id('json')" {{ $element->attributes()->only('class') }} data-field-block="{{ $element->column() }}">
     {{ $element->value(withOld: false)
             ->editable()
             ->when(

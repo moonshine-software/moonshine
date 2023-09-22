@@ -4,9 +4,9 @@ export function getInputs(formId) {
     inputs[inputFieldName(element.getAttribute('name'))] = inputGeValue(element)
   })
 
-  document.querySelectorAll('#' + formId + ' [data-input-table]').forEach(element => {
-    inputs[inputFieldName(element.getAttribute('data-input-table'))] =
-      element.getAttribute('data-input-table')
+  document.querySelectorAll('#' + formId + ' [data-field-block]').forEach(element => {
+    inputs[inputFieldName(element.getAttribute('data-field-block'))] =
+      element.getAttribute('data-field-block')
   })
 
   return inputs
@@ -31,7 +31,7 @@ export function showWhenVisibilityChange(fieldName, inputs, field, formId) {
 
   if (inputElement === null) {
     inputElement = document.querySelector(
-      '#' + formId + ' [data-input-table=' + field.showField + ']'
+      '#' + formId + ' [data-field-block=' + field.showField + ']'
     )
   }
 

@@ -4,7 +4,8 @@
     'beforeLabel' => false,
     'inLabel' => false,
     'beforeSlot',
-    'afterSlot'
+    'afterSlot',
+    'formName' => ''
 ])
 <div {{ $attributes->merge(['class' => 'form-group moonshine-field'])
     ->only(['class', 'x-show']) }}
@@ -29,7 +30,7 @@
 
     {{ $afterSlot ?? '' }}
 
-    @error($name)
+    @error($name, $formName)
         <x-moonshine::form.input-error>
             {{ $message }}
         </x-moonshine::form.input-error>
