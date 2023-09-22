@@ -96,10 +96,12 @@ final class MoonShineRegister
             foreach ($this->options[$this->activeOption][$this->activeSection] as $fieldApply => $applyClasse) {
                 if(is_subclass_of($key, $fieldApply)) {
                     $result = $applyClasse;
+
                     break;
                 }
             }
         }
+
         return $result ?? null;
     }
 

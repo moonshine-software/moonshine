@@ -38,19 +38,19 @@ abstract class FormElements extends MoonShineRenderElements
         return $this->onlyFields()
             ->unwrapElements(StackFields::class)
             ->map(
-            static function (Field $formElement): Field {
-                $formElement->when(
-                    ! $formElement instanceof Fileable,
-                    function ($field): void {
-                        $field->customAttributes(
-                            ['x-on:change' => 'onChangeField($event)']
-                        );
-                    }
-                );
+                static function (Field $formElement): Field {
+                    $formElement->when(
+                        ! $formElement instanceof Fileable,
+                        function ($field): void {
+                            $field->customAttributes(
+                                ['x-on:change' => 'onChangeField($event)']
+                            );
+                        }
+                    );
 
-                return $formElement;
-            }
-        );
+                    return $formElement;
+                }
+            );
     }
 
     /**
