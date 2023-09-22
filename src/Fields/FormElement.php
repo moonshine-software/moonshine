@@ -150,7 +150,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return $this;
     }
 
-    public function getFormName()
+    public function getFormName(): ?string
     {
         return $this->formName;
     }
