@@ -115,17 +115,19 @@ class ExportHandler extends Handler
         string $dir = '/',
         string $delimiter = ','
     ): string {
-        $fields = $resource->getFields()->exportFields();
-
         $items = $resource->items();
         $data = collect();
 
-        foreach ($items as $item) {
+        foreach ($items as $index => $item) {
             $row = [];
+
+            $fields = $resource
+                ->getIndexFields()
+                ->exportFields()
+                ->fillCloned($item->toArray(), $item, $index);
 
             foreach ($fields as $field) {
                 $row[$field->label()] = $field
-                    ->resolveFill($item->toArray(), $item)
                     ->rawMode()
                     ->preview();
             }

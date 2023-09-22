@@ -8,12 +8,16 @@ use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Traits\Makeable;
 
 /**
+ * @template T
  * @method static static make(string $class)
  */
 final class ModelCast implements MoonShineDataCast
 {
     use Makeable;
 
+    /**
+     * @param  class-string<T>  $class
+     */
     public function __construct(
         protected string $class
     ) {
@@ -24,6 +28,10 @@ final class ModelCast implements MoonShineDataCast
         return $this->class;
     }
 
+    /**
+     * @param  array  $data
+     * @return T
+     */
     public function hydrate(array $data): mixed
     {
         $value = (new $this->class())

@@ -155,6 +155,10 @@ abstract class FormElements extends MoonShineRenderElements
     }
 
     /**
+     * @template T
+     * @param  class-string<T>  $class
+     * @param ?Field  $default
+     * @return T|Field
      * @throws Throwable
      */
     public function findByClass(
