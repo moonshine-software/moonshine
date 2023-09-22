@@ -98,7 +98,7 @@ class MorphTo extends BelongsTo
     {
         $item = $this->getRelatedModel();
 
-        if ($item instanceof Model && !$item->getKey()) {
+        if ($item instanceof Model && ! $item->getKey()) {
             return [];
         }
 
@@ -108,7 +108,7 @@ class MorphTo extends BelongsTo
 
         if(is_null($this->formattedValueCallback())) {
             $this->setFormattedValueCallback(
-                fn($v) => $v->{$this->getSearchColumn($v::class)}
+                fn ($v) => $v->{$this->getSearchColumn($v::class)}
             );
         }
 
@@ -119,7 +119,7 @@ class MorphTo extends BelongsTo
     {
         $item = $this->getRelatedModel();
 
-        if ($item instanceof Model && !$item->getKey()) {
+        if ($item instanceof Model && ! $item->getKey()) {
             return '';
         }
 
