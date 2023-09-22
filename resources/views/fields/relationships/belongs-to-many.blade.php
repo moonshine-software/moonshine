@@ -1,4 +1,4 @@
-<div x-id="['belongs-to-many']" :id="$id('belongs-to-many')">
+<div x-id="['belongs-to-many']" :id="$id('belongs-to-many')" data-field-block="{{ $element->column() }}">
     @if($element->isCreatable())
         {{
             actionBtn(__('moonshine::ui.add'), to_page($element->getResource(), 'form-page', fragment: 'crud-form'))
