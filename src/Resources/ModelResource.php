@@ -133,7 +133,7 @@ abstract class ModelResource extends Resource
     }
 
     /**
-     * @param array<int|string> $ids
+     * @param  array<int|string>  $ids
      */
     public function massDelete(array $ids): void
     {
@@ -212,7 +212,6 @@ abstract class ModelResource extends Resource
                     $item = $this->afterUpdated($item);
                 }
             }
-
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }

@@ -1,7 +1,6 @@
 @props([
     'files' => [],
-    'path' => '',
-    'dir' => '',
+    'raw' => [],
     'download' => false,
     'removable' => true,
     'imageable' => true
@@ -12,7 +11,7 @@
         {{ $attributes->merge(['class' => 'form-file-upload'])->except(['id'])}}
     />
 
-    @if(array_filter((array) $files))
+    @if(is_array($files) ? array_filter($files) : $files->isNotEmpty())
         <div class="dropzone">
             <div class="dropzone-items"
                  x-data="sortable"
@@ -21,8 +20,7 @@
                 @foreach($files as $index => $file)
                     <x-moonshine::form.file-item
                         :attributes="$attributes"
-                        :dir="$dir"
-                        :path="$path"
+                        :raw="$raw[$index]"
                         :file="$file"
                         :download="$download"
                         :removable="$removable"

@@ -23,8 +23,9 @@ export default (
     this.table = this.$root.querySelector('table')
     const tbody = this.table?.querySelector('tbody')
 
+    this.lastRow = tbody.lastElementChild.cloneNode(true)
+
     if(this.creatable) {
-      this.lastRow = tbody.lastElementChild.cloneNode(true)
       tbody.lastElementChild.remove()
     }
 
@@ -43,13 +44,14 @@ export default (
       })
     }
   },
-  add() {
-    if(!this.creatable) {
+  add(force = false) {
+    if(!this.creatable && !force) {
       return
     }
 
     this.table.querySelector('tbody').appendChild(this.lastRow.cloneNode(true))
-    if(this.reindex) {
+
+    if(!force && this.reindex) {
       this.resolveReindex()
     }
   },

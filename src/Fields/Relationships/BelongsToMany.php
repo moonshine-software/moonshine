@@ -214,7 +214,7 @@ class BelongsToMany extends ModelRelationField implements
 
         $fields = $this->preparedFields()
             ->onlyFields()
-            ->prepend(NoInput::make($titleColumn))
+            ->prepend(NoInput::make($titleColumn)->customAttributes(['class' => 'pivotTitle']))
             ->prepend($identityField);
 
         $values = $this->resolveValuesQuery()->get();

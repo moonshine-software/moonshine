@@ -188,6 +188,10 @@ class Json extends Field implements
                 $field->setLevel($level);
             }
 
+            if ($field instanceof ID) {
+                $field->beforeRender(fn(ID $id) => $id->preview());
+            }
+
             $name = $name
                 ->when(
                     $this->isCreatable(),

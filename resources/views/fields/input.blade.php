@@ -1,13 +1,3 @@
-@php
-if($element->isFile()) {
-    $value = false;
-} elseif(isset($valueKey)) {
-    $value = is_array($element->value()) ? ($element->value()[$valueKey] ?? '') : '';
-} else {
-    $value = (string) $element->value();
-}
-@endphp
-
 <x-moonshine::form.input-extensions
     :extensions="method_exists($element, 'getExtensions') ? $element->getExtensions() : null"
 >
@@ -16,7 +6,7 @@ if($element->isFile()) {
         'id' => $element->id(),
         'placeholder' => $element->label() ?? '',
         'name' => $element->name(),
-        'value' => $value
+        'value' => $element->isFile() ? false : (string) $element->value()
     ])"
         @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
         :@change="(($updateOnPreview ?? false)

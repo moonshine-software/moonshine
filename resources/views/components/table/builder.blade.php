@@ -19,7 +19,9 @@
 {{ (int) $sortable }},
 {{ (int) $reindex }},
 {{ (int) $async }}
-)">
+)"
+@add-table-row.window="add(true)"
+>
     @if($async)
         <div class="flex items-center gap-2">
             <form action="{{ $asyncUrl }}"
@@ -98,4 +100,7 @@
             {{ $paginator->links('moonshine::ui.pagination', ['async' => $async]) }}
         @endif
     </div>
+
+    <span @click="add(true)" class="hidden tableBuilderAddEvent"></span>
+    <span @click="resolveReindex" class="hidden tableBuilderReIndexEvent"></span>
 </div>

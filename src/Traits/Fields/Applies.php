@@ -107,6 +107,10 @@ trait Applies
             : $this->resolveAfterDestroy($data);
     }
 
+    /**
+     * @param  Closure(mixed, mixed, Field): self  $onApply
+     * @return $this
+     */
     public function onApply(Closure $onApply): static
     {
         $this->onApply = $onApply;

@@ -30,7 +30,9 @@
                 @foreach($row->getFields() as $index => $field)
                     @if($field->isSee($field->toValue()))
                         <x-moonshine::field-container :field="$field">
-                            {!! $field->{$editable ? 'render' : 'preview'}() !!}
+                            {!! !$field->isForcePreview() && $editable ? $field->getBeforeRender() : '' !!}
+                            {!! $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}() !!}
+                            {!! !$field->isForcePreview() && $editable ? $field->getAfterRender() : '' !!}
                         </x-moonshine::field-container>
                     @endif
                 @endforeach
@@ -48,10 +50,11 @@
                             : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
                         x-data="asyncData"
                     >
-                        {!! $field->isSee($field->toValue())
-                            ? $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}()
-                            : ''
-                        !!}
+                        @if($field->isSee($field->toValue()))
+                            {!! !$field->isForcePreview() && $editable ? $field->getBeforeRender() : '' !!}
+                            {!! $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}() !!}
+                            {!! !$field->isForcePreview() && $editable ? $field->getAfterRender() : '' !!}
+                        @endif
                     </td>
 
                     @if($vertical)

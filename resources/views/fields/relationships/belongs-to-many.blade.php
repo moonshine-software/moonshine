@@ -43,8 +43,8 @@
                                     <li class="dropdown-item">
                                         <a href="#"
                                            class="dropdown-menu-link"
-                                           x-text="item"
-                                           @click.prevent="select(key)"
+                                           x-text="item.label"
+                                           @click.prevent="select(item)"
                                         />
                                     </li>
                                 </template>
@@ -53,16 +53,16 @@
                     </div>
                 </div>
 
-                <template x-for="item in items">
+                <x-moonshine::divider />
 
-                </template>
+                <div x-data="pivot" x-init="autoCheck" class="pivotTable">
+                    {{ $element->value(withOld: false)->render() }}
+                </div>
             </div>
-
-            <x-moonshine::divider />
+        @else
+            <div x-data="pivot" x-init="autoCheck">
+                {{ $element->value(withOld: false)->render() }}
+            </div>
         @endif
-
-        <div x-data="pivot" x-init="autoCheck">
-            {{ $element->value(withOld: false)->render() }}
-        </div>
     @endif
 </div>

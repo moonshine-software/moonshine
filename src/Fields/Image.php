@@ -13,7 +13,7 @@ class Image extends File
 
     protected function resolvePreview(): View|string
     {
-        $values = $this->prepareForView();
+        $values = $this->getFullPathValues();
 
         if ($this->isRawMode()) {
             return implode(';', array_filter($values));

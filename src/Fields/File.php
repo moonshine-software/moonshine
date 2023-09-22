@@ -39,24 +39,9 @@ class File extends Field implements Fileable, RemovableContract
         return $this;
     }
 
-    protected function prepareForView(): array
-    {
-        $values = $this->value(withOld: false);
-
-        if (! $values) {
-            return [];
-        }
-
-        return $this->isMultiple()
-            ? collect($values)
-                ->map(fn ($value): string => $this->pathWithDir($value))
-                ->toArray()
-            : [$this->pathWithDir($values)];
-    }
-
     protected function resolvePreview(): View|string
     {
-        $values = $this->prepareForView();
+        $values = $this->getFullPathValues();
 
         if ($this->isRawMode()) {
             return implode(';', array_filter($values));

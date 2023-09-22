@@ -1,34 +1,27 @@
 @props([
     'file' => null,
-    'path' => '',
-    'dir' => '',
+    'raw' => null,
     'download' => false,
     'removable' => true,
     'imageable' => true
 ])
-@php
-    $fileWithDir = str($file)->remove($dir)
-        ->prepend($dir)
-        ->prepend($path)
-        ->value();
-
-    $hiddenName = str($attributes->get('data-name'))
-        ->replaceLast($attributes->get('data-column'), 'hidden_' . $attributes->get('data-column'))
-        ->value();
-@endphp
 <div
     class="x-removeable dropzone-item zoom-in @if(!$imageable) dropzone-item-file @endif"
 >
     <x-moonshine::form.input
         type="hidden"
         :name="'hidden_' . $attributes->get('name')"
-        :attributes="$attributes->only(['data-level'])->merge(['data-name' => $hiddenName])"
-        :value="$file"
+        :attributes="$attributes->only(['data-level'])->merge([
+            'data-name' => str($attributes->get('data-name'))
+                ->replaceLast($attributes->get('data-column'), 'hidden_' . $attributes->get('data-column'))
+                ->value()
+        ])"
+        :value="$raw"
     />
 
     @if(!$imageable)
         @include('moonshine::ui.file', [
-            'value' => $fileWithDir,
+            'value' => $file,
             'download' => $download
         ])
     @endif
@@ -46,8 +39,8 @@
     @endif
 
     @if($imageable)
-        <img src="{{ $fileWithDir }}"
-             @click.stop="$dispatch('img-popup', {open: true, src: '{{ $fileWithDir }}' })"
+        <img src="{{ $file }}"
+             @click.stop="$dispatch('img-popup', {open: true, src: '{{ $file }}' })"
              alt=""
         />
     @endif

@@ -188,10 +188,25 @@ trait FileTrait
 
     protected function resolveValue(): mixed
     {
-        if ($this->isMultiple() && ! $this->toValue() instanceof Collection) {
-            return collect($this->toValue());
+        if ($this->isMultiple() && ! $this->toValue(false) instanceof Collection) {
+            return collect($this->toValue(false));
         }
 
         return parent::resolveValue();
+    }
+
+    public function getFullPathValues(): array
+    {
+        $values = $this->toValue(withDefault: false);
+
+        if (! $values) {
+            return [];
+        }
+
+        return $this->isMultiple()
+            ? collect($values)
+                ->map(fn ($value): string => $this->pathWithDir($value))
+                ->toArray()
+            : [$this->pathWithDir($values)];
     }
 }
