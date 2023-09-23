@@ -48,7 +48,6 @@ final class ModelCast implements MoonShineDataCast
 
     /**
      * @param  T  $data
-     * @return array
      */
     public function dehydrate(mixed $data): array
     {
