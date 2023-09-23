@@ -17,6 +17,14 @@ return new class () extends Migration {
 
             $table->string('name');
 
+            $table->integer('start_point')->default(0);
+
+            $table->integer('end_point')->default(100);
+
+            $table->date('start_date')->nullable();
+
+            $table->date('end_date')->nullable();
+
             $table->json('data')->nullable();
 
             $table->text('content');

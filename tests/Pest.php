@@ -8,6 +8,10 @@ use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
+use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\Tests\TestCase;
 use Pest\Expectation;
 
@@ -46,6 +50,15 @@ function createItem(int $countItems = 1, int $countComments = 3)
         )
         ->create()
         ->first();
+}
+
+function createResourceField(Field $field): TestResource
+{
+    return TestResourceBuilder::new(Item::class)
+        ->setTestFields([
+            ...(new TestItemResource())->fields(),
+            $field,
+        ]);
 }
 
 function exampleFields(): Fields
