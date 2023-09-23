@@ -1,4 +1,6 @@
-<div x-data="{
+<div
+    data-field-block="{{ $element->column() }}"
+    x-data="{
          range_from_{{ $element->id() }}: '{{ $element->value()[$element->fromField] ?? '' }}',
          range_to_{{ $element->id() }}: '{{ $element->value()[$element->toField] ?? '' }}'
      }"
