@@ -1,8 +1,9 @@
+@aware(['type'])
 @props([
     'icon' => false,
-    'filled' => false
+    'filled' => false,
 ])
-<a {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
+<a {{ $attributes->class(['btn', 'btn-primary' => $filled, "btn-$type"]) }}>
     @if($icon)
         <x-moonshine::icon
             :icon="$icon"

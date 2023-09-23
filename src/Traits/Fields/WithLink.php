@@ -63,7 +63,8 @@ trait WithLink
         string|Closure $name = '',
         ?string $icon = null,
         bool $withoutIcon = false,
-        bool $blank = false
+        bool $blank = false,
+        string $type = 'primary'
     ): static {
         $this->isLink = true;
 
@@ -72,6 +73,7 @@ trait WithLink
         $this->linkValue = $link;
         $this->linkName = $name;
         $this->linkBlank = $blank;
+        $this->type = $type;
 
         return $this;
     }

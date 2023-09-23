@@ -3,6 +3,7 @@
         :href="$element->getLinkValue()"
         :target="$element->isLinkBlank() ? '_blank' : '_self'"
         :filled="true"
+        :type="$element->getType()"
         :icon="$element->iconValue()"
         :attributes="$element->attributes()"
     >
