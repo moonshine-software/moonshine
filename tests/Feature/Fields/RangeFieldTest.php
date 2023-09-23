@@ -74,8 +74,9 @@ it('before apply', function () {
         RangeField::make('Range')->fromTo('start_point', 'end_point')
             ->onBeforeApply(function ($item, $data) {
                 if(empty($data['name'])) {
-                    $item->name = $data['start_point'] . ' - '. $data['end_point'];
+                    $item->name = $data['start_point'] . ' - ' . $data['end_point'];
                 }
+
                 return $item;
             })
     );
@@ -101,6 +102,7 @@ it('after apply', function () {
         ->onAfterApply(function ($item) {
             $item->start_point = $item->start_point * 1000;
             $item->end_point = $item->end_point * 1000;
+
             return $item;
         })
     );

@@ -112,7 +112,7 @@ describe('common field methods', function () {
                 ->fill(['start' => Carbon::now(), 'end' => Carbon::make(now())->add(1, 'day')])
                 ->preview()
         )
-            ->toBe(Carbon::now().' - '.Carbon::make(now())->add(1, 'day'));
+            ->toBe(Carbon::now() . ' - ' . Carbon::make(now())->add(1, 'day'));
     });
 
     it('is group', function (): void {
