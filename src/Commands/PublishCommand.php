@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Commands;
 
-use MoonShine\MoonShine;
-
 use function Laravel\Prompts\{info, multiselect};
+
+use MoonShine\MoonShine;
 
 class PublishCommand extends MoonShineCommand
 {
@@ -25,7 +25,7 @@ class PublishCommand extends MoonShineCommand
 
         if (in_array('assets', $types, true)) {
             $this->call('vendor:publish', [
-                '--tag' => 'moonshine-assets'
+                '--tag' => 'moonshine-assets',
             ]);
         }
 
@@ -34,7 +34,7 @@ class PublishCommand extends MoonShineCommand
                 'Layout',
                 MoonShine::dir('/MoonShineLayout.php'),
                 [
-                    '{namespace}' => MoonShine::namespace()
+                    '{namespace}' => MoonShine::namespace(),
                 ]
             );
 
