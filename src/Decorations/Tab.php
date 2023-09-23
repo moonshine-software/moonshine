@@ -11,6 +11,8 @@ class Tab extends Decoration
 {
     use WithIcon;
 
+    public bool $active = false;
+
     /**
      * @throws DecorationException
      */
@@ -19,5 +21,15 @@ class Tab extends Decoration
         throw new DecorationException(
             'You need to use ' . Tabs::class . ' class'
         );
+    }
+
+    /**
+     * @return $this
+     */
+    public function active(): static
+    {
+        $this->active = true;
+
+        return $this;
     }
 }
