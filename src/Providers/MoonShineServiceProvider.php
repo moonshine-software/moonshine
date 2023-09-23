@@ -23,6 +23,7 @@ use MoonShine\Commands\MakeFieldCommand;
 use MoonShine\Commands\MakePageCommand;
 use MoonShine\Commands\MakeResourceCommand;
 use MoonShine\Commands\MakeUserCommand;
+use MoonShine\Commands\PublishCommand;
 use MoonShine\Http\Middleware\ChangeLocale;
 use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
@@ -40,6 +41,7 @@ class MoonShineServiceProvider extends ServiceProvider
         MakeUserCommand::class,
         MakeComponentCommand::class,
         MakeApplyCommand::class,
+        PublishCommand::class,
     ];
 
     protected array $middlewareGroups = [

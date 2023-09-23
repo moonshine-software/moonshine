@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\TypeCasts;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Traits\Makeable;
 
 /**
- * @template T
+ * @template T of Model
  * @method static static make(string $class)
  */
 final class ModelCast implements MoonShineDataCast
@@ -33,19 +34,26 @@ final class ModelCast implements MoonShineDataCast
      */
     public function hydrate(array $data): mixed
     {
-        $value = (new $this->class())
+        /** @var T $value */
+        $value = (new ($this->getClass())());
+
+        $value
             ->setRelations($data['_relations'] ?? [])
             ->forceFill($data);
 
-        $value->exists = true;
+        $value->exists = ! empty($value->getKey());
 
         return $value;
     }
 
+    /**
+     * @param  T  $data
+     * @return array
+     */
     public function dehydrate(mixed $data): array
     {
         return $data->attributesToArray() + [
-            '_relations' => $data->getRelations(),
-        ];
+                '_relations' => $data->getRelations(),
+            ];
     }
 }

@@ -6,14 +6,13 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
+use MoonShine\Fields\Field;
+use MoonShine\MoonShine;
+use Symfony\Component\Finder\SplFileInfo;
 
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
-
-use MoonShine\Fields\Field;
-use MoonShine\MoonShine;
-use Symfony\Component\Finder\SplFileInfo;
 
 class MakeFieldCommand extends MoonShineCommand
 {
@@ -24,7 +23,7 @@ class MakeFieldCommand extends MoonShineCommand
     /**
      * @throws FileNotFoundException
      */
-    public function handle(): void
+    public function handle(): int
     {
         $className = text(
             'Class name',
@@ -81,5 +80,7 @@ class MakeFieldCommand extends MoonShineCommand
                 $field
             )
         );
+
+        return self::SUCCESS;
     }
 }

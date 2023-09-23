@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{info, outro, select, text};
-
-use MoonShine\MoonShine;
 
 class MakeResourceCommand extends MoonShineCommand
 {
@@ -19,7 +18,7 @@ class MakeResourceCommand extends MoonShineCommand
     /**
      * @throws FileNotFoundException
      */
-    public function handle(): void
+    public function handle(): int
     {
         $name = str(
             text(
@@ -94,5 +93,7 @@ class MakeResourceCommand extends MoonShineCommand
         );
 
         outro('Now register resource in menu');
+
+        return self::SUCCESS;
     }
 }

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
-
-use MoonShine\MoonShine;
 
 class MakeComponentCommand extends MoonShineCommand
 {
@@ -21,7 +19,7 @@ class MakeComponentCommand extends MoonShineCommand
     /**
      * @throws FileNotFoundException
      */
-    public function handle(): void
+    public function handle(): int
     {
         $className = $this->argument('className') ?? text(
             'Class name',
@@ -60,5 +58,7 @@ class MakeComponentCommand extends MoonShineCommand
                 $component
             )
         );
+
+        return self::SUCCESS;
     }
 }

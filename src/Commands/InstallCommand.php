@@ -6,12 +6,10 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
-
-use MoonShine\MoonShine;
-
-use MoonShine\Providers\MoonShineServiceProvider;
 
 class InstallCommand extends MoonShineCommand
 {
@@ -22,7 +20,7 @@ class InstallCommand extends MoonShineCommand
     /**
      * @throws FileNotFoundException
      */
-    public function handle(): void
+    public function handle(): int
     {
         intro('MoonShine installation ...');
 
@@ -51,6 +49,8 @@ class InstallCommand extends MoonShineCommand
 
         $this->components->task('');
         outro("Now run 'php artisan moonshine:user'");
+
+        return self::SUCCESS;
     }
 
     protected function initVendorPublish(): void
