@@ -3,6 +3,7 @@
     'wide' => false,
     'open' => false,
     'auto' => false,
+    'closeOutside' => true,
     'asyncUrl' => '',
     'title' => '',
     'outerHtml' => ''
@@ -21,7 +22,7 @@
             class="modal"
             aria-modal="true"
             role="dialog"
-            @click.self="open=false"
+            @if($closeOutside) @click.self="open=false" @endif
         >
             <div class="modal-dialog
             @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif"

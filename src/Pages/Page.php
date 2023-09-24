@@ -9,12 +9,16 @@ use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\MoonShineRouter;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithView;
 
+/**
+ * @method static static make(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
+ */
 abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFiller
 {
     use Makeable;
@@ -28,10 +32,18 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     protected string $layout = 'moonshine::layouts.app';
 
-    public function __construct(?string $title = null)
+    public function __construct(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
     {
         if (! is_null($title)) {
             $this->setTitle($title);
+        }
+
+        if (! is_null($alias)) {
+            $this->alias($alias);
+        }
+
+        if (! is_null($resource)) {
+            $this->setResource($resource);
         }
 
         $this->customView('moonshine::page');
@@ -82,9 +94,23 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->title;
     }
 
+    public function setSubTitle(string $subtitle): self
+    {
+        $this->subtitle = $subtitle;
+
+        return $this;
+    }
+
     public function subtitle(): string
     {
         return $this->subtitle;
+    }
+
+    public function setLayout(string $layout): self
+    {
+        $this->layout = $layout;
+
+        return $this;
     }
 
     public function layout(): string

@@ -1,10 +1,6 @@
-<p align="center">
-<a href="https://moonshine.cutcode.dev" target="_blank">
-<img src="https://moonshine.cutcode.dev/moon-promo-dark.svg?v=1.53.0">
-</a>
-</p>
+![logo](https://github.com/moonshine-software/moonshine/raw/2.x/art/lego.png)
 
-## MoonShine - easy to use, powerful, customizable, illegal :smile:
+## MoonShine - Simple for beginners and powerful for experts:
 ### Administration panel for Laravel framework
 
 
@@ -15,8 +11,8 @@
 <a href="https://packagist.org/packages/moonshine/moonshine"><img src="https://img.shields.io/packagist/l/moonshine/moonshine" alt="License"></a>
 </p> 
 <p align="center">
-    <a href="https://laravel.com"><img alt="Laravel 9+" src="https://img.shields.io/badge/Laravel-9+-FF2D20?style=for-the-badge&logo=laravel"></a>
-    <a href="https://laravel.com"><img alt="PHP 8+" src="https://img.shields.io/badge/PHP-8+-777BB4?style=for-the-badge&logo=php"></a>
+    <a href="https://laravel.com"><img alt="Laravel 9+" src="https://img.shields.io/badge/Laravel-10+-FF2D20?style=for-the-badge&logo=laravel"></a>
+    <a href="https://laravel.com"><img alt="PHP 8+" src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=for-the-badge&logo=php"></a>
 </p>
 
 #### [Documentation](https://moonshine.cutcode.dev)

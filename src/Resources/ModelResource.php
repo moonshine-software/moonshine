@@ -40,8 +40,6 @@ abstract class ModelResource extends Resource
 
     protected string $model;
 
-    protected string $title = '';
-
     protected string $column = 'id';
 
     protected bool $createInModal = false;
@@ -75,11 +73,6 @@ abstract class ModelResource extends Resource
     public function getModelCast(): ModelCast
     {
         return ModelCast::make($this->model);
-    }
-
-    public function title(): string
-    {
-        return $this->title;
     }
 
     public function column(): string

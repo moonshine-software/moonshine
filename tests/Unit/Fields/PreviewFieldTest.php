@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\NoInput;
+use MoonShine\Fields\Preview;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
-    $this->field = NoInput::make('NoInput', 'no_input');
+    $this->field = Preview::make('NoInput', 'no_input');
 
     $this->item = new class () extends Model {
         public string|bool $no_input = 'Hello world';
@@ -20,7 +20,7 @@ beforeEach(function (): void {
 
 it('view', function (): void {
     expect($this->field->getView())
-        ->toBe('moonshine::fields.no-input');
+        ->toBe('moonshine::fields.preview');
 });
 
 it('default item value', function (): void {
@@ -29,7 +29,7 @@ it('default item value', function (): void {
 });
 
 it('reformat item value', function (): void {
-    $this->field = NoInput::make('NoInput', 'no_input', fn (): string => 'Testing');
+    $this->field = Preview::make('NoInput', 'no_input', fn (): string => 'Testing');
 
     $this->field->resolveFill($this->item->toArray(), $this->item);
 

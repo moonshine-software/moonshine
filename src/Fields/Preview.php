@@ -8,9 +8,9 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Support\Condition;
 
-class NoInput extends Field
+class Preview extends Field
 {
-    protected string $view = 'moonshine::fields.no-input';
+    protected string $view = 'moonshine::fields.preview';
 
     protected bool $isBoolean = false;
 

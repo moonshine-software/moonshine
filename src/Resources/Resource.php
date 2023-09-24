@@ -15,6 +15,8 @@ abstract class Resource implements ResourceContract, MenuFiller
 {
     use WithUriKey;
 
+    protected string $title = '';
+
     abstract protected function pages(): array;
 
     public function getPages(): Pages
@@ -45,7 +47,11 @@ abstract class Resource implements ResourceContract, MenuFiller
         return Handlers::make($this->handlers());
     }
 
-    // MenuFiller methods
+    public function title(): string
+    {
+        return $this->title;
+    }
+
     public function url(): string
     {
         return $this

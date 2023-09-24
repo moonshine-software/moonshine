@@ -18,9 +18,10 @@ use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
-use MoonShine\Fields\NoInput;
+use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
 use MoonShine\Support\Condition;
+use MoonShine\Traits\Fields\HasTreeMode;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
@@ -35,14 +36,11 @@ class BelongsToMany extends ModelRelationField implements
     use WithFields;
     use WithRelatedValues;
     use WithAsyncSearch;
+    use HasTreeMode;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
     protected bool $isGroup = true;
-
-    protected bool $tree = false;
-
-    protected string $treeHtml = '';
 
     protected string $treeParentColumn = '';
 
@@ -107,66 +105,6 @@ class BelongsToMany extends ModelRelationField implements
         return $this->selectMode;
     }
 
-    public function tree(string $parentColumn): static
-    {
-        $this->treeParentColumn = $parentColumn;
-        $this->tree = true;
-
-        return $this;
-    }
-
-    protected function isTree(): bool
-    {
-        return $this->tree;
-    }
-
-    public function toTreeHtml(): string
-    {
-        $data = $this->resolveValuesQuery()
-            ->get()
-            ->map(fn ($item) => $item->setAttribute($this->treeParentColumn, $item->{$this->treeParentColumn} ?? 0))
-            ->groupBy($this->treeParentColumn)
-            ->map(fn ($items): Collection => $items->keyBy($items->first()->getKeyName()));
-
-        $this->treeHtml = '';
-
-        return $this->buildTree($data);
-    }
-
-    protected function buildTree(Collection $data, int|string $parentKey = 0, int $offset = 0): string
-    {
-        if ($data->has($parentKey)) {
-            foreach ($data->get($parentKey) as $item) {
-                $element = view(
-                    'moonshine::components.form.input-composition',
-                    [
-                        'attributes' => $this->attributes()->merge([
-                            'type' => 'checkbox',
-                            'id' => $this->id((string) $item->getKey()),
-                            'name' => $this->name((string) $item->getKey()),
-                            'value' => $item->getKey(),
-                            'class' => 'form-group-inline',
-                        ]),
-                        'beforeLabel' => true,
-                        'label' => $item->{$this->getResourceColumn()},
-                    ]
-                );
-
-                $this->treeHtml .= str($element)->wrap(
-                    "<li style='margin-left: " . ($offset * 30) . "px'>",
-                    "</li>"
-                );
-
-                $this->buildTree($data, $item->getKey(), $offset + 1);
-            }
-        }
-
-        return str($this->treeHtml)->wrap(
-            "<ul class='tree-list'>",
-            "</ul>"
-        )->value();
-    }
-
     protected function getPivotAs(): string
     {
         return $this->getRelation()?->getPivotAccessor() ?? 'pivot';
@@ -214,7 +152,7 @@ class BelongsToMany extends ModelRelationField implements
 
         $fields = $this->preparedFields()
             ->onlyFields()
-            ->prepend(NoInput::make($titleColumn)->customAttributes(['class' => 'pivotTitle']))
+            ->prepend(Preview::make($titleColumn)->customAttributes(['class' => 'pivotTitle']))
             ->prepend($identityField);
 
         $values = $this->resolveValuesQuery()->get();
@@ -265,8 +203,8 @@ class BelongsToMany extends ModelRelationField implements
 
         if ($this->isRawMode()) {
             return $values
-                ->map(fn (Model $item) => $item->{$column})
-                ->implode(';');
+                ->map(fn (Model $item) => $item->getKey())
+                ->toJson();
         }
 
         if ($this->onlyCount) {
@@ -338,7 +276,7 @@ class BelongsToMany extends ModelRelationField implements
                 $values = request($field->requestKeyPrefix());
 
                 $apply = $field->apply(
-                    fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                    fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? null),
                     $values
                 );
 

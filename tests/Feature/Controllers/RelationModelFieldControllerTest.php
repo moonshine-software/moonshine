@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\MoonShineRouter;
+use MoonShine\Tests\Fixtures\Models\Category;
+use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 
 uses()->group('relation-controller');
@@ -12,7 +15,6 @@ beforeEach(function (): void {
 });
 
 it('search relations with pagination', function () {
-
     $item = createItem();
 
     $lastComment = $item->comments[count($item->comments) - 1];
@@ -101,5 +103,39 @@ it('search relations empty result', function () {
         ->assertOk()
         ->assertSee('asyncRequest')
         ->assertSee('Records not found')
+    ;
+});
+
+it('async search', function () {
+    $item = createItem();
+    $category = Category::factory()->create([
+        'name' => 'test'
+    ]);
+    $item->categories()->attach($category);
+    $item->refresh();
+
+    $field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
+        ->resolveFill($item->toArray(), $item);
+
+    createResourceField($field);
+
+    asAdmin()->get(MoonShineRouter::to("relation.search", [
+        'pageUri' => 'form-page',
+        'resourceUri' => 'test-resource',
+        'resourceItem' => $item->id,
+        '_component_name' => 'crud',
+        '_relation' => 'categories',
+        'query' => 'test',
+    ]))
+        ->assertOk()
+        ->assertJson([
+            [
+                'value' => $category->getKey(),
+                'label' => $category->name,
+                'customProperties' => [
+                    'image' => null
+                ]
+            ]
+        ])
     ;
 });

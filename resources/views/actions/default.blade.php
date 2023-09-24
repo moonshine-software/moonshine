@@ -18,6 +18,7 @@
     <x-moonshine::modal
         :wide="$action->modal()->isAsync()"
         :async="$action->modal()->isAsync()"
+        :closeOutside="$action->modal()->isAsync()"
         :asyncUrl="$action->url()"
         title="{{ $action->modal()->title($action) }}"
     >

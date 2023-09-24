@@ -23,6 +23,7 @@ class Category extends Model
     protected $fillable = [
         'name',
         'content',
+        'category_id',
         'moonshine_user_id',
         'public_at',
         'created_at',

@@ -22,6 +22,15 @@ class ActionButton extends AbstractAction implements ActionButtonContract
         $this->setLabel($label);
     }
 
+    public function blank(): self
+    {
+        $this->customAttributes([
+            'target' => '_blank'
+        ]);
+
+        return $this;
+    }
+
     public function bulk(): self
     {
         $this->isBulk = true;

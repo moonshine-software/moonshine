@@ -10,9 +10,7 @@ use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
-use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
-use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 use function Pest\Laravel\get;
 
@@ -25,15 +23,6 @@ beforeEach(function () {
     expect($this->item->data)
         ->toBeEmpty();
 });
-
-function createResourceWithJson(Json $json)
-{
-    return TestResourceBuilder::new(Item::class)
-        ->setTestFields([
-            ...(new TestItemResource())->fields(),
-            $json,
-        ]);
-}
 
 function testJsonValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null)
 {
@@ -50,7 +39,7 @@ function testJsonValue(TestResource $resource, Item $item, array $data, ?array $
 }
 
 it('apply as base', function () {
-    $resource = createResourceWithJson(
+    $resource = createResourceField(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
@@ -71,7 +60,7 @@ it('apply as base with default', function () {
         ['title' => 'Title 2', 'value' => 'Value 2'],
     ];
 
-    $resource = createResourceWithJson(
+    $resource = createResourceField(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
@@ -88,7 +77,7 @@ it('apply as base with default', function () {
 });
 
 it('apply as key value', function () {
-    $resource = createResourceWithJson(
+    $resource = createResourceField(
         Json::make('Data')->keyValue()
     );
 
@@ -101,7 +90,7 @@ it('apply as key value', function () {
 });
 
 it('apply as only value', function () {
-    $resource = createResourceWithJson(
+    $resource = createResourceField(
         Json::make('Data')->onlyValue()
     );
 
@@ -114,7 +103,7 @@ it('apply as only value', function () {
 });
 
 it('apply as relation', function () {
-    $resource = createResourceWithJson(
+    $resource = createResourceField(
         Json::make('Comments')->asRelation(new TestCommentResource())
     );
 
@@ -183,7 +172,7 @@ function jsonExport(Item $item): ?string
     $item->data = $data;
     $item->save();
 
-    $resource = createResourceWithJson(
+    $resource = createResourceField(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
@@ -215,7 +204,7 @@ it('import', function (): void {
 
     $file = jsonExport($this->item);
 
-    $resource = createResourceWithJson(
+    $resource = createResourceField(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
