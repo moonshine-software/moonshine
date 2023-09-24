@@ -58,9 +58,9 @@ class MenuItem extends MenuElement
 
     public function getFiller(): MenuFiller|string
     {
-        return is_closure($this->filler)
-            ? call_user_func($this->filler)
-            : $this->filler;
+        return !is_closure($this->filler)
+            ? $this->filler
+            : '';
     }
 
     public function badge(Closure $callback): static
