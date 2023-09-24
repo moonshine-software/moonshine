@@ -53,6 +53,17 @@ class File extends Field implements Fileable, RemovableContract
         ]);
     }
 
+    protected function resolveBeforeApply(mixed $data): mixed
+    {
+        if($this->isMultiple() || empty($this->toValue())) {
+            return $data;
+        }
+
+        $this->deleteFile($this->toValue());
+
+        return $data;
+    }
+
     protected function resolveAfterDestroy(mixed $data): mixed
     {
         if (! $this->isDeleteFiles()) {

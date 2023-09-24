@@ -155,9 +155,11 @@ abstract class ModelResource extends Resource
     {
         $item = $this->beforeDeleting($item);
 
-        $this->getFields()
-            ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->afterDestroy($item));
+        $fields = $this->getFormFields()->onlyFields();
+
+        $fields->fill($item->toArray(), $item);
+
+        $fields->each(fn (Field $field): mixed => $field->afterDestroy($item));
 
         return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
     }
