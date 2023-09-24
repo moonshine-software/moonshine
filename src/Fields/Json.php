@@ -316,11 +316,9 @@ class Json extends Field implements
                 }
 
                 foreach ($this->getFields() as $field) {
-                    $field->setRequestKeyPrefix(
-                        str("{$this->column()}.$index")->when(
-                            $this->requestKeyPrefix(),
-                            fn ($str) => $str->prepend("{$this->requestKeyPrefix()}.")
-                        )->value()
+                    $field->appendRequestKeyPrefix(
+                        "{$this->column()}.$index",
+                        $this->requestKeyPrefix()
                     );
 
                     if ($this->isAsRelation()) {
@@ -372,5 +370,37 @@ class Json extends Field implements
                 $this->prepareOnApply($applyValues)
             );
         };
+    }
+
+    protected function resolveBeforeApply(mixed $data): mixed
+    {
+        $this->getFields()
+            ->onlyFields()
+            ->each(function (Field $field, $index) use($data) {
+                $field->appendRequestKeyPrefix(
+                    "{$this->column()}.$index",
+                    $this->requestKeyPrefix()
+                );
+
+                $field->beforeApply($data);
+            });
+
+        return $data;
+    }
+
+    protected function resolveAfterApply(mixed $data): mixed
+    {
+        $this->getFields()
+            ->onlyFields()
+            ->each(function (Field $field, $index) use($data) {
+                $field->appendRequestKeyPrefix(
+                    "{$this->column()}.$index",
+                    $this->requestKeyPrefix()
+                );
+
+                $field->afterApply($data);
+            });
+
+        return $data;
     }
 }

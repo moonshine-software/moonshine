@@ -117,6 +117,18 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return $this;
     }
 
+    public function appendRequestKeyPrefix(string $value, ?string $prefix = null): static
+    {
+        $this->setRequestKeyPrefix(
+            str($value)->when(
+                $prefix,
+                fn ($str) => $str->prepend("$prefix.")
+            )->value()
+        );
+
+        return $this;
+    }
+
     public function requestValue(string|int|null $index = null): mixed
     {
         $nameDot = str($this->nameDot())

@@ -13,7 +13,7 @@ use Throwable;
 /**
  * @template TKey of array-key
  *
- * @implements   Collection<TKey, Field>
+ * @implements Collection<TKey, Field>
  */
 final class Fields extends FormElements
 {

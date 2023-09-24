@@ -266,11 +266,9 @@ class BelongsToMany extends ModelRelationField implements
 
         foreach ($requestValues as $key => $checked) {
             foreach ($this->getFields() as $field) {
-                $field->setRequestKeyPrefix(
-                    str("{$this->getPivotName()}.$key")->when(
-                        $this->requestKeyPrefix(),
-                        fn ($str) => $str->prepend("{$this->requestKeyPrefix()}.")
-                    )->value()
+                $field->appendRequestKeyPrefix(
+                    "{$this->getPivotName()}.$key",
+                    $this->requestKeyPrefix()
                 );
 
                 $values = request($field->requestKeyPrefix());
@@ -289,6 +287,22 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         $item->{$this->getRelationName()}()->sync($applyValues);
+
+        return $data;
+    }
+
+    protected function resolveBeforeApply(mixed $data): mixed
+    {
+        $this->getFields()
+            ->onlyFields()
+            ->each(function (Field $field, $index) use($data) {
+                $field->appendRequestKeyPrefix(
+                    "{$this->getPivotName()}.$index",
+                    $this->requestKeyPrefix()
+                );
+
+                $field->beforeApply($data);
+            });
 
         return $data;
     }
