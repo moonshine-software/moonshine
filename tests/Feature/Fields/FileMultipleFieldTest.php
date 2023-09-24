@@ -6,36 +6,37 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use MoonShine\Fields\File;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 uses()->group('file-field');
 
 beforeEach(function () {
     $this->item = createItem(countComments: 0);
-    $this->resource = createResourceField(
-        File::make('Files')
-            ->multiple()
-            ->dir('items')
-    );
 });
 
 it('show field on pages', function () {
+    $resource = multipleFileResource();
+
     asAdmin()->get(
-        to_page($this->resource, 'index-page')
+        to_page($resource, 'index-page')
     )
         ->assertOk()
         ->assertSee('Files')
     ;
 
     asAdmin()->get(
-        to_page($this->resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
+        to_page($resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Files')
     ;
 
     asAdmin()->get(
-        to_page($this->resource, 'form-page', ['resourceItem' => $this->item->getKey()])
+        to_page($resource, 'form-page', ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Files')
@@ -43,10 +44,12 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $files = saveMultipleFiles($this->resource, $this->item);
+    $resource = multipleFileResource();
+
+    $files = saveMultipleFiles($resource, $this->item);
 
     asAdmin()->get(
-        to_page($this->resource, 'index-page')
+        to_page($resource, 'index-page')
     )
         ->assertOk()
         ->assertSee('File')
@@ -55,7 +58,7 @@ it('apply as base', function () {
     ;
 
     asAdmin()->get(
-        to_page($this->resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
+        to_page($resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $files[0]->hashName())
@@ -63,7 +66,7 @@ it('apply as base', function () {
     ;
 
     asAdmin()->get(
-        to_page($this->resource, 'form-page', ['resourceItem' => $this->item->getKey()])
+        to_page($resource, 'form-page', ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $files[0]->hashName())
@@ -72,14 +75,16 @@ it('apply as base', function () {
 });
 
 it('before apply', function () {
-    $files = saveMultipleFiles($this->resource, $this->item);
+    $resource = multipleFileResource();
+
+    $files = saveMultipleFiles($resource, $this->item);
 
     $file3 = UploadedFile::fake()->create('test3.csv');
 
     $data = ['files' => [$file3], 'hidden_files' => ['items/' . $files[0]->hashName(), 'items/' . $files[1]->hashName()]];
 
     asAdmin()->put(
-        $this->resource->route('crud.update', $this->item->getKey()),
+        $resource->route('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -102,10 +107,12 @@ it('before apply', function () {
 });
 
 it('after destroy', function () {
-    $files = saveMultipleFiles($this->resource, $this->item);
+    $resource = multipleFileResource();
+
+    $files = saveMultipleFiles($resource, $this->item);
 
     asAdmin()->delete(
-        $this->resource->route('crud.destroy', $this->item->getKey()),
+        $resource->route('crud.destroy', $this->item->getKey()),
     )
         ->assertRedirect();
 
@@ -113,6 +120,37 @@ it('after destroy', function () {
 
     Storage::disk('public')->assertMissing('items/' . $files[1]->hashName());
 });
+
+it('after destroy disableDeleteFiles', function () {
+    $resource = TestResourceBuilder::new(Item::class)
+        ->setTestFields([
+            ...(new TestItemResource())->fields(),
+            File::make('Files')
+                ->multiple()
+                ->disableDeleteFiles()
+                ->dir('items'),
+        ]);
+
+    $files = saveMultipleFiles($resource, $this->item);
+
+    asAdmin()->delete(
+        $resource->route('crud.destroy', $this->item->getKey()),
+    )
+        ->assertRedirect();
+
+    Storage::disk('public')->assertExists('items/' . $files[0]->hashName());
+
+    Storage::disk('public')->assertExists('items/' . $files[1]->hashName());
+});
+
+function multipleFileResource(): TestResource
+{
+    return createResourceField(
+        File::make('Files')
+            ->multiple()
+            ->dir('items')
+    );
+}
 
 function saveMultipleFiles(ModelResource $resource, Model $item): array
 {
