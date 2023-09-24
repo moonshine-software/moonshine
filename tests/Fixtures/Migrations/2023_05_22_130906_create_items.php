@@ -25,6 +25,10 @@ return new class () extends Migration {
 
             $table->date('end_date')->nullable();
 
+            $table->string('file')->nullable();
+
+            $table->string('files')->nullable();
+
             $table->json('data')->nullable();
 
             $table->text('content');

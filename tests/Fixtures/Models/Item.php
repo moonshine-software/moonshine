@@ -24,6 +24,12 @@ class Item extends Model
         'name',
         'content',
         'category_id',
+        'start_point',
+        'end_point',
+        'start_date',
+        'end_date',
+        'file',
+        'files',
         'moonshine_user_id',
         'public_at',
         'data',
@@ -33,6 +39,7 @@ class Item extends Model
 
     protected $casts = [
         'data' => 'collection',
+        'files' => 'collection',
     ];
 
     public function category(): BelongsTo
