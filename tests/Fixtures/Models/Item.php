@@ -39,7 +39,7 @@ class Item extends Model
 
     protected $casts = [
         'data' => 'collection',
-        'files' => 'collection'
+        'files' => 'collection',
     ];
 
     public function category(): BelongsTo

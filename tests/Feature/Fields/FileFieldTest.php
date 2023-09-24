@@ -90,7 +90,7 @@ it('before apply', function () {
     $this->item->refresh();
 
     expect($this->item->file)
-        ->toBe('items/'.$file2->hashName())
+        ->toBe('items/' . $file2->hashName())
     ;
 
     Storage::disk('public')->assertExists('items/' . $file2->hashName());

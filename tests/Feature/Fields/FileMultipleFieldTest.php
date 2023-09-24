@@ -93,9 +93,9 @@ it('before apply', function () {
 
     expect($this->item->files->toArray())
         ->toBe([
-            'items/'.$files[0]->hashName(),
-            'items/'.$files[1]->hashName(),
-            'items/'.$file3->hashName(),
+            'items/' . $files[0]->hashName(),
+            'items/' . $files[1]->hashName(),
+            'items/' . $file3->hashName(),
         ])
     ;
 
@@ -168,7 +168,7 @@ function saveMultipleFiles(ModelResource $resource, Model $item): array
     $item->refresh();
 
     expect($item->files->toArray())
-        ->toBe(['items/'.$file1->hashName(), 'items/'.$file2->hashName()])
+        ->toBe(['items/' . $file1->hashName(), 'items/' . $file2->hashName()])
     ;
 
     Storage::disk('public')->assertExists('items/' . $file1->hashName());
