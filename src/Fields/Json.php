@@ -376,7 +376,7 @@ class Json extends Field implements
     {
         $this->getFields()
             ->onlyFields()
-            ->each(function (Field $field, $index) use($data) {
+            ->each(function (Field $field, $index) use($data): void {
                 $field->appendRequestKeyPrefix(
                     "{$this->column()}.$index",
                     $this->requestKeyPrefix()
@@ -392,7 +392,7 @@ class Json extends Field implements
     {
         $this->getFields()
             ->onlyFields()
-            ->each(function (Field $field, $index) use($data) {
+            ->each(function (Field $field, $index) use($data): void {
                 $field->appendRequestKeyPrefix(
                     "{$this->column()}.$index",
                     $this->requestKeyPrefix()
