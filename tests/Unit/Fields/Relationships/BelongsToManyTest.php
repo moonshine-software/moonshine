@@ -21,7 +21,7 @@ beforeEach(function (): void {
 
     $this->pivotFields = [
         Text::make('Pivot 1', 'pivot_1'),
-        Text::make('Pivot 2', 'pivot_2')
+        Text::make('Pivot 2', 'pivot_2'),
     ];
 
     $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())

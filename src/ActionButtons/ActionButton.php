@@ -25,7 +25,7 @@ class ActionButton extends AbstractAction implements ActionButtonContract
     public function blank(): self
     {
         $this->customAttributes([
-            'target' => '_blank'
+            'target' => '_blank',
         ]);
 
         return $this;

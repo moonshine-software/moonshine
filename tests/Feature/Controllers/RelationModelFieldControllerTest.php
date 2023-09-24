@@ -109,7 +109,7 @@ it('search relations empty result', function () {
 it('async search', function () {
     $item = createItem();
     $category = Category::factory()->create([
-        'name' => 'test'
+        'name' => 'test',
     ]);
     $item->categories()->attach($category);
     $item->refresh();
@@ -133,9 +133,9 @@ it('async search', function () {
                 'value' => $category->getKey(),
                 'label' => $category->name,
                 'customProperties' => [
-                    'image' => null
-                ]
-            ]
+                    'image' => null,
+                ],
+            ],
         ])
     ;
 });
