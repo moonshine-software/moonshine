@@ -50,8 +50,8 @@ abstract class MenuElement
                 return $filler->isActive();
             }
 
-            $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
-            $host = parse_url($this->url(), PHP_URL_HOST) ?? '';
+            $path = parse_url((string) $this->url(), PHP_URL_PATH) ?? '/';
+            $host = parse_url((string) $this->url(), PHP_URL_HOST) ?? '';
 
             if ($path === '/' && request()->host() === $host) {
                 return request()->path() === $path;

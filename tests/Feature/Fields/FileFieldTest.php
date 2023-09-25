@@ -72,6 +72,25 @@ it('apply as base', function () {
 
 });
 
+it('file exists after save', function () {
+    $resource = fileResource();
+    $file = saveFile($resource, $this->item);
+
+    asAdmin()->put(
+        $resource->route('crud.update', $this->item->getKey()),
+        ['hidden_file' => 'items/' . $file->hashName()]
+    )
+        ->assertRedirect();
+
+    $this->item->refresh();
+
+    expect($this->item->file)
+        ->toBe('items/' . $file->hashName())
+    ;
+
+    Storage::disk('public')->assertExists('items/' . $file->hashName());
+});
+
 it('before apply', function () {
     $resource = fileResource();
 
