@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use Illuminate\Contracts\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Fields\Field;
 use MoonShine\Http\Requests\Resources\ViewAnyFormRequest;
 use MoonShine\MoonShineRequest;
+use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\Resource;
 use Throwable;
 
@@ -55,7 +57,16 @@ class RelationFieldController extends BaseController
             $this->fieldResource = $this->field->resource()->relatable();
 
             $this->fieldResource->customBuilder(
-                $request->getItemOrInstance()->{$this->field->relation()}()
+                $request->getItemOrInstance()
+                    ->{$this->field->relation()}()
+                    ->when(
+                        $request->get('queryTag', null),
+                        fn(EloquentBuilder $builder, string $queryTag) => collect($this->field->resource()->queryTags())
+                            ->first(fn(QueryTag $tag): bool => $tag->uri() === $queryTag)
+                            ?->builder(
+                                $this->fieldResource->query()
+                            )
+                    )
             );
         }
     }
