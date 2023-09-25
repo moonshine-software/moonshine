@@ -8,7 +8,7 @@ use Closure;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 
 /**
- * @method static static make(Closure|string $label, Closure|string|null $url = null, mixed $item = null)
+ * @method static static make(Closure|string $label, Closure|string $url = '', mixed $item = null)
  */
 class ActionButton extends AbstractAction implements ActionButtonContract
 {
@@ -16,7 +16,7 @@ class ActionButton extends AbstractAction implements ActionButtonContract
 
     public function __construct(
         Closure|string $label,
-        protected Closure|string|null $url = null,
+        protected Closure|string $url = '',
         protected mixed $item = null
     ) {
         $this->setLabel($label);
@@ -75,5 +75,45 @@ class ActionButton extends AbstractAction implements ActionButtonContract
         return is_closure($this->url)
             ? call_user_func($this->url, $this->getItem())
             : $this->url;
+    }
+
+    /**
+     * @return $this
+     */
+    public function primary(): static
+    {
+        return $this->customAttributes(['class' => 'btn-primary']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function secondary(): static
+    {
+        return $this->customAttributes(['class' => 'btn-secondary']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function success(): static
+    {
+        return $this->customAttributes(['class' => 'btn-success']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function warning(): static
+    {
+        return $this->customAttributes(['class' => 'btn-warning']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function error(): static
+    {
+        return $this->customAttributes(['class' => 'btn-error']);
     }
 }

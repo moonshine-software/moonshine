@@ -14,7 +14,7 @@ final class ExportButton
             $export->label(),
             $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
         )
-            ->customAttributes(['class' => 'btn btn-primary'])
+            ->primary()
             ->icon($export->iconValue());
     }
 }

@@ -17,7 +17,7 @@ final class AsyncCreateButton
                 fragment: 'crud-form'
             )
         )
-            ->customAttributes(['class' => 'btn btn-primary'])
+            ->primary()
             ->icon('heroicons.outline.plus')
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),

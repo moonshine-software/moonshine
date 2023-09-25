@@ -26,7 +26,7 @@ final class FormButton
                 ['resourceItem' => $data->getKey()]
             )
         )
-            ->customAttributes(['class' => 'btn-primary'])
+            ->primary()
             ->icon('heroicons.outline.pencil')
             ->showInLine();
     }
