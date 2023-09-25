@@ -11,11 +11,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\Fixtures\Models\Traits\MorphRelationTrait;
-use MoonShine\Tests\Fixtures\Models\Traits\UserHasOneTrait;
+use MoonShine\Tests\Fixtures\Models\Traits\UserBelongsToTrait;
 
 class Item extends Model
 {
-    use UserHasOneTrait;
+    use UserBelongsToTrait;
 
     use MorphRelationTrait;
 

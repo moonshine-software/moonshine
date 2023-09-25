@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Models\Traits\MorphRelationTrait;
-use MoonShine\Tests\Fixtures\Models\Traits\UserHasOneTrait;
+use MoonShine\Tests\Fixtures\Models\Traits\UserBelongsToTrait;
 
 class Category extends Model
 {
-    use UserHasOneTrait;
+    use UserBelongsToTrait;
 
     use MorphRelationTrait;
 
