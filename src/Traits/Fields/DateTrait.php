@@ -10,7 +10,7 @@ trait DateTrait
 
     protected string $inputFormat = 'Y-m-d';
 
-    public function format($format): static
+    public function format(string $format): static
     {
         $this->format = $format;
 
