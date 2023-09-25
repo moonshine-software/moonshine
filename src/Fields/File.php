@@ -58,7 +58,7 @@ class File extends Field implements Fileable, RemovableContract
         if(
             $this->isMultiple()
             || empty($this->toValue())
-            || request($this->hiddenOldValuesKey()) == $this->toValue()
+            || request($this->hiddenOldValuesKey()) === $this->toValue()
         ) {
             return $data;
         }
