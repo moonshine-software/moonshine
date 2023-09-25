@@ -15,7 +15,7 @@
     <a href="https://laravel.com"><img alt="PHP 8+" src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=for-the-badge&logo=php"></a>
 </p>
 
-#### [Documentation](https://moonshine.cutcode.dev)
+#### [Documentation](https://moonshine-laravel.com)
 #### [Documentation repository](https://github.com/moonshine-software/doc)
 #### [Demo project](https://github.com/moonshine-software/demo-project)
 
@@ -34,16 +34,16 @@ Everything is already ready for use in your projects, documentation has been cre
 I invite interested users to use and develop Moonshine together.
 
 <p align="center">
-<img src="https://moonshine.cutcode.dev/screenshots/main.png?v=new1.50.0" alt="Main">
+<img src="https://moonshine-laravel.com/screenshots/main.png?v=2.0" alt="Main">
 </p>
 
 <p align="center">
-<img src="https://moonshine.cutcode.dev/screenshots/login.png?v=new1.50.0" alt="Login">
+<img src="https://moonshine-laravel.com/screenshots/login.png?v=2.0" alt="Login">
 </p>
 
 ## Contributing
 
-Thank you for contributing in the project, more information in the official guide [Documentation](https://moonshine.cutcode.dev/section/contribution).
+Thank you for contributing in the project, more information in the official guide [Documentation](https://moonshine-laravel.com/section/contribution).
 
 ## License
 

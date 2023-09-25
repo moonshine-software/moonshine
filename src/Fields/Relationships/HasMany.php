@@ -133,8 +133,8 @@ class HasMany extends ModelRelationField implements HasFields
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
             ->buttons([
-                DetailButton::for($resource),
-                FormButton::for($resource),
+                DetailButton::forMode($resource),
+                FormButton::forMode($resource),
                 DeleteButton::for($resource, request()->getUri()),
                 MassDeleteButton::for($resource),
             ]);

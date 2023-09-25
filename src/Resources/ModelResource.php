@@ -87,12 +87,12 @@ abstract class ModelResource extends Resource
 
     public function isEditInModal(): bool
     {
-        return $this->createInModal;
+        return $this->editInModal;
     }
 
     public function isDetailInModal(): bool
     {
-        return $this->createInModal;
+        return $this->detailInModal;
     }
 
     public function isAsync(): bool

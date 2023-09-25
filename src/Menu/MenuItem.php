@@ -56,11 +56,9 @@ class MenuItem extends MenuElement
         }
     }
 
-    public function getFiller(): MenuFiller|string
+    public function getFiller(): MenuFiller|Closure|string
     {
-        return !is_closure($this->filler)
-            ? $this->filler
-            : '';
+        return $this->filler;
     }
 
     public function badge(Closure $callback): static
