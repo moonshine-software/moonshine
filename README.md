@@ -1,10 +1,6 @@
-<p align="center">
-<a href="https://moonshine.cutcode.dev" target="_blank">
-<img src="https://moonshine.cutcode.dev/moon-promo-dark.svg?v=1.53.0">
-</a>
-</p>
+![logo](https://github.com/moonshine-software/moonshine/raw/2.x/art/lego.png)
 
-## MoonShine - easy to use, powerful, customizable, illegal :smile:
+## MoonShine - Simple for beginners and powerful for experts:
 ### Administration panel for Laravel framework
 
 
@@ -15,11 +11,11 @@
 <a href="https://packagist.org/packages/moonshine/moonshine"><img src="https://img.shields.io/packagist/l/moonshine/moonshine" alt="License"></a>
 </p> 
 <p align="center">
-    <a href="https://laravel.com"><img alt="Laravel 9+" src="https://img.shields.io/badge/Laravel-9+-FF2D20?style=for-the-badge&logo=laravel"></a>
-    <a href="https://laravel.com"><img alt="PHP 8+" src="https://img.shields.io/badge/PHP-8+-777BB4?style=for-the-badge&logo=php"></a>
+    <a href="https://laravel.com"><img alt="Laravel 9+" src="https://img.shields.io/badge/Laravel-10+-FF2D20?style=for-the-badge&logo=laravel"></a>
+    <a href="https://laravel.com"><img alt="PHP 8+" src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=for-the-badge&logo=php"></a>
 </p>
 
-#### [Documentation](https://moonshine.cutcode.dev)
+#### [Documentation](https://moonshine-laravel.com)
 #### [Documentation repository](https://github.com/moonshine-software/doc)
 #### [Demo project](https://github.com/moonshine-software/demo-project)
 
@@ -38,16 +34,16 @@ Everything is already ready for use in your projects, documentation has been cre
 I invite interested users to use and develop Moonshine together.
 
 <p align="center">
-<img src="https://moonshine.cutcode.dev/screenshots/main.png?v=new1.50.0" alt="Main">
+<img src="https://moonshine-laravel.com/screenshots/main.png?v=2.0" alt="Main">
 </p>
 
 <p align="center">
-<img src="https://moonshine.cutcode.dev/screenshots/login.png?v=new1.50.0" alt="Login">
+<img src="https://moonshine-laravel.com/screenshots/login.png?v=2.0" alt="Login">
 </p>
 
 ## Contributing
 
-Thank you for contributing in the project, more information in the official guide [Documentation](https://moonshine.cutcode.dev/section/contribution).
+Thank you for contributing in the project, more information in the official guide [Documentation](https://moonshine-laravel.com/section/contribution).
 
 ## License
 

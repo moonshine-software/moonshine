@@ -51,8 +51,9 @@ abstract class MenuElement
             }
 
             $path = parse_url((string) $this->url(), PHP_URL_PATH) ?? '/';
+            $host = parse_url((string) $this->url(), PHP_URL_HOST) ?? '';
 
-            if ($path === '/') {
+            if ($path === '/' && request()->host() === $host) {
                 return request()->path() === $path;
             }
 

@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Tests\Fixtures\Models\Category;
 
 return new class () extends Migration {
     /**
@@ -17,6 +18,11 @@ return new class () extends Migration {
             $table->string('name');
 
             $table->text('content');
+
+            $table->foreignIdFor(Category::class)
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
 
             $table->foreignIdFor(MoonshineUser::class)
                 ->nullable()

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
-use App\MoonShine\Resources\CommentResource;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +16,7 @@ use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -102,7 +102,7 @@ class HasMany extends ModelRelationField implements HasFields
     protected function resolveValue(): mixed
     {
         /**
-         * @var CommentResource $resource
+         * @var ModelResource $resource
          */
         $resource = $this->getResource();
 
@@ -133,8 +133,8 @@ class HasMany extends ModelRelationField implements HasFields
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
             ->buttons([
-                DetailButton::for($resource),
-                FormButton::for($resource),
+                DetailButton::forMode($resource),
+                FormButton::forMode($resource),
                 DeleteButton::for($resource, request()->getUri()),
                 MassDeleteButton::for($resource),
             ]);

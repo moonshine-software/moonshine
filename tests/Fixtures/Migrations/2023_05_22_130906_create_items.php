@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Models\Category;
+use MoonShine\Tests\Fixtures\Models\Item;
 
 return new class () extends Migration {
     /**
@@ -25,6 +26,10 @@ return new class () extends Migration {
 
             $table->date('end_date')->nullable();
 
+            $table->string('file')->nullable();
+
+            $table->string('files')->nullable();
+
             $table->json('data')->nullable();
 
             $table->text('content');
@@ -43,6 +48,26 @@ return new class () extends Migration {
 
             $table->timestamps();
         });
+
+        Schema::create('category_item', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignIdFor(Category::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreignIdFor(Item::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->string('pivot_1')->nullable();
+            $table->string('pivot_2')->nullable();
+
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -50,6 +75,7 @@ return new class () extends Migration {
      */
     public function down(): void
     {
+        Schema::dropIfExists('category_item');
         Schema::dropIfExists('items');
     }
 };

@@ -40,8 +40,6 @@ abstract class ModelResource extends Resource
 
     protected string $model;
 
-    protected string $title = '';
-
     protected string $column = 'id';
 
     protected bool $createInModal = false;
@@ -77,11 +75,6 @@ abstract class ModelResource extends Resource
         return ModelCast::make($this->model);
     }
 
-    public function title(): string
-    {
-        return $this->title;
-    }
-
     public function column(): string
     {
         return $this->column;
@@ -94,12 +87,12 @@ abstract class ModelResource extends Resource
 
     public function isEditInModal(): bool
     {
-        return $this->createInModal;
+        return $this->editInModal;
     }
 
     public function isDetailInModal(): bool
     {
-        return $this->createInModal;
+        return $this->detailInModal;
     }
 
     public function isAsync(): bool
@@ -155,9 +148,11 @@ abstract class ModelResource extends Resource
     {
         $item = $this->beforeDeleting($item);
 
-        $this->getFields()
-            ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->afterDestroy($item));
+        $fields = $this->getFormFields()->onlyFields();
+
+        $fields->fill($item->toArray(), $item);
+
+        $fields->each(fn (Field $field): mixed => $field->afterDestroy($item));
 
         return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
     }

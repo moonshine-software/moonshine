@@ -69,7 +69,9 @@ class IndexPage extends Page
 
         return $metrics
             ? LayoutBlock::make($metrics)
-                ->customAttributes(['class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6'])
+                ->customAttributes([
+                    'class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6',
+                ])
             : null
         ;
     }

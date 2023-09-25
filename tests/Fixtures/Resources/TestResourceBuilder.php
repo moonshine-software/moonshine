@@ -7,8 +7,8 @@ namespace MoonShine\Tests\Fixtures\Resources;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Fields\Email;
-use MoonShine\Fields\NoInput;
 use MoonShine\Fields\Password;
+use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
 use MoonShine\Metrics\DonutChartMetric;
 use MoonShine\Metrics\LineChartMetric;
@@ -41,7 +41,7 @@ class TestResourceBuilder
                 Text::make('Name'),
                 Email::make('Email'),
                 Password::make('Password'),
-                NoInput::make('Badge')->badge(fn () => 'red'),
+                Preview::make('Badge')->badge(fn () => 'red'),
             ])
             ->setTestQueryTags([
                 QueryTag::make(

@@ -7,6 +7,7 @@ namespace MoonShine\Tests\Fixtures\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\Fixtures\Models\Traits\MorphRelationTrait;
@@ -24,6 +25,12 @@ class Item extends Model
         'name',
         'content',
         'category_id',
+        'start_point',
+        'end_point',
+        'start_date',
+        'end_date',
+        'file',
+        'files',
         'moonshine_user_id',
         'public_at',
         'data',
@@ -33,11 +40,18 @@ class Item extends Model
 
     protected $casts = [
         'data' => 'collection',
+        'files' => 'collection',
     ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class)
+            ->withPivot(['pivot_1', 'pivot_2']);
     }
 
     public function comments(): HasMany

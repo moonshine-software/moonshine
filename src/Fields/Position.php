@@ -9,7 +9,7 @@ use Closure;
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null)
  */
-class Position extends NoInput
+class Position extends Preview
 {
     public function __construct(?string $label = null, ?string $column = null)
     {
