@@ -55,7 +55,11 @@ class File extends Field implements Fileable, RemovableContract
 
     protected function resolveBeforeApply(mixed $data): mixed
     {
-        if($this->isMultiple() || empty($this->toValue())) {
+        if(
+            $this->isMultiple()
+            || empty($this->toValue())
+            || request($this->hiddenOldValuesKey()) == $this->toValue()
+        ) {
             return $data;
         }
 
