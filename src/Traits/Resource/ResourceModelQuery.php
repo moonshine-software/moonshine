@@ -64,13 +64,41 @@ trait ResourceModelQuery
         }
 
         if (request()->has('search') && count($this->search())) {
-            $query = $query->where(function (Builder $q): void {
-                foreach ($this->search() as $field) {
-                    $q->orWhere(
-                        $field,
-                        'LIKE',
-                        '%' . request('search') . '%'
-                    );
+            $query = $query->where(function (Builder $builder): void {
+                $terms = request()
+                    ->str('search')
+                    ->squish()
+                    ->value();
+                foreach ($this->search() as $key => $column) {
+                    if (is_string($column) && str($column)->contains('.')) {
+                        $column = str($column)
+                            ->explode('.')
+                            ->tap(function (Collection $data) use (&$key) {
+                                $key = $data->first();
+                            })
+                            ->slice(-1)
+                            ->values()
+                            ->toArray();
+                    }
+
+                    if (is_array($column)) {
+                        $builder->when(
+                            method_exists($this->getModel(), $key),
+                            fn (Builder $query) => $query->orWhereHas(
+                                $key,
+                                fn (Builder $q) => $q->where(
+                                    fn (Builder $qq) => collect($column)->each(
+                                        fn ($item) => $qq->orWhere($item, 'LIKE', "%$terms%")
+                                    )
+                                )
+                            ),
+                            fn (Builder $query) => collect($column)->each(fn ($item) => $query->where(
+                                fn (Builder $qq) => $qq->orWhereJsonContains("$key->$item", $terms)
+                            ))
+                        );
+                    } else {
+                        $builder->orWhere($column, 'LIKE', "%$terms%");
+                    }
                 }
             });
         }
