@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Handlers\ExportHandler;
+use MoonShine\Handlers\ImportHandler;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\MoonShineUserResource;
@@ -191,6 +193,62 @@ it('after apply', function () {
         ->toContain('_'.$id)
     ;
 });
+
+it('export', function (): void {
+    belongsToExport($this->item, randomUserId());
+});
+
+it('import', function (): void {
+
+    $id = randomUserId();
+
+    $file = belongsToExport($this->item, $id);
+
+    $resource = createResourceField(
+        BelongsTo::make('User', resource: new MoonShineUserResource())->useOnImport()
+    );
+
+    $import = ImportHandler::make('');
+
+    asAdmin()->post(
+        $resource->route('handler', query: ['handlerUri' => $import->uriKey()]),
+        [$import->getInputName() => $file]
+    )->assertRedirect();
+
+    $this->item->refresh();
+
+    expect($this->item->moonshine_user_id)
+        ->toBe($id)
+    ;
+});
+
+function belongsToExport(Item $item, int $newId): ?string
+{
+    $data = ['moonshine_user_id' => $newId];
+
+    $item->moonshine_user_id = $data['moonshine_user_id'];
+
+    $item->save();
+
+    $resource = createResourceField(
+        BelongsTo::make('User', resource: new MoonShineUserResource())->showOnExport()
+    );
+
+    $export = ExportHandler::make('');
+
+    asAdmin()->get(
+        $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+    )->assertDownload();
+
+    $file = Storage::disk('public')->get('test-resource.csv');
+
+    expect($file)
+        ->toContain('User')
+        ->toContain($item->user->name)
+    ;
+
+    return $file;
+}
 
 function belongsToResource(): TestResource
 {
