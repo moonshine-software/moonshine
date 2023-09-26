@@ -10,19 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Buttons\HasOneField\HasManyCreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Decorations\Block;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\MoonShineRouter;
-use MoonShine\Resources\ModelResource;
-use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -78,11 +73,13 @@ class HasMany extends ModelRelationField implements HasFields
 
     public function onlyLink(Closure|bool|null $condition = null): static
     {
-        $this->onlyLink = $condition;
-
         if(is_null($condition)) {
             $this->onlyLink = true;
+
+            return $this;
         }
+
+        $this->onlyLink = $condition;
 
         return $this;
     }
@@ -140,10 +137,10 @@ class HasMany extends ModelRelationField implements HasFields
         $parentName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
 
         return ActionButton::make(
-            __('moonshine::ui.show'). " ($countItems)",
+            "($countItems)",
             to_page($this->getResource(), 'index-page', ['parentId' => $parentName . '-'. $casted->{$casted->getKeyName()}])
         )
-            ->customAttributes(['class' => 'btn btn-primary'])
+            ->icon('heroicons.outline.eye')
             ->render()
         ;
     }
