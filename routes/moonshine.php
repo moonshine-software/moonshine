@@ -25,7 +25,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                     ->only(['store', 'update', 'destroy']);
 
                 Route::any('handler/{handlerUri}', HandlerController::class)->name('handler');
-                Route::get('{pageUri}', PageController::class)->name('resource.page');
+                Route::get('{pageUri}/{parentId?}', PageController::class)->name('resource.page');
                 Route::put('/{resourceItem}', UpdateColumnController::class)->name('resource.update-column');
             });
 

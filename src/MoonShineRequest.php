@@ -73,6 +73,11 @@ class MoonShineRequest extends Request
         return $this->route('resourceUri');
     }
 
+    public function getParentResourceId(): ?string
+    {
+        return $this->route('parentId');
+    }
+
     public function getPageUri(): ?string
     {
         return $this->route('pageUri');

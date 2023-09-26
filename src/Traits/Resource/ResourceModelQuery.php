@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use App\Models\Comment;
+use App\MoonShine\Resources\CategoryResource;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use MoonShine\Attributes\SearchUsingFullText;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
+use MoonShine\MoonShineRouter;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Attributes;
@@ -39,6 +42,8 @@ trait ResourceModelQuery
     protected ?Builder $query = null;
 
     protected ?Builder $customBuilder = null;
+
+    protected array $parentRelations = [];
 
     public function getItemID(): int|string|null
     {
@@ -127,6 +132,7 @@ trait ResourceModelQuery
         $this->resolveTags()
             ->resolveSearch()
             ->resolveFilters()
+            ->resolveParentResource()
             ->resolveOrder(
                 request('sort.column', $this->sortColumn()),
                 request('sort.direction', $this->sortDirection())
@@ -286,6 +292,37 @@ trait ResourceModelQuery
         return $this;
     }
 
+    protected function resolveParentResource(): self
+    {
+        $parentIdUri = moonshineRequest()->getParentResourceId();
+
+        if(is_null($parentIdUri) || empty($this->parentRelations())) {
+            return $this;
+        }
+
+        $relation = '';
+        $parentId = 0;
+
+        foreach ($this->parentRelations() as $relationName) {
+            if(str_contains($parentIdUri, $relationName)) {
+                $relation = $relationName;
+                $parentId = str_replace($relationName. '-', '', $parentIdUri);
+                break;
+            }
+        }
+
+        if(empty($relation)) {
+            return $this;
+        }
+
+        $this->query()->where(
+            $this->getModel()->{$relation}()->getForeignKeyName(),
+            $parentId
+        );
+
+        return $this;
+    }
+
     public function hasWith(): bool
     {
         return $this->with !== [];
@@ -329,5 +366,10 @@ trait ResourceModelQuery
     public function isPaginationUsed(): bool
     {
         return $this->usePagination;
+    }
+
+    public function parentRelations(): array
+    {
+        return $this->parentRelations;
     }
 }
