@@ -73,9 +73,7 @@ it('before apply', function () {
     $resource = createResourceField(
         RangeField::make('Range')->fromTo('start_point', 'end_point')
             ->onBeforeApply(function ($item, $data) {
-                if(empty($data['name'])) {
-                    $item->name = $data['start_point'] . ' - ' . $data['end_point'];
-                }
+                $item->name = $data['start_point'] . ' - ' . $data['end_point'];
 
                 return $item;
             })
