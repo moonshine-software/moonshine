@@ -8,15 +8,20 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Buttons\HasOneField\HasManyCreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Decorations\Block;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\MoonShineRouter;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -30,6 +35,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected int $limit = 15;
 
+    protected bool $isOnlyLink = false;
+
     public function resolveFill(
         array $raw = [],
         mixed $casted = null,
@@ -41,6 +48,19 @@ class HasMany extends ModelRelationField implements HasFields
         }
 
         return $this;
+    }
+
+    public function onlyLink(Closure|bool|null $condition = null): static
+    {
+        $this->isOnlyLink = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+
+    public function isOnlyLink(): bool
+    {
+        return $this->isOnlyLink;
     }
 
     /**
@@ -101,9 +121,41 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolveValue(): mixed
     {
-        /**
-         * @var ModelResource $resource
-         */
+        if($this->isOnlyLink()) {
+            return $this->buttonsValueView();
+        }
+
+        return $this->tableValueView();
+    }
+
+    protected function buttonsValueView()
+    {
+        $resource = $this->getResource();
+
+        $casted = $this->getRelatedModel();
+
+        $this->getResource()
+            ->query()
+            ->where(
+                $casted->{$this->getRelationName()}()->getForeignKeyName(),
+                $casted->{$casted->getKeyName()}
+            );
+
+        $items = $this->getResource()->query()->count();
+
+        $parentName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+
+        return
+            ActionButton::make(
+                __('moonshine::ui.show'). " ($items)",
+                to_page($resource, 'index-page', ['parentId' => $parentName . '-' . request('resourceItem')])
+            )
+                ->customAttributes(['class' => 'btn btn-primary'])
+        ;
+    }
+
+    protected function tableValueView()
+    {
         $resource = $this->getResource();
 
         $asyncUrl = to_relation_route('search-relations', request('resourceItem'));

@@ -121,7 +121,7 @@ class FormPage extends Page
         foreach ($this->getResource()->getOutsideFields() as $field) {
             $components[] = Divider::make($field->label());
 
-            if (! $field->toOne()) {
+            if (! $field->toOne() && ! $field->isOnlyLink()) {
                 $components[] = HasManyCreateButton::for($field, $item->getKey());
                 $components[] = Divider::make();
             }
