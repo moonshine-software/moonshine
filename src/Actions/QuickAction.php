@@ -12,7 +12,6 @@ use Illuminate\Http\RedirectResponse;
  */
 class QuickAction extends Action
 {
-
     protected Closure $callback;
 
     public function __construct(string $label = '', Closure $callback = null)
