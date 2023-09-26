@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasOneField\HasManyCreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
@@ -35,7 +36,32 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected int $limit = 15;
 
-    protected bool $isOnlyLink = false;
+    protected Closure | bool $onlyLink = false;
+
+    public function preview(): View|string
+    {
+        $casted = $this->getRelatedModel();
+
+        $this->setValue($casted->{$this->getRelationName()});
+
+        return parent::preview();
+    }
+
+    public function value(bool $withOld = true): mixed
+    {
+        $casted = $this->getRelatedModel();
+
+        $this->getResource()
+            ->query()
+            ->where(
+                $casted->{$this->getRelationName()}()->getForeignKeyName(),
+                $casted->{$casted->getKeyName()}
+            );
+
+        $this->setValue($this->getResource()->paginate());
+
+        return parent::value($withOld);
+    }
 
     public function resolveFill(
         array $raw = [],
@@ -52,15 +78,30 @@ class HasMany extends ModelRelationField implements HasFields
 
     public function onlyLink(Closure|bool|null $condition = null): static
     {
-        $this->isOnlyLink = Condition::boolean($condition, true);
+        $this->onlyLink = $condition;
+
+        if(is_null($condition)) {
+            $this->onlyLink = true;
+        }
 
         return $this;
     }
 
-
     public function isOnlyLink(): bool
     {
-        return $this->isOnlyLink;
+        if(is_callable($this->onlyLink) && is_null($this->toValue())) {
+            return call_user_func($this->onlyLink, 0, $this);
+        }
+
+        if(is_callable($this->onlyLink)) {
+            $count = $this->toValue() instanceof Collection
+                ? $this->toValue()->count()
+                : $this->toValue()->total();
+
+            return call_user_func($this->onlyLink, $count, $this);
+        }
+
+        return $this->onlyLink;
     }
 
     /**
@@ -94,12 +135,12 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $casted = $this->getRelatedModel();
 
-        $items = $casted->{$this->getRelationName()}->count();
+        $countItems = $this->toValue()->count();
 
         $parentName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
 
         return ActionButton::make(
-            __('moonshine::ui.show'). " ($items)",
+            __('moonshine::ui.show'). " ($countItems)",
             to_page($this->getResource(), 'index-page', ['parentId' => $parentName . '-'. $casted->{$casted->getKeyName()}])
         )
             ->customAttributes(['class' => 'btn btn-primary'])
@@ -109,9 +150,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function tablePreview(): View|string
     {
-        $casted = $this->getRelatedModel();
-
-        $items = $casted->{$this->getRelationName()};
+        $items = $this->toValue();
 
         if(! empty($items) && ! $this->toOne()) {
             $items = $items->take($this->getLimit());
@@ -148,25 +187,12 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function linkValue()
     {
-        $resource = $this->getResource();
-
-        $casted = $this->getRelatedModel();
-
-        $this->getResource()
-            ->query()
-            ->where(
-                $casted->{$this->getRelationName()}()->getForeignKeyName(),
-                $casted->{$casted->getKeyName()}
-            );
-
-        $items = $this->getResource()->query()->count();
-
         $parentName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
 
         return
             ActionButton::make(
-                __('moonshine::ui.show'). " ($items)",
-                to_page($resource, 'index-page', ['parentId' => $parentName . '-' . request('resourceItem')])
+                __('moonshine::ui.show'). " ({$this->toValue()->total()})",
+                to_page($this->getResource(), 'index-page', ['parentId' => $parentName . '-' . request('resourceItem')])
             )
                 ->customAttributes(['class' => 'btn btn-primary'])
         ;
@@ -178,22 +204,11 @@ class HasMany extends ModelRelationField implements HasFields
 
         $asyncUrl = to_relation_route('search-relations', request('resourceItem'));
 
-        $casted = $this->getRelatedModel();
-
-        $this->getResource()
-            ->query()
-            ->where(
-                $casted->{$this->getRelationName()}()->getForeignKeyName(),
-                $casted->{$casted->getKeyName()}
-            );
-
-        $items = $this->getResource()->paginate();
-
-        $items->setPath(to_relation_route('search-relations', request('resourceItem')));
+        $this->toValue()->setPath(to_relation_route('search-relations', request('resourceItem')));
         $fields = $this->preparedFields();
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
-        return TableBuilder::make(items: $items)
+        return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
             ->name($this->getRelationName())
             ->fields($fields)
