@@ -9,7 +9,6 @@ use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Fields\Select;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Tests\Fixtures\Models\Item;

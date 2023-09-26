@@ -110,7 +110,7 @@ it('belongs to valuesQuery', function () {
 
     $resource = createResourceField(
         BelongsTo::make('User', resource: new MoonShineUserResource())
-            ->valuesQuery(fn(Builder $query) => $query->where('id', $id))
+            ->valuesQuery(fn (Builder $query) => $query->where('id', $id))
     );
 
     $user = $this->users
@@ -163,7 +163,7 @@ it('before apply', function () {
     $this->item->refresh();
 
     expect($this->item->name)
-        ->toContain('_'.$id)
+        ->toContain('_' . $id)
     ;
 });
 
@@ -171,7 +171,7 @@ it('after apply', function () {
     $resource = createResourceField(
         BelongsTo::make('User', resource: new MoonShineUserResource())
             ->onAfterApply(function ($item) {
-                $item->name = $item->name . '_'. $item->user->id;
+                $item->name = $item->name . '_' . $item->user->id;
 
                 return $item;
             })
@@ -190,7 +190,7 @@ it('after apply', function () {
     $this->item->refresh();
 
     expect($this->item->name)
-        ->toContain('_'.$id)
+        ->toContain('_' . $id)
     ;
 });
 
