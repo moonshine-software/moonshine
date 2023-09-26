@@ -87,6 +87,28 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolvePreview(): View|string
     {
+        return $this->isOnlyLink() ? $this->linkPreview() : $this->tablePreview();
+    }
+
+    protected function linkPreview(): View|string
+    {
+        $casted = $this->getRelatedModel();
+
+        $items = $casted->{$this->getRelationName()}->count();
+
+        $parentName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+
+        return ActionButton::make(
+            __('moonshine::ui.show'). " ($items)",
+            to_page($this->getResource(), 'index-page', ['parentId' => $parentName . '-'. $casted->{$casted->getKeyName()}])
+        )
+            ->customAttributes(['class' => 'btn btn-primary'])
+            ->render()
+        ;
+    }
+
+    protected function tablePreview(): View|string
+    {
         $casted = $this->getRelatedModel();
 
         $items = $casted->{$this->getRelationName()};
@@ -121,14 +143,10 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolveValue(): mixed
     {
-        if($this->isOnlyLink()) {
-            return $this->buttonsValueView();
-        }
-
-        return $this->tableValueView();
+        return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
     }
 
-    protected function buttonsValueView()
+    protected function linkValue()
     {
         $resource = $this->getResource();
 
@@ -154,7 +172,7 @@ class HasMany extends ModelRelationField implements HasFields
         ;
     }
 
-    protected function tableValueView()
+    protected function tableValue()
     {
         $resource = $this->getResource();
 
