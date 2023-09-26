@@ -14,14 +14,13 @@ use MoonShine\Traits\WithConfirmation;
  */
 class QuickAction extends Action
 {
-
     use WithConfirmation;
 
     public function __construct(
         string $label,
         protected Closure $callback,
-        protected string $message = 'Done')
-    {
+        protected string $message = 'Done'
+    ) {
         parent::__construct($label);
     }
 
