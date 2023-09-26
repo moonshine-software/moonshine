@@ -73,7 +73,7 @@ trait ResourceModelQuery
                     if (is_string($column) && str($column)->contains('.')) {
                         $column = str($column)
                             ->explode('.')
-                            ->tap(function (Collection $data) use (&$key) {
+                            ->tap(function (Collection $data) use (&$key): void {
                                 $key = $data->first();
                             })
                             ->slice(-1)
@@ -84,16 +84,16 @@ trait ResourceModelQuery
                     if (is_array($column)) {
                         $builder->when(
                             method_exists($this->getModel(), $key),
-                            fn (Builder $query) => $query->orWhereHas(
+                            fn (Builder $query): \Illuminate\Database\Eloquent\Builder => $query->orWhereHas(
                                 $key,
-                                fn (Builder $q) => $q->where(
-                                    fn (Builder $qq) => collect($column)->each(
-                                        fn ($item) => $qq->orWhere($item, 'LIKE', "%$terms%")
+                                fn (Builder $q): \Illuminate\Database\Eloquent\Builder => $q->where(
+                                    fn (Builder $qq): Collection => collect($column)->each(
+                                        fn ($item): \Illuminate\Database\Eloquent\Builder => $qq->orWhere($item, 'LIKE', "%$terms%")
                                     )
                                 )
                             ),
-                            fn (Builder $query) => collect($column)->each(fn ($item) => $query->where(
-                                fn (Builder $qq) => $qq->orWhereJsonContains("$key->$item", $terms)
+                            fn (Builder $query): Collection => collect($column)->each(fn ($item): \Illuminate\Database\Eloquent\Builder => $query->where(
+                                fn (Builder $qq): \Illuminate\Database\Query\Builder => $qq->orWhereJsonContains("$key->$item", $terms)
                             ))
                         );
                     } else {
