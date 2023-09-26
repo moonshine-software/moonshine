@@ -2,7 +2,14 @@
 
 declare(strict_types=1);
 
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Fields\Select;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -18,11 +25,42 @@ beforeEach(function (): void {
 
     $this->item = Item::factory()
         ->create();
+
+    $this->field = BelongsTo::make('User', resource: new MoonShineUserResource());
+
+});
+
+it('ModelRelationField is parent', function (): void {
+    expect($this->field)
+        ->toBeInstanceOf(ModelRelationField::class);
+});
+
+it('type', function (): void {
+    expect($this->field->type())
+        ->toBeEmpty();
+});
+
+it('correct interfaces', function (): void {
+    expect($this->field)
+        ->toBeInstanceOf(HasAsyncSearch::class)
+        ->toBeInstanceOf(HasRelatedValues::class)
+        ->toBeInstanceOf(HasDefaultValue::class)
+        ->toBeInstanceOf(DefaultCanBeString::class)
+        ->toBeInstanceOf(DefaultCanBeNumeric::class)
+    ;
+});
+
+it('async search', function (): void {
+    expect($this->field->asyncSearch('name'))
+        ->isAsyncSearch()
+        ->toBeTrue()
+        ->asyncSearchColumn()
+        ->toBe('name');
 });
 
 describe('basic methods', function () {
     it('change preview', function () {
-        expect(BelongsTo::make('User', resource: new MoonShineUserResource())->changePreview(static fn () => 'changed'))
+        expect($this->field->changePreview(static fn () => 'changed'))
             ->preview()
             ->toBe('changed');
     });
@@ -36,7 +74,7 @@ describe('basic methods', function () {
     });
 
     it('applies', function () {
-        $field = BelongsTo::make('User', resource: new MoonShineUserResource())
+        $field = $this->field
             ->onApply(fn ($data) => ['onApply']);
 
         expect($field->onApply(fn ($data) => ['onApply'])->apply(fn ($data) => $data, []))
