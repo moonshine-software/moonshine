@@ -296,29 +296,42 @@ trait ResourceModelQuery
     {
         $parentIdUri = moonshineRequest()->getParentResourceId();
 
-        if(is_null($parentIdUri) || empty($this->parentRelations())) {
+        if(is_null($parentIdUri)) {
             return $this;
         }
 
-        $relation = '';
-        $parentId = 0;
+        $parentInfo = explode('-', $parentIdUri);
+        $relation = $parentInfo[0] ?? null;
+        $parentId = $parentInfo[1] ?? null;
 
-        foreach ($this->parentRelations() as $relationName) {
-            if(str_contains($parentIdUri, $relationName)) {
-                $relation = $relationName;
-                $parentId = str_replace($relationName. '-', '', $parentIdUri);
-                break;
+        if(is_null($relation) || is_null($parentId)) {
+            return $this;
+        }
+
+        if(! empty($this->parentRelations())) {
+            foreach ($this->parentRelations() as $relationName) {
+                if($relation == $relationName) {
+                    $this->query()->where(
+                        $this->getModel()->{$relation}()->getForeignKeyName(),
+                        $parentId
+                    );
+
+                    return $this;
+                }
             }
         }
 
-        if(empty($relation)) {
+        if(
+            method_exists($this->getModel(), $relation)
+            && method_exists($this->getModel()->{$relation}(), 'getForeignKeyName')
+        ) {
+            $this->query()->where(
+                $this->getModel()->{$relation}()->getForeignKeyName(),
+                $parentId
+            );
+
             return $this;
         }
-
-        $this->query()->where(
-            $this->getModel()->{$relation}()->getForeignKeyName(),
-            $parentId
-        );
 
         return $this;
     }
