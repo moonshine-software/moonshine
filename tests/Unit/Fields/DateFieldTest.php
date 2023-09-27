@@ -9,6 +9,7 @@ use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
+uses()->group('date-field');
 
 beforeEach(function (): void {
     $this->field = Date::make('Created at');

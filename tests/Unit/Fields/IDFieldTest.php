@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use MoonShine\Fields\Hidden;
 use MoonShine\Fields\ID;
-use MoonShine\Fields\Text;
 
 uses()->group('fields');
 
@@ -13,7 +13,7 @@ beforeEach(function (): void {
 
 it('text is parent', function (): void {
     expect($this->field)
-        ->toBeInstanceOf(Text::class);
+        ->toBeInstanceOf(Hidden::class);
 });
 
 it('type', function (): void {

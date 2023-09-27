@@ -6,10 +6,11 @@ namespace MoonShine\Applies\Filters;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
 
-class SlideModelApply implements ApplyContract
+class DateRangeModelApply implements ApplyContract
 {
     public function apply(Field $field): Closure
     {
@@ -19,12 +20,20 @@ class SlideModelApply implements ApplyContract
             $query->when(
                 $values['from'] ?? null,
                 function ($query, $from) use ($field): void {
-                    $query->where($field->column(), '>=', $from);
+                    $query->whereDate(
+                        $field->column(),
+                        '>=',
+                        Carbon::parse($from)
+                    );
                 }
             )->when(
                 $values['to'] ?? null,
                 function ($query, $to) use ($field): void {
-                    $query->where($field->column(), '<=', $to);
+                    $query->whereDate(
+                        $field->column(),
+                        '<=',
+                        Carbon::parse($to)
+                    );
                 }
             );
         };

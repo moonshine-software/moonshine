@@ -22,18 +22,22 @@ class Date extends Text
         }
 
         if ($value instanceof Carbon) {
-            return $value->format($this->inputFormat);
+            return $value->format($this->getInputFormat());
         }
 
-        return date($this->inputFormat, strtotime((string) $value));
+        return date($this->getInputFormat(), strtotime((string) $value));
     }
 
     protected function resolvePreview(): string
     {
-        $value = parent::resolvePreview();
+        $value = $this->toFormattedValue();
+
+        if ($value instanceof Carbon) {
+            return $value->format($this->getFormat());
+        }
 
         return $value
-            ? date($this->format, strtotime($value))
+            ? date($this->getFormat(), strtotime($value))
             : '';
     }
 }

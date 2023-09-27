@@ -1,12 +1,12 @@
 <x-moonshine::form.input-extensions
-    :extensions="method_exists($element, 'getExtensions') ? $element->getExtensions() : null"
+    :extensions="$element->getExtensions()"
 >
     <x-moonshine::form.input
         :attributes="$element->attributes()->except('x-on:change')->merge([
         'id' => $element->id(),
         'placeholder' => $element->label() ?? '',
         'name' => $element->name(),
-        'value' => $element->isFile() ? false : (string) $element->value()
+        'value' => (string) $element->value()
     ])"
         @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
         :@change="(($updateOnPreview ?? false)

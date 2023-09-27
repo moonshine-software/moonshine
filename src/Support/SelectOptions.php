@@ -19,14 +19,16 @@ final class SelectOptions
             $current = $current->value ?? $current->name ?? null;
         }
 
-        if (is_iterable($current)) {
-            $current = is_string($current) ? json_decode(
+        if (is_string($current) && str($current)->isJson()) {
+            $current = json_decode(
                 $current,
                 true,
                 512,
                 JSON_THROW_ON_ERROR
-            ) : $current;
+            );
+        }
 
+        if (is_iterable($current)) {
             return match (true) {
                 $current instanceof Collection => $current->contains(
                     $value

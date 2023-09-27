@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Carbon;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Fields\RangeField;
@@ -85,34 +84,14 @@ describe('common field methods', function () {
             ->toBe('number');
     });
 
-    it('date type', function (): void {
-        expect($this->field->dates()->type())
-            ->toBe('date');
-    });
-
     it('view', function (): void {
         expect($this->field->getView())
-            ->toBe('moonshine::fields.range');
-    });
-
-    it('date view type', function (): void {
-        expect($this->field->dates()->getView())
             ->toBe('moonshine::fields.range');
     });
 
     it('preview', function (): void {
         expect($this->field->fill(['start' => 0, 'end' => 100])->preview())
             ->toBe('0 - 100');
-    });
-
-    it('date preview', function (): void {
-        expect(
-            $this->field
-                ->dates()
-                ->fill(['start' => Carbon::now(), 'end' => Carbon::make(now())->add(1, 'day')])
-                ->preview()
-        )
-            ->toBe(Carbon::now() . ' - ' . Carbon::make(now())->add(1, 'day'));
     });
 
     it('is group', function (): void {

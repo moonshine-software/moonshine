@@ -5,25 +5,13 @@
     <x-moonshine::box
         class="box-shadow zoom-in h-full p-0"
     >
-        <div class="report-card">
-            <div class="report-card-heading">
-                {!! $element->getIcon(6, 'secondary') !!}
-            </div>
-
-            @if($element->isProgress())
-                <x-moonshine::progress-bar
-                    color="primary"
-                    :radial="false"
-                    :value="$element->valueResult()"
-                >
-                    {{ $element->valueResult() }}%
-                </x-moonshine::progress-bar>
-            @endif
-
-            <div class="report-card-body">
-                <div class="report-card-value">{{ $element->simpleValue() }}</div>
-                <h5 class="report-card-title">{{ $element->label() }}</h5>
-            </div>
-        </div>
+        <x-moonshine::metrics.value
+            :attributes="$element->attributes()"
+            :title="$element->label()"
+            :icon="$element->getIcon(6, 'secondary')"
+            :progress="$element->isProgress()"
+            :value="$element->valueResult()"
+            :simpleValue="$element->simpleValue()"
+        />
     </x-moonshine::box>
 </x-moonshine::column>

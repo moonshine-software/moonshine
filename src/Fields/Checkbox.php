@@ -10,6 +10,7 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Traits\Fields\BooleanTrait;
+use MoonShine\Traits\Fields\UpdateOnPreview;
 use MoonShine\Traits\Fields\WithDefaultValue;
 
 class Checkbox extends Field implements
@@ -20,6 +21,7 @@ class Checkbox extends Field implements
 {
     use BooleanTrait;
     use WithDefaultValue;
+    use UpdateOnPreview;
 
     protected string $view = 'moonshine::fields.checkbox';
 

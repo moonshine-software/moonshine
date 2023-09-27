@@ -22,6 +22,11 @@ trait DateTrait
         return $this->format;
     }
 
+    public function getInputFormat(): string
+    {
+        return $this->inputFormat;
+    }
+
     public function withTime(): static
     {
         $this->type = "datetime-local";

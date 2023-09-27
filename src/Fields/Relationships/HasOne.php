@@ -140,7 +140,8 @@ class HasOne extends ModelRelationField
                     __('moonshine::ui.delete'),
                     url: fn ($data): string => $resource->route('crud.destroy', $data->getKey())
                 )
-                    ->customAttributes(['class' => 'btn-secondary btn-lg'])
+                    ->secondary()
+                    ->customAttributes(['class' => 'btn-lg'])
                     ->inModal(
                         fn (): array|string|null => __('moonshine::ui.delete'),
                         fn (ActionButton $action): string => (string) form(

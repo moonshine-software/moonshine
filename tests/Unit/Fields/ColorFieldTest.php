@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Color;
-use MoonShine\Fields\Text;
+use MoonShine\Fields\Field;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
@@ -16,12 +16,12 @@ beforeEach(function (): void {
 
 it('text is parent', function (): void {
     expect($this->field)
-        ->toBeInstanceOf(Text::class);
+        ->toBeInstanceOf(Field::class);
 });
 
 it('type', function (): void {
     expect($this->field->type())
-        ->toBe("text");
+        ->toBe('color');
 });
 
 it('view', function (): void {
@@ -46,6 +46,5 @@ it('apply', function (): void {
     )
         ->toBeInstanceOf(Model::class)
         ->color
-        ->toBe($data['color'])
-    ;
+        ->toBe($data['color']);
 });

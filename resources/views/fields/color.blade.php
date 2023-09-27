@@ -11,7 +11,7 @@
         </div>
 
         <x-moonshine::form.input
-            :attributes="$element->attributes()->merge([
+            :attributes="$element->attributes()->except(['type'])->merge([
                 'id' => $element->id(),
                 'name' => $element->name(),
                 'type' => 'text',

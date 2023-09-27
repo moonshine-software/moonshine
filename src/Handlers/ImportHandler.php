@@ -159,7 +159,9 @@ class ImportHandler extends Handler
                             : ($field->isNullable() ? null : $value);
                     }
 
-                    $value = str($value)->isJson() ? json_decode($value, null, 512, JSON_THROW_ON_ERROR) : $value;
+                    $value = is_string($value) && str($value)->isJson()
+                        ? json_decode($value, null, 512, JSON_THROW_ON_ERROR)
+                        : $value;
 
                     return [$field->column() => $value];
                 }

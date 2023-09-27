@@ -184,8 +184,7 @@ class HasMany extends ModelRelationField implements HasFields
             ActionButton::make(
                 __('moonshine::ui.show') . " ({$this->toValue()->total()})",
                 to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-' . request('resourceItem')])
-            )
-                ->customAttributes(['class' => 'btn btn-primary'])
+            )->primary()
         ;
     }
 

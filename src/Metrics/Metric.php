@@ -12,6 +12,7 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithColumnSpan;
+use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithView;
@@ -26,6 +27,7 @@ abstract class Metric implements MoonShineRenderable, HasAssets
     use WithAssets;
     use WithView;
     use WithColumnSpan;
+    use WithComponentAttributes;
     use WithLabel;
     use WithIcon;
 

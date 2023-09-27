@@ -40,7 +40,7 @@ class Select extends Field implements
         $value = $this->toFormattedValue();
 
         if ($this->isMultiple()) {
-            $value = is_string($value) ?
+            $value = is_string($value) && str($value)->isJson() ?
                 json_decode($value, true, 512, JSON_THROW_ON_ERROR)
                 : $value;
 
