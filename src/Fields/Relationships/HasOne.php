@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use MoonShine\ActionButtons\ActionButton;
@@ -15,7 +16,6 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Traits\WithFields;
-use Illuminate\Contracts\View\View;
 use Throwable;
 
 class HasOne extends ModelRelationField
