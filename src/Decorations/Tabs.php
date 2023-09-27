@@ -31,8 +31,6 @@ class Tabs extends Decoration
 
     /**
      * @throws Throwable
-     *
-     * @return string|int|null
      */
     public function getActive(): string|int|null
     {
