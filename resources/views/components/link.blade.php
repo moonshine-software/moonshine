@@ -1,6 +1,6 @@
 @props([
     'icon' => false,
-    'filled' => false
+    'filled' => false,
 ])
 <a {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
     @if($icon)

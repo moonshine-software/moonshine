@@ -26,7 +26,7 @@ final class DeleteButton
                 ])
             )
         )
-            ->customAttributes(['class' => 'btn-secondary'])
+            ->secondary()
             ->icon('heroicons.outline.trash')
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.delete'),

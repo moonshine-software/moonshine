@@ -23,7 +23,7 @@ final class HasManyCreateButton
         $fields = $field->preparedFields();
 
         return ActionButton::make(__('moonshine::ui.add'), url: $action)
-            ->customAttributes(['class' => 'btn btn-primary'])
+            ->primary()
             ->icon('heroicons.outline.plus')
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),

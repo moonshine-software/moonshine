@@ -29,9 +29,14 @@ class Tabs extends Decoration
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     *
+     * @return string|int|null
+     */
     public function getActive(): string|int|null
     {
-        return $this->active;
+        return $this->tabs()->firstWhere('active', true)?->id();
     }
 
     /**

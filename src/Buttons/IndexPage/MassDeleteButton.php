@@ -21,7 +21,7 @@ final class MassDeleteButton
             ])
         )
             ->bulk()
-            ->customAttributes(['class' => 'btn-secondary'])
+            ->secondary()
             ->icon('heroicons.outline.trash')
             ->inModal(
                 fn (): string => 'Delete',

@@ -14,7 +14,7 @@
                 <li class="tabs-item">
                     <button
                         @click.prevent="activeTab = '{{ $tabId }}'"
-                        :class="{ '_is-active': activeTab === '{{ $tabId}}' }"
+                        :class="{ '_is-active': activeTab === '{{ $tabId }}' }"
                         class="tabs-button"
                         type="button"
                     >

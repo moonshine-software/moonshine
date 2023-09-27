@@ -16,7 +16,7 @@ final class ImportButton
             $import->label(),
             '#'
         )
-            ->customAttributes(['class' => 'btn btn-primary'])
+            ->primary()
             ->icon($import->iconValue())
             ->inOffCanvas(
                 fn (): string => $import->label(),
