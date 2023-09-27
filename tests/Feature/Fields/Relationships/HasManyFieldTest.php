@@ -5,6 +5,7 @@ declare(strict_types=1);
 uses()->group('model-relation-fields');
 uses()->group('has-many-field');
 
+use MoonShine\Fields\Field;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Text;
@@ -85,7 +86,7 @@ it('onlyLink preview condition', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
-            ->onlyLink(function ($count) {
+            ->onlyLink(condition: function (int $count): bool {
                 return $count > 10;
             })
         ,
@@ -107,7 +108,7 @@ it('onlyLink value condition', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
-            ->onlyLink(function ($count, $field) {
+            ->onlyLink(condition: function (int $count, Field $field): bool {
                 return $field->toValue()->total() > 20;
             })
         ,
