@@ -33,6 +33,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected Closure | bool $onlyLink = false;
 
+    protected ?string $linkRelation = null;
+
     public function preview(): View|string
     {
         $casted = $this->getRelatedModel();
@@ -71,8 +73,10 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
-    public function onlyLink(Closure|bool|null $condition = null): static
+    public function onlyLink(?string $linkRelation = null, Closure|bool|null $condition = null): static
     {
+        $this->linkRelation = $linkRelation;
+
         if(is_null($condition)) {
             $this->onlyLink = true;
 
@@ -134,11 +138,13 @@ class HasMany extends ModelRelationField implements HasFields
 
         $countItems = $this->toValue()->count();
 
-        $parentName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+        if(is_null($relationName = $this->linkRelation)) {
+            $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+        }
 
         return ActionButton::make(
             "($countItems)",
-            to_page($this->getResource(), 'index-page', ['parentId' => $parentName . '-'. $casted->{$casted->getKeyName()}])
+            to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-'. $casted->{$casted->getKeyName()}])
         )
             ->icon('heroicons.outline.eye')
             ->render()
@@ -184,12 +190,14 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function linkValue()
     {
-        $parentName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+        if(is_null($relationName = $this->linkRelation)) {
+            $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+        }
 
         return
             ActionButton::make(
                 __('moonshine::ui.show'). " ({$this->toValue()->total()})",
-                to_page($this->getResource(), 'index-page', ['parentId' => $parentName . '-' . request('resourceItem')])
+                to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-' . request('resourceItem')])
             )
                 ->customAttributes(['class' => 'btn btn-primary'])
         ;

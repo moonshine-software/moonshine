@@ -16,6 +16,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use MoonShine\Attributes\SearchUsingFullText;
 use MoonShine\Contracts\ApplyContract;
+use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\MoonShineRouter;
 use MoonShine\QueryTags\QueryTag;
@@ -326,7 +327,7 @@ trait ResourceModelQuery
             return $this;
         }
 
-        return $this;
+        throw new ResourceException("Relation $relation not found for current resource");
     }
 
     public function hasWith(): bool
