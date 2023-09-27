@@ -294,17 +294,10 @@ trait ResourceModelQuery
 
     protected function resolveParentResource(): self
     {
-        $parentIdUri = moonshineRequest()->getParentResourceId();
-
-        if(is_null($parentIdUri)) {
-            return $this;
-        }
-
-        $parentInfo = explode('-', $parentIdUri);
-        $relation = $parentInfo[0] ?? null;
-        $parentId = $parentInfo[1] ?? null;
-
-        if(is_null($relation) || is_null($parentId)) {
+        if(
+            is_null($relation = moonshineRequest()->getParentRelationName())
+            || is_null($parentId = moonshineRequest()->getParentRelationId())
+        ) {
             return $this;
         }
 
