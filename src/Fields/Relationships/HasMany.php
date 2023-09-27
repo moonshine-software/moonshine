@@ -144,7 +144,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return ActionButton::make(
             "($countItems)",
-            to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-'. $casted->{$casted->getKeyName()}])
+            to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}])
         )
             ->icon('heroicons.outline.eye')
             ->render()
@@ -196,7 +196,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return
             ActionButton::make(
-                __('moonshine::ui.show'). " ({$this->toValue()->total()})",
+                __('moonshine::ui.show') . " ({$this->toValue()->total()})",
                 to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-' . request('resourceItem')])
             )
                 ->customAttributes(['class' => 'btn btn-primary'])
