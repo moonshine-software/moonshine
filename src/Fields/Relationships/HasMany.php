@@ -15,6 +15,7 @@ use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Traits\WithFields;
@@ -56,7 +57,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         $this->setValue($this->getResource()->paginate());
 
-        return parent::value($withOld);
+        return parent::value(false);
     }
 
     public function resolveFill(
@@ -168,12 +169,12 @@ class HasMany extends ModelRelationField implements HasFields
             ->render();
     }
 
-    protected function resolveValue(): mixed
+    protected function resolveValue(): MoonShineRenderable
     {
         return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
     }
 
-    protected function linkValue()
+    protected function linkValue(): MoonShineRenderable
     {
         if(is_null($relationName = $this->linkRelation)) {
             $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
@@ -188,7 +189,7 @@ class HasMany extends ModelRelationField implements HasFields
         ;
     }
 
-    protected function tableValue()
+    protected function tableValue(): MoonShineRenderable
     {
         $resource = $this->getResource();
 

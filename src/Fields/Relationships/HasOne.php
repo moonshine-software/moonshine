@@ -41,7 +41,7 @@ class HasOne extends ModelRelationField
     {
         $this->setValue($this->getRelatedModel()->{$this->getRelationName()});
 
-        return parent::value($withOld);
+        return parent::value(false);
     }
 
     public function resolveFill(
