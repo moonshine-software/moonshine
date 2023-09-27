@@ -16,18 +16,24 @@ class HasOne extends HasMany
 {
     protected bool $toOne = true;
 
+    public function value(bool $withOld = true): mixed
+    {
+        $this->setValue($this->getRelatedModel()->{$this->getRelationName()});
+
+        return ModelRelationField::value($withOld);
+    }
+
     /**
      * @throws FieldException
      * @throws Throwable
      */
     protected function resolveValue(): mixed
     {
-        $casted = $this->getRelatedModel();
-
-        $item = $casted->{$this->getRelationName()};
-
         $resource = $this->getResource();
+
         $parentResource = moonshineRequest()->getResource();
+
+        $item = $this->toValue();
 
         if(is_null($parentResource)) {
             throw new FieldException('Parent resource is required');
