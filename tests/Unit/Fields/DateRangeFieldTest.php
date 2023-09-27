@@ -100,7 +100,7 @@ describe('common field methods', function () {
         $to = now()->addMonth();
 
         expect($this->field->fill(['start' => $from, 'end' => $to])->preview())
-            ->toBe($from.' - '.$to);
+            ->toBe($from . ' - ' . $to);
     });
 
     it('is group', function (): void {
@@ -124,7 +124,7 @@ describe('unique field methods', function () {
             ->format('d.m');
 
         expect($field->preview())
-            ->toBe($from->format('d.m').' - '.$to->format('d.m'))
+            ->toBe($from->format('d.m') . ' - ' . $to->format('d.m'))
             ->and($field->value())
                 ->toBe([
                     $field->fromField => $from->format('Y-m-d'),

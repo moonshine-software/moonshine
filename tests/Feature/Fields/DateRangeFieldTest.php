@@ -33,7 +33,7 @@ it('show field on pages', function () {
 
     $item = Item::factory()->create([
         'start_date' => $from,
-        'end_date' => $to
+        'end_date' => $to,
     ]);
 
     asAdmin()->get(
@@ -41,7 +41,7 @@ it('show field on pages', function () {
     )
         ->assertOk()
         ->assertSee('Range')
-        ->assertSee($from->format('d.m.Y') . ' - '. $to->format('d.m.Y'))
+        ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
     ;
 
     asAdmin()->get(
@@ -98,7 +98,7 @@ it('before apply', function () {
     $this->item->refresh();
 
     expect($this->item->name)
-        ->toBe($from.' - '.$to)
+        ->toBe($from . ' - ' . $to)
     ;
 });
 
