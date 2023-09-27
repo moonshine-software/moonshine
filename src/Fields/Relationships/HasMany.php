@@ -7,7 +7,6 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
@@ -16,6 +15,7 @@ use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Traits\WithFields;
@@ -44,7 +44,7 @@ class HasMany extends ModelRelationField implements HasFields
         return parent::preview();
     }
 
-    public function value(bool $withOld = true): mixed
+    public function value(bool $withOld = false): mixed
     {
         $casted = $this->getRelatedModel();
 
@@ -57,7 +57,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         $this->setValue($this->getResource()->paginate());
 
-        return parent::value($withOld);
+        return parent::value(false);
     }
 
     public function resolveFill(
@@ -111,20 +111,14 @@ class HasMany extends ModelRelationField implements HasFields
     public function preparedFields(): Fields
     {
         if (! $this->hasFields()) {
-            $fields = $this->toOne()
-                ? $this->getResource()->getFormFields()
-                : $this->getResource()->getIndexFields();
+            $fields = $this->getResource()->getIndexFields();
 
             $this->fields($fields->toArray());
 
             return Fields::make($this->fields);
         }
 
-        return $this->getFields()->when(
-            $this->toOne(),
-            static fn (Fields $fields): Fields => $fields->formFields(),
-            static fn (Fields $fields): Fields => $fields->indexFields()
-        );
+        return $this->getFields()->indexFields();
     }
 
     protected function resolvePreview(): View|string
@@ -155,12 +149,8 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $items = $this->toValue();
 
-        if(! empty($items) && ! $this->toOne()) {
+        if(! empty($items)) {
             $items = $items->take($this->getLimit());
-        }
-
-        if($this->toOne()) {
-            $items = Arr::wrap($items);
         }
 
         if ($this->isRawMode()) {
@@ -176,19 +166,15 @@ class HasMany extends ModelRelationField implements HasFields
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
-            ->when(
-                $this->toOne(),
-                static fn (TableBuilder $table): TableBuilder => $table->vertical()
-            )
             ->render();
     }
 
-    protected function resolveValue(): mixed
+    protected function resolveValue(): MoonShineRenderable
     {
         return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
     }
 
-    protected function linkValue(): static
+    protected function linkValue(): MoonShineRenderable
     {
         if(is_null($relationName = $this->linkRelation)) {
             $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
@@ -203,7 +189,7 @@ class HasMany extends ModelRelationField implements HasFields
         ;
     }
 
-    protected function tableValue()
+    protected function tableValue(): MoonShineRenderable
     {
         $resource = $this->getResource();
 

@@ -4,23 +4,94 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Traits\WithFields;
+use Illuminate\Contracts\View\View;
 use Throwable;
 
-class HasOne extends HasMany
+class HasOne extends ModelRelationField
 {
+    use WithFields;
+
     protected bool $toOne = true;
 
-    public function value(bool $withOld = true): mixed
+    protected bool $isGroup = true;
+
+    protected bool $outsideComponent = true;
+
+    public function preview(): View|string
+    {
+        $casted = $this->getRelatedModel();
+
+        $this->setValue($casted->{$this->getRelationName()});
+
+        return parent::preview();
+    }
+
+    public function value(bool $withOld = false): mixed
     {
         $this->setValue($this->getRelatedModel()->{$this->getRelationName()});
 
-        return ModelRelationField::value($withOld);
+        return parent::value(false);
+    }
+
+    public function resolveFill(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0
+    ): Field {
+
+        if ($casted instanceof Model) {
+            $this->setRelatedModel($casted);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function preparedFields(): Fields
+    {
+        if (! $this->hasFields()) {
+            $fields = $this->getResource()->getFormFields();
+
+            $this->fields($fields->toArray());
+
+            return Fields::make($this->fields);
+        }
+
+        return $this->getFields()->formFields();
+    }
+
+    protected function resolvePreview(): View|string
+    {
+        $items = Arr::wrap($this->toValue());
+
+        if ($this->isRawMode()) {
+            return $items
+                ->map(fn (Model $item) => $item->{$this->getResourceColumn()})
+                ->implode(';');
+        }
+
+        $resource = $this->getResource();
+
+        return TableBuilder::make(items: $items)
+            ->fields($this->preparedFields())
+            ->cast($resource->getModelCast())
+            ->preview()
+            ->simple()
+            ->vertical()
+            ->render();
     }
 
     /**
