@@ -81,17 +81,17 @@ class MoonShineRequest extends Request
     public function getParentRelationName(): ?string
     {
         return
-            ! is_null($parentResource = $this->getParentResourceId())
-                ? explode('-', $parentResource)[0] ?? null
-                : null;
+            is_null($parentResource = $this->getParentResourceId())
+                ? null
+                : explode('-', $parentResource)[0] ?? null;
     }
 
     public function getParentRelationId(): int|string|null
     {
         return
-            ! is_null($parentResource = $this->getParentResourceId())
-                ? explode('-', $parentResource)[1] ?? null
-                : null;
+            is_null($parentResource = $this->getParentResourceId())
+                ? null
+                : explode('-', $parentResource)[1] ?? null;
     }
 
     public function getPageUri(): ?string

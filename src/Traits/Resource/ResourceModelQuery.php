@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
-use App\Models\Comment;
-use App\MoonShine\Resources\CategoryResource;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -18,7 +16,6 @@ use MoonShine\Attributes\SearchUsingFullText;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
-use MoonShine\MoonShineRouter;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Attributes;

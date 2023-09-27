@@ -188,7 +188,7 @@ class HasMany extends ModelRelationField implements HasFields
         return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
     }
 
-    protected function linkValue()
+    protected function linkValue(): static
     {
         if(is_null($relationName = $this->linkRelation)) {
             $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
