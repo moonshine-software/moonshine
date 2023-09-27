@@ -87,7 +87,7 @@ trait RangeTrait
 
     protected function resolvePreview(): string
     {
-        $value = $this->toValue(withDefault: false);
+        $value = $this->toFormattedValue();
 
         if ($this->isRawMode()) {
             return "{$value[$this->fromField]} - {$value[$this->toField]}";

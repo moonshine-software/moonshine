@@ -215,7 +215,7 @@ class Json extends Field implements
     protected function resolvePreview(): View|string
     {
         if ($this->isRawMode()) {
-            return (string) $this->toFormattedValue();
+            return parent::resolvePreview();
         }
 
         return $this->resolveValue()

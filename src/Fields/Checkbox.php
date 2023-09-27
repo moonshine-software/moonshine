@@ -51,7 +51,7 @@ class Checkbox extends Field implements
         }
 
         return view('moonshine::ui.boolean', [
-            'value' => (bool) $this->toValue(false),
+            'value' => (bool) parent::resolvePreview(),
         ]);
     }
 }
