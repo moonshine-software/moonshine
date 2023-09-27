@@ -37,7 +37,7 @@ class Date extends Text
         }
 
         return $value
-            ? date($this->getFormat(), strtotime($value))
+            ? date($this->getFormat(), strtotime((string) $value))
             : '';
     }
 }

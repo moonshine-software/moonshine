@@ -70,7 +70,7 @@ class DateRangeField extends Field implements HasDefaultValue, DefaultCanBeArray
     private function isNullDates(): bool
     {
         if (is_array($this->toValue())) {
-            return empty(array_filter($this->toValue()));
+            return array_filter($this->toValue()) === [];
         }
 
         return true;
