@@ -144,11 +144,11 @@ abstract class ModelResource extends Resource
     /**
      * @throws Throwable
      */
-    public function delete(Model $item): bool
+    public function delete(Model $item, ?Fields $fields = null): bool
     {
         $item = $this->beforeDeleting($item);
 
-        $fields = $this->getFormFields()->onlyFields();
+        $fields ??= $this->getFormFields()->onlyFields();
 
         $fields->fill($item->toArray(), $item);
 

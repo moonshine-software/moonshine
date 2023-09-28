@@ -138,7 +138,11 @@ class HasOne extends ModelRelationField
             ->buttons(is_null($item) ? [] : [
                 ActionButton::make(
                     __('moonshine::ui.delete'),
-                    url: fn ($data): string => $resource->route('crud.destroy', $data->getKey())
+                    url: fn ($data): string => to_relation_route(
+                        'delete',
+                        $this->getRelatedModel()?->getKey(),
+                        relation: $this->getRelationName()
+                    )
                 )
                     ->secondary()
                     ->customAttributes(['class' => 'btn-lg'])
@@ -148,6 +152,7 @@ class HasOne extends ModelRelationField
                             $action->url(),
                             fields: [
                                 Hidden::make('_method')->setValue('DELETE'),
+                                Hidden::make('id')->setValue($item->getKey()),
                                 TextBlock::make('', __('moonshine::ui.confirm_message')),
                             ]
                         )

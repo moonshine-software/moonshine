@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Relationships\MorphTo;
+use MoonShine\Http\Requests\Relations\RelationModelFieldDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
@@ -95,6 +96,40 @@ class RelationModelFieldController extends MoonShineController
     public function update(RelationModelFieldUpateRequest $request): JsonResponse|RedirectResponse
     {
         return $this->updateOrCreate($request);
+    }
+
+    public function delete(RelationModelFieldDeleteRequest $request): RedirectResponse
+    {
+        $parentResource = $request->getResource();
+
+        $parentItem = $parentResource->getItemOrInstance();
+
+        $field = $request->getField()->resolveFill(
+            $parentItem->toArray(),
+            $parentItem
+        );
+
+        $fields = $field->getFields();
+
+        $resource = $field->getResource();
+
+        if ($fields->isEmpty()) {
+            $fields = $resource->getFormFields();
+        }
+
+        $resource->delete(
+            $request->getFieldItemOrFail(),
+            $fields->onlyFields()
+        );
+
+        $this->toast(
+            __('moonshine::ui.deleted'),
+            'delete'
+        );
+
+        return $request->redirectRoute(
+            $parentResource->redirectAfterSave()
+        );
     }
 
     /**
