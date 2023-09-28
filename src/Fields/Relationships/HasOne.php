@@ -22,6 +22,8 @@ class HasOne extends ModelRelationField
 {
     use WithFields;
 
+    protected string $view = 'moonshine::fields.relationships.has-one';
+
     protected bool $toOne = true;
 
     protected bool $isGroup = true;

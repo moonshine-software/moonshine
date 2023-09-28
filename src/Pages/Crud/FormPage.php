@@ -2,7 +2,6 @@
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\HasOneField\HasManyCreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Components\ActionGroup;
@@ -60,8 +59,7 @@ class FormPage extends Page
                 ,
             ])
                 ->customAttributes(['class' => 'mb-4'])
-                ->justifyAlign('end')
-            ;
+                ->justifyAlign('end');
         }
 
         return $components;
@@ -118,20 +116,19 @@ class FormPage extends Page
             return $components;
         }
 
-        foreach ($this->getResource()->getOutsideFields() as $field) {
-            $components[] = Divider::make($field->label());
+        $outsideFields = $this->getResource()->getOutsideFields();
 
-            if (! $field->toOne()) {
-                $components[] = HasManyCreateButton::for($field, $item->getKey());
-                $components[] = Divider::make();
+        if ($outsideFields->isNotEmpty()) {
+            $components[] = Divider::make();
+
+            foreach ($this->getResource()->getOutsideFields() as $field) {
+                $components[] = Fragment::make([
+                    $field->resolveFill(
+                        $item?->attributesToArray() ?? [],
+                        $item
+                    ),
+                ])->withName($field->getRelationName());
             }
-
-            $components[] = Fragment::make([
-                $field->resolveFill(
-                    $item?->attributesToArray() ?? [],
-                    $item
-                )->value(withOld: false),
-            ])->withName($field->getRelationName());
         }
 
         return $components;

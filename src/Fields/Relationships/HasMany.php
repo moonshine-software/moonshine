@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Buttons\HasOneField\HasManyCreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Buttons\IndexPage\FormButton;
@@ -18,6 +19,7 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -25,15 +27,31 @@ class HasMany extends ModelRelationField implements HasFields
 {
     use WithFields;
 
+    protected string $view = 'moonshine::fields.relationships.has-many';
+
     protected bool $isGroup = true;
 
     protected bool $outsideComponent = true;
 
     protected int $limit = 15;
 
-    protected Closure | bool $onlyLink = false;
+    protected Closure|bool $onlyLink = false;
 
     protected ?string $linkRelation = null;
+
+    protected bool $isCreatable = false;
+
+    public function creatable(Closure|bool|null $condition = null): static
+    {
+        $this->isCreatable = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isCreatable(): bool
+    {
+        return $this->isCreatable;
+    }
 
     public function preview(): View|string
     {
@@ -65,7 +83,6 @@ class HasMany extends ModelRelationField implements HasFields
         mixed $casted = null,
         int $index = 0
     ): Field {
-
         if ($casted instanceof Model) {
             $this->setRelatedModel($casted);
         }
@@ -77,7 +94,7 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $this->linkRelation = $linkRelation;
 
-        if(is_null($condition)) {
+        if (is_null($condition)) {
             $this->onlyLink = true;
 
             return $this;
@@ -90,11 +107,11 @@ class HasMany extends ModelRelationField implements HasFields
 
     public function isOnlyLink(): bool
     {
-        if(is_callable($this->onlyLink) && is_null($this->toValue())) {
+        if (is_callable($this->onlyLink) && is_null($this->toValue())) {
             return call_user_func($this->onlyLink, 0, $this);
         }
 
-        if(is_callable($this->onlyLink)) {
+        if (is_callable($this->onlyLink)) {
             $count = $this->toValue() instanceof Collection
                 ? $this->toValue()->count()
                 : $this->toValue()->total();
@@ -132,24 +149,27 @@ class HasMany extends ModelRelationField implements HasFields
 
         $countItems = $this->toValue()->count();
 
-        if(is_null($relationName = $this->linkRelation)) {
+        if (is_null($relationName = $this->linkRelation)) {
             $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
         }
 
         return ActionButton::make(
             "($countItems)",
-            to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}])
+            to_page(
+                $this->getResource(),
+                'index-page',
+                ['parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}]
+            )
         )
             ->icon('heroicons.outline.eye')
-            ->render()
-        ;
+            ->render();
     }
 
     protected function tablePreview(): View|string
     {
         $items = $this->toValue();
 
-        if(! empty($items)) {
+        if (! empty($items)) {
             $items = $items->take($this->getLimit());
         }
 
@@ -176,16 +196,32 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function linkValue(): MoonShineRenderable
     {
-        if(is_null($relationName = $this->linkRelation)) {
+        if (is_null($relationName = $this->linkRelation)) {
             $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
         }
 
         return
             ActionButton::make(
                 __('moonshine::ui.show') . " ({$this->toValue()->total()})",
-                to_page($this->getResource(), 'index-page', ['parentId' => $relationName . '-' . request('resourceItem')])
-            )->primary()
-        ;
+                to_page(
+                    $this->getResource(),
+                    'index-page',
+                    ['parentId' => $relationName . '-' . request('resourceItem')]
+                )
+            )->primary();
+    }
+
+    public function createButton(): ?ActionButton
+    {
+        if (is_null($this->getRelatedModel()?->getKey())) {
+            return null;
+        }
+
+        if (! $this->isCreatable()) {
+            return null;
+        }
+
+        return HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey());
     }
 
     protected function tableValue(): MoonShineRenderable
