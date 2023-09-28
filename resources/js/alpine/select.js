@@ -134,15 +134,17 @@ export default (asyncUrl = '') => ({
         this.$el.addEventListener(
           'search',
           debounce(event => {
-            if (event.detail.value.length > 0) {
-              let extraQuery = ''
+            let url = new URL(asyncUrl)
 
+            if (event.detail.value.length > 0) {
               if (this.$el.dataset.asyncExtra !== undefined) {
-                extraQuery = '&extra=' + this.$el.dataset.asyncExtra
+                url.searchParams.append('extra', this.$el.dataset.asyncExtra)
               }
 
+              url.searchParams.append('query', event.detail.value)
+
               this.fromUrl(
-                asyncUrl + '&query=' + event.detail.value + extraQuery + '&' + crudFormQuery()
+                url.toString() + (crudFormQuery().length ? ('&' + crudFormQuery()) : '')
               )
             }
           }, 300),
