@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use App\Models\Item;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Http\JsonResponse;
