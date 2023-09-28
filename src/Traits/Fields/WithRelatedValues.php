@@ -67,6 +67,15 @@ trait WithRelatedValues
         return $query;
     }
 
+    private function resolveRelatedQuery(Builder $builder): Collection
+    {
+        return cache()->remember(
+            $builder->toRawSql(),
+            4,
+            fn(): Collection => $builder->get()
+        );
+    }
+
     /**
      * @throws Throwable
      */
@@ -76,7 +85,7 @@ trait WithRelatedValues
         $related = $query->getModel();
 
         if (is_closure($this->formattedValueCallback())) {
-            $values = $this->memoizeValues ?? $query->get();
+            $values = $this->memoizeValues ?? $this->resolveRelatedQuery($query);
             $this->memoizeValues = $values;
 
             $values = $values->mapWithKeys(
@@ -93,9 +102,9 @@ trait WithRelatedValues
             $column = "$table.{$this->getResourceColumn()}";
 
             $values = $this->memoizeValues
-                ?? $query->selectRaw(
+                ?? $this->resolveRelatedQuery($query->selectRaw(
                     implode(',', [$key, $column, ...$this->relatedColumns])
-                )->get();
+                ));
 
             $this->memoizeValues = $values;
 

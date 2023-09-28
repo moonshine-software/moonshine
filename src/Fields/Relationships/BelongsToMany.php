@@ -56,6 +56,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $isCreatable = false;
 
+    protected ?Collection $memoizeAllValues = null;
+
     public function getView(): string
     {
         if ($this->isTree()) {
@@ -155,7 +157,8 @@ class BelongsToMany extends ModelRelationField implements
             ->prepend(Preview::make($titleColumn)->customAttributes(['class' => 'pivotTitle']))
             ->prepend($identityField);
 
-        $values = $this->resolveValuesQuery()->get();
+        $values = $this->memoizeAllValues ?? $this->resolveValuesQuery()->get();
+        $this->memoizeAllValues = $values;
 
         $values = $values->map(function ($value) use ($checkedColumn) {
             if ($this->isValueWithModels()) {
