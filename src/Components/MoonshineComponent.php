@@ -25,7 +25,7 @@ abstract class MoonshineComponent extends Component implements MoonShineRenderab
 
     protected ?string $name = null;
 
-    public function name(string $name): self
+    public function name(string $name): static
     {
         $this->name = $name;
 

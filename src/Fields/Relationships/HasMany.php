@@ -82,7 +82,7 @@ class HasMany extends ModelRelationField implements HasFields
         array $raw = [],
         mixed $casted = null,
         int $index = 0
-    ): Field {
+    ): static {
         if ($casted instanceof Model) {
             $this->setRelatedModel($casted);
         }

@@ -8,7 +8,7 @@ trait WithQueue
 {
     protected bool $queue = false;
 
-    public function queue(): self
+    public function queue(): static
     {
         $this->queue = true;
 

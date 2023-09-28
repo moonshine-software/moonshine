@@ -27,14 +27,14 @@ trait TableStates
         return $this->withNotFound;
     }
 
-    public function withNotFound(): self
+    public function withNotFound(): static
     {
         $this->withNotFound = true;
 
         return $this;
     }
 
-    public function preview(): self
+    public function preview(): static
     {
         $this->isPreview = true;
 
@@ -46,7 +46,7 @@ trait TableStates
         return $this->isPreview;
     }
 
-    public function editable(): self
+    public function editable(): static
     {
         $this->isEditable = true;
 
@@ -58,7 +58,7 @@ trait TableStates
         return $this->isEditable;
     }
 
-    public function vertical(): self
+    public function vertical(): static
     {
         $this->isVertical = true;
 
@@ -70,7 +70,7 @@ trait TableStates
         return $this->isVertical;
     }
 
-    public function creatable(bool $reindex = true): self
+    public function creatable(bool $reindex = true): static
     {
         $this->isCreatable = true;
         $this->isReindex = $reindex;
@@ -83,7 +83,7 @@ trait TableStates
         return $this->isCreatable;
     }
 
-    public function reindex(): self
+    public function reindex(): static
     {
         $this->isReindex = true;
 
@@ -95,7 +95,7 @@ trait TableStates
         return $this->isReindex;
     }
 
-    public function sortable(): self
+    public function sortable(): static
     {
         $this->isSortable = true;
 
@@ -107,7 +107,7 @@ trait TableStates
         return $this->isSortable;
     }
 
-    public function simple(): self
+    public function simple(): static
     {
         $this->isSimple = true;
 

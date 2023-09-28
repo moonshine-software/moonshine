@@ -12,5 +12,5 @@ interface HasRelatedValues
 
     public function setValues(array $values): void;
 
-    public function valuesQuery(Closure $callback): self;
+    public function valuesQuery(Closure $callback): static;
 }

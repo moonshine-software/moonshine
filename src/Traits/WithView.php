@@ -14,7 +14,7 @@ trait WithView
         return $this->customView ?? $this->view;
     }
 
-    public function customView(string $customView): self
+    public function customView(string $customView): static
     {
         $this->customView = $customView;
 

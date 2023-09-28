@@ -16,7 +16,7 @@ trait WithAssets
         return $this->assets;
     }
 
-    public function addAssets(array $assets): self
+    public function addAssets(array $assets): static
     {
         moonshineAssets()->add($assets);
 

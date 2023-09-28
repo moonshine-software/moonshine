@@ -123,4 +123,9 @@ class MoonShineUserResource extends ModelResource
     {
         return [];
     }
+
+    public function getBadge(): string
+    {
+        return (string) $this->getModel()->newModelQuery()->count();
+    }
 }

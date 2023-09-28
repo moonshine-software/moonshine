@@ -20,7 +20,7 @@ trait WithOffCanvas
         ?Closure $title = null,
         ?Closure $content = null,
         bool $isLeft = false
-    ): self {
+    ): static {
         $this->offCanvas = OffCanvas::make($title, $content, $isLeft);
 
         return $this;

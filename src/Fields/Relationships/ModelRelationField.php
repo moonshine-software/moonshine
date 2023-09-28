@@ -86,7 +86,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return data_get($casted, $this->getRelationName());
     }
 
-    public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): Field
+    public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): static
     {
         if ($casted instanceof Model) {
             $this->setRelatedModel($casted);

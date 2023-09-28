@@ -19,8 +19,8 @@
 
             <span class="menu-inner-text">{{ $item->label() }}</span>
 
-            @if($item->hasBadge())
-                <span class="menu-inner-counter">{{ $item->getBadge() }}</span>
+            @if($item->hasBadge() && $badge = $item->getBadge())
+                <span class="menu-inner-counter">{{ $badge }}</span>
             @endif
         </a>
     </li>

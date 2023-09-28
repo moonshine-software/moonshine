@@ -22,14 +22,14 @@ trait WithModal
         ?Closure $content = null,
         array $buttons = [],
         bool $async = false
-    ): self {
+    ): static {
         $this->modal = Modal::make($title, $content, $async)
             ->buttons($buttons);
 
         return $this;
     }
 
-    public function withConfirm(): self
+    public function withConfirm(): static
     {
         $this->modal = Modal::make(
             static fn (): array|string|null => __('moonshine::ui.confirm'),

@@ -96,7 +96,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return $this->withWrapper;
     }
 
-    public function customWrapperAttributes(array $attributes): self
+    public function customWrapperAttributes(array $attributes): static
     {
         $this->wrapperAttributes = array_merge($attributes, $this->wrapperAttributes);
 
@@ -167,14 +167,14 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
         return $this->formName;
     }
 
-    public function beforeRender(Closure $closure): self
+    public function beforeRender(Closure $closure): static
     {
         $this->beforeRender = $closure;
 
         return $this;
     }
 
-    public function afterRender(Closure $closure): self
+    public function afterRender(Closure $closure): static
     {
         $this->afterRender = $closure;
 

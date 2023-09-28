@@ -21,7 +21,7 @@ trait WithRelatedValues
 
     protected array $relatedColumns = [];
 
-    protected function relatedColumns(array $relatedColumns): self
+    protected function relatedColumns(array $relatedColumns): static
     {
         $this->relatedColumns = $relatedColumns;
 
@@ -33,7 +33,7 @@ trait WithRelatedValues
         return $this->memoizeValues ?? collect();
     }
 
-    public function valuesQuery(Closure $callback): self
+    public function valuesQuery(Closure $callback): static
     {
         $this->valuesQuery = $callback;
 

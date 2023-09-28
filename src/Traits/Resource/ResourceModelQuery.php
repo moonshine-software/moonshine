@@ -156,7 +156,7 @@ trait ResourceModelQuery
         return $this->query;
     }
 
-    protected function resolveCachedBackRequest(): self
+    protected function resolveCachedBackRequest(): static
     {
         Cache::forget($this->queryCacheKey());
 
@@ -169,7 +169,7 @@ trait ResourceModelQuery
         return $this;
     }
 
-    protected function resolveTags(): self
+    protected function resolveTags(): static
     {
         if ($tagUri = request('query-tag')) {
             $tag = collect($this->queryTags())
@@ -189,7 +189,7 @@ trait ResourceModelQuery
         return $this;
     }
 
-    protected function resolveSearch(): self
+    protected function resolveSearch(): static
     {
         if (! empty($this->search()) && request()->has('search')) {
             $fullTextColumns = Attributes::for($this)
@@ -248,14 +248,14 @@ trait ResourceModelQuery
         });
     }
 
-    protected function resolveOrder(string $column, string $direction): self
+    protected function resolveOrder(string $column, string $direction): static
     {
         $this->query()->orderBy($column, $direction);
 
         return $this;
     }
 
-    protected function resolveFilters(): self
+    protected function resolveFilters(): static
     {
         $filters = $this->getFilters()->onlyFields();
 
@@ -291,7 +291,7 @@ trait ResourceModelQuery
         return $this;
     }
 
-    protected function resolveParentResource(): self
+    protected function resolveParentResource(): static
     {
         if(
             is_null($relation = moonshineRequest()->getParentRelationName())

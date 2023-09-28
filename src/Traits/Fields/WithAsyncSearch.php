@@ -27,7 +27,7 @@ trait WithAsyncSearch
 
     protected array $withImage = [];
 
-    public function withImage(string $column, string $disk = 'public', string $dir = ''): self
+    public function withImage(string $column, string $disk = 'public', string $dir = ''): static
     {
         $this->withImage = [
             'column' => $column,

@@ -17,7 +17,7 @@ abstract class IterableComponent extends MoonshineComponent
 
     protected array $buttons = [];
 
-    public function items(iterable $items = []): self
+    public function items(iterable $items = []): static
     {
         $this->items = $items;
 

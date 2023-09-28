@@ -108,7 +108,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, Field): self  $onApply
+     * @param  Closure(mixed, mixed, Field): static  $onApply
      * @return $this
      */
     public function onApply(Closure $onApply): static

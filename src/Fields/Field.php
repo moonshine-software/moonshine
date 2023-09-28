@@ -100,7 +100,7 @@ abstract class Field extends FormElement
         return $data;
     }
 
-    public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): self
+    public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): static
     {
         if ($this->value) {
             return $this;
@@ -153,7 +153,7 @@ abstract class Field extends FormElement
         return $this->rawValue;
     }
 
-    protected function setRawValue(mixed $value = null): self
+    protected function setRawValue(mixed $value = null): static
     {
         $this->rawValue = $value;
 
@@ -182,7 +182,7 @@ abstract class Field extends FormElement
         return $this->resolveValue();
     }
 
-    public function setValue(mixed $value = null): self
+    public function setValue(mixed $value = null): static
     {
         $this->value = $value;
 
@@ -194,7 +194,7 @@ abstract class Field extends FormElement
         return $this->toValue();
     }
 
-    protected function setFormattedValue(mixed $value = null): self
+    protected function setFormattedValue(mixed $value = null): static
     {
         $this->formattedValue = $value;
 
@@ -233,7 +233,7 @@ abstract class Field extends FormElement
         return $this->previewMode;
     }
 
-    public function forcePreview(): self
+    public function forcePreview(): static
     {
         $this->isForcePreview = true;
 
@@ -299,7 +299,7 @@ abstract class Field extends FormElement
         return $value;
     }
 
-    public function reset(): self
+    public function reset(): static
     {
         return $this
             ->setValue()
@@ -319,7 +319,7 @@ abstract class Field extends FormElement
         return $this->nullable;
     }
 
-    public function inLabel(): self
+    public function inLabel(): static
     {
         $this->isInLabel = true;
 
@@ -331,7 +331,7 @@ abstract class Field extends FormElement
         return $this->isInLabel;
     }
 
-    public function beforeLabel(): self
+    public function beforeLabel(): static
     {
         $this->isBeforeLabel = true;
 

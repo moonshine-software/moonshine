@@ -12,7 +12,6 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Exceptions\FieldException;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Traits\WithFields;
@@ -50,7 +49,7 @@ class HasOne extends ModelRelationField
         array $raw = [],
         mixed $casted = null,
         int $index = 0
-    ): Field {
+    ): static {
 
         if ($casted instanceof Model) {
             $this->setRelatedModel($casted);

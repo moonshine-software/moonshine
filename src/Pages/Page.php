@@ -82,7 +82,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return PageComponents::make($this->components());
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
@@ -94,7 +94,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->title;
     }
 
-    public function setSubTitle(string $subtitle): self
+    public function setSubTitle(string $subtitle): static
     {
         $this->subtitle = $subtitle;
 
@@ -106,7 +106,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->subtitle;
     }
 
-    public function setLayout(string $layout): self
+    public function setLayout(string $layout): static
     {
         $this->layout = $layout;
 

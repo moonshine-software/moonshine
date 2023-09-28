@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use App\Models\Item;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -74,7 +75,7 @@ class RelationModelFieldController extends MoonShineController
         $parentResource = $request->getResource();
 
         /**
-         * @var Item $parentItem
+         * @var Model $parentItem
          */
         $parentItem = $parentResource->getItemOrInstance();
 

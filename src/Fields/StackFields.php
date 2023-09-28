@@ -36,7 +36,7 @@ class StackFields extends Field implements HasFields
         array $raw = [],
         mixed $casted = null,
         int $index = 0
-    ): Field {
+    ): static {
         $this->getFields()
             ->onlyFields()
             ->each(fn (Field $field): Field => $field->resolveFill($raw, $casted, $index));
