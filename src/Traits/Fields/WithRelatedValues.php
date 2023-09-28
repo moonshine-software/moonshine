@@ -72,7 +72,7 @@ trait WithRelatedValues
         return cache()->remember(
             $builder->toRawSql(),
             4,
-            fn(): Collection => $builder->get()
+            fn (): Collection => $builder->get()
         );
     }
 
