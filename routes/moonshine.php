@@ -39,6 +39,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                     Route::get('{resourceUri?}/{resourceItem?}', 'search')->name('relation.search');
                     Route::post('{resourceUri}/{resourceItem?}', 'store')->name('relation.store');
                     Route::put('{resourceUri}/{resourceItem}', 'update')->name('relation.update');
+                    Route::delete('{resourceUri}/{resourceItem}', 'delete')->name('relation.delete');
                 }
             );
 

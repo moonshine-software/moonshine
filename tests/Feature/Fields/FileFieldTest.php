@@ -98,7 +98,7 @@ it('before apply', function () {
 
     $file2 = UploadedFile::fake()->create('test2.csv');
 
-    $data = ['file' => $file2];
+    $data = ['file' => $file2, 'hidden_file' => 'items/' . $file->hashName()];
 
     asAdmin()->put(
         $resource->route('crud.update', $this->item->getKey()),
