@@ -7,7 +7,7 @@ namespace MoonShine\Fields;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Traits\Fields\RangeTrait;
 
-class RangeField extends Number implements DefaultCanBeArray
+class Range extends Number implements DefaultCanBeArray
 {
     use RangeTrait;
 

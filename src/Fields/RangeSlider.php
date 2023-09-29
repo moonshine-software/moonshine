@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-class SlideField extends RangeField
+class RangeSlider extends Range
 {
     protected string $view = 'moonshine::fields.slide';
 }

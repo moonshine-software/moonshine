@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonShine\Buttons\HasOneField;
+namespace MoonShine\Buttons\HasOneOrManyFields;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;

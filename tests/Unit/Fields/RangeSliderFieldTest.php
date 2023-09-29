@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Number;
-use MoonShine\Fields\SlideField;
+use MoonShine\Fields\RangeSlider;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
-    $this->field = SlideField::make('Slide')
+    $this->field = RangeSlider::make('Slide')
     ;
     $this->item = new class () extends Model {
         public int $from = 10;

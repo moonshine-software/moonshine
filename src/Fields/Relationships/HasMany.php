@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Buttons\HasOneField\HasManyCreateButton;
+use MoonShine\Buttons\HasOneOrManyFields\HasManyCreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Buttons\IndexPage\FormButton;
