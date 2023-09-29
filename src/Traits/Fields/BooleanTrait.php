@@ -10,7 +10,7 @@ trait BooleanTrait
 
     protected int|string $offValue = 0;
 
-    public function onValue($onValue): static
+    public function onValue(int|string $onValue): static
     {
         $this->onValue = $onValue;
 
@@ -22,7 +22,7 @@ trait BooleanTrait
         return (string) $this->onValue;
     }
 
-    public function offValue($offValue): static
+    public function offValue(int|string $offValue): static
     {
         $this->offValue = $offValue;
 
