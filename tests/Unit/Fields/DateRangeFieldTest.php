@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Fields\DateRangeField;
+use MoonShine\Fields\DateRange;
 
 uses()->group('fields');
 uses()->group('date-field');
 
 beforeEach(function (): void {
-    $this->field = DateRangeField::make('Range')
+    $this->field = DateRange::make('Range')
         ->fromTo('start', 'end');
 });
 
@@ -21,7 +21,7 @@ describe('basic methods', function () {
     });
 
     it('formatted value', function () {
-        $field = DateRangeField::make('Range', formatted: static fn () => ['changed'])
+        $field = DateRange::make('Range', formatted: static fn () => ['changed'])
             ->fromTo('start', 'end')
             ->fill([]);
 
@@ -33,7 +33,7 @@ describe('basic methods', function () {
         $from = now();
         $to = now()->addMonth();
 
-        $field = DateRangeField::make('Range')
+        $field = DateRange::make('Range')
             ->fromTo('start', 'end')
             ->default([$from, $to]);
 
@@ -43,7 +43,7 @@ describe('basic methods', function () {
         $fromFilled = now()->addMonth();
         $toFilled = now()->addYear();
 
-        $field = DateRangeField::make('Range')
+        $field = DateRange::make('Range')
             ->fromTo('start', 'end')
             ->default([$from, $to])
             ->fill(['start' => $fromFilled, 'end' => $toFilled])
@@ -54,7 +54,7 @@ describe('basic methods', function () {
     });
 
     it('applies', function () {
-        $field = DateRangeField::make('Range')
+        $field = DateRange::make('Range')
             ->fromTo('start', 'end')
         ;
 

@@ -11,9 +11,9 @@ use MoonShine\Applies\Filters\JsonModelApply;
 use MoonShine\Applies\Filters\RangeModelApply;
 use MoonShine\Applies\Filters\TextModelApply;
 use MoonShine\Fields\Date;
-use MoonShine\Fields\DateRangeField;
+use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Json;
-use MoonShine\Fields\RangeField;
+use MoonShine\Fields\Range;
 use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\Fields\Text;
 use MoonShine\Fields\Textarea;
@@ -29,8 +29,8 @@ final class MoonShineRegister
         'filters' => [
             ModelResource::class => [
                 Date::class => DateModelApply::class,
-                RangeField::class => RangeModelApply::class,
-                DateRangeField::class => DateRangeModelApply::class,
+                Range::class => RangeModelApply::class,
+                DateRange::class => DateRangeModelApply::class,
                 BelongsToMany::class => BelongsToManyModelApply::class,
                 Json::class => JsonModelApply::class,
                 Text::class => TextModelApply::class,

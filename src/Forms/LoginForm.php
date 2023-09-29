@@ -6,7 +6,7 @@ namespace MoonShine\Forms;
 
 use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Password;
-use MoonShine\Fields\SwitchBoolean;
+use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 
 final class LoginForm
@@ -29,7 +29,7 @@ final class LoginForm
                 Password::make(__('moonshine::ui.login.password'), 'password')
                     ->required(),
 
-                SwitchBoolean::make(__('moonshine::ui.login.remember_me'), 'remember'),
+                Switcher::make(__('moonshine::ui.login.remember_me'), 'remember'),
             ])->submit(__('moonshine::ui.login.login'), [
                 'class' => 'btn-primary btn-lg w-full',
             ]);

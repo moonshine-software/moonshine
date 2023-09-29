@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Checkbox;
-use MoonShine\Fields\SwitchBoolean;
+use MoonShine\Fields\Switcher;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
-    $this->field = SwitchBoolean::make('Active');
+    $this->field = Switcher::make('Active');
     $this->item = new class () extends Model {
         public bool $active = true;
     };

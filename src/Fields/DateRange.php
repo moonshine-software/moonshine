@@ -11,7 +11,7 @@ use MoonShine\Traits\Fields\DateTrait;
 use MoonShine\Traits\Fields\RangeTrait;
 use MoonShine\Traits\Fields\WithDefaultValue;
 
-class DateRangeField extends Field implements HasDefaultValue, DefaultCanBeArray
+class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
 {
     use RangeTrait;
     use DateTrait;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use MoonShine\Applies\Filters\DateRangeModelApply;
-use MoonShine\Fields\DateRangeField;
+use MoonShine\Fields\DateRange;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -15,7 +15,7 @@ uses()->group('date-field');
 
 beforeEach(function () {
     $this->item = createItem(countComments: 0);
-    $this->field = DateRangeField::make('Range')->fromTo('start_date', 'end_date');
+    $this->field = DateRange::make('Range')->fromTo('start_date', 'end_date');
 });
 
 it('show field on pages', function () {
@@ -204,7 +204,7 @@ function dateRangeExport(Item $item): ?string
     $item->save();
 
     $resource = createResourceField(
-        DateRangeField::make('Range')->fromTo('start_date', 'end_date')->showOnExport()
+        DateRange::make('Range')->fromTo('start_date', 'end_date')->showOnExport()
     );
 
     $export = ExportHandler::make('');

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use MoonShine\Applies\Filters\RangeModelApply;
-use MoonShine\Fields\RangeField;
+use MoonShine\Fields\Range;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -18,7 +18,7 @@ beforeEach(function () {
 
 it('show field on pages', function () {
     $resource = createResourceField(
-        RangeField::make('Range')->fromTo('start_point', 'end_point')
+        Range::make('Range')->fromTo('start_point', 'end_point')
     );
 
     asAdmin()->get(
@@ -49,7 +49,7 @@ it('show field on pages', function () {
 
 it('apply as base', function () {
     $resource = createResourceField(
-        RangeField::make('Range')->fromTo('start_point', 'end_point')
+        Range::make('Range')->fromTo('start_point', 'end_point')
     );
 
     $data = ['start_point' => 10, 'end_point' => 90];
@@ -71,7 +71,7 @@ it('apply as base', function () {
 
 it('before apply', function () {
     $resource = createResourceField(
-        RangeField::make('Range')->fromTo('start_point', 'end_point')
+        Range::make('Range')->fromTo('start_point', 'end_point')
             ->onBeforeApply(function ($item, $data) {
                 $item->name = $data['start_point'] . ' - ' . $data['end_point'];
 
@@ -96,7 +96,7 @@ it('before apply', function () {
 
 it('after apply', function () {
     $resource = createResourceField(
-        RangeField::make('Range')->fromTo('start_point', 'end_point')
+        Range::make('Range')->fromTo('start_point', 'end_point')
         ->onAfterApply(function ($item) {
             $item->start_point = $item->start_point * 1000;
             $item->end_point = $item->end_point * 1000;
@@ -126,7 +126,7 @@ it('apply as base with default', function () {
     $data = ['start_point' => 10, 'end_point' => 90];
 
     $resource = createResourceField(
-        RangeField::make('Range')->fromTo('start_point', 'end_point')->default($data)
+        Range::make('Range')->fromTo('start_point', 'end_point')->default($data)
     );
 
     asAdmin()->put(
@@ -143,7 +143,7 @@ it('apply as base with default', function () {
 });
 
 it('apply as filter', function (): void {
-    $field = RangeField::make('Range', 'start_point')
+    $field = Range::make('Range', 'start_point')
         ->wrapName('filters');
 
     $query = Item::query();
@@ -173,7 +173,7 @@ function rangeExport(Item $item): ?string
     $item->save();
 
     $resource = createResourceField(
-        RangeField::make('Range')->fromTo('start_point', 'end_point')->showOnExport()
+        Range::make('Range')->fromTo('start_point', 'end_point')->showOnExport()
     );
 
     $export = ExportHandler::make('');
@@ -199,7 +199,7 @@ it('import', function (): void {
     $file = rangeExport($this->item);
 
     $resource = createResourceField(
-        RangeField::make('Range')->fromTo('start_point', 'end_point')->useOnImport()
+        Range::make('Range')->fromTo('start_point', 'end_point')->useOnImport()
     );
 
     $import = ImportHandler::make('');

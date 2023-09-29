@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Fields\RangeField;
+use MoonShine\Fields\Range;
 
 uses()->group('fields');
 
 beforeEach(function (): void {
-    $this->field = RangeField::make('Range')->fromTo('start', 'end');
+    $this->field = Range::make('Range')->fromTo('start', 'end');
 });
 
 describe('basic methods', function () {
@@ -20,7 +20,7 @@ describe('basic methods', function () {
     });
 
     it('formatted value', function () {
-        $field = RangeField::make('Range', formatted: static fn () => ['changed'])
+        $field = Range::make('Range', formatted: static fn () => ['changed'])
             ->fromTo('start', 'end')
             ->fill([]);
 
@@ -29,14 +29,14 @@ describe('basic methods', function () {
     });
 
     it('default value', function () {
-        $field = RangeField::make('Range')
+        $field = Range::make('Range')
             ->fromTo('start', 'end')
             ->default([0, 100]);
 
         expect($field->toValue())
             ->toBe([0, 100]);
 
-        $field = RangeField::make('Range')
+        $field = Range::make('Range')
             ->fromTo('start', 'end')
             ->default([0, 100])
             ->fill(['start' => 10, 'end' => 90])
@@ -47,7 +47,7 @@ describe('basic methods', function () {
     });
 
     it('applies', function () {
-        $field = RangeField::make('Range')
+        $field = Range::make('Range')
             ->fromTo('start', 'end')
         ;
 
