@@ -5,42 +5,42 @@
     'elements' => []
 ])
 
-@if ($paginator->hasPages())
-    @if($simple)
-        <ul class="pagination-list simple">
-            {{-- Previous Page Link --}}
-            <li>
-                @if ($paginator->onFirstPage())
-                    <span class="pagination-simple disabled">
-                        {!! __('moonshine::pagination.previous') !!}
-                    </span>
-                @else
-                    <a href="{{ $paginator->previousPageUrl() }}"
-                       @if($async) @click.prevent="asyncRequest" @endif
-                       class="pagination-simple"
-                    >
-                        {!! __('moonshine::pagination.previous') !!}
-                    </a>
-                @endif
-            </li>
 
-            {{-- Next Page Link --}}
-            <li>
-                @if ($paginator->hasMorePages())
-                    <a href="{{ $paginator->nextPageUrl() }}"
-                       @if($async) @click.prevent="asyncRequest" @endif
-                       class="pagination-simple"
-                    >
-                        {!! __('moonshine::pagination.next') !!}
-                    </a>
-                @else
-                    <span class="pagination-simple disabled">
-                        {!! __('moonshine::pagination.next') !!}
-                    </span>
-                @endif
-            </li>
-        </ul>
-    @else
+@if($simple)
+    <ul class="pagination-list simple">
+        {{-- Previous Page Link --}}
+        <li>
+            @if ($paginator->onFirstPage())
+                <span class="pagination-simple disabled">
+                    {!! __('moonshine::pagination.previous') !!}
+                </span>
+            @else
+                <a href="{{ $paginator->previousPageUrl() }}"
+                   @if($async) @click.prevent="asyncRequest" @endif
+                   class="pagination-simple"
+                >
+                    {!! __('moonshine::pagination.previous') !!}
+                </a>
+            @endif
+        </li>
+
+        {{-- Next Page Link --}}
+        <li>
+            @if ($paginator->hasMorePages())
+                <a href="{{ $paginator->nextPageUrl() }}"
+                   @if($async) @click.prevent="asyncRequest" @endif
+                   class="pagination-simple"
+                >
+                    {!! __('moonshine::pagination.next') !!}
+                </a>
+            @else
+                <span class="pagination-simple disabled">
+                    {!! __('moonshine::pagination.next') !!}
+                </span>
+            @endif
+        </li>
+    </ul>
+@elseif ($paginator->hasPages())
     <!-- Pagination -->
     <div class="pagination">
         <ul class="pagination-list">
@@ -113,5 +113,5 @@
         </div>
     </div>
     <!-- END: Pagination -->
-    @endif
 @endif
+

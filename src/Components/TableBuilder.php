@@ -6,6 +6,7 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
@@ -41,11 +42,11 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function __construct(
         Fields|array $fields = [],
         protected iterable $items = [],
-        protected ?LengthAwarePaginator $paginator = null
+        protected ?Paginator $paginator = null
     ) {
         $this->fields($fields);
 
-        if ($items instanceof LengthAwarePaginator) {
+        if ($items instanceof Paginator) {
             $this->paginator($items);
             $this->items($items->items());
         }
@@ -86,14 +87,14 @@ final class TableBuilder extends IterableComponent implements TableContract
         });
     }
 
-    public function paginator(LengthAwarePaginator $paginator): self
+    public function paginator(Paginator $paginator): self
     {
         $this->paginator = $paginator;
 
         return $this;
     }
 
-    public function getPaginator(): ?LengthAwarePaginator
+    public function getPaginator(): ?Paginator
     {
         return $this->paginator;
     }
@@ -130,6 +131,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             'fields' => $this->getFields(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
+            'simple' => ! $this->getPaginator() instanceof LengthAwarePaginator,
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),
             'async' => $this->isAsync(),
