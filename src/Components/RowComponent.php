@@ -54,7 +54,7 @@ abstract class RowComponent extends MoonshineComponent
         $casted = $this->castData($this->values);
 
         return ActionButtons::make($this->buttons)
-            ->onlyVisible($casted)
-            ->fillItem($casted);
+            ->fillItem($casted)
+            ->onlyVisible($casted);
     }
 }

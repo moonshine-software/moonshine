@@ -56,7 +56,7 @@ final class ActionButtons extends Collection
     public function onlyVisible(mixed $item = null): self
     {
         return $this->filter(
-            fn (ActionButtonContract $action) => $action->isSee($item ?? moonshineRequest())
+            fn (ActionButtonContract $action) => $action->isSee($item)
         );
     }
 

@@ -77,6 +77,13 @@ trait ResourceModelQuery
         );
     }
 
+    public function setItem(?Model $model): static
+    {
+        $this->item = $model;
+
+        return $this;
+    }
+
     public function getItemOrInstance(): Model
     {
         return $this->itemOr(

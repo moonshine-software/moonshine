@@ -17,7 +17,6 @@ final class FormButton
                 ['resourceItem' => request('resourceItem')]
             )
         )
-            ->canSee(fn (): bool => $resource->can('update'))
             ->primary()
             ->icon('heroicons.outline.pencil')
             ->showInLine();

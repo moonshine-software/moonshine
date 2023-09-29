@@ -26,6 +26,9 @@ final class DetailButton
                 ['resourceItem' => $data->getKey()]
             )
         )
+            /*->canSee(fn(?Model $item) => !is_null($item) && in_array('show', $resource->getActiveActions())
+                && $resource->setItem($item)->can('show')
+            )*/
             ->icon('heroicons.outline.eye')
             ->showInLine()
         ;
