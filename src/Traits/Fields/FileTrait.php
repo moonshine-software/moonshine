@@ -61,7 +61,7 @@ trait FileTrait
         return implode(',', $extensions);
     }
 
-    public function disableDownload($condition = null): static
+    public function disableDownload(Closure|bool|null $condition = null): static
     {
         $this->disableDownload = Condition::boolean($condition, true);
 
