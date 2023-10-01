@@ -73,7 +73,7 @@ module.exports = {
                 },
                 body: 'rgba(var(--body), <alpha-value>)',
                 dark: {
-                    DEFAULT: 'rgba(var(--dark), <alpha-value>)',
+                    DEFAULT: 'rgba(var(--dark-DEFAULT), <alpha-value>)',
                     50: 'rgba(var(--dark-50), <alpha-value>)',
                     100: 'rgba(var(--dark-100), <alpha-value>)',
                     200: 'rgba(var(--dark-200), <alpha-value>)',
