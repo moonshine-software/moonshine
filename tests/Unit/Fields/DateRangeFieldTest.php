@@ -58,14 +58,8 @@ describe('basic methods', function () {
             ->fromTo('start', 'end')
         ;
 
-        expect($field->onApply(fn ($data) => ['onApply'])->apply(fn ($data) => $data, []))
-            ->toBe(['onApply'])
-            ->and($field->onBeforeApply(fn ($data) => ['onBeforeApply'])->beforeApply([]))
-            ->toBe(['onBeforeApply'])
-            ->and($field->onAfterApply(fn ($data) => ['onAfterApply'])->afterApply([]))
-            ->toBe(['onAfterApply'])
-            ->and($field->onAfterDestroy(fn ($data) => ['onAfterDestroy'])->afterDestroy([]))
-            ->toBe(['onAfterDestroy'])
+        expect()
+            ->applies($field);
         ;
     });
 });

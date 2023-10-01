@@ -22,6 +22,7 @@ class ItemFactory extends Factory
             'moonshine_user_id' => MoonshineUser::query()->inRandomOrder()->value('id'),
             'created_at' => now(),
             'public_at' => now(),
+            'active' => $this->faker->boolean()
         ];
     }
 }

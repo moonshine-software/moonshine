@@ -166,7 +166,7 @@ abstract class Field extends FormElement
             ? $this->getDefault()
             : null;
 
-        return empty($this->value) ? $default : $this->value;
+        return is_null($this->value) ? $default : $this->value;
     }
 
     public function value(bool $withOld = true): mixed

@@ -36,11 +36,13 @@ class Item extends Model
         'data',
         'created_at',
         'updated_at',
+        'active'
     ];
 
     protected $casts = [
         'data' => 'collection',
         'files' => 'collection',
+        'active' => 'boolean'
     ];
 
     public function category(): BelongsTo
