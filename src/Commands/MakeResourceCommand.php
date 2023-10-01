@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{info, outro, select, text};
+
+use MoonShine\MoonShine;
 
 class MakeResourceCommand extends MoonShineCommand
 {
@@ -62,7 +63,7 @@ class MakeResourceCommand extends MoonShineCommand
             $pageData = fn (string $name): array => [
                 'className' => "$dir$name",
                 '--dir' => $pageDir,
-                '--extends' => $name
+                '--extends' => $name,
             ];
 
             $this->call(MakePageCommand::class, $pageData('IndexPage'));
