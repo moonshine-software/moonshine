@@ -42,11 +42,6 @@ class Checkbox extends Field implements
         return parent::resolveValue();
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
-    {
-        return parent::prepareFill($raw, $casted);
-    }
-
     protected function resolvePreview(): View|string
     {
         if ($this->isRawMode()) {
