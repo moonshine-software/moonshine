@@ -14,7 +14,6 @@ use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
-use MoonShine\Pages\Crud\FormPage;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -95,13 +94,7 @@ class CrudController extends MoonShineController
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 
-        $redirectRoute = $request->redirectRoute(
-            to_page(
-                $request->getResource(),
-                FormPage::class,
-                $item->exists ? ['resourceItem' => $item] : []
-            )
-        );
+        $redirectRoute = $resource->redirectAfterSave();
 
         $validator = $resource->validate($item);
 

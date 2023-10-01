@@ -17,7 +17,7 @@ class DummyPage extends Page
 
     public function title(): string
     {
-        return 'DummyTitle';
+        return $this->title ?: 'DummyTitle';
     }
 
     public function components(): array

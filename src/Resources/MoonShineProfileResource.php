@@ -26,6 +26,11 @@ class MoonShineProfileResource extends ModelResource
         return __('moonshine::ui.profile');
     }
 
+    public function search(): array
+    {
+        return [];
+    }
+
     public function fields(): array
     {
         return [

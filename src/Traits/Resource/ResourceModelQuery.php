@@ -282,15 +282,19 @@ trait ResourceModelQuery
                 ModelResource::class
             );
 
+            $defaultApply = static fn (Builder $query): Builder => $query->where(
+                $filter->column(),
+                $filter->requestValue()
+            );
+
             if ($filterApply instanceof ApplyContract) {
                 $filter->onApply($filterApply->apply($filter));
+            } else {
+                $filter->onApply($defaultApply);
             }
 
             $filter->apply(
-                static fn (Builder $query): Builder => $query->where(
-                    $filter->column(),
-                    $filter->requestValue()
-                ),
+                $defaultApply,
                 $this->query()
             );
         });
