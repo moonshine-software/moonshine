@@ -42,7 +42,7 @@ class DetailPage extends Page
         );
     }
 
-    public function mainLayer(): array
+    protected function mainLayer(): array
     {
         $resource = $this->getResource();
         $item = $resource->getItem();

@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
-
-use MoonShine\MoonShine;
 
 class MakePageCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?} {--dir=}';
+    protected $signature = 'moonshine:page {className?} {--dir=} {--extends=}';
 
     protected $description = 'Create page';
 
@@ -24,6 +22,7 @@ class MakePageCommand extends MoonShineCommand
     public function handle(): int
     {
         $dir = $this->option('dir') ?? 'Pages';
+        $extends = $this->option('extends') ?? 'Page';
 
         $className = $this->argument('className') ?? text(
             'Class name',
@@ -36,10 +35,13 @@ class MakePageCommand extends MoonShineCommand
             $this->makeDir($this->getDirectory() . "/$dir");
         }
 
-        $this->copyStub('Page', $page, [
+        $stub = $this->option('extends') ? 'CrudPage' : 'Page';
+
+        $this->copyStub($stub, $page, [
             '{namespace}' => MoonShine::namespace('\\' . str_replace('/', '\\', $dir)),
             'DummyPage' => $className,
             'DummyTitle' => $className,
+            '{extendShort}' => $extends
         ]);
 
         outro(

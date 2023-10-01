@@ -45,7 +45,7 @@ class FormPage extends Page
         );
     }
 
-    public function topLayer(): array
+    protected function topLayer(): array
     {
         $components = [];
         if (! empty($item = $this->getResource()->getItem())) {
@@ -65,7 +65,7 @@ class FormPage extends Page
         return $components;
     }
 
-    public function mainLayer(): array
+    protected function mainLayer(): array
     {
         $item = $this->getResource()->getItem();
 
@@ -108,7 +108,7 @@ class FormPage extends Page
         ];
     }
 
-    public function bottomLayer(): array
+    protected function bottomLayer(): array
     {
         $components = [];
 
