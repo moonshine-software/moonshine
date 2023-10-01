@@ -53,17 +53,10 @@ describe('basic methods', function () {
     })->expectException(BadMethodCallException::class);
 
     it('applies', function () {
-        $field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
-            ->onApply(fn ($data) => ['onApply']);
+        $field = BelongsToMany::make('Categories', resource: new TestCategoryResource());
 
-        expect($field->onApply(fn ($data) => ['onApply'])->apply(fn ($data) => $data, []))
-            ->toBe(['onApply'])
-            ->and($field->onBeforeApply(fn ($data) => ['onBeforeApply'])->beforeApply([]))
-            ->toBe(['onBeforeApply'])
-            ->and($field->onAfterApply(fn ($data) => ['onAfterApply'])->afterApply([]))
-            ->toBe(['onAfterApply'])
-            ->and($field->onAfterDestroy(fn ($data) => ['onAfterDestroy'])->afterDestroy([]))
-            ->toBe(['onAfterDestroy']);
+        expect()
+            ->applies($field);
     });
 });
 

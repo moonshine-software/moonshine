@@ -46,6 +46,8 @@ return new class () extends Migration {
 
             $table->timestamp('public_at')->nullable();
 
+            $table->boolean('active')->default(false);
+
             $table->timestamps();
         });
 
