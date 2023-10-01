@@ -14,6 +14,10 @@ input[type="number"] {
 	-moz-appearance: textfield;
 }
 
+.dark input {
+  color-scheme: dark;
+}
+
 .form-flex-col {
 	@apply flex flex-col gap-y-5;
 
