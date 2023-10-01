@@ -29,7 +29,7 @@ class Checkbox extends Field implements
 
     public function isChecked(): bool
     {
-        return (bool) $this->getOnValue() === $this->value();
+        return $this->getOnValue() == $this->value();
     }
 
     protected function resolveValue(): mixed
