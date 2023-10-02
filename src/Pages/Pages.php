@@ -6,6 +6,7 @@ namespace MoonShine\Pages;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\PageType;
 
 /**
  * @template TKey of array-key
@@ -24,7 +25,12 @@ final class Pages extends Collection
         Page $default = null
     ): ?Page {
         return $this->first(
-            static fn (Page $page): bool => $page->uriKey() === $uri,
+            function (Page $page) use ($uri): bool {
+                if($page->uriKey() === $uri) {
+                    return true;
+                }
+                return $page->pageType() === PageType::getTypeFromUri($uri);
+            },
             $default
         );
     }

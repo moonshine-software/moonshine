@@ -10,6 +10,7 @@ use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\PageType;
 use MoonShine\MoonShineRouter;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
@@ -31,6 +32,8 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     protected string $subtitle = '';
 
     protected string $layout = 'moonshine::layouts.app';
+
+    protected ?PageType $pageType = null;
 
     public function __construct(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
     {
@@ -64,6 +67,11 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     protected function bottomLayer(): array
     {
         return [];
+    }
+
+    public function pageType(): ?PageType
+    {
+        return $this->pageType;
     }
 
     public function breadcrumbs(): array

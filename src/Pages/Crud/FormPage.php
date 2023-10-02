@@ -9,12 +9,15 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
+use MoonShine\Enums\PageType;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
 
 class FormPage extends Page
 {
+    protected ?PageType $pageType = PageType::FORM;
+
     public function breadcrumbs(): array
     {
         $breadcrumbs = parent::breadcrumbs();

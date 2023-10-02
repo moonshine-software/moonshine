@@ -11,11 +11,14 @@ use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
+use MoonShine\Enums\PageType;
 use MoonShine\Pages\Page;
 use Throwable;
 
 class DetailPage extends Page
 {
+    protected ?PageType $pageType = PageType::DETAIL;
+
     public function breadcrumbs(): array
     {
         $breadcrumbs = parent::breadcrumbs();
