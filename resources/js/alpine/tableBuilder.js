@@ -21,11 +21,12 @@ export default (
     }
 
     this.table = this.$root.querySelector('table')
+    const removeAfterClone = this.table?.dataset?.removeAfterClone;
     const tbody = this.table?.querySelector('tbody')
 
     this.lastRow = tbody?.lastElementChild?.cloneNode(true)
 
-    if(this.creatable) {
+    if(this.creatable || removeAfterClone) {
       tbody?.lastElementChild?.remove()
     }
 

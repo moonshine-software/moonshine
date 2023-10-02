@@ -177,8 +177,21 @@ class BelongsToMany extends ModelRelationField implements
                 ->setAttribute($checkedColumn, ! is_null($checked));
         });
 
+        $removeAfterClone = false;
+
+        if (! $this->isPreviewMode() && $this->isAsyncSearch() && blank($values)) {
+            $values->push($this->getResource()->getModel());
+            $removeAfterClone = true;
+        }
+
         return TableBuilder::make(items: $values)
             ->fields($fields)
+            ->when(
+                $removeAfterClone,
+                fn(TableBuilder $table): TableBuilder => $table->customAttributes([
+                    'data-remove-after-clone' => 1
+                ])
+            )
             ->cast($this->getModelCast())
             ->trAttributes(
                 fn (
