@@ -281,7 +281,7 @@ abstract class Field extends FormElement
             $href = $this->getLinkValue($value);
 
             $value = view('moonshine::ui.url', [
-                'value' => $this->getLinkName() ?? $value,
+                'value' => $this->getLinkName() ?: $value,
                 'href' => $href,
                 'blank' => $this->isLinkBlank(),
                 'icon' => $this->getLinkIcon(),
