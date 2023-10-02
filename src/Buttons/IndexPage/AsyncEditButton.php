@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Buttons\IndexPage;
 
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class AsyncEditButton
@@ -13,10 +14,10 @@ final class AsyncEditButton
     {
         return ActionButton::make(
             '',
-            url: fn ($data): string => to_page(
-                $resource,
-                'form-page',
-                ['resourceItem' => $data->getKey()],
+            url: static fn ($data): string => to_page(
+                page: FormPage::class,
+                resource: $resource,
+                params: ['resourceItem' => $data->getKey()],
                 fragment: 'crud-form'
             )
         )

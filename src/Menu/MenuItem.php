@@ -74,7 +74,7 @@ class MenuItem extends MenuElement
 
     public function getBadge(): ?string
     {
-        return call_user_func($this->badge);
+        return value($this->badge);
     }
 
     public function setUrl(string|Closure|null $url): static
@@ -89,8 +89,6 @@ class MenuItem extends MenuElement
      */
     public function url(): string
     {
-        return is_closure($this->url)
-            ? call_user_func($this->url)
-            : $this->url;
+        return value($this->url);
     }
 }

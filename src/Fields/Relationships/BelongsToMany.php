@@ -219,7 +219,7 @@ class BelongsToMany extends ModelRelationField implements
                 $value = $item->{$column} ?? false;
 
                 if (is_closure($this->formattedValueCallback())) {
-                    $value = call_user_func(
+                    $value = value(
                         $this->formattedValueCallback(),
                         $item
                     );

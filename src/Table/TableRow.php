@@ -61,7 +61,7 @@ final class TableRow
             return $attributes;
         }
 
-        return call_user_func($this->trAttributes, $this->data, $row, $attributes);
+        return value($this->trAttributes, $this->data, $row, $attributes);
     }
 
     public function tdAttributes(int $row, int $cell): ComponentAttributeBag
@@ -72,6 +72,6 @@ final class TableRow
             return $attributes;
         }
 
-        return call_user_func($this->tdAttributes, $this->data, $row, $cell, $attributes);
+        return value($this->tdAttributes, $this->data, $row, $cell, $attributes);
     }
 }

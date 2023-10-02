@@ -72,9 +72,7 @@ class ActionButton extends AbstractAction implements ActionButtonContract
 
     public function url(): string
     {
-        return is_closure($this->url)
-            ? call_user_func($this->url, $this->getItem())
-            : $this->url;
+        return value($this->url, $this->getItem());
     }
 
     /**

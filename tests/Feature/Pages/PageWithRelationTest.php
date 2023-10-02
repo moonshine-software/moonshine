@@ -28,7 +28,7 @@ it('has one on index', function () {
         ->first();
 
     asAdmin()->get(
-        to_page($this->categoryResource, IndexPage::class)
+        to_page(page: IndexPage::class, resource: $this->categoryResource)
     )
         ->assertOk()
         ->assertSee($category->name)
@@ -42,7 +42,7 @@ it('empty has one on index', function () {
         ->first();
 
     asAdmin()->get(
-        to_page($this->categoryResource, IndexPage::class)
+        to_page(page: IndexPage::class, resource: $this->categoryResource)
     )
         ->assertOk()
         ->assertSee($category->name)
@@ -51,7 +51,7 @@ it('empty has one on index', function () {
 
 it('has one dont see', function () {
     asAdmin()->get(
-        to_page($this->categoryResource, FormPage::class)
+        to_page(page: FormPage::class, resource: $this->categoryResource)
     )
         ->assertOk()
         ->assertSee('Name title')
@@ -65,7 +65,7 @@ it('has one see', function () {
     $category = Category::factory()->count(1)->create()->first();
 
     asAdmin()->get(
-        to_page($this->categoryResource, FormPage::class, ['resourceItem' => $category->id])
+        to_page(page: FormPage::class, resource: $this->categoryResource, params: ['resourceItem' => $category->id])
     )
         ->assertOk()
         ->assertSee('Name title')
@@ -80,7 +80,7 @@ it('has many on index', function () {
     $items = createItem(3);
 
     asAdmin()->get(
-        to_page($this->itemResource, IndexPage::class)
+        to_page(page: IndexPage::class, resource: $this->itemResource)
     )
         ->assertOk()
         ->assertSee('Name title')
@@ -97,7 +97,7 @@ it('empty has many on index', function () {
     $items = createItem(3, 0);
 
     asAdmin()->get(
-        to_page($this->itemResource, IndexPage::class)
+        to_page(page: IndexPage::class, resource: $this->itemResource)
     )
         ->assertOk()
         ->assertSee('Name title')
@@ -109,7 +109,7 @@ it('empty has many on index', function () {
 it('has many dont see', function () {
 
     asAdmin()->get(
-        to_page($this->itemResource, FormPage::class)
+        to_page(page: FormPage::class, resource: $this->itemResource)
     )
         ->assertOk()
         ->assertSee('Name title')
@@ -128,7 +128,7 @@ it('has many see', function () {
     $firstComment = $item->comments[0];
 
     asAdmin()->get(
-        to_page($this->itemResource, FormPage::class, ['resourceItem' => $item->id])
+        to_page(page: FormPage::class, resource: $this->itemResource, params: ['resourceItem' => $item->id])
     )
         ->assertOk()
         ->assertSee('Name title')

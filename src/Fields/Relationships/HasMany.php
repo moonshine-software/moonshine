@@ -19,6 +19,7 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
 use Throwable;
@@ -108,7 +109,7 @@ class HasMany extends ModelRelationField implements HasFields
     public function isOnlyLink(): bool
     {
         if (is_callable($this->onlyLink) && is_null($this->toValue())) {
-            return call_user_func($this->onlyLink, 0, $this);
+            return value($this->onlyLink, 0, $this);
         }
 
         if (is_callable($this->onlyLink)) {
@@ -116,7 +117,7 @@ class HasMany extends ModelRelationField implements HasFields
                 ? $this->toValue()->count()
                 : $this->toValue()->total();
 
-            return call_user_func($this->onlyLink, $count, $this);
+            return value($this->onlyLink, $count, $this);
         }
 
         return $this->onlyLink;
@@ -156,9 +157,9 @@ class HasMany extends ModelRelationField implements HasFields
         return ActionButton::make(
             "($countItems)",
             to_page(
-                $this->getResource(),
-                'index-page',
-                ['parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}]
+                page: IndexPage::class,
+                resource: $this->getResource(),
+                params: ['parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}]
             )
         )
             ->icon('heroicons.outline.eye')
@@ -169,7 +170,7 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $items = $this->toValue();
 
-        if (! empty($items)) {
+        if (filled($items)) {
             $items = $items->take($this->getLimit());
         }
 
@@ -204,9 +205,9 @@ class HasMany extends ModelRelationField implements HasFields
             ActionButton::make(
                 __('moonshine::ui.show') . " ({$this->toValue()->total()})",
                 to_page(
-                    $this->getResource(),
-                    'index-page',
-                    ['parentId' => $relationName . '-' . request('resourceItem')]
+                    page: IndexPage::class,
+                    resource: $this->getResource(),
+                    params: ['parentId' => $relationName . '-' . request('resourceItem')]
                 )
             )->primary();
     }

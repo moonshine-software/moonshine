@@ -114,7 +114,7 @@ abstract class Field extends FormElement
 
         if (is_closure($this->formattedValueCallback())) {
             $this->setFormattedValue(
-                call_user_func(
+                value(
                     $this->formattedValueCallback(),
                     empty($casted) ? $this->toRawValue() : $casted,
                     $index
@@ -250,7 +250,7 @@ abstract class Field extends FormElement
         $this->previewMode = true;
 
         if ($this->isPreviewChanged()) {
-            return (string) call_user_func(
+            return (string) value(
                 $this->previewCallback,
                 $this->toValue(),
                 $this->toRawValue(),

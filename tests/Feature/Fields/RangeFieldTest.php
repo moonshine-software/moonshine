@@ -6,6 +6,9 @@ use MoonShine\Applies\Filters\RangeModelApply;
 use MoonShine\Fields\Range;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
+use MoonShine\Pages\Crud\DetailPage;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
 
 use function Pest\Laravel\get;
@@ -22,7 +25,7 @@ it('show field on pages', function () {
     );
 
     asAdmin()->get(
-        to_page($resource, 'index-page')
+        to_page(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Range')
@@ -30,7 +33,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page($resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Range')
@@ -38,7 +41,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page($resource, 'form-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('range')

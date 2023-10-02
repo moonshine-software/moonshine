@@ -38,7 +38,7 @@ final class Profile extends MoonshineComponent
             : "https://ui-avatars.com/api/?name=$nameOfUser";
 
         return [
-            'route' => to_page(MoonShineProfileResource::class),
+            'route' => to_page(resource: MoonShineProfileResource::class),
             'avatar' => $avatar,
             'nameOfUser' => $nameOfUser,
             'username' => $username,

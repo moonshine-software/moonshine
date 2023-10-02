@@ -20,7 +20,7 @@ trait HasCanSee
     public function isSee(mixed $data)
     {
         return is_closure($this->canSeeCallback)
-            ? call_user_func($this->canSeeCallback, $data)
+            ? value($this->canSeeCallback, $data)
             : true;
     }
 }

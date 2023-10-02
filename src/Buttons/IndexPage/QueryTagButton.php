@@ -13,7 +13,7 @@ final class QueryTagButton
     {
         return ActionButton::make(
             $tag->label(),
-            to_page($resource, IndexPage::class, params: ['query-tag' => $tag->uri()])
+            to_page(page: IndexPage::class, resource: $resource, params: ['query-tag' => $tag->uri()])
         )
             ->showInLine()
             ->icon($tag->iconValue())

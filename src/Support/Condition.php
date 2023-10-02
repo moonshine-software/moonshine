@@ -22,8 +22,6 @@ final class Condition
             return $default;
         }
 
-        return is_closure($condition)
-            ? $condition()
-            : $condition;
+        return value($condition);
     }
 }

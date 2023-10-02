@@ -5,6 +5,9 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use MoonShine\Fields\File;
+use MoonShine\Pages\Crud\DetailPage;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
@@ -22,21 +25,21 @@ it('show field on pages', function () {
     $resource = fileResource();
 
     asAdmin()->get(
-        to_page($resource, 'index-page')
+        to_page(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('File')
     ;
 
     asAdmin()->get(
-        to_page($resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('File')
     ;
 
     asAdmin()->get(
-        to_page($resource, 'form-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('File')
@@ -49,7 +52,7 @@ it('apply as base', function () {
     $file = saveFile($resource, $this->item);
 
     asAdmin()->get(
-        to_page($resource, 'index-page')
+        to_page(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('File')
@@ -57,14 +60,14 @@ it('apply as base', function () {
     ;
 
     asAdmin()->get(
-        to_page($resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $file->hashName())
     ;
 
     asAdmin()->get(
-        to_page($resource, 'form-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $file->hashName())

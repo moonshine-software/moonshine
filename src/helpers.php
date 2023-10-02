@@ -26,19 +26,6 @@ use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
 use MoonShine\Support\SelectOptions;
 
-if (! function_exists('tryOrReturn')) {
-    function tryOrReturn(Closure $tryCallback, mixed $default = false): mixed
-    {
-        try {
-            $return = $tryCallback();
-        } catch (Throwable) {
-            $return = $default;
-        }
-
-        return $return;
-    }
-}
-
 if (! function_exists('moonshine')) {
     function moonshine(): MoonShine
     {
@@ -55,8 +42,8 @@ if (! function_exists('moonshineRegister')) {
 
 if (! function_exists('to_page')) {
     function to_page(
-        string|ResourceContract|null $resource,
         string|Page|null $page = null,
+        string|ResourceContract|null $resource = null,
         array $params = [],
         bool $redirect = false,
         ?string $fragment = null
@@ -65,7 +52,12 @@ if (! function_exists('to_page')) {
             $params += ['_fragment-load' => $fragment];
         }
 
-        return MoonShineRouter::to_page($resource, $page, $params, $redirect);
+        return MoonShineRouter::to_page(
+            page: $page,
+            resource: $resource,
+            params: $params,
+            redirect: $redirect
+        );
     }
 }
 

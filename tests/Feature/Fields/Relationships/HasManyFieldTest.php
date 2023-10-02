@@ -9,6 +9,8 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Text;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
@@ -24,7 +26,7 @@ it('onlyLink preview', function () {
     ]);
 
     asAdmin()
-        ->get(to_page($resource, 'index-page'))
+        ->get(to_page(page: IndexPage::class, resource: $resource))
         ->assertOk()
         ->assertSee('(6)')
     ;
@@ -41,7 +43,7 @@ it('onlyLink preview empty', function () {
     ]);
 
     asAdmin()
-        ->get(to_page($resource, 'index-page'))
+        ->get(to_page(page: IndexPage::class, resource: $resource))
         ->assertOk()
     ;
 });
@@ -57,7 +59,7 @@ it('onlyLink value', function () {
     ]);
 
     asAdmin()
-        ->get(to_page($resource, 'form-page', ['resourceItem' => $item->id]))
+        ->get(to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertSee('(16)')
         ->assertOk()
     ;
@@ -74,7 +76,7 @@ it('onlyLink value empty', function () {
     ]);
 
     asAdmin()
-        ->get(to_page($resource, 'form-page', ['resourceItem' => $item->id]))
+        ->get(to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertOk()
     ;
 });
@@ -93,7 +95,7 @@ it('onlyLink preview condition', function () {
     ]);
 
     asAdmin()
-        ->get(to_page($resource, 'index-page'))
+        ->get(to_page(page: IndexPage::class, resource: $resource))
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments[0]->content)
@@ -115,7 +117,7 @@ it('onlyLink value condition', function () {
     ]);
 
     asAdmin()
-        ->get(to_page($resource, 'form-page', ['resourceItem' => $item->id]))
+        ->get(to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments[15]->content)
