@@ -17,6 +17,7 @@ use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
@@ -68,7 +69,9 @@ class Json extends Field implements
                 ->customAttributes($this->attributes()->getAttributes()),
         ]);
 
-        return $this;
+        return $this
+            ->creatable()
+            ->removable();
     }
 
     public function isKeyValue(): bool
@@ -90,7 +93,9 @@ class Json extends Field implements
                 ->customAttributes($this->attributes()->getAttributes()),
         ]);
 
-        return $this;
+        return $this
+            ->creatable()
+            ->removable();
     }
 
     public function isOnlyValue(): bool
@@ -103,9 +108,9 @@ class Json extends Field implements
         return $this->keyValue || $this->onlyValue;
     }
 
-    public function vertical(): self
+    public function vertical(Closure|bool|null $condition = null): self
     {
-        $this->isVertical = true;
+        $this->isVertical = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -115,9 +120,9 @@ class Json extends Field implements
         return $this->isVertical;
     }
 
-    public function creatable(): self
+    public function creatable(Closure|bool|null $condition = null): self
     {
-        $this->isCreatable = true;
+        $this->isCreatable = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -269,7 +274,7 @@ class Json extends Field implements
             : [$value ?? $emptyRow];
 
         $values = collect($values)->when(
-            ! $this->isPreviewMode() && $iterable && $this->isCreatable(),
+            ! $this->isPreviewMode(),
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
