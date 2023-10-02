@@ -29,6 +29,7 @@ final class Pages extends Collection
                 if($page->uriKey() === $uri) {
                     return true;
                 }
+
                 return $page->pageType() === PageType::getTypeFromUri($uri);
             },
             $default
