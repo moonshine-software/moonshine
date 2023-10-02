@@ -23,12 +23,15 @@ use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
+use MoonShine\Enums\PageType;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 use Throwable;
 
 class IndexPage extends Page
 {
+    protected ?PageType $pageType = PageType::INDEX;
+
     /**
      * @throws Throwable
      */
