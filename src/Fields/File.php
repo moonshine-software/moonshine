@@ -63,7 +63,7 @@ class File extends Field implements Fileable, RemovableContract
             foreach ($this->toValue() as $value) {
                 $this->deleteFile($value);
             }
-        } elseif (! empty($this->toValue())) {
+        } elseif (filled($this->toValue())) {
             $this->deleteFile($this->toValue());
         }
 

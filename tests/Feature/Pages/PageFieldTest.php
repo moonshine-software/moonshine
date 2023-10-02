@@ -28,7 +28,7 @@ beforeEach(function (): void {
 
 it('fields on index', function () {
     asAdmin()->get(
-        to_page($this->resource, IndexPage::class)
+        to_page(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('table')
@@ -49,7 +49,7 @@ it('fields on index', function () {
 
 it('fields on form', function () {
     asAdmin()->get(
-        to_page($this->resource, FormPage::class, ['resourceItem' => 12])
+        to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => 12])
     )
         ->assertOk()
         ->assertSee('Name')
@@ -63,7 +63,7 @@ it('fields on form', function () {
 
 it('fields on show', function () {
     asAdmin()->get(
-        to_page($this->resource, DetailPage::class, ['resourceItem' => 12])
+        to_page(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => 12])
     )
         ->assertOk()
         ->assertSee('Name')

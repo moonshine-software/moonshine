@@ -35,7 +35,7 @@ trait WithBadge
     public function badgeColor(mixed $value = null): string
     {
         if (! is_null($this->badgeColorCallback)) {
-            return call_user_func($this->badgeColorCallback, $value);
+            return value($this->badgeColorCallback, $value);
         }
 
         return $this->badgeColor;

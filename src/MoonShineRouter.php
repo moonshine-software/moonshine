@@ -23,8 +23,8 @@ final class MoonShineRouter
     }
 
     public static function to_page(
-        string|ResourceContract|null $resource,
         string|Page|null $page = null,
+        string|ResourceContract|null $resource = null,
         array $params = [],
         bool $redirect = false
     ): RedirectResponse|string {

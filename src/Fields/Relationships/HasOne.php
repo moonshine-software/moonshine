@@ -14,6 +14,7 @@ use MoonShine\Decorations\TextBlock;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -160,9 +161,9 @@ class HasOne extends ModelRelationField
                             ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
                             ->redirect(
                                 to_page(
-                                    $parentResource,
-                                    'form-page',
-                                    ['resourceItem' => $parentItem->getKey()]
+                                    page: FormPage::class,
+                                    resource: $parentResource,
+                                    params: ['resourceItem' => $parentItem->getKey()]
                                 )
                             )
                     )

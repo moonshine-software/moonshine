@@ -26,12 +26,12 @@ class Modal
 
     public function title(mixed $data = null): ?string
     {
-        return call_user_func($this->title, $data);
+        return value($this->title, $data);
     }
 
     public function content(mixed $data = null): ?string
     {
-        return call_user_func($this->content, $data);
+        return value($this->content, $data);
     }
 
     public function buttons(array $buttons): self

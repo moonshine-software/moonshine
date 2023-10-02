@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Buttons\IndexPage;
 
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Resources\ModelResource;
 
 class AsyncDetailButton
@@ -13,10 +14,10 @@ class AsyncDetailButton
     {
         return ActionButton::make(
             '',
-            url: fn ($data): string => to_page(
-                $resource,
-                'detail-page',
-                ['resourceItem' => $data->getKey()],
+            url: static fn ($data): string => to_page(
+                page: DetailPage::class,
+                resource: $resource,
+                params: ['resourceItem' => $data->getKey()],
                 fragment: 'crud-show-table'
             )
         )

@@ -40,8 +40,6 @@ final class QueryTag
 
     public function apply(Builder $builder): Builder
     {
-        return is_closure($this->builder)
-            ? call_user_func($this->builder, $builder)
-            : $builder;
+        return value($this->builder, $builder);
     }
 }

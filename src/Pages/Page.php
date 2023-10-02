@@ -73,7 +73,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         }
 
         return [
-            to_page($this->getResource()) => $this->getResource()->title(),
+            to_page(resource: $this->getResource()) => $this->getResource()->title(),
         ];
     }
 

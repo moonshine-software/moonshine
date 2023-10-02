@@ -16,9 +16,7 @@ trait WithLabel
 
     public function label(): string
     {
-        $this->label = is_closure($this->label)
-            ? call_user_func($this->label)
-            : $this->label;
+        $this->label = value($this->label);
 
         if ($this->translatable) {
             return __(

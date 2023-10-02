@@ -5,6 +5,9 @@ declare(strict_types=1);
 use MoonShine\Fields\Checkbox;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
+use MoonShine\Pages\Crud\DetailPage;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
 
 uses()->group('fields');
@@ -22,7 +25,7 @@ it('show field on pages', function () {
     $view = view('moonshine::ui.boolean', ['value' => $this->item->active])->render();
 
     asAdmin()->get(
-        to_page($resource, 'index-page')
+        to_page(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Active')
@@ -30,7 +33,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page($resource, 'detail-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Active')
@@ -38,7 +41,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page($resource, 'form-page', ['resourceItem' => $this->item->getKey()])
+        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('active')

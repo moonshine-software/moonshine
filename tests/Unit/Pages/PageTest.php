@@ -30,7 +30,7 @@ it('to page index', function () {
             ->getRoutes()
             ->match(
                 app('request')->create(
-                    to_page($this->resource, IndexPage::class)
+                    to_page(page: IndexPage::class, resource: $this->resource)
                 )
             )
     )
@@ -49,7 +49,7 @@ it('to page index', function () {
 
 it('to page form', function () {
 
-    $url = to_page($this->resource, FormPage::class, ['resourceItem' => 1]);
+    $url = to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => 1]);
 
     expect(
         app('router')
@@ -76,7 +76,7 @@ it('to page form', function () {
 
 it('to page show', function () {
 
-    $url = to_page($this->resource, DetailPage::class, ['resourceItem' => 1]);
+    $url = to_page(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => 1]);
 
     expect(
         app('router')

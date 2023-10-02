@@ -185,14 +185,14 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     {
         return is_null($this->beforeRender)
             ? ''
-            : call_user_func($this->beforeRender, $this);
+            : value($this->beforeRender, $this);
     }
 
     public function getAfterRender(): View|string
     {
         return is_null($this->afterRender)
             ? ''
-            : call_user_func($this->afterRender, $this);
+            : value($this->afterRender, $this);
     }
 
     public function render(): View|Closure|string

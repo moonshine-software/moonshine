@@ -15,6 +15,7 @@ use MoonShine\Http\Requests\Relations\RelationModelFieldDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
+use MoonShine\Pages\Crud\FormPage;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -49,7 +50,7 @@ class RelationModelFieldController extends MoonShineController
         $query = $model->newModelQuery();
 
         if (is_closure($field->asyncSearchQuery())) {
-            $query = call_user_func(
+            $query = value(
                 $field->asyncSearchQuery(),
                 $query,
                 $request
@@ -166,9 +167,9 @@ class RelationModelFieldController extends MoonShineController
 
         $redirectRoute = redirect(
             to_page(
-                $parentResource,
-                'form-page',
-                ['resourceItem' => $parentItem->getKey()]
+                page: FormPage::class,
+                resource: $parentResource,
+                params: ['resourceItem' => $parentItem->getKey()]
             )
         );
 

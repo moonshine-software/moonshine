@@ -3,6 +3,7 @@
 namespace MoonShine\Buttons\IndexPage;
 
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class AsyncCreateButton
@@ -12,8 +13,8 @@ final class AsyncCreateButton
         return ActionButton::make(
             __('moonshine::ui.create'),
             to_page(
-                $resource,
-                'form-page',
+                page: FormPage::class,
+                resource: $resource,
                 fragment: 'crud-form'
             )
         )

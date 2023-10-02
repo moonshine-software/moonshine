@@ -3,6 +3,7 @@
 namespace MoonShine\Buttons\DetailPage;
 
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class FormButton
@@ -11,10 +12,10 @@ final class FormButton
     {
         return ActionButton::make(
             '',
-            url: fn (): string => to_page(
-                $resource,
-                'form-page',
-                ['resourceItem' => request('resourceItem')]
+            url: static fn (): string => to_page(
+                page: FormPage::class,
+                resource: $resource,
+                params: ['resourceItem' => request('resourceItem')]
             )
         )
             ->primary()

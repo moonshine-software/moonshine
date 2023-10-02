@@ -85,7 +85,7 @@ trait Applies
         }
 
         return is_closure($this->onBeforeApply)
-            ? call_user_func($this->onBeforeApply, $data, $this->requestValue(), $this)
+            ? value($this->onBeforeApply, $data, $this->requestValue(), $this)
             : $this->resolveBeforeApply($data);
     }
 
@@ -96,14 +96,14 @@ trait Applies
         }
 
         return is_closure($this->onAfterApply)
-            ? call_user_func($this->onAfterApply, $data, $this->requestValue(), $this)
+            ? value($this->onAfterApply, $data, $this->requestValue(), $this)
             : $this->resolveAfterApply($data);
     }
 
     public function afterDestroy(mixed $data): mixed
     {
         return is_closure($this->onAfterDestroy)
-            ? call_user_func($this->onAfterDestroy, $data, $this->requestValue(), $this)
+            ? value($this->onAfterDestroy, $data, $this->requestValue(), $this)
             : $this->resolveAfterDestroy($data);
     }
 

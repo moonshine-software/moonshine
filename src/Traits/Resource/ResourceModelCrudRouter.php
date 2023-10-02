@@ -8,6 +8,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\MoonShineRouter;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 
 /**
  * @mixin ResourceContract
@@ -45,14 +47,14 @@ trait ResourceModelCrudRouter
     public function redirectAfterSave(): string
     {
         return request('_redirect') ?? to_page(
-            $this,
-            'form-page',
-            is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()->getKey()]
+            page: FormPage::class,
+            resource: $this,
+            params: is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()->getKey()]
         );
     }
 
     public function redirectAfterDelete(): string
     {
-        return request('_redirect') ?? to_page($this, 'index-page');
+        return request('_redirect') ?? to_page(page: IndexPage::class, resource: $this);
     }
 }

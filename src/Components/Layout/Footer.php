@@ -27,9 +27,7 @@ class Footer extends WithComponents
 
     public function getCopyright(): string
     {
-        return is_closure($this->copyright)
-            ? call_user_func($this->copyright)
-            : $this->copyright;
+        return value($this->copyright);
     }
 
     /**

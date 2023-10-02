@@ -27,20 +27,12 @@ trait WithLink
 
     public function getLinkValue(mixed $value = null): string|Closure
     {
-        if (is_closure($this->linkValue)) {
-            return call_user_func($this->linkValue, $value);
-        }
-
-        return $this->linkValue;
+        return value($this->linkValue, $value);
     }
 
     public function getLinkName(mixed $value = null): string
     {
-        if (is_closure($this->linkName)) {
-            return call_user_func($this->linkName, $value);
-        }
-
-        return $this->linkName;
+        return value($this->linkName, $value);
     }
 
     public function getLinkIcon(): ?string
