@@ -12,7 +12,7 @@ trait WithLink
 
     protected string|Closure $linkValue = '';
 
-    protected string $linkName = '';
+    protected string|Closure $linkName = '';
 
     protected ?string $linkIcon = null;
 
