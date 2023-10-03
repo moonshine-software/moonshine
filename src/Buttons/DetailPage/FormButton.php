@@ -21,7 +21,8 @@ final class FormButton
                 params: ['resourceItem' => request('resourceItem')]
             )
         )
-            ->canSee(fn(?Model $item) => !is_null($item) && in_array($ability, $resource->getActiveActions())
+            ->canSee(
+                fn (?Model $item) => ! is_null($item) && in_array($ability, $resource->getActiveActions())
                 && $resource->setItem($item)->can($ability)
             )
             ->primary()

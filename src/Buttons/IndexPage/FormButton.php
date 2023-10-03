@@ -30,7 +30,8 @@ final class FormButton
         )
             ->primary()
             ->icon('heroicons.outline.pencil')
-            ->canSee(fn(?Model $item) => !is_null($item) && in_array('update', $resource->getActiveActions())
+            ->canSee(
+                fn (?Model $item) => ! is_null($item) && in_array('update', $resource->getActiveActions())
                 && $resource->setItem($item)->can('update')
             )
             ->showInLine();

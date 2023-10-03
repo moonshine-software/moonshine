@@ -36,7 +36,8 @@ final class MassDeleteButton
                     ])
                     ->submit('Delete', ['class' => 'btn-secondary'])
             )
-            ->canSee(fn(?Model $item) => !is_null($item) && in_array('delete', $resource->getActiveActions())
+            ->canSee(
+                fn (?Model $item) => ! is_null($item) && in_array('delete', $resource->getActiveActions())
                 && $resource->setItem($item)->can('massDelete')
             )
             ->showInLine();

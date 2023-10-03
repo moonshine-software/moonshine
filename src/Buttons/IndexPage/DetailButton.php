@@ -28,7 +28,8 @@ final class DetailButton
                 params: ['resourceItem' => $data->getKey()]
             )
         )
-            ->canSee(fn(?Model $item) => !is_null($item) && in_array('view', $resource->getActiveActions())
+            ->canSee(
+                fn (?Model $item) => ! is_null($item) && in_array('view', $resource->getActiveActions())
                 && $resource->setItem($item)->can('view')
             )
             ->icon('heroicons.outline.eye')

@@ -26,7 +26,8 @@ final class CreateButton
             )
         )
             ->primary()
-            ->canSee(fn(?Model $item) => !is_null($item) && in_array('create', $resource->getActiveActions())
+            ->canSee(
+                fn (?Model $item) => ! is_null($item) && in_array('create', $resource->getActiveActions())
                 && $resource->setItem($item)->can('create')
             )
             ->icon('heroicons.outline.plus');
