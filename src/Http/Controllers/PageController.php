@@ -9,6 +9,9 @@ class PageController extends MoonShineController
 {
     public function __invoke(MoonShineRequest $request): View|string
     {
-        return $request->getPage()->render();
+        $page = $request->getPage();
+        $page->beforeRender();
+
+        return $page->render();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace MoonShine\Buttons\IndexPage;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
@@ -20,6 +21,9 @@ final class AsyncCreateButton
         )
             ->primary()
             ->icon('heroicons.outline.plus')
+            ->canSee(fn(?Model $item) => !is_null($item) && in_array('create', $resource->getActiveActions())
+                && $resource->setItem($item)->can('create')
+            )
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),
                 fn (): string => '',

@@ -11,7 +11,7 @@ final class ViewFormRequest extends MoonshineFormRequest
     public function authorize(): bool
     {
         if (! in_array(
-            'show',
+            'view',
             $this->getResource()->getActiveActions(),
             true
         )) {

@@ -24,13 +24,6 @@ beforeEach(function () {
 it('show field on pages', function () {
     $resource = createResourceField($this->field->format('d.m.Y'));
 
-    asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $resource)
-    )
-        ->assertOk()
-        ->assertSee('Range')
-    ;
-
     $from = now();
     $to = now()->addMonth();
 
@@ -38,6 +31,16 @@ it('show field on pages', function () {
         'start_date' => $from,
         'end_date' => $to,
     ]);
+
+    $this->field->resolveFill($item->toArray(), $item);
+
+    asAdmin()->get(
+        to_page(page: IndexPage::class, resource: $resource)
+    )
+        ->assertOk()
+        ->assertSee('Range')
+        ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
+    ;
 
     asAdmin()->get(
         to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $item->getKey()])

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons\IndexPage;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Hidden;
@@ -37,6 +38,9 @@ final class DeleteButton
                         TextBlock::make('', __('moonshine::ui.confirm_message')),
                     ]
                 )->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
+            )
+            ->canSee(fn(?Model $item) => !is_null($item) && in_array('delete', $resource->getActiveActions())
+                && $resource->setItem($item)->can('delete')
             )
             ->showInLine();
     }
