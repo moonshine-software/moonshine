@@ -11,6 +11,8 @@ use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageDetail;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageForm;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageIndex;
+use MoonShine\Tests\Fixtures\Pages\NoType\CustomNoTypeForm;
+use MoonShine\Tests\Fixtures\Pages\NoType\CustomNoTypeIndex;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('pages-feature');
@@ -57,4 +59,16 @@ it('detail page', function () {
         ->assertOk()
         ->assertSee('CustomPageDetail')
     ;
+});
+
+it('no page type resource', function () {
+    $resource = TestResourceBuilder::new(Item::class)
+        ->setTestPages([
+            CustomNoTypeIndex::make('CustomNoTypeIndex', 'page-1'),
+            CustomNoTypeForm::make('CustomNoTypeForm', 'page-2'),
+        ])
+    ;
+
+    expect(to_page('page-2', resource: $resource))
+        ->toContain('page-2');
 });

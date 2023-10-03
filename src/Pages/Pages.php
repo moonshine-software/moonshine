@@ -30,7 +30,10 @@ final class Pages extends Collection
                     return true;
                 }
 
-                return $page->pageType() === PageType::getTypeFromUri($uri);
+                return
+                    !is_null($pageTypeUri = PageType::getTypeFromUri($uri))
+                    && $page->pageType() === $pageTypeUri
+                ;
             },
             $default
         );
