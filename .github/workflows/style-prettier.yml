@@ -1,10 +1,6 @@
 name: Style Prettier
 
-on:
-  push:
-    branches: [ "1.5.x" ]
-  pull_request:
-    branches: [ "1.5.x" ]
+on: [push, pull_request]
 
 jobs:
   style:
