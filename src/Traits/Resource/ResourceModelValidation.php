@@ -46,6 +46,6 @@ trait ResourceModelValidation
 
     public function prepareForValidation(): void
     {
-        //
+        // Logic
     }
 }

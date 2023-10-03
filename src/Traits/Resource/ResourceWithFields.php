@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\FilterException;
 use MoonShine\Fields\Fields;
 use MoonShine\Support\Filters;
@@ -31,11 +32,18 @@ trait ResourceWithFields
      */
     public function getIndexFields(): Fields
     {
-        return Fields::make(
-            empty($this->indexFields())
-                ? $this->fields()
-                : $this->indexFields()
-        )->filter()->indexFields();
+        $fields = $this->getPages()
+            ->findByUri(PageType::INDEX->value)
+            ?->fields();
+
+        if (empty($fields)) {
+            $fields = $this->indexFields()
+                ?: $this->fields();
+        }
+
+        return Fields::make($fields)
+            ->filter()
+            ->indexFields();
     }
 
     public function formFields(): array
@@ -45,20 +53,35 @@ trait ResourceWithFields
 
     public function getFormFields(): Fields
     {
-        return Fields::make(
-            empty($this->formFields())
-                ? $this->fields()
-                : $this->formFields()
-        )->filter()->formFields()->withoutOutside();
+        $fields = $this->getPages()
+            ->findByUri(PageType::FORM->value)
+            ?->fields();
+
+        if (empty($fields)) {
+            $fields = $this->formFields()
+                ?: $this->fields();
+        }
+
+        return Fields::make($fields)
+            ->filter()
+            ->formFields()
+            ->withoutOutside();
     }
 
     public function getOutsideFields(): Fields
     {
-        return Fields::make(
-            empty($this->formFields())
-                ? $this->fields()
-                : $this->formFields()
-        )->filter()->onlyOutside();
+        $fields = $this->getPages()
+            ->findByUri(PageType::FORM->value)
+            ?->fields();
+
+        if (empty($fields)) {
+            $fields = $this->formFields()
+                ?: $this->fields();
+        }
+
+        return Fields::make($fields)
+            ->filter()
+            ->onlyOutside();
     }
 
     public function detailFields(): array
@@ -68,11 +91,18 @@ trait ResourceWithFields
 
     public function getDetailFields(): Fields
     {
-        return Fields::make(
-            empty($this->detailFields())
-                ? $this->fields()
-                : $this->detailFields()
-        )->filter()->detailFields();
+        $fields = $this->getPages()
+            ->findByUri(PageType::DETAIL->value)
+            ?->fields();
+
+        if (empty($fields)) {
+            $fields = $this->detailFields()
+                ?: $this->fields();
+        }
+
+        return Fields::make($fields)
+            ->filter()
+            ->detailFields();
     }
 
     public function filters(): array
@@ -91,7 +121,7 @@ trait ResourceWithFields
             ->wrapNames('filters');
 
         $filters->each(function ($filter): void {
-            if(in_array($filter::class, Filters::NO_FILTERS)) {
+            if (in_array($filter::class, Filters::NO_FILTERS)) {
                 throw new FilterException("You can't use " . $filter::class . " inside filters.");
             }
         });

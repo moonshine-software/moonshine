@@ -17,6 +17,6 @@ class DummyResource extends Resource
 
     protected function resolveRoutes(): void
     {
-        //
+        parent::resolveRoutes();
     }
 }

@@ -88,7 +88,7 @@ class Slug extends Text
         return ! DB::table($item->getTable())
             ->whereNot($item->getKeyName(), $item->getKey())
             ->where($this->column(), $slug)
-            ->first();
+            ->exists();
     }
 
 }

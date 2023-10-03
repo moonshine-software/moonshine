@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Enums\PageType;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
@@ -15,11 +16,11 @@ beforeEach(function (): void {
 
 it('page urls', function () {
     expect($this->resource->getPages())
-        ->findByUri('index-page')
+        ->findByUri(PageType::INDEX->value)
         ->toBeInstanceOf(IndexPage::class)
-        ->findByUri('form-page')
+        ->findByUri(PageType::FORM->value)
         ->toBeInstanceOf(FormPage::class)
-        ->findByUri('detail-page')
+        ->findByUri(PageType::DETAIL->value)
         ->toBeInstanceOf(DetailPage::class)
     ;
 });
@@ -43,7 +44,7 @@ it('to page index', function () {
         ->parameter('resourceUri')
         ->toBe('test-resource')
         ->parameter('pageUri')
-        ->toBe('index-page')
+        ->toBe(PageType::INDEX->value)
     ;
 });
 
@@ -67,7 +68,7 @@ it('to page form', function () {
         ->parameter('resourceUri')
         ->toBe('test-resource')
         ->parameter('pageUri')
-        ->toBe('form-page')
+        ->toBe(PageType::FORM->value)
         ->and(parse_url($url))
         ->query
         ->toBe('resourceItem=1')
@@ -94,7 +95,7 @@ it('to page show', function () {
         ->parameter('resourceUri')
         ->toBe('test-resource')
         ->parameter('pageUri')
-        ->toBe('detail-page')
+        ->toBe(PageType::DETAIL->value)
         ->and(parse_url($url))
         ->query
         ->toBe('resourceItem=1')

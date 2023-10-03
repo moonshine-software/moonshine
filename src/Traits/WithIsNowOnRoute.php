@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use MoonShine\Enums\PageType;
+
 trait WithIsNowOnRoute
 {
     public function isNowOnIndex(): bool
     {
-        return request()?->route('pageUri') === 'index-page'
-            || request('pageUri') === 'index-page';
+        return request()?->route('pageUri') === PageType::INDEX->value
+            || request('pageUri') === PageType::INDEX->value;
     }
 
     public function isNowOnDetail(): bool
     {
-        return request()?->route('pageUri') === 'detail-page'
-            || request('pageUri') === 'detail-page';
+        return request()?->route('pageUri') === PageType::DETAIL->value
+            || request('pageUri') === PageType::DETAIL->value;
     }
 
     public function isNowOnForm(): bool
@@ -28,10 +30,10 @@ trait WithIsNowOnRoute
     {
         return (
             is_null(request()?->route('resourceItem'))
-            && request()?->route('pageUri') === 'form-page'
+            && request()?->route('pageUri') === PageType::FORM->value
         ) || (
             is_null(request('resourceItem'))
-            && request('pageUri') === 'form-page'
+            && request('pageUri') === PageType::FORM->value
         );
     }
 
@@ -39,10 +41,10 @@ trait WithIsNowOnRoute
     {
         return (
             ! is_null(request()?->route('resourceItem'))
-            && request()?->route('pageUri') === 'form-page'
+            && request()?->route('pageUri') === PageType::FORM->value
         ) || (
             ! is_null(request('resourceItem'))
-            && request('pageUri') === 'form-page'
+            && request('pageUri') === PageType::FORM->value
         );
     }
 }

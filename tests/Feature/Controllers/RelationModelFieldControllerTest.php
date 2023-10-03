@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Enums\PageType;
 use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\MoonShineRouter;
 use MoonShine\Tests\Fixtures\Models\Category;
@@ -21,7 +22,7 @@ it('search relations with pagination', function () {
     $firstComment = $item->comments[0];
 
     asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
-        'pageUri' => 'form-page',
+        'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
         '_relation' => 'comments',
@@ -45,7 +46,7 @@ it('pagination has many with page', function () {
     $comment = $item->comments[3];
 
     asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
-        'pageUri' => 'form-page',
+        'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
         '_relation' => 'comments',
@@ -69,7 +70,7 @@ it('pagination has many sort', function () {
     $firstComment = $item->comments[0];
 
     asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
-        'pageUri' => 'form-page',
+        'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
         '_relation' => 'comments',
@@ -94,7 +95,7 @@ it('search relations empty result', function () {
     $item = createItem(countComments: 1);
 
     asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
-        'pageUri' => 'form-page',
+        'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
         '_relation' => 'comments',
@@ -120,7 +121,7 @@ it('async search', function () {
     createResourceField($field);
 
     asAdmin()->get(MoonShineRouter::to("relation.search", [
-        'pageUri' => 'form-page',
+        'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-resource',
         'resourceItem' => $item->id,
         '_component_name' => 'crud',

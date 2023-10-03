@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Enums\PageType;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShineRequest;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
@@ -15,7 +16,7 @@ beforeEach(function (): void {
 
 it('find resource', function (): void {
     asAdmin()
-        ->get($this->resource->route('resource.page', query: ['pageUri' => 'index-page']))
+        ->get($this->resource->route('resource.page', query: ['pageUri' => PageType::INDEX->value]))
         ->assertOk();
 
 

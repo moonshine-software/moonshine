@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Enums\PageType;
 use MoonShine\MoonShineRequest;
 
 uses()->group('core');
@@ -11,7 +12,7 @@ it('recognizes internal request as MoonShine request', function (): void {
     $resource = $this->moonShineUserResource();
 
     asAdmin()
-        ->get($resource->route('resource.page', query: ['pageUri' => 'index-page']))
+        ->get($resource->route('resource.page', query: ['pageUri' => PageType::INDEX->value]))
         ->assertOk();
 
     expect(app(MoonShineRequest::class)->isMoonShineRequest())

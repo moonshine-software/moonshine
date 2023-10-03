@@ -8,6 +8,11 @@ use MoonShine\Pages\Crud\{extendShort};
 
 class DummyPage extends {extendShort}
 {
+    public function fields(): array
+    {
+        return [];
+    }
+
     protected function topLayer(): array
     {
         return [

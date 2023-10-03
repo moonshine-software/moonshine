@@ -13,7 +13,7 @@ class DummyClass implements ApplyContract
     public function apply(Field $field): Closure
     {
         return static function (mixed $data) {
-            //
+            // Logic
         };
     }
 }

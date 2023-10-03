@@ -143,7 +143,7 @@ trait ResourceModelQuery
                 request('sort.column', $this->sortColumn()),
                 request('sort.direction', $this->sortDirection())
             )
-            ->resolveCachedBackRequest();
+            ->cacheQueryParams();
 
         return $this->query();
     }
@@ -163,7 +163,7 @@ trait ResourceModelQuery
         return $this->query;
     }
 
-    protected function resolveCachedBackRequest(): static
+    protected function cacheQueryParams(): static
     {
         Cache::forget($this->queryCacheKey());
 
