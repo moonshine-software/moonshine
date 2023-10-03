@@ -8,7 +8,7 @@
     }
 
     &--top-menu {
-      @apply flex-col pt-[4.5rem] lg:pt-24 px-3 md:px-5 pb-6 transition-none;
+      @apply flex-col px-3 pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
     }
   }
 

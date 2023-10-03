@@ -1,8 +1,4 @@
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from './showWhenFunctions'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -10,8 +6,8 @@ export default () => ({
     if (initData !== undefined && initData.whenFields !== undefined) {
       this.whenFields = initData.whenFields
 
-      let formId = this.$id('form');
-      if(formId === undefined) {
+      let formId = this.$id('form')
+      if (formId === undefined) {
         formId = this.$el.getAttribute('id')
       }
 
@@ -69,30 +65,33 @@ export default () => ({
         ContentType: form.getAttribute('enctype'),
       },
     })
-    .then(function (response) {
-      const data = response.data
+      .then(function (response) {
+        const data = response.data
 
-      if(data.redirect) {
-        window.location = data.redirect
-      }
+        if (data.redirect) {
+          window.location = data.redirect
+        }
 
-      t.$dispatch('toast', {type: 'success', text: data.message})
+        t.$dispatch('toast', {type: 'success', text: data.message})
 
-      submitState(form, false)
-    })
-    .catch(errorResponse => {
-      const data = errorResponse.response.data
+        submitState(form, false)
+      })
+      .catch(errorResponse => {
+        const data = errorResponse.response.data
 
-      t.$dispatch('toast', {type: 'error', text: data.message})
+        t.$dispatch('toast', {type: 'error', text: data.message})
 
-      submitState(form, false)
-    })
+        submitState(form, false)
+      })
 
     return false
   },
 
   onChangeField(event) {
-    this.showWhenChange(event.target.getAttribute('name'), event.target.closest('form').getAttribute('id'))
+    this.showWhenChange(
+      event.target.getAttribute('name'),
+      event.target.closest('form').getAttribute('id')
+    )
   },
 
   showWhenChange,
@@ -103,7 +102,7 @@ export default () => ({
 })
 
 function submitState(form, loading = true) {
-  if(!loading) {
+  if (!loading) {
     form.querySelector('.form_submit_button_loader').style.display = 'none'
     form.querySelector('.form_submit_button').removeAttribute('disabled')
   } else {

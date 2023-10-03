@@ -1,76 +1,76 @@
 /* Spinners (loaders) */
 .spinner {
-	@apply relative h-8 w-8 rounded-full before:absolute before:inset-0 before:box-border before:rounded-full before:border-3 before:border-slate-300 dark:before:border-slate-500;
-	animation: ms-loader-rotate 1s linear infinite;
-	&::before {
-		animation: ms-loader-spinner 2s linear infinite;
-	}
+  @apply relative h-8 w-8 rounded-full before:absolute before:inset-0 before:box-border before:rounded-full before:border-3 before:border-slate-300 dark:before:border-slate-500;
+  animation: ms-loader-rotate 1s linear infinite;
+  &::before {
+    animation: ms-loader-spinner 2s linear infinite;
+  }
 
-	/* Fixed position */
-	&-fixed {
-		@apply fixed inset-0 m-auto;
-	}
+  /* Fixed position */
+  &-fixed {
+    @apply fixed inset-0 m-auto;
+  }
 
-	/* Absolute position */
-	&-absolute {
-		@apply absolute inset-0 m-auto;
-	}
+  /* Absolute position */
+  &-absolute {
+    @apply absolute inset-0 m-auto;
+  }
 
-	/* Sizes */
-	&-sm {
-		@apply h-6 w-6 before:border-2;
-	}
-	&-md {
-		@apply h-10 w-10;
-	}
-	&-lg {
-		@apply h-12 w-12 before:border-4;
-	}
-	&-xl {
-		@apply h-14 w-14 before:border-4;
-	}
+  /* Sizes */
+  &-sm {
+    @apply h-6 w-6 before:border-2;
+  }
+  &-md {
+    @apply h-10 w-10;
+  }
+  &-lg {
+    @apply h-12 w-12 before:border-4;
+  }
+  &-xl {
+    @apply h-14 w-14 before:border-4;
+  }
 
-	/* Themes */
-	&--primary {
-		@apply before:border-primary dark:before:border-primary;
-	}
-	&--secondary {
-		@apply before:border-secondary dark:before:border-secondary;
-	}
-	&--success {
-		@apply before:border-success-bg dark:before:border-success-bg;
-	}
-	&--warning {
-		@apply before:border-warning-bg dark:before:border-warning-bg;
-	}
-	&--error {
-		@apply before:border-error-bg dark:before:border-error-bg;
-	}
-	&--info {
-		@apply before:border-info-bg dark:before:border-info-bg;
-	}
+  /* Themes */
+  &--primary {
+    @apply before:border-primary dark:before:border-primary;
+  }
+  &--secondary {
+    @apply before:border-secondary dark:before:border-secondary;
+  }
+  &--success {
+    @apply before:border-success-bg dark:before:border-success-bg;
+  }
+  &--warning {
+    @apply before:border-warning-bg dark:before:border-warning-bg;
+  }
+  &--error {
+    @apply before:border-error-bg dark:before:border-error-bg;
+  }
+  &--info {
+    @apply before:border-info-bg dark:before:border-info-bg;
+  }
 }
 
 @keyframes ms-loader-rotate {
-	100% {
-		transform: rotate(360deg);
-	}
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes ms-loader-spinner {
-	0% {
-		clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
-	}
-	25% {
-		clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
-	}
-	50% {
-		clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
-	}
-	75% {
-		clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
-	}
-	100% {
-		clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
-	}
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+  75% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+  }
 }

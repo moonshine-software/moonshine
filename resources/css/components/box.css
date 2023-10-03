@@ -1,14 +1,14 @@
 .box {
-	@apply relative rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
-	&-dark {
-		@apply bg-dark-600 text-slate-200 shadow-none dark:bg-dark-800 dark:text-slate-300 dark:shadow-black/5;
-	}
+  @apply relative rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
+  &-dark {
+    @apply bg-dark-600 text-slate-200 shadow-none dark:bg-dark-800 dark:text-slate-300 dark:shadow-black/5;
+  }
 }
 
 .box-shadow {
-	@apply before:absolute before:inset-x-0 before:top-3 before:-z-1 before:mx-auto before:h-full before:w-[90%] before:rounded-lg before:bg-white before:shadow-md before:shadow-gray-200 before:dark:bg-dark-500 before:dark:shadow-black/5;
+  @apply before:absolute before:inset-x-0 before:top-3 before:-z-1 before:mx-auto before:h-full before:w-[90%] before:rounded-lg before:bg-white before:shadow-md before:shadow-gray-200 before:dark:bg-dark-500 before:dark:shadow-black/5;
 }
 
 .box-title {
-	@apply mb-3 border-b border-gray-200 pb-3 text-xs font-semibold dark:border-dark-200 lg:mb-5 lg:pb-5;
+  @apply mb-3 border-b border-gray-200 pb-3 text-xs font-semibold dark:border-dark-200 lg:mb-5 lg:pb-5;
 }
