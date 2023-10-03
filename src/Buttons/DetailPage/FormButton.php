@@ -22,7 +22,7 @@ final class FormButton
             )
         )
             ->canSee(
-                fn (?Model $item) => ! is_null($item) && in_array($ability, $resource->getActiveActions())
+                fn (?Model $item): bool => ! is_null($item) && in_array($ability, $resource->getActiveActions())
                 && $resource->setItem($item)->can($ability)
             )
             ->primary()

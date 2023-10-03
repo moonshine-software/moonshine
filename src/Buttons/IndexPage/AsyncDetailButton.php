@@ -29,7 +29,7 @@ class AsyncDetailButton
                 async: true
             )
             ->canSee(
-                fn (?Model $item) => ! is_null($item) && in_array('view', $resource->getActiveActions())
+                fn (?Model $item): bool => ! is_null($item) && in_array('view', $resource->getActiveActions())
                 && $resource->setItem($item)->can('view')
             )
             ->showInLine();

@@ -30,7 +30,7 @@ final class AsyncEditButton
                 async: true
             )
             ->canSee(
-                fn (?Model $item) => ! is_null($item) && in_array('update', $resource->getActiveActions())
+                fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
                 && $resource->setItem($item)->can('update')
             )
             ->showInLine()

@@ -22,7 +22,7 @@ final class AsyncCreateButton
             ->primary()
             ->icon('heroicons.outline.plus')
             ->canSee(
-                fn (?Model $item) => ! is_null($item) && in_array('create', $resource->getActiveActions())
+                fn (?Model $item): bool => ! is_null($item) && in_array('create', $resource->getActiveActions())
                 && $resource->setItem($item)->can('create')
             )
             ->inModal(

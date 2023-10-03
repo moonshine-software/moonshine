@@ -40,7 +40,7 @@ final class DeleteButton
                 )->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )
             ->canSee(
-                fn (?Model $item) => ! is_null($item) && in_array('delete', $resource->getActiveActions())
+                fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
                 && $resource->setItem($item)->can('delete')
             )
             ->showInLine();
