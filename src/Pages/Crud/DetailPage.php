@@ -29,6 +29,15 @@ class DetailPage extends Page
         return $breadcrumbs;
     }
 
+    public function beforeRender(): void
+    {
+        abort_if(
+            ! in_array('view', $this->getResource()->getActiveActions())
+            || ! $this->getResource()->can('view'),
+            403
+        );
+    }
+
     /**
      * @throws Throwable
      */

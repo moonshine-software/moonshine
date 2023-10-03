@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons\IndexPage;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
@@ -29,6 +30,10 @@ final class FormButton
         )
             ->primary()
             ->icon('heroicons.outline.pencil')
+            ->canSee(
+                fn (?Model $item) => ! is_null($item) && in_array('update', $resource->getActiveActions())
+                && $resource->setItem($item)->can('update')
+            )
             ->showInLine();
     }
 }

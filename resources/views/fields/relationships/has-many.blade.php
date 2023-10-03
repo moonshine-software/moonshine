@@ -5,7 +5,7 @@
     @if($element->isCreatable())
         <x-moonshine::divider />
 
-        {{ $element->createButton() }}
+        {!! $element->createButton() !!}
     @endif
 
     <x-moonshine::divider />

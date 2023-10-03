@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons\IndexPage;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Resources\ModelResource;
@@ -27,9 +28,10 @@ final class DetailButton
                 params: ['resourceItem' => $data->getKey()]
             )
         )
-            /*->canSee(fn(?Model $item) => !is_null($item) && in_array('show', $resource->getActiveActions())
-                && $resource->setItem($item)->can('show')
-            )*/
+            ->canSee(
+                fn (?Model $item) => ! is_null($item) && in_array('view', $resource->getActiveActions())
+                && $resource->setItem($item)->can('view')
+            )
             ->icon('heroicons.outline.eye')
             ->showInLine();
     }
