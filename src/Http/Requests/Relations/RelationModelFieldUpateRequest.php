@@ -11,7 +11,7 @@ class RelationModelFieldUpateRequest extends RelationModelFieldRequest
         $resource = $this->getField()->getResource();
 
         if (! in_array(
-            'edit',
+            'update',
             $resource->getActiveActions(),
             true
         )) {

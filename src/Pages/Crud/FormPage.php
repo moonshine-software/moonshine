@@ -32,6 +32,22 @@ class FormPage extends Page
         return $breadcrumbs;
     }
 
+    public function beforeRender(): void
+    {
+        $ability = $this->getResource()->isNowOnUpdateForm()
+            ? 'update'
+            : 'create';
+
+        abort_if(
+            ! in_array(
+                $ability,
+                $this->getResource()->getActiveActions()
+            )
+            || ! $this->getResource()->can($ability),
+            403
+        );
+    }
+
     public function components(): array
     {
         if (

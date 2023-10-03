@@ -19,7 +19,7 @@ final class UpdateColumnFormRequest extends MoonshineFormRequest
         }
 
         if (! in_array(
-            'edit',
+            'update',
             $resource->getActiveActions(),
             true
         )) {

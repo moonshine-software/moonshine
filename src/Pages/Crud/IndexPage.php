@@ -32,6 +32,11 @@ class IndexPage extends Page
 {
     protected ?PageType $pageType = PageType::INDEX;
 
+    public function beforeRender(): void
+    {
+        abort_if(!$this->getResource()->can('viewAny'), 403);
+    }
+
     /**
      * @throws Throwable
      */

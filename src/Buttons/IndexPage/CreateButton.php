@@ -2,6 +2,7 @@
 
 namespace MoonShine\Buttons\IndexPage;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
@@ -25,6 +26,9 @@ final class CreateButton
             )
         )
             ->primary()
+            ->canSee(fn(?Model $item) => !is_null($item) && in_array('create', $resource->getActiveActions())
+                && $resource->setItem($item)->can('create')
+            )
             ->icon('heroicons.outline.plus');
     }
 }

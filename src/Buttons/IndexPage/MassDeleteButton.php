@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons\IndexPage;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Decorations\Heading;
 use MoonShine\Fields\Hidden;
@@ -34,6 +35,9 @@ final class MassDeleteButton
                         Heading::make(__('moonshine::ui.confirm_message')),
                     ])
                     ->submit('Delete', ['class' => 'btn-secondary'])
+            )
+            ->canSee(fn(?Model $item) => !is_null($item) && in_array('delete', $resource->getActiveActions())
+                && $resource->setItem($item)->can('massDelete')
             )
             ->showInLine();
     }

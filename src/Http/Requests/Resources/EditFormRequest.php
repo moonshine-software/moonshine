@@ -11,7 +11,7 @@ final class EditFormRequest extends MoonshineFormRequest
     public function authorize(): bool
     {
         if (! in_array(
-            'edit',
+            'update',
             $this->getResource()->getActiveActions(),
             true
         )) {
