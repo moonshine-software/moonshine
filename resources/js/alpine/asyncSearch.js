@@ -11,7 +11,7 @@ export default route => ({
 
     const pivot = this.$root.querySelector('.pivotTable')
 
-    if(pivot !== null) {
+    if (pivot !== null) {
       pivot.querySelector('.tableBuilderAddEvent')?.click()
 
       this.$nextTick(() => {

@@ -19,17 +19,17 @@ export default (asyncUrl = '') => ({
     this.shouldSort = !!this.$el.dataset.shouldSort
 
     this.$nextTick(() => {
-      const items = [];
+      const items = []
 
-      Array.from(this.$el.options ?? []).forEach(function(option) {
+      Array.from(this.$el.options ?? []).forEach(function (option) {
         items.push({
           label: option.value,
           value: option.text,
           customProperties: option.dataset?.customProperties
             ? JSON.parse(option.dataset.customProperties)
-            : {}
-        });
-      });
+            : {},
+        })
+      })
 
       this.choicesInstance = new Choices(this.$el, {
         allowHTML: true,
@@ -40,24 +40,25 @@ export default (asyncUrl = '') => ({
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
-        callbackOnCreateTemplates: function(template) {
+        callbackOnCreateTemplates: function (template) {
           return {
             item: ({classNames}, data) => {
               return template(`
                 <div class="${classNames.item} ${
-                      data.highlighted
-                        ? classNames.highlightedState
-                        : classNames.itemSelectable
-                    } ${
-                      data.placeholder ? classNames.placeholder : ''
-                    }" data-item data-id="${data.id}" data-value="${data.value}" ${
-                      data.active ? 'aria-selected="true"' : ''
-                    } ${data.disabled ? 'aria-disabled="true"' : ''}>
+                data.highlighted ? classNames.highlightedState : classNames.itemSelectable
+              } ${data.placeholder ? classNames.placeholder : ''}" data-item data-id="${
+                data.id
+              }" data-value="${data.value}" ${data.active ? 'aria-selected="true"' : ''} ${
+                data.disabled ? 'aria-disabled="true"' : ''
+              }>
                       <div class="flex gap-x-2 items-center ">
-                        ${data.customProperties?.image
-                          ? '<div class="zoom-in h-10 w-10 overflow-hidden rounded-md">' +
-                          '<img class="h-full w-full object-cover" src="'+data.customProperties.image+'" alt=""></div>'
-                          : ''
+                        ${
+                          data.customProperties?.image
+                            ? '<div class="zoom-in h-10 w-10 overflow-hidden rounded-md">' +
+                              '<img class="h-full w-full object-cover" src="' +
+                              data.customProperties.image +
+                              '" alt=""></div>'
+                            : ''
                         }
                         <span>
                           ${data.label}
@@ -65,36 +66,37 @@ export default (asyncUrl = '') => ({
                       </div>
 
                 </div>
-              `);
+              `)
             },
             choice: ({classNames}, data) => {
               return template(`
                 <div class="flex gap-x-2 items-center ${classNames.item} ${classNames.itemChoice} ${
-                      data.disabled
-                        ? classNames.itemDisabled
-                        : classNames.itemSelectable
-                    }" data-select-text="${this.config.itemSelectText}" data-choice ${
-                      data.disabled
-                        ? 'data-choice-disabled aria-disabled="true"'
-                        : 'data-choice-selectable'
-                    } data-id="${data.id}" data-value="${data.value}" ${
-                      data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
-                    }>
+                data.disabled ? classNames.itemDisabled : classNames.itemSelectable
+              }" data-select-text="${this.config.itemSelectText}" data-choice ${
+                data.disabled
+                  ? 'data-choice-disabled aria-disabled="true"'
+                  : 'data-choice-selectable'
+              } data-id="${data.id}" data-value="${data.value}" ${
+                data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
+              }>
                       <div class="flex gap-x-2 items-center ">
-                          ${data.customProperties?.image
-                            ? '<div class="zoom-in h-10 w-10 overflow-hidden rounded-md">' +
-                            '<img class="h-full w-full object-cover" src="'+data.customProperties.image+'" alt=""></div>'
-                            : ''
+                          ${
+                            data.customProperties?.image
+                              ? '<div class="zoom-in h-10 w-10 overflow-hidden rounded-md">' +
+                                '<img class="h-full w-full object-cover" src="' +
+                                data.customProperties.image +
+                                '" alt=""></div>'
+                              : ''
                           }
                         <span>
                           ${data.label}
                         </span>
                       </div>
                 </div>
-            `);
+            `)
             },
-          };
-        }
+          }
+        },
       })
 
       if (this.$el.dataset.overflow || this.$el.closest('.table-responsive')) {
@@ -143,9 +145,7 @@ export default (asyncUrl = '') => ({
 
               url.searchParams.append('query', event.detail.value)
 
-              this.fromUrl(
-                url.toString() + (crudFormQuery().length ? ('&' + crudFormQuery()) : '')
-              )
+              this.fromUrl(url.toString() + (crudFormQuery().length ? '&' + crudFormQuery() : ''))
             }
           }, 300),
           false

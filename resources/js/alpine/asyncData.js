@@ -24,7 +24,7 @@ export default () => ({
   },
 
   async updateColumn(route, column, value = null) {
-    if(value === null) {
+    if (value === null) {
       value = this.$el.value
     }
 

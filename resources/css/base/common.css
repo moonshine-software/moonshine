@@ -40,7 +40,7 @@
   --scrollbar-color: theme('colors.gray.300');
   --scrollbar-hover-color: theme('colors.gray.200');
 }
-:root[class="dark"] {
+:root[class='dark'] {
   --scrollbar-color: theme('colors.dark.100');
   --scrollbar-hover-color: theme('colors.dark.50');
 

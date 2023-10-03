@@ -1,24 +1,24 @@
 /* Toasts (notices) */
 .toast {
-	&-container {
-		@apply pointer-events-none fixed inset-0 z-toast flex h-screen w-screen flex-col-reverse items-end justify-end;
-	}
+  &-container {
+    @apply pointer-events-none fixed inset-0 z-toast flex h-screen w-screen flex-col-reverse items-end justify-end;
+  }
 
-	&-item {
-		@apply pointer-events-auto mt-2 mr-2 flex w-56 cursor-pointer items-center justify-center rounded bg-gray-600 p-2 text-center text-2xs text-white dark:bg-dark-50 dark:text-white sm:p-3 lg:mt-4 lg:mr-4;
-	}
+  &-item {
+    @apply pointer-events-auto mt-2 mr-2 flex w-56 cursor-pointer items-center justify-center rounded bg-gray-600 p-2 text-center text-2xs text-white dark:bg-dark-50 dark:text-white sm:p-3 lg:mt-4 lg:mr-4;
+  }
 
-	/* Themes */
-	&-info {
-		@apply bg-info-bg text-info-text dark:bg-info-bg dark:text-info-text;
-	}
-	&-success {
-		@apply bg-success-bg text-success-text dark:bg-success-bg dark:text-success-text;
-	}
-	&-warning {
-		@apply bg-warning-bg text-warning-text dark:bg-warning-bg dark:text-warning-text;
-	}
-	&-error {
-		@apply bg-error-bg text-error-text dark:bg-error-bg dark:text-error-text;
-	}
+  /* Themes */
+  &-info {
+    @apply bg-info-bg text-info-text dark:bg-info-bg dark:text-info-text;
+  }
+  &-success {
+    @apply bg-success-bg text-success-text dark:bg-success-bg dark:text-success-text;
+  }
+  &-warning {
+    @apply bg-warning-bg text-warning-text dark:bg-warning-bg dark:text-warning-text;
+  }
+  &-error {
+    @apply bg-error-bg text-error-text dark:bg-error-bg dark:text-error-text;
+  }
 }
