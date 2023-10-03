@@ -17,7 +17,7 @@ class CustomPageForm extends Page
     {
         return [
             Block::make([
-                Preview::make('CustomPageForm', formatted: fn() => 'CustomPageForm')
+                Preview::make('CustomPageForm', formatted: fn () => 'CustomPageForm'),
             ]),
         ];
     }

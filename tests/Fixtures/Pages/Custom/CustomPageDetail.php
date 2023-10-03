@@ -17,7 +17,7 @@ class CustomPageDetail extends Page
     {
         return [
             Block::make([
-                Preview::make('CustomPageDetail', formatted: fn() => 'CustomPageDetail')
+                Preview::make('CustomPageDetail', formatted: fn () => 'CustomPageDetail'),
             ]),
         ];
     }
