@@ -38,7 +38,7 @@ abstract class IterableComponent extends MoonshineComponent
         return ActionButtons::make($this->buttons)
             ->filter()
             ->fillItem($casted)
-            ->onlyVisible($casted)
+            ->onlyVisible()
             ->withoutBulk();
     }
 }
