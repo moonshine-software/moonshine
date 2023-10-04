@@ -14,7 +14,7 @@ class LayoutBuilder extends WithComponents
     public function topMenuMode(): self
     {
         return $this->customAttributes([
-            'class' => 'layout-wrapper--top-menu'
+            'class' => 'layout-wrapper--top-menu',
         ]);
     }
 }
