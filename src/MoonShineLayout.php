@@ -31,11 +31,9 @@ final class MoonShineLayout implements MoonShineLayoutContract
                             CutCode
                         </a>
                     HTML)->menu([
-                    'https://moonshine.cutcode.dev' => 'Documentation',
+                    'https://moonshine-laravel.com' => 'Documentation',
                 ]),
             ])->customAttributes(['class' => 'layout-page']),
-        ])->customAttributes([
-            //'class' => 'layout-wrapper--top-menu'
         ]);
     }
 }
