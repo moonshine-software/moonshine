@@ -20,7 +20,6 @@
         "@tailwindcss/aspect-ratio": "^0.4.2",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.9",
-        "@vitejs/plugin-legacy": "^4.0.1",
         "autoprefixer": "^10.4.14",
         "choices.js": "^10.2.0",
         "codeflask": "^1.4.1",
