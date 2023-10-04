@@ -29,9 +29,7 @@ final class MassDeleteButton
                 fn (): string => (string) form($resource->route('crud.massDelete'))
                     ->fields([
                         Hidden::make('_method')->setValue('DELETE'),
-                        Hidden::make('ids')->customAttributes([
-                            'class' => 'actionsCheckedIds',
-                        ]),
+                        Hidden::actionCheckedIds(),
                         Heading::make(__('moonshine::ui.confirm_message')),
                     ])
                     ->submit('Delete', ['class' => 'btn-secondary'])

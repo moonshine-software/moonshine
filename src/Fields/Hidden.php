@@ -15,4 +15,11 @@ class Hidden extends Field implements HasDefaultValue, DefaultCanBeString
     protected string $view = 'moonshine::fields.hidden';
 
     protected string $type = 'hidden';
+
+    public static function actionCheckedIds(): self
+    {
+        return self::make('ids')->customAttributes([
+            'class' => 'actionsCheckedIds',
+        ]);
+    }
 }
