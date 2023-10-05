@@ -24,7 +24,7 @@ final class FiltersForm
         data_forget(
             $values,
             $filters->onlyGrouped()
-                ->map(fn (Field $field) => $field->column())
+                ->map(fn (Field $field): string => $field->column())
                 ->toArray()
         );
 
