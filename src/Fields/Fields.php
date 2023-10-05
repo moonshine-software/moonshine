@@ -133,6 +133,17 @@ final class Fields extends FormElements
     }
 
     /**
+     * @return Fields<Field>
+     * @throws Throwable
+     */
+    public function onlyGrouped(): Fields
+    {
+        return $this->onlyFields()->filter(
+            static fn (Field $field): bool => $field->isGroup()
+        )->values();
+    }
+
+    /**
      * @return Fields<ModelRelationField>
      * @throws Throwable
      */
