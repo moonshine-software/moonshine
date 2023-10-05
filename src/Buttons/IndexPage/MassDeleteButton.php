@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons\IndexPage;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Decorations\Heading;
 use MoonShine\Fields\Hidden;
