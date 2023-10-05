@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Composer\InstalledVersions;
+use Illuminate\Foundation\Vite;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
 
+/**
+ * @todo pull theme options into a separate class
+ */
 class AssetManager
 {
     use Conditionable;
@@ -54,9 +59,16 @@ class AssetManager
         'info-text' => '179, 220, 255',
     ];
 
+    /**
+     * @deprecated
+     */
     private string $mainJs = '/vendor/moonshine/js/moonshine.js';
 
-    private string $mainCss = '/vendor/moonshine/css/moonshine.css';
+    private ?string $mainCss = null;
+
+    private string $vendorBuildDirectory = 'vendor/moonshine';
+    private array $vendorStyleEntryPoints = ['resources/js/app.css'];
+    private array $vendorScriptEntryPoints = ['resources/js/app.js'];
 
     public function mainCss(string $path): self
     {
@@ -65,11 +77,17 @@ class AssetManager
         return $this;
     }
 
-    public function getMainCss(): string
+    /**
+     * @deprecated Why?
+     */
+    public function getMainCss(): ?string
     {
         return $this->mainCss;
     }
 
+    /**
+     * @deprecated Why?
+     */
     public function getMainJs(): string
     {
         return $this->mainJs;
@@ -92,8 +110,9 @@ class AssetManager
 
     public function js(): string
     {
-        return collect($this->assets)
-            ->push($this->getMainJs())
+        $vendorScripts = $this->buildVendorAssets($this->vendorScriptEntryPoints);
+
+        $customScripts = collect($this->assets)
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.js')
             )
@@ -102,20 +121,39 @@ class AssetManager
                     $asset
                 ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
+
+        return $vendorScripts.$customScripts;
     }
 
     public function css(): string
     {
-        return collect($this->assets)
-            ->push($this->getMainCss())
+        $vendorStyles = is_null($this->mainCss)
+            ? $this->buildVendorAssets($this->vendorStyleEntryPoints)
+            : '';
+
+        $customStyles = collect($this->assets)
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.css')
             )
+            ->when(!is_null($this->mainCss), fn (Collection $assets) => $assets->push($this->mainCss))
             ->map(
                 fn ($asset): string => "<link href='" . asset(
                     $asset
                 ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}' rel='stylesheet'>"
             )->implode(PHP_EOL);
+
+        return $vendorStyles.$customStyles;
+    }
+
+    private function buildVendorAssets(array $entryPoints): string
+    {
+        return app(Vite::class)
+            ->useBuildDirectory($this->vendorBuildDirectory)
+            ->useHotFile(
+                InstalledVersions::getInstallPath('moonshine/moonshine').'/public/hot'
+            )
+            ->withEntryPoints($entryPoints)
+            ->toHtml();
     }
 
     public function colors(array $colors): static
