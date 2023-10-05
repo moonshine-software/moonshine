@@ -59,9 +59,6 @@ class AssetManager
         'info-text' => '179, 220, 255',
     ];
 
-    /**
-     * @deprecated
-     */
     private string $mainJs = '/vendor/moonshine/js/moonshine.js';
 
     private ?string $mainCss = null;
@@ -77,18 +74,12 @@ class AssetManager
         return $this;
     }
 
-    /**
-     * @deprecated Why?
-     */
-    public function getMainCss(): ?string
+    private function getMainCss(): ?string
     {
         return $this->mainCss;
     }
 
-    /**
-     * @deprecated Why?
-     */
-    public function getMainJs(): string
+    private function getMainJs(): string
     {
         return $this->mainJs;
     }
