@@ -143,7 +143,11 @@ export default (creatable = false, sortable = false, reindex = false, async = fa
     }
 
     let checkboxes = this.$root.querySelectorAll('.' + id + '-tableActionRow')
-    let ids = document.querySelectorAll('.actionsCheckedIds')
+    let ids = document.querySelectorAll('.hidden-ids')
+
+    ids.forEach(function (value) {
+      value.innerHTML = ''
+    })
 
     let values = []
 
@@ -158,7 +162,12 @@ export default (creatable = false, sortable = false, reindex = false, async = fa
     }
 
     for (let i = 0, n = ids.length; i < n; i++) {
-      ids[i].value = values.join(';')
+      values.forEach(function (value) {
+        ids[i].insertAdjacentHTML(
+          'beforeend',
+          `<input type="hidden" name="ids[]" value="${value}"/>`
+        )
+      })
     }
 
     this.actionsOpen = !!(all.checked || values.length)

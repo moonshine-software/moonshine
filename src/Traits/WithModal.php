@@ -17,6 +17,20 @@ trait WithModal
         return ! is_null($this->modal);
     }
 
+    public static function makeModal(
+        Closure|string $button,
+        Closure|string $title,
+        string $url,
+        ?Closure $component
+    ): ActionButton {
+        if(! is_closure($title)) {
+            $title = fn (): Closure|string => $title;
+        }
+
+        return ActionButton::make($button, $url)
+            ->inModal($title, $component);
+    }
+
     public function inModal(
         ?Closure $title = null,
         ?Closure $content = null,

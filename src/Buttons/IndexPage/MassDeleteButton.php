@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons\IndexPage;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Decorations\Heading;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\HiddenIds;
 use MoonShine\Resources\ModelResource;
 
 final class MassDeleteButton
@@ -29,14 +29,14 @@ final class MassDeleteButton
                 fn (): string => (string) form($resource->route('crud.massDelete'))
                     ->fields([
                         Hidden::make('_method')->setValue('DELETE'),
-                        Hidden::actionCheckedIds(),
+                        HiddenIds::make(),
                         Heading::make(__('moonshine::ui.confirm_message')),
                     ])
                     ->submit('Delete', ['class' => 'btn-secondary'])
             )
             ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
-                && $resource->setItem($item)->can('massDelete')
+                fn (): bool => in_array('delete', $resource->getActiveActions())
+                && $resource->can('massDelete')
             )
             ->showInLine();
     }
