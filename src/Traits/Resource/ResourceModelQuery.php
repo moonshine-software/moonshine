@@ -198,7 +198,7 @@ trait ResourceModelQuery
 
     protected function resolveSearch(): static
     {
-        if (! empty($this->search()) && request()->has('search')) {
+        if (! empty($this->search()) && request()->filled('search')) {
             $fullTextColumns = Attributes::for($this)
                 ->method('search')
                 ->attribute(SearchUsingFullText::class)
@@ -267,7 +267,7 @@ trait ResourceModelQuery
         $filters = $this->getFilters()->onlyFields();
 
         $filters->fill(
-            request('filters', $this->getModel()->toArray()),
+            request('filters', []),
             $this->getModel()
         );
 

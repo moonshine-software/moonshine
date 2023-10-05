@@ -33,7 +33,7 @@ final class FiltersForm
                 )
                 ->toArray()
         )
-        ->fill(request('filters', $resource->getModel()->toArray()))
+        ->fill(request('filters', []))
         ->submit(__('moonshine::ui.search'))
         ->when(
             request('filters'),
