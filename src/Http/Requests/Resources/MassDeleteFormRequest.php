@@ -22,15 +22,4 @@ final class MassDeleteFormRequest extends MoonshineFormRequest
             'ids' => ['required', 'array'],
         ];
     }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'ids' => request()
-                ->str('ids')
-                ->explode(';')
-                ->filter()
-                ->toArray(),
-        ]);
-    }
 }
