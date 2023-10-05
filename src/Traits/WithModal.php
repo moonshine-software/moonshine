@@ -23,8 +23,8 @@ trait WithModal
         string $url,
         ?Closure $component
     ): ActionButton {
-        if(!is_closure($title)) {
-            $title = fn(): Closure|string => $title;
+        if(! is_closure($title)) {
+            $title = fn (): Closure|string => $title;
         }
 
         return ActionButton::make($button, $url)
