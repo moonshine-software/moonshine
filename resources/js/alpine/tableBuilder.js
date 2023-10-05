@@ -162,8 +162,11 @@ export default (creatable = false, sortable = false, reindex = false, async = fa
     }
 
     for (let i = 0, n = ids.length; i < n; i++) {
-      values.forEach(function(value) {
-        ids[i].insertAdjacentHTML('beforeend', `<input type="hidden" name="ids[]" value="${value}"/>`)
+      values.forEach(function (value) {
+        ids[i].insertAdjacentHTML(
+          'beforeend',
+          `<input type="hidden" name="ids[]" value="${value}"/>`
+        )
       })
     }
 
