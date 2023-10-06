@@ -21,8 +21,8 @@ final class HasManyCreateButton
             $resourceId,
         );
 
-        $fields = $field->preparedFields();
         $resource = $field->getResource();
+        $fields = $resource->getFormFields();
 
         return ActionButton::make(__('moonshine::ui.add'), url: $action)
             ->primary()
