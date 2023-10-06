@@ -46,7 +46,7 @@ final class HasManyCreateButton
                         ->toArray()
                     )
                     ->fill([
-                        $field->getRelation()?->getForeignKeyName() => $resourceId
+                        $field->getRelation()?->getForeignKeyName() => $resourceId,
                     ])
             );
     }

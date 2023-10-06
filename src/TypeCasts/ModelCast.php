@@ -39,7 +39,7 @@ final class ModelCast implements MoonShineDataCast
 
         $value
             ->forceFill([
-                $value->getKeyName() => $data[$value->getKeyName()] ?? null
+                $value->getKeyName() => $data[$value->getKeyName()] ?? null,
             ])
             ->fill($data)
             ->setRelations($data['_relations'] ?? []);
