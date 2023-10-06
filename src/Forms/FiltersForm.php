@@ -6,7 +6,6 @@ namespace MoonShine\Forms;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Resources\ModelResource;
@@ -16,17 +15,8 @@ final class FiltersForm
     public function __invoke(ModelResource $resource): FormBuilder
     {
         $values = request('filters', []);
-        $filters = $resource
-            ->getFilters();
-
+        $filters = $resource->getFilters();
         $filters->fill($values, $resource->getModel());
-
-        data_forget(
-            $values,
-            $filters->onlyGrouped()
-                ->map(fn (Field $field): string => $field->column())
-                ->toArray()
-        );
 
         return FormBuilder::make($resource->currentRoute(), 'GET')
             ->name('filters-form')

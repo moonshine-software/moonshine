@@ -245,7 +245,7 @@ trait ResourceModelQuery
                             ))
                         ),
                         fn (Builder $query) => collect($column)->each(fn ($item) => $query->where(
-                            fn (Builder $qq) => $qq->orWhereJsonContains("$key->$item", $terms)
+                            fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms])
                         ))
                     );
                 } else {
