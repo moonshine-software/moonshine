@@ -264,7 +264,7 @@ trait ResourceModelQuery
 
     protected function resolveFilters(): static
     {
-        if(!request()->has('filters')) {
+        if(! request()->has('filters')) {
             return $this;
         }
 
