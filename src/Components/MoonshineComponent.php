@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Closure;
+use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
@@ -15,7 +16,7 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithView;
 use Throwable;
 
-abstract class MoonshineComponent extends Component implements MoonShineRenderable
+abstract class MoonshineComponent extends Component implements MoonShineRenderable, CanBeEscapedWhenCastToString
 {
     use Conditionable;
     use Macroable;
@@ -71,5 +72,10 @@ abstract class MoonshineComponent extends Component implements MoonShineRenderab
     public function __toString(): string
     {
         return (string) $this->render();
+    }
+
+    public function escapeWhenCastingToString($escape = true): self
+    {
+        return $this;
     }
 }

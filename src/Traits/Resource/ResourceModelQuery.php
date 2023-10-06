@@ -264,6 +264,10 @@ trait ResourceModelQuery
 
     protected function resolveFilters(): static
     {
+        if(!request()->has('filters')) {
+            return $this;
+        }
+
         $filters = $this->getFilters()->onlyFields();
 
         $filters->fill(
