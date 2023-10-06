@@ -369,10 +369,12 @@ class Json extends Field implements
                 return $item;
             }
 
+            $preparedValues = $this->prepareOnApply($applyValues);
+
             return data_set(
                 $item,
                 $this->column(),
-                $this->prepareOnApply($applyValues)
+                $this->isKeyOrOnlyValue() ? $preparedValues : array_values($preparedValues)
             );
         };
     }

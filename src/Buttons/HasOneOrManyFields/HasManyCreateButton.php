@@ -45,6 +45,9 @@ final class HasManyCreateButton
                         ->push(Hidden::make('_relation')->setValue($field->getRelationName()))
                         ->toArray()
                     )
+                    ->fill([
+                        $field->getRelation()?->getForeignKeyName() => $resourceId
+                    ])
             );
     }
 }
