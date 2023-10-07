@@ -1,12 +1,6 @@
-{!! moonshineAssets()->css() !!}
-
-@yield('after-styles')
+{!! moonshineAssets()->toHtml() !!}
 
 @stack('styles')
-
-{!! moonshineAssets()->js() !!}
-
-@yield('after-scripts')
 
 <style>
     [x-cloak] { display: none !important; }
