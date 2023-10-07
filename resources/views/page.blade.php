@@ -9,7 +9,7 @@
 
     @if(!is_null($resource) && method_exists($resource, 'search') && $resource->search())
        <x-moonshine::search
-           :action="$resource->currentRoute()"
+           :action="to_page(resource: $resource)"
        />
     @endif
 @endsection

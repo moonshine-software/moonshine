@@ -1,6 +1,7 @@
 <div x-id="['json']" :id="$id('json')" {{ $element->attributes()->only('class') }} data-field-block="{{ $element->column() }}">
     {{ $element->value(withOld: false)
             ->editable()
+            ->reindex()
             ->when(
                 !$element->isAsRelation(),
                 fn($table) => $table->sortable()

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Fields\Field;
+use MoonShine\Fields\StackFields;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use Throwable;
 
@@ -36,6 +37,7 @@ final class UpdateColumnFormRequest extends MoonshineFormRequest
     {
         return $this->getResource()
             ?->getIndexFields()
+            ?->unwrapElements(StackFields::class)
             ?->findByColumn($this->get('field'));
     }
 

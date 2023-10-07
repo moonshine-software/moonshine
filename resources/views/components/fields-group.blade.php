@@ -1,3 +1,6 @@
+@props([
+    'components' => []
+])
 @foreach($components as $fieldOrDecoration)
     @if(is_field($fieldOrDecoration) && $fieldOrDecoration->hasWrapper())
         <x-moonshine::field-container :field="$fieldOrDecoration">
