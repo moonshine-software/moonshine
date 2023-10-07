@@ -198,11 +198,7 @@ class Json extends Field implements
             }
 
             $name = $name
-                ->when(
-                    $this->isCreatable(),
-                    static fn (Stringable $str): Stringable => $str->append('[${index' . $level . '}]'),
-                    static fn (Stringable $str): Stringable => $str->append('[' . $level . ']')
-                )
+                ->append('[${index' . $level . '}]')
                 ->append("[{$field->column()}]")
                 ->replace('[]', '')
                 ->when(
@@ -258,6 +254,15 @@ class Json extends Field implements
         return $data;
     }
 
+    protected function isBlankValue(): bool
+    {
+        if ($this->isPreviewMode()) {
+            return parent::isBlankValue();
+        }
+
+        return blank($this->value);
+    }
+
     protected function resolveValue(): mixed
     {
         $emptyRow = $this->isAsRelation()
@@ -268,6 +273,7 @@ class Json extends Field implements
             ? $this->toFormattedValue()
             : $this->toValue();
 
+
         $iterable = is_iterable($value);
         $values = $iterable
             ? $value
@@ -275,6 +281,9 @@ class Json extends Field implements
 
         $values = collect($values)->when(
             ! $this->isPreviewMode() && $this->isCreatable(),
+            static fn ($values): Collection => $values->push($emptyRow)
+        )->when(
+            ! $this->isPreviewMode() && ! $this->isCreatable() && blank($values),
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
