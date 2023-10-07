@@ -1,13 +1,11 @@
 {
-  "resources/js/app.css": {
-    "file": "css/moonshine.css",
-    "src": "resources/js/app.css"
+  "resources/css/main.css": {
+    "file": "assets/main.css",
+    "isEntry": true,
+    "src": "resources/css/main.css"
   },
   "resources/js/app.js": {
-    "css": [
-      "css/moonshine.css"
-    ],
-    "file": "js/moonshine.js",
+    "file": "assets/app.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }
