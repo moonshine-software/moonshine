@@ -43,7 +43,7 @@ class Json extends Field implements
 
     protected bool $isVertical = false;
 
-    protected bool $isCreatable = false;
+    protected bool $isCreatable = true;
 
     protected int $level = 0;
 
@@ -69,9 +69,7 @@ class Json extends Field implements
                 ->customAttributes($this->attributes()->getAttributes()),
         ]);
 
-        return $this
-            ->creatable()
-            ->removable();
+        return $this;
     }
 
     public function isKeyValue(): bool
@@ -93,9 +91,7 @@ class Json extends Field implements
                 ->customAttributes($this->attributes()->getAttributes()),
         ]);
 
-        return $this
-            ->creatable()
-            ->removable();
+        return $this;
     }
 
     public function isOnlyValue(): bool
@@ -273,9 +269,7 @@ class Json extends Field implements
             ? $this->toFormattedValue()
             : $this->toValue();
 
-
-        $iterable = is_iterable($value);
-        $values = $iterable
+        $values = is_iterable($value)
             ? $value
             : [$value ?? $emptyRow];
 
@@ -383,7 +377,7 @@ class Json extends Field implements
             return data_set(
                 $item,
                 $this->column(),
-                $this->isKeyOrOnlyValue() ? $preparedValues : array_values($preparedValues)
+                ! $this->isKeyValue() ? array_values($preparedValues) : $preparedValues
             );
         };
     }

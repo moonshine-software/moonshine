@@ -147,10 +147,10 @@ describe('unique field methods', function () {
     it('creatable method', function (): void {
         expect($this->field)
             ->isCreatable()
-            ->toBeFalse()
-            ->and($this->field->creatable())
+            ->toBeTrue()
+            ->and($this->field->creatable(false))
             ->isCreatable()
-            ->toBeTrue();
+            ->toBeFalse();
     });
 
     it('has fields', function (): void {

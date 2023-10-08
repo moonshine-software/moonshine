@@ -52,10 +52,6 @@ export default (creatable = false, sortable = false, reindex = false, async = fa
     }
   },
   remove() {
-    if (!this.creatable) {
-      return
-    }
-
     this.$el.closest('tr').remove()
     if (this.reindex) {
       this.resolveReindex()
