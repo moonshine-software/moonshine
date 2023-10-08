@@ -6,6 +6,7 @@ namespace MoonShine;
 
 use Composer\InstalledVersions;
 use Illuminate\Foundation\Vite;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
@@ -127,7 +128,8 @@ class AssetManager
     {
         // If vite dev running
         if (
-            ($hotFilePath = InstalledVersions::getInstallPath('moonshine/moonshine').'/public/hot')
+            App::isLocal()
+            && ($hotFilePath = InstalledVersions::getInstallPath('moonshine/moonshine').'/public/hot')
             && File::exists($hotFilePath)
         ) {
             return app(Vite::class)
