@@ -377,7 +377,7 @@ class Json extends Field implements
             return data_set(
                 $item,
                 $this->column(),
-                ! $this->isKeyValue() ? array_values($preparedValues) : $preparedValues
+                $this->isKeyValue() ? $preparedValues : array_values($preparedValues)
             );
         };
     }
