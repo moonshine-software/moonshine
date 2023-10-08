@@ -1,15 +1,15 @@
 const plugin = require('tailwindcss/plugin')
 
-const packageSafeList = [
+const vendorSafeList = [
   {
     // usage: column.blade.php
     pattern: /col-span-\d/,
-    variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+    variants: isDevelopment() ? ['xl'] : ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
   },
   {
     // usage: icons
     pattern: /text-(pink|purple)/,
-    variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+    variants: isDevelopment() ? [] : ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
   },
   {
     // usage: icons
@@ -39,10 +39,7 @@ const clientSafeList = [
 module.exports = {
   important: true,
   content: ['./resources/js/**/*.js', './resources/views/**/*.blade.php'],
-  safelist:
-    process.env.NODE_ENV === 'development'
-      ? packageSafeList
-      : [...packageSafeList, ...clientSafeList],
+  safelist: isDevelopment() ? vendorSafeList : [...vendorSafeList, ...clientSafeList],
   darkMode: 'class',
   theme: {
     screens: {
@@ -170,4 +167,8 @@ module.exports = {
       addVariant('current', '&._is-active')
     }),
   ],
+}
+
+function isDevelopment() {
+  return process.env.NODE_ENV === 'development'
 }
