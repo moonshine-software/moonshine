@@ -2,6 +2,7 @@ import {defineConfig} from 'vite'
 import laravel from 'laravel-vite-plugin'
 
 export default defineConfig({
+  base: '/vendor/moonshine/',
   plugins: [
     laravel({
       input: ['resources/css/main.css', 'resources/js/app.js'],
@@ -15,11 +16,15 @@ export default defineConfig({
     emptyOutDir: false,
     outDir: 'public',
     rollupOptions: {
-      // Currently, fonts and images – external resources
-      external: [/\.woff2/, /\.svg/],
       output: {
         entryFileNames: `assets/[name].js`,
-        assetFileNames: 'assets/[name].css',
+        assetFileNames: chunk => {
+          if (chunk.name.endsWith('.woff2')) {
+            return 'fonts/[name].[ext]'
+          }
+
+          return 'assets/[name].css'
+        },
       },
     },
   },
