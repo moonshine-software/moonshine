@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
@@ -21,7 +22,7 @@ use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithView;
 
-abstract class FormElement implements MoonShineRenderable, HasAssets
+abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscapedWhenCastToString
 {
     use Makeable;
     use Macroable;
@@ -209,5 +210,10 @@ abstract class FormElement implements MoonShineRenderable, HasAssets
     public function __toString(): string
     {
         return (string) $this->render();
+    }
+
+    public function escapeWhenCastingToString($escape = true): self
+    {
+        return $this;
     }
 }
