@@ -45,10 +45,6 @@ Alpine.data('code', code)
 Alpine.data('tree', tree)
 Alpine.data('charts', charts)
 
-// Alpine components
-
-import.meta.glob(['../images/**', '../fonts/**'])
-
 window.Alpine = Alpine
 
 /* Alpine.js */
