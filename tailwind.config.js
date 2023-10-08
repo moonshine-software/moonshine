@@ -1,14 +1,10 @@
 const plugin = require('tailwindcss/plugin')
 
-const systemSafeList = []
-const clientSafeList = [
-  'visible',
-  'pointer-events-auto',
-  'opacity-0',
-  'opacity-100',
+const packageSafeList = [
   {
-    // usage: icons
-    pattern: /(w-|h-)[1-9]/,
+    // usage: column.blade.php
+    pattern: /col-span-\d/,
+    variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
   },
   {
     // usage: icons
@@ -16,12 +12,17 @@ const clientSafeList = [
     variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
   },
   {
-    pattern: /text-dark-\d/,
-    variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+    // usage: icons
+    pattern: /(w-|h-)[1-9]/,
   },
+]
+const clientSafeList = [
+  'visible',
+  'pointer-events-auto',
+  'opacity-0',
+  'opacity-100',
   {
-    // usage: column.blade.php
-    pattern: /col-span-\d/,
+    pattern: /text-dark-\d/,
     variants: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
   },
   {
@@ -40,8 +41,8 @@ module.exports = {
   content: ['./resources/js/**/*.js', './resources/views/**/*.blade.php'],
   safelist:
     process.env.NODE_ENV === 'development'
-      ? systemSafeList
-      : [...systemSafeList, ...clientSafeList],
+      ? packageSafeList
+      : [...packageSafeList, ...clientSafeList],
   darkMode: 'class',
   theme: {
     screens: {
