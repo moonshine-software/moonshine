@@ -132,6 +132,11 @@ final class FormBuilder extends RowComponent
         return $this->submitLabel ?? __('moonshine::ui.save');
     }
 
+    public function switchFormMode(bool $isAsync): self
+    {
+        return $isAsync ? $this->async() : $this->precognitive();
+    }
+
     protected function viewData(): array
     {
         $fields = $this->preparedFields();

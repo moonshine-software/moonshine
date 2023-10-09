@@ -14,7 +14,7 @@ final class HasManyCreateButton
     /**
      * @throws Throwable
      */
-    public static function for(HasMany $field, int $resourceId): ActionButton
+    public static function for(HasMany $field, int $resourceId, bool $isParentAsync = false): ActionButton
     {
         $action = to_relation_route(
             'store',
@@ -27,6 +27,8 @@ final class HasManyCreateButton
             ? $field->getFields()->formFields()
             : $resource->getFormFields();
 
+        $isAsync = $resource->isAsync() || $isParentAsync;
+
         return ActionButton::make(__('moonshine::ui.add'), url: $action)
             ->primary()
             ->icon('heroicons.outline.plus')
@@ -37,7 +39,7 @@ final class HasManyCreateButton
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),
                 fn (ActionButton $action): string => (string) FormBuilder::make($action->url())
-                    ->precognitive()
+                    ->switchFormMode($isAsync)
                     ->name($field->getRelationName())
                     ->cast($field->getResource()->getModelCast())
                     ->fields(

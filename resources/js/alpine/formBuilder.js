@@ -69,12 +69,14 @@ export default () => ({
         const data = response.data
 
         if (data.redirect) {
-          window.location = data.redirect
+          //window.location = data.redirect
         }
 
         t.$dispatch('toast', {type: 'success', text: data.message})
 
-        submitState(form, false)
+        submitState(form, false, true)
+
+        t.$dispatch('update-relation')
       })
       .catch(errorResponse => {
         const data = errorResponse.response.data
@@ -101,10 +103,13 @@ export default () => ({
   getInputs,
 })
 
-function submitState(form, loading = true) {
+function submitState(form, loading = true, isAsync = false) {
   if (!loading) {
     form.querySelector('.form_submit_button_loader').style.display = 'none'
     form.querySelector('.form_submit_button').removeAttribute('disabled')
+    if(isAsync) {
+      form.reset()
+    }
   } else {
     form.querySelector('.form_submit_button').setAttribute('disabled', 'true')
     form.querySelector('.form_submit_button_loader').style.display = 'block'

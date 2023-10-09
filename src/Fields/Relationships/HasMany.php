@@ -222,7 +222,7 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        return HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey());
+        return HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey(), moonshineRequest()->getResource()->isAsync());
     }
 
     protected function tableValue(): MoonShineRenderable
@@ -244,6 +244,9 @@ class HasMany extends ModelRelationField implements HasFields
                 $this->isNowOnForm(),
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
+            ->customAttributes([
+                '@update-relation.window' => 'asyncRequest',
+            ])
             ->buttons([
                 DetailButton::forMode($resource),
                 FormButton::forMode($resource),
