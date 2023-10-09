@@ -121,10 +121,8 @@ class HasOne extends ModelRelationField
             $this->getRelatedModel()?->getKey(),
         );
 
-        $isAsync = $parentResource->isAsync() || $resource->isAsync();
-
         return FormBuilder::make($action)
-            ->switchFormMode($isAsync)
+            ->switchFormMode($resource->isAsync())
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(

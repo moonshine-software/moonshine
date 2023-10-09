@@ -222,7 +222,7 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        return HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey(), moonshineRequest()->getResource()->isAsync());
+        return HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey());
     }
 
     protected function tableValue(): MoonShineRenderable
