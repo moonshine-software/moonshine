@@ -33,6 +33,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     protected string $layout = 'moonshine::layouts.app';
 
+    protected ?string $contentView = null;
+
+
     protected ?PageType $pageType = null;
 
     public function __construct(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
@@ -136,6 +139,18 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->layout;
     }
 
+    public function setContentView(string $contentView): static
+    {
+        $this->contentView = $contentView;
+
+        return $this;
+    }
+
+    public function contentView(): ?string
+    {
+        return $this->contentView;
+    }
+
     public function route(array $params = []): string
     {
         return MoonShineRouter::to(
@@ -160,8 +175,15 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
             === $this->uriKey();
     }
 
+    protected function viewData(): array
+    {
+        return [];
+    }
+
     public function render(): View|Closure|string
     {
+        $data = $this->viewData();
+
         request()
             ?->route()
             ?->setParameter('pageUri', $this->uriKey());
@@ -175,7 +197,8 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
                 : null,
             'breadcrumbs' => $this->breadcrumbs(),
             'components' => $this->getComponents(),
-        ])
+            'contentView' => $this->contentView(),
+        ] + $data)
             ->fragmentIf(
                 moonshineRequest()->isFragmentLoad(),
                 moonshineRequest()->getFragmentLoad()

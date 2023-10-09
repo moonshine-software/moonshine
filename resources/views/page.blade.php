@@ -20,5 +20,7 @@
         'subTitle' => $subtitle
     ])
 
+    @includeWhen($contentView ?? false, $contentView)
+
     <x-moonshine::components :components="$components" />
 @endsection
