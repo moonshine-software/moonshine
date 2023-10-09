@@ -69,12 +69,20 @@ export default () => ({
         const data = response.data
 
         if (data.redirect) {
-          //window.location = data.redirect
+          window.location = data.redirect
         }
 
         t.$dispatch('toast', {type: 'success', text: data.message})
 
-        submitState(form, false, true)
+        let isFormReset = false;
+        const modalParent = t.$el.closest('.modal')
+
+        if(modalParent !== null) {
+          modalParent.querySelector('.btn-close').click()
+          isFormReset = true
+        }
+
+        submitState(form, false, isFormReset)
 
         t.$dispatch('update-relation')
       })
@@ -103,11 +111,11 @@ export default () => ({
   getInputs,
 })
 
-function submitState(form, loading = true, isAsync = false) {
+function submitState(form, loading = true, isFormReset = false) {
   if (!loading) {
     form.querySelector('.form_submit_button_loader').style.display = 'none'
     form.querySelector('.form_submit_button').removeAttribute('disabled')
-    if(isAsync) {
+    if(isFormReset) {
       form.reset()
     }
   } else {
