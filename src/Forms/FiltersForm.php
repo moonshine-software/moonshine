@@ -14,7 +14,7 @@ final class FiltersForm
 {
     public function __invoke(ModelResource $resource): FormBuilder
     {
-        $values = request('filters', []);
+        $values = $resource->getFilterParams();
         $filters = $resource->getFilters();
         $filters->fill($values, $resource->getModel());
 

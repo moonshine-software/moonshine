@@ -9,9 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use MoonShine\Attributes\SearchUsingFullText;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Exceptions\ResourceException;
@@ -42,6 +40,8 @@ trait ResourceModelQuery
     protected ?Builder $customBuilder = null;
 
     protected array $parentRelations = [];
+
+    protected bool $saveFilterState = false;
 
     public function getItemID(): int|string|null
     {
@@ -163,15 +163,26 @@ trait ResourceModelQuery
         return $this->query;
     }
 
+    public function saveFilterState(): bool
+    {
+        return $this->saveFilterState;
+    }
+
     protected function cacheQueryParams(): static
     {
-        Cache::forget($this->queryCacheKey());
+        if (! $this->saveFilterState()) {
+            return $this;
+        }
 
-        Cache::remember(
-            $this->queryCacheKey(),
-            now()->addHours(2),
-            static fn () => Arr::query(request()->only(['sort', 'filters', 'query-tag']))
-        );
+        cache()->forget($this->queryCacheKey());
+
+        if (! request()->has('reset')) {
+            cache()->remember(
+                $this->queryCacheKey(),
+                now()->addHours(2),
+                static fn () => request()->only(['sort', 'filters'])
+            );
+        }
 
         return $this;
     }
@@ -262,16 +273,35 @@ trait ResourceModelQuery
         return $this;
     }
 
+    public function getFilterParams(): array
+    {
+        $params = $this->saveFilterState()
+        && ! request()->has('filters')
+        && ! request()->has('reset')
+            ? cache(
+                $this->queryCacheKey(),
+                []
+            )
+            : request('filters', []);
+
+        return tap(
+            is_array($params) ? $params : [],
+            fn () => request()->merge($params)
+        );
+    }
+
     protected function resolveFilters(): static
     {
-        if(! request()->has('filters')) {
+        $params = $this->getFilterParams();
+
+        if (! request()->has('filters')) {
             return $this;
         }
 
         $filters = $this->getFilters()->onlyFields();
 
         $filters->fill(
-            request('filters', []),
+            $params,
             $this->getModel()
         );
 
@@ -308,16 +338,16 @@ trait ResourceModelQuery
 
     protected function resolveParentResource(): static
     {
-        if(
+        if (
             is_null($relation = moonshineRequest()->getParentRelationName())
             || is_null($parentId = moonshineRequest()->getParentRelationId())
         ) {
             return $this;
         }
 
-        if(! empty($this->parentRelations())) {
+        if (! empty($this->parentRelations())) {
             foreach ($this->parentRelations() as $relationName) {
-                if($relation == $relationName) {
+                if ($relation == $relationName) {
                     $this->query()->where(
                         $this->getModel()->{$relation}()->getForeignKeyName(),
                         $parentId
@@ -328,7 +358,7 @@ trait ResourceModelQuery
             }
         }
 
-        if(
+        if (
             method_exists($this->getModel(), $relation)
             && method_exists($this->getModel()->{$relation}(), 'getForeignKeyName')
         ) {
