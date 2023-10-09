@@ -8,6 +8,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasAsync;
 
 /**
@@ -48,6 +49,15 @@ final class FormBuilder extends RowComponent
             'enctype' => 'multipart/form-data',
             'x-data' => 'formBuilder',
         ]);
+    }
+
+    public function fillFromModelResource(ModelResource $resource)
+    {
+        $item = $resource->getItem();
+
+        return $this
+            ->fill($item ? $resource->getModelCast()->dehydrate($item) : [])
+            ->cast($resource->getModelCast());
     }
 
     public function action(string $action): self
