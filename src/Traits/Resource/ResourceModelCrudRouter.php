@@ -31,9 +31,6 @@ trait ResourceModelCrudRouter
         int|string $key = null,
         array $query = []
     ): string {
-
-        //TODO cache repair
-
         $query['resourceUri'] = $this->uriKey();
 
         data_forget($query, ['change-moonshine-locale', 'reset']);
