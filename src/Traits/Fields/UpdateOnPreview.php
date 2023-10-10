@@ -42,7 +42,7 @@ trait UpdateOnPreview
 
     protected function getDefaultUpdateRoute(Resource $resource): Closure
     {
-        return fn ($item) => MoonShineRouter::to('resource.update-column', [
+        return fn ($item): string => MoonShineRouter::to('resource.update-column', [
             'resourceItem' => $item->getKey(),
             'resourceUri' => $resource->uriKey()
         ]);
