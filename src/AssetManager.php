@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Composer\InstalledVersions;
-use Illuminate\Foundation\Vite;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
 
@@ -99,7 +98,7 @@ class AssetManager
     public function js(): string
     {
         return collect($this->assets)
-            ->push($this->getMainJs())
+            ->unless($this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainJs()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.js')
             )
@@ -113,7 +112,7 @@ class AssetManager
     public function css(): string
     {
         return collect($this->assets)
-            ->push($this->getMainCss())
+            ->unless($this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainCss()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.css')
             )
@@ -126,20 +125,24 @@ class AssetManager
 
     public function toHtml(): string
     {
-        // If vite dev running
-        if (
-            App::isLocal()
-            && ($hotFilePath = InstalledVersions::getInstallPath('moonshine/moonshine').'/public/hot')
-            && File::exists($hotFilePath)
-        ) {
-            return app(Vite::class)
-                ->useBuildDirectory('vendor/moonshine')
-                ->useHotFile($hotFilePath)
+        if ($this->isRunningHot()) {
+            $vendorAssets = Vite::useBuildDirectory('vendor/moonshine')
+                ->useHotFile($this->hotFile())
                 ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
                 ->toHtml();
         }
 
-        return implode(PHP_EOL, [$this->css(), $this->js()]);
+        return implode(PHP_EOL, [$vendorAssets ?? '', $this->css(), $this->js()]);
+    }
+
+    private function isRunningHot(): bool
+    {
+        return app()->isLocal() && is_file($this->hotFile());
+    }
+
+    private function hotFile(): string
+    {
+        return InstalledVersions::getInstallPath('moonshine/moonshine').'/public/hot';
     }
 
     public function colors(array $colors): static
