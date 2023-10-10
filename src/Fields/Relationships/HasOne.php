@@ -134,7 +134,7 @@ class HasOne extends ModelRelationField
                     Hidden::make('_relation')->setValue($this->getRelationName()),
                 )->toArray()
             )
-            ->fillValues($item?->attributesToArray() ?? [
+            ->fillCast($item?->attributesToArray() ?? [
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
             ], $resource->getModelCast())
             ->buttons(is_null($item) ? [] : [

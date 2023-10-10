@@ -56,12 +56,13 @@ final class FormBuilder extends RowComponent
     {
         $item = $resource->getItem();
 
-        return $this
-            ->fill($item ? $resource->getModelCast()->dehydrate($item) : [])
-            ->cast($resource->getModelCast());
+        return $this->fillCast(
+            $item ? $resource->getModelCast()->dehydrate($item) : [],
+            $resource->getModelCast()
+        );
     }
 
-    public function fillValues(array $values, MoonShineDataCast $cast): self
+    public function fillCast(array $values, MoonShineDataCast $cast): self
     {
         return $this
             ->cast($cast)

@@ -20,7 +20,7 @@ final class FiltersForm
 
         return FormBuilder::make($resource->currentRoute(), 'GET')
             ->name('filters-form')
-            ->fillValues($values, $resource->getModelCast())
+            ->fillCast($values, $resource->getModelCast())
             ->fields(
                 $filters
                     ->when(
