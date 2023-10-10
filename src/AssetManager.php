@@ -132,7 +132,7 @@ class AssetManager
                 ->toHtml();
         }
 
-        return implode(PHP_EOL, [$vendorAssets ?? '', $this->css(), $this->js()]);
+        return implode(PHP_EOL, [$this->js(), $vendorAssets ?? '', $this->css()]);
     }
 
     private function isRunningHot(): bool
