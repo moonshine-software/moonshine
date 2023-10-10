@@ -37,7 +37,7 @@ class Select extends Field implements
      */
     protected function resolvePreview(): string
     {
-        $value = $this->toFormattedValue();
+        $value = $this->toValue();
 
         if ($this->isMultiple()) {
             $value = is_string($value) && str($value)->isJson() ?

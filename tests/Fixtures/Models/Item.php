@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\Fixtures\Models\Traits\MorphRelationTrait;
 use MoonShine\Tests\Fixtures\Models\Traits\UserBelongsToTrait;
@@ -44,6 +45,11 @@ class Item extends Model
         'files' => 'collection',
         'active' => 'boolean',
     ];
+
+    public function moonshineUser(): BelongsTo
+    {
+        return $this->belongsTo(MoonshineUser::class);
+    }
 
     public function category(): BelongsTo
     {
