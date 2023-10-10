@@ -1,7 +1,13 @@
 import {crudFormQuery} from './formFunctions'
 import Sortable from 'sortablejs'
 
-export default (creatable = false, sortable = false, reindex = false, async = false, asyncUrl = '') => ({
+export default (
+  creatable = false,
+  sortable = false,
+  reindex = false,
+  async = false,
+  asyncUrl = ''
+) => ({
   actionsOpen: false,
   lastRow: null,
   table: null,
@@ -120,7 +126,7 @@ export default (creatable = false, sortable = false, reindex = false, async = fa
     const resultUrl = new URL(url)
 
     if (resultUrl.searchParams.get('_relation') === null) {
-      let separator = resultUrl.searchParams.size ? '&' : '?';
+      let separator = resultUrl.searchParams.size ? '&' : '?'
       url = url + separator + '_relation=' + (this.table?.dataset?.name ?? 'crud-table')
     }
 

@@ -74,10 +74,10 @@ export default () => ({
 
         t.$dispatch('toast', {type: 'success', text: data.message})
 
-        let isFormReset = false;
+        let isFormReset = false
         const modalParent = t.$el.closest('.modal')
 
-        if(modalParent !== null) {
+        if (modalParent !== null) {
           modalParent.querySelector('.btn-close').click()
           isFormReset = true
         }
@@ -115,7 +115,7 @@ function submitState(form, loading = true, isFormReset = false) {
   if (!loading) {
     form.querySelector('.form_submit_button_loader').style.display = 'none'
     form.querySelector('.form_submit_button').removeAttribute('disabled')
-    if(isFormReset) {
+    if (isFormReset) {
       form.reset()
     }
   } else {
