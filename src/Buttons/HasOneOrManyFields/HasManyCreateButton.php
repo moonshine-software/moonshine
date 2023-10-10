@@ -37,17 +37,17 @@ final class HasManyCreateButton
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),
                 fn (ActionButton $action): string => (string) FormBuilder::make($action->url())
-                    ->precognitive()
+                    ->switchFormMode($resource->isAsync())
                     ->name($field->getRelationName())
-                    ->cast($field->getResource()->getModelCast())
+                    ->fillCast(
+                        [$field->getRelation()?->getForeignKeyName() => $resourceId],
+                        $field->getResource()->getModelCast()
+                    )
                     ->fields(
                         $fields
                         ->push(Hidden::make('_relation')->setValue($field->getRelationName()))
                         ->toArray()
                     )
-                    ->fill([
-                        $field->getRelation()?->getForeignKeyName() => $resourceId,
-                    ])
             );
     }
 }

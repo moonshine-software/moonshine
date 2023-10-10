@@ -122,8 +122,7 @@ class HasOne extends ModelRelationField
         );
 
         return FormBuilder::make($action)
-            ->precognitive()
-            ->async()
+            ->switchFormMode($resource->isAsync())
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(
@@ -135,10 +134,9 @@ class HasOne extends ModelRelationField
                     Hidden::make('_relation')->setValue($this->getRelationName()),
                 )->toArray()
             )
-            ->fill($item?->attributesToArray() ?? [
+            ->fillCast($item?->attributesToArray() ?? [
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
-            ])
-            ->cast($resource->getModelCast())
+            ], $resource->getModelCast())
             ->buttons(is_null($item) ? [] : [
                 ActionButton::make(
                     __('moonshine::ui.delete'),

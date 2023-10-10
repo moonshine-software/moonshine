@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasAsync;
 
 /**
@@ -48,6 +50,23 @@ final class FormBuilder extends RowComponent
             'enctype' => 'multipart/form-data',
             'x-data' => 'formBuilder',
         ]);
+    }
+
+    public function fillFromModelResource(ModelResource $resource): self
+    {
+        $item = $resource->getItem();
+
+        return $this->fillCast(
+            $item ? $resource->getModelCast()->dehydrate($item) : [],
+            $resource->getModelCast()
+        );
+    }
+
+    public function fillCast(array $values, MoonShineDataCast $cast): self
+    {
+        return $this
+            ->cast($cast)
+            ->fill($values);
     }
 
     public function action(string $action): self
@@ -120,6 +139,11 @@ final class FormBuilder extends RowComponent
     public function submitLabel(): string
     {
         return $this->submitLabel ?? __('moonshine::ui.save');
+    }
+
+    public function switchFormMode(bool $isAsync): self
+    {
+        return $isAsync ? $this->async() : $this->precognitive();
     }
 
     protected function viewData(): array

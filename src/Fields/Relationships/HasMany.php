@@ -244,6 +244,9 @@ class HasMany extends ModelRelationField implements HasFields
                 $this->isNowOnForm(),
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
+            ->customAttributes([
+                '@update-relation.window' => 'asyncRequest',
+            ])
             ->buttons([
                 DetailButton::forMode($resource),
                 FormButton::forMode($resource),

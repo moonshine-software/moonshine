@@ -96,6 +96,7 @@ class FormPage extends Page
         return [
             Fragment::make([
                 form($action)
+                    ->fillFromModelResource($this->getResource())
                     ->when(
                         moonshineRequest()->isFragmentLoad('crud-form'),
                         fn (FormBuilder $form): FormBuilder => $form->precognitive()
@@ -120,8 +121,6 @@ class FormPage extends Page
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
                     )
                     ->name('crud')
-                    ->fill($item ? $this->getResource()->getModelCast()->dehydrate($item) : [])
-                    ->cast($this->getResource()->getModelCast())
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
             ])->withName('crud-form'),
         ];

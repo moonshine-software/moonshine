@@ -204,6 +204,12 @@ class RelationModelFieldController extends MoonShineController
             'success'
         );
 
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => __('moonshine::ui.saved'),
+            ]);
+        }
+
         return $request->redirectRoute(
             $parentResource->redirectAfterSave()
         );

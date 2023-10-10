@@ -6,6 +6,8 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\MoonShineRouter;
+use MoonShine\Resources\Resource;
 use MoonShine\Support\Condition;
 
 trait UpdateOnPreview
@@ -30,12 +32,20 @@ trait UpdateOnPreview
         return parent::readonly($condition);
     }
 
-    public function updateOnPreview(?Closure $url = null, mixed $condition = null): static
+    public function updateOnPreview(?Resource $resource = null, ?Closure $url = null, mixed $condition = null): static
     {
-        $this->updateOnPreviewUrl = $url;
+        $this->updateOnPreviewUrl = $resource ? $this->getDefaultUpdateRoute($resource) : $url;
         $this->updateOnPreview = Condition::boolean($condition, true);
 
         return $this;
+    }
+
+    protected function getDefaultUpdateRoute(Resource $resource): Closure
+    {
+        return fn ($item) => MoonShineRouter::to('resource.update-column', [
+            'resourceItem' => $item->getKey(),
+            'resourceUri' => $resource->uriKey()
+        ]);
     }
 
     public function isUpdateOnPreview(): bool
