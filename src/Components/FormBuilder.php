@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
@@ -51,13 +52,20 @@ final class FormBuilder extends RowComponent
         ]);
     }
 
-    public function fillFromModelResource(ModelResource $resource)
+    public function fillFromModelResource(ModelResource $resource): self
     {
         $item = $resource->getItem();
 
         return $this
             ->fill($item ? $resource->getModelCast()->dehydrate($item) : [])
             ->cast($resource->getModelCast());
+    }
+
+    public function fillValues(array $values, MoonShineDataCast $cast): self
+    {
+        return $this
+            ->cast($cast)
+            ->fill($values);
     }
 
     public function action(string $action): self

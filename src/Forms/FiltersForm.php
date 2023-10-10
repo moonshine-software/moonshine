@@ -20,7 +20,7 @@ final class FiltersForm
 
         return FormBuilder::make($resource->currentRoute(), 'GET')
             ->name('filters-form')
-            ->cast($resource->getModelCast())
+            ->fillValues($values, $resource->getModelCast())
             ->fields(
                 $filters
                     ->when(
@@ -36,7 +36,6 @@ final class FiltersForm
                     )
                     ->toArray()
             )
-            ->fill($values)
             ->submit(__('moonshine::ui.search'))
             ->when(
                 request('filters'),

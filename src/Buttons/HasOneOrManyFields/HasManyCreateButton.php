@@ -39,15 +39,15 @@ final class HasManyCreateButton
                 fn (ActionButton $action): string => (string) FormBuilder::make($action->url())
                     ->switchFormMode($resource->isAsync())
                     ->name($field->getRelationName())
-                    ->cast($field->getResource()->getModelCast())
+                    ->fillValues(
+                        [$field->getRelation()?->getForeignKeyName() => $resourceId],
+                        $field->getResource()->getModelCast()
+                    )
                     ->fields(
                         $fields
                         ->push(Hidden::make('_relation')->setValue($field->getRelationName()))
                         ->toArray()
                     )
-                    ->fill([
-                        $field->getRelation()?->getForeignKeyName() => $resourceId,
-                    ])
             );
     }
 }

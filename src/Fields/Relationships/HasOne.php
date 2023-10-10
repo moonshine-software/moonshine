@@ -134,10 +134,9 @@ class HasOne extends ModelRelationField
                     Hidden::make('_relation')->setValue($this->getRelationName()),
                 )->toArray()
             )
-            ->fill($item?->attributesToArray() ?? [
+            ->fillValues($item?->attributesToArray() ?? [
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
-            ])
-            ->cast($resource->getModelCast())
+            ], $resource->getModelCast())
             ->buttons(is_null($item) ? [] : [
                 ActionButton::make(
                     __('moonshine::ui.delete'),
