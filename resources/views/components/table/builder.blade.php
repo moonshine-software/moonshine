@@ -18,7 +18,8 @@
 {{ (int) $creatable }},
 {{ (int) $sortable }},
 {{ (int) $reindex }},
-{{ (int) $async }}
+{{ (int) $async }},
+'{{ $asyncUrl }}'
 )"
 @add-table-row.window="add(true)"
 >

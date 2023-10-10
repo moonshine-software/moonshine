@@ -1,11 +1,18 @@
 import {crudFormQuery} from './formFunctions'
 import Sortable from 'sortablejs'
 
-export default (creatable = false, sortable = false, reindex = false, async = false) => ({
+export default (
+  creatable = false,
+  sortable = false,
+  reindex = false,
+  async = false,
+  asyncUrl = ''
+) => ({
   actionsOpen: false,
   lastRow: null,
   table: null,
   async: async,
+  asyncUrl: asyncUrl,
   sortable: sortable,
   creatable: creatable,
   reindex: reindex,
@@ -101,7 +108,7 @@ export default (creatable = false, sortable = false, reindex = false, async = fa
 
     const isForm = this.$el.tagName === 'FORM'
 
-    let url = this.$el.href
+    let url = this.$el.href ? this.$el.href : this.asyncUrl
 
     if (isForm) {
       const urlObject = new URL(this.$el.getAttribute('action'))
@@ -119,7 +126,8 @@ export default (creatable = false, sortable = false, reindex = false, async = fa
     const resultUrl = new URL(url)
 
     if (resultUrl.searchParams.get('_relation') === null) {
-      url = url + '&_relation=' + (this.table?.dataset?.name ?? 'crud-table')
+      let separator = resultUrl.searchParams.size ? '&' : '?'
+      url = url + separator + '_relation=' + (this.table?.dataset?.name ?? 'crud-table')
     }
 
     axios

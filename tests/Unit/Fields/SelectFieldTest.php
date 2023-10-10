@@ -34,113 +34,145 @@ beforeEach(function (): void {
     fillFromModel($this->fieldMultiple, $this->item);
 });
 
-it('type', function (): void {
-    expect($this->field->type())
-        ->toBeEmpty();
-});
+describe('basic methods', function () {
+    it('type', function (): void {
+        expect($this->field->type())
+            ->toBeEmpty();
+    });
 
-it('view', function (): void {
-    expect($this->field->getView())
-        ->toBe('moonshine::fields.select');
-});
+    it('view', function (): void {
+        expect($this->field->getView())
+            ->toBe('moonshine::fields.select');
+    });
 
-it('preview', function (): void {
-    expect($this->field->preview())
-        ->toBe('2')
-        ->and((string) $this->fieldMultiple)
-        ->toBe(view('moonshine::fields.select', [
-            'element' => $this->fieldMultiple,
-        ])->render());
-});
+    it('preview', function (): void {
+        expect($this->field->preview())
+            ->toBe('2')
+            ->and((string) $this->fieldMultiple)
+            ->toBe(
+                view('moonshine::fields.select', [
+                    'element' => $this->fieldMultiple,
+                ])->render()
+            );
+    });
 
-it('multiple', function (): void {
-    expect($this->field->isMultiple())
-        ->toBeFalse()
-        ->and($this->fieldMultiple->isMultiple())
-        ->toBeTrue();
-});
+    it('change preview', function () {
+        expect($this->field->changePreview(static fn () => 'changed'))
+            ->preview()
+            ->toBe('changed');
+    });
 
-it('searchable', function (): void {
-    expect($this->fieldMultiple)
-        ->isSearchable()
-        ->toBeFalse()
-        ->and($this->fieldMultiple->searchable())
-        ->isSearchable()
-        ->toBeTrue();
-});
+    it('default value', function () {
+        $field = Select::make('Select')->options([
+            1 => 1,
+            2 => 2,
+        ])->default(2);
 
-it('options', function (): void {
-    expect($this->fieldMultiple)
-        ->values()
-        ->toBe($this->selectOptions);
-});
+        expect($field->toValue())
+            ->toBe(2);
+    });
 
-it('is selected correctly', function (): void {
-    expect($this->fieldMultiple)
-        ->isSelected('1')
-        ->toBeTrue();
-});
+    it('applies', function () {
+        expect()
+            ->applies($this->field);
+    });
 
-it('is selected invalid', function (): void {
-    expect($this->fieldMultiple)
-        ->isSelected($this->item, '2')
-        ->toBeFalse();
-});
+    it('multiple', function (): void {
+        expect($this->field->isMultiple())
+            ->toBeFalse()
+            ->and($this->fieldMultiple->isMultiple())
+            ->toBeTrue();
+    });
 
-it('names single', function (): void {
-    expect($this->field)
-        ->name()
-        ->toBe('select')
-        ->name('1')
-        ->toBe('select');
-});
+    it('searchable', function (): void {
+        expect($this->fieldMultiple)
+            ->isSearchable()
+            ->toBeFalse()
+            ->and($this->fieldMultiple->searchable())
+            ->isSearchable()
+            ->toBeTrue();
+    });
 
-it('names multiple', function (): void {
-    expect($this->fieldMultiple)
-        ->name()
-        ->toBe('select_multiple[]')
-        ->name('1')
-        ->toBe('select_multiple[1]');
-});
+    it('options', function (): void {
+        expect($this->fieldMultiple)
+            ->values()
+            ->toBe($this->selectOptions);
+    });
 
-it('apply', function (): void {
-    $data = ['select' => 1];
+    it('is selected correctly', function (): void {
+        expect($this->fieldMultiple)
+            ->isSelected('1')
+            ->toBeTrue();
+    });
 
-    fakeRequest(parameters: $data);
+    it('is selected invalid', function (): void {
+        expect($this->fieldMultiple)
+            ->isSelected($this->item, '2')
+            ->toBeFalse();
+    });
 
-    expect(
-        $this->field->apply(
-            TestResourceBuilder::new()->onSave($this->field),
-            new class () extends Model {
-                protected $fillable = [
-                    'select',
-                ];
-            }
+    it('is selected grouped correctly', function (): void {
+        expect(Select::make('Select')->options(
+            ['Group 1' => [1 => 1], 'Group 2' => [2 => 2]]
+        )->default(2)->toValue())
+            ->toBe(2);
+    });
+
+    it('names single', function (): void {
+        expect($this->field)
+            ->name()
+            ->toBe('select')
+            ->name('1')
+            ->toBe('select');
+    });
+
+    it('names multiple', function (): void {
+        expect($this->fieldMultiple)
+            ->name()
+            ->toBe('select_multiple[]')
+            ->name('1')
+            ->toBe('select_multiple[1]');
+    });
+
+    it('apply', function (): void {
+        $data = ['select' => 1];
+
+        fakeRequest(parameters: $data);
+
+        expect(
+            $this->field->apply(
+                TestResourceBuilder::new()->onSave($this->field),
+                new class () extends Model {
+                    protected $fillable = [
+                        'select',
+                    ];
+                }
+            )
         )
-    )
-        ->toBeInstanceOf(Model::class)
-        ->select
-        ->toBe($data['select'])
-    ;
-});
+            ->toBeInstanceOf(Model::class)
+            ->select
+            ->toBe($data['select'])
+        ;
+    });
 
-it('apply multiple', function (): void {
-    $data = ['select' => [1,2]];
+    it('apply multiple', function (): void {
+        $data = ['select' => [1,2]];
 
-    fakeRequest(parameters: $data);
+        fakeRequest(parameters: $data);
 
-    expect(
-        $this->field->apply(
-            TestResourceBuilder::new()->onSave($this->field),
-            new class () extends Model {
-                protected $fillable = [
-                    'select',
-                ];
-            }
+        expect(
+            $this->field->apply(
+                TestResourceBuilder::new()->onSave($this->field),
+                new class () extends Model {
+                    protected $fillable = [
+                        'select',
+                    ];
+                }
+            )
         )
-    )
-        ->toBeInstanceOf(Model::class)
-        ->select
-        ->toBe($data['select'])
-    ;
+            ->toBeInstanceOf(Model::class)
+            ->select
+            ->toBe($data['select'])
+        ;
+    });
 });
