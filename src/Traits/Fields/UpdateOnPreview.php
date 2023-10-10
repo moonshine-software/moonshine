@@ -44,7 +44,7 @@ trait UpdateOnPreview
     {
         return fn ($item): string => MoonShineRouter::to('resource.update-column', [
             'resourceItem' => $item->getKey(),
-            'resourceUri' => $resource->uriKey()
+            'resourceUri' => $resource->uriKey(),
         ]);
     }
 
