@@ -13,9 +13,18 @@ final class DummyClass extends MoonshineController
     public function __invoke(MoonShineRequest $request): Response
     {
         // Examples
+
         // $this->toast('Hello world');
         // $request->getPage();
         // $request->getResource();
+
+        /*
+        // Render custom content
+        return $this
+            ->view('path_to_blade', ['param' => 'value'])
+            ->setLayout('custom_layout')
+            ->render();
+        */
 
         return back();
     }

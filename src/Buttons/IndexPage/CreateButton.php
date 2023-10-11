@@ -13,7 +13,7 @@ final class CreateButton
     {
         return $resource->isCreateInModal()
             ? AsyncCreateButton::for($resource)
-            : CreateButton::for($resource);
+            : self::for($resource);
     }
 
     public static function for(ModelResource $resource): ActionButton
@@ -27,8 +27,8 @@ final class CreateButton
         )
             ->primary()
             ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('create', $resource->getActiveActions())
-                && $resource->setItem($item)->can('create')
+                fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
+                && $resource->can('create')
             )
             ->icon('heroicons.outline.plus');
     }

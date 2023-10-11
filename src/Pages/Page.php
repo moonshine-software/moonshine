@@ -35,6 +35,8 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     protected ?string $contentView = null;
 
+    protected array $viewData = [];
+
 
     protected ?PageType $pageType = null;
 
@@ -139,9 +141,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->layout;
     }
 
-    public function setContentView(string $contentView): static
+    public function setContentView(string $contentView, array $data = []): static
     {
         $this->contentView = $contentView;
+        $this->viewData = $data;
 
         return $this;
     }
@@ -177,7 +180,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     protected function viewData(): array
     {
-        return [];
+        return [
+            ...$this->viewData
+        ];
     }
 
     public function render(): View|Closure|string

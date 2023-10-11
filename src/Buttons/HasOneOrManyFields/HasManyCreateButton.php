@@ -31,8 +31,8 @@ final class HasManyCreateButton
             ->primary()
             ->icon('heroicons.outline.plus')
             ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('create', $resource->getActiveActions())
-                && $resource->setItem($item)->can('create')
+                fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
+                && $resource->can('create')
             )
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),
