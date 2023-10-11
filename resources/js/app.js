@@ -1,5 +1,4 @@
 import './bootstrap'
-import './../css/app.css'
 
 import Alpine from 'alpinejs'
 import persist from '@alpinejs/persist'
@@ -45,10 +44,6 @@ Alpine.data('range', range)
 Alpine.data('code', code)
 Alpine.data('tree', tree)
 Alpine.data('charts', charts)
-
-// Alpine components
-
-import.meta.glob(['../images/**', '../fonts/**'])
 
 window.Alpine = Alpine
 

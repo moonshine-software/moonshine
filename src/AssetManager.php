@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Composer\InstalledVersions;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
 
+/**
+ * @todo pull theme options into a separate class
+ */
 class AssetManager
 {
     use Conditionable;
@@ -54,9 +59,9 @@ class AssetManager
         'info-text' => '179, 220, 255',
     ];
 
-    private string $mainJs = '/vendor/moonshine/js/moonshine.js';
+    private string $mainJs = '/vendor/moonshine/assets/app.js';
 
-    private string $mainCss = '/vendor/moonshine/css/moonshine.css';
+    private string $mainCss = '/vendor/moonshine/assets/main.css';
 
     public function mainCss(string $path): self
     {
@@ -65,12 +70,12 @@ class AssetManager
         return $this;
     }
 
-    public function getMainCss(): string
+    protected function getMainCss(): string
     {
         return $this->mainCss;
     }
 
-    public function getMainJs(): string
+    protected function getMainJs(): string
     {
         return $this->mainJs;
     }
@@ -93,29 +98,51 @@ class AssetManager
     public function js(): string
     {
         return collect($this->assets)
-            ->push($this->getMainJs())
+            ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainJs()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.js')
             )
             ->map(
                 fn ($asset): string => "<script defer src='" . asset(
-                    $asset
-                ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
+                        $asset
+                    ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
     }
 
     public function css(): string
     {
         return collect($this->assets)
-            ->push($this->getMainCss())
+            ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainCss()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.css')
             )
             ->map(
                 fn ($asset): string => "<link href='" . asset(
-                    $asset
-                ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}' rel='stylesheet'>"
+                        $asset
+                    ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}' rel='stylesheet'>"
             )->implode(PHP_EOL);
+    }
+
+    public function toHtml(): string
+    {
+        if ($this->isRunningHot()) {
+            $vendorAssets = Vite::useBuildDirectory('vendor/moonshine')
+                ->useHotFile($this->hotFile())
+                ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
+                ->toHtml();
+        }
+
+        return implode(PHP_EOL, [$this->js(), $vendorAssets ?? '', $this->css()]);
+    }
+
+    private function isRunningHot(): bool
+    {
+        return app()->isLocal() && is_file($this->hotFile());
+    }
+
+    private function hotFile(): string
+    {
+        return MoonShine::path('/public').'/hot';
     }
 
     public function colors(array $colors): static

@@ -8,6 +8,7 @@
     "devDependencies": {
         "alpinejs": "^3.12.0",
         "axios": "^1.3.4",
+        "laravel-vite-plugin": "^0.8.1",
         "lodash": "^4.17.21",
         "prettier": "^2.8.8",
         "prettier-plugin-tailwindcss": "^0.3.0",

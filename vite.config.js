@@ -1,26 +1,31 @@
-import {defineConfig} from 'vite';
+import {defineConfig} from 'vite'
+import laravel from 'laravel-vite-plugin'
+
 export default defineConfig({
-    build: {
-        emptyOutDir: false,
-        manifest: true,
-        rollupOptions: {
-            input: ['resources/js/app.js'],
-            output: {
-                entryFileNames: `js/moonshine.js`,
-                assetFileNames: file => {
-                    let ext = file.name.split('.').pop()
-                    if (ext === 'css') {
-                        return 'css/moonshine.css'
-                    }
+  base: '/vendor/moonshine/',
+  plugins: [
+    laravel({
+      input: ['resources/css/main.css', 'resources/js/app.js'],
+      refresh: true,
+    }),
+  ],
+  server: {
+    host: 'localhost',
+  },
+  build: {
+    emptyOutDir: false,
+    outDir: 'public',
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        assetFileNames: chunk => {
+          if (chunk.name.endsWith('.woff2')) {
+            return 'fonts/[name].[ext]'
+          }
 
-                    if (ext === 'woff2') {
-                        return 'fonts/[name].[ext]'
-                    }
-
-                    return 'assets/[name].[ext]'
-                }
-            }
+          return 'assets/[name].css'
         },
-        outDir: 'public',
+      },
     },
-});
+  },
+})
