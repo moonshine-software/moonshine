@@ -10,6 +10,7 @@
         :attributes="$field->wrapperAttributes()"
         label="{{ $field->label() }}"
         name="{{ $field->name() }}"
+        id="{{ $field->id() }}"
         :beforeLabel="$field->isBeforeLabel()"
         :inLabel="$field->isInLabel()"
         :formName="$field->getFormName()"

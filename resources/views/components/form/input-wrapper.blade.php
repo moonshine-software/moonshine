@@ -1,5 +1,6 @@
 @props([
     'name' => '',
+    'id' => '',
     'label' => '',
     'beforeLabel' => false,
     'inLabel' => false,
@@ -15,7 +16,7 @@
 
     @if($label)
         <x-moonshine::form.label
-            for="{{ $attributes->get('id', $name) }}"
+            for="{{ $attributes->get('id', $id) }}"
             :attributes="$attributes->only('required')"
         >
             {{ $beforeLabel && $inLabel ? $slot : '' }}

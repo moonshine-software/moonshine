@@ -35,6 +35,7 @@ trait WithFormElementAttributes
             ->replaceMatches('/_{2,}/', '_')
             ->trim('_')
             ->snake()
+            ->slug('_')
             ->when(
                 ! is_null($index),
                 fn (Stringable $str): Stringable => $str->append("_$index")
