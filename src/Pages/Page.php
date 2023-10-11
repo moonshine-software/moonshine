@@ -181,7 +181,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     protected function viewData(): array
     {
         return [
-            ...$this->viewData
+            ...$this->viewData,
         ];
     }
 
