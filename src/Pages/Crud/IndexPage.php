@@ -98,8 +98,10 @@ class IndexPage extends Page
             Grid::make([
                 Column::make([
                     Flex::make([
-                        CreateButton::forMode($this->getResource()),
-                        ...$this->getResource()->actions(),
+                        ActionGroup::make([
+                            CreateButton::forMode($this->getResource()),
+                            ...$this->getResource()->actions(),
+                        ]),
                     ])->justifyAlign('start'),
 
                     ActionGroup::make()->when(

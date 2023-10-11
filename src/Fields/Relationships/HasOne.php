@@ -146,6 +146,10 @@ class HasOne extends ModelRelationField
                         relation: $this->getRelationName()
                     )
                 )
+                    ->canSee(
+                        fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
+                            && $resource->setItem($item)->can('delete')
+                    )
                     ->secondary()
                     ->customAttributes(['class' => 'btn-lg'])
                     ->inModal(
