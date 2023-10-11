@@ -70,7 +70,7 @@ class AssetManager
         return $this;
     }
 
-    public function getMainCss(): ?string
+    public function getMainCss(): string
     {
         return $this->mainCss;
     }
