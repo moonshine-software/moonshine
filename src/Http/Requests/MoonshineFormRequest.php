@@ -22,6 +22,18 @@ class MoonshineFormRequest extends FormRequest
         return [];
     }
 
+    public function messages(): array
+    {
+        if ($this->hasResource()) {
+            return array_merge(
+                trans('moonshine::validation'),
+                $this->getResource()?->validationMessages() ?? []
+            );
+        }
+
+        return parent::messages();
+    }
+
     public function getResource(): ?ResourceContract
     {
         return moonshineRequest()->getResource();
