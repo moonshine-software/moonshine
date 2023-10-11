@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Switcher;
-use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -18,19 +17,9 @@ beforeEach(function (): void {
     fillFromModel($this->field, $this->item);
 });
 
-it('type', function (): void {
-    expect($this->field->type())
-        ->toBe('checkbox');
-});
-
 it('checkbox is parent', function (): void {
     expect($this->field)
         ->toBeInstanceOf(Checkbox::class);
-});
-
-it('view', function (): void {
-    expect($this->field->getView())
-        ->toBe('moonshine::fields.switch');
 });
 
 it('preview with not auto update', function (): void {
@@ -52,23 +41,42 @@ it('preview with auto update', function (): void {
         );
 });
 
-it('apply', function (): void {
-    $data = ['active' => 1];
+describe('basic methods', function () {
+    it('type', function (): void {
+        expect($this->field->type())
+            ->toBe('checkbox');
+    });
 
-    fakeRequest(parameters: $data);
+    it('view', function (): void {
+        expect($this->field->getView())
+            ->toBe('moonshine::fields.switch');
+    });
 
-    expect(
-        $this->field->apply(
-            TestResourceBuilder::new()->onSave($this->field),
-            new class () extends Model {
-                protected $fillable = [
-                    'active',
-                ];
-            }
-        )
-    )
-        ->toBeInstanceOf(Model::class)
-        ->active
-        ->toBe($data['active'])
-    ;
+    it('preview', function (): void {
+        expect($this->field->preview())
+            ->toBe(view('moonshine::ui.boolean', [
+                'value' => true,
+            ])->render());
+    });
+
+    it('change preview', function () {
+        expect($this->field->changePreview(static fn () => 'changed'))
+            ->preview()
+            ->toBe('changed');
+    });
+
+    it('default value', function () {
+        $field = Switcher::make('Switcher')
+            ->onValue(1)
+            ->offValue(0)
+            ->default(1);
+
+        expect($field->toValue())
+            ->toBe(1);
+    });
+
+    it('applies', function () {
+        expect()
+            ->applies($this->field);
+    });
 });
