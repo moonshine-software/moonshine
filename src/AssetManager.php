@@ -70,12 +70,12 @@ class AssetManager
         return $this;
     }
 
-    public function getMainCss(): string
+    protected function getMainCss(): string
     {
         return $this->mainCss;
     }
 
-    public function getMainJs(): string
+    protected function getMainJs(): string
     {
         return $this->mainJs;
     }
