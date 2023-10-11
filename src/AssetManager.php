@@ -142,7 +142,7 @@ class AssetManager
 
     private function hotFile(): string
     {
-        return InstalledVersions::getInstallPath('moonshine/moonshine').'/public/hot';
+        return MoonShine::path('/public').'/hot';
     }
 
     public function colors(array $colors): static
