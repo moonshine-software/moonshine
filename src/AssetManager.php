@@ -98,7 +98,7 @@ class AssetManager
     public function js(): string
     {
         return collect($this->assets)
-            ->unless($this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainJs()))
+            ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainJs()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.js')
             )
@@ -112,7 +112,7 @@ class AssetManager
     public function css(): string
     {
         return collect($this->assets)
-            ->unless($this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainCss()))
+            ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainCss()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.css')
             )
