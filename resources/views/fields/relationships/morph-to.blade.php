@@ -12,7 +12,6 @@
         <x-moonshine::form.select
             :attributes="$element->attributes()->merge([
         'id' => $element->id(),
-        'placeholder' => $element->label() ?? '',
         'name' => $element->name(),
     ])"
             :nullable="false"

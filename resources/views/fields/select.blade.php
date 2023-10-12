@@ -1,7 +1,6 @@
 <x-moonshine::form.select
         :attributes="$element->attributes()->except('x-on:change')->merge([
         'id' => $element->id(),
-        'placeholder' => $element->label() ?? '',
         'name' => $element->name(),
     ])"
         :nullable="$element->isNullable()"
