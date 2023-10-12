@@ -63,12 +63,13 @@ trait ResourceModelQuery
             }
         }
 
-        if (request()->has('search') && count($this->search())) {
+        if (request()->filled('search') && count($this->search())) {
             $query = $query->where(function (Builder $builder): void {
                 $terms = request()
                     ->str('search')
                     ->squish()
                     ->value();
+
                 foreach ($this->search() as $key => $column) {
                     if (is_string($column) && str($column)->contains('.')) {
                         $column = str($column)
@@ -84,16 +85,14 @@ trait ResourceModelQuery
                     if (is_array($column)) {
                         $builder->when(
                             method_exists($this->getModel(), $key),
-                            fn (Builder $query): \Illuminate\Database\Eloquent\Builder => $query->orWhereHas(
+                            fn (Builder $query) => $query->orWhereHas(
                                 $key,
-                                fn (Builder $q): \Illuminate\Database\Eloquent\Builder => $q->where(
-                                    fn (Builder $qq): Collection => collect($column)->each(
-                                        fn ($item): \Illuminate\Database\Eloquent\Builder => $qq->orWhere($item, 'LIKE', "%$terms%")
-                                    )
-                                )
+                                fn (Builder $q) => collect($column)->each(fn ($item) => $q->where(
+                                    fn (Builder $qq) => $qq->orWhere($item, 'LIKE', "%$terms%")
+                                ))
                             ),
-                            fn (Builder $query): Collection => collect($column)->each(fn ($item): \Illuminate\Database\Eloquent\Builder => $query->where(
-                                fn (Builder $qq): \Illuminate\Database\Query\Builder => $qq->orWhereJsonContains("$key->$item", $terms)
+                            fn (Builder $query) => collect($column)->each(fn ($item) => $query->orWhere(
+                                fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms])
                             ))
                         );
                     } else {
