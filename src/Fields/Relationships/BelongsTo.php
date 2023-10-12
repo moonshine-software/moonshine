@@ -12,6 +12,7 @@ use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithDefaultValue;
@@ -28,6 +29,7 @@ class BelongsTo extends ModelRelationField implements
     use WithAsyncSearch;
     use Searchable;
     use WithDefaultValue;
+    use HasPlaceholder;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to';
 

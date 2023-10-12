@@ -159,13 +159,21 @@ export default (asyncUrl = '') => ({
         )
       }
 
-      this.$el.parentElement.addEventListener('click', event => {
-        if (event.target.classList.contains('choices__button--remove')) {
-          const choiceElement = event.target.closest('.choices__item')
-          const value = choiceElement.getAttribute('data-value')
-          this.choicesInstance.removeActiveItemsByValue(value)
-        }
-      })
+      if(this.removeItemButton) {
+        this.$el.parentElement.addEventListener('click', event => {
+          if (event.target.classList.contains('choices__button--remove')) {
+            const choiceElement = event.target.closest('.choices__item')
+            const value = choiceElement.getAttribute('data-value')
+            this.choicesInstance.removeActiveItemsByValue(value)
+            this.choicesInstance._triggerChange(this.choicesInstance._store.placeholderChoice.value)
+
+            if(!this.$el.getAttribute('multiple')) {
+              this.choicesInstance._selectPlaceholderChoice(this.choicesInstance._store.placeholderChoice)
+            }
+          }
+        })
+      }
+
     })
   },
 

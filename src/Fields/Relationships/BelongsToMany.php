@@ -21,6 +21,7 @@ use MoonShine\Fields\ID;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
 use MoonShine\Support\Condition;
+use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\HasTreeMode;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
@@ -37,6 +38,7 @@ class BelongsToMany extends ModelRelationField implements
     use WithRelatedValues;
     use WithAsyncSearch;
     use HasTreeMode;
+    use HasPlaceholder;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 

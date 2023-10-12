@@ -40,8 +40,7 @@ final class ModelCast implements MoonShineDataCast
         $value
             ->forceFill([
                 $value->getKeyName() => $data[$value->getKeyName()] ?? null,
-                $value->getCreatedAtColumn() => $data[$value->getCreatedAtColumn()] ?? null,
-                $value->getUpdatedAtColumn() => $data[$value->getUpdatedAtColumn()] ?? null,
+                ...collect($data)->filter(fn($item) => is_scalar($item))->toArray()
             ])
             ->fill($data)
             ->setRelations($data['_relations'] ?? []);

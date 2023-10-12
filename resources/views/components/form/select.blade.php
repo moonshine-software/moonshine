@@ -17,6 +17,9 @@
     @if($options ?? false)
         {{ $options }}
     @else
+        @if($nullable)
+            <option value="">{{ $attributes->get('placeholder', '-') }}</option>
+        @endif
         @foreach($values as $value => $label)
             @if(is_array($label))
                 <optgroup label="{{ $value }}">
