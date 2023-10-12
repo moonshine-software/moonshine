@@ -77,7 +77,9 @@ export default (asyncUrl = '') => ({
               return template(`
                 <div class="flex gap-x-2 items-center ${classNames.item} ${classNames.itemChoice} ${
                 data.disabled ? classNames.itemDisabled : classNames.itemSelectable
-              } ${data.value == '' ? 'choices__placeholder' : ''}" data-select-text="${this.config.itemSelectText}" data-choice ${
+              } ${data.value == '' ? 'choices__placeholder' : ''}" data-select-text="${
+                this.config.itemSelectText
+              }" data-choice ${
                 data.disabled
                   ? 'data-choice-disabled aria-disabled="true"'
                   : 'data-choice-selectable'
@@ -157,16 +159,13 @@ export default (asyncUrl = '') => ({
         )
       }
 
-      this.$el.parentElement.addEventListener(
-          'click',
-          event =>  {
-            if (event.target.classList.contains('choices__button--remove')) {
-              const choiceElement = event.target.closest('.choices__item');
-              const value = choiceElement.getAttribute('data-value');
-              this.choicesInstance.removeActiveItemsByValue(value)
-            }
-          }
-      )
+      this.$el.parentElement.addEventListener('click', event => {
+        if (event.target.classList.contains('choices__button--remove')) {
+          const choiceElement = event.target.closest('.choices__item')
+          const value = choiceElement.getAttribute('data-value')
+          this.choicesInstance.removeActiveItemsByValue(value)
+        }
+      })
     })
   },
 
