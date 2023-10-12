@@ -234,7 +234,7 @@ input[type='number'] {
 
 /* Choises (Single/Multiple Select) */
 .choices {
-  @apply mb-0 w-full text-2xs dark:after:!border-t-dark-50;
+  @apply mb-0 w-full text-2xs dark:after:!border-t-dark-50 relative;
 
   &.is-open {
     @apply dark:after:!border-t-transparent dark:after:!border-b-dark-50;
@@ -287,6 +287,9 @@ input[type='number'] {
       @apply border-secondary bg-secondary;
     }
   }
+}
+.choices select[hidden] {
+  @apply absolute !block h-full w-full opacity-0 top-0 left-0 !m-0 !p-0;
 }
 
 /* TinyMCE */
