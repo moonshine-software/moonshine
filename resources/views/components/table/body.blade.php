@@ -24,7 +24,7 @@
 
         @if($vertical && !$preview)
             <td
-                {{ $row->tdAttributes($loop->parent->index, 0 + $actions->isNotEmpty())->merge(['class' => 'space-y-3']) }}
+                {{ $row->tdAttributes($vertical ? 0 : $loop->parent->index, 0 + $actions->isNotEmpty())->merge(['class' => 'space-y-3']) }}
                 x-data="asyncData"
             >
                 @foreach($row->getFields() as $index => $field)
