@@ -9,7 +9,7 @@ trait HasPlaceholder
     public function placeholder(string $value): static
     {
         return $this->customAttributes([
-            'placeholder' => $value
+            'placeholder' => $value,
         ]);
     }
 }

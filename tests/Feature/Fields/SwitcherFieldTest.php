@@ -14,7 +14,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->item = createItem();
-    $this->field = Switcher::make('Active')->updateOnPreview(url: fn() => '/');
+    $this->field = Switcher::make('Active')->updateOnPreview(url: fn () => '/');
 });
 
 it('show field on pages', function () {
