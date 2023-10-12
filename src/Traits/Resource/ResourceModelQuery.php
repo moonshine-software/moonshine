@@ -255,7 +255,7 @@ trait ResourceModelQuery
                                 fn (Builder $qq) => $qq->orWhere($item, 'LIKE', "%$terms%")
                             ))
                         ),
-                        fn (Builder $query) => collect($column)->each(fn ($item) => $query->where(
+                        fn (Builder $query) => collect($column)->each(fn ($item) => $query->orWhere(
                             fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms])
                         ))
                     );
