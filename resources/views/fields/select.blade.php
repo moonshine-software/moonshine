@@ -18,7 +18,7 @@
 >
     <x-slot:options>
         @if($element->isNullable())
-            <option @selected(!$element->value()) value="">-</option>
+            <option value="">{{ $element->label() ?? '' }}</option>
         @endif
         @foreach($element->values() as $optionValue => $optionName)
             @if(is_array($optionName))
