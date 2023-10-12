@@ -62,6 +62,11 @@ export default (asyncUrl = '') => ({
                         }
                         <span>
                           ${data.label}
+                          ${
+                            this.config.removeItemButton
+                              ? '<button type="button" class="choices__button choices__button--remove" data-button="">Remove item</button>'
+                              : ''
+                          }
                         </span>
                       </div>
 
@@ -72,7 +77,7 @@ export default (asyncUrl = '') => ({
               return template(`
                 <div class="flex gap-x-2 items-center ${classNames.item} ${classNames.itemChoice} ${
                 data.disabled ? classNames.itemDisabled : classNames.itemSelectable
-              }" data-select-text="${this.config.itemSelectText}" data-choice ${
+              } ${data.value == '' ? 'choices__placeholder' : ''}" data-select-text="${this.config.itemSelectText}" data-choice ${
                 data.disabled
                   ? 'data-choice-disabled aria-disabled="true"'
                   : 'data-choice-selectable'
@@ -151,6 +156,17 @@ export default (asyncUrl = '') => ({
           false
         )
       }
+
+      this.$el.parentElement.addEventListener(
+          'click',
+          event =>  {
+            if (event.target.classList.contains('choices__button--remove')) {
+              const choiceElement = event.target.closest('.choices__item');
+              const value = choiceElement.getAttribute('data-value');
+              this.choicesInstance.removeActiveItemsByValue(value)
+            }
+          }
+      )
     })
   },
 
