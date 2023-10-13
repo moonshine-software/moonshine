@@ -132,10 +132,10 @@ export default (asyncUrl = '') => ({
                 placement: 'bottom',
                 strategy: 'fixed',
                 modifiers: [sameWidth],
-              }
+              },
             )
           },
-          false
+          false,
         )
       }
 
@@ -155,7 +155,7 @@ export default (asyncUrl = '') => ({
               this.fromUrl(url.toString() + (crudFormQuery().length ? '&' + crudFormQuery() : ''))
             }
           }, 300),
-          false
+          false,
         )
       }
 
@@ -169,7 +169,7 @@ export default (asyncUrl = '') => ({
 
             if (!this.$el.getAttribute('multiple')) {
               this.choicesInstance._selectPlaceholderChoice(
-                this.choicesInstance._store.placeholderChoice
+                this.choicesInstance._store.placeholderChoice,
               )
             }
           }

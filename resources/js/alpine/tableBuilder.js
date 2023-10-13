@@ -6,7 +6,7 @@ export default (
   sortable = false,
   reindex = false,
   async = false,
-  asyncUrl = ''
+  asyncUrl = '',
 ) => ({
   actionsOpen: false,
   lastRow: null,
@@ -169,7 +169,7 @@ export default (
       values.forEach(function (value) {
         ids[i].insertAdjacentHTML(
           'beforeend',
-          `<input type="hidden" name="ids[]" value="${value}"/>`
+          `<input type="hidden" name="ids[]" value="${value}"/>`,
         )
       })
     }
