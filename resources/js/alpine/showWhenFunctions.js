@@ -31,7 +31,7 @@ export function showWhenVisibilityChange(fieldName, inputs, field, formId) {
 
   if (inputElement === null) {
     inputElement = document.querySelector(
-      '#' + formId + ' [data-field-block=' + field.showField + ']'
+      '#' + formId + ' [data-field-block=' + field.showField + ']',
     )
   }
 

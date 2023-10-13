@@ -100,7 +100,7 @@ export default () => ({
   onChangeField(event) {
     this.showWhenChange(
       event.target.getAttribute('name'),
-      event.target.closest('form').getAttribute('id')
+      event.target.closest('form').getAttribute('id'),
     )
   },
 

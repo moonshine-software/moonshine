@@ -40,8 +40,9 @@
 
   /* Progress circle */
   &::before {
-    background: radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0))
-        top/var(--thickness) var(--thickness) no-repeat,
+    background:
+      radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0)) top/var(--thickness)
+        var(--thickness) no-repeat,
       conic-gradient(currentColor calc(var(--value) * 1%), rgba(0, 0, 0, 0) 0);
     mask: radial-gradient(
       farthest-side,
