@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Fields\Fields;
 use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\WithFields;
@@ -14,18 +15,35 @@ abstract class RowComponent extends MoonshineComponent
     use HasDataCast;
     use WithFields;
 
-    protected array $values = [];
+    protected mixed $values = [];
 
     protected array $buttons = [];
 
-    public function fill(array $values = []): static
+    public function fill(mixed $values = []): static
     {
-        $this->values = $values;
+        if($this->hasCast() && filled($values)) {
+            $class = $this->getCast()->getClass();
+
+            $values = !$values instanceof $class
+                ? $this->getCast()->hydrate($values)
+                : $values;
+
+            $values = $this->getCast()->dehydrate($values);
+        }
+
+        $this->values = $values ?? [];
 
         return $this;
     }
 
-    public function getValues(): array
+    public function fillCast(mixed $values, MoonShineDataCast $cast): static
+    {
+        return $this
+            ->cast($cast)
+            ->fill($values);
+    }
+
+    public function getValues(): mixed
     {
         return $this->values;
     }

@@ -86,9 +86,10 @@ class FormPage extends Page
 
     protected function mainLayer(): array
     {
-        $item = $this->getResource()->getItem();
+        $resource = $this->getResource();
+        $item = $resource->getItem();
 
-        $action = $this->getResource()->route(
+        $action = $resource->route(
             is_null($item) ? 'crud.store' : 'crud.update',
             $item?->getKey()
         );
@@ -96,13 +97,16 @@ class FormPage extends Page
         return [
             Fragment::make([
                 form($action)
-                    ->fillFromModelResource($this->getResource())
+                    ->fillCast(
+                        $item,
+                        $resource->getModelCast()
+                    )
                     ->when(
                         moonshineRequest()->isFragmentLoad('crud-form'),
                         fn (FormBuilder $form): FormBuilder => $form->precognitive()
                     )
                     ->fields(
-                        $this->getResource()
+                        $resource
                             ->getFormFields()
                             ->when(
                                 ! is_null($item),
@@ -113,11 +117,11 @@ class FormPage extends Page
                             ->toArray()
                     )
                     ->when(
-                        $this->getResource()->isAsync(),
+                        $resource->isAsync(),
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async()
                     )
                     ->when(
-                        $this->getResource()->isPrecognitive(),
+                        $resource->isPrecognitive(),
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
                     )
                     ->name('crud')

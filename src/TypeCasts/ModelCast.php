@@ -55,6 +55,10 @@ final class ModelCast implements MoonShineDataCast
      */
     public function dehydrate(mixed $data): array
     {
+        if(!$data instanceof Model) {
+            return [];
+        }
+
         return $data->attributesToArray() + [
                 '_relations' => $data->getRelations(),
             ];
