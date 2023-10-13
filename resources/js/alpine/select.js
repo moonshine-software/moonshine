@@ -45,12 +45,12 @@ export default (asyncUrl = '') => ({
             item: ({classNames}, data) => {
               return template(`
                 <div class="${classNames.item} ${
-                data.highlighted ? classNames.highlightedState : classNames.itemSelectable
-              } ${data.placeholder ? classNames.placeholder : ''}" data-item data-id="${
-                data.id
-              }" data-value="${data.value}" ${data.active ? 'aria-selected="true"' : ''} ${
-                data.disabled ? 'aria-disabled="true"' : ''
-              }>
+                  data.highlighted ? classNames.highlightedState : classNames.itemSelectable
+                } ${data.placeholder ? classNames.placeholder : ''}" data-item data-id="${
+                  data.id
+                }" data-value="${data.value}" ${data.active ? 'aria-selected="true"' : ''} ${
+                  data.disabled ? 'aria-disabled="true"' : ''
+                }>
                       <div class="flex gap-x-2 items-center ">
                         ${
                           data.customProperties?.image
@@ -76,16 +76,16 @@ export default (asyncUrl = '') => ({
             choice: ({classNames}, data) => {
               return template(`
                 <div class="flex gap-x-2 items-center ${classNames.item} ${classNames.itemChoice} ${
-                data.disabled ? classNames.itemDisabled : classNames.itemSelectable
-              } ${data.value == '' ? 'choices__placeholder' : ''}" data-select-text="${
-                this.config.itemSelectText
-              }" data-choice ${
-                data.disabled
-                  ? 'data-choice-disabled aria-disabled="true"'
-                  : 'data-choice-selectable'
-              } data-id="${data.id}" data-value="${data.value}" ${
-                data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
-              }>
+                  data.disabled ? classNames.itemDisabled : classNames.itemSelectable
+                } ${data.value == '' ? 'choices__placeholder' : ''}" data-select-text="${
+                  this.config.itemSelectText
+                }" data-choice ${
+                  data.disabled
+                    ? 'data-choice-disabled aria-disabled="true"'
+                    : 'data-choice-selectable'
+                } data-id="${data.id}" data-value="${data.value}" ${
+                  data.groupId > 0 ? 'role="treeitem"' : 'role="option"'
+                }>
                       <div class="flex gap-x-2 items-center ">
                           ${
                             data.customProperties?.image
