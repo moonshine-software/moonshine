@@ -3,12 +3,14 @@
     "tabWidth": 2,
     "useTabs": false,
     "singleQuote": true,
-    "trailingComma": "es5",
     "bracketSpacing": false,
     "semi": false,
     "requirePragma": false,
     "proseWrap": "preserve",
     "arrowParens": "avoid",
+    "plugins": [
+        "prettier-plugin-tailwindcss"
+    ],
     "tailwindConfig": "tailwind.config.js",
     "overrides": [
         {
