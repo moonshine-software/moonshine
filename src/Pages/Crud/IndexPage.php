@@ -44,11 +44,7 @@ class IndexPage extends Page
     {
         $this->validateResource();
 
-        return array_merge(
-            $this->topLayer(),
-            $this->mainLayer(),
-            $this->bottomLayer(),
-        );
+        return $this->getLayers();
     }
 
     protected function topLayer(): array
