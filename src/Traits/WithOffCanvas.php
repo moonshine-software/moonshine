@@ -17,8 +17,8 @@ trait WithOffCanvas
     }
 
     public function inOffCanvas(
-        ?Closure $title = null,
-        ?Closure $content = null,
+        Closure|string|null $title = null,
+        Closure|string|null $content = null,
         bool $isLeft = false
     ): static {
         $this->offCanvas = OffCanvas::make($title, $content, $isLeft);

@@ -7,6 +7,9 @@ use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Makeable;
 
+/**
+ * @method static static make(string|Closure|null $title, string|Closure|null $content, bool $async = false)
+ */
 class Modal
 {
     use Makeable;
@@ -15,8 +18,8 @@ class Modal
     protected array $buttons = [];
 
     public function __construct(
-        protected ?Closure $title,
-        protected ?Closure $content,
+        protected string|Closure|null $title,
+        protected string|Closure|null $content,
         bool $async = false
     ) {
         if ($async) {
