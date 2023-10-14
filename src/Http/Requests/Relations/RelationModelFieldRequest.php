@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
@@ -34,8 +35,16 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             return $this->field;
         }
 
-        $this->field = $this->getPageComponent(request('_component_name'))
-            ->getFields($this->getPage()->uriKey())
+        $fields = $this->getPageComponent(request('_component_name'))
+            ->getFields($this->getPage()->uriKey());
+
+        foreach ($fields as $field) {
+            if($field instanceof HasFields && $field->hasFields()) {
+                $field->getFields()->each(fn($nestedField) => $fields->add($nestedField));
+            }
+        }
+
+        $this->field = $fields
             ->onlyRelationFields()
             ->findByRelation($this->getRelationName());
 

@@ -124,6 +124,7 @@ trait WithAsyncSearch
 
         return to_relation_route(
             'search',
+            resourceItem: request('resourceItem'),
             component: $formName,
             relation: $this->getRelationName(),
             resourceUri: $resourceUri
