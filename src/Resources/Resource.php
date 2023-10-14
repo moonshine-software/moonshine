@@ -55,7 +55,7 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     protected function bootTraits(): void
     {
-        $class = get_class($this);
+        $class = static::class;
 
         $booted = [];
 
