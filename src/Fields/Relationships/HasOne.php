@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Fields;
@@ -18,7 +19,7 @@ use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
-class HasOne extends ModelRelationField
+class HasOne extends ModelRelationField implements HasFields
 {
     use WithFields;
 

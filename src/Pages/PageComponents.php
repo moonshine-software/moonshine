@@ -55,6 +55,7 @@ final class PageComponents extends MoonShineRenderElements
         return self::make($data);
     }
 
+    // TODO remove after decoration refactoring
     public function onlyFragments(): self
     {
         $data = [];

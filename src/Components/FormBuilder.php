@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
-use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasAsync;
 
 /**
- * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], array $values = [])
+ * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], mixed $values = [])
  */
 final class FormBuilder extends RowComponent
 {
@@ -28,6 +26,7 @@ final class FormBuilder extends RowComponent
     ];
 
     protected bool $isPrecognitive = false;
+
     protected ?string $submitLabel = null;
 
     protected ComponentAttributeBag $submitAttributes;
@@ -36,9 +35,10 @@ final class FormBuilder extends RowComponent
         protected string $action = '',
         protected string $method = 'POST',
         Fields|array $fields = [],
-        protected array $values = []
+        mixed $values = []
     ) {
         $this->fields($fields);
+        $this->fill($values);
 
         $this->submitAttributes = $this->newAttributeBag([
             'type' => 'submit',
@@ -50,23 +50,6 @@ final class FormBuilder extends RowComponent
             'enctype' => 'multipart/form-data',
             'x-data' => 'formBuilder',
         ]);
-    }
-
-    public function fillFromModelResource(ModelResource $resource): self
-    {
-        $item = $resource->getItem();
-
-        return $this->fillCast(
-            $item ? $resource->getModelCast()->dehydrate($item) : [],
-            $resource->getModelCast()
-        );
-    }
-
-    public function fillCast(array $values, MoonShineDataCast $cast): self
-    {
-        return $this
-            ->cast($cast)
-            ->fill($values);
     }
 
     public function action(string $action): self

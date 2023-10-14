@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\TypeCasts;
 
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Traits\Makeable;
 
@@ -55,8 +56,12 @@ final class ModelCast implements MoonShineDataCast
      */
     public function dehydrate(mixed $data): array
     {
+        if(!$data instanceof Model) {
+            throw new InvalidArgumentException('Model is required');
+        }
+
         return $data->attributesToArray() + [
-                '_relations' => $data->getRelations(),
-            ];
+            '_relations' => $data->getRelations(),
+        ];
     }
 }

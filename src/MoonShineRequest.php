@@ -33,7 +33,7 @@ class MoonShineRequest extends Request
             $this->getResourceUri()
         );
 
-        return $this->resource->boot();
+        return $this->resource?->boot();
     }
 
     public function getPage(): Page

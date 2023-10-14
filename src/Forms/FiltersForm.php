@@ -36,14 +36,14 @@ final class FiltersForm
                     )
                     ->toArray()
             )
-            ->submit(__('moonshine::ui.search'))
+            ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
                 request('filters'),
                 static fn ($fields): FormBuilder => $fields->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
                         $resource->currentRoute(query: ['reset' => true])
-                    )->showInLine(),
+                    )->secondary()->showInLine(),
                 ])
             );
     }

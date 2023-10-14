@@ -131,7 +131,7 @@ class BelongsToMany extends ModelRelationField implements
         return collect($this->toValue())->every(fn ($item): bool => $item instanceof Model);
     }
 
-    protected function preparedFields(): Fields
+    public function preparedFields(): Fields
     {
         return $this->getFields()->onlyFields()->map(
             fn (Field $field): Field => (clone $field)
