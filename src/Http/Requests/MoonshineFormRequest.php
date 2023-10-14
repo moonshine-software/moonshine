@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Components\MoonshineComponent;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Decorations\Fragment;
 use MoonShine\Pages\Page;
 
 class MoonshineFormRequest extends FormRequest
@@ -49,7 +50,7 @@ class MoonshineFormRequest extends FormRequest
         return moonshineRequest()->getPage();
     }
 
-    public function getPageComponent(string $name): ?MoonshineComponent
+    public function getPageComponent(string $name): null|MoonshineComponent|Fragment
     {
         return moonshineRequest()->getPageComponent($name);
     }
