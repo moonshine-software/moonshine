@@ -7,6 +7,7 @@ namespace MoonShine;
 use Illuminate\Http\Request;
 use MoonShine\Components\MoonshineComponent;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Decorations\Fragment;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Pages\Page;
 use Throwable;
@@ -25,14 +26,14 @@ class MoonShineRequest extends Request
     public function getResource(): ?ResourceContract
     {
         if ($this->resource instanceof ResourceContract) {
-            return $this->resource;
+            return $this->resource->boot();
         }
 
         $this->resource = MoonShine::getResourceFromUriKey(
             $this->getResourceUri()
         );
 
-        return $this->resource;
+        return $this->resource->boot();
     }
 
     public function getPage(): Page
@@ -61,7 +62,8 @@ class MoonShineRequest extends Request
     /**
      * @throws Throwable
      */
-    public function getPageComponent(string $name): ?MoonshineComponent
+    //TODO replace return after decoration refactoring
+    public function getPageComponent(string $name): null|MoonshineComponent|Fragment
     {
         return $this->getPage()
             ->getComponents()

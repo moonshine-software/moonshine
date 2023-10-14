@@ -13,6 +13,7 @@ use MoonShine\Enums\PageType;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
+use Throwable;
 
 class FormPage extends Page
 {
@@ -48,8 +49,13 @@ class FormPage extends Page
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function components(): array
     {
+        $this->validateResource();
+
         if (
             is_null($this->getResource()->getItem())
             && $this->getResource()->isNowOnUpdateForm()
@@ -57,16 +63,13 @@ class FormPage extends Page
             oops404();
         }
 
-        return array_merge(
-            $this->topLayer(),
-            $this->mainLayer(),
-            $this->bottomLayer(),
-        );
+        return $this->getLayers();
     }
 
     protected function topLayer(): array
     {
         $components = [];
+
         if (! empty($item = $this->getResource()->getItem())) {
             $components[] = Flex::make([
                 ActionGroup::make([

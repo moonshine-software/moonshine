@@ -1,14 +1,42 @@
 /* Theme layout */
 .layout {
   &-wrapper {
-    @apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-16 pb-3 transition-all md:px-5 lg:flex-row lg:py-6 lg:pl-[5.75rem] xl:pr-6 xl:pl-72;
+    @apply relative flex min-h-screen flex-col gap-y-5 p-3 transition-all md:p-5 lg:flex-row lg:p-6;
 
-    &-short {
+    /* SIDEBAR */
+    /* selector :has not supported */
+
+    &--sidebar {
+      @apply pt-16 md:pt-5 lg:pt-6 lg:pl-[5.75rem] xl:pl-72;
+    }
+
+    &--sidebar&-short {
       @apply lg:pl-[6rem];
     }
 
+    /* selector :has supported */
+    @supports selector(:has(*)) {
+      &:has(> .layout-menu) {
+        @apply pt-16 md:pt-5 lg:pt-6 lg:pl-[5.75rem] xl:pl-72;
+      }
+
+      &-short:has(> .layout-menu) {
+        @apply lg:pl-[6rem];
+      }
+    }
+
+    /* TOPBAR */
+    /* selector :has not supported */
+
     &--top-menu {
       @apply flex-col px-3 pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
+    }
+
+    /* selector :has supported */
+    @supports selector(:has(*)) {
+      &:has(> .layout-menu-horizontal) {
+        @apply flex-col px-3 pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
+      }
     }
   }
 

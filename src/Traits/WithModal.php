@@ -23,8 +23,8 @@ trait WithModal
         string $url,
         ?Closure $component
     ): ActionButton {
-        if(! is_closure($title)) {
-            $title = fn (): Closure|string => $title;
+        if (! is_closure($title)) {
+            $title = static fn (): Closure|string => $title;
         }
 
         return ActionButton::make($button, $url)
@@ -32,8 +32,8 @@ trait WithModal
     }
 
     public function inModal(
-        ?Closure $title = null,
-        ?Closure $content = null,
+        Closure|string|null $title = null,
+        Closure|string|null $content = null,
         array $buttons = [],
         bool $async = false
     ): static {
@@ -43,15 +43,18 @@ trait WithModal
         return $this;
     }
 
-    public function withConfirm(): static
-    {
+    public function withConfirm(
+        Closure|string|null $title = null,
+        Closure|string|null $content = null,
+        Closure|string|null $button = null,
+    ): static {
         $this->modal = Modal::make(
-            static fn (): array|string|null => __('moonshine::ui.confirm'),
-            static fn (): array|string|null => __('moonshine::ui.confirm_message')
+            is_null($title) ? __('moonshine::ui.confirm') : $title,
+            is_null($content) ? __('moonshine::ui.confirm_message') : $content
         )->buttons([
             ActionButton::make(
-                __('moonshine::ui.confirm'),
-                '#'
+                is_null($button) ? __('moonshine::ui.confirm') : $button,
+                $this->url()
             )->showInLine(),
         ]);
 
