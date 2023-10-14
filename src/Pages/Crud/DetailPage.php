@@ -43,15 +43,13 @@ class DetailPage extends Page
      */
     public function components(): array
     {
+        $this->validateResource();
+
         if (is_null($this->getResource()->getItem())) {
             oops404();
         }
 
-        return array_merge(
-            $this->topLayer(),
-            $this->mainLayer(),
-            $this->bottomLayer(),
-        );
+        return $this->getLayers();
     }
 
     protected function mainLayer(): array

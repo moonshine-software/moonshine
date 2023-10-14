@@ -10,6 +10,7 @@ use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
 use MoonShine\MoonShineRouter;
 use MoonShine\Traits\HasResource;
@@ -34,6 +35,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     protected string $layout = 'moonshine::layouts.app';
 
     protected ?string $contentView = null;
+
+    protected ?PageComponents $components = null;
+
+    protected array $layersComponents = [];
 
     protected Closure|array $viewData = [];
 
@@ -102,7 +107,37 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function getComponents(): PageComponents
     {
-        return PageComponents::make($this->components());
+        if (! is_null($this->components)) {
+            return $this->components;
+        }
+
+        $this->components = PageComponents::make($this->components());
+
+        return $this->components;
+    }
+
+    public function getLayers(): array
+    {
+        return array_merge(
+            $this->getLayerComponents(Layer::TOP),
+            $this->getLayerComponents(Layer::MAIN),
+            $this->getLayerComponents(Layer::BOTTOM),
+        );
+    }
+
+    public function getLayerComponents(Layer $layer): array
+    {
+        return array_merge(
+            $this->{$layer->value}(),
+            $this->layersComponents[$layer->value] ?? []
+        );
+    }
+
+    public function pushToLayer(Layer $layer, MoonShineRenderable $component): static
+    {
+        $this->layersComponents[$layer->value][] = $component;
+
+        return $this;
     }
 
     public function setTitle(string $title): static
@@ -193,17 +228,20 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
             ?->route()
             ?->setParameter('pageUri', $this->uriKey());
 
-        return view($this->getView(), [
-            'layout' => $this->layout(),
-            'title' => $this->title(),
-            'subtitle' => $this->subtitle(),
-            'resource' => $this->hasResource()
-                ? $this->getResource()
-                : null,
-            'breadcrumbs' => $this->breadcrumbs(),
-            'components' => $this->getComponents(),
-            'contentView' => $this->contentView(),
-        ] + $data)
+        return view(
+            $this->getView(),
+            [
+                'layout' => $this->layout(),
+                'title' => $this->title(),
+                'subtitle' => $this->subtitle(),
+                'resource' => $this->hasResource()
+                    ? $this->getResource()
+                    : null,
+                'breadcrumbs' => $this->breadcrumbs(),
+                'components' => $this->getComponents(),
+                'contentView' => $this->contentView(),
+            ] + $data
+        )
             ->fragmentIf(
                 moonshineRequest()->isFragmentLoad(),
                 moonshineRequest()->getFragmentLoad()
