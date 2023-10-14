@@ -78,7 +78,7 @@ final class PageComponents extends MoonShineRenderElements
         );
 
         if($component) {
-           return $component;
+            return $component;
         }
 
         return $this->onlyFragments()->first(
