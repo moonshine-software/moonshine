@@ -50,6 +50,7 @@ class MoonshineFormRequest extends FormRequest
         return moonshineRequest()->getPage();
     }
 
+    //TODO replace return after decoration refactoring
     public function getPageComponent(string $name): null|MoonshineComponent|Fragment
     {
         return moonshineRequest()->getPageComponent($name);

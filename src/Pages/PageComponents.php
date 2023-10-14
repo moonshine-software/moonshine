@@ -67,6 +67,7 @@ final class PageComponents extends MoonShineRenderElements
     /**
      * @throws Throwable
      */
+    //TODO replace return after decoration refactoring
     public function findByName(
         string $name,
         MoonshineComponent $default = null

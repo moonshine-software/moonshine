@@ -62,6 +62,7 @@ class MoonShineRequest extends Request
     /**
      * @throws Throwable
      */
+    //TODO replace return after decoration refactoring
     public function getPageComponent(string $name): null|MoonshineComponent|Fragment
     {
         return $this->getPage()
