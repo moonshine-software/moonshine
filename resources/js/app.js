@@ -1,4 +1,5 @@
 import './bootstrap'
+import './layout'
 
 import Alpine from 'alpinejs'
 import persist from '@alpinejs/persist'
