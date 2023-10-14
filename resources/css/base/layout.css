@@ -1,14 +1,26 @@
 /* Theme layout */
 .layout {
   &-wrapper {
-    @apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-16 pb-3 transition-all md:px-5 lg:flex-row lg:py-6 lg:pl-[5.75rem] xl:pr-6 xl:pl-72;
+    @apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-16 pb-3 transition-all md:px-5 lg:flex-row lg:py-6 xl:pr-6 ;
 
     &-short {
       @apply lg:pl-[6rem];
     }
 
-    &--top-menu {
+    &:has(>.layout-menu) {
+      @apply lg:pl-[5.75rem] xl:pl-72
+    }
+
+    &--sidebar { /* Workaround for Firefox */
+      @apply lg:pl-[5.75rem] xl:pl-72
+    }
+
+    &:has(>.layout-menu-horizontal) {
       @apply flex-col px-3 pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
+    }
+
+    &--top-menu { /* Workaround for Firefox */
+      @apply flex-col pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
     }
   }
 
