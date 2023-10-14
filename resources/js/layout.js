@@ -1,18 +1,18 @@
 /**
  * Classes for layout wrapper with a sidebar or topbar.
- * Workaround for Firefox (~12% usage).
- * Probably has selector coming in version 120.
+ * Workaround for browsers that do not support the :has selector (Firefox).
+ * Probably :has selector coming in Firefox 120.
+ * @see https://bugzilla.mozilla.org/show_bug.cgi?id=418039
  */
-if (navigator.userAgent.match(/firefox|fxios/i)) {
-  document.addEventListener('DOMContentLoaded', event => {
+if (!CSS.supports('selector(:has(*))')) {
+  document.addEventListener('DOMContentLoaded', () => {
     const wrapperElement = document.querySelector('.layout-wrapper')
-    if (!wrapperElement) {
-      return
-    }
-    if (wrapperElement.querySelector(':scope > .layout-menu')) {
+
+    if (wrapperElement && wrapperElement.querySelector(':scope > .layout-menu')) {
       wrapperElement.classList.add('layout-wrapper--sidebar')
     }
-    if (wrapperElement.querySelector(':scope > .layout-menu-horizontal')) {
+
+    if (wrapperElement && wrapperElement.querySelector(':scope > .layout-menu-horizontal')) {
       wrapperElement.classList.add('layout-wrapper--top-menu')
     }
   })
