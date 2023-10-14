@@ -1,25 +1,25 @@
 /* Theme layout */
 .layout {
   &-wrapper {
-    @apply relative flex min-h-screen flex-col gap-y-5 px-3 pt-16 pb-3 transition-all md:px-5 lg:flex-row lg:py-6 xl:pr-6 ;
+    @apply relative flex min-h-screen flex-col gap-y-5 p-3 transition-all md:px-5 lg:flex-row lg:py-6 xl:pr-6 ;
 
     &-short {
       @apply lg:pl-[6rem];
     }
 
-    &:has(>.layout-menu) {
-      @apply lg:pl-[5.75rem] xl:pl-72
+    &:has(>.layout-menu) { /* Paddings for sidebar */
+      @apply pt-16 lg:pl-[5.75rem] xl:pl-72
     }
 
-    &--sidebar { /* Workaround for Firefox */
-      @apply lg:pl-[5.75rem] xl:pl-72
+    &--sidebar { /* Paddings for sidebar: workaround for Firefox */
+      @apply pt-16 lg:pl-[5.75rem] xl:pl-72
     }
 
-    &:has(>.layout-menu-horizontal) {
+    &:has(>.layout-menu-horizontal) { /* Paddings for topbar */
       @apply flex-col px-3 pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
     }
 
-    &--top-menu { /* Workaround for Firefox */
+    &--top-menu { /* Paddings for topbar: workaround for Firefox */
       @apply flex-col pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
     }
   }
