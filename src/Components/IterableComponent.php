@@ -6,10 +6,11 @@ namespace MoonShine\Components;
 
 use Illuminate\Contracts\Pagination\Paginator;
 use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\WithFields;
 
-abstract class IterableComponent extends MoonshineComponent
+abstract class IterableComponent extends MoonshineComponent implements HasFields
 {
     use HasDataCast;
     use WithFields;
@@ -56,13 +57,11 @@ abstract class IterableComponent extends MoonshineComponent
         return $this;
     }
 
-    public function getButtons(array $data): ActionButtons
+    public function getButtons(mixed $data): ActionButtons
     {
-        $casted = $this->castData($data);
-
         return ActionButtons::make($this->buttons)
             ->filter()
-            ->fillItem($casted)
+            ->fillItem($this->castData($data))
             ->onlyVisible()
             ->withoutBulk();
     }

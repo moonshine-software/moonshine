@@ -38,6 +38,7 @@ abstract class MoonShineRenderElements extends Collection
     /**
      * @throws Throwable
      */
+    // TODO remove after decoration refactoring
     protected function extractFragments($elements, array &$data): void
     {
         foreach ($elements as $element) {

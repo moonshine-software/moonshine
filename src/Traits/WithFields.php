@@ -20,6 +20,14 @@ trait WithFields
     protected ?Closure $fieldsClosure = null;
 
     /**
+     * @throws Throwable
+     */
+    public function preparedFields(): Fields
+    {
+        return $this->getFields();
+    }
+
+    /**
      * @return Fields<Field>
      * @throws Throwable
      */
@@ -37,9 +45,6 @@ trait WithFields
         return $this->getFields()->isNotEmpty();
     }
 
-    /**
-     * @return $this
-     */
     public function fields(Fields|Closure|array $fields): static
     {
         if(is_closure($fields)) {

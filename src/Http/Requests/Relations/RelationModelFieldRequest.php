@@ -36,10 +36,20 @@ class RelationModelFieldRequest extends MoonshineFormRequest
         }
 
         $fields = $this->getPageComponent(request('_component_name'))
-            ->getFields($this->getPage()->uriKey());
+            ?->getFields($this->getPage()->uriKey());
+
+        if(is_null($fields)) {
+            return $this->field;
+        }
 
         foreach ($fields as $field) {
-            if($field instanceof HasFields && $field->hasFields()) {
+            if (! $field instanceof HasFields) {
+                continue;
+            }
+
+            $field->preparedFields();
+
+            if ($field->hasFields()) {
                 $field->getFields()->each(fn ($nestedField) => $fields->add($nestedField));
             }
         }
@@ -62,13 +72,13 @@ class RelationModelFieldRequest extends MoonshineFormRequest
 
         $resource = $this->getResource();
 
-        $fields = match($this->getPage()::class) {
+        $fields = match ($this->getPage()::class) {
             IndexPage::class => $resource->getIndexFields(),
             DetailPage::class => $resource->getDetailFields(),
             FormPage::class => Fields::make(
                 empty($resource->formFields())
-                        ? $resource->fields()
-                        : $resource->formFields()
+                    ? $resource->fields()
+                    : $resource->formFields()
             )->filter()->formFields(),
             default => Fields::make($this->fields())
         };

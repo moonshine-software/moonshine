@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Fields\Fields;
 use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\WithFields;
 
-abstract class RowComponent extends MoonshineComponent
+abstract class RowComponent extends MoonshineComponent implements HasFields
 {
     use HasDataCast;
     use WithFields;
@@ -21,17 +22,7 @@ abstract class RowComponent extends MoonshineComponent
 
     public function fill(mixed $values = []): static
     {
-        if($this->hasCast() && filled($values)) {
-            $class = $this->getCast()->getClass();
-
-            $values = !$values instanceof $class
-                ? $this->getCast()->hydrate($values)
-                : $values;
-
-            $values = $this->getCast()->dehydrate($values);
-        }
-
-        $this->values = $values ?? [];
+        $this->values = $values;
 
         return $this;
     }
@@ -45,7 +36,7 @@ abstract class RowComponent extends MoonshineComponent
 
     public function getValues(): mixed
     {
-        return $this->values;
+        return $this->values ?? [];
     }
 
     public function buttons(array $buttons = []): static
@@ -55,11 +46,11 @@ abstract class RowComponent extends MoonshineComponent
         return $this;
     }
 
-    protected function preparedFields(): Fields
+    public function preparedFields(): Fields
     {
         $this->getFields()->fill(
-            $this->getValues(),
-            $this->castData($this->values)
+            $this->unCastData($this->getValues()),
+            $this->castData($this->getValues())
         );
 
         $this->getFields()->prepareAttributes();
@@ -69,10 +60,10 @@ abstract class RowComponent extends MoonshineComponent
 
     public function getButtons(): ActionButtons
     {
-        $casted = $this->castData($this->values);
-
         return ActionButtons::make($this->buttons)
-            ->fillItem($casted)
-            ->onlyVisible();
+            ->filter()
+            ->fillItem($this->castData($this->getValues()))
+            ->onlyVisible()
+            ->withoutBulk();
     }
 }

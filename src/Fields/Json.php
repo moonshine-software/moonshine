@@ -172,7 +172,7 @@ class Json extends Field implements
         return $this->asRelationResource;
     }
 
-    protected function preparedFields(): Fields
+    public function preparedFields(): Fields
     {
         return $this->getFields()->map(function (Field $field): Field {
             throw_if(

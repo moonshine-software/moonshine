@@ -55,18 +55,14 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function getItems(): Collection
     {
-        return collect($this->items)
-            ->map(
-                fn ($item): array => $this->hasCast()
-                    ? $this->getCast()->dehydrate($item)
-                    : (array) $item
-            );
+        return collect($this->items);
     }
 
     public function rows(): Collection
     {
-        return $this->getItems()->map(function (array $data, $index): TableRow {
+        return $this->getItems()->map(function (mixed $data, $index): TableRow {
             $casted = $this->castData($data);
+            $raw = $this->unCastData($data);
 
             $fields = $this->getFields();
 
@@ -78,8 +74,8 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             return TableRow::make(
                 $casted,
-                $fields->fillCloned($data, $casted, $index),
-                $this->getButtons($data),
+                $fields->fillCloned($raw, $casted, $index),
+                $this->getButtons($casted),
                 $this->trAttributes,
                 $this->tdAttributes
             );
