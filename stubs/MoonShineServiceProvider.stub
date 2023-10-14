@@ -37,7 +37,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                ),
             ]),
 
-            MenuItem::make('Documentation', 'https://moonshine.cutcode.dev')
+            MenuItem::make('Documentation', 'https://moonshine-laravel.com')
                ->badge(fn() => 'Check'),
         ];
     }
