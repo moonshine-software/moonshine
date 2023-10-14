@@ -45,9 +45,9 @@ trait HasDataCast
         if($this->hasCast()) {
             $class = $this->getCast()->getClass();
 
-            return !$data instanceof $class
-                ? $this->getCast()->hydrate($data)
-                : $data;
+            return $data instanceof $class
+                ? $data
+                : $this->getCast()->hydrate($data);
         }
 
         return $data;
