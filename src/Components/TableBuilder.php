@@ -46,7 +46,7 @@ final class TableBuilder extends IterableComponent implements TableContract
         $this->fields($fields);
         $this->items($items);
 
-        if (!is_null($paginator)) {
+        if (! is_null($paginator)) {
             $this->paginator($paginator);
         }
 
