@@ -50,7 +50,7 @@ class DetailPage extends Page
         $this->validateResource();
         $item = $this->getResource()->getItem();
 
-        if (!$item?->exists) {
+        if (! $item?->exists) {
             oops404();
         }
 

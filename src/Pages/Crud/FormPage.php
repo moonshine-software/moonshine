@@ -62,7 +62,7 @@ class FormPage extends Page
         $item = $this->getResource()->getItem();
 
         if (
-            !$item?->exists
+            ! $item?->exists
             && $this->getResource()->isNowOnUpdateForm()
         ) {
             oops404();
@@ -147,7 +147,7 @@ class FormPage extends Page
         $components = [];
         $item = $this->getResource()->getItem();
 
-        if (!$item?->exists) {
+        if (! $item?->exists) {
             return $components;
         }
 

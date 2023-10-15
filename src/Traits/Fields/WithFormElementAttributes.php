@@ -76,7 +76,7 @@ trait WithFormElementAttributes
             return $this->name;
         }
 
-        if (!$this instanceof Field) {
+        if (! $this instanceof Field) {
             return '';
         }
 
