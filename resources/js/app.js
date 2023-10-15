@@ -52,18 +52,14 @@ window.Alpine = Alpine
 document.addEventListener('alpine:init', () => {
   /* Dark mode */
   Alpine.store('darkMode', {
-    on: Alpine.$persist(false).as('darkMode'),
+    init() {
+      window.addEventListener('darkMode:toggle', () => this.toggle())
+    },
+    on: Alpine.$persist(window.matchMedia('(prefers-color-scheme: dark)').matches).as('darkMode'),
     toggle() {
       this.on = !this.on
-      window.location.reload()
     },
   })
-
-  if (Alpine.store('darkMode').on) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
 })
 
 Alpine.plugin(persist)

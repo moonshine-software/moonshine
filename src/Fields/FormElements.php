@@ -9,16 +9,18 @@ use Illuminate\Support\Collection;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Decorations\Decoration;
 use MoonShine\Exceptions\FieldsException;
-use MoonShine\Fields\Relationships\ModelRelationField;
 use ReflectionClass;
 use ReflectionException;
 use Throwable;
 
+/**
+ * @extends MoonShineRenderElements<int|string, Field|Decoration>
+ */
 abstract class FormElements extends MoonShineRenderElements
 {
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function onlyFields(): Fields
@@ -27,7 +29,7 @@ abstract class FormElements extends MoonShineRenderElements
 
         $this->extractOnly($this->toArray(), Field::class, $data);
 
-        return self::make($data);
+        return Fields::make($data);
     }
 
     /**
@@ -71,94 +73,10 @@ abstract class FormElements extends MoonShineRenderElements
     }
 
     /**
-     * @throws Throwable
-     */
-    public function isWhenConditionField(string $name): bool
-    {
-        return $this->whenFieldNames()->has($name);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function whenFieldNames(): Fields
-    {
-        return $this->whenFields()->mapWithKeys(
-            static fn (Field $field): array => [
-                $field->showWhenCondition()['changeField'] => $field->showWhenCondition()['changeField'],
-            ]
-        );
-    }
-
-    /**
-     * @return Fields<Field>
-     * @throws Throwable
-     */
-    public function whenFields(): Fields
-    {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field->hasShowWhen()
-            )
-            ->values();
-    }
-
-    /**
-     * @return array<string, string>
-     * @throws Throwable
-     */
-    public function extractLabels(): array
-    {
-        return $this->onlyFields()->flatMap(
-            static fn (Field $field): array => [$field->column() => $field->label()]
-        )->toArray();
-    }
-
-
-    /**
-     * @throws Throwable
-     */
-    public function findByResourceClass(
-        string $resource,
-        ModelRelationField $default = null
-    ): ?ModelRelationField {
-        return $this->onlyRelationFields()->first(
-            static fn (ModelRelationField $field): bool => $field->getResource()::class === $resource,
-            $default
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function findByRelation(
-        string $relation,
-        ModelRelationField $default = null
-    ): ?ModelRelationField {
-        return $this->onlyRelationFields()->first(
-            static fn (ModelRelationField $field): bool => $field->getRelationName() === $relation,
-            $default
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function findByColumn(
-        string $column,
-        Field $default = null
-    ): ?Field {
-        return $this->onlyFields()->first(
-            static fn (Field $field): bool => $field->column() === $column,
-            $default
-        );
-    }
-
-    /**
-     * @template T
+     * @template T of Field
      * @param  class-string<T>  $class
      * @param ?Field  $default
-     * @return T|Field
+     * @return T
      * @throws Throwable
      */
     public function findByClass(
@@ -168,16 +86,6 @@ abstract class FormElements extends MoonShineRenderElements
         return $this->onlyFields()->first(
             static fn (Field $field): bool => $field::class === $class,
             $default
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function onlyColumns(): Fields
-    {
-        return $this->onlyFields()->transform(
-            static fn (Field $field): string => $field->column()
         );
     }
 

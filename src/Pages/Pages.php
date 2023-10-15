@@ -11,7 +11,7 @@ use MoonShine\Enums\PageType;
 /**
  * @template TKey of array-key
  *
- * @implements  Collection<TKey, Page>
+ * @extends Collection<TKey, Page>
  */
 final class Pages extends Collection
 {

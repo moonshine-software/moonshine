@@ -17,11 +17,11 @@ class MenuManager
 
     public static function all(): ?Collection
     {
-        return self::$menu?->filter(function (MenuElement $item) {
-            if ($item->isGroup()) {
+        return self::$menu?->filter(function (MenuElement $item): bool {
+            if ($item instanceof MenuGroup) {
                 $item->setItems(
                     $item->items()->filter(
-                        fn (MenuElement $child) => $child->isSee(moonshineRequest())
+                        fn (MenuElement $child): bool => $child->isSee(moonshineRequest())
                     )
                 );
             }

@@ -13,8 +13,12 @@ use MoonShine\Enums\PageType;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use Throwable;
 
+/**
+ * @method ModelResource getResource()
+ */
 class FormPage extends Page
 {
     protected ?PageType $pageType = PageType::FORM;
@@ -55,9 +59,10 @@ class FormPage extends Page
     public function components(): array
     {
         $this->validateResource();
+        $item = $this->getResource()->getItem();
 
         if (
-            is_null($this->getResource()->getItem())
+            ! $item?->exists
             && $this->getResource()->isNowOnUpdateForm()
         ) {
             oops404();
@@ -69,8 +74,9 @@ class FormPage extends Page
     protected function topLayer(): array
     {
         $components = [];
+        $item = $this->getResource()->getItem();
 
-        if (! empty($item = $this->getResource()->getItem())) {
+        if ($item?->exists) {
             $components[] = Flex::make([
                 ActionGroup::make([
                     ...$this->getResource()->getFormButtons(),
@@ -89,23 +95,27 @@ class FormPage extends Page
 
     protected function mainLayer(): array
     {
-        $item = $this->getResource()->getItem();
+        $resource = $this->getResource();
+        $item = $resource->getItem();
 
-        $action = $this->getResource()->route(
-            is_null($item) ? 'crud.store' : 'crud.update',
+        $action = $resource->route(
+            $item?->exists ? 'crud.update' : 'crud.store',
             $item?->getKey()
         );
 
         return [
             Fragment::make([
                 form($action)
-                    ->fillFromModelResource($this->getResource())
+                    ->fillCast(
+                        $item,
+                        $resource->getModelCast()
+                    )
                     ->when(
                         moonshineRequest()->isFragmentLoad('crud-form'),
                         fn (FormBuilder $form): FormBuilder => $form->precognitive()
                     )
                     ->fields(
-                        $this->getResource()
+                        $resource
                             ->getFormFields()
                             ->when(
                                 ! is_null($item),
@@ -116,11 +126,11 @@ class FormPage extends Page
                             ->toArray()
                     )
                     ->when(
-                        $this->getResource()->isAsync(),
+                        $resource->isAsync(),
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async()
                     )
                     ->when(
-                        $this->getResource()->isPrecognitive(),
+                        $resource->isPrecognitive(),
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
                     )
                     ->name('crud')
@@ -129,11 +139,15 @@ class FormPage extends Page
         ];
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function bottomLayer(): array
     {
         $components = [];
+        $item = $this->getResource()->getItem();
 
-        if (empty($item = $this->getResource()->getItem())) {
+        if (! $item?->exists) {
             return $components;
         }
 

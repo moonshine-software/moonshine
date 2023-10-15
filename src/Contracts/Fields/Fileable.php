@@ -23,4 +23,6 @@ interface Fileable
     public function disableDownload(): static;
 
     public function canDownload(): bool;
+
+    public function isDeleteFiles(): bool;
 }

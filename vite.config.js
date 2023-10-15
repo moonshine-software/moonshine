@@ -12,6 +12,9 @@ export default defineConfig({
   server: {
     host: 'localhost',
   },
+  css: {
+    devSourcemap: true,
+  },
   build: {
     emptyOutDir: false,
     outDir: 'public',

@@ -31,20 +31,27 @@ export default () => ({
       })
     }
 
-    const config = {
+    let editorInstance = null
+
+    const config = darkMode => ({
       selector: '#' + this.$el.getAttribute('id'),
       path_absolute: '/',
       file_manager: '',
       relative_urls: false,
       branding: false,
-      skin: Alpine.store('darkMode').on ? 'oxide-dark' : 'oxide',
-      content_css: Alpine.store('darkMode').on ? 'dark' : 'default',
+      skin: darkMode ? 'oxide-dark' : 'oxide',
+      content_css: darkMode ? 'dark' : 'default',
       ...this.$el.dataset,
       file_picker_callback: this.$el.dataset.file_manager ? fileManager : null,
       init_instance_callback: editor =>
         editor.on('blur', () => (this.$el.innerHTML = editor.getContent())),
-    }
+      setup: editor => {
+        editorInstance = editor
+      },
+    })
 
-    tinymce.init(config)
+    tinymce.init(config(Alpine.store('darkMode').on))
+
+    window.addEventListener('darkMode:toggle', () => tinymce.remove(editorInstance))
   },
 })

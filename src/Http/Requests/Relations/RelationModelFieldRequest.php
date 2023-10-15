@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
@@ -36,12 +35,10 @@ class RelationModelFieldRequest extends MoonshineFormRequest
         }
 
         $fields = $this->getPageComponent(request('_component_name'))
-            ->getFields($this->getPage()->uriKey());
+            ?->getFields($this->getPage()->uriKey());
 
-        foreach ($fields as $field) {
-            if($field instanceof HasFields && $field->hasFields()) {
-                $field->getFields()->each(fn ($nestedField) => $fields->add($nestedField));
-            }
+        if(is_null($fields)) {
+            return $this->field;
         }
 
         $this->field = $fields
@@ -62,15 +59,15 @@ class RelationModelFieldRequest extends MoonshineFormRequest
 
         $resource = $this->getResource();
 
-        $fields = match($this->getPage()::class) {
+        $fields = match ($this->getPage()::class) {
             IndexPage::class => $resource->getIndexFields(),
             DetailPage::class => $resource->getDetailFields(),
             FormPage::class => Fields::make(
                 empty($resource->formFields())
-                        ? $resource->fields()
-                        : $resource->formFields()
+                    ? $resource->fields()
+                    : $resource->formFields()
             )->filter()->formFields(),
-            default => Fields::make($this->fields())
+            default => Fields::make($resource->fields())
         };
 
         $this->field = $fields

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Closure;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButtons;
@@ -17,7 +16,7 @@ use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Table\TableStates;
 
 /**
- * @method static static make(Fields|array $fields = [], iterable $items = [], ?LengthAwarePaginator $paginator = null)
+ * @method static static make(Fields|array $fields = [], iterable $items = [], ?Paginator $paginator = null)
  */
 final class TableBuilder extends IterableComponent implements TableContract
 {
@@ -41,14 +40,14 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function __construct(
         Fields|array $fields = [],
-        protected iterable $items = [],
-        protected ?Paginator $paginator = null
+        iterable $items = [],
+        ?Paginator $paginator = null
     ) {
         $this->fields($fields);
+        $this->items($items);
 
-        if ($items instanceof Paginator) {
-            $this->paginator($items);
-            $this->items($items->items());
+        if (! is_null($paginator)) {
+            $this->paginator($paginator);
         }
 
         $this->withAttributes([]);
@@ -56,18 +55,14 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function getItems(): Collection
     {
-        return collect($this->items)
-            ->map(
-                fn ($item): array => $this->hasCast()
-                    ? $this->getCast()->dehydrate($item)
-                    : (array) $item
-            );
+        return collect($this->items);
     }
 
     public function rows(): Collection
     {
-        return $this->getItems()->map(function (array $data, $index): TableRow {
+        return $this->getItems()->map(function (mixed $data, $index): TableRow {
             $casted = $this->castData($data);
+            $raw = $this->unCastData($data);
 
             $fields = $this->getFields();
 
@@ -79,29 +74,12 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             return TableRow::make(
                 $casted,
-                $fields->fillCloned($data, $casted, $index),
-                $this->getButtons($data),
+                $fields->fillCloned($raw, $casted, $index),
+                $this->getButtons($casted),
                 $this->trAttributes,
                 $this->tdAttributes
             );
         });
-    }
-
-    public function paginator(Paginator $paginator): self
-    {
-        $this->paginator = $paginator;
-
-        return $this;
-    }
-
-    public function getPaginator(): ?Paginator
-    {
-        return $this->paginator;
-    }
-
-    public function hasPaginator(): bool
-    {
-        return ! is_null($this->paginator);
     }
 
     public function getBulkButtons(): ActionButtons

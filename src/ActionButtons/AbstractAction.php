@@ -9,14 +9,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Traits\HasCanSee;
-use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithComponentAttributes;
-use MoonShine\Traits\WithIcon;
-use MoonShine\Traits\WithLabel;
-use MoonShine\Traits\WithModal;
-use MoonShine\Traits\WithOffCanvas;
 use MoonShine\Traits\WithView;
 
 abstract class AbstractAction implements MoonShineRenderable
@@ -24,12 +18,6 @@ abstract class AbstractAction implements MoonShineRenderable
     use Makeable;
     use Macroable;
     use WithView;
-    use WithLabel;
-    use WithIcon;
-    use WithModal;
-    use WithOffCanvas;
-    use HasCanSee;
-    use InDropdownOrLine;
     use WithComponentAttributes;
     use Conditionable;
 

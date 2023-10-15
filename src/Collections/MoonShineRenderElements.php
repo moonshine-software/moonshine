@@ -13,6 +13,12 @@ use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Tabs;
 use Throwable;
 
+/**
+ * @template T
+ * @template TKey of array-key
+ *
+ * @extends Collection<TKey, T>
+ */
 abstract class MoonShineRenderElements extends Collection
 {
     use Conditionable;
@@ -38,6 +44,7 @@ abstract class MoonShineRenderElements extends Collection
     /**
      * @throws Throwable
      */
+    // TODO remove after decoration refactoring
     protected function extractFragments($elements, array &$data): void
     {
         foreach ($elements as $element) {

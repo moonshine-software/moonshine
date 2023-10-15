@@ -24,7 +24,7 @@ trait HasResource
         return ! is_null($this->resource);
     }
 
-    public function getResource(): ResourceContract
+    public function getResource(): ?ResourceContract
     {
         return $this->resource;
     }

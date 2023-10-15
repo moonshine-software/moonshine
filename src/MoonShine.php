@@ -9,6 +9,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
+use MoonShine\Menu\MenuGroup;
+use MoonShine\Menu\MenuItem;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Resources\MoonShineProfileResource;
@@ -90,7 +92,7 @@ class MoonShine
     /**
      * Get collection of registered resources
      *
-     * @return Collection<ResourceContract>
+     * @return Collection<int|string, ResourceContract>
      */
     public static function getResources(): Collection
     {
@@ -109,8 +111,6 @@ class MoonShine
 
     /**
      * Get collection of registered pages
-     *
-     * @return Pages<Page>
      */
     public static function getPages(): Pages
     {
@@ -120,7 +120,7 @@ class MoonShine
     /**
      * Get collection of registered menu
      *
-     * @return Collection<MenuElement>
+     * @return Collection<int|string, MenuElement>
      */
     public static function getMenu(): Collection
     {
@@ -155,12 +155,14 @@ class MoonShine
 
     private static function resolveMenuItem(MenuElement $element): void
     {
-        if ($element->isGroup()) {
+        if ($element instanceof MenuGroup) {
             $element->items()->each(
                 fn (MenuElement $item) => self::resolveMenuItem($item)
             );
         } elseif ($element->isItem()) {
-            $filler = $element->getFiller();
+            $filler = $element instanceof MenuItem
+                ? $element->getFiller()
+                : null;
 
             if ($filler instanceof Page) {
                 self::$pages->add($filler);

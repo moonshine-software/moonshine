@@ -23,6 +23,7 @@ use MoonShine\Fields\Text;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\HasTreeMode;
+use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
@@ -36,6 +37,7 @@ class BelongsToMany extends ModelRelationField implements
 {
     use WithFields;
     use WithRelatedValues;
+    use Searchable;
     use WithAsyncSearch;
     use HasTreeMode;
     use HasPlaceholder;
@@ -131,7 +133,7 @@ class BelongsToMany extends ModelRelationField implements
         return collect($this->toValue())->every(fn ($item): bool => $item instanceof Model);
     }
 
-    protected function preparedFields(): Fields
+    public function preparedFields(): Fields
     {
         return $this->getFields()->onlyFields()->map(
             fn (Field $field): Field => (clone $field)

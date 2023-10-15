@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages;
 
-use Illuminate\Support\Collection;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\MoonshineComponent;
@@ -13,9 +12,7 @@ use MoonShine\Decorations\Fragment;
 use Throwable;
 
 /**
- * @template TKey of array-key
- *
- * @implements   Collection<TKey, MoonShineComponent>
+ * @extends MoonShineRenderElements<int|string, MoonShineComponent>
  */
 final class PageComponents extends MoonShineRenderElements
 {
@@ -55,6 +52,7 @@ final class PageComponents extends MoonShineRenderElements
         return self::make($data);
     }
 
+    // TODO remove after decoration refactoring
     public function onlyFragments(): self
     {
         $data = [];
@@ -77,7 +75,7 @@ final class PageComponents extends MoonShineRenderElements
             $default
         );
 
-        if($component) {
+        if ($component) {
             return $component;
         }
 

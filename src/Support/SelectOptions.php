@@ -33,8 +33,7 @@ final class SelectOptions
                 $current instanceof Collection => $current->contains(
                     $value
                 ),
-                is_array($current) => in_array($value, $current),
-                default => (string) $current === $value
+                default => in_array($value, (array) $current),
             };
         }
 

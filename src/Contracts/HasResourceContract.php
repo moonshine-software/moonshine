@@ -12,5 +12,5 @@ interface HasResourceContract
 
     public function hasResource(): bool;
 
-    public function getResource(): ResourceContract;
+    public function getResource(): ?ResourceContract;
 }
