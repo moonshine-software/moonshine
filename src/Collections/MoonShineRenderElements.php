@@ -13,6 +13,12 @@ use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Tabs;
 use Throwable;
 
+/**
+ * @template T
+ * @template TKey of array-key
+ *
+ * @extends Collection<TKey, T>
+ */
 abstract class MoonShineRenderElements extends Collection
 {
     use Conditionable;

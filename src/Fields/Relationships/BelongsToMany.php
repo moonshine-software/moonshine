@@ -23,6 +23,7 @@ use MoonShine\Fields\Text;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\HasTreeMode;
+use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
@@ -36,6 +37,7 @@ class BelongsToMany extends ModelRelationField implements
 {
     use WithFields;
     use WithRelatedValues;
+    use Searchable;
     use WithAsyncSearch;
     use HasTreeMode;
     use HasPlaceholder;

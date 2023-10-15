@@ -81,7 +81,7 @@ class HasOne extends ModelRelationField implements HasFields
         $items = Arr::wrap($this->toValue());
 
         if ($this->isRawMode()) {
-            return $items
+            return collect($items)
                 ->map(fn (Model $item) => $item->{$this->getResourceColumn()})
                 ->implode(';');
         }

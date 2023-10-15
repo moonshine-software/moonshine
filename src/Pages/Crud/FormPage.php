@@ -13,8 +13,12 @@ use MoonShine\Enums\PageType;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use Throwable;
 
+/**
+ * @method ModelResource getResource()
+ */
 class FormPage extends Page
 {
     protected ?PageType $pageType = PageType::FORM;
@@ -55,9 +59,10 @@ class FormPage extends Page
     public function components(): array
     {
         $this->validateResource();
+        $item = $this->getResource()->getItem();
 
         if (
-            is_null($this->getResource()->getItem())
+            !$item?->exists
             && $this->getResource()->isNowOnUpdateForm()
         ) {
             oops404();
@@ -69,8 +74,9 @@ class FormPage extends Page
     protected function topLayer(): array
     {
         $components = [];
+        $item = $this->getResource()->getItem();
 
-        if (! empty($item = $this->getResource()->getItem())) {
+        if ($item?->exists) {
             $components[] = Flex::make([
                 ActionGroup::make([
                     ...$this->getResource()->getFormButtons(),
@@ -93,7 +99,7 @@ class FormPage extends Page
         $item = $resource->getItem();
 
         $action = $resource->route(
-            is_null($item) ? 'crud.store' : 'crud.update',
+            $item?->exists ? 'crud.update' : 'crud.store',
             $item?->getKey()
         );
 
@@ -133,11 +139,15 @@ class FormPage extends Page
         ];
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function bottomLayer(): array
     {
         $components = [];
+        $item = $this->getResource()->getItem();
 
-        if (empty($item = $this->getResource()->getItem())) {
+        if (!$item?->exists) {
             return $components;
         }
 

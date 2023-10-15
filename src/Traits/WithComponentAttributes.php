@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits;
 
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Fields\Field;
 
 trait WithComponentAttributes
 {
@@ -48,6 +49,10 @@ trait WithComponentAttributes
 
     public function iterableAttributes(int $level = 0): static
     {
+        if (! $this instanceof Field) {
+            return $this;
+        }
+
         return $this->customAttributes([
             'data-name' => $this->name(),
             'data-column' => str($this->column())->explode('.')->last(),

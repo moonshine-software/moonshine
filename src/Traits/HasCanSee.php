@@ -17,7 +17,7 @@ trait HasCanSee
         return $this;
     }
 
-    public function isSee(mixed $data)
+    public function isSee(mixed $data): bool
     {
         return is_closure($this->canSeeCallback)
             ? value($this->canSeeCallback, $data)

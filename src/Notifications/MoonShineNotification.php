@@ -11,7 +11,7 @@ use MoonShine\MoonShineAuth;
 final class MoonShineNotification
 {
     /**
-     * @param  array{'link': string, 'label': string}  $button
+     * @param  array{}|array{'link': string, 'label': string}  $button
      * @param  array<int|string>  $ids
      */
     public static function send(

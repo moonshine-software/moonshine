@@ -6,12 +6,25 @@ namespace MoonShine\ActionButtons;
 
 use Closure;
 use MoonShine\Contracts\Actions\ActionButtonContract;
+use MoonShine\Traits\HasCanSee;
+use MoonShine\Traits\InDropdownOrLine;
+use MoonShine\Traits\WithIcon;
+use MoonShine\Traits\WithLabel;
+use MoonShine\Traits\WithModal;
+use MoonShine\Traits\WithOffCanvas;
 
 /**
  * @method static static make(Closure|string $label, Closure|string $url = '', mixed $item = null)
  */
 class ActionButton extends AbstractAction implements ActionButtonContract
 {
+    use WithLabel;
+    use WithIcon;
+    use WithOffCanvas;
+    use HasCanSee;
+    use InDropdownOrLine;
+    use WithModal;
+
     protected bool $isBulk = false;
 
     public function __construct(

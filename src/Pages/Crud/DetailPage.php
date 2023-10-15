@@ -13,8 +13,12 @@ use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Enums\PageType;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use Throwable;
 
+/**
+ * @method ModelResource getResource()
+ */
 class DetailPage extends Page
 {
     protected ?PageType $pageType = PageType::DETAIL;
@@ -44,8 +48,9 @@ class DetailPage extends Page
     public function components(): array
     {
         $this->validateResource();
+        $item = $this->getResource()->getItem();
 
-        if (is_null($this->getResource()->getItem())) {
+        if (!$item?->exists) {
             oops404();
         }
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 /**
  * @template TKey of array-key
  *
- * @implements  Collection<TKey, Handler>
+ * @extends Collection<TKey, Handler>
  */
 final class Handlers extends Collection
 {

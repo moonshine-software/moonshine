@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use Illuminate\Support\Collection;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
 /**
- * @template TKey of array-key
- *
- * @implements Collection<TKey, Field>
+ * @extends FormElements<int|string, Field>
  */
 final class Fields extends FormElements
 {
@@ -86,7 +83,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function indexFields(): Fields
@@ -98,7 +94,6 @@ final class Fields extends FormElements
 
 
     /**
-     * @return Fields<ModelRelationField>
      * @throws Throwable
      */
     public function onlyRelationFields(): Fields
@@ -111,7 +106,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function withoutOutside(): Fields
@@ -122,7 +116,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<ModelRelationField>
      * @throws Throwable
      */
     public function onlyOutside(): Fields
@@ -133,7 +126,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function onlyGrouped(): Fields
@@ -144,7 +136,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<ModelRelationField>
      * @throws Throwable
      */
     public function withoutRelationFields(): Fields
@@ -155,7 +146,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function formFields(): Fields
@@ -166,7 +156,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function detailFields(): Fields
@@ -177,8 +166,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<File>
-     *
      * @throws Throwable
      */
     public function onlyDeletableFileFields(bool $isDeleteFiles = true): Fields
@@ -191,8 +178,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<File>
-     *
      * @throws Throwable
      */
     public function onlyFileFields(): Fields
@@ -205,7 +190,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function exportFields(): Fields
@@ -216,7 +200,6 @@ final class Fields extends FormElements
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function importFields(): Fields
@@ -224,5 +207,98 @@ final class Fields extends FormElements
         return $this->onlyFields()
             ->filter(static fn (Field $field): bool => $field->isOnImport())
             ->values();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function isWhenConditionField(string $name): bool
+    {
+        return $this->whenFieldNames()->has($name);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function whenFieldNames(): Fields
+    {
+        return $this->whenFields()->mapWithKeys(
+            static fn (Field $field): array => [
+                $field->showWhenCondition()['changeField'] => $field->showWhenCondition()['changeField'],
+            ]
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function whenFields(): Fields
+    {
+        return $this->onlyFields()
+            ->filter(
+                static fn (Field $field): bool => $field->hasShowWhen()
+            )
+            ->values();
+    }
+
+    /**
+     * @return array<string, string>
+     * @throws Throwable
+     */
+    public function extractLabels(): array
+    {
+        return $this->onlyFields()->flatMap(
+            static fn (Field $field): array => [$field->column() => $field->label()]
+        )->toArray();
+    }
+
+
+    /**
+     * @throws Throwable
+     */
+    public function findByResourceClass(
+        string $resource,
+        ModelRelationField $default = null
+    ): ?ModelRelationField {
+        return $this->onlyRelationFields()->first(
+            static fn (ModelRelationField $field): bool => $field->getResource()::class === $resource,
+            $default
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function findByRelation(
+        string $relation,
+        ModelRelationField $default = null
+    ): ?ModelRelationField {
+        return $this->onlyRelationFields()->first(
+            static fn (ModelRelationField $field): bool => $field->getRelationName() === $relation,
+            $default
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function findByColumn(
+        string $column,
+        Field $default = null
+    ): ?Field {
+        return $this->onlyFields()->first(
+            static fn (Field $field): bool => $field->column() === $column,
+            $default
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function onlyColumns(): Fields
+    {
+        return $this->onlyFields()->transform(
+            static fn (Field $field): string => $field->column()
+        );
     }
 }

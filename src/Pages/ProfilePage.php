@@ -5,8 +5,12 @@ namespace MoonShine\Pages;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Http\Controllers\ProfileController;
+use MoonShine\Resources\ModelResource;
 use MoonShine\TypeCasts\ModelCast;
 
+/**
+ * @method ModelResource getResource()
+ */
 class ProfilePage extends Page
 {
     public function components(): array

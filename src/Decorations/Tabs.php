@@ -49,7 +49,7 @@ class Tabs extends Decoration
     }
 
     /**
-     * @return Collection<Tab>
+     * @return Collection<int|string, Tab>
      * @throws Throwable
      */
     public function tabs(): Collection

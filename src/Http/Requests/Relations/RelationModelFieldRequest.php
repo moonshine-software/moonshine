@@ -80,7 +80,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
                     ? $resource->fields()
                     : $resource->formFields()
             )->filter()->formFields(),
-            default => Fields::make($this->fields())
+            default => Fields::make($resource->fields())
         };
 
         $this->field = $fields

@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
+use MoonShine\Fields\Field;
 use MoonShine\Support\Condition;
 
 trait WithFormElementAttributes
@@ -73,6 +74,10 @@ trait WithFormElementAttributes
 
         if ($this->name) {
             return $this->name;
+        }
+
+        if (!$this instanceof Field) {
+            return '';
         }
 
         return (string) str($this->nameUnDot($this->column()))

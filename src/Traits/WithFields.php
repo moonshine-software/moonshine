@@ -6,7 +6,6 @@ namespace MoonShine\Traits;
 
 use Closure;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use Throwable;
 
@@ -28,7 +27,6 @@ trait WithFields
     }
 
     /**
-     * @return Fields<Field>
      * @throws Throwable
      */
     public function getFields(mixed $data = null): Fields

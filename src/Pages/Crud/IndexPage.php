@@ -26,8 +26,12 @@ use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use Throwable;
 
+/**
+ * @method ModelResource getResource()
+ */
 class IndexPage extends Page
 {
     protected ?PageType $pageType = PageType::INDEX;

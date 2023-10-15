@@ -51,6 +51,9 @@ trait ResourceWithFields
         return [];
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getFormFields(): Fields
     {
         $fields = $this->getPages()
@@ -68,6 +71,9 @@ trait ResourceWithFields
             ->withoutOutside();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getOutsideFields(): Fields
     {
         $fields = $this->getPages()
@@ -89,6 +95,9 @@ trait ResourceWithFields
         return [];
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getDetailFields(): Fields
     {
         $fields = $this->getPages()

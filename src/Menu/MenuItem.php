@@ -8,15 +8,12 @@ use Closure;
 use MoonShine\Attributes\Icon;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Support\Attributes;
-use Throwable;
 
 /**
  * @method static static make(Closure|string $label, Closure|MenuFiller|string $filler, string $icon = null)
  */
 class MenuItem extends MenuElement
 {
-    protected Closure|string|null $url = null;
-
     protected ?Closure $badge = null;
 
     final public function __construct(
@@ -75,20 +72,5 @@ class MenuItem extends MenuElement
     public function getBadge(): ?string
     {
         return value($this->badge);
-    }
-
-    public function setUrl(string|Closure|null $url): static
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function url(): string
-    {
-        return value($this->url);
     }
 }
