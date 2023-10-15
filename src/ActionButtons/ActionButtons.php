@@ -17,7 +17,7 @@ final class ActionButtons extends Collection
     public function fillItem(mixed $item): self
     {
         return $this->map(
-            fn (ActionButtonContract $action) => (clone $action)->setItem($item)
+            fn (ActionButtonContract $action): ActionButtonContract => (clone $action)->setItem($item)
         );
     }
 
@@ -56,7 +56,7 @@ final class ActionButtons extends Collection
     public function onlyVisible(mixed $item = null): self
     {
         return $this->filter(
-            fn (ActionButtonContract $action) => $action->isSee($item ?? $action->getItem())
+            fn (ActionButtonContract $action): bool => $action->isSee($item ?? $action->getItem())
         );
     }
 

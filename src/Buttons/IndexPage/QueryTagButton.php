@@ -17,7 +17,7 @@ final class QueryTagButton
         )
             ->showInLine()
             ->icon($tag->iconValue())
-            ->canSee(fn () => $tag->isSee(moonshineRequest()))
+            ->canSee(fn (): bool => $tag->isSee(moonshineRequest()))
             ->when(
                 $tag->isActive(),
                 fn (ActionButton $btn): ActionButton => $btn->primary()
