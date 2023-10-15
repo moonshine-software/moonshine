@@ -24,7 +24,7 @@ class AsyncDetailButton
         )
             ->icon('heroicons.outline.eye')
             ->inModal(
-                fn (): array|string|null => __('moonshine::ui.create'),
+                fn (): array|string|null => __('moonshine::ui.show'),
                 fn (): string => '',
                 async: true
             )
