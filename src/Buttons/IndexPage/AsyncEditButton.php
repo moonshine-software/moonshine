@@ -25,7 +25,7 @@ final class AsyncEditButton
             ->primary()
             ->icon('heroicons.outline.pencil')
             ->inModal(
-                fn (): array|string|null => __('moonshine::ui.create'),
+                fn (): array|string|null => __('moonshine::ui.edit'),
                 fn (): string => '',
                 async: true
             )
