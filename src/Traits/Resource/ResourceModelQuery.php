@@ -277,6 +277,7 @@ trait ResourceModelQuery
     {
         $params = $this->saveFilterState()
         && ! request()->has('filters')
+        && ! request()->has('sort')
         && ! request()->has('reset')
             ? cache(
                 $this->queryCacheKey(),
