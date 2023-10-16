@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
@@ -42,7 +41,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             return $this->field;
         }
 
-        $fields->each(function ($field) use ($fields) : void {
+        $fields->each(function ($field) use ($fields): void {
         });
 
         $this->field = $fields
