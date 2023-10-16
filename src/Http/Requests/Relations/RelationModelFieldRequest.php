@@ -6,6 +6,7 @@ namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonshineFormRequest;
@@ -29,30 +30,22 @@ class RelationModelFieldRequest extends MoonshineFormRequest
     /**
      * @throws Throwable
      */
-    public function getComponentField(): ?ModelRelationField
+    public function getPageField(): ?ModelRelationField
     {
         if (! is_null($this->field)) {
             return $this->field;
         }
 
-        $fields = $this->getPageComponent(request('_component_name'))
-            ?->getFields($this->getPage()->uriKey());
+        $fields = request('_parent_field')
+            ? $this->getPage()->getComponents()->onlyFields()
+                ->filter(static fn (Field $field): bool => $field instanceof HasFields)
+                ->findByColumn(request('_parent_field'))
+                ?->preparedFields()
+            : $this->getPage()->getComponents()->onlyFields();
 
         if(is_null($fields)) {
             return $this->field;
         }
-
-        $fields->each(function ($field) use ($fields): void {
-            if (! $field instanceof HasFields) {
-                return;
-            }
-
-            $field->preparedFields();
-
-            if ($field->hasFields()) {
-                $field->getFields()->each(fn ($nestedField) => $fields->add($nestedField));
-            }
-        });
 
         $this->field = $fields
             ->onlyRelationFields()

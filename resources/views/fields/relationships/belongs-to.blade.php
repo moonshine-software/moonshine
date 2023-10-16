@@ -9,6 +9,6 @@
     :value="$element->value()"
     :values="$element->values()"
     :customProperties="$element->valuesWithProperties(onlyCustom: true)"
-    :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl($element->getFormName()) : null"
+    :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"
 >
 </x-moonshine::form.select>

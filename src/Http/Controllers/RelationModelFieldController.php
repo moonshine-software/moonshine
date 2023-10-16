@@ -29,7 +29,7 @@ class RelationModelFieldController extends MoonShineController
         $term = $request->get('query');
         $extra = $request->get('extra');
 
-        $field = $request->getComponentField();
+        $field = $request->getPageField();
 
         if (! $field instanceof HasAsyncSearch || empty($term)) {
             return response()->json();

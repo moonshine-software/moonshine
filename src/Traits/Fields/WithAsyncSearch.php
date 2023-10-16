@@ -107,7 +107,7 @@ trait WithAsyncSearch
         return $this->asyncSearchValueCallback;
     }
 
-    public function asyncSearchUrl(?string $formName = null): string
+    public function asyncSearchUrl(): string
     {
         if (! is_null($this->asyncUrl)) {
             return $this->asyncUrl;
@@ -115,19 +115,18 @@ trait WithAsyncSearch
 
         $resourceUri = moonshineRequest()->getResourceUri();
 
+        $parentName = null;
+
         if ($this->hasParent() && $this->parent() instanceof ModelRelationField) {
-            $formName = $this->parent()->getFormName() ?? 'crud';
-            $resourceUri = $this->parent()
-                ->getResource()
-                ->uriKey();
+            $parentName = $this->parent()->column() ?? null;
         }
 
         return to_relation_route(
             'search',
             resourceItem: request('resourceItem'),
-            component: $formName,
             relation: $this->getRelationName(),
-            resourceUri: $resourceUri
+            resourceUri: $resourceUri,
+            parentField: $parentName
         );
     }
 

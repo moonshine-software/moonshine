@@ -4,9 +4,7 @@ namespace MoonShine\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
-use MoonShine\Components\MoonshineComponent;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Decorations\Fragment;
 use MoonShine\Pages\Page;
 
 class MoonshineFormRequest extends FormRequest
@@ -48,12 +46,6 @@ class MoonshineFormRequest extends FormRequest
     public function getPage(): Page
     {
         return moonshineRequest()->getPage();
-    }
-
-    //TODO replace return after decoration refactoring
-    public function getPageComponent(string $name): null|MoonshineComponent|Fragment
-    {
-        return moonshineRequest()->getPageComponent($name);
     }
 
     public function redirectRoute(string $default): RedirectResponse

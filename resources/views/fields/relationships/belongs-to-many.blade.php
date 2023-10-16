@@ -23,12 +23,12 @@
             :value="$element->selectedKeys()"
             :values="$element->values()"
             :customProperties="$element->valuesWithProperties(onlyCustom: true)"
-            :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl($element->getFormName()) : null"
+            :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"
         >
         </x-moonshine::form.select>
     @else
         @if($element->isAsyncSearch())
-            <div x-data="asyncSearch('{{ $element->asyncSearchUrl($element->getFormName()) }}')">
+            <div x-data="asyncSearch('{{ $element->asyncSearchUrl() }}')">
                 <div class="dropdown">
                     <x-moonshine::form.input
                         x-model="query"

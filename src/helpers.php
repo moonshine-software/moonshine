@@ -65,13 +65,13 @@ if (! function_exists('to_relation_route')) {
     function to_relation_route(
         string $action,
         int|string|null $resourceItem = null,
-        ?string $component = null,
         ?string $relation = null,
         ?string $resourceUri = null,
         ?string $pageUri = null,
+        ?string $parentField = null,
     ): string {
         $data = [
-            '_component_name' => $component,
+            '_parent_field' => $parentField,
             '_relation' => $relation,
             'resourceItem' => $resourceItem,
         ];
