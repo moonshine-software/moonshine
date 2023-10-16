@@ -42,7 +42,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             return $this->field;
         }
 
-        $fields->each(function ($field) use($fields): void {
+        $fields->each(function ($field) use ($fields): void {
             if (! $field instanceof HasFields) {
                 return;
             }
