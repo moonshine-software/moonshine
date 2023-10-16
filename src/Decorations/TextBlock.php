@@ -6,7 +6,8 @@ namespace MoonShine\Decorations;
 
 use Closure;
 
-losure|string $label, string $text)
+/**
+ * @method static static make(Closure|string $label, string $text)
  */
 final class TextBlock extends Decoration
 {
@@ -24,3 +25,4 @@ final class TextBlock extends Decoration
         return $this->text;
     }
 }
+
