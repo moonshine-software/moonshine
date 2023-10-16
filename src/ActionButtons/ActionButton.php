@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\ActionButtons;
 
 use Closure;
+use MoonShine\Components\MoonshineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
-use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
@@ -16,12 +16,11 @@ use MoonShine\Traits\WithOffCanvas;
 /**
  * @method static static make(Closure|string $label, Closure|string $url = '', mixed $item = null)
  */
-class ActionButton extends AbstractAction implements ActionButtonContract
+class ActionButton extends MoonshineComponent implements ActionButtonContract
 {
     use WithLabel;
     use WithIcon;
     use WithOffCanvas;
-    use HasCanSee;
     use InDropdownOrLine;
     use WithModal;
 
@@ -33,6 +32,20 @@ class ActionButton extends AbstractAction implements ActionButtonContract
         protected mixed $item = null
     ) {
         $this->setLabel($label);
+    }
+
+    public function getView(): string
+    {
+        return parent::getView() === ''
+            ? 'moonshine::actions.default'
+            : parent::getView();
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            'action' => $this,
+        ];
     }
 
     public function blank(): self

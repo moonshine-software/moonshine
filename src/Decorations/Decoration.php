@@ -5,32 +5,21 @@ declare(strict_types=1);
 namespace MoonShine\Decorations;
 
 use Closure;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Traits\Conditionable;
-use Illuminate\Support\Traits\Macroable;
+use MoonShine\Components\MoonshineComponent;
 use MoonShine\Contracts\Decorations\FieldsDecoration;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithFields;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithUniqueId;
-use MoonShine\Traits\WithView;
 
 /**
  * @method static static make(Closure|string|array $labelOrFields = '', array $fields = [])
  */
-abstract class Decoration implements MoonShineRenderable, FieldsDecoration, HasFields
+abstract class Decoration extends MoonshineComponent implements FieldsDecoration, HasFields
 {
-    use Makeable;
-    use Macroable;
-    use WithView;
     use WithLabel;
     use WithFields;
     use WithUniqueId;
-    use WithComponentAttributes;
-    use Conditionable;
 
     public function __construct(
         Closure|string|array $labelOrFields = '',
@@ -45,15 +34,10 @@ abstract class Decoration implements MoonShineRenderable, FieldsDecoration, HasF
         $this->fields($fields);
     }
 
-    public function render(): View|Closure|string
+    protected function viewData(): array
     {
-        return view($this->getView(), [
+        return [
             'element' => $this,
-        ]);
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->render();
+        ];
     }
 }

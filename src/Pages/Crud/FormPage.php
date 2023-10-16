@@ -135,7 +135,7 @@ class FormPage extends Page
                     )
                     ->name('crud')
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
-            ])->withName('crud-form'),
+            ])->name('crud-form'),
         ];
     }
 
@@ -162,7 +162,7 @@ class FormPage extends Page
                         $item?->attributesToArray() ?? [],
                         $item
                     ),
-                ])->withName($field->getRelationName());
+                ])->name($field->getRelationName());
             }
         }
 

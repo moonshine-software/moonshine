@@ -6,7 +6,7 @@
         class="box-shadow zoom-in h-full p-0"
     >
         <x-moonshine::metrics.value
-            :attributes="$element->attributes()"
+            :attributes="$attributes"
             :title="$element->label()"
             :icon="$element->getIcon(6, 'secondary')"
             :progress="$element->isProgress()"

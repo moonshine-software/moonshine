@@ -12,6 +12,7 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithView;
 use Throwable;
@@ -22,6 +23,7 @@ abstract class MoonshineComponent extends Component implements MoonShineRenderab
     use Macroable;
     use Makeable;
     use WithView;
+    use HasCanSee;
 
     protected ?string $name = null;
 
@@ -48,6 +50,11 @@ abstract class MoonshineComponent extends Component implements MoonShineRenderab
         return $this;
     }
 
+    public function attributes(): ComponentAttributeBag
+    {
+        return $this->attributes ?: $this->newAttributeBag();
+    }
+
     protected function viewData(): array
     {
         return [];
@@ -60,7 +67,7 @@ abstract class MoonshineComponent extends Component implements MoonShineRenderab
         return view(
             $this->getView(),
             [
-                'attributes' => $this->attributes ?: $this->newAttributeBag(),
+                'attributes' => $this->attributes(),
                 'name' => $this->getName(),
             ] + $data
         );

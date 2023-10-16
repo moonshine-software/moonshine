@@ -1,5 +1,5 @@
 <x-moonshine::box
-    :attributes="$element->attributes()"
+    :attributes="$attributes"
     :title="$element->label()"
 >
     <x-moonshine::fields-group

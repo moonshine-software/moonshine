@@ -1,7 +1,7 @@
 <x-moonshine::collapse :show="$element->isShow()"
                        :title="$element->label()"
                        :persist="true"
-                       :attributes="$element->attributes()"
+                       :attributes="$attributes"
 >
     <x-moonshine::fields-group
         :components="$element->getFields()"

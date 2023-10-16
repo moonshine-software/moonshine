@@ -86,4 +86,17 @@ final class PageComponents extends MoonShineRenderElements
             $default
         );
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function findByName(
+        string $name,
+        MoonshineComponent $default = null
+    ): ?MoonshineComponent {
+        return $this->onlyComponents()->first(
+            static fn (MoonshineComponent $component): bool => $component->getName() === $name,
+            $default
+        );
+    }
 }

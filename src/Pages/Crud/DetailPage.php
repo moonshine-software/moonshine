@@ -83,7 +83,7 @@ class DetailPage extends Page
                                 'width' => '20%',
                             ])
                         )),
-                ])->withName('crud-show-table'),
+                ])->name('crud-show-table'),
 
                 Divider::make(),
 

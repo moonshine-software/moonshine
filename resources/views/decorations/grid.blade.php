@@ -1,4 +1,4 @@
-<x-moonshine::grid :attributes="$element->attributes()">
+<x-moonshine::grid :attributes="$attributes">
     <x-moonshine::fields-group
         :components="$element->getFields()"
         :container="true"

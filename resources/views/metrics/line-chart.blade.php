@@ -4,7 +4,7 @@
 >
     <x-moonshine::box class="grow">
         <x-moonshine::metrics.line
-            :attributes="$element->attributes()->merge(['id' => $element->id()])"
+            :attributes="$attributes->merge(['id' => $element->id()])"
             :lines="$element->lines()"
             :colors="$element->colors()"
             :labels="$element->labels()"

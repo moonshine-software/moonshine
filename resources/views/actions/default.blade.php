@@ -3,7 +3,7 @@
         title="{{ $action->offCanvas()->title($action) }}"
         :left="$action->offCanvas()->isLeft()"
     >
-        <x-slot:toggler :class="$action->attributes()->get('class')">
+        <x-slot:toggler :class="$attributes->get('class')">
             <x-moonshine::icon
                 :icon="$action->iconValue()"
                 size="6"
@@ -34,7 +34,7 @@
 
         <x-slot name="outerHtml">
             <x-moonshine::link
-                :attributes="$action->attributes()"
+                :attributes="$attributes"
                 :icon="$action->iconValue()"
             >
                 {{ $action->label() }}
@@ -44,7 +44,7 @@
     </x-moonshine::modal>
 @else
     <x-dynamic-component
-            :attributes="$action->attributes()"
+            :attributes="$attributes"
             :component="'moonshine::' . ($action->inDropdown() ? 'link-native' : 'link')"
             @class(['p-2' => $action->inDropdown()])
             :href="$action->url()"

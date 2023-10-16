@@ -7,6 +7,7 @@ namespace MoonShine\Traits;
 trait WithView
 {
     protected string $view = '';
+
     protected ?string $customView = null;
 
     public function getView(): string

@@ -1,10 +1,1 @@
-- [x] Dashboard to Decorations
-- [x] Decorations with PageComponents
-- [x] Use BladeComponents, Livewire components in PageComponents
-- [x] TableBuilder BulkActions (Perhaps ItemAction with method bulk)
-- [x] PageComponents: Actions, QueryTags
-- [x] Rename Renderable
-- [x] Modal and offcanvas decoration
-- [x] Actions with offcanvas mode
-- [x] Decorations with html attributes
-- [x] Field RangeField
+- [ ] Infinite menu items

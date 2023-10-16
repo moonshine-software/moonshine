@@ -1,4 +1,4 @@
-<div {{ $element->attributes()
+<div {{ $attributes
         ->class([
             'my-4',
         ])

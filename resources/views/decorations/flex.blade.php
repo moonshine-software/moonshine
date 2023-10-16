@@ -1,5 +1,5 @@
 <div
-    {{ $element->attributes()
+    {{ $attributes
         ->class([
             'sm:flex',
             'gap-4' => !$element->isWithoutSpace(),

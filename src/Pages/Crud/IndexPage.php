@@ -173,7 +173,7 @@ class IndexPage extends Page
                         DeleteButton::for($this->getResource()),
                         MassDeleteButton::for($this->getResource()),
                     ]),
-            ])->withName('crud-table'),
+            ])->name('crud-table'),
         ];
     }
 }
