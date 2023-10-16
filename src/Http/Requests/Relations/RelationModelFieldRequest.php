@@ -42,18 +42,6 @@ class RelationModelFieldRequest extends MoonshineFormRequest
             return $this->field;
         }
 
-        foreach ($fields as $field) {
-            if (! $field instanceof HasFields) {
-                continue;
-            }
-
-            $field->preparedFields();
-
-            if ($field->hasFields()) {
-                $field->getFields()->each(fn ($nestedField) => $fields->add($nestedField));
-            }
-        }
-
         $this->field = $fields
             ->onlyRelationFields()
             ->findByRelation($this->getRelationName());
