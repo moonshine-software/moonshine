@@ -8,7 +8,7 @@ use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\MoonshineComponent;
 use MoonShine\Components\TableBuilder;
-use MoonShine\Decorations\Fragment;
+use MoonShine\Fields\Fields;
 use Throwable;
 
 /**
@@ -52,37 +52,13 @@ final class PageComponents extends MoonShineRenderElements
         return self::make($data);
     }
 
-    // TODO remove after decoration refactoring
-    public function onlyFragments(): self
+    public function onlyFields(): Fields
     {
         $data = [];
 
-        $this->extractFragments($this->toArray(), $data);
+        $this->extractFields($this->toArray(), $data);
 
-        return self::make($data);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    //TODO replace return after decoration refactoring
-    public function findByName(
-        string $name,
-        MoonshineComponent $default = null
-    ): null|MoonshineComponent|Fragment {
-        $component = $this->onlyComponents()->first(
-            static fn (MoonshineComponent $component): bool => $component->getName() === $name,
-            $default
-        );
-
-        if ($component) {
-            return $component;
-        }
-
-        return $this->onlyFragments()->first(
-            static fn (Fragment $fragment): bool => $fragment->getName() === $name,
-            $default
-        );
+        return Fields::make($data);
     }
 
     /**

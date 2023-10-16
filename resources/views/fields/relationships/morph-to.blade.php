@@ -20,7 +20,7 @@
             x-bind:data-async-extra="morphType"
             :value="$element->value()"
             :values="$element->values()"
-            :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl($element->getFormName()) : null"
+            :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"
         >
         </x-moonshine::form.select>
     </div>

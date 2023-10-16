@@ -11,6 +11,7 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\Decoration;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Tabs;
+use MoonShine\Fields\Field;
 use Throwable;
 
 /**
@@ -36,6 +37,23 @@ abstract class MoonShineRenderElements extends Collection
             } elseif ($element instanceof Decoration) {
                 $this->extractOnly($element->getFields(), $type, $data);
             } elseif ($element instanceof $type) {
+                $data[] = $element;
+            }
+        }
+    }
+
+    protected function extractFields($elements, array &$data): void
+    {
+        foreach ($elements as $element) {
+            if ($element instanceof Tabs) {
+                foreach ($element->tabs() as $tab) {
+                    $this->extractFields($tab->getFields(), $data);
+                }
+            } elseif ($element instanceof Field && $element instanceof HasFields) {
+                $data[] = $element;
+            } elseif ($element instanceof HasFields) {
+                $this->extractFields($element->getFields(), $data);
+            } elseif ($element instanceof Field) {
                 $data[] = $element;
             }
         }

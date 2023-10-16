@@ -5,6 +5,7 @@ namespace MoonShine\Buttons\HasOneOrManyFields;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
 use Throwable;
@@ -26,6 +27,8 @@ final class HasManyCreateButton
         $fields = $field->hasFields()
             ? $field->getFields()->formFields()
             : $resource->getFormFields();
+
+        $fields->onlyFields()->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
 
         return ActionButton::make(__('moonshine::ui.add'), url: $action)
             ->primary()

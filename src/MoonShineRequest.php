@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Illuminate\Http\Request;
-use MoonShine\Components\MoonshineComponent;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Decorations\Fragment;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Pages\Page;
-use Throwable;
 
 class MoonShineRequest extends Request
 {
@@ -57,17 +54,6 @@ class MoonShineRequest extends Request
         }
 
         return $this->page;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    //TODO replace return after decoration refactoring
-    public function getPageComponent(string $name): null|MoonshineComponent|Fragment
-    {
-        return $this->getPage()
-            ->getComponents()
-            ->findByName($name);
     }
 
     public function getResourceUri(): ?string
