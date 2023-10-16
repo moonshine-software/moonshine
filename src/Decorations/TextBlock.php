@@ -25,4 +25,3 @@ final class TextBlock extends Decoration
         return $this->text;
     }
 }
-
