@@ -4,8 +4,6 @@
     'paginator',
     'elements' => []
 ])
-
-
 @if($simple)
     <ul class="pagination-list simple">
         {{-- Previous Page Link --}}

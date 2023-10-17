@@ -6,7 +6,6 @@
     <x-moonshine::form.input
         type="hidden"
         :name="$attributes->get('name')"
-        :attributes="$attributes->except(['class', 'id', 'type', 'checked', 'value'])"
         value="{{ $offValue }}"
     />
 
