@@ -25,18 +25,16 @@ abstract class MoonshineComponent extends Component implements MoonShineRenderab
     use WithView;
     use HasCanSee;
 
-    protected ?string $name = null;
-
     public function name(string $name): static
     {
-        $this->name = $name;
+        $this->componentName = $name;
 
         return $this;
     }
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->componentName;
     }
 
     public function customAttributes(array $attributes): static

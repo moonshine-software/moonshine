@@ -152,9 +152,15 @@ class IndexPage extends Page
      */
     protected function table(): array
     {
+        $items = $this->getResource()->paginate();
+
+        if($this->getResource()->isAsync()) {
+            $items->setPath(tableAsyncRoute());
+        }
+
         return [
             Fragment::make([
-                TableBuilder::make(items: $this->getResource()->paginate())
+                TableBuilder::make(items: $items)
                     ->fields($this->getResource()->getIndexFields())
                     ->cast($this->getResource()->getModelCast())
                     ->withNotFound()
@@ -166,13 +172,23 @@ class IndexPage extends Page
                         ! is_null($this->getResource()->tdAttributes()),
                         fn (TableBuilder $table): TableBuilder => $table->tdAttributes($this->getResource()->tdAttributes())
                     )
+                    ->when($this->getResource()->isAsync(), function(TableBuilder $table) {
+                        $table->async(tableAsyncRoute())
+                            ->customAttributes([
+                                '@update-relation.window' => 'asyncRequest',
+                            ]);
+                    })
+                    ->when(
+                        $this->getResource()->isSimplePaginate(),
+                        fn(TableBuilder $table) => $table->simple()
+                    )
                     ->buttons([
                         ...$this->getResource()->getIndexButtons(),
                         DetailButton::forMode($this->getResource()),
                         FormButton::forMode($this->getResource()),
                         DeleteButton::for($this->getResource()),
                         MassDeleteButton::for($this->getResource()),
-                    ]),
+                    ])->withName('index-table'),
             ])->name('crud-table'),
         ];
     }

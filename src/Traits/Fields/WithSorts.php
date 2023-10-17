@@ -42,7 +42,11 @@ trait WithSorts
             return request()->fullUrlWithQuery($sortData);
         }
 
-        return $url . '?' . Arr::query($sortData);
+        $urlParse = parse_url($url);
+
+        $separator = empty($urlParse['query']) ? '?' : '&';
+
+        return $url . $separator . Arr::query($sortData);
     }
 
     public function sortActive(): bool

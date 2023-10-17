@@ -201,6 +201,18 @@ if (! function_exists('is_selected_option')) {
     }
 }
 
+if (! function_exists('tableAsyncRoute')) {
+    function tableAsyncRoute(string $componentName = 'index-table'): string
+    {
+        return route('moonshine.async.table', [
+            'pageUri'         => moonshineRequest()->getPageUri(),
+            'resourceUri'     => moonshineRequest()->getResourceUri(),
+            '_component_name' => $componentName,
+            'filters' => moonshineRequest()->get('filters')
+        ]);
+    }
+}
+
 if (! function_exists('oops404')) {
     function oops404(): never
     {

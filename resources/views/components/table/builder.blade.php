@@ -27,6 +27,7 @@
         <div class="flex items-center gap-2">
             <form action="{{ $asyncUrl }}"
                   @submit.prevent="asyncRequest"
+                  @async-table.window = "asyncRequest"
                   data-name="{{ $name }}"
             >
                 <x-moonshine::form.input

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use MoonShine\Http\Controllers\AsyncController;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
@@ -59,6 +60,8 @@ Route::prefix(config('moonshine.route.prefix', ''))
                     Route::get('/', 'readAll')->name('readAll');
                     Route::get('/{notification}', 'read')->name('read');
                 });
+
+            Route::get('/async/{pageUri}/{resourceUri}', [AsyncController::class, 'table'])->name('async.table');
         });
 
         if (config('moonshine.auth.enable', true)) {

@@ -97,6 +97,16 @@ export default () => ({
     return false
   },
 
+  asyncFilters(form) {
+    this.$el.closest('.offcanvas-template').querySelector('#async-reset-button').removeAttribute('style')
+
+    const queryString = new URLSearchParams(new FormData(form)).toString()
+
+    this.$dispatch('async-table', {filters: queryString})
+
+    this.$el.closest('.offcanvas-template').querySelector('.btn-close').click()
+  },
+
   onChangeField(event) {
     this.showWhenChange(
       event.target.getAttribute('name'),

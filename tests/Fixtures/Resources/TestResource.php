@@ -210,4 +210,9 @@ class TestResource extends ModelResource
     {
         return $this->testTdAttributes ?? parent::tdAttributes();
     }
+
+    public function setSimplePaginate(): void
+    {
+        $this->simplePaginate = true;
+    }
 }
