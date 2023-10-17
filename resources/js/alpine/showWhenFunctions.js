@@ -105,6 +105,9 @@ export function showWhenVisibilityChange(fieldName, inputs, field, formId) {
 }
 
 export function inputFieldName(inputName) {
+  if(inputName === null) {
+    return ''
+  }
   inputName = inputName.replace('[]', '')
   if (inputName.indexOf('slide[') !== -1) {
     inputName = inputName.replace('slide[', '').replace(']', '')

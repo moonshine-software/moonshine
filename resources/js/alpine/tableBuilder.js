@@ -130,6 +130,18 @@ export default (
       url = url + separator + '_relation=' + (this.table?.dataset?.name ?? 'crud-table')
     }
 
+    if(event.detail && event.detail.filters) {
+      const urlWithFilters = new URL(url)
+
+      if(urlWithFilters.searchParams.get('filters')) {
+        urlWithFilters.searchParams.delete('filters')
+      }
+
+      let separator = resultUrl.searchParams.size ? '&' : '?'
+
+      url = urlWithFilters.toString() + separator + event.detail.filters
+    }
+
     axios
       .get(url)
       .then(response => {

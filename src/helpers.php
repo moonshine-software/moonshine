@@ -207,7 +207,8 @@ if (! function_exists('tableAsyncRoute')) {
         return route('moonshine.async.table', [
             'pageUri'         => moonshineRequest()->getPageUri(),
             'resourceUri'     => moonshineRequest()->getResourceUri(),
-            '_component_name' => $componentName
+            '_component_name' => $componentName,
+            'filters' => moonshineRequest()->get('filters')
         ]);
     }
 }

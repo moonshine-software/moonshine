@@ -18,8 +18,9 @@ final class FiltersForm
         $filters = $resource->getFilters();
         $filters->fill($values, $resource->getModel());
 
-        return FormBuilder::make($resource->currentRoute(), 'GET')
-            ->name('filters-form')
+        $action = $resource->isAsync() ? '#' : $resource->currentRoute();
+
+        return FormBuilder::make($action, 'GET')
             ->fillCast($values, $resource->getModelCast())
             ->fields(
                 $filters
@@ -36,6 +37,25 @@ final class FiltersForm
                     )
                     ->toArray()
             )
+            ->when($resource->isAsync(), function(FormBuilder $form) use($resource) {
+                $form->customAttributes([
+                    'x-on:submit.prevent' => 'asyncFilters($event.target)',
+                ]);
+
+                $form->buttons([
+                    ActionButton::make(
+                        __('moonshine::ui.reset'),
+                        $resource->currentRoute(query: ['reset' => true])
+                    )
+                        ->secondary()
+                        ->showInLine()
+                        ->customAttributes([
+                            'id' => 'async-reset-button',
+                            'style' => 'display: none',
+                        ])
+                    ,
+                ]);
+            })
             ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
                 request('filters'),
@@ -45,6 +65,7 @@ final class FiltersForm
                         $resource->currentRoute(query: ['reset' => true])
                     )->secondary()->showInLine(),
                 ])
-            );
+            )
+            ;
     }
 }
