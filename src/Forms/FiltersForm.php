@@ -37,7 +37,7 @@ final class FiltersForm
                     )
                     ->toArray()
             )
-            ->when($resource->isAsync(), function(FormBuilder $form) use($resource) {
+            ->when($resource->isAsync(), function(FormBuilder $form) use($resource): void {
                 $form->customAttributes([
                     'x-on:submit.prevent' => 'asyncFilters($event.target)',
                 ]);
