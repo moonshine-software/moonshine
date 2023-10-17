@@ -119,7 +119,7 @@ trait ResourceModelQuery
     {
         return $this->resolveQuery()
             ->when(
-                $this->simplePaginate,
+                $this->isSimplePaginate(),
                 fn (Builder $query): Paginator => $query->simplePaginate(
                     $this->itemsPerPage
                 ),
@@ -130,6 +130,10 @@ trait ResourceModelQuery
             ->appends(request()->except('page'));
     }
 
+    public function isSimplePaginate(): bool
+    {
+        return $this->simplePaginate;
+    }
     /**
      * @throws Throwable
      */
@@ -287,7 +291,7 @@ trait ResourceModelQuery
 
         return tap(
             is_array($params) ? $params : [],
-            fn () => request()->merge($params)
+            fn () => request()->merge(isset($params['filters']) ? $params : ['filters' => $params])
         );
     }
 

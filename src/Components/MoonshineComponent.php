@@ -36,7 +36,7 @@ abstract class MoonshineComponent extends Component implements MoonShineRenderab
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->name ?? $this->componentName;
     }
 
     public function customAttributes(array $attributes): static
