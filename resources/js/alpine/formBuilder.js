@@ -98,7 +98,10 @@ export default () => ({
   },
 
   asyncFilters(form) {
-    this.$el.closest('.offcanvas-template').querySelector('#async-reset-button').removeAttribute('style')
+    this.$el
+      .closest('.offcanvas-template')
+      .querySelector('#async-reset-button')
+      .removeAttribute('style')
 
     const queryString = new URLSearchParams(new FormData(form)).toString()
 

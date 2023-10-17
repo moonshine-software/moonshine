@@ -130,10 +130,10 @@ export default (
       url = url + separator + '_relation=' + (this.table?.dataset?.name ?? 'crud-table')
     }
 
-    if(event.detail && event.detail.filters) {
+    if (event.detail && event.detail.filters) {
       const urlWithFilters = new URL(url)
 
-      if(urlWithFilters.searchParams.get('filters')) {
+      if (urlWithFilters.searchParams.get('filters')) {
         urlWithFilters.searchParams.delete('filters')
       }
 

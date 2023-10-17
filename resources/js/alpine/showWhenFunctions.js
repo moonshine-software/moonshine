@@ -105,7 +105,7 @@ export function showWhenVisibilityChange(fieldName, inputs, field, formId) {
 }
 
 export function inputFieldName(inputName) {
-  if(inputName === null) {
+  if (inputName === null) {
     return ''
   }
   inputName = inputName.replace('[]', '')
