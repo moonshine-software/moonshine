@@ -47,6 +47,19 @@ it('fields on index', function () {
     ;
 });
 
+it('simple pagination on index', function () {
+    $this->resource->setSimplePaginate();
+
+    asAdmin()->get(
+        to_page(page: IndexPage::class, resource: $this->resource)
+    )
+        ->assertOk()
+        ->assertSee('table')
+        ->assertSee('Next')
+        ->assertSee('Previous')
+    ;
+});
+
 it('fields on form', function () {
     asAdmin()->get(
         to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => 12])
