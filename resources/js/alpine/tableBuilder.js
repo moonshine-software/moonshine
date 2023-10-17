@@ -147,11 +147,7 @@ export default (
       .then(response => {
         const query = url.slice(url.indexOf('?') + 1)
 
-        history.pushState(
-          {},
-          "",
-          query ? "?" + query : location.pathname
-        )
+        history.pushState({}, '', query ? '?' + query : location.pathname)
 
         this.$root.outerHTML = response.data
       })
