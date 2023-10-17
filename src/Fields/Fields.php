@@ -10,7 +10,7 @@ use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
 /**
- * @extends FormElements<int|string, Field>
+ * @extends FormElements<int, Field>
  */
 final class Fields extends FormElements
 {

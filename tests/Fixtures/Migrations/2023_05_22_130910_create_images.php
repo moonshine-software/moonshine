@@ -13,9 +13,7 @@ return new class () extends Migration {
         Schema::create('images', static function (Blueprint $table): void {
             $table->id();
 
-            $table->bigInteger('imageable_id');
-
-            $table->string('imageable_type');
+            $table->morphs('imageable');
 
             $table->text('name')->nullable();
 

@@ -7,26 +7,28 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
-use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Fields\Relationships\MorphTo;
+use MoonShine\Tests\Fixtures\Models\Category;
+use MoonShine\Tests\Fixtures\Models\ImageModel;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 
 uses()->group('model-relation-fields');
-uses()->group('belongs-to-field');
 
 beforeEach(function (): void {
+    $this->item = Item::factory()->createOne();
+    $this->image = ImageModel::create([
+        'imageable_id' => $this->item->getKey(),
+        'imageable_type' => Item::class,
+    ]);
 
-    $this->user = MoonshineUser::factory()
-        ->count(5)
-        ->create();
-
-    $this->item = Item::factory()
-        ->create();
-
-    $this->field = BelongsTo::make('User', resource: new MoonShineUserResource());
-
+    $this->field = MorphTo::make('Imageable', resource: new TestImageResource())
+        ->resolveFill($this->item->toArray(), $this->item)
+        ->types([
+            Item::class => 'name',
+            Category::class => 'name',
+        ]);
 });
 
 describe('common field methods', function () {
@@ -58,6 +60,21 @@ describe('unique field methods', function () {
             ->asyncSearchColumn()
             ->toBe('name');
     });
+
+    it('types', function (): void {
+        expect($this->field)
+            ->getSearchColumn(Item::class)
+            ->toBe('name')
+            ->getTypes()
+            ->toBe([
+                Item::class => 'Item',
+                Category::class => 'Category',
+            ])
+            ->getMorphType()
+            ->toBe('imageable_type')
+            ->getMorphKey()
+            ->toBe('imageable_id');
+    });
 });
 
 describe('basic methods', function () {
@@ -68,8 +85,8 @@ describe('basic methods', function () {
     });
 
     it('formatted value', function () {
-        $field = BelongsTo::make('User', formatted: static fn () => ['changed'], resource: new MoonShineUserResource())
-            ->fill($this->item->toArray(), $this->item);
+        $field = MorphTo::make('Imageable', formatted: static fn () => ['changed'], resource: new TestImageResource())
+            ->resolveFill($this->item->toArray(), $this->item);
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);

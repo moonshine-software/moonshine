@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\Decoration;
-use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Field;
 use Throwable;
@@ -42,6 +41,9 @@ abstract class MoonShineRenderElements extends Collection
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function extractFields($elements, array &$data): void
     {
         foreach ($elements as $element) {
@@ -54,23 +56,6 @@ abstract class MoonShineRenderElements extends Collection
             } elseif ($element instanceof HasFields) {
                 $this->extractFields($element->getFields(), $data);
             } elseif ($element instanceof Field) {
-                $data[] = $element;
-            }
-        }
-    }
-
-    /**
-     * @throws Throwable
-     */
-    // TODO remove after decoration refactoring
-    protected function extractFragments($elements, array &$data): void
-    {
-        foreach ($elements as $element) {
-            if ($element instanceof Tabs) {
-                foreach ($element->tabs() as $tab) {
-                    $this->extractFragments($tab->getFields(), $data);
-                }
-            } elseif ($element instanceof Fragment) {
                 $data[] = $element;
             }
         }

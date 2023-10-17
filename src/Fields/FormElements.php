@@ -16,7 +16,7 @@ use ReflectionException;
 use Throwable;
 
 /**
- * @extends MoonShineRenderElements<int|string, Field|Decoration>
+ * @extends MoonShineRenderElements<int, Field|Decoration>
  */
 abstract class FormElements extends MoonShineRenderElements
 {

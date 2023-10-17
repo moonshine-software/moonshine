@@ -92,7 +92,7 @@ class MoonShine
     /**
      * Get collection of registered resources
      *
-     * @return Collection<int|string, ResourceContract>
+     * @return Collection<int, ResourceContract>
      */
     public static function getResources(): Collection
     {
@@ -120,7 +120,7 @@ class MoonShine
     /**
      * Get collection of registered menu
      *
-     * @return Collection<int|string, MenuElement>
+     * @return Collection<int, MenuElement>
      */
     public static function getMenu(): Collection
     {

@@ -12,7 +12,7 @@ use MoonShine\Fields\Fields;
 use Throwable;
 
 /**
- * @extends MoonShineRenderElements<int|string, MoonShineComponent>
+ * @extends MoonShineRenderElements<int, MoonShineComponent>
  */
 final class PageComponents extends MoonShineRenderElements
 {

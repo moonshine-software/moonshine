@@ -52,6 +52,27 @@ class MorphTo extends BelongsTo
         return $this;
     }
 
+    public function getTypes(): array
+    {
+        if ($this->types === []) {
+            throw new FieldException('Morph types is required');
+        }
+
+        return $this->types;
+    }
+
+    public function getMorphType(): string
+    {
+        return $this->getRelation()
+            ->getMorphType();
+    }
+
+    public function getMorphKey(): string
+    {
+        return $this->getRelation()
+            ->getForeignKeyName();
+    }
+
     protected function resolveOnApply(): ?Closure
     {
         return function (Model $item): Model {
@@ -60,12 +81,6 @@ class MorphTo extends BelongsTo
 
             return $item;
         };
-    }
-
-    public function getMorphType(): string
-    {
-        return $this->getRelation()
-            ->getMorphType();
     }
 
     public function requestTypeValue(): string
@@ -79,34 +94,19 @@ class MorphTo extends BelongsTo
         );
     }
 
-    public function getTypes(): array
-    {
-        if($this->types === []) {
-            throw new FieldException('Morph types is required');
-        }
-
-        return $this->types;
-    }
-
-    public function getMorphKey(): string
-    {
-        return $this->getRelation()
-            ->getForeignKeyName();
-    }
-
     public function values(): array
     {
         $item = $this->getRelatedModel();
 
-        if ($item instanceof Model && ! $item->getKey()) {
+        if (empty(data_get($item, $this->getMorphKey()))) {
             return [];
         }
 
-        if(is_null($item)) {
+        if (is_null($item)) {
             return [];
         }
 
-        if(is_null($this->formattedValueCallback())) {
+        if (is_null($this->formattedValueCallback())) {
             $this->setFormattedValueCallback(
                 fn ($v) => $v->{$this->getSearchColumn($v::class)}
             );
@@ -123,7 +123,7 @@ class MorphTo extends BelongsTo
             return '';
         }
 
-        if(is_null($item)) {
+        if (is_null($item)) {
             return '';
         }
 
