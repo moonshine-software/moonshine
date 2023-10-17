@@ -1,4 +1,8 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -99,15 +103,18 @@ export default () => ({
 
   asyncFilters(form) {
     this.$el
-      .closest('.offcanvas-template')
-      .querySelector('#async-reset-button')
-      .removeAttribute('style')
+      ?.closest('.offcanvas-template')
+      ?.querySelector('#async-reset-button')
+      ?.removeAttribute('style')
 
     const queryString = new URLSearchParams(new FormData(form)).toString()
 
     this.$dispatch('async-table', {filters: queryString})
 
-    this.$el.closest('.offcanvas-template').querySelector('.btn-close').click()
+    this.$el
+      ?.closest('.offcanvas-template')
+      ?.querySelector('.btn-close')
+      ?.click()
   },
 
   onChangeField(event) {
