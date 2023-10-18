@@ -16,7 +16,7 @@ use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Table\TableStates;
 
 /**
- * @method static static make(Fields|array $fields = [], iterable $items = [], ?Paginator $paginator = null)
+ * @method static static make(Fields|array $fields = [], Paginator|iterable $items = [], ?Paginator $paginator = null)
  */
 final class TableBuilder extends IterableComponent implements TableContract
 {
@@ -40,7 +40,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function __construct(
         Fields|array $fields = [],
-        iterable $items = [],
+        Paginator|iterable $items = [],
         ?Paginator $paginator = null
     ) {
         $this->fields($fields);
@@ -104,6 +104,11 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function viewData(): array
     {
+        if($this->isAsync() && $this->hasPaginator()) {
+            $this->getPaginator()
+                ?->setPath($this->asyncUrl());
+        }
+
         return [
             'rows' => $this->rows(),
             'fields' => $this->getFields(),

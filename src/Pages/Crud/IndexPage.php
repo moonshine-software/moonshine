@@ -152,25 +152,23 @@ class IndexPage extends Page
      */
     protected function table(): array
     {
-        $items = $this->getResource()->paginate();
-
-        if($this->getResource()->isAsync()) {
-            $items->setPath(tableAsyncRoute());
-        }
-
         return [
             Fragment::make([
-                TableBuilder::make(items: $items)
+                TableBuilder::make(items: $this->getResource()->paginate())
                     ->fields($this->getResource()->getIndexFields())
                     ->cast($this->getResource()->getModelCast())
                     ->withNotFound()
                     ->when(
                         ! is_null($this->getResource()->trAttributes()),
-                        fn (TableBuilder $table): TableBuilder => $table->trAttributes($this->getResource()->trAttributes())
+                        fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                            $this->getResource()->trAttributes()
+                        )
                     )
                     ->when(
                         ! is_null($this->getResource()->tdAttributes()),
-                        fn (TableBuilder $table): TableBuilder => $table->tdAttributes($this->getResource()->tdAttributes())
+                        fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                            $this->getResource()->tdAttributes()
+                        )
                     )
                     ->when($this->getResource()->isAsync(), function(TableBuilder $table): void {
                         $table->async(tableAsyncRoute())
@@ -188,7 +186,7 @@ class IndexPage extends Page
                         FormButton::forMode($this->getResource()),
                         DeleteButton::for($this->getResource()),
                         MassDeleteButton::for($this->getResource()),
-                    ])->withName('index-table'),
+                    ])->name('index-table'),
             ])->name('crud-table'),
         ];
     }
