@@ -205,10 +205,10 @@ if (! function_exists('tableAsyncRoute')) {
     function tableAsyncRoute(string $componentName = 'index-table'): string
     {
         return route('moonshine.async.table', [
-            'pageUri'         => moonshineRequest()->getPageUri(),
-            'resourceUri'     => moonshineRequest()->getResourceUri(),
+            'pageUri' => moonshineRequest()->getPageUri(),
+            'resourceUri' => moonshineRequest()->getResourceUri(),
             '_component_name' => $componentName,
-            'filters' => moonshineRequest()->get('filters')
+            'filters' => moonshineRequest()->get('filters'),
         ]);
     }
 }

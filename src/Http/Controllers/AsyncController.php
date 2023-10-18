@@ -2,8 +2,8 @@
 
 namespace MoonShine\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
 use Closure;
+use Illuminate\Contracts\View\View;
 use MoonShine\MoonShineRequest;
 use Throwable;
 

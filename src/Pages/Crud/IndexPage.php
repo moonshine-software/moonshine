@@ -170,7 +170,7 @@ class IndexPage extends Page
                             $this->getResource()->tdAttributes()
                         )
                     )
-                    ->when($this->getResource()->isAsync(), function(TableBuilder $table): void {
+                    ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
                         $table->async(tableAsyncRoute())
                             ->customAttributes([
                                 '@update-relation.window' => 'asyncRequest',
@@ -178,7 +178,7 @@ class IndexPage extends Page
                     })
                     ->when(
                         $this->getResource()->isSimplePaginate(),
-                        fn(TableBuilder $table): TableBuilder => $table->simple()
+                        fn (TableBuilder $table): TableBuilder => $table->simple()
                     )
                     ->buttons([
                         ...$this->getResource()->getIndexButtons(),
