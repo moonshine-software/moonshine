@@ -14,7 +14,7 @@
         <table {{ $attributes
                 ->merge(['class' => 'table' . (!$simple ? '-list' : '')])
         }} x-id="['table-component']" :id="$id('table-component')">
-            <thead {{ isset($thead) ? $thead?->attributes : '' }}>
+            <thead {{ $thead->attributes ?? '' }}>
             <tr>
                 @if(is_array($columns))
                     @foreach($columns as $name => $label)
@@ -27,7 +27,7 @@
                 {{ $thead ?? '' }}
             </tr>
             </thead>
-            <tbody  {{ $tbody?->attributes ?? '' }}>
+            <tbody  {{ $tbody->attributes ?? '' }}>
             @if(is_iterable($values))
                 @foreach($values as $index => $data)
                     <tr>
