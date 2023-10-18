@@ -9,6 +9,12 @@
   }
 
   /* Themes */
+  &-primary {
+    @apply bg-primary text-white dark:bg-primary dark:text-white;
+  }
+  &-secondary {
+    @apply bg-secondary text-white dark:bg-secondary dark:text-white;
+  }
   &-info {
     @apply bg-info-bg text-info-text dark:bg-info-bg dark:text-info-text;
   }
