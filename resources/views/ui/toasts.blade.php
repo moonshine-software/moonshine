@@ -14,6 +14,8 @@
             @click="remove(toast.id)"
             class="toast-item"
             :class="{
+                    'toast-primary': toast.type === 'primary',
+                    'toast-secondary': toast.type === 'secondary',
                     'toast-success': toast.type === 'success',
                     'toast-info': toast.type === 'info',
                     'toast-warning': toast.type === 'warning',
