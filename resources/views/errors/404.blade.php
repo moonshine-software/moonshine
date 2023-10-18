@@ -23,7 +23,7 @@
             </div>
 
             <div class="mt-8">
-                <a href="{{ route(config('moonshine.route.index_route', 'moonshine.index')) }}"
+                <a href="{{ route('moonshine.index') }}"
                    class="btn btn-primary"
                    rel="home">
                     Back to Home

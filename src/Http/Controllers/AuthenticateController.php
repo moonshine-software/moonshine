@@ -16,9 +16,7 @@ class AuthenticateController extends MoonShineController
     public function login(): View|RedirectResponse
     {
         if ($this->auth()->check()) {
-            return to_route(
-                config('moonshine.route.index_route', 'moonshine.index')
-            );
+            return to_route('moonshine.index');
         }
 
         $form = config('moonshine.forms.login', LoginForm::class);
@@ -35,8 +33,7 @@ class AuthenticateController extends MoonShineController
     {
         $request->authenticate();
 
-        return redirect()
-            ->intended(route(config('moonshine.route.index_route', 'moonshine.index')));
+        return redirect()->intended(route('moonshine.index'));
     }
 
     public function logout(Request $request): RedirectResponse
