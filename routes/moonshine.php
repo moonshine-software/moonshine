@@ -5,7 +5,7 @@ use MoonShine\Http\Controllers\AsyncController;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
-use MoonShine\Http\Controllers\DashboardController;
+use MoonShine\Http\Controllers\HomeController;
 use MoonShine\Http\Controllers\HandlerController;
 use MoonShine\Http\Controllers\NotificationController;
 use MoonShine\Http\Controllers\PageController;
@@ -50,7 +50,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 }
             );
 
-            Route::get('/', DashboardController::class)->name('index');
+            Route::get('/', HomeController::class)->name('index');
             Route::post('/attachments', AttachmentController::class)->name('attachments');
 
             Route::controller(NotificationController::class)

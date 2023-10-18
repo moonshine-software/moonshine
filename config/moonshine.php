@@ -19,7 +19,6 @@ return [
     'route' => [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
         'single_page_prefix' => 'page',
-        'index_route' => env('MOONSHINE_INDEX_ROUTE', 'moonshine.index'),
         'middlewares' => [
             SecurityHeadersMiddleware::class,
         ],
