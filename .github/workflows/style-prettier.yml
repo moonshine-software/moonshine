@@ -1,6 +1,6 @@
 name: Style Prettier
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   style:
