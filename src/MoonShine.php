@@ -7,8 +7,9 @@ namespace MoonShine;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Exceptions\InvalidHomeClass;
+use MoonShine\Exceptions\InvalidHome;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
@@ -32,7 +33,7 @@ class MoonShine
 
     protected static array $authorization = [];
 
-    protected static ?string $home = null;
+    protected static string|Closure|null $homeClass = null;
 
     public static function path(string $path = ''): string
     {
@@ -208,23 +209,26 @@ class MoonShine
     /**
      * Set home page/resource when visiting the base Moonshine url.
      *
-     * @param  class-string<Page|Resource>  $itemClass
-     * @throws InvalidHomeClass
+     * @param  class-string<Page|Resource>|Closure  $homeClass
      */
-    public static function home(string $itemClass): void
+    public static function home(string|Closure $homeClass): void
     {
-        if(
-            is_subclass_of($itemClass, Page::class)
-            || is_subclass_of($itemClass, Resource::class)
-        ){
-            self::$home = $itemClass;
-        }
-
-        throw InvalidHomeClass::create($itemClass);
+        self::$homeClass = $homeClass;
     }
 
-    public static function homeUrl()
+
+    /**
+     * @throws Throwable
+     * @throws InvalidHome
+     */
+    public static function homeUrl(): ?string
     {
-        return self::$home ? (new self::$home())->url() : null;
+        if ($class = value(self::$homeClass)) {
+            throw_unless(is_a($class, MenuFiller::class, true), InvalidHome::create($class));
+
+            return (new $class())->url();
+        }
+
+        return null;
     }
 }
