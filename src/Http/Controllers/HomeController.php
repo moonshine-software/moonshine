@@ -7,7 +7,6 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\MoonShine;
-use MoonShine\Pages\Page;
 
 class HomeController extends MoonShineController
 {
