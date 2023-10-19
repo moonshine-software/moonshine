@@ -33,7 +33,7 @@ abstract class Action implements ActionContract, MassActionContract
 
     protected bool $withQuery = false;
 
-    final public function __construct(string $label = '')
+    public function __construct(string $label = '')
     {
         $this->setLabel($label);
     }
