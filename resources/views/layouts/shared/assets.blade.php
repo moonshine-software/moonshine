@@ -16,7 +16,7 @@
     --{{ $name }}:{{ $value }};
     @endforeach
     }
-    :root[class="dark"] {
+    :root.dark {
     @foreach (moonshineAssets()->getColors(dark: true) as $name => $value)
         --{{ $name }}:{{ $value }};
     @endforeach
