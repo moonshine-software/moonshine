@@ -6,4 +6,5 @@ namespace MoonShine\Fields\Relationships;
 
 class MorphMany extends HasMany
 {
+    protected bool $isMorph = true;
 }

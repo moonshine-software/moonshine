@@ -8,4 +8,8 @@ use Exception;
 
 class FieldException extends Exception
 {
+    public static function resourceRequired(string $fieldClass, string $fieldIdentification): self
+    {
+        return new self("Resource is required for $fieldClass ($fieldIdentification)");
+    }
 }
