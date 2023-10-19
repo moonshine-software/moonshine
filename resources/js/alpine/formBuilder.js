@@ -105,6 +105,8 @@ export default () => ({
 
     const queryString = new URLSearchParams(new FormData(form)).toString()
 
+    this.$dispatch('disable-query-tags')
+
     this.$dispatch('async-table', {filters: queryString})
 
     this.$el?.closest('.offcanvas-template')?.querySelector('.btn-close')?.click()
