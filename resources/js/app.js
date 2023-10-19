@@ -25,9 +25,11 @@ import code from './alpine/code'
 import tree from './alpine/tree'
 import charts from './alpine/charts'
 import sortable from './alpine/sortable'
+import link from "./alpine/link";
 
 Alpine.data('formBuilder', formBuilder)
 Alpine.data('tableBuilder', tableBuilder)
+Alpine.data('link', link)
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
 Alpine.data('sortable', sortable)

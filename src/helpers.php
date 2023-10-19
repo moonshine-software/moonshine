@@ -209,6 +209,7 @@ if (! function_exists('tableAsyncRoute')) {
             'resourceUri' => moonshineRequest()->getResourceUri(),
             '_component_name' => $componentName,
             'filters' => moonshineRequest()->get('filters'),
+            'query-tag' => moonshineRequest()->get('query-tag'),
         ]);
     }
 }

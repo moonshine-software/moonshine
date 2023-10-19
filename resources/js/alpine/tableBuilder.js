@@ -106,6 +106,7 @@ export default (
   asyncFormRequest() {
     const urlObject = new URL(this.$el.getAttribute('action'))
     let urlSeparator = urlObject.search === '' ? '?' : '&'
+
     this.asyncUrl =
         urlObject.href +
         urlSeparator +
@@ -120,14 +121,24 @@ export default (
 
     this.loading = true
 
-    const resultUrl = new URL(url)
-
     if (this.$event.detail && this.$event.detail.filters) {
+      url = this.prepareUrl(url);
+
       const urlWithFilters = new URL(url)
 
-      let separator = resultUrl.searchParams.size ? '&' : '?'
+      let separator = urlWithFilters.searchParams.size ? '&' : '?'
 
       url = urlWithFilters.toString() + separator + this.$event.detail.filters
+    }
+
+    if (this.$event.detail && this.$event.detail.queryTags) {
+      url = this.prepareUrl(url);
+
+      const urlWithQueryTags = new URL(url)
+
+      let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
+
+      url = urlWithQueryTags.toString() + separator + this.$event.detail.queryTags
     }
 
     const t = this
@@ -185,4 +196,20 @@ export default (
 
     this.actionsOpen = !!(all.checked || values.length)
   },
+  prepareUrl(url) {
+    const resultUrl = new URL(url)
+
+    if(resultUrl.searchParams.get('query-tag')) {
+      resultUrl.searchParams.delete('query-tag')
+    }
+
+    Array.from(resultUrl.searchParams).map(function(values) {
+      let [index] = values;
+      if(index.indexOf('filters[') === 0) {
+        resultUrl.searchParams.delete(index)
+      }
+    })
+
+    return resultUrl.toString();
+  }
 })

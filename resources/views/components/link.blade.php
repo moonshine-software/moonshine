@@ -2,7 +2,7 @@
     'icon' => false,
     'filled' => false,
 ])
-<a {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
+<a x-data="link()" {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
     @if($icon)
         <x-moonshine::icon
             :icon="$icon"
