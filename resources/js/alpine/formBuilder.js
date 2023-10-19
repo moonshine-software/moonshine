@@ -84,7 +84,7 @@ export default () => ({
 
         submitState(form, false, isFormReset)
 
-        t.$dispatch('update-relation')
+        t.$dispatch('async-table')
       })
       .catch(errorResponse => {
         const data = errorResponse.response.data

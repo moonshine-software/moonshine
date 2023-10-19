@@ -68,7 +68,7 @@ if (! function_exists('to_relation_route')) {
         ?string $relation = null,
         ?string $resourceUri = null,
         ?string $pageUri = null,
-        ?string $parentField = null,
+        ?string $parentField = null
     ): string {
         $data = [
             '_parent_field' => $parentField,
@@ -209,6 +209,7 @@ if (! function_exists('tableAsyncRoute')) {
             'resourceUri' => moonshineRequest()->getResourceUri(),
             '_component_name' => $componentName,
             'filters' => moonshineRequest()->get('filters'),
+            'query-tag' => moonshineRequest()->get('query-tag'),
         ]);
     }
 }

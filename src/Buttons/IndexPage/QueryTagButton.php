@@ -18,9 +18,21 @@ final class QueryTagButton
             ->showInLine()
             ->icon($tag->iconValue())
             ->canSee(fn (): bool => $tag->isSee(moonshineRequest()))
+            ->customAttributes([
+                'class' => 'query-tag-button'
+            ])
             ->when(
                 $tag->isActive(),
-                fn (ActionButton $btn): ActionButton => $btn->primary()
+                fn (ActionButton $btn): ActionButton => $btn
+                    ->primary()
+                    ->customAttributes([
+                        'class' => 'active-query-tag'
+                    ])
+            )
+            ->when(
+                $resource->isAsync(),
+                fn(ActionButton $btn) => $btn
+                    ->onClick(fn($action) => "dispatchAsyncEvent(`{$tag->uri()}`)", "prevent")
             );
     }
 }

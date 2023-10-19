@@ -233,7 +233,7 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
-        $asyncUrl = to_relation_route('search-relations', request('resourceItem'));
+        $asyncUrl = to_relation_route('search-relations', request('resourceItem'), relation: $this->getRelationName());
 
         $this->toValue()->setPath(to_relation_route('search-relations', request('resourceItem')));
         $fields = $this->preparedFields();
@@ -248,9 +248,6 @@ class HasMany extends ModelRelationField implements HasFields
                 $this->isNowOnForm(),
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
-            ->customAttributes([
-                '@update-relation.window' => 'asyncRequest',
-            ])
             ->buttons([
                 DetailButton::forMode($resource),
                 FormButton::forMode($resource),

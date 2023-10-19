@@ -103,52 +103,56 @@ export default (
       })
     })
   },
+  asyncFormRequest() {
+    const urlObject = new URL(this.$el.getAttribute('action'))
+    let urlSeparator = urlObject.search === '' ? '?' : '&'
+
+    this.asyncUrl =
+        urlObject.href +
+        urlSeparator +
+        crudFormQuery(this.$el.querySelectorAll('[name]'))
+
+    this.asyncRequest()
+  },
   asyncRequest() {
     this.$event.preventDefault()
 
-    const isForm = this.$el.tagName === 'FORM'
-
     let url = this.$el.href ? this.$el.href : this.asyncUrl
-
-    if (isForm) {
-      const urlObject = new URL(this.$el.getAttribute('action'))
-      let urlSeparator = urlObject.search === '' ? '?' : '&'
-      url =
-        urlObject.href +
-        urlSeparator +
-        crudFormQuery(this.$el.querySelectorAll('[name]')) +
-        '&_relation=' +
-        this.$el.getAttribute('data-name')
-    }
 
     this.loading = true
 
-    const resultUrl = new URL(url)
+    if (this.$event.detail && this.$event.detail.filters) {
+      url = this.prepareUrl(url);
 
-    if (resultUrl.searchParams.get('_relation') === null) {
-      let separator = resultUrl.searchParams.size ? '&' : '?'
-      url = url + separator + '_relation=' + (this.table?.dataset?.name ?? 'crud-table')
-    }
-
-    if (event.detail && event.detail.filters) {
       const urlWithFilters = new URL(url)
 
-      if (urlWithFilters.searchParams.get('filters')) {
-        urlWithFilters.searchParams.delete('filters')
-      }
+      let separator = urlWithFilters.searchParams.size ? '&' : '?'
 
-      let separator = resultUrl.searchParams.size ? '&' : '?'
-
-      url = urlWithFilters.toString() + separator + event.detail.filters
+      url = urlWithFilters.toString() + separator + this.$event.detail.filters
     }
+
+    if (this.$event.detail && this.$event.detail.queryTag) {
+      url = this.prepareUrl(url);
+
+      const urlWithQueryTags = new URL(url)
+
+      let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
+
+      url = urlWithQueryTags.toString() + separator + this.$event.detail.queryTag
+    }
+
+    const t = this
 
     axios
       .get(url)
       .then(response => {
-        const query = url.slice(url.indexOf('?') + 1)
-
-        history.pushState({}, '', query ? '?' + query : location.pathname)
-
+        if(
+            t.$root.getAttribute('data-pushstate') !== null
+            && t.$root.getAttribute('data-pushstate')
+        ) {
+          const query = url.slice(url.indexOf('?') + 1)
+          history.pushState({}, '', query ? '?' + query : location.pathname)
+        }
         this.$root.outerHTML = response.data
       })
       .catch(error => {
@@ -192,4 +196,20 @@ export default (
 
     this.actionsOpen = !!(all.checked || values.length)
   },
+  prepareUrl(url) {
+    const resultUrl = new URL(url)
+
+    if(resultUrl.searchParams.get('query-tag')) {
+      resultUrl.searchParams.delete('query-tag')
+    }
+
+    Array.from(resultUrl.searchParams).map(function(values) {
+      let [index] = values;
+      if(index.indexOf('filters[') === 0) {
+        resultUrl.searchParams.delete(index)
+      }
+    })
+
+    return resultUrl.toString();
+  }
 })
