@@ -108,9 +108,7 @@ export default (
     let urlSeparator = urlObject.search === '' ? '?' : '&'
 
     this.asyncUrl =
-        urlObject.href +
-        urlSeparator +
-        crudFormQuery(this.$el.querySelectorAll('[name]'))
+      urlObject.href + urlSeparator + crudFormQuery(this.$el.querySelectorAll('[name]'))
 
     this.asyncRequest()
   },
@@ -122,7 +120,7 @@ export default (
     this.loading = true
 
     if (this.$event.detail && this.$event.detail.filters) {
-      url = this.prepareUrl(url);
+      url = this.prepareUrl(url)
 
       const urlWithFilters = new URL(url)
 
@@ -132,7 +130,7 @@ export default (
     }
 
     if (this.$event.detail && this.$event.detail.queryTag) {
-      url = this.prepareUrl(url);
+      url = this.prepareUrl(url)
 
       const urlWithQueryTags = new URL(url)
 
@@ -146,9 +144,9 @@ export default (
     axios
       .get(url)
       .then(response => {
-        if(
-            t.$root.getAttribute('data-pushstate') !== null
-            && t.$root.getAttribute('data-pushstate')
+        if (
+          t.$root.getAttribute('data-pushstate') !== null &&
+          t.$root.getAttribute('data-pushstate')
         ) {
           const query = url.slice(url.indexOf('?') + 1)
           history.pushState({}, '', query ? '?' + query : location.pathname)
@@ -199,17 +197,17 @@ export default (
   prepareUrl(url) {
     const resultUrl = new URL(url)
 
-    if(resultUrl.searchParams.get('query-tag')) {
+    if (resultUrl.searchParams.get('query-tag')) {
       resultUrl.searchParams.delete('query-tag')
     }
 
-    Array.from(resultUrl.searchParams).map(function(values) {
-      let [index] = values;
-      if(index.indexOf('filters[') === 0) {
+    Array.from(resultUrl.searchParams).map(function (values) {
+      let [index] = values
+      if (index.indexOf('filters[') === 0) {
         resultUrl.searchParams.delete(index)
       }
     })
 
-    return resultUrl.toString();
-  }
+    return resultUrl.toString()
+  },
 })

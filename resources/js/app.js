@@ -25,7 +25,7 @@ import code from './alpine/code'
 import tree from './alpine/tree'
 import charts from './alpine/charts'
 import sortable from './alpine/sortable'
-import queryTag from "./alpine/queryTag";
+import queryTag from './alpine/queryTag'
 
 Alpine.data('formBuilder', formBuilder)
 Alpine.data('tableBuilder', tableBuilder)
