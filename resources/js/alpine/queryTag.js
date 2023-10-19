@@ -18,5 +18,5 @@ export default () => ({
       element.classList.remove('btn-primary')
       element.classList.remove('active-query-tag')
     })
-  }
+  },
 })
