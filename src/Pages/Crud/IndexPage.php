@@ -173,7 +173,7 @@ class IndexPage extends Page
                     ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
                         $table->async(tableAsyncRoute())
                             ->customAttributes([
-                                'data-pushstate' => 'true'
+                                'data-pushstate' => 'true',
                             ]);
                     })
                     ->when(
