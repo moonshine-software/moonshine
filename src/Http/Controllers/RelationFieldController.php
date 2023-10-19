@@ -60,7 +60,7 @@ class RelationFieldController extends BaseController
                 $request->getItemOrInstance()
                     ->{$this->field->relation()}()
                     ->when(
-                        $request->get('queryTag', null),
+                        $request->get('queryTag'),
                         fn (EloquentBuilder $builder, string $queryTag) => collect($this->field->resource()->queryTags())
                             ->first(fn (QueryTag $tag): bool => $tag->uri() === $queryTag)
                             ?->builder(
