@@ -131,14 +131,14 @@ export default (
       url = urlWithFilters.toString() + separator + this.$event.detail.filters
     }
 
-    if (this.$event.detail && this.$event.detail.queryTags) {
+    if (this.$event.detail && this.$event.detail.queryTag) {
       url = this.prepareUrl(url);
 
       const urlWithQueryTags = new URL(url)
 
       let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
 
-      url = urlWithQueryTags.toString() + separator + this.$event.detail.queryTags
+      url = urlWithQueryTags.toString() + separator + this.$event.detail.queryTag
     }
 
     const t = this

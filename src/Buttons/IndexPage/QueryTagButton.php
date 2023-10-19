@@ -23,7 +23,11 @@ final class QueryTagButton
             ])
             ->when(
                 $tag->isActive(),
-                fn (ActionButton $btn): ActionButton => $btn->primary()
+                fn (ActionButton $btn): ActionButton => $btn
+                    ->primary()
+                    ->customAttributes([
+                        'class' => 'active-query-tag'
+                    ])
             )
             ->when(
                 $resource->isAsync(),
