@@ -31,8 +31,8 @@ final class QueryTagButton
             )
             ->when(
                 $resource->isAsync(),
-                fn(ActionButton $btn) => $btn
-                    ->onClick(fn($action) => "dispatchAsyncEvent(`{$tag->uri()}`)", "prevent")
+                fn(ActionButton $btn): ActionButton => $btn
+                    ->onClick(fn($action): string => "dispatchAsyncEvent(`{$tag->uri()}`)", "prevent")
             );
     }
 }
