@@ -119,6 +119,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             'bulkButtons' => $this->getBulkButtons(),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->asyncUrl(),
+            'attributes' => $this->attributes()
         ] + $this->statesToArray();
     }
 }

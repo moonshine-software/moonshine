@@ -68,7 +68,7 @@ if (! function_exists('to_relation_route')) {
         ?string $relation = null,
         ?string $resourceUri = null,
         ?string $pageUri = null,
-        ?string $parentField = null,
+        ?string $parentField = null
     ): string {
         $data = [
             '_parent_field' => $parentField,

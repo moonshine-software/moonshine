@@ -15,20 +15,20 @@
 ])
 
 <div x-data="tableBuilder(
-{{ (int) $creatable }},
-{{ (int) $sortable }},
-{{ (int) $reindex }},
-{{ (int) $async }},
-'{{ $asyncUrl }}'
+    {{ (int) $creatable }},
+    {{ (int) $sortable }},
+    {{ (int) $reindex }},
+    {{ (int) $async }},
+    '{{ $asyncUrl }}'
 )"
-@add-table-row.window="add(true)"
+    @add-table-row.window="add(true)"
+    data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
 >
     @if($async)
         <div class="flex items-center gap-2">
             <form action="{{ $asyncUrl }}"
-                  @submit.prevent="asyncRequest"
+                  @submit.prevent="asyncFormRequest"
                   @async-table.window = "asyncRequest"
-                  data-name="{{ $name }}"
             >
                 <x-moonshine::form.input
                     name="search"
