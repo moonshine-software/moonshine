@@ -11,14 +11,15 @@ final class FormButton
 {
     public static function for(ModelResource $resource): ActionButton
     {
-        $ability = request('resourceItem') ? 'update' : 'create';
+        $itemId = $resource->getItemID();
+        $ability = $itemId ? 'update' : 'create';
 
         return ActionButton::make(
             '',
             url: static fn (): string => to_page(
                 page: FormPage::class,
                 resource: $resource,
-                params: ['resourceItem' => request('resourceItem')]
+                params: ['resourceItem' => $itemId]
             )
         )
             ->canSee(

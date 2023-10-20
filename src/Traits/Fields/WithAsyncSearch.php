@@ -118,7 +118,7 @@ trait WithAsyncSearch
         $parentName = null;
 
         if ($this->hasParent() && $this->parent() instanceof ModelRelationField) {
-            $parentName = $this->parent()->column() ?? null;
+            $parentName = $this->parent()->column();
         }
 
         return to_relation_route(

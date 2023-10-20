@@ -46,7 +46,7 @@ trait ResourceModelCrudRouter
         return request('_redirect') ?? to_page(
             page: FormPage::class,
             resource: $this,
-            params: is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()->getKey()]
+            params: is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()?->getKey()]
         );
     }
 

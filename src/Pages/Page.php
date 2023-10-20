@@ -194,7 +194,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return MoonShineRouter::to(
             'resource.page',
             [
-                'resourceUri' => $this->getResource()->uriKey(),
+                'resourceUri' => $this->getResource()?->uriKey(),
                 'pageUri' => $this->uriKey(),
             ] + $params
         );

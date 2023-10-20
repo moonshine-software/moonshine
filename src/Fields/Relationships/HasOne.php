@@ -13,6 +13,7 @@ use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Crud\FormPage;
@@ -116,6 +117,7 @@ class HasOne extends ModelRelationField implements HasFields
         $parentItem = $parentResource->getItemOrInstance();
 
         $fields = $this->preparedFields();
+        $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
         $action = to_relation_route(
             is_null($item) ? 'store' : 'update',

@@ -207,7 +207,9 @@ class HasMany extends ModelRelationField implements HasFields
                 to_page(
                     page: IndexPage::class,
                     resource: $this->getResource(),
-                    params: ['parentId' => $relationName . '-' . request('resourceItem')]
+                    params: [
+                        'parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
+                    ]
                 )
             )->primary();
     }
@@ -233,9 +235,12 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
-        $asyncUrl = to_relation_route('search-relations', request('resourceItem'), relation: $this->getRelationName());
+        $asyncUrl = to_relation_route(
+            'search-relations',
+            resourceItem: $this->getRelatedModel()?->getKey(),
+            relation: $this->getRelationName()
+        );
 
-        $this->toValue()->setPath(to_relation_route('search-relations', request('resourceItem')));
         $fields = $this->preparedFields();
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
