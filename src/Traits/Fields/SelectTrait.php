@@ -12,6 +12,8 @@ trait SelectTrait
 {
     protected array $options = [];
 
+    protected array|Closure $optionProperties = [];
+
     public function options(Closure|array $data): static
     {
         $this->options = is_closure($data)
@@ -32,6 +34,18 @@ trait SelectTrait
     public function isSelected(string $value): bool
     {
         return SelectOptions::isSelected($this->value(), $value);
+    }
+
+    public function optionProperties(Closure|array $data): static
+    {
+        $this->optionProperties = $data;
+
+        return $this;
+    }
+
+    public function getOptionProperties(string $value): array
+    {
+        return data_get(value($this->optionProperties), $value, []);
     }
 
     public function flattenValues(): array

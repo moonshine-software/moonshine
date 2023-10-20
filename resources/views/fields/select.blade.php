@@ -25,6 +25,7 @@
                     @foreach($optionName as $oValue => $oName)
                         <option @selected($element->isSelected($oValue))
                                 value="{{ $oValue }}"
+                                data-custom-properties='@json($element->getOptionProperties($oValue))'
                         >
                             {{ $oName }}
                         </option>
@@ -33,6 +34,7 @@
             @else
                 <option @selected($element->isSelected($optionValue))
                         value="{{ $optionValue }}"
+                        data-custom-properties='@json($element->getOptionProperties($optionValue))'
                 >
                     {{ $optionName }}
                 </option>
