@@ -6,9 +6,7 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
-use function Laravel\Prompts\outro;
-
-use function Laravel\Prompts\text;
+use function Laravel\Prompts\{outro, select, text};
 
 use MoonShine\MoonShine;
 
