@@ -15,7 +15,7 @@
         :inLabel="$field->isInLabel()"
         :formName="$field->getFormName()"
     >
-        @if($field->hasLink())
+        @if(!$field->isPreviewMode() && $field->hasLink())
             <x-slot:beforeSlot>
                 <x-moonshine::link-native
                     icon="heroicons.link"
