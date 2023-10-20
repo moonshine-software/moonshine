@@ -4,12 +4,12 @@
     'toggler'
 ])
 <div x-data="offcanvas">
-    <x-moonshine::link
+    <x-moonshine::link-button
         :attributes="$toggler->attributes"
         @click.prevent="toggleCanvas"
     >
         {{ $toggler }}
-    </x-moonshine::link>
+    </x-moonshine::link-button>
 
     <template x-teleport="body">
         <div class="offcanvas-template">

@@ -20,6 +20,8 @@ final class QueryTagButton
             ->canSee(fn (): bool => $tag->isSee(moonshineRequest()))
             ->customAttributes([
                 'class' => 'query-tag-button',
+                'x-data' => 'queryTag',
+                'x-on:disable-query-tags.window' => 'disableQueryTags'
             ])
             ->when(
                 $tag->isActive(),
@@ -32,7 +34,10 @@ final class QueryTagButton
             ->when(
                 $resource->isAsync(),
                 fn (ActionButton $btn): ActionButton => $btn
-                    ->onClick(fn ($action): string => "dispatchAsyncEvent(`{$tag->uri()}`)", "prevent")
+                    ->onClick(
+                        fn ($action): string => "dispatchAsyncEvent(`{$tag->uri()}`)",
+                        'prevent'
+                    )
             );
     }
 }

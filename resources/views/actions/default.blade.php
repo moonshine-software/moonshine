@@ -33,19 +33,19 @@
         @endif
 
         <x-slot name="outerHtml">
-            <x-moonshine::link
+            <x-moonshine::link-button
                 :attributes="$attributes"
                 :icon="$action->iconValue()"
             >
                 {{ $action->label() }}
-            </x-moonshine::link>
+            </x-moonshine::link-button>
         </x-slot>
 
     </x-moonshine::modal>
 @else
     <x-dynamic-component
             :attributes="$attributes"
-            :component="'moonshine::' . ($action->inDropdown() ? 'link-native' : 'link')"
+            :component="'moonshine::link-' . ($action->inDropdown() ? 'native' : 'button')"
             @class(['p-2' => $action->inDropdown()])
             :href="$action->url()"
             :icon="$action->iconValue()"
