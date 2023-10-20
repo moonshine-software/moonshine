@@ -21,7 +21,7 @@ final class QueryTagButton
             ->customAttributes([
                 'class' => 'query-tag-button',
                 'x-data' => 'queryTag',
-                'x-on:disable-query-tags.window' => 'disableQueryTags'
+                'x-on:disable-query-tags.window' => 'disableQueryTags',
             ])
             ->when(
                 $tag->isActive(),
