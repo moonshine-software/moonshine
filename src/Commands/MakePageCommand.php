@@ -14,7 +14,7 @@ use MoonShine\MoonShine;
 
 class MakePageCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?} {--dir=} {--extends=}';
+    protected $signature = 'moonshine:page {className?} {--dir=}';
 
     protected $description = 'Create page';
 
@@ -24,7 +24,13 @@ class MakePageCommand extends MoonShineCommand
     public function handle(): int
     {
         $dir = $this->option('dir') ?? 'Pages';
-        $extends = $this->option('extends') ?? 'Page';
+        
+        $extends = select('Extends', [
+            'Page',
+            'DetailPage',
+            'FormPage',
+            'IndexPage'
+        ], 'Page');
 
         $className = $this->argument('className') ?? text(
             'Class name',
@@ -43,7 +49,7 @@ class MakePageCommand extends MoonShineCommand
             $this->makeDir($this->getDirectory() . "/$dir");
         }
 
-        $stub = $this->option('extends') ? 'CrudPage' : 'Page';
+        $stub = $extends !== 'Page' ? 'CrudPage' : 'Page';
 
         $this->copyStub($stub, $page, [
             '{namespace}' => MoonShine::namespace('\\' . str_replace('/', '\\', $dir)),
