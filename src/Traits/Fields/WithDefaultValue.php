@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Fields;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultMustBeNull;
 use UnitEnum;
@@ -43,6 +44,10 @@ trait WithDefaultValue
         }
 
         if (is_string($this->default) && $this instanceof DefaultCanBeString) {
+            return $this->default;
+        }
+
+        if (is_object($this->default) && $this instanceof DefaultCanBeObject) {
             return $this->default;
         }
 

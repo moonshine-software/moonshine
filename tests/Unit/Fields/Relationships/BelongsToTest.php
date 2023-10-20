@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
@@ -17,7 +16,6 @@ uses()->group('model-relation-fields');
 uses()->group('belongs-to-field');
 
 beforeEach(function (): void {
-
     $this->user = MoonshineUser::factory()
         ->count(5)
         ->create();
@@ -26,7 +24,6 @@ beforeEach(function (): void {
         ->create();
 
     $this->field = BelongsTo::make('User', resource: new MoonShineUserResource());
-
 });
 
 describe('common field methods', function () {
@@ -45,8 +42,7 @@ describe('common field methods', function () {
             ->toBeInstanceOf(HasAsyncSearch::class)
             ->toBeInstanceOf(HasRelatedValues::class)
             ->toBeInstanceOf(HasDefaultValue::class)
-            ->toBeInstanceOf(DefaultCanBeString::class)
-            ->toBeInstanceOf(DefaultCanBeNumeric::class);
+            ->toBeInstanceOf(DefaultCanBeObject::class);
     });
 });
 

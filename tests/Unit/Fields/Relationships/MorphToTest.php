@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
@@ -47,8 +46,7 @@ describe('common field methods', function () {
             ->toBeInstanceOf(HasAsyncSearch::class)
             ->toBeInstanceOf(HasRelatedValues::class)
             ->toBeInstanceOf(HasDefaultValue::class)
-            ->toBeInstanceOf(DefaultCanBeString::class)
-            ->toBeInstanceOf(DefaultCanBeNumeric::class);
+            ->toBeInstanceOf(DefaultCanBeObject::class);
     });
 });
 
