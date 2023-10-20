@@ -89,13 +89,13 @@
         @if($creatable)
             <x-moonshine::divider />
 
-            <x-moonshine::link
+            <x-moonshine::link-button
                 class="w-full"
                 icon="heroicons.plus-circle"
                 @click.prevent="add()"
             >
                 @lang('moonshine::ui.add')
-            </x-moonshine::link>
+            </x-moonshine::link-button>
         @endif
 
         @if(!$preview && $hasPaginator)
