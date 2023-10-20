@@ -91,7 +91,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         return tap(
             $resource,
-            function (?ResourceContract $resource) {
+            function (?ResourceContract $resource): void {
                 throw_if(
                     is_null($resource),
                     FieldException::resourceRequired(static::class, $this->getRelationName())
