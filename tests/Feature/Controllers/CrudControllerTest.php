@@ -46,7 +46,7 @@ beforeEach(function (): void {
         'dates' => [
             'start_date' => date('Y-m-d'),
             'end_date' => date('Y-m-d'),
-        ]
+        ],
     ];
 
 });
