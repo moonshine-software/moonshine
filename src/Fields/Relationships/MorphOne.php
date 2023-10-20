@@ -6,4 +6,5 @@ namespace MoonShine\Fields\Relationships;
 
 class MorphOne extends HasOne
 {
+    protected bool $isMorph = true;
 }

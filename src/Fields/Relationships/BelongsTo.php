@@ -6,8 +6,7 @@ namespace MoonShine\Fields\Relationships;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
@@ -22,8 +21,7 @@ class BelongsTo extends ModelRelationField implements
     HasAsyncSearch,
     HasRelatedValues,
     HasDefaultValue,
-    DefaultCanBeString,
-    DefaultCanBeNumeric
+    DefaultCanBeObject
 {
     use WithRelatedValues;
     use WithAsyncSearch;

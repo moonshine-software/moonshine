@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Field;
 use MoonShine\MoonShine;
 use MoonShine\Resources\ModelResource;
@@ -31,6 +32,8 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected bool $outsideComponent = false;
 
     protected bool $toOne = false;
+
+    protected bool $isMorph = false;
 
     public function __construct(
         Closure|string $label,
@@ -72,13 +75,29 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             return $this->getResource();
         }
 
-        return MoonShine::getResourceFromUriKey(
+        $resource = MoonShine::getResourceFromUriKey(
             str($this->getRelationName())
                 ->singular()
                 ->append('Resource')
                 ->kebab()
                 ->value()
-        ) ?? MoonShine::getResourceFromUriKey(moonshineRequest()->getResourceUri());
+        );
+
+        if(is_null($resource) && $this->isMorph()) {
+            $resource = MoonShine::getResourceFromUriKey(
+                moonshineRequest()->getResourceUri()
+            );
+        }
+
+        return tap(
+            $resource,
+            function (?ResourceContract $resource) {
+                throw_if(
+                    is_null($resource),
+                    FieldException::resourceRequired(static::class, $this->getRelationName())
+                );
+            }
+        );
     }
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
@@ -136,6 +155,11 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->toOne;
     }
 
+    public function isMorph(): bool
+    {
+        return $this->isMorph;
+    }
+
     protected function setRelationName(string $relationName): void
     {
         $this->relationName = $relationName;
@@ -161,7 +185,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
      */
     public function getResourceColumn(): string
     {
-        return $this->getResource()->column() ?? 'id';
+        return $this->getResource()?->column() ?? 'id';
     }
 
     public function getRelatedModel(): ?Model

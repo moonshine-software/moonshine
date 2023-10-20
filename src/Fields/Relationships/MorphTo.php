@@ -17,6 +17,8 @@ class MorphTo extends BelongsTo
 
     protected array $searchColumns = [];
 
+    protected bool $isMorph = true;
+
     public function getSearchColumn(string $key): string
     {
         return $this->searchColumns[$key];

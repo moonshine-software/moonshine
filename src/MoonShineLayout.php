@@ -15,9 +15,6 @@ final class MoonShineLayout implements MoonShineLayoutContract
             Sidebar::make([
                 Menu::make()->customAttributes(['class' => 'mt-2']),
             ]),
-            /*TopBar::make([
-                Menu::make()->top(),
-            ]),*/
             LayoutBlock::make([
                 Flash::make(),
                 Header::make(),
