@@ -20,7 +20,7 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')
     );
 
@@ -51,7 +51,7 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')
     );
 
@@ -73,7 +73,7 @@ it('apply as base', function () {
 });
 
 it('before apply', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')
             ->onBeforeApply(function ($item, $data) {
                 $item->name = $data['start_point'] . ' - ' . $data['end_point'];
@@ -98,7 +98,7 @@ it('before apply', function () {
 });
 
 it('after apply', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')
         ->onAfterApply(function ($item) {
             $item->start_point = $item->start_point * 1000;
@@ -128,7 +128,7 @@ it('after apply', function () {
 it('apply as base with default', function () {
     $data = ['start_point' => 10, 'end_point' => 90];
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')->default($data)
     );
 
@@ -175,7 +175,7 @@ function rangeExport(Item $item): ?string
 
     $item->save();
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')->showOnExport()
     );
 
@@ -201,7 +201,7 @@ it('import', function (): void {
 
     $file = rangeExport($this->item);
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')->useOnImport()
     );
 

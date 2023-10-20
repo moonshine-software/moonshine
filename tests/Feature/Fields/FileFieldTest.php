@@ -154,7 +154,7 @@ it('after destroy disableDeleteFiles', function () {
 
 function fileResource(): TestResource
 {
-    return createResourceField(
+    return addFieldToTestResource(
         File::make('File')->dir('items')
     );
 }

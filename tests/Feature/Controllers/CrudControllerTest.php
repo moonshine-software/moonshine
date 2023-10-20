@@ -14,7 +14,7 @@ use MoonShine\Tests\Fixtures\Models\Item;
 uses()->group('crud-controller');
 
 beforeEach(function (): void {
-    $this->itemResource = createResourceFields([
+    $this->itemResource = addFieldsToTestResource([
         Range::make('Points')
             ->fromTo('start_point', 'end_point')
             ->withoutWrapper()
