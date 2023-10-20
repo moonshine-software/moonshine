@@ -52,12 +52,17 @@ function createItem(int $countItems = 1, int $countComments = 3)
         ->first();
 }
 
-function createResourceField(Field $field): TestResource
+function addFieldToTestResource(Field $field): TestResource
+{
+    return addFieldsToTestResource([$field]);
+}
+
+function addFieldsToTestResource(array $fields): TestResource
 {
     return TestResourceBuilder::new(Item::class)
         ->setTestFields([
             ...(new TestItemResource())->fields(),
-            $field,
+            ...$fields,
         ]);
 }
 

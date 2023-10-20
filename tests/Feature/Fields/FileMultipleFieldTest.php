@@ -148,7 +148,7 @@ it('after destroy disableDeleteFiles', function () {
 
 function multipleFileResource(): TestResource
 {
-    return createResourceField(
+    return addFieldToTestResource(
         File::make('Files')
             ->multiple()
             ->dir('items')

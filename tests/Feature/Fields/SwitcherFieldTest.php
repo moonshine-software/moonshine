@@ -18,7 +18,7 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
     );
 
@@ -49,7 +49,7 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
     );
 
@@ -69,7 +69,7 @@ it('apply as base', function () {
 });
 
 it('before apply', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Switcher::make('Active')
             ->onBeforeApply(function ($item) {
                 $item->name = 'Switcher';
@@ -94,7 +94,7 @@ it('before apply', function () {
 });
 
 it('after apply', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Switcher::make('Active')
             ->onAfterApply(function ($item, $data) {
                 $item->name = 'Switcher';
@@ -121,7 +121,7 @@ it('after apply', function () {
 });
 
 it('apply as base with default', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Switcher::make('Active')->default(1)
     );
 
@@ -144,7 +144,7 @@ function switcherExport(Item $item): ?string
 
     $item->save();
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Switcher::make('Active')->showOnExport()
     );
 
@@ -170,7 +170,7 @@ it('import', function (): void {
 
     $file = switcherExport($this->item);
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Switcher::make('Active')->useOnImport()
     );
 

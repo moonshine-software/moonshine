@@ -118,7 +118,7 @@ it('async search', function () {
     $field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
         ->resolveFill($item->toArray(), $item);
 
-    createResourceField($field);
+    addFieldToTestResource($field);
 
     asAdmin()->get(MoonShineRouter::to("relation.search", [
         'pageUri' => PageType::FORM->value,

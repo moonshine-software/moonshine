@@ -55,17 +55,12 @@ class File extends Field implements Fileable, RemovableContract
 
     protected function resolveAfterDestroy(mixed $data): mixed
     {
-        if (! $this->isDeleteFiles()) {
+        if (! $this->isDeleteFiles() || blank($this->toValue())) {
             return $data;
         }
 
-        if ($this->isMultiple()) {
-            foreach ($this->toValue() as $value) {
-                $this->deleteFile($value);
-            }
-        } elseif (filled($this->toValue())) {
-            $this->deleteFile($this->toValue());
-        }
+        collect($this->isMultiple() ? $this->toValue() : [$this->toValue()])
+            ->each(fn ($file) => $this->deleteFile($file));
 
         $this->deleteDir();
 

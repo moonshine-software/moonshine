@@ -39,7 +39,7 @@ function testJsonValue(TestResource $resource, Item $item, array $data, ?array $
 }
 
 it('apply as base', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
@@ -60,7 +60,7 @@ it('apply as base with default', function () {
         ['title' => 'Title 2', 'value' => 'Value 2'],
     ];
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
@@ -77,7 +77,7 @@ it('apply as base with default', function () {
 });
 
 it('apply as key value', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Json::make('Data')->keyValue()
     );
 
@@ -90,7 +90,7 @@ it('apply as key value', function () {
 });
 
 it('apply as only value', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Json::make('Data')->onlyValue()
     );
 
@@ -103,7 +103,7 @@ it('apply as only value', function () {
 });
 
 it('apply as relation', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Json::make('Comments')->asRelation(new TestCommentResource())
     );
 
@@ -172,7 +172,7 @@ function jsonExport(Item $item): ?string
     $item->data = $data;
     $item->save();
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
@@ -204,7 +204,7 @@ it('import', function (): void {
 
     $file = jsonExport($this->item);
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),

@@ -51,7 +51,7 @@ function testBelongsToManyValue(TestResource $resource, Item $item, array $data,
 }
 
 it('apply as base', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
     );
 
@@ -63,7 +63,7 @@ it('apply as base', function () {
 });
 
 it('apply as base with pivot', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
     );
 
@@ -88,7 +88,7 @@ it('apply as base with pivot', function () {
 });
 
 it('apply as tree', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field->tree('category_id')
     );
 
@@ -100,7 +100,7 @@ it('apply as tree', function () {
 });
 
 it('apply as select', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field->selectMode()
     );
 
@@ -137,7 +137,7 @@ function belongsToManyExport(Item $item, BelongsToMany $field): ?string
     $item->categories()->attach($category);
     $item->refresh();
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $field->showOnExport()
     );
 
@@ -163,7 +163,7 @@ it('import', function (): void {
 
     $file = belongsToManyExport($this->item, $this->field);
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field->useOnImport()
     );
 

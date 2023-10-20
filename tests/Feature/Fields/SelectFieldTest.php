@@ -23,7 +23,7 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
     );
 
@@ -52,7 +52,7 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
     );
 
@@ -72,7 +72,7 @@ it('apply as base', function () {
 });
 
 it('before apply', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
             ->onBeforeApply(function ($item, $data) {
                 $item->name = 'Select';
@@ -97,7 +97,7 @@ it('before apply', function () {
 });
 
 it('after apply', function () {
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field
             ->onAfterApply(function ($item, $data) {
                 $item->name = 'Select';
@@ -125,7 +125,7 @@ it('after apply', function () {
 
 it('apply as base with default', function () {
     $default = array_rand($this->values);
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field->default($default)
     );
 
@@ -148,7 +148,7 @@ function selectExport(Item $item, Select $field, int $value, string $label): ?st
 
     $item->save();
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $field->showOnExport()
     );
 
@@ -175,7 +175,7 @@ it('import', function (): void {
     $value = array_rand($this->values);
     $file = selectExport($this->item, $this->field, $value, $this->values[$value]);
 
-    $resource = createResourceField(
+    $resource = addFieldToTestResource(
         $this->field->useOnImport()
     );
 
