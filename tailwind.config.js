@@ -36,7 +36,7 @@ const clientSafeList = [
 ]
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./resources/js/**/*.js', './resources/views/**/*.blade.php'],
   safelist: isDevelopment() ? vendorSafeList : [...vendorSafeList, ...clientSafeList],
   darkMode: 'class',
