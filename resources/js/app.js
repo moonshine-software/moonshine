@@ -64,6 +64,5 @@ document.addEventListener('alpine:init', () => {
   })
 })
 
-Alpine.plugin(persist)
-Alpine.plugin(mask)
+Alpine.plugin([persist, mask])
 Alpine.start()
