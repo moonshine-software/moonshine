@@ -61,6 +61,9 @@ class IndexPage extends Page
         return $components;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function mainLayer(): array
     {
         return array_merge(

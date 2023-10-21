@@ -93,6 +93,9 @@ class FormPage extends Page
         return $components;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function mainLayer(): array
     {
         $resource = $this->getResource();
@@ -127,7 +130,7 @@ class FormPage extends Page
                     )
                     ->when(
                         $resource->isAsync(),
-                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async()
+                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async(asyncEvents: 'table-updated')
                     )
                     ->when(
                         $resource->isPrecognitive(),

@@ -25,11 +25,11 @@ import code from './alpine/code'
 import tree from './alpine/tree'
 import charts from './alpine/charts'
 import sortable from './alpine/sortable'
-import queryTag from './alpine/queryTag'
+import asyncLink from './alpine/asyncLink'
 
 Alpine.data('formBuilder', formBuilder)
 Alpine.data('tableBuilder', tableBuilder)
-Alpine.data('queryTag', queryTag)
+Alpine.data('asyncLink', asyncLink)
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
 Alpine.data('sortable', sortable)

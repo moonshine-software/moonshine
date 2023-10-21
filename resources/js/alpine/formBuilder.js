@@ -1,4 +1,8 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -52,7 +56,7 @@ export default () => ({
     return false
   },
 
-  async(form) {
+  async(form, events = '') {
     submitState(form, true)
     const t = this
 
@@ -84,7 +88,13 @@ export default () => ({
 
         submitState(form, false, isFormReset)
 
-        t.$dispatch('async-table')
+        if(events !== '') {
+          events = events.split(',')
+
+          events.forEach(function(event) {
+            t.$dispatch(event.replaceAll(/\s/g,''))
+          })
+        }
       })
       .catch(errorResponse => {
         const data = errorResponse.response.data
@@ -107,7 +117,7 @@ export default () => ({
 
     this.$dispatch('disable-query-tags')
 
-    this.$dispatch('async-table', {filters: queryString})
+    this.$dispatch('table-updated', {filters: queryString})
 
     this.$el?.closest('.offcanvas-template')?.querySelector('.btn-close')?.click()
   },
