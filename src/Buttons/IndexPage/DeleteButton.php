@@ -39,8 +39,9 @@ final class DeleteButton
                         TextBlock::make('', __('moonshine::ui.confirm_message')),
                     ]
                 )
-                    ->when($resource->isAsync() && $resource->isNowOnIndex(),
-                        fn(FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated')
+                    ->when(
+                        $resource->isAsync() && $resource->isNowOnIndex(),
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated')
                     )
                     ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )
