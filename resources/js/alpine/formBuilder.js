@@ -1,8 +1,4 @@
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from './showWhenFunctions'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -88,11 +84,11 @@ export default () => ({
 
         submitState(form, false, isFormReset)
 
-        if(events !== '') {
+        if (events !== '') {
           events = events.split(',')
 
-          events.forEach(function(event) {
-            t.$dispatch(event.replaceAll(/\s/g,''))
+          events.forEach(function (event) {
+            t.$dispatch(event.replaceAll(/\s/g, ''))
           })
         }
       })

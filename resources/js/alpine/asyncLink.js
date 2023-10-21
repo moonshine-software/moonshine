@@ -1,4 +1,4 @@
-export default (activeClass) => ({
+export default activeClass => ({
   queryTagRequest(data) {
     if (this.$root.classList.contains('active-query-tag')) {
       this.$dispatch('table-updated', {queryTag: 'query-tag=null'})
