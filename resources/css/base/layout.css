@@ -7,7 +7,7 @@
     /* selector :has not supported */
 
     &--sidebar {
-      @apply pt-16 md:pt-5 lg:pt-6 lg:pl-[5.75rem] xl:pl-72;
+      @apply pt-16 md:pt-5 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
     }
 
     &--sidebar&-short {
@@ -17,7 +17,7 @@
     /* selector :has supported */
     @supports selector(:has(*)) {
       &:has(> .layout-menu) {
-        @apply pt-16 md:pt-5 lg:pt-6 lg:pl-[5.75rem] xl:pl-72;
+        @apply pt-16 md:pt-5 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
       }
 
       &-short:has(> .layout-menu) {
@@ -29,13 +29,13 @@
     /* selector :has not supported */
 
     &--top-menu {
-      @apply flex-col px-3 pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
+      @apply flex-col px-3 pb-6 pt-[4.5rem] transition-none md:px-5 lg:pt-24;
     }
 
     /* selector :has supported */
     @supports selector(:has(*)) {
       &:has(> .layout-menu-horizontal) {
-        @apply flex-col px-3 pt-[4.5rem] pb-6 transition-none md:px-5 lg:pt-24;
+        @apply flex-col px-3 pb-6 pt-[4.5rem] transition-none md:px-5 lg:pt-24;
       }
     }
   }

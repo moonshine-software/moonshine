@@ -1,6 +1,6 @@
 .breadcrumbs {
   &-list {
-    @apply flex flex-wrap gap-y-1 gap-x-1.5;
+    @apply flex flex-wrap gap-x-1.5 gap-y-1;
   }
 
   &-item {

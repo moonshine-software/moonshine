@@ -1,6 +1,6 @@
 /* Authentication */
 .authentication {
-  @apply flex min-h-screen flex-col items-center justify-center gap-y-6 py-8 px-4;
+  @apply flex min-h-screen flex-col items-center justify-center gap-y-6 px-4 py-8;
 
   &-content {
     @apply w-full max-w-[420px] rounded-lg bg-white p-5 dark:bg-dark-600 lg:p-8;

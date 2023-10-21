@@ -22,7 +22,7 @@ input[type='number'] {
   @apply flex flex-col gap-y-5;
 
   .form-group + .form-group {
-    @apply mt-0 mb-0;
+    @apply mb-0 mt-0;
   }
 }
 
@@ -30,7 +30,7 @@ input[type='number'] {
   @apply flex w-full flex-col gap-2;
 
   & + .form-group {
-    @apply mt-5 mb-5;
+    @apply mb-5 mt-5;
   }
 
   .form-input,
@@ -74,7 +74,7 @@ input[type='number'] {
       @apply rounded-r-none;
     }
     .expansion {
-      @apply rounded-none border border-gray-300 bg-slate-100 py-2 px-3 text-2xs text-slate-600 shadow-sm first:rounded-l-md last:rounded-r-md dark:border-dark-300 dark:bg-dark-900/20 dark:text-slate-400 [&:not(:first-child)]:border-l-transparent [&:not(:last-child)]:border-r-transparent;
+      @apply rounded-none border border-gray-300 bg-slate-100 px-3 py-2 text-2xs text-slate-600 shadow-sm first:rounded-l-md last:rounded-r-md dark:border-dark-300 dark:bg-dark-900/20 dark:text-slate-400 [&:not(:first-child)]:border-l-transparent [&:not(:last-child)]:border-r-transparent;
       ~ .form-input {
         @apply rounded-l-none rounded-r-md;
       }
@@ -104,7 +104,7 @@ input[type='number'] {
 .form-switcher {
   @apply relative flex cursor-pointer items-center;
   &-toggler {
-    @apply h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring peer-focus:ring-slate-100 dark:border-dark-300 dark:bg-dark-800 dark:peer-focus:ring-dark-100 dark:peer-focus:ring-opacity-30;
+    @apply h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring peer-focus:ring-slate-100 dark:border-dark-300 dark:bg-dark-800 dark:peer-focus:ring-dark-100 dark:peer-focus:ring-opacity-30;
   }
 }
 
@@ -115,10 +115,10 @@ input[type='number'] {
     @apply relative z-3 h-2;
   }
   &-tracker {
-    @apply absolute left-0 right-0 bottom-0 top-0 z-3 rounded-md bg-gray-200 dark:bg-dark-200;
+    @apply absolute bottom-0 left-0 right-0 top-0 z-3 rounded-md bg-gray-200 dark:bg-dark-200;
   }
   &-connect {
-    @apply absolute top-0 bottom-0 z-4 rounded-md bg-primary;
+    @apply absolute bottom-0 top-0 z-4 rounded-md bg-primary;
   }
   &-input {
     @apply pointer-events-none absolute z-4 h-2 w-full cursor-pointer appearance-none opacity-0;
@@ -136,7 +136,7 @@ input[type='number'] {
 
 /* File upload */
 .form-file-upload {
-  @apply cursor-pointer bg-clip-padding p-3 file:-m-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-slate-100 file:p-3 file:transition file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-primary dark:file:text-white dark:file:hover:bg-secondary;
+  @apply cursor-pointer bg-clip-padding p-3 file:-m-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-slate-100 file:p-3 file:transition file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-primary dark:file:text-white dark:file:hover:bg-secondary;
 }
 
 .form-input,
@@ -225,7 +225,7 @@ input[type='number'] {
   }
 
   &-remove {
-    @apply absolute top-1 right-1 z-5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-600 bg-red-600 leading-none text-white will-change-transform hover:bg-white hover:text-red-600 dark:hover:border-red-700 dark:hover:bg-red-700 dark:hover:text-white;
+    @apply absolute right-1 top-1 z-5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-600 bg-red-600 leading-none text-white will-change-transform hover:bg-white hover:text-red-600 dark:hover:border-red-700 dark:hover:bg-red-700 dark:hover:text-white;
     > svg {
       @apply h-3 w-3;
     }
@@ -237,9 +237,9 @@ input[type='number'] {
   @apply relative mb-0 w-full text-2xs dark:after:!border-t-dark-50;
 
   &.is-open {
-    @apply dark:after:!border-t-transparent dark:after:!border-b-dark-50;
+    @apply dark:after:!border-b-dark-50 dark:after:!border-t-transparent;
     .choices__inner {
-      @apply rounded-t-md rounded-b-none;
+      @apply rounded-b-none rounded-t-md;
     }
   }
 
@@ -289,7 +289,7 @@ input[type='number'] {
   }
 }
 .choices select[hidden] {
-  @apply absolute top-0 left-0 !m-0 !block h-full w-full !p-0 opacity-0;
+  @apply absolute left-0 top-0 !m-0 !block h-full w-full !p-0 opacity-0;
 }
 
 /* TinyMCE */

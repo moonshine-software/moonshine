@@ -23,11 +23,11 @@
       @apply lg:pointer-events-none lg:absolute lg:opacity-0;
     }
     .menu-inner-counter {
-      @apply lg:absolute lg:top-0.5 lg:-right-2 lg:max-w-[64px] lg:scale-90;
+      @apply lg:absolute lg:-right-2 lg:top-0.5 lg:max-w-[64px] lg:scale-90;
     }
     .menu-inner-dropdown {
       .menu-inner-counter {
-        @apply lg:top-0.5 lg:right-0 lg:max-w-[48px];
+        @apply lg:right-0 lg:top-0.5 lg:max-w-[48px];
       }
     }
     .menu-inner-divider {
@@ -50,7 +50,7 @@
   }
 
   .menu {
-    @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 bg-body px-6 pt-14 pb-8 opacity-0 transition-all lg:pointer-events-auto lg:visible lg:static lg:z-1 lg:mt-0 lg:flex lg:translate-y-0 lg:flex-col lg:bg-transparent lg:py-0 lg:pl-0 lg:pr-4 lg:opacity-100 lg:transition-none xl:pr-5;
+    @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 bg-body px-6 pb-8 pt-14 opacity-0 transition-all lg:pointer-events-auto lg:visible lg:static lg:z-1 lg:mt-0 lg:flex lg:translate-y-0 lg:flex-col lg:bg-transparent lg:py-0 lg:pl-0 lg:pr-4 lg:opacity-100 lg:transition-none xl:pr-5;
     overflow-y: auto;
     overflow-x: clip;
 
@@ -60,7 +60,7 @@
 
     /* Heading */
     &-heading {
-      @apply pointer-events-auto fixed top-0 left-0 right-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 py-3 px-6 backdrop-blur-sm md:px-10 lg:static lg:z-auto lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:py-3 lg:px-0 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:py-4 xl:px-4;
+      @apply pointer-events-auto fixed left-0 right-0 top-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 px-6 py-3 backdrop-blur-sm md:px-10 lg:static lg:z-auto lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:px-0 lg:py-3 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:px-4 xl:py-4;
 
       &-logo {
         @apply grow-0 lg:grow;
@@ -112,7 +112,7 @@
       }
       &-link,
       &-button {
-        @apply relative flex items-center gap-x-2.5 rounded-lg py-3 px-4 text-xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
+        @apply relative flex items-center gap-x-2.5 rounded-lg px-4 py-3 text-xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
         &._is-active {
           @apply bg-menu-active-bg text-menu-active-color;
           .menu-inner-arrow {
@@ -136,7 +136,7 @@
         @apply grow truncate text-left;
       }
       &-counter {
-        @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:top-0.5 lg:-right-2 lg:z-1 lg:max-w-[64px] lg:scale-90 xl:static xl:top-0 xl:-right-1 xl:max-w-[120px] xl:scale-100;
+        @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:-right-2 lg:top-0.5 lg:z-1 lg:max-w-[64px] lg:scale-90 xl:static xl:-right-1 xl:top-0 xl:max-w-[120px] xl:scale-100;
       }
       &-arrow {
         @apply transition-transform;
@@ -151,7 +151,7 @@
 
       /* Dropdown Menu */
       &-dropdown {
-        @apply mt-2 flex flex-col gap-y-1 rounded-lg bg-menu-dropdown-bg py-1.5 px-1;
+        @apply mt-2 flex flex-col gap-y-1 rounded-lg bg-menu-dropdown-bg px-1 py-1.5;
         .menu-inner-item {
           &::before,
           &::after {
@@ -169,7 +169,7 @@
           }
         }
         .menu-inner-counter {
-          @apply h-5 bg-secondary text-[11px] leading-5 lg:top-0.5 lg:right-0 lg:max-w-[48px] xl:right-1 xl:max-w-[120px];
+          @apply h-5 bg-secondary text-[11px] leading-5 lg:right-0 lg:top-0.5 lg:max-w-[48px] xl:right-1 xl:max-w-[120px];
         }
         .menu-inner-divider {
           @apply -ml-3.5;
@@ -187,7 +187,7 @@
 
     /* User Profile */
     &-profile {
-      @apply flex flex-row items-center gap-y-4 gap-x-2 py-4 px-2 lg:flex-col xl:flex-row;
+      @apply flex flex-row items-center gap-x-2 gap-y-4 px-2 py-4 lg:flex-col xl:flex-row;
       &-main {
         @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
         &:hover {
@@ -284,7 +284,7 @@
         @apply grow truncate text-left;
       }
       &-counter {
-        @apply absolute top-0.5 -right-1 z-1 h-6 max-w-[64px] shrink-0 scale-90 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:static lg:max-w-[120px] lg:scale-100;
+        @apply absolute -right-1 top-0.5 z-1 h-6 max-w-[64px] shrink-0 scale-90 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:static lg:max-w-[120px] lg:scale-100;
       }
       &-arrow {
         @apply transition-transform;
@@ -299,7 +299,7 @@
 
       /* Dropdown Menu */
       &-dropdown {
-        @apply flex flex-col gap-y-1 rounded-lg border border-dark-300 bg-menu-dropdown-bg py-1.5 px-1 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
+        @apply flex flex-col gap-y-1 rounded-lg border border-dark-300 bg-menu-dropdown-bg px-1 py-1.5 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
 
         .menu-inner-item {
           &::before,
@@ -321,7 +321,7 @@
           @apply block;
         }
         .menu-inner-counter {
-          @apply top-0.5 right-0 h-5 max-w-[48px] bg-secondary text-[11px] leading-5 xl:right-1 xl:max-w-[120px];
+          @apply right-0 top-0.5 h-5 max-w-[48px] bg-secondary text-[11px] leading-5 xl:right-1 xl:max-w-[120px];
         }
         .menu-inner-divider {
           @apply my-2 -ml-3.5 pl-4 pr-0.5 before:h-[1px] before:min-w-[16px] before:bg-slate-400;
@@ -351,7 +351,7 @@
 
     /* User Profile */
     &-profile {
-      @apply flex flex-row items-center gap-y-4 gap-x-2;
+      @apply flex flex-row items-center gap-x-2 gap-y-4;
 
       &-main {
         @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;

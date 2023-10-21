@@ -2,7 +2,7 @@
   /* Breadcrumbs */
   .breadcrumbs {
     &-list {
-      @apply flex flex-wrap gap-y-1 gap-x-1.5;
+      @apply flex flex-wrap gap-x-1.5 gap-y-1;
     }
     &-item {
       @apply flex items-center gap-x-1.5 text-3xs md:text-2xs;
@@ -48,10 +48,10 @@
         @apply h-full w-60 rounded-full border-transparent bg-gray-200/50 pr-10 ring-0 transition-all placeholder:text-3xs placeholder:font-normal placeholder:text-slate-600 focus:w-80 focus:border-gray-300 focus:bg-white dark:bg-dark-600 dark:placeholder:text-slate-500 focus:dark:border-dark-200;
       }
       &-icon {
-        @apply pointer-events-none absolute top-0 bottom-0 right-3 z-2 my-auto h-6 w-6 stroke-slate-600 dark:stroke-dark-50;
+        @apply pointer-events-none absolute bottom-0 right-3 top-0 z-2 my-auto h-6 w-6 stroke-slate-600 dark:stroke-dark-50;
       }
       &-close {
-        @apply absolute top-0 bottom-0 right-2 z-2 my-auto h-6 w-6 stroke-slate-600 hover:text-secondary;
+        @apply absolute bottom-0 right-2 top-0 z-2 my-auto h-6 w-6 stroke-slate-600 hover:text-secondary;
       }
     }
   }
@@ -68,7 +68,7 @@
       @apply relative flex gap-x-3 p-3;
     }
     &-remove {
-      @apply absolute top-1/2 right-3 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
+      @apply absolute right-3 top-1/2 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
       > svg {
         @apply h-4 w-4;
       }
