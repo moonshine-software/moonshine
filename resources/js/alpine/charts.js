@@ -35,14 +35,16 @@ export default (options = {}) => ({
   init() {
     this.apexchartsInstance = new ApexCharts(this.$el, options)
 
-    setTimeout(() => {
-      this.apexchartsInstance.render()
-    }, 300)
-
-    window.addEventListener('darkMode:toggle', () => {
+    const updateThemeOptions = () =>
       this.apexchartsInstance.updateOptions(
         Alpine.store('darkMode').on ? darkModeOptions : lightModeOptions,
       )
-    })
+
+    setTimeout(() => {
+      this.apexchartsInstance.render()
+      updateThemeOptions()
+    }, 300)
+
+    window.addEventListener('darkMode:toggle', updateThemeOptions)
   },
 })
