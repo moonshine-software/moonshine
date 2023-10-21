@@ -1,21 +1,21 @@
-export default () => ({
-  dispatchAsyncEvent(data) {
+export default (activeClass) => ({
+  queryTagRequest(data) {
     if (this.$root.classList.contains('active-query-tag')) {
-      this.$dispatch('async-table', {queryTag: 'query-tag=null'})
+      this.$dispatch('table-updated', {queryTag: 'query-tag=null'})
       this.disableQueryTags()
       return
     }
 
-    this.$dispatch('async-table', {queryTag: 'query-tag=' + data})
+    this.$dispatch('table-updated', {queryTag: 'query-tag=' + data})
 
     this.disableQueryTags()
 
-    this.$root.classList.add('btn-primary')
+    this.$root.classList.add(activeClass)
     this.$root.classList.add('active-query-tag')
   },
   disableQueryTags() {
     document.querySelectorAll('.query-tag-button').forEach(function (element) {
-      element.classList.remove('btn-primary')
+      element.classList.remove(activeClass)
       element.classList.remove('active-query-tag')
     })
   },

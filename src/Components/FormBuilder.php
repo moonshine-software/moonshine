@@ -77,9 +77,10 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
-    public function async(?string $asyncUrl = null): self
+    public function async(?string $asyncUrl = null, ?string $asyncEvents = null): self
     {
         $this->asyncUrl = $asyncUrl ?? $this->getAction();
+        $this->asyncEvents = $asyncEvents;
 
         return $this;
     }
@@ -159,7 +160,7 @@ final class FormBuilder extends RowComponent
 
         if($this->isAsync()) {
             $this->customAttributes([
-                'x-on:submit.prevent' => 'async($event.target)',
+                'x-on:submit.prevent' => 'async($event.target, `'.$this->asyncEvents().'`)',
             ]);
         }
 

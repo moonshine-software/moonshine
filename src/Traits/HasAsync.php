@@ -8,14 +8,17 @@ trait HasAsync
 {
     protected ?string $asyncUrl = null;
 
+    protected ?string $asyncEvents = null;
+
     public function isAsync(): bool
     {
         return ! is_null($this->asyncUrl);
     }
 
-    public function async(?string $asyncUrl = null): static
+    public function async(?string $asyncUrl = null, ?string $asyncEvents = null): static
     {
         $this->asyncUrl = $asyncUrl;
+        $this->asyncEvents = $asyncEvents;
 
         return $this;
     }
@@ -23,5 +26,10 @@ trait HasAsync
     public function asyncUrl(): ?string
     {
         return $this->asyncUrl;
+    }
+
+    public function asyncEvents(): ?string
+    {
+        return $this->asyncEvents;
     }
 }
