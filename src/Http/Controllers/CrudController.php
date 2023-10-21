@@ -45,11 +45,17 @@ class CrudController extends MoonShineController
         return $this->updateOrCreate($request);
     }
 
-    public function destroy(DeleteFormRequest $request): RedirectResponse
+    public function destroy(DeleteFormRequest $request): JsonResponse|RedirectResponse
     {
         $request->getResource()->delete(
             $request->getResource()->getItemOrFail()
         );
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => __('moonshine::ui.deleted'),
+            ]);
+        }
 
         $this->toast(
             __('moonshine::ui.deleted'),
