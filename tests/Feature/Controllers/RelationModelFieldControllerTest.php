@@ -74,10 +74,7 @@ it('pagination has many sort', function () {
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
         '_relation' => 'comments',
-        'sort' => [
-            'column' => 'id',
-            'direction' => 'asc',
-        ],
+        'sort' => 'id',
     ]))
         ->assertOk()
         ->assertSee('asyncRequest')

@@ -30,11 +30,7 @@ trait WithSorts
     public function sortQuery(?string $url = null): string
     {
         $sortData = [
-            'sort' => [
-                'column' => $this->column(),
-                'direction' => $this->sortActive() && $this->sortDirection('asc') ? 'desc'
-                    : 'asc',
-            ],
+            'sort' => ($this->sortActive() && $this->sortDirection('asc') ? '-' : '').$this->column(),
             'page' => request('page', 1),
         ];
 
@@ -46,16 +42,34 @@ trait WithSorts
 
         $separator = empty($urlParse['query']) ? '?' : '&';
 
-        return $url . $separator . Arr::query($sortData);
+        return $url.$separator.Arr::query($sortData);
     }
 
     public function sortActive(): bool
     {
-        return request('sort.column') === $this->column();
+        return $this->getSortColumnFromRequest() === $this->column();
     }
 
     public function sortDirection(string $type): bool
     {
-        return request('sort.direction') === strtolower($type);
+        return $this->getSortDirectionFromRequest() === strtolower($type);
+    }
+
+    private function getSortColumnFromRequest(): ?string
+    {
+        if (($sort = request('sort')) && is_string($sort)) {
+            return ltrim($sort, '-');
+        }
+
+        return null;
+    }
+
+    private function getSortDirectionFromRequest(): ?string
+    {
+        if (($sort = request('sort')) && is_string($sort)) {
+            return str_starts_with($sort, '-') ? 'desc' : 'asc';
+        }
+
+        return null;
     }
 }
