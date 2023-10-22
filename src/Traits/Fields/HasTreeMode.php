@@ -42,10 +42,15 @@ trait HasTreeMode
         return $this->buildTree($data);
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function buildTree(Collection $data, int|string $parentKey = 0, int $offset = 0): string
     {
         if ($data->has($parentKey)) {
             foreach ($data->get($parentKey) as $item) {
+                $label = $this->columnOrFormattedValue($item, $item->{$this->getResourceColumn()});
+
                 $element = view(
                     'moonshine::components.form.input-composition',
                     [
@@ -57,7 +62,7 @@ trait HasTreeMode
                             'class' => 'form-group-inline',
                         ]),
                         'beforeLabel' => true,
-                        'label' => $item->{$this->getResourceColumn()},
+                        'label' => $label,
                     ]
                 );
 

@@ -157,7 +157,7 @@ trait WithAsyncSearch
         $this->asyncSearchColumn = $asyncSearchColumn;
         $this->asyncSearchCount = $asyncSearchCount;
         $this->asyncSearchQuery = $asyncSearchQuery;
-        $this->asyncSearchValueCallback = $asyncSearchValueCallback;
+        $this->asyncSearchValueCallback = $asyncSearchValueCallback ?? $this->formattedValueCallback();
         $this->asyncUrl = $url;
 
         $this->valuesQuery = function (Builder $query) {

@@ -62,6 +62,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected ?Collection $memoizeAllValues = null;
 
+    protected ?string $columnLabel = null;
+
     public function getView(): string
     {
         if ($this->isTree()) {
@@ -133,6 +135,18 @@ class BelongsToMany extends ModelRelationField implements
         return collect($this->toValue())->every(fn ($item): bool => $item instanceof Model);
     }
 
+    public function columnLabel(string $label): self
+    {
+        $this->columnLabel = $label;
+
+        return $this;
+    }
+
+    protected function getResourceColumnLabel(): string
+    {
+        return $this->columnLabel ?? $this->getResource()->title();
+    }
+
     public function preparedFields(): Fields
     {
         return $this->getFields()->onlyFields()->map(
@@ -147,9 +161,13 @@ class BelongsToMany extends ModelRelationField implements
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveValue(): mixed
     {
         $titleColumn = $this->getResourceColumn();
+
         $checkedColumn = $this->name('${index0}');
         $identityField = Checkbox::make('#', $checkedColumn)
             ->setAttribute('class', 'pivotChecker')
@@ -158,7 +176,10 @@ class BelongsToMany extends ModelRelationField implements
 
         $fields = $this->preparedFields()
             ->onlyFields()
-            ->prepend(Preview::make($titleColumn)->customAttributes(['class' => 'pivotTitle']))
+            ->prepend(
+                Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->formattedValueCallback())
+                    ->customAttributes(['class' => 'pivotTitle'])
+            )
             ->prepend($identityField);
 
         $values = $this->memoizeAllValues ?? $this->resolveValuesQuery()->get();
@@ -213,6 +234,18 @@ class BelongsToMany extends ModelRelationField implements
             ->withNotFound();
     }
 
+    protected function columnOrFormattedValue(Model $item, string|int $default): string|int
+    {
+        if (is_closure($this->formattedValueCallback())) {
+            return value(
+                $this->formattedValueCallback(),
+                $item
+            );
+        }
+
+        return $default;
+    }
+
     /**
      * @throws Throwable
      */
@@ -233,14 +266,7 @@ class BelongsToMany extends ModelRelationField implements
 
         if ($this->inLine) {
             return $values->implode(function (Model $item) use ($column) {
-                $value = $item->{$column} ?? false;
-
-                if (is_closure($this->formattedValueCallback())) {
-                    $value = value(
-                        $this->formattedValueCallback(),
-                        $item
-                    );
-                }
+                $value = $this->columnOrFormattedValue($item, $item->{$column} ?? false);
 
                 if ($this->inLineBadge) {
                     return view('moonshine::ui.badge', [
@@ -256,7 +282,7 @@ class BelongsToMany extends ModelRelationField implements
 
         $fields = $this->preparedFields()
             ->onlyFields()
-            ->prepend(Text::make('#', $column))
+            ->prepend(Text::make($this->getResourceColumnLabel(), $column, $this->formattedValueCallback()))
             ->prepend(ID::make());
 
         return TableBuilder::make($fields, $values)
@@ -271,6 +297,9 @@ class BelongsToMany extends ModelRelationField implements
         return static fn ($item) => $item;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveAfterApply(mixed $data): mixed
     {
         /* @var Model $item */
@@ -311,6 +340,9 @@ class BelongsToMany extends ModelRelationField implements
         return $data;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveBeforeApply(mixed $data): mixed
     {
         $this->getFields()
