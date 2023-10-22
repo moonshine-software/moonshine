@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use MoonShine\MoonShine;
 
 use function Laravel\Prompts\outro;
+
 use function Laravel\Prompts\text;
+
+use MoonShine\MoonShine;
 
 class MakePageCommand extends MoonShineCommand
 {
@@ -32,7 +34,7 @@ class MakePageCommand extends MoonShineCommand
         if ($this->option('crud')) {
             $dir = "$dir/$className";
             foreach (['IndexPage', 'FormPage', 'DetailPage'] as $type) {
-                $this->makePage($className.$type, 'CrudPage', $dir, $type);
+                $this->makePage($className . $type, 'CrudPage', $dir, $type);
             }
         } else {
             $this->makePage($className, 'Page', $dir, $extends);
