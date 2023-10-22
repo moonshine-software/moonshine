@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{info, outro, select, text};
-
-use MoonShine\MoonShine;
 
 class MakeResourceCommand extends MoonShineCommand
 {
@@ -58,30 +57,26 @@ class MakeResourceCommand extends MoonShineCommand
             'Dummy' => $name,
         ];
 
-        if($stub === 'ModelResourceWithPages') {
+        if ($stub === 'ModelResourceWithPages') {
             $pageDir = "Pages/$dir";
-            $pageData = fn (string $name): array => [
-                'className' => "$dir$name",
-                '--dir' => $pageDir,
-                '--extends' => $name,
-            ];
 
-            $this->call(MakePageCommand::class, $pageData('IndexPage'));
-            $this->call(MakePageCommand::class, $pageData('FormPage'));
-            $this->call(MakePageCommand::class, $pageData('DetailPage'));
+            $this->call(MakePageCommand::class, [
+                'className' => $name,
+                '--crud' => true,
+            ]);
 
-            $pageNamespace = fn (string $name): string => MoonShine::namespace(
+            $pageNamespace = static fn (string $name): string => MoonShine::namespace(
                 str_replace('/', '\\', "\\$pageDir\\$dir$name")
             );
 
             $replaceData = [
-                '{indexPage}' => "{$dir}IndexPage",
-                '{formPage}' => "{$dir}FormPage",
-                '{detailPage}' => "{$dir}DetailPage",
-                '{index-page-namespace}' => $pageNamespace('IndexPage'),
-                '{form-page-namespace}' => $pageNamespace('FormPage'),
-                '{detail-page-namespace}' => $pageNamespace('DetailPage'),
-            ] + $replaceData;
+                    '{indexPage}' => "{$dir}IndexPage",
+                    '{formPage}' => "{$dir}FormPage",
+                    '{detailPage}' => "{$dir}DetailPage",
+                    '{index-page-namespace}' => $pageNamespace('IndexPage'),
+                    '{form-page-namespace}' => $pageNamespace('FormPage'),
+                    '{detail-page-namespace}' => $pageNamespace('DetailPage'),
+                ] + $replaceData;
         }
 
         $this->copyStub($stub, $resource, $replaceData);

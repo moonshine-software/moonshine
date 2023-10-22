@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
-
-use MoonShine\MoonShine;
 
 class MakePageCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?} {--dir=} {--extends=}';
+    protected $signature = 'moonshine:page {className?} {--crud} {--dir=} {--extends=}';
 
     protected $description = 'Create page';
 
@@ -31,13 +29,35 @@ class MakePageCommand extends MoonShineCommand
             required: true
         );
 
-        $page = $this->getDirectory() . "/$dir/$className.php";
-
-        if(! is_dir($this->getDirectory() . "/$dir")) {
-            $this->makeDir($this->getDirectory() . "/$dir");
+        if ($this->option('crud')) {
+            $dir = "$dir/$className";
+            foreach (['IndexPage', 'FormPage', 'DetailPage'] as $type) {
+                $this->makePage($className.$type, 'CrudPage', $dir, $type);
+            }
+        } else {
+            $this->makePage($className, 'Page', $dir, $extends);
         }
 
-        $stub = $this->option('extends') ? 'CrudPage' : 'Page';
+        return self::SUCCESS;
+    }
+
+    /**
+     * @throws FileNotFoundException
+     */
+    private function makePage(
+        string $className,
+        string $stub = 'Page',
+        ?string $dir = null,
+        ?string $extends = null
+    ): void {
+        $dir = is_null($dir) ? 'Pages' : $dir;
+        $extends = is_null($extends) ? 'Page' : $extends;
+
+        $page = $this->getDirectory() . "/$dir/$className.php";
+
+        if (! is_dir($this->getDirectory() . "/$dir")) {
+            $this->makeDir($this->getDirectory() . "/$dir");
+        }
 
         $this->copyStub($stub, $page, [
             '{namespace}' => MoonShine::namespace('\\' . str_replace('/', '\\', $dir)),
@@ -53,7 +73,5 @@ class MakePageCommand extends MoonShineCommand
                 $page
             )
         );
-
-        return self::SUCCESS;
     }
 }
