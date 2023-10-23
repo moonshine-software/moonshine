@@ -20,13 +20,4 @@ class RelationModelFieldDeleteRequest extends RelationModelFieldRequest
 
         return $resource->can('delete');
     }
-
-    public function rules(): array
-    {
-        $this->errorBag = $this->getRelationName();
-
-        $resource = $this->getField()->getResource();
-
-        return $resource->rules($this->getFieldItemOrFail());
-    }
 }
