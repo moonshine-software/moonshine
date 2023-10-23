@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {namespace};
+
+use MoonShine\Contracts\MoonShineDataCast;
+use MoonShine\Traits\Makeable;
+
+/**
+ * @template T
+ * @method static static make(string $class)
+ */
+final class DummyCast implements MoonShineDataCast
+{
+    use Makeable;
+
+    /**
+     * @param  class-string<T>  $class
+     */
+    public function __construct(
+        protected string $class
+    ) {
+    }
+
+    public function getClass(): string
+    {
+        return $this->class;
+    }
+
+    /**
+     * @return T
+     */
+    public function hydrate(array $data): mixed
+    {
+        return $data;
+    }
+
+    /**
+     * @param  T  $data
+     */
+    public function dehydrate(mixed $data): array
+    {
+        return [];
+    }
+}

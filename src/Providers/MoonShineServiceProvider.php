@@ -20,8 +20,10 @@ use MoonShine\Commands\MakeApplyCommand;
 use MoonShine\Commands\MakeComponentCommand;
 use MoonShine\Commands\MakeControllerCommand;
 use MoonShine\Commands\MakeFieldCommand;
+use MoonShine\Commands\MakeHandlerCommand;
 use MoonShine\Commands\MakePageCommand;
 use MoonShine\Commands\MakeResourceCommand;
+use MoonShine\Commands\MakeTypeCastCommand;
 use MoonShine\Commands\MakeUserCommand;
 use MoonShine\Commands\PublishCommand;
 use MoonShine\Http\Middleware\ChangeLocale;
@@ -41,6 +43,8 @@ class MoonShineServiceProvider extends ServiceProvider
         MakeUserCommand::class,
         MakeComponentCommand::class,
         MakeApplyCommand::class,
+        MakeHandlerCommand::class,
+        MakeTypeCastCommand::class,
         PublishCommand::class,
     ];
 
