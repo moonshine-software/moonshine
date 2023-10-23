@@ -60,7 +60,7 @@ abstract class ModelResource extends Resource
      *  – 'select'
      *  – null.
      */
-    protected ?string $clickAction = 'detail';
+    protected ?string $clickAction = null;
 
     protected function pages(): array
     {
