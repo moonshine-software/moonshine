@@ -70,10 +70,12 @@ table {
   &[data-click-action] {
     tbody {
       tr {
-        @apply relative;
+        td {
+          @apply relative;
+        }
 
         &:hover td::before {
-          @apply absolute inset-0 pointer-events-none bg-gray-400/[.01] mix-blend-luminosity;
+          @apply absolute inset-0 pointer-events-none bg-gray-400/5 mix-blend-luminosity;
           content: "";
         }
       }
