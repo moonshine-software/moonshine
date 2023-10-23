@@ -134,6 +134,7 @@ trait ResourceModelQuery
     {
         return $this->simplePaginate;
     }
+
     /**
      * @throws Throwable
      */
@@ -143,10 +144,7 @@ trait ResourceModelQuery
             ->resolveSearch()
             ->resolveFilters()
             ->resolveParentResource()
-            ->resolveOrder(
-                request('sort.column', $this->sortColumn()),
-                request('sort.direction', $this->sortDirection())
-            )
+            ->resolveOrder()
             ->cacheQueryParams();
 
         return $this->query();
@@ -270,8 +268,16 @@ trait ResourceModelQuery
         });
     }
 
-    protected function resolveOrder(string $column, string $direction): static
+    protected function resolveOrder(): static
     {
+        $column = $this->sortColumn();
+        $direction = $this->sortDirection();
+
+        if (($sort = request('sort')) && is_string($sort)) {
+            $column = ltrim($sort, '-');
+            $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
+        }
+
         $this->query()->orderBy($column, $direction);
 
         return $this;

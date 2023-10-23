@@ -25,10 +25,9 @@ final class FiltersForm
             ->fields(
                 $filters
                     ->when(
-                        request('sort.column'),
+                        request('sort'),
                         static fn ($fields): Fields => $fields
-                            ->prepend(Hidden::make(column: 'sort.direction')->setValue(request('sort.direction')))
-                            ->prepend(Hidden::make(column: 'sort.column')->setValue(request('sort.column')))
+                            ->prepend(Hidden::make(column: 'sort')->setValue(request('sort')))
                     )
                     ->when(
                         request('query-tag'),
