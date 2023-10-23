@@ -32,6 +32,7 @@ class AsyncDetailButton
                 fn (?Model $item): bool => ! is_null($item) && in_array('view', $resource->getActiveActions())
                 && $resource->setItem($item)->can('view')
             )
+            ->customAttributes(['class' => 'detail-button'])
             ->showInLine();
     }
 }

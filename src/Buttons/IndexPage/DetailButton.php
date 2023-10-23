@@ -33,6 +33,7 @@ final class DetailButton
                 && $resource->setItem($item)->can('view')
             )
             ->icon('heroicons.outline.eye')
+            ->customAttributes(['class' => 'detail-button'])
             ->showInLine();
     }
 }

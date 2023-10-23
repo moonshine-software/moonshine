@@ -210,4 +210,34 @@ export default (
 
     return resultUrl.toString()
   },
+
+  rowClickAction(event) {
+    const isIgnoredElement = event
+      .composedPath()
+      .some(
+        path =>
+          path instanceof HTMLAnchorElement ||
+          path instanceof HTMLButtonElement ||
+          path instanceof HTMLInputElement ||
+          path instanceof HTMLLabelElement,
+      )
+
+    if (isIgnoredElement || window.getSelection()?.toString()) {
+      return
+    }
+
+    const rowElement = this.$el.parentNode
+
+    switch (this.table.dataset.clickAction) {
+      case 'detail':
+        rowElement.querySelector('.detail-button')?.click()
+        break
+      case 'edit':
+        rowElement.querySelector('.edit-button')?.click()
+        break
+      case 'select':
+        rowElement.querySelector('.tableActionRow[type="checkbox"]')?.click()
+        break
+    }
+  },
 })
