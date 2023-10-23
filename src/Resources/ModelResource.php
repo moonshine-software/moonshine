@@ -115,13 +115,6 @@ abstract class ModelResource extends Resource
         return $this->isPrecognitive;
     }
 
-    public function withClickAction(string | Closure | null $clickAction): static
-    {
-        $this->clickAction = $clickAction;
-
-        return $this;
-    }
-
     public function getClickAction(): ?string
     {
         return $this->clickAction;
