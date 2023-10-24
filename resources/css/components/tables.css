@@ -78,8 +78,8 @@ table {
           @apply shadow-sm;
 
           td::before {
-            @apply absolute inset-0 pointer-events-none bg-zinc-800 dark:bg-zinc-400 opacity-5;
-            content: "";
+            @apply pointer-events-none absolute inset-0 bg-zinc-800 opacity-5 dark:bg-zinc-400;
+            content: '';
           }
         }
       }
