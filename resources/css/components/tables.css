@@ -66,6 +66,25 @@ table {
       @apply max-w-lg whitespace-nowrap px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 lg:whitespace-normal;
     }
   }
+
+  &[data-click-action] {
+    tbody {
+      tr {
+        td {
+          @apply relative;
+        }
+
+        &:hover {
+          @apply shadow-sm;
+
+          td::before {
+            @apply absolute inset-0 pointer-events-none bg-zinc-800 dark:bg-zinc-400 opacity-5;
+            content: "";
+          }
+        }
+      }
+    }
+  }
 }
 
 .table-responsive {

@@ -52,6 +52,16 @@ abstract class ModelResource extends Resource
 
     protected bool $isPrecognitive = false;
 
+    /**
+     * The click action to use when clicking on the resource in the table.
+     * Can be one of:
+     *  – 'detail'
+     *  – 'edit'
+     *  – 'select'
+     *  – null.
+     */
+    protected ?string $clickAction = null;
+
     protected function pages(): array
     {
         return [
@@ -103,6 +113,11 @@ abstract class ModelResource extends Resource
     public function isPrecognitive(): bool
     {
         return $this->isPrecognitive;
+    }
+
+    public function getClickAction(): ?string
+    {
+        return $this->clickAction;
     }
 
     public function metrics(): array

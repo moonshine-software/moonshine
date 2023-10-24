@@ -4,6 +4,7 @@
     'vertical' => false,
     'editable' => false,
     'preview' => false,
+    'hasClickAction' => false,
 ])
 @foreach($rows as $row)
     <tr {{ $row->trAttributes($loop->index) }}>
@@ -49,6 +50,10 @@
                             ? $row->tdAttributes($index, 1)
                             : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
                         x-data="asyncData"
+                        @if(!$vertical && $hasClickAction)
+                            :class="'cursor-pointer'"
+                            @click.stop="rowClickAction"
+                        @endif
                     >
                         @if($field->isSee($field->toValue()))
                             {!! !$field->isForcePreview() && $editable ? $field->getBeforeRender() : '' !!}

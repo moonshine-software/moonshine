@@ -34,6 +34,7 @@ final class FormButton
                 fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
                 && $resource->setItem($item)->can('update')
             )
+            ->customAttributes(['class' => 'edit-button'])
             ->showInLine();
     }
 }
