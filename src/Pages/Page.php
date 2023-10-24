@@ -118,11 +118,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function getLayers(): array
     {
-        return array_merge(
-            $this->getLayerComponents(Layer::TOP),
-            $this->getLayerComponents(Layer::MAIN),
-            $this->getLayerComponents(Layer::BOTTOM),
-        );
+        return [...$this->getLayerComponents(Layer::TOP), ...$this->getLayerComponents(Layer::MAIN), ...$this->getLayerComponents(Layer::BOTTOM)];
     }
 
     public function getLayerComponents(Layer $layer): array

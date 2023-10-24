@@ -66,12 +66,7 @@ class IndexPage extends Page
      */
     protected function mainLayer(): array
     {
-        return array_merge(
-            $this->filtersForm(),
-            $this->actionButtons(),
-            $this->queryTags(),
-            $this->table(),
-        );
+        return [...$this->filtersForm(), ...$this->actionButtons(), ...$this->queryTags(), ...$this->table()];
     }
 
     protected function metrics(): ?MoonshineComponent
