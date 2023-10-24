@@ -8,3 +8,4 @@ node_modules
 app
 reports
 phpunit.xml.dist
+.env
