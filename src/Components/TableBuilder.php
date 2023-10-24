@@ -6,6 +6,7 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
@@ -102,11 +103,34 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
+    protected function prepareAsyncUrlFromPaginator(): string
+    {
+        $hostAsyncUrl = strtok($this->asyncUrl(), '?');
+
+        if(!$hostAsyncUrl) {
+            return $this->asyncUrl();
+        }
+
+        parse_str(parse_url($this->asyncUrl(), PHP_URL_QUERY), $asyncUri);
+
+        $paginatorUri = $this->getPaginator()->resolveQueryString();
+
+        $asyncUri = array_filter($asyncUri, function ($value, $key) use ($paginatorUri) {
+            return !isset($paginatorUri[$key]);
+        }, ARRAY_FILTER_USE_BOTH);
+
+        if(count($asyncUri)) {
+            return $hostAsyncUrl . "?" . Arr::query($asyncUri);
+        }
+
+        return $hostAsyncUrl;
+    }
+
     protected function viewData(): array
     {
         if($this->isAsync() && $this->hasPaginator()) {
             $this->getPaginator()
-                ?->setPath($this->asyncUrl());
+                ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
         return [
