@@ -105,13 +105,15 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function prepareAsyncUrlFromPaginator(): string
     {
-        $hostAsyncUrl = strtok($this->asyncUrl(), '?');
+        $withoutQuery = strtok($this->asyncUrl(), '?');
 
-        if(!$hostAsyncUrl) {
+        if(!$withoutQuery) {
             return $this->asyncUrl();
         }
 
-        parse_str(parse_url($this->asyncUrl(), PHP_URL_QUERY), $asyncUri);
+        $query = parse_url($this->asyncUrl(), PHP_URL_QUERY);
+
+        parse_str($query, $asyncUri);
 
         $paginatorUri = $this->getPaginator()->resolveQueryString();
 
@@ -120,10 +122,10 @@ final class TableBuilder extends IterableComponent implements TableContract
         }, ARRAY_FILTER_USE_BOTH);
 
         if(count($asyncUri)) {
-            return $hostAsyncUrl . "?" . Arr::query($asyncUri);
+            return $withoutQuery . "?" . Arr::query($asyncUri);
         }
 
-        return $hostAsyncUrl;
+        return $withoutQuery;
     }
 
     protected function viewData(): array
