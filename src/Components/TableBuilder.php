@@ -107,7 +107,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     {
         $withoutQuery = strtok($this->asyncUrl(), '?');
 
-        if(!$withoutQuery) {
+        if(! $withoutQuery) {
             return $this->asyncUrl();
         }
 
@@ -117,7 +117,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         $paginatorUri = $this->getPaginator()->resolveQueryString();
 
-        $asyncUri = array_filter($asyncUri, fn($value, $key): bool => !isset($paginatorUri[$key]), ARRAY_FILTER_USE_BOTH);
+        $asyncUri = array_filter($asyncUri, fn ($value, $key): bool => ! isset($paginatorUri[$key]), ARRAY_FILTER_USE_BOTH);
 
         if($asyncUri !== []) {
             return $withoutQuery . "?" . Arr::query($asyncUri);
