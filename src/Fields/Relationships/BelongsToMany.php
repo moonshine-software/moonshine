@@ -313,6 +313,14 @@ class BelongsToMany extends ModelRelationField implements
             return $data;
         }
 
+        if ($this->getFields()->isEmpty()) {
+            $item->{$this->getRelationName()}()->sync(
+                array_keys($requestValues)
+            );
+
+            return $data;
+        }
+
         foreach ($requestValues as $key => $checked) {
             foreach ($this->getFields() as $field) {
                 $field->appendRequestKeyPrefix(
