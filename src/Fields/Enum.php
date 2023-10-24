@@ -19,7 +19,7 @@ class Enum extends Select implements DefaultCanBeEnum
 
         $this->options(
             $values->mapWithKeys(fn ($value): array => [
-                $value->name => method_exists($value, 'toString')
+                $value->value => method_exists($value, 'toString')
                     ? $value->toString()
                     : $value->value,
             ])->toArray()
