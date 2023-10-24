@@ -12,6 +12,7 @@
     'creatable' => false,
     'reindex' => false,
     'sortable' => false,
+    'searchable' => false
 ])
 
 <div x-data="tableBuilder(
@@ -23,12 +24,12 @@
 )"
     @add-table-row.window="add(true)"
     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
+    @if($async) @table-updated.window="asyncRequest" @endif
 >
-    @if($async)
+    @if($async && $searchable)
         <div class="flex items-center gap-2">
             <form action="{{ $asyncUrl }}"
                   @submit.prevent="asyncFormRequest"
-                  @table-updated.window="asyncRequest"
             >
                 <x-moonshine::form.input
                     name="search"
