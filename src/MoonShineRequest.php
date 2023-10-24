@@ -63,7 +63,7 @@ class MoonShineRequest extends Request
 
     public function getParentResourceId(): ?string
     {
-        return $this->route('parentId');
+        return $this->get('_parentId');
     }
 
     public function getParentRelationName(): ?string
