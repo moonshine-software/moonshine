@@ -102,7 +102,7 @@ abstract class Resource implements ResourceContract, MenuFiller
         return $this
             ->getPages()
             ->first()
-            ->url();
+            ->route();
     }
 
     public function isActive(): bool
