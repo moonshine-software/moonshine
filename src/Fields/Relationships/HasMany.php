@@ -159,7 +159,7 @@ class HasMany extends ModelRelationField implements HasFields
             to_page(
                 page: IndexPage::class,
                 resource: $this->getResource(),
-                params: ['parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}]
+                params: ['_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}]
             )
         )
             ->icon('heroicons.outline.eye')
