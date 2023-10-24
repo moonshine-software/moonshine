@@ -43,7 +43,11 @@ final class ModelCast implements MoonShineDataCast
                 $value->getKeyName() => $data[$value->getKeyName()] ?? null,
                 ...collect($data)->filter(fn ($item): bool => is_scalar($item))->toArray(),
             ])
-            ->fill($data)
+            ->fill(
+                collect($data)
+                    ->except([$value->getKeyName(), $value->getUpdatedAtColumn(), $value->getCreatedAtColumn()])
+                    ->toArray()
+            )
             ->setRelations($data['_relations'] ?? []);
 
         $value->exists = ! empty($value->getKey());

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{info, outro, select, text};
-
-use MoonShine\MoonShine;
 
 class MakeResourceCommand extends MoonShineCommand
 {
@@ -42,6 +41,10 @@ class MakeResourceCommand extends MoonShineCommand
         $title = $this->option('title') ?? str($name)->singular()->plural()->value();
 
         $resource = $this->getDirectory() . "/Resources/{$name}Resource.php";
+
+        if (! is_dir($this->getDirectory() . "/Resources")) {
+            $this->makeDir($this->getDirectory() . "/Resources");
+        }
 
         $stub = select('Resource type', [
             'ModelResourceDefault' => 'Default model resource',

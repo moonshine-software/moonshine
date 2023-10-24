@@ -6,14 +6,13 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
+use MoonShine\Fields\Field;
+use MoonShine\MoonShine;
+use Symfony\Component\Finder\SplFileInfo;
 
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
-
-use MoonShine\Fields\Field;
-use MoonShine\MoonShine;
-use Symfony\Component\Finder\SplFileInfo;
 
 class MakeFieldCommand extends MoonShineCommand
 {
@@ -74,11 +73,29 @@ class MakeFieldCommand extends MoonShineCommand
             'DummyField' => $className,
         ]);
 
+        $view = str_replace('.blade.php', '', $view);
+        $viewPath = resource_path('views/' . str_replace('.', DIRECTORY_SEPARATOR, $view));
+        $viewPath .= '.blade.php';
+
+        if(! is_dir(dirname($viewPath))) {
+            $this->makeDir(dirname($viewPath));
+        }
+
+        $this->copyStub('view', $viewPath);
+
         outro(
             "$className was created: " . str_replace(
                 base_path(),
                 '',
                 $field
+            )
+        );
+
+        outro(
+            "View was created: " . str_replace(
+                base_path(),
+                '',
+                $viewPath
             )
         );
 

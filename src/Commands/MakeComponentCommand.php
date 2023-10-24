@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
-
-use MoonShine\MoonShine;
 
 class MakeComponentCommand extends MoonShineCommand
 {
@@ -47,6 +45,16 @@ class MakeComponentCommand extends MoonShineCommand
             $this->makeDir($this->getDirectory() . '/Components');
         }
 
+        $view = str_replace('.blade.php', '', $view);
+        $viewPath = resource_path('views/' . str_replace('.', DIRECTORY_SEPARATOR, $view));
+        $viewPath .= '.blade.php';
+
+        if(! is_dir(dirname($viewPath))) {
+            $this->makeDir(dirname($viewPath));
+        }
+
+        $this->copyStub('view', $viewPath);
+
         $this->copyStub('Component', $component, [
             '{namespace}' => MoonShine::namespace('\Components'),
             '{view}' => $view,
@@ -58,6 +66,14 @@ class MakeComponentCommand extends MoonShineCommand
                 base_path(),
                 '',
                 $component
+            )
+        );
+
+        outro(
+            "View was created: " . str_replace(
+                base_path(),
+                '',
+                $viewPath
             )
         );
 
