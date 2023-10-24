@@ -74,9 +74,13 @@ table {
           @apply relative;
         }
 
-        &:hover td::before {
-          @apply absolute inset-0 pointer-events-none bg-gray-400/5 mix-blend-luminosity;
-          content: "";
+        &:hover {
+          @apply shadow-sm;
+
+          td::before {
+            @apply absolute inset-0 pointer-events-none bg-zinc-800 dark:bg-zinc-400 opacity-5;
+            content: "";
+          }
         }
       }
     }
