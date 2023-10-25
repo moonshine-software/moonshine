@@ -40,7 +40,7 @@ final class HasManyCreateButton
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),
                 fn (ActionButton $action): string => (string) FormBuilder::make($action->url())
-                    ->switchFormMode($resource->isAsync())
+                    ->switchFormMode($resource->isAsync(), 'table-updated')
                     ->name($field->getRelationName())
                     ->fillCast(
                         [$field->getRelation()?->getForeignKeyName() => $resourceId],
