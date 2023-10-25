@@ -132,7 +132,7 @@ export default (
     if (this.$event.detail && this.$event.detail.queryTag) {
       url = this.prepareUrl(url)
 
-      if(this.$event.detail.queryTag !== 'query-tag=null') {
+      if (this.$event.detail.queryTag !== 'query-tag=null') {
         const urlWithQueryTags = new URL(url)
 
         let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
