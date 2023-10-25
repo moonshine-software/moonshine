@@ -4,6 +4,7 @@
     'vertical' => false,
     'editable' => false,
     'preview' => false,
+    'simple' => false,
     'hasClickAction' => false,
 ])
 @foreach($rows as $row)
@@ -73,6 +74,7 @@
                 @if($vertical) width="5%" @endif
             >
                 <x-moonshine::table.actions
+                    :simple="$simple"
                     :actions="$row->getActions()"
                 />
             </td>

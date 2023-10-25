@@ -68,6 +68,7 @@
                         :vertical="$vertical"
                         :preview="$preview"
                         :editable="$editable"
+                        :simple="$simple"
                         :actions="$bulkButtons"
                         :has-click-action="$attributes->get('data-click-action') !== null"
                     />
