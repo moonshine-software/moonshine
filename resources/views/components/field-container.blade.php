@@ -7,7 +7,8 @@
     <div class="hidden">{{ $slot }}</div>
 @else
     <x-moonshine::form.input-wrapper
-        :attributes="$field->wrapperAttributes()"
+        :attributes="$field->wrapperAttributes()
+            ->merge(['required' => $field->attributes()->get('required')])"
         label="{{ $field->label() }}"
         name="{{ $field->name() }}"
         id="{{ $field->id() }}"
