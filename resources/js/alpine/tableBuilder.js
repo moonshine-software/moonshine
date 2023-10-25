@@ -132,11 +132,13 @@ export default (
     if (this.$event.detail && this.$event.detail.queryTag) {
       url = this.prepareUrl(url)
 
-      const urlWithQueryTags = new URL(url)
+      if(this.$event.detail.queryTag !== 'query-tag=null') {
+        const urlWithQueryTags = new URL(url)
 
-      let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
+        let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
 
-      url = urlWithQueryTags.toString() + separator + this.$event.detail.queryTag
+        url = urlWithQueryTags.toString() + separator + this.$event.detail.queryTag
+      }
     }
 
     const t = this

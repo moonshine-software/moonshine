@@ -6,12 +6,14 @@
     'async' => false,
     'preview' => false,
     'simple' => false,
+    'simplePaginate' => false,
     'editable' => false,
     'notfound' => false,
     'vertical' => false,
     'creatable' => false,
     'reindex' => false,
     'sortable' => false,
+    'searchable' => false
 ])
 
 <div x-data="tableBuilder(
@@ -23,12 +25,12 @@
 )"
     @add-table-row.window="add(true)"
     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
+    @if($async) @table-updated.window="asyncRequest" @endif
 >
-    @if($async)
+    @if($async && $searchable)
         <div class="flex items-center gap-2">
             <form action="{{ $asyncUrl }}"
                   @submit.prevent="asyncFormRequest"
-                  @table-updated.window="asyncRequest"
             >
                 <x-moonshine::form.input
                     name="search"
@@ -101,7 +103,7 @@
         @endif
 
         @if(!$preview && $hasPaginator)
-            {{ $paginator->links($simple ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination', ['async' => $async]) }}
+            {{ $paginator->links($simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination', ['async' => $async]) }}
         @endif
     </div>
 

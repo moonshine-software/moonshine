@@ -113,10 +113,6 @@ class FormPage extends Page
                         $item,
                         $resource->getModelCast()
                     )
-                    ->when(
-                        moonshineRequest()->isFragmentLoad('crud-form'),
-                        fn (FormBuilder $form): FormBuilder => $form->precognitive()
-                    )
                     ->fields(
                         $resource
                             ->getFormFields()
@@ -131,6 +127,10 @@ class FormPage extends Page
                     ->when(
                         $resource->isAsync(),
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async(asyncEvents: 'table-updated')
+                    )
+                    ->when(
+                        moonshineRequest()->isFragmentLoad('crud-form') && ! $resource->isAsync(),
+                        fn (FormBuilder $form): FormBuilder => $form->precognitive()
                     )
                     ->when(
                         $resource->isPrecognitive(),

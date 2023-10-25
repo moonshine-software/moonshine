@@ -22,6 +22,8 @@ trait TableStates
 
     protected bool $isSimple = false;
 
+    protected bool $searchable = false;
+
     public function hasNotFound(): bool
     {
         return $this->withNotFound;
@@ -119,6 +121,18 @@ trait TableStates
         return $this->isSimple;
     }
 
+    public function searchable(): static
+    {
+        $this->searchable = true;
+
+        return $this;
+    }
+
+    public function isSearchable(): bool
+    {
+        return $this->searchable;
+    }
+
     /**
      * @return array{vertical: mixed, editable: mixed, preview: mixed, notfound: mixed, creatable: mixed, reindex: mixed, sortable: mixed, simple: mixed}
      */
@@ -133,6 +147,7 @@ trait TableStates
             'reindex' => $this->isReindex(),
             'sortable' => $this->isSortable(),
             'simple' => $this->isSimple(),
+            'searchable' => $this->isSearchable(),
         ];
     }
 }
