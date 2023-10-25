@@ -6,6 +6,7 @@
     'async' => false,
     'preview' => false,
     'simple' => false,
+    'simplePaginate' => false,
     'editable' => false,
     'notfound' => false,
     'vertical' => false,
@@ -101,7 +102,7 @@
         @endif
 
         @if(!$preview && $hasPaginator)
-            {{ $paginator->links($simple ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination', ['async' => $async]) }}
+            {{ $paginator->links($simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination', ['async' => $async]) }}
         @endif
     </div>
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Closure;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -139,6 +140,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
             'simple' => $this->isSimple(),
+            'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
             'paginator' => $this->getPaginator(),
             'bulkButtons' => $this->getBulkButtons(),
             'async' => $this->isAsync(),

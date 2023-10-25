@@ -174,10 +174,6 @@ class IndexPage extends Page
                                 'data-pushstate' => 'true',
                             ]);
                     })
-                    ->when(
-                        $this->getResource()->isSimplePaginate(),
-                        fn (TableBuilder $table): TableBuilder => $table->simple()
-                    )
                     ->buttons([
                         ...$this->getResource()->getIndexButtons(),
                         DetailButton::forMode($this->getResource()),
