@@ -113,10 +113,6 @@ class FormPage extends Page
                         $item,
                         $resource->getModelCast()
                     )
-                    ->when(
-                        moonshineRequest()->isFragmentLoad('crud-form'),
-                        fn (FormBuilder $form): FormBuilder => $form->precognitive()
-                    )
                     ->fields(
                         $resource
                             ->getFormFields()
