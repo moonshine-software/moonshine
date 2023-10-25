@@ -13,7 +13,7 @@ use MoonShine\Resources\ModelResource;
 
 final class DeleteButton
 {
-    public static function for(ModelResource $resource, string $tableName = '', string $redirectAfterDelete = ''): ActionButton
+    public static function for(ModelResource $resource, string $tableName = 'default', string $redirectAfterDelete = ''): ActionButton
     {
         return ActionButton::make(
             '',

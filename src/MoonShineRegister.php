@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use MoonShine\Applies\Filters\BelongsToManyModelApply;
+use MoonShine\Applies\Filters\CheckboxModelApply;
 use MoonShine\Applies\Filters\DateModelApply;
 use MoonShine\Applies\Filters\DateRangeModelApply;
 use MoonShine\Applies\Filters\JsonModelApply;
 use MoonShine\Applies\Filters\MorphToModelApply;
 use MoonShine\Applies\Filters\RangeModelApply;
 use MoonShine\Applies\Filters\TextModelApply;
+use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Json;
@@ -38,6 +40,7 @@ final class MoonShineRegister
                 Json::class => JsonModelApply::class,
                 Text::class => TextModelApply::class,
                 Textarea::class => TextModelApply::class,
+                Checkbox::class => CheckboxModelApply::class,
             ],
         ],
         'fields' => [],

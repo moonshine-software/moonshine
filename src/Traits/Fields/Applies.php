@@ -118,6 +118,11 @@ trait Applies
         return $this;
     }
 
+    public function hasOnApply(): bool
+    {
+        return ! is_null($this->onApply);
+    }
+
     public function onBeforeApply(Closure $onBeforeApply): static
     {
         $this->onBeforeApply = $onBeforeApply;

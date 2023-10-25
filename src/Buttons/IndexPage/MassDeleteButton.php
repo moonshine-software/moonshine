@@ -13,7 +13,7 @@ use MoonShine\Resources\ModelResource;
 
 final class MassDeleteButton
 {
-    public static function for(ModelResource $resource, string $tableName = ''): ActionButton
+    public static function for(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
         return ActionButton::make(
             '',

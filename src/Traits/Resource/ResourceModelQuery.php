@@ -305,7 +305,7 @@ trait ResourceModelQuery
     {
         $params = $this->getFilterParams();
 
-        if (! request()->has('filters')) {
+        if (! request()->filled('filters')) {
             return $this;
         }
 
@@ -317,7 +317,7 @@ trait ResourceModelQuery
         );
 
         $filters->each(function (Field $filter): void {
-            if (empty($filter->requestValue())) {
+            if ($filter->requestValue() === false) {
                 return;
             }
 
@@ -334,7 +334,7 @@ trait ResourceModelQuery
 
             if ($filterApply instanceof ApplyContract) {
                 $filter->onApply($filterApply->apply($filter));
-            } else {
+            } elseif(!$filter->hasOnApply()) {
                 $filter->onApply($defaultApply);
             }
 

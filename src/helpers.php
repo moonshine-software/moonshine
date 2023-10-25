@@ -163,6 +163,10 @@ if (! function_exists('actionBtn')) {
 if (! function_exists('findFieldApply')) {
     function findFieldApply(Field $field, string $type, string $for): ?ApplyContract
     {
+        if($field->hasOnApply()) {
+            return null;
+        }
+
         $applyClass = moonshineRegister()
             ->{$type}()
             ->for($for)
