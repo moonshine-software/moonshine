@@ -9,10 +9,10 @@ use MoonShine\Resources\ModelResource;
 
 final class CreateButton
 {
-    public static function forMode(ModelResource $resource): ActionButton
+    public static function forMode(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
         return $resource->isCreateInModal()
-            ? AsyncCreateButton::for($resource)
+            ? AsyncCreateButton::for($resource, $tableName)
             : self::for($resource);
     }
 

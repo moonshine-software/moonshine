@@ -9,13 +9,14 @@ use MoonShine\Resources\ModelResource;
 
 final class AsyncCreateButton
 {
-    public static function for(ModelResource $resource): ActionButton
+    public static function for(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
         return ActionButton::make(
             __('moonshine::ui.create'),
             to_page(
                 page: FormPage::class,
                 resource: $resource,
+                params: ['_tableName' => $tableName],
                 fragment: 'crud-form'
             )
         )
