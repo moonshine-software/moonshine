@@ -17,7 +17,7 @@ final class FormButton
         return ActionButton::make(
             '',
             url: static fn (): string => to_page(
-                page: FormPage::class,
+                page: $resource->getPages()->form(),
                 resource: $resource,
                 params: ['resourceItem' => $itemId]
             )

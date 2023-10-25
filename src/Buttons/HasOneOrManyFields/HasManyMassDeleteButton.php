@@ -19,7 +19,7 @@ final class HasManyMassDeleteButton
             '',
             url: fn (): string => $resource->route('crud.massDelete', query: [
                 '_redirect' => to_page(
-                    page: FormPage::class,
+                    page: $resource->formPage(),
                     resource: moonshineRequest()->getResource(),
                     params: ['resourceItem' => $resourceItem]
                 ),

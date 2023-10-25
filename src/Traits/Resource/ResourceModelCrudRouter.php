@@ -44,7 +44,7 @@ trait ResourceModelCrudRouter
     public function redirectAfterSave(): string
     {
         return request('_redirect') ?? to_page(
-            page: FormPage::class,
+            page: $this->formPage(),
             resource: $this,
             params: is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()?->getKey()]
         );

@@ -21,7 +21,7 @@ final class CreateButton
         return ActionButton::make(
             __('moonshine::ui.create'),
             to_page(
-                page: FormPage::class,
+                page: $resource->formPage(),
                 resource: $resource,
             )
         )

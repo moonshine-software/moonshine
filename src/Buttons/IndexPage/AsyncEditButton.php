@@ -16,7 +16,7 @@ final class AsyncEditButton
         return ActionButton::make(
             '',
             url: static fn ($data): string => to_page(
-                page: FormPage::class,
+                page: $resource->formPage(),
                 resource: $resource,
                 params: ['resourceItem' => $data->getKey(), '_tableName' => $tableName],
                 fragment: 'crud-form'

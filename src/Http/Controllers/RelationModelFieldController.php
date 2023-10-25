@@ -167,7 +167,7 @@ class RelationModelFieldController extends MoonShineController
 
         $redirectRoute = redirect(
             to_page(
-                page: FormPage::class,
+                page: $parentResource->formPage(),
                 resource: $parentResource,
                 params: ['resourceItem' => $parentItem->getKey()]
             )

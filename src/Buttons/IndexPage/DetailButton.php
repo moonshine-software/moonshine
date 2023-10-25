@@ -6,6 +6,7 @@ namespace MoonShine\Buttons\IndexPage;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Enums\PageType;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Resources\ModelResource;
 
@@ -23,7 +24,7 @@ final class DetailButton
         return ActionButton::make(
             '',
             url: static fn ($data): string => to_page(
-                page: DetailPage::class,
+                page: $resource->getPages()->detail(),
                 resource: $resource,
                 params: ['resourceItem' => $data->getKey()]
             )

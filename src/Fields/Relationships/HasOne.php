@@ -168,7 +168,7 @@ class HasOne extends ModelRelationField implements HasFields
                             ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
                             ->redirect(
                                 to_page(
-                                    page: FormPage::class,
+                                    page: $resource->formPage(),
                                     resource: $parentResource,
                                     params: ['resourceItem' => $parentItem->getKey()]
                                 )
