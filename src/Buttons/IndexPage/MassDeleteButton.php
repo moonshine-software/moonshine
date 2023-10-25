@@ -13,7 +13,7 @@ use MoonShine\Resources\ModelResource;
 
 final class MassDeleteButton
 {
-    public static function for(ModelResource $resource): ActionButton
+    public static function for(ModelResource $resource, string $tableName = ''): ActionButton
     {
         return ActionButton::make(
             '',
@@ -32,7 +32,7 @@ final class MassDeleteButton
                     ])
                     ->when(
                         $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-index-table')
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$tableName)
                     )
                     ->submit('Delete', ['class' => 'btn-secondary'])
             )

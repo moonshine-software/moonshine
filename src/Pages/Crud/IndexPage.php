@@ -178,8 +178,8 @@ class IndexPage extends Page
                         ...$this->getResource()->getIndexButtons(),
                         DetailButton::forMode($this->getResource()),
                         FormButton::forMode($this->getResource()),
-                        DeleteButton::for($this->getResource()),
-                        MassDeleteButton::for($this->getResource()),
+                        DeleteButton::for($this->getResource(), 'index-table'),
+                        MassDeleteButton::for($this->getResource(), 'index-table'),
                     ])
                     ->customAttributes([
                         'data-click-action' => $this->getResource()->getClickAction(),

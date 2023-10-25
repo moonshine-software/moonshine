@@ -13,7 +13,7 @@ use MoonShine\Resources\ModelResource;
 
 final class DeleteButton
 {
-    public static function for(ModelResource $resource, string $redirectAfterDelete = ''): ActionButton
+    public static function for(ModelResource $resource, string $tableName = '', string $redirectAfterDelete = ''): ActionButton
     {
         return ActionButton::make(
             '',
@@ -41,7 +41,7 @@ final class DeleteButton
                 )
                     ->when(
                         $resource->isAsync() && $resource->isNowOnIndex(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-index-table')
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$tableName)
                     )
                     ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )
