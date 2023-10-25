@@ -14,7 +14,7 @@
     'reindex' => false,
     'sortable' => false,
     'searchable' => false,
-    'name' => ''
+    'name' => 'default'
 ])
 
 <div x-data="tableBuilder(
