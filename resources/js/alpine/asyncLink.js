@@ -1,12 +1,12 @@
-export default activeClass => ({
+export default (activeClass, tableName) => ({
   queryTagRequest(data) {
     if (this.$root.classList.contains('active-query-tag')) {
-      this.$dispatch('table-updated-index-table', {queryTag: 'query-tag=null'})
+      this.$dispatch('table-updated-' + tableName, {queryTag: 'query-tag=null'})
       this.disableQueryTags()
       return
     }
 
-    this.$dispatch('table-updated-index-table', {queryTag: 'query-tag=' + data})
+    this.$dispatch('table-updated-' + tableName, {queryTag: 'query-tag=' + data})
 
     this.disableQueryTags()
 

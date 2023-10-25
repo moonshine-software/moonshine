@@ -103,7 +103,7 @@ export default () => ({
     return false
   },
 
-  asyncFilters(form) {
+  asyncFilters(form, tableName) {
     this.$el
       ?.closest('.offcanvas-template')
       ?.querySelector('#async-reset-button')
@@ -113,7 +113,7 @@ export default () => ({
 
     this.$dispatch('disable-query-tags')
 
-    this.$dispatch('table-updated', {filters: queryString})
+    this.$dispatch('table-updated-' + tableName, {filters: queryString})
 
     this.$el?.closest('.offcanvas-template')?.querySelector('.btn-close')?.click()
   },
