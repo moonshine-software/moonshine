@@ -41,7 +41,7 @@ final class DeleteButton
                 )
                     ->when(
                         $resource->isAsync() && $resource->isNowOnIndex(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$tableName)
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $tableName)
                     )
                     ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )

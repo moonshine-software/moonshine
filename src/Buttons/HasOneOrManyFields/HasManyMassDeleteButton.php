@@ -22,7 +22,7 @@ final class HasManyMassDeleteButton
                     page: FormPage::class,
                     resource: moonshineRequest()->getResource(),
                     params: ['resourceItem' => $resourceItem]
-                )
+                ),
             ])
         )
             ->bulk()
@@ -38,7 +38,7 @@ final class HasManyMassDeleteButton
                     ])
                     ->when(
                         $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$field->getRelationName())
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $field->getRelationName())
                     )
                     ->submit('Delete', ['class' => 'btn-secondary'])
             )

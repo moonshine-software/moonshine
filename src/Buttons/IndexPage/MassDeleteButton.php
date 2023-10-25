@@ -32,7 +32,7 @@ final class MassDeleteButton
                     ])
                     ->when(
                         $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$tableName)
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $tableName)
                     )
                     ->submit('Delete', ['class' => 'btn-secondary'])
             )

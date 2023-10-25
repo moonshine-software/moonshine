@@ -18,7 +18,8 @@ final class HasManyDeleteButton
         return ActionButton::make(
             '',
             url: static fn ($data): string => route(
-                'moonshine.crud.destroy', [
+                'moonshine.crud.destroy',
+                [
                     'resourceUri' => $resource->uriKey(),
                     'resourceItem' => $data->getKey(),
                     '_redirect' => to_page(
@@ -42,7 +43,7 @@ final class HasManyDeleteButton
                 )
                     ->when(
                         $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$field->getRelationName())
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $field->getRelationName())
                     )
                     ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )
