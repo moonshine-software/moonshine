@@ -24,7 +24,7 @@ final class Pages extends Collection
         PageType $type,
         Page $default = null
     ): ?Page {
-        return $this->first(fn(Page $page): bool => $page->pageType() === $type, $default);
+        return $this->first(fn (Page $page): bool => $page->pageType() === $type, $default);
     }
 
     public function findByUri(
