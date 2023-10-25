@@ -141,7 +141,7 @@ class CrudController extends MoonShineController
 
         if ($request->ajax()) {
             return response()->json(
-                $resource->isEditInModal() && $resource->isAsync()
+                $resource->isCreateInModal() && $resource->isAsync()
                     ? ['message' => __('moonshine::ui.saved')]
                     : ['message' => __('moonshine::ui.saved'),
                         'redirect' => $item->wasRecentlyCreated
