@@ -14,6 +14,10 @@ final class DetailButton
 {
     public static function forMode(ModelResource $resource): ActionButton
     {
+        if(!$resource->detailPage()) {
+            return ActionButton::make('')->customAttributes(['style' => 'display:none']);
+        }
+
         return $resource->isDetailInModal()
             ? AsyncDetailButton::for($resource)
             : DetailButton::for($resource);
@@ -24,7 +28,7 @@ final class DetailButton
         return ActionButton::make(
             '',
             url: static fn ($data): string => to_page(
-                page: $resource->getPages()->detail(),
+                page: $resource->detailPage(),
                 resource: $resource,
                 params: ['resourceItem' => $data->getKey()]
             )
