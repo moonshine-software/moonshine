@@ -1,23 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
-namespace MoonShine\Buttons\IndexPage;
+namespace MoonShine\Buttons\HasOneOrManyFields;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Heading;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\HiddenIds;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
-final class MassDeleteButton
+final class HasManyMassDeleteButton
 {
-    public static function for(ModelResource $resource): ActionButton
+    public static function for(ModelResource $resource, int|string $resourceItem): ActionButton
     {
         return ActionButton::make(
             '',
-            url: fn (): string => $resource->route('crud.massDelete')
+            url: fn (): string => $resource->route('crud.massDelete', query: [
+                '_redirect' => to_page(
+                    page: FormPage::class,
+                    resource: moonshineRequest()->getResource(),
+                    params: ['resourceItem' => $resourceItem]
+                )
+            ])
         )
             ->bulk()
             ->secondary()
@@ -38,7 +43,7 @@ final class MassDeleteButton
             )
             ->canSee(
                 fn (): bool => in_array('delete', $resource->getActiveActions())
-                && $resource->can('massDelete')
+                    && $resource->can('massDelete')
             )
             ->showInLine();
     }

@@ -67,15 +67,10 @@ class CrudController extends MoonShineController
         );
     }
 
-    public function massDelete(MassDeleteFormRequest $request): RedirectResponse
+    public function massDelete(MassDeleteFormRequest $request): JsonResponse|RedirectResponse
     {
         try {
             $request->getResource()->massDelete($request->get('ids'));
-
-            $this->toast(
-                __('moonshine::ui.deleted'),
-                'success'
-            );
         } catch (Throwable $e) {
             throw_if(! app()->isProduction(), $e);
             report_if(app()->isProduction(), $e);
@@ -85,6 +80,17 @@ class CrudController extends MoonShineController
                 'error'
             );
         }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => __('moonshine::ui.deleted'),
+            ]);
+        }
+
+        $this->toast(
+            __('moonshine::ui.deleted'),
+            'success'
+        );
 
         return $request->redirectRoute(
             $request->getResource()->redirectAfterDelete()

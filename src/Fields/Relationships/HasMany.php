@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyCreateButton;
+use MoonShine\Buttons\HasOneOrManyFields\HasManyDeleteButton;
+use MoonShine\Buttons\HasOneOrManyFields\HasManyMassDeleteButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Buttons\IndexPage\FormButton;
@@ -19,6 +21,7 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
@@ -244,6 +247,8 @@ class HasMany extends ModelRelationField implements HasFields
         $fields = $this->preparedFields();
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
+        $parentId = $this->getRelatedModel()?->getKey();
+
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
             ->searchable()
@@ -257,8 +262,8 @@ class HasMany extends ModelRelationField implements HasFields
             ->buttons([
                 DetailButton::forMode($resource),
                 FormButton::forMode($resource),
-                DeleteButton::for($resource, request()->getUri()),
-                MassDeleteButton::for($resource),
+                HasManyDeleteButton::for($resource, $parentId),
+                HasManyMassDeleteButton::for($resource, $parentId),
             ]);
     }
 
