@@ -258,7 +258,7 @@ class HasMany extends ModelRelationField implements HasFields
             )
             ->buttons([
                 DetailButton::forMode($resource),
-                FormButton::forMode($resource),
+                FormButton::forMode($resource, $this->getRelationName()),
                 HasManyDeleteButton::for($this, $resource, $parentId),
                 HasManyMassDeleteButton::for($this, $resource, $parentId),
             ]);

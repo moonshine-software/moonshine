@@ -11,14 +11,14 @@ use MoonShine\Resources\ModelResource;
 
 final class AsyncEditButton
 {
-    public static function for(ModelResource $resource): ActionButton
+    public static function for(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
         return ActionButton::make(
             '',
             url: static fn ($data): string => to_page(
                 page: FormPage::class,
                 resource: $resource,
-                params: ['resourceItem' => $data->getKey()],
+                params: ['resourceItem' => $data->getKey(), '_tableName' => $tableName],
                 fragment: 'crud-form'
             )
         )

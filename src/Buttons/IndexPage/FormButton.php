@@ -11,10 +11,10 @@ use MoonShine\Resources\ModelResource;
 
 final class FormButton
 {
-    public static function forMode(ModelResource $resource): ActionButton
+    public static function forMode(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
         return $resource->isEditInModal()
-            ? AsyncEditButton::for($resource)
+            ? AsyncEditButton::for($resource, $tableName)
             : FormButton::for($resource);
     }
 
