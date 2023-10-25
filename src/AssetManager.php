@@ -112,7 +112,7 @@ class AssetManager
     public function css(): string
     {
         return collect($this->assets)
-            ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainCss()))
+            ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->prepend($this->getMainCss()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.css')
             )
