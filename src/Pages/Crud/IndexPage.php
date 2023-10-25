@@ -150,6 +150,8 @@ class IndexPage extends Page
      */
     protected function table(): array
     {
+        $tableName = 'index-table';
+
         return [
             Fragment::make([
                 TableBuilder::make(items: $this->getResource()->paginate())
@@ -177,14 +179,14 @@ class IndexPage extends Page
                     ->buttons([
                         ...$this->getResource()->getIndexButtons(),
                         DetailButton::forMode($this->getResource()),
-                        FormButton::forMode($this->getResource()),
-                        DeleteButton::for($this->getResource(), 'index-table'),
-                        MassDeleteButton::for($this->getResource(), 'index-table'),
+                        FormButton::forMode($this->getResource(), $tableName),
+                        DeleteButton::for($this->getResource(), $tableName),
+                        MassDeleteButton::for($this->getResource(), $tableName),
                     ])
                     ->customAttributes([
                         'data-click-action' => $this->getResource()->getClickAction(),
                     ])
-                    ->name('index-table'),
+                    ->name($tableName),
             ])->name('crud-table'),
         ];
     }
