@@ -147,7 +147,8 @@ class CrudController extends MoonShineController
                         'redirect' => $item->wasRecentlyCreated
                             ? $resource->redirectAfterSave()
                             : null,
-                ]);
+                ]
+            );
         }
 
         $this->toast(
