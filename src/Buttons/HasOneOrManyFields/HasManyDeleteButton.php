@@ -7,12 +7,13 @@ use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class HasManyDeleteButton
 {
-    public static function for(ModelResource $resource, int|string $resourceItem): ActionButton
+    public static function for(HasMany $field, ModelResource $resource, int|string $resourceItem): ActionButton
     {
         return ActionButton::make(
             '',
@@ -41,7 +42,7 @@ final class HasManyDeleteButton
                 )
                     ->when(
                         $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated')
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$field->getRelationName())
                     )
                     ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )

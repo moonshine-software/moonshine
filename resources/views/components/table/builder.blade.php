@@ -13,7 +13,8 @@
     'creatable' => false,
     'reindex' => false,
     'sortable' => false,
-    'searchable' => false
+    'searchable' => false,
+    'name' => ''
 ])
 
 <div x-data="tableBuilder(
@@ -25,7 +26,7 @@
 )"
     @add-table-row.window="add(true)"
     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
-    @if($async) @table-updated.window="asyncRequest" @endif
+    @if($async) @table-updated-{{ $name }}.window="asyncRequest" @endif
 >
     @if($async && $searchable)
         <div class="flex items-center gap-2">

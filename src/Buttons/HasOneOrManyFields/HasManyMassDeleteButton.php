@@ -7,12 +7,13 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Heading;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\HiddenIds;
+use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class HasManyMassDeleteButton
 {
-    public static function for(ModelResource $resource, int|string $resourceItem): ActionButton
+    public static function for(HasMany $field, ModelResource $resource, int|string $resourceItem): ActionButton
     {
         return ActionButton::make(
             '',
@@ -37,7 +38,7 @@ final class HasManyMassDeleteButton
                     ])
                     ->when(
                         $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated')
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$field->getRelationName())
                     )
                     ->submit('Delete', ['class' => 'btn-secondary'])
             )

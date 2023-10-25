@@ -12,16 +12,13 @@ use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyCreateButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyDeleteButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyMassDeleteButton;
-use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Buttons\IndexPage\FormButton;
-use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
@@ -262,8 +259,8 @@ class HasMany extends ModelRelationField implements HasFields
             ->buttons([
                 DetailButton::forMode($resource),
                 FormButton::forMode($resource),
-                HasManyDeleteButton::for($resource, $parentId),
-                HasManyMassDeleteButton::for($resource, $parentId),
+                HasManyDeleteButton::for($this, $resource, $parentId),
+                HasManyMassDeleteButton::for($this, $resource, $parentId),
             ]);
     }
 
