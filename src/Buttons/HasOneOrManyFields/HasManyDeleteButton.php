@@ -1,31 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
-namespace MoonShine\Buttons\IndexPage;
+namespace MoonShine\Buttons\HasOneOrManyFields;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
-final class DeleteButton
+final class HasManyDeleteButton
 {
-    public static function for(ModelResource $resource, string $tableName = '', string $redirectAfterDelete = ''): ActionButton
+    public static function for(HasMany $field, ModelResource $resource, int|string $resourceItem): ActionButton
     {
         return ActionButton::make(
             '',
             url: static fn ($data): string => route(
-                'moonshine.crud.destroy',
-                array_filter([
+                'moonshine.crud.destroy', [
                     'resourceUri' => $resource->uriKey(),
                     'resourceItem' => $data->getKey(),
-                    ...$redirectAfterDelete
-                        ? ['_redirect' => $redirectAfterDelete]
-                        : [],
-                ])
+                    '_redirect' => to_page(
+                        page: FormPage::class,
+                        resource: moonshineRequest()->getResource(),
+                        params: ['resourceItem' => $resourceItem]
+                    ),
+                ]
             )
         )
             ->secondary()
@@ -40,14 +41,14 @@ final class DeleteButton
                     ]
                 )
                     ->when(
-                        $resource->isAsync() && $resource->isNowOnIndex(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$tableName)
+                        $resource->isAsync(),
+                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-'.$field->getRelationName())
                     )
                     ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )
             ->canSee(
                 fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
-                && $resource->setItem($item)->can('delete')
+                    && $resource->setItem($item)->can('delete')
             )
             ->showInLine();
     }
