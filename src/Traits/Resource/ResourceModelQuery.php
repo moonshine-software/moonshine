@@ -334,7 +334,7 @@ trait ResourceModelQuery
 
             if ($filterApply instanceof ApplyContract) {
                 $filter->onApply($filterApply->apply($filter));
-            } elseif(!$filter->hasOnApply()) {
+            } elseif(! $filter->hasOnApply()) {
                 $filter->onApply($defaultApply);
             }
 
