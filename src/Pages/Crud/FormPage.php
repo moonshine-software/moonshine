@@ -129,6 +129,10 @@ class FormPage extends Page
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async(asyncEvents: 'table-updated')
                     )
                     ->when(
+                        moonshineRequest()->isFragmentLoad('crud-form') && ! $resource->isAsync(),
+                        fn (FormBuilder $form): FormBuilder => $form->precognitive()
+                    )
+                    ->when(
                         $resource->isPrecognitive(),
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
                     )
