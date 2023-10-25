@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Enums\ClickAction;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -54,13 +55,8 @@ abstract class ModelResource extends Resource
 
     /**
      * The click action to use when clicking on the resource in the table.
-     * Can be one of:
-     *  – 'detail'
-     *  – 'edit'
-     *  – 'select'
-     *  – null.
      */
-    protected ?string $clickAction = null;
+    protected ?ClickAction $clickAction = null;
 
     protected function pages(): array
     {
@@ -117,7 +113,7 @@ abstract class ModelResource extends Resource
 
     public function getClickAction(): ?string
     {
-        return $this->clickAction;
+        return $this->clickAction?->value;
     }
 
     public function metrics(): array

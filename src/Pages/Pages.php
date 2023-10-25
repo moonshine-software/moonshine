@@ -20,6 +20,13 @@ final class Pages extends Collection
         return $this->each(fn (Page $page): Page => $page->setResource($resource));
     }
 
+    public function findByType(
+        PageType $type,
+        Page $default = null
+    ): ?Page {
+        return $this->first(fn(Page $page) => $page->pageType() === $type, $default);
+    }
+
     public function findByUri(
         string $uri,
         Page $default = null
