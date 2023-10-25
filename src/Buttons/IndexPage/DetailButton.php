@@ -15,7 +15,7 @@ final class DetailButton
     public static function forMode(ModelResource $resource): ActionButton
     {
         if(!$resource->detailPage()) {
-            return ActionButton::make('')->customAttributes(['style' => 'display:none']);
+            return ActionButton::emptyButton();
         }
 
         return $resource->isDetailInModal()

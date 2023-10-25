@@ -34,6 +34,11 @@ class ActionButton extends MoonshineComponent implements ActionButtonContract
         $this->setLabel($label);
     }
 
+    public static function emptyButton()
+    {
+        return ActionButton::make('')->customAttributes(['style' => 'display:none']);
+    }
+
     public function getView(): string
     {
         return parent::getView() === ''

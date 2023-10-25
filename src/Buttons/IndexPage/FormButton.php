@@ -13,6 +13,10 @@ final class FormButton
 {
     public static function forMode(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
+        if(!$resource->formPage()) {
+            return ActionButton::emptyButton();
+        }
+
         return $resource->isEditInModal()
             ? AsyncEditButton::for($resource, $tableName)
             : FormButton::for($resource);

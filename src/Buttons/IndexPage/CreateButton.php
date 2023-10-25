@@ -11,6 +11,10 @@ final class CreateButton
 {
     public static function forMode(ModelResource $resource): ActionButton
     {
+        if(!$resource->formPage()) {
+            return ActionButton::emptyButton();
+        }
+
         return $resource->isCreateInModal()
             ? AsyncCreateButton::for($resource)
             : self::for($resource);
