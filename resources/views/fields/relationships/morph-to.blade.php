@@ -22,6 +22,9 @@
             :values="$element->values()"
             :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"
         >
+            <x-slot:options>
+                <option value="">{{ $element->attributes()->get('placeholder', '-') }}</option>
+            </x-slot:options>
         </x-moonshine::form.select>
     </div>
 
