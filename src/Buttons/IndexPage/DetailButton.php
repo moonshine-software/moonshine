@@ -6,13 +6,16 @@ namespace MoonShine\Buttons\IndexPage;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Resources\ModelResource;
 
 final class DetailButton
 {
     public static function forMode(ModelResource $resource): ActionButton
     {
+        if(! $resource->detailPage()) {
+            return ActionButton::emptyHidden();
+        }
+
         return $resource->isDetailInModal()
             ? AsyncDetailButton::for($resource)
             : DetailButton::for($resource);
@@ -23,7 +26,7 @@ final class DetailButton
         return ActionButton::make(
             '',
             url: static fn ($data): string => to_page(
-                page: DetailPage::class,
+                page: $resource->detailPage(),
                 resource: $resource,
                 params: ['resourceItem' => $data->getKey()]
             )

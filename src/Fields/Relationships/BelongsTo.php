@@ -38,7 +38,7 @@ class BelongsTo extends ModelRelationField implements
         if ($this->toValue()) {
             $this->link(
                 to_page(
-                    page: FormPage::class,
+                    page: $this->getResource()->formPage(),
                     resource: $this->getResource(),
                     params: ['resourceItem' => $this->toValue()->getKey()]
                 ),

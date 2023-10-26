@@ -16,7 +16,7 @@ class AsyncDetailButton
         return ActionButton::make(
             '',
             url: static fn ($data): string => to_page(
-                page: DetailPage::class,
+                page: $resource->detailPage(),
                 resource: $resource,
                 params: ['resourceItem' => $data->getKey()],
                 fragment: 'crud-show-table'

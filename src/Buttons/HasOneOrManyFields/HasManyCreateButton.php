@@ -17,6 +17,12 @@ final class HasManyCreateButton
      */
     public static function for(HasMany $field, int $resourceId): ActionButton
     {
+        $resource = $field->getResource();
+
+        if(! $resource->formPage()) {
+            return ActionButton::emptyHidden();
+        }
+
         $action = to_relation_route(
             'store',
             $resourceId,

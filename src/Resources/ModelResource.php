@@ -15,6 +15,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Pages\Page;
 use MoonShine\Traits\Resource\ResourceModelActions;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
@@ -69,6 +70,16 @@ abstract class ModelResource extends Resource
             ),
             DetailPage::make(__('moonshine::ui.show')),
         ];
+    }
+
+    public function formPage(): ?Page
+    {
+        return $this->getPages()->formPage();
+    }
+
+    public function detailPage(): ?Page
+    {
+        return $this->getPages()->detailPage();
     }
 
     public function getModel(): Model
