@@ -98,7 +98,7 @@ class RelationModelFieldController extends MoonShineController
         return $this->updateOrCreate($request);
     }
 
-    public function delete(RelationModelFieldDeleteRequest $request): RedirectResponse
+    public function delete(RelationModelFieldDeleteRequest $request): JsonResponse|RedirectResponse
     {
         $parentResource = $request->getResource();
 
@@ -121,6 +121,12 @@ class RelationModelFieldController extends MoonShineController
             $request->getFieldItemOrFail(),
             $fields->onlyFields()
         );
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => __('moonshine::ui.deleted'),
+            ]);
+        }
 
         $this->toast(
             __('moonshine::ui.deleted'),
