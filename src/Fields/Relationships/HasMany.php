@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyCreateButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyDeleteButton;
+use MoonShine\Buttons\HasOneOrManyFields\HasManyFormButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyMassDeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Buttons\IndexPage\FormButton;
@@ -21,6 +22,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Support\Condition;
+use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -42,6 +44,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $isCreatable = false;
 
+    protected bool $isAsync = false;
+
     public function creatable(Closure|bool|null $condition = null): static
     {
         $this->isCreatable = Condition::boolean($condition, true);
@@ -52,6 +56,18 @@ class HasMany extends ModelRelationField implements HasFields
     public function isCreatable(): bool
     {
         return $this->isCreatable;
+    }
+
+    public function async(): static
+    {
+        $this->isAsync = true;
+
+        return $this;
+    }
+
+    public function isAsync(): bool
+    {
+        return $this->isAsync;
     }
 
     public function preview(): View|string
@@ -258,7 +274,7 @@ class HasMany extends ModelRelationField implements HasFields
             )
             ->buttons([
                 DetailButton::forMode($resource),
-                FormButton::forMode($resource, $this->getRelationName()),
+                HasManyFormButton::forMode($resource, $this),
                 HasManyDeleteButton::for($this, $resource, $parentId),
                 HasManyMassDeleteButton::for($this, $resource, $parentId),
             ]);
