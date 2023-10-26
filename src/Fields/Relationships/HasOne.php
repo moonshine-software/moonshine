@@ -16,7 +16,6 @@ use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
-use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
