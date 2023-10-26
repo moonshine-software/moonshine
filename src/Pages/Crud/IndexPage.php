@@ -97,7 +97,7 @@ class IndexPage extends Page
                 Column::make([
                     Flex::make([
                         ActionGroup::make([
-                            CreateButton::forMode($this->getResource()),
+                            CreateButton::forMode($this->getResource(), 'index-table'),
                             ...$this->getResource()->actions(),
                         ]),
                     ])->justifyAlign('start'),

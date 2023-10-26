@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Resource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\PageType;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
@@ -16,6 +17,10 @@ use MoonShine\Pages\Crud\IndexPage;
  */
 trait ResourceModelCrudRouter
 {
+    protected ?PageType $redirectAfterSave = PageType::FORM;
+
+    protected ?PageType $redirectAfterDelete = PageType::INDEX;
+
     public function currentRoute(array $query = []): string
     {
         return str(request()->url())->when(
@@ -43,6 +48,13 @@ trait ResourceModelCrudRouter
 
     public function redirectAfterSave(): string
     {
+        if (! is_null($this->redirectAfterSave)) {
+            return $this
+                ->getPages()
+                ->findByType($this->redirectAfterSave)
+                ->route();
+        }
+
         return request('_redirect') ?? to_page(
             page: $this->formPage(),
             resource: $this,
@@ -52,6 +64,13 @@ trait ResourceModelCrudRouter
 
     public function redirectAfterDelete(): string
     {
+        if (! is_null($this->redirectAfterDelete)) {
+            return $this
+                ->getPages()
+                ->findByType($this->redirectAfterDelete)
+                ->route();
+        }
+
         return request('_redirect') ?? to_page(page: IndexPage::class, resource: $this);
     }
 }
