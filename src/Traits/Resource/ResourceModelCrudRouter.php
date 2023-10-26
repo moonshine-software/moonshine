@@ -18,8 +18,6 @@ trait ResourceModelCrudRouter
 {
     protected ?PageType $redirectAfterSave = PageType::FORM;
 
-    protected ?PageType $redirectAfterDelete = PageType::INDEX;
-
     public function currentRoute(array $query = []): string
     {
         return str(request()->url())->when(
@@ -47,29 +45,26 @@ trait ResourceModelCrudRouter
 
     public function redirectAfterSave(): string
     {
+        $params = is_null($this->getItem()) || $this->redirectAfterSave === PageType::INDEX
+            ? []
+            : ['resourceItem' => $this->getItem()?->getKey()];
+
         if (! is_null($this->redirectAfterSave)) {
             return $this
                 ->getPages()
                 ->findByType($this->redirectAfterSave)
-                ->route();
+                ->route($params);
         }
 
         return request('_redirect') ?? to_page(
             page: $this->formPage(),
             resource: $this,
-            params: is_null($this->getItem()) ?: ['resourceItem' => $this->getItem()?->getKey()]
+            params: $params
         );
     }
 
     public function redirectAfterDelete(): string
     {
-        if (! is_null($this->redirectAfterDelete)) {
-            return $this
-                ->getPages()
-                ->findByType($this->redirectAfterDelete)
-                ->route();
-        }
-
         return request('_redirect') ?? to_page(page: IndexPage::class, resource: $this);
     }
 }
