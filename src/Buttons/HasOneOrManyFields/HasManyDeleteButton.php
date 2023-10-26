@@ -16,17 +16,10 @@ final class HasManyDeleteButton
     {
         return ActionButton::make(
             '',
-            url: static fn ($data): string => route(
-                'moonshine.crud.destroy',
-                [
-                    'resourceUri' => $resource->uriKey(),
-                    'resourceItem' => $data->getKey(),
-                    '_redirect' => to_page(
-                        page: $resource->formPage(),
-                        resource: moonshineRequest()->getResource(),
-                        params: ['resourceItem' => $resourceItem]
-                    ),
-                ]
+            url: static fn ($data): string => to_relation_route(
+                'delete',
+                $data->getKey(),
+                $field->getRelationName(),
             )
         )
             ->secondary()
@@ -37,6 +30,7 @@ final class HasManyDeleteButton
                     $action->url(),
                     fields: [
                         Hidden::make('_method')->setValue('DELETE'),
+                        Hidden::make($action->getItem()->getKeyName())->setValue($action->getItem()->getKey()),
                         TextBlock::make('', __('moonshine::ui.confirm_message')),
                     ]
                 )
