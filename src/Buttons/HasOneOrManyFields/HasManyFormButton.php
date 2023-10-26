@@ -23,7 +23,7 @@ final class HasManyFormButton
             : FormButton::for($resource);
     }
 
-    public static function for(ModelResource $resource, string $tableName = 'default')
+    public static function for(ModelResource $resource, string $tableName = 'default'): static
     {
         return ActionButton::make(
             '',
