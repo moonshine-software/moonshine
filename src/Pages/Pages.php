@@ -27,12 +27,17 @@ final class Pages extends Collection
         return $this->first(fn (Page $page): bool => $page->pageType() === $type, $default);
     }
 
-    public function form(): ?Page
+    public function indexPage(): ?Page
+    {
+        return $this->findByType(PageType::INDEX);
+    }
+
+    public function formPage(): ?Page
     {
         return $this->findByType(PageType::FORM);
     }
 
-    public function detail(): ?Page
+    public function detailPage(): ?Page
     {
         return $this->findByType(PageType::DETAIL);
     }

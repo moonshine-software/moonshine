@@ -74,12 +74,12 @@ abstract class ModelResource extends Resource
 
     public function formPage(): ?Page
     {
-        return $this->getPages()->form();
+        return $this->getPages()->formPage();
     }
 
     public function detailPage(): ?Page
     {
-        return $this->getPages()->detail();
+        return $this->getPages()->detailPage();
     }
 
     public function getModel(): Model

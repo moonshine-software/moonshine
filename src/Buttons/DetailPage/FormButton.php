@@ -4,7 +4,6 @@ namespace MoonShine\Buttons\DetailPage;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class FormButton
@@ -17,7 +16,7 @@ final class FormButton
         return ActionButton::make(
             '',
             url: static fn (): string => to_page(
-                page: $resource->getPages()->form(),
+                page: $resource->formPage(),
                 resource: $resource,
                 params: ['resourceItem' => $itemId]
             )

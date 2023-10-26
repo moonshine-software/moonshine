@@ -6,15 +6,14 @@ namespace MoonShine\Buttons\IndexPage;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class FormButton
 {
     public static function forMode(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
-        if(!$resource->formPage()) {
-            return ActionButton::emptyButton();
+        if(! $resource->formPage()) {
+            return ActionButton::emptyHidden();
         }
 
         return $resource->isEditInModal()

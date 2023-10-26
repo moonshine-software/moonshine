@@ -19,8 +19,8 @@ final class HasManyCreateButton
     {
         $resource = $field->getResource();
 
-        if(!$resource->formPage()) {
-            return ActionButton::emptyButton();
+        if(! $resource->formPage()) {
+            return ActionButton::emptyHidden();
         }
 
         $action = to_relation_route(
