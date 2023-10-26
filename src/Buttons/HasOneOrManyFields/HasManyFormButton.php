@@ -33,7 +33,7 @@ final class HasManyFormButton
                 params: [
                     'resourceItem' => $data->getKey(),
                     '_tableName' => $tableName,
-                    '_asyncMode' => true
+                    '_asyncMode' => true,
                 ],
                 fragment: 'crud-form'
             )
@@ -51,6 +51,6 @@ final class HasManyFormButton
             )
             ->customAttributes(['class' => 'edit-button'])
             ->showInLine()
-            ;
+        ;
     }
 }
