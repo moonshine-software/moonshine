@@ -8,7 +8,6 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\TextBlock;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
 
 final class HasManyDeleteButton

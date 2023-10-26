@@ -9,7 +9,6 @@ use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\PageType;
 use MoonShine\MoonShineRouter;
-use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 
 /**
