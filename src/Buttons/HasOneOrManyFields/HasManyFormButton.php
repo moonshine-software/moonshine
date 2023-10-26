@@ -19,11 +19,11 @@ final class HasManyFormButton
         }
 
         return ($resource->isEditInModal() || $field->isAsync())
-            ? HasManyFormButton::for($resource, $field->getRelationName())
+            ? self::for($resource, $field->getRelationName())
             : FormButton::for($resource);
     }
 
-    public static function for(ModelResource $resource, string $tableName = 'default'): static
+    public static function for(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
         return ActionButton::make(
             '',

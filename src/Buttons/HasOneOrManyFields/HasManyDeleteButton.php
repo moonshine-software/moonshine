@@ -41,8 +41,9 @@ final class HasManyDeleteButton
                     ]
                 )
                     ->when(
-                        $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $field->getRelationName())
+                        $field->isAsync() || $resource->isAsync(),
+                        fn (FormBuilder $form): FormBuilder => $form
+                            ->async(asyncEvents: 'table-updated-' . $field->getRelationName())
                     )
                     ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
             )

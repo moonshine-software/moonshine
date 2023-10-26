@@ -16,7 +16,7 @@ final class HasManyMassDeleteButton
     {
         return ActionButton::make(
             '',
-            url: fn (): string => $resource->route('crud.massDelete', query: [
+            url: static fn (): string => $resource->route('crud.massDelete', query: [
                 '_redirect' => to_page(
                     page: $resource->formPage(),
                     resource: moonshineRequest()->getResource(),
@@ -36,8 +36,9 @@ final class HasManyMassDeleteButton
                         Heading::make(__('moonshine::ui.confirm_message')),
                     ])
                     ->when(
-                        $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $field->getRelationName())
+                        $field->isAsync() || $resource->isAsync(),
+                        fn (FormBuilder $form): FormBuilder => $form
+                            ->async(asyncEvents: 'table-updated-' . $field->getRelationName())
                     )
                     ->submit('Delete', ['class' => 'btn-secondary'])
             )

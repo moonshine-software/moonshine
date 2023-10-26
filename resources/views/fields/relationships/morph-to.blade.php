@@ -11,9 +11,9 @@
     <div class="sm:w-3/4 w-full">
         <x-moonshine::form.select
             :attributes="$element->attributes()->merge([
-        'id' => $element->id(),
-        'name' => $element->name(),
-    ])"
+                'id' => $element->id(),
+                'name' => $element->name(),
+            ])"
             :nullable="false"
             :searchable="true"
             @class(['form-invalid' => $errors->{$element->getFormName()}->has($element->name())])

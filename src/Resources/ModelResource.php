@@ -198,9 +198,7 @@ abstract class ModelResource extends Resource
         $fields ??= $this->getFormFields()
             ->onlyFields();
 
-        if ($item->exists) {
-            $fields->fill($item->toArray(), $item);
-        }
+        $fields->fill($item->toArray(), $item);
 
         try {
             $fields->each(fn (Field $field): mixed => $field->beforeApply($item));
