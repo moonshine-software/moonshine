@@ -31,7 +31,7 @@ final class FiltersButton
             ->collect('filters')
             ->filter(
                 fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter)
-                    : $filter
+                    : filled($filter)
             )
             ->count();
 

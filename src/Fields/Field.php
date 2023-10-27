@@ -81,7 +81,7 @@ abstract class Field extends FormElement
 
     public function setColumn(string $column): static
     {
-        if($this->showWhenState) {
+        if ($this->showWhenState) {
             $this->showWhenCondition['showField'] = $column;
         }
 
@@ -92,7 +92,13 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        return data_get($casted ?? $raw, $this->column());
+        $value = data_get($casted ?? $raw, $this->column());
+
+        if (is_null($value) || $value === false) {
+            $value = data_get($raw, $this->column());
+        }
+
+        return $value;
     }
 
     protected function reformatFilledValue(mixed $data): mixed
@@ -264,7 +270,7 @@ abstract class Field extends FormElement
 
         $preview = $this->resolvePreview();
 
-        if($this->isRawMode()) {
+        if ($this->isRawMode()) {
             return $preview;
         }
 

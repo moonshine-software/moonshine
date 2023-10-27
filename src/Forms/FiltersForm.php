@@ -9,14 +9,17 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Resources\ModelResource;
+use Throwable;
 
 final class FiltersForm
 {
+    /**
+     * @throws Throwable
+     */
     public function __invoke(ModelResource $resource): FormBuilder
     {
         $values = $resource->getFilterParams();
         $filters = $resource->getFilters();
-        $filters->fill($values, $resource->getModel());
 
         $action = $resource->isAsync() ? '#' : $resource->currentRoute();
 
