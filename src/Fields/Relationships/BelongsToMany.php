@@ -161,6 +161,35 @@ class BelongsToMany extends ModelRelationField implements
         );
     }
 
+    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    {
+        // if filter data or raw fill logic
+        if (is_array($values = $raw[$this->getRelationName()] ?? false) && ! empty($values)) {
+            $values = array_filter($values);
+
+            $keys = $this->isSelectMode()
+                ? $values
+                : array_keys($values);
+
+            $related = $this->getRelation()?->getRelated();
+
+            $casted->setRelation(
+                $this->getRelationName(),
+                $related?->query()
+                    ->whereIn($related->getKeyName(), $keys)?->get() ?? []
+            );
+        }
+
+        $values = parent::prepareFill($raw, $casted);
+
+        if ($this->isAsyncSearch()) {
+            $this->memoizeValues = $values;
+            $this->memoizeAllValues = $values;
+        }
+
+        return $values;
+    }
+
     /**
      * @throws Throwable
      */

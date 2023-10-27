@@ -21,17 +21,17 @@ class BelongsToManyModelApply implements ApplyContract
                 return;
             }
 
+            $values = array_filter($field->requestValue());
+
+            if (is_null($field->getRelation()) || blank($values)) {
+                return;
+            }
+
             $query->whereHas(
                 $field->getRelationName(),
-                function (Builder $q) use ($field): Builder {
-                    if (is_null($field->getRelation())) {
-                        return $q;
-                    }
-
+                function (Builder $q) use ($field, $values): Builder {
                     $table = $field->getRelation()->getTable();
                     $id = $field->getRelation()->getRelatedPivotKeyName();
-
-                    $values = array_filter($field->requestValue());
 
                     return $q->whereIn(
                         "$table.$id",

@@ -102,9 +102,11 @@ trait WithRelatedValues
             $column = "$table.{$this->getResourceColumn()}";
 
             $values = $this->memoizeValues
-                ?? $this->resolveRelatedQuery($query->selectRaw(
-                    implode(',', [$key, $column, ...$this->relatedColumns])
-                ));
+                ?? $this->resolveRelatedQuery(
+                    $query->selectRaw(
+                        implode(',', [$key, $column, ...$this->relatedColumns])
+                    )
+                );
 
             $this->memoizeValues = $values;
 
