@@ -25,12 +25,20 @@ trait ResourceModelActions
 
     public function export(): ?ExportHandler
     {
+        if (! config('moonshine.model_resources.default_with_export', true)) {
+            return null;
+        }
+
         return ExportHandler::make(__('moonshine::ui.export'))
             ->csv();
     }
 
     public function import(): ?ImportHandler
     {
+        if (! config('moonshine.model_resources.default_with_import', true)) {
+            return null;
+        }
+
         return ImportHandler::make(__('moonshine::ui.import'));
     }
 

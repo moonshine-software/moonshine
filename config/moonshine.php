@@ -41,6 +41,11 @@ return [
         'profile' => ProfilePage::class
     ],
 
+    'model_resources' => [
+        'default_with_import' => true,
+        'default_with_export' => true,
+    ],
+
     'auth' => [
         'enable' => true,
         'middleware' => Authenticate::class,
