@@ -164,7 +164,7 @@ class BelongsToMany extends ModelRelationField implements
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
         // if filter data or raw fill logic
-        if (is_array($values = $raw[$this->getRelationName()] ?? false) && ! empty($values)) {
+        if (is_array($values = $raw[$this->getRelationName()] ?? false) && $values !== []) {
             $values = array_filter($values);
 
             $keys = $this->isSelectMode()
