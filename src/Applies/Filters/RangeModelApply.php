@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
-use MoonShine\Fields\Range;
 
 class RangeModelApply implements ApplyContract
 {

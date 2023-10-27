@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\ApplyContract;
-use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Field;
 
 class DateRangeModelApply implements ApplyContract

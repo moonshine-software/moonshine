@@ -7,7 +7,6 @@ namespace MoonShine\Applies\Filters;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\ApplyContract;
-use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Field;
 
 class CheckboxModelApply implements ApplyContract
