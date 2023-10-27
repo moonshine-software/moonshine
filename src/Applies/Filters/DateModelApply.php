@@ -7,10 +7,12 @@ namespace MoonShine\Applies\Filters;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\ApplyContract;
+use MoonShine\Fields\Date;
 use MoonShine\Fields\Field;
 
 class DateModelApply implements ApplyContract
 {
+    /* @param Date $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

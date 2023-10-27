@@ -49,6 +49,8 @@ class Json extends Field implements
 
     protected bool $asRelation = false;
 
+    protected bool $isFilterMode = false;
+
     protected ?ModelResource $asRelationResource = null;
 
     /**
@@ -126,6 +128,19 @@ class Json extends Field implements
     public function isCreatable(): bool
     {
         return $this->isCreatable;
+    }
+
+    public function filterMode(): self
+    {
+        $this->isFilterMode = true;
+        $this->creatable(false);
+
+        return $this;
+    }
+
+    public function isFilterMode(): bool
+    {
+        return $this->isFilterMode;
     }
 
     protected function incrementLevel(): self
@@ -223,7 +238,7 @@ class Json extends Field implements
 
     protected function reformatFilledValue(mixed $data): mixed
     {
-        if ($this->isKeyOrOnlyValue()) {
+        if ($this->isKeyOrOnlyValue() && ! $this->isFilterMode()) {
             return collect($data)->map(fn ($data, $key): array => $this->extractKeyValue(
                 $this->isOnlyValue() ? [$data] : [$key => $data]
             ))->values()->toArray();
