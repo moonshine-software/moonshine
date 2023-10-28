@@ -18,9 +18,7 @@ abstract class MoonShineController extends BaseController
 
     public function json(string $message, array $data = [], string $redirect = null): JsonResponse
     {
-        $data = array_merge([
-            'message' => $message
-        ], $data);
+        $data = ['message' => $message, ...$data];
 
         if($redirect) {
             $data['redirect'] = $redirect;

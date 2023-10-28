@@ -159,11 +159,11 @@ class HasOne extends ModelRelationField implements HasFields
                     ->secondary()
                     ->customAttributes(['class' => 'btn-lg'])
                     ->withConfirm(
-                        fields: fn(Model $item) => [
+                        fields: fn(Model $item): array => [
                             Hidden::make($item->getKeyName())->setValue($item->getKey())
                         ],
                         method: 'DELETE',
-                        formBuilder: fn(FormBuilder $form, Model $item) => $form->redirect(
+                        formBuilder: fn(FormBuilder $form, Model $item): FormBuilder => $form->redirect(
                             to_page(
                                 page: $resource->formPage(),
                                 resource: $parentResource,

@@ -26,7 +26,7 @@ final class HasManyDeleteButton
             ->secondary()
             ->icon('heroicons.outline.trash')
             ->withConfirm(
-                fields: fn(Model $item) => [
+                fields: fn(Model $item): array => [
                     Hidden::make($item->getKeyName())->setValue($item->getKey())
                 ],
                 method: 'DELETE',

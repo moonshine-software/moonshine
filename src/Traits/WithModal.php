@@ -64,11 +64,11 @@ trait WithModal
                 $isDefaultMethods ? $method : 'POST'
             )->fields(
                 array_filter([
-                    ! $isDefaultMethods
-                        ? Hidden::make('_method')->setValue($method)
-                        : null,
+                    $isDefaultMethods
+                        ? null
+                        : Hidden::make('_method')->setValue($method),
 
-                    ...(!is_null($fields) ? value($fields, $data) : []),
+                    ...(is_null($fields) ? [] : value($fields, $data)),
 
                     Heading::make(
                         is_null($content)

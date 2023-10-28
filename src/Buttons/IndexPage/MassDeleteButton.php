@@ -23,7 +23,7 @@ final class MassDeleteButton
             ->secondary()
             ->icon('heroicons.outline.trash')
             ->withConfirm(
-                fields: fn() => [
+                fields: fn(): array => [
                     HiddenIds::make(),
                 ],
                 method: 'DELETE',
