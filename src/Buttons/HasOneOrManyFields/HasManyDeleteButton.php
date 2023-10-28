@@ -26,11 +26,11 @@ final class HasManyDeleteButton
             ->secondary()
             ->icon('heroicons.outline.trash')
             ->withConfirm(
-                fields: fn(Model $item): array => [
-                    Hidden::make($item->getKeyName())->setValue($item->getKey())
+                fields: fn (Model $item): array => [
+                    Hidden::make($item->getKeyName())->setValue($item->getKey()),
                 ],
                 method: 'DELETE',
-                formBuilder: fn(FormBuilder $formBuilder, Model $item) => $formBuilder->when(
+                formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
                     $field->isAsync() || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form
                         ->async(asyncEvents: 'table-updated-' . $field->getRelationName())

@@ -35,7 +35,7 @@ final class DeleteButton
             ->icon('heroicons.outline.trash')
             ->withConfirm(
                 method: 'DELETE',
-                formBuilder: fn(FormBuilder $formBuilder, Model $item) => $formBuilder->when(
+                formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
                     $resource->isAsync() && $resource->isNowOnIndex(),
                     fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $tableName)
                 )
