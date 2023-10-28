@@ -34,7 +34,7 @@ class HasOne extends ModelRelationField implements HasFields
     {
         $casted = $this->getRelatedModel();
 
-        $this->setValue($casted->{$this->getRelationName()});
+        $this->setValue($casted?->{$this->getRelationName()});
 
         return parent::preview();
     }
@@ -75,6 +75,9 @@ class HasOne extends ModelRelationField implements HasFields
         return $this->getFields()->formFields();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolvePreview(): View|string
     {
         $items = Arr::wrap($this->toValue());
