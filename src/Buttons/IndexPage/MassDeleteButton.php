@@ -6,8 +6,6 @@ namespace MoonShine\Buttons\IndexPage;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Decorations\Heading;
-use MoonShine\Fields\Hidden;
 use MoonShine\Fields\HiddenIds;
 use MoonShine\Resources\ModelResource;
 
@@ -15,26 +13,24 @@ final class MassDeleteButton
 {
     public static function for(ModelResource $resource, string $tableName = 'default'): ActionButton
     {
+        $action = static fn (): string => $resource->route('crud.massDelete');
+
         return ActionButton::make(
             '',
-            url: fn (): string => $resource->route('crud.massDelete')
+            url: $action
         )
             ->bulk()
             ->secondary()
             ->icon('heroicons.outline.trash')
-            ->inModal(
-                fn (): string => 'Delete',
-                fn (ActionButton $action): string => (string) form($action->url())
-                    ->fields([
-                        Hidden::make('_method')->setValue('DELETE'),
-                        HiddenIds::make(),
-                        Heading::make(__('moonshine::ui.confirm_message')),
-                    ])
-                    ->when(
-                        $resource->isAsync(),
-                        fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $tableName)
-                    )
-                    ->submit('Delete', ['class' => 'btn-secondary'])
+            ->withConfirm(
+                fields: fn() => [
+                    HiddenIds::make(),
+                ],
+                method: 'DELETE',
+                formBuilder: fn(FormBuilder $formBuilder) => $formBuilder->when(
+                    $resource->isAsync(),
+                    fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $tableName)
+                )
             )
             ->canSee(
                 fn (): bool => in_array('delete', $resource->getActiveActions())

@@ -19,6 +19,12 @@ class MoonShineUserRoleResource extends ModelResource
 
     public string $column = 'name';
 
+    protected bool $isAsync = true;
+
+    protected bool $createInModal = true;
+
+    protected bool $editInModal = true;
+
     public function fields(): array
     {
         return [

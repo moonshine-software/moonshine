@@ -101,9 +101,9 @@ class ActionButton extends MoonshineComponent implements ActionButtonContract
         return $this;
     }
 
-    public function url(): string
+    public function url(mixed $data = null): string
     {
-        return value($this->url, $this->getItem());
+        return value($this->url, $data ?? $this->getItem());
     }
 
     /**
