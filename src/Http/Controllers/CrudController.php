@@ -6,15 +6,13 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class CrudController extends MoonShineController
@@ -31,7 +29,7 @@ class CrudController extends MoonShineController
      */
     public function store(
         StoreFormRequest $request
-    ): JsonResponse|RedirectResponse {
+    ): Response {
         return $this->updateOrCreate($request);
     }
 
@@ -41,20 +39,18 @@ class CrudController extends MoonShineController
      */
     public function update(
         UpdateFormRequest $request
-    ): JsonResponse|RedirectResponse {
+    ): Response {
         return $this->updateOrCreate($request);
     }
 
-    public function destroy(DeleteFormRequest $request): JsonResponse|RedirectResponse
+    public function destroy(DeleteFormRequest $request): Response
     {
         $request->getResource()->delete(
             $request->getResource()->getItemOrFail()
         );
 
         if ($request->ajax()) {
-            return response()->json([
-                'message' => __('moonshine::ui.deleted'),
-            ]);
+            return $this->json(message: __('moonshine::ui.deleted'));
         }
 
         $this->toast(
@@ -67,7 +63,7 @@ class CrudController extends MoonShineController
         );
     }
 
-    public function massDelete(MassDeleteFormRequest $request): JsonResponse|RedirectResponse
+    public function massDelete(MassDeleteFormRequest $request): Response
     {
         try {
             $request->getResource()->massDelete($request->get('ids'));
@@ -82,9 +78,7 @@ class CrudController extends MoonShineController
         }
 
         if ($request->ajax()) {
-            return response()->json([
-                'message' => __('moonshine::ui.deleted'),
-            ]);
+            return $this->json(message: __('moonshine::ui.deleted'));
         }
 
         $this->toast(
@@ -102,7 +96,7 @@ class CrudController extends MoonShineController
      */
     protected function updateOrCreate(
         MoonshineFormRequest $request
-    ): JsonResponse|RedirectResponse {
+    ): Response {
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 
@@ -114,8 +108,8 @@ class CrudController extends MoonShineController
             return response()->json(
                 $validator->errors(),
                 $validator->fails()
-                    ? ResponseAlias::HTTP_UNPROCESSABLE_ENTITY
-                    : ResponseAlias::HTTP_OK
+                    ? Response::HTTP_UNPROCESSABLE_ENTITY
+                    : Response::HTTP_OK
             );
         }
 
@@ -140,14 +134,11 @@ class CrudController extends MoonShineController
         }
 
         if ($request->ajax()) {
-            return response()->json(
-                $resource->isCreateInModal() && $resource->isAsync()
-                    ? ['message' => __('moonshine::ui.saved')]
-                    : ['message' => __('moonshine::ui.saved'),
-                        'redirect' => $item->wasRecentlyCreated
-                            ? $resource->redirectAfterSave()
-                            : null,
-                ]
+            return $this->json(
+                message: __('moonshine::ui.saved'),
+                redirect: $item->wasRecentlyCreated && (!$resource->isAsync() && !$resource->isCreateInModal())
+                ? $resource->redirectAfterSave()
+                : null
             );
         }
 

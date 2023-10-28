@@ -11,7 +11,6 @@ use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Decorations\TextBlock;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -123,8 +122,14 @@ class HasOne extends ModelRelationField implements HasFields
             $this->getRelatedModel()?->getKey(),
         );
 
+        $buttonUrl = fn (Model $data): string => to_relation_route(
+            'delete',
+            $this->getRelatedModel()?->getKey(),
+            relation: $this->getRelationName()
+        );
+
         return FormBuilder::make($action)
-            ->switchFormMode($resource->isAsync())
+            ->switchFormMode($resource->isAsync() && ! is_null($item))
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(
@@ -142,11 +147,7 @@ class HasOne extends ModelRelationField implements HasFields
             ->buttons(is_null($item) ? [] : [
                 ActionButton::make(
                     __('moonshine::ui.delete'),
-                    url: fn ($data): string => to_relation_route(
-                        'delete',
-                        $this->getRelatedModel()?->getKey(),
-                        relation: $this->getRelationName()
-                    )
+                    url: $buttonUrl
                 )
                     ->canSee(
                         fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
@@ -154,24 +155,18 @@ class HasOne extends ModelRelationField implements HasFields
                     )
                     ->secondary()
                     ->customAttributes(['class' => 'btn-lg'])
-                    ->inModal(
-                        fn (): array|string|null => __('moonshine::ui.delete'),
-                        fn (ActionButton $action): string => (string) form(
-                            $action->url(),
-                            fields: [
-                                Hidden::make('_method')->setValue('DELETE'),
-                                Hidden::make('id')->setValue($item->getKey()),
-                                TextBlock::make('', __('moonshine::ui.confirm_message')),
-                            ]
-                        )
-                            ->submit(__('moonshine::ui.delete'), ['class' => 'btn-secondary'])
-                            ->redirect(
-                                to_page(
-                                    page: $resource->formPage(),
-                                    resource: $parentResource,
-                                    params: ['resourceItem' => $parentItem->getKey()]
-                                )
+                    ->withConfirm(
+                        fields: fn(Model $item) => [
+                            Hidden::make($item->getKeyName())->setValue($item->getKey())
+                        ],
+                        method: 'DELETE',
+                        formBuilder: fn(FormBuilder $form, Model $item) => $form->redirect(
+                            to_page(
+                                page: $resource->formPage(),
+                                resource: $parentResource,
+                                params: ['resourceItem' => $parentItem->getKey()]
                             )
+                        )
                     )
                     ->showInLine(),
             ])

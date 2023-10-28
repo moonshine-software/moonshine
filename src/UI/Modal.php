@@ -44,8 +44,9 @@ class Modal
         return $this;
     }
 
-    public function getButtons(): ActionButtons
+    public function getButtons(mixed $data = null): ActionButtons
     {
-        return ActionButtons::make($this->buttons);
+        return ActionButtons::make($this->buttons)
+            ->fillItem($data);
     }
 }

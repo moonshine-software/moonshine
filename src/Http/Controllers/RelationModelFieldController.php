@@ -6,8 +6,6 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Relationships\MorphTo;
@@ -15,7 +13,7 @@ use MoonShine\Http\Requests\Relations\RelationModelFieldDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class RelationModelFieldController extends MoonShineController
@@ -23,7 +21,7 @@ class RelationModelFieldController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function search(RelationModelFieldRequest $request): JsonResponse
+    public function search(RelationModelFieldRequest $request): Response
     {
         $term = $request->get('query');
         $extra = $request->get('extra');
@@ -69,7 +67,7 @@ class RelationModelFieldController extends MoonShineController
         );
     }
 
-    public function searchRelations(RelationModelFieldRequest $request)
+    public function searchRelations(RelationModelFieldRequest $request): mixed
     {
         $parentResource = $request->getResource();
 
@@ -88,17 +86,17 @@ class RelationModelFieldController extends MoonShineController
         return $field->value();
     }
 
-    public function store(RelationModelFieldStoreRequest $request): JsonResponse|RedirectResponse
+    public function store(RelationModelFieldStoreRequest $request): Response
     {
         return $this->updateOrCreate($request);
     }
 
-    public function update(RelationModelFieldUpateRequest $request): JsonResponse|RedirectResponse
+    public function update(RelationModelFieldUpateRequest $request): Response
     {
         return $this->updateOrCreate($request);
     }
 
-    public function delete(RelationModelFieldDeleteRequest $request): JsonResponse|RedirectResponse
+    public function delete(RelationModelFieldDeleteRequest $request): Response
     {
         $parentResource = $request->getResource();
 
@@ -123,9 +121,7 @@ class RelationModelFieldController extends MoonShineController
         );
 
         if ($request->ajax()) {
-            return response()->json([
-                'message' => __('moonshine::ui.deleted'),
-            ]);
+            return $this->json(message: __('moonshine::ui.deleted'));
         }
 
         $this->toast(
@@ -144,7 +140,7 @@ class RelationModelFieldController extends MoonShineController
      */
     protected function updateOrCreate(
         RelationModelFieldRequest $request
-    ): JsonResponse|RedirectResponse {
+    ): Response {
         $parentResource = $request->getResource();
         $parentItem = $parentResource->getItemOrInstance();
 
@@ -182,8 +178,8 @@ class RelationModelFieldController extends MoonShineController
             return response()->json(
                 $validator->errors(),
                 $validator->fails()
-                    ? ResponseAlias::HTTP_UNPROCESSABLE_ENTITY
-                    : ResponseAlias::HTTP_OK
+                    ? Response::HTTP_UNPROCESSABLE_ENTITY
+                    : Response::HTTP_OK
             );
         }
 
@@ -210,9 +206,7 @@ class RelationModelFieldController extends MoonShineController
         );
 
         if ($request->ajax()) {
-            return response()->json([
-                'message' => __('moonshine::ui.saved'),
-            ]);
+            return $this->json(message: __('moonshine::ui.saved'));
         }
 
         return $request->redirectRoute(

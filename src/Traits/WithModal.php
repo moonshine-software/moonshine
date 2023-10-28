@@ -6,6 +6,9 @@ namespace MoonShine\Traits;
 
 use Closure;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\FormBuilder;
+use MoonShine\Decorations\Heading;
+use MoonShine\Fields\Hidden;
 use MoonShine\UI\Modal;
 
 trait WithModal
@@ -47,16 +50,46 @@ trait WithModal
         Closure|string|null $title = null,
         Closure|string|null $content = null,
         Closure|string|null $button = null,
+        Closure|array|null $fields = null,
+        string $method = 'POST',
+        bool $async = false,
+        ?Closure $formBuilder = null
     ): static {
+        $isDefaultMethods = in_array(strtolower($method), ['get', 'post']);
+
         $this->modal = Modal::make(
             is_null($title) ? __('moonshine::ui.confirm') : $title,
-            is_null($content) ? __('moonshine::ui.confirm_message') : $content
-        )->buttons([
-            ActionButton::make(
-                is_null($button) ? __('moonshine::ui.confirm') : $button,
-                $this->url()
-            )->showInLine(),
-        ]);
+            fn (mixed $data): string => (string) FormBuilder::make(
+                $this->url($data),
+                $isDefaultMethods ? $method : 'POST'
+            )->fields(
+                array_filter([
+                    ! $isDefaultMethods
+                        ? Hidden::make('_method')->setValue($method)
+                        : null,
+
+                    ...(!is_null($fields) ? value($fields, $data) : []),
+
+                    Heading::make(
+                        is_null($content)
+                            ? __('moonshine::ui.confirm_message')
+                            : value($content, $data)
+                    ),
+                ])
+            )->when(
+                $async,
+                fn (FormBuilder $form): FormBuilder => $form->async()
+            )
+            ->when(
+                ! is_null($formBuilder),
+                fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
+            )->submit(
+                is_null($button)
+                    ? __('moonshine::ui.confirm')
+                    : value($button, $data),
+                ['class' => 'btn-secondary']
+            )
+        );
 
         return $this;
     }
