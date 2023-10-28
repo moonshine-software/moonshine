@@ -65,7 +65,12 @@ class DetailPage extends Page
         return [
             Block::make([
                 Fragment::make([
-                    TableBuilder::make($resource->getDetailFields()->onlyFields())
+                    TableBuilder::make(
+                        $resource
+                            ->getDetailFields()
+                            ->onlyFields()
+                            ->withoutOutside()
+                    )
                         ->cast($resource->getModelCast())
                         ->items([$item])
                         ->vertical()
@@ -97,5 +102,39 @@ class DetailPage extends Page
                 ])->justifyAlign('end'),
             ]),
         ];
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function bottomLayer(): array
+    {
+        $components = [];
+        $item = $this->getResource()->getItem();
+
+        if (! $item?->exists) {
+            return $components;
+        }
+
+        $outsideFields = $this->getResource()->getOutsideFields();
+
+        if ($outsideFields->isNotEmpty()) {
+            $components[] = Divider::make();
+
+            foreach ($this->getResource()->getOutsideFields() as $field) {
+                if($field->toOne()) {
+                    $field->forcePreview();
+                }
+
+                $components[] = Fragment::make([
+                    $field->resolveFill(
+                        $item?->attributesToArray() ?? [],
+                        $item
+                    ),
+                ])->name($field->getRelationName());
+            }
+        }
+
+        return $components;
     }
 }
