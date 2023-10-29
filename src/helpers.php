@@ -24,7 +24,6 @@ use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
-use MoonShine\Resources\ModelResource;
 use MoonShine\Support\SelectOptions;
 
 if (! function_exists('moonshine')) {
@@ -224,13 +223,13 @@ if (! function_exists('tableAsyncRoute')) {
 if (! function_exists('updateRelationColumnRoute')) {
     function updateRelationColumnRoute(string $resourceUri, string $pageUri): Closure
     {
-        return fn($item): string => MoonShineRouter::to(
+        return fn ($item): string => MoonShineRouter::to(
             'column.relation.update-column',
             [
                 'resourceItem' => $item->getKey(),
-                'resourceUri'  => $resourceUri,
-                'pageUri'      => $pageUri,
-                '_relation'    => 'comments',
+                'resourceUri' => $resourceUri,
+                'pageUri' => $pageUri,
+                '_relation' => 'comments',
             ]
         );
     }
