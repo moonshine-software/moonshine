@@ -8,6 +8,7 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
 final class HasManyCreateButton
@@ -19,7 +20,7 @@ final class HasManyCreateButton
     {
         $resource = $field->getResource();
 
-        if(! $resource->formPage()) {
+        if (! $resource->formPage()) {
             return ActionButton::emptyHidden();
         }
 
@@ -34,14 +35,20 @@ final class HasManyCreateButton
             ? $field->getFields()->formFields()
             : $resource->getFormFields();
 
-        $fields->onlyFields()->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+        $fields->onlyFields()
+            ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+
+        $fields->exceptElements(
+            fn (mixed $nestedFields): bool => $nestedFields instanceof ModelRelationField
+                && $nestedFields->getResource() === moonshineRequest()->getResource()
+        );
 
         return ActionButton::make(__('moonshine::ui.add'), url: $action)
             ->primary()
             ->icon('heroicons.outline.plus')
             ->canSee(
                 fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
-                && $resource->can('create')
+                    && $resource->can('create')
             )
             ->inModal(
                 fn (): array|string|null => __('moonshine::ui.create'),
@@ -57,8 +64,9 @@ final class HasManyCreateButton
                     )
                     ->fields(
                         $fields
-                        ->push(Hidden::make('_relation')->setValue($field->getRelationName()))
-                        ->toArray()
+                            ->push(Hidden::make($field->getRelation()?->getForeignKeyName())->setValue($resourceId))
+                            ->push(Hidden::make('_relation')->setValue($field->getRelationName()))
+                            ->toArray()
                     )
             );
     }

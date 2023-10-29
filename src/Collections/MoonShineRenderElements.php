@@ -61,7 +61,7 @@ abstract class MoonShineRenderElements extends Collection
         }
     }
 
-    protected function exceptElements(Closure $except): self
+    public function exceptElements(Closure $except): self
     {
         return clone $this->map(function ($element) use ($except) {
             if ($except($element) === true) {
