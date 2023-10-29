@@ -1,7 +1,11 @@
 import './bootstrap'
 import './layout'
 
-import Alpine from 'alpinejs'
+const alpineExists = !!window.Alpine
+
+/** @type {import('@types/alpinejs').Alpine} */
+const Alpine = alpineExists ? window.Alpine : (await import('alpinejs')).default
+
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
 
@@ -50,7 +54,6 @@ Alpine.data('charts', charts)
 
 window.Alpine = Alpine
 
-/* Alpine.js */
 document.addEventListener('alpine:init', () => {
   /* Dark mode */
   Alpine.store('darkMode', {
@@ -64,5 +67,11 @@ document.addEventListener('alpine:init', () => {
   })
 })
 
-Alpine.plugin([persist, mask])
-Alpine.start()
+if (window.Livewire === undefined) {
+  Alpine.plugin(persist)
+  Alpine.plugin(mask)
+}
+
+if (!alpineExists) {
+  Alpine.start()
+}

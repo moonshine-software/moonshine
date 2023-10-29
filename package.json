@@ -7,6 +7,8 @@
     },
     "devDependencies": {
         "@types/alpinejs": "^3.13.3",
+        "@types/alpinejs__mask": "^3.13.2",
+        "@types/alpinejs__persist": "^3.13.2",
         "axios": "^1.3.4",
         "laravel-vite-plugin": "^0.8.1",
         "lodash": "^4.17.21",
