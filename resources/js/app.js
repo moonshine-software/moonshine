@@ -1,10 +1,12 @@
 import './bootstrap'
 import './layout'
 
+import AlpineMS from 'alpinejs'
+
 const alpineExists = !!window.Alpine
 
 /** @type {import('@types/alpinejs').Alpine} */
-const Alpine = alpineExists ? window.Alpine : (await import('alpinejs')).default
+const Alpine = alpineExists ? window.Alpine : AlpineMS
 
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
