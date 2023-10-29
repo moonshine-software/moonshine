@@ -27,7 +27,7 @@ class TestResourceBuilder
             $resource->setTestModel($model);
         }
 
-        MoonShine::addResource($resource);
+        MoonShine::resources([$resource]);
 
         return $resource;
     }

@@ -13,16 +13,11 @@ beforeEach(function (): void {
 });
 
 it('find resource by uri key', function (): void {
-    MoonShine::resources([
-        $this->resource,
-    ]);
-
     expect(MoonShine::getResourceFromUriKey($this->resource->uriKey()))
         ->toBe($this->resource);
 });
 
 it('menu', function (): void {
-
     MoonShine::menu([
         MenuItem::make('Resource', $this->resource),
     ]);

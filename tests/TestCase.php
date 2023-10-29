@@ -116,11 +116,11 @@ class TestCase extends Orchestra
             new TestImageResource(),
 
             new MoonShineUserRoleResource(),
-        ]);
+        ], newCollection: true);
 
         MoonShine::menu([
             MenuItem::make('Admins', $this->moonShineUserResource()),
-        ]);
+        ], newCollection: true);
 
         return $this;
     }

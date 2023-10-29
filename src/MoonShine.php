@@ -16,7 +16,6 @@ use MoonShine\Menu\MenuItem;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Resources\MoonShineProfileResource;
-use MoonShine\Resources\Resource;
 use Throwable;
 
 class MoonShine
@@ -30,6 +29,8 @@ class MoonShine
     protected static ?Pages $pages = null;
 
     protected static ?Collection $menu = null;
+
+    protected static ?Collection $vendorsMenu = null;
 
     protected static array $authorization = [];
 
@@ -78,20 +79,11 @@ class MoonShine
      *
      * @param  array<ResourceContract>  $data
      */
-    public static function resources(array $data): void
+    public static function resources(array $data, bool $newCollection = false): void
     {
-        self::$resources = collect($data);
-    }
-
-    public static function addResource(ResourceContract $resource): void
-    {
-        if (is_null(self::$resources)) {
-            self::$resources = collect([$resource]);
-
-            return;
-        }
-
-        self::$resources->add($resource);
+        self::$resources = $newCollection
+            ? collect($data)
+            : self::getResources()->merge($data);
     }
 
     /**
@@ -109,9 +101,11 @@ class MoonShine
      *
      * @param  array<Page>  $data
      */
-    public static function pages(array $data): void
+    public static function pages(array $data, bool $newCollection = false): void
     {
-        self::$pages = Pages::make($data);
+        self::$pages = $newCollection
+            ? Pages::make($data)
+            : self::getPages()->merge($data);
     }
 
     /**
@@ -120,6 +114,24 @@ class MoonShine
     public static function getPages(): Pages
     {
         return self::$pages ?? Pages::make();
+    }
+
+    /**
+     * Get custom menu items for automatic registration
+     * @return Collection<int, MenuElement>
+     */
+    public static function getVendorsMenu(): Collection
+    {
+        return self::$vendorsMenu ?? collect();
+    }
+
+    /**
+     * Set custom menu items to register them automatically later.
+     * @param  array<MenuElement> $data
+     */
+    public static function vendorsMenu(array $data): void
+    {
+        self::$vendorsMenu = self::getVendorsMenu()->merge($data);
     }
 
     /**
@@ -138,13 +150,13 @@ class MoonShine
      * @param  array<MenuElement>  $data
      * @throws Throwable
      */
-    public static function menu(array $data): void
+    public static function menu(array $data, bool $newCollection = false): void
     {
-        self::$menu = self::getMenu();
+        self::$menu = $newCollection ? collect() : self::getMenu();
         self::$pages = self::getPages();
         self::$resources = self::getResources();
 
-        collect($data)->each(
+        collect($data)->merge(self::getVendorsMenu())->each(
             function (MenuElement $item): void {
                 self::$menu->add($item);
                 self::resolveMenuItem($item);
@@ -179,7 +191,6 @@ class MoonShine
         }
     }
 
-
     /**
      * Register moonshine routes and resources routes in the system
      */
@@ -209,7 +220,7 @@ class MoonShine
     /**
      * Set home page/resource when visiting the base Moonshine url.
      *
-     * @param  class-string<Page|Resource>|Closure  $homeClass
+     * @param  class-string<Page|ResourceContract>|Closure  $homeClass
      */
     public static function home(string|Closure $homeClass): void
     {
