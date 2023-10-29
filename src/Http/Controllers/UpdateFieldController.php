@@ -13,14 +13,14 @@ use MoonShine\Http\Requests\Relations\RelationModelColumnUpdateRequest;
 use MoonShine\Http\Requests\Resources\UpdateColumnFormRequest;
 use MoonShine\Resources\ModelResource;
 
-class UpdateColumnController extends MoonShineController
+class UpdateFieldController extends MoonShineController
 {
-    public function update(UpdateColumnFormRequest $request): Response
+    public function column(UpdateColumnFormRequest $request): Response
     {
         return $this->save($request->getResource(), $request->getField());
     }
 
-    public function updateRelation(RelationModelColumnUpdateRequest $request): Response
+    public function relation(RelationModelColumnUpdateRequest $request): Response
     {
         $relationField = $request->getField();
 
