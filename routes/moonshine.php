@@ -27,7 +27,11 @@ Route::prefix(config('moonshine.route.prefix', ''))
 
                 Route::any('handler/{handlerUri}', HandlerController::class)->name('handler');
                 Route::get('{pageUri}', PageController::class)->name('resource.page');
-                Route::put('/{resourceItem}', UpdateColumnController::class)->name('resource.update-column');
+            });
+
+            Route::prefix('column')->group(function (): void {
+                Route::put('resource/{resourceUri}/{resourceItem}', [UpdateColumnController::class, 'update'])->name('column.resource.update-column');
+                Route::put('relation/{resourceUri}/{pageUri}/{resourceItem}', [UpdateColumnController::class, 'updateRelation'])->name('column.relation.update-column');
             });
 
             Route::get(

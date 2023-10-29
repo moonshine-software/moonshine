@@ -16,6 +16,7 @@ use MoonShine\Buttons\HasOneOrManyFields\HasManyMassDeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -256,6 +257,20 @@ class HasMany extends ModelRelationField implements HasFields
         );
 
         $fields = $this->preparedFields();
+
+        $fields->each(function (Field $field) {
+            if(
+                $field instanceof HasUpdateOnPreview
+                && $field->isUpdateOnPreview()
+                && is_null($field->getUrl())
+            ) {
+                $field->setUpdateOnPreviewUrl(updateRelationColumnRoute(
+                    $field->getResourceUriForUpdate(),
+                    $field->getPageUriForUpdate()
+                ));
+            }
+        });
+
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
         $parentId = $this->getRelatedModel()?->getKey();

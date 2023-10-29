@@ -10,6 +10,7 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\Searchable;
@@ -22,7 +23,8 @@ class Select extends Field implements
     HasDefaultValue,
     DefaultCanBeArray,
     DefaultCanBeString,
-    DefaultCanBeNumeric
+    DefaultCanBeNumeric,
+    HasUpdateOnPreview
 {
     use CanBeMultiple;
     use Searchable;
