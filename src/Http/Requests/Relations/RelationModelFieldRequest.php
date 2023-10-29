@@ -6,6 +6,7 @@ namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Enums\PageType;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -65,10 +66,10 @@ class RelationModelFieldRequest extends MoonshineFormRequest
 
         $resource = $this->getResource();
 
-        $fields = match ($this->getPage()::class) {
-            IndexPage::class => $resource->getIndexFields(),
-            DetailPage::class => $resource->getDetailFields(),
-            FormPage::class => Fields::make(
+        $fields = match ($this->getPage()->pageType()) {
+            PageType::INDEX => $resource->getIndexFields(),
+            PageType::DETAIL => $resource->getDetailFields(),
+            PageType::FORM => Fields::make(
                 empty($resource->formFields())
                     ? $resource->fields()
                     : $resource->formFields()

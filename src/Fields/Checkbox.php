@@ -9,6 +9,7 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Traits\Fields\BooleanTrait;
 use MoonShine\Traits\Fields\UpdateOnPreview;
 use MoonShine\Traits\Fields\WithDefaultValue;
@@ -17,7 +18,8 @@ class Checkbox extends Field implements
     HasDefaultValue,
     DefaultCanBeNumeric,
     DefaultCanBeString,
-    DefaultCanBeBool
+    DefaultCanBeBool,
+    HasUpdateOnPreview
 {
     use BooleanTrait;
     use WithDefaultValue;
