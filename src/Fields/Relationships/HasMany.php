@@ -258,7 +258,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         $fields = $this->preparedFields();
 
-        $fields->each(function (Field $field) {
+        $fields->each(function (Field $field): void {
             if(
                 $field instanceof HasUpdateOnPreview
                 && $field->isUpdateOnPreview()
