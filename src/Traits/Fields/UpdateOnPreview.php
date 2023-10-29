@@ -51,7 +51,7 @@ trait UpdateOnPreview
 
         $this->url = $url;
 
-        if(!is_null($resource)) {
+        if(! is_null($resource)) {
             $this->resourceUri = $resource->uriKey();
             $this->pageUri = $resource->formPage()->uriKey();
         }
@@ -85,6 +85,7 @@ trait UpdateOnPreview
     public function setUpdateOnPreviewUrl(Closure $url): static
     {
         $this->updateOnPreviewUrl = $url;
+
         return $this;
     }
 
