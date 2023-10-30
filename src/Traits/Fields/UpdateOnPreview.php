@@ -53,7 +53,7 @@ trait UpdateOnPreview
 
         $this->url = $url;
 
-        $resource = $resource ?? moonshineRequest()->getResource();
+        $resource ??= moonshineRequest()->getResource();
 
         if (is_null($resource) && is_null($url)) {
             throw new FieldException('updateOnPreview must accept either $resource or $url parameters');
