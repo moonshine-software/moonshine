@@ -221,7 +221,7 @@ if (! function_exists('tableAsyncRoute')) {
 }
 
 if (! function_exists('updateRelationColumnRoute')) {
-    function updateRelationColumnRoute(string $resourceUri, string $pageUri): Closure
+    function updateRelationColumnRoute(string $resourceUri, string $pageUri, string $relation): Closure
     {
         return fn ($item): string => MoonShineRouter::to(
             'column.relation.update-column',
@@ -229,7 +229,7 @@ if (! function_exists('updateRelationColumnRoute')) {
                 'resourceItem' => $item->getKey(),
                 'resourceUri' => $resourceUri,
                 'pageUri' => $pageUri,
-                '_relation' => 'comments',
+                '_relation' => $relation,
             ]
         );
     }
