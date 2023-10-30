@@ -56,7 +56,7 @@ trait ResourceModelCrudRouter
                 ->route($params);
         }
 
-        return request('_redirect') ?? to_page(
+        return to_page(
             page: $this->formPage(),
             resource: $this,
             params: $params
@@ -65,6 +65,6 @@ trait ResourceModelCrudRouter
 
     public function redirectAfterDelete(): string
     {
-        return request('_redirect') ?? to_page(page: IndexPage::class, resource: $this);
+        return to_page(page: IndexPage::class, resource: $this);
     }
 }

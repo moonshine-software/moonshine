@@ -64,7 +64,7 @@ trait UpdateOnPreview
             $this->updateColumnPageUri = $resource->formPage()->uriKey();
         }
 
-        if ($this instanceof Text) {
+        if ($this instanceof Text && ! $this->isNowOnForm()) {
             $this->locked();
         }
 

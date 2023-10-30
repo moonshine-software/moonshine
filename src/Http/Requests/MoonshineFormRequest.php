@@ -3,7 +3,6 @@
 namespace MoonShine\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 
@@ -46,10 +45,5 @@ class MoonshineFormRequest extends FormRequest
     public function getPage(): Page
     {
         return moonshineRequest()->getPage();
-    }
-
-    public function redirectRoute(string $default): RedirectResponse
-    {
-        return redirect($default);
     }
 }

@@ -34,7 +34,11 @@ final class HasManyDeleteButton
                     $field->isAsync() || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form
                         ->async(asyncEvents: 'table-updated-' . $field->getRelationName())
-                )
+                )->redirect(to_page(
+                    page: $resource->formPage(),
+                    resource: moonshineRequest()->getResource(),
+                    params: ['resourceItem' => $resourceItem]
+                ))
             )
             ->canSee(
                 fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())

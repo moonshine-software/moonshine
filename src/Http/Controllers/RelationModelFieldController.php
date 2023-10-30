@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Exceptions\ResourceException;
@@ -13,6 +12,8 @@ use MoonShine\Http\Requests\Relations\RelationModelFieldDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
+use MoonShine\Resources\ModelResource;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -32,6 +33,7 @@ class RelationModelFieldController extends MoonShineController
             return response()->json();
         }
 
+        /* @var ModelResource $resource */
         $resource = $field->getResource();
 
         $model = $resource->getModel();
@@ -69,28 +71,34 @@ class RelationModelFieldController extends MoonShineController
 
     public function searchRelations(RelationModelFieldRequest $request): mixed
     {
+        /* @var ModelResource $parentResource */
         $parentResource = $request->getResource();
 
-        /**
-         * @var Model $parentItem
-         */
         $parentItem = $parentResource->getItemOrInstance();
 
         $field = $request->getField();
 
-        $field->resolveFill(
+        $field?->resolveFill(
             $parentItem->toArray(),
             $parentItem
         );
 
-        return $field->value();
+        return $field?->value();
     }
 
+    /**
+     * @throws Throwable
+     * @throws ResourceException
+     */
     public function store(RelationModelFieldStoreRequest $request): Response
     {
         return $this->updateOrCreate($request);
     }
 
+    /**
+     * @throws ResourceException
+     * @throws Throwable
+     */
     public function update(RelationModelFieldUpateRequest $request): Response
     {
         return $this->updateOrCreate($request);
@@ -98,27 +106,33 @@ class RelationModelFieldController extends MoonShineController
 
     public function delete(RelationModelFieldDeleteRequest $request): Response
     {
+        /* @var ModelResource $parentResource */
         $parentResource = $request->getResource();
 
         $parentItem = $parentResource->getItemOrInstance();
 
-        $field = $request->getField()->resolveFill(
+        $field = $request->getField()?->resolveFill(
             $parentItem->toArray(),
             $parentItem
         );
 
-        $fields = $field->getFields();
+        $fields = $field?->getFields();
 
+        /* @var ModelResource $resource */
         $resource = $field->getResource();
 
         if ($fields->isEmpty()) {
             $fields = $resource->getFormFields();
         }
 
-        $resource->delete(
-            $request->getFieldItemOrFail(),
-            $fields->onlyFields()
-        );
+        $redirectRoute = $request->get('_redirect', $parentResource->redirectAfterDelete());
+
+        if ($this->tryOrRedirect(static fn () => $resource->delete(
+                $request->getFieldItemOrFail(),
+                $fields->onlyFields()
+            ), $redirectRoute) instanceof RedirectResponse) {
+            return redirect($redirectRoute);
+        }
 
         if ($request->ajax()) {
             return $this->json(message: __('moonshine::ui.deleted'));
@@ -129,9 +143,7 @@ class RelationModelFieldController extends MoonShineController
             'delete'
         );
 
-        return $request->redirectRoute(
-            $parentResource->redirectAfterSave()
-        );
+        return redirect($redirectRoute);
     }
 
     /**
@@ -141,14 +153,16 @@ class RelationModelFieldController extends MoonShineController
     protected function updateOrCreate(
         RelationModelFieldRequest $request
     ): Response {
+        /* @var ModelResource $parentResource */
         $parentResource = $request->getResource();
         $parentItem = $parentResource->getItemOrInstance();
 
-        $field = $request->getField()->resolveFill(
+        $field = $request->getField()?->resolveFill(
             $parentItem->toArray(),
             $parentItem
         );
 
+        /* @var ModelResource $resource */
         $resource = $field->getResource();
 
         $relation = $field->getRelation();
@@ -166,13 +180,7 @@ class RelationModelFieldController extends MoonShineController
 
         $validator = $resource->validate($item);
 
-        $redirectRoute = redirect(
-            to_page(
-                page: $parentResource->formPage(),
-                resource: $parentResource,
-                params: ['resourceItem' => $parentItem->getKey()]
-            )
-        );
+        $redirectRoute = $request->get('_redirect', $parentResource->redirectAfterSave());
 
         if ($request->isAttemptingPrecognition()) {
             return response()->json(
@@ -184,7 +192,7 @@ class RelationModelFieldController extends MoonShineController
         }
 
         if ($validator->fails()) {
-            return $redirectRoute
+            return back()
                 ->withErrors($validator, $field->getRelationName())
                 ->withInput();
         }
@@ -195,10 +203,13 @@ class RelationModelFieldController extends MoonShineController
             $fields = $resource->getFormFields();
         }
 
-        $resource->save(
-            $item,
-            $fields->onlyFields()
-        );
+        if ($this->tryOrRedirect(static fn () => $resource->save(
+                $item,
+                $fields->onlyFields()
+            ),
+                $redirectRoute) instanceof RedirectResponse) {
+            return redirect($redirectRoute);
+        }
 
         $this->toast(
             __('moonshine::ui.saved'),
@@ -209,8 +220,6 @@ class RelationModelFieldController extends MoonShineController
             return $this->json(message: __('moonshine::ui.saved'));
         }
 
-        return $request->redirectRoute(
-            $parentResource->redirectAfterSave()
-        );
+        return redirect($redirectRoute);
     }
 }

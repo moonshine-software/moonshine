@@ -62,7 +62,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function rows(): Collection
     {
-        return $this->getItems()->map(function (mixed $data, $index): TableRow {
+        return $this->getItems()->filter()->map(function (mixed $data, $index): TableRow {
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 
