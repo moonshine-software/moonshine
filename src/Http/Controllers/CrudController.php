@@ -11,7 +11,6 @@ use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
-use MoonShine\Resources\ModelResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
