@@ -12,6 +12,7 @@ use MoonShine\Fields\Image;
 use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Relationships\MorphMany;
+use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 use MoonShine\Fields\TinyMce;
 use MoonShine\Resources\ModelResource;
@@ -47,6 +48,7 @@ class TestItemResource extends ModelResource
                 HasMany::make('Comments title', 'comments', resource: new TestCommentResource())->fields([
                     ID::make()->sortable(),
                     Text::make('Comment title', 'content')->sortable(),
+                    Switcher::make('Active title', 'active')->updateOnPreview(resource: $this),
                 ]),
 
                 MorphMany::make('Images title', 'images', resource: new TestImageResource())

@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('item_id');
+            $table->boolean('active')->default(1);
             $table->text('content');
             $table->json('data')->nullable();
             $table->timestamps();

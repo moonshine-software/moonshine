@@ -21,9 +21,9 @@ trait UpdateOnPreview
 
     protected ?Closure $url = null;
 
-    protected ?string $resourceUri = null;
+    protected ?string $updateColumnResourceUri = null;
 
-    protected ?string $pageUri = null;
+    protected ?string $updateColumnPageUri = null;
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
@@ -40,23 +40,24 @@ trait UpdateOnPreview
     }
 
     public function updateOnPreview(
-        ?ResourceContract $resource = null,
         ?Closure $url = null,
+        ?ResourceContract $resource = null,
         mixed $condition = null
     ): static {
+        $this->url = $url;
+
+        $resource = $resource ?? moonshineRequest()->getResource();
 
         if(is_null($resource) && is_null($url)) {
             throw new FieldException('updateOnPreview must accept either $resource or $url parameters');
         }
 
-        $this->url = $url;
-
-        if(! is_null($resource)) {
-            $this->resourceUri = $resource->uriKey();
-            $this->pageUri = $resource->formPage()->uriKey();
+        if(!is_null($resource)) {
+            $this->updateColumnResourceUri = $resource->uriKey();
+            $this->updateColumnPageUri = $resource->formPage()->uriKey();
         }
 
-        $this->updateOnPreviewUrl = $resource ? $this->getDefaultUpdateRoute() : $this->getUrl();
+        $this->updateOnPreviewUrl = $this->getUrl() ?? $this->getDefaultUpdateRoute();
         $this->updateOnPreview = Condition::boolean($condition, true);
 
         return $this;
@@ -96,12 +97,12 @@ trait UpdateOnPreview
 
     public function getResourceUriForUpdate(): ?string
     {
-        return $this->resourceUri;
+        return $this->updateColumnResourceUri;
     }
 
     public function getPageUriForUpdate(): ?string
     {
-        return $this->pageUri;
+        return $this->updateColumnPageUri;
     }
 
     public function preview(): View|string

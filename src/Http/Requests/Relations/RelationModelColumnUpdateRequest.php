@@ -23,7 +23,7 @@ class RelationModelColumnUpdateRequest extends RelationModelFieldRequest
 
     protected function prepareForValidation(): void
     {
-        $this->merge([
+        request()->merge([
             $this->get('field') => $this->get('value'),
         ]);
     }

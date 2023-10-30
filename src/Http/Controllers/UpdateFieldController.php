@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\Response;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -23,6 +24,10 @@ class UpdateFieldController extends MoonShineController
     public function relation(RelationModelColumnUpdateRequest $request): Response
     {
         $relationField = $request->getField();
+
+        if($relationField instanceof HasFields) {
+            $relationField->preparedFields();
+        }
 
         $resource = $relationField->getResource();
 
