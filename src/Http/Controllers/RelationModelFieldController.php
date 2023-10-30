@@ -12,6 +12,7 @@ use MoonShine\Http\Requests\Relations\RelationModelFieldDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
+use MoonShine\Resources\ModelResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;

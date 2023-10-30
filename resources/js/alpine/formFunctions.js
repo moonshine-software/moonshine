@@ -1,11 +1,6 @@
 import {inputFieldName, inputGeValue} from './showWhenFunctions'
 
-export function crudFormQuery(customFormElements = null) {
-  const formElements =
-    customFormElements !== null
-      ? customFormElements
-      : document.querySelectorAll('#moonshine-form [name]')
-
+export function crudFormQuery(formElements = null) {
   if (formElements.length === 0) {
     return ''
   }
@@ -17,8 +12,7 @@ export function crudFormQuery(customFormElements = null) {
     if (
       element.getAttribute('type') !== 'file' &&
       element.tagName.toLowerCase() !== 'textarea' &&
-      name !== '_token' &&
-      name !== '_method' &&
+      !name.startsWith('_') &&
       !name.startsWith('hidden_')
     ) {
       values[inputFieldName(name)] = inputGeValue(element)

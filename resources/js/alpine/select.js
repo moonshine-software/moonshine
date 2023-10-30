@@ -152,7 +152,10 @@ export default (asyncUrl = '') => ({
 
               url.searchParams.append('query', event.detail.value)
 
-              this.fromUrl(url.toString() + (crudFormQuery().length ? '&' + crudFormQuery() : ''))
+              const form = this.$el.form
+              const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+
+              this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
             }
           }, 300),
           false,
