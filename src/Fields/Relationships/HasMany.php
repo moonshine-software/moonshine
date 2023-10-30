@@ -266,7 +266,8 @@ class HasMany extends ModelRelationField implements HasFields
             ) {
                 $field->setUpdateOnPreviewUrl(updateRelationColumnRoute(
                     $field->getResourceUriForUpdate(),
-                    $field->getPageUriForUpdate()
+                    $field->getPageUriForUpdate(),
+                    $this->getRelationName(),
                 ));
             }
         });
