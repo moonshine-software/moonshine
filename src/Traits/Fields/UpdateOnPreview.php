@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\Text;
 use MoonShine\MoonShineRouter;
 use MoonShine\Support\Condition;
 
@@ -44,21 +45,30 @@ trait UpdateOnPreview
         ?ResourceContract $resource = null,
         mixed $condition = null
     ): static {
+        $this->updateOnPreview = Condition::boolean($condition, true);
+
+        if (! $this->updateOnPreview) {
+            return $this;
+        }
+
         $this->url = $url;
 
-        $resource ??= moonshineRequest()->getResource();
+        $resource = $resource ?? moonshineRequest()->getResource();
 
-        if(is_null($resource) && is_null($url)) {
+        if (is_null($resource) && is_null($url)) {
             throw new FieldException('updateOnPreview must accept either $resource or $url parameters');
         }
 
-        if(! is_null($resource)) {
+        if (! is_null($resource)) {
             $this->updateColumnResourceUri = $resource->uriKey();
             $this->updateColumnPageUri = $resource->formPage()->uriKey();
         }
 
+        if ($this instanceof Text) {
+            $this->locked();
+        }
+
         $this->updateOnPreviewUrl = $this->getUrl() ?? $this->getDefaultUpdateRoute();
-        $this->updateOnPreview = Condition::boolean($condition, true);
 
         return $this;
     }

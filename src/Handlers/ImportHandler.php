@@ -25,9 +25,11 @@ class ImportHandler extends Handler
     use WithStorage;
 
     protected string $view = 'moonshine::actions.import';
+
     public string $inputName = 'import_file';
 
     protected ?string $icon = 'heroicons.outline.paper-clip';
+
     protected bool $deleteAfter = false;
 
     protected string $csvDelimiter = ',';
