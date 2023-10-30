@@ -195,7 +195,6 @@ it('relation update column', function () {
                 '_relation' => 'comments',
                 'field' => 'active',
                 'value' => 0,
-                'active' => 0, //TODO Strange behavior, if not specified explicitly, will not work
             ]
         )
     )
@@ -240,7 +239,6 @@ it('relation update column in resource', function () {
                 '_relation' => 'comments',
                 'field' => 'active',
                 'value' => 0,
-                'active' => 0, //TODO Strange behavior, if not specified explicitly, will not work
             ]
         )
     )
