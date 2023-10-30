@@ -52,6 +52,9 @@ function createItem(int $countItems = 1, int $countComments = 3)
         ->first();
 }
 
+/**
+ * @deprecated
+ */
 function addFieldToTestResource(Field $field): TestResource
 {
     return addFieldsToTestResource([$field]);

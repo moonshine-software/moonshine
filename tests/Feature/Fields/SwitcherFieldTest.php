@@ -2,13 +2,20 @@
 
 declare(strict_types=1);
 
+use MoonShine\Fields\ID;
+use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Switcher;
+use MoonShine\Fields\Text;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
+use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Resources\TestHasManyCommentResource;
+use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
 
@@ -18,8 +25,8 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = addFieldToTestResource(
-        $this->field
+    $resource = addFieldsToTestResource(
+        [$this->field]
     );
 
 
@@ -49,8 +56,8 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $resource = addFieldToTestResource(
-        $this->field
+    $resource = addFieldsToTestResource(
+        [$this->field]
     );
 
     $data = ['active' => 1];
@@ -69,13 +76,13 @@ it('apply as base', function () {
 });
 
 it('before apply', function () {
-    $resource = addFieldToTestResource(
-        Switcher::make('Active')
+    $resource = addFieldsToTestResource(
+        [Switcher::make('Active')
             ->onBeforeApply(function ($item) {
                 $item->name = 'Switcher';
 
                 return $item;
-            })
+            })]
     );
 
     $data = ['active' => 0];
@@ -94,13 +101,13 @@ it('before apply', function () {
 });
 
 it('after apply', function () {
-    $resource = addFieldToTestResource(
-        Switcher::make('Active')
+    $resource = addFieldsToTestResource(
+        [Switcher::make('Active')
             ->onAfterApply(function ($item, $data) {
                 $item->name = 'Switcher';
 
                 return $item;
-            })
+            })]
     );
 
     $data = ['active' => 1];
@@ -121,8 +128,8 @@ it('after apply', function () {
 });
 
 it('apply as base with default', function () {
-    $resource = addFieldToTestResource(
-        Switcher::make('Active')->default(1)
+    $resource = addFieldsToTestResource(
+        [Switcher::make('Active')->default(1)]
     );
 
     asAdmin()->put(
@@ -136,6 +143,117 @@ it('apply as base with default', function () {
     ;
 });
 
+it('resource update column', function () {
+
+    $resource = TestResourceBuilder::new(Item::class);
+
+    $field = Switcher::make('Active')->default(1)->updateOnPreview(resource: $resource);
+
+    $resource->setTestFields([
+        ...(new TestItemResource())->fields(),
+        ...[$field],
+    ]);
+
+    $this->item->active = false;
+    $this->item->save();
+
+    $this->item->refresh();
+
+    expect($this->item->active)
+        ->toBe(false);
+
+    asAdmin()->put(
+        MoonShineRouter::to('column.resource.update-column', [
+            'resourceItem' => $this->item->getKey(),
+            'resourceUri' => $resource->uriKey(),
+            'field' => 'active',
+            'value' => 0
+        ])
+    )->assertStatus(204);
+
+    $this->item->refresh();
+
+    expect($this->item->active)
+        ->toBe(true);
+});
+
+it('relation update column', function () {
+    $comment = $this->item->comments->first();
+
+    $resource = new TestItemResource();
+
+    expect($comment->active)
+        ->toBe(1);
+
+    asAdmin()->put(
+        MoonShineRouter::to(
+            'column.relation.update-column',
+            [
+                'resourceItem' => $comment->getKey(),
+                'resourceUri' => $resource->uriKey(),
+                'pageUri' => $resource->formPage()->uriKey(),
+                '_relation' => 'comments',
+                'field' => 'active',
+                'value' => 0,
+                'active' => 0, //TODO Strange behavior, if not specified explicitly, will not work
+            ]
+        )
+    )
+        ->assertStatus(204);
+
+    $this->item->refresh();
+
+    $comment = $this->item->comments->first();
+
+    expect($comment->active)
+        ->toBe(0);
+});
+
+it('relation update column in resource', function () {
+
+    $comment = $this->item->comments->first();
+
+    expect($comment->active)
+        ->toBe(1);
+
+    $resource = TestResourceBuilder::new(Item::class);
+
+    fakeRequest(to_page(
+        $resource->formPage()->uriKey(),
+        $resource, [
+            'resourceItem' => $this->item->getKey()
+        ]
+    ));
+
+    $resource->setTestFields([
+        ID::make(),
+        HasMany::make('Comments title', 'comments', resource: new TestHasManyCommentResource()),
+    ]);
+
+    asAdmin()->put(
+        MoonShineRouter::to(
+            'column.relation.update-column',
+            [
+                'resourceItem' => $comment->getKey(),
+                'resourceUri' => $resource->uriKey(),
+                'pageUri' => $resource->formPage()->uriKey(),
+                '_relation' => 'comments',
+                'field' => 'active',
+                'value' => 0,
+                'active' => 0, //TODO Strange behavior, if not specified explicitly, will not work
+            ]
+        )
+    )
+        ->assertStatus(204);
+
+    $this->item->refresh();
+
+    $comment = $this->item->comments->first();
+
+    expect($comment->active)
+        ->toBe(0);
+});
+
 function switcherExport(Item $item): ?string
 {
     $data = ['active' => 0];
@@ -144,8 +262,8 @@ function switcherExport(Item $item): ?string
 
     $item->save();
 
-    $resource = addFieldToTestResource(
-        Switcher::make('Active')->showOnExport()
+    $resource = addFieldsToTestResource(
+        [Switcher::make('Active')->showOnExport()]
     );
 
     $export = ExportHandler::make('');
@@ -170,8 +288,8 @@ it('import', function (): void {
 
     $file = switcherExport($this->item);
 
-    $resource = addFieldToTestResource(
-        Switcher::make('Active')->useOnImport()
+    $resource = addFieldsToTestResource(
+        [Switcher::make('Active')->useOnImport()]
     );
 
     $import = ImportHandler::make('');

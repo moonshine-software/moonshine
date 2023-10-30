@@ -40,23 +40,24 @@ trait UpdateOnPreview
     }
 
     public function updateOnPreview(
-        ?ResourceContract $resource = null,
         ?Closure $url = null,
+        ?ResourceContract $resource = null,
         mixed $condition = null
     ): static {
+        $this->url = $url;
 
-        if(is_null($resource) && is_null($url)) {
+        $resultResource = $resource ?? moonshineRequest()->getResource();
+
+        if(is_null($resultResource) && is_null($url)) {
             throw new FieldException('updateOnPreview must accept either $resource or $url parameters');
         }
 
-        $this->url = $url;
-
-        if(! is_null($resource)) {
-            $this->resourceUri = $resource->uriKey();
-            $this->pageUri = $resource->formPage()->uriKey();
+        if(!is_null($resultResource)) {
+            $this->resourceUri = $resultResource->uriKey();
+            $this->pageUri = $resultResource->formPage()->uriKey();
         }
 
-        $this->updateOnPreviewUrl = $resource ? $this->getDefaultUpdateRoute() : $this->getUrl();
+        $this->updateOnPreviewUrl = $this->getUrl() ?? $this->getDefaultUpdateRoute();
         $this->updateOnPreview = Condition::boolean($condition, true);
 
         return $this;
