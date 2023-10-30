@@ -128,9 +128,9 @@ class RelationModelFieldController extends MoonShineController
         $redirectRoute = $request->get('_redirect', $parentResource->redirectAfterDelete());
 
         if ($this->tryOrRedirect(static fn () => $resource->delete(
-                $request->getFieldItemOrFail(),
-                $fields->onlyFields()
-            ), $redirectRoute) instanceof RedirectResponse) {
+            $request->getFieldItemOrFail(),
+            $fields->onlyFields()
+        ), $redirectRoute) instanceof RedirectResponse) {
             return redirect($redirectRoute);
         }
 
@@ -203,11 +203,13 @@ class RelationModelFieldController extends MoonShineController
             $fields = $resource->getFormFields();
         }
 
-        if ($this->tryOrRedirect(static fn () => $resource->save(
+        if ($this->tryOrRedirect(
+            static fn () => $resource->save(
                 $item,
                 $fields->onlyFields()
             ),
-                $redirectRoute) instanceof RedirectResponse) {
+            $redirectRoute
+        ) instanceof RedirectResponse) {
             return redirect($redirectRoute);
         }
 

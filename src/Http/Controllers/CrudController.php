@@ -78,8 +78,10 @@ class CrudController extends MoonShineController
 
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
 
-        if ($this->tryOrRedirect(static fn () => $resource->massDelete($request->get('ids')),
-                $redirectRoute) instanceof RedirectResponse) {
+        if ($this->tryOrRedirect(
+            static fn () => $resource->massDelete($request->get('ids')),
+            $redirectRoute
+        ) instanceof RedirectResponse) {
             return redirect($redirectRoute);
         }
 
