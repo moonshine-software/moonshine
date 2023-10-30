@@ -5,7 +5,6 @@ declare(strict_types=1);
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Switcher;
-use MoonShine\Fields\Text;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
 use MoonShine\MoonShineRouter;
@@ -167,7 +166,7 @@ it('resource update column', function () {
             'resourceItem' => $this->item->getKey(),
             'resourceUri' => $resource->uriKey(),
             'field' => 'active',
-            'value' => 0
+            'value' => 0,
         ])
     )->assertStatus(204);
 
@@ -219,8 +218,9 @@ it('relation update column in resource', function () {
 
     fakeRequest(to_page(
         $resource->formPage()->uriKey(),
-        $resource, [
-            'resourceItem' => $this->item->getKey()
+        $resource,
+        [
+            'resourceItem' => $this->item->getKey(),
         ]
     ));
 

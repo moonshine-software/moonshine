@@ -52,7 +52,7 @@ trait UpdateOnPreview
             throw new FieldException('updateOnPreview must accept either $resource or $url parameters');
         }
 
-        if(!is_null($resource)) {
+        if(! is_null($resource)) {
             $this->updateColumnResourceUri = $resource->uriKey();
             $this->updateColumnPageUri = $resource->formPage()->uriKey();
         }
