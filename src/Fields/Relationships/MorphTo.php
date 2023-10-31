@@ -30,8 +30,7 @@ class MorphTo extends BelongsTo
      */
     public function types(array $types): self
     {
-        $this->asyncSearch()
-            ->required();
+        $this->asyncSearch();
 
         $this->searchColumns = collect($types)
             ->mapWithKeys(
@@ -125,7 +124,7 @@ class MorphTo extends BelongsTo
             return '';
         }
 
-        if (is_null($item)) {
+        if (is_null($item) || is_null($item->{$this->getRelationName()})) {
             return '';
         }
 
@@ -140,11 +139,18 @@ class MorphTo extends BelongsTo
             ->value();
     }
 
+    public function typeValue(): string
+    {
+        $default = Arr::first(array_keys($this->getTypes()));
+
+        return old($this->getMorphType()) ?? addslashes(
+            $this->getRelatedModel()->{$this->getMorphType()}
+            ?? $default
+        );
+    }
+
     protected function resolveValue(): string
     {
-        return addslashes(
-            $this->getRelatedModel()->{$this->getMorphType()}
-            ?? Arr::first(array_keys($this->getTypes()))
-        );
+        return (string) $this->getRelatedModel()->{$this->getMorphKey()};
     }
 }

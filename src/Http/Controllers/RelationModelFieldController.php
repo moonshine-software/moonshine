@@ -12,6 +12,7 @@ use MoonShine\Http\Requests\Relations\RelationModelFieldDeleteRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldStoreRequest;
 use MoonShine\Http\Requests\Relations\RelationModelFieldUpateRequest;
+use MoonShine\Resources\ModelResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -24,7 +25,6 @@ class RelationModelFieldController extends MoonShineController
     public function search(RelationModelFieldRequest $request): Response
     {
         $term = $request->get('query');
-        $extra = $request->get('extra');
 
         $field = $request->getPageField();
 
@@ -40,7 +40,9 @@ class RelationModelFieldController extends MoonShineController
         $searchColumn = $field->asyncSearchColumn() ?? $resource->column();
 
         if ($field instanceof MorphTo) {
-            $morphClass = $extra;
+            $field->resolveFill([], $model);
+
+            $morphClass = $request->get($field->getMorphType());
             $model = new $morphClass();
             $searchColumn = $field->getSearchColumn($morphClass);
         }

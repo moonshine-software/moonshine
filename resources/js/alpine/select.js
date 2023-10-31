@@ -146,10 +146,6 @@ export default (asyncUrl = '') => ({
             let url = new URL(asyncUrl)
 
             if (event.detail.value.length > 0) {
-              if (this.$el.dataset.asyncExtra !== undefined) {
-                url.searchParams.append('extra', this.$el.dataset.asyncExtra)
-              }
-
               url.searchParams.append('query', event.detail.value)
 
               const form = this.$el.form
