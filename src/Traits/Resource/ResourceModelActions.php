@@ -12,7 +12,7 @@ trait ResourceModelActions
 {
     public function getActiveActions(): array
     {
-        return ['create', 'view', 'update', 'delete'];
+        return ['create', 'view', 'update', 'delete', 'massDelete'];
     }
 
     /**

@@ -33,7 +33,7 @@ final class MassDeleteButton
                 )
             )
             ->canSee(
-                fn (): bool => in_array('delete', $resource->getActiveActions())
+                fn (): bool => in_array('massDelete', $resource->getActiveActions())
                 && $resource->can('massDelete')
             )
             ->showInLine();

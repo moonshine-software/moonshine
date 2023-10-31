@@ -87,7 +87,8 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function getBulkButtons(): ActionButtons
     {
         return ActionButtons::make($this->buttons)
-            ->bulk();
+            ->bulk()
+            ->onlyVisible();
     }
 
     public function trAttributes(Closure $closure): self
