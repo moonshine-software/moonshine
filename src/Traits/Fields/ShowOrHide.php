@@ -120,6 +120,7 @@ trait ShowOrHide
     public function showOnCreate(mixed $condition = null): static
     {
         $this->showOnCreateForm = Condition::boolean($condition, true);
+        $this->showOnForm = $this->isNowOnCreateForm() && $this->showOnCreateForm;
 
         return $this;
     }
@@ -132,6 +133,7 @@ trait ShowOrHide
     public function hideOnCreate(mixed $condition = null): static
     {
         $this->showOnCreateForm = Condition::boolean($condition, false);
+        $this->showOnForm = $this->isNowOnUpdateForm() || $this->showOnCreateForm;
 
         return $this;
     }
@@ -144,6 +146,7 @@ trait ShowOrHide
     public function showOnUpdate(mixed $condition = null): static
     {
         $this->showOnUpdateForm = Condition::boolean($condition, true);
+        $this->showOnForm = $this->isNowOnUpdateForm() && $this->showOnUpdateForm;
 
         return $this;
     }
@@ -156,6 +159,7 @@ trait ShowOrHide
     public function hideOnUpdate(mixed $condition = null): static
     {
         $this->showOnUpdateForm = Condition::boolean($condition, false);
+        $this->showOnForm = $this->isNowOnCreateForm() || $this->showOnUpdateForm;
 
         return $this;
     }
