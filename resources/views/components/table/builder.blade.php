@@ -80,7 +80,6 @@
 
             @if(!$preview)
             <x-slot:tfoot
-                x-ref="foot"
                 ::class="actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
             >
                 <x-moonshine::table.foot

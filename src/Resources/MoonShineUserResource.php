@@ -26,9 +26,12 @@ class MoonShineUserResource extends ModelResource
 {
     public string $model = MoonshineUser::class;
 
-    public string $title = 'MoonshineUsers';
-
     public string $column = 'name';
+
+    public function title(): string
+    {
+        return __('moonshine::ui.resource.admins_title');
+    }
 
     public function fields(): array
     {
@@ -41,44 +44,44 @@ class MoonShineUserResource extends ModelResource
                             ->showOnExport(),
 
                         BelongsTo::make(
-                            trans('moonshine::ui.resource.role'),
+                            __('moonshine::ui.resource.role'),
                             'moonshineUserRole',
                             static fn (MoonshineUserRole $model) => $model->name,
                             new MoonShineUserRoleResource(),
                         ),
 
-                        Text::make(trans('moonshine::ui.resource.name'), 'name')
+                        Text::make(__('moonshine::ui.resource.name'), 'name')
                             ->required()
                             ->showOnExport(),
 
-                        Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
+                        Image::make(__('moonshine::ui.resource.avatar'), 'avatar')
                             ->showOnExport()
                             ->disk(config('moonshine.disk', 'public'))
                             ->dir('moonshine_users')
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
-                        Date::make(trans('moonshine::ui.resource.created_at'), 'created_at')
+                        Date::make(__('moonshine::ui.resource.created_at'), 'created_at')
                             ->format("d.m.Y")
                             ->default(now()->toDateTimeString())
                             ->sortable()
                             ->hideOnForm()
                             ->showOnExport(),
 
-                        Email::make(trans('moonshine::ui.resource.email'), 'email')
+                        Email::make(__('moonshine::ui.resource.email'), 'email')
                             ->sortable()
                             ->showOnExport()
                             ->required(),
                     ]),
 
-                    Tab::make(trans('moonshine::ui.resource.password'), [
+                    Tab::make(__('moonshine::ui.resource.password'), [
                         Heading::make('Change password'),
 
-                        Password::make(trans('moonshine::ui.resource.password'), 'password')
+                        Password::make(__('moonshine::ui.resource.password'), 'password')
                             ->customAttributes(['autocomplete' => 'new-password'])
                             ->hideOnIndex()
                             ->eye(),
 
-                        PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
+                        PasswordRepeat::make(__('moonshine::ui.resource.repeat_password'), 'password_repeat')
                             ->customAttributes(['autocomplete' => 'confirm-password'])
                             ->hideOnIndex()
                             ->eye(),
@@ -112,20 +115,5 @@ class MoonShineUserResource extends ModelResource
     public function search(): array
     {
         return ['id', 'name'];
-    }
-
-    public function filters(): array
-    {
-        return [];
-    }
-
-    public function actions(): array
-    {
-        return [];
-    }
-
-    public function getBadge(): string
-    {
-        return (string) $this->getModel()->newModelQuery()->count();
     }
 }

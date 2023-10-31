@@ -18,13 +18,14 @@ export default (
   reindex: reindex,
   loading: false,
   init() {
-    if (this.$refs.foot !== undefined) {
-      this.$refs.foot.classList.remove('hidden')
-    }
-
     this.table = this.$root.querySelector('table')
     const removeAfterClone = this.table?.dataset?.removeAfterClone
     const tbody = this.table?.querySelector('tbody')
+    const tfoot = this.table?.querySelector('tfoot')
+
+    if (tfoot !== null && tfoot !== undefined) {
+      tfoot.classList.remove('hidden')
+    }
 
     this.lastRow = tbody?.lastElementChild?.cloneNode(true)
 

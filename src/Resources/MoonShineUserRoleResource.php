@@ -15,8 +15,6 @@ class MoonShineUserRoleResource extends ModelResource
 {
     public string $model = MoonshineUserRole::class;
 
-    protected string $title = 'Roles';
-
     public string $column = 'name';
 
     protected bool $isAsync = true;
@@ -25,12 +23,17 @@ class MoonShineUserRoleResource extends ModelResource
 
     protected bool $editInModal = true;
 
+    public function title(): string
+    {
+        return __('moonshine::ui.resource.role');
+    }
+
     public function fields(): array
     {
         return [
             Block::make('', [
                 ID::make()->sortable()->showOnExport(),
-                Text::make(trans('moonshine::ui.resource.role_name'), 'name')
+                Text::make(__('moonshine::ui.resource.role_name'), 'name')
                     ->required()
                     ->showOnExport(),
             ]),
@@ -50,15 +53,5 @@ class MoonShineUserRoleResource extends ModelResource
     public function search(): array
     {
         return ['id', 'name'];
-    }
-
-    public function filters(): array
-    {
-        return [];
-    }
-
-    public function actions(): array
-    {
-        return [];
     }
 }

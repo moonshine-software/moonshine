@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Commands;
 
-use function Laravel\Prompts\{info, multiselect};
-
+use Illuminate\Filesystem\Filesystem;
 use MoonShine\MoonShine;
+
+use function Laravel\Prompts\{info, multiselect};
 
 class PublishCommand extends MoonShineCommand
 {
@@ -19,6 +20,7 @@ class PublishCommand extends MoonShineCommand
             [
                 'assets' => 'Assets',
                 'layout' => 'Layout',
+                'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)'
             ],
             required: true
         );
@@ -47,6 +49,43 @@ class PublishCommand extends MoonShineCommand
             info('Layout published');
         }
 
+        if (in_array('resources', $types, true)) {
+            $this->publishSystemResource('MoonShineUserResource', 'MoonshineUser');
+            $this->publishSystemResource('MoonShineUserRoleResource', 'MoonshineUserRole');
+
+            info('Resources published');
+        }
+
         return self::SUCCESS;
+    }
+
+    private function publishSystemResource(string $name, string $model): void
+    {
+        $classPath = "/src/Resources/$name.php";
+        $fullClassPath = MoonShine::dir("/Resources/$name.php");
+        $targetNamespace = MoonShine::namespace('\Resources');
+
+        (new Filesystem)->put(
+            $fullClassPath,
+            file_get_contents(MoonShine::path($classPath))
+        );
+
+        $this->replaceInFile(
+            'namespace MoonShine\Resources;',
+            "namespace $targetNamespace;",
+            $fullClassPath
+        );
+
+        $this->replaceInFile(
+            "use MoonShine\Models\\$model;",
+            "use MoonShine\Models\\$model;\nuse MoonShine\Resources\ModelResource;",
+            $fullClassPath
+        );
+
+        $this->replaceInFile(
+            "use MoonShine\Resources\\$name;",
+            "use $targetNamespace\\$name;",
+            app_path('Providers/MoonShineServiceProvider.php')
+        );
     }
 }
