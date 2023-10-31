@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Filesystem\Filesystem;
-use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{info, multiselect};
+
+use MoonShine\MoonShine;
 
 class PublishCommand extends MoonShineCommand
 {
@@ -20,7 +21,7 @@ class PublishCommand extends MoonShineCommand
             [
                 'assets' => 'Assets',
                 'layout' => 'Layout',
-                'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)'
+                'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
             ],
             required: true
         );
@@ -65,7 +66,7 @@ class PublishCommand extends MoonShineCommand
         $fullClassPath = MoonShine::dir("/Resources/$name.php");
         $targetNamespace = MoonShine::namespace('\Resources');
 
-        (new Filesystem)->put(
+        (new Filesystem())->put(
             $fullClassPath,
             file_get_contents(MoonShine::path($classPath))
         );
