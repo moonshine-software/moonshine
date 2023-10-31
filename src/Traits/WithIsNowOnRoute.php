@@ -51,12 +51,12 @@ trait WithIsNowOnRoute
         }
 
         return (
-                is_null(request()?->route('resourceItem'))
-                && request()?->route('pageUri') === PageType::FORM->value
-            ) && (
-                is_null(request('resourceItem'))
-                && request('pageUri') === PageType::FORM->value
-            );
+            is_null(request()?->route('resourceItem'))
+            && request()?->route('pageUri') === PageType::FORM->value
+        ) && (
+            is_null(request('resourceItem'))
+            && request('pageUri') === PageType::FORM->value
+        );
     }
 
     public function isNowOnUpdateForm(): bool
@@ -66,11 +66,11 @@ trait WithIsNowOnRoute
         }
 
         return (
-                ! is_null(request()?->route('resourceItem'))
-                && request()?->route('pageUri') === PageType::FORM->value
-            ) || (
-                ! is_null(request('resourceItem'))
-                && request('pageUri') === PageType::FORM->value
-            );
+            ! is_null(request()?->route('resourceItem'))
+            && request()?->route('pageUri') === PageType::FORM->value
+        ) || (
+            ! is_null(request('resourceItem'))
+            && request('pageUri') === PageType::FORM->value
+        );
     }
 }
