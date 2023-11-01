@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
+use Closure;
+
+/**
+ * @method static static make(Closure|string $label)
+ */
 class Divider extends Decoration
 {
     protected string $view = 'moonshine::decorations.divider';
