@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Text;
+use MoonShine\InputExtensions\InputNumberUpDown;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
@@ -53,6 +54,11 @@ it('number methods', function (): void {
 it('preview value', function (): void {
     expect($this->field->preview())
         ->toBe('3');
+});
+
+it('buttons is up-down extension', function (): void {
+    expect($this->field->buttons()->getExtensions()->first())
+        ->toBeInstanceOf(InputNumberUpDown::class);
 });
 
 it('preview with stars', function (): void {
