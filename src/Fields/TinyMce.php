@@ -101,7 +101,7 @@ final class TinyMce extends Textarea
             'mergetags_list',
         ];
 
-        if (!in_array($name, $reservedNames)) {
+        if (! in_array($name, $reservedNames)) {
             $this->customAttributes(["data-$name" => $value]);
         }
 
