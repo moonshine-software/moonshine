@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Number;
-use MoonShine\Fields\Text;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('fields');
@@ -20,7 +20,7 @@ beforeEach(function (): void {
 
 it('text field is parent', function (): void {
     expect($this->field)
-        ->toBeInstanceOf(Text::class);
+        ->toBeInstanceOf(Field::class);
 });
 
 it('type', function (): void {
@@ -47,8 +47,11 @@ it('number methods', function (): void {
         ->step->toBe(2)
         ->getAttribute('step')
         ->toBe(2)
+        ->stars()
+        ->asStars()
+        ->toBe(true)
         ->buttons()
-        ->withButtons()
+        ->hasButtons()
         ->toBe(true)
     ;
 });

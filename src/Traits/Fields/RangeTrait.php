@@ -96,7 +96,7 @@ trait RangeTrait
         $from = $value[$this->fromField];
         $to = $value[$this->toField];
 
-        if ($this->withStars()) {
+        if ($this->asStars()) {
             $from = view('moonshine::ui.rating', [
                 'value' => $from,
             ])->render();

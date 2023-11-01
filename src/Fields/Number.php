@@ -6,11 +6,22 @@ namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\NumberTrait;
+use MoonShine\Traits\Fields\UpdateOnPreview;
+use MoonShine\Traits\Fields\WithDefaultValue;
+use MoonShine\Traits\Fields\WithInputExtensions;
+use MoonShine\Traits\Fields\WithMask;
 
-class Number extends Text implements DefaultCanBeNumeric
+class Number extends Field implements DefaultCanBeNumeric, HasDefaultValue
 {
     use NumberTrait;
+    use WithInputExtensions;
+    use WithMask;
+    use WithDefaultValue;
+    use HasPlaceholder;
+    use UpdateOnPreview;
 
     protected string $type = 'number';
 
@@ -44,19 +55,19 @@ class Number extends Text implements DefaultCanBeNumeric
         return $this;
     }
 
-    public function withButtons(): bool
+    public function hasButtons(): bool
     {
         return $this->buttons;
     }
 
-    public function withStars(): bool
+    public function asStars(): bool
     {
         return $this->stars;
     }
 
     protected function resolvePreview(): View|string
     {
-        if (! $this->isRawMode() && $this->withStars()) {
+        if (! $this->isRawMode() && $this->asStars()) {
             return view('moonshine::ui.rating', [
                 'value' => parent::resolvePreview(),
             ]);
