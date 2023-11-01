@@ -32,7 +32,7 @@ return [
     'notfound' => 'Пока записей нет',
     'collapse_menu' => 'Свернуть меню',
     '404' => 'Хьюстон! У нас проблема - страница не найдена',
-    'copied' => 'Скорировано!',
+    'copied' => 'Скопировано!',
     'notifications' => [
         'title' => 'Уведомления',
         'mark_as_read_all' => 'Все прочитано',
@@ -78,7 +78,7 @@ return [
         'import' => [
             'imported' => 'Импортирован',
             'file_required' => 'Файл обязателен',
-            'extension_not_supported' => 'Расширения не поддерживается'
+            'extension_not_supported' => 'Расширение файла не поддерживается'
         ]
     ]
 ];
