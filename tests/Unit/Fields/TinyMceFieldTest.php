@@ -34,6 +34,23 @@ it('has assets', function (): void {
         ->not->toBeEmpty();
 });
 
+it('tinymce methods', function (): void {
+    expect($this->field)
+        ->commentAuthor('test')
+        ->commentAuthor->toBe('test')
+        ->menubar('test')
+        ->menubar->toBe('test')
+        ->addConfig('test-config', 1)
+        ->getAttribute('data-test-config')->toBe(1)
+        ->addConfig('test-config-string', 'string')
+        ->getAttribute('data-test-config-string')->toBe('string')
+        ->addConfig('test-config-float', 1.2)
+        ->getAttribute('data-test-config-float')->toBe(1.2)
+        ->addConfig('test-config-bool', true)
+        ->getAttribute('data-test-config-bool')->toBe(true)
+    ;
+});
+
 it('apply', function (): void {
     $data = ['tinymce' => 'test'];
 

@@ -80,6 +80,34 @@ final class TinyMce extends Textarea
         return $this;
     }
 
+    public function addConfig(string $name, bool|int|float|string $value): self
+    {
+        $name = str($name)->lower()->value();
+        $reservedNames = [
+            'selector',
+            'path_absolute',
+            'file_manager',
+            'relative_urls',
+            'branding',
+            'skin',
+            'content_css',
+            'file_picker_callback',
+            'language',
+            'plugins',
+            'menubar',
+            'toolbar',
+            'tinycomments_mode',
+            'tinycomments_author',
+            'mergetags_list',
+        ];
+
+        if (!in_array($name, $reservedNames)) {
+            $this->customAttributes(["data-$name" => $value]);
+        }
+
+        return $this;
+    }
+
     public function addPlugins(string $plugins): self
     {
         $this->addedPlugins = $plugins;
