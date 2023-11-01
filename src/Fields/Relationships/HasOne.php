@@ -120,7 +120,7 @@ class HasOne extends ModelRelationField implements HasFields
         );
 
         return FormBuilder::make($action)
-            ->switchFormMode(!is_null($item) && ($this->isAsync() || $resource->isAsync()))
+            ->switchFormMode(! is_null($item) && ($this->isAsync() || $resource->isAsync()))
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(
@@ -148,9 +148,9 @@ class HasOne extends ModelRelationField implements HasFields
                     )
                         ->canSee(
                             fn (?Model $item): bool => ! is_null($item) && in_array(
-                                    'delete',
-                                    $resource->getActiveActions()
-                                )
+                                'delete',
+                                $resource->getActiveActions()
+                            )
                                 && $resource->setItem($item)->can('delete')
                         )
                         ->secondary()
