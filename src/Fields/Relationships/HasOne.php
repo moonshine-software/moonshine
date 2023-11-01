@@ -11,6 +11,7 @@ use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -30,33 +31,18 @@ class HasOne extends ModelRelationField implements HasFields
 
     protected bool $outsideComponent = true;
 
-    public function preview(): View|string
+    protected bool $isAsync = false;
+
+    public function async(): static
     {
-        $casted = $this->getRelatedModel();
-
-        $this->setValue($casted?->{$this->getRelationName()});
-
-        return parent::preview();
-    }
-
-    public function value(bool $withOld = false): mixed
-    {
-        $this->setValue($this->getRelatedModel()->{$this->getRelationName()});
-
-        return parent::value(false);
-    }
-
-    public function resolveFill(
-        array $raw = [],
-        mixed $casted = null,
-        int $index = 0
-    ): static {
-
-        if ($casted instanceof Model) {
-            $this->setRelatedModel($casted);
-        }
+        $this->isAsync = true;
 
         return $this;
+    }
+
+    public function isAsync(): bool
+    {
+        return $this->isAsync;
     }
 
     /**
@@ -103,15 +89,17 @@ class HasOne extends ModelRelationField implements HasFields
      * @throws FieldException
      * @throws Throwable
      */
-    protected function resolveValue(): mixed
+    protected function resolveValue(): MoonShineRenderable
     {
         $resource = $this->getResource();
 
         $parentResource = moonshineRequest()->getResource();
 
         $item = $this->toValue();
+        // When need lazy load
+        // $item->load($resource->getWith());
 
-        if(is_null($parentResource)) {
+        if (is_null($parentResource)) {
             throw new FieldException('Parent resource is required');
         }
 
@@ -132,7 +120,7 @@ class HasOne extends ModelRelationField implements HasFields
         );
 
         return FormBuilder::make($action)
-            ->switchFormMode($resource->isAsync() && ! is_null($item))
+            ->switchFormMode(!is_null($item) && ($this->isAsync() || $resource->isAsync()))
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(
@@ -144,35 +132,45 @@ class HasOne extends ModelRelationField implements HasFields
                     Hidden::make('_relation')->setValue($this->getRelationName()),
                 )->toArray()
             )
-            ->fillCast($item?->attributesToArray() ?? [
+            ->fillCast(
+                $item?->attributesToArray() ?? [
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
-            ], $resource->getModelCast())
-            ->buttons(is_null($item) ? [] : [
-                ActionButton::make(
-                    __('moonshine::ui.delete'),
-                    url: $buttonUrl
-                )
-                    ->canSee(
-                        fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
-                            && $resource->setItem($item)->can('delete')
+            ],
+                $resource->getModelCast()
+            )
+            ->buttons(
+                is_null($item)
+                    ? []
+                    : [
+                    ActionButton::make(
+                        __('moonshine::ui.delete'),
+                        url: $buttonUrl
                     )
-                    ->secondary()
-                    ->customAttributes(['class' => 'btn-lg'])
-                    ->withConfirm(
-                        fields: fn (Model $item): array => [
-                            Hidden::make($item->getKeyName())->setValue($item->getKey()),
-                        ],
-                        method: 'DELETE',
-                        formBuilder: fn (FormBuilder $form, Model $item): FormBuilder => $form->redirect(
-                            to_page(
-                                page: $resource->formPage(),
-                                resource: $parentResource,
-                                params: ['resourceItem' => $parentItem->getKey()]
+                        ->canSee(
+                            fn (?Model $item): bool => ! is_null($item) && in_array(
+                                    'delete',
+                                    $resource->getActiveActions()
+                                )
+                                && $resource->setItem($item)->can('delete')
+                        )
+                        ->secondary()
+                        ->customAttributes(['class' => 'btn-lg'])
+                        ->withConfirm(
+                            fields: fn (Model $item): array => [
+                                Hidden::make($item->getKeyName())->setValue($item->getKey()),
+                            ],
+                            method: 'DELETE',
+                            formBuilder: fn (FormBuilder $form, Model $item): FormBuilder => $form->redirect(
+                                to_page(
+                                    page: $resource->formPage(),
+                                    resource: $parentResource,
+                                    params: ['resourceItem' => $parentItem->getKey()]
+                                )
                             )
                         )
-                    )
-                    ->showInLine(),
-            ])
+                        ->showInLine(),
+                ]
+            )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
 }

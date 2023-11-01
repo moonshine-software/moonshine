@@ -70,6 +70,10 @@ trait ResourceModelQuery
 
     public function getItem(): ?Model
     {
+        if(is_null($this->getItemID())) {
+            return null;
+        }
+
         return $this->itemOr(
             fn () => $this
                 ->resolveItemQuery()
@@ -86,6 +90,10 @@ trait ResourceModelQuery
 
     public function getItemOrInstance(): Model
     {
+        if(is_null($this->getItemID())) {
+            return $this->getModel();
+        }
+
         return $this->itemOr(
             fn () => $this
                 ->resolveItemQuery()

@@ -57,6 +57,35 @@ class HasMany extends ModelRelationField implements HasFields
         return $this->isCreatable;
     }
 
+    public function createButton(): ?ActionButton
+    {
+        if (is_null($this->getRelatedModel()?->getKey())) {
+            return null;
+        }
+
+        if (! $this->isCreatable()) {
+            return null;
+        }
+
+        $button = HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey());
+
+        return $button->isSee($this->getRelatedModel())
+            ? $button
+            : null;
+    }
+
+    public function limit(int $limit): static
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
     public function async(): static
     {
         $this->isAsync = true;
@@ -67,43 +96,6 @@ class HasMany extends ModelRelationField implements HasFields
     public function isAsync(): bool
     {
         return $this->isAsync;
-    }
-
-    public function preview(): View|string
-    {
-        $casted = $this->getRelatedModel();
-
-        $this->setValue($casted->{$this->getRelationName()});
-
-        return parent::preview();
-    }
-
-    public function value(bool $withOld = false): mixed
-    {
-        $casted = $this->getRelatedModel();
-
-        $this->getResource()
-            ->query()
-            ->where(
-                $casted->{$this->getRelationName()}()->getForeignKeyName(),
-                $casted->{$casted->getKeyName()}
-            );
-
-        $this->setValue($this->getResource()->paginate());
-
-        return parent::value(false);
-    }
-
-    public function resolveFill(
-        array $raw = [],
-        mixed $casted = null,
-        int $index = 0
-    ): static {
-        if ($casted instanceof Model) {
-            $this->setRelatedModel($casted);
-        }
-
-        return $this;
     }
 
     public function onlyLink(?string $linkRelation = null, Closure|bool|null $condition = null): static
@@ -154,11 +146,6 @@ class HasMany extends ModelRelationField implements HasFields
         return $this->getFields()->indexFields();
     }
 
-    protected function resolvePreview(): View|string
-    {
-        return $this->isOnlyLink() ? $this->linkPreview() : $this->tablePreview();
-    }
-
     protected function linkPreview(): View|string
     {
         $casted = $this->getRelatedModel();
@@ -205,11 +192,6 @@ class HasMany extends ModelRelationField implements HasFields
             ->render();
     }
 
-    protected function resolveValue(): MoonShineRenderable
-    {
-        return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
-    }
-
     protected function linkValue(): MoonShineRenderable
     {
         if (is_null($relationName = $this->linkRelation)) {
@@ -227,23 +209,6 @@ class HasMany extends ModelRelationField implements HasFields
                     ]
                 )
             )->primary();
-    }
-
-    public function createButton(): ?ActionButton
-    {
-        if (is_null($this->getRelatedModel()?->getKey())) {
-            return null;
-        }
-
-        if (! $this->isCreatable()) {
-            return null;
-        }
-
-        $button = HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey());
-
-        return $button->isSee($this->getRelatedModel())
-            ? $button
-            : null;
     }
 
     protected function tableValue(): MoonShineRenderable
@@ -294,16 +259,38 @@ class HasMany extends ModelRelationField implements HasFields
             ]);
     }
 
-    public function limit(int $limit): static
+    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        $this->limit = $limit;
-
-        return $this;
+        return null;
     }
 
-    public function getLimit(): int
+    protected function resolvePreview(): View|string
     {
-        return $this->limit;
+        if(is_null($this->toValue())) {
+            $casted = $this->getRelatedModel();
+
+            $this->setValue($casted->{$this->getRelationName()});
+        }
+
+        return $this->isOnlyLink() ? $this->linkPreview() : $this->tablePreview();
+    }
+
+    protected function resolveValue(): MoonShineRenderable
+    {
+        if(is_null($this->toValue())) {
+            $casted = $this->getRelatedModel();
+
+            $this->getResource()
+                ->query()
+                ->where(
+                    $casted->{$this->getRelationName()}()->getForeignKeyName(),
+                    $casted->{$casted->getKeyName()}
+                );
+
+            $this->setValue($this->getResource()->paginate());
+        }
+
+        return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
     }
 
     protected function resolveOnApply(): ?Closure
