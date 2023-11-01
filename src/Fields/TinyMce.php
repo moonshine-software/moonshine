@@ -108,7 +108,6 @@ final class TinyMce extends Textarea
             'tinycomments_mode',
             'tinycomments_author',
             'mergetags_list',
-            'file_manager'
         ];
 
         if (!in_array($name, $reservedNames)) {
