@@ -12,8 +12,6 @@ final class TinyMce extends Textarea
 
     public string $addedPlugins = '';
 
-    public array $addedConfigs = [];
-
     public string $menubar = 'file edit insert view format table tools';
 
     public string $toolbar = 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table tabledelete hr nonbreaking pagebreak | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | codesample | ltr rtl | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | fullscreen preview print visualblocks visualchars code | help';
@@ -35,13 +33,6 @@ final class TinyMce extends Textarea
         }
 
         return $assets;
-    }
-
-    public function getAddedConfigs(): array
-    {
-        return collect($this->addedConfigs)
-            ->keyBy(static fn($_, $key): string => "data-$key")
-            ->toArray();
     }
 
     protected function token(): string
@@ -89,7 +80,7 @@ final class TinyMce extends Textarea
         return $this;
     }
 
-    public function addConfig(string $name, mixed $value): self
+    public function addConfig(string $name, bool|int|float|string $value): self
     {
         $name = str($name)->lower()->value();
         $reservedNames = [
@@ -111,7 +102,7 @@ final class TinyMce extends Textarea
         ];
 
         if (!in_array($name, $reservedNames)) {
-            $this->addedConfigs[$name] = $value;
+            $this->customAttributes(["data-$name" => $value]);
         }
 
         return $this;

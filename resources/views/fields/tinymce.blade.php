@@ -2,8 +2,7 @@
     <x-moonshine::form.textarea
         :attributes="$element->attributes()->merge([
             'name' => $element->name()
-        ])->merge($element->getAddedConfigs())
-        ->except('x-bind:id')"
+        ])->except('x-bind:id')"
         ::id="$id('tiny-mce')"
         x-data="tinymce()"
         :data-language="!empty($element->locale) ? $element->locale : app()->getLocale()"
