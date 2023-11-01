@@ -30,7 +30,7 @@ it('type', function (): void {
 
 it('view', function (): void {
     expect($this->field->getView())
-        ->toBe('moonshine::fields.input');
+        ->toBe('moonshine::fields.number');
 });
 
 it('number methods', function (): void {
@@ -47,6 +47,9 @@ it('number methods', function (): void {
         ->step->toBe(2)
         ->getAttribute('step')
         ->toBe(2)
+        ->buttons()
+        ->withButtons()
+        ->toBe(true)
     ;
 });
 

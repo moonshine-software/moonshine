@@ -14,6 +14,8 @@ class Number extends Text implements DefaultCanBeNumeric
 
     protected string $type = 'number';
 
+    protected string $view = 'moonshine::fields.number';
+
     protected array $attributes = [
         'type',
         'min',
@@ -26,11 +28,25 @@ class Number extends Text implements DefaultCanBeNumeric
 
     protected bool $stars = false;
 
+    protected bool $buttons = false;
+
     public function stars(): static
     {
         $this->stars = true;
 
         return $this;
+    }
+
+    public function buttons(): static
+    {
+        $this->buttons = true;
+
+        return $this;
+    }
+
+    public function withButtons(): bool
+    {
+        return $this->buttons;
     }
 
     public function withStars(): bool
