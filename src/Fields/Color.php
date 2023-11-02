@@ -24,7 +24,7 @@ class Color extends Field implements HasDefaultValue, DefaultCanBeString
         }
 
         return view('moonshine::ui.color', [
-            'element' => $this,
+            'color' => $this->value(),
         ]);
     }
 }
