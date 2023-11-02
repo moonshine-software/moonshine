@@ -7,9 +7,9 @@ namespace MoonShine\Pages\Crud;
 use MoonShine\Buttons\IndexPage\CreateButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
+use MoonShine\Buttons\IndexPage\EditButton;
 use MoonShine\Buttons\IndexPage\ExportButton;
 use MoonShine\Buttons\IndexPage\FiltersButton;
-use MoonShine\Buttons\IndexPage\FormButton;
 use MoonShine\Buttons\IndexPage\ImportButton;
 use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Buttons\IndexPage\QueryTagButton;
@@ -97,7 +97,7 @@ class IndexPage extends Page
                 Column::make([
                     Flex::make([
                         ActionGroup::make([
-                            CreateButton::forMode($this->getResource(), 'index-table'),
+                            CreateButton::for($this->getResource(), 'index-table'),
                             ...$this->getResource()->actions(),
                         ]),
                     ])->justifyAlign('start'),
@@ -178,8 +178,8 @@ class IndexPage extends Page
                     })
                     ->buttons([
                         ...$this->getResource()->getIndexButtons(),
-                        DetailButton::forMode($this->getResource()),
-                        FormButton::forMode($this->getResource(), $tableName),
+                        DetailButton::for($this->getResource()),
+                        EditButton::for($this->getResource(), $tableName),
                         DeleteButton::for($this->getResource(), $tableName),
                         MassDeleteButton::for($this->getResource(), $tableName),
                     ])

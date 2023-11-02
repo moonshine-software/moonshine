@@ -10,27 +10,39 @@ use MoonShine\Resources\ModelResource;
 
 final class DetailButton
 {
-    public static function forMode(ModelResource $resource): ActionButton
+    public static function for(ModelResource $resource, bool $isAsync = false): ActionButton
     {
         if(! $resource->detailPage()) {
             return ActionButton::emptyHidden();
         }
 
-        return $resource->isDetailInModal()
-            ? AsyncDetailButton::for($resource)
-            : DetailButton::for($resource);
-    }
+        $action = static fn ($data): string => to_page(
+            page: $resource->detailPage(),
+            resource: $resource,
+            params: ['resourceItem' => $data->getKey()]
+        );
 
-    public static function for(ModelResource $resource): ActionButton
-    {
-        return ActionButton::make(
-            '',
-            url: static fn ($data): string => to_page(
+        if($isAsync || $resource->isDetailInModal()) {
+            $action = static fn ($data): string => to_page(
                 page: $resource->detailPage(),
                 resource: $resource,
-                params: ['resourceItem' => $data->getKey()]
-            )
+                params: ['resourceItem' => $data->getKey()],
+                fragment: 'crud-show-table'
+            );
+        }
+
+        return ActionButton::make(
+            '',
+            $action
         )
+            ->when(
+                $isAsync || $resource->isDetailInModal(),
+                fn(ActionButton $button) => $button->inModal(
+                    fn (): array|string|null => __('moonshine::ui.show'),
+                    fn (): string => '',
+                    async: true
+                )
+            )
             ->canSee(
                 fn (?Model $item): bool => ! is_null($item) && in_array('view', $resource->getActiveActions())
                 && $resource->setItem($item)->can('view')

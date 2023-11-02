@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasOneOrManyFields\HasManyCreateButton;
-use MoonShine\Buttons\HasOneOrManyFields\HasManyDeleteButton;
-use MoonShine\Buttons\HasOneOrManyFields\HasManyFormButton;
-use MoonShine\Buttons\HasOneOrManyFields\HasManyMassDeleteButton;
+use MoonShine\Buttons\HasOneOrManyFields\HasManyEditButton;
+use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Buttons\IndexPage\DetailButton;
+use MoonShine\Buttons\IndexPage\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasUpdateOnPreview;
@@ -67,7 +67,7 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        $button = HasManyCreateButton::for($this, $this->getRelatedModel()?->getKey());
+        $button = HasManyCreateButton::for($this);
 
         return $button->isSee($this->getRelatedModel())
             ? $button
@@ -161,13 +161,18 @@ class HasMany extends ModelRelationField implements HasFields
             to_page(
                 page: IndexPage::class,
                 resource: $this->getResource(),
-                params: ['_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}]
+                params: [
+                    '_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}
+                ]
             )
         )
             ->icon('heroicons.outline.eye')
             ->render();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function tablePreview(): View|string
     {
         $items = $this->toValue();
@@ -205,7 +210,7 @@ class HasMany extends ModelRelationField implements HasFields
                     page: IndexPage::class,
                     resource: $this->getResource(),
                     params: [
-                        'parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
+                        '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
                     ]
                 )
             )->primary();
@@ -224,22 +229,30 @@ class HasMany extends ModelRelationField implements HasFields
         $fields = $this->preparedFields();
 
         $fields->each(function (Field $field): void {
-            if(
+            if (
                 $field instanceof HasUpdateOnPreview
                 && $field->isUpdateOnPreview()
                 && is_null($field->getUrl())
             ) {
-                $field->setUpdateOnPreviewUrl(updateRelationColumnRoute(
-                    $field->getResourceUriForUpdate(),
-                    $field->getPageUriForUpdate(),
-                    $this->getRelationName(),
-                ));
+                $field->setUpdateOnPreviewUrl(
+                    updateRelationColumnRoute(
+                        $field->getResourceUriForUpdate(),
+                        $field->getPageUriForUpdate(),
+                        $this->getRelationName(),
+                    )
+                );
             }
         });
 
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
         $parentId = $this->getRelatedModel()?->getKey();
+
+        $redirectAfter = !$this->isAsync() ? to_page(
+            page: $resource->formPage(),
+            resource: moonshineRequest()->getResource(),
+            params: ['resourceItem' => $parentId]
+        ) : '';
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
@@ -252,10 +265,20 @@ class HasMany extends ModelRelationField implements HasFields
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
             ->buttons([
-                DetailButton::forMode($resource),
-                HasManyFormButton::forMode($resource, $this),
-                HasManyDeleteButton::for($this, $resource, $parentId),
-                HasManyMassDeleteButton::for($this, $resource, $parentId),
+                DetailButton::for($resource, $this->isAsync()),
+                HasManyEditButton::for($this),
+                DeleteButton::for(
+                    $resource,
+                    $this->getRelationName(),
+                    redirectAfterDelete: $redirectAfter,
+                    isAsync: $this->isAsync()
+                ),
+                MassDeleteButton::for(
+                    $resource,
+                    $this->getRelationName(),
+                    redirectAfterDelete: $redirectAfter,
+                    isAsync: $this->isAsync()
+                ),
             ]);
     }
 
@@ -266,7 +289,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolvePreview(): View|string
     {
-        if(is_null($this->toValue())) {
+        if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
 
             $this->setValue($casted->{$this->getRelationName()});
@@ -277,7 +300,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolveValue(): MoonShineRenderable
     {
-        if(is_null($this->toValue())) {
+        if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
 
             $this->getResource()

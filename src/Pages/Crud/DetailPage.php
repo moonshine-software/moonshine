@@ -3,8 +3,8 @@
 namespace MoonShine\Pages\Crud;
 
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Buttons\DetailPage\FormButton;
 use MoonShine\Buttons\IndexPage\DeleteButton;
+use MoonShine\Buttons\IndexPage\EditButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
@@ -95,8 +95,11 @@ class DetailPage extends Page
                 Flex::make([
                     ActionGroup::make([
                         ...$resource->getDetailButtons(),
-                        FormButton::for($resource),
-                        DeleteButton::for($resource),
+                        EditButton::for($resource),
+                        DeleteButton::for(
+                            $resource,
+                            redirectAfterDelete: $resource->redirectAfterDelete()
+                        ),
                     ])
                         ->setItem($item),
                 ])->justifyAlign('end'),

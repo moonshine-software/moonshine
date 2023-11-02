@@ -14,7 +14,8 @@ final class DeleteButton
     public static function for(
         ModelResource $resource,
         string $tableName = 'default',
-        string $redirectAfterDelete = ''
+        string $redirectAfterDelete = '',
+        bool $isAsync = false,
     ): ActionButton {
         $action = static fn (Model $data): string => route(
             'moonshine.crud.destroy',
@@ -31,12 +32,10 @@ final class DeleteButton
             '',
             url: $action
         )
-            ->secondary()
-            ->icon('heroicons.outline.trash')
             ->withConfirm(
                 method: 'DELETE',
                 formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
-                    $resource->isAsync() && $resource->isNowOnIndex(),
+                    $isAsync || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $tableName)
                 )
             )
@@ -44,6 +43,8 @@ final class DeleteButton
                 fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
                     && $resource->setItem($item)->can('delete')
             )
+            ->secondary()
+            ->icon('heroicons.outline.trash')
             ->showInLine();
     }
 }

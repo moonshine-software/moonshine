@@ -81,7 +81,10 @@ class FormPage extends Page
                 ActionGroup::make([
                     ...$this->getResource()->getFormButtons(),
                     DetailButton::for($this->getResource()),
-                    DeleteButton::for($this->getResource()),
+                    DeleteButton::for(
+                        $this->getResource(),
+                        redirectAfterDelete: $this->getResource()->redirectAfterDelete()
+                    ),
                 ])
                     ->setItem($item)
                 ,
@@ -106,11 +109,12 @@ class FormPage extends Page
             $item?->getKey()
         );
 
-        $isAsync = $resource->isAsync() || request('_asyncMode', false);
+        $isForceAsync = request('_async_form', false);
+        $isAsync = $resource->isAsync() || $isForceAsync;
 
         return [
             Fragment::make([
-                form($action)
+                FormBuilder::make($action)
                     ->fillCast(
                         $item,
                         $resource->getModelCast()
@@ -124,19 +128,22 @@ class FormPage extends Page
                                     Hidden::make('_method')->setValue('PUT')
                                 )
                             )
+                            ->when(
+                                !$item?->exists && $isForceAsync,
+                                fn (Fields $fields): Fields => $fields->push(
+                                    Hidden::make('_force_redirect')->setValue(true)
+                                )
+                            )
                             ->toArray()
                     )
                     ->when(
                         $isAsync,
-                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->async(asyncEvents: 'table-updated-' . request('_tableName', 'default'))
+                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
+                            ->async(asyncEvents: 'table-updated-' . request('_tableName', 'default'))
                     )
                     ->when(
-                        moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync,
+                        $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),
                         fn (FormBuilder $form): FormBuilder => $form->precognitive()
-                    )
-                    ->when(
-                        $resource->isPrecognitive(),
-                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder->precognitive()
                     )
                     ->name('crud')
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
