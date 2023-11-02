@@ -18,6 +18,8 @@ use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
 
+final class FieldWithoutValue {}
+
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
  */
@@ -92,10 +94,10 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        $value = data_get($casted ?? $raw, $this->column());
+        $value = data_get($casted ?? $raw, $this->column(), new FieldWithoutValue);
 
-        if (is_null($value) || $value === false) {
-            $value = data_get($raw, $this->column());
+        if (is_null($value) || $value === false || $value instanceof FieldWithoutValue) {
+            $value = data_get($raw, $this->column(), new FieldWithoutValue);
         }
 
         return $value;
@@ -108,11 +110,11 @@ abstract class Field extends FormElement
 
     public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): static
     {
-        if ($this->value) {
+        $value = $this->prepareFill($raw, $casted);
+
+        if($value instanceof FieldWithoutValue) {
             return $this;
         }
-
-        $value = $this->prepareFill($raw, $casted);
 
         $this->setRawValue($value);
 

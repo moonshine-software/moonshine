@@ -22,7 +22,7 @@ final class HasManyEditButton
     public static function for(HasMany $field): ActionButton
     {
         $resource = $field->getResource();
-        $item = $field->getRelatedModel();
+        $parent = $field->getRelatedModel();
 
         if (! $resource->formPage()) {
             return ActionButton::emptyHidden();
@@ -67,7 +67,7 @@ final class HasManyEditButton
                                 $field->getRelation() instanceof MorphOneOrMany,
                                 fn (Fields $f) => $f->push(
                                     Hidden::make($field->getRelation()?->getQualifiedMorphType())
-                                        ->setValue($item::class)
+                                        ->setValue($parent::class)
                                 )
                             )
                             ->push(
@@ -75,7 +75,7 @@ final class HasManyEditButton
                             )
                             ->push(
                                 Hidden::make($field->getRelation()?->getForeignKeyName())
-                                    ->setValue($item->getKey())
+                                    ->setValue($parent->getKey())
                             )
                             ->push(Hidden::make('_async_field')->setValue($isAsync))
                             ->toArray()
@@ -84,7 +84,7 @@ final class HasManyEditButton
                         $isAsync ? null : to_page(
                             PageType::FORM->value,
                             moonshineRequest()->getResource(),
-                            params: ['resourceItem' => $item->getKey()]
+                            params: ['resourceItem' => $parent->getKey()]
                         )
                     )
             )
