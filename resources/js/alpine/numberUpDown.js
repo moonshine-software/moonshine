@@ -1,5 +1,3 @@
-import { value } from 'lodash/seq';
-
 export default () => ({
   value: 0,
   min: 0,
