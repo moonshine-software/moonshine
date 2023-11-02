@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
+use MoonShine\Support\FieldEmptyValue;
 use MoonShine\Traits\Fields\Applies;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
@@ -17,10 +18,6 @@ use MoonShine\Traits\Fields\WithSorts;
 use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
-
-final class FieldWithoutValue
-{
-}
 
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
@@ -96,10 +93,10 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        $value = data_get($casted ?? $raw, $this->column(), new FieldWithoutValue());
+        $value = data_get($casted ?? $raw, $this->column(), new FieldEmptyValue());
 
-        if (is_null($value) || $value === false || $value instanceof FieldWithoutValue) {
-            $value = data_get($raw, $this->column(), new FieldWithoutValue());
+        if (is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
+            $value = data_get($raw, $this->column(), new FieldEmptyValue());
         }
 
         return $value;
@@ -114,7 +111,7 @@ abstract class Field extends FormElement
     {
         $value = $this->prepareFill($raw, $casted);
 
-        if($value instanceof FieldWithoutValue) {
+        if($value instanceof FieldEmptyValue) {
             return $this;
         }
 

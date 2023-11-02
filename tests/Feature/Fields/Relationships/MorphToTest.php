@@ -15,7 +15,6 @@ use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 
 uses()->group('model-relation-fields');
-uses()->group('now');
 
 beforeEach(function (): void {
     $this->resource = new TestImageResource();

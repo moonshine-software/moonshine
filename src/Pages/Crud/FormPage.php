@@ -129,7 +129,7 @@ class FormPage extends Page
                                 )
                             )
                             ->when(
-                                ! $item?->exists && $isForceAsync,
+                                ! $item?->exists && !$resource->isCreateInModal(),
                                 fn (Fields $fields): Fields => $fields->push(
                                     Hidden::make('_force_redirect')->setValue(true)
                                 )
