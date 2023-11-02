@@ -6,5 +6,4 @@ namespace MoonShine\Support;
 
 final class FieldEmptyValue
 {
-
 }
