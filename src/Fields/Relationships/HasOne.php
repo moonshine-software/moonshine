@@ -141,7 +141,7 @@ class HasOne extends ModelRelationField implements HasFields
                 )
                 ->toArray()
             )
-            ->redirect(!$isAsync ? $redirectAfter : null)
+            ->redirect($isAsync ? null : $redirectAfter)
             ->fillCast(
                 $item?->attributesToArray() ?? [
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),

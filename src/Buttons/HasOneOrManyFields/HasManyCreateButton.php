@@ -77,11 +77,11 @@ final class HasManyCreateButton
                             ->toArray()
                     )
                     ->redirect(
-                        !$isAsync ? to_page(
+                        $isAsync ? null : to_page(
                             PageType::FORM->value,
                             moonshineRequest()->getResource(),
                             params: ['resourceItem' => $item?->getKey()]
-                        ) : null
+                        )
                     )
             )
             ->primary()

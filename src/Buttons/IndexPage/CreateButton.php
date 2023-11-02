@@ -41,7 +41,7 @@ final class CreateButton
         )
             ->when(
                 $isAsync || $resource->isCreateInModal(),
-                fn(ActionButton $button) => $button->inModal(
+                fn(ActionButton $button): ActionButton => $button->inModal(
                     fn (): array|string|null => __('moonshine::ui.create'),
                     fn (): string => '',
                     async: true

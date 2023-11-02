@@ -44,7 +44,7 @@ final class EditButton
         )
             ->when(
                 $isAsync || $resource->isEditInModal(),
-                fn(ActionButton $button) => $button->inModal(
+                fn(ActionButton $button): ActionButton => $button->inModal(
                     fn (): array|string|null => __('moonshine::ui.edit'),
                     fn (): string => '',
                     async: true

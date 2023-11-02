@@ -11,7 +11,6 @@ use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
-use MoonShine\Resources\ModelResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -129,7 +128,7 @@ final class CrudController extends MoonShineController
                 ->withInput();
         }
 
-        $redirectRoute = static fn ($resource) => $request->get('_redirect', $resource->redirectAfterSave());
+        $redirectRoute = static fn ($resource): mixed => $request->get('_redirect', $resource->redirectAfterSave());
 
         $itemOrRedirect = $this->tryOrRedirect(
             static fn () => $resource->save($item), $redirectRoute($resource)

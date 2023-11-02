@@ -248,11 +248,11 @@ class HasMany extends ModelRelationField implements HasFields
 
         $parentId = $this->getRelatedModel()?->getKey();
 
-        $redirectAfter = !$this->isAsync() ? to_page(
+        $redirectAfter = $this->isAsync() ? '' : to_page(
             page: $resource->formPage(),
             resource: moonshineRequest()->getResource(),
             params: ['resourceItem' => $parentId]
-        ) : '';
+        );
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
