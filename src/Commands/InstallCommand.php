@@ -6,12 +6,10 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
-
-use MoonShine\MoonShine;
-
-use MoonShine\Providers\MoonShineServiceProvider;
 
 class InstallCommand extends MoonShineCommand
 {
@@ -47,7 +45,7 @@ class InstallCommand extends MoonShineCommand
 
             $this->components->bulletList([
                 'Star or contribute to MoonShine: https://github.com/moonshine-software/moonshine',
-                'MoonShine Documentation: https://moonshine.cutcode.dev',
+                'MoonShine Documentation: https://moonshine-laravel.com',
                 'CutCode: https://cutcode.dev',
             ]);
         }
