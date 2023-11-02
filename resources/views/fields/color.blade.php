@@ -1,6 +1,6 @@
 <div x-data="{ color: '{!! $element->value() ?? "#000000" !!}' }">
-    <div class="flex flex-row justify-start items-center">
-        <div class="relative -mr-10 ml-2 w-8 h-8 rounded-full overflow-hidden">
+    <div class="flex items-center">
+        <div class="relative mr-[-2.3rem] ml-[0.3rem] w-8 h-8 rounded-md overflow-hidden">
             <x-moonshine::form.input
                 :attributes="$element->attributes()->except('type')->merge([
                     'type' => 'color',
@@ -17,7 +17,7 @@
                 'type' => 'text',
                 'placeholder' => '#000000',
             ])"
-            style="padding-left: 50px;"
+            style="padding-left: 45px;"
             x-model:value="color"
             @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
         />

@@ -29,6 +29,11 @@ it('view', function (): void {
         ->toBe('moonshine::fields.color');
 });
 
+it('resolve preview value', function (): void {
+    expect($this->field->setValue('#DDD')->rawMode()->preview())
+        ->toBe('#DDD');
+});
+
 it('apply', function (): void {
     $data = ['color' => '#FFF'];
 
