@@ -288,6 +288,11 @@ class Json extends Field implements
             ? $value
             : [$value ?? $emptyRow];
 
+        // because the TableBuilder filters the values
+        if(blank($emptyRow)) {
+            $emptyRow = [null];
+        }
+
         $values = collect($values)->when(
             ! $this->isPreviewMode() && $this->isCreatable(),
             static fn ($values): Collection => $values->push($emptyRow)

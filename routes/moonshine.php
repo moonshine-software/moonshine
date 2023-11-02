@@ -5,8 +5,8 @@ use MoonShine\Http\Controllers\AsyncController;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
-use MoonShine\Http\Controllers\HomeController;
 use MoonShine\Http\Controllers\HandlerController;
+use MoonShine\Http\Controllers\HomeController;
 use MoonShine\Http\Controllers\NotificationController;
 use MoonShine\Http\Controllers\PageController;
 use MoonShine\Http\Controllers\ProfileController;
@@ -30,8 +30,10 @@ Route::prefix(config('moonshine.route.prefix', ''))
             });
 
             Route::prefix('column')->controller(UpdateFieldController::class)->group(function (): void {
-                Route::put('resource/{resourceUri}/{resourceItem}', 'column')->name('column.resource.update-column');
-                Route::put('relation/{resourceUri}/{pageUri}/{resourceItem}', 'relation')->name('column.relation.update-column');
+                Route::put('resource/{resourceUri}/{resourceItem}', 'column')
+                    ->name('column.resource.update-column');
+                Route::put('relation/{resourceUri}/{pageUri}/{resourceItem}', 'relation')
+                    ->name('column.relation.update-column');
             });
 
             Route::get(
@@ -42,9 +44,6 @@ Route::prefix(config('moonshine.route.prefix', ''))
             Route::prefix('relation/{pageUri}')->controller(RelationModelFieldController::class)->group(
                 function (): void {
                     Route::get('{resourceUri?}/{resourceItem?}', 'search')->name('relation.search');
-                    Route::post('{resourceUri}/{resourceItem?}', 'store')->name('relation.store');
-                    Route::put('{resourceUri}/{resourceItem}', 'update')->name('relation.update');
-                    Route::delete('{resourceUri}/{resourceItem}', 'delete')->name('relation.delete');
                 }
             );
 

@@ -70,7 +70,11 @@ trait ResourceModelQuery
 
     public function getItem(): ?Model
     {
-        if(is_null($this->getItemID())) {
+        if (! is_null($this->item)) {
+            return $this->item;
+        }
+
+        if (is_null($this->getItemID())) {
             return null;
         }
 
@@ -90,7 +94,11 @@ trait ResourceModelQuery
 
     public function getItemOrInstance(): Model
     {
-        if(is_null($this->getItemID())) {
+        if (! is_null($this->item)) {
+            return $this->item;
+        }
+
+        if (is_null($this->getItemID())) {
             return $this->getModel();
         }
 
@@ -103,6 +111,10 @@ trait ResourceModelQuery
 
     public function getItemOrFail(): Model
     {
+        if (! is_null($this->item)) {
+            return $this->item;
+        }
+
         return $this->itemOr(
             fn () => $this
                 ->resolveItemQuery()
@@ -342,7 +354,7 @@ trait ResourceModelQuery
 
             if ($filterApply instanceof ApplyContract) {
                 $filter->onApply($filterApply->apply($filter));
-            } elseif(! $filter->hasOnApply()) {
+            } elseif (! $filter->hasOnApply()) {
                 $filter->onApply($defaultApply);
             }
 

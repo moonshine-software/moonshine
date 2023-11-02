@@ -11,11 +11,12 @@ use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
+use MoonShine\Resources\ModelResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-class CrudController extends MoonShineController
+final class CrudController extends MoonShineController
 {
     public function __construct()
     {
@@ -59,7 +60,10 @@ class CrudController extends MoonShineController
         }
 
         if ($request->ajax()) {
-            return $this->json(message: __('moonshine::ui.deleted'));
+            return $this->json(
+                message: __('moonshine::ui.deleted'),
+                redirect: $request->get('_redirect')
+            );
         }
 
         $this->toast(
@@ -78,9 +82,9 @@ class CrudController extends MoonShineController
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
 
         if ($this->tryOrRedirect(
-            static fn () => $resource->massDelete($request->get('ids')),
-            $redirectRoute
-        ) instanceof RedirectResponse) {
+                static fn () => $resource->massDelete($request->get('ids', [])),
+                $redirectRoute
+            ) instanceof RedirectResponse) {
             return redirect($redirectRoute);
         }
 
@@ -102,11 +106,11 @@ class CrudController extends MoonShineController
     protected function updateOrCreate(
         MoonshineFormRequest $request
     ): Response {
-        /* @var ModelResource $resource */
+        /*
+         * @var ModelResource $resource
+         */
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
-
-        $redirectRoute = $request->get('_redirect', $resource->redirectAfterSave());
 
         $validator = $resource->validate($item);
 
@@ -125,16 +129,26 @@ class CrudController extends MoonShineController
                 ->withInput();
         }
 
-        if ($this->tryOrRedirect(static fn () => $resource->save($item), $redirectRoute) instanceof RedirectResponse) {
-            return redirect($redirectRoute);
+        $redirectRoute = static fn ($resource) => $request->get('_redirect', $resource->redirectAfterSave());
+
+        $itemOrRedirect = $this->tryOrRedirect(
+            static fn () => $resource->save($item), $redirectRoute($resource)
+        );
+
+        if ($itemOrRedirect instanceof RedirectResponse) {
+            return redirect($redirectRoute($resource));
         }
 
+        $resource->setItem($itemOrRedirect);
+
         if ($request->ajax()) {
+            $forceRedirect = $request->boolean('_force_redirect')
+                ?  $redirectRoute($resource)
+                : null;
+
             return $this->json(
                 message: __('moonshine::ui.saved'),
-                redirect: $item->wasRecentlyCreated && (! $resource->isAsync() && ! $resource->isCreateInModal())
-                    ? $redirectRoute
-                    : null
+                redirect: $request->get('_redirect', $forceRedirect)
             );
         }
 
@@ -144,7 +158,7 @@ class CrudController extends MoonShineController
         );
 
         return redirect(
-            $redirectRoute
+            $redirectRoute($resource)
         );
     }
 }

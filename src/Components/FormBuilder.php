@@ -93,9 +93,12 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
-    public function redirect(string $uri): self
+    public function redirect(?string $uri = null): self
     {
-        $this->fields[] = Hidden::make('_redirect')->setValue($uri);
+        if (! is_null($uri)) {
+            $this->fields[] = Hidden::make('_redirect')
+                ->setValue($uri);
+        }
 
         return $this;
     }
@@ -152,13 +155,13 @@ final class FormBuilder extends RowComponent
             'x-init' => "init($xInit)",
         ]);
 
-        if($this->isPrecognitive()) {
+        if ($this->isPrecognitive()) {
             $this->customAttributes([
                 'x-on:submit.prevent' => 'precognition($event.target)',
             ]);
         }
 
-        if($this->isAsync()) {
+        if ($this->isAsync()) {
             $this->customAttributes([
                 'x-on:submit.prevent' => 'async($event.target, `' . $this->asyncEvents() . '`)',
             ]);

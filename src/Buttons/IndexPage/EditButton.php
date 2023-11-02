@@ -1,33 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoonShine\Buttons\IndexPage;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
-final class CreateButton
+final class EditButton
 {
     public static function for(
         ModelResource $resource,
         string $tableName = 'default',
-        bool $isAsync = false,
-    ): ActionButton
-    {
-        if(! $resource->formPage()) {
+        bool $isAsync = false
+    ): ActionButton {
+        if (! $resource->formPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = to_page(
+        $action = static fn ($data): string => to_page(
             page: $resource->formPage(),
             resource: $resource,
+            params: ['resourceItem' => $data->getKey()]
         );
 
-        if($isAsync || $resource->isCreateInModal()) {
-            $action = to_page(
+        if ($isAsync || $resource->isEditInModal()) {
+            $action = static fn ($data): string => to_page(
                 page: $resource->formPage(),
                 resource: $resource,
                 params: [
+                    'resourceItem' => $data->getKey(),
                     '_tableName' => $tableName,
                     '_async_form' => $isAsync,
                 ],
@@ -36,22 +39,24 @@ final class CreateButton
         }
 
         return ActionButton::make(
-            __('moonshine::ui.create'),
-            $action
+            '',
+            url: $action
         )
             ->when(
-                $isAsync || $resource->isCreateInModal(),
+                $isAsync || $resource->isEditInModal(),
                 fn(ActionButton $button) => $button->inModal(
-                    fn (): array|string|null => __('moonshine::ui.create'),
+                    fn (): array|string|null => __('moonshine::ui.edit'),
                     fn (): string => '',
                     async: true
                 )
             )
-            ->canSee(
-                fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
-                && $resource->can('create')
-            )
             ->primary()
-            ->icon('heroicons.outline.plus');
+            ->icon('heroicons.outline.pencil')
+            ->canSee(
+                fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
+                    && $resource->setItem($item)->can('update')
+            )
+            ->customAttributes(['class' => 'edit-button'])
+            ->showInLine();
     }
 }

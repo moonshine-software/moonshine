@@ -7,7 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Buttons\IndexPage\DeleteButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
@@ -51,14 +51,14 @@ class HasOne extends ModelRelationField implements HasFields
     public function preparedFields(): Fields
     {
         if (! $this->hasFields()) {
-            $fields = $this->getResource()->getFormFields();
+            $fields = $this->getResource()->getDetailFields();
 
             $this->fields($fields->toArray());
 
             return Fields::make($this->fields);
         }
 
-        return $this->getFields()->formFields();
+        return $this->getFields()->detailFields();
     }
 
     /**
@@ -105,22 +105,29 @@ class HasOne extends ModelRelationField implements HasFields
 
         $parentItem = $parentResource->getItemOrInstance();
 
-        $fields = $this->preparedFields();
+        $fields = $resource->getFormFields();
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
-        $action = to_relation_route(
-            is_null($item) ? 'store' : 'update',
-            $this->getRelatedModel()?->getKey(),
+        $action = $resource->route(
+            is_null($item) ? 'crud.store' : 'crud.update',
+            $item?->getKey()
         );
 
-        $buttonUrl = fn (Model $data): string => to_relation_route(
-            'delete',
-            $this->getRelatedModel()?->getKey(),
-            relation: $this->getRelationName()
+        $fields->exceptElements(
+            fn (mixed $nestedFields): bool => $nestedFields instanceof ModelRelationField
+                && $nestedFields->getResource() === moonshineRequest()->getResource()
         );
+
+        $redirectAfter = to_page(
+            page: $resource->formPage(),
+            resource: $parentResource,
+            params: ['resourceItem' => $parentItem->getKey()]
+        );
+
+        $isAsync = ! is_null($item) && ($this->isAsync() || $resource->isAsync());
 
         return FormBuilder::make($action)
-            ->switchFormMode(! is_null($item) && ($this->isAsync() || $resource->isAsync()))
+            ->switchFormMode($isAsync)
             ->name($this->getRelationName())
             ->fields(
                 $fields->when(
@@ -129,9 +136,12 @@ class HasOne extends ModelRelationField implements HasFields
                         Hidden::make('_method')->setValue('PUT'),
                     )
                 )->push(
-                    Hidden::make('_relation')->setValue($this->getRelationName()),
-                )->toArray()
+                    Hidden::make($this->getRelation()?->getForeignKeyName())
+                        ->setValue($this->getRelatedModel()?->getKey())
+                )
+                ->toArray()
             )
+            ->redirect(!$isAsync ? $redirectAfter : null)
             ->fillCast(
                 $item?->attributesToArray() ?? [
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
@@ -142,33 +152,10 @@ class HasOne extends ModelRelationField implements HasFields
                 is_null($item)
                     ? []
                     : [
-                    ActionButton::make(
-                        __('moonshine::ui.delete'),
-                        url: $buttonUrl
-                    )
-                        ->canSee(
-                            fn (?Model $item): bool => ! is_null($item) && in_array(
-                                'delete',
-                                $resource->getActiveActions()
-                            )
-                                && $resource->setItem($item)->can('delete')
-                        )
-                        ->secondary()
-                        ->customAttributes(['class' => 'btn-lg'])
-                        ->withConfirm(
-                            fields: fn (Model $item): array => [
-                                Hidden::make($item->getKeyName())->setValue($item->getKey()),
-                            ],
-                            method: 'DELETE',
-                            formBuilder: fn (FormBuilder $form, Model $item): FormBuilder => $form->redirect(
-                                to_page(
-                                    page: $resource->formPage(),
-                                    resource: $parentResource,
-                                    params: ['resourceItem' => $parentItem->getKey()]
-                                )
-                            )
-                        )
-                        ->showInLine(),
+                    DeleteButton::for(
+                        $resource,
+                        redirectAfterDelete: $redirectAfter
+                    )->customAttributes(['class' => 'btn-lg']),
                 ]
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);

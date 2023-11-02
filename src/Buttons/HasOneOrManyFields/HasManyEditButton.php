@@ -14,7 +14,7 @@ use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
-final class HasManyCreateButton
+final class HasManyEditButton
 {
     /**
      * @throws Throwable
@@ -28,7 +28,8 @@ final class HasManyCreateButton
             return ActionButton::emptyHidden();
         }
 
-        $action = $resource->route('crud.store');
+        $action = static fn(Model $data) => $resource
+            ->route('crud.update', $data->getKey());
 
         $fields = $resource->getFormFields();
 
@@ -42,21 +43,21 @@ final class HasManyCreateButton
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 
-        return ActionButton::make(__('moonshine::ui.add'), url: $action)
+        return ActionButton::make('', url: $action)
             ->canSee(
-                fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
-                    && $resource->can('create')
+                fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
+                    && $resource->setItem($item)->can('update')
             )
             ->inModal(
-                fn (): array|string|null => __('moonshine::ui.create'),
-                fn (): string => (string) FormBuilder::make($action)
+                fn (): array|string|null => __('moonshine::ui.edit'),
+                fn (Model $data): string => (string) FormBuilder::make($action($data))
                     ->switchFormMode(
                         $isAsync,
                         'table-updated-' . $field->getRelationName()
                     )
                     ->name($field->getRelationName())
                     ->fillCast(
-                        [$field->getRelation()?->getForeignKeyName() => $item?->getKey()],
+                        $data,
                         $resource->getModelCast()
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
@@ -70,8 +71,11 @@ final class HasManyCreateButton
                                 )
                             )
                             ->push(
+                                Hidden::make('_method')->setValue('PUT'),
+                            )
+                            ->push(
                                 Hidden::make($field->getRelation()?->getForeignKeyName())
-                                    ->setValue($item?->getKey())
+                                    ->setValue($item->getKey())
                             )
                             ->push(Hidden::make('_async_field')->setValue($isAsync))
                             ->toArray()
@@ -80,11 +84,11 @@ final class HasManyCreateButton
                         !$isAsync ? to_page(
                             PageType::FORM->value,
                             moonshineRequest()->getResource(),
-                            params: ['resourceItem' => $item?->getKey()]
+                            params: ['resourceItem' => $item->getKey()]
                         ) : null
                     )
             )
             ->primary()
-            ->icon('heroicons.outline.plus');
+            ->icon('heroicons.outline.pencil');
     }
 }
