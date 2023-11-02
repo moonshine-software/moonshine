@@ -28,7 +28,7 @@ final class HasManyEditButton
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn(Model $data) => $resource
+        $action = static fn (Model $data) => $resource
             ->route('crud.update', $data->getKey());
 
         $fields = $resource->getFormFields();

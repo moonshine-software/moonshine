@@ -37,7 +37,7 @@ final class DetailButton
         )
             ->when(
                 $isAsync || $resource->isDetailInModal(),
-                fn(ActionButton $button): ActionButton => $button->inModal(
+                fn (ActionButton $button): ActionButton => $button->inModal(
                     fn (): array|string|null => __('moonshine::ui.show'),
                     fn (): string => '',
                     async: true

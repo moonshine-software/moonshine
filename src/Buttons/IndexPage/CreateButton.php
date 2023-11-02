@@ -12,8 +12,7 @@ final class CreateButton
         ModelResource $resource,
         string $tableName = 'default',
         bool $isAsync = false,
-    ): ActionButton
-    {
+    ): ActionButton {
         if(! $resource->formPage()) {
             return ActionButton::emptyHidden();
         }
@@ -41,7 +40,7 @@ final class CreateButton
         )
             ->when(
                 $isAsync || $resource->isCreateInModal(),
-                fn(ActionButton $button): ActionButton => $button->inModal(
+                fn (ActionButton $button): ActionButton => $button->inModal(
                     fn (): array|string|null => __('moonshine::ui.create'),
                     fn (): string => '',
                     async: true

@@ -81,9 +81,9 @@ final class CrudController extends MoonShineController
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
 
         if ($this->tryOrRedirect(
-                static fn () => $resource->massDelete($request->get('ids', [])),
-                $redirectRoute
-            ) instanceof RedirectResponse) {
+            static fn () => $resource->massDelete($request->get('ids', [])),
+            $redirectRoute
+        ) instanceof RedirectResponse) {
             return redirect($redirectRoute);
         }
 
@@ -131,7 +131,8 @@ final class CrudController extends MoonShineController
         $redirectRoute = static fn ($resource): mixed => $request->get('_redirect', $resource->redirectAfterSave());
 
         $itemOrRedirect = $this->tryOrRedirect(
-            static fn () => $resource->save($item), $redirectRoute($resource)
+            static fn () => $resource->save($item),
+            $redirectRoute($resource)
         );
 
         if ($itemOrRedirect instanceof RedirectResponse) {
@@ -142,7 +143,7 @@ final class CrudController extends MoonShineController
 
         if ($request->ajax()) {
             $forceRedirect = $request->boolean('_force_redirect')
-                ?  $redirectRoute($resource)
+                ? $redirectRoute($resource)
                 : null;
 
             return $this->json(

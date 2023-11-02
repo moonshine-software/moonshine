@@ -162,7 +162,7 @@ class HasMany extends ModelRelationField implements HasFields
                 page: IndexPage::class,
                 resource: $this->getResource(),
                 params: [
-                    '_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()}
+                    '_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()},
                 ]
             )
         )
