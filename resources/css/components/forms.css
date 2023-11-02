@@ -73,7 +73,8 @@ input[type='number'] {
     .form-input {
       @apply rounded-r-none;
     }
-    .expansion, .expansion-custom {
+    .expansion,
+    .expansion-custom {
       @apply rounded-none border border-gray-300 bg-slate-100 px-3 py-2 text-2xs text-slate-600 shadow-sm first:rounded-l-md last:rounded-r-md dark:border-dark-300 dark:bg-dark-900/20 dark:text-slate-400 [&:not(:first-child)]:border-l-transparent [&:not(:last-child)]:border-r-transparent;
       ~ .form-input {
         @apply rounded-l-none rounded-r-md;
