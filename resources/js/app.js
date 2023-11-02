@@ -32,6 +32,7 @@ import tree from './alpine/tree'
 import charts from './alpine/charts'
 import sortable from './alpine/sortable'
 import asyncLink from './alpine/asyncLink'
+import numberUpDown from './alpine/numberUpDown'
 
 Alpine.data('formBuilder', formBuilder)
 Alpine.data('tableBuilder', tableBuilder)
@@ -53,6 +54,7 @@ Alpine.data('range', range)
 Alpine.data('code', code)
 Alpine.data('tree', tree)
 Alpine.data('charts', charts)
+Alpine.data('numberUpDown', numberUpDown)
 
 window.Alpine = Alpine
 
