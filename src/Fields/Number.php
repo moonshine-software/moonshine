@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\InputExtensions\InputNumberUpDown;
 use MoonShine\Traits\Fields\NumberTrait;
 
 class Number extends Text implements DefaultCanBeNumeric
@@ -36,6 +37,13 @@ class Number extends Text implements DefaultCanBeNumeric
     public function withStars(): bool
     {
         return $this->stars;
+    }
+
+    public function buttons(): static
+    {
+        $this->extension(new InputNumberUpDown());
+
+        return $this;
     }
 
     protected function resolvePreview(): View|string
