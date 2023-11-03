@@ -17,20 +17,17 @@ table {
   @apply text-xs;
 
   thead {
-    @apply bg-slate-100 text-3xs uppercase dark:bg-dark-700;
+    @apply text-3xs uppercase;
     td,
     th {
-      @apply max-w-lg border border-gray-200 p-3 font-semibold dark:border-dark-300;
+      @apply max-w-lg p-2 font-semibold dark:border-dark-300 border-b;
     }
   }
 
   tbody {
-    tr {
-      @apply odd:bg-gray-50 even:bg-white dark:odd:bg-dark-700 dark:even:bg-dark-700/70;
-    }
     td,
     th {
-      @apply max-w-lg break-words border border-gray-200 p-3 dark:border-dark-300;
+      @apply max-w-lg break-words p-2 py-3 border-b dark:border-dark-400;
     }
     th {
       @apply font-semibold;
