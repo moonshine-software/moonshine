@@ -9,7 +9,7 @@ use MoonShine\Components\MoonshineComponent;
 use MoonShine\Resources\MoonShineProfileResource;
 
 /**
- * @method static static make()
+ * @method static static make(bool $withBorder = false)
  */
 final class Profile extends MoonshineComponent
 {

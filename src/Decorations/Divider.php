@@ -7,7 +7,7 @@ namespace MoonShine\Decorations;
 use Closure;
 
 /**
- * @method static static make(Closure|string $label)
+ * @method static static make(Closure|string $label = '')
  */
 class Divider extends Decoration
 {

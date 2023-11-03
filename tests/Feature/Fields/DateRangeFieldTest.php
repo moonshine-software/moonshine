@@ -57,7 +57,7 @@ it('show field on pages', function () {
         ->assertSee('start_date')
         ->assertSee('end_date')
     ;
-})->group('now');
+});
 
 it('apply as base', function () {
     $resource = addFieldToTestResource($this->field);

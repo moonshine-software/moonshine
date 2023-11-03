@@ -117,9 +117,14 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         parse_str($query, $asyncUri);
 
-        $paginatorUri = $this->getPaginator()->resolveQueryString();
+        $paginatorUri = $this->getPaginator()
+            ->resolveQueryString();
 
-        $asyncUri = array_filter($asyncUri, fn ($value, $key): bool => ! isset($paginatorUri[$key]), ARRAY_FILTER_USE_BOTH);
+        $asyncUri = array_filter(
+            $asyncUri,
+            static fn ($value, $key): bool => ! isset($paginatorUri[$key]),
+            ARRAY_FILTER_USE_BOTH
+        );
 
         if($asyncUri !== []) {
             return $withoutQuery . "?" . Arr::query($asyncUri);
