@@ -18,7 +18,7 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         $this->field
     );
 
@@ -49,7 +49,7 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         $this->field
     );
 
@@ -69,7 +69,7 @@ it('apply as base', function () {
 });
 
 it('before apply', function () {
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         Checkbox::make('Active')
             ->onBeforeApply(function ($item, $data) {
                 $item->name = 'Checkbox';
@@ -94,7 +94,7 @@ it('before apply', function () {
 });
 
 it('after apply', function () {
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         Checkbox::make('Active')
             ->onAfterApply(function ($item, $data) {
                 $item->name = 'Checkbox';
@@ -121,7 +121,7 @@ it('after apply', function () {
 });
 
 it('apply as base with default', function () {
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         Checkbox::make('Active')->default(true)
     );
 
@@ -144,7 +144,7 @@ function checkboxExport(Item $item): ?string
 
     $item->save();
 
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         Checkbox::make('Active')->showOnExport()
     );
 
@@ -170,7 +170,7 @@ it('import', function (): void {
 
     $file = checkboxExport($this->item);
 
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         Checkbox::make('Active')->useOnImport()
     );
 

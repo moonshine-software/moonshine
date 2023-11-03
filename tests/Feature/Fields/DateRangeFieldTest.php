@@ -21,7 +21,7 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = addFieldToTestResource($this->field->format('d.m.Y'));
+    $resource = addFieldsToTestResource($this->field->format('d.m.Y'));
 
     $from = now();
     $to = now()->addMonth();
@@ -60,7 +60,7 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $resource = addFieldToTestResource($this->field);
+    $resource = addFieldsToTestResource($this->field);
 
     $from = now();
     $to = now()->addMonth();
@@ -82,7 +82,7 @@ it('apply as base', function () {
 });
 
 it('before apply', function () {
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         $this->field->onBeforeApply(function ($item, $data) {
             $item->name = $data['start_date'] . ' - ' . $data['end_date'];
 
@@ -108,7 +108,7 @@ it('before apply', function () {
 });
 
 it('after apply', function () {
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         $this->field->onAfterApply(function ($item) {
             $item->start_date = '2020-01-01';
             $item->end_date = '2020-01-02';
@@ -140,7 +140,7 @@ it('apply as base with default', function () {
 
     $data = ['start_date' => $from, 'end_date' => $to];
 
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         $this->field->default($data)
     );
 
@@ -160,7 +160,7 @@ it('apply as base with default', function () {
 it('apply as base with null', function () {
     $data = ['start_date' => '', 'end_date' => ''];
 
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         $this->field->nullable()
     );
 
@@ -208,7 +208,7 @@ function dateRangeExport(Item $item): ?string
 
     $item->save();
 
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         DateRange::make('Range')->fromTo('start_date', 'end_date')->showOnExport()
     );
 
@@ -234,7 +234,7 @@ it('import', function (): void {
 
     $file = dateRangeExport($this->item);
 
-    $resource = addFieldToTestResource(
+    $resource = addFieldsToTestResource(
         $this->field->useOnImport()
     );
 
