@@ -40,7 +40,6 @@ function fillFromModel(Field $field, Model $model)
     $field->resolveFill($model->toArray(), $model);
 }
 
-
 function createItem(int $countItems = 1, int $countComments = 3)
 {
     return ItemFactory::new()
@@ -52,16 +51,12 @@ function createItem(int $countItems = 1, int $countComments = 3)
         ->first();
 }
 
-/**
- * @deprecated
- */
-function addFieldToTestResource(Field $field): TestResource
+function addFieldsToTestResource(array|Field $fields): TestResource
 {
-    return addFieldsToTestResource([$field]);
-}
+    if(! is_array($fields)) {
+        $fields = [$fields];
+    }
 
-function addFieldsToTestResource(array $fields): TestResource
-{
     return TestResourceBuilder::new(Item::class)
         ->setTestFields([
             ...(new TestItemResource())->fields(),
