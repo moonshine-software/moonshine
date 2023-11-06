@@ -38,9 +38,15 @@ trait WithModal
         Closure|string|null $title = null,
         Closure|string|null $content = null,
         array $buttons = [],
-        bool $async = false
+        bool $async = false,
+        bool $wide = false,
+        bool $auto = false,
+        bool $closeOutside = false,
     ): static {
         $this->modal = Modal::make($title, $content, $async)
+            ->auto($auto)
+            ->wide($wide)
+            ->closeOutside($closeOutside)
             ->buttons($buttons);
 
         return $this;
@@ -58,8 +64,8 @@ trait WithModal
         $isDefaultMethods = in_array(strtolower($method), ['get', 'post']);
 
         $this->modal = Modal::make(
-            is_null($title) ? __('moonshine::ui.confirm') : $title,
-            fn (mixed $data): string => (string) FormBuilder::make(
+            title: is_null($title) ? __('moonshine::ui.confirm') : $title,
+            content: fn (mixed $data): string => (string) FormBuilder::make(
                 $this->url($data),
                 $isDefaultMethods ? $method : 'POST'
             )->fields(
@@ -89,7 +95,7 @@ trait WithModal
                     : value($button, $data),
                 ['class' => 'btn-secondary']
             )
-        );
+        )->auto();
 
         return $this;
     }

@@ -2,8 +2,8 @@
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\IndexPage\DeleteButton;
-use MoonShine\Buttons\IndexPage\DetailButton;
+use MoonShine\Buttons\DeleteButton;
+use MoonShine\Buttons\DetailButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Divider;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Buttons\IndexPage;
+namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
@@ -38,9 +38,10 @@ final class DetailButton
             ->when(
                 $isAsync || $resource->isDetailInModal(),
                 fn (ActionButton $button): ActionButton => $button->inModal(
-                    fn (): array|string|null => __('moonshine::ui.show'),
-                    fn (): string => '',
-                    async: true
+                    title: fn (): array|string|null => __('moonshine::ui.show'),
+                    content: fn (): string => '',
+                    async: true,
+                    wide: true,
                 )
             )
             ->canSee(

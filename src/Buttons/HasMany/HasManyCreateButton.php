@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonShine\Buttons\HasOneOrManyFields;
+namespace MoonShine\Buttons\HasMany;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
@@ -14,7 +14,7 @@ use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
-final class HasManyEditButton
+final class HasManyCreateButton
 {
     /**
      * @throws Throwable
@@ -22,14 +22,13 @@ final class HasManyEditButton
     public static function for(HasMany $field): ActionButton
     {
         $resource = $field->getResource();
-        $parent = $field->getRelatedModel();
+        $item = $field->getRelatedModel();
 
         if (! $resource->formPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn (Model $data) => $resource
-            ->route('crud.update', $data->getKey());
+        $action = $resource->route('crud.store');
 
         $fields = $resource->getFormFields();
 
@@ -43,21 +42,21 @@ final class HasManyEditButton
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 
-        return ActionButton::make('', url: $action)
+        return ActionButton::make(__('moonshine::ui.add'), url: $action)
             ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
-                    && $resource->setItem($item)->can('update')
+                fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
+                    && $resource->can('create')
             )
             ->inModal(
-                fn (): array|string|null => __('moonshine::ui.edit'),
-                fn (Model $data): string => (string) FormBuilder::make($action($data))
+                title: fn (): array|string|null => __('moonshine::ui.create'),
+                content: fn (): string => (string) FormBuilder::make($action)
                     ->switchFormMode(
                         $isAsync,
                         'table-updated-' . $field->getRelationName()
                     )
                     ->name($field->getRelationName())
                     ->fillCast(
-                        $data,
+                        [$field->getRelation()?->getForeignKeyName() => $item?->getKey()],
                         $resource->getModelCast()
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
@@ -67,15 +66,12 @@ final class HasManyEditButton
                                 $field->getRelation() instanceof MorphOneOrMany,
                                 fn (Fields $f) => $f->push(
                                     Hidden::make($field->getRelation()?->getQualifiedMorphType())
-                                        ->setValue($parent::class)
+                                        ->setValue($item::class)
                                 )
                             )
                             ->push(
-                                Hidden::make('_method')->setValue('PUT'),
-                            )
-                            ->push(
                                 Hidden::make($field->getRelation()?->getForeignKeyName())
-                                    ->setValue($parent->getKey())
+                                    ->setValue($item?->getKey())
                             )
                             ->push(Hidden::make('_async_field')->setValue($isAsync))
                             ->toArray()
@@ -84,11 +80,13 @@ final class HasManyEditButton
                         $isAsync ? null : to_page(
                             PageType::FORM->value,
                             moonshineRequest()->getResource(),
-                            params: ['resourceItem' => $parent->getKey()]
+                            params: ['resourceItem' => $item?->getKey()]
                         )
-                    )
+                    ),
+                wide: true,
+                closeOutside: false,
             )
             ->primary()
-            ->icon('heroicons.outline.pencil');
+            ->icon('heroicons.outline.plus');
     }
 }

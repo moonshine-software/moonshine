@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonShine\Buttons\IndexPage;
+namespace MoonShine\Buttons;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Handlers\ExportHandler;

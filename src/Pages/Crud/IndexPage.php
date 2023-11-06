@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\IndexPage\CreateButton;
-use MoonShine\Buttons\IndexPage\DeleteButton;
-use MoonShine\Buttons\IndexPage\DetailButton;
-use MoonShine\Buttons\IndexPage\EditButton;
-use MoonShine\Buttons\IndexPage\ExportButton;
-use MoonShine\Buttons\IndexPage\FiltersButton;
-use MoonShine\Buttons\IndexPage\ImportButton;
-use MoonShine\Buttons\IndexPage\MassDeleteButton;
-use MoonShine\Buttons\IndexPage\QueryTagButton;
+use MoonShine\Buttons\CreateButton;
+use MoonShine\Buttons\DeleteButton;
+use MoonShine\Buttons\DetailButton;
+use MoonShine\Buttons\EditButton;
+use MoonShine\Buttons\ExportButton;
+use MoonShine\Buttons\FiltersButton;
+use MoonShine\Buttons\ImportButton;
+use MoonShine\Buttons\MassDeleteButton;
+use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\Layout\LayoutBlock;
 use MoonShine\Components\MoonshineComponent;

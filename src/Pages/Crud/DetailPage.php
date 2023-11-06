@@ -3,8 +3,8 @@
 namespace MoonShine\Pages\Crud;
 
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Buttons\IndexPage\DeleteButton;
-use MoonShine\Buttons\IndexPage\EditButton;
+use MoonShine\Buttons\DeleteButton;
+use MoonShine\Buttons\EditButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Buttons\IndexPage;
+namespace MoonShine\Buttons;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;

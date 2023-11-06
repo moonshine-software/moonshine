@@ -7,7 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use MoonShine\Buttons\IndexPage\DeleteButton;
+use MoonShine\Buttons\DeleteButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;

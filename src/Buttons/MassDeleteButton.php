@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Buttons\IndexPage;
+namespace MoonShine\Buttons;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;

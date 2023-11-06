@@ -60,6 +60,8 @@ abstract class Field extends FormElement
 
     protected bool $isInLabel = false;
 
+    protected bool $canBeEmpty = false;
+
     public function __construct(
         Closure|string|null $label = null,
         ?string $column = null,
@@ -93,10 +95,12 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        $value = data_get($casted ?? $raw, $this->column(), new FieldEmptyValue());
+        $default = $this->isCanBeEmpty() ? null : new FieldEmptyValue();
+
+        $value = data_get($casted ?? $raw, $this->column(), $default);
 
         if (is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
-            $value = data_get($raw, $this->column(), new FieldEmptyValue());
+            $value = data_get($raw, $this->column(), $default);
         }
 
         return $value;
@@ -329,6 +333,11 @@ abstract class Field extends FormElement
     public function isNullable(): bool
     {
         return $this->nullable;
+    }
+
+    protected function isCanBeEmpty(): bool
+    {
+        return $this->canBeEmpty;
     }
 
     public function inLabel(): static

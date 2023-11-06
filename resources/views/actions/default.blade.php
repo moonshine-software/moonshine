@@ -16,9 +16,10 @@
     </x-moonshine::offcanvas>
 @elseif($action->isInModal())
     <x-moonshine::modal
-        :wide="$action->modal()->isAsync()"
         :async="$action->modal()->isAsync()"
-        :closeOutside="$action->modal()->isAsync()"
+        :auto="$action->modal()->isAuto()"
+        :wide="$action->modal()->isWide()"
+        :closeOutside="$action->modal()->isCloseOutside()"
         :asyncUrl="$action->url()"
         title="{{ $action->modal()->title($action->getItem()) }}"
     >

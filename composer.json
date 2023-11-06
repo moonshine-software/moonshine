@@ -3,7 +3,7 @@
   "description": "Laravel administration panel",
   "keywords": ["laravel", "admin", "dashboard", "moonshine"],
   "type": "library",
-  "homepage": "https://moonshine.cutcode.dev",
+  "homepage": "https://moonshine-laravel.com",
   "license": "MIT",
   "support": {
     "issues": "https://github.com/moonshine-software/moonshine/issues",
@@ -21,15 +21,15 @@
     "ext-curl": "*",
     "ext-json": "*",
     "rap2hpoutre/fast-excel": "^5.0",
-    "lee-to/laravel-package-command": "^0.9.1"
+    "lee-to/laravel-package-command": "^0.9"
   },
   "require-dev": {
-    "pestphp/pest": "^2.16",
+    "pestphp/pest": "^2.24.2",
     "mockery/mockery": "^1.6",
-    "orchestra/testbench": "^8.9",
-    "pestphp/pest-plugin-laravel": "^2.0",
+    "orchestra/testbench": "^8.14",
+    "pestphp/pest-plugin-laravel": "^2.2",
     "pestphp/pest-plugin-mock": "^2.0",
-    "rector/rector": "^0.18.0",
+    "rector/rector": "^0.18",
     "nunomaduro/larastan": "^2.6"
   },
   "autoload": {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Buttons\IndexPage;
+namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
