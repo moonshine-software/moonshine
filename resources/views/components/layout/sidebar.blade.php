@@ -1,18 +1,27 @@
 @props([
-    'components' => []
+    'components' => [],
+    'home_route' => null,
+    'logo',
+    'profile',
 ])
 <aside {{ $attributes->merge(['class' => 'layout-menu']) }}
        :class="minimizedMenu && '_is-minimized'"
 >
     <div class="menu-heading">
         <div class="menu-heading-logo">
-            @include('moonshine::layouts.shared.logo')
+            @if($logo ?? false)
+                {{ $logo }}
+            @else
+                @include('moonshine::layouts.shared.logo', ['home_route' => $home_route])
+            @endif
         </div>
 
         <div class="menu-heading-actions">
-            <div class="menu-heading-mode">
-                <x-moonshine::layout.theme-switcher :top="false" />
-            </div>
+            @if(config('moonshine.use_theme_switcher', true))
+                <div class="menu-heading-mode">
+                    <x-moonshine::layout.theme-switcher :top="false" />
+                </div>
+            @endif
 
             <div class="menu-heading-burger">
                 @include('moonshine::layouts.shared.burger')
@@ -27,13 +36,15 @@
 
         {{ $slot ?? '' }}
 
-        @if(config('moonshine.auth.enable', true))
+        @if($profile ?? false)
+            {{ $profile }}
+        @elseif(config('moonshine.auth.enable', true))
             <x-moonshine::layout.profile :with-border="true" />
         @endif
 
         <!-- Bottom menu -->
         <div
-            @if(config('moonshine.auth.enable', true))
+            @if(($profile ?? false) || config('moonshine.auth.enable', true))
                  class="border-t border-dark-200"
             @endif
         >

@@ -1,12 +1,19 @@
 @props([
-    'components' => []
+    'components' => [],
+    'home_route' => null,
+    'logo',
+    'profile',
 ])
 <!-- Menu horizontal -->
 <aside {{ $attributes->merge(['class' => 'layout-menu-horizontal']) }}
        :class="asideMenuOpen && '_is-opened'"
 >
     <div class="menu-logo">
-        @include('moonshine::layouts.shared.logo')
+        @if($logo ?? false)
+            {{ $logo }}
+        @else
+            @include('moonshine::layouts.shared.logo', ['home_route' => $home_route])
+        @endif
     </div>
 
     <nav class="menu-navigation">
@@ -18,15 +25,19 @@
     </nav>
 
     <div class="menu-actions">
-        @if(config('moonshine.auth.enable', true))
+        @if($profile ?? false)
+            {{ $profile }}
+        @elseif(config('moonshine.auth.enable', true))
             <x-moonshine::layout.profile />
         @endif
 
         <div class="menu-inner-divider"></div>
 
-        <div class="menu-mode">
-            <x-moonshine::layout.theme-switcher :top="true" />
-        </div>
+        @if(config('moonshine.use_theme_switcher', true))
+            <div class="menu-mode">
+                <x-moonshine::layout.theme-switcher :top="true" />
+            </div>
+        @endif
 
         <div class="menu-burger">
             @include('moonshine::layouts.shared.burger')

@@ -1,5 +1,6 @@
 @props([
     'route',
+    'logOutRoute',
     'avatar',
     'name' => '',
     'username' => '',
@@ -22,7 +23,7 @@
             </div>
         </a>
 
-        <a href="{{ route('moonshine.logout') }}"
+        <a href="{{ $logOutRoute }}"
            class="menu-profile-exit"
            title="Logout"
         >

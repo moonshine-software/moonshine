@@ -1,5 +1,7 @@
 @props([
-    'components' => []
+    'components' => [],
+    'notifications' => true,
+    'locales' => true,
 ])
 <div {{ $attributes->merge(['class' => 'layout-navigation']) }}>
     @section("header-inner")
@@ -13,12 +15,12 @@
     {{ $slot ?? '' }}
 
     @includeWhen(
-        config('moonshine.auth.enable', true),
+        $notifications && config('moonshine.auth.enable', true),
         'moonshine::layouts.shared.notifications'
     )
 
     @includeWhen(
-        count(config('moonshine.locales', [])) > 1,
+        $locales && count(config('moonshine.locales', [])) > 1,
         'moonshine::layouts.shared.locales'
     )
 </div>

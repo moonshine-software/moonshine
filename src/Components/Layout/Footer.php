@@ -12,6 +12,8 @@ use Illuminate\Support\Collection;
  */
 class Footer extends WithComponents
 {
+    protected $except = ['copyright'];
+
     protected string $view = 'moonshine::components.layout.footer';
 
     protected string|Closure $copyright = '';

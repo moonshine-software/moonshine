@@ -1,4 +1,4 @@
-<a href="{{ route('moonshine.index') }}" class="block" rel="home">
+<a href="{{ $home_route ?? route('moonshine.index') }}" class="block" rel="home">
         <img src="{{ config('moonshine.logo') ?: asset('vendor/moonshine/logo.svg') }}"
              class="hidden h-14 xl:block"
              :class="minimizedMenu && '!hidden'"

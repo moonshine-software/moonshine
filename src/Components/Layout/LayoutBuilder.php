@@ -10,11 +10,4 @@ namespace MoonShine\Components\Layout;
 class LayoutBuilder extends WithComponents
 {
     protected string $view = 'moonshine::components.layout.index';
-
-    public function topMenuMode(): self
-    {
-        return $this->customAttributes([
-            'class' => 'layout-wrapper--top-menu',
-        ]);
-    }
 }

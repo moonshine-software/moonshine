@@ -15,8 +15,14 @@ final class Profile extends MoonshineComponent
 {
     protected string $view = 'moonshine::components.layout.profile';
 
-    public function __construct(protected bool $withBorder = false)
-    {
+    public function __construct(
+        protected ?string $route = null,
+        protected ?string $logOutRoute = null,
+        protected ?string $avatar = null,
+        protected ?string $nameOfUser = null,
+        protected ?string $username = null,
+        protected bool $withBorder = false,
+    ) {
     }
 
     public function isWithBorder(): bool
@@ -38,10 +44,11 @@ final class Profile extends MoonshineComponent
             : "https://ui-avatars.com/api/?name=$nameOfUser";
 
         return [
-            'route' => to_page(resource: MoonShineProfileResource::class),
-            'avatar' => $avatar,
-            'nameOfUser' => $nameOfUser,
-            'username' => $username,
+            'route' => $this->route ?? to_page(resource: MoonShineProfileResource::class),
+            'logOutRoute' => $this->logOutRoute ?? route('moonshine.logout'),
+            'avatar' => $this->avatar ?? $avatar,
+            'nameOfUser' => $this->nameOfUser ?? $nameOfUser,
+            'username' => $this->username ?? $username,
             'withBorder' => $this->isWithBorder(),
         ];
     }
