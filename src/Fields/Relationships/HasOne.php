@@ -160,4 +160,13 @@ class HasOne extends ModelRelationField implements HasFields
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
+
+    protected function resolveAfterDestroy(mixed $data): mixed
+    {
+        $this->getResource()
+            ->getFormFields()
+            ->each(fn(Field $field) => $field->resolveFill($data->toArray())->afterDestroy($data));
+
+        return $data;
+    }
 }

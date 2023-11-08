@@ -15,7 +15,7 @@ use MoonShine\Tests\Fixtures\Pages\NoType\CustomNoTypeForm;
 use MoonShine\Tests\Fixtures\Pages\NoType\CustomNoTypeIndex;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
-uses()->group('pages-feature');
+uses()->group('resources-feature');
 uses()->group('pages-custom');
 
 beforeEach(function (): void {

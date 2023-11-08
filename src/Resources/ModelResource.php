@@ -12,6 +12,7 @@ use MoonShine\Enums\ClickAction;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
@@ -53,6 +54,8 @@ abstract class ModelResource extends Resource
     protected bool $isAsync = false;
 
     protected bool $isPrecognitive = false;
+
+    protected bool $deleteRelationships = false;
 
     /**
      * The click action to use when clicking on the resource in the table.
@@ -122,6 +125,11 @@ abstract class ModelResource extends Resource
         return $this->isPrecognitive;
     }
 
+    public function deleteRelationships(): bool
+    {
+        return $this->deleteRelationships;
+    }
+
     public function getClickAction(): ?string
     {
         return $this->clickAction?->value;
@@ -175,6 +183,16 @@ abstract class ModelResource extends Resource
         $fields->fill($item->toArray(), $item);
 
         $fields->each(fn (Field $field): mixed => $field->afterDestroy($item));
+
+        if($this->deleteRelationships()) {
+            $this->getOutsideFields()->each(function (ModelRelationField $field) use ($item) {
+                $relationItems = $item->{$field->getRelationName()};
+
+                !$field->toOne() ?: $relationItems = collect([$relationItems]);
+
+                $relationItems->each(fn($relationItem) => $field->resolveFill($relationItem->toArray())->afterDestroy($relationItem));
+            });
+        }
 
         return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
     }

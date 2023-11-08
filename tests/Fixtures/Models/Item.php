@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
@@ -66,6 +67,16 @@ class Item extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'item_id');
+    }
+
+    public function itemFiles(): HasMany
+    {
+        return $this->hasMany(FileModel::class, 'item_id');
+    }
+
+    public function itemFile(): HasOne
+    {
+        return $this->hasOne(FileModel::class, 'item_id');
     }
 
     public function imageable(): MorphMany

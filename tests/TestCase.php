@@ -22,6 +22,7 @@ use MoonShine\Resources\MoonShineUserRoleResource;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestCoverResource;
+use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\Tests\Fixtures\TestServiceProvider;
@@ -114,6 +115,7 @@ class TestCase extends Orchestra
             new TestItemResource(),
             new TestCommentResource(),
             new TestImageResource(),
+            new TestFileResource(),
 
             new MoonShineUserRoleResource(),
         ], newCollection: true);

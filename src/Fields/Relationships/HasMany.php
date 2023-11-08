@@ -320,4 +320,13 @@ class HasMany extends ModelRelationField implements HasFields
     {
         return static fn ($item) => $item;
     }
+
+    protected function resolveAfterDestroy(mixed $data): mixed
+    {
+        $this->getResource()
+            ->getFormFields()
+            ->each(fn(Field $field) => $field->resolveFill($data->toArray())->afterDestroy($data));
+
+        return $data;
+    }
 }
