@@ -233,7 +233,7 @@ abstract class ModelResource extends Resource
             throw new ResourceException($queryException->getMessage());
         }
 
-        //$this->setItem($item);
+        $this->setItem($item);
 
         return $item;
     }

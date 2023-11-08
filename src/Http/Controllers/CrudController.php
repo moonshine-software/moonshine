@@ -111,23 +111,6 @@ final class CrudController extends MoonShineController
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 
-        $validator = $resource->validate($item);
-
-        if ($request->isAttemptingPrecognition()) {
-            return response()->json(
-                $validator->errors(),
-                $validator->fails()
-                    ? Response::HTTP_UNPROCESSABLE_ENTITY
-                    : Response::HTTP_OK
-            );
-        }
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator, 'crud')
-                ->withInput();
-        }
-
         $redirectRoute = static fn ($resource): mixed => $request->get('_redirect', $resource->redirectAfterSave());
 
         $itemOrRedirect = $this->tryOrRedirect(

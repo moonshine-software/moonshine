@@ -20,6 +20,13 @@ class MoonshineFormRequest extends FormRequest
         return [];
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->hasResource()) {
+            $this->getResource()->prepareForValidation();
+        }
+    }
+
     public function messages(): array
     {
         if ($this->hasResource()) {
@@ -30,6 +37,18 @@ class MoonshineFormRequest extends FormRequest
         }
 
         return parent::messages();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function attributes(): array
+    {
+        return $this->hasResource()
+            ? $this->getResource()
+                ->getFormFields()
+                ->extractLabels()
+            : [];
     }
 
     public function getResource(): ?ResourceContract
