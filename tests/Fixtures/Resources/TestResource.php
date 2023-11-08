@@ -215,4 +215,9 @@ class TestResource extends ModelResource
     {
         $this->simplePaginate = true;
     }
+
+    public function setDeleteRelationships(): void
+    {
+        $this->deleteRelationships = true;
+    }
 }

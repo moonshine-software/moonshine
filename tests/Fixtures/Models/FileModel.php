@@ -5,26 +5,21 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FileModel extends Model
 {
     protected $table = 'files';
 
     protected $fillable = [
-        'fileable_id',
-        'fileable_type',
-        'name',
+        'path',
+        'item_id',
         'created_at',
         'updated_at',
     ];
 
-    protected $casts = [
-        'name' => 'array',
-    ];
-
-    public function fileable(): MorphTo
+    public function item(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Item::class, 'item_id');
     }
 }

@@ -68,6 +68,11 @@ class Item extends Model
         return $this->hasMany(Comment::class, 'item_id');
     }
 
+    public function itemFiles(): HasMany
+    {
+        return $this->hasMany(FileModel::class, 'item_id');
+    }
+
     public function imageable(): MorphMany
     {
         return $this->morphMany(ImageModel::class, 'imageable');
