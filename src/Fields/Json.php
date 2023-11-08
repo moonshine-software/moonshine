@@ -447,7 +447,8 @@ class Json extends Field implements
             foreach ($values as $value) {
                 $this->getFields()
                     ->onlyFields()
-                    ->each(fn (Field $field): mixed => $field
+                    ->each(
+                        fn (Field $field): mixed => $field
                         ->when(
                             $this->isAsRelation() && $value instanceof Arrayable,
                             fn (Field $f): Field => $f->resolveFill($value->toArray())

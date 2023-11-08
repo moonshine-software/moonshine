@@ -408,7 +408,8 @@ class BelongsToMany extends ModelRelationField implements
             foreach ($values as $value) {
                 $this->getFields()
                     ->onlyFields()
-                    ->each(fn (Field $field): mixed => $field
+                    ->each(
+                        fn (Field $field): mixed => $field
                         ->resolveFill($value->toArray())
                         ->afterDestroy($value)
                     );
