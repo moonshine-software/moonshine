@@ -36,8 +36,7 @@ trait ResourceWithParent
 
         if(request($parentKey = $this->getModel()
             ?->{$relationName}()
-            ->getForeignKeyName()))
-        {
+            ->getForeignKeyName())) {
             return $this->parentId = request($parentKey);
         }
 

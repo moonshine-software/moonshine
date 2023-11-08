@@ -86,7 +86,7 @@ it('delete a has many file after delete item with parent', function () {
 
     $this->item->refresh();
 
-    $filePath = 'item_files/'.$this->item->id.'/'.$file->hashName();
+    $filePath = 'item_files/' . $this->item->id . '/' . $file->hashName();
 
     expect($this->item->itemFiles)
         ->not()->toBeNull()
