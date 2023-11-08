@@ -165,7 +165,7 @@ class HasOne extends ModelRelationField implements HasFields
     {
         $this->getResource()
             ->getFormFields()
-            ->each(fn(Field $field): mixed => $field->resolveFill($data->toArray())->afterDestroy($data));
+            ->each(fn (Field $field): mixed => $field->resolveFill($data->toArray())->afterDestroy($data));
 
         return $data;
     }

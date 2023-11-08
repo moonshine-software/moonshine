@@ -24,7 +24,7 @@ beforeEach(function (): void {
         ->setTestFields([
             ID::make()->sortable(),
             Text::make('Name', 'name')->sortable(),
-            HasOne::make('Files', 'itemFile', resource: new TestFileResource())
+            HasOne::make('Files', 'itemFile', resource: new TestFileResource()),
         ])
     ;
 });

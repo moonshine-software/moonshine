@@ -20,7 +20,7 @@ class TestFileResource extends ModelResource
         return [
             ID::make()->sortable(),
             File::make('File', 'path'),
-            BelongsTo::make('Item', resource: new TestItemResource())
+            BelongsTo::make('Item', resource: new TestItemResource()),
         ];
     }
 

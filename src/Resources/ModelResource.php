@@ -188,9 +188,9 @@ abstract class ModelResource extends Resource
             $this->getOutsideFields()->each(function (ModelRelationField $field) use ($item): void {
                 $relationItems = $item->{$field->getRelationName()};
 
-                !$field->toOne() ?: $relationItems = collect([$relationItems]);
+                ! $field->toOne() ?: $relationItems = collect([$relationItems]);
 
-                $relationItems->each(fn($relationItem): mixed => $field->resolveFill($relationItem->toArray())->afterDestroy($relationItem));
+                $relationItems->each(fn ($relationItem): mixed => $field->resolveFill($relationItem->toArray())->afterDestroy($relationItem));
             });
         }
 
