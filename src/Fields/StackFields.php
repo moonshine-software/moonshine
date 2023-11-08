@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
@@ -105,7 +106,17 @@ class StackFields extends Field implements HasFields
     {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->afterDestroy($data));
+            ->each(fn (Field $field): mixed => $field
+                ->when(
+                    $data instanceof Arrayable,
+                    fn(Field $f) => $f->resolveFill($data->toArray())
+                )
+                ->when(
+                    is_array($data),
+                    fn(Field $f) => $f->resolveFill($data)
+                )
+                ->afterDestroy($data)
+            );
 
         return $data;
     }

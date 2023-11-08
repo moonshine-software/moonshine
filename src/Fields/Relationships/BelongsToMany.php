@@ -395,4 +395,26 @@ class BelongsToMany extends ModelRelationField implements
 
         return $data;
     }
+
+    protected function resolveAfterDestroy(mixed $data): mixed
+    {
+        if (! $this->getResource()->deleteRelationships()) {
+            return $data;
+        }
+
+        $values = $this->toValue(withDefault: false);
+
+        if (filled($values)) {
+            foreach ($values as $value) {
+                $this->getFields()
+                    ->onlyFields()
+                    ->each(fn (Field $field): mixed => $field
+                        ->resolveFill($value->toArray())
+                        ->afterDestroy($value)
+                    );
+            }
+        }
+
+        return $data;
+    }
 }

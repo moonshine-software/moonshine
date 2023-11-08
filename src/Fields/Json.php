@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
@@ -289,7 +290,7 @@ class Json extends Field implements
             : [$value ?? $emptyRow];
 
         // because the TableBuilder filters the values
-        if(blank($emptyRow)) {
+        if (blank($emptyRow)) {
             $emptyRow = [null];
         }
 
@@ -430,6 +431,35 @@ class Json extends Field implements
 
                 $field->afterApply($data);
             });
+
+        return $data;
+    }
+
+    protected function resolveAfterDestroy(mixed $data): mixed
+    {
+        if ($this->isAsRelation() && ! $this->getResource()->deleteRelationships()) {
+            return $data;
+        }
+
+        $values = $this->toValue(withDefault: false);
+
+        if (! $this->isKeyOrOnlyValue() && filled($values)) {
+            foreach ($values as $value) {
+                $this->getFields()
+                    ->onlyFields()
+                    ->each(fn (Field $field): mixed => $field
+                        ->when(
+                            $this->isAsRelation() && $value instanceof Arrayable,
+                            fn (Field $f) => $f->resolveFill($value->toArray())
+                        )
+                        ->when(
+                            is_array($value),
+                            fn (Field $f) => $f->resolveFill($value)
+                        )
+                        ->afterDestroy($value)
+                    );
+            }
+        }
 
         return $data;
     }
