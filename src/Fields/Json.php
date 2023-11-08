@@ -450,11 +450,11 @@ class Json extends Field implements
                     ->each(fn (Field $field): mixed => $field
                         ->when(
                             $this->isAsRelation() && $value instanceof Arrayable,
-                            fn (Field $f) => $f->resolveFill($value->toArray())
+                            fn (Field $f): Field => $f->resolveFill($value->toArray())
                         )
                         ->when(
                             is_array($value),
-                            fn (Field $f) => $f->resolveFill($value)
+                            fn (Field $f): Field => $f->resolveFill($value)
                         )
                         ->afterDestroy($value)
                     );

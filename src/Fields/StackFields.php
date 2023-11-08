@@ -109,11 +109,11 @@ class StackFields extends Field implements HasFields
             ->each(fn (Field $field): mixed => $field
                 ->when(
                     $data instanceof Arrayable,
-                    fn(Field $f) => $f->resolveFill($data->toArray())
+                    fn(Field $f): Field => $f->resolveFill($data->toArray())
                 )
                 ->when(
                     is_array($data),
-                    fn(Field $f) => $f->resolveFill($data)
+                    fn(Field $f): Field => $f->resolveFill($data)
                 )
                 ->afterDestroy($data)
             );
