@@ -53,6 +53,14 @@ class MoonShine
         return (config('moonshine.namespace') ?? static::NAMESPACE) . $path;
     }
 
+    public static function getResourceFromClassName(string $className): ?ResourceContract
+    {
+        return self::getResources()
+            ->first(
+                fn (ResourceContract $resource): bool => get_class($resource) === $className
+            );
+    }
+
     public static function getResourceFromUriKey(?string $uri): ?ResourceContract
     {
         if (is_null($uri)) {

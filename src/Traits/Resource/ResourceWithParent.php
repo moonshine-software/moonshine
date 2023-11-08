@@ -4,28 +4,34 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
-use MoonShine\Resources\ModelResource;
+use MoonShine\MoonShine;
 
 trait ResourceWithParent
 {
-    protected ?string $parentId = null;
+    protected null|string|int $parentId = null;
 
-    abstract protected function getParentResource(): ModelResource;
+    abstract public function getItemID(): int|string|null;
+
+    abstract protected function getParentResourceClassName(): string;
 
     abstract protected function getParentRelationName(): string;
 
-    protected function getParentId()
+    protected function getParentId(): null|string|int
     {
         if(! is_null($this->parentId)) {
             return $this->parentId;
         }
 
-        $parentResource = $this->getParentResource();
+        $parentResource = Moonshine::getResourceFromClassName($this->getParentResourceClassName());
+
+        if(is_null($parentResource)) {
+            return null;
+        }
 
         $relationName = $this->getParentRelationName();
 
         if(moonshineRequest()->getResourceUri() === $parentResource->uriKey()) {
-            return $this->parentId = request('resourceItem');
+            return $this->parentId = $this->getItemID();
         }
 
         if(request($parentKey = $this->getModel()
