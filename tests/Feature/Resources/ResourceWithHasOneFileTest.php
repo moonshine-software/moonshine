@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use MoonShine\Fields\ID;
-use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\Text;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Resources\ModelResource;
@@ -14,7 +14,7 @@ use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('resources-feature');
-uses()->group('resources-has-many-files');
+uses()->group('resources-has-one-file');
 
 beforeEach(function (): void {
 
@@ -24,41 +24,41 @@ beforeEach(function (): void {
         ->setTestFields([
             ID::make()->sortable(),
             Text::make('Name', 'name')->sortable(),
-            HasMany::make('Files', 'itemFiles', resource: new TestFileResource())
+            HasOne::make('Files', 'itemFile', resource: new TestFileResource())
         ])
     ;
 });
 
-it('resource with has many', function () {
+it('resource with has one', function () {
     asAdmin()->get(
         to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->item->id])
     )
         ->assertOk()
         ->assertSee('Name')
-        ->assertSee('Files')
+        ->assertSee('itemFile')
     ;
 });
 
-it('delete a has many file after delete item', function () {
-    $file = addHasManyFile(new TestFileResource(), $this->item);
+it('delete a has one file after delete item', function () {
+    $file = addHasOneFile(new TestFileResource(), $this->item);
 
     $this->resource->setDeleteRelationships();
 
-    deleteItemWithHasMany($this->resource, $this->item->getKey());
+    deleteItemWithHasOne($this->resource, $this->item->getKey());
 
     Storage::disk('public')->assertMissing($file->hashName());
 
 });
 
 it('not delete a has many file after delete item', function () {
-    $file = addHasManyFile(new TestFileResource(), $this->item);
+    $file = addHasOneFile(new TestFileResource(), $this->item);
 
-    deleteItemWithHasMany($this->resource, $this->item->getKey());
+    deleteItemWithHasOne($this->resource, $this->item->getKey());
 
     Storage::disk('public')->assertExists($file->hashName());
 });
 
-function addHasManyFile(ModelResource $resource, Model $item)
+function addHasOneFile(ModelResource $resource, Model $item)
 {
     $file = UploadedFile::fake()->create('test.csv');
 
@@ -75,9 +75,9 @@ function addHasManyFile(ModelResource $resource, Model $item)
 
     $item->refresh();
 
-    expect($item->itemFiles)
+    expect($item->itemFile)
         ->not()->toBeNull()
-        ->and($item->itemFiles->first()->path)
+        ->and($item->itemFile->path)
         ->toBe($file->hashName())
     ;
 
@@ -86,7 +86,7 @@ function addHasManyFile(ModelResource $resource, Model $item)
     return $file;
 }
 
-function deleteItemWithHasMany(ModelResource $resource, int $itemId): void
+function deleteItemWithHasOne(ModelResource $resource, int $itemId): void
 {
     asAdmin()->delete(
         $resource->route('crud.destroy', $itemId),
