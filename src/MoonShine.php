@@ -57,7 +57,7 @@ class MoonShine
     {
         return self::getResources()
             ->first(
-                fn (ResourceContract $resource): bool => get_class($resource) === $className
+                fn (ResourceContract $resource): bool => $resource::class === $className
             );
     }
 
