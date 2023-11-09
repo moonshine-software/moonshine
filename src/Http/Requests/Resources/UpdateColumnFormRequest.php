@@ -54,7 +54,7 @@ final class UpdateColumnFormRequest extends MoonshineFormRequest
 
     protected function prepareForValidation(): void
     {
-        $this->merge([
+        request()->merge([
             $this->get('field') => $this->get('value'),
         ]);
     }
