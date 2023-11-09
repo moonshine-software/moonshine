@@ -72,7 +72,10 @@ export default () => ({
           window.location = data.redirect
         }
 
-        t.$dispatch('toast', {type: data.messageType ? data.messageType : 'success', text: data.message})
+        t.$dispatch('toast', {
+          type: data.messageType ? data.messageType : 'success',
+          text: data.message,
+        })
 
         let isFormReset = false
         const modalParent = t.$el.closest('.modal')
