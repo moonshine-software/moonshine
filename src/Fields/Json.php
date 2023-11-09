@@ -281,6 +281,11 @@ class Json extends Field implements
             ? $this->asRelationResource()?->getModel()
             : [];
 
+        // because the TableBuilder filters the values
+        if (blank($emptyRow)) {
+            $emptyRow = [null];
+        }
+
         $value = $this->isPreviewMode()
             ? $this->toFormattedValue()
             : $this->toValue();
@@ -288,11 +293,6 @@ class Json extends Field implements
         $values = is_iterable($value)
             ? $value
             : [$value ?? $emptyRow];
-
-        // because the TableBuilder filters the values
-        if (blank($emptyRow)) {
-            $emptyRow = [null];
-        }
 
         $values = collect($values)->when(
             ! $this->isPreviewMode() && $this->isCreatable(),
