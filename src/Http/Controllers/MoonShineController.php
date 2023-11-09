@@ -10,6 +10,7 @@ use MoonShine\Pages\ViewPage;
 use MoonShine\Traits\Controller\InteractsWithAuth;
 use MoonShine\Traits\Controller\InteractsWithUI;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 abstract class MoonShineController extends BaseController
@@ -17,9 +18,9 @@ abstract class MoonShineController extends BaseController
     use InteractsWithUI;
     use InteractsWithAuth;
 
-    protected function json(string $message, array $data = [], string $redirect = null): JsonResponse
+    protected function json(string $message, array $data = [], string $redirect = null, string $messageType = 'success'): JsonResponse
     {
-        $data = ['message' => $message, ...$data];
+        $data = ['message' => $message, 'messageType' => $messageType, ...$data];
 
         if($redirect) {
             $data['redirect'] = $redirect;
@@ -37,20 +38,29 @@ abstract class MoonShineController extends BaseController
         return $page->setContentView($path, $data);
     }
 
-    protected function tryOrRedirect(callable $callable, string $redirectRoute): mixed
+    /**
+     * @throws Throwable
+     */
+    protected function reportAndResponse(bool $isAjax, Throwable $e, string $redirectRoute): Response
     {
-        try {
-            return $callable();
-        } catch (Throwable $e) {
-            throw_if(! app()->isProduction(), $e);
-            report_if(app()->isProduction(), $e);
+        if($isAjax) {
+            report($e);
 
-            $this->toast(
-                __('moonshine::ui.saved_error'),
-                'error'
+            return $this->json(
+                message: __('moonshine::ui.saved_error'),
+                messageType: 'error'
             );
-
-            return redirect($redirectRoute);
         }
+
+        throw_if(! app()->isProduction(), $e);
+
+        report_if(app()->isProduction(), $e);
+
+        $this->toast(
+            __('moonshine::ui.saved_error'),
+            'error'
+        );
+
+        return redirect($redirectRoute);
     }
 }
