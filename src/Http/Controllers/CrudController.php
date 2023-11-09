@@ -50,12 +50,10 @@ final class CrudController extends MoonShineController
 
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
 
-        $try = $this->tryOrRedirect(static fn () => $resource->delete(
-            $resource->getItemOrFail()
-        ), $redirectRoute);
-
-        if ($try instanceof RedirectResponse) {
-            return redirect($redirectRoute);
+        try {
+            $resource->delete($resource->getItemOrFail());
+        } catch (Throwable $e) {
+            return $this->reportAndResponse($request->ajax(), $e, $redirectRoute);
         }
 
         if ($request->ajax()) {
@@ -80,11 +78,10 @@ final class CrudController extends MoonShineController
 
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
 
-        if ($this->tryOrRedirect(
-            static fn () => $resource->massDelete($request->get('ids', [])),
-            $redirectRoute
-        ) instanceof RedirectResponse) {
-            return redirect($redirectRoute);
+        try {
+            $resource->massDelete($request->get('ids', []));
+        } catch (Throwable $e) {
+            return $this->reportAndResponse($request->ajax(), $e, $redirectRoute);
         }
 
         if ($request->ajax()) {
@@ -113,16 +110,13 @@ final class CrudController extends MoonShineController
 
         $redirectRoute = static fn ($resource): mixed => $request->get('_redirect', $resource->redirectAfterSave());
 
-        $itemOrRedirect = $this->tryOrRedirect(
-            static fn () => $resource->save($item),
-            $redirectRoute($resource)
-        );
-
-        if ($itemOrRedirect instanceof RedirectResponse) {
-            return redirect($redirectRoute($resource));
+        try {
+            $item = $resource->save($item);
+        } catch (Throwable $e) {
+            return $this->reportAndResponse($request->ajax(), $e, $redirectRoute($resource));
         }
 
-        $resource->setItem($itemOrRedirect);
+        $resource->setItem($item);
 
         if ($request->ajax()) {
             $forceRedirect = $request->boolean('_force_redirect')
