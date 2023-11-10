@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 uses()->group('pages-feature');
 
-use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 
@@ -26,7 +26,7 @@ it('filters', function () {
                 'filters' => [
                     'name' => $item->name,
                     'category_id' => $item->category_id,
-                ]
+                ],
             ]
         )
     )
@@ -47,7 +47,7 @@ it('query tags', function () {
             page: IndexPage::class,
             resource: $this->resource,
             params: [
-                'query-tag' => 'item-1-query-tag'
+                'query-tag' => 'item-1-query-tag',
             ]
         )
     )
