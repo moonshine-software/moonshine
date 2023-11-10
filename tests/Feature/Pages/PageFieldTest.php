@@ -15,8 +15,10 @@ beforeEach(function (): void {
 
     MoonShineUser::factory()->count(10)->create();
 
+    $this->userID = MoonshineUser::query()->max('id') + 1;
+
     MoonshineUser::factory()->create([
-        'id' => 12,
+        'id' => $this->userID,
         'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
         'name' => 'Test Name',
         'email' => 'test@mail.ru',
@@ -62,7 +64,7 @@ it('simple pagination on index', function () {
 
 it('fields on form', function () {
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => 12])
+        to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
     )
         ->assertOk()
         ->assertSee('Name')
@@ -76,7 +78,7 @@ it('fields on form', function () {
 
 it('fields on show', function () {
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => 12])
+        to_page(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
     )
         ->assertOk()
         ->assertSee('Name')

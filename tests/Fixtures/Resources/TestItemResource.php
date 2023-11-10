@@ -15,7 +15,9 @@ use MoonShine\Fields\Relationships\MorphMany;
 use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 use MoonShine\Fields\TinyMce;
+use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 
 class TestItemResource extends ModelResource
@@ -57,6 +59,26 @@ class TestItemResource extends ModelResource
                         Image::make('Image title', 'name'),
                     ]),
             ]),
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            Text::make('Name'),
+            BelongsTo::make('Category', resource: new TestCategoryResource())->nullable(),
+        ];
+    }
+
+    public function queryTags(): array
+    {
+        $maxId = Category::query()->max('id');
+
+        return [
+            QueryTag::make(
+                'Item #1 Query Tag',
+                fn ($query) => $query->where('category_id', $maxId) // Query builder
+            ),
         ];
     }
 
