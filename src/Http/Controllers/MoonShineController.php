@@ -47,7 +47,7 @@ abstract class MoonShineController extends BaseController
             report($e);
 
             return $this->json(
-                message: __('moonshine::ui.saved_error'),
+                message: app()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage(),
                 messageType: 'error'
             );
         }
@@ -57,10 +57,10 @@ abstract class MoonShineController extends BaseController
         report_if(app()->isProduction(), $e);
 
         $this->toast(
-            __('moonshine::ui.saved_error'),
+            app()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage(),
             'error'
         );
 
-        return redirect($redirectRoute);
+        return redirect($redirectRoute)->withInput();
     }
 }

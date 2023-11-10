@@ -333,26 +333,20 @@ class Json extends Field implements
 
     protected function resolveOnApply(): ?Closure
     {
+        if ($this->isAsRelation()) {
+            return static fn ($item) => $item;
+        }
+
         return function ($item) {
             $requestValues = array_filter($this->requestValue() ?: []);
             $applyValues = [];
 
             foreach ($requestValues as $index => $values) {
-                if ($this->isAsRelation()) {
-                    $values = $this->asRelationResource()
-                        ?->getModel()
-                        ?->forceFill($values) ?? $values;
-                }
-
                 foreach ($this->getFields() as $field) {
                     $field->appendRequestKeyPrefix(
                         "{$this->column()}.$index",
                         $this->requestKeyPrefix()
                     );
-
-                    if ($this->isAsRelation()) {
-                        $field->resolveFill($values->toArray(), $values);
-                    }
 
                     $apply = $field->apply(
                         fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
@@ -365,32 +359,6 @@ class Json extends Field implements
                         data_get($apply, $field->column())
                     );
                 }
-            }
-
-            if ($this->isAsRelation()) {
-                $items = collect($this->prepareOnApply($applyValues));
-
-                $ids = $items
-                    ->pluck($item->{$this->column()}()->getLocalKeyName())
-                    ->filter()
-                    ->toArray();
-
-                $localKey = $item->{$this->column()}()->getLocalKeyName();
-
-                $item->{$this->column()}()->when(
-                    ! empty($ids),
-                    fn (Builder $q) => $q->whereNotIn(
-                        $localKey,
-                        $ids
-                    )->delete()
-                );
-
-                $items->each(fn ($data) => $item->{$this->column()}()->updateOrCreate(
-                    [$localKey => $data[$localKey] ?? null],
-                    $data
-                ));
-
-                return $item;
             }
 
             $preparedValues = $this->prepareOnApply($applyValues);
@@ -421,6 +389,59 @@ class Json extends Field implements
 
     protected function resolveAfterApply(mixed $data): mixed
     {
+        if ($this->isAsRelation()) {
+            $requestValues = array_filter($this->requestValue() ?: []);
+            $applyValues = [];
+
+            foreach ($requestValues as $index => $values) {
+                $values = $this->asRelationResource()
+                    ?->getModel()
+                    ?->forceFill($values) ?? $values;
+
+                foreach ($this->getFields() as $field) {
+                    $field->appendRequestKeyPrefix(
+                        "{$this->column()}.$index",
+                        $this->requestKeyPrefix()
+                    );
+
+                    $field->resolveFill($values->toArray(), $values);
+
+                    $apply = $field->apply(
+                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                        $values
+                    );
+
+                    data_set(
+                        $applyValues[$index],
+                        $field->column(),
+                        data_get($apply, $field->column())
+                    );
+                }
+            }
+
+            $items = collect($this->prepareOnApply($applyValues));
+
+            $ids = $items
+                ->pluck($data->{$this->column()}()->getLocalKeyName())
+                ->filter()
+                ->toArray();
+
+            $localKey = $data->{$this->column()}()->getLocalKeyName();
+
+            $data->{$this->column()}()->when(
+                ! empty($ids),
+                fn (Builder $q) => $q->whereNotIn(
+                    $localKey,
+                    $ids
+                )->delete()
+            );
+
+            $items->each(fn ($d) => $data->{$this->column()}()->updateOrCreate(
+                [$localKey => $d[$localKey] ?? null],
+                $d
+            ));
+        }
+
         $this->getFields()
             ->onlyFields()
             ->each(function (Field $field, $index) use ($data): void {
@@ -449,15 +470,15 @@ class Json extends Field implements
                     ->onlyFields()
                     ->each(
                         fn (Field $field): mixed => $field
-                        ->when(
-                            $this->isAsRelation() && $value instanceof Arrayable,
-                            fn (Field $f): Field => $f->resolveFill($value->toArray())
-                        )
-                        ->when(
-                            is_array($value),
-                            fn (Field $f): Field => $f->resolveFill($value)
-                        )
-                        ->afterDestroy($value)
+                            ->when(
+                                $this->isAsRelation() && $value instanceof Arrayable,
+                                fn (Field $f): Field => $f->resolveFill($value->toArray())
+                            )
+                            ->when(
+                                is_array($value),
+                                fn (Field $f): Field => $f->resolveFill($value)
+                            )
+                            ->afterDestroy($value)
                     );
             }
         }
