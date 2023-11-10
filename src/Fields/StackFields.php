@@ -110,7 +110,7 @@ class StackFields extends Field implements HasFields
                 fn (Field $field): mixed => $field
                 ->when(
                     $data instanceof Arrayable,
-                    fn (Field $f): Field => $f->resolveFill($data->toArray())
+                    fn (Field $f): Field => $f->resolveFill($data->toArray(), $data)
                 )
                 ->when(
                     is_array($data),

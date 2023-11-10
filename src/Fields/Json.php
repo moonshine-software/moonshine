@@ -472,7 +472,7 @@ class Json extends Field implements
                         fn (Field $field): mixed => $field
                             ->when(
                                 $this->isAsRelation() && $value instanceof Arrayable,
-                                fn (Field $f): Field => $f->resolveFill($value->toArray())
+                                fn (Field $f): Field => $f->resolveFill($value->toArray(), $value)
                             )
                             ->when(
                                 is_array($value),
