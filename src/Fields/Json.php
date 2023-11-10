@@ -458,7 +458,7 @@ class Json extends Field implements
 
     protected function resolveAfterDestroy(mixed $data): mixed
     {
-        if ($this->isAsRelation() && ! $this->getResource()->deleteRelationships()) {
+        if ($this->isAsRelation() && ! $this->asRelationResource()?->deleteRelationships()) {
             return $data;
         }
 
