@@ -166,7 +166,7 @@ it('resource update column', function () {
             'resourceItem' => $this->item->getKey(),
             'resourceUri' => $resource->uriKey(),
             'field' => 'active',
-            'value' => 0,
+            'value' => 1,
         ])
     )->assertStatus(204);
 

@@ -52,7 +52,7 @@ beforeEach(function (): void {
 });
 
 describe('without special fields', function () {
-    it('add item', function () {
+    it('crud store', function () {
 
         $date = date('Y-m-d', strtotime('-1 DAY'));
 
@@ -77,7 +77,7 @@ describe('without special fields', function () {
         ;
     });
 
-    it('update item', function () {
+    it('crud update', function () {
         $item = storeResource($this->itemResource, $this->storeData);
 
         asAdmin()->put(
@@ -92,7 +92,16 @@ describe('without special fields', function () {
             ->toBe('New test name');
     });
 
-    it('delete item with null cast value', function () {
+    it('crud delete', function () {
+        $item = storeResource($this->itemResource, $this->storeData);
+
+        asAdmin()->delete(
+            $this->itemResource->route('crud.destroy', $item->getKey())
+        )
+            ->assertRedirect();
+    });
+
+    it('crud delete item with null cast value', function () {
         $item = createItem(1, 0);
 
         $item->files = null;
@@ -104,13 +113,19 @@ describe('without special fields', function () {
             ->assertRedirect();
     });
 
-    it('delete item', function () {
-        $item = storeResource($this->itemResource, $this->storeData);
+    it('crud mass delete', function () {
+        createItem(3);
+
+        $ids = Item::query()->get()->pluck('id')->toArray();
 
         asAdmin()->delete(
-            $this->itemResource->route('crud.destroy', $item->getKey())
+            $this->itemResource->route('crud.massDelete', query: ['ids' => $ids])
         )
             ->assertRedirect();
+
+        $items = Item::query()->get()->toArray();
+
+        expect($items)->toBeEmpty();
     });
 });
 

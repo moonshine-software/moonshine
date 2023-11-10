@@ -43,7 +43,8 @@
   "autoload-dev": {
     "psr-4": {
       "MoonShine\\Tests\\": "tests/",
-      "MoonShine\\Database\\Factories\\": "database/factories/"
+      "MoonShine\\Database\\Factories\\": "database/factories/",
+      "App\\": "app/"
     }
   },
   "suggest": {
