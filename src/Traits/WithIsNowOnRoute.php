@@ -28,14 +28,14 @@ trait WithIsNowOnRoute
 
     public function isNowOnIndex(): bool
     {
-        return request()?->route('pageUri') === PageType::INDEX->value
-            || request('pageUri') === PageType::INDEX->value;
+        return (request()?->route('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::INDEX)
+            || (request('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::INDEX);
     }
 
     public function isNowOnDetail(): bool
     {
-        return request()?->route('pageUri') === PageType::DETAIL->value
-            || request('pageUri') === PageType::DETAIL->value;
+        return (request()?->route('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::DETAIL)
+            || (request('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::DETAIL);
     }
 
     public function isNowOnForm(): bool
@@ -52,10 +52,10 @@ trait WithIsNowOnRoute
 
         return (
             is_null(request()?->route('resourceItem'))
-            && request()?->route('pageUri') === PageType::FORM->value
+            && request()?->route('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::FORM
         ) && (
             is_null(request('resourceItem'))
-            && request('pageUri') === PageType::FORM->value
+            && request('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::FORM
         );
     }
 
@@ -67,10 +67,10 @@ trait WithIsNowOnRoute
 
         return (
             ! is_null(request()?->route('resourceItem'))
-            && request()?->route('pageUri') === PageType::FORM->value
+            && request()?->route('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::FORM
         ) || (
             ! is_null(request('resourceItem'))
-            && request('pageUri') === PageType::FORM->value
+            && request('pageUri') && moonshineRequest()->getPage()->pageType() === PageType::FORM
         );
     }
 }

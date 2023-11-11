@@ -33,7 +33,7 @@ trait ResourceWithFields
     public function getIndexFields(): Fields
     {
         $fields = $this->getPages()
-            ->findByUri(PageType::INDEX->value)
+            ->findByType(PageType::INDEX)
             ?->fields();
 
         if (empty($fields)) {
@@ -57,7 +57,7 @@ trait ResourceWithFields
     public function getFormFields(): Fields
     {
         $fields = $this->getPages()
-            ->findByUri(PageType::FORM->value)
+            ->findByType(PageType::FORM)
             ?->fields();
 
         if (empty($fields)) {
@@ -77,7 +77,7 @@ trait ResourceWithFields
     public function getOutsideFields(): Fields
     {
         $fields = $this->getPages()
-            ->findByUri(PageType::FORM->value)
+            ->findByType(PageType::FORM)
             ?->fields();
 
         if (empty($fields)) {
@@ -101,7 +101,7 @@ trait ResourceWithFields
     public function getDetailFields(): Fields
     {
         $fields = $this->getPages()
-            ->findByUri(PageType::DETAIL->value)
+            ->findByType(PageType::DETAIL)
             ?->fields();
 
         if (empty($fields)) {

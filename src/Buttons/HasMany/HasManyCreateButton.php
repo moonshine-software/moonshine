@@ -78,7 +78,9 @@ final class HasManyCreateButton
                     )
                     ->redirect(
                         $isAsync ? null : to_page(
-                            PageType::FORM->value,
+                            moonshineRequest()->getResource()
+                                ?->getPages()
+                                ?->findByType(PageType::FORM),
                             moonshineRequest()->getResource(),
                             params: ['resourceItem' => $item?->getKey()]
                         )

@@ -2,7 +2,9 @@
     @if($element->isCreatable())
         {{
             actionBtn(__('moonshine::ui.add'), to_page(
-                    page: 'form-page',
+                    page: $element->getResource()
+                        ?->getPages()
+                        ?->findByType(\MoonShine\Enums\PageType::FORM) ?? 'form-page',
                     resource: $element->getResource(),
                     fragment: 'crud-form'
                 ))

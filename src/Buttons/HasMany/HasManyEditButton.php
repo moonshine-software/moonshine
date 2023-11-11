@@ -82,7 +82,9 @@ final class HasManyEditButton
                     )
                     ->redirect(
                         $isAsync ? null : to_page(
-                            PageType::FORM->value,
+                            moonshineRequest()->getResource()
+                                ?->getPages()
+                                ?->findByType(PageType::FORM),
                             moonshineRequest()->getResource(),
                             params: ['resourceItem' => $parent->getKey()]
                         )
