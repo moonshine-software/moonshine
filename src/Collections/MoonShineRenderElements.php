@@ -63,7 +63,7 @@ abstract class MoonShineRenderElements extends Collection
 
     public function exceptElements(Closure $except): self
     {
-        return $this->filter(function ($element) use ($except) {
+        return $this->filter(function ($element) use ($except): bool {
             if ($except($element) === true) {
                 return false;
             }
