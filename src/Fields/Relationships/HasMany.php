@@ -271,7 +271,7 @@ class HasMany extends ModelRelationField implements HasFields
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
             ->when(
-                $this->isSearchable() && !empty($this->getResource()->search()),
+                $this->isSearchable() && ! empty($this->getResource()->search()),
                 fn (TableBuilder $table): TableBuilder => $table->searchable()
             )
             ->name($this->getRelationName())
