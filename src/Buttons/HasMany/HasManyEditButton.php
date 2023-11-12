@@ -35,7 +35,7 @@ final class HasManyEditButton
         $fields->onlyFields()
             ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
 
-        $fields->withoutForeignField();
+        $fields = $fields->withoutForeignField();
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 
