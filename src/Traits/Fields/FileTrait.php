@@ -128,7 +128,7 @@ trait FileTrait
         if (is_closure($this->customName)) {
             return $file->storeAs(
                 $this->getDir(),
-                value($this->customName, $file),
+                value($this->customName, $file, $this),
                 $this->getDisk()
             );
         }

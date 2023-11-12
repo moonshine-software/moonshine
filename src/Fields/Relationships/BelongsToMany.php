@@ -268,7 +268,8 @@ class BelongsToMany extends ModelRelationField implements
         if (is_closure($this->formattedValueCallback())) {
             return value(
                 $this->formattedValueCallback(),
-                $item
+                $item,
+                $this
             );
         }
 

@@ -61,7 +61,7 @@ trait WithRelatedValues
         $query = $related->newModelQuery();
 
         if (is_closure($this->valuesQuery)) {
-            $query = value($this->valuesQuery, $query);
+            $query = value($this->valuesQuery, $query, $this);
         }
 
         return $query;
@@ -92,7 +92,8 @@ trait WithRelatedValues
                 fn ($item): array => [
                     $item->getKey() => value(
                         $this->formattedValueCallback(),
-                        $item
+                        $item,
+                        $this
                     ),
                 ]
             );

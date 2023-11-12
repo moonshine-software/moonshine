@@ -16,7 +16,7 @@ trait WithLabel
 
     public function label(): string
     {
-        $this->label = value($this->label);
+        $this->label = value($this->label, $this);
 
         if ($this->translatable) {
             return __(

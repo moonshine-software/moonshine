@@ -136,7 +136,7 @@ trait WithAsyncSearch
 
         return [
             'label' => is_closure($this->asyncSearchValueCallback())
-                ? ($this->asyncSearchValueCallback())($model)
+                ? ($this->asyncSearchValueCallback())($model, $this)
                 : $model->{$searchColumn},
             'value' => $model->getKey(),
             'customProperties' => [

@@ -62,6 +62,10 @@ abstract class Field extends FormElement
 
     protected bool $canBeEmpty = false;
 
+    protected mixed $data = null;
+
+    protected int $rowIndex = 0;
+
     public function __construct(
         Closure|string|null $label = null,
         ?string $column = null,
@@ -113,6 +117,9 @@ abstract class Field extends FormElement
 
     public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): static
     {
+        $this->setData($casted ?? $raw);
+        $this->setRowIndex($index);
+
         $value = $this->prepareFill($raw, $casted);
 
         if($value instanceof FieldEmptyValue) {
@@ -122,16 +129,6 @@ abstract class Field extends FormElement
         $this->setRawValue($value);
 
         $value = $this->reformatFilledValue($value);
-
-        if (is_closure($this->formattedValueCallback())) {
-            $this->setFormattedValue(
-                value(
-                    $this->formattedValueCallback(),
-                    empty($casted) ? $this->toRawValue() : $casted,
-                    $index
-                )
-            );
-        }
 
         $this->setValue($value);
 
@@ -169,6 +166,30 @@ abstract class Field extends FormElement
         $this->rawValue = $value;
 
         return $this;
+    }
+
+    protected function setData(mixed $data = null): static
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    public function getData(): mixed
+    {
+        return $this->data;
+    }
+
+    protected function setRowIndex(int $index = 0): static
+    {
+        $this->rowIndex = $index;
+
+        return $this;
+    }
+
+    public function getRowIndex(): int
+    {
+        return $this->rowIndex;
     }
 
     public function toValue(bool $withDefault = true): mixed
@@ -229,6 +250,16 @@ abstract class Field extends FormElement
 
     public function toFormattedValue(): mixed
     {
+        if (is_closure($this->formattedValueCallback())) {
+            $this->setFormattedValue(
+                value(
+                    $this->formattedValueCallback(),
+                    $this->getData(),
+                    $this->getRowIndex()
+                )
+            );
+        }
+
         return $this->formattedValue ?? $this->toValue(withDefault: false);
     }
 
@@ -269,7 +300,7 @@ abstract class Field extends FormElement
             return (string) value(
                 $this->previewCallback,
                 $this->toValue(),
-                $this->toRawValue(),
+                $this,
             );
         }
 
@@ -297,7 +328,7 @@ abstract class Field extends FormElement
             $href = $this->getLinkValue($value);
 
             $value = view('moonshine::ui.url', [
-                'value' => $this->getLinkName() ?: $value,
+                'value' => $this->getLinkName($value) ?: $value,
                 'href' => $href,
                 'blank' => $this->isLinkBlank(),
                 'icon' => $this->getLinkIcon(),

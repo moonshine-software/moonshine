@@ -11,7 +11,6 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
 final class HasManyEditButton
@@ -36,10 +35,7 @@ final class HasManyEditButton
         $fields->onlyFields()
             ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
 
-        $fields->exceptElements(
-            fn (mixed $nestedFields): bool => $nestedFields instanceof ModelRelationField
-                && $nestedFields->getResource() === moonshineRequest()->getResource()
-        );
+        $fields->withoutForeignField();
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 

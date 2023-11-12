@@ -113,10 +113,7 @@ class HasOne extends ModelRelationField implements HasFields
             $item?->getKey()
         );
 
-        $fields->exceptElements(
-            fn (mixed $nestedFields): bool => $nestedFields instanceof ModelRelationField
-                && $nestedFields->getResource() === moonshineRequest()->getResource()
-        );
+        $fields->withoutForeignField();
 
         $redirectAfter = to_page(
             page: $resource->formPage(),

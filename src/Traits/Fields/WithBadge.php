@@ -35,7 +35,7 @@ trait WithBadge
     public function badgeColor(mixed $value = null): string
     {
         if (! is_null($this->badgeColorCallback)) {
-            return value($this->badgeColorCallback, $value);
+            return value($this->badgeColorCallback, $value ?? $this->toValue(withDefault: false), $this);
         }
 
         return $this->badgeColor;

@@ -1,4 +1,8 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -72,22 +76,27 @@ export default () => ({
           window.location = data.redirect
         }
 
+        const type = data.messageType ? data.messageType : 'success'
+
         t.$dispatch('toast', {
-          type: data.messageType ? data.messageType : 'success',
+          type: type,
           text: data.message,
         })
 
         let isFormReset = false
-        const modalParent = t.$el.closest('.modal')
 
-        if (modalParent !== null) {
-          modalParent.querySelector('.btn-close').click()
-          isFormReset = true
+        if(type !== 'error') {
+          const modalParent = t.$el.closest('.modal')
+
+          if (modalParent !== null) {
+            modalParent.querySelector('.btn-close').click()
+            isFormReset = true
+          }
         }
 
         submitState(form, false, isFormReset)
 
-        if (events !== '') {
+        if (events !== '' && type !== 'error') {
           events = events.split(',')
 
           events.forEach(function (event) {

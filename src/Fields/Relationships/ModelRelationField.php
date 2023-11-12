@@ -105,19 +105,21 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return data_get($casted ?? $raw, $this->getRelationName());
     }
 
+    /**
+     * @throws Throwable
+     */
     public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): static
     {
         if ($casted instanceof Model) {
             $this->setRelatedModel($casted);
         }
 
-        if ($this->value) {
-            return $this;
-        }
+        $this->setData($raw ?? $casted);
 
         $data = $this->prepareFill($raw, $casted);
 
         $this->setValue($data);
+        $this->setRowIndex($index);
 
         if ($this->toOne()) {
             $this->setColumn(
@@ -131,18 +133,26 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             $this->setFormattedValue(
                 data_get($data, $this->getResourceColumn())
             );
-
-            if (is_closure($this->formattedValueCallback())) {
-                $this->setFormattedValue(
-                    value(
-                        $this->formattedValueCallback(),
-                        $data ?? $this->getRelation()?->getModel()
-                    )
-                );
-            }
         }
 
         return $this;
+    }
+
+    public function toFormattedValue(): mixed
+    {
+        $value = $this->toValue(withDefault: false);
+
+        if ($this->toOne() && is_closure($this->formattedValueCallback())) {
+            $this->setFormattedValue(
+                value(
+                    $this->formattedValueCallback(),
+                    $value ?? $this->getRelation()?->getModel(),
+                    $this->getRowIndex()
+                )
+            );
+        }
+
+        return $this->formattedValue ?? $value;
     }
 
     public function outsideComponent(): bool

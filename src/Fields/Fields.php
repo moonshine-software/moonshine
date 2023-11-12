@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
@@ -108,7 +109,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function withoutOutside(): Fields
+    public function withoutOutside(): MoonShineRenderElements
     {
         return $this->exceptElements(
             fn ($element): bool => $element instanceof ModelRelationField && $element->outsideComponent()
@@ -138,7 +139,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function withoutRelationFields(): Fields
+    public function withoutRelationFields(): MoonShineRenderElements
     {
         return $this->exceptElements(
             fn ($element): bool => $element instanceof ModelRelationField
@@ -148,7 +149,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function formFields(): Fields
+    public function formFields(): MoonShineRenderElements
     {
         return $this->exceptElements(
             fn ($element): bool => $element instanceof Field && ! $element->isOnForm()
@@ -239,6 +240,15 @@ final class Fields extends FormElements
                 static fn (Field $field): bool => $field->hasShowWhen()
             )
             ->values();
+    }
+
+    public function withoutForeignField(): MoonShineRenderElements
+    {
+        return $this->exceptElements(
+            fn (mixed $field): bool => $field instanceof ModelRelationField
+                && $field->toOne()
+                && $field->getResource()->uriKey() === moonshineRequest()->getResourceUri()
+        );
     }
 
     /**

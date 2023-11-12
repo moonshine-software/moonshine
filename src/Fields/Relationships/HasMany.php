@@ -43,6 +43,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $isCreatable = false;
 
+    protected bool $isSearchable = true;
+
     protected bool $isAsync = false;
 
     public function creatable(Closure|bool|null $condition = null): static
@@ -55,6 +57,18 @@ class HasMany extends ModelRelationField implements HasFields
     public function isCreatable(): bool
     {
         return $this->isCreatable;
+    }
+
+    public function searchable(Closure|bool|null $condition = null): static
+    {
+        $this->isSearchable = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isSearchable(): bool
+    {
+        return $this->isSearchable;
     }
 
     public function createButton(): ?ActionButton
@@ -256,7 +270,10 @@ class HasMany extends ModelRelationField implements HasFields
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
-            ->searchable()
+            ->when(
+                $this->isSearchable() && !empty($this->getResource()->search()),
+                fn (TableBuilder $table): TableBuilder => $table->searchable()
+            )
             ->name($this->getRelationName())
             ->fields($fields)
             ->cast($resource->getModelCast())

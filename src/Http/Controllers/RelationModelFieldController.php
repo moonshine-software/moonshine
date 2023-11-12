@@ -46,7 +46,8 @@ class RelationModelFieldController extends MoonShineController
             $query = value(
                 $field->asyncSearchQuery(),
                 $query,
-                $request
+                $request,
+                $field
             );
         }
 

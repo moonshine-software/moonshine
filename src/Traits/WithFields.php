@@ -32,7 +32,7 @@ trait WithFields
     public function getFields(mixed $data = null): Fields
     {
         if(! is_null($this->fieldsClosure)) {
-            $this->fields = value($this->fieldsClosure, $data);
+            $this->fields = value($this->fieldsClosure, $data, $this);
         }
 
         return Fields::make($this->fields);
