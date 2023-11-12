@@ -45,7 +45,7 @@ final class QueryTag
 
     public function isActive(): bool
     {
-        return ($this->isDefault && !request()->filled('query-tag')) || request('query-tag') === $this->uri();
+        return ($this->isDefault && ! request()->filled('query-tag')) || request('query-tag') === $this->uri();
     }
 
     public function apply(Builder $builder): Builder
