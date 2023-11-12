@@ -113,7 +113,7 @@ class HasOne extends ModelRelationField implements HasFields
             $item?->getKey()
         );
 
-        $fields->withoutForeignField();
+        $fields = $fields->withoutForeignField();
 
         $redirectAfter = to_page(
             page: $resource->formPage(),

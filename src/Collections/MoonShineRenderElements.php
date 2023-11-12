@@ -63,9 +63,9 @@ abstract class MoonShineRenderElements extends Collection
 
     public function exceptElements(Closure $except): self
     {
-        return clone $this->map(function ($element) use ($except) {
+        return $this->filter(function ($element) use ($except) {
             if ($except($element) === true) {
-                return null;
+                return false;
             }
 
             if ($element instanceof Tabs) {
@@ -74,15 +74,19 @@ abstract class MoonShineRenderElements extends Collection
                         $tab->getFields()->exceptElements($except)->toArray()
                     );
                 }
+
+                return true;
             }
 
             if ($element instanceof HasFields) {
                 $element->fields(
                     $element->getFields()->exceptElements($except)->toArray()
                 );
+
+                return true;
             }
 
-            return $element;
+            return true;
         })->filter()->values();
     }
 }
