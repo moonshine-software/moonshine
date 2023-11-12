@@ -1,8 +1,4 @@
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from './showWhenFunctions'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -85,7 +81,7 @@ export default () => ({
 
         let isFormReset = false
 
-        if(type !== 'error') {
+        if (type !== 'error') {
           const modalParent = t.$el.closest('.modal')
 
           if (modalParent !== null) {
