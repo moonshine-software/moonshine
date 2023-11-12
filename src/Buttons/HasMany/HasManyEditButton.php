@@ -30,14 +30,33 @@ final class HasManyEditButton
         $action = static fn (Model $data) => $resource
             ->route('crud.update', $data->getKey());
 
-        $fields = $resource->getFormFields();
-
-        $fields->onlyFields()
-            ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
-
-        $fields = $fields->withoutForeignField();
-
         $isAsync = $resource->isAsync() || $field->isAsync();
+
+        $getFieldsFunction = function () use ($resource, $field, $isAsync, $parent) {
+            $fields = $resource->getFormFields();
+
+            $fields->onlyFields()
+                ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+
+            $fields = $fields->withoutForeignField();
+
+            return $fields->when(
+                $field->getRelation() instanceof MorphOneOrMany,
+                fn (Fields $f) => $f->push(
+                    Hidden::make($field->getRelation()?->getQualifiedMorphType())
+                        ->setValue($parent::class)
+                )
+            )
+                ->push(
+                    Hidden::make('_method')->setValue('PUT'),
+                )
+                ->push(
+                    Hidden::make($field->getRelation()?->getForeignKeyName())
+                        ->setValue($parent->getKey())
+                )
+                ->push(Hidden::make('_async_field')->setValue($isAsync))
+                ->toArray();
+        };
 
         return ActionButton::make('', url: $action)
             ->canSee(
@@ -57,25 +76,7 @@ final class HasManyEditButton
                         $resource->getModelCast()
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
-                    ->fields(
-                        $fields
-                            ->when(
-                                $field->getRelation() instanceof MorphOneOrMany,
-                                fn (Fields $f) => $f->push(
-                                    Hidden::make($field->getRelation()?->getQualifiedMorphType())
-                                        ->setValue($parent::class)
-                                )
-                            )
-                            ->push(
-                                Hidden::make('_method')->setValue('PUT'),
-                            )
-                            ->push(
-                                Hidden::make($field->getRelation()?->getForeignKeyName())
-                                    ->setValue($parent->getKey())
-                            )
-                            ->push(Hidden::make('_async_field')->setValue($isAsync))
-                            ->toArray()
-                    )
+                    ->fields($getFieldsFunction)
                     ->redirect(
                         $isAsync ? null : to_page(
                             moonshineRequest()->getResource()

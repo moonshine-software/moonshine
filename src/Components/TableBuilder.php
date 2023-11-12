@@ -67,6 +67,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             $raw = $this->unCastData($data);
 
             $fields = $this->getFields();
+            $fields->fill($raw, $casted, $index);
 
             if (! is_null($this->getName())) {
                 $fields->onlyFields()->each(
@@ -76,7 +77,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             return TableRow::make(
                 $casted,
-                $fields->fillCloned($raw, $casted, $index),
+                $fields,
                 $this->getButtons($casted),
                 $this->trAttributes,
                 $this->tdAttributes

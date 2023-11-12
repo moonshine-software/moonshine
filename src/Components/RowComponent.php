@@ -48,14 +48,16 @@ abstract class RowComponent extends MoonshineComponent implements HasFields
 
     public function preparedFields(): Fields
     {
-        $this->getFields()->fill(
+        $fields = $this->getFields();
+
+        $fields->fill(
             $this->unCastData($this->getValues()),
             $this->castData($this->getValues())
         );
 
-        $this->getFields()->prepareAttributes();
+        $fields->prepareAttributes();
 
-        return $this->getFields();
+        return $fields;
     }
 
     public function getButtons(): ActionButtons
