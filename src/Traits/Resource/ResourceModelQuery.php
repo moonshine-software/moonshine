@@ -211,19 +211,17 @@ trait ResourceModelQuery
 
     protected function resolveTags(): static
     {
-        if ($tagUri = request('query-tag')) {
-            $tag = collect($this->queryTags())
-                ->first(
-                    fn (QueryTag $tag): bool => $tag->uri() === $tagUri
-                );
+        $tag = collect($this->queryTags())
+            ->first(
+                fn (QueryTag $tag): bool => $tag->isActive()
+            );
 
-            if ($tag) {
-                $this->customBuilder(
-                    $tag->apply(
-                        $this->query()
-                    )
-                );
-            }
+        if ($tag) {
+            $this->customBuilder(
+                $tag->apply(
+                    $this->query()
+                )
+            );
         }
 
         return $this;

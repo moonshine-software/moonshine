@@ -6,6 +6,7 @@ namespace MoonShine\QueryTags;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithIcon;
@@ -21,6 +22,8 @@ final class QueryTag
     use HasCanSee;
     use WithLabel;
 
+    protected bool $isDefault = false;
+
     public function __construct(
         Closure|string $label,
         protected Closure $builder,
@@ -33,9 +36,16 @@ final class QueryTag
         return str($this->label())->slug()->value();
     }
 
+    public function default(Closure|bool|null $condition = null): self
+    {
+        $this->isDefault = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
     public function isActive(): bool
     {
-        return request('query-tag') === $this->uri();
+        return ($this->isDefault && !request()->filled('query-tag')) || request('query-tag') === $this->uri();
     }
 
     public function apply(Builder $builder): Builder
