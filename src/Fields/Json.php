@@ -275,6 +275,9 @@ class Json extends Field implements
         return blank($this->value);
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveValue(): mixed
     {
         $emptyRow = $this->isAsRelation()

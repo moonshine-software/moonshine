@@ -46,7 +46,6 @@ class RelationModelFieldRequest extends MoonshineFormRequest
         }
 
         $this->field = $fields
-            ->onlyRelationFields()
             ->findByRelation($this->getRelationName());
 
         return $this->field;
@@ -76,7 +75,6 @@ class RelationModelFieldRequest extends MoonshineFormRequest
 
         $this->field = $fields
             ->filter()
-            ->onlyRelationFields()
             ->findByRelation($this->getRelationName());
 
         return $this->field;
