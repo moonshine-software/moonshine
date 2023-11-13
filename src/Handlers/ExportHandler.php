@@ -123,8 +123,9 @@ class ExportHandler extends Handler
 
             $fields = $resource
                 ->getIndexFields()
-                ->exportFields()
-                ->fillCloned($item->toArray(), $item, $index);
+                ->exportFields();
+
+            $fields->fill($item->toArray(), $item, $index);
 
             foreach ($fields as $field) {
                 $row[$field->label()] = $field

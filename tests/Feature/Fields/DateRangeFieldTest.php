@@ -6,6 +6,7 @@ use MoonShine\Applies\Filters\DateRangeModelApply;
 use MoonShine\Fields\DateRange;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
+use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -26,10 +27,9 @@ it('show field on pages', function () {
     $from = now();
     $to = now()->addMonth();
 
-    $item = Item::factory()->create([
-        'start_date' => $from,
-        'end_date' => $to,
-    ]);
+    $this->item->start_date = $from->format('Y-m-d');
+    $this->item->end_date = $to->format('Y-m-d');
+    $this->item->save();
 
     asAdmin()->get(
         to_page(page: IndexPage::class, resource: $resource)
@@ -39,18 +39,16 @@ it('show field on pages', function () {
         ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
     ;
 
-    /*
-     * TODO range empty value just in tests
-     * asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $item->getKey()])
+    asAdmin()->get(
+        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Range')
         ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
-    ;*/
+    ;
 
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->getKey()])
+        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('range')

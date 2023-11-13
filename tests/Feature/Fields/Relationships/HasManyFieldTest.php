@@ -98,7 +98,7 @@ it('onlyLink preview condition', function () {
         ->get(to_page(page: IndexPage::class, resource: $resource))
         ->assertOk()
         ->assertSee('Comments title')
-        ->assertSee($item->comments[0]->content)
+        ->assertSee($item->comments->first()->content)
         ->assertDontSee('(6)')
     ;
 });
