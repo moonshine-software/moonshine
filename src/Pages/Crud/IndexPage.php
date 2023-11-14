@@ -155,7 +155,7 @@ class IndexPage extends Page
         return [
             Fragment::make([
                 TableBuilder::make(items: $this->getResource()->paginate())
-                    ->fields(fn() => $this->getResource()->getIndexFields()->toArray())
+                    ->fields(fn () => $this->getResource()->getIndexFields()->toArray())
                     ->cast($this->getResource()->getModelCast())
                     ->withNotFound()
                     ->when(
