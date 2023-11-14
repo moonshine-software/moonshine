@@ -29,11 +29,11 @@ final class MoonShineRegister
 
     private string $activeSection = '';
 
-    private array $options = [
-        'filters' => [
-            ModelResource::class => [
-                Date::class => DateModelApply::class,
-                Range::class => RangeModelApply::class,
+private array $options = [
+    'filters' => [
+        ModelResource::class => [
+            Date::class => DateModelApply::class,
+            Range::class => RangeModelApply::class,
                 DateRange::class => DateRangeModelApply::class,
                 BelongsToMany::class => BelongsToManyModelApply::class,
                 MorphTo::class => MorphToModelApply::class,
@@ -76,8 +76,8 @@ final class MoonShineRegister
 
     public function set(string $key, string $value): MoonShineRegister
     {
-        if($this->issetOption()) {
-            return $this;
+        if(! $this->issetOption()) {
+            $this->options[$this->activeOption][$this->activeSection] = [];
         }
 
         if(! empty($this->options[$this->activeOption][$this->activeSection][$key])) {

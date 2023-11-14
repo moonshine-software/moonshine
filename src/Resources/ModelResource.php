@@ -203,9 +203,13 @@ abstract class ModelResource extends Resource
     public function onSave(Field $field): Closure
     {
         return static function (Model $item) use ($field): Model {
-            if ($field->requestValue() !== false) {
-                data_set($item, $field->column(), $field->requestValue());
+            if(! $field->hasRequestValue() && ! $field->defaultIfExists()) {
+                return $item;
             }
+
+            $value = $field->requestValue() !== false ? $field->requestValue() : null;
+
+            data_set($item, $field->column(), $value);
 
             return $item;
         };

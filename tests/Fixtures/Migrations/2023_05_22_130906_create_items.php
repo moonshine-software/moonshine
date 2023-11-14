@@ -32,7 +32,7 @@ return new class () extends Migration {
 
             $table->json('data')->nullable();
 
-            $table->text('content');
+            $table->text('content')->nullable();
 
             $table->foreignIdFor(MoonshineUser::class)
                 ->nullable()

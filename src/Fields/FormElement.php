@@ -132,9 +132,19 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return $this;
     }
 
+    public function hasRequestValue(string|int|null $index = null): bool
+    {
+        return request()->has($this->requestNameDot($index));
+    }
+
     public function requestValue(string|int|null $index = null): mixed
     {
-        $nameDot = str($this->nameDot())
+        return request($this->requestNameDot($index), $this->defaultIfExists()) ?? false;
+    }
+
+    protected function requestNameDot(string|int|null $index = null): string
+    {
+        return str($this->nameDot())
             ->when(
                 $this->requestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->prepend(
@@ -145,12 +155,13 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
                 ! is_null($index) && $index !== '',
                 fn (Stringable $str): Stringable => $str->append(".$index")
             )->value();
+    }
 
-        $default = $this instanceof HasDefaultValue
+    public function defaultIfExists(): mixed
+    {
+        return $this instanceof HasDefaultValue
             ? $this->getDefault()
             : false;
-
-        return request($nameDot, $default) ?? false;
     }
 
     public function requestKeyPrefix(): ?string
