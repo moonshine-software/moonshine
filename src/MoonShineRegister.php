@@ -29,22 +29,22 @@ final class MoonShineRegister
 
     private string $activeSection = '';
 
-private array $options = [
-    'filters' => [
-        ModelResource::class => [
-            Date::class => DateModelApply::class,
-            Range::class => RangeModelApply::class,
-                DateRange::class => DateRangeModelApply::class,
-                BelongsToMany::class => BelongsToManyModelApply::class,
-                MorphTo::class => MorphToModelApply::class,
-                Json::class => JsonModelApply::class,
-                Text::class => TextModelApply::class,
-                Textarea::class => TextModelApply::class,
-                Checkbox::class => CheckboxModelApply::class,
+    private array $options = [
+        'filters' => [
+            ModelResource::class => [
+                Date::class => DateModelApply::class,
+                Range::class => RangeModelApply::class,
+                    DateRange::class => DateRangeModelApply::class,
+                    BelongsToMany::class => BelongsToManyModelApply::class,
+                    MorphTo::class => MorphToModelApply::class,
+                    Json::class => JsonModelApply::class,
+                    Text::class => TextModelApply::class,
+                    Textarea::class => TextModelApply::class,
+                    Checkbox::class => CheckboxModelApply::class,
+                ],
             ],
-        ],
-        'fields' => [],
-    ];
+            'fields' => [],
+        ];
 
     public function activeOption(string $activeOption): MoonShineRegister
     {
