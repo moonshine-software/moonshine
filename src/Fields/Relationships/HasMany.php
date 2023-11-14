@@ -204,7 +204,7 @@ class HasMany extends ModelRelationField implements HasFields
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
-            ->fields($this->preparedFields())
+            ->fields(fn() => $this->getResource()->getIndexFields()->toArray())
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
@@ -240,25 +240,30 @@ class HasMany extends ModelRelationField implements HasFields
             relation: $this->getRelationName()
         );
 
-        $fields = $this->preparedFields();
+        $getFields = function () {
+            $fields = $this->getResource()->getIndexFields();
 
-        $fields->each(function (Field $field): void {
-            if (
-                $field instanceof HasUpdateOnPreview
-                && $field->isUpdateOnPreview()
-                && is_null($field->getUrl())
-            ) {
-                $field->setUpdateOnPreviewUrl(
-                    updateRelationColumnRoute(
-                        $field->getResourceUriForUpdate(),
-                        $field->getPageUriForUpdate(),
-                        $this->getRelationName(),
-                    )
-                );
-            }
-        });
+            $fields->each(function (Field $field): void {
+                if (
+                    $field instanceof HasUpdateOnPreview
+                    && $field->isUpdateOnPreview()
+                    && is_null($field->getUrl())
+                ) {
+                    $field->setUpdateOnPreviewUrl(
+                        updateRelationColumnRoute(
+                            $field->getResourceUriForUpdate(),
+                            $field->getPageUriForUpdate(),
+                            $this->getRelationName(),
+                        )
+                    );
+                }
+            });
 
-        $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
+            $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
+
+            return $fields->toArray();
+        };
+
 
         $parentId = $this->getRelatedModel()?->getKey();
 
@@ -275,7 +280,7 @@ class HasMany extends ModelRelationField implements HasFields
                 fn (TableBuilder $table): TableBuilder => $table->searchable()
             )
             ->name($this->getRelationName())
-            ->fields($fields)
+            ->fields($getFields)
             ->cast($resource->getModelCast())
             ->when(
                 $this->isNowOnForm(),

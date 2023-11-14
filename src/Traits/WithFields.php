@@ -31,6 +31,9 @@ trait WithFields
      */
     public function getFields(mixed $data = null): Fields
     {
+        /**
+         * If this method is called from within a loop, it is important to use fieldsClosure
+         */
         if(! is_null($this->fieldsClosure)) {
             $this->fields = value($this->fieldsClosure, $data, $this);
         }
