@@ -48,6 +48,8 @@ abstract class Field extends FormElement
 
     protected ?Closure $previewCallback = null;
 
+    protected ?Closure $fillCallback = null;
+
     protected mixed $formattedValue = null;
 
     protected ?Closure $formattedValueCallback = null;
@@ -99,6 +101,14 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
+        if($this->isFillChanged()) {
+            return value(
+                $this->fillCallback,
+                $casted ?? $raw,
+                $this
+            );
+        }
+
         $default = $this->isCanBeEmpty() ? null : new FieldEmptyValue();
 
         $value = data_get($casted ?? $raw, $this->column(), $default);
@@ -261,6 +271,18 @@ abstract class Field extends FormElement
         }
 
         return $this->formattedValue ?? $this->toValue(withDefault: false);
+    }
+
+    public function changeFill(Closure $closure): static
+    {
+        $this->fillCallback = $closure;
+
+        return $this;
+    }
+
+    public function isFillChanged(): bool
+    {
+        return ! is_null($this->fillCallback);
     }
 
     public function changePreview(Closure $closure): static
