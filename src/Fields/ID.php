@@ -15,7 +15,7 @@ class ID extends Hidden
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            if ($this->requestValue()) {
+            if ($this->requestValue() !== false) {
                 data_set($item, $this->column(), $this->requestValue());
             }
 
