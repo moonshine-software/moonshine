@@ -32,7 +32,7 @@ final class HasManyEditButton
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 
-        $getFieldsFunction = function () use ($resource, $field, $isAsync, $parent) {
+        $getFields = function () use ($resource, $field, $isAsync, $parent) {
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()
@@ -76,7 +76,7 @@ final class HasManyEditButton
                         $resource->getModelCast()
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
-                    ->fields($getFieldsFunction)
+                    ->fields($getFields)
                     ->redirect(
                         $isAsync ? null : to_page(
                             moonshineRequest()->getResource()
