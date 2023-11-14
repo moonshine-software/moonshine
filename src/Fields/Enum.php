@@ -33,7 +33,7 @@ class Enum extends Select implements DefaultCanBeEnum
         $value = $this->toFormattedValue();
 
         if(is_scalar($value)) {
-            return $value;
+            return (string) $value;
         }
 
         if(method_exists($value, 'getColor')) {
@@ -41,9 +41,9 @@ class Enum extends Select implements DefaultCanBeEnum
         }
 
         if(method_exists($value, 'toString')) {
-            return $value->toString();
+            return (string) $value->toString();
         }
 
-        return $value?->value ?? '';
+        return (string) ($value?->value ?? '');
     }
 }
