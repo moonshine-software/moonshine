@@ -203,7 +203,7 @@ abstract class ModelResource extends Resource
     public function onSave(Field $field): Closure
     {
         return static function (Model $item) use ($field): Model {
-            if(! $field->hasRequestValue() && ! $field->hasDefaultValue()) {
+            if(! $field->hasRequestValue() && ! $field->defaultValue()) {
                 return $item;
             }
 
