@@ -74,10 +74,12 @@ export default () => ({
 
         const type = data.messageType ? data.messageType : 'success'
 
-        t.$dispatch('toast', {
-          type: type,
-          text: data.message,
-        })
+        if(data.message) {
+          t.$dispatch('toast', {
+            type: type,
+            text: data.message,
+          })
+        }
 
         let isFormReset = false
 
@@ -131,6 +133,10 @@ export default () => ({
       event.target.getAttribute('name'),
       event.target.closest('form').getAttribute('id'),
     )
+  },
+
+  formReset() {
+    this.$el.reset()
   },
 
   showWhenChange,

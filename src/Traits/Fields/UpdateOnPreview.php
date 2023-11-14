@@ -60,6 +60,10 @@ trait UpdateOnPreview
         }
 
         if (! is_null($resource)) {
+            if (is_null($resource->formPage())) {
+                throw new FieldException('To use the updateOnPreview method, you must set FormPage to the Resource');
+            }
+
             $this->updateColumnResourceUri = $resource->uriKey();
             $this->updateColumnPageUri = $resource->formPage()->uriKey();
         }
