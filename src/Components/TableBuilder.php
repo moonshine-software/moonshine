@@ -16,6 +16,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Table\TableStates;
+use Throwable;
 
 /**
  * @method static static make(Fields|array $fields = [], Paginator|iterable $items = [], ?Paginator $paginator = null)
@@ -66,8 +67,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 
-            $fields = $this->getFields();
-            $fields->fill($raw, $casted, $index);
+            $fields = $this->getFilledFields($raw, $casted, $index);
 
             if (! is_null($this->getName())) {
                 $fields->onlyFields()->each(
@@ -83,6 +83,21 @@ final class TableBuilder extends IterableComponent implements TableContract
                 $this->tdAttributes
             );
         });
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function getFilledFields(array $raw = [], mixed $casted = null, int $index = 0): Fields
+    {
+        $fields = $this->getFields();
+
+        if(is_closure($this->fieldsClosure)) {
+            $fields->fill($raw, $casted, $index);
+            return $fields;
+        }
+
+        return $fields->fillCloned($raw, $casted, $index);
     }
 
     public function getBulkButtons(): ActionButtons
