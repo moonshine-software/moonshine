@@ -64,7 +64,7 @@ Route::prefix(config('moonshine.route.prefix', ''))
                     Route::get('/{notification}', 'read')->name('read');
                 });
 
-            Route::get('/async/{pageUri}/{resourceUri}', [AsyncController::class, 'table'])->name('async.table');
+            Route::get('/async/{pageUri}/{resourceUri?}', [AsyncController::class, 'table'])->name('async.table');
         });
 
         if (config('moonshine.auth.enable', true)) {
