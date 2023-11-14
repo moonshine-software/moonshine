@@ -94,6 +94,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         if(is_closure($this->fieldsClosure)) {
             $fields->fill($raw, $casted, $index);
+
             return $fields;
         }
 
