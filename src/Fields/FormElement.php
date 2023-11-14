@@ -139,7 +139,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     public function requestValue(string|int|null $index = null): mixed
     {
-        return request($this->requestNameDot($index), $this->defaultValue()) ?? false;
+        return request($this->requestNameDot($index), $this->defaultIfExists()) ?? false;
     }
 
     protected function requestNameDot(string|int|null $index = null): string
@@ -157,7 +157,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
             )->value();
     }
 
-    public function defaultValue(): mixed
+    public function defaultIfExists(): mixed
     {
         return $this instanceof HasDefaultValue
             ? $this->getDefault()
