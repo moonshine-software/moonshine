@@ -74,7 +74,7 @@ export default () => ({
 
         const type = data.messageType ? data.messageType : 'success'
 
-        if(data.message) {
+        if (data.message) {
           t.$dispatch('toast', {
             type: type,
             text: data.message,
