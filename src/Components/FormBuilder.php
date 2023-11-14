@@ -164,7 +164,7 @@ final class FormBuilder extends RowComponent
         if ($this->isAsync()) {
             $this->customAttributes([
                 'x-on:submit.prevent' => 'async($event.target, `' . $this->asyncEvents() . '`)',
-                '@form-reset-' . $this->getName() ?? 'default' . '.window' => 'formReset',
+                '@form-reset-' . $this->getName() ?? 'default.window' => 'formReset',
             ]);
         }
 
