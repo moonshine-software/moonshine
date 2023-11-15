@@ -77,12 +77,9 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
-    public function async(?string $asyncUrl = null, ?string $asyncEvents = null): self
+    protected function prepareAsyncUrl(?string $asyncUrl = null): ?string
     {
-        $this->asyncUrl = $asyncUrl ?? $this->getAction();
-        $this->asyncEvents = $asyncEvents;
-
-        return $this;
+        return $asyncUrl ?? $this->getAction();
     }
 
     public function method(string $method): self
@@ -128,7 +125,7 @@ final class FormBuilder extends RowComponent
         return $this->submitLabel ?? __('moonshine::ui.save');
     }
 
-    public function switchFormMode(bool $isAsync, string $asyncEvents = ''): self
+    public function switchFormMode(bool $isAsync, string|array|null $asyncEvents = ''): self
     {
         return $isAsync ? $this->async(asyncEvents: $asyncEvents) : $this->precognitive();
     }
