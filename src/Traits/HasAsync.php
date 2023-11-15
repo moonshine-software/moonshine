@@ -37,7 +37,7 @@ trait HasAsync
     {
         return is_array($this->asyncEvents)
             ? collect($this->asyncEvents)
-                ->map(fn($value) => (string) str($value)->squish())
+                ->map(fn($value): string => (string) str($value)->squish())
                 ->filter()
                 ->implode(',')
             : $this->asyncEvents;
