@@ -152,9 +152,13 @@ class IndexPage extends Page
     {
         $tableName = 'index-table';
 
+        $items = $this->getResource()->isPaginationUsed()
+            ? $this->getResource()->paginate()
+            : $this->getResource()->items();
+
         return [
             Fragment::make([
-                TableBuilder::make(items: $this->getResource()->paginate())
+                TableBuilder::make(items: $items)
                     ->name($tableName)
                     ->fields(fn () => $this->getResource()->getIndexFields()->toArray())
                     ->cast($this->getResource()->getModelCast())
