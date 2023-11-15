@@ -155,6 +155,7 @@ class IndexPage extends Page
         return [
             Fragment::make([
                 TableBuilder::make(items: $this->getResource()->paginate())
+                    ->name($tableName)
                     ->fields(fn () => $this->getResource()->getIndexFields()->toArray())
                     ->cast($this->getResource()->getModelCast())
                     ->withNotFound()
@@ -170,12 +171,6 @@ class IndexPage extends Page
                             $this->getResource()->tdAttributes()
                         )
                     )
-                    ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
-                        $table->async(tableAsyncRoute())
-                            ->customAttributes([
-                                'data-pushstate' => 'true',
-                            ]);
-                    })
                     ->buttons([
                         ...$this->getResource()->getIndexButtons(),
                         DetailButton::for($this->getResource()),
@@ -186,7 +181,11 @@ class IndexPage extends Page
                     ->customAttributes([
                         'data-click-action' => $this->getResource()->getClickAction(),
                     ])
-                    ->name($tableName),
+                    ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
+                        $table->async()->customAttributes([
+                            'data-pushstate' => 'true',
+                        ]);
+                    }),
             ])->name('crud-table'),
         ];
     }
