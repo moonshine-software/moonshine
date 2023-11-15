@@ -22,6 +22,7 @@ use MoonShine\Commands\MakeControllerCommand;
 use MoonShine\Commands\MakeFieldCommand;
 use MoonShine\Commands\MakeHandlerCommand;
 use MoonShine\Commands\MakePageCommand;
+use MoonShine\Commands\MakePolicyCommand;
 use MoonShine\Commands\MakeResourceCommand;
 use MoonShine\Commands\MakeTypeCastCommand;
 use MoonShine\Commands\MakeUserCommand;
@@ -46,6 +47,7 @@ class MoonShineServiceProvider extends ServiceProvider
         MakeHandlerCommand::class,
         MakeTypeCastCommand::class,
         PublishCommand::class,
+        MakePolicyCommand::class,
     ];
 
     protected array $middlewareGroups = [
