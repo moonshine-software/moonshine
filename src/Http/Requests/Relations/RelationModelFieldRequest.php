@@ -10,6 +10,7 @@ use MoonShine\Enums\PageType;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Fields\StackFields;
 use MoonShine\Http\Requests\MoonshineFormRequest;
 use MoonShine\Resources\ModelResource;
 use Throwable;
@@ -46,6 +47,7 @@ class RelationModelFieldRequest extends MoonshineFormRequest
         }
 
         $this->field = $fields
+            ->unwrapElements(StackFields::class)
             ->findByRelation($this->getRelationName());
 
         return $this->field;
