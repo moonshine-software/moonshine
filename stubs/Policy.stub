@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Policies;
+
+use Illuminate\Auth\Access\HandlesAuthorization;
+use {model-namespace};
+use {user-model-namespace};
+
+class DummyClass
+{
+    use HandlesAuthorization;
+
+    public function viewAny({user-model} $user)
+    {
+        return true;
+    }
+
+    public function view({user-model} $user, {model} $item)
+    {
+        return true;
+    }
+
+    public function create({user-model} $user)
+    {
+        return true;
+    }
+
+    public function update({user-model} $user, {model} $item)
+    {
+        return true;
+    }
+
+    public function delete(MoonshineUser $user, {model} $item)
+    {
+        return true;
+    }
+
+    public function restore({user-model} $user, {model} $item)
+    {
+        return true;
+    }
+
+    public function forceDelete({user-model} $user, {model} $item)
+    {
+        return true;
+    }
+
+    public function massDelete({user-model} $user)
+    {
+        return true;
+    }
+}
