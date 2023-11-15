@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use MoonShine\MoonShineAuth;
 
 use function Laravel\Prompts\outro;
+
 use function Laravel\Prompts\text;
+
+use MoonShine\MoonShineAuth;
 
 class MakePolicyCommand extends MoonShineCommand
 {
@@ -40,7 +42,7 @@ class MakePolicyCommand extends MoonShineCommand
             '{model-namespace}' => $model,
             '{model}' => class_basename($model),
             '{user-model-namespace}' => MoonShineAuth::model()::class,
-            '{user-model}' => class_basename(MoonShineAuth::model())
+            '{user-model}' => class_basename(MoonShineAuth::model()),
         ]);
 
         outro(
