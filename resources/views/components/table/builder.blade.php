@@ -24,8 +24,8 @@
     {{ (int) $async }},
     '{{ $asyncUrl }}'
 )"
-    @add-table-row.window="add(true)"
     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
+    @add-table-row.window="add(true)"
     @if($async) @table-updated-{{ $name }}.window="asyncRequest" @endif
 >
     @if($async && $searchable)

@@ -122,12 +122,9 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
-    public function async(?string $asyncUrl = null, ?string $asyncEvents = null): self
+    protected function prepareAsyncUrl(?string $asyncUrl = null): ?string
     {
-        $this->asyncUrl = $asyncUrl ?? tableAsyncRoute($this->getName());
-        $this->asyncEvents = $asyncEvents;
-
-        return $this;
+        return $asyncUrl ?? tableAsyncRoute($this->getName());
     }
 
     protected function prepareAsyncUrlFromPaginator(): string
