@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-
-use function Laravel\Prompts\outro;
-
-use function Laravel\Prompts\text;
-
 use MoonShine\MoonShineAuth;
+use Symfony\Component\Finder\Finder;
+use function Laravel\Prompts\outro;
+use function Laravel\Prompts\suggest;
 
 class MakePolicyCommand extends MoonShineCommand
 {
@@ -23,9 +21,14 @@ class MakePolicyCommand extends MoonShineCommand
      */
     public function handle(): int
     {
-        $className = $this->argument('className') ?? text(
+        $modelPath = is_dir(app_path('Models')) ? app_path('Models') : app_path();
+
+        $className = suggest(
             'Model',
-            required: true
+            collect((new Finder)->files()->depth(0)->in($modelPath))
+                ->map(fn ($file) => $file->getBasename('.php'))
+                ->values()
+                ->all()
         );
 
         $model = $this->qualifyModel($className);
