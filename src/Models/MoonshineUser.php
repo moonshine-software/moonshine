@@ -24,8 +24,6 @@ class MoonshineUser extends Authenticatable
         'avatar',
     ];
 
-    protected $with = ['moonshineUserRole'];
-
     public function moonshineUserRole(): BelongsTo
     {
         return $this->belongsTo(MoonshineUserRole::class);

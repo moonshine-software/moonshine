@@ -28,6 +28,8 @@ class MoonShineUserResource extends ModelResource
 
     public string $column = 'name';
 
+    public array $with = ['moonshineUserRole'];
+
     public function title(): string
     {
         return __('moonshine::ui.resource.admins_title');
