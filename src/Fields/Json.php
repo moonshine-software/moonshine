@@ -365,11 +365,12 @@ class Json extends Field implements
             }
 
             $preparedValues = $this->prepareOnApply($applyValues);
+            $values = $this->isKeyValue() ? $preparedValues : array_values($preparedValues);
 
             return data_set(
                 $item,
-                $this->column(),
-                $this->isKeyValue() ? $preparedValues : array_values($preparedValues)
+                str_replace('.', '->', $this->column()),
+                $values
             );
         };
     }
