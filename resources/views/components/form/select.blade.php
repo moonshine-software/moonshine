@@ -11,7 +11,7 @@
             'class' => 'form-select',
             'x-data' => 'select(\''. $asyncRoute .'\')',
             'data-search-enabled' => $searchable,
-            'data-remove-item-button' => $nullable
+            'data-remove-item-button' => $attributes->get('multiple', false) || $nullable
         ]) }}
 >
     @if($options ?? false)

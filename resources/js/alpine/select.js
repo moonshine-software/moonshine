@@ -162,14 +162,28 @@ export default (asyncUrl = '') => ({
         this.$el.parentElement.addEventListener('click', event => {
           if (event.target.classList.contains('choices__button--remove')) {
             const choiceElement = event.target.closest('.choices__item')
-            const value = choiceElement.getAttribute('data-value')
-            this.choicesInstance.removeActiveItemsByValue(value)
-            this.choicesInstance._triggerChange(this.choicesInstance._store.placeholderChoice.value)
+            const id = choiceElement.getAttribute('data-id')
 
-            if (!this.$el.getAttribute('multiple')) {
+            if (this.choicesInstance._isSelectOneElement && this.choicesInstance._store.placeholderChoice) {
+              this.choicesInstance.removeActiveItems(id)
+
+              this.choicesInstance._triggerChange(this.choicesInstance._store.placeholderChoice.value)
+
               this.choicesInstance._selectPlaceholderChoice(
                 this.choicesInstance._store.placeholderChoice,
               )
+            } else {
+              const { items } = this.choicesInstance._store;
+
+              const itemToRemove =
+                id && items.find((item) => item.id === parseInt(id, 10));
+
+              if (!itemToRemove) {
+                return;
+              }
+
+              this.choicesInstance._removeItem(itemToRemove);
+              this.choicesInstance._triggerChange(itemToRemove.value);
             }
           }
         })
