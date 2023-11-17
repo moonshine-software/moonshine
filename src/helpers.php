@@ -12,7 +12,6 @@ use MoonShine\AssetManager;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
-use MoonShine\Contracts\MoonShineLayoutContract;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Fields\Field;
