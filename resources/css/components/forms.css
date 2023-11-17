@@ -238,7 +238,7 @@ input[type='number'] {
 
 /* Choises (Single/Multiple Select) */
 .choices {
-  @apply relative mb-0 w-full text-2xs dark:after:!border-t-dark-50;
+  @apply !mb-0 w-full text-2xs dark:after:!border-t-dark-50;
 
   &.is-open {
     @apply dark:after:!border-b-dark-50 dark:after:!border-t-transparent;
@@ -253,6 +253,15 @@ input[type='number'] {
 
   .choices__inner {
     @apply rounded-md border-gray-300 bg-white transition-colors duration-200 dark:border-dark-300 dark:bg-dark-800;
+  }
+
+  &.is-disabled {
+    .choices__inner {
+      @apply bg-gray-100 text-gray-400 disabled:cursor-not-allowed dark:bg-dark-700 dark:text-gray-500;
+    }
+    .choices__button {
+      @apply hidden;
+    }
   }
 
   .choices__placeholder {
@@ -294,6 +303,10 @@ input[type='number'] {
 }
 .choices select[hidden] {
   @apply absolute left-0 top-0 !m-0 !block h-full w-full !p-0 opacity-0;
+}
+
+.choices__heading {
+  @apply !border-gray-300 !text-gray-400 dark:!border-dark-300 dark:!text-gray-500;
 }
 
 /* TinyMCE */
