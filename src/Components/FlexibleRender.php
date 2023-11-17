@@ -17,8 +17,7 @@ final class FlexibleRender extends MoonshineComponent
     public function __construct(
         protected Closure|View|string $content,
         protected Closure|array $additionalData = [],
-    )
-    {
+    ) {
     }
 
     protected function viewData(): array
@@ -34,7 +33,7 @@ final class FlexibleRender extends MoonshineComponent
         }
 
         return [
-            'content' => $this->content
+            'content' => $this->content,
         ];
     }
 }
