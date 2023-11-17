@@ -164,26 +164,30 @@ export default (asyncUrl = '') => ({
             const choiceElement = event.target.closest('.choices__item')
             const id = choiceElement.getAttribute('data-id')
 
-            if (this.choicesInstance._isSelectOneElement && this.choicesInstance._store.placeholderChoice) {
+            if (
+              this.choicesInstance._isSelectOneElement &&
+              this.choicesInstance._store.placeholderChoice
+            ) {
               this.choicesInstance.removeActiveItems(id)
 
-              this.choicesInstance._triggerChange(this.choicesInstance._store.placeholderChoice.value)
+              this.choicesInstance._triggerChange(
+                this.choicesInstance._store.placeholderChoice.value,
+              )
 
               this.choicesInstance._selectPlaceholderChoice(
                 this.choicesInstance._store.placeholderChoice,
               )
             } else {
-              const { items } = this.choicesInstance._store;
+              const {items} = this.choicesInstance._store
 
-              const itemToRemove =
-                id && items.find((item) => item.id === parseInt(id, 10));
+              const itemToRemove = id && items.find(item => item.id === parseInt(id, 10))
 
               if (!itemToRemove) {
-                return;
+                return
               }
 
-              this.choicesInstance._removeItem(itemToRemove);
-              this.choicesInstance._triggerChange(itemToRemove.value);
+              this.choicesInstance._removeItem(itemToRemove)
+              this.choicesInstance._triggerChange(itemToRemove.value)
             }
           }
         })
