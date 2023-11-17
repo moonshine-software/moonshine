@@ -8,9 +8,9 @@ use MoonShine\Buttons\EditButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
-use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
+use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
@@ -90,7 +90,7 @@ class DetailPage extends Page
                         )),
                 ])->name('crud-show-table'),
 
-                Divider::make(),
+                LineBreak::make(),
 
                 Flex::make([
                     ActionGroup::make([
@@ -122,10 +122,10 @@ class DetailPage extends Page
         $outsideFields = $this->getResource()->getOutsideFields();
 
         if ($outsideFields->isNotEmpty()) {
-            $components[] = Divider::make();
+            $components[] = LineBreak::make();
 
             foreach ($this->getResource()->getOutsideFields() as $field) {
-                if($field->toOne()) {
+                if ($field->toOne()) {
                     $field->forcePreview();
                 }
 
