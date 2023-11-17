@@ -17,3 +17,5 @@
         @endforeach
     </ul>
 @endif
+
+{{ $slot ?? '' }}
