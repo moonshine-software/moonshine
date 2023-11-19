@@ -69,7 +69,7 @@ class Fragment extends Decoration
     {
         if($this->isUpdateAsync()) {
             $this->customAttributes([
-                'x-data' => 'fragment(`'.$this->updateAsyncUrl().'`)',
+                'x-data' => 'fragment(`' . $this->updateAsyncUrl() . '`)',
                 '@fragment-updated-' . ($this->getName() ?? 'default') . '.window' => 'fragmentUpdate',
             ]);
         }
