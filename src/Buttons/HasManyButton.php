@@ -13,7 +13,6 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Fields\StackFields;
 use Throwable;
 
@@ -41,12 +40,12 @@ final class HasManyButton
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()
-                ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
-
-            $fields->onlyFields()
                 ->unwrapElements(StackFields::class)
-                ->onlyRelationFields()
-                ->each(fn (ModelRelationField $nestedFields): Field => $nestedFields->setParentResource($resource));
+                ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field))
+                // Uncomment if you need a parent resource
+                //->onlyRelationFields()
+                //->each(fn (ModelRelationField $nestedFields): Field => $nestedFields->setParentResource($resource))
+            ;
 
             $fields = $fields->withoutForeignField();
 

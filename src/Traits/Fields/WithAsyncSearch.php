@@ -113,13 +113,13 @@ trait WithAsyncSearch
             return $this->asyncUrl;
         }
 
-        $resourceUri = moonshineRequest()->getResourceUri();
-
         $parentName = null;
 
         if ($this->hasParent() && $this->parent() instanceof ModelRelationField) {
             $parentName = $this->parent()->column();
         }
+
+        $resourceUri = moonshineRequest()->getResourceUri();
 
         return to_relation_route(
             'search',
