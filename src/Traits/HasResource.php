@@ -12,6 +12,20 @@ trait HasResource
 {
     protected ?ResourceContract $resource = null;
 
+    protected ?ResourceContract $parentResource = null;
+
+    public function getParentResource(): ?ResourceContract
+    {
+        return $this->parentResource;
+    }
+
+    public function setParentResource(ResourceContract $resource): static
+    {
+        $this->parentResource = $resource;
+
+        return $this;
+    }
+
     public function setResource(ResourceContract $resource): static
     {
         $this->resource = $resource;

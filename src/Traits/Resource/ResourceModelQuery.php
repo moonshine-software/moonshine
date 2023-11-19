@@ -231,8 +231,8 @@ trait ResourceModelQuery
     {
         if (! empty($this->search()) && request()->filled('search')) {
             $fullTextColumns = Attributes::for($this)
-                ->method('search')
                 ->attribute(SearchUsingFullText::class)
+                ->method('search')
                 ->attributeProperty('columns')
                 ->get();
 

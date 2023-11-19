@@ -25,9 +25,9 @@ final class Attributes
     ) {
     }
 
-    public static function for(object $class): self
+    public static function for(object $class, ?string $currentAttribute = null): self
     {
-        return new Attributes($class);
+        return new Attributes($class, $currentAttribute);
     }
 
     public function method(string $method): self

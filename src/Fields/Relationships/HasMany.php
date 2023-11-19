@@ -13,6 +13,7 @@ use MoonShine\Buttons\DeleteButton;
 use MoonShine\Buttons\DetailButton;
 use MoonShine\Buttons\HasMany\HasManyCreateButton;
 use MoonShine\Buttons\HasMany\HasManyEditButton;
+use MoonShine\Buttons\HasManyButton;
 use MoonShine\Buttons\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
@@ -81,7 +82,7 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        $button = HasManyCreateButton::for($this);
+        $button = HasManyButton::for($this);
 
         return $button->isSee($this->getRelatedModel())
             ? $button
@@ -288,7 +289,7 @@ class HasMany extends ModelRelationField implements HasFields
             )
             ->buttons([
                 DetailButton::for($resource, $this->isAsync()),
-                HasManyEditButton::for($this),
+                HasManyButton::for($this, update: true),
                 DeleteButton::for(
                     $resource,
                     $this->getRelationName(),

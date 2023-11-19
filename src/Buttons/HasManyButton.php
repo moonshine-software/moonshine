@@ -1,6 +1,8 @@
 <?php
 
-namespace MoonShine\Buttons\HasMany;
+declare(strict_types=1);
+
+namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
@@ -11,14 +13,16 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Fields\StackFields;
 use Throwable;
 
-final class HasManyEditButton
+final class HasManyButton
 {
     /**
      * @throws Throwable
      */
-    public static function for(HasMany $field): ActionButton
+    public static function for(HasMany $field, bool $update = false): ActionButton
     {
         $resource = $field->getResource();
         $parent = $field->getRelatedModel();
@@ -27,16 +31,22 @@ final class HasManyEditButton
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn (Model $data) => $resource
-            ->route('crud.update', $data->getKey());
+        $action = $update
+            ? static fn (Model $data) => $resource->route('crud.update', $data->getKey())
+            : static fn (?Model $data) =>  $resource->route('crud.store');
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 
-        $getFields = function () use ($resource, $field, $isAsync, $parent) {
+        $getFields = function () use ($resource, $field, $isAsync, $parent, $update) {
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()
                 ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+
+            $fields->onlyFields()
+                ->unwrapElements(StackFields::class)
+                ->onlyRelationFields()
+                ->each(fn (ModelRelationField $nestedFields): Field => $nestedFields->setParentResource($resource));
 
             $fields = $fields->withoutForeignField();
 
@@ -46,10 +56,12 @@ final class HasManyEditButton
                     Hidden::make($field->getRelation()?->getQualifiedMorphType())
                         ->setValue($parent::class)
                 )
-            )
-                ->push(
+            )->when(
+                $update,
+                fn(Fields $f) => $f->push(
                     Hidden::make('_method')->setValue('PUT'),
                 )
+            )
                 ->push(
                     Hidden::make($field->getRelation()?->getForeignKeyName())
                         ->setValue($parent->getKey())
@@ -58,22 +70,32 @@ final class HasManyEditButton
                 ->toArray();
         };
 
-        return ActionButton::make('', url: $action)
-            ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
-                    && $resource->setItem($item)->can('update')
-            )
+        $authorize = $update
+            ? fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
+            && $resource->setItem($item)->can('update')
+            : fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
+            && $resource->can('create');
+
+        return ActionButton::make($update ? '' : __('moonshine::ui.add'), url: $action)
+            ->canSee($authorize)
             ->inModal(
-                title: fn (): array|string|null => __('moonshine::ui.edit'),
-                content: fn (Model $data): string => (string) FormBuilder::make($action($data))
+                title: fn (): array|string|null => __($update ? 'moonshine::ui.create' : 'moonshine::ui.edit'),
+                content: fn (?Model $data): string => (string) FormBuilder::make($action($data))
                     ->switchFormMode(
                         $isAsync,
                         'table-updated-' . $field->getRelationName()
                     )
                     ->name($field->getRelationName())
-                    ->fillCast(
-                        $data,
-                        $resource->getModelCast()
+                    ->when(
+                        $update,
+                        fn(FormBuilder $form) => $form->fillCast(
+                            $data,
+                            $resource->getModelCast()
+                        ),
+                        fn(FormBuilder $form) => $form->fillCast(
+                            [$field->getRelation()?->getForeignKeyName() => $parent?->getKey()],
+                            $resource->getModelCast()
+                        )
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields)
@@ -90,6 +112,6 @@ final class HasManyEditButton
                 closeOutside: false,
             )
             ->primary()
-            ->icon('heroicons.outline.pencil');
+            ->icon($update ? 'heroicons.outline.pencil' : 'heroicons.outline.plus');
     }
 }
