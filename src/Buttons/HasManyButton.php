@@ -33,7 +33,7 @@ final class HasManyButton
 
         $action = $update
             ? static fn (Model $data) => $resource->route('crud.update', $data->getKey())
-            : static fn (?Model $data) =>  $resource->route('crud.store');
+            : static fn (?Model $data) => $resource->route('crud.store');
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 
@@ -58,7 +58,7 @@ final class HasManyButton
                 )
             )->when(
                 $update,
-                fn(Fields $f) => $f->push(
+                fn (Fields $f) => $f->push(
                     Hidden::make('_method')->setValue('PUT'),
                 )
             )
@@ -88,11 +88,11 @@ final class HasManyButton
                     ->name($field->getRelationName())
                     ->when(
                         $update,
-                        fn(FormBuilder $form): FormBuilder => $form->fillCast(
+                        fn (FormBuilder $form): FormBuilder => $form->fillCast(
                             $data,
                             $resource->getModelCast()
                         ),
-                        fn(FormBuilder $form): FormBuilder => $form->fillCast(
+                        fn (FormBuilder $form): FormBuilder => $form->fillCast(
                             [$field->getRelation()?->getForeignKeyName() => $parent?->getKey()],
                             $resource->getModelCast()
                         )
