@@ -2,7 +2,6 @@ import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFun
 
 export default () => ({
   whenFields: {},
-  asyncUpdateRoute: '',
   init(initData) {
     if (initData !== undefined && initData.whenFields !== undefined) {
       this.whenFields = initData.whenFields
@@ -20,10 +19,6 @@ export default () => ({
         }
         this.showWhenVisibilityChange(field.changeField, inputs, field, formId)
       })
-    }
-
-    if (initData !== undefined && initData.asyncUpdateRoute !== undefined) {
-      this.asyncUpdateRoute = initData.asyncUpdateRoute
     }
   },
   precognition(form) {
@@ -142,21 +137,6 @@ export default () => ({
 
   formReset() {
     this.$el.reset()
-  },
-
-  formUpdate() {
-    if(this.asyncUpdateRoute === '') {
-      return;
-    }
-
-    axios
-        .get(this.asyncUpdateRoute)
-        .then(response => {
-          this.$root.outerHTML = response.data
-        })
-        .catch(error => {
-          //
-        })
   },
 
   showWhenChange,

@@ -8,9 +8,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
-use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Traits\HasAsync;
-use MoonShine\Traits\HasUpdateAsync;
 
 /**
  * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], mixed $values = [])
@@ -18,8 +16,6 @@ use MoonShine\Traits\HasUpdateAsync;
 final class FormBuilder extends RowComponent
 {
     use HasAsync;
-
-    use HasUpdateAsync;
 
     protected string $view = 'moonshine::components.form.builder';
 
@@ -86,16 +82,6 @@ final class FormBuilder extends RowComponent
         return $asyncUrl ?? $this->getAction();
     }
 
-    protected function prepareUpdateAsyncUrl(?string $updateAsyncUrl = null): ?string
-    {
-        return $updateAsyncUrl ?? to_page(
-            page: FormPage::class,
-            resource: moonshineRequest()->getResource(),
-            params: ['resourceItem' => request('resourceItem')],
-            fragment: 'crud-form'
-        );
-    }
-
     public function method(string $method): self
     {
         $this->method = $method;
@@ -160,7 +146,6 @@ final class FormBuilder extends RowComponent
 
         $xInit = json_encode([
             'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
-            'asyncUpdateRoute' => $this->isUpdateAsync() ? $this->updateAsyncUrl() : ''
         ], JSON_THROW_ON_ERROR);
 
         $this->customAttributes([
@@ -177,12 +162,6 @@ final class FormBuilder extends RowComponent
             $this->customAttributes([
                 'x-on:submit.prevent' => 'async($event.target, `' . $this->asyncEvents() . '`)',
                 '@form-reset-' . ($this->getName() ?? 'default') . '.window' => 'formReset',
-            ]);
-        }
-
-        if($this->isUpdateAsync()) {
-            $this->customAttributes([
-                '@form-updated-' . ($this->getName() ?? 'default') . '.window' => 'formUpdate',
             ]);
         }
 

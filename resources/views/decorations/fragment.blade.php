@@ -1,5 +1,7 @@
 @fragment($element->getName())
-<x-moonshine::fields-group
-    :components="$element->getFields()"
-/>
+    <div {{ $element->attributes() }}>
+        <x-moonshine::fields-group
+            :components="$element->getFields()"
+        />
+    </div>
 @endfragment

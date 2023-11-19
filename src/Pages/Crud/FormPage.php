@@ -146,9 +146,10 @@ class FormPage extends Page
                         fn (FormBuilder $form): FormBuilder => $form->precognitive()
                     )
                     ->name('crud')
-                    ->updateAsync()
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
-            ])->name('crud-form'),
+            ])
+                ->name('crud-form')
+                ->updateAsync(['resourceItem' => request('resourceItem')]),
         ];
     }
 
