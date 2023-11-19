@@ -7,6 +7,7 @@ namespace MoonShine\Decorations;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\DecorationException;
 use MoonShine\Exceptions\PageException;
+use MoonShine\Pages\Page;
 
 /**
  * @method static static make(array $fields = [])
@@ -20,6 +21,10 @@ class Fragment extends Decoration
     protected string $view = 'moonshine::decorations.fragment';
 
 
+    /**
+     * @throws DecorationException
+     * @throws PageException
+     */
     public function updateAsync(
         array $params = [],
         string|ResourceContract|null $resource = null,
@@ -46,6 +51,7 @@ class Fragment extends Decoration
         );
 
         $this->isUpdateAsync = true;
+
         return $this;
     }
 
