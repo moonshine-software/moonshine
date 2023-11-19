@@ -51,10 +51,7 @@ export default () => ({
       },
     })
 
-    console.log(config(true))
-
     tinymce.init(config(Alpine.store('darkMode').on))
-    console.log(config(true))
 
     window.addEventListener('darkMode:toggle', () => tinymce.remove(editorInstance))
   },
