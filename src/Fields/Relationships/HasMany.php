@@ -11,8 +11,6 @@ use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\DeleteButton;
 use MoonShine\Buttons\DetailButton;
-use MoonShine\Buttons\HasMany\HasManyCreateButton;
-use MoonShine\Buttons\HasMany\HasManyEditButton;
 use MoonShine\Buttons\HasManyButton;
 use MoonShine\Buttons\MassDeleteButton;
 use MoonShine\Components\TableBuilder;

@@ -88,11 +88,11 @@ final class HasManyButton
                     ->name($field->getRelationName())
                     ->when(
                         $update,
-                        fn(FormBuilder $form) => $form->fillCast(
+                        fn(FormBuilder $form): FormBuilder => $form->fillCast(
                             $data,
                             $resource->getModelCast()
                         ),
-                        fn(FormBuilder $form) => $form->fillCast(
+                        fn(FormBuilder $form): FormBuilder => $form->fillCast(
                             [$field->getRelation()?->getForeignKeyName() => $parent?->getKey()],
                             $resource->getModelCast()
                         )
