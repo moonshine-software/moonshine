@@ -36,10 +36,10 @@ trait HasAsync
     public function asyncEvents(): string|array|null
     {
         if(is_array($this->asyncEvents)) {
-           return collect($this->asyncEvents)
-               ->map(fn ($value): string => (string) str($value)->lower()->squish())
-               ->filter()
-               ->implode(',');
+            return collect($this->asyncEvents)
+                ->map(fn ($value): string => (string) str($value)->lower()->squish())
+                ->filter()
+                ->implode(',');
         }
 
         if(is_string($this->asyncEvents)) {
