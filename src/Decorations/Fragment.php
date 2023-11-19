@@ -30,9 +30,9 @@ class Fragment extends Decoration
             throw new DecorationException("To use updateAsync you must first give the fragment a name");
         }
 
-        $resource = $resource ?? moonshineRequest()->getResource();
+        $resource ??= moonshineRequest()->getResource();
 
-        $page = $page ?? $resource?->formPage();
+        $page ??= $resource?->formPage();
 
         if(is_null($resource) && is_null($page)) {
             throw new PageException("Resource or FormPage not found when generating updateAsyncUrl");
