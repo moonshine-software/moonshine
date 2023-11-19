@@ -147,7 +147,9 @@ class FormPage extends Page
                     )
                     ->name('crud')
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
-            ])->name('crud-form'),
+            ])
+                ->name('crud-form')
+                ->updateAsync(['resourceItem' => request('resourceItem')]),
         ];
     }
 
