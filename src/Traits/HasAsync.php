@@ -35,11 +35,17 @@ trait HasAsync
 
     public function asyncEvents(): string|array|null
     {
-        return is_array($this->asyncEvents)
-            ? collect($this->asyncEvents)
-                ->map(fn ($value): string => (string) str($value)->squish())
-                ->filter()
-                ->implode(',')
-            : $this->asyncEvents;
+        if(is_array($this->asyncEvents)) {
+           return collect($this->asyncEvents)
+               ->map(fn ($value): string => (string) str($value)->lower()->squish())
+               ->filter()
+               ->implode(',');
+        }
+
+        if(is_string($this->asyncEvents)) {
+            return strtolower($this->asyncEvents);
+        }
+
+        return $this->asyncEvents;
     }
 }

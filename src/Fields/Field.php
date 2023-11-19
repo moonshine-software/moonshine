@@ -140,7 +140,7 @@ abstract class Field extends FormElement
 
         $value = $this->reformatFilledValue($value);
 
-        $this->setValue($value);
+        $this->setValue($this->value ?? $value);
 
         return $this;
     }

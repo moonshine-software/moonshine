@@ -16,6 +16,8 @@ class Preview extends Field
 
     protected bool $isBoolean = false;
 
+    protected bool $isImage = false;
+
     protected bool $hideTrue = false;
 
     protected bool $hideFalse = false;
@@ -32,6 +34,13 @@ class Preview extends Field
         return $this;
     }
 
+    public function image(): static
+    {
+        $this->isImage = true;
+
+        return $this;
+    }
+
     protected function resolvePreview(): View|string
     {
         $value = $this->toFormattedValue();
@@ -42,6 +51,12 @@ class Preview extends Field
 
         if ($this->isBoolean) {
             return view('moonshine::ui.boolean', [
+                'value' => $value,
+            ]);
+        }
+
+        if ($this->isImage) {
+            return view('moonshine::ui.image', [
                 'value' => $value,
             ]);
         }

@@ -234,6 +234,13 @@ if (! function_exists('updateRelationColumnRoute')) {
     }
 }
 
+if (! function_exists('moonShineIndexRoute')) {
+    function moonShineIndexRoute(): string
+    {
+        return config('moonshine.route.index', 'moonshine.index');
+    }
+}
+
 if (! function_exists('oops404')) {
     function oops404(): never
     {
