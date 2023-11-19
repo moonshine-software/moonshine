@@ -5,6 +5,7 @@ export default () => ({
     await this.$nextTick()
 
     const fileManager = function (callback, value, meta) {
+      const tinyConfig = config(Alpine.store('darkMode').on)
       const x =
         window.innerWidth ||
         document.documentElement.clientWidth ||
@@ -14,8 +15,8 @@ export default () => ({
         document.documentElement.clientHeight ||
         document.getElementsByTagName('body')[0].clientHeight
       const cmsURL =
-        config.path_absolute +
-        config.file_manager +
+        tinyConfig.path_absolute +
+        tinyConfig.file_manager +
         '?editor=' +
         meta.fieldname +
         (meta.filetype === 'image' ? '&type=Images' : '&type=Files')
