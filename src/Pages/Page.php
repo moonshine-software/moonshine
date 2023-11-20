@@ -121,7 +121,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return [
             ...$this->getLayerComponents(Layer::TOP),
             ...$this->getLayerComponents(Layer::MAIN),
-            ...$this->getLayerComponents(Layer::BOTTOM)
+            ...$this->getLayerComponents(Layer::BOTTOM),
         ];
     }
 
