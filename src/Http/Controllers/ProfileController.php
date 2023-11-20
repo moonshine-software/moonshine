@@ -43,7 +43,7 @@ class ProfileController extends MoonShineController
             )] = $request->get('hidden_avatar');
         }
 
-        $resultData = array_filter($resultData, static fn($key): bool => $key !== 0 && $key !== '', ARRAY_FILTER_USE_KEY);
+        $resultData = array_filter($resultData, static fn ($key): bool => $key !== 0 && $key !== '', ARRAY_FILTER_USE_KEY);
 
         $request->user()->update($resultData);
 
