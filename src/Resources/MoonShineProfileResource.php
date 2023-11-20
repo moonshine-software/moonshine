@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Heading;
@@ -15,11 +16,17 @@ use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\MoonShineAuth;
 use MoonShine\Pages\ProfilePage;
 
 class MoonShineProfileResource extends ModelResource
 {
     public string $model = MoonshineUser::class;
+
+    public function getModel(): Model
+    {
+        return MoonShineAuth::model() ?? parent::getModel();
+    }
 
     public function title(): string
     {

@@ -21,7 +21,7 @@ class ProfileController extends MoonShineController
             config('moonshine.auth.fields.name', 'name') => $data['name'],
         ];
 
-        if (isset($data['password']) && $data['password'] !== '') {
+        if (isset($data['password']) && filled($data['password'])) {
             $resultData[config(
                 'moonshine.auth.fields.password',
                 'password'
@@ -42,6 +42,10 @@ class ProfileController extends MoonShineController
                 'avatar'
             )] = $request->get('hidden_avatar');
         }
+
+        $resultData = array_filter($resultData, static function ($key) {
+            return !empty($key);
+        }, ARRAY_FILTER_USE_KEY);
 
         $request->user()->update($resultData);
 
