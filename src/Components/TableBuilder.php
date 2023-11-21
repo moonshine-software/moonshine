@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Fields\Field;
@@ -38,6 +39,8 @@ final class TableBuilder extends IterableComponent implements TableContract
     protected array $rows = [];
 
     protected ?Closure $trAttributes = null;
+
+    protected ?Closure $systemTrAttributes = null;
 
     protected ?Closure $tdAttributes = null;
 
@@ -80,7 +83,8 @@ final class TableBuilder extends IterableComponent implements TableContract
                 $fields,
                 $this->getButtons($casted),
                 $this->trAttributes,
-                $this->tdAttributes
+                $this->tdAttributes,
+                $this->systemTrAttributes
             );
         });
     }
@@ -111,6 +115,13 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function trAttributes(Closure $closure): self
     {
         $this->trAttributes = $closure;
+
+        return $this;
+    }
+
+    protected function systemTrAttributes(Closure $closure): self
+    {
+        $this->systemTrAttributes = $closure;
 
         return $this;
     }
@@ -166,6 +177,16 @@ final class TableBuilder extends IterableComponent implements TableContract
             $this->customAttributes([
                 'data-creatable-limit' => $this->creatableLimit,
             ]);
+        }
+
+        if (! is_null($this->sortableUrl) && $this->isSortable()) {
+            $this->customAttributes([
+                'data-sortable-url' => $this->sortableUrl,
+                'data-sortable-group' => $this->sortableGroup,
+            ])->systemTrAttributes(
+                fn(mixed $data, int $index, ComponentAttributeBag $attr)
+                    => $attr->merge(['data-id' => data_get($data, $this->sortableKey ?? 'id', $index)])
+            );
         }
 
         return [

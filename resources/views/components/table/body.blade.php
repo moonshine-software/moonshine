@@ -27,7 +27,6 @@
         @if($vertical && !$preview)
             <td
                 {{ $row->tdAttributes($vertical ? 0 : $loop->parent->index, 0 + $actions->isNotEmpty())->merge(['class' => 'space-y-3']) }}
-                x-data="asyncData"
             >
                 @foreach($row->getFields() as $index => $field)
                     @if($field->isSee($field->toValue()))
@@ -50,7 +49,6 @@
                     <td {{ $vertical
                             ? $row->tdAttributes($index, 1)
                             : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
-                        x-data="asyncData"
                         @if(!$vertical && $hasClickAction)
                             :class="'cursor-pointer'"
                             @click.stop="rowClickAction"

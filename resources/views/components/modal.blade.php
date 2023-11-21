@@ -59,7 +59,7 @@
     </template>
 
     @if($async)
-        <div x-data="asyncData">
+        <div>
             <div @click.prevent="toggleModal;load('{!! str_replace('&amp;', '&', $asyncUrl) !!}', id);">
                 {{ $outerHtml ?? '' }}
             </div>
