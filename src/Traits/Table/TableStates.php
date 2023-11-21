@@ -14,6 +14,8 @@ trait TableStates
 
     protected bool $isCreatable = false;
 
+    protected ?int $creatableLimit = null;
+
     protected bool $isReindex = false;
 
     protected bool $isSortable = false;
@@ -72,10 +74,11 @@ trait TableStates
         return $this->isVertical;
     }
 
-    public function creatable(bool $reindex = true): static
+    public function creatable(bool $reindex = true, ?int $limit = null): static
     {
         $this->isCreatable = true;
         $this->isReindex = $reindex;
+        $this->creatableLimit = $limit;
 
         return $this;
     }
@@ -134,7 +137,16 @@ trait TableStates
     }
 
     /**
-     * @return array{vertical: mixed, editable: mixed, preview: mixed, notfound: mixed, creatable: mixed, reindex: mixed, sortable: mixed, simple: mixed}
+     * @return array{
+     *     vertical: mixed,
+     *     editable: mixed,
+     *     preview: mixed,
+     *     notfound: mixed,
+     *     creatable: mixed,
+     *     reindex: mixed,
+     *     sortable: mixed,
+     *     simple: mixed
+     * }
      */
     public function statesToArray(): array
     {

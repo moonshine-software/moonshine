@@ -8,7 +8,7 @@
             )
             ->when(
                 $element->isCreatable(),
-                fn($table) => $table->creatable()
+                fn($table) => $table->creatable(limit: $element->creatableLimit())
             )
             ->when(
                 $element->isRemovable(),
