@@ -1,10 +1,6 @@
 import Sortable from 'sortablejs'
 
-export default (
-  url = null,
-  group = null,
-  element = null,
-) => ({
+export default (url = null, group = null, element = null) => ({
   init(onSort = null) {
     const el = element || this.$el
 
@@ -26,7 +22,7 @@ export default (
 
           await axios.post(url, formData)
 
-          if(typeof onSort === 'function') {
+          if (typeof onSort === 'function') {
             onSort(evt)
           }
         }

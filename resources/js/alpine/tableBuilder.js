@@ -42,7 +42,7 @@ export default (
         this.table?.dataset?.sortableUrl ?? null,
         this.table?.dataset?.sortableGroup ?? null,
         tbody,
-        this.table?.dataset?.sortableEvents ?? null
+        this.table?.dataset?.sortableEvents ?? null,
       ).init(() => {
         if (this.reindex) {
           this.resolveReindex()
