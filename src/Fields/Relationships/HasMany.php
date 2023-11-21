@@ -285,6 +285,18 @@ class HasMany extends ModelRelationField implements HasFields
                 $this->isNowOnForm(),
                 fn (TableBuilder $table): TableBuilder => $table->withNotFound()
             )
+            ->when(
+                ! is_null($resource->trAttributes()),
+                fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                    $resource->trAttributes()
+                )
+            )
+            ->when(
+                ! is_null($resource->tdAttributes()),
+                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                    $resource->tdAttributes()
+                )
+            )
             ->buttons([
                 DetailButton::for($resource, $this->isAsync()),
                 HasManyButton::for($this, update: true),
