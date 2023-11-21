@@ -56,7 +56,7 @@ export default (
     const total = this.table.querySelectorAll('tbody > tr').length
     const limit = this.table.dataset?.creatableLimit
 
-    if(limit && parseInt(total) >= parseInt(limit)) {
+    if (limit && parseInt(total) >= parseInt(limit)) {
       return
     }
 
