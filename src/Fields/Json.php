@@ -46,6 +46,8 @@ class Json extends Field implements
 
     protected bool $isCreatable = true;
 
+    protected ?int $creatableLimit = null;
+
     protected int $level = 0;
 
     protected bool $asRelation = false;
@@ -119,9 +121,10 @@ class Json extends Field implements
         return $this->isVertical;
     }
 
-    public function creatable(Closure|bool|null $condition = null): self
+    public function creatable(Closure|bool|null $condition = null, ?int $limit = null): self
     {
         $this->isCreatable = Condition::boolean($condition, true);
+        $this->creatableLimit = $limit;
 
         return $this;
     }
@@ -129,6 +132,11 @@ class Json extends Field implements
     public function isCreatable(): bool
     {
         return $this->isCreatable;
+    }
+
+    public function creatableLimit(): ?int
+    {
+        return $this->creatableLimit;
     }
 
     public function filterMode(): self

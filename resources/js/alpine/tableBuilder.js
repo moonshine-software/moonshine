@@ -53,6 +53,13 @@ export default (
       return
     }
 
+    const total = this.table.querySelectorAll('tbody > tr').length
+    const limit = this.table.dataset?.creatableLimit
+
+    if(limit && parseInt(total) >= parseInt(limit)) {
+      return
+    }
+
     this.table.querySelector('tbody').appendChild(this.lastRow.cloneNode(true))
 
     if (!force && this.reindex) {

@@ -92,7 +92,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     {
         $fields = $this->getFields();
 
-        if(is_closure($this->fieldsClosure)) {
+        if (is_closure($this->fieldsClosure)) {
             $fields->fill($raw, $casted, $index);
 
             return $fields;
@@ -131,7 +131,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     {
         $withoutQuery = strtok($this->asyncUrl(), '?');
 
-        if(! $withoutQuery) {
+        if (! $withoutQuery) {
             return $this->asyncUrl();
         }
 
@@ -148,7 +148,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             ARRAY_FILTER_USE_BOTH
         );
 
-        if($asyncUri !== []) {
+        if ($asyncUri !== []) {
             return $withoutQuery . "?" . Arr::query($asyncUri);
         }
 
@@ -157,22 +157,28 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function viewData(): array
     {
-        if($this->isAsync() && $this->hasPaginator()) {
+        if ($this->isAsync() && $this->hasPaginator()) {
             $this->getPaginator()
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
+        if (! is_null($this->creatableLimit) && $this->isCreatable()) {
+            $this->customAttributes([
+                'data-creatable-limit' => $this->creatableLimit,
+            ]);
+        }
+
         return [
-            'rows' => $this->rows(),
-            'fields' => $this->getFields(),
-            'name' => $this->getName(),
-            'hasPaginator' => $this->hasPaginator(),
-            'simple' => $this->isSimple(),
-            'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
-            'paginator' => $this->getPaginator(),
-            'bulkButtons' => $this->getBulkButtons(),
-            'async' => $this->isAsync(),
-            'asyncUrl' => $this->asyncUrl(),
-        ] + $this->statesToArray();
+                'rows' => $this->rows(),
+                'fields' => $this->getFields(),
+                'name' => $this->getName(),
+                'hasPaginator' => $this->hasPaginator(),
+                'simple' => $this->isSimple(),
+                'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
+                'paginator' => $this->getPaginator(),
+                'bulkButtons' => $this->getBulkButtons(),
+                'async' => $this->isAsync(),
+                'asyncUrl' => $this->asyncUrl(),
+            ] + $this->statesToArray();
     }
 }
