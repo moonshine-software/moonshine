@@ -22,6 +22,7 @@ final class TableRow
         protected ActionButtons $actions,
         protected ?Closure $trAttributes = null,
         protected ?Closure $tdAttributes = null,
+        protected ?Closure $systemTrAttributes = null,
     ) {
     }
 
@@ -61,7 +62,13 @@ final class TableRow
             return $attributes;
         }
 
-        return value($this->trAttributes, $this->data, $row, $attributes);
+        $attributes = value($this->trAttributes, $this->data, $row, $attributes);
+
+        if (!is_null($this->systemTrAttributes)) {
+            return value($this->systemTrAttributes, $this->data, $row, $attributes);
+        }
+
+        return $attributes;
     }
 
     public function tdAttributes(int $row, int $cell): ComponentAttributeBag

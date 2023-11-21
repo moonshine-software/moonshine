@@ -20,6 +20,12 @@ trait TableStates
 
     protected bool $isSortable = false;
 
+    protected ?string $sortableUrl = null;
+
+    protected string $sortableKey = 'id';
+
+    protected ?string $sortableGroup = null;
+
     protected bool $withNotFound = false;
 
     protected bool $isSimple = false;
@@ -100,9 +106,15 @@ trait TableStates
         return $this->isReindex;
     }
 
-    public function sortable(): static
-    {
+    public function sortable(
+        ?string $url = null,
+        string $key = 'id',
+        ?string $group = null
+    ): static {
         $this->isSortable = true;
+        $this->sortableUrl = $url;
+        $this->sortableKey = $key;
+        $this->sortableGroup = $group;
 
         return $this;
     }

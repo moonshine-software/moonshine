@@ -1,5 +1,5 @@
 import {crudFormQuery} from './formFunctions'
-import Sortable from 'sortablejs'
+import sortableFunction from './../alpine/sortable'
 
 export default (
   creatable = false,
@@ -38,13 +38,15 @@ export default (
     }
 
     if (this.sortable) {
-      Sortable.create(tbody, {
-        handle: 'tr',
-        onSort: () => {
-          if (this.reindex) {
-            this.resolveReindex()
-          }
-        },
+      sortableFunction(
+        this.table?.dataset?.sortableUrl ?? null,
+        this.table?.dataset?.sortableGroup ?? null,
+        tbody,
+        this.table?.dataset?.sortableEvents ?? null
+      ).init(() => {
+        if (this.reindex) {
+          this.resolveReindex()
+        }
       })
     }
   },
