@@ -64,7 +64,7 @@ final class TableRow
 
         $attributes = value($this->trAttributes, $this->data, $row, $attributes);
 
-        if (!is_null($this->systemTrAttributes)) {
+        if (! is_null($this->systemTrAttributes)) {
             return value($this->systemTrAttributes, $this->data, $row, $attributes);
         }
 

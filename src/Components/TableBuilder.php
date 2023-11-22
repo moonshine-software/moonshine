@@ -184,7 +184,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 'data-sortable-url' => $this->sortableUrl,
                 'data-sortable-group' => $this->sortableGroup,
             ])->systemTrAttributes(
-                fn(mixed $data, int $index, ComponentAttributeBag $attr)
+                fn (mixed $data, int $index, ComponentAttributeBag $attr)
                     => $attr->merge(['data-id' => data_get($data, $this->sortableKey ?? 'id', $index)])
             );
         }
