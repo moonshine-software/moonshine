@@ -16,7 +16,7 @@ class HomeController extends MoonShineController
             return redirect($url);
         }
 
-        /* @var Page $page */
+        /* @var \MoonShine\Pages\Page $page */
         $page = new (config('moonshine.pages.dashboard'))();
 
         return $page->render();

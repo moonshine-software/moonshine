@@ -6,7 +6,7 @@ namespace MoonShine\Pages;
 
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Fields\Fields;
 use Throwable;
@@ -47,7 +47,7 @@ final class PageComponents extends MoonShineRenderElements
     {
         $data = [];
 
-        $this->extractOnly($this->toArray(), MoonshineComponent::class, $data);
+        $this->extractOnly($this->toArray(), MoonShineComponent::class, $data);
 
         return self::make($data);
     }
@@ -92,10 +92,10 @@ final class PageComponents extends MoonShineRenderElements
      */
     public function findByName(
         string $name,
-        MoonshineComponent $default = null
-    ): ?MoonshineComponent {
+        MoonShineComponent $default = null
+    ): ?MoonShineComponent {
         return $this->onlyComponents()->first(
-            static fn (MoonshineComponent $component): bool => $component->getName() === $name,
+            static fn (MoonShineComponent $component): bool => $component->getName() === $name,
             $default
         );
     }

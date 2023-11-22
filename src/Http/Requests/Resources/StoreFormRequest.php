@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests\Resources;
 
-use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Http\Requests\MoonShineFormRequest;
 
-final class StoreFormRequest extends MoonshineFormRequest
+final class StoreFormRequest extends MoonShineFormRequest
 {
     public function authorize(): bool
     {

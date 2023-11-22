@@ -6,7 +6,7 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Http\Requests\MoonShineFormRequest;
 use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
@@ -44,7 +44,7 @@ final class CrudController extends MoonShineController
 
     public function destroy(DeleteFormRequest $request): Response
     {
-        /* @var ModelResource $resource */
+        /* @var \MoonShine\Resources\ModelResource $resource */
         $resource = $request->getResource();
 
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
@@ -72,7 +72,7 @@ final class CrudController extends MoonShineController
 
     public function massDelete(MassDeleteFormRequest $request): Response
     {
-        /* @var ModelResource $resource */
+        /* @var \MoonShine\Resources\ModelResource $resource */
         $resource = $request->getResource();
 
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
@@ -99,11 +99,9 @@ final class CrudController extends MoonShineController
      * @throws Throwable
      */
     protected function updateOrCreate(
-        MoonshineFormRequest $request
+        MoonShineFormRequest $request
     ): Response {
-        /*
-         * @var ModelResource $resource
-         */
+        /* @var \MoonShine\Resources\ModelResource $resource */
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 

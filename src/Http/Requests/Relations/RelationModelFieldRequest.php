@@ -11,11 +11,11 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Fields\StackFields;
-use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Http\Requests\MoonShineFormRequest;
 use MoonShine\Resources\ModelResource;
 use Throwable;
 
-class RelationModelFieldRequest extends MoonshineFormRequest
+class RelationModelFieldRequest extends MoonShineFormRequest
 {
     protected ?ModelResource $resource = null;
 

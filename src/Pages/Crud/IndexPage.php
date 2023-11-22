@@ -15,7 +15,7 @@ use MoonShine\Buttons\MassDeleteButton;
 use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\Layout\LayoutBlock;
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
@@ -69,7 +69,7 @@ class IndexPage extends Page
         return [...$this->filtersForm(), ...$this->actionButtons(), ...$this->queryTags(), ...$this->table()];
     }
 
-    protected function metrics(): ?MoonshineComponent
+    protected function metrics(): ?MoonShineComponent
     {
         $metrics = $this->getResource()->metrics();
 

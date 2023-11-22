@@ -9,7 +9,7 @@ use Closure;
 /**
  * @method static static make(Closure $condition, Closure $components, ?Closure $default = null)
  */
-class When extends MoonshineComponent
+class When extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.components';
 

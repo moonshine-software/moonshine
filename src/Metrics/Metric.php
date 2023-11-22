@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Metrics;
 
 use Closure;
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithColumnSpan;
@@ -15,7 +15,7 @@ use MoonShine\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $label)
  */
-abstract class Metric extends MoonshineComponent implements HasAssets
+abstract class Metric extends MoonShineComponent implements HasAssets
 {
     use WithAssets;
     use WithColumnSpan;

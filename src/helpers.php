@@ -39,68 +39,10 @@ if (! function_exists('moonshineRegister')) {
     }
 }
 
-if (! function_exists('to_page')) {
-    function to_page(
-        string|Page|null $page = null,
-        string|ResourceContract|null $resource = null,
-        array $params = [],
-        bool $redirect = false,
-        ?string $fragment = null
-    ): RedirectResponse|string {
-        if ($fragment !== null && $fragment !== '') {
-            $params += ['_fragment-load' => $fragment];
-        }
-
-        return MoonShineRouter::to_page(
-            page: $page,
-            resource: $resource,
-            params: $params,
-            redirect: $redirect
-        );
-    }
-}
-
-if (! function_exists('to_relation_route')) {
-    function to_relation_route(
-        string $action,
-        int|string|null $resourceItem = null,
-        ?string $relation = null,
-        ?string $resourceUri = null,
-        ?string $pageUri = null,
-        ?string $parentField = null
-    ): string {
-        $data = [
-            '_parent_field' => $parentField,
-            '_relation' => $relation,
-            'resourceItem' => $resourceItem,
-        ];
-
-        return MoonShineRouter::to("relation.$action", [
-            'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
-            'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
-            ...array_filter($data),
-        ]);
-    }
-}
-
 if (! function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest
     {
         return app(MoonShineRequest::class);
-    }
-}
-
-if (! function_exists('is_closure')) {
-    function is_closure(mixed $variable): bool
-    {
-        return $variable instanceof Closure;
-    }
-}
-
-if (! function_exists('is_field')) {
-    function is_field(mixed $variable): bool
-    {
-        return $variable instanceof Field;
     }
 }
 
@@ -118,6 +60,16 @@ if (! function_exists('moonshineMenu')) {
     }
 }
 
+if (! function_exists('moonshineLayout')) {
+    function moonshineLayout(): View
+    {
+        /* @var \MoonShine\Contracts\MoonShineLayoutContract $class */
+        $class = config('moonshine.layout', MoonShineLayout::class);
+
+        return $class::build()->render();
+    }
+}
+
 if (! function_exists('form')) {
     function form(
         string $action = '',
@@ -126,16 +78,6 @@ if (! function_exists('form')) {
         array $values = []
     ): FormBuilder {
         return FormBuilder::make($action, $method, $fields, $values);
-    }
-}
-
-if (! function_exists('moonshineLayout')) {
-    function moonshineLayout(): View
-    {
-        /* @var MoonShineLayoutContract $class */
-        $class = config('moonshine.layout', MoonShineLayout::class);
-
-        return $class::build()->render();
     }
 }
 
@@ -197,10 +139,47 @@ if (! function_exists('formErrors')) {
     }
 }
 
-if (! function_exists('is_selected_option')) {
-    function is_selected_option(mixed $current, string $value): bool
-    {
-        return SelectOptions::isSelected($current, $value);
+if (! function_exists('to_page')) {
+    function to_page(
+        string|Page|null $page = null,
+        string|ResourceContract|null $resource = null,
+        array $params = [],
+        bool $redirect = false,
+        ?string $fragment = null
+    ): RedirectResponse|string {
+        if ($fragment !== null && $fragment !== '') {
+            $params += ['_fragment-load' => $fragment];
+        }
+
+        return MoonShineRouter::to_page(
+            page: $page,
+            resource: $resource,
+            params: $params,
+            redirect: $redirect
+        );
+    }
+}
+
+if (! function_exists('to_relation_route')) {
+    function to_relation_route(
+        string $action,
+        int|string|null $resourceItem = null,
+        ?string $relation = null,
+        ?string $resourceUri = null,
+        ?string $pageUri = null,
+        ?string $parentField = null
+    ): string {
+        $data = [
+            '_parent_field' => $parentField,
+            '_relation' => $relation,
+            'resourceItem' => $resourceItem,
+        ];
+
+        return MoonShineRouter::to("relation.$action", [
+            'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
+            'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
+            ...array_filter($data),
+        ]);
     }
 }
 
@@ -238,6 +217,27 @@ if (! function_exists('moonShineIndexRoute')) {
     function moonShineIndexRoute(): string
     {
         return config('moonshine.route.index', 'moonshine.index');
+    }
+}
+
+if (! function_exists('is_closure')) {
+    function is_closure(mixed $variable): bool
+    {
+        return $variable instanceof Closure;
+    }
+}
+
+if (! function_exists('is_field')) {
+    function is_field(mixed $variable): bool
+    {
+        return $variable instanceof Field;
+    }
+}
+
+if (! function_exists('is_selected_option')) {
+    function is_selected_option(mixed $current, string $value): bool
+    {
+        return SelectOptions::isSelected($current, $value);
     }
 }
 

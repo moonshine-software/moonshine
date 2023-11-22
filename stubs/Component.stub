@@ -6,12 +6,12 @@ namespace {namespace};
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 
 /**
  * @method static static make()
  */
-final class DummyClass extends MoonshineComponent
+final class DummyClass extends MoonShineComponent
 {
     protected string $view = '{view}';
 

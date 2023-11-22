@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\MoonShineRequest;
-use MoonShine\Http\Controllers\MoonshineController;
+use MoonShine\Http\Controllers\MoonShineController;
 use Symfony\Component\HttpFoundation\Response;
 
-final class DummyClass extends MoonshineController
+final class DummyClass extends MoonShineController
 {
     public function __invoke(MoonShineRequest $request): Response
     {

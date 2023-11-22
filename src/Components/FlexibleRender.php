@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 /**
  * @method static static make(Closure|View|string $content, Closure|array $additionalData = [])
  */
-final class FlexibleRender extends MoonshineComponent
+final class FlexibleRender extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.flexible-render';
 

@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 use MoonShine\MoonShineAuth;
 
-class ProfileFormRequest extends MoonshineFormRequest
+class ProfileFormRequest extends MoonShineFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

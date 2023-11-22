@@ -14,7 +14,7 @@ use Throwable;
 /**
  * @method static static make(ResourceContract $resource, ?Closure $query = null)
  */
-final class ResourcePreview extends MoonshineComponent
+final class ResourcePreview extends MoonShineComponent
 {
     use HasResource;
 

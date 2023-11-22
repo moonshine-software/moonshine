@@ -226,7 +226,7 @@ class MoonShine
     }
 
     /**
-     * Set home page/resource when visiting the base Moonshine url.
+     * Set home page/resource when visiting the base MoonShine url.
      *
      * @param  class-string<Page|ResourceContract>|Closure  $homeClass
      */

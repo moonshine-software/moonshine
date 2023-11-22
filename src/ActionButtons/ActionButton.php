@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\ActionButtons;
 
 use Closure;
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
@@ -16,7 +16,7 @@ use MoonShine\Traits\WithOffCanvas;
 /**
  * @method static static make(Closure|string $label, Closure|string $url = '', mixed $item = null)
  */
-class ActionButton extends MoonshineComponent implements ActionButtonContract
+class ActionButton extends MoonShineComponent implements ActionButtonContract
 {
     use WithLabel;
     use WithIcon;

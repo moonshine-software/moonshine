@@ -11,7 +11,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\WithFields;
 
-abstract class RowComponent extends MoonshineComponent implements HasFields
+abstract class RowComponent extends MoonShineComponent implements HasFields
 {
     use HasDataCast;
     use WithFields;

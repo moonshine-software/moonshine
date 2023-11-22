@@ -10,7 +10,7 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\HasDataCast;
 use MoonShine\Traits\WithFields;
 
-abstract class IterableComponent extends MoonshineComponent implements HasFields
+abstract class IterableComponent extends MoonShineComponent implements HasFields
 {
     use HasDataCast;
     use WithFields;
