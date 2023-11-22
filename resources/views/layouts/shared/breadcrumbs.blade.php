@@ -1,5 +1,5 @@
 <x-moonshine::breadcrumbs
     :items="collect($items)
-        ->prepend(':::heroicons.outline.home', route(moonShineIndexRoute()))
+        ->prepend(':::heroicons.outline.home', route(moonshineIndexRoute()))
         ->toArray()"
 />

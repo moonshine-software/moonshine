@@ -213,8 +213,8 @@ if (! function_exists('updateRelationColumnRoute')) {
     }
 }
 
-if (! function_exists('moonShineIndexRoute')) {
-    function moonShineIndexRoute(): string
+if (! function_exists('moonshineIndexRoute')) {
+    function moonshineIndexRoute(): string
     {
         return config('moonshine.route.index', 'moonshine.index');
     }

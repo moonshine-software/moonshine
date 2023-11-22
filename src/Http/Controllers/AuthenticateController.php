@@ -17,7 +17,7 @@ class AuthenticateController extends MoonShineController
     {
         if ($this->auth()->check()) {
             return to_route(
-                moonShineIndexRoute()
+                moonshineIndexRoute()
             );
         }
 
@@ -37,7 +37,7 @@ class AuthenticateController extends MoonShineController
 
         return redirect()->intended(
             route(
-                moonShineIndexRoute()
+                moonshineIndexRoute()
             )
         );
     }

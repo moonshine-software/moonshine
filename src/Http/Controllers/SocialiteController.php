@@ -92,7 +92,7 @@ class SocialiteController extends MoonShineController
         $this->auth()->loginUsingId($account->moonshine_user_id);
 
         return to_route(
-            moonShineIndexRoute()
+            moonshineIndexRoute()
         );
     }
 
