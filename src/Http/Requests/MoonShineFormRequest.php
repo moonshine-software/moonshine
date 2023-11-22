@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 
-class MoonshineFormRequest extends FormRequest
+class MoonShineFormRequest extends FormRequest
 {
     protected $errorBag = 'crud';
 

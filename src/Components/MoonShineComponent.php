@@ -17,7 +17,7 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithView;
 use Throwable;
 
-abstract class MoonshineComponent extends Component implements MoonShineRenderable, CanBeEscapedWhenCastToString
+abstract class MoonShineComponent extends Component implements MoonShineRenderable, CanBeEscapedWhenCastToString
 {
     use Conditionable;
     use Macroable;
