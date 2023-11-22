@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 
-abstract class WithComponents extends MoonshineComponent
+abstract class WithComponents extends MoonShineComponent
 {
     public function __construct(
         protected array $components = [],

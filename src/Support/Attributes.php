@@ -78,7 +78,7 @@ final class Attributes
         }
 
         if (! is_null($this->currentAttribute)) {
-            /* @var ReflectionAttribute $attributes */
+            /* @var \ReflectionAttribute $attributes */
             $attributes = Arr::first($reflection->getAttributes($this->currentAttribute));
         } else {
             $attributes = $reflection->getAttributes();

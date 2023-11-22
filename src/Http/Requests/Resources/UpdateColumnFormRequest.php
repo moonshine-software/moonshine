@@ -6,10 +6,10 @@ namespace MoonShine\Http\Requests\Resources;
 
 use MoonShine\Fields\Field;
 use MoonShine\Fields\StackFields;
-use MoonShine\Http\Requests\MoonshineFormRequest;
+use MoonShine\Http\Requests\MoonShineFormRequest;
 use Throwable;
 
-final class UpdateColumnFormRequest extends MoonshineFormRequest
+final class UpdateColumnFormRequest extends MoonShineFormRequest
 {
     public function authorize(): bool
     {

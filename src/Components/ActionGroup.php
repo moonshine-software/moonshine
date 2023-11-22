@@ -10,7 +10,7 @@ use MoonShine\ActionButtons\ActionButtons;
 /**
  * @method static static make(array $actions = [])
  */
-final class ActionGroup extends MoonshineComponent
+final class ActionGroup extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.action-group';
 

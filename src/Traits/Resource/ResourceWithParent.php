@@ -22,7 +22,7 @@ trait ResourceWithParent
             return $this->parentId;
         }
 
-        $parentResource = Moonshine::getResourceFromClassName($this->getParentResourceClassName());
+        $parentResource = MoonShine::getResourceFromClassName($this->getParentResourceClassName());
 
         if(is_null($parentResource)) {
             return null;

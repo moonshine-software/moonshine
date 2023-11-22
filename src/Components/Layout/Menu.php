@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 
-class Menu extends MoonshineComponent
+class Menu extends MoonShineComponent
 {
     protected bool $top = false;
 

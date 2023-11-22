@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 
 /**
  * @method static static make(string $key = 'alert', string $type = 'info', bool $withToast = true, bool $removable = true)
  */
-class Flash extends MoonshineComponent
+class Flash extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.flash';
 

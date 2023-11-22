@@ -25,7 +25,7 @@ class RelationModelFieldController extends MoonShineController
             return response()->json();
         }
 
-        /* @var ModelResource $resource */
+        /* @var \MoonShine\Resources\ModelResource $resource */
         $resource = $field->getResource();
 
         $model = $resource->getModel();
@@ -66,7 +66,7 @@ class RelationModelFieldController extends MoonShineController
 
     public function searchRelations(RelationModelFieldRequest $request): mixed
     {
-        /* @var ModelResource $parentResource */
+        /* @var \MoonShine\Resources\ModelResource $parentResource */
         $parentResource = $request->getResource();
 
         $parentItem = $parentResource->getItemOrInstance();

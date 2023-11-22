@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Components\Layout;
 
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Components\MoonshineComponent;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Resources\MoonShineProfileResource;
 
 /**
  * @method static static make(bool $withBorder = false)
  */
-final class Profile extends MoonshineComponent
+final class Profile extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.profile';
 
