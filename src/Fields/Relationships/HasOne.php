@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
-use MoonShine\Collections\MoonShineRenderElements;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Support\Arr;
 use MoonShine\Buttons\DeleteButton;
+use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
@@ -151,7 +151,7 @@ class HasOne extends ModelRelationField implements HasFields
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
                 ...$this->getRelation() instanceof MorphOneOrMany
                     ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()::class]
-                    : []
+                    : [],
             ]),
                 $resource->getModelCast()
             )
@@ -165,7 +165,7 @@ class HasOne extends ModelRelationField implements HasFields
                     )->customAttributes(['class' => 'btn-lg']),
                 ]
             )
-            ->onBeforeFieldsRender(fn(Fields $fields): MoonShineRenderElements => $fields->exceptElements(
+            ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                 fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->toOne()
                     && $field->column() === $relation->getForeignKeyName()

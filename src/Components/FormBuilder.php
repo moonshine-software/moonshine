@@ -175,7 +175,7 @@ final class FormBuilder extends RowComponent
             ]);
         }
 
-        if(!is_null($this->onBeforeFieldsRender)) {
+        if(! is_null($this->onBeforeFieldsRender)) {
             $fields = value($this->onBeforeFieldsRender, $fields);
         }
 

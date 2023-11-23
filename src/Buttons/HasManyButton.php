@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
-use MoonShine\Collections\MoonShineRenderElements;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Field;
@@ -97,14 +97,14 @@ final class HasManyButton
                                 $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
                                 ...$field->getRelation() instanceof MorphOneOrMany
                                     ? [$field->getRelation()?->getMorphType() => $parent::class]
-                                    : []
+                                    : [],
                             ]),
                             $resource->getModelCast()
                         )
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields)
-                    ->onBeforeFieldsRender(fn(Fields $fields): MoonShineRenderElements => $fields->exceptElements(
+                    ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                         fn (mixed $field): bool => $field instanceof ModelRelationField
                             && $field->toOne()
                             && $field->column() === $relation->getForeignKeyName()
