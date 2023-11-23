@@ -19,7 +19,6 @@ use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
 use Throwable;
@@ -172,7 +171,7 @@ class HasMany extends ModelRelationField implements HasFields
         return ActionButton::make(
             "($countItems)",
             to_page(
-                page: IndexPage::class,
+                page: $this->getResource()->indexPage(),
                 resource: $this->getResource(),
                 params: [
                     '_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()},
@@ -220,7 +219,7 @@ class HasMany extends ModelRelationField implements HasFields
             ActionButton::make(
                 __('moonshine::ui.show') . " ({$this->toValue()->total()})",
                 to_page(
-                    page: IndexPage::class,
+                    page: $this->getResource()->indexPage(),
                     resource: $this->getResource(),
                     params: [
                         '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),

@@ -75,6 +75,11 @@ abstract class ModelResource extends Resource
         ];
     }
 
+    public function indexPage(): ?Page
+    {
+        return $this->getPages()->indexPage();
+    }
+
     public function formPage(): ?Page
     {
         return $this->getPages()->formPage();

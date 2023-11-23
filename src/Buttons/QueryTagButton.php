@@ -3,7 +3,6 @@
 namespace MoonShine\Buttons;
 
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
 
@@ -13,7 +12,7 @@ final class QueryTagButton
     {
         return ActionButton::make(
             $tag->label(),
-            to_page(page: IndexPage::class, resource: $resource, params: ['query-tag' => $tag->uri()])
+            to_page(page: $resource->indexPage(), resource: $resource, params: ['query-tag' => $tag->uri()])
         )
             ->showInLine()
             ->icon($tag->iconValue())
