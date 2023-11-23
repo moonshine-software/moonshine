@@ -18,6 +18,8 @@ class ValueMetric extends Metric
 
     protected bool $progress = false;
 
+    protected bool $short = false;
+
     public function valueFormat(string|Closure $value): static
     {
         $this->valueFormat = is_closure($value) ? $value() : $value;
@@ -29,6 +31,10 @@ class ValueMetric extends Metric
     {
         if ($this->isProgress()) {
             return round(($this->value / $this->target) * 100);
+        }
+
+        if($this->isShort()) {
+            return $this->shortValue();
         }
 
         return $this->simpleValue();
@@ -66,4 +72,36 @@ class ValueMetric extends Metric
 
         return $this;
     }
+
+    public function short(): static
+    {
+        $this->short = true;
+
+        return $this;
+    }
+
+    public function isShort(): bool
+    {
+        return $this->short;
+    }
+
+    public function shortValue(): string|float
+    {
+        $abbreviations = ['T', 'B', 'M', 'K'];
+        $len = strlen((string) $this->value);
+        $rest = (int) substr((string) $this->value, 2, $len);
+        $checkPlus = (is_int($rest) && !empty($rest)) ? "+" : "";
+
+        foreach ([1000000000000, 1000000000, 1000000, 1000] as $index => $limit) {
+            if ($this->value >= $limit) {
+                $this->value = rtrim(rtrim(number_format($this->value / $limit, 1), '0'), '.');
+                $this->valueFormat.= $abbreviations[$index];
+                break;
+            }
+        }
+
+        $this->valueFormat .= $checkPlus;
+        return $this->simpleValue();
+    }
+
 }
