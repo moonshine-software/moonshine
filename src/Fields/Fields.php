@@ -242,15 +242,6 @@ final class Fields extends FormElements
             ->values();
     }
 
-    public function withoutForeignField(): MoonShineRenderElements
-    {
-        return $this->exceptElements(
-            fn (mixed $field): bool => $field instanceof ModelRelationField
-                && $field->toOne()
-                && $field->getResource()->uriKey() === moonshineRequest()->getResourceUri()
-        );
-    }
-
     /**
      * @return array<string, string>
      * @throws Throwable

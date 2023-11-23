@@ -13,6 +13,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Fields\StackFields;
 use Throwable;
 
@@ -25,6 +26,7 @@ final class HasManyButton
     {
         $resource = $field->getResource();
         $parent = $field->getRelatedModel();
+        $relation = $parent->{$field->getRelationName()}();
 
         if (! $resource->formPage()) {
             return ActionButton::emptyHidden();
@@ -47,12 +49,10 @@ final class HasManyButton
                 //->each(fn (ModelRelationField $nestedFields): Field => $nestedFields->setParentResource($resource))
             ;
 
-            $fields = $fields->withoutForeignField();
-
             return $fields->when(
                 $field->getRelation() instanceof MorphOneOrMany,
                 fn (Fields $f) => $f->push(
-                    Hidden::make($field->getRelation()?->getQualifiedMorphType())
+                    Hidden::make($field->getRelation()?->getMorphType())
                         ->setValue($parent::class)
                 )
             )->when(
@@ -78,7 +78,7 @@ final class HasManyButton
         return ActionButton::make($update ? '' : __('moonshine::ui.add'), url: $action)
             ->canSee($authorize)
             ->inModal(
-                title: fn (): array|string|null => __($update ? 'moonshine::ui.create' : 'moonshine::ui.edit'),
+                title: fn (): array|string|null => __(!$update ? 'moonshine::ui.create' : 'moonshine::ui.edit'),
                 content: fn (?Model $data): string => (string) FormBuilder::make($action($data))
                     ->switchFormMode(
                         $isAsync,
@@ -92,12 +92,22 @@ final class HasManyButton
                             $resource->getModelCast()
                         ),
                         fn (FormBuilder $form): FormBuilder => $form->fillCast(
-                            [$field->getRelation()?->getForeignKeyName() => $parent?->getKey()],
+                            array_filter([
+                                $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
+                                ...$field->getRelation() instanceof MorphOneOrMany
+                                    ? [$field->getRelation()?->getMorphType() => $parent::class]
+                                    : []
+                            ]),
                             $resource->getModelCast()
                         )
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields)
+                    ->onBeforeFieldsRender(fn(Fields $fields) => $fields->exceptElements(
+                        fn (mixed $field): bool => $field instanceof ModelRelationField
+                            && $field->toOne()
+                            && $field->column() === $relation->getForeignKeyName()
+                    ))
                     ->redirect(
                         $isAsync ? null : to_page(
                             moonshineRequest()->getResource()
