@@ -6,6 +6,7 @@ namespace MoonShine\Fields\Relationships;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Support\Arr;
 use MoonShine\Buttons\DeleteButton;
 use MoonShine\Components\FormBuilder;
@@ -104,6 +105,7 @@ class HasOne extends ModelRelationField implements HasFields
         }
 
         $parentItem = $parentResource->getItemOrInstance();
+        $relation = $parentItem->{$this->getRelationName()}();
 
         $fields = $resource->getFormFields();
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
@@ -112,8 +114,6 @@ class HasOne extends ModelRelationField implements HasFields
             is_null($item) ? 'crud.store' : 'crud.update',
             $item?->getKey()
         );
-
-        $fields = $fields->withoutForeignField();
 
         $redirectAfter = to_page(
             page: $resource->formPage(),
@@ -135,14 +135,23 @@ class HasOne extends ModelRelationField implements HasFields
                 )->push(
                     Hidden::make($this->getRelation()?->getForeignKeyName())
                         ->setValue($this->getRelatedModel()?->getKey())
+                )->when(
+                    $this->getRelation() instanceof MorphOneOrMany,
+                    fn (Fields $f) => $f->push(
+                        Hidden::make($this->getRelation()?->getMorphType())
+                            ->setValue($this->getRelatedModel()::class)
+                    )
                 )
                 ->toArray()
             )
             ->redirect($isAsync ? null : $redirectAfter)
             ->fillCast(
-                $item?->attributesToArray() ?? [
+                $item?->attributesToArray() ?? array_filter([
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
-            ],
+                ...$this->getRelation() instanceof MorphOneOrMany
+                    ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()::class]
+                    : []
+            ]),
                 $resource->getModelCast()
             )
             ->buttons(
@@ -155,6 +164,11 @@ class HasOne extends ModelRelationField implements HasFields
                     )->customAttributes(['class' => 'btn-lg']),
                 ]
             )
+            ->onBeforeFieldsRender(fn(Fields $fields) => $fields->exceptElements(
+                fn (mixed $field): bool => $field instanceof ModelRelationField
+                    && $field->toOne()
+                    && $field->column() === $relation->getForeignKeyName()
+            ))
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
 

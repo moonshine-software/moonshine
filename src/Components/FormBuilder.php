@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
+use Closure;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -30,6 +31,8 @@ final class FormBuilder extends RowComponent
     protected ?string $submitLabel = null;
 
     protected ComponentAttributeBag $submitAttributes;
+
+    protected ?Closure $onBeforeFieldsRender = null;
 
     public function __construct(
         protected string $action = '',
@@ -130,6 +133,13 @@ final class FormBuilder extends RowComponent
         return $isAsync ? $this->async(asyncEvents: $asyncEvents) : $this->precognitive();
     }
 
+    public function onBeforeFieldsRender(Closure $closure): self
+    {
+        $this->onBeforeFieldsRender = $closure;
+
+        return $this;
+    }
+
     protected function viewData(): array
     {
         $fields = $this->preparedFields();
@@ -163,6 +173,10 @@ final class FormBuilder extends RowComponent
                 'x-on:submit.prevent' => 'async($event.target, `' . $this->asyncEvents() . '`)',
                 '@form-reset-' . ($this->getName() ?? 'default') . '.window' => 'formReset',
             ]);
+        }
+
+        if(!is_null($this->onBeforeFieldsRender)) {
+            $fields = value($this->onBeforeFieldsRender, $fields);
         }
 
         return [
