@@ -335,15 +335,11 @@ class HasMany extends ModelRelationField implements HasFields
     {
         if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
+            $relation = $casted->{$this->getRelationName()}();
+            $resource = $this->getResource();
+            $resource->customBuilder($relation);
 
-            $this->getResource()
-                ->query()
-                ->where(
-                    $casted->{$this->getRelationName()}()->getForeignKeyName(),
-                    $casted->{$casted->getKeyName()}
-                );
-
-            $this->setValue($this->getResource()->paginate());
+            $this->setValue($resource->paginate());
         }
 
         return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
