@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use MoonShine\Collections\MoonShineRenderElements;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
@@ -164,7 +165,7 @@ class HasOne extends ModelRelationField implements HasFields
                     )->customAttributes(['class' => 'btn-lg']),
                 ]
             )
-            ->onBeforeFieldsRender(fn(Fields $fields) => $fields->exceptElements(
+            ->onBeforeFieldsRender(fn(Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                 fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->toOne()
                     && $field->column() === $relation->getForeignKeyName()

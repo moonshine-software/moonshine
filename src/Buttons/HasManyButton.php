@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
+use MoonShine\Collections\MoonShineRenderElements;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\ActionButtons\ActionButton;
@@ -78,7 +79,7 @@ final class HasManyButton
         return ActionButton::make($update ? '' : __('moonshine::ui.add'), url: $action)
             ->canSee($authorize)
             ->inModal(
-                title: fn (): array|string|null => __(!$update ? 'moonshine::ui.create' : 'moonshine::ui.edit'),
+                title: fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: fn (?Model $data): string => (string) FormBuilder::make($action($data))
                     ->switchFormMode(
                         $isAsync,
@@ -103,7 +104,7 @@ final class HasManyButton
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields)
-                    ->onBeforeFieldsRender(fn(Fields $fields) => $fields->exceptElements(
+                    ->onBeforeFieldsRender(fn(Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                         fn (mixed $field): bool => $field instanceof ModelRelationField
                             && $field->toOne()
                             && $field->column() === $relation->getForeignKeyName()
