@@ -148,7 +148,7 @@ final class FormBuilder extends RowComponent
         $fields = $this->preparedFields();
 
         if($this->hasAdditionalFields()) {
-            $this->getAdditionalFields()->each(fn($field) => $fields->push($field));
+            $this->getAdditionalFields()->each(fn ($field) => $fields->push($field));
         }
 
         if (! is_null($this->getName())) {
