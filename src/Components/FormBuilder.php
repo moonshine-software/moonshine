@@ -9,6 +9,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Traits\Fields\WithAdditionalFields;
 use MoonShine\Traits\HasAsync;
 
 /**
@@ -17,6 +18,8 @@ use MoonShine\Traits\HasAsync;
 final class FormBuilder extends RowComponent
 {
     use HasAsync;
+
+    use WithAdditionalFields;
 
     protected string $view = 'moonshine::components.form.builder';
 
@@ -96,7 +99,7 @@ final class FormBuilder extends RowComponent
     public function redirect(?string $uri = null): self
     {
         if (! is_null($uri)) {
-            $this->fields[] = Hidden::make('_redirect')
+            $this->additionalFields[] = Hidden::make('_redirect')
                 ->setValue($uri);
         }
 
@@ -143,6 +146,10 @@ final class FormBuilder extends RowComponent
     protected function viewData(): array
     {
         $fields = $this->preparedFields();
+
+        if($this->hasAdditionalFields()) {
+            $this->getAdditionalFields()->each(fn($field) => $fields->push($field));
+        }
 
         if (! is_null($this->getName())) {
             $fields->onlyFields()->each(

@@ -9,7 +9,6 @@ use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\PageType;
 use MoonShine\MoonShineRouter;
-use MoonShine\Pages\Crud\IndexPage;
 
 /**
  * @mixin ResourceContract
@@ -65,6 +64,6 @@ trait ResourceModelCrudRouter
 
     public function redirectAfterDelete(): string
     {
-        return to_page(page: IndexPage::class, resource: $this);
+        return to_page(page: $this->indexPage(), resource: $this);
     }
 }
