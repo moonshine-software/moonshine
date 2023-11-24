@@ -9,6 +9,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Buttons\BelongsToManyButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
@@ -106,6 +108,23 @@ class BelongsToMany extends ModelRelationField implements
     public function isCreatable(): bool
     {
         return $this->isCreatable;
+    }
+
+    public function createButton(): ?ActionButton
+    {
+        if (is_null($this->getRelatedModel()?->getKey())) {
+            return null;
+        }
+
+        if (! $this->isCreatable()) {
+            return null;
+        }
+
+        $button = BelongsToManyButton::for($this);
+
+        return $button->isSee($this->getRelatedModel())
+            ? $button
+            : null;
     }
 
     public function isSelectMode(): bool
@@ -411,8 +430,8 @@ class BelongsToMany extends ModelRelationField implements
                     ->onlyFields()
                     ->each(
                         fn (Field $field): mixed => $field
-                        ->resolveFill($value->toArray(), $value)
-                        ->afterDestroy($value)
+                            ->resolveFill($value->toArray(), $value)
+                            ->afterDestroy($value)
                     );
             }
         }
