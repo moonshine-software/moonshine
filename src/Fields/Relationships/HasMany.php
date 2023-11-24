@@ -166,7 +166,7 @@ class HasMany extends ModelRelationField implements HasFields
         $fields = $this->preparedFields();
 
         return $this->hasFields()
-            ? $fields->map(fn($field) => (clone $field))
+            ? $fields->map(fn($field): int => (clone $field))
             //If there are no fields, then the resource fields always return new objects
             : $fields;
     }
