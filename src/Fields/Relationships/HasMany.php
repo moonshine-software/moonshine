@@ -158,6 +158,19 @@ class HasMany extends ModelRelationField implements HasFields
         return $this->getFields()->indexFields();
     }
 
+    /**
+     * @throws Throwable
+     */
+    public function preparedClonedFields()
+    {
+        $fields = $this->preparedFields();
+
+        return $this->hasFields()
+            ? $fields->map(fn($field) => (clone $field))
+            //If there are no fields, then the resource fields always return new objects
+            : $fields;
+    }
+
     protected function linkPreview(): View|string
     {
         $casted = $this->getRelatedModel();
@@ -202,7 +215,7 @@ class HasMany extends ModelRelationField implements HasFields
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
-            ->fields(fn () => $this->getResource()->getIndexFields()->toArray())
+            ->fields(fn() => $this->preparedClonedFields()->toArray())
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
@@ -239,7 +252,7 @@ class HasMany extends ModelRelationField implements HasFields
         );
 
         $getFields = function () {
-            $fields = $this->getResource()->getIndexFields();
+            $fields = $this->preparedClonedFields();
 
             $fields->each(function (Field $field): void {
                 if (
