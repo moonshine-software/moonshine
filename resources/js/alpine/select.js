@@ -40,6 +40,7 @@ export default (asyncUrl = '') => ({
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
+        ...this.$el.dataset,
         callbackOnCreateTemplates: function (template) {
           return {
             item: ({classNames}, data) => {
