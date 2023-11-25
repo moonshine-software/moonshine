@@ -166,8 +166,9 @@ trait WithAsyncSearch
 
         if($this->associatedWith) {
             $this->customAttributes([
-                // TODO get dotNestedToName from ShowWhen trait
-                'data-associated-with' => $this->associatedWith
+                'data-associated-with' => $this->associatedWith,
+                // replace after merge pr 655
+                //'data-associated-with' => $this->dotNestedToName($this->associatedWith),
             ]);
         }
 
