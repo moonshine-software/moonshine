@@ -50,7 +50,9 @@ class RelationModelFieldController extends MoonShineController
             );
         }
 
-        $term = $request->get('query', null);
+        $term = $request->get('query');
+
+        $except = explode(',', $request->get($field->column()) ?? '');
 
         $query->when(
             $term,
@@ -60,6 +62,7 @@ class RelationModelFieldController extends MoonShineController
                 "%$term%"
             )
         )
+            ->whereNotIn($model->getKeyName(), $except)
             ->limit($field->asyncSearchCount());
 
         return response()->json(
