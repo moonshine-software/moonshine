@@ -65,17 +65,6 @@ trait ShowWhen
         return $this;
     }
 
-    private function dotNestedToName(string $value): string
-    {
-        if (! str_contains($value, '.')) {
-            return $value;
-        }
-
-        return str($value)->explode('.')
-            ->map(fn($part, $index) => $index === 0 ? $part : "[$part]")
-            ->implode('');
-    }
-
     private function makeCondition(
         string $column,
         mixed $operator = null,
