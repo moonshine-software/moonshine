@@ -141,32 +141,32 @@ export default (asyncUrl = '') => ({
       }
 
       if (asyncUrl) {
-        this.$el.addEventListener(
-          'search',
+        const search_terms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
+
+        search_terms.addEventListener(
+          'input',
           debounce(event => {
             let url = new URL(asyncUrl)
 
-            if (event.detail.value.length > 0) {
-              url.searchParams.append('query', event.detail.value)
-
-              const form = this.$el.form
-              const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
-
-              this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
+            if (event.target.value.length) {
+              url.searchParams.append('query', event.target.value)
             }
-          }, 300),
-          false,
-        )
-        this.$el.addEventListener(
-          'showDropdown',
-          debounce(event => {
-            let url = new URL(asyncUrl)
 
             const form = this.$el.form
             const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
 
             this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
           }, 300),
+          false,
+        )
+        this.$el.addEventListener(
+          'showDropdown',
+          () => search_terms.dispatchEvent(new Event('input')),
+          false,
+        )
+        this.$el.addEventListener(
+          'change',
+          () => search_terms.dispatchEvent(new Event('input')),
           false,
         )
       }
