@@ -157,6 +157,18 @@ export default (asyncUrl = '') => ({
           }, 300),
           false,
         )
+        this.$el.addEventListener(
+          'showDropdown',
+          debounce(event => {
+            let url = new URL(asyncUrl)
+
+            const form = this.$el.form
+            const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+
+            this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
+          }, 300),
+          false,
+        )
       }
 
       if (this.removeItemButton) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
@@ -17,11 +18,9 @@ class RelationModelFieldController extends MoonShineController
      */
     public function search(RelationModelFieldRequest $request): Response
     {
-        $term = $request->get('query');
-
         $field = $request->getPageField();
 
-        if (! $field instanceof HasAsyncSearch || empty($term)) {
+        if (! $field instanceof HasAsyncSearch) {
             return response()->json();
         }
 
@@ -51,11 +50,17 @@ class RelationModelFieldController extends MoonShineController
             );
         }
 
-        $query = $query->where(
-            $searchColumn,
-            'LIKE',
-            "%$term%"
-        )->limit($field->asyncSearchCount());
+        $term = $request->get('query', null);
+
+        $query->when(
+            $term,
+            fn (Builder $q) => $q->where(
+                $searchColumn,
+                'LIKE',
+                "%$term%"
+            )
+        )
+            ->limit($field->asyncSearchCount());
 
         return response()->json(
             $query->get()->map(
