@@ -27,6 +27,8 @@ trait WithAsyncSearch
 
     protected array $withImage = [];
 
+    protected ?string $associatedWith = null;
+
     public function withImage(string $column, string $disk = 'public', string $dir = ''): static
     {
         $this->withImage = [
@@ -150,6 +152,7 @@ trait WithAsyncSearch
         int $asyncSearchCount = 15,
         ?Closure $asyncSearchQuery = null,
         ?Closure $asyncSearchValueCallback = null,
+        ?string $associatedWith = null,
         ?string $url = null,
     ): static {
         $this->asyncSearch = true;
@@ -158,7 +161,15 @@ trait WithAsyncSearch
         $this->asyncSearchCount = $asyncSearchCount;
         $this->asyncSearchQuery = $asyncSearchQuery;
         $this->asyncSearchValueCallback = $asyncSearchValueCallback ?? $this->formattedValueCallback();
+        $this->associatedWith = $associatedWith;
         $this->asyncUrl = $url;
+
+        if($this->associatedWith) {
+            $this->customAttributes([
+                // TODO get dotNestedToName from ShowWhen trait
+                'data-associated-with' => $this->associatedWith
+            ]);
+        }
 
         $this->valuesQuery = function (Builder $query) {
             if ($this->getRelatedModel()) {
@@ -170,5 +181,4 @@ trait WithAsyncSearch
 
         return $this;
     }
-
 }

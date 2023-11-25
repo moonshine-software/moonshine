@@ -11,12 +11,18 @@ export default (asyncUrl = '') => ({
   searchEnabled: null,
   removeItemButton: null,
   shouldSort: null,
+  associatedWith: null,
 
   init() {
     this.placeholder = this.$el.getAttribute('placeholder')
     this.searchEnabled = !!this.$el.dataset.searchEnabled
     this.removeItemButton = !!this.$el.dataset.removeItemButton
     this.shouldSort = !!this.$el.dataset.shouldSort
+    this.associatedWith = this.$el.dataset.associatedWith
+
+    if(this.associatedWith) {
+      this.$el.removeAttribute('data-associated-with')
+    }
 
     this.$nextTick(() => {
       const items = []
@@ -105,7 +111,23 @@ export default (asyncUrl = '') => ({
             },
           }
         },
+        callbackOnInit: () => {
+          if(asyncUrl && this.associatedWith) {
+            this.asyncSearch()
+          }
+        }
       })
+
+      if(this.associatedWith && asyncUrl) {
+        document.querySelector('[name="'+this.associatedWith+'"]').addEventListener(
+          'change',
+          event => {
+            this.choicesInstance.clearStore()
+            this.asyncSearch()
+          },
+          false,
+        )
+      }
 
       if (this.$el.dataset.overflow || this.$el.closest('.table-responsive')) {
         // Modifier "Same width" Popper reference
@@ -145,23 +167,7 @@ export default (asyncUrl = '') => ({
 
         search_terms.addEventListener(
           'input',
-          debounce(event => {
-            let url = new URL(asyncUrl)
-
-            if (event.target.value.length) {
-              url.searchParams.append('query', event.target.value)
-            }
-
-            const form = this.$el.form
-            const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
-
-            this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
-          }, 300),
-          false,
-        )
-        this.$el.addEventListener(
-          'showDropdown',
-          () => search_terms.dispatchEvent(new Event('input')),
+          debounce(event => this.asyncSearch(event.target.value), 300),
           false,
         )
         this.$el.addEventListener(
@@ -208,6 +214,18 @@ export default (asyncUrl = '') => ({
     })
   },
 
+  asyncSearch(query = null) {
+    let url = new URL(asyncUrl)
+
+    if (query !== null && query.length) {
+      url.searchParams.append('query', query)
+    }
+
+    const form = this.$el.form
+    const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+
+    this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
+  },
   async fromUrl(url) {
     const json = await fetch(url)
       .then(response => {
