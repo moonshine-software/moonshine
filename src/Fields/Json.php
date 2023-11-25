@@ -360,7 +360,7 @@ class Json extends Field implements
                     );
 
                     $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
                         $values
                     );
 
@@ -419,7 +419,7 @@ class Json extends Field implements
                     $field->resolveFill($values->toArray(), $values);
 
                     $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
                         $values
                     );
 
