@@ -57,12 +57,23 @@ trait ShowWhen
 
         $this->showWhenCondition = [
             'showField' => str_replace('[]', '', $this->column()),
-            'changeField' => $column,
+            'changeField' => $this->dotNestedToName($column),
             'operator' => $operator,
             'value' => $value,
         ];
 
         return $this;
+    }
+
+    private function dotNestedToName(string $value): string
+    {
+        if (! str_contains($value, '.')) {
+            return $value;
+        }
+
+        return str($value)->explode('.')
+            ->map(fn($part, $index) => $index === 0 ? $part : "[$part]")
+            ->implode('');
     }
 
     private function makeCondition(
@@ -116,9 +127,9 @@ trait ShowWhen
     private function invalidOperator(mixed $operator): bool
     {
         return ! is_string($operator) || (! in_array(
-            strtolower($operator),
-            $this->operators,
-            true
-        ));
+                strtolower($operator),
+                $this->operators,
+                true
+            ));
     }
 }
