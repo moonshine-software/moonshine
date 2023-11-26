@@ -168,7 +168,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function preparedFields(): Fields
     {
-        return $this->getFields()->onlyFields()->map(
+        return $this->getFields()->prepareAttributes()->map(
             fn (Field $field): Field => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->column()}")
                 ->setAttribute('class', 'pivotField')

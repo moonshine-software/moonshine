@@ -19,6 +19,11 @@ beforeEach(function (): void {
         {
             return 'field1';
         }
+
+        protected function dotNestedToName(string $value): string
+        {
+            return $value;
+        }
     };
 });
 

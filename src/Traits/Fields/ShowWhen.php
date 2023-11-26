@@ -87,7 +87,9 @@ trait ShowWhen
     ): array {
         if ($useDefault) {
             return [$operator, '='];
-        } elseif ($this->invalidOperatorAndValue($operator, $value)) {
+        }
+
+        if ($this->invalidOperatorAndValue($operator, $value)) {
             throw new InvalidArgumentException(
                 'Illegal operator and value combination.'
             );
