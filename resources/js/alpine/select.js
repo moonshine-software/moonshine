@@ -14,7 +14,7 @@ export default (asyncUrl = '') => ({
   associatedWith: null,
   observer: null,
   options: [],
-  terms: null,
+  searchTerms: null,
 
   init() {
     this.placeholder = this.$el.getAttribute('placeholder')
@@ -116,7 +116,7 @@ export default (asyncUrl = '') => ({
           }
         },
         callbackOnInit: () => {
-          this.search_terms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
+          this.searchTerms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
 
           if (asyncUrl) {
             this.asyncSearch()
@@ -183,7 +183,7 @@ export default (asyncUrl = '') => ({
       }
 
       if (asyncUrl) {
-        this.search_terms.addEventListener(
+        this.searchTerms.addEventListener(
           'input',
           debounce(event => this.asyncSearch(), 300),
           false,
@@ -235,7 +235,7 @@ export default (asyncUrl = '') => ({
   async asyncSearch(preloader = true) {
     const url = new URL(asyncUrl)
 
-    const query = this.search_terms.value ?? null
+    const query = this.searchTerms.value ?? null
 
     if (preloader) {
       this.options = []
