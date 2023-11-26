@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -26,6 +27,8 @@ trait WithAsyncSearch
     protected ?Closure $asyncSearchValueCallback = null;
 
     protected array $withImage = [];
+
+    protected ?string $associatedWith = null;
 
     public function withImage(string $column, string $disk = 'public', string $dir = ''): static
     {
@@ -150,6 +153,7 @@ trait WithAsyncSearch
         int $asyncSearchCount = 15,
         ?Closure $asyncSearchQuery = null,
         ?Closure $asyncSearchValueCallback = null,
+        ?string $associatedWith = null,
         ?string $url = null,
     ): static {
         $this->asyncSearch = true;
@@ -158,7 +162,14 @@ trait WithAsyncSearch
         $this->asyncSearchCount = $asyncSearchCount;
         $this->asyncSearchQuery = $asyncSearchQuery;
         $this->asyncSearchValueCallback = $asyncSearchValueCallback ?? $this->formattedValueCallback();
+        $this->associatedWith = $associatedWith;
         $this->asyncUrl = $url;
+
+        if($this->associatedWith) {
+            $this->customAttributes([
+                'data-associated-with' => $this->dotNestedToName($this->associatedWith),
+            ]);
+        }
 
         $this->valuesQuery = function (Builder $query) {
             if ($this->getRelatedModel()) {
@@ -171,4 +182,14 @@ trait WithAsyncSearch
         return $this;
     }
 
+    public function associatedWith(string $column, ?Closure $asyncSearchQuery = null): static
+    {
+        $searchQuery = static fn (Builder $query, Request $request)
+            => $query->where($column, $request->get($column));
+
+        return $this->asyncSearch(
+            asyncSearchQuery: is_null($asyncSearchQuery) ? $searchQuery : $asyncSearchQuery,
+            associatedWith: $column
+        );
+    }
 }

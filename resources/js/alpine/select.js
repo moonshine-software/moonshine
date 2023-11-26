@@ -11,12 +11,21 @@ export default (asyncUrl = '') => ({
   searchEnabled: null,
   removeItemButton: null,
   shouldSort: null,
+  associatedWith: null,
+  observer: null,
+  options: [],
+  searchTerms: null,
 
   init() {
     this.placeholder = this.$el.getAttribute('placeholder')
     this.searchEnabled = !!this.$el.dataset.searchEnabled
     this.removeItemButton = !!this.$el.dataset.removeItemButton
     this.shouldSort = !!this.$el.dataset.shouldSort
+    this.associatedWith = this.$el.dataset.associatedWith
+
+    if (this.associatedWith) {
+      this.$el.removeAttribute('data-associated-with')
+    }
 
     this.$nextTick(() => {
       const items = []
@@ -37,6 +46,7 @@ export default (asyncUrl = '') => ({
         position: 'bottom',
         placeholderValue: this.placeholder,
         searchEnabled: this.searchEnabled,
+        resetScrollPosition: false,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
@@ -105,7 +115,39 @@ export default (asyncUrl = '') => ({
             },
           }
         },
+        callbackOnInit: () => {
+          this.searchTerms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
+
+          if (asyncUrl) {
+            this.asyncSearch()
+
+            const options = {
+              root: this.$el.closest('.choices').querySelector('.choices__list .choices__list'),
+              rootMargin: '0px',
+              threshold: 1.0,
+            }
+
+            const callback = (entries, observer) => {
+              if (entries[0].isIntersecting) {
+                this.asyncSearch(false)
+              }
+            }
+
+            this.observer = new IntersectionObserver(callback, options)
+          }
+        },
       })
+
+      if (this.associatedWith && asyncUrl) {
+        document.querySelector(`[name="${this.associatedWith}"]`).addEventListener(
+          'change',
+          event => {
+            this.choicesInstance.clearStore()
+            this.asyncSearch()
+          },
+          false,
+        )
+      }
 
       if (this.$el.dataset.overflow || this.$el.closest('.table-responsive')) {
         // Modifier "Same width" Popper reference
@@ -141,20 +183,14 @@ export default (asyncUrl = '') => ({
       }
 
       if (asyncUrl) {
+        this.searchTerms.addEventListener(
+          'input',
+          debounce(event => this.asyncSearch(), 300),
+          false,
+        )
         this.$el.addEventListener(
-          'search',
-          debounce(event => {
-            let url = new URL(asyncUrl)
-
-            if (event.detail.value.length > 0) {
-              url.searchParams.append('query', event.detail.value)
-
-              const form = this.$el.form
-              const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
-
-              this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
-            }
-          }, 300),
+          'change',
+          debounce(event => this.asyncSearch(), 300),
           false,
         )
       }
@@ -196,15 +232,44 @@ export default (asyncUrl = '') => ({
     })
   },
 
-  async fromUrl(url) {
-    const json = await fetch(url)
+  async asyncSearch(preloader = true) {
+    const url = new URL(asyncUrl)
+
+    const query = this.searchTerms.value ?? null
+
+    if (preloader) {
+      this.options = []
+    }
+
+    if (query !== null && query.length) {
+      url.searchParams.append('query', query)
+    }
+
+    url.searchParams.append('offset', this.options.length)
+
+    const form = this.$el.form
+    const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+
+    const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
+
+    this.options = [...this.options, ...options]
+
+    this.choicesInstance.setChoices(this.options, 'value', 'label', true)
+
+    const target = this.$el
+      .closest('.choices')
+      .querySelector('.choices__list .choices__list .choices__item:last-child')
+
+    this.observer.observe(target)
+  },
+
+  fromUrl(url) {
+    return fetch(url)
       .then(response => {
         return response.json()
       })
       .then(json => {
         return json
       })
-
-    this.choicesInstance.setChoices(json, 'value', 'label', true)
   },
 })
