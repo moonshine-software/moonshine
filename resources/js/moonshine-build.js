@@ -14,17 +14,13 @@ const moonshineBuildPlugin = () => ({
             fsSync.writeSync(fd, data, 0, data.length, insert.length)
             fsSync.close(fd, (err) => {
                 if (err) {
-                    console.log('prepend to app.js file error', err);
                     throw err;
                 }
             });
 
             //append "})()" to app.js
-            await fs.appendFile('public/assets/app.js', '})()', function (err) {
-                console.log('append to app.js file error', err);
-            });
+            await fs.appendFile('public/assets/app.js', '})()');
         } catch (e) {
-            console.error('moonshine-build-plugin - closeBundle error:', e)
         }
     }
 
