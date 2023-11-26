@@ -198,7 +198,7 @@ class Json extends Field implements
 
     public function preparedFields(): Fields
     {
-        return $this->getFields()->map(function (Field $field): Field {
+        return $this->getFields()->prepareAttributes()->map(function (Field $field): Field {
             throw_if(
                 ! $this->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
@@ -360,7 +360,7 @@ class Json extends Field implements
                     );
 
                     $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
                         $values
                     );
 
@@ -419,7 +419,7 @@ class Json extends Field implements
                     $field->resolveFill($values->toArray(), $values);
 
                     $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()]),
+                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
                         $values
                     );
 
