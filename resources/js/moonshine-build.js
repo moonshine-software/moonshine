@@ -1,7 +1,7 @@
 const fs = require('fs/promises')
 const fsSync = require('fs')
 
-const moonshineBuildPlugin = () => ({
+const moonShineBuildPlugin = () => ({
     name: 'moonshine-build-plugin',
     async closeBundle()
     {
@@ -26,4 +26,4 @@ const moonshineBuildPlugin = () => ({
 
 })
 
-export default moonshineBuildPlugin;
+export default moonShineBuildPlugin;
