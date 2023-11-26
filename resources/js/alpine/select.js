@@ -20,7 +20,7 @@ export default (asyncUrl = '') => ({
     this.shouldSort = !!this.$el.dataset.shouldSort
     this.associatedWith = this.$el.dataset.associatedWith
 
-    if(this.associatedWith) {
+    if (this.associatedWith) {
       this.$el.removeAttribute('data-associated-with')
     }
 
@@ -112,14 +112,14 @@ export default (asyncUrl = '') => ({
           }
         },
         callbackOnInit: () => {
-          if(asyncUrl && this.associatedWith) {
+          if (asyncUrl) {
             this.asyncSearch()
           }
-        }
+        },
       })
 
-      if(this.associatedWith && asyncUrl) {
-        document.querySelector('[name="'+this.associatedWith+'"]').addEventListener(
+      if (this.associatedWith && asyncUrl) {
+        document.querySelector(`[name="${this.associatedWith}"]`).addEventListener(
           'change',
           event => {
             this.choicesInstance.clearStore()
@@ -226,6 +226,7 @@ export default (asyncUrl = '') => ({
 
     this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
   },
+
   async fromUrl(url) {
     const json = await fetch(url)
       .then(response => {
