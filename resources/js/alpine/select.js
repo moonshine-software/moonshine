@@ -12,6 +12,8 @@ export default (asyncUrl = '') => ({
   removeItemButton: null,
   shouldSort: null,
   associatedWith: null,
+  observer: null,
+  options: [],
 
   init() {
     this.placeholder = this.$el.getAttribute('placeholder')
@@ -114,6 +116,20 @@ export default (asyncUrl = '') => ({
         callbackOnInit: () => {
           if (asyncUrl) {
             this.asyncSearch()
+
+            const options = {
+              root: this.$el.closest('.choices').querySelector('.choices__list .choices__list'),
+              rootMargin: '0px',
+              threshold: 1.0,
+            };
+
+            const callback = (entries, observer) => {
+              if (entries[0].isIntersecting) {
+                this.asyncSearch(null, false)
+              }
+            }
+
+            this.observer = new IntersectionObserver(callback, options)
           }
         },
       })
@@ -214,28 +230,42 @@ export default (asyncUrl = '') => ({
     })
   },
 
-  asyncSearch(query = null) {
-    let url = new URL(asyncUrl)
+  async asyncSearch(query = null, preloader = true) {
+    const url = new URL(asyncUrl)
+
+    if (preloader) {
+      this.options = []
+    }
 
     if (query !== null && query.length) {
       url.searchParams.append('query', query)
     }
 
+    url.searchParams.append('offset', this.options.length)
+
     const form = this.$el.form
     const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
 
-    this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
+    const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
+
+    this.options = [...this.options, ...options]
+
+    this.choicesInstance.setChoices(this.options, 'value', 'label', true)
+
+    const target = this.$el
+      .closest('.choices')
+      .querySelector('.choices__list .choices__list .choices__item:last-child');
+
+    this.observer.observe(target);
   },
 
-  async fromUrl(url) {
-    const json = await fetch(url)
+  fromUrl(url) {
+    return fetch(url)
       .then(response => {
         return response.json()
       })
       .then(json => {
         return json
       })
-
-    this.choicesInstance.setChoices(json, 'value', 'label', true)
   },
 })
