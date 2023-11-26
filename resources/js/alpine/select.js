@@ -182,7 +182,6 @@ export default (asyncUrl = '') => ({
       }
 
       if (asyncUrl) {
-
         this.search_terms.addEventListener(
           'input',
           debounce(event => this.asyncSearch(), 300),
