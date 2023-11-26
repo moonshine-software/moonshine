@@ -140,7 +140,7 @@ class IndexPage extends Page
 
                     return $group;
                 }
-            ),
+            )->customAttributes(['class' => 'flex-wrap']),
             LineBreak::make(),
         ];
     }
