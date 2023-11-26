@@ -157,6 +157,17 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
             )->value();
     }
 
+    protected function dotNestedToName(string $value): string
+    {
+        if (! str_contains($value, '.')) {
+            return $value;
+        }
+
+        return str($value)->explode('.')
+            ->map(fn ($part, $index) => $index === 0 ? $part : "[$part]")
+            ->implode('');
+    }
+
     public function defaultIfExists(): mixed
     {
         return $this instanceof HasDefaultValue

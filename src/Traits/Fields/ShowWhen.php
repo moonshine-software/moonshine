@@ -57,7 +57,7 @@ trait ShowWhen
 
         $this->showWhenCondition = [
             'showField' => str_replace('[]', '', $this->column()),
-            'changeField' => $column,
+            'changeField' => $this->dotNestedToName($column),
             'operator' => $operator,
             'value' => $value,
         ];
@@ -87,7 +87,9 @@ trait ShowWhen
     ): array {
         if ($useDefault) {
             return [$operator, '='];
-        } elseif ($this->invalidOperatorAndValue($operator, $value)) {
+        }
+
+        if ($this->invalidOperatorAndValue($operator, $value)) {
             throw new InvalidArgumentException(
                 'Illegal operator and value combination.'
             );
