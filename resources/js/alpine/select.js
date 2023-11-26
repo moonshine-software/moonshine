@@ -121,7 +121,7 @@ export default (asyncUrl = '') => ({
               root: this.$el.closest('.choices').querySelector('.choices__list .choices__list'),
               rootMargin: '0px',
               threshold: 1.0,
-            };
+            }
 
             const callback = (entries, observer) => {
               if (entries[0].isIntersecting) {
@@ -254,9 +254,9 @@ export default (asyncUrl = '') => ({
 
     const target = this.$el
       .closest('.choices')
-      .querySelector('.choices__list .choices__list .choices__item:last-child');
+      .querySelector('.choices__list .choices__list .choices__item:last-child')
 
-    this.observer.observe(target);
+    this.observer.observe(target)
   },
 
   fromUrl(url) {
