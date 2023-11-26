@@ -46,6 +46,7 @@ export default (asyncUrl = '') => ({
         position: 'bottom',
         placeholderValue: this.placeholder,
         searchEnabled: this.searchEnabled,
+        resetScrollPosition: false,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
