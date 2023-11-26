@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -166,9 +167,7 @@ trait WithAsyncSearch
 
         if($this->associatedWith) {
             $this->customAttributes([
-                'data-associated-with' => $this->associatedWith,
-                // replace after merge pr 655
-                //'data-associated-with' => $this->dotNestedToName($this->associatedWith),
+                'data-associated-with' => $this->dotNestedToName($this->associatedWith),
             ]);
         }
 
@@ -181,5 +180,16 @@ trait WithAsyncSearch
         };
 
         return $this;
+    }
+
+    public function associatedWith(string $column, ?Closure $asyncSearchQuery = null): static
+    {
+        $searchQuery = static fn (Builder $query, Request $request)
+            => $query->where($column, $request->get($column));
+
+        return $this->asyncSearch(
+            asyncSearchQuery: is_null($asyncSearchQuery) ? $searchQuery : $asyncSearchQuery,
+            associatedWith: $column
+        );
     }
 }
