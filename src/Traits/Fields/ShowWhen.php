@@ -118,9 +118,9 @@ trait ShowWhen
     private function invalidOperator(mixed $operator): bool
     {
         return ! is_string($operator) || (! in_array(
-                strtolower($operator),
-                $this->operators,
-                true
-            ));
+            strtolower($operator),
+            $this->operators,
+            true
+        ));
     }
 }

@@ -164,7 +164,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         }
 
         return str($value)->explode('.')
-            ->map(fn($part, $index) => $index === 0 ? $part : "[$part]")
+            ->map(fn ($part, $index) => $index === 0 ? $part : "[$part]")
             ->implode('');
     }
 
