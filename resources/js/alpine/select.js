@@ -14,6 +14,7 @@ export default (asyncUrl = '') => ({
   associatedWith: null,
   observer: null,
   options: [],
+  terms: null,
 
   init() {
     this.placeholder = this.$el.getAttribute('placeholder')
@@ -114,6 +115,8 @@ export default (asyncUrl = '') => ({
           }
         },
         callbackOnInit: () => {
+          this.search_terms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
+
           if (asyncUrl) {
             this.asyncSearch()
 
@@ -125,7 +128,7 @@ export default (asyncUrl = '') => ({
 
             const callback = (entries, observer) => {
               if (entries[0].isIntersecting) {
-                this.asyncSearch(null, false)
+                this.asyncSearch(false)
               }
             }
 
@@ -179,16 +182,15 @@ export default (asyncUrl = '') => ({
       }
 
       if (asyncUrl) {
-        const search_terms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
 
-        search_terms.addEventListener(
+        this.search_terms.addEventListener(
           'input',
-          debounce(event => this.asyncSearch(event.target.value), 300),
+          debounce(event => this.asyncSearch(), 300),
           false,
         )
         this.$el.addEventListener(
           'change',
-          () => search_terms.dispatchEvent(new Event('input')),
+          debounce(event => this.asyncSearch(), 300),
           false,
         )
       }
@@ -230,8 +232,10 @@ export default (asyncUrl = '') => ({
     })
   },
 
-  async asyncSearch(query = null, preloader = true) {
+  async asyncSearch(preloader = true) {
     const url = new URL(asyncUrl)
+
+    const query = this.search_terms.value ?? null
 
     if (preloader) {
       this.options = []
