@@ -51,8 +51,12 @@ class RelationModelFieldController extends MoonShineController
         }
 
         $term = $request->get('query');
+        $values = $request->get($field->column(), '') ?? '';
 
-        $except = explode(',', $request->get($field->column()) ?? '');
+        $except = is_array($values)
+            ? array_keys($values)
+            : array_filter(explode(',', $values));
+
         $offset = $request->get('offset', 0);
 
         $query->when(

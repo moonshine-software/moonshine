@@ -12,8 +12,6 @@ export default (asyncUrl = '') => ({
   removeItemButton: null,
   shouldSort: null,
   associatedWith: null,
-  observer: null,
-  options: [],
   searchTerms: null,
 
   init() {
@@ -46,7 +44,6 @@ export default (asyncUrl = '') => ({
         position: 'bottom',
         placeholderValue: this.placeholder,
         searchEnabled: this.searchEnabled,
-        resetScrollPosition: false,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
@@ -118,22 +115,8 @@ export default (asyncUrl = '') => ({
         callbackOnInit: () => {
           this.searchTerms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
 
-          if (asyncUrl) {
+          if (this.associatedWith && asyncUrl) {
             this.asyncSearch()
-
-            const options = {
-              root: this.$el.closest('.choices').querySelector('.choices__list .choices__list'),
-              rootMargin: '0px',
-              threshold: 1.0,
-            }
-
-            const callback = (entries, observer) => {
-              if (entries[0].isIntersecting) {
-                this.asyncSearch(false)
-              }
-            }
-
-            this.observer = new IntersectionObserver(callback, options)
           }
         },
       })
@@ -143,7 +126,6 @@ export default (asyncUrl = '') => ({
           'change',
           event => {
             this.choicesInstance.clearStore()
-            this.asyncSearch()
           },
           false,
         )
@@ -188,11 +170,6 @@ export default (asyncUrl = '') => ({
           debounce(event => this.asyncSearch(), 300),
           false,
         )
-        this.$el.addEventListener(
-          'change',
-          debounce(event => this.asyncSearch(), 300),
-          false,
-        )
       }
 
       if (this.removeItemButton) {
@@ -232,35 +209,21 @@ export default (asyncUrl = '') => ({
     })
   },
 
-  async asyncSearch(preloader = true) {
+  async asyncSearch() {
     const url = new URL(asyncUrl)
 
     const query = this.searchTerms.value ?? null
 
-    if (preloader) {
-      this.options = []
-    }
-
     if (query !== null && query.length) {
       url.searchParams.append('query', query)
     }
-
-    url.searchParams.append('offset', this.options.length)
 
     const form = this.$el.form
     const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
 
     const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
 
-    this.options = [...this.options, ...options]
-
-    this.choicesInstance.setChoices(this.options, 'value', 'label', true)
-
-    const target = this.$el
-      .closest('.choices')
-      .querySelector('.choices__list .choices__list .choices__item:last-child')
-
-    this.observer.observe(target)
+    this.choicesInstance.setChoices(options, 'value', 'label', true)
   },
 
   fromUrl(url) {
