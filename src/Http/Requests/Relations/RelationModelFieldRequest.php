@@ -41,6 +41,7 @@ class RelationModelFieldRequest extends MoonShineFormRequest
                 ->findByColumn(request('_parent_field'))
                 ?->getResource()
                 ?->getFormFields()
+                ?->onlyFields()
             : $this->getPage()->getComponents()->onlyFields();
 
         if(is_null($fields)) {
