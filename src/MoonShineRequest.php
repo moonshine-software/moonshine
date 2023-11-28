@@ -23,7 +23,7 @@ class MoonShineRequest extends Request
     public function getResource(): ?ResourceContract
     {
         if ($this->resource instanceof ResourceContract) {
-            return $this->resource->boot();
+            return $this->resource;
         }
 
         $this->resource = MoonShine::getResourceFromUriKey(

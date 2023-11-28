@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Enums\PageType;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Fields\StackFields;
 use MoonShine\Http\Requests\MoonShineFormRequest;
 use MoonShine\Resources\ModelResource;
 use Throwable;
@@ -36,20 +33,20 @@ class RelationModelFieldRequest extends MoonShineFormRequest
         }
 
         $fields = request('_parent_field')
-            ? $this->getPage()->getComponents()->onlyFields()
-                ->filter(static fn (Field $field): bool => $field instanceof HasFields)
+            ? $this->getPage()->getComponents()
+                ->onlyFields()
+                ->withoutHasFields()
                 ->findByColumn(request('_parent_field'))
                 ?->getResource()
                 ?->getFormFields()
-                ?->onlyFields()
-            : $this->getPage()->getComponents()->onlyFields();
+            : $this->getPage()->getComponents();
 
         if(is_null($fields)) {
             return $this->field;
         }
 
         $this->field = $fields
-            ->unwrapElements(StackFields::class)
+            ->onlyFields()
             ->findByRelation($this->getRelationName());
 
         return $this->field;
@@ -78,7 +75,6 @@ class RelationModelFieldRequest extends MoonShineFormRequest
         };
 
         $this->field = $fields
-            ->filter()
             ->findByRelation($this->getRelationName());
 
         return $this->field;

@@ -15,7 +15,6 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Fields\StackFields;
 use Throwable;
 
 final class HasManyButton
@@ -43,7 +42,6 @@ final class HasManyButton
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()
-                ->unwrapElements(StackFields::class)
                 ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field))
                 // Uncomment if you need a parent resource
                 //->onlyRelationFields()

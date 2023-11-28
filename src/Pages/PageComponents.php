@@ -52,13 +52,17 @@ final class PageComponents extends MoonShineRenderElements
         return self::make($data);
     }
 
-    public function onlyFields(): Fields
+    /**
+     * @throws Throwable
+     */
+    public function onlyFields(bool $withWrappers = false): Fields
     {
         $data = [];
 
         $this->extractFields($this->toArray(), $data);
 
-        return Fields::make($data);
+        return Fields::make($data)
+            ->onlyFields($withWrappers);
     }
 
     /**

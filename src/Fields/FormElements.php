@@ -23,13 +23,16 @@ abstract class FormElements extends MoonShineRenderElements
     /**
      * @throws Throwable
      */
-    public function onlyFields(): Fields
+    public function onlyFields(bool $withWrappers = false): Fields
     {
         $data = [];
 
         $this->extractOnly($this->toArray(), Field::class, $data);
 
-        return Fields::make($data);
+        return Fields::make($data)->when(
+            ! $withWrappers,
+            fn (Fields $fields): Fields|FormElements => $fields->withoutWrappers()
+        );
     }
 
     /**
@@ -38,7 +41,6 @@ abstract class FormElements extends MoonShineRenderElements
     public function prepareAttributes(): Fields
     {
         return $this->onlyFields()
-            ->unwrapElements(StackFields::class)
             ->map(
                 static function (Field $formElement): Field {
                     $formElement->when(
@@ -61,7 +63,6 @@ abstract class FormElements extends MoonShineRenderElements
     public function whenFieldsConditions(): Fields
     {
         return $this->onlyFields()
-            ->unwrapElements(StackFields::class)
             ->filter(
                 static fn (Field $field): bool => $field->hasShowWhen()
             )
@@ -83,7 +84,7 @@ abstract class FormElements extends MoonShineRenderElements
         string $class,
         Field $default = null
     ): ?Field {
-        return $this->onlyFields()->first(
+        return $this->first(
             static fn (Field $field): bool => $field::class === $class,
             $default
         );

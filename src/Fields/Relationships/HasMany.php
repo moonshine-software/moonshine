@@ -254,7 +254,7 @@ class HasMany extends ModelRelationField implements HasFields
         $getFields = function () {
             $fields = $this->preparedClonedFields();
 
-            $fields->each(function (Field $field): void {
+            $fields->onlyFields()->each(function (Field $field): void {
                 if (
                     $field instanceof HasUpdateOnPreview
                     && $field->isUpdateOnPreview()
@@ -268,9 +268,9 @@ class HasMany extends ModelRelationField implements HasFields
                         )
                     );
                 }
-            });
 
-            $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
+                $field->setParent($this);
+            });
 
             return $fields->toArray();
         };
