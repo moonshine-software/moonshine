@@ -34,7 +34,10 @@ class RelationModelFieldController extends MoonShineController
         if ($field instanceof MorphTo) {
             $field->resolveFill([], $model);
 
-            $morphClass = $request->get($field->getMorphType());
+            $morphClass = $field->getWrapName()
+                ? data_get($request->get($field->getWrapName(), []), $field->getMorphType())
+                : $request->get($field->getMorphType());
+
             $model = new $morphClass();
             $searchColumn = $field->getSearchColumn($morphClass);
         }

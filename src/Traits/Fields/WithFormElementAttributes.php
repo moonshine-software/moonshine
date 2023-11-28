@@ -55,6 +55,11 @@ trait WithFormElementAttributes
         return $this;
     }
 
+    public function getWrapName(): ?string
+    {
+        return $this->wrapName;
+    }
+
     protected function nameUnDot(string $name): string
     {
         $parts = explode('.', $name);

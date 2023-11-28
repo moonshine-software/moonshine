@@ -6,7 +6,9 @@ namespace MoonShine\Fields;
 
 use Closure;
 use MoonShine\Collections\MoonShineRenderElements;
+use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
@@ -88,7 +90,7 @@ final class Fields extends FormElements
      */
     public function indexFields(): Fields
     {
-        return $this->onlyFields()
+        return $this->onlyFields(withWrappers: true)
             ->filter(static fn (Field $field): bool => $field->isOnIndex())
             ->values();
     }
@@ -114,6 +116,11 @@ final class Fields extends FormElements
         return $this->exceptElements(
             fn ($element): bool => $element instanceof ModelRelationField && $element->outsideComponent()
         );
+    }
+
+    public function withoutHasFields(): Fields
+    {
+        return $this->filter(static fn (Field $field): bool => $field instanceof HasFields);
     }
 
     /**
@@ -161,7 +168,7 @@ final class Fields extends FormElements
      */
     public function detailFields(): Fields
     {
-        return $this->onlyFields()
+        return $this->onlyFields(withWrappers: true)
             ->filter(static fn (Field $field): bool => $field->isOnDetail())
             ->values();
     }
@@ -188,6 +195,11 @@ final class Fields extends FormElements
                 static fn (Field $field): bool => $field instanceof Fileable
             )
             ->values();
+    }
+
+    public function withoutWrappers(): FormElements|Fields
+    {
+        return $this->unwrapElements(FieldsWrapper::class);
     }
 
     /**
@@ -287,7 +299,7 @@ final class Fields extends FormElements
         string $column,
         Field $default = null
     ): ?Field {
-        return $this->onlyFields()->first(
+        return $this->first(
             static fn (Field $field): bool => $field->column() === $column,
             $default
         );

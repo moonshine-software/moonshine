@@ -7,11 +7,12 @@ namespace MoonShine\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
+use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
-class StackFields extends Field implements HasFields
+class StackFields extends Field implements HasFields, FieldsWrapper
 {
     use WithFields;
 

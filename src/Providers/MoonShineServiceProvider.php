@@ -135,7 +135,7 @@ class MoonShineServiceProvider extends ServiceProvider
         Blade::withoutDoubleEncoding();
         Blade::componentNamespace('MoonShine\Components', 'moonshine');
 
-        $this->app->bind(
+        $this->app->scoped(
             MoonShineRequest::class,
             fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );

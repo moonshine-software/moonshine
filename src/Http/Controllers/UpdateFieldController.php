@@ -9,7 +9,6 @@ use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Fields\StackFields;
 use MoonShine\Http\Requests\Relations\RelationModelColumnUpdateRequest;
 use MoonShine\Http\Requests\Resources\UpdateColumnFormRequest;
 use MoonShine\Resources\ModelResource;
@@ -33,7 +32,7 @@ class UpdateFieldController extends MoonShineController
 
         $field = $relationField
             ->getFields()
-            ?->unwrapElements(StackFields::class)
+            ?->onlyFields()
             ?->findByColumn($request->get('field'));
 
         return $this->save($resource, $field);

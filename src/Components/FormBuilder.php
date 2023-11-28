@@ -6,11 +6,13 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\View\ComponentAttributeBag;
+use JsonException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Traits\Fields\WithAdditionalFields;
 use MoonShine\Traits\HasAsync;
+use Throwable;
 
 /**
  * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], mixed $values = [])
@@ -143,6 +145,10 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     * @throws JsonException
+     */
     protected function viewData(): array
     {
         $fields = $this->preparedFields();

@@ -10,7 +10,6 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\BelongsToMany;
-use MoonShine\Fields\StackFields;
 use Throwable;
 
 final class BelongsToManyButton
@@ -32,7 +31,6 @@ final class BelongsToManyButton
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()
-                ->unwrapElements(StackFields::class)
                 ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
 
             return $fields
