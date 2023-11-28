@@ -28,6 +28,7 @@ final class QueryTagButton
                     ->primary()
                     ->customAttributes([
                         'class' => 'active-query-tag',
+                        'href' => to_page(page: $resource->indexPage(), resource: $resource),
                     ])
             )
             ->when(
