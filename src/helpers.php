@@ -8,7 +8,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\AssetManager;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
@@ -24,6 +23,8 @@ use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
 use MoonShine\Support\SelectOptions;
+use MoonShine\Theme\AssetManager;
+use MoonShine\Theme\ColorManager;
 
 if (! function_exists('moonshine')) {
     function moonshine(): MoonShine
@@ -50,6 +51,13 @@ if (! function_exists('moonshineAssets')) {
     function moonshineAssets(): AssetManager
     {
         return app(AssetManager::class);
+    }
+}
+
+if (! function_exists('moonshineColors')) {
+    function moonshineColors(): ColorManager
+    {
+        return app(ColorManager::class);
     }
 }
 

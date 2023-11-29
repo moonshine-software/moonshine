@@ -14,7 +14,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use MoonShine\AssetManager;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeApplyCommand;
 use MoonShine\Commands\MakeComponentCommand;
@@ -32,6 +31,8 @@ use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
+use MoonShine\Theme\AssetManager;
+use MoonShine\Theme\ColorManager;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -148,6 +149,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(MoonShine::class);
         $this->app->singleton(MenuManager::class);
         $this->app->singleton(AssetManager::class);
+        $this->app->singleton(ColorManager::class);
         $this->app->singleton(MoonShineRegister::class);
 
         $this->loadAuthConfig();

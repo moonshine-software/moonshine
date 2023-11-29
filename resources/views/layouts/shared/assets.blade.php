@@ -12,12 +12,12 @@
 
 <style>
     :root {
-    @foreach (moonshineAssets()->getColors() as $name => $value)
+    @foreach (moonshineColors()->all() as $name => $value)
     --{{ $name }}:{{ $value }};
     @endforeach
     }
     :root.dark {
-    @foreach (moonshineAssets()->getColors(dark: true) as $name => $value)
+    @foreach (moonshineColors()->all(dark: true) as $name => $value)
         --{{ $name }}:{{ $value }};
     @endforeach
     }
