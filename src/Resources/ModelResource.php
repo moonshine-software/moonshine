@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\ClickAction;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
@@ -228,37 +229,42 @@ abstract class ModelResource extends Resource
         $fields ??= $this->getFormFields()
             ->onlyFields();
 
-        $fields->fill($item->toArray(), $item);
+        $form = FormBuilder::make()
+            ->fields($fields)
+            ->fillCast($item, $this->getModelCast());
 
         try {
-            $fields->each(fn (Field $field): mixed => $field->beforeApply($item));
+            $form->apply(
+                static fn(Model $item) => $item->save(),
+                default: fn(Field $field) => $this->onSave($field),
+                before: function (Model $item) {
+                    if (! $item->exists) {
+                        $item = $this->beforeCreating($item);
+                    }
 
-            if (! $item->exists) {
-                $item = $this->beforeCreating($item);
-            }
+                    if ($item->exists) {
+                        $item = $this->beforeUpdating($item);
+                    }
 
-            if ($item->exists) {
-                $item = $this->beforeUpdating($item);
-            }
+                    return $item;
+                },
+                after: function (Model $item) {
+                    $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-            $fields->withoutOutside()
-                ->each(fn (Field $field): mixed => $field->apply($this->onSave($field), $item));
+                    $item->save();
 
-            if ($item->save()) {
-                $wasRecentlyCreated = $item->wasRecentlyCreated;
+                    if ($wasRecentlyCreated) {
+                        $item = $this->afterCreated($item);
+                    }
 
-                $fields->each(fn (Field $field): mixed => $field->afterApply($item));
+                    if (! $wasRecentlyCreated) {
+                        $item = $this->afterUpdated($item);
+                    }
 
-                $item->save();
-
-                if ($wasRecentlyCreated) {
-                    $item = $this->afterCreated($item);
-                }
-
-                if (! $wasRecentlyCreated) {
-                    $item = $this->afterUpdated($item);
-                }
-            }
+                    return $item;
+                },
+                throw: true
+            );
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }

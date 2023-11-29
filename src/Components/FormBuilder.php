@@ -147,13 +147,67 @@ final class FormBuilder extends RowComponent
 
     /**
      * @throws Throwable
+     */
+    public function apply(
+        Closure $apply,
+        ?Closure $default = null,
+        ?Closure $before = null,
+        ?Closure $after = null,
+        bool $throw = false,
+    ): bool {
+        $values = $this->getValues();
+
+        if (is_null($default)) {
+            $default = static function (Field $field): Closure {
+                return static function (mixed $item) use ($field): mixed {
+                    if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
+                        return $item;
+                    }
+
+                    $value = $field->requestValue() !== false ? $field->requestValue() : null;
+
+                    data_set($item, $field->column(), $value);
+
+                    return $item;
+                };
+            };
+        }
+
+        try {
+            $fields = $this->preparedFields()->onlyFields();
+
+            $values = is_null($before) ? $values : $before($values);
+
+            $fields->each(fn (Field $field): mixed => $field->beforeApply($values));
+
+            $fields
+                ->withoutOutside()
+                ->each(fn (Field $field): mixed => $field->apply($default($field), $values));
+
+            $apply($values, $fields);
+
+            $fields->each(fn (Field $field): mixed => $field->afterApply($values));
+
+            value($after, $values);
+        } catch (Throwable $e) {
+            report_if(! $throw, $e);
+            throw_if($throw, $e);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @throws Throwable
      * @throws JsonException
      */
     protected function viewData(): array
     {
         $fields = $this->preparedFields();
 
-        if($this->hasAdditionalFields()) {
+        if ($this->hasAdditionalFields()) {
             $this->getAdditionalFields()->each(fn ($field) => $fields->push($field));
         }
 
@@ -188,7 +242,7 @@ final class FormBuilder extends RowComponent
             ]);
         }
 
-        if(! is_null($this->onBeforeFieldsRender)) {
+        if (! is_null($this->onBeforeFieldsRender)) {
             $fields = value($this->onBeforeFieldsRender, $fields);
         }
 
