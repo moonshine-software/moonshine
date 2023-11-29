@@ -31,6 +31,15 @@ final class FormBuilder extends RowComponent
         'submitLabel',
     ];
 
+    protected array $excludeFields = [
+        '_force_redirect',
+        '_redirect',
+        '_method',
+        '_token',
+        '_component_name',
+        '_async_field'
+    ];
+
     protected bool $isPrecognitive = false;
 
     protected ?string $submitLabel = null;
@@ -138,6 +147,18 @@ final class FormBuilder extends RowComponent
         return $isAsync ? $this->async(asyncEvents: $asyncEvents) : $this->precognitive();
     }
 
+    public function getExcludedFields(): array
+    {
+        return $this->excludeFields;
+    }
+
+    public function excludeFields(array $excludeFields): self
+    {
+        $this->excludeFields = array_merge($this->excludeFields, $excludeFields);
+
+        return $this;
+    }
+
     public function onBeforeFieldsRender(Closure $closure): self
     {
         $this->onBeforeFieldsRender = $closure;
@@ -175,6 +196,10 @@ final class FormBuilder extends RowComponent
 
         try {
             $fields = $this->preparedFields()->onlyFields();
+
+            $fields->exceptElements(
+                fn (Field $element): bool => ! in_array($element->column(), $this->getExcludedFields(), true)
+            );
 
             $values = is_null($before) ? $values : $before($values);
 
