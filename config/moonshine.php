@@ -17,6 +17,7 @@ return [
     'logo_small' => env('MOONSHINE_LOGO_SMALL'),
 
     'route' => [
+        'domain' => env('MOONSHINE_URL', ''),
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
         'single_page_prefix' => 'page',
         'index' => 'moonshine.index',

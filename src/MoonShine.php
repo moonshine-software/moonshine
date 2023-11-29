@@ -204,15 +204,23 @@ class MoonShine
      */
     public static function resolveRoutes(): void
     {
-        Route::prefix(config('moonshine.route.prefix', ''))
-            ->middleware('moonshine')
-            ->as('moonshine.')->group(function (): void {
-                self::getResources()->each(
-                    static function (ResourceContract $resource): void {
-                        $resource->routes();
-                    }
-                );
-            });
+        Route::group($this->configureRoutes(), function (): void {
+            self::getResources()->each(
+                static function (ResourceContract $resource): void {
+                    $resource->routes();
+                }
+            );
+        });
+    }
+
+    private function configureRoutes(): array
+    {
+        return array_filter([
+            'domain' => config('moonshine.route.domain', ''),
+            'prefix' => config('moonshine.route.prefix', ''),
+            'middleware' => 'moonshine',
+            'as' => 'moonshine.',
+        ]);
     }
 
     public static function authorizationRules(): Collection
