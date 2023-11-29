@@ -205,12 +205,12 @@ class MoonShine
     public static function resolveRoutes(): void
     {
         Route::group($this->configureRoutes(), function (): void {
-                self::getResources()->each(
-                    static function (ResourceContract $resource): void {
-                        $resource->routes();
-                    }
-                );
-            });
+            self::getResources()->each(
+                static function (ResourceContract $resource): void {
+                    $resource->routes();
+                }
+            );
+        });
     }
 
     private function configureRoutes(): array
