@@ -35,7 +35,6 @@ final class FormBuilder extends RowComponent
         '_force_redirect',
         '_redirect',
         '_method',
-        '_token',
         '_component_name',
         '_async_field'
     ];
