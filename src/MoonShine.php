@@ -213,16 +213,6 @@ class MoonShine
         });
     }
 
-    private function configureRoutes(): array
-    {
-        return array_filter([
-            'domain' => config('moonshine.route.domain', ''),
-            'prefix' => config('moonshine.route.prefix', ''),
-            'middleware' => 'moonshine',
-            'as' => 'moonshine.',
-        ]);
-    }
-
     public static function authorizationRules(): Collection
     {
         return collect(self::$authorization);
