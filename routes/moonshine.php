@@ -14,9 +14,7 @@ use MoonShine\Http\Controllers\RelationModelFieldController;
 use MoonShine\Http\Controllers\SocialiteController;
 use MoonShine\Http\Controllers\UpdateFieldController;
 
-Route::prefix(config('moonshine.route.prefix', ''))
-    ->middleware('moonshine')
-    ->as('moonshine.')->group(static function (): void {
+Route::group(moonshine()->configureRoutes(), static function (): void {
         Route::middleware(config('moonshine.auth.middleware', []))->group(function (): void {
             Route::prefix('resource/{resourceUri}')->group(function (): void {
                 Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
