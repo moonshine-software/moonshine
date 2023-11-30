@@ -51,17 +51,15 @@ class PublishCommand extends MoonShineCommand
             if(confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
                 $this->flushNodeModules();
 
-                self::updateNodePackages(static function ($packages) {
-                    return [
-                            '@tailwindcss/forms' => '^0.5',
-                            '@tailwindcss/typography' => '^0.5',
-                            '@tailwindcss/line-clamp' => '^0.4',
-                            '@tailwindcss/aspect-ratio' => '^0.4',
-                            'tailwindcss' => '^3',
-                            'autoprefixer' => '^10',
-                            'postcss' => '^8',
-                        ] + $packages;
-                });
+                self::updateNodePackages(static fn($packages) => [
+                        '@tailwindcss/forms' => '^0.5',
+                        '@tailwindcss/typography' => '^0.5',
+                        '@tailwindcss/line-clamp' => '^0.4',
+                        '@tailwindcss/aspect-ratio' => '^0.4',
+                        'tailwindcss' => '^3',
+                        'autoprefixer' => '^10',
+                        'postcss' => '^8',
+                    ] + $packages);
 
                 $this->installNodePackages();
 
