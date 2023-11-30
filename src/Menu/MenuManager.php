@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace MoonShine\Menu;
 
+use Closure;
 use Illuminate\Support\Collection;
 
 class MenuManager
 {
-    protected static ?Collection $menu = null;
+    protected static Closure|Collection|array|null $menu = null;
 
-    public static function register(Collection $data): void
+    public static function register(Closure|array|Collection $data): void
     {
         self::$menu = $data;
     }
 
     public static function all(): ?Collection
     {
-        return self::$menu?->filter(function (MenuElement $item): bool {
+        return collect(value(self::$menu, moonshineRequest()))?->filter(function (MenuElement $item): bool {
             if ($item instanceof MenuGroup) {
                 $item->setItems(
                     $item->items()->filter(

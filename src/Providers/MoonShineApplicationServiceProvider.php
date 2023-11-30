@@ -24,13 +24,17 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     {
         MoonShine::resources($this->resources());
         MoonShine::pages($this->pages());
-        MoonShine::menu($this->menu());
 
-        MenuManager::register(MoonShine::getMenu());
+        $menu = $this->menu();
+
+        MoonShine::init($menu);
+        MenuManager::register($menu);
 
         MoonShine::resolveRoutes();
 
-        $theme = is_closure($this->theme()) ? $this->theme() : fn (): array|Closure => $this->theme();
+        $theme = is_closure($this->theme())
+            ? $this->theme()
+            : fn (): array|Closure => $this->theme();
 
         moonshineColors()->lazyAssign($theme);
         moonshineAssets()->lazyAssign($theme);
@@ -61,9 +65,9 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return array<MenuElement>
+     * @return Closure|array<MenuElement>
      */
-    protected function menu(): array
+    protected function menu(): Closure|array
     {
         return [];
     }
