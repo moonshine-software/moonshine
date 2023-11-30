@@ -162,7 +162,7 @@ class MoonShine
         self::$pages = self::getPages();
         self::$resources = self::getResources();
 
-        if(!is_closure($data)) {
+        if(! is_closure($data)) {
             self::$menu = $newCollection ? collect() : self::getMenu();
 
             collect($data)->merge(self::getVendorsMenu())->each(
