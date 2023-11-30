@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Providers;
 
+use Closure;
 use Illuminate\Support\ServiceProvider;
-use MoonShine\AssetManager;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuManager;
@@ -30,18 +30,10 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
 
         MoonShine::resolveRoutes();
 
-        $theme = $this->theme();
+        $theme = is_closure($this->theme()) ? $this->theme() : fn() => $this->theme();
 
-        moonshineAssets()->when(
-            isset($theme['css']) && $theme['css'] !== '',
-            static fn (AssetManager $assets): AssetManager => $assets->mainCss($theme['css'])
-        )->when(
-            isset($theme['colors']) && $theme['colors'] !== [],
-            static fn (AssetManager $assets): AssetManager => $assets->colors($theme['colors'])
-        )->when(
-            isset($theme['darkColors']) && $theme['darkColors'] !== [],
-            static fn (AssetManager $assets): AssetManager => $assets->darkColors($theme['darkColors'])
-        );
+        moonshineColors()->lazyAssign($theme);
+        moonshineAssets()->lazyAssign($theme);
     }
 
     /**
@@ -77,9 +69,9 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return array{css: string, colors: array, darkColors: array}
+     * @return Closure|array{css: string, colors: array, darkColors: array}
      */
-    protected function theme(): array
+    protected function theme(): Closure|array
     {
         return [];
     }
