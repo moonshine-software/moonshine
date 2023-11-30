@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Theme;
 
 use Closure;
+use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
 
@@ -195,7 +196,17 @@ final class ColorManager
 
     public function __call(string $name, array $arguments): self
     {
-        $this->set($name, $arguments[0] ?? '', dark: $arguments[1] ?? false);
+        $this->set(
+            name: str($name)
+                ->kebab()
+                ->when(
+                    $arguments[1] ?? false,
+                    fn(Stringable $str) => $str->append(".$arguments[1]")
+                )
+                ->value(),
+            value: $arguments[0] ?? '',
+            dark: $arguments[2] ?? false,
+        );
 
         return $this;
     }
