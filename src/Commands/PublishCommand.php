@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Filesystem\Filesystem;
-
-use function Laravel\Prompts\{info, multiselect};
-
 use MoonShine\MoonShine;
+
+use function Laravel\Prompts\{confirm, info, multiselect};
 
 class PublishCommand extends MoonShineCommand
 {
@@ -20,6 +19,7 @@ class PublishCommand extends MoonShineCommand
             'Types',
             [
                 'assets' => 'Assets',
+                'assets-template' => 'Assets template',
                 'layout' => 'Layout',
                 'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
             ],
@@ -30,6 +30,46 @@ class PublishCommand extends MoonShineCommand
             $this->call('vendor:publish', [
                 '--tag' => 'moonshine-assets',
             ]);
+        }
+
+        if (in_array('assets-template', $types, true)) {
+            $this->copyStub(
+                'assets/css',
+                resource_path('css/app.css')
+            );
+
+            $this->copyStub(
+                'assets/postcss.config.preset',
+                base_path('postcss.config.js')
+            );
+
+            $this->copyStub(
+                'assets/tailwind.config.preset',
+                base_path('tailwind.config.js')
+            );
+
+            if(confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
+                $this->flushNodeModules();
+
+                self::updateNodePackages(static function ($packages) {
+                    return [
+                            '@tailwindcss/forms' => '^0.5',
+                            '@tailwindcss/typography' => '^0.5',
+                            '@tailwindcss/line-clamp' => '^0.4',
+                            '@tailwindcss/aspect-ratio' => '^0.4',
+                            'tailwindcss' => '^3',
+                            'autoprefixer' => '^10',
+                            'postcss' => '^8',
+                        ] + $packages;
+                });
+
+                $this->installNodePackages();
+
+                info('Node packages installed');
+            }
+
+            info('App.css, postcss/tailwind.config published');
+            info("Don't forget to add to MoonShineServiceProvider `Vite::asset('resources/css/app.css')`");
         }
 
         if (in_array('layout', $types, true)) {
