@@ -201,7 +201,7 @@ final class ColorManager
                 ->kebab()
                 ->when(
                     $arguments[1] ?? false,
-                    fn(Stringable $str) => $str->append(".$arguments[1]")
+                    fn (Stringable $str) => $str->append(".$arguments[1]")
                 )
                 ->value(),
             value: $arguments[0] ?? '',
