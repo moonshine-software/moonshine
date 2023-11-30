@@ -155,21 +155,23 @@ class MoonShine
     /**
      * Register Menu with resources and pages in the system
      *
-     * @param  array<MenuElement>  $data
-     * @throws Throwable
+     * @param  Closure|array<MenuElement>  $data
      */
-    public static function menu(array $data, bool $newCollection = false): void
+    public static function init(array|Closure $data, bool $newCollection = false): void
     {
-        self::$menu = $newCollection ? collect() : self::getMenu();
         self::$pages = self::getPages();
         self::$resources = self::getResources();
 
-        collect($data)->merge(self::getVendorsMenu())->each(
-            function (MenuElement $item): void {
-                self::$menu->add($item);
-                self::resolveMenuItem($item);
-            }
-        );
+        if(!is_closure($data)) {
+            self::$menu = $newCollection ? collect() : self::getMenu();
+
+            collect($data)->merge(self::getVendorsMenu())->each(
+                function (MenuElement $item): void {
+                    self::$menu->add($item);
+                    self::resolveMenuItem($item);
+                }
+            );
+        }
 
         self::$resources->add(new MoonShineProfileResource());
 
