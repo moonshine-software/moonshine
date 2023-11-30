@@ -31,6 +31,14 @@ final class FormBuilder extends RowComponent
         'submitLabel',
     ];
 
+    protected array $excludeFields = [
+        '_force_redirect',
+        '_redirect',
+        '_method',
+        '_component_name',
+        '_async_field'
+    ];
+
     protected bool $isPrecognitive = false;
 
     protected ?string $submitLabel = null;
@@ -138,11 +146,82 @@ final class FormBuilder extends RowComponent
         return $isAsync ? $this->async(asyncEvents: $asyncEvents) : $this->precognitive();
     }
 
+    public function getExcludedFields(): array
+    {
+        return $this->excludeFields;
+    }
+
+    public function excludeFields(array $excludeFields): self
+    {
+        $this->excludeFields = array_merge($this->excludeFields, $excludeFields);
+
+        return $this;
+    }
+
     public function onBeforeFieldsRender(Closure $closure): self
     {
         $this->onBeforeFieldsRender = $closure;
 
         return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function apply(
+        Closure $apply,
+        ?Closure $default = null,
+        ?Closure $before = null,
+        ?Closure $after = null,
+        bool $throw = false,
+    ): bool {
+        $values = $this->getValues();
+
+        if (is_null($default)) {
+            $default = static function (Field $field): Closure {
+                return static function (mixed $item) use ($field): mixed {
+                    if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
+                        return $item;
+                    }
+
+                    $value = $field->requestValue() !== false ? $field->requestValue() : null;
+
+                    data_set($item, $field->column(), $value);
+
+                    return $item;
+                };
+            };
+        }
+
+        try {
+            $fields = $this
+                ->preparedFields()
+                ->onlyFields()
+                ->exceptElements(
+                fn (Field $element): bool => in_array($element->column(), $this->getExcludedFields(), true)
+            );
+
+            $values = is_null($before) ? $values : $before($values);
+
+            $fields->each(fn (Field $field): mixed => $field->beforeApply($values));
+
+            $fields
+                ->withoutOutside()
+                ->each(fn (Field $field): mixed => $field->apply($default($field), $values));
+
+            $apply($values, $fields);
+
+            $fields->each(fn (Field $field): mixed => $field->afterApply($values));
+
+            value($after, $values);
+        } catch (Throwable $e) {
+            report_if(! $throw, $e);
+            throw_if($throw, $e);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -153,7 +232,7 @@ final class FormBuilder extends RowComponent
     {
         $fields = $this->preparedFields();
 
-        if($this->hasAdditionalFields()) {
+        if ($this->hasAdditionalFields()) {
             $this->getAdditionalFields()->each(fn ($field) => $fields->push($field));
         }
 
@@ -188,7 +267,7 @@ final class FormBuilder extends RowComponent
             ]);
         }
 
-        if(! is_null($this->onBeforeFieldsRender)) {
+        if (! is_null($this->onBeforeFieldsRender)) {
             $fields = value($this->onBeforeFieldsRender, $fields);
         }
 
