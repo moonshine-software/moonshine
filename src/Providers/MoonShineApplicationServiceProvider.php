@@ -30,7 +30,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
 
         MoonShine::resolveRoutes();
 
-        $theme = is_closure($this->theme()) ? $this->theme() : fn() => $this->theme();
+        $theme = is_closure($this->theme()) ? $this->theme() : fn(): array|Closure => $this->theme();
 
         moonshineColors()->lazyAssign($theme);
         moonshineAssets()->lazyAssign($theme);

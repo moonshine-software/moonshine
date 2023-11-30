@@ -147,7 +147,7 @@ final class ColorManager
         if (! $this->extracted) {
             $this->when(
                 value($this->lazy, moonshineRequest()),
-                fn (self $class, array $data) => $class
+                fn (self $class, array $data): \MoonShine\Theme\ColorManager => $class
                     ->bulkAssign(data_get($data, 'colors', []))
                     ->bulkAssign(data_get($data, 'darkColors', []), dark: true)
             );
