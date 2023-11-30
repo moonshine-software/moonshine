@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Filesystem\Filesystem;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{confirm, info, multiselect};
-
-use MoonShine\MoonShine;
 
 class PublishCommand extends MoonShineCommand
 {
@@ -53,7 +52,6 @@ class PublishCommand extends MoonShineCommand
                 $this->flushNodeModules();
 
                 self::updateNodePackages(static fn ($packages) => [
-                        '@tailwindcss/forms' => '^0.5',
                         '@tailwindcss/typography' => '^0.5',
                         '@tailwindcss/line-clamp' => '^0.4',
                         '@tailwindcss/aspect-ratio' => '^0.4',
