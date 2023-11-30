@@ -36,7 +36,7 @@ final class FormBuilder extends RowComponent
         '_redirect',
         '_method',
         '_component_name',
-        '_async_field'
+        '_async_field',
     ];
 
     protected bool $isPrecognitive = false;
@@ -178,7 +178,7 @@ final class FormBuilder extends RowComponent
         $values = $this->getValues();
 
         if (is_null($default)) {
-            $default = static fn(Field $field): Closure => static function (mixed $item) use ($field): mixed {
+            $default = static fn (Field $field): Closure => static function (mixed $item) use ($field): mixed {
                 if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
                     return $item;
                 }
@@ -196,8 +196,8 @@ final class FormBuilder extends RowComponent
                 ->preparedFields()
                 ->onlyFields()
                 ->exceptElements(
-                fn (Field $element): bool => in_array($element->column(), $this->getExcludedFields(), true)
-            );
+                    fn (Field $element): bool => in_array($element->column(), $this->getExcludedFields(), true)
+                );
 
             $values = is_null($before) ? $values : $before($values);
 
