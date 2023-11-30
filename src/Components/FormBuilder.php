@@ -178,18 +178,16 @@ final class FormBuilder extends RowComponent
         $values = $this->getValues();
 
         if (is_null($default)) {
-            $default = static function (Field $field): Closure {
-                return static function (mixed $item) use ($field): mixed {
-                    if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
-                        return $item;
-                    }
-
-                    $value = $field->requestValue() !== false ? $field->requestValue() : null;
-
-                    data_set($item, $field->column(), $value);
-
+            $default = static fn(Field $field): Closure => static function (mixed $item) use ($field): mixed {
+                if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
                     return $item;
-                };
+                }
+
+                $value = $field->requestValue() !== false ? $field->requestValue() : null;
+
+                data_set($item, $field->column(), $value);
+
+                return $item;
             };
         }
 
