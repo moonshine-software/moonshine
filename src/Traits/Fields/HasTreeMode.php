@@ -35,7 +35,9 @@ trait HasTreeMode
             ->get()
             ->map(fn ($item) => $item->setAttribute($this->treeParentColumn, $item->{$this->treeParentColumn} ?? 0))
             ->groupBy($this->treeParentColumn)
-            ->map(fn ($items): Collection => $items->keyBy($items->first()->getKeyName()));
+            ->map(fn ($items): Collection => $items->keyBy(
+                $this->getRelation()?->getRelated()?->getKeyName() ?? 'id'
+            ));
 
         $this->treeHtml = '';
 
