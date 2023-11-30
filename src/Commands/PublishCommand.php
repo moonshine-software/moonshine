@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Filesystem\Filesystem;
-use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{confirm, info, multiselect};
+
+use MoonShine\MoonShine;
 
 class PublishCommand extends MoonShineCommand
 {
