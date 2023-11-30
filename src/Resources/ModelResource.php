@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\ClickAction;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
@@ -229,42 +228,37 @@ abstract class ModelResource extends Resource
         $fields ??= $this->getFormFields()
             ->onlyFields();
 
-        $form = FormBuilder::make()
-            ->fields($fields)
-            ->fillCast($item, $this->getModelCast());
+        $fields->fill($item->toArray(), $item);
 
         try {
-            $form->apply(
-                static fn(Model $item) => $item->save(),
-                default: fn(Field $field) => $this->onSave($field),
-                before: function (Model $item) {
-                    if (! $item->exists) {
-                        $item = $this->beforeCreating($item);
-                    }
+            $fields->each(fn (Field $field): mixed => $field->beforeApply($item));
 
-                    if ($item->exists) {
-                        $item = $this->beforeUpdating($item);
-                    }
+            if (! $item->exists) {
+                $item = $this->beforeCreating($item);
+            }
 
-                    return $item;
-                },
-                after: function (Model $item) {
-                    $wasRecentlyCreated = $item->wasRecentlyCreated;
+            if ($item->exists) {
+                $item = $this->beforeUpdating($item);
+            }
 
-                    $item->save();
+            $fields->withoutOutside()
+                ->each(fn (Field $field): mixed => $field->apply($this->onSave($field), $item));
 
-                    if ($wasRecentlyCreated) {
-                        $item = $this->afterCreated($item);
-                    }
+            if ($item->save()) {
+                $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-                    if (! $wasRecentlyCreated) {
-                        $item = $this->afterUpdated($item);
-                    }
+                $fields->each(fn (Field $field): mixed => $field->afterApply($item));
 
-                    return $item;
-                },
-                throw: true
-            );
+                $item->save();
+
+                if ($wasRecentlyCreated) {
+                    $item = $this->afterCreated($item);
+                }
+
+                if (! $wasRecentlyCreated) {
+                    $item = $this->afterUpdated($item);
+                }
+            }
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }
