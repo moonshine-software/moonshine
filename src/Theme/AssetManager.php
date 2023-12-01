@@ -6,6 +6,7 @@ namespace MoonShine\Theme;
 
 use Closure;
 use Composer\InstalledVersions;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Traits\Conditionable;
@@ -102,6 +103,10 @@ class AssetManager
             $this->when(
                 value($this->lazy, moonshineRequest()),
                 fn (self $class, array $data) => $class
+                    ->when(
+                        Arr::isList($data) && filled($data),
+                        static fn (AssetManager $assets) => $assets->add($data)
+                    )
                     ->when(
                         isset($data['css']) && $data['css'] !== '',
                         static fn (AssetManager $assets): AssetManager => $assets->mainCss($data['css'])

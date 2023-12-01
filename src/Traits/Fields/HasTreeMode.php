@@ -33,11 +33,10 @@ trait HasTreeMode
     {
         $data = $this->resolveValuesQuery()
             ->get()
-            ->map(fn ($item) => $item->setAttribute($this->treeParentColumn, $item->{$this->treeParentColumn} ?? 0))
             ->groupBy($this->treeParentColumn)
-            ->map(fn ($items): Collection => $items->keyBy(
+            ->mapWithKeys(fn ($items, $key): array => [$key ?: 0 => $items->keyBy(
                 $this->getRelation()?->getRelated()?->getKeyName() ?? 'id'
-            ));
+            )]);
 
         $this->treeHtml = '';
 
