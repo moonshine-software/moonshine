@@ -121,7 +121,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
                 ->implode(','),
             'data-async-selector' => $selector,
             'data-async-method' => $method,
-        ])->onClick(fn () => 'request', 'prevent');
+        ])->onClick(fn (): string => 'request', 'prevent');
     }
 
     public function url(mixed $data = null): string
