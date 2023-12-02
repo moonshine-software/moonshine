@@ -2,12 +2,6 @@ import './bootstrap'
 import './layout'
 
 import AlpineMS from 'alpinejs'
-
-const alpineExists = !!window.Alpine
-
-/** @type {import('@types/alpinejs').Alpine} */
-const Alpine = alpineExists ? window.Alpine : AlpineMS
-
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
 
@@ -17,6 +11,7 @@ import tableBuilder from './alpine/tableBuilder'
 import dropdown from './alpine/dropdown'
 import modal from './alpine/modal'
 import offcanvas from './alpine/offcanvas'
+import actionButton from './alpine/actionButton'
 import select from './alpine/select'
 import toasts from './alpine/toasts'
 import tooltip from './alpine/tooltip'
@@ -35,9 +30,15 @@ import asyncLink from './alpine/asyncLink'
 import numberUpDown from './alpine/numberUpDown'
 import fragment from './alpine/fragment'
 
+const alpineExists = !!window.Alpine
+
+/** @type {import('@types/alpinejs').Alpine} */
+const Alpine = alpineExists ? window.Alpine : AlpineMS
+
 Alpine.data('formBuilder', formBuilder)
 Alpine.data('tableBuilder', tableBuilder)
 Alpine.data('asyncLink', asyncLink)
+Alpine.data('actionButton', actionButton)
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
 Alpine.data('sortable', sortable)

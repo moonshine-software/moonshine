@@ -192,7 +192,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     public function route(array $params = []): string
     {
         return MoonShineRouter::to(
-            'resource.page',
+            $this->hasResource() ? 'resource.page' : 'page',
             [
                 'resourceUri' => $this->getResource()?->uriKey(),
                 'pageUri' => $this->uriKey(),

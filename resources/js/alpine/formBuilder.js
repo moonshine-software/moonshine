@@ -1,4 +1,8 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -105,7 +109,7 @@ export default () => ({
       .catch(errorResponse => {
         const data = errorResponse.response.data
 
-        t.$dispatch('toast', {type: 'error', text: data.message})
+        t.$dispatch('toast', {type: 'error', text: data.message ?? data})
 
         submitState(form, false)
       })

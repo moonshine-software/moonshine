@@ -7,6 +7,7 @@ namespace MoonShine\ActionButtons;
 use Closure;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
@@ -25,6 +26,8 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     use WithModal;
 
     protected bool $isBulk = false;
+
+    protected bool $isAsync = false;
 
     public function __construct(
         Closure|string $label,
@@ -101,6 +104,26 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this;
     }
 
+    public function isAsync(): bool
+    {
+        return $this->isAsync;
+    }
+
+    public function async(string $method = 'GET', ?string $selector = null, array $events = []): self
+    {
+        $this->isAsync = true;
+
+        return $this->customAttributes([
+            'x-data' => 'actionButton',
+            'data-async-events' => collect($events)
+                ->map(fn ($value): string => (string) str($value)->lower()->squish())
+                ->filter()
+                ->implode(','),
+            'data-async-selector' => $selector,
+            'data-async-method' => $method,
+        ])->onClick(fn () => 'request', 'prevent');
+    }
+
     public function url(mixed $data = null): string
     {
         return value($this->url, $data ?? $this->getItem());
@@ -109,40 +132,60 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     /**
      * @return $this
      */
-    public function primary(): static
+    public function primary(Closure|bool|null $condition = null): static
     {
+        if (! Condition::boolean($condition, true)) {
+            return $this;
+        }
+
         return $this->customAttributes(['class' => 'btn-primary']);
     }
 
     /**
      * @return $this
      */
-    public function secondary(): static
+    public function secondary(Closure|bool|null $condition = null): static
     {
+        if (! Condition::boolean($condition, true)) {
+            return $this;
+        }
+
         return $this->customAttributes(['class' => 'btn-secondary']);
     }
 
     /**
      * @return $this
      */
-    public function success(): static
+    public function success(Closure|bool|null $condition = null): static
     {
+        if (! Condition::boolean($condition, true)) {
+            return $this;
+        }
+
         return $this->customAttributes(['class' => 'btn-success']);
     }
 
     /**
      * @return $this
      */
-    public function warning(): static
+    public function warning(Closure|bool|null $condition = null): static
     {
+        if (! Condition::boolean($condition, true)) {
+            return $this;
+        }
+
         return $this->customAttributes(['class' => 'btn-warning']);
     }
 
     /**
      * @return $this
      */
-    public function error(): static
+    public function error(Closure|bool|null $condition = null): static
     {
+        if (! Condition::boolean($condition, true)) {
+            return $this;
+        }
+
         return $this->customAttributes(['class' => 'btn-error']);
     }
 }

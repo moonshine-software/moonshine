@@ -31,7 +31,7 @@ final class MoonShineRouter
         if(is_null($resource)) {
             return MoonShine::getPageFromUriKey(
                 is_string($page) ? self::uriKey($page) : $page->uriKey()
-            )->url();
+            )->route($params);
         }
 
         $resource = $resource instanceof ResourceContract
