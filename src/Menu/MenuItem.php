@@ -69,7 +69,7 @@ class MenuItem extends MenuElement
         return is_callable($this->badge);
     }
 
-    public function getBadge(): ?string
+    public function getBadge(): mixed
     {
         return value($this->badge);
     }
