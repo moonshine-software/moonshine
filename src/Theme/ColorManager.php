@@ -196,16 +196,20 @@ final class ColorManager
 
     public function __call(string $name, array $arguments): self
     {
+        $value = $arguments['value'] ?? $arguments[0] ?? '';
+        $shade = $arguments['shade'] ?? $arguments[1] ?? false;
+        $dark = $arguments['dark'] ?? $arguments[2] ?? false;
+
         $this->set(
             name: str($name)
                 ->kebab()
                 ->when(
-                    $arguments[1] ?? false,
-                    fn (Stringable $str) => $str->append(".$arguments[1]")
+                    $shade,
+                    fn (Stringable $str) => $str->append(".$shade")
                 )
                 ->value(),
-            value: $arguments[0] ?? '',
-            dark: $arguments[2] ?? false,
+            value: $value,
+            dark: $dark,
         );
 
         return $this;
