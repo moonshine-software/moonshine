@@ -173,7 +173,9 @@ class MoonShine
             );
         }
 
-        self::$pages->add(new ProfilePage());
+        self::$pages->add(
+            new (config('moonshine.pages.profile', ProfilePage::class))()
+        );
 
         if (class_exists(config('moonshine.pages.dashboard'))) {
             self::$pages->add(new (config('moonshine.pages.dashboard'))());

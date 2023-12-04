@@ -119,7 +119,7 @@ class SocialiteController extends MoonShineController
         }
 
         return to_page(
-            ProfilePage::class,
+            config('moonshine.pages.profile', ProfilePage::class),
             redirect: true
         );
     }
