@@ -1,8 +1,4 @@
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from './showWhenFunctions'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
 
 export default () => ({
   whenFields: {},
@@ -63,8 +59,8 @@ export default () => ({
     let action = form.getAttribute('action')
     let formData = new FormData(form)
 
-    if(method === 'get') {
-      action =  action +'?'+ new URLSearchParams(formData).toString()
+    if (method === 'get') {
+      action = action + '?' + new URLSearchParams(formData).toString()
     }
 
     axios({
