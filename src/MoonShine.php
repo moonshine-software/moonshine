@@ -15,7 +15,7 @@ use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
-use MoonShine\Resources\MoonShineProfileResource;
+use MoonShine\Pages\ProfilePage;
 use Throwable;
 
 class MoonShine
@@ -173,7 +173,9 @@ class MoonShine
             );
         }
 
-        self::$resources->add(new MoonShineProfileResource());
+        self::$pages->add(
+            new (config('moonshine.pages.profile', ProfilePage::class))()
+        );
 
         if (class_exists(config('moonshine.pages.dashboard'))) {
             self::$pages->add(new (config('moonshine.pages.dashboard'))());

@@ -6,7 +6,7 @@ namespace MoonShine\Components\Layout;
 
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Components\MoonShineComponent;
-use MoonShine\Resources\MoonShineProfileResource;
+use MoonShine\Pages\ProfilePage;
 
 /**
  * @method static static make(bool $withBorder = false)
@@ -44,7 +44,7 @@ final class Profile extends MoonShineComponent
             : "https://ui-avatars.com/api/?name=$nameOfUser";
 
         return [
-            'route' => $this->route ?? to_page(resource: MoonShineProfileResource::class),
+            'route' => $this->route ?? to_page(config('moonshine.pages.profile', ProfilePage::class)),
             'logOutRoute' => $this->logOutRoute ?? route('moonshine.logout'),
             'avatar' => $this->avatar ?? $avatar,
             'nameOfUser' => $this->nameOfUser ?? $nameOfUser,

@@ -146,11 +146,11 @@ class MoonShineServiceProvider extends ServiceProvider
             static fn (): string => "<?php echo view('moonshine::layouts.shared.assets') ?>"
         );
 
-        $this->app->singleton(MoonShine::class);
-        $this->app->singleton(MenuManager::class);
-        $this->app->singleton(AssetManager::class);
-        $this->app->singleton(ColorManager::class);
-        $this->app->singleton(MoonShineRegister::class);
+        $this->app->scoped(MoonShine::class);
+        $this->app->scoped(MenuManager::class);
+        $this->app->scoped(AssetManager::class);
+        $this->app->scoped(ColorManager::class);
+        $this->app->scoped(MoonShineRegister::class);
 
         $this->loadAuthConfig();
     }

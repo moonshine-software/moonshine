@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
+use Closure;
 use MoonShine\Exceptions\DecorationException;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\WithIcon;
 
 class Tab extends Decoration
@@ -26,9 +28,9 @@ class Tab extends Decoration
     /**
      * @return $this
      */
-    public function active(): static
+    public function active(Closure|bool|null $condition = null): static
     {
-        $this->active = true;
+        $this->active = is_null($condition) || Condition::boolean($condition, false);
 
         return $this;
     }

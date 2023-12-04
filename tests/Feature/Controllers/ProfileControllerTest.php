@@ -1,19 +1,15 @@
 <?php
 
 
+use MoonShine\Http\Controllers\ProfileController;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Pages\ProfilePage;
-use MoonShine\Resources\MoonShineProfileResource;
-
-beforeEach(function () {
-    $this->resource = new MoonShineProfileResource();
-});
 
 it('index', function () {
     $user = MoonshineUser::query()->find(1);
 
     asAdmin()
-        ->get(to_page(ProfilePage::class, $this->resource))
+        ->get(to_page(config('moonshine.pages.profile', ProfilePage::class)))
         ->assertSee($user->name)
         ->assertSee($user->email)
         ->assertSee('Avatar')
@@ -33,7 +29,7 @@ it('store', function () {
     ];
 
     asAdmin()
-        ->post($this->resource->route('profile.store'), $data)
+        ->post(action([ProfileController::class, 'store']), $data)
         ->assertRedirect();
 
     $user = MoonshineUser::query()->find(1);

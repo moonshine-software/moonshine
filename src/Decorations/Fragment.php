@@ -37,7 +37,7 @@ class Fragment extends Decoration
 
         $resource ??= moonshineRequest()->getResource();
 
-        $page ??= $resource?->formPage();
+        $page ??= $resource?->formPage() ?? moonshineRequest()->getPage();
 
         if(is_null($resource) && is_null($page)) {
             throw new PageException("Resource or FormPage not found when generating updateAsyncUrl");

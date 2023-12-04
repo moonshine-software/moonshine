@@ -10,7 +10,7 @@ use Laravel\Socialite\Contracts\User;
 use Laravel\Socialite\Facades\Socialite;
 use MoonShine\Exceptions\AuthException;
 use MoonShine\Models\MoonshineSocialite;
-use MoonShine\Resources\MoonShineProfileResource;
+use MoonShine\Pages\ProfilePage;
 use RuntimeException;
 
 class SocialiteController extends MoonShineController
@@ -119,7 +119,7 @@ class SocialiteController extends MoonShineController
         }
 
         return to_page(
-            resource: new MoonShineProfileResource(),
+            config('moonshine.pages.profile', ProfilePage::class),
             redirect: true
         );
     }
