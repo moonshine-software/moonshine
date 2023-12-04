@@ -37,9 +37,10 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         $this->setLabel($label);
     }
 
-    public static function emptyHidden(): static
+    public static function emptyHidden(): self
     {
-        return ActionButton::make('')->customAttributes(['style' => 'display:none']);
+        return self::make('')
+            ->customAttributes(['style' => 'display:none']);
     }
 
     public function getView(): string
@@ -129,10 +130,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return value($this->url, $data ?? $this->getItem());
     }
 
-    /**
-     * @return $this
-     */
-    public function primary(Closure|bool|null $condition = null): static
+    public function primary(Closure|bool|null $condition = null): self
     {
         if (! Condition::boolean($condition, true)) {
             return $this;
@@ -141,10 +139,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->customAttributes(['class' => 'btn-primary']);
     }
 
-    /**
-     * @return $this
-     */
-    public function secondary(Closure|bool|null $condition = null): static
+    public function secondary(Closure|bool|null $condition = null): self
     {
         if (! Condition::boolean($condition, true)) {
             return $this;
@@ -153,10 +148,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->customAttributes(['class' => 'btn-secondary']);
     }
 
-    /**
-     * @return $this
-     */
-    public function success(Closure|bool|null $condition = null): static
+    public function success(Closure|bool|null $condition = null): self
     {
         if (! Condition::boolean($condition, true)) {
             return $this;
@@ -165,10 +157,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->customAttributes(['class' => 'btn-success']);
     }
 
-    /**
-     * @return $this
-     */
-    public function warning(Closure|bool|null $condition = null): static
+    public function warning(Closure|bool|null $condition = null): self
     {
         if (! Condition::boolean($condition, true)) {
             return $this;
@@ -177,10 +166,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->customAttributes(['class' => 'btn-warning']);
     }
 
-    /**
-     * @return $this
-     */
-    public function error(Closure|bool|null $condition = null): static
+    public function error(Closure|bool|null $condition = null): self
     {
         if (! Condition::boolean($condition, true)) {
             return $this;

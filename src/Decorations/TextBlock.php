@@ -7,6 +7,8 @@ namespace MoonShine\Decorations;
 use Closure;
 
 /**
+ * @deprecated will be removed in 3.0
+ * @see \MoonShine\Components\FlexibleRender
  * @method static static make(Closure|string $label, string $text)
  */
 final class TextBlock extends Decoration
