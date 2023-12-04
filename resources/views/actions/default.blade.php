@@ -37,6 +37,7 @@
             <x-moonshine::link-button
                 :attributes="$attributes"
                 :icon="$action->iconValue()"
+                :href="$action->url()"
             >
                 {{ $action->label() }}
             </x-moonshine::link-button>
