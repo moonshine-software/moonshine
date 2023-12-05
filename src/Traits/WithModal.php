@@ -51,7 +51,7 @@ trait WithModal
             ->buttons($buttons)
         ;
 
-        if(! empty($attributes)) {
+        if($attributes !== []) {
             $this->modal->customAttributes($attributes);
         }
 
