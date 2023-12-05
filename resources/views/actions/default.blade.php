@@ -19,6 +19,7 @@
         :async="$action->modal()->isAsync()"
         :auto="$action->modal()->isAuto()"
         :wide="$action->modal()->isWide()"
+        :attributes="$action->modal()->attributes()"
         :closeOutside="$action->modal()->isCloseOutside()"
         :asyncUrl="$action->url()"
         title="{{ $action->modal()->title($action->getItem()) }}"

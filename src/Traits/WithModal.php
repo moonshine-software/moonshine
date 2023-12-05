@@ -42,12 +42,18 @@ trait WithModal
         bool $wide = false,
         bool $auto = false,
         bool $closeOutside = false,
+        array $attributes = [],
     ): static {
         $this->modal = Modal::make($title, $content, $async)
             ->auto($auto)
             ->wide($wide)
             ->closeOutside($closeOutside)
-            ->buttons($buttons);
+            ->buttons($buttons)
+        ;
+
+        if(! empty($attributes)) {
+            $this->modal->customAttributes($attributes);
+        }
 
         return $this;
     }

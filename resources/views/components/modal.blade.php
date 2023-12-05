@@ -19,9 +19,9 @@
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-10"
-            class="modal"
             aria-modal="true"
             role="dialog"
+            {{ $attributes->merge(['class' => 'modal']) }}
             @if($closeOutside) @click.self="open=false" @endif
         >
             <div class="modal-dialog

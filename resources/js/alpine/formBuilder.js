@@ -52,7 +52,7 @@ export default () => ({
     return false
   },
 
-  async(form, events = '') {
+  async(form, events = '', successFunction = '') {
     submitState(form, true)
     const t = this
     const method = form.getAttribute('method')
@@ -73,6 +73,16 @@ export default () => ({
       },
     })
       .then(function (response) {
+        if(successFunction) {
+          const fn = window[successFunction];
+
+          if (typeof fn === "function") {
+            fn.apply(null, [response, form, events, t]);
+          }
+
+          return
+        }
+
         const data = response.data
 
         if (data.redirect) {
@@ -90,13 +100,8 @@ export default () => ({
 
         let isFormReset = false
 
-        if (type !== 'error') {
-          const modalParent = t.$el.closest('.modal')
-
-          if (modalParent !== null) {
-            modalParent.querySelector('.btn-close').click()
-            isFormReset = true
-          }
+        if (type !== 'error' && t.inModal) {
+          t.toggleModal()
         }
 
         submitState(form, false, isFormReset)
