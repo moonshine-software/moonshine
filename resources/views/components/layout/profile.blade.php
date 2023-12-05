@@ -11,7 +11,7 @@
 @if($withBorder) <div {{ $attributes->merge(['class' => 'mt-2 border-t border-dark-200']) }}> @endif
     {{ $before ?? '' }}
 
-    @if($slot->isNotEmpty())
+    @if(isset($slot) && $slot->isNotEmpty())
         {{ $slot }}
     @else
         <div class="menu-profile">

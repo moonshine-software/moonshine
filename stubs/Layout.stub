@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\Components\Layout\{Content, Flash, Footer, Header, LayoutBlock, LayoutBuilder, Menu, Sidebar};
+use MoonShine\Components\Layout\{Content, Flash, Footer, Header, LayoutBlock, LayoutBuilder, Menu, Sidebar, Profile};
+use MoonShine\Components\When;
 use MoonShine\Contracts\MoonShineLayoutContract;
 
 final class MoonShineLayout implements MoonShineLayoutContract
@@ -14,6 +15,10 @@ final class MoonShineLayout implements MoonShineLayoutContract
         return LayoutBuilder::make([
             Sidebar::make([
                 Menu::make()->customAttributes(['class' => 'mt-2']),
+                When::make(
+                    static fn() => config('moonshine.auth.enable', true),
+                    static fn() => [Profile::make(withBorder: true)]
+                ),
             ]),
             LayoutBlock::make([
                 Flash::make(),

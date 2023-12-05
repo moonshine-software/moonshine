@@ -36,12 +36,6 @@
 
         {{ $slot ?? '' }}
 
-        @if($profile ?? false)
-            {{ $profile }}
-        @elseif(config('moonshine.auth.enable', true))
-            <x-moonshine::layout.profile :with-border="true" />
-        @endif
-
         <!-- Bottom menu -->
         <div
             @if(($profile ?? false) || config('moonshine.auth.enable', true))
