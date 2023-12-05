@@ -52,7 +52,7 @@ export default () => ({
     return false
   },
 
-  async(form, events = '', successFunction = '') {
+  async(form, events = '', callbackFunction = '') {
     submitState(form, true)
     const t = this
     const method = form.getAttribute('method')
@@ -73,8 +73,8 @@ export default () => ({
       },
     })
       .then(function (response) {
-        if(successFunction) {
-          t.applySuccessFunction(successFunction, response, form, events, t)
+        if(callbackFunction) {
+          t.applyCallbackFunction(callbackFunction, response, form, events, t)
           return
         }
 
@@ -110,8 +110,8 @@ export default () => ({
         }
       })
       .catch(errorResponse => {
-        if(successFunction) {
-          t.applySuccessFunction(successFunction, errorResponse.response, form, events, t)
+        if(callbackFunction) {
+          t.applyCallbackFunction(callbackFunction, errorResponse.response, form, events, t)
           return
         }
 
@@ -159,14 +159,14 @@ export default () => ({
 
   getInputs,
 
-  applySuccessFunction(successFunction, errorResponse, form, events, component)
+  applyCallbackFunction(callbackFunction, errorResponse, form, events, component)
   {
-    const fn = window[successFunction];
+    const fn = window[callbackFunction];
 
     if (typeof fn !== "function") {
       component.$dispatch('toast', {type: 'error', text: 'Error'})
       submitState(form, false)
-      throw new Error(successFunction + ' is not a function!');
+      throw new Error(callbackFunction + ' is not a function!');
     }
 
     fn.apply(null, [errorResponse, form, events, component]);
