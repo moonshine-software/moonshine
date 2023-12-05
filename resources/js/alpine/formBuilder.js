@@ -73,7 +73,7 @@ export default () => ({
       },
     })
       .then(function (response) {
-        if(callbackFunction) {
+        if (callbackFunction) {
           t.applyCallbackFunction(callbackFunction, response, form, events, t)
           return
         }
@@ -110,12 +110,12 @@ export default () => ({
         }
       })
       .catch(errorResponse => {
-        if(callbackFunction) {
+        if (callbackFunction) {
           t.applyCallbackFunction(callbackFunction, errorResponse.response, form, events, t)
           return
         }
 
-        if(errorResponse.response.data) {
+        if (errorResponse.response.data) {
           const data = errorResponse.response.data
 
           t.$dispatch('toast', {type: 'error', text: data.message ?? data})
@@ -159,18 +159,17 @@ export default () => ({
 
   getInputs,
 
-  applyCallbackFunction(callbackFunction, errorResponse, form, events, component)
-  {
-    const fn = window[callbackFunction];
+  applyCallbackFunction(callbackFunction, errorResponse, form, events, component) {
+    const fn = window[callbackFunction]
 
-    if (typeof fn !== "function") {
+    if (typeof fn !== 'function') {
       component.$dispatch('toast', {type: 'error', text: 'Error'})
       submitState(form, false)
-      throw new Error(callbackFunction + ' is not a function!');
+      throw new Error(callbackFunction + ' is not a function!')
     }
 
-    fn.apply(null, [errorResponse, form, events, component]);
-  }
+    fn.apply(null, [errorResponse, form, events, component])
+  },
 })
 
 function submitState(form, loading = true, isFormReset = false) {
