@@ -17,7 +17,7 @@ final class MoonShineLayout implements MoonShineLayoutContract
                 Menu::make()->customAttributes(['class' => 'mt-2']),
                 When::make(
                     static fn() => config('moonshine.auth.enable', true),
-                    static fn() => [Profile::make()]
+                    static fn() => [Profile::make(withBorder: true)]
                 ),
             ]),
             LayoutBlock::make([
