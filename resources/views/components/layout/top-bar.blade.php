@@ -25,11 +25,9 @@
     </nav>
 
     <div class="menu-actions">
-        @if($profile ?? false)
-            {{ $profile }}
-        @elseif(config('moonshine.auth.enable', true))
-            <x-moonshine::layout.profile />
-        @endif
+        <x-moonshine::components
+            :components="$actions"
+        />
 
         <div class="menu-inner-divider"></div>
 
