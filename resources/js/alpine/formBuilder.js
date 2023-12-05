@@ -52,7 +52,7 @@ export default () => ({
     return false
   },
 
-  async(form, events = '') {
+  async(form, events = '', callbackFunction = '') {
     submitState(form, true)
     const t = this
     const method = form.getAttribute('method')
@@ -73,6 +73,11 @@ export default () => ({
       },
     })
       .then(function (response) {
+        if(callbackFunction) {
+          t.applyCallbackFunction(callbackFunction, response, form, events, t)
+          return
+        }
+
         const data = response.data
 
         if (data.redirect) {
@@ -90,13 +95,8 @@ export default () => ({
 
         let isFormReset = false
 
-        if (type !== 'error') {
-          const modalParent = t.$el.closest('.modal')
-
-          if (modalParent !== null) {
-            modalParent.querySelector('.btn-close').click()
-            isFormReset = true
-          }
+        if (type !== 'error' && t.inModal) {
+          t.toggleModal()
         }
 
         submitState(form, false, isFormReset)
@@ -110,9 +110,16 @@ export default () => ({
         }
       })
       .catch(errorResponse => {
-        const data = errorResponse.response.data
+        if(callbackFunction) {
+          t.applyCallbackFunction(callbackFunction, errorResponse.response, form, events, t)
+          return
+        }
 
-        t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+        if(errorResponse.response.data) {
+          const data = errorResponse.response.data
+
+          t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+        }
 
         submitState(form, false)
       })
@@ -151,6 +158,19 @@ export default () => ({
   showWhenVisibilityChange,
 
   getInputs,
+
+  applyCallbackFunction(callbackFunction, errorResponse, form, events, component)
+  {
+    const fn = window[callbackFunction];
+
+    if (typeof fn !== "function") {
+      component.$dispatch('toast', {type: 'error', text: 'Error'})
+      submitState(form, false)
+      throw new Error(callbackFunction + ' is not a function!');
+    }
+
+    fn.apply(null, [errorResponse, form, events, component]);
+  }
 })
 
 function submitState(form, loading = true, isFormReset = false) {

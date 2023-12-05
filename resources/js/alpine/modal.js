@@ -3,6 +3,7 @@
 export default (open = false) => ({
   open: open,
   id: '',
+  inModal: true,
 
   init() {
     this.id = this.$id('modal-content')

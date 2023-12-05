@@ -3,6 +3,7 @@
 namespace MoonShine\UI;
 
 use Closure;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\HasAsync;
@@ -24,6 +25,8 @@ class Modal
 
     protected bool $isCloseOutside = false;
 
+    protected ComponentAttributeBag $attributes;
+
     public function __construct(
         protected string|Closure|null $title,
         protected string|Closure|null $content,
@@ -32,6 +35,8 @@ class Modal
         if ($async) {
             $this->async('#');
         }
+
+        $this->attributes = new ComponentAttributeBag();
     }
 
     public function wide(mixed $condition = null): self
@@ -83,6 +88,18 @@ class Modal
     public function buttons(array $buttons): self
     {
         $this->buttons = $buttons;
+
+        return $this;
+    }
+
+    public function attributes(): ComponentAttributeBag
+    {
+        return $this->attributes;
+    }
+
+    public function customAttributes(array $attributes): static
+    {
+        $this->attributes = $this->attributes->merge($attributes);
 
         return $this;
     }
