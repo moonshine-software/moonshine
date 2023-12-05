@@ -74,12 +74,7 @@ export default () => ({
     })
       .then(function (response) {
         if(successFunction) {
-          const fn = window[successFunction];
-
-          if (typeof fn === "function") {
-            fn.apply(null, [response, form, events, t]);
-          }
-
+          t.applySuccessFunction(successFunction, response, form, events, t)
           return
         }
 
@@ -115,9 +110,16 @@ export default () => ({
         }
       })
       .catch(errorResponse => {
-        const data = errorResponse.response.data
+        if(successFunction) {
+          t.applySuccessFunction(successFunction, errorResponse.response, form, events, t)
+          return
+        }
 
-        t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+        if(errorResponse.response.data) {
+          const data = errorResponse.response.data
+
+          t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+        }
 
         submitState(form, false)
       })
@@ -156,6 +158,19 @@ export default () => ({
   showWhenVisibilityChange,
 
   getInputs,
+
+  applySuccessFunction(successFunction, errorResponse, form, events, component)
+  {
+    const fn = window[successFunction];
+
+    if (typeof fn !== "function") {
+      component.$dispatch('toast', {type: 'error', text: 'Error'})
+      submitState(form, false)
+      throw new Error(successFunction + ' is not a function!');
+    }
+
+    fn.apply(null, [errorResponse, form, events, component]);
+  }
 })
 
 function submitState(form, loading = true, isFormReset = false) {
