@@ -296,7 +296,22 @@ trait ResourceModelQuery
             $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         }
 
-        $this->query()->orderBy($column, $direction);
+        $field = $this->getFields()
+            ->onlyFields()
+            ->findByColumn($column);
+
+        $callback = $field?->sortableCallback();
+
+        if(is_string($callback)) {
+            $column = value($callback);
+        }
+
+        if(is_closure($callback)) {
+            $callback($this->query(), $column, $direction);
+        } else {
+            $this->query()
+                ->orderBy($column, $direction);
+        }
 
         return $this;
     }

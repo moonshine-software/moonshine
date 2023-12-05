@@ -4,22 +4,31 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
+use Closure;
 use Illuminate\Support\Arr;
 
 trait WithSorts
 {
     protected bool $sortable = false;
 
+    protected Closure|string|null $sortableCallback = null;
+
     /**
      * Define whether if index page can be sorted by this field
      *
      * @return $this
      */
-    public function sortable(): static
+    public function sortable(Closure|string|null $callback = null): static
     {
         $this->sortable = true;
+        $this->sortableCallback = $callback;
 
         return $this;
+    }
+
+    public function sortableCallback(): Closure|string|null
+    {
+        return $this->sortableCallback;
     }
 
     public function isSortable(): bool
