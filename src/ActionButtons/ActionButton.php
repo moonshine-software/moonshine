@@ -110,8 +110,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->isAsync;
     }
 
-    public function async(string $method = 'GET', ?string $selector = null, array $events = []): self
-    {
+    public function async(
+        string $method = 'GET',
+        ?string $selector = null,
+        array $events = [],
+        ?string $callback = null
+    ): self {
         $this->isAsync = true;
 
         return $this->customAttributes([
@@ -121,6 +125,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
                 ->filter()
                 ->implode(','),
             'data-async-selector' => $selector,
+            'data-async-callback' => $callback,
             'data-async-method' => $method,
         ])->onClick(fn (): string => 'request', 'prevent');
     }

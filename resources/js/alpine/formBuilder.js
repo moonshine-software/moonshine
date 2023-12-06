@@ -1,4 +1,9 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
+import {dispatchEvents, responseCallback} from './asyncFunctions'
 
 export default () => ({
   whenFields: {},
@@ -74,7 +79,8 @@ export default () => ({
     })
       .then(function (response) {
         if (callbackFunction) {
-          t.applyCallbackFunction(callbackFunction, response, form, events, t)
+          responseCallback(callbackFunction, response, form, events, t)
+
           return
         }
 
@@ -101,17 +107,12 @@ export default () => ({
 
         submitState(form, false, isFormReset)
 
-        if (events !== '' && type !== 'error') {
-          events = events.split(',')
-
-          events.forEach(function (event) {
-            t.$dispatch(event.replaceAll(/\s/g, ''))
-          })
-        }
+        dispatchEvents(events, type, t)
       })
       .catch(errorResponse => {
         if (callbackFunction) {
-          t.applyCallbackFunction(callbackFunction, errorResponse.response, form, events, t)
+          responseCallback(callbackFunction, errorResponse.response, form, events, t)
+
           return
         }
 
@@ -158,18 +159,6 @@ export default () => ({
   showWhenVisibilityChange,
 
   getInputs,
-
-  applyCallbackFunction(callbackFunction, errorResponse, form, events, component) {
-    const fn = window[callbackFunction]
-
-    if (typeof fn !== 'function') {
-      component.$dispatch('toast', {type: 'error', text: 'Error'})
-      submitState(form, false)
-      throw new Error(callbackFunction + ' is not a function!')
-    }
-
-    fn.apply(null, [errorResponse, form, events, component])
-  },
 })
 
 function submitState(form, loading = true, isFormReset = false) {
