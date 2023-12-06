@@ -1,4 +1,5 @@
 @props([
+    'name' => 'default',
     'async' => false,
     'wide' => false,
     'open' => false,
@@ -10,7 +11,7 @@
 ])
 <div x-data="modal({{ $open }})">
     <template x-teleport="body">
-    <div class="modal-template">
+    <div class="modal-template" @modal-toggled-{{ $name }}.window="toggleModal">
         <div
             x-show="open"
             x-transition:enter="transition ease-out duration-300"
@@ -49,7 +50,7 @@
                             </div>
                         @endif
 
-                        {{ $slot ?? '' }}
+                        {!! $slot ?? '' !!}
                     </div>
                 </div>
             </div>
@@ -61,12 +62,12 @@
     @if($async)
         <div>
             <div @click.prevent="toggleModal;load('{!! str_replace('&amp;', '&', $asyncUrl) !!}', id);">
-                {{ $outerHtml ?? '' }}
+                {!! $outerHtml ?? '' !!}
             </div>
         </div>
     @else
         <div @click.prevent="toggleModal">
-            {{ $outerHtml ?? '' }}
+            {!! $outerHtml ?? '' !!}
         </div>
     @endif
 </div>
