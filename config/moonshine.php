@@ -71,6 +71,7 @@ return [
                 'model' => MoonshineUser::class,
             ],
         ],
+        'pipelines' => [],
     ],
     'locales' => [
         'en',
