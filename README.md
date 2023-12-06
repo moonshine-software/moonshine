@@ -17,7 +17,8 @@
 
 #### [Documentation](https://moonshine-laravel.com)
 #### [Documentation repository](https://github.com/moonshine-software/doc)
-#### [Demo project](https://github.com/moonshine-software/demo-project)
+#### [Demo project 1](https://github.com/moonshine-software/demo-project)
+#### [Demo project 2](https://github.com/moonshine-software/demo-blog)
 
 #### Hello Laravel user!
 
