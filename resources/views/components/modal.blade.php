@@ -1,15 +1,15 @@
 @props([
     'name' => 'default',
     'async' => false,
+    'asyncUrl' => '',
     'wide' => false,
     'open' => false,
     'auto' => false,
     'closeOutside' => true,
-    'asyncUrl' => '',
     'title' => '',
     'outerHtml' => ''
 ])
-<div x-data="modal({{ $open }})">
+<div x-data="modal(`{{ $open }}`, `{{ $async && $outerHtml->isEmpty() ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
     <template x-teleport="body">
     <div class="modal-template" @modal-toggled-{{ $name }}.window="toggleModal">
         <div
@@ -50,7 +50,7 @@
                             </div>
                         @endif
 
-                        {!! $slot ?? '' !!}
+                        {{ $slot ?? '' }}
                     </div>
                 </div>
             </div>
@@ -59,15 +59,9 @@
     </div>
     </template>
 
-    @if($async)
-        <div>
-            <div @click.prevent="toggleModal;load('{!! str_replace('&amp;', '&', $asyncUrl) !!}', id);">
-                {!! $outerHtml ?? '' !!}
-            </div>
-        </div>
-    @else
-        <div @click.prevent="toggleModal">
-            {!! $outerHtml ?? '' !!}
+    @if($outerHtml->isNotEmpty())
+        <div @click.prevent="toggleModal;{{ $async ? 'load(`' . str_replace('&amp;', '&', $asyncUrl) . '`, id);' : '' }}">
+            {{ $outerHtml ?? '' }}
         </div>
     @endif
 </div>

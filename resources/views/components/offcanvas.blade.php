@@ -1,18 +1,24 @@
 @props([
+    'name' => 'default',
+    'open' => false,
     'left' => false,
     'title' => '',
+    'async' => false,
+    'asyncUrl' => '',
     'toggler'
 ])
-<div x-data="offcanvas">
-    <x-moonshine::link-button
-        :attributes="$toggler->attributes"
-        @click.prevent="toggleCanvas"
-    >
-        {{ $toggler }}
-    </x-moonshine::link-button>
+<div x-data="offcanvas(`{{ $open }}`, `{{ $async && $toggler->isEmpty() ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
+    @if($toggler->isNotEmpty())
+        <x-moonshine::link-button
+            :attributes="$toggler->attributes"
+            @click.prevent="toggleCanvas;{{ $async ? 'load(`' . str_replace('&amp;', '&', $asyncUrl) . '`, id);' : '' }}"
+        >
+            {{ $toggler ?? '' }}
+        </x-moonshine::link-button>
+    @endif
 
     <template x-teleport="body">
-        <div class="offcanvas-template">
+        <div class="offcanvas-template"  @offcanvas-toggled-{{ $name }}.window="toggleCanvas">
             <div
                 x-show="open"
                 x-bind="dismissCanvas"
@@ -42,7 +48,13 @@
                     </button>
                 </div>
                 <div class="offcanvas-body">
-                    {{ $slot }}
+                    @if($async)
+                        <div :id="id">
+                            <x-moonshine::loader />
+                        </div>
+                    @endif
+
+                    {{ $slot ?? '' }}
                 </div>
             </div>
             <div x-show="open" x-transition.opacity class="offcanvas-backdrop"></div>

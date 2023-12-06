@@ -6,6 +6,7 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Condition;
 
 /**
@@ -22,6 +23,8 @@ final class ModalComponent extends MoonShineComponent
     protected bool $wide = false;
 
     protected bool $auto = false;
+
+    protected array $outerAttributes = [];
 
     public function __construct(
         protected Closure|string $title = '',
@@ -59,6 +62,13 @@ final class ModalComponent extends MoonShineComponent
         return $this;
     }
 
+    public function outerAttributes(array $attributes): self
+    {
+        $this->outerAttributes = $attributes;
+
+        return $this;
+    }
+
     protected function viewData(): array
     {
         return [
@@ -69,8 +79,8 @@ final class ModalComponent extends MoonShineComponent
             'async' => ! is_null($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
-            'slot' => value($this->content, $this),
-            'outerHtml' => value($this->outer, $this),
+            'slot' => new ComponentSlot(value($this->content, $this)),
+            'outerHtml' => new ComponentSlot(value($this->outer, $this), $this->outerAttributes),
         ];
     }
 }
