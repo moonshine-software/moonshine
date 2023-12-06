@@ -9,7 +9,7 @@ export default (open = false, asyncUrl = '') => ({
   init() {
     this.id = this.$id('modal-content')
 
-    if(this.asyncUrl) {
+    if (this.asyncUrl) {
       this.load(asyncUrl, this.id)
     }
 

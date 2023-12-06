@@ -8,7 +8,7 @@ export default (open = false, asyncUrl = '') => ({
   init() {
     this.id = this.$id('offcanvas-content')
 
-    if(this.asyncUrl) {
+    if (this.asyncUrl) {
       this.load(asyncUrl, this.id)
     }
 
