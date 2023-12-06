@@ -14,8 +14,6 @@ export function dispatchEvents(events, type, component) {
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
 
-    allEvents.forEach((event) => component.$dispatch(event.replaceAll(/\s/g, '')))
+    allEvents.forEach(event => component.$dispatch(event.replaceAll(/\s/g, '')))
   }
 }
-
-
