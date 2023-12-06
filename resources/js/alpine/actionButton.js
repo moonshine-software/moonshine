@@ -1,8 +1,11 @@
+import {dispatchEvents, responseCallback} from './asyncFunctions'
+
 export default () => ({
   url: '',
   selector: null,
   method: 'GET',
   events: '',
+  callback: '',
   loading: false,
   btnText: '',
 
@@ -12,6 +15,7 @@ export default () => ({
     this.selector = this.$el?.dataset?.asyncSelector
     this.method = this.$el?.dataset?.asyncMethod
     this.events = this.$el?.dataset?.asyncEvents
+    this.callback = this.$el?.dataset?.asyncCallback
     this.loading = false
     const el = this.$el
     const btnText = this.btnText
@@ -42,6 +46,12 @@ export default () => ({
 
         const data = response.data
 
+        if (t.callback) {
+          responseCallback(t.callback, data, t.$el, t.events, t)
+
+          return
+        }
+
         if (t.selector) {
           const element = document.querySelector(t.selector)
           element.innerHTML = data.html ? data.html : data
@@ -60,18 +70,18 @@ export default () => ({
           })
         }
 
-        if (t.events !== '' && type !== 'error') {
-          const events = t.events.split(',')
-
-          events.forEach(function (event) {
-            t.$dispatch(event.replaceAll(/\s/g, ''))
-          })
-        }
+        dispatchEvents(t.events, type, t)
       })
       .catch(errorResponse => {
         t.loading = false
 
         const data = errorResponse.response.data
+
+        if (t.callback) {
+          responseCallback(t.callback, data, t.$el, t.events, t)
+
+          return
+        }
 
         t.$dispatch('toast', {type: 'error', text: data.message ?? data})
       })
