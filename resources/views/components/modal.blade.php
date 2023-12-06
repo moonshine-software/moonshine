@@ -7,7 +7,7 @@
     'auto' => false,
     'closeOutside' => true,
     'title' => '',
-    'outerHtml' => ''
+    'outerHtml' => null
 ])
 <div x-data="modal(`{{ $open }}`, `{{ $async && $outerHtml->isEmpty() ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
     <template x-teleport="body">
@@ -59,7 +59,7 @@
     </div>
     </template>
 
-    @if($outerHtml->isNotEmpty())
+    @if($outerHtml?->isNotEmpty())
         <div @click.prevent="toggleModal;{{ $async ? 'load(`' . str_replace('&amp;', '&', $asyncUrl) . '`, id);' : '' }}">
             {{ $outerHtml ?? '' }}
         </div>
