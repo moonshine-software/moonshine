@@ -25,10 +25,7 @@ class Tab extends Decoration
         );
     }
 
-    /**
-     * @return $this
-     */
-    public function active(Closure|bool|null $condition = null): static
+    public function active(Closure|bool|null $condition = null): self
     {
         $this->active = is_null($condition) || Condition::boolean($condition, false);
 
