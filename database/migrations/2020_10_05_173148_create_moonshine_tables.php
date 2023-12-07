@@ -22,7 +22,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
 
             $table->string('email', 190)->unique();
-            $table->string('password', 60);
+            $table->string('password', 255);
             $table->string('name');
             $table->string('avatar')->nullable();
             $table->string('remember_token', 100)->nullable();
