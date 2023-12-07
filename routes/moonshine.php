@@ -5,6 +5,7 @@ use MoonShine\Http\Controllers\AsyncController;
 use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
+use MoonShine\Http\Controllers\GlobalSearchController;
 use MoonShine\Http\Controllers\HandlerController;
 use MoonShine\Http\Controllers\HomeController;
 use MoonShine\Http\Controllers\NotificationController;
@@ -38,6 +39,11 @@ Route::group(moonshine()->configureRoutes(), static function (): void {
                 config('moonshine.route.single_page_prefix', 'page') . "/{pageUri}",
                 PageController::class
             )->name('page');
+
+            Route::get(
+                'search',
+                GlobalSearchController::class
+            )->name('global-search');
 
             Route::prefix('relation/{pageUri}')->controller(RelationModelFieldController::class)->group(
                 function (): void {
