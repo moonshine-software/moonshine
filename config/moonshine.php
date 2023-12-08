@@ -78,6 +78,10 @@ return [
         'ru',
     ],
 
+    'global_search' => [
+        // User::class
+    ],
+
     'tinymce' => [
         'file_manager' => false, // or 'laravel-filemanager' prefix for lfm
         'token' => env('MOONSHINE_TINYMCE_TOKEN', ''),
