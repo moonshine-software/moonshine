@@ -1,21 +1,21 @@
-export default (action) => ({
+export default action => ({
   action: action,
   query: '',
   groups: [],
   init() {
     const t = this
 
-    t.$watch('query', async function(value) {
+    t.$watch('query', async function (value) {
       const loader = document.querySelector('.search-loading')
       loader.style.display = 'none'
 
-      if(value.length < 2) {
-        return;
+      if (value.length < 2) {
+        return
       }
 
       loader.style.display = 'block'
 
-      let response = await  axios.get(t.action + '?query=' + value)
+      let response = await axios.get(t.action + '?query=' + value)
 
       loader.style.display = 'none'
 
@@ -26,14 +26,14 @@ export default (action) => ({
     const t = this
 
     t.$dispatch('modal-toggled-global-search')
-    t.$nextTick(function() {
+    t.$nextTick(function () {
       document.querySelector('.search-input').focus()
     })
   },
   group(label, items) {
     let itemsTemplate = ``
     const t = this
-    items.forEach(function(item) {
+    items.forEach(function (item) {
       itemsTemplate += t.item(item)
     })
 
@@ -49,10 +49,12 @@ export default (action) => ({
       <a href="${data.url}" class="flex items-center justify-start gap-4">
           ${
             data?.image
-            ? '<div class="zoom-in h-10 w-10 overflow-hidden rounded-md">' +
-            '<img class="h-full w-full object-cover" src="' + data.image + '" alt="">' +
-            '</div>'
-            : ''
+              ? '<div class="zoom-in h-10 w-10 overflow-hidden rounded-md">' +
+                '<img class="h-full w-full object-cover" src="' +
+                data.image +
+                '" alt="">' +
+                '</div>'
+              : ''
           }
           <div>
             <span class="font-bold text-sm">${data.title}</span>
@@ -60,5 +62,5 @@ export default (action) => ({
           </div>
       </a>
       `
-  }
+  },
 })
