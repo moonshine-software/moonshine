@@ -252,7 +252,7 @@ input[type='number'] {
   }
 
   .choices__inner {
-    @apply rounded-md border-gray-300 bg-white transition-colors duration-200 dark:border-dark-300 dark:bg-dark-800;
+    @apply rounded-md border-gray-300 bg-white leading-tight transition-colors duration-200 dark:border-dark-300 dark:bg-dark-800;
   }
 
   &.is-disabled {

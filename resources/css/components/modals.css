@@ -28,7 +28,7 @@
   }
 
   &-header {
-    @apply flex justify-between gap-x-4 border-b border-gray-200 p-4 dark:border-dark-200 lg:p-6;
+    @apply sticky top-0 z-10 flex justify-between gap-x-4 rounded-t-lg border-b border-gray-200 bg-white p-4 dark:border-dark-200 dark:bg-dark-700 lg:p-6;
   }
 
   &-title {
@@ -36,7 +36,7 @@
   }
 
   &-body {
-    @apply grow overflow-y-auto p-4 lg:p-6;
+    @apply grow p-4 lg:p-6;
   }
 
   /* Backdrop */
