@@ -5,7 +5,7 @@
             @foreach(config('moonshine.socialite') as $driver => $src)
                 <a href="{{ route('moonshine.socialite.redirect', $driver) }}" class="social-item">
                     <img class="h-6 w-6"
-                         src="{{ $src }}"
+                         src="{{ asset($src) }}"
                          alt="{{ $driver }}"
                     >
                 </a>
