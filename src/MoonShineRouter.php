@@ -29,9 +29,12 @@ final class MoonShineRouter
         bool $redirect = false
     ): RedirectResponse|string {
         if(is_null($resource)) {
-            return MoonShine::getPageFromUriKey(
-                is_string($page) ? self::uriKey($page) : $page->uriKey()
-            )->route($params);
+            $route = MoonShine::getPageFromUriKey(
+                    is_string($page) ? self::uriKey($page) : $page->uriKey()
+                )->route($params);
+            return $redirect
+                ? redirect($route)
+                : $route;
         }
 
         $resource = $resource instanceof ResourceContract
