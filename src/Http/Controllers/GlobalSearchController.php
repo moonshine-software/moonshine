@@ -30,7 +30,6 @@ class GlobalSearchController extends MoonShineController
     /**
      * @template T of HasGlobalSearch
      * @param  class-string<T>  $class
-     * @return array
      */
     protected function search(string $class): array
     {
@@ -40,7 +39,7 @@ class GlobalSearchController extends MoonShineController
             ->searchableQuery($builder)
             ->get()
             ->ensure(HasGlobalSearch::class)
-            ->mapToGroups(fn (HasGlobalSearch $model) => $this->castResponse($model))
+            ->mapToGroups(fn (HasGlobalSearch $model): array => $this->castResponse($model))
             ->toArray();
     }
 
