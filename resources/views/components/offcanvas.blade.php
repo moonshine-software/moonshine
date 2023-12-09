@@ -1,4 +1,5 @@
 @props([
+    'eventName' => null,
     'name' => 'default',
     'open' => false,
     'left' => false,
@@ -18,7 +19,7 @@
     @endif
 
     <template x-teleport="body">
-        <div class="offcanvas-template"  @offcanvas-toggled-{{ $name }}.window="toggleCanvas">
+        <div class="offcanvas-template"  @offcanvas-toggled-{{ $eventName ?? $name }}.window="toggleCanvas">
             <div
                 x-show="open"
                 x-bind="dismissCanvas"

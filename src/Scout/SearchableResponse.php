@@ -22,9 +22,9 @@ final class SearchableResponse implements Arrayable
         return [
             'group' => $this->group,
             'url' => $this->url,
-            'image' => $this->image,
+            'image' => $this->image ?? '',
             'title' => $this->title,
-            'preview' => $this->preview,
+            'preview' => $this->preview ?? '',
         ];
     }
 }

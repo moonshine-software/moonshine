@@ -25,6 +25,10 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     use WithView;
     use HasCanSee;
 
+    protected $except = [
+        'name',
+    ];
+
     public function name(string $name): static
     {
         $this->componentName = $name;
@@ -66,7 +70,9 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
             $this->getView(),
             [
                 'attributes' => $this->attributes(),
-                'name' => $this->getName(),
+                'name' => str_contains($this->getName() ?? '', '::')
+                    ? 'default'
+                    : $this->getName(),
             ] + $data
         );
     }

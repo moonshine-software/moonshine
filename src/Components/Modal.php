@@ -12,7 +12,7 @@ use MoonShine\Support\Condition;
 /**
  * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $outer = '', Closure|string|null $asyncUrl = '')
  */
-final class ModalComponent extends MoonShineComponent
+final class Modal extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.modal';
 
@@ -25,6 +25,14 @@ final class ModalComponent extends MoonShineComponent
     protected bool $auto = false;
 
     protected array $outerAttributes = [];
+
+    protected $except = [
+        'name',
+        'open',
+        'closeOutside',
+        'wide',
+        'auto'
+    ];
 
     public function __construct(
         protected Closure|string $title = '',

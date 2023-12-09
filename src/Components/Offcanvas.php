@@ -12,7 +12,7 @@ use MoonShine\Support\Condition;
 /**
  * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '')
  */
-final class OffCanvasComponent extends MoonShineComponent
+final class Offcanvas extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.offcanvas';
 
@@ -21,6 +21,12 @@ final class OffCanvasComponent extends MoonShineComponent
     protected bool $open = false;
 
     protected array $togglerAttributes = [];
+
+    protected $except = [
+        'name',
+        'open',
+        'left'
+    ];
 
     public function __construct(
         protected Closure|string $title = '',

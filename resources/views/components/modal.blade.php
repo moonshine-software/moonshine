@@ -1,4 +1,5 @@
 @props([
+    'eventName' => null,
     'name' => 'default',
     'async' => false,
     'asyncUrl' => '',
@@ -11,7 +12,7 @@
 ])
 <div x-data="modal(`{{ $open }}`, `{{ $async && $outerHtml->isEmpty() ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
     <template x-teleport="body">
-    <div class="modal-template" @modal-toggled-{{ $name }}.window="toggleModal">
+    <div class="modal-template" @modal-toggled-{{ $eventName ?? $name }}.window="toggleModal">
         <div
             x-show="open"
             x-transition:enter="transition ease-out duration-300"
