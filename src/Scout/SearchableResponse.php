@@ -14,8 +14,7 @@ final class SearchableResponse implements Arrayable
         protected readonly string $url,
         protected readonly ?string $preview = null,
         protected readonly ?string $image = null,
-    )
-    {
+    ) {
     }
 
     public function toArray(): array

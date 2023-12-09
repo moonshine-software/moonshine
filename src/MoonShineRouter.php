@@ -30,8 +30,9 @@ final class MoonShineRouter
     ): RedirectResponse|string {
         if(is_null($resource)) {
             $route = MoonShine::getPageFromUriKey(
-                    is_string($page) ? self::uriKey($page) : $page->uriKey()
-                )->route($params);
+                is_string($page) ? self::uriKey($page) : $page->uriKey()
+            )->route($params);
+
             return $redirect
                 ? redirect($route)
                 : $route;

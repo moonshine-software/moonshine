@@ -32,7 +32,7 @@ final class MoonShineLayout implements MoonShineLayoutContract
             LayoutBlock::make([
                 Flash::make(),
                 Header::make([
-                    Search::make()
+                    Search::make(),
                 ]),
                 Content::make(),
                 Footer::make()->copyright(fn (): string => <<<'HTML'
