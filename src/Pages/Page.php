@@ -6,6 +6,7 @@ namespace MoonShine\Pages;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
@@ -251,5 +252,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     public function __toString(): string
     {
         return (string) $this->render();
+    }
+
+    public function canSee(Request $request): bool
+    {
+        return true;
     }
 }

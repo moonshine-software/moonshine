@@ -32,6 +32,8 @@ return [
     'notfound' => 'Records not found',
     'collapse_menu' => 'Collapse menu',
     '404' => 'Houston we have a problem page not found',
+    '403' => 'Forbidden',
+    'back_to_home' => 'Back to home',
     'copied' => 'Copied!',
     'notifications' => [
         'title' => 'Notifications',

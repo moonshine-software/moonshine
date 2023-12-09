@@ -260,3 +260,15 @@ if (! function_exists('oops404')) {
         throw new $handler();
     }
 }
+
+if (! function_exists('oops403')) {
+    function oops403(): never
+    {
+        $handler = config(
+            'moonshine.route.forbiddenHandler',
+            MoonShineForbiddenException::class
+        );
+
+        throw new $handler();
+    }
+}

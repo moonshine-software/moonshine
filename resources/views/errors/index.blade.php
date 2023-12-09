@@ -27,7 +27,7 @@
                 <a href="{{ route(moonshineIndexRoute()) }}"
                    class="btn btn-primary"
                    rel="home">
-                    Back to Home
+                    @lang('moonshine::ui.back_to_home')
                 </a>
             </div>
         </div>
