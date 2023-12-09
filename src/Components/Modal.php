@@ -31,7 +31,7 @@ final class Modal extends MoonShineComponent
         'open',
         'closeOutside',
         'wide',
-        'auto'
+        'auto',
     ];
 
     public function __construct(

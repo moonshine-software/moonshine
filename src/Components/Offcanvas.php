@@ -25,7 +25,7 @@ final class Offcanvas extends MoonShineComponent
     protected $except = [
         'name',
         'open',
-        'left'
+        'left',
     ];
 
     public function __construct(
