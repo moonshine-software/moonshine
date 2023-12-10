@@ -1,0 +1,7 @@
+/* Article <ul> list */
+article,
+.article {
+  ul {
+    @apply list-[square] pl-4 marker:text-primary space-y-2;
+  }
+}
