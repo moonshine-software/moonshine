@@ -13,6 +13,7 @@ use MoonShine\Exceptions\InvalidHome;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
+use MoonShine\Menu\MenuManager;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Pages\ProfilePage;
@@ -180,6 +181,8 @@ class MoonShine
         if (class_exists(config('moonshine.pages.dashboard'))) {
             self::$pages->add(new (config('moonshine.pages.dashboard'))());
         }
+
+        MenuManager::register(self::$menu);
     }
 
     private static function resolveMenuItem(MenuElement $element): void

@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
-use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\Pages\Page;
 use Throwable;
@@ -28,7 +27,6 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
         $menu = $this->menu();
 
         MoonShine::init($menu);
-        MenuManager::register($menu);
 
         MoonShine::resolveRoutes();
 
