@@ -2,6 +2,6 @@
 article,
 .article {
   ul {
-    @apply list-[square] pl-4 marker:text-primary space-y-2;
+    @apply list-[square] space-y-2 pl-4 marker:text-primary;
   }
 }
