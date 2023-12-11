@@ -37,6 +37,8 @@ abstract class MoonShineRenderElements extends Collection
                 $this->extractOnly($element->getFields(), $type, $data);
             } elseif ($element instanceof $type) {
                 $data[] = $element;
+            } elseif ($element instanceof HasFields) {
+                $this->extractOnly($element->getFields(), $type, $data);
             }
         }
     }
