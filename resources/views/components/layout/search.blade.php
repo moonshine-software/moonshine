@@ -63,7 +63,7 @@
             />
         </a>
 
-        <x-moonshine::modal name="global-search" title="Search" :closeOutside="true">
+        <x-moonshine::modal eventName="global-search" title="Search" :closeOutside="true">
             <x-moonshine::form name="search">
                 <x-moonshine::form.input
                     class="search-input"

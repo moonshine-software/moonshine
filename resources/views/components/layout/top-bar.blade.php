@@ -1,5 +1,6 @@
 @props([
     'components' => [],
+    'actions' => [],
     'home_route' => null,
     'logo',
     'profile',
@@ -29,6 +30,8 @@
             :components="$actions"
         />
 
+        {{ $profile ?? '' }}
+
         <div class="menu-inner-divider"></div>
 
         @if(config('moonshine.use_theme_switcher', true))
@@ -43,4 +46,3 @@
     </div>
 </aside>
 <!-- END: Menu horizontal -->
-

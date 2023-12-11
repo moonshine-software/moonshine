@@ -13,6 +13,7 @@ use MoonShine\Exceptions\InvalidHome;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
+use MoonShine\Menu\MenuManager;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Pages\ProfilePage;
@@ -162,7 +163,7 @@ class MoonShine
         self::$pages = self::getPages();
         self::$resources = self::getResources();
 
-        if(! is_closure($data)) {
+        if (! is_closure($data)) {
             self::$menu = $newCollection ? collect() : self::getMenu();
 
             collect($data)->merge(self::getVendorsMenu())->each(
@@ -173,13 +174,17 @@ class MoonShine
             );
         }
 
-        self::$pages->add(
-            new (config('moonshine.pages.profile', ProfilePage::class))()
-        );
+        if (! empty(config('moonshine.pages.profile')) && config('moonshine.auth.enable', true)) {
+            self::$pages->add(
+                new (config('moonshine.pages.profile', ProfilePage::class))()
+            );
+        }
 
         if (class_exists(config('moonshine.pages.dashboard'))) {
             self::$pages->add(new (config('moonshine.pages.dashboard'))());
         }
+
+        MenuManager::register(is_closure($data) ? $data : self::$menu);
     }
 
     private static function resolveMenuItem(MenuElement $element): void

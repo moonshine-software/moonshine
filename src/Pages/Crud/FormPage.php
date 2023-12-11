@@ -9,6 +9,7 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
+use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
@@ -170,7 +171,9 @@ class FormPage extends Page
         if ($outsideFields->isNotEmpty()) {
             $components[] = Divider::make();
 
-            foreach ($this->getResource()->getOutsideFields() as $field) {
+            foreach ($this->getResource()->getOutsideFields()->formFields() as $field) {
+                $components[] = LineBreak::make();
+
                 $components[] = Fragment::make([
                     $field->resolveFill(
                         $item?->attributesToArray() ?? [],

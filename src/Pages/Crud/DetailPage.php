@@ -124,10 +124,12 @@ class DetailPage extends Page
         if ($outsideFields->isNotEmpty()) {
             $components[] = LineBreak::make();
 
-            foreach ($this->getResource()->getOutsideFields() as $field) {
+            foreach ($this->getResource()->getOutsideFields()->detailFields() as $field) {
                 if ($field->toOne()) {
                     $field->forcePreview();
                 }
+
+                $components[] = LineBreak::make();
 
                 $components[] = Fragment::make([
                     $field->resolveFill(

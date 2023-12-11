@@ -84,7 +84,7 @@ final class Modal extends MoonShineComponent
             'open' => $this->open,
             'auto' => $this->auto,
             'closeOutside' => $this->closeOutside,
-            'async' => ! is_null($this->asyncUrl),
+            'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
             'slot' => new ComponentSlot(value($this->content, $this)),
