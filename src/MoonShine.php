@@ -163,7 +163,7 @@ class MoonShine
         self::$pages = self::getPages();
         self::$resources = self::getResources();
 
-        if(! is_closure($data)) {
+        if (! is_closure($data)) {
             self::$menu = $newCollection ? collect() : self::getMenu();
 
             collect($data)->merge(self::getVendorsMenu())->each(
@@ -174,9 +174,11 @@ class MoonShine
             );
         }
 
-        self::$pages->add(
-            new (config('moonshine.pages.profile', ProfilePage::class))()
-        );
+        if (! empty(config('moonshine.pages.profile')) && config('moonshine.auth.enable', true)) {
+            self::$pages->add(
+                new (config('moonshine.pages.profile', ProfilePage::class))()
+            );
+        }
 
         if (class_exists(config('moonshine.pages.dashboard'))) {
             self::$pages->add(new (config('moonshine.pages.dashboard'))());
