@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -111,10 +110,4 @@ abstract class Resource implements ResourceContract, MenuFiller
         return moonshineRequest()->getResourceUri()
             === $this->uriKey();
     }
-
-    public function canSee(Request $request): bool
-    {
-        return true;
-    }
-
 }
