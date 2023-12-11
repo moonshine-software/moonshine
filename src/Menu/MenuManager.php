@@ -11,7 +11,7 @@ class MenuManager
 {
     protected static Closure|Collection|array|null $menu = null;
 
-    public static function register(Closure|array|Collection $data): void
+    public static function register(Closure|array|Collection|null $data): void
     {
         self::$menu = $data;
     }

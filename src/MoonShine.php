@@ -182,7 +182,7 @@ class MoonShine
             self::$pages->add(new (config('moonshine.pages.dashboard'))());
         }
 
-        MenuManager::register(self::$menu);
+        MenuManager::register(is_closure($data) ? $data : self::$menu);
     }
 
     private static function resolveMenuItem(MenuElement $element): void
