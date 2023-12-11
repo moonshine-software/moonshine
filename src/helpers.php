@@ -254,7 +254,7 @@ if (! function_exists('oops404')) {
     function oops404(): never
     {
         $handler = config(
-            'moonshine.route.notFoundHandler',
+            'moonshine.route.handlers.notFound',
             MoonShineNotFoundException::class
         );
 
@@ -266,7 +266,7 @@ if (! function_exists('oops403')) {
     function oops403(): never
     {
         $handler = config(
-            'moonshine.route.forbiddenHandler',
+            'moonshine.route.handlers.forbidden',
             MoonShineForbiddenException::class
         );
 

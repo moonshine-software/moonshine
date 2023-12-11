@@ -25,8 +25,10 @@ return [
         'middlewares' => [
             SecurityHeadersMiddleware::class,
         ],
-        'notFoundHandler' => MoonShineNotFoundException::class,
-        'forbiddenHandler' => MoonShineForbiddenException::class,
+        'handlers' => [
+            'notFound' => MoonShineNotFoundException::class,
+            'forbidden' => MoonShineForbiddenException::class,
+        ]
     ],
 
     'use_migrations' => true,
