@@ -63,7 +63,7 @@ final class Offcanvas extends MoonShineComponent
             'left' => $this->left,
             'open' => $this->open,
             'title' => value($this->title, $this),
-            'async' => ! is_null($this->asyncUrl),
+            'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'toggler' => new ComponentSlot(value($this->toggler, $this), $this->togglerAttributes),
             'slot' => new ComponentSlot(value($this->content, $this)),

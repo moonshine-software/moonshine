@@ -21,7 +21,7 @@
         :wide="$action->modal()->isWide()"
         :attributes="$action->modal()->attributes()"
         :closeOutside="$action->modal()->isCloseOutside()"
-        :asyncUrl="$action->url()"
+        :asyncUrl="$action->modal()->isAsync() ? $action->url() : ''"
         title="{{ $action->modal()->title($action->getItem()) }}"
     >
         <div class="mb-4">
