@@ -35,11 +35,12 @@ class DetailPage extends Page
 
     public function beforeRender(): void
     {
-        abort_if(
+        if(
             ! in_array('view', $this->getResource()->getActiveActions())
-            || ! $this->getResource()->can('view'),
-            403
-        );
+            || ! $this->getResource()->can('view')
+        ) {
+            oops403();
+        };
     }
 
     /**

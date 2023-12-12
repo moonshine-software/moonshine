@@ -44,14 +44,15 @@ class FormPage extends Page
             ? 'update'
             : 'create';
 
-        abort_if(
+        if(
             ! in_array(
                 $ability,
                 $this->getResource()->getActiveActions()
             )
-            || ! $this->getResource()->can($ability),
-            403
-        );
+            || ! $this->getResource()->can($ability)
+        ) {
+            oops403();
+        };
     }
 
     /**
