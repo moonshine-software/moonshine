@@ -7,8 +7,8 @@
         class="flex min-h-screen flex-col items-center justify-center gap-x-8 gap-y-8 py-8 px-4 md:flex-row lg:gap-x-12">
         <div class="shrink-0">
             <img src="{{ asset('vendor/moonshine/logo-small.svg') }}"
-                 class="h-28 animate-wiggle xs:h-36 md:h-56 lg:h-60"
-                 alt="MoonShine"
+                class="h-28 animate-wiggle xs:h-36 md:h-56 lg:h-60"
+                alt="MoonShine"
             />
         </div>
 
@@ -25,9 +25,9 @@
 
             <div class="mt-8">
                 <a href="{{ route(moonshineIndexRoute()) }}"
-                   class="btn btn-primary"
-                   rel="home">
-                    Back to Home
+                    class="btn btn-primary"
+                    rel="home">
+                    @lang('moonshine::ui.back_to_home')
                 </a>
             </div>
         </div>

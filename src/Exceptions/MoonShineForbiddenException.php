@@ -8,13 +8,13 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class MoonShineNotFoundException extends Exception
+class MoonShineForbiddenException extends Exception
 {
     public function render(Request $request): Response
     {
         return response()->view('moonshine::errors.index', [
-            'code' => 404,
-            'message' => trans('moonshine::ui.404'),
-        ])->setStatusCode(404);
+            'code' => 403,
+            'message' => trans('moonshine::ui.403'),
+        ])->setStatusCode(403);
     }
 }

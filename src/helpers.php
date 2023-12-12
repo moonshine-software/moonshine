@@ -12,6 +12,7 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Exceptions\MoonShineForbiddenException;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -255,6 +256,18 @@ if (! function_exists('oops404')) {
         $handler = config(
             'moonshine.route.notFoundHandler',
             MoonShineNotFoundException::class
+        );
+
+        throw new $handler();
+    }
+}
+
+if (! function_exists('oops403')) {
+    function oops403(): never
+    {
+        $handler = config(
+            'moonshine.route.forbiddenHandler',
+            MoonShineForbiddenException::class
         );
 
         throw new $handler();

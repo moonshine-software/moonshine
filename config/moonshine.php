@@ -1,5 +1,6 @@
 <?php
 
+use MoonShine\Exceptions\MoonShineForbiddenException;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Middleware\Authenticate;
@@ -25,6 +26,7 @@ return [
             SecurityHeadersMiddleware::class,
         ],
         'notFoundHandler' => MoonShineNotFoundException::class,
+        'forbiddenHandler' => MoonShineForbiddenException::class,
     ],
 
     'use_migrations' => true,
