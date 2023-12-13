@@ -27,7 +27,7 @@ abstract class FormElements extends MoonShineRenderElements
     {
         $data = [];
 
-        $this->extractOnly($this->toArray(), Field::class, $data);
+        $this->extractFields($this->toArray(), $data);
 
         return Fields::make($data)->when(
             ! $withWrappers,

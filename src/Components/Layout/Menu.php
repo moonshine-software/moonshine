@@ -27,8 +27,8 @@ class Menu extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'data' => moonshineMenu()->all(),
-            'top' => $this->isTop(),
+            '_data' => moonshineMenu()->all(),
+            'isTop' => $this->isTop(),
         ];
     }
 }

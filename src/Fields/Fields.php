@@ -88,17 +88,6 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function indexFields(): Fields
-    {
-        return $this->onlyFields(withWrappers: true)
-            ->filter(static fn (Field $field): bool => $field->isOnIndex())
-            ->values();
-    }
-
-
-    /**
-     * @throws Throwable
-     */
     public function onlyRelationFields(): Fields
     {
         return $this->onlyFields()
@@ -151,6 +140,16 @@ final class Fields extends FormElements
         return $this->exceptElements(
             fn ($element): bool => $element instanceof ModelRelationField
         );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function indexFields(): Fields
+    {
+        return $this->onlyFields(withWrappers: true)
+            ->filter(static fn (Field $field): bool => $field->isOnIndex())
+            ->values();
     }
 
     /**

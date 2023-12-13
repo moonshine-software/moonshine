@@ -1,6 +1,6 @@
 @props([
     'buttons',
-    'name',
+    'name' => null,
     'errors' => false,
     'precognitive' => false,
     'raw' => false

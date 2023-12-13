@@ -1,6 +1,6 @@
 @props([
     'components' => [],
-    'actions' => [],
+    'actions' => $_actions ?? [],
     'home_route' => null,
     'logo',
     'profile',

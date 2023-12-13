@@ -1,8 +1,8 @@
 @props([
     'eventName' => null,
     'name' => 'default',
-    'open' => false,
-    'left' => false,
+    'open' => $isOpen ?? false,
+    'left' => $isLeft ?? false,
     'title' => '',
     'async' => false,
     'asyncUrl' => '',

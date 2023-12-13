@@ -29,13 +29,6 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected string $view = 'moonshine::components.table.builder';
 
-    protected $except = [
-        'rows',
-        'fields',
-        'hasPaginator',
-        'paginator',
-    ];
-
     protected array $rows = [];
 
     protected ?Closure $trAttributes = null;

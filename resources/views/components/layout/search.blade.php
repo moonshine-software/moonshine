@@ -1,7 +1,7 @@
 @props([
-    'enabled' => true,
-    'global' => false,
-    'action' => '',
+    'enabled' => $isEnabled ?? true,
+    'global' => $isGlobal ?? false,
+    'action' => $_action ?? '',
     'key' => 'search',
     'placeholder' => __('moonshine::ui.search') . ' (Ctrl+K)'
 ])

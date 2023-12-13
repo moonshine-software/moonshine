@@ -14,10 +14,6 @@ final class ActionGroup extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.action-group';
 
-    protected $except = [
-        'getActions',
-    ];
-
     public function __construct(protected array|ActionButtons $actions = [])
     {
     }

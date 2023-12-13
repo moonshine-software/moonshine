@@ -22,12 +22,6 @@ final class Offcanvas extends MoonShineComponent
 
     protected array $togglerAttributes = [];
 
-    protected $except = [
-        'name',
-        'open',
-        'left',
-    ];
-
     public function __construct(
         protected Closure|string $title = '',
         protected Closure|View|string $content = '',
@@ -60,8 +54,8 @@ final class Offcanvas extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'left' => $this->left,
-            'open' => $this->open,
+            'isLeft' => $this->left,
+            'isOpen' => $this->open,
             'title' => value($this->title, $this),
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',

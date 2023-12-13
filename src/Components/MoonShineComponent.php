@@ -25,10 +25,6 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     use WithView;
     use HasCanSee;
 
-    protected $except = [
-        'name',
-    ];
-
     public function name(string $name): static
     {
         $this->componentName = $name;
@@ -38,7 +34,9 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
 
     public function getName(): ?string
     {
-        return $this->componentName;
+        return str_starts_with($this->componentName ?? '', 'moonshine::')
+            ? 'default'
+            : $this->componentName;
     }
 
     public function customAttributes(array $attributes): static
@@ -62,18 +60,24 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         return [];
     }
 
+    public function data(): array
+    {
+        $this->attributes = $this->attributes ?: $this->newAttributeBag();
+
+        return array_merge($this->extractPublicProperties(), [
+            'attributes' => $this->attributes(),
+            'name' => $this->getName(),
+        ]);
+    }
+
     public function render(): View|Closure|string
     {
-        $data = $this->viewData();
+        $mergeData = $this->viewData();
 
-        return view(
+        return $this->view(
             $this->getView(),
-            [
-                'attributes' => $this->attributes(),
-                'name' => str_contains($this->getName() ?? '', '::')
-                    ? 'default'
-                    : $this->getName(),
-            ] + $data
+            $this->data(),
+            $mergeData,
         );
     }
 

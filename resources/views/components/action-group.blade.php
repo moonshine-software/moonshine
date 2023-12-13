@@ -1,3 +1,6 @@
+@props([
+    'actions' => []
+])
 <div {{ $attributes->merge(['class' => 'flex items-center gap-2']) }}>
     @if($actions->inDropdown()->isNotEmpty())
         <x-moonshine::dropdown>

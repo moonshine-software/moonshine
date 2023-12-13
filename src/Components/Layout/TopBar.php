@@ -22,6 +22,6 @@ class TopBar extends WithComponents
 
     protected function viewData(): array
     {
-        return parent::viewData() + ['actions' => $this->actions];
+        return parent::viewData() + ['_actions' => $this->actions];
     }
 }

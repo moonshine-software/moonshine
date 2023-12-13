@@ -11,7 +11,7 @@ use MoonShine\Fields\Switcher;
 use MoonShine\Pages\PageComponents;
 
 uses()->group('core');
-uses()->group('new');
+uses()->group('now');
 
 beforeEach(function (): void {
     $this->data = Block::make([

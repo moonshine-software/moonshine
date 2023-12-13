@@ -3,10 +3,10 @@
     'name' => 'default',
     'async' => false,
     'asyncUrl' => '',
-    'wide' => false,
-    'open' => false,
-    'auto' => false,
-    'closeOutside' => true,
+    'wide' => $isWide ?? false,
+    'open' => $isOpen ?? false,
+    'auto' => $isAuto ?? false,
+    'closeOutside' => $isCloseOutside ?? true,
     'title' => '',
     'outerHtml' => null
 ])

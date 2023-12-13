@@ -25,12 +25,6 @@ final class FormBuilder extends RowComponent
 
     protected string $view = 'moonshine::components.form.builder';
 
-    protected $except = [
-        'fields',
-        'buttons',
-        'submitLabel',
-    ];
-
     protected array $excludeFields = [
         '_force_redirect',
         '_redirect',

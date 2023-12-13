@@ -12,8 +12,6 @@ use Illuminate\Support\Collection;
  */
 class Footer extends WithComponents
 {
-    protected $except = ['copyright'];
-
     protected string $view = 'moonshine::components.layout.footer';
 
     protected string|Closure $copyright = '';
@@ -47,8 +45,8 @@ class Footer extends WithComponents
     {
         return [
             ...parent::viewData(),
-            'menu' => $this->getMenu(),
-            'copyright' => $this->getCopyright(),
+            '_menu' => $this->getMenu(),
+            '_copyright' => $this->getCopyright(),
         ];
     }
 

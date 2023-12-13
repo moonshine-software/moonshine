@@ -9,7 +9,7 @@ use MoonShine\Components\MoonShineComponent;
 use MoonShine\Pages\ProfilePage;
 
 /**
- * @method static static make(bool $withBorder = false)
+ * @method static static make(?string $route = null, ?string $logOutRoute = null, ?string $avatar = null, ?string $nameOfUser = null, ?string $username = null, bool $withBorder = false)
  */
 final class Profile extends MoonShineComponent
 {

@@ -26,19 +26,12 @@ final class Modal extends MoonShineComponent
 
     protected array $outerAttributes = [];
 
-    protected $except = [
-        'name',
-        'open',
-        'closeOutside',
-        'wide',
-        'auto',
-    ];
-
     public function __construct(
         protected Closure|string $title = '',
         protected Closure|View|string $content = '',
         protected Closure|string $outer = '',
-        protected Closure|string|null $asyncUrl = null
+        protected Closure|string|null $asyncUrl = null,
+
     ) {
     }
 
@@ -80,10 +73,10 @@ final class Modal extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'wide' => $this->wide,
-            'open' => $this->open,
-            'auto' => $this->auto,
-            'closeOutside' => $this->closeOutside,
+            'isWide' => $this->wide,
+            'isOpen' => $this->open,
+            'isAuto' => $this->auto,
+            'isCloseOutside' => $this->closeOutside,
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),

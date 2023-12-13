@@ -1,6 +1,6 @@
 @props([
-    'data',
-    'top' => false
+    'data' => $_data ?? [],
+    'top' => $isTop ?? false
 ])
 @if($data)
     <ul {{ $attributes->class(['menu-inner', 'grow' => !$top]) }}
