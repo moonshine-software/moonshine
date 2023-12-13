@@ -27,10 +27,12 @@ abstract class MoonShineRenderElements extends Collection
     protected function extractOnly($elements, string $type, array &$data): void
     {
         foreach ($elements as $element) {
+            if ($element instanceof HasFields) {
+                $this->extractOnly($element->getFields(), $type, $data);
+            }
+
             if ($element instanceof $type) {
                 $data[] = $element;
-            } elseif ($element instanceof HasFields) {
-                $this->extractOnly($element->getFields(), $type, $data);
             }
         }
     }
