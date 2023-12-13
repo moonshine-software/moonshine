@@ -36,7 +36,7 @@
   }
 
   &-body {
-    @apply grow p-4 lg:p-6;
+    @apply z-1 grow p-4 lg:p-6;
   }
 
   /* Backdrop */
