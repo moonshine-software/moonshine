@@ -69,7 +69,7 @@ class MoonShineFormRequest extends FormRequest
     public function beforeResourceAuthorization(): void
     {
         throw_if(
-            !$this->hasResource(),
+            ! $this->hasResource(),
             ResourceException::notDeclared()
         );
     }

@@ -20,7 +20,7 @@ beforeEach(function (): void {
                 Tab::make([
                     LineBreak::make()->name('line-break'),
                     FormBuilder::make()->name('inner-form')->fields([
-                        Switcher::make('Switcher')
+                        Switcher::make('Switcher'),
                     ]),
 
                 ]),
@@ -29,17 +29,17 @@ beforeEach(function (): void {
                         ->name('first-table'),
 
                     TableBuilder::make()
-                        ->name('second-table')
+                        ->name('second-table'),
                 ]),
-            ])
+            ]),
         ])->name('parent-form'),
 
         TableBuilder::make()
-            ->name('parent-table')
+            ->name('parent-table'),
     ])->name('block');
 
     $this->collection = PageComponents::make([
-        $this->data
+        $this->data,
     ]);
 });
 
