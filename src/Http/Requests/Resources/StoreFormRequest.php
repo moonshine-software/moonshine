@@ -10,6 +10,8 @@ final class StoreFormRequest extends MoonShineFormRequest
 {
     public function authorize(): bool
     {
+        $this->beforeResourceAuthorization();
+
         if (! in_array(
             'create',
             $this->getResource()->getActiveActions(),

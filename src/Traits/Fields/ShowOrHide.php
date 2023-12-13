@@ -200,12 +200,4 @@ trait ShowOrHide
     {
         return $this->showOnDetail;
     }
-
-    public function canDisplayOnForm(mixed $item): bool
-    {
-        return $this->isSee($item)
-            && $this->showOnForm
-            && ($item->exists ? $this->showOnUpdateForm
-                : $this->showOnCreateForm);
-    }
 }

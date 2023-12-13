@@ -13,8 +13,8 @@ class MoonShineNotFoundException extends Exception
     public function render(Request $request): Response
     {
         return response()->view('moonshine::errors.404', [
-            'code' => 404,
+            'code' => Response::HTTP_NOT_FOUND,
             'message' => trans('moonshine::ui.404'),
-        ])->setStatusCode(404);
+        ])->setStatusCode(Response::HTTP_NOT_FOUND);
     }
 }

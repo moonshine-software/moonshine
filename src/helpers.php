@@ -242,6 +242,21 @@ if (! function_exists('is_field')) {
     }
 }
 
+if (! function_exists('isSeeWhenExists')) {
+    function isSeeWhenExists(mixed $component): bool
+    {
+        if(method_exists($component, 'isSee')) {
+            return $component->isSee(
+                $component instanceof Field
+                    ? $component->toValue()
+                    : moonshineRequest()
+            );
+        }
+
+        return true;
+    }
+}
+
 if (! function_exists('is_selected_option')) {
     function is_selected_option(mixed $current, string $value): bool
     {

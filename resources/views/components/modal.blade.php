@@ -10,7 +10,7 @@
     'title' => '',
     'outerHtml' => null
 ])
-<div x-data="modal(`{{ $open }}`, `{{ $async && $outerHtml->isEmpty() ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
+<div x-data="modal(`{{ $open }}`, `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
     <template x-teleport="body">
     <div class="modal-template" @modal-toggled-{{ $eventName ?? $name }}.window="toggleModal">
         <div
@@ -61,7 +61,7 @@
     </template>
 
     @if($outerHtml?->isNotEmpty())
-        <div @click.prevent="toggleModal;{{ $async ? 'load(`' . str_replace('&amp;', '&', $asyncUrl) . '`, id);' : '' }}">
+        <div @click.prevent="toggleModal">
             {{ $outerHtml ?? '' }}
         </div>
     @endif

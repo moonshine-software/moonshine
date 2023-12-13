@@ -167,7 +167,7 @@ trait ResourceModelQuery
             ->resolveOrder()
             ->cacheQueryParams();
 
-        return $this->query();
+        return $this->getQuery();
     }
 
     public function query(): Builder
@@ -183,6 +183,11 @@ trait ResourceModelQuery
         }
 
         return $this->query;
+    }
+
+    public function getQuery(): Builder
+    {
+        return $this->query ?: $this->query();
     }
 
     public function saveFilterState(): bool
@@ -211,6 +216,7 @@ trait ResourceModelQuery
 
     protected function resolveTags(): static
     {
+        /** @var QueryTag $tag */
         $tag = collect($this->queryTags())
             ->first(
                 fn (QueryTag $tag): bool => $tag->isActive()
@@ -219,7 +225,7 @@ trait ResourceModelQuery
         if ($tag) {
             $this->customBuilder(
                 $tag->apply(
-                    $this->query()
+                    $this->getQuery()
                 )
             );
         }
@@ -242,7 +248,7 @@ trait ResourceModelQuery
                 ->value();
 
             if (! is_null($fullTextColumns)) {
-                $this->query()->whereFullText($fullTextColumns, $terms);
+                $this->getQuery()->whereFullText($fullTextColumns, $terms);
             } else {
                 $this->searchQuery($terms);
             }
@@ -253,7 +259,7 @@ trait ResourceModelQuery
 
     protected function searchQuery(string $terms): void
     {
-        $this->query()->where(function (Builder $builder) use ($terms): void {
+        $this->getQuery()->where(function (Builder $builder) use ($terms): void {
             foreach ($this->search() as $key => $column) {
                 if (is_string($column) && str($column)->contains('.')) {
                     $column = str($column)
@@ -307,9 +313,9 @@ trait ResourceModelQuery
         }
 
         if(is_closure($callback)) {
-            $callback($this->query(), $column, $direction);
+            $callback($this->getQuery(), $column, $direction);
         } else {
-            $this->query()
+            $this->getQuery()
                 ->orderBy($column, $direction);
         }
 
@@ -373,7 +379,7 @@ trait ResourceModelQuery
 
             $filter->apply(
                 $defaultApply,
-                $this->query()
+                $this->getQuery()
             );
         });
 
@@ -392,7 +398,7 @@ trait ResourceModelQuery
         if (! empty($this->parentRelations())) {
             foreach ($this->parentRelations() as $relationName) {
                 if ($relation == $relationName) {
-                    $this->query()->where(
+                    $this->getQuery()->where(
                         $this->getModel()->{$relation}()->getForeignKeyName(),
                         $parentId
                     );
@@ -406,7 +412,7 @@ trait ResourceModelQuery
             method_exists($this->getModel(), $relation)
             && method_exists($this->getModel()->{$relation}(), 'getForeignKeyName')
         ) {
-            $this->query()->where(
+            $this->getQuery()->where(
                 $this->getModel()->{$relation}()->getForeignKeyName(),
                 $parentId
             );

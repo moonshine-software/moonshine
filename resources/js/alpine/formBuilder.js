@@ -1,4 +1,8 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 import {dispatchEvents, responseCallback} from './asyncFunctions'
 
 export default () => ({
@@ -24,6 +28,7 @@ export default () => ({
   },
   precognition(form) {
     form.querySelector('.precognition_errors').innerHTML = ''
+    const t = this
 
     submitState(form, true)
 
@@ -41,10 +46,16 @@ export default () => ({
       .catch(errorResponse => {
         submitState(form, false)
 
+        const data = errorResponse.response.data
+
         let errors = ''
-        let errorsData = errorResponse.response.data.errors
+        let errorsData = data.errors
         for (const error in errorsData) {
           errors = errors + '<div class="mt-2 text-secondary">' + errorsData[error] + '</div>'
+        }
+
+        if (data?.message) {
+          t.$dispatch('toast', {type: 'error', text: data.message})
         }
 
         form.querySelector('.precognition_errors').innerHTML = errors

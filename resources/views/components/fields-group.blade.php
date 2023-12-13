@@ -2,6 +2,8 @@
     'components' => []
 ])
 @foreach($components as $fieldOrDecoration)
+    @continue(!isSeeWhenExists($fieldOrDecoration))
+
     @if(is_field($fieldOrDecoration) && $fieldOrDecoration->hasWrapper())
         <x-moonshine::field-container :field="$fieldOrDecoration">
             {!! is_field($fieldOrDecoration) ? $fieldOrDecoration->getBeforeRender() : '' !!}

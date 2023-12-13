@@ -6,6 +6,7 @@ namespace MoonShine\Decorations;
 
 use Illuminate\Support\Collection;
 use MoonShine\Exceptions\DecorationException;
+use MoonShine\Fields\Fields;
 use Throwable;
 
 /**
@@ -49,14 +50,14 @@ class Tabs extends Decoration
     }
 
     /**
-     * @return Collection<int, Tab>
+     * @return Fields<int, Tab>
      * @throws Throwable
      */
-    public function tabs(): Collection
+    public function tabs(): Fields
     {
         return tap(
-            Collection::make($this->tabs),
-            static function (Collection $tabs): void {
+            Fields::make($this->tabs),
+            static function (Fields $tabs): void {
                 throw_if(
                     $tabs->every(fn ($tab): bool => ! $tab instanceof Tab),
                     new DecorationException(
@@ -65,6 +66,11 @@ class Tabs extends Decoration
                 );
             }
         );
+    }
+
+    public function getFields(mixed $data = null): Fields
+    {
+        return $this->tabs();
     }
 
     public function contentWithHtml(): Collection

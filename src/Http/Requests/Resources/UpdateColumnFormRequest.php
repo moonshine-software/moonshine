@@ -12,6 +12,8 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
 {
     public function authorize(): bool
     {
+        $this->beforeResourceAuthorization();
+
         $resource = $this->getResource();
 
         if (is_null($resource) || is_null($this->getField())) {

@@ -4,7 +4,9 @@ namespace MoonShine\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Exceptions\ResourceException;
 use MoonShine\Pages\Page;
+use Throwable;
 
 class MoonShineFormRequest extends FormRequest
 {
@@ -59,6 +61,17 @@ class MoonShineFormRequest extends FormRequest
     public function hasResource(): bool
     {
         return ! is_null($this->getResource());
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function beforeResourceAuthorization(): void
+    {
+        throw_if(
+            !$this->hasResource(),
+            ResourceException::notDeclared()
+        );
     }
 
     public function getPage(): Page
