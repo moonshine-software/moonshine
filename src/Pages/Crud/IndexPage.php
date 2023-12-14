@@ -163,7 +163,7 @@ class IndexPage extends Page
             Fragment::make([
                 TableBuilder::make(items: $items)
                     ->name($tableName)
-                    ->fields(fn () => $this->getResource()->getIndexFields()->toArray())
+                    ->fields($this->getResource()->getIndexFields()->toArray())
                     ->cast($this->getResource()->getModelCast())
                     ->withNotFound()
                     ->when(

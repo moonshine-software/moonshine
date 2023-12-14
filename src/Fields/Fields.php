@@ -17,9 +17,14 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function fillCloned(array $raw = [], mixed $casted = null, int $index = 0): self
-    {
-        return $this->onlyFields()->map(
+    public function fillCloned(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0,
+        ?Fields $preparedFields = null
+    ): self {
+        $fields = $preparedFields ?? $this->onlyFields();
+        return $fields->map(
             fn (Field $field): Field => (clone $field)
                 ->resolveFill($raw, $casted, $index)
         );

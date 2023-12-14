@@ -32,7 +32,6 @@ final class TableRow
     public function getKey(): int|string
     {
         return $this->getFields()
-            ->onlyFields()
             ->findByClass(ID::class)
             ?->value() ?? '';
     }

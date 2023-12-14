@@ -16,8 +16,6 @@ trait WithFields
 {
     protected array $fields = [];
 
-    protected ?Closure $fieldsClosure = null;
-
     /**
      * @throws Throwable
      */
@@ -31,13 +29,6 @@ trait WithFields
      */
     public function getFields(mixed $data = null): Fields
     {
-        /**
-         * If this method is called from within a loop, it is important to use fieldsClosure
-         */
-        if(! is_null($this->fieldsClosure)) {
-            $this->fields = value($this->fieldsClosure, $data, $this);
-        }
-
         return Fields::make($this->fields);
     }
 
@@ -49,9 +40,7 @@ trait WithFields
     public function fields(Fields|Closure|array $fields): static
     {
         if(is_closure($fields)) {
-            $this->fieldsClosure = $fields;
-
-            return $this;
+            $fields = call_user_func($fields);
         }
 
         $this->fields = $fields instanceof Fields

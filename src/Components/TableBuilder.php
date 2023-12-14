@@ -59,14 +59,16 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function rows(): Collection
     {
-        return $this->getItems()->filter()->map(function (mixed $data, $index): TableRow {
+        $tableFields = $this->getFields()->onlyFields();
+
+        return $this->getItems()->filter()->map(function (mixed $data, $index) use ($tableFields): TableRow {
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 
-            $fields = $this->getFilledFields($raw, $casted, $index);
+            $fields = $this->getFilledFields($raw, $casted, $index, $tableFields);
 
             if (! is_null($this->getName())) {
-                $fields->onlyFields()->each(
+                $fields->each(
                     fn (Field $field): Field => $field->formName($this->getName())
                 );
             }
@@ -85,17 +87,15 @@ final class TableBuilder extends IterableComponent implements TableContract
     /**
      * @throws Throwable
      */
-    protected function getFilledFields(array $raw = [], mixed $casted = null, int $index = 0): Fields
-    {
-        $fields = $this->getFields();
+    protected function getFilledFields(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0,
+        ?Fields $preparedFields = null
+    ): Fields {
+        $fields = $preparedFields ?? $this->getFields();
 
-        if (is_closure($this->fieldsClosure)) {
-            $fields->fill($raw, $casted, $index);
-
-            return $fields;
-        }
-
-        return $fields->fillCloned($raw, $casted, $index);
+        return $fields->fillCloned($raw, $casted, $index, $fields);
     }
 
     public function getBulkButtons(): ActionButtons
