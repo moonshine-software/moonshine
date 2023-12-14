@@ -8,13 +8,13 @@ use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Relationships\HasOne;
+use MoonShine\Fields\StackFields;
 use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 use MoonShine\Pages\PageComponents;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 
 uses()->group('core');
-uses()->group('now');
 
 beforeEach(function (): void {
     $this->data = Block::make([
@@ -24,8 +24,10 @@ beforeEach(function (): void {
                     LineBreak::make()->name('line-break'),
                     FormBuilder::make()->name('inner-form')->fields([
                         Switcher::make('Switcher'),
-                        Text::make('Text')->hideOnForm(),
-                        Text::make('Email'),
+                        StackFields::make()->fields([
+                            Text::make('Text')->hideOnForm(),
+                            Text::make('Email'),
+                        ]),
                         HasOne::make('HasOne', resource: new TestResource()),
                     ]),
 

@@ -31,7 +31,8 @@ abstract class FormElements extends MoonShineRenderElements
     public function onlyFields(bool $withWrappers = false): Fields
     {
         if($this->onlyFieldsCalled) {
-            return Fields::make($this->toArray());
+            return Fields::make($this->toArray())
+                ->onlyFieldsCalled();
         }
 
         $data = [];

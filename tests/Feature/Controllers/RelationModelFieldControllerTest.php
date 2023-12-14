@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Relationships\BelongsToMany;
+use MoonShine\Fields\StackFields;
 use MoonShine\MoonShineRouter;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
@@ -112,8 +113,10 @@ it('async search', function () {
     $item->categories()->attach($category);
     $item->refresh();
 
-    $field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
-        ->resolveFill($item->toArray(), $item);
+    $field = StackFields::make()->fields([
+        BelongsToMany::make('Categories', resource: new TestCategoryResource())
+            ->resolveFill($item->toArray(), $item)
+    ]);
 
     addFieldsToTestResource($field);
 
