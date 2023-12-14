@@ -82,6 +82,9 @@ class IndexPage extends Page
         ;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function filtersForm(): array
     {
         return [

@@ -19,7 +19,7 @@ trait ResourceWithFields
 
     public function getFields(): Fields
     {
-        return Fields::make($this->fields())->filter();
+        return Fields::make($this->fields());
     }
 
     public function indexFields(): array
@@ -54,7 +54,7 @@ trait ResourceWithFields
     /**
      * @throws Throwable
      */
-    public function getFormFields(): Fields
+    public function getFormFields(bool $withOutside = false): Fields
     {
         $fields = $this->getPages()
             ->findByType(PageType::FORM)
@@ -66,8 +66,7 @@ trait ResourceWithFields
         }
 
         return Fields::make($fields)
-            ->formFields()
-            ->withoutOutside();
+            ->formFields(withOutside: $withOutside);
     }
 
     /**
@@ -97,7 +96,7 @@ trait ResourceWithFields
     /**
      * @throws Throwable
      */
-    public function getDetailFields(): Fields
+    public function getDetailFields(bool $withOutside = false): Fields
     {
         $fields = $this->getPages()
             ->findByType(PageType::DETAIL)
@@ -110,7 +109,7 @@ trait ResourceWithFields
 
         return Fields::make($fields)
             ->onlyFields(withWrappers: true)
-            ->detailFields();
+            ->detailFields(withOutside: $withOutside);
     }
 
     public function filters(): array
@@ -124,7 +123,6 @@ trait ResourceWithFields
     public function getFilters(): Fields
     {
         $filters = Fields::make($this->filters())
-            ->filter()
             ->withoutOutside()
             ->wrapNames('filters');
 

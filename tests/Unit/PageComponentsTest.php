@@ -7,8 +7,11 @@ use MoonShine\Decorations\LineBreak;
 use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\Switcher;
+use MoonShine\Fields\Text;
 use MoonShine\Pages\PageComponents;
+use MoonShine\Tests\Fixtures\Resources\TestResource;
 
 uses()->group('core');
 uses()->group('now');
@@ -21,6 +24,9 @@ beforeEach(function (): void {
                     LineBreak::make()->name('line-break'),
                     FormBuilder::make()->name('inner-form')->fields([
                         Switcher::make('Switcher'),
+                        Text::make('Text')->hideOnForm(),
+                        Text::make('Email'),
+                        HasOne::make('HasOne', resource: new TestResource()),
                     ]),
 
                 ]),
@@ -64,7 +70,7 @@ it('only tables', function () {
 
 it('only fields', function () {
     expect($this->collection->onlyFields())
-        ->toHaveCount(1)
+        ->toHaveCount(4)
         ->each->toBeInstanceOf(Field::class);
 });
 
@@ -87,4 +93,34 @@ it('find by name', function () {
         ->toBeInstanceOf(LineBreak::class)
         ->getName()
         ->toBe('line-break');
+});
+
+it('form fields without outside', function () {
+    expect($this->collection->onlyFields()->formFields(withOutside: false)->onlyFields())
+        ->toHaveCount(2)
+        ->each->toBeInstanceOf(Field::class);
+});
+
+it('form fields with outside', function () {
+    expect($this->collection->onlyFields()->formFields()->onlyFields())
+        ->toHaveCount(3)
+        ->each->toBeInstanceOf(Field::class);
+});
+
+it('fields only outside', function () {
+    expect($this->collection->onlyFields()->onlyOutside())
+        ->toHaveCount(1)
+        ->each->toBeInstanceOf(HasOne::class);
+});
+
+it('form fields only outside', function () {
+    expect($this->collection->onlyFields()->formFields()->onlyOutside())
+        ->toHaveCount(1)
+        ->each->toBeInstanceOf(HasOne::class);
+});
+
+it('except element', function () {
+    expect($this->collection->exceptElements(fn($element) => $element instanceof FormBuilder)->first())
+        ->getFields()->first()
+        ->toBeInstanceOf(TableBuilder::class);
 });

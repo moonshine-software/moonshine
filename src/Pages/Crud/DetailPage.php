@@ -57,6 +57,9 @@ class DetailPage extends Page
         return $this->getLayers();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function mainLayer(): array
     {
         $resource = $this->getResource();
@@ -66,10 +69,7 @@ class DetailPage extends Page
             Block::make([
                 Fragment::make([
                     TableBuilder::make(
-                        $resource
-                            ->getDetailFields()
-                            ->onlyFields()
-                            ->withoutOutside()
+                        $resource->getDetailFields()
                     )
                         ->cast($resource->getModelCast())
                         ->items([$item])
@@ -119,12 +119,12 @@ class DetailPage extends Page
             return $components;
         }
 
-        $outsideFields = $this->getResource()->getOutsideFields();
+        $outsideFields = $this->getResource()->getOutsideFields()->detailFields();
 
         if ($outsideFields->isNotEmpty()) {
             $components[] = LineBreak::make();
 
-            foreach ($this->getResource()->getOutsideFields()->detailFields() as $field) {
+            foreach ($outsideFields as $field) {
                 if ($field->toOne()) {
                     $field->forcePreview();
                 }

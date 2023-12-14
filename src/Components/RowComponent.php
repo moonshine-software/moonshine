@@ -63,7 +63,6 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
     public function getButtons(): ActionButtons
     {
         return ActionButtons::make($this->buttons)
-            ->filter()
             ->fillItem($this->castData($this->getValues()))
             ->onlyVisible()
             ->withoutBulk();

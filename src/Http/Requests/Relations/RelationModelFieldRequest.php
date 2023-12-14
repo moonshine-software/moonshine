@@ -65,12 +65,8 @@ class RelationModelFieldRequest extends MoonShineFormRequest
 
         $fields = match ($this->getPage()->pageType()) {
             PageType::INDEX => $resource->getIndexFields(),
-            PageType::DETAIL => $resource->getDetailFields(),
-            PageType::FORM => Fields::make(
-                empty($resource->formFields())
-                    ? $resource->fields()
-                    : $resource->formFields()
-            )->onlyFields()->formFields(),
+            PageType::DETAIL => $resource->getDetailFields(withOutside: true),
+            PageType::FORM => $resource->getFormFields(withOutside: true)->onlyFields(),
             default => Fields::make($resource->fields())->onlyFields()
         };
 

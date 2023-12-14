@@ -60,7 +60,6 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
     public function getButtons(mixed $data): ActionButtons
     {
         return ActionButtons::make($this->buttons)
-            ->filter()
             ->fillItem($this->castData($data))
             ->onlyVisible()
             ->withoutBulk();

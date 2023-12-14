@@ -73,7 +73,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             return TableRow::make(
                 $casted,
-                $fields,
+                $fields->values(),
                 $this->getButtons($casted),
                 $this->trAttributes,
                 $this->tdAttributes,

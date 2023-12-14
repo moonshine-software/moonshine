@@ -28,9 +28,9 @@ final class ActionGroup extends MoonShineComponent
 
     public function getActions(): ActionButtons
     {
-        return (is_array($this->actions)
+        return is_array($this->actions)
             ? ActionButtons::make($this->actions)
-            : $this->actions)->filter();
+            : $this->actions;
     }
 
     public function add(ActionButton $item): self

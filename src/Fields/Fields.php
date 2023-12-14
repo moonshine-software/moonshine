@@ -65,8 +65,7 @@ final class Fields extends FormElements
     {
         return $this->filter(
             static fn (Field $field): bool => $field instanceof ModelRelationField
-        )
-            ->values();
+        );
     }
 
     /**
@@ -91,7 +90,7 @@ final class Fields extends FormElements
     {
         return $this->filter(
             static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
-        )->values();
+        );
     }
 
     /**
@@ -110,28 +109,44 @@ final class Fields extends FormElements
     public function indexFields(): Fields
     {
         return $this
-            ->filter(static fn (Field $field): bool => $field->isOnIndex())
-            ->values();
+            ->filter(static fn (Field $field): bool => $field->isOnIndex());
     }
 
     /**
      * @throws Throwable
      */
-    public function formFields(): MoonShineRenderElements
+    public function formFields(bool $withOutside = true): MoonShineRenderElements
     {
-        return $this->exceptElements(
-            fn ($element): bool => $element instanceof Field && ! $element->isOnForm()
-        );
+        $closure = static fn ($element): bool => $element instanceof Field && ! $element->isOnForm();
+
+        if ($withOutside === false) {
+            $closure = static fn ($element): bool => ($element instanceof ModelRelationField
+                && $element->outsideComponent())
+                || $closure($element);
+        }
+
+        return $this->exceptElements($closure);
     }
 
     /**
      * @throws Throwable
      */
-    public function detailFields(): Fields
+    public function detailFields(bool $withOutside = true): Fields
     {
+        if ($withOutside) {
+            return $this
+                ->filter(
+                    static fn (Field $field): bool => $field instanceof ModelRelationField
+                        && $field->outsideComponent()
+                        && $field->isOnDetail()
+                );
+        }
+
         return $this
-            ->filter(static fn (Field $field): bool => $field->isOnDetail())
-            ->values();
+            ->filter(
+                static fn (Field $field): bool => $field->isOnDetail()
+                && !($field instanceof ModelRelationField && $field->outsideComponent())
+            );
     }
 
     /**
@@ -139,8 +154,7 @@ final class Fields extends FormElements
      */
     public function exportFields(): Fields
     {
-        return $this->filter(static fn (Field $field): bool => $field->isOnExport())
-            ->values();
+        return $this->filter(static fn (Field $field): bool => $field->isOnExport());
     }
 
     /**
@@ -148,8 +162,7 @@ final class Fields extends FormElements
      */
     public function importFields(): Fields
     {
-        return $this->filter(static fn (Field $field): bool => $field->isOnImport())
-            ->values();
+        return $this->filter(static fn (Field $field): bool => $field->isOnImport());
     }
 
     /**

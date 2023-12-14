@@ -166,12 +166,12 @@ class FormPage extends Page
             return $components;
         }
 
-        $outsideFields = $this->getResource()->getOutsideFields();
+        $outsideFields = $this->getResource()->getOutsideFields()->formFields();
 
         if ($outsideFields->isNotEmpty()) {
             $components[] = Divider::make();
 
-            foreach ($this->getResource()->getOutsideFields()->formFields() as $field) {
+            foreach ($outsideFields as $field) {
                 $components[] = LineBreak::make();
 
                 $components[] = Fragment::make([
