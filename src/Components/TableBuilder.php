@@ -57,11 +57,14 @@ final class TableBuilder extends IterableComponent implements TableContract
         return collect($this->items);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function rows(): Collection
     {
         $tableFields = $this->getFields()->onlyFields();
 
-        return $this->getItems()->filter()->map(function (mixed $data, $index) use ($tableFields): TableRow {
+        return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($tableFields): TableRow {
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 

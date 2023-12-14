@@ -16,11 +16,24 @@ use Throwable;
  */
 abstract class FormElements extends MoonShineRenderElements
 {
+    protected bool $onlyFieldsCalled = false;
+
+    public function onlyFieldsCalled(): static
+    {
+        $this->onlyFieldsCalled = true;
+
+        return $this;
+    }
+
     /**
      * @throws Throwable
      */
     public function onlyFields(bool $withWrappers = false): Fields
     {
+        if($this->onlyFieldsCalled) {
+            return Fields::make($this->toArray());
+        }
+
         $data = [];
 
         $this->extractFields($this->toArray(), $data);
@@ -28,7 +41,7 @@ abstract class FormElements extends MoonShineRenderElements
         return Fields::make($data)->when(
             ! $withWrappers,
             fn (Fields $fields): Fields|FormElements => $fields->withoutWrappers()
-        );
+        )->onlyFieldsCalled();
     }
 
     /**

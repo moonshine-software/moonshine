@@ -9,11 +9,19 @@
         @endif
     >
         @foreach($data as $item)
-            <x-dynamic-component
-                component="moonshine::menu.{{ $item->isGroup() ? 'group' : 'item' }}"
-                :item="$item"
-                :top="$top"
-            />
+            @if($item->isGroup())
+                <x-moonshine::menu.group
+                    :item="$item"
+                    :top="$top"
+                />
+            @else
+                <x-moonshine::menu.item
+                    :item="$item"
+                    :top="$top"
+                />
+            @endif
+
+
         @endforeach
     </ul>
 @endif

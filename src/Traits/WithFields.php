@@ -27,11 +27,14 @@ trait WithFields
     /**
      * @throws Throwable
      */
-    public function getFields(mixed $data = null): Fields
+    public function getFields(): Fields
     {
         return Fields::make($this->fields);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function hasFields(): bool
     {
         return $this->getFields()->isNotEmpty();
@@ -40,7 +43,7 @@ trait WithFields
     public function fields(Fields|Closure|array $fields): static
     {
         if(is_closure($fields)) {
-            $fields = call_user_func($fields);
+            $fields = $fields();
         }
 
         $this->fields = $fields instanceof Fields

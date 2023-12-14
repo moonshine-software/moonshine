@@ -46,14 +46,24 @@
 
     </x-moonshine::modal>
 @else
-    <x-dynamic-component
+    @if($action->inDropdown())
+        <x-moonshine::link-native
             :attributes="$attributes"
-            :component="'moonshine::link-' . ($action->inDropdown() ? 'native' : 'button')"
             @class(['p-2' => $action->inDropdown()])
             :href="$action->url()"
             :icon="$action->iconValue()"
-    >
-        {{ $action->label() }}
-    </x-dynamic-component>
+        >
+            {{ $action->label() }}
+        </x-moonshine::link-native>
+    @else
+        <x-moonshine::link-button
+            :attributes="$attributes"
+            @class(['p-2' => $action->inDropdown()])
+            :href="$action->url()"
+            :icon="$action->iconValue()"
+        >
+            {{ $action->label() }}
+        </x-moonshine::link-button>
+    @endif
 @endif
 

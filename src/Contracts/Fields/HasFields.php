@@ -13,7 +13,7 @@ interface HasFields
 
     public function hasFields(): bool;
 
-    public function getFields(mixed $data = null): Fields;
+    public function getFields(): Fields;
 
     public function preparedFields(): Fields;
 }

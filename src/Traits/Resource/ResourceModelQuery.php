@@ -132,6 +132,11 @@ trait ResourceModelQuery
         return [];
     }
 
+    protected function itemsPerPage(): int
+    {
+        return $this->itemsPerPage;
+    }
+
     /**
      * @throws Throwable
      */
@@ -141,10 +146,10 @@ trait ResourceModelQuery
             ->when(
                 $this->isSimplePaginate(),
                 fn (Builder $query): Paginator => $query->simplePaginate(
-                    $this->itemsPerPage
+                    $this->itemsPerPage()
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    $this->itemsPerPage
+                    $this->itemsPerPage()
                 ),
             )
             ->appends(request()->except('page'));

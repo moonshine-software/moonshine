@@ -68,7 +68,7 @@ class Tabs extends Decoration
         );
     }
 
-    public function getFields(mixed $data = null): Fields
+    public function getFields(): Fields
     {
         return $this->tabs();
     }

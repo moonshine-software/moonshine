@@ -9,10 +9,7 @@
         {{ $slot }}
 
         @foreach($extensions as $extension)
-            <x-dynamic-component
-                :component="$extension->getView()"
-                :extension="$extension"
-            />
+            {{ $extension->render() }}
         @endforeach
     </div>
 @else
