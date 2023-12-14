@@ -24,6 +24,7 @@ final class Fields extends FormElements
         ?Fields $preparedFields = null
     ): self {
         $fields = $preparedFields ?? $this->onlyFields();
+
         return $fields->map(
             fn (Field $field): Field => (clone $field)
                 ->resolveFill($raw, $casted, $index)
