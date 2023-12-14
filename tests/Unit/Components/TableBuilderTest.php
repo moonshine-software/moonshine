@@ -14,7 +14,7 @@ beforeEach(function () {
     $this->builder = TableBuilder::make()
         ->fields([
             ID::make(),
-            Text::make('Name')
+            Text::make('Name'),
         ])
         ->items(Item::query()->get())
         ->cast(ModelCast::make(Item::class))
