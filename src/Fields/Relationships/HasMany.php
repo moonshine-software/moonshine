@@ -217,7 +217,7 @@ class HasMany extends ModelRelationField implements HasFields
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
-            ->fields(fn () => $this->preparedClonedFields()->toArray())
+            ->fields($this->preparedClonedFields()->toArray())
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
@@ -256,7 +256,7 @@ class HasMany extends ModelRelationField implements HasFields
         $getFields = function () {
             $fields = $this->preparedClonedFields();
 
-            $fields->onlyFields()->each(function (Field $field): void {
+            $fields->each(function (Field $field): void {
                 if (
                     $field instanceof HasUpdateOnPreview
                     && $field->isUpdateOnPreview()
