@@ -31,7 +31,6 @@ final class Modal extends MoonShineComponent
         protected Closure|View|string $content = '',
         protected Closure|string $outer = '',
         protected Closure|string|null $asyncUrl = null,
-
     ) {
     }
 
