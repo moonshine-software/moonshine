@@ -29,13 +29,13 @@
     /* selector :has not supported */
 
     &--top-menu {
-      @apply flex-col px-3 pb-6 pt-[4.5rem] transition-none md:px-5 lg:pt-24;
+      @apply flex-col gap-y-0 px-3 pb-6 pt-0 transition-none md:px-5;
     }
 
     /* selector :has supported */
     @supports selector(:has(*)) {
       &:has(> .layout-menu-horizontal) {
-        @apply flex-col px-3 pb-6 pt-[4.5rem] transition-none md:px-5 lg:pt-24;
+        @apply flex-col gap-y-0 px-3 pb-6 pt-0 transition-none md:px-5;
       }
     }
   }
