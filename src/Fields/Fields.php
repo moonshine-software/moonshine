@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Closure;
 use MoonShine\Collections\MoonShineRenderElements;
-use MoonShine\Contracts\Fields\FieldsWrapper;
-use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
@@ -42,30 +39,6 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function requestValues(int|string|null $index = null, ?Closure $column = null): Fields
-    {
-        return $this->onlyFields()->mapWithKeys(
-            fn (Field $field): array => [
-                is_null($column) ? $field->column() : $column($field) => $field->requestValue($index),
-            ]
-        )->filter();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getValues(?Closure $column = null): Fields
-    {
-        return $this->onlyFields()->mapWithKeys(
-            fn (Field $field): array => [
-                is_null($column) ? $field->column() : $column($field) => $field->toValue(),
-            ]
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function wrapNames(string $name): Fields
     {
         $this
@@ -90,10 +63,9 @@ final class Fields extends FormElements
      */
     public function onlyRelationFields(): Fields
     {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field instanceof ModelRelationField
-            )
+        return $this->filter(
+            static fn (Field $field): bool => $field instanceof ModelRelationField
+        )
             ->values();
     }
 
@@ -117,18 +89,8 @@ final class Fields extends FormElements
      */
     public function onlyOutside(): Fields
     {
-        return $this->onlyFields()->filter(
+        return $this->filter(
             static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
-        )->values();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function onlyGrouped(): Fields
-    {
-        return $this->onlyFields()->filter(
-            static fn (Field $field): bool => $field->isGroup()
         )->values();
     }
 
@@ -147,7 +109,7 @@ final class Fields extends FormElements
      */
     public function indexFields(): Fields
     {
-        return $this->onlyFields(withWrappers: true)
+        return $this
             ->filter(static fn (Field $field): bool => $field->isOnIndex())
             ->values();
     }
@@ -167,7 +129,7 @@ final class Fields extends FormElements
      */
     public function detailFields(): Fields
     {
-        return $this->onlyFields(withWrappers: true)
+        return $this
             ->filter(static fn (Field $field): bool => $field->isOnDetail())
             ->values();
     }
@@ -175,39 +137,9 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function onlyDeletableFileFields(bool $isDeleteFiles = true): Fields
-    {
-        return $this->onlyFileFields()
-            ->filter(
-                static fn (Fileable $field): bool => $field->isDeleteFiles() === $isDeleteFiles
-            )
-            ->values();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function onlyFileFields(): Fields
-    {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field instanceof Fileable
-            )
-            ->values();
-    }
-
-    public function withoutWrappers(): FormElements|Fields
-    {
-        return $this->unwrapElements(FieldsWrapper::class);
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function exportFields(): Fields
     {
-        return $this->onlyFields()
-            ->filter(static fn (Field $field): bool => $field->isOnExport())
+        return $this->filter(static fn (Field $field): bool => $field->isOnExport())
             ->values();
     }
 
@@ -216,40 +148,7 @@ final class Fields extends FormElements
      */
     public function importFields(): Fields
     {
-        return $this->onlyFields()
-            ->filter(static fn (Field $field): bool => $field->isOnImport())
-            ->values();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function isWhenConditionField(string $name): bool
-    {
-        return $this->whenFieldNames()->has($name);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function whenFieldNames(): Fields
-    {
-        return $this->whenFields()->mapWithKeys(
-            static fn (Field $field): array => [
-                $field->showWhenCondition()['changeField'] => $field->showWhenCondition()['changeField'],
-            ]
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function whenFields(): Fields
-    {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field->hasShowWhen()
-            )
+        return $this->filter(static fn (Field $field): bool => $field->isOnImport())
             ->values();
     }
 
@@ -259,23 +158,9 @@ final class Fields extends FormElements
      */
     public function extractLabels(): array
     {
-        return $this->onlyFields()->flatMap(
+        return $this->flatMap(
             static fn (Field $field): array => [$field->column() => $field->label()]
         )->toArray();
-    }
-
-
-    /**
-     * @throws Throwable
-     */
-    public function findByResourceClass(
-        string $resource,
-        ModelRelationField $default = null
-    ): ?ModelRelationField {
-        return $this->onlyRelationFields()->first(
-            static fn (ModelRelationField $field): bool => $field->getResource()::class === $resource,
-            $default
-        );
     }
 
     /**
@@ -301,16 +186,6 @@ final class Fields extends FormElements
         return $this->first(
             static fn (Field $field): bool => $field->column() === $column,
             $default
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function onlyColumns(): Fields
-    {
-        return $this->onlyFields()->transform(
-            static fn (Field $field): string => $field->column()
         );
     }
 }

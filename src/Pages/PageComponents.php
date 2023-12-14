@@ -9,6 +9,7 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\FormElements;
 use Throwable;
 
 /**
@@ -61,8 +62,10 @@ final class PageComponents extends MoonShineRenderElements
 
         $this->extractFields($this->toArray(), $data);
 
-        return Fields::make($data)
-            ->onlyFields($withWrappers);
+        return Fields::make($data)->when(
+            ! $withWrappers,
+            fn (Fields $fields): Fields|FormElements => $fields->withoutWrappers()
+        );
     }
 
     /**

@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Collections\MoonShineRenderElements;
-use MoonShine\Contracts\Decorations\FieldsDecoration;
+use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Decorations\Decoration;
-use MoonShine\Exceptions\FieldsException;
-use ReflectionClass;
-use ReflectionException;
 use Throwable;
 
 /**
@@ -58,22 +54,6 @@ abstract class FormElements extends MoonShineRenderElements
     }
 
     /**
-     * @throws Throwable
-     */
-    public function whenFieldsConditions(): Fields
-    {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field->hasShowWhen()
-            )
-            ->map(
-                static fn (
-                    Field $field
-                ): array => $field->showWhenCondition()
-            );
-    }
-
-    /**
      * @template T of Field
      * @param  class-string<T>  $class
      * @param ?Field  $default
@@ -90,20 +70,9 @@ abstract class FormElements extends MoonShineRenderElements
         );
     }
 
-    /**
-     * @throws ReflectionException|FieldsException
-     */
-    public function wrapIntoDecoration(
-        string $class,
-        Closure|string $label
-    ): FormElements {
-        $reflectionClass = new ReflectionClass($class);
-
-        if (! $reflectionClass->implementsInterface(FieldsDecoration::class)) {
-            throw FieldsException::wrapError();
-        }
-
-        return self::make([new $class($label, $this->toArray())]);
+    public function withoutWrappers(): FormElements|Fields
+    {
+        return $this->unwrapElements(FieldsWrapper::class);
     }
 
     public function unwrapElements(string $class): FormElements
@@ -123,5 +92,41 @@ abstract class FormElements extends MoonShineRenderElements
         );
 
         return $modified;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function whenFields(): Fields
+    {
+        return $this->onlyFields()
+            ->filter(
+                static fn (Field $field): bool => $field->hasShowWhen()
+            )
+            ->values();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function whenFieldNames(): Fields
+    {
+        return $this->whenFields()->mapWithKeys(
+            static fn (Field $field): array => [
+                $field->showWhenCondition()['changeField'] => $field->showWhenCondition()['changeField'],
+            ]
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function whenFieldsConditions(): Fields
+    {
+        return $this->whenFields()->map(
+            static fn (
+                Field $field
+            ): array => $field->showWhenCondition()
+        );
     }
 }

@@ -42,7 +42,13 @@ abstract class MoonShineRenderElements extends Collection
      */
     protected function extractFields($elements, array &$data): void
     {
-        $this->extractOnly($elements, Field::class, $data);
+        foreach ($elements as $element) {
+            if ($element instanceof Field) {
+                $data[] = $element;
+            } elseif ($element instanceof HasFields) {
+                $this->extractFields($element->getFields(), $data);
+            }
+        }
     }
 
     public function exceptElements(Closure $except): self

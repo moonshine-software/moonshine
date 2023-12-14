@@ -49,6 +49,7 @@ class MoonShineFormRequest extends FormRequest
         return $this->hasResource()
             ? $this->getResource()
                 ->getFormFields()
+                ->onlyFields()
                 ->extractLabels()
             : [];
     }

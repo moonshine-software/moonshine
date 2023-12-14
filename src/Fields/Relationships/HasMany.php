@@ -155,7 +155,9 @@ class HasMany extends ModelRelationField implements HasFields
             return Fields::make($this->fields);
         }
 
-        return $this->getFields()->indexFields();
+        return $this->getFields()
+            ->onlyFields(withWrappers: true)
+            ->indexFields();
     }
 
     /**
@@ -366,6 +368,7 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $this->getResource()
             ->getFormFields()
+            ->onlyFields()
             ->each(fn (Field $field): mixed => $field->resolveFill($data->toArray(), $data)->afterDestroy($data));
 
         return $data;

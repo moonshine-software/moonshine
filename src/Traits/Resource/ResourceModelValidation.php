@@ -40,7 +40,7 @@ trait ResourceModelValidation
                 trans('moonshine::validation'),
                 $this->validationMessages()
             ),
-            $this->getFields()->extractLabels()
+            $this->getFields()->onlyFields()->extractLabels()
         );
     }
 

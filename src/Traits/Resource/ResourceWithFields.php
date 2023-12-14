@@ -42,7 +42,7 @@ trait ResourceWithFields
         }
 
         return Fields::make($fields)
-            ->filter()
+            ->onlyFields(withWrappers: true)
             ->indexFields();
     }
 
@@ -66,7 +66,6 @@ trait ResourceWithFields
         }
 
         return Fields::make($fields)
-            ->filter()
             ->formFields()
             ->withoutOutside();
     }
@@ -86,7 +85,7 @@ trait ResourceWithFields
         }
 
         return Fields::make($fields)
-            ->filter()
+            ->onlyFields()
             ->onlyOutside();
     }
 
@@ -110,7 +109,7 @@ trait ResourceWithFields
         }
 
         return Fields::make($fields)
-            ->filter()
+            ->onlyFields(withWrappers: true)
             ->detailFields();
     }
 
