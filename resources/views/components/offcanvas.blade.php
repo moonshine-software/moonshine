@@ -11,8 +11,9 @@
 <div x-data="offcanvas(`{{ $open }}`, `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
     @if($toggler?->isNotEmpty())
         <x-moonshine::link-button
-            :attributes="$toggler->attributes"
-            @click.prevent="toggleCanvas"
+            :attributes="$toggler->attributes?->merge([
+                '@click.prevent' => 'toggleCanvas',
+            ])"
         >
             {{ $toggler ?? '' }}
         </x-moonshine::link-button>

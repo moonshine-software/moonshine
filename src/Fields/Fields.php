@@ -43,7 +43,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function wrapNames(string $name): Fields
+    public function wrapNames(string $name): self
     {
         $this
             ->onlyFields()
@@ -62,12 +62,12 @@ final class Fields extends FormElements
         );
     }
 
-    public function onlyHasFields(): Fields
+    public function onlyHasFields(): self
     {
         return $this->filter(static fn (Field $field): bool => $field instanceof HasFields);
     }
 
-    public function withoutHasFields(): Fields
+    public function withoutHasFields(): self
     {
         return $this->filter(static fn (Field $field): bool => ! $field instanceof HasFields);
     }
@@ -75,7 +75,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function onlyOutside(): Fields
+    public function onlyOutside(): self
     {
         return $this->filter(
             static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
@@ -95,7 +95,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function onlyRelationFields(): Fields
+    public function onlyRelationFields(): self
     {
         return $this->filter(
             static fn (Field $field): bool => $field instanceof ModelRelationField
@@ -115,7 +115,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function indexFields(): Fields
+    public function indexFields(): self
     {
         return $this
             ->filter(static fn (Field $field): bool => $field->isOnIndex());
@@ -140,7 +140,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function detailFields(bool $onlyOutside = true): Fields
+    public function detailFields(bool $onlyOutside = true): self
     {
         if ($onlyOutside) {
             return $this
@@ -161,7 +161,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function exportFields(): Fields
+    public function exportFields(): self
     {
         return $this->filter(static fn (Field $field): bool => $field->isOnExport());
     }
@@ -169,7 +169,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function importFields(): Fields
+    public function importFields(): self
     {
         return $this->filter(static fn (Field $field): bool => $field->isOnImport());
     }
