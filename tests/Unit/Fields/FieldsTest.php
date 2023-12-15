@@ -70,7 +70,7 @@ describe('form elements', function () {
     it('prepare attributes', function () {
         expect($this->collection->prepareAttributes())
             ->toHaveCount(4)
-            ->each(fn($expect) => $expect->getAttribute('x-on:change')->toBe('onChangeField($event)'))
+            ->each(fn ($expect) => $expect->getAttribute('x-on:change')->toBe('onChangeField($event)'))
         ;
     });
 
@@ -95,7 +95,7 @@ describe('fields', function () {
         ];
 
         expect($this->collection->fillCloned($values)->withoutOutside())
-            ->each(fn($expect) => $expect->toValue()->toBe('value'))
+            ->each(fn ($expect) => $expect->toValue()->toBe('value'))
         ;
     });
 
@@ -109,7 +109,7 @@ describe('fields', function () {
         $this->collection->fill($values);
 
         expect($this->collection->onlyFields()->withoutOutside())
-            ->each(fn($expect) => $expect->toValue()->toBe('value'))
+            ->each(fn ($expect) => $expect->toValue()->toBe('value'))
         ;
     });
 
@@ -117,7 +117,7 @@ describe('fields', function () {
         $this->collection->wrapNames('filters');
 
         expect($this->collection->onlyFields())
-            ->each(fn($expect) => $expect->name()->toContain('filters'))
+            ->each(fn ($expect) => $expect->name()->toContain('filters'))
         ;
     });
 
@@ -132,7 +132,7 @@ describe('fields', function () {
         $this->collection->reset();
 
         expect($this->collection->onlyFields()->withoutOutside())
-            ->each(fn($expect) => $expect->toValue()->toBe(null))
+            ->each(fn ($expect) => $expect->toValue()->toBe(null))
         ;
     });
 
@@ -180,31 +180,31 @@ describe('fields', function () {
 
     it('index fields', function () {
         expect($this->collection->onlyFields()->indexFields())
-            ->each(fn($expect) => $expect->isOnIndex()->toBeTrue())
+            ->each(fn ($expect) => $expect->isOnIndex()->toBeTrue())
         ;
     });
 
     it('form fields', function () {
         expect($this->collection->onlyFields()->formFields())
-            ->each(fn($expect) => $expect->isOnForm()->toBeTrue())
+            ->each(fn ($expect) => $expect->isOnForm()->toBeTrue())
         ;
     });
 
     it('detail fields', function () {
         expect($this->collection->onlyFields()->detailFields())
-            ->each(fn($expect) => $expect->isOnDetail()->toBeTrue())
+            ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue())
         ;
     });
 
     it('export fields', function () {
         expect($this->collection->onlyFields()->exportFields())
-            ->each(fn($expect) => $expect->isOnExport()->toBeTrue())
+            ->each(fn ($expect) => $expect->isOnExport()->toBeTrue())
         ;
     });
 
     it('import fields', function () {
         expect($this->collection->onlyFields()->importFields())
-            ->each(fn($expect) => $expect->isOnImport()->toBeTrue())
+            ->each(fn ($expect) => $expect->isOnImport()->toBeTrue())
         ;
     });
 
@@ -237,4 +237,3 @@ describe('fields', function () {
         ;
     });
 });
-

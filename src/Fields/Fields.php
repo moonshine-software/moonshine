@@ -69,7 +69,7 @@ final class Fields extends FormElements
 
     public function withoutHasFields(): Fields
     {
-        return $this->filter(static fn (Field $field): bool => !$field instanceof HasFields);
+        return $this->filter(static fn (Field $field): bool => ! $field instanceof HasFields);
     }
 
     /**
