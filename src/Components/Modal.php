@@ -7,10 +7,11 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentSlot;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Support\Condition;
 
 /**
- * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $outer = '', Closure|string|null $asyncUrl = '')
+ * @method static static make(Closure|string $title, Closure|View|string $content, Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '')
  */
 final class Modal extends MoonShineComponent
 {
@@ -29,7 +30,7 @@ final class Modal extends MoonShineComponent
     public function __construct(
         protected Closure|string $title = '',
         protected Closure|View|string $content = '',
-        protected Closure|string $outer = '',
+        protected Closure|View|ActionButton|string $outer = '',
         protected Closure|string|null $asyncUrl = null,
     ) {
     }
