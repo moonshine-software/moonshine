@@ -54,7 +54,7 @@ beforeEach(function (): void {
 it('index fields', function () {
     expect($this->resource->getIndexFields())
         ->toHaveCount(4)
-        ->each(fn($expect) => $expect->isOnIndex()->toBeTrue());
+        ->each(fn ($expect) => $expect->isOnIndex()->toBeTrue());
 });
 
 it('form fields with outside', function () {
@@ -63,7 +63,7 @@ it('form fields with outside', function () {
         ->toBeInstanceOf(Block::class)
         ->onlyFields()
         ->toHaveCount(4)
-        ->each(fn($expect) => $expect->isOnForm()->toBeTrue());
+        ->each(fn ($expect) => $expect->isOnForm()->toBeTrue());
 });
 
 it('form fields without outside', function () {
@@ -72,19 +72,19 @@ it('form fields without outside', function () {
         ->toBeInstanceOf(Block::class)
         ->onlyFields()
         ->toHaveCount(3)
-        ->each(fn($expect) => $expect->isOnForm()->toBeTrue());
+        ->each(fn ($expect) => $expect->isOnForm()->toBeTrue());
 });
 
 it('detail fields with outside', function () {
     expect($this->resource->getDetailFields())
         ->toHaveCount(4)
-        ->each(fn($expect) => $expect->isOnDetail()->toBeTrue());
+        ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue());
 });
 
 it('detail fields only outside', function () {
     expect($this->resource->getDetailFields(onlyOutside: true))
         ->toHaveCount(1)
-        ->each(fn($expect) => $expect->isOnDetail()->toBeTrue());
+        ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue());
 });
 
 it('outside fields', function () {
@@ -99,5 +99,5 @@ it('filters fields', function () {
         ->toBeInstanceOf(Block::class)
         ->onlyFields()
         ->toHaveCount(1)
-        ->each(fn($expect) => $expect->name()->toContain('filters'));
+        ->each(fn ($expect) => $expect->name()->toContain('filters'));
 });
