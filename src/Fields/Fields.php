@@ -23,9 +23,7 @@ final class Fields extends FormElements
         int $index = 0,
         ?Fields $preparedFields = null
     ): self {
-        $fields = $preparedFields ?? $this->onlyFields();
-
-        return $fields->map(
+        return ($preparedFields ?? $this->onlyFields())->map(
             fn (Field $field): Field => (clone $field)
                 ->resolveFill($raw, $casted, $index)
         );
@@ -64,13 +62,23 @@ final class Fields extends FormElements
         );
     }
 
+    public function onlyHasFields(): Fields
+    {
+        return $this->filter(static fn (Field $field): bool => $field instanceof HasFields);
+    }
+
+    public function withoutHasFields(): Fields
+    {
+        return $this->filter(static fn (Field $field): bool => !$field instanceof HasFields);
+    }
+
     /**
      * @throws Throwable
      */
-    public function onlyRelationFields(): Fields
+    public function onlyOutside(): Fields
     {
         return $this->filter(
-            static fn (Field $field): bool => $field instanceof ModelRelationField
+            static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
         );
     }
 
@@ -84,18 +92,13 @@ final class Fields extends FormElements
         );
     }
 
-    public function withoutHasFields(): Fields
-    {
-        return $this->filter(static fn (Field $field): bool => $field instanceof HasFields);
-    }
-
     /**
      * @throws Throwable
      */
-    public function onlyOutside(): Fields
+    public function onlyRelationFields(): Fields
     {
         return $this->filter(
-            static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
+            static fn (Field $field): bool => $field instanceof ModelRelationField
         );
     }
 
@@ -204,6 +207,23 @@ final class Fields extends FormElements
     ): ?Field {
         return $this->first(
             static fn (Field $field): bool => $field->column() === $column,
+            $default
+        );
+    }
+
+    /**
+     * @template T of Field
+     * @param  class-string<T>  $class
+     * @param ?Field  $default
+     * @return T
+     * @throws Throwable
+     */
+    public function findByClass(
+        string $class,
+        Field $default = null
+    ): ?Field {
+        return $this->first(
+            static fn (Field $field): bool => $field::class === $class,
             $default
         );
     }

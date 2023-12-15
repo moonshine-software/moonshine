@@ -67,28 +67,6 @@ abstract class FormElements extends MoonShineRenderElements
             );
     }
 
-    /**
-     * @template T of Field
-     * @param  class-string<T>  $class
-     * @param ?Field  $default
-     * @return T
-     * @throws Throwable
-     */
-    public function findByClass(
-        string $class,
-        Field $default = null
-    ): ?Field {
-        return $this->first(
-            static fn (Field $field): bool => $field::class === $class,
-            $default
-        );
-    }
-
-    public function withoutWrappers(): FormElements|Fields
-    {
-        return $this->unwrapElements(FieldsWrapper::class);
-    }
-
     public function unwrapElements(string $class): FormElements
     {
         $modified = self::make();
@@ -108,6 +86,11 @@ abstract class FormElements extends MoonShineRenderElements
         return $modified;
     }
 
+    public function withoutWrappers(): FormElements|Fields
+    {
+        return $this->unwrapElements(FieldsWrapper::class);
+    }
+
     /**
      * @throws Throwable
      */
@@ -118,18 +101,6 @@ abstract class FormElements extends MoonShineRenderElements
                 static fn (Field $field): bool => $field->hasShowWhen()
             )
             ->values();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function whenFieldNames(): Fields
-    {
-        return $this->whenFields()->mapWithKeys(
-            static fn (Field $field): array => [
-                $field->showWhenCondition()['changeField'] => $field->showWhenCondition()['changeField'],
-            ]
-        );
     }
 
     /**
