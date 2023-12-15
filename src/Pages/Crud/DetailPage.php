@@ -119,7 +119,7 @@ class DetailPage extends Page
             return $components;
         }
 
-        $outsideFields = $this->getResource()->getOutsideFields()->detailFields();
+        $outsideFields = $this->getResource()->getDetailFields(onlyOutside: true);
 
         if ($outsideFields->isNotEmpty()) {
             $components[] = LineBreak::make();

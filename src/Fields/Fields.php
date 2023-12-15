@@ -140,9 +140,9 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function detailFields(bool $withOutside = true): Fields
+    public function detailFields(bool $onlyOutside = true): Fields
     {
-        if ($withOutside) {
+        if ($onlyOutside) {
             return $this
                 ->filter(
                     static fn (Field $field): bool => $field instanceof ModelRelationField

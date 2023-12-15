@@ -297,6 +297,9 @@ trait ResourceModelQuery
         });
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveOrder(): static
     {
         $column = $this->sortColumn();
@@ -345,6 +348,9 @@ trait ResourceModelQuery
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveFilters(): static
     {
         $params = $this->getFilterParams();
@@ -402,7 +408,7 @@ trait ResourceModelQuery
 
         if (! empty($this->parentRelations())) {
             foreach ($this->parentRelations() as $relationName) {
-                if ($relation == $relationName) {
+                if ($relation === $relationName) {
                     $this->getQuery()->where(
                         $this->getModel()->{$relation}()->getForeignKeyName(),
                         $parentId

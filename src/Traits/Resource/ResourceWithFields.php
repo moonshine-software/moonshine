@@ -69,6 +69,30 @@ trait ResourceWithFields
             ->formFields(withOutside: $withOutside);
     }
 
+    public function detailFields(): array
+    {
+        return [];
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getDetailFields(bool $onlyOutside = false): Fields
+    {
+        $fields = $this->getPages()
+            ->findByType(PageType::DETAIL)
+            ?->fields();
+
+        if (empty($fields)) {
+            $fields = $this->detailFields()
+                ?: $this->fields();
+        }
+
+        return Fields::make($fields)
+            ->onlyFields(withWrappers: true)
+            ->detailFields(onlyOutside: $onlyOutside);
+    }
+
     /**
      * @throws Throwable
      */
@@ -86,30 +110,6 @@ trait ResourceWithFields
         return Fields::make($fields)
             ->onlyFields()
             ->onlyOutside();
-    }
-
-    public function detailFields(): array
-    {
-        return [];
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getDetailFields(bool $withOutside = false): Fields
-    {
-        $fields = $this->getPages()
-            ->findByType(PageType::DETAIL)
-            ?->fields();
-
-        if (empty($fields)) {
-            $fields = $this->detailFields()
-                ?: $this->fields();
-        }
-
-        return Fields::make($fields)
-            ->onlyFields(withWrappers: true)
-            ->detailFields(withOutside: $withOutside);
     }
 
     public function filters(): array
