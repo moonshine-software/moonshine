@@ -169,12 +169,6 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
-        if (! is_null($this->creatableLimit) && $this->isCreatable()) {
-            $this->customAttributes([
-                'data-creatable-limit' => $this->creatableLimit,
-            ]);
-        }
-
         if (! is_null($this->sortableUrl) && $this->isSortable()) {
             $this->customAttributes([
                 'data-sortable-url' => $this->sortableUrl,
@@ -196,6 +190,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 'bulkButtons' => $this->getBulkButtons(),
                 'async' => $this->isAsync(),
                 'asyncUrl' => $this->asyncUrl(),
+                'createButton' => $this->creatableButton
             ] + $this->statesToArray();
     }
 }
