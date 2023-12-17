@@ -233,7 +233,7 @@ class Json extends Field implements
         if ($this->isRemovable()) {
             $buttons[] = ActionButton::make('', '#')
                 ->icon('heroicons.outline.trash')
-                ->onClick(fn ($action): string => 'remove()', 'prevent')
+                ->onClick(fn ($action): string => 'remove', 'prevent')
                 ->customAttributes(['class' => 'btn-secondary'])
                 ->showInLine();
         }

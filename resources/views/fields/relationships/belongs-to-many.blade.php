@@ -69,11 +69,21 @@
                         <x-moonshine::divider />
 
                         <div x-data="pivot" x-init="autoCheck" class="pivotTable">
+                            <x-moonshine::action-group
+                                class="mb-4"
+                                :actions="$element->getButtons()"
+                            />
+
                             {{ $element->value(withOld: false)->render() }}
                         </div>
                     </div>
                 @else
                     <div x-data="pivot" x-init="autoCheck">
+                        <x-moonshine::action-group
+                            class="mb-4"
+                            :actions="$element->getButtons()"
+                        />
+
                         {{ $element->value(withOld: false)->render() }}
                     </div>
                 @endif

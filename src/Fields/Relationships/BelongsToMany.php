@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Buttons\BelongsToManyButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
@@ -62,6 +63,10 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $isCreatable = false;
 
+    protected ?ActionButton $creatableButton = null;
+
+    protected array $buttons = [];
+
     protected ?Collection $memoizeAllValues = null;
 
     protected ?string $columnLabel = null;
@@ -98,9 +103,12 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    public function creatable(Closure|bool|null $condition = null): static
-    {
+    public function creatable(
+        Closure|bool|null $condition = null,
+        ?ActionButton $button = null,
+    ): static {
         $this->isCreatable = Condition::boolean($condition, true);
+        $this->creatableButton = $button;
 
         return $this;
     }
@@ -110,8 +118,15 @@ class BelongsToMany extends ModelRelationField implements
         return $this->isCreatable;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function createButton(): ?ActionButton
     {
+        if(!is_null($this->creatableButton)) {
+            return $this->creatableButton;
+        }
+
         if (is_null($this->getRelatedModel()?->getKey())) {
             return null;
         }
@@ -125,6 +140,28 @@ class BelongsToMany extends ModelRelationField implements
         return $button->isSee($this->getRelatedModel())
             ? $button
             : null;
+    }
+
+    public function buttons(array $buttons): self
+    {
+        $this->buttons = $buttons;
+
+        return $this;
+    }
+
+    public function withCheckAll(): self
+    {
+        return $this->buttons([
+            ActionButton::make('', '')
+                ->onClick(fn() => 'checkAll', 'prevent')
+                ->primary()
+                ->icon('heroicons.outline.check')
+        ]);
+    }
+
+    public function getButtons(): ActionButtons
+    {
+        return ActionButtons::make($this->buttons);
     }
 
     public function isSelectMode(): bool
