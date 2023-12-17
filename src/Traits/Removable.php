@@ -17,8 +17,7 @@ trait Removable
     public function removable(
         Closure|bool|null $condition = null,
         array $attributes = []
-    ): static
-    {
+    ): static {
         $this->removable = Condition::boolean($condition, true);
         $this->removableAttributes = $attributes;
 

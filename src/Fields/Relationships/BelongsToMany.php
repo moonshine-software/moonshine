@@ -123,7 +123,7 @@ class BelongsToMany extends ModelRelationField implements
      */
     public function createButton(): ?ActionButton
     {
-        if(!is_null($this->creatableButton)) {
+        if(! is_null($this->creatableButton)) {
             return $this->creatableButton;
         }
 
@@ -153,9 +153,9 @@ class BelongsToMany extends ModelRelationField implements
     {
         return $this->buttons([
             ActionButton::make('', '')
-                ->onClick(fn(): string => 'checkAll', 'prevent')
+                ->onClick(fn (): string => 'checkAll', 'prevent')
                 ->primary()
-                ->icon('heroicons.outline.check')
+                ->icon('heroicons.outline.check'),
         ]);
     }
 
