@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Table;
 
+use MoonShine\ActionButtons\ActionButton;
+
 trait TableStates
 {
     protected bool $isPreview = false;
@@ -14,7 +16,7 @@ trait TableStates
 
     protected bool $isCreatable = false;
 
-    protected ?int $creatableLimit = null;
+    protected ?ActionButton $creatableButton = null;
 
     protected bool $isReindex = false;
 
@@ -80,11 +82,36 @@ trait TableStates
         return $this->isVertical;
     }
 
-    public function creatable(bool $reindex = true, ?int $limit = null): static
-    {
+    public function creatable(
+        bool $reindex = true,
+        ?int $limit = null,
+        ?string $label = null,
+        ?string $icon = null,
+        array $attributes = [],
+        ?ActionButton $button = null,
+    ): static {
         $this->isCreatable = true;
         $this->isReindex = $reindex;
-        $this->creatableLimit = $limit;
+
+        $this->creatableButton = $button
+            ?: ActionButton::make($label ?? __('moonshine::ui.add'), '#')
+                ->icon($icon ?? 'heroicons.plus-circle')
+                ->customAttributes(
+                    array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes)
+                )
+        ;
+
+        if(!is_null($button)) {
+            $button->customAttributes([
+                '@click.prevent' => 'add()'
+            ]);
+        }
+
+        if (! is_null($limit)) {
+            $this->customAttributes([
+                'data-creatable-limit' => $limit,
+            ]);
+        }
 
         return $this;
     }

@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -47,6 +48,10 @@ class Json extends Field implements
     protected bool $isCreatable = true;
 
     protected ?int $creatableLimit = null;
+
+    protected ?ActionButton $creatableButton = null;
+
+    protected array $buttons = [];
 
     protected int $level = 0;
 
@@ -121,12 +126,26 @@ class Json extends Field implements
         return $this->isVertical;
     }
 
-    public function creatable(Closure|bool|null $condition = null, ?int $limit = null): self
-    {
+    public function creatable(
+        Closure|bool|null $condition = null,
+        ?int $limit = null,
+        ?ActionButton $button = null
+    ): self {
         $this->isCreatable = Condition::boolean($condition, true);
-        $this->creatableLimit = $limit;
+
+        if($this->isCreatable()) {
+            $this->creatableLimit = $limit;
+            $this->creatableButton = $button?->customAttributes([
+                '@click.prevent' => 'add()',
+            ]);
+        }
 
         return $this;
+    }
+
+    public function creatableButton(): ?ActionButton
+    {
+        return $this->creatableButton;
     }
 
     public function isCreatable(): bool
@@ -194,6 +213,32 @@ class Json extends Field implements
     public function asRelationResource(): ?ModelResource
     {
         return $this->asRelationResource;
+    }
+
+    public function buttons(array $buttons): self
+    {
+        $this->buttons = $buttons;
+
+        return $this;
+    }
+
+    public function getButtons(): array
+    {
+        if (array_filter($this->buttons) !== []) {
+            return $this->buttons;
+        }
+
+        $buttons = [];
+
+        if ($this->isRemovable()) {
+            $buttons[] = ActionButton::make('', '#')
+                ->icon('heroicons.outline.trash')
+                ->onClick(fn ($action) => 'remove()', 'prevent')
+                ->customAttributes(['class' => 'btn-secondary'])
+                ->showInLine();
+        }
+
+        return $buttons;
     }
 
     public function preparedFields(): Fields

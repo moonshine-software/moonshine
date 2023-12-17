@@ -93,17 +93,16 @@
         @if($creatable)
             <x-moonshine::divider />
 
-            <x-moonshine::link-button
-                class="w-full"
-                icon="heroicons.plus-circle"
-                @click.prevent="add()"
-            >
-                @lang('moonshine::ui.add')
-            </x-moonshine::link-button>
+            {!! $createButton !!}
         @endif
 
         @if(!$preview && $hasPaginator)
-            {{ $paginator->links($simplePaginate ? 'moonshine::ui.simple-pagination' : 'moonshine::ui.pagination', ['async' => $async]) }}
+            {{ $paginator->links(
+                $simplePaginate
+                    ? 'moonshine::ui.simple-pagination'
+                    : 'moonshine::ui.pagination',
+                ['async' => $async]
+            ) }}
         @endif
     </div>
 

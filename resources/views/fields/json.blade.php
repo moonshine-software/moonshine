@@ -1,4 +1,8 @@
-<div x-id="['json']" :id="$id('json')" {{ $element->attributes()->only('class') }} data-field-block="{{ $element->column() }}">
+<div x-id="['json']"
+     :id="$id('json')"
+     {{ $element->attributes()->only('class') }}
+     data-field-block="{{ $element->column() }}"
+>
     {{ $element->value(withOld: false)
             ->editable()
             ->reindex()
@@ -8,18 +12,12 @@
             )
             ->when(
                 $element->isCreatable(),
-                fn($table) => $table->creatable(limit: $element->creatableLimit())
+                fn($table) => $table->creatable(
+                    limit: $element->creatableLimit(),
+                    button: $element->creatableButton()
+                )
             )
-            ->when(
-                $element->isRemovable(),
-                fn($table) => $table->buttons([
-                    actionBtn('', '#')
-                        ->icon('heroicons.outline.trash')
-                        ->onClick(fn($action) => 'remove()', 'prevent')
-                        ->customAttributes(['class' => 'btn-secondary'])
-                        ->showInLine(),
-                ])
-            )
+            ->buttons($element->getButtons())
             ->simple()
             ->render()
     }}
