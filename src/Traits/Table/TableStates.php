@@ -101,9 +101,9 @@ trait TableStates
                 )
         ;
 
-        if(!is_null($button)) {
+        if(! is_null($button)) {
             $button->customAttributes([
-                '@click.prevent' => 'add()'
+                '@click.prevent' => 'add()',
             ]);
         }
 
