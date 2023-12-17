@@ -1,0 +1,23 @@
+* text=auto eol=lf
+
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+/.github export-ignore
+/.tests export-ignore
+/.editorconfig export-ignore
+/.env.example export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.prettierrc export-ignore
+/.package-lock.json export-ignore
+/phpstan.neon.dist export-ignore
+/phpunit-example.xml.dist export-ignore
+/README.md export-ignore
+/rector.php export-ignore
+/Roadmap.md export-ignore
+/TODO.md export-ignore
