@@ -3,6 +3,7 @@
     'raw' => null,
     'download' => false,
     'removable' => true,
+    'removableAttributes' => null,
     'imageable' => true
 ])
 <div
@@ -28,9 +29,11 @@
 
     @if($removable)
         <button
-            class="dropzone-remove"
-            type="button"
-            @click.prevent="$event.target.closest('.x-removeable').remove()"
+            {{ $removableAttributes?->merge([
+                '@click.prevent' => '$event.target.closest(".x-removeable").remove()',
+                'type' => 'button',
+                'class' => 'dropzone-remove',
+            ]) }}
         >
             <x-moonshine::icon
                 icon="heroicons.x-mark"

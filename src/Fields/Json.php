@@ -234,7 +234,7 @@ class Json extends Field implements
             $buttons[] = ActionButton::make('', '#')
                 ->icon('heroicons.outline.trash')
                 ->onClick(fn ($action): string => 'remove', 'prevent')
-                ->customAttributes(['class' => 'btn-secondary'])
+                ->customAttributes($this->removableAttributes ?: ['class' => 'btn-secondary'])
                 ->showInLine();
         }
 
