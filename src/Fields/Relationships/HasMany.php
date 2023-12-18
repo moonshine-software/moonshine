@@ -210,7 +210,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         if ($this->isRawMode()) {
             return $items
-                ->map(fn (Model $item) => $item->{$this->getResourceColumn()})
+                ->map(fn (Model $item) => data_get($item, $this->getResourceColumn()))
                 ->implode(';');
         }
 

@@ -42,7 +42,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         ?ModelResource $resource = null,
     ) {
         if(is_string($formatted)) {
-            $formatted = static fn ($item) => $item->{$formatted};
+            $formatted = static fn ($item) => data_get($item, $formatted);
         }
 
         parent::__construct($label, $relationName, $formatted);
@@ -150,6 +150,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                     $this->getRowIndex()
                 )
             );
+        }
+
+        if($this->toOne()) {
+            $value = data_get($value, $this->getResource()->column());
         }
 
         return $this->formattedValue ?? $value;

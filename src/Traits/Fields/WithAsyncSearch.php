@@ -54,11 +54,13 @@ trait WithAsyncSearch
             return null;
         }
 
-        if (empty($item->{$this->withImage['column']})) {
+        $value = data_get($item, $this->withImage['column']);
+
+        if (empty($value)) {
             return null;
         }
 
-        $value = str($item->{$this->withImage['column']})
+        $value = str($value)
             ->replaceFirst($this->withImage['dir'], '')
             ->trim('/')
             ->prepend($this->withImage['dir'] . '/')
@@ -140,7 +142,7 @@ trait WithAsyncSearch
         return [
             'label' => is_closure($this->asyncSearchValueCallback())
                 ? ($this->asyncSearchValueCallback())($model, $this)
-                : $model->{$searchColumn},
+                : data_get($model, $searchColumn, ''),
             'value' => $model->getKey(),
             'customProperties' => [
                 'image' => $this->getImageUrl($model),

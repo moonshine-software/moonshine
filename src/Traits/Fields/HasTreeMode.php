@@ -50,7 +50,7 @@ trait HasTreeMode
     {
         if ($data->has($parentKey)) {
             foreach ($data->get($parentKey) as $item) {
-                $label = $this->columnOrFormattedValue($item, $item->{$this->getResourceColumn()});
+                $label = $this->columnOrFormattedValue($item, data_get($item, $this->getResourceColumn()));
 
                 $element = view(
                     'moonshine::components.form.input-composition',
