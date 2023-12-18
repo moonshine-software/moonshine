@@ -50,7 +50,7 @@ trait HasResource
     {
         throw_if(
             ! $this->hasResource(),
-            new ResourceException('Resource is required')
+            ResourceException::required()
         );
     }
 }

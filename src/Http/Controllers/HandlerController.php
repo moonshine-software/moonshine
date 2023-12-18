@@ -7,14 +7,18 @@ namespace MoonShine\Http\Controllers;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\MoonShineRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 final class HandlerController extends MoonShineController
 {
+    /**
+     * @throws Throwable
+     */
     public function __invoke(string $resourceUri, string $handlerUri, MoonShineRequest $request): Response
     {
         throw_if(
             ! $request->hasResource(),
-            new ResourceException('Resource is required')
+            ResourceException::required()
         );
 
         $handler = $request

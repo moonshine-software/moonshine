@@ -7,12 +7,14 @@ namespace MoonShine\ActionButtons;
 use Closure;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
+use MoonShine\Exceptions\ActionException;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithModal;
 use MoonShine\Traits\WithOffCanvas;
+use Throwable;
 
 /**
  * @method static static make(Closure|string $label, Closure|string $url = '', mixed $item = null)
@@ -103,6 +105,33 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ]);
 
         return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function method(
+        string $method,
+        ?string $message = null,
+        ?string $selector = null,
+        array $events = [],
+        ?string $callback = null
+    ): self {
+        throw_if(!moonshineRequest()->hasResource(), ActionException::resourceRequired());
+
+        $this->url = static fn(mixed $item): ?string => moonshineRequest()
+            ->getResource()
+            ?->route('async.method', $item?->getKey(), [
+                'pageUri' => moonshineRequest()?->getPageUri(),
+                'method' => $method,
+                'message' => $message
+            ]);
+
+        return $this->async(
+            selector: $selector,
+            events: $events,
+            callback: $callback
+        );
     }
 
     public function isAsync(): bool
