@@ -42,6 +42,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     protected Closure|array $viewData = [];
 
+    protected ?array $breadcrumbs = null;
 
     protected ?PageType $pageType = null;
 
@@ -96,6 +97,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function breadcrumbs(): array
     {
+        if (! is_null($this->breadcrumbs)) {
+            return $this->breadcrumbs;
+        }
+
         if (! $this->hasResource()) {
             return [];
         }
@@ -103,6 +108,13 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return [
             to_page(resource: $this->getResource()) => $this->getResource()->title(),
         ];
+    }
+
+    public function setBreadcrumbs(array $breadcrumbs): static
+    {
+        $this->breadcrumbs = $breadcrumbs;
+
+        return $this;
     }
 
     public function getComponents(): PageComponents
