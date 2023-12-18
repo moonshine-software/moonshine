@@ -352,7 +352,7 @@ class BelongsToMany extends ModelRelationField implements
 
         if ($this->inLine) {
             return $values->implode(function (Model $item) use ($column) {
-                $value = $this->columnOrFormattedValue($item, $item->{$column} ?? false);
+                $value = $this->columnOrFormattedValue($item, data_get($item, $column) ?? false);
 
                 if ($this->inLineBadge) {
                     return view('moonshine::ui.badge', [
