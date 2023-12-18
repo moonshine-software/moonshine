@@ -29,8 +29,7 @@ class FormPage extends Page
         $breadcrumbs = parent::breadcrumbs();
 
         if ($this->getResource()->getItemID()) {
-            $breadcrumbs[$this->route()] = $this->getResource()->getItem()
-                ?->{$this->getResource()->column()};
+            $breadcrumbs[$this->route()] = data_get($this->getResource()->getItem(), $this->getResource()->column());
         } else {
             $breadcrumbs[$this->route()] = __('moonshine::ui.add');
         }
