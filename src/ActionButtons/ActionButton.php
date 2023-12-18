@@ -125,7 +125,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
         $this->url = static fn(mixed $item): ?string => $resource
             ->route('async.method', $item?->getKey(), [
-                'pageUri' => moonshineRequest()?->getPageUri(),
+                'pageUri' => moonshineRequest()->getPageUri(),
                 'method' => $method,
                 'message' => $message
             ]);
