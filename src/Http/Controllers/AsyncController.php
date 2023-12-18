@@ -30,7 +30,7 @@ class AsyncController extends MoonShineController
     {
         $toast = [
             'type' => 'info',
-            'message' => $request->get('message', '')
+            'message' => $request->get('message', ''),
         ];
 
         try {

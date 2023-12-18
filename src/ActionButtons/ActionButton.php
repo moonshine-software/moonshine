@@ -123,11 +123,11 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
         throw_if(is_null($resource), ActionException::resourceRequired());
 
-        $this->url = static fn(mixed $item): ?string => $resource
+        $this->url = static fn (mixed $item): ?string => $resource
             ->route('async.method', $item?->getKey(), [
                 'pageUri' => moonshineRequest()->getPageUri(),
                 'method' => $method,
-                'message' => $message
+                'message' => $message,
             ]);
 
         return $this->async(
