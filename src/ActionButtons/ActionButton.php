@@ -7,6 +7,7 @@ namespace MoonShine\ActionButtons;
 use Closure;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
@@ -115,13 +116,15 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ?string $message = null,
         ?string $selector = null,
         array $events = [],
-        ?string $callback = null
+        ?string $callback = null,
+        ?ResourceContract $resource = null,
     ): self {
-        throw_if(!moonshineRequest()->hasResource(), ActionException::resourceRequired());
+        $resource ??= moonshineRequest()->getResource();
 
-        $this->url = static fn(mixed $item): ?string => moonshineRequest()
-            ->getResource()
-            ?->route('async.method', $item?->getKey(), [
+        throw_if(is_null($resource), ActionException::resourceRequired());
+
+        $this->url = static fn(mixed $item): ?string => $resource
+            ->route('async.method', $item?->getKey(), [
                 'pageUri' => moonshineRequest()?->getPageUri(),
                 'method' => $method,
                 'message' => $message
