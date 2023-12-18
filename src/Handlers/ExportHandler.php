@@ -55,7 +55,7 @@ class ExportHandler extends Handler
     public function handle(): Response
     {
         if (! $this->hasResource()) {
-            throw new ActionException('Resource is required for action');
+            throw ActionException::resourceRequired();
         }
 
         $this->resolveStorage();

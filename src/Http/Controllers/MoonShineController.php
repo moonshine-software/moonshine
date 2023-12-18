@@ -18,11 +18,15 @@ abstract class MoonShineController extends BaseController
     use InteractsWithUI;
     use InteractsWithAuth;
 
-    protected function json(string $message, array $data = [], string $redirect = null, string $messageType = 'success'): JsonResponse
-    {
+    protected function json(
+        string $message,
+        array $data = [],
+        string $redirect = null,
+        string $messageType = 'success'
+    ): JsonResponse {
         $data = ['message' => $message, 'messageType' => $messageType, ...$data];
 
-        if($redirect) {
+        if ($redirect) {
             $data['redirect'] = $redirect;
         }
 
@@ -43,7 +47,7 @@ abstract class MoonShineController extends BaseController
      */
     protected function reportAndResponse(bool $isAjax, Throwable $e, string $redirectRoute): Response
     {
-        if($isAjax) {
+        if ($isAjax) {
             report($e);
 
             return $this->json(

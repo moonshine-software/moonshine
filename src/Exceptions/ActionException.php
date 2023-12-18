@@ -8,4 +8,8 @@ use Exception;
 
 class ActionException extends Exception
 {
+    public static function resourceRequired(): self
+    {
+        return new self("Resource is required for action");
+    }
 }

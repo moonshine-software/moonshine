@@ -29,7 +29,7 @@ trait ResourceModelCrudRouter
 
     public function route(
         string $name = null,
-        int|string $key = null,
+        int|string|null $key = null,
         array $query = []
     ): string {
         $query['resourceUri'] = $this->uriKey();
