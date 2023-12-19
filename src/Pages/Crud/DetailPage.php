@@ -11,6 +11,8 @@ use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
+use MoonShine\Decorations\Tab;
+use MoonShine\Decorations\Tabs;
 use MoonShine\Enums\PageType;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
@@ -125,6 +127,9 @@ class DetailPage extends Page
         $outsideFields = $this->getResource()->getDetailFields(onlyOutside: true);
 
         if ($outsideFields->isNotEmpty()) {
+            $tabItems = [];
+            $isTabDisplay = $outsideFields->count() > 1;
+
             $components[] = LineBreak::make();
 
             foreach ($outsideFields as $field) {
@@ -132,14 +137,28 @@ class DetailPage extends Page
                     $field->forcePreview();
                 }
 
-                $components[] = LineBreak::make();
-
-                $components[] = Fragment::make([
+                $fragment = Fragment::make([
                     $field->resolveFill(
                         $item?->attributesToArray() ?? [],
                         $item
                     ),
                 ])->name($field->getRelationName());
+
+                if($isTabDisplay) {
+                    $tabItems[] = Tab::make($field->label(), [$fragment]);
+                }
+                else {
+                    $components[] = LineBreak::make();
+                    $components[] = $fragment;
+                }
+            }
+
+            if($isTabDisplay) {
+                $components[] =  Block::make([
+                    Tabs::make([
+                        ...$tabItems
+                    ])
+                ]);
             }
         }
 
