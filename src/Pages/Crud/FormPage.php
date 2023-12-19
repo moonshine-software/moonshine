@@ -26,6 +26,10 @@ class FormPage extends Page
 
     public function breadcrumbs(): array
     {
+        if (! is_null($this->breadcrumbs)) {
+            return $this->breadcrumbs;
+        }
+
         $breadcrumbs = parent::breadcrumbs();
 
         if ($this->getResource()->getItemID()) {

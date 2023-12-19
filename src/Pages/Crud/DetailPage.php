@@ -25,6 +25,10 @@ class DetailPage extends Page
 
     public function breadcrumbs(): array
     {
+        if (! is_null($this->breadcrumbs)) {
+            return $this->breadcrumbs;
+        }
+
         $breadcrumbs = parent::breadcrumbs();
 
         $breadcrumbs[$this->route()] = data_get($this->getResource()->getItem(), $this->getResource()->column());
