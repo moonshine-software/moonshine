@@ -18,6 +18,7 @@
     <x-moonshine::modal
         :async="$action->modal()->isAsync()"
         :auto="$action->modal()->isAuto()"
+        :autoClose="$action->modal()->isAutoClose()"
         :wide="$action->modal()->isWide()"
         :attributes="$action->modal()->attributes()"
         :closeOutside="$action->modal()->isCloseOutside()"

@@ -25,6 +25,8 @@ final class Modal extends MoonShineComponent
 
     protected bool $auto = false;
 
+    protected bool $autoClose = true;
+
     protected array $outerAttributes = [];
 
     public function __construct(
@@ -63,6 +65,13 @@ final class Modal extends MoonShineComponent
         return $this;
     }
 
+    public function autoClose(Closure|bool|null $autoClose = null): self
+    {
+        $this->autoClose = is_null($autoClose) || Condition::boolean($autoClose, false);
+
+        return $this;
+    }
+
     public function outerAttributes(array $attributes): self
     {
         $this->outerAttributes = $attributes;
@@ -76,6 +85,7 @@ final class Modal extends MoonShineComponent
             'isWide' => $this->wide,
             'isOpen' => $this->open,
             'isAuto' => $this->auto,
+            'isAutoClose' => $this->autoClose,
             'isCloseOutside' => $this->closeOutside,
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',

@@ -104,7 +104,7 @@ export default () => ({
 
         let isFormReset = false
 
-        if (type !== 'error' && t.inModal) {
+        if (type !== 'error' && t.inModal && t.autoClose) {
           t.toggleModal()
         }
 

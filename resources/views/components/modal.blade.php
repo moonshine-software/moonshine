@@ -6,11 +6,12 @@
     'wide' => $isWide ?? false,
     'open' => $isOpen ?? false,
     'auto' => $isAuto ?? false,
+    'autoClose' => $isAutoClose ?? false,
     'closeOutside' => $isCloseOutside ?? true,
     'title' => '',
     'outerHtml' => null
 ])
-<div x-data="modal(`{{ $open }}`, `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
+<div x-data="modal(`{{ $open }}`, `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`, `{{ $autoClose }}`)">
     <template x-teleport="body">
     <div class="modal-template" @modal-toggled-{{ $eventName ?? $name }}.window="toggleModal">
         <div
