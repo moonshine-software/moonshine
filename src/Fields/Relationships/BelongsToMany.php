@@ -260,7 +260,6 @@ class BelongsToMany extends ModelRelationField implements
             ->iterableAttributes();
 
         $fields = $this->preparedFields()
-            ->onlyFields()
             ->prepend(
                 Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->formattedValueCallback())
                     ->customAttributes(['class' => 'pivotTitle'])
@@ -367,7 +366,6 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         $fields = $this->preparedFields()
-            ->onlyFields()
             ->prepend(Text::make($this->getResourceColumnLabel(), $column, $this->formattedValueCallback()))
             ->prepend(ID::make());
 

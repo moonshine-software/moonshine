@@ -188,7 +188,6 @@ final class FormBuilder extends RowComponent
         try {
             $fields = $this
                 ->preparedFields()
-                ->onlyFields()
                 ->exceptElements(
                     fn (Field $element): bool => in_array($element->column(), $this->getExcludedFields(), true)
                 );
