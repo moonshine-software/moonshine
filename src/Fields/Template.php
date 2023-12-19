@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
 
 final class Template extends Field
 {
@@ -36,9 +35,9 @@ final class Template extends Field
         return $this;
     }
 
-    public function render(): View|string
+    public function render(): string
     {
-        return value($this->renderCallback, $this->toValue(), $this) ?? '';
+        return (string) value($this->renderCallback, $this->toValue(), $this);
     }
 
     protected function resolveOnApply(): ?Closure
