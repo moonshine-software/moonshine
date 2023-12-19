@@ -1,11 +1,12 @@
 /* Modal */
 
-export default (open = false, asyncUrl = '') => ({
+export default (open = false, asyncUrl = '', autoClose = true) => ({
   open: open,
   id: '',
   asyncUrl: asyncUrl,
   inModal: true,
   asyncLoaded: false,
+  autoClose: autoClose,
 
   init() {
     this.id = this.$id('modal-content')

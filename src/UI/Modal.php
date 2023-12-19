@@ -26,6 +26,8 @@ class Modal
 
     protected bool $isCloseOutside = false;
 
+    protected bool $isAutoClose = true;
+
     public function __construct(
         protected string|Closure|null $title,
         protected string|Closure|null $content,
@@ -39,6 +41,13 @@ class Modal
     public function wide(mixed $condition = null): self
     {
         $this->isWide = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function autoClose(mixed $condition = null): self
+    {
+        $this->isAutoClose = Condition::boolean($condition, true);
 
         return $this;
     }
@@ -58,6 +67,11 @@ class Modal
     public function isAuto(): bool
     {
         return $this->isAuto;
+    }
+
+    public function isAutoClose(): bool
+    {
+        return $this->isAutoClose;
     }
 
     public function closeOutside(mixed $condition = null): self
