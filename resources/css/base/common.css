@@ -115,6 +115,11 @@ pre {
   }
 }
 
+/* List marker */
+ul.list-marker {
+  @apply list-[square] space-y-2 pl-6 marker:text-primary;
+}
+
 /* Checkboxes tree */
 ul.tree-list {
   @apply -m-1 space-y-1.5 overflow-x-auto p-1;
