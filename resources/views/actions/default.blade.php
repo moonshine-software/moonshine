@@ -20,7 +20,6 @@
         :auto="$action->modal()->isAuto()"
         :autoClose="$action->modal()->isAutoClose()"
         :wide="$action->modal()->isWide()"
-        :wide="$action->modal()->isWide()"
         :attributes="$action->modal()->attributes()"
         :closeOutside="$action->modal()->isCloseOutside()"
         :asyncUrl="$action->modal()->isAsync() ? $action->url() : ''"
