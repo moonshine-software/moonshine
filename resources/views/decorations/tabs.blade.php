@@ -5,5 +5,6 @@
         :active="$element->getActive()"
         :tabs="$element->tabsWithHtml()->toArray()"
         :contents="$element->contentWithHtml()->toArray()"
+        :justifyAlign="$element->getJustifyAlign()"
     />
 @endif

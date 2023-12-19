@@ -18,6 +18,8 @@ class Tabs extends Decoration
 
     protected string|int|null $active = null;
 
+    protected string $justifyAlign = 'start';
+
     public function __construct(protected array $tabs = [])
     {
         parent::__construct(uniqid('', true));
@@ -28,6 +30,18 @@ class Tabs extends Decoration
         $this->active = $active;
 
         return $this;
+    }
+
+    public function justifyAlign(string $justifyAlign): self
+    {
+        $this->justifyAlign = $justifyAlign;
+
+        return $this;
+    }
+
+    public function getJustifyAlign(): string
+    {
+        return $this->justifyAlign;
     }
 
     /**
