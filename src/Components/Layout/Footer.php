@@ -7,9 +7,6 @@ namespace MoonShine\Components\Layout;
 use Closure;
 use Illuminate\Support\Collection;
 
-/**
- * @method static static make(array $components = [])
- */
 class Footer extends WithComponents
 {
     protected string $view = 'moonshine::components.layout.footer';
