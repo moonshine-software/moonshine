@@ -30,6 +30,7 @@ class PublishCommand extends MoonShineCommand
         if (in_array('assets', $types, true)) {
             $this->call('vendor:publish', [
                 '--tag' => 'moonshine-assets',
+                '--force' => true,
             ]);
         }
 
