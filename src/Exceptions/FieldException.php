@@ -12,4 +12,9 @@ class FieldException extends Exception
     {
         return new self("Resource is required for $fieldClass ($fieldIdentification)");
     }
+
+    public static function notFound(): self
+    {
+        return new self("Field not found");
+    }
 }

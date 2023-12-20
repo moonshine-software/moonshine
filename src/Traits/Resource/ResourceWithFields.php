@@ -77,7 +77,7 @@ trait ResourceWithFields
     /**
      * @throws Throwable
      */
-    public function getDetailFields(bool $onlyOutside = false): Fields
+    public function getDetailFields(bool $withOutside = false, bool $onlyOutside = false): Fields
     {
         $fields = $this->getPages()
             ->findByType(PageType::DETAIL)
@@ -90,7 +90,7 @@ trait ResourceWithFields
 
         return Fields::make($fields)
             ->onlyFields(withWrappers: true)
-            ->detailFields(onlyOutside: $onlyOutside);
+            ->detailFields(withOutside: $withOutside, onlyOutside: $onlyOutside);
     }
 
     /**

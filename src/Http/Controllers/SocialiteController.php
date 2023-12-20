@@ -96,7 +96,7 @@ class SocialiteController extends MoonShineController
         );
     }
 
-    private function bindAccount(
+    protected function bindAccount(
         User $socialiteUser,
         string $driver,
         ?MoonshineSocialite $account

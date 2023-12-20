@@ -76,7 +76,13 @@ it('form fields without outside', function () {
 });
 
 it('detail fields with outside', function () {
-    expect($this->resource->getDetailFields())
+    expect($this->resource->getDetailFields(withOutside: true))
+        ->toHaveCount(5)
+        ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue());
+});
+
+it('detail fields without outside', function () {
+    expect($this->resource->getDetailFields(withOutside: false))
         ->toHaveCount(4)
         ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue());
 });

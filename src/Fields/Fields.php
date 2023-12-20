@@ -140,7 +140,7 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function detailFields(bool $onlyOutside = true): self
+    public function detailFields(bool $withOutside = false, bool $onlyOutside = false): self
     {
         if ($onlyOutside) {
             return $this
@@ -149,6 +149,10 @@ final class Fields extends FormElements
                         && $field->outsideComponent()
                         && $field->isOnDetail()
                 );
+        }
+
+        if($withOutside) {
+            return $this->filter(static fn (Field $field): bool => $field->isOnDetail());
         }
 
         return $this
@@ -204,7 +208,7 @@ final class Fields extends FormElements
     public function findByColumn(
         string $column,
         Field $default = null
-    ): ?Field {
+    ): Field|ModelRelationField|null {
         return $this->first(
             static fn (Field $field): bool => $field->column() === $column,
             $default

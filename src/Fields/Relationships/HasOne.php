@@ -62,7 +62,7 @@ class HasOne extends ModelRelationField implements HasFields
 
         return $this->getFields()
             ->onlyFields(withWrappers: true)
-            ->detailFields();
+            ->detailFields(withOutside: false);
     }
 
     /**

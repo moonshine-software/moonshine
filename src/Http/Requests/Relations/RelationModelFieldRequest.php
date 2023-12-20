@@ -6,6 +6,7 @@ namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Enums\PageType;
+use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonShineFormRequest;
@@ -61,24 +62,34 @@ class RelationModelFieldRequest extends MoonShineFormRequest
             return $this->field;
         }
 
+        /* @var ModelResource $resource */
         $resource = $this->getResource();
 
         $fields = match ($this->getPage()->pageType()) {
             PageType::INDEX => $resource->getIndexFields(),
-            PageType::DETAIL => $resource->getDetailFields(),
-            PageType::FORM => $resource->getFormFields(withOutside: true)->onlyFields(),
-            default => Fields::make($resource->fields())->onlyFields()
+            PageType::DETAIL => $resource->getDetailFields(withOutside: true),
+            PageType::FORM => $resource->getFormFields(withOutside: true),
+            default => Fields::make($resource->fields())
         };
 
         $this->field = $fields
+            ->onlyFields()
             ->findByRelation($this->getRelationName());
 
         return $this->field;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getFieldItemOrFail(): Model
     {
-        $resource = $this->getField()->getResource();
+        $field = $this->getField();
+
+        throw_if(is_null($field), FieldException::notFound());
+
+        /* @var ModelResource $resource */
+        $resource = $field->getResource();
 
         return $resource
             ->getModel()
