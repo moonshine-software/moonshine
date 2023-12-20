@@ -70,7 +70,7 @@ trait WithRelatedValues
     private function resolveRelatedQuery(Builder $builder): Collection
     {
         // #MongoDB Models fix
-        $key = rescue(fn() => $builder->toRawSql(), fn() => false, false);
+        $key = rescue(fn() => $builder->toRawSql(), fn(): bool => false, false);
 
         if($key === false) {
             return $builder->get();
@@ -94,7 +94,7 @@ trait WithRelatedValues
         $formatted = is_closure($this->formattedValueCallback());
 
         // #MongoDB Models fix
-        if(!$formatted && !str_starts_with(get_class($query), 'Illuminate\Database')) {
+        if(!$formatted && !str_starts_with((string) $query::class, 'Illuminate\Database')) {
             $this->setFormattedValueCallback(fn($data) => data_get($data, $this->getResourceColumn()));
             $formatted = true;
         }
