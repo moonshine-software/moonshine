@@ -5,20 +5,20 @@ const moonShineBuildPlugin = () => ({
   async closeBundle() {
     try {
       // prepend "(()=>{" to app.js
-      const filePath = 'public/assets/app.js';
-      const data = readFileSync(filePath);
-      const insert = Buffer.from('(()=>{');
+      const filePath = 'public/assets/app.js'
+      const data = readFileSync(filePath)
+      const insert = Buffer.from('(()=>{')
 
       // Use writeFileSync without the third argument for encoding
-      writeFileSync(filePath, insert);
-      writeFileSync(filePath, data, { flag: 'a' }); // Use { flag: 'a' } for append mode
+      writeFileSync(filePath, insert)
+      writeFileSync(filePath, data, {flag: 'a'}) // Use { flag: 'a' } for append mode
 
       // append "})()" to app.js
-      await fsPromises.appendFile(filePath, '})()');
+      await fsPromises.appendFile(filePath, '})()')
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
   },
-});
+})
 
-export default moonShineBuildPlugin;
+export default moonShineBuildPlugin
