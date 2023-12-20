@@ -18,9 +18,9 @@ final class Template extends Field implements HasFields
     {
         return tap(
             $this->getFields()->wrapNames($this->column()),
-            fn() => $this->getFields()
+            fn () => $this->getFields()
                 ->onlyFields()
-                ->map(fn(Field $field): Field => $field->setParent($this))
+                ->map(fn (Field $field): Field => $field->setParent($this))
         );
     }
 
