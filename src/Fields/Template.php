@@ -5,10 +5,24 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Traits\WithFields;
 
-final class Template extends Field
+final class Template extends Field implements HasFields
 {
+    use WithFields;
+
     protected ?Closure $renderCallback = null;
+
+    public function preparedFields(): Fields
+    {
+        return tap(
+            $this->getFields()->wrapNames($this->column()),
+            fn() => $this->getFields()
+                ->onlyFields()
+                ->map(fn(Field $field) => $field->setParent($this))
+        );
+    }
 
     protected function resolvePreview(): string
     {

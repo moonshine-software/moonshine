@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use Illuminate\Support\Collection;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\FilterException;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Support\Filters;
 use Throwable;
 
@@ -28,6 +31,7 @@ trait ResourceWithFields
     }
 
     /**
+     * @return Collection<int, Fields>
      * @throws Throwable
      */
     public function getIndexFields(): Fields
@@ -52,6 +56,7 @@ trait ResourceWithFields
     }
 
     /**
+     * @return Collection<int, Fields>
      * @throws Throwable
      */
     public function getFormFields(bool $withOutside = false): Fields
@@ -75,6 +80,7 @@ trait ResourceWithFields
     }
 
     /**
+     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getDetailFields(bool $withOutside = false, bool $onlyOutside = false): Fields
@@ -94,6 +100,7 @@ trait ResourceWithFields
     }
 
     /**
+     * @return Collection<int, ModelRelationField>
      * @throws Throwable
      */
     public function getOutsideFields(): Fields
@@ -118,6 +125,7 @@ trait ResourceWithFields
     }
 
     /**
+     * @return Collection<int, Fields>
      * @throws Throwable
      */
     public function getFilters(): Fields
