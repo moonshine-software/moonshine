@@ -32,13 +32,19 @@ table {
     th {
       @apply font-semibold;
     }
+    tr:last-child {
+      td,
+      th {
+        @apply border-b-0;
+      }
+    }
   }
 
   tfoot {
     tr:first-child {
       td,
       th {
-        @apply max-w-lg pt-3;
+        @apply max-w-lg pt-3 border-t dark:border-dark-300;
       }
     }
   }
