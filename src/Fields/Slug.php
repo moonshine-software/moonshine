@@ -4,7 +4,6 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Slug extends Text
@@ -85,7 +84,7 @@ class Slug extends Text
 
     protected function checkUnique(Model $item, string $slug): bool
     {
-        return ! DB::table($item->getTable())
+        return ! $item->newModelQuery()
             ->whereNot($item->getKeyName(), $item->getKey())
             ->where($this->column(), $slug)
             ->exists();
