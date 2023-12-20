@@ -128,18 +128,29 @@ class DetailPage extends Page
             $components[] = LineBreak::make();
 
             foreach ($outsideFields as $field) {
-                if ($field->toOne()) {
-                    $field->forcePreview();
-                }
+                $field->resolveFill(
+                    $item?->attributesToArray() ?? [],
+                    $item
+                );
 
                 $components[] = LineBreak::make();
 
-                $components[] = Fragment::make([
-                    $field->resolveFill(
-                        $item?->attributesToArray() ?? [],
-                        $item
-                    ),
-                ])->name($field->getRelationName());
+                $blocks = [
+                    $field,
+                ];
+
+                if ($field->toOne()) {
+                    $field
+                        ->withoutWrapper()
+                        ->forcePreview();
+
+                    $blocks = [
+                        Block::make($field->label(), [$field]),
+                    ];
+                }
+
+                $components[] = Fragment::make($blocks)
+                    ->name($field->getRelationName());
             }
         }
 

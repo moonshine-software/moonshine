@@ -4,11 +4,22 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests\Relations;
 
+use MoonShine\Exceptions\ResourceException;
+use Throwable;
+
 class RelationModelColumnUpdateRequest extends RelationModelFieldRequest
 {
+    /**
+     * @throws Throwable
+     */
     public function authorize(): bool
     {
-        $resource = $this->getField()->getResource();
+        $resource = $this->getField()?->getResource();
+
+        throw_if(
+            is_null($resource),
+            ResourceException::notDeclared()
+        );
 
         if (! in_array(
             'update',

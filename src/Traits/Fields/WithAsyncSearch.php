@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Fields\Relationships\ModelRelationField;
 
 trait WithAsyncSearch
 {
@@ -120,8 +119,8 @@ trait WithAsyncSearch
 
         $parentName = null;
 
-        if ($this->hasParent() && $this->parent() instanceof ModelRelationField) {
-            $parentName = $this->parent()->column();
+        if ($this->hasParent()) {
+            $parentName = $this->parent()?->column();
         }
 
         $resourceUri = moonshineRequest()->getResourceUri();
@@ -167,7 +166,7 @@ trait WithAsyncSearch
         $this->associatedWith = $associatedWith;
         $this->asyncUrl = $url;
 
-        if($this->associatedWith) {
+        if ($this->associatedWith) {
             $this->customAttributes([
                 'data-associated-with' => $this->dotNestedToName($this->associatedWith),
             ]);
@@ -186,8 +185,7 @@ trait WithAsyncSearch
 
     public function associatedWith(string $column, ?Closure $asyncSearchQuery = null): static
     {
-        $searchQuery = static fn (Builder $query, Request $request)
-            => $query->where($column, $request->get($column));
+        $searchQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->get($column));
 
         return $this->asyncSearch(
             asyncSearchQuery: is_null($asyncSearchQuery) ? $searchQuery : $asyncSearchQuery,
