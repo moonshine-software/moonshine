@@ -69,12 +69,15 @@ trait WithRelatedValues
 
     private function resolveRelatedQuery(Builder $builder): Collection
     {
-        if (! method_exists($builder, 'toRawSql')) {
+        // #MongoDB Models fix
+        $key = rescue(fn() => $builder->toRawSql(), fn() => false, false);
+
+        if($key === false) {
             return $builder->get();
         }
 
         return moonshineCache()->remember(
-            sha1($builder->toRawSql()),
+            sha1((string) $key),
             4,
             fn (): Collection => $builder->get()
         );
@@ -88,7 +91,15 @@ trait WithRelatedValues
         $query = $this->resolveValuesQuery();
         $related = $query->getModel();
 
-        if (is_closure($this->formattedValueCallback())) {
+        $formatted = is_closure($this->formattedValueCallback());
+
+        // #MongoDB Models fix
+        if(!$formatted && !str_starts_with(get_class($query), 'Illuminate\Database')) {
+            $this->setFormattedValueCallback(fn($data) => data_get($data, $this->getResourceColumn()));
+            $formatted = true;
+        }
+
+        if ($formatted) {
             $values = $this->memoizeValues ?? $this->resolveRelatedQuery($query);
             $this->memoizeValues = $values;
 
