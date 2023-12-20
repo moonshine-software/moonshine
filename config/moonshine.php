@@ -35,6 +35,8 @@ return [
 
     'disk' => 'public',
 
+    'cache' => 'file',
+
     'forms' => [
         'login' => LoginForm::class
     ],

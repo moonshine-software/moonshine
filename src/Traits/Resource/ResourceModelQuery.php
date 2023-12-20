@@ -142,14 +142,21 @@ trait ResourceModelQuery
      */
     public function paginate(): Paginator
     {
+        $page = data_get(
+            moonshineCache()->get($this->queryCacheKey(), []),
+            'page',
+        );
+
         return $this->resolveQuery()
             ->when(
                 $this->isSimplePaginate(),
                 fn (Builder $query): Paginator => $query->simplePaginate(
-                    $this->itemsPerPage()
+                    $this->itemsPerPage(),
+                    page: $page
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    $this->itemsPerPage()
+                    $this->itemsPerPage(),
+                    page: $page
                 ),
             )
             ->appends(request()->except('page'));
@@ -206,13 +213,13 @@ trait ResourceModelQuery
             return $this;
         }
 
-        cache()->forget($this->queryCacheKey());
+        moonshineCache()->forget($this->queryCacheKey());
 
         if (! request()->has('reset')) {
-            cache()->remember(
+            moonshineCache()->remember(
                 $this->queryCacheKey(),
                 now()->addHours(2),
-                static fn () => request()->only(['sort', 'filters'])
+                static fn () => request()->only(['sort', 'filters', 'page'])
             );
         }
 
@@ -336,10 +343,7 @@ trait ResourceModelQuery
         && ! request()->has('filters')
         && ! request()->has('sort')
         && ! request()->has('reset')
-            ? cache(
-                $this->queryCacheKey(),
-                []
-            )
+            ? moonshineCache()->get($this->queryCacheKey(), [])
             : request('filters', []);
 
         return tap(

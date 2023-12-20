@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Cache\Repository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -75,6 +76,14 @@ if (! function_exists('moonshineLayout')) {
         $class = config('moonshine.layout', MoonShineLayout::class);
 
         return $class::build()->render();
+    }
+}
+
+if (! function_exists('moonshineCache')) {
+    function moonshineCache(): Repository
+    {
+        return app('cache')
+            ->store(config('moonshine.cache', 'file'));
     }
 }
 

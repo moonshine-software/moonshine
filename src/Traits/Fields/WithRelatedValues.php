@@ -69,8 +69,12 @@ trait WithRelatedValues
 
     private function resolveRelatedQuery(Builder $builder): Collection
     {
-        return cache()->remember(
-            $builder->toRawSql(),
+        if (! method_exists($builder, 'toRawSql')) {
+            return $builder->get();
+        }
+
+        return moonshineCache()->remember(
+            sha1($builder->toRawSql()),
             4,
             fn (): Collection => $builder->get()
         );

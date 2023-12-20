@@ -52,6 +52,7 @@ class TestCase extends Orchestra
     protected function defineEnvironment($app): void
     {
         $app['config']->set('app.debug', 'true');
+        $app['config']->set('moonshine.cache', 'array');
     }
 
     protected function performApplication(): static

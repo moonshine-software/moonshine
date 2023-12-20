@@ -2,7 +2,7 @@
     'tabs',
     'contents',
     'active',
-    'justifyAlign',
+    'justifyAlign' => 'start',
 ])
 @if($tabs)
     <!-- Tabs -->
@@ -10,7 +10,7 @@
          x-data="{ activeTab: '{{ $active ?? array_key_first($tabs) }}'}"
     >
         <!-- Tabs Buttons -->
-        <ul class="tabs-list {{ 'justify-' . $justifyAlign }}" >
+        <ul @class(['tabs-list', 'justify-' . $justifyAlign])>
             @foreach($tabs as $tabId => $tabContent)
                 <li class="tabs-item">
                     <button
