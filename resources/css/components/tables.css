@@ -44,7 +44,7 @@ table {
     tr:first-child {
       td,
       th {
-        @apply max-w-lg pt-3 border-t dark:border-dark-300;
+        @apply max-w-lg border-t pt-3 dark:border-dark-300;
       }
     }
   }
