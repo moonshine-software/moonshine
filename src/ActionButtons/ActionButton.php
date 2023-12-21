@@ -8,7 +8,7 @@ use Closure;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Exceptions\ActionException;
+use MoonShine\Pages\Page;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
@@ -117,18 +117,16 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ?string $selector = null,
         array $events = [],
         ?string $callback = null,
+        ?Page $page = null,
         ?ResourceContract $resource = null,
     ): self {
-        $resource ??= moonshineRequest()->getResource();
-
-        throw_if(is_null($resource), ActionException::resourceRequired());
-
-        $this->url = static fn (mixed $item): ?string => $resource
-            ->route('async.method', $item?->getKey(), [
-                'pageUri' => moonshineRequest()->getPageUri(),
-                'method' => $method,
-                'message' => $message,
-            ]);
+        $this->url = static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
+            $method,
+            $message,
+            params: ['resourceItem' => $item?->getKey()],
+            page: $page,
+            resource: $resource
+        );
 
         return $this->async(
             selector: $selector,

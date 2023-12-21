@@ -69,6 +69,13 @@ if (! function_exists('moonshineMenu')) {
     }
 }
 
+if (! function_exists('moonshineRouter')) {
+    function moonshineRouter(): MoonShineRouter
+    {
+        return app(MoonShineRouter::class);
+    }
+}
+
 if (! function_exists('moonshineLayout')) {
     function moonshineLayout(): View
     {
@@ -168,7 +175,7 @@ if (! function_exists('to_page')) {
             $params += ['_fragment-load' => $fragment];
         }
 
-        return MoonShineRouter::to_page(
+        return moonshineRouter()->to_page(
             page: $page,
             resource: $resource,
             params: $params,
@@ -178,6 +185,10 @@ if (! function_exists('to_page')) {
 }
 
 if (! function_exists('to_relation_route')) {
+    /**
+     * @deprecated will be removed in 3.0
+     * @see MoonShineRouter::toRelation()
+     */
     function to_relation_route(
         string $action,
         int|string|null $resourceItem = null,
@@ -186,54 +197,51 @@ if (! function_exists('to_relation_route')) {
         ?string $pageUri = null,
         ?string $parentField = null
     ): string {
-        $data = [
-            '_parent_field' => $parentField,
-            '_relation' => $relation,
-            'resourceItem' => $resourceItem,
-        ];
-
-        return MoonShineRouter::to("relation.$action", [
-            'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
-            'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
-            ...array_filter($data),
-        ]);
+        return moonshineRouter()->toRelation(
+            $action,
+            $resourceItem,
+            $relation,
+            $resourceUri,
+            $pageUri,
+            $parentField
+        );
     }
 }
 
 if (! function_exists('tableAsyncRoute')) {
+    /**
+     * @deprecated will be removed in 3.0
+     * @see MoonShineRouter::asyncTable()
+     */
     function tableAsyncRoute(string $componentName = 'index-table'): string
     {
-        return route('moonshine.async.table', [
-            '_component_name' => $componentName,
-            '_parentId' => moonshineRequest()->getParentResourceId(),
-            'resourceUri' => moonshineRequest()->getResourceUri(),
-            'pageUri' => moonshineRequest()->getPageUri(),
-            'filters' => moonshineRequest()->get('filters'),
-            'query-tag' => moonshineRequest()->get('query-tag'),
-            'search' => moonshineRequest()->get('search'),
-        ]);
+        return moonshineRouter()->asyncTable($componentName);
     }
 }
 
 if (! function_exists('updateRelationColumnRoute')) {
+    /**
+     * @deprecated will be removed in 3.0
+     * @see MoonShineRouter::updateColumn()
+     */
     function updateRelationColumnRoute(string $resourceUri, string $pageUri, string $relation): Closure
     {
-        return fn ($item): string => MoonShineRouter::to(
-            'column.relation.update-column',
-            [
-                'resourceItem' => $item->getKey(),
-                'resourceUri' => $resourceUri,
-                'pageUri' => $pageUri,
-                '_relation' => $relation,
-            ]
+        return moonshineRouter()->updateColumn(
+            $resourceUri,
+            $pageUri,
+            $relation
         );
     }
 }
 
 if (! function_exists('moonshineIndexRoute')) {
+    /**
+     * @deprecated will be removed in 3.0
+     * @see MoonShineRouter::home()
+     */
     function moonshineIndexRoute(): string
     {
-        return config('moonshine.route.index', 'moonshine.index');
+        return moonshineRouter()->home();
     }
 }
 

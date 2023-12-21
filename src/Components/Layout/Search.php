@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Components\Layout;
 
 use MoonShine\Components\MoonShineComponent;
-use MoonShine\MoonShineRouter;
 
 /**
  * @method static static make()
@@ -30,7 +29,7 @@ final class Search extends MoonShineComponent
 
     protected function viewData(): array
     {
-        $action = MoonShineRouter::to('global-search');
+        $action = moonshineRouter()->to('global-search');
 
         if (! $this->globalSearchEnabled() && $this->resourceSearchEnabled()) {
             $action = to_page(resource: moonshineRequest()->getResource());

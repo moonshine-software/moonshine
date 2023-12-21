@@ -22,8 +22,11 @@ trait HasAsync
         return $asyncUrl;
     }
 
-    public function async(?string $asyncUrl = null, string|array|null $asyncEvents = null, string $asyncCallback = null): static
-    {
+    public function async(
+        ?string $asyncUrl = null,
+        string|array|null $asyncEvents = null,
+        string $asyncCallback = null
+    ): static {
         $this->asyncUrl = $this->prepareAsyncUrl($asyncUrl);
         $this->asyncEvents = $asyncEvents;
         $this->asyncCallback = $asyncCallback;
@@ -38,14 +41,14 @@ trait HasAsync
 
     public function asyncEvents(): string|array|null
     {
-        if(is_array($this->asyncEvents)) {
+        if (is_array($this->asyncEvents)) {
             return collect($this->asyncEvents)
                 ->map(fn ($value): string => (string) str($value)->lower()->squish())
                 ->filter()
                 ->implode(',');
         }
 
-        if(is_string($this->asyncEvents)) {
+        if (is_string($this->asyncEvents)) {
             return strtolower($this->asyncEvents);
         }
 

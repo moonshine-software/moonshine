@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\PageType;
-use MoonShine\MoonShineRouter;
 
 /**
  * @mixin ResourceContract
@@ -36,7 +35,7 @@ trait ResourceModelCrudRouter
 
         data_forget($query, ['change-moonshine-locale', 'reset']);
 
-        return MoonShineRouter::to(
+        return moonshineRouter()->to(
             $name,
             $key ? array_merge(['resourceItem' => $key], $query) : $query
         );

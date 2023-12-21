@@ -60,6 +60,6 @@ class AuthenticateController extends MoonShineController
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return to_route('moonshine.login');
+        return to_route('moonshine.');
     }
 }
