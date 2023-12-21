@@ -33,8 +33,8 @@ class OffCanvas
     {
         $content = value($this->content, $data);
 
-        return !is_null($content)
-            ? (string) $content
-            : null;
+        return is_null($content)
+            ? null
+            : (string) $content;
     }
 }
