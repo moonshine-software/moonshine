@@ -17,8 +17,8 @@ class AuthenticateController extends MoonShineController
     public function login(): View|RedirectResponse
     {
         if ($this->auth()->check()) {
-            return to_route(
-                moonshineIndexRoute()
+            return redirect(
+                moonshineRouter()->home()
             );
         }
 
@@ -47,9 +47,7 @@ class AuthenticateController extends MoonShineController
         $request->authenticate();
 
         return redirect()->intended(
-            route(
-                moonshineIndexRoute()
-            )
+            moonshineRouter()->home()
         );
     }
 
@@ -60,6 +58,8 @@ class AuthenticateController extends MoonShineController
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return to_route('moonshine.');
+        return redirect(
+            moonshineRouter()->to('login')
+        );
     }
 }

@@ -17,8 +17,8 @@ final class DeleteButton
         string $redirectAfterDelete = '',
         bool $isAsync = false,
     ): ActionButton {
-        $action = static fn (Model $data): string => route(
-            'moonshine.crud.destroy',
+        $action = static fn (Model $data): string => moonshineRouter()->to(
+            'crud.destroy',
             array_filter([
                 'resourceUri' => $resource->uriKey(),
                 'resourceItem' => $data->getKey(),
