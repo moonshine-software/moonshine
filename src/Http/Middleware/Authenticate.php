@@ -27,6 +27,6 @@ class Authenticate extends Middleware
 
     protected function redirectTo($request): string
     {
-        return route('moonshine.login');
+        return moonshineRouter()->to('login');
     }
 }

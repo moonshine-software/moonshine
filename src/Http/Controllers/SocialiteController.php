@@ -84,15 +84,15 @@ class SocialiteController extends MoonShineController
                 'error'
             );
 
-            return to_route('moonshine.login')->withErrors([
+            return redirect(moonshineRouter()->to('login'))->withErrors([
                 'username' => __('moonshine::auth.failed'),
             ]);
         }
 
         $this->auth()->loginUsingId($account->moonshine_user_id);
 
-        return to_route(
-            moonshineIndexRoute()
+        return redirect(
+            moonshineRouter()->home()
         );
     }
 

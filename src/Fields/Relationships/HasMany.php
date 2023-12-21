@@ -247,7 +247,7 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
-        $asyncUrl = to_relation_route(
+        $asyncUrl = moonshineRouter()->toRelation(
             'search-relations',
             resourceItem: $this->getRelatedModel()?->getKey(),
             relation: $this->getRelationName()

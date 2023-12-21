@@ -24,7 +24,7 @@
             </div>
 
             <div class="mt-8">
-                <a href="{{ route(moonshineIndexRoute()) }}"
+                <a href="{{ moonshineRouter()->home() }}"
                    class="btn btn-primary"
                    rel="home">
                     Back to Home

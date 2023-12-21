@@ -17,7 +17,7 @@ final class LoginForm
             ->customAttributes([
                 'class' => 'authentication-form',
             ])
-            ->action(route('moonshine.authenticate'))
+            ->action(moonshineRouter()->to('authenticate'))
             ->fields([
                 Text::make(__('moonshine::ui.login.username'), 'username')
                     ->required()

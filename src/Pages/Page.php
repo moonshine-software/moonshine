@@ -12,7 +12,6 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
-use MoonShine\MoonShineRouter;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithUriKey;
@@ -203,7 +202,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function route(array $params = []): string
     {
-        return MoonShineRouter::to(
+        return moonshineRouter()->to(
             $this->hasResource() ? 'resource.page' : 'page',
             [
                 'resourceUri' => $this->getResource()?->uriKey(),
@@ -214,7 +213,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function url(): string
     {
-        return MoonShineRouter::to('page', [
+        return moonshineRouter()->to('page', [
             'pageUri' => $this->uriKey(),
         ]);
     }

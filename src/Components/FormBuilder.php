@@ -7,9 +7,11 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\View\ComponentAttributeBag;
 use JsonException;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Pages\Page;
 use MoonShine\Traits\Fields\WithAdditionalFields;
 use MoonShine\Traits\HasAsync;
 use Throwable;
@@ -90,6 +92,32 @@ final class FormBuilder extends RowComponent
     protected function prepareAsyncUrl(?string $asyncUrl = null): ?string
     {
         return $asyncUrl ?? $this->getAction();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function asyncMethod(
+        string $method,
+        ?string $message = null,
+        array $events = [],
+        ?string $callback = null,
+        ?Page $page = null,
+        ?ResourceContract $resource = null,
+    ): self {
+        $asyncUrl = moonshineRouter()->asyncMethod(
+            $method,
+            $message,
+            params: ['resourceItem' => $resource?->getItemID()],
+            page: $page,
+            resource: $resource
+        );
+
+        return $this->action($asyncUrl)->async(
+            $asyncUrl,
+            asyncEvents: $events,
+            asyncCallback: $callback
+        );
     }
 
     public function method(string $method): self
@@ -253,7 +281,8 @@ final class FormBuilder extends RowComponent
 
         if ($this->isAsync()) {
             $this->customAttributes([
-                'x-on:submit.prevent' => 'async($event.target, `' . $this->asyncEvents() . '`, `' . $this->asyncCallback() . '`)',
+                'x-on:submit.prevent' => 'async($event.target, `' . $this->asyncEvents(
+                    ) . '`, `' . $this->asyncCallback() . '`)',
                 '@form-reset-' . ($this->getName() ?? 'default') . '.window' => 'formReset',
             ]);
         }

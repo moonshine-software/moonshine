@@ -34,8 +34,11 @@ class AsyncController extends MoonShineController
         ];
 
         try {
-            $result = $request
-                ->getResource()
+            $pageOrResource = $request->hasResource()
+                ? $request->getResource()
+                : $request->getPage();
+
+            $result = $pageOrResource
                 ->{$request->get('method')}($request);
 
             $toast = $request->session()->get('toast', $toast);

@@ -45,7 +45,7 @@ final class Profile extends MoonShineComponent
 
         return [
             'route' => $this->route ?? to_page(config('moonshine.pages.profile', ProfilePage::class)),
-            'logOutRoute' => $this->logOutRoute ?? route('moonshine.logout'),
+            'logOutRoute' => $this->logOutRoute ?? moonshineRouter()->to('logout'),
             'avatar' => $this->avatar ?? $avatar,
             'nameOfUser' => $this->nameOfUser ?? $nameOfUser,
             'username' => $this->username ?? $username,

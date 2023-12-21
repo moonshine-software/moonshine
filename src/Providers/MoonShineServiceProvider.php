@@ -31,6 +31,7 @@ use MoonShine\Menu\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
+use MoonShine\MoonShineRouter;
 use MoonShine\Theme\AssetManager;
 use MoonShine\Theme\ColorManager;
 
@@ -151,6 +152,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->scoped(AssetManager::class);
         $this->app->scoped(ColorManager::class);
         $this->app->scoped(MoonShineRegister::class);
+        $this->app->scoped(MoonShineRouter::class);
 
         $this->loadAuthConfig();
     }
