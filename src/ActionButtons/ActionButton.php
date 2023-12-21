@@ -126,7 +126,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             $message,
             params: array_filter([
                 'resourceItem' => $item?->getKey(),
-                ...value($params, $item)
+                ...value($params, $item),
             ]),
             page: $page,
             resource: $resource
