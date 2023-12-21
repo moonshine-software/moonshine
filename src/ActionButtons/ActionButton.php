@@ -113,6 +113,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
      */
     public function method(
         string $method,
+        array|Closure $params = [],
         ?string $message = null,
         ?string $selector = null,
         array $events = [],
@@ -123,7 +124,10 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         $this->url = static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
             $method,
             $message,
-            params: ['resourceItem' => $item?->getKey()],
+            params: array_filter([
+                'resourceItem' => $item?->getKey(),
+                ...value($params, $item)
+            ]),
             page: $page,
             resource: $resource
         );
