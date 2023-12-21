@@ -62,7 +62,7 @@ final class MoonShineRouter
         ?string $relation = null,
     ): Closure {
         return static fn ($item): string => self::to(
-            'column.'.($relation ? 'relation' : 'resource').'.update-column',
+            'column.' . ($relation ? 'relation' : 'resource') . '.update-column',
             array_filter([
                 'resourceItem' => $item->getKey(),
                 'resourceUri' => $resourceUri,
