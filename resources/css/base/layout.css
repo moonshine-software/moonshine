@@ -46,7 +46,7 @@
   }
 
   &-page {
-    @apply relative z-2 flex w-full grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
+    @apply relative flex w-full grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
   }
 
   &-navigation {
