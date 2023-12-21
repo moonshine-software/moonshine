@@ -31,6 +31,10 @@ class OffCanvas
 
     public function content(mixed $data = null): ?string
     {
-        return value($this->content, $data);
+        $content = value($this->content, $data);
+
+        return !is_null($content)
+            ? (string) $content
+            : null;
     }
 }
