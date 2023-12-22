@@ -129,7 +129,7 @@ export default (asyncUrl = '') => ({
                 root: this.$el.closest('.choices').querySelector('.choices__list .choices__list'),
                 rootMargin: '0px',
                 threshold: 1.0,
-              }
+              },
             )
           }
         },
@@ -198,7 +198,7 @@ export default (asyncUrl = '') => ({
 
         this.$el.addEventListener(
           'fetch-options',
-          debounce(event => this.asyncSearch(), 300)
+          debounce(event => this.asyncSearch(), 300),
         )
       }
 
@@ -304,7 +304,7 @@ export default (asyncUrl = '') => ({
       this.observer.observe(
         this.$el
           .closest('.choices')
-          .querySelector('.choices__list .choices__list .choices__item:last-child')
+          .querySelector('.choices__list .choices__list .choices__item:last-child'),
       )
     }
   },
