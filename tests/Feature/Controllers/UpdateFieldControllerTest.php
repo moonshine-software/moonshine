@@ -3,12 +3,11 @@
 declare(strict_types=1);
 
 use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShine;
 use MoonShine\MoonShineRouter;
 use MoonShine\Resources\MoonShineUserResource;
 
 beforeEach(function () {
-    $this->resource = MoonShine::getResourceFromClassName(MoonShineUserResource::class);
+    $this->resource = moonshine()->getResourceFromClassName(MoonShineUserResource::class);
 
     $this->user = MoonshineUser::query()->find(1);
 });

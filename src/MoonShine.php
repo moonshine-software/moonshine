@@ -13,7 +13,6 @@ use MoonShine\Exceptions\InvalidHome;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
-use MoonShine\Menu\MenuManager;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Pages\ProfilePage;
@@ -25,17 +24,17 @@ class MoonShine
 
     final public const NAMESPACE = 'App\MoonShine';
 
-    protected static ?Collection $resources = null;
+    protected ?Collection $resources = null;
 
-    protected static ?Pages $pages = null;
+    protected ?Pages $pages = null;
 
-    protected static ?Collection $menu = null;
+    protected ?Collection $menu = null;
 
-    protected static ?Collection $vendorsMenu = null;
+    protected ?Collection $vendorsMenu = null;
 
-    protected static array $authorization = [];
+    protected array $authorization = [];
 
-    protected static string|Closure|null $homeClass = null;
+    protected string|Closure|null $homeClass = null;
 
     public static function path(string $path = ''): string
     {
@@ -54,33 +53,33 @@ class MoonShine
         return (config('moonshine.namespace') ?? static::NAMESPACE) . $path;
     }
 
-    public static function getResourceFromClassName(string $className): ?ResourceContract
+    public function getResourceFromClassName(string $className): ?ResourceContract
     {
-        return self::getResources()
+        return $this->getResources()
             ->first(
                 fn (ResourceContract $resource): bool => $resource::class === $className
             );
     }
 
-    public static function getResourceFromUriKey(?string $uri): ?ResourceContract
+    public function getResourceFromUriKey(?string $uri): ?ResourceContract
     {
         if (is_null($uri)) {
             return null;
         }
 
-        return self::getResources()
+        return $this->getResources()
             ->first(
                 fn (ResourceContract $resource): bool => $resource->uriKey() === $uri
             );
     }
 
-    public static function getPageFromUriKey(?string $uri): ?Page
+    public function getPageFromUriKey(?string $uri): ?Page
     {
         if (is_null($uri)) {
             return null;
         }
 
-        return self::getPages()->findByUri($uri);
+        return $this->getPages()->findByUri($uri);
     }
 
     /**
@@ -88,11 +87,13 @@ class MoonShine
      *
      * @param  array<ResourceContract>  $data
      */
-    public static function resources(array $data, bool $newCollection = false): void
+    public function resources(array $data, bool $newCollection = false): self
     {
-        self::$resources = $newCollection
+        $this->resources = $newCollection
             ? collect($data)
-            : self::getResources()->merge($data);
+            : $this->getResources()->merge($data);
+
+        return $this;
     }
 
     /**
@@ -100,9 +101,9 @@ class MoonShine
      *
      * @return Collection<int, ResourceContract>
      */
-    public static function getResources(): Collection
+    public function getResources(): Collection
     {
-        return self::$resources ?? collect();
+        return $this->resources ?? collect();
     }
 
     /**
@@ -110,37 +111,41 @@ class MoonShine
      *
      * @param  array<Page>  $data
      */
-    public static function pages(array $data, bool $newCollection = false): void
+    public function pages(array $data, bool $newCollection = false): self
     {
-        self::$pages = $newCollection
+        $this->pages = $newCollection
             ? Pages::make($data)
-            : self::getPages()->merge($data);
+            : $this->getPages()->merge($data);
+
+        return $this;
     }
 
     /**
      * Get collection of registered pages
      */
-    public static function getPages(): Pages
+    public function getPages(): Pages
     {
-        return self::$pages ?? Pages::make();
+        return $this->pages ?? Pages::make();
     }
 
     /**
      * Get custom menu items for automatic registration
      * @return Collection<int, MenuElement>
      */
-    public static function getVendorsMenu(): Collection
+    public function getVendorsMenu(): Collection
     {
-        return self::$vendorsMenu ?? collect();
+        return $this->vendorsMenu ?? collect();
     }
 
     /**
      * Set custom menu items to register them automatically later.
      * @param  array<MenuElement> $data
      */
-    public static function vendorsMenu(array $data): void
+    public function vendorsMenu(array $data): self
     {
-        self::$vendorsMenu = self::getVendorsMenu()->merge($data);
+        $this->vendorsMenu = $this->getVendorsMenu()->merge($data);
+
+        return $this;
     }
 
     /**
@@ -148,9 +153,9 @@ class MoonShine
      *
      * @return Collection<int, MenuElement>
      */
-    public static function getMenu(): Collection
+    public function getMenu(): Collection
     {
-        return self::$menu ?? collect();
+        return $this->menu ?? collect();
     }
 
     /**
@@ -158,40 +163,43 @@ class MoonShine
      *
      * @param  Closure|array<MenuElement>  $data
      */
-    public static function init(array|Closure $data, bool $newCollection = false): void
+    public function init(array|Closure $data, bool $newCollection = false): self
     {
-        self::$pages = self::getPages();
-        self::$resources = self::getResources();
+        $this->pages = $this->getPages();
+        $this->resources = $this->getResources();
 
         if (! is_closure($data)) {
-            self::$menu = $newCollection ? collect() : self::getMenu();
+            $this->menu = $newCollection ? collect() : $this->getMenu();
 
-            collect($data)->merge(self::getVendorsMenu())->each(
+            collect($data)->merge($this->getVendorsMenu())->each(
                 function (MenuElement $item): void {
-                    self::$menu->add($item);
-                    self::resolveMenuItem($item);
+                    $this->menu->add($item);
+                    $this->resolveMenuItem($item);
                 }
             );
         }
 
         if (! empty(config('moonshine.pages.profile')) && config('moonshine.auth.enable', true)) {
-            self::$pages->add(
+            $this->pages->add(
                 new (config('moonshine.pages.profile', ProfilePage::class))()
             );
         }
 
         if (class_exists(config('moonshine.pages.dashboard'))) {
-            self::$pages->add(new (config('moonshine.pages.dashboard'))());
+            $this->pages->add(new (config('moonshine.pages.dashboard'))());
         }
 
-        MenuManager::register(is_closure($data) ? $data : self::$menu);
+        moonshineMenu()
+            ->register(is_closure($data) ? $data : $this->menu);
+
+        return $this;
     }
 
-    private static function resolveMenuItem(MenuElement $element): void
+    private function resolveMenuItem(MenuElement $element): void
     {
         if ($element instanceof MenuGroup) {
             $element->items()->each(
-                fn (MenuElement $item) => self::resolveMenuItem($item)
+                fn (MenuElement $item) => $this->resolveMenuItem($item)
             );
         } elseif ($element->isItem()) {
             $filler = $element instanceof MenuItem
@@ -199,11 +207,11 @@ class MoonShine
                 : null;
 
             if ($filler instanceof Page) {
-                self::$pages->add($filler);
+                $this->pages->add($filler);
             }
 
             if ($filler instanceof ResourceContract) {
-                self::$resources->add($filler);
+                $this->resources->add($filler);
             }
         }
     }
@@ -211,18 +219,20 @@ class MoonShine
     /**
      * Register moonshine routes and resources routes in the system
      */
-    public static function resolveRoutes(): void
+    public function resolveRoutes(): self
     {
-        Route::group(self::configureRoutes(), static function (): void {
-            self::getResources()->each(
+        Route::group($this->configureRoutes(), function (): void {
+            $this->getResources()->each(
                 static function (ResourceContract $resource): void {
                     $resource->routes();
                 }
             );
         });
+
+        return $this;
     }
 
-    public static function configureRoutes(): array
+    public function configureRoutes(): array
     {
         return array_filter([
             'domain' => config('moonshine.route.domain', ''),
@@ -232,14 +242,14 @@ class MoonShine
         ]);
     }
 
-    public static function authorizationRules(): Collection
+    public function authorizationRules(): Collection
     {
-        return collect(self::$authorization);
+        return collect($this->authorization);
     }
 
-    public static function defineAuthorization(Closure $rule): void
+    public function defineAuthorization(Closure $rule): void
     {
-        self::$authorization[] = $rule;
+        $this->authorization[] = $rule;
     }
 
     /**
@@ -247,19 +257,18 @@ class MoonShine
      *
      * @param  class-string<Page|ResourceContract>|Closure  $homeClass
      */
-    public static function home(string|Closure $homeClass): void
+    public function home(string|Closure $homeClass): void
     {
-        self::$homeClass = $homeClass;
+        $this->homeClass = $homeClass;
     }
-
 
     /**
      * @throws Throwable
      * @throws InvalidHome
      */
-    public static function homeUrl(): ?string
+    public function homeUrl(): ?string
     {
-        if ($class = value(self::$homeClass)) {
+        if ($class = value($this->homeClass)) {
             throw_unless(is_a($class, MenuFiller::class, true), InvalidHome::create($class));
 
             return (new $class())->url();

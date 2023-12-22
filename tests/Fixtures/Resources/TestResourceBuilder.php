@@ -14,7 +14,6 @@ use MoonShine\Metrics\DonutChartMetric;
 use MoonShine\Metrics\LineChartMetric;
 use MoonShine\Metrics\ValueMetric;
 use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShine;
 use MoonShine\QueryTags\QueryTag;
 
 class TestResourceBuilder
@@ -27,14 +26,14 @@ class TestResourceBuilder
             $resource->setTestModel($model);
         }
 
-        MoonShine::resources([$resource]);
+        moonshine()->resources([$resource]);
 
         return $resource;
     }
 
     public static function testResourceWithAllFeatures(): TestResource
     {
-        return TestResourceBuilder::new(
+        return self::new(
             MoonShineUser::class
         )
             ->setTestFields([

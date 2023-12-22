@@ -25,7 +25,7 @@ class MoonShineRequest extends Request
             return $this->resource;
         }
 
-        $this->resource = MoonShine::getResourceFromUriKey(
+        $this->resource = moonshine()->getResourceFromUriKey(
             $this->getResourceUri()
         );
 
@@ -43,7 +43,7 @@ class MoonShineRequest extends Request
                 ?->getPages()
                 ?->findByUri($this->getPageUri());
         } else {
-            $this->page = MoonShine::getPageFromUriKey(
+            $this->page = moonshine()->getPageFromUriKey(
                 $this->getPageUri()
             );
         }

@@ -9,16 +9,16 @@ use Illuminate\Support\Collection;
 
 class MenuManager
 {
-    protected static Closure|Collection|array|null $menu = null;
+    protected Closure|Collection|array|null $menu = null;
 
-    public static function register(Closure|array|Collection|null $data): void
+    public function register(Closure|array|Collection|null $data): void
     {
-        self::$menu = $data;
+        $this->menu = $data;
     }
 
-    public static function all(): ?Collection
+    public function all(): ?Collection
     {
-        return collect(value(self::$menu, moonshineRequest()))?->filter(function (MenuElement $item): bool {
+        return collect(value($this->menu, moonshineRequest()))?->filter(function (MenuElement $item): bool {
             if ($item instanceof MenuGroup) {
                 $item->setItems(
                     $item->items()->filter(

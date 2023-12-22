@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
-use MoonShine\MoonShine;
 use MoonShine\Pages\Page;
 use Throwable;
 
@@ -21,14 +20,11 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        MoonShine::resources($this->resources());
-        MoonShine::pages($this->pages());
-
-        $menu = $this->menu();
-
-        MoonShine::init($menu);
-
-        MoonShine::resolveRoutes();
+        moonshine()
+            ->resources($this->resources())
+            ->pages($this->pages())
+            ->init($this->menu())
+            ->resolveRoutes();
 
         $theme = is_closure($this->theme())
             ? $this->theme()
