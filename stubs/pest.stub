@@ -1,0 +1,50 @@
+<?php
+
+use {namespace}\DummyResource;
+use {model-namespace};
+use MoonShine\Models\MoonshineUser;
+use function Pest\Laravel\actingAs;
+
+uses()->group('moonshine');
+
+beforeEach(function (): void {
+    $this->resource = new DummyResource();
+    $this->user = MoonshineUser::factory()->create();
+});
+
+it('index page', function (): void {
+    actingAs($this->user, 'moonshine')
+        ->get(
+            $this->resource->indexPageUrl()
+        )
+        ->assertOk();
+});
+
+it('detail page', function (): void {
+    $item = {model}::factory()->create();
+
+    actingAs($this->user, 'moonshine')
+        ->get(
+            $this->resource->detailPageUrl($item)
+        )
+        ->assertOk();
+});
+
+it('create page', function (): void {
+    actingAs($this->user, 'moonshine')
+        ->get(
+            $this->resource->formPageUrl()
+        )
+        ->assertOk();
+});
+
+it('edit page', function (): void {
+    $item = {model}::factory()->create();
+
+    actingAs($this->user, 'moonshine')
+        ->get(
+            $this->resource->formPageUrl($item)
+        )
+        ->assertOk();
+});
+
