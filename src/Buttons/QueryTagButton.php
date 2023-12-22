@@ -12,7 +12,7 @@ final class QueryTagButton
     {
         return ActionButton::make(
             $tag->label(),
-            to_page(page: $resource->indexPage(), resource: $resource, params: ['query-tag' => $tag->uri()])
+            $resource->indexPageUrl(['query-tag' => $tag->uri()])
         )
             ->showInLine()
             ->icon($tag->iconValue())
@@ -28,7 +28,7 @@ final class QueryTagButton
                     ->primary()
                     ->customAttributes([
                         'class' => 'active-query-tag',
-                        'href' => to_page(page: $resource->indexPage(), resource: $resource),
+                        'href' => $resource->indexPageUrl(),
                     ])
             )
             ->when(

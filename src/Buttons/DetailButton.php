@@ -16,17 +16,11 @@ final class DetailButton
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn ($data): string => to_page(
-            page: $resource->detailPage(),
-            resource: $resource,
-            params: ['resourceItem' => $data->getKey()]
-        );
+        $action = static fn ($data): string => $resource->detailPageUrl($data);
 
         if($isAsync || $resource->isDetailInModal()) {
-            $action = static fn ($data): string => to_page(
-                page: $resource->detailPage(),
-                resource: $resource,
-                params: ['resourceItem' => $data->getKey()],
+            $action = static fn ($data): string => $resource->detailPageUrl(
+                $data,
                 fragment: 'crud-show-table'
             );
         }

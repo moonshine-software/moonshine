@@ -33,7 +33,7 @@ final class HandlerController extends MoonShineController
         }
 
         return redirect(
-            $request->getResource()->route('crud.index')
+            $request->getResource()?->url() ?? moonshineRouter()->home()
         );
     }
 }

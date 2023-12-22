@@ -21,10 +21,7 @@ it('recognizes internal request as MoonShine request', function (): void {
 });
 
 it('recognizes external request as non MoonShine request', function (): void {
-    $this->post(
-        route('moonshine.authenticate'),
-        ['username' => $this->adminUser()->email, 'password' => 'test']
-    )->assertValid();
+    $this->get('/')->assertValid();
 
     expect(app(MoonShineRequest::class)->isMoonShineRequest())
         ->toBeFalse();

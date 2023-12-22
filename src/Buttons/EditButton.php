@@ -19,18 +19,12 @@ final class EditButton
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn ($data): string => to_page(
-            page: $resource->formPage(),
-            resource: $resource,
-            params: ['resourceItem' => $data->getKey()]
-        );
+        $action = static fn ($data): string => $resource->formPageUrl($data);
 
         if ($isAsync || $resource->isEditInModal()) {
-            $action = static fn ($data): string => to_page(
-                page: $resource->formPage(),
-                resource: $resource,
+            $action = static fn ($data): string => $resource->formPageUrl(
+                $data,
                 params: [
-                    'resourceItem' => $data->getKey(),
                     '_tableName' => $tableName,
                     '_async_form' => $isAsync,
                 ],
