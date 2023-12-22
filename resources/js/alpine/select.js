@@ -12,6 +12,8 @@ export default (asyncUrl = '') => ({
   removeItemButton: null,
   shouldSort: null,
   associatedWith: null,
+  observer: null,
+  options: [],
   searchTerms: null,
 
   init() {
@@ -44,6 +46,7 @@ export default (asyncUrl = '') => ({
         position: 'bottom',
         placeholderValue: this.placeholder,
         searchEnabled: this.searchEnabled,
+        resetScrollPosition: false,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
@@ -115,8 +118,19 @@ export default (asyncUrl = '') => ({
         callbackOnInit: () => {
           this.searchTerms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
 
-          if (this.associatedWith && asyncUrl) {
-            this.asyncSearch()
+          if (asyncUrl) {
+            this.observer = new IntersectionObserver(
+              (entries, observer) => {
+                if (entries[0].isIntersecting) {
+                  this.$el.dispatchEvent(new Event('fetch-options'))
+                }
+              },
+              {
+                root: this.$el.closest('.choices').querySelector('.choices__list .choices__list'),
+                rootMargin: '0px',
+                threshold: 1.0,
+              }
+            )
           }
         },
       })
@@ -165,10 +179,26 @@ export default (asyncUrl = '') => ({
       }
 
       if (asyncUrl) {
-        this.searchTerms.addEventListener(
-          'input',
-          debounce(event => this.asyncSearch(), 300),
-          false,
+        this.searchTerms.addEventListener('input', () => {
+          this.options = []
+          this.$el.dispatchEvent(new Event('fetch-options'))
+        })
+
+        this.$el.addEventListener('showDropdown', () => {
+          if (!this.options.length) {
+            this.$el.dispatchEvent(new Event('fetch-options'))
+          }
+        })
+
+        this.$el.addEventListener('change', () => {
+          if (this.searchTerms.value) {
+            this.options = []
+          }
+        })
+
+        this.$el.addEventListener(
+          'fetch-options',
+          debounce(event => this.asyncSearch(), 300)
         )
       }
 
@@ -209,6 +239,43 @@ export default (asyncUrl = '') => ({
     })
   },
 
+  handleLoadingState(setLoading = true) {
+    let placeholderItem = this.choicesInstance.itemList.getChild(
+      `.${this.choicesInstance.config.classNames.placeholder}`,
+    )
+
+    if (setLoading) {
+      this.choicesInstance.containerOuter.addLoadingState()
+
+      if (this.choicesInstance._isSelectOneElement) {
+        if (!placeholderItem) {
+          let placeholderItem = this.choicesInstance._getTemplate(
+            'placeholder',
+            this.choicesInstance.config.loadingText,
+          )
+
+          if (placeholderItem) {
+            this.choicesInstance.itemList.append(placeholderItem)
+          }
+        } else {
+          placeholderItem.innerHTML = this.choicesInstance.config.loadingText
+        }
+      } else {
+        this.choicesInstance.input.placeholder = this.choicesInstance.config.loadingText
+      }
+    } else {
+      this.choicesInstance.containerOuter.removeLoadingState()
+
+      if (this.choicesInstance._isSelectOneElement) {
+        if (placeholderItem) {
+          placeholderItem.innerHTML = this.choicesInstance._placeholderValue || ''
+        }
+      } else {
+        this.choicesInstance.input.placeholder = this.choicesInstance._placeholderValue || ''
+      }
+    }
+  },
+
   async asyncSearch() {
     const url = new URL(asyncUrl)
 
@@ -218,12 +285,28 @@ export default (asyncUrl = '') => ({
       url.searchParams.append('query', query)
     }
 
+    url.searchParams.append('offset', this.options.length)
+
     const form = this.$el.form
     const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
 
+    this.handleLoadingState(true)
+
     const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
 
-    this.choicesInstance.setChoices(options, 'value', 'label', true)
+    this.handleLoadingState(false)
+
+    this.options = [...this.options, ...options]
+
+    this.choicesInstance.setChoices(this.options, 'value', 'label', true)
+
+    if (options.length) {
+      this.observer.observe(
+        this.$el
+          .closest('.choices')
+          .querySelector('.choices__list .choices__list .choices__item:last-child')
+      )
+    }
   },
 
   fromUrl(url) {
