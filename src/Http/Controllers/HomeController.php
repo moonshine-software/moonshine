@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use Throwable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Exceptions\InvalidHome;
+use Throwable;
 
 class HomeController extends MoonShineController
 {
