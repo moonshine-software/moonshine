@@ -192,7 +192,7 @@ class MoonShine
         moonshineMenu()
             ->register(is_closure($data) ? $data : $this->menu);
 
-        return $this;
+        return $this->resolveRoutes();
     }
 
     private function resolveMenuItem(MenuElement $element): void

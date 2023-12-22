@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
 
 use function Laravel\Prompts\{info, outro, select, text};
 
-use MoonShine\MoonShine;
-
 class MakeResourceCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=}';
+    protected $signature = 'moonshine:resource {name?} {--m|model=} {--t|title=} {--test} {--pest}';
 
     protected $description = 'Create resource';
 
@@ -61,6 +60,15 @@ class MakeResourceCommand extends MoonShineCommand
             'DummyTitle' => $title,
             'Dummy' => $name,
         ];
+
+        if($this->option('test') || $this->option('pest')) {
+            $testStub = $this->option('pest') ? 'pest' : 'test';
+            $testPath = base_path('tests/Feature/') . $name . 'ResourceTest.php';
+
+            $this->copyStub($testStub, $testPath, $replaceData);
+
+            info('Test file was created');
+        }
 
         if ($stub === 'ModelResourceWithPages') {
             $pageDir = "Pages/$dir";

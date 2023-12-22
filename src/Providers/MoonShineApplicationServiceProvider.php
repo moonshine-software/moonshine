@@ -23,8 +23,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
         moonshine()
             ->resources($this->resources())
             ->pages($this->pages())
-            ->init($this->menu())
-            ->resolveRoutes();
+            ->init($this->menu());
 
         $theme = is_closure($this->theme())
             ? $this->theme()

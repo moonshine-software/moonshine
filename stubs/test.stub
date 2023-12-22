@@ -1,0 +1,81 @@
+<?php
+
+namespace Tests\Feature;
+
+use {namespace}\DummyResource;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Contracts\Auth\Authenticatable;
+use MoonShine\Models\MoonshineUser;
+use {model-namespace};
+use MoonShine\Resources\ModelResource;
+use Tests\TestCase;
+
+class DummyResourceTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected ModelResource $resource;
+
+    protected Authenticatable|MoonshineUser $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->resource = new DummyResource();
+
+        $user = MoonshineUser::factory()->create();
+
+        $this->be($user, 'moonshine');
+    }
+
+    protected function getResource(): ModelResource
+    {
+        return $this->resource;
+    }
+
+    protected function getUser(): Authenticatable|MoonshineUser
+    {
+        return $this->user;
+    }
+
+    public function test_index_page_successful(): void
+    {
+        $response = $this->get(
+            $this->getResource()->indexPageUrl()
+        );
+
+        $response->assertSuccessful();
+    }
+
+    public function test_detail_page_successful(): void
+    {
+        $item = {model}::factory()->create();
+
+        $response = $this->get(
+            $this->getResource()->detailPageUrl($item)
+        );
+
+        $response->assertSuccessful();
+    }
+
+    public function test_create_page_successful(): void
+    {
+        $response = $this->get(
+            $this->getResource()->formPageUrl()
+        );
+
+        $response->assertSuccessful();
+    }
+
+    public function test_edit_page_successful(): void
+    {
+        $item = {model}::factory()->create();
+
+        $response = $this->get(
+            $this->getResource()->formPageUrl($item)
+        );
+
+        $response->assertSuccessful();
+    }
+}

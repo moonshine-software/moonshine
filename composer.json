@@ -34,7 +34,8 @@
   },
   "autoload": {
     "psr-4": {
-      "MoonShine\\": "src/"
+      "MoonShine\\": "src/",
+      "MoonShine\\Database\\Factories\\": "database/factories/"
     },
     "files": [
       "src/helpers.php"
