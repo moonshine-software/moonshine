@@ -90,7 +90,11 @@ if (! function_exists('moonshineCache')) {
     function moonshineCache(): Repository
     {
         return app('cache')
-            ->store(config('moonshine.cache', 'file'));
+            ->store(
+                app()->runningUnitTests()
+                    ? 'array'
+                    : config('moonshine.cache', 'file')
+            );
     }
 }
 

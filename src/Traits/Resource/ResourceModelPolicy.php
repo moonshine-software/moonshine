@@ -6,7 +6,6 @@ namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Facades\Gate;
 use MoonShine\Exceptions\ResourceException;
-use MoonShine\MoonShine;
 use MoonShine\MoonShineAuth;
 
 trait ResourceModelPolicy
@@ -42,7 +41,7 @@ trait ResourceModelPolicy
 
         $user = MoonShineAuth::guard()->user();
 
-        $checkCustomRules = MoonShine::authorizationRules()
+        $checkCustomRules = moonshine()->authorizationRules()
             ->every(fn ($rule) => $rule($this, $user, $ability, $this->getItem() ?? $this->getModel()));
 
         if (! $checkCustomRules) {

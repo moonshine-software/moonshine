@@ -14,7 +14,6 @@ use MoonShine\Commands\InstallCommand;
 use MoonShine\Menu\MenuItem;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
-use MoonShine\MoonShine;
 use MoonShine\Providers\MoonShineServiceProvider;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\MoonShineUserResource;
@@ -109,7 +108,7 @@ class TestCase extends Orchestra
 
     protected function registerTestResource(): static
     {
-        MoonShine::resources([
+        moonshine()->resources([
             $this->moonShineUserResource(),
             new MoonShineUserRoleResource(),
             new TestCategoryResource(),
@@ -121,9 +120,8 @@ class TestCase extends Orchestra
             new TestFileResourceWithParent(),
 
             new MoonShineUserRoleResource(),
-        ], newCollection: true);
-
-        MoonShine::init([
+        ], newCollection: true)
+        ->init([
             MenuItem::make('Admins', $this->moonShineUserResource()),
         ], newCollection: true);
 

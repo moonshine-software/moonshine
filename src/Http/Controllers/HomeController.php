@@ -6,13 +6,17 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use MoonShine\MoonShine;
+use MoonShine\Exceptions\InvalidHome;
 
 class HomeController extends MoonShineController
 {
+    /**
+     * @throws \Throwable
+     * @throws InvalidHome
+     */
     public function __invoke(): RedirectResponse|View|string
     {
-        if ($url = MoonShine::homeUrl()) {
+        if ($url = moonshine()->homeUrl()) {
             return redirect($url);
         }
 

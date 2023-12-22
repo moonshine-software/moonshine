@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
-use MoonShine\MoonShine;
-
 trait ResourceWithParent
 {
     protected null|string|int $parentId = null;
@@ -22,7 +20,7 @@ trait ResourceWithParent
             return $this->parentId;
         }
 
-        $parentResource = MoonShine::getResourceFromClassName($this->getParentResourceClassName());
+        $parentResource = moonshine()->getResourceFromClassName($this->getParentResourceClassName());
 
         if(is_null($parentResource)) {
             return null;

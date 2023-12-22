@@ -12,7 +12,6 @@ use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Field;
-use MoonShine\MoonShine;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\HasResource;
 use MoonShine\TypeCasts\ModelCast;
@@ -75,7 +74,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             return $this->getResource();
         }
 
-        $resource = MoonShine::getResourceFromUriKey(
+        $resource = moonshine()->getResourceFromUriKey(
             str($this->getRelationName())
                 ->singular()
                 ->append('Resource')
@@ -84,7 +83,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         );
 
         if(is_null($resource) && $this->isMorph()) {
-            $resource = MoonShine::getResourceFromUriKey(
+            $resource = moonshine()->getResourceFromUriKey(
                 moonshineRequest()->getResourceUri()
             );
         }
