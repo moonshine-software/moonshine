@@ -17,11 +17,10 @@ final class DeleteButton
         string $redirectAfterDelete = '',
         bool $isAsync = false,
     ): ActionButton {
-        $action = static fn (Model $data): string => moonshineRouter()->to(
+        $action = static fn (Model $data): string => $resource->route(
             'crud.destroy',
+            $data->getKey(),
             array_filter([
-                'resourceUri' => $resource->uriKey(),
-                'resourceItem' => $data->getKey(),
                 ...$redirectAfterDelete
                     ? ['_redirect' => $redirectAfterDelete]
                     : [],

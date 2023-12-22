@@ -104,8 +104,13 @@ final class MoonShineRouter
         string|Page|null $page = null,
         string|ResourceContract|null $resource = null,
         array $params = [],
-        bool $redirect = false
+        bool $redirect = false,
+        ?string $fragment = null,
     ): RedirectResponse|string {
+        if ($fragment !== null && $fragment !== '') {
+            $params += ['_fragment-load' => $fragment];
+        }
+
         if (is_null($resource)) {
             $route = MoonShine::getPageFromUriKey(
                 is_string($page) ? self::uriKey($page) : $page->uriKey()

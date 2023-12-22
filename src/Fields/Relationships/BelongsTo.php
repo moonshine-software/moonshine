@@ -47,11 +47,7 @@ class BelongsTo extends ModelRelationField implements
                 : $this->getResource()->detailPage();
 
             $this->link(
-                to_page(
-                    page: $page,
-                    resource: $this->getResource(),
-                    params: ['resourceItem' => $this->toValue()->getKey()]
-                ),
+                $this->getResource()->pageUrl($page, ['resourceItem' => $this->toValue()->getKey()]),
                 withoutIcon: true
             );
         }

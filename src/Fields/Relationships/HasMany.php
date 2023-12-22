@@ -185,13 +185,9 @@ class HasMany extends ModelRelationField implements HasFields
 
         return ActionButton::make(
             "($countItems)",
-            to_page(
-                page: $this->getResource()->indexPage(),
-                resource: $this->getResource(),
-                params: [
-                    '_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()},
-                ]
-            )
+            $this->getResource()->indexPageUrl([
+                '_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()},
+            ])
         )
             ->icon('heroicons.outline.eye')
             ->render();
@@ -233,13 +229,9 @@ class HasMany extends ModelRelationField implements HasFields
         return
             ActionButton::make(
                 __('moonshine::ui.show') . " ({$this->toValue()->total()})",
-                to_page(
-                    page: $this->getResource()->indexPage(),
-                    resource: $this->getResource(),
-                    params: [
-                        '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
-                    ]
-                )
+                $this->getResource()->indexPageUrl([
+                    '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
+                ])
             )->primary();
     }
 
@@ -280,11 +272,11 @@ class HasMany extends ModelRelationField implements HasFields
 
         $parentId = $this->getRelatedModel()?->getKey();
 
-        $redirectAfter = $this->isAsync() ? '' : to_page(
-            page: $resource->formPage(),
-            resource: moonshineRequest()->getResource(),
-            params: ['resourceItem' => $parentId]
-        );
+        $redirectAfter = $this->isAsync()
+            ? ''
+            : moonshineRequest()
+                ->getResource()
+                ?->formPageUrl($parentId) ?? '';
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)

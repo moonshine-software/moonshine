@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Enums\PageType;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
@@ -108,13 +107,11 @@ final class HasManyButton
                             && $field->column() === $relation->getForeignKeyName()
                     ))
                     ->redirect(
-                        $isAsync ? null : to_page(
-                            moonshineRequest()->getResource()
-                                ?->getPages()
-                                ?->findByType(PageType::FORM),
-                            moonshineRequest()->getResource(),
-                            params: ['resourceItem' => $parent->getKey()]
-                        )
+                        $isAsync ?
+                            null
+                            : moonshineRequest()
+                                ->getResource()
+                                ?->formPageUrl($parent)
                     ),
                 wide: true,
                 closeOutside: false,

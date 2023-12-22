@@ -17,15 +17,10 @@ final class CreateButton
             return ActionButton::emptyHidden();
         }
 
-        $action = to_page(
-            page: $resource->formPage(),
-            resource: $resource,
-        );
+        $action = $resource->formPageUrl();
 
         if($isAsync || $resource->isCreateInModal()) {
-            $action = to_page(
-                page: $resource->formPage(),
-                resource: $resource,
+            $action = $resource->formPageUrl(
                 params: [
                     '_tableName' => $tableName,
                     '_async_form' => $isAsync,

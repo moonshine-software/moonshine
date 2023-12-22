@@ -6,7 +6,6 @@ namespace MoonShine;
 
 use Illuminate\Http\Request;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Pages\Page;
 
 class MoonShineRequest extends Request
@@ -111,7 +110,7 @@ class MoonShineRequest extends Request
     public function isMoonShineRequest(): bool
     {
         return in_array(
-            Authenticate::class,
+            'moonshine',
             $this->route()?->gatherMiddleware() ?? [],
             true
         );

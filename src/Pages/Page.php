@@ -105,7 +105,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         }
 
         return [
-            to_page(resource: $this->getResource()) => $this->getResource()->title(),
+            $this->getResource()->indexPageUrl() => $this->getResource()->title(),
         ];
     }
 
@@ -213,9 +213,33 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function url(): string
     {
-        return moonshineRouter()->to('page', [
-            'pageUri' => $this->uriKey(),
-        ]);
+        return $this->route();
+    }
+
+    public function asyncMethodUrl(
+        string $method,
+        ?string $message = null,
+        array $params = [],
+        ?ResourceContract $resource = null,
+    ): string {
+        return moonshineRouter()->asyncMethod(
+            $method,
+            $message,
+            $params,
+            page: $this,
+            resource: $resource
+        );
+    }
+
+    public function fragmentLoadUrl(
+        string $fragment,
+        array $params = []
+    ): string {
+        return moonshineRouter()->to_page(
+            $this,
+            params: array_filter($params),
+            fragment: $fragment
+        );
     }
 
     public function isActive(): bool

@@ -171,15 +171,12 @@ if (! function_exists('to_page')) {
         bool $redirect = false,
         ?string $fragment = null
     ): RedirectResponse|string {
-        if ($fragment !== null && $fragment !== '') {
-            $params += ['_fragment-load' => $fragment];
-        }
-
         return moonshineRouter()->to_page(
             page: $page,
             resource: $resource,
             params: $params,
-            redirect: $redirect
+            redirect: $redirect,
+            fragment: $fragment
         );
     }
 }
