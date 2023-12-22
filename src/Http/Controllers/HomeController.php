@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
+use Throwable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Exceptions\InvalidHome;
@@ -11,7 +12,7 @@ use MoonShine\Exceptions\InvalidHome;
 class HomeController extends MoonShineController
 {
     /**
-     * @throws \Throwable
+     * @throws Throwable
      * @throws InvalidHome
      */
     public function __invoke(): RedirectResponse|View|string
