@@ -79,8 +79,7 @@ trait ResourceModelCrudRouter
         Model|int|string $model,
         array $params = [],
         ?string $fragment = null
-    ): string
-    {
+    ): string {
         return $this->pageUrl(
             $this->detailPage(),
             params: array_filter([
