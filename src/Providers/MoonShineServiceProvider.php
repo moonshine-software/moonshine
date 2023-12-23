@@ -118,10 +118,7 @@ class MoonShineServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this
-            ->registerBindings()
-            ->registerRouteMiddleware()
-            ->registerAuthConfig();
+        $this->registerBindings();
     }
 
     public function boot(): void
@@ -166,5 +163,9 @@ class MoonShineServiceProvider extends ServiceProvider
             'moonShineAssets',
             static fn (): string => "<?php echo view('moonshine::layouts.shared.assets') ?>"
         );
+
+        $this
+            ->registerRouteMiddleware()
+            ->registerAuthConfig();
     }
 }
