@@ -68,7 +68,7 @@ class MoonShineServiceProvider extends ServiceProvider
     /**
      * Setup auth configuration.
      */
-    protected function loadAuthConfig(): void
+    protected function registerAuthConfig(): self
     {
         $authConfig = collect(config('moonshine.auth', []))
             ->only(['guards', 'providers'])
@@ -77,12 +77,14 @@ class MoonShineServiceProvider extends ServiceProvider
         config(
             Arr::dot($authConfig, 'auth.')
         );
+
+        return $this;
     }
 
     /**
      * Register the route middleware.
      */
-    protected function registerRouteMiddleware(): void
+    protected function registerRouteMiddleware(): self
     {
         $this->middlewareGroups['moonshine'] = array_merge(
             $this->middlewareGroups['moonshine'],
@@ -92,11 +94,36 @@ class MoonShineServiceProvider extends ServiceProvider
         foreach ($this->middlewareGroups as $key => $middleware) {
             app('router')->middlewareGroup($key, $middleware);
         }
+
+        return $this;
     }
 
-    /**
-     * Bootstrap services.
-     */
+    protected function registerBindings(): self
+    {
+        $this->app->scoped(MoonShine::class);
+
+        $this->app->scoped(
+            MoonShineRequest::class,
+            fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
+        );
+
+        $this->app->scoped(MenuManager::class);
+        $this->app->scoped(AssetManager::class);
+        $this->app->scoped(ColorManager::class);
+        $this->app->scoped(MoonShineRegister::class);
+        $this->app->scoped(MoonShineRouter::class);
+
+        return $this;
+    }
+
+    public function register(): void
+    {
+        $this
+            ->registerBindings()
+            ->registerRouteMiddleware()
+            ->registerAuthConfig();
+    }
+
     public function boot(): void
     {
         if (config('moonshine.use_migrations', true)) {
@@ -132,28 +159,12 @@ class MoonShineServiceProvider extends ServiceProvider
             $this->commands($this->commands);
         }
 
-        $this->registerRouteMiddleware();
-
         Blade::withoutDoubleEncoding();
         Blade::componentNamespace('MoonShine\Components', 'moonshine');
-
-        $this->app->scoped(
-            MoonShineRequest::class,
-            fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
-        );
 
         Blade::directive(
             'moonShineAssets',
             static fn (): string => "<?php echo view('moonshine::layouts.shared.assets') ?>"
         );
-
-        $this->app->scoped(MoonShine::class);
-        $this->app->scoped(MenuManager::class);
-        $this->app->scoped(AssetManager::class);
-        $this->app->scoped(ColorManager::class);
-        $this->app->scoped(MoonShineRegister::class);
-        $this->app->scoped(MoonShineRouter::class);
-
-        $this->loadAuthConfig();
     }
 }
