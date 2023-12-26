@@ -1,12 +1,6 @@
 import Sortable from 'sortablejs'
 
-export default (
-  url = null,
-  group = null,
-  element = null,
-  events = null,
-  attributes = null,
-) => ({
+export default (url = null, group = null, element = null, events = null, attributes = null) => ({
   init(onSort = null) {
     const el = element || this.$el
     const data = attributes || el.dataset
