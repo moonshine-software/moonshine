@@ -67,7 +67,7 @@ trait WithRelatedValues
         return $query;
     }
 
-    private function resolveRelatedQuery(Builder $builder): Collection
+    protected function resolveRelatedQuery(Builder $builder): Collection
     {
         // #MongoDB Models fix
         $key = rescue(fn () => $builder->toRawSql(), fn (): bool => false, false);
