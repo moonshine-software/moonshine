@@ -65,7 +65,7 @@ trait ShowWhen
         return $this;
     }
 
-    private function makeCondition(
+    protected function makeCondition(
         string $column,
         mixed $operator = null,
         mixed $value = null
@@ -80,7 +80,7 @@ trait ShowWhen
         ];
     }
 
-    private function prepareValueAndOperator(
+    protected function prepareValueAndOperator(
         mixed $value,
         mixed $operator = null,
         $useDefault = false
@@ -109,13 +109,13 @@ trait ShowWhen
         return [$value, $operator];
     }
 
-    private function invalidOperatorAndValue($operator, $value): bool
+    protected function invalidOperatorAndValue($operator, $value): bool
     {
         return is_null($value) && in_array($operator, $this->operators) &&
             ! in_array($operator, ['=', '!=']);
     }
 
-    private function invalidOperator(mixed $operator): bool
+    protected function invalidOperator(mixed $operator): bool
     {
         return ! is_string($operator) || (! in_array(
             strtolower($operator),

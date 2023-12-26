@@ -64,7 +64,7 @@ trait WithSorts
         return $this->getSortDirectionFromRequest() === strtolower($type);
     }
 
-    private function getSortColumnFromRequest(): ?string
+    protected function getSortColumnFromRequest(): ?string
     {
         if (($sort = request('sort')) && is_string($sort)) {
             return ltrim($sort, '-');
@@ -73,7 +73,7 @@ trait WithSorts
         return null;
     }
 
-    private function getSortDirectionFromRequest(): ?string
+    protected function getSortDirectionFromRequest(): ?string
     {
         if (($sort = request('sort')) && is_string($sort)) {
             return str_starts_with($sort, '-') ? 'desc' : 'asc';
