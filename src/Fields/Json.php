@@ -374,14 +374,14 @@ class Json extends Field implements
         );
 
         $fields = $this->preparedFields();
-        $sortable = !$this->isPreviewMode()
-            && !$this->isAsRelation()
+        $sortable = ! $this->isPreviewMode()
+            && ! $this->isAsRelation()
             && $this->isReorderable();
 
         if($sortable) {
             $fields->prepend(
                 Preview::make(
-                    formatted: static fn() => view('moonshine::ui.icons.heroicons.outline.bars-4')
+                    formatted: static fn () => view('moonshine::ui.icons.heroicons.outline.bars-4')
                 )->customAttributes(['class' => 'handle', 'style' => 'cursor: move'])
             );
         }
@@ -393,7 +393,7 @@ class Json extends Field implements
                     ->when(
                         $sortable,
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                            'data-handle' => '.handle'
+                            'data-handle' => '.handle',
                         ])
                     )
                     ->jsonSerialize()
