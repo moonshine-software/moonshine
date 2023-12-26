@@ -14,6 +14,12 @@ final class InputLock extends InputExtension
 
     protected array $xData = [
         'isLock: true',
-        'toggleLock() { this.isLock = ! this.isLock; $refs.extensionInput.readOnly = this.isLock;  }',
+        <<<'HTML'
+          toggleLock() {
+            this.isLock = ! this.isLock;
+            $refs.extensionInput.readOnly = this.isLock;
+            if(!this.isLock) $refs.extensionInput.focus();
+          }
+        HTML,
     ];
 }

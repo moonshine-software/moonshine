@@ -100,18 +100,18 @@ class MoonShineServiceProvider extends ServiceProvider
 
     protected function registerBindings(): self
     {
-        $this->app->scoped(MoonShine::class);
+        $this->app->singleton(MoonShine::class);
 
-        $this->app->scoped(
+        $this->app->singleton(
             MoonShineRequest::class,
             fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );
 
-        $this->app->scoped(MenuManager::class);
-        $this->app->scoped(AssetManager::class);
-        $this->app->scoped(ColorManager::class);
-        $this->app->scoped(MoonShineRegister::class);
-        $this->app->scoped(MoonShineRouter::class);
+        $this->app->singleton(MenuManager::class);
+        $this->app->singleton(AssetManager::class);
+        $this->app->singleton(ColorManager::class);
+        $this->app->singleton(MoonShineRegister::class);
+        $this->app->singleton(MoonShineRouter::class);
 
         return $this;
     }

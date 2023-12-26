@@ -20,6 +20,14 @@ class Fragment extends Decoration
 
     protected string $view = 'moonshine::decorations.fragment';
 
+    /**
+     * @throws DecorationException
+     * @throws PageException
+     */
+    public function name(string $name): static
+    {
+        return parent::name($name)->updateAsync();
+    }
 
     /**
      * @throws DecorationException
