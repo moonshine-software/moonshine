@@ -304,6 +304,7 @@ class HasMany extends ModelRelationField implements HasFields
                 )
             )
             ->buttons([
+                ...$resource->getIndexButtons(),
                 DetailButton::for($resource, $this->isAsync()),
                 HasManyButton::for($this, update: true),
                 DeleteButton::for(

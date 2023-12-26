@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
@@ -56,6 +57,8 @@ class Json extends Field implements
     protected int $level = 0;
 
     protected bool $asRelation = false;
+
+    protected bool $isReorderable = true;
 
     protected bool $isFilterMode = false;
 
@@ -169,6 +172,18 @@ class Json extends Field implements
     public function isFilterMode(): bool
     {
         return $this->isFilterMode;
+    }
+
+    public function reorderable(Closure|bool|null $condition = null): self
+    {
+        $this->isReorderable = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isReorderable(): bool
+    {
+        return $this->isReorderable;
     }
 
     protected function incrementLevel(): self
@@ -358,7 +373,33 @@ class Json extends Field implements
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
-        return TableBuilder::make($this->preparedFields(), $values)
+        $fields = $this->preparedFields();
+        $sortable = !$this->isPreviewMode() && !$this->isAsRelation() && $this->isReorderable();
+
+        if($sortable) {
+            $fields->prepend(
+                Preview::make(
+                    formatted: static fn() => view('moonshine::ui.icons.heroicons.outline.bars-4')
+                )->customAttributes(['class' => 'handle', 'style' => 'cursor: move'])
+            );
+        }
+
+        return TableBuilder::make($fields, $values)
+            ->customAttributes(
+                $this->attributes()
+                    ->except('class')
+                    ->when(
+                        $sortable,
+                        fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                            'data-handle' => '.handle'
+                        ])
+                    )
+                    ->jsonSerialize()
+            )
+            ->when(
+                $sortable,
+                fn (TableBuilder $table): TableBuilder => $table->sortable()
+            )
             ->when(
                 $this->isAsRelation(),
                 fn (TableBuilder $table): TableBuilder => $table
@@ -444,6 +485,9 @@ class Json extends Field implements
         return $data;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveAfterApply(mixed $data): mixed
     {
         if ($this->isAsRelation()) {

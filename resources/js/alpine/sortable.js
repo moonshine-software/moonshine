@@ -1,8 +1,15 @@
 import Sortable from 'sortablejs'
 
-export default (url = null, group = null, element = null) => ({
+export default (
+  url = null,
+  group = null,
+  element = null,
+  events = null,
+  attributes = null,
+) => ({
   init(onSort = null) {
     const el = element || this.$el
+    const data = attributes || el.dataset
 
     let options = {
       group: group
@@ -10,7 +17,7 @@ export default (url = null, group = null, element = null) => ({
             name: group,
           }
         : null,
-      ...el.dataset,
+      ...data,
       onSort: async function (evt) {
         if (url) {
           let formData = new FormData()

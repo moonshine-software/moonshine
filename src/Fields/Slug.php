@@ -12,6 +12,8 @@ class Slug extends Text
 
     protected string $separator = '-';
 
+    protected ?string $locale = null;
+
     protected bool $unique = false;
 
     public function from(string $from): static
@@ -50,9 +52,25 @@ class Slug extends Text
         };
     }
 
-    private function generateSlug(string $value): string
+    protected function generateSlug(string $value): string
     {
-        return Str::slug($value, $this->getSeparator());
+        return Str::slug(
+            $value,
+            $this->getSeparator(),
+            language: $this->getLocal()
+        );
+    }
+
+    public function locale(string $local): self
+    {
+        $this->locale = $local;
+
+        return $this;
+    }
+
+    public function getLocal(): string
+    {
+        return $this->locale ?? app()->getLocale();
     }
 
     public function getSeparator(): string

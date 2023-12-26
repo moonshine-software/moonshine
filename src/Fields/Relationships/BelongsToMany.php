@@ -294,6 +294,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         return TableBuilder::make(items: $values)
+            ->customAttributes($this->attributes()->jsonSerialize())
             ->fields($fields)
             ->when(
                 $removeAfterClone,

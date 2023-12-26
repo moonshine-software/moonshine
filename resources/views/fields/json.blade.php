@@ -7,10 +7,6 @@
             ->editable()
             ->reindex()
             ->when(
-                !$element->isAsRelation(),
-                fn($table) => $table->sortable()
-            )
-            ->when(
                 $element->isCreatable(),
                 fn($table) => $table->creatable(
                     limit: $element->creatableLimit(),

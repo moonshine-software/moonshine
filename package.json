@@ -8,6 +8,10 @@
         "prettier": "npx prettier --write 'resources/**/*.{css,js,yml}' '!**/views' '!**/dist' '!**/vendor'"
     },
     "devDependencies": {
+        "tailwindcss": "3.3.5",
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/forms": "^0.5.6",
+        "@tailwindcss/typography": "^0.5.10",
         "@types/alpinejs": "^3.13.3",
         "@types/alpinejs__mask": "^3.13.2",
         "@types/alpinejs__persist": "^3.13.2",
@@ -16,24 +20,20 @@
         "lodash": "^4.17.21",
         "prettier": "3.0.3",
         "prettier-plugin-tailwindcss": "0.5.6",
-        "tailwindcss": "3.3.5",
-        "vite": "^5.0.0"
-    },
-    "dependencies": {
-        "@alpinejs/mask": "3.13.2",
-        "@alpinejs/persist": "3.13.2",
-        "@popperjs/core": "^2.11.8",
-        "@tailwindcss/aspect-ratio": "^0.4.2",
-        "@tailwindcss/forms": "^0.5.6",
-        "@tailwindcss/typography": "^0.5.10",
-        "alpinejs": "3.13.2",
+        "vite": "^5.0.0",
         "autoprefixer": "^10.4.16",
-        "choices.js": "^10.2.0",
-        "codeflask": "^1.4.1",
-        "concurrently": "^8.2.2",
         "postcss": "^8.4.31",
         "postcss-import": "^15.1.0",
         "postcss-nested": "^6.0.1",
+        "concurrently": "^8.2.2"
+    },
+    "dependencies": {
+        "alpinejs": "3.13.2",
+        "@alpinejs/mask": "3.13.2",
+        "@alpinejs/persist": "3.13.2",
+        "@popperjs/core": "^2.11.8",
+        "choices.js": "^10.2.0",
+        "codeflask": "^1.4.1",
         "sortablejs": "^1.15.0",
         "tippy.js": "^6.3.7"
     }

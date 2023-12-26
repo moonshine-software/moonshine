@@ -43,6 +43,7 @@ export default (
         this.table?.dataset?.sortableGroup ?? null,
         tbody,
         this.table?.dataset?.sortableEvents ?? null,
+        this.table?.dataset,
       ).init(() => {
         if (this.reindex) {
           this.resolveReindex()
