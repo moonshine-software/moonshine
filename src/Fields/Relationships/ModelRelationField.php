@@ -58,7 +58,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         $this->setRelationName($relationName);
 
-        if ($this->toOne() && !$this->outsideComponent()) {
+        if ($this->toOne() && ! $this->outsideComponent()) {
             $this->setColumn(
                 str($this->getRelationName())
                     ->singular()
