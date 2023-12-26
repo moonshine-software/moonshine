@@ -374,7 +374,9 @@ class Json extends Field implements
         );
 
         $fields = $this->preparedFields();
-        $sortable = !$this->isPreviewMode() && !$this->isAsRelation() && $this->isReorderable();
+        $sortable = !$this->isPreviewMode()
+            && !$this->isAsRelation()
+            && $this->isReorderable();
 
         if($sortable) {
             $fields->prepend(
