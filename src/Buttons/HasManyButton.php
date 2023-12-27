@@ -106,6 +106,7 @@ final class HasManyButton
                             && $field->toOne()
                             && $field->column() === $relation->getForeignKeyName()
                     ))
+                    ->buttons($resource->getFormButtons())
                     ->redirect(
                         $isAsync ?
                             null
