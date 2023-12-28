@@ -37,6 +37,8 @@ final class CardsBuilder extends IterableComponent
 
     protected bool $overlay = false;
 
+    protected ?Closure $customComponent = null;
+
     public function __construct(
         Paginator|iterable $items = [],
         Fields|array $fields = [],
@@ -122,6 +124,10 @@ final class CardsBuilder extends IterableComponent
                 );
             }
 
+            if(!is_null($this->customComponent)) {
+                return value($this->customComponent, $data, $index, $this);
+            }
+
             return Card::make(...$this->getMapper($data, $fields, $index))
                 ->content((string) value($this->content, $data, $index, $this))
                 ->header((string) value($this->header, $data, $index, $this))
@@ -129,6 +135,13 @@ final class CardsBuilder extends IterableComponent
                     fn () => ActionGroup::make($this->getButtons($data)->toArray())
                 );
         });
+    }
+
+    public function customComponent(Closure $component): self
+    {
+        $this->customComponent = $component;
+
+        return $this;
     }
 
     protected function getMapperValue(string $column, mixed $data, int $index): string
