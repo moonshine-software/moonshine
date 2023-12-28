@@ -127,10 +127,6 @@ class BelongsToMany extends ModelRelationField implements
             return $this->creatableButton;
         }
 
-        if (is_null($this->getRelatedModel()?->getKey())) {
-            return null;
-        }
-
         if (! $this->isCreatable()) {
             return null;
         }
