@@ -12,7 +12,6 @@ final class EditButton
 {
     public static function for(
         ModelResource $resource,
-        string $tableName = 'default',
         bool $isAsync = false
     ): ActionButton {
         if (! $resource->formPage()) {
@@ -25,7 +24,7 @@ final class EditButton
             $action = static fn ($data): string => $resource->formPageUrl(
                 $data,
                 params: [
-                    '_tableName' => $tableName,
+                    '_component_name' => $resource->listComponentName(),
                     '_async_form' => $isAsync,
                 ],
                 fragment: 'crud-form'

@@ -1,4 +1,8 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 import {dispatchEvents, responseCallback} from './asyncFunctions'
 
 export default () => ({
@@ -131,7 +135,7 @@ export default () => ({
     return false
   },
 
-  asyncFilters(form, tableName) {
+  asyncFilters(form, componentEvent) {
     this.$el
       ?.closest('.offcanvas-template')
       ?.querySelector('#async-reset-button')
@@ -140,7 +144,7 @@ export default () => ({
     const queryString = new URLSearchParams(new FormData(form)).toString()
 
     this.$dispatch('disable-query-tags')
-    this.$dispatch('table-updated-' + tableName, {filters: queryString})
+    this.$dispatch(componentEvent, {filters: queryString})
 
     this.toggleCanvas()
   },

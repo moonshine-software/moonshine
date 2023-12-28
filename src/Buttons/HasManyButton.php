@@ -80,7 +80,7 @@ final class HasManyButton
                 content: fn (?Model $data): string => (string) FormBuilder::make($action($data))
                     ->switchFormMode(
                         $isAsync,
-                        'table-updated-' . $field->getRelationName()
+                        $resource->listEventName($field->getRelationName())
                     )
                     ->name($field->getRelationName())
                     ->when(

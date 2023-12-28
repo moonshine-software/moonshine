@@ -6,6 +6,10 @@ namespace MoonShine\Traits\Resource;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Buttons\DeleteButton;
+use MoonShine\Buttons\DetailButton;
+use MoonShine\Buttons\EditButton;
+use MoonShine\Buttons\MassDeleteButton;
 
 trait ResourceWithButtons
 {
@@ -78,5 +82,16 @@ trait ResourceWithButtons
     public function detailButtons(): array
     {
         return [];
+    }
+
+    public function getItemButtons(): array
+    {
+        return [
+            ...$this->getIndexButtons(),
+            DetailButton::for($this),
+            EditButton::for($this),
+            DeleteButton::for($this),
+            MassDeleteButton::for($this),
+        ];
     }
 }

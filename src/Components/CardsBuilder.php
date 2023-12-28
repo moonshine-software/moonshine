@@ -14,6 +14,9 @@ use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\WithColumnSpan;
 use Throwable;
 
+/**
+ * @method static static make(Paginator|iterable $items = [], Fields|array $fields = [])
+ */
 final class CardsBuilder extends IterableComponent
 {
     use HasAsync;

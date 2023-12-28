@@ -143,7 +143,7 @@ class FormPage extends Page
                     ->when(
                         $isAsync,
                         fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
-                            ->async(asyncEvents: 'table-updated-' . request('_tableName', 'default'))
+                            ->async(asyncEvents: $resource->listEventName(request('_component_name', 'default')))
                     )
                     ->when(
                         $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),

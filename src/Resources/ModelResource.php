@@ -160,6 +160,26 @@ abstract class ModelResource extends Resource
         return ['id'];
     }
 
+    public function listComponentName(): string
+    {
+        return (string) rescue(
+            fn(): string => $this->indexPage()?->listComponentName(),
+            fn(): string => 'index-table',
+            false
+        );
+    }
+
+    public function listEventName(?string $name = null): string
+    {
+        $name = $name ?? $this->listComponentName();
+
+        return (string) rescue(
+            fn(): string => "{$this->indexPage()?->listEventName()}-$name",
+            fn(): string => "table-updated-$name",
+            false
+        );
+    }
+
     /**
      * @param  array<int|string>  $ids
      */
