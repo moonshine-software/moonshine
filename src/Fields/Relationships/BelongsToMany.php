@@ -12,6 +12,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Buttons\BelongsToManyButton;
+use MoonShine\Components\Badge;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
@@ -355,11 +356,9 @@ class BelongsToMany extends ModelRelationField implements
                 $value = $this->columnOrFormattedValue($item, data_get($item, $column) ?? false);
 
                 if ($this->inLineBadge) {
-                    return view('moonshine::ui.badge', [
-                        'color' => 'primary',
-                        'value' => $value,
-                        'margin' => true,
-                    ])->render();
+                    return Badge::make($value, 'primary')
+                        ->customAttributes(['class' => 'm-1'])
+                        ->render();
                 }
 
                 return $value;

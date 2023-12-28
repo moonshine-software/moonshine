@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\Badge;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
 use MoonShine\Support\FieldEmptyValue;
@@ -359,10 +360,8 @@ abstract class Field extends FormElement
         }
 
         if ($this->isBadge()) {
-            return view('moonshine::ui.badge', [
-                'color' => $this->badgeColor($this->toValue()),
-                'value' => $value,
-            ])->render();
+            return Badge::make($value, $this->badgeColor($this->toValue()))
+                ->render();
         }
 
         return $value;
