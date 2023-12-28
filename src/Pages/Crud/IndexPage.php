@@ -173,7 +173,7 @@ class IndexPage extends Page
                     $this->getResource()->tdAttributes()
                 )
             )
-            ->buttons($this->getResource()->getItemButtons())
+            ->buttons($this->getResource()->getIndexItemButtons())
             ->customAttributes([
                 'data-click-action' => $this->getResource()->getClickAction(),
             ])

@@ -84,7 +84,7 @@ trait ResourceWithButtons
         return [];
     }
 
-    public function getItemButtons(): array
+    public function getIndexItemButtons(): array
     {
         return [
             ...$this->getIndexButtons(),
