@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Components\Badge;
 use MoonShine\Fields\Preview;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -38,11 +39,8 @@ it('reformat item value', function (): void {
 });
 
 it('badge value', function (): void {
-    expect($this->field->badge('green')->preview())
-        ->toBe(view('moonshine::ui.badge', [
-            'color' => 'green',
-            'value' => $this->item->no_input,
-        ])->render());
+    expect((string) $this->field->badge('green')->preview())
+        ->toBe((string) Badge::make($this->item->no_input, 'green')->render());
 });
 
 it('boolean value', function (): void {
