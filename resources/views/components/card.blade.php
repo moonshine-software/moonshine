@@ -5,8 +5,8 @@
     'thumbnail' => '',
     'overlay' => false,
     'values' => [],
-    'header',
-    'actions'
+    'header' => null,
+    'actions' => null,
 ])
 <!-- Card -->
 <div {{ $attributes->class(['card', 'card-category']) }}>
@@ -53,7 +53,7 @@
         {{ $slot }}
     </div>
 
-    @if($actions ?? false)
+    @if($actions?->isNotEmpty())
         <div {{ $actions->attributes->class(['card-actions']) }}>
             {{ $actions }}
         </div>

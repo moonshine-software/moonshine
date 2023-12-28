@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use Illuminate\Support\Arr;
+
 trait HasAsync
 {
     protected ?string $asyncUrl = null;
@@ -20,6 +22,34 @@ trait HasAsync
     protected function prepareAsyncUrl(?string $asyncUrl = null): ?string
     {
         return $asyncUrl;
+    }
+
+    protected function prepareAsyncUrlFromPaginator(): string
+    {
+        $withoutQuery = strtok($this->asyncUrl(), '?');
+
+        if (! $withoutQuery) {
+            return $this->asyncUrl();
+        }
+
+        $query = parse_url($this->asyncUrl(), PHP_URL_QUERY);
+
+        parse_str($query, $asyncUri);
+
+        $paginatorUri = $this->getPaginator()
+            ?->resolveQueryString() ?? [];
+
+        $asyncUri = array_filter(
+            $asyncUri,
+            static fn ($value, $key): bool => ! isset($paginatorUri[$key]),
+            ARRAY_FILTER_USE_BOTH
+        );
+
+        if ($asyncUri !== []) {
+            return $withoutQuery . "?" . Arr::query($asyncUri);
+        }
+
+        return $withoutQuery;
     }
 
     public function async(

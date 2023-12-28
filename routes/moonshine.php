@@ -71,6 +71,9 @@ Route::group(moonshine()->configureRoutes(), static function (): void {
             Route::get('/async/table/{pageUri}/{resourceUri?}', [AsyncController::class, 'table'])
                 ->name('async.table');
 
+            Route::get('/async/component/{pageUri}/{resourceUri?}', [AsyncController::class, 'component'])
+                ->name('async.component');
+
             Route::any('/async/method/{pageUri}/{resourceUri?}', [AsyncController::class, 'method'])
                 ->name('async.method');
         });

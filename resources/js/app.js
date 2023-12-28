@@ -8,6 +8,7 @@ import mask from '@alpinejs/mask'
 // Alpine components
 import formBuilder from './alpine/formBuilder'
 import tableBuilder from './alpine/tableBuilder'
+import cardsBuilder from './alpine/cardsBuilder'
 import dropdown from './alpine/dropdown'
 import modal from './alpine/modal'
 import offcanvas from './alpine/offcanvas'
@@ -38,6 +39,7 @@ const Alpine = alpineExists ? window.Alpine : AlpineMS
 
 Alpine.data('formBuilder', formBuilder)
 Alpine.data('tableBuilder', tableBuilder)
+Alpine.data('cardsBuilder', cardsBuilder)
 Alpine.data('asyncLink', asyncLink)
 Alpine.data('actionButton', actionButton)
 Alpine.data('dropdown', dropdown)

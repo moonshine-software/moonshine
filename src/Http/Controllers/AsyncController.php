@@ -12,6 +12,8 @@ use Throwable;
 class AsyncController extends MoonShineController
 {
     /**
+     * @deprecated will be removed in 3.0
+     * @see component
      * @throws Throwable
      */
     public function table(MoonShineRequest $request): View|Closure|string
@@ -19,6 +21,18 @@ class AsyncController extends MoonShineController
         $page = $request->getPage();
 
         $table = $page->getComponents()->findTable(request('_component_name'));
+
+        return $table ? $table->render() : '';
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function component(MoonShineRequest $request): View|Closure|string
+    {
+        $page = $request->getPage();
+
+        $table = $page->getComponents()->findByName(request('_component_name'));
 
         return $table ? $table->render() : '';
     }
