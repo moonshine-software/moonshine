@@ -13,7 +13,7 @@ use function Laravel\Prompts\text;
 
 class MakePageCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?} {--crud} {--dir=} {--extends=}';
+    protected $signature = 'moonshine:page {className?} {--force} {--crud} {--dir=} {--extends=}';
 
     protected $description = 'Create page';
 
@@ -36,7 +36,7 @@ class MakePageCommand extends MoonShineCommand
             $dir = 'Pages';
         }
 
-        if (! $this->option('extends') && ! $this->option('crud')) {
+        if (! $this->option('force') && ! $this->option('extends') && ! $this->option('crud')) {
             $types = [
                 '' => 'Custom',
                 'IndexPage' => 'IndexPage',
