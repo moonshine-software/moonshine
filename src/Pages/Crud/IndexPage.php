@@ -21,6 +21,7 @@ use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
+use MoonShine\Fields\Fields;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
@@ -154,7 +155,7 @@ class IndexPage extends Page
         return 'table-updated';
     }
 
-    protected function itemsComponent(iterable $items, array $fields): MoonShineRenderable
+    protected function itemsComponent(iterable $items, Fields $fields): MoonShineRenderable
     {
         return TableBuilder::make(items: $items)
             ->name($this->listComponentName())
@@ -193,7 +194,7 @@ class IndexPage extends Page
             ? $this->getResource()->paginate()
             : $this->getResource()->items();
 
-        $fields = $this->getResource()->getIndexFields()->toArray();
+        $fields = $this->getResource()->getIndexFields();
 
         return [
             Fragment::make([

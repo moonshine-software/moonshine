@@ -94,4 +94,28 @@ trait ResourceWithButtons
             MassDeleteButton::for($this),
         ];
     }
+
+    public function getFormItemButtons(): array
+    {
+        return [
+            ...$this->getFormButtons(),
+            DetailButton::for($this),
+            DeleteButton::for(
+                $this,
+                redirectAfterDelete: $this->redirectAfterDelete()
+            ),
+        ];
+    }
+
+    public function getDetailItemButtons(): array
+    {
+        return [
+            ...$this->getDetailButtons(),
+            EditButton::for($this),
+            DeleteButton::for(
+                $this,
+                redirectAfterDelete: $this->redirectAfterDelete()
+            ),
+        ];
+    }
 }

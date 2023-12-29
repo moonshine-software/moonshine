@@ -21,7 +21,7 @@ final class DetailButton
         if($isAsync || $resource->isDetailInModal()) {
             $action = static fn ($data): string => $resource->detailPageUrl(
                 $data,
-                fragment: 'crud-show-table'
+                fragment: 'crud-detail'
             );
         }
 
