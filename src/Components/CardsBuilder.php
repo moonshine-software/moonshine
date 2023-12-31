@@ -157,7 +157,7 @@ final class CardsBuilder extends IterableComponent
     protected function getMapper(mixed $data, Fields $fields, int $index): array
     {
         $values = $fields->values()
-            ->mapWithKeys(fn (Field $value) => [$value->label() => (string) $value->preview()])
+            ->mapWithKeys(fn (Field $value): array => [$value->label() => (string) $value->preview()])
             ->toArray();
 
         return [
