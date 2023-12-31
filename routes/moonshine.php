@@ -68,11 +68,19 @@ Route::group(moonshine()->configureRoutes(), static function (): void {
                     Route::get('/{notification}', 'read')->name('read');
                 });
 
-            Route::get('/async/table/{pageUri}/{resourceUri?}', [AsyncController::class, 'table'])
-                ->name('async.table');
+            Route::controller(AsyncController::class)
+                ->prefix('async')
+                ->as('async.')
+                ->group(function () {
 
-            Route::any('/async/method/{pageUri}/{resourceUri?}', [AsyncController::class, 'method'])
-                ->name('async.method');
+                Route::get('table/{pageUri}/{resourceUri?}', 'table')
+                    ->name('table');
+                Route::get('component/{pageUri}/{resourceUri?}', 'component')
+                    ->name('component');
+                Route::any('method/{pageUri}/{resourceUri?}', 'method')
+                    ->name('method');
+            });
+
         });
 
         if (config('moonshine.auth.enable', true)) {

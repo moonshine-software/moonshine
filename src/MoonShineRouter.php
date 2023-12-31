@@ -56,6 +56,19 @@ final class MoonShineRouter
         ]);
     }
 
+    public static function asyncComponent(
+        string $name,
+        array $additionally = []
+    ): string {
+        return self::to('async.component', [
+            '_component_name' => $name,
+            '_parentId' => moonshineRequest()->getParentResourceId(),
+            'resourceUri' => moonshineRequest()->getResourceUri(),
+            'pageUri' => moonshineRequest()->getPageUri(),
+            ...$additionally,
+        ]);
+    }
+
     public static function updateColumn(
         string $resourceUri,
         ?string $pageUri = null,

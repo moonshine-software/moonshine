@@ -1,5 +1,6 @@
 import {crudFormQuery} from './formFunctions'
-import sortableFunction from './../alpine/sortable'
+import sortableFunction from './sortable'
+import {asyncCRUDRequest} from './asyncFunctions'
 
 export default (
   creatable = false,
@@ -124,51 +125,7 @@ export default (
     this.asyncRequest()
   },
   asyncRequest() {
-    this.$event.preventDefault()
-
-    let url = this.$el.href ? this.$el.href : this.asyncUrl
-
-    this.loading = true
-
-    if (this.$event.detail && this.$event.detail.filters) {
-      url = this.prepareUrl(url)
-
-      const urlWithFilters = new URL(url)
-
-      let separator = urlWithFilters.searchParams.size ? '&' : '?'
-
-      url = urlWithFilters.toString() + separator + this.$event.detail.filters
-    }
-
-    if (this.$event.detail && this.$event.detail.queryTag) {
-      url = this.prepareUrl(url)
-
-      if (this.$event.detail.queryTag !== 'query-tag=null') {
-        const urlWithQueryTags = new URL(url)
-
-        let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
-
-        url = urlWithQueryTags.toString() + separator + this.$event.detail.queryTag
-      }
-    }
-
-    const t = this
-
-    axios
-      .get(url)
-      .then(response => {
-        if (
-          t.$root.getAttribute('data-pushstate') !== null &&
-          t.$root.getAttribute('data-pushstate')
-        ) {
-          const query = url.slice(url.indexOf('?') + 1)
-          history.pushState({}, '', query ? '?' + query : location.pathname)
-        }
-        this.$root.outerHTML = response.data
-      })
-      .catch(error => {
-        //
-      })
+    asyncCRUDRequest(this)
   },
   actions(type, id) {
     let all = this.$root.querySelector('.' + id + '-actionsAllChecked')
@@ -207,23 +164,6 @@ export default (
 
     this.actionsOpen = !!(all.checked || values.length)
   },
-  prepareUrl(url) {
-    const resultUrl = new URL(url)
-
-    if (resultUrl.searchParams.get('query-tag')) {
-      resultUrl.searchParams.delete('query-tag')
-    }
-
-    Array.from(resultUrl.searchParams).map(function (values) {
-      let [index] = values
-      if (index.indexOf('filters[') === 0) {
-        resultUrl.searchParams.delete(index)
-      }
-    })
-
-    return resultUrl.toString()
-  },
-
   rowClickAction(event) {
     const isIgnoredElement = event
       .composedPath()

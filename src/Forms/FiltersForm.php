@@ -41,7 +41,7 @@ final class FiltersForm
             )
             ->when($resource->isAsync(), function (FormBuilder $form) use ($resource): void {
                 $form->customAttributes([
-                    'x-on:submit.prevent' => 'asyncFilters($event.target, `index-table`)',
+                    'x-on:submit.prevent' => 'asyncFilters($event.target, `'.$resource->listEventName().'`)',
                 ]);
 
                 $form->buttons([

@@ -2,16 +2,17 @@
 
 namespace MoonShine\Pages\Crud;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Buttons\DeleteButton;
-use MoonShine\Buttons\EditButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
+use MoonShine\Fields\Fields;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
 use Throwable;
@@ -60,6 +61,27 @@ class DetailPage extends Page
         return $this->getLayers();
     }
 
+    protected function detailComponent(?Model $item, Fields $fields): MoonShineRenderable
+    {
+        return TableBuilder::make($fields)
+            ->cast($this->getResource()->getModelCast())
+            ->items([$item])
+            ->vertical()
+            ->simple()
+            ->preview()
+            ->tdAttributes(fn (
+                $data,
+                int $row,
+                int $cell,
+                ComponentAttributeBag $attributes
+            ): ComponentAttributeBag => $attributes->when(
+                $cell === 0,
+                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                    'class' => 'font-semibold',
+                    'width' => '20%',
+                ])
+            ));
+    }
     /**
      * @throws Throwable
      */
@@ -71,39 +93,13 @@ class DetailPage extends Page
         return [
             Block::make([
                 Fragment::make([
-                    TableBuilder::make(
-                        $resource->getDetailFields()
-                    )
-                        ->cast($resource->getModelCast())
-                        ->items([$item])
-                        ->vertical()
-                        ->simple()
-                        ->preview()
-                        ->tdAttributes(fn (
-                            $data,
-                            int $row,
-                            int $cell,
-                            ComponentAttributeBag $attributes
-                        ): ComponentAttributeBag => $attributes->when(
-                            $cell === 0,
-                            fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
-                                'class' => 'font-semibold',
-                                'width' => '20%',
-                            ])
-                        )),
-                ])->name('crud-show-table'),
+                    $this->detailComponent($item, $resource->getDetailFields())
+                ])->name('crud-detail'),
 
                 LineBreak::make(),
 
                 Flex::make([
-                    ActionGroup::make([
-                        ...$resource->getDetailButtons(),
-                        EditButton::for($resource),
-                        DeleteButton::for(
-                            $resource,
-                            redirectAfterDelete: $resource->redirectAfterDelete()
-                        ),
-                    ])
+                    ActionGroup::make($resource->getDetailItemButtons())
                         ->setItem($item),
                 ])->justifyAlign('end'),
             ]),

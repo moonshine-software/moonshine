@@ -52,4 +52,18 @@ trait WithFields
 
         return $this;
     }
+
+    /**
+     * @throws Throwable
+     */
+    protected function getFilledFields(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0,
+        ?Fields $preparedFields = null
+    ): Fields {
+        $fields = $preparedFields ?? $this->getFields();
+
+        return $fields->fillCloned($raw, $casted, $index, $fields);
+    }
 }

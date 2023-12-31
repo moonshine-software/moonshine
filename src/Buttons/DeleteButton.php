@@ -13,7 +13,7 @@ final class DeleteButton
 {
     public static function for(
         ModelResource $resource,
-        string $tableName = 'default',
+        ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = false,
     ): ActionButton {
@@ -35,7 +35,11 @@ final class DeleteButton
                 method: 'DELETE',
                 formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
-                    fn (FormBuilder $form): FormBuilder => $form->async(asyncEvents: 'table-updated-' . $tableName)
+                    fn (FormBuilder $form): FormBuilder => $form->async(
+                        asyncEvents: $resource->listEventName(
+                            $componentName ?? $resource->listComponentName()
+                        )
+                    )
                 )
             )
             ->canSee(

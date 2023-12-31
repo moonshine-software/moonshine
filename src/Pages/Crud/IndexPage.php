@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\Pages\Crud;
 
 use MoonShine\Buttons\CreateButton;
-use MoonShine\Buttons\DeleteButton;
-use MoonShine\Buttons\DetailButton;
-use MoonShine\Buttons\EditButton;
 use MoonShine\Buttons\ExportButton;
 use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\ImportButton;
-use MoonShine\Buttons\MassDeleteButton;
 use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\Layout\LayoutBlock;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
@@ -24,6 +21,7 @@ use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
+use MoonShine\Fields\Fields;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
@@ -54,7 +52,7 @@ class IndexPage extends Page
     protected function topLayer(): array
     {
         $components = [];
-        if($metrics = $this->metrics()) {
+        if ($metrics = $this->metrics()) {
             $components[] = $metrics;
         }
 
@@ -78,8 +76,7 @@ class IndexPage extends Page
                 ->customAttributes([
                     'class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6',
                 ])
-            : null
-        ;
+            : null;
     }
 
     /**
@@ -100,7 +97,7 @@ class IndexPage extends Page
                 Column::make([
                     Flex::make([
                         ActionGroup::make([
-                            CreateButton::for($this->getResource(), 'index-table'),
+                            CreateButton::for($this->getResource()),
                             ...$this->getResource()->actions(),
                         ]),
                     ])->justifyAlign('start'),
@@ -148,52 +145,61 @@ class IndexPage extends Page
         ];
     }
 
+    public function listComponentName(): string
+    {
+        return 'index-table';
+    }
+
+    public function listEventName(): string
+    {
+        return 'table-updated';
+    }
+
+    protected function itemsComponent(iterable $items, Fields $fields): MoonShineRenderable
+    {
+        return TableBuilder::make(items: $items)
+            ->name($this->listComponentName())
+            ->fields($fields)
+            ->cast($this->getResource()->getModelCast())
+            ->withNotFound()
+            ->when(
+                ! is_null($this->getResource()->trAttributes()),
+                fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                    $this->getResource()->trAttributes()
+                )
+            )
+            ->when(
+                ! is_null($this->getResource()->tdAttributes()),
+                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                    $this->getResource()->tdAttributes()
+                )
+            )
+            ->buttons($this->getResource()->getIndexItemButtons())
+            ->customAttributes([
+                'data-click-action' => $this->getResource()->getClickAction(),
+            ])
+            ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
+                $table->async()->customAttributes([
+                    'data-pushstate' => 'true',
+                ]);
+            });
+    }
+
     /**
      * @throws Throwable
      */
     protected function table(): array
     {
-        $tableName = 'index-table';
-
         $items = $this->getResource()->isPaginationUsed()
             ? $this->getResource()->paginate()
             : $this->getResource()->items();
 
+        $fields = $this->getResource()->getIndexFields();
+
         return [
             Fragment::make([
-                TableBuilder::make(items: $items)
-                    ->name($tableName)
-                    ->fields($this->getResource()->getIndexFields()->toArray())
-                    ->cast($this->getResource()->getModelCast())
-                    ->withNotFound()
-                    ->when(
-                        ! is_null($this->getResource()->trAttributes()),
-                        fn (TableBuilder $table): TableBuilder => $table->trAttributes(
-                            $this->getResource()->trAttributes()
-                        )
-                    )
-                    ->when(
-                        ! is_null($this->getResource()->tdAttributes()),
-                        fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
-                            $this->getResource()->tdAttributes()
-                        )
-                    )
-                    ->buttons([
-                        ...$this->getResource()->getIndexButtons(),
-                        DetailButton::for($this->getResource()),
-                        EditButton::for($this->getResource(), $tableName),
-                        DeleteButton::for($this->getResource(), $tableName),
-                        MassDeleteButton::for($this->getResource(), $tableName),
-                    ])
-                    ->customAttributes([
-                        'data-click-action' => $this->getResource()->getClickAction(),
-                    ])
-                    ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
-                        $table->async()->customAttributes([
-                            'data-pushstate' => 'true',
-                        ]);
-                    }),
-            ])->name('crud-table'),
+                $this->itemsComponent($items, $fields),
+            ])->name('crud-list'),
         ];
     }
 }

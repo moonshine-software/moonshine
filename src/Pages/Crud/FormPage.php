@@ -2,10 +2,10 @@
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\DeleteButton;
-use MoonShine\Buttons\DetailButton;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
@@ -82,14 +82,7 @@ class FormPage extends Page
 
         if ($item?->exists) {
             $components[] = Flex::make([
-                ActionGroup::make([
-                    ...$this->getResource()->getFormButtons(),
-                    DetailButton::for($this->getResource()),
-                    DeleteButton::for(
-                        $this->getResource(),
-                        redirectAfterDelete: $this->getResource()->redirectAfterDelete()
-                    ),
-                ])
+                ActionGroup::make($this->getResource()->getFormItemButtons())
                     ->setItem($item)
                 ,
             ])
@@ -98,6 +91,48 @@ class FormPage extends Page
         }
 
         return $components;
+    }
+
+    protected function formComponent(
+        string $action,
+        ?Model $item,
+        Fields $fields,
+        bool $isAsync = false,
+    ): MoonShineRenderable {
+        $resource = $this->getResource();
+
+        return FormBuilder::make($action)
+            ->fillCast(
+                $item,
+                $resource->getModelCast()
+            )
+            ->fields(
+                $fields
+                    ->when(
+                        ! is_null($item),
+                        fn (Fields $fields): Fields => $fields->push(
+                            Hidden::make('_method')->setValue('PUT')
+                        )
+                    )
+                    ->when(
+                        ! $item?->exists && ! $resource->isCreateInModal(),
+                        fn (Fields $fields): Fields => $fields->push(
+                            Hidden::make('_force_redirect')->setValue(true)
+                        )
+                    )
+                    ->toArray()
+            )
+            ->when(
+                $isAsync,
+                fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
+                    ->async(asyncEvents: $resource->listEventName(request('_component_name', 'default')))
+            )
+            ->when(
+                $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),
+                fn (FormBuilder $form): FormBuilder => $form->precognitive()
+            )
+            ->name('crud')
+            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
 
     /**
@@ -118,39 +153,12 @@ class FormPage extends Page
 
         return [
             Fragment::make([
-                FormBuilder::make($action)
-                    ->fillCast(
-                        $item,
-                        $resource->getModelCast()
-                    )
-                    ->fields(
-                        $resource
-                            ->getFormFields()
-                            ->when(
-                                ! is_null($item),
-                                fn (Fields $fields): Fields => $fields->push(
-                                    Hidden::make('_method')->setValue('PUT')
-                                )
-                            )
-                            ->when(
-                                ! $item?->exists && ! $resource->isCreateInModal(),
-                                fn (Fields $fields): Fields => $fields->push(
-                                    Hidden::make('_force_redirect')->setValue(true)
-                                )
-                            )
-                            ->toArray()
-                    )
-                    ->when(
-                        $isAsync,
-                        fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
-                            ->async(asyncEvents: 'table-updated-' . request('_tableName', 'default'))
-                    )
-                    ->when(
-                        $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),
-                        fn (FormBuilder $form): FormBuilder => $form->precognitive()
-                    )
-                    ->name('crud')
-                    ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']),
+                $this->formComponent(
+                    $action,
+                    $item,
+                    $this->getResource()->getFormFields(),
+                    $isAsync
+                ),
             ])
                 ->name('crud-form')
                 ->updateAsync(['resourceItem' => $resource->getItemID()]),

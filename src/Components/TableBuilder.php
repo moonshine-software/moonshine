@@ -7,10 +7,8 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -52,11 +50,6 @@ final class TableBuilder extends IterableComponent implements TableContract
         $this->withAttributes([]);
     }
 
-    public function getItems(): Collection
-    {
-        return collect($this->items);
-    }
-
     /**
      * @throws Throwable
      */
@@ -87,27 +80,6 @@ final class TableBuilder extends IterableComponent implements TableContract
         });
     }
 
-    /**
-     * @throws Throwable
-     */
-    protected function getFilledFields(
-        array $raw = [],
-        mixed $casted = null,
-        int $index = 0,
-        ?Fields $preparedFields = null
-    ): Fields {
-        $fields = $preparedFields ?? $this->getFields();
-
-        return $fields->fillCloned($raw, $casted, $index, $fields);
-    }
-
-    public function getBulkButtons(): ActionButtons
-    {
-        return ActionButtons::make($this->buttons)
-            ->bulk()
-            ->onlyVisible();
-    }
-
     public function trAttributes(Closure $closure): self
     {
         $this->trAttributes = $closure;
@@ -134,38 +106,11 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $asyncUrl ?? moonshineRouter()->asyncTable($this->getName());
     }
 
-    protected function prepareAsyncUrlFromPaginator(): string
-    {
-        $withoutQuery = strtok($this->asyncUrl(), '?');
-
-        if (! $withoutQuery) {
-            return $this->asyncUrl();
-        }
-
-        $query = parse_url($this->asyncUrl(), PHP_URL_QUERY);
-
-        parse_str($query, $asyncUri);
-
-        $paginatorUri = $this->getPaginator()
-            ->resolveQueryString();
-
-        $asyncUri = array_filter(
-            $asyncUri,
-            static fn ($value, $key): bool => ! isset($paginatorUri[$key]),
-            ARRAY_FILTER_USE_BOTH
-        );
-
-        if ($asyncUri !== []) {
-            return $withoutQuery . "?" . Arr::query($asyncUri);
-        }
-
-        return $withoutQuery;
-    }
-
     protected function viewData(): array
     {
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->getPaginator()
+                ?->appends(request()->except('page'))
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
