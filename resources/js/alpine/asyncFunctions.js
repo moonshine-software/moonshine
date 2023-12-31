@@ -48,22 +48,22 @@ export function asyncCRUDRequest(component) {
   }
 
   axios
-  .get(url)
-  .then(response => {
-    if (
-      component.$root.getAttribute('data-pushstate') !== null &&
-      component.$root.getAttribute('data-pushstate')
-    ) {
-      const query = url.slice(url.indexOf('?') + 1)
+    .get(url)
+    .then(response => {
+      if (
+        component.$root.getAttribute('data-pushstate') !== null &&
+        component.$root.getAttribute('data-pushstate')
+      ) {
+        const query = url.slice(url.indexOf('?') + 1)
 
-      history.pushState({}, '', query ? '?' + query : location.pathname)
-    }
-    component.$root.outerHTML = response.data
-    component.loading = false
-  })
-  .catch(error => {
-    component.loading = false
-  })
+        history.pushState({}, '', query ? '?' + query : location.pathname)
+      }
+      component.$root.outerHTML = response.data
+      component.loading = false
+    })
+    .catch(error => {
+      component.loading = false
+    })
 
   function prepareCRUDUrl(url) {
     const resultUrl = new URL(url)
