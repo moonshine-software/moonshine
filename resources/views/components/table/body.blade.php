@@ -15,6 +15,7 @@
                 @if($vertical) width="5%" @endif
             >
                 <x-moonshine::form.input type="checkbox"
+                     autocomplete="off"
                      @change="actions('row', $id('table-component'))"
                      name="items[{{ $row->getKey() }}]"
                      class="tableActionRow"

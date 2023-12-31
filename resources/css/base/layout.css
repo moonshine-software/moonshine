@@ -7,7 +7,7 @@
     /* selector :has not supported */
 
     &--sidebar {
-      @apply pt-16 md:pt-5 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
+      @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
     }
 
     &--sidebar&-short {
@@ -17,7 +17,7 @@
     /* selector :has supported */
     @supports selector(:has(*)) {
       &:has(> .layout-menu) {
-        @apply pt-16 md:pt-5 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
+        @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
       }
 
       &-short:has(> .layout-menu) {

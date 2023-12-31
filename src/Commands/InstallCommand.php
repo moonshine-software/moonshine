@@ -127,6 +127,7 @@ class InstallCommand extends MoonShineCommand
     {
         $this->call(MakePageCommand::class, [
             'className' => 'Dashboard',
+            '--force' => true,
         ]);
 
         $this->replaceInFile(
