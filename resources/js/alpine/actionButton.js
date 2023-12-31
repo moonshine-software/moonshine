@@ -37,18 +37,14 @@ export default () => ({
 
     const t = this
 
-    t.beforeCallback = function() {
+    t.beforeCallback = function () {
       t.loading = false
     }
 
-    t.errorCallback = function() {
+    t.errorCallback = function () {
       t.loading = false
     }
 
-    moonShineRequest(
-      t,
-      this.url,
-      this.method,
-    )
+    moonShineRequest(t, this.url, this.method)
   },
 })

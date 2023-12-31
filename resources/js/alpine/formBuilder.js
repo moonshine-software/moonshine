@@ -1,8 +1,4 @@
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from './showWhenFunctions'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
 import {moonShineRequest} from './asyncFunctions'
 
 export default () => ({
@@ -80,7 +76,7 @@ export default () => ({
     t.callback = callbackFunction
     t.events = events
 
-    t.afterCallback = function(data, type) {
+    t.afterCallback = function (data, type) {
       if (type !== 'error' && t.inModal && t.autoClose) {
         t.toggleModal()
       }
@@ -88,20 +84,14 @@ export default () => ({
       submitState(form, false, false)
     }
 
-    t.afterErrorCallback = function() {
+    t.afterErrorCallback = function () {
       submitState(form, false)
     }
 
-    moonShineRequest(
-      t,
-      action,
-      method,
-      formData,
-      {
-        Accept: 'application/json',
-        ContentType: form.getAttribute('enctype'),
-      }
-    )
+    moonShineRequest(t, action, method, formData, {
+      Accept: 'application/json',
+      ContentType: form.getAttribute('enctype'),
+    })
 
     return false
   },
@@ -113,9 +103,7 @@ export default () => ({
       ?.querySelector('#async-reset-button')
       ?.removeAttribute('style')
 
-    const queryString = new URLSearchParams(
-      new FormData(form)
-    ).toString()
+    const queryString = new URLSearchParams(new FormData(form)).toString()
 
     this.$dispatch('disable-query-tags')
     this.$dispatch(componentEvent, {filters: queryString})

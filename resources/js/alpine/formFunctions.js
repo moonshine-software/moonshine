@@ -1,15 +1,15 @@
 import {inputFieldName, inputGeValue} from './showWhenFunctions'
 
 export function filterAttributeStartsWith(data, startsWith) {
-  const filtered = {};
+  const filtered = {}
 
   for (const key in data) {
     if (!key.startsWith(startsWith)) {
-      filtered[key] = data[key];
+      filtered[key] = data[key]
     }
   }
 
-  return filtered;
+  return filtered
 }
 
 export function crudFormQuery(formElements = null) {

@@ -18,77 +18,71 @@ export function dispatchEvents(events, type, component) {
   }
 }
 
-export function moonShineRequest(
-  t,
-  url,
-  method = 'get',
-  body = {},
-  headers = {},
-) {
+export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}) {
   axios({
     url: url,
     method: method,
     data: body,
-    headers: headers
+    headers: headers,
   })
-  .then(function (response) {
-    const data = response.data
+    .then(function (response) {
+      const data = response.data
 
-    if(t.beforeCallback !== undefined && typeof t.beforeCallback === 'function') {
-      t.beforeCallback(data)
-    }
+      if (t.beforeCallback !== undefined && typeof t.beforeCallback === 'function') {
+        t.beforeCallback(data)
+      }
 
-    if (t.callback !== undefined && t.callback) {
-      responseCallback(t.callback, data, t.$el, t.events, t)
+      if (t.callback !== undefined && t.callback) {
+        responseCallback(t.callback, data, t.$el, t.events, t)
 
-      return
-    }
+        return
+      }
 
-    if (t.selector !== undefined && t.selector) {
-      const element = document.querySelector(t.selector)
-      element.innerHTML = data.html ? data.html : data
-    }
+      if (t.selector !== undefined && t.selector) {
+        const element = document.querySelector(t.selector)
+        element.innerHTML = data.html ? data.html : data
+      }
 
-    if (data.redirect) {
-      window.location = data.redirect
-    }
+      if (data.redirect) {
+        window.location = data.redirect
+      }
 
-    const type = data.messageType ? data.messageType : 'success'
+      const type = data.messageType ? data.messageType : 'success'
 
-    if (data.message) {
-      t.$dispatch('toast', {
-        type: type,
-        text: data.message,
-      })
-    }
+      if (data.message) {
+        t.$dispatch('toast', {
+          type: type,
+          text: data.message,
+        })
+      }
 
-    if(t.afterCallback !== undefined && typeof t.afterCallback === 'function') {
-      t.afterCallback(data, type)
-    }
+      if (t.afterCallback !== undefined && typeof t.afterCallback === 'function') {
+        t.afterCallback(data, type)
+      }
 
-    if(t.events !== undefined) {
-      dispatchEvents(t.events, type, t)
-    }
-  })
-  .catch(errorResponse => {
-    const data = errorResponse.response.data
+      if (t.events !== undefined) {
+        dispatchEvents(t.events, type, t)
+      }
+    })
+    .catch(errorResponse => {
+      const data = errorResponse.response.data
 
-    if(t.errorCallback !== undefined && typeof t.errorCallback === 'function') {
-      t.errorCallback(data)
-    }
+      if (t.errorCallback !== undefined && typeof t.errorCallback === 'function') {
+        t.errorCallback(data)
+      }
 
-    if (t.callback !== undefined && t.callback) {
-      responseCallback(t.callback, data, t.$el, t.events, t)
+      if (t.callback !== undefined && t.callback) {
+        responseCallback(t.callback, data, t.$el, t.events, t)
 
-      return
-    }
+        return
+      }
 
-    if(t.afterErrorCallback !== undefined && typeof t.afterErrorCallback === 'function') {
-      t.afterErrorCallback(data)
-    }
+      if (t.afterErrorCallback !== undefined && typeof t.afterErrorCallback === 'function') {
+        t.afterErrorCallback(data)
+      }
 
-    t.$dispatch('toast', {type: 'error', text: data.message ?? data})
-  })
+      t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+    })
 }
 
 export function listComponentRequest(component) {
