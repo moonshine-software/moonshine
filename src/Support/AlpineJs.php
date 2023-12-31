@@ -20,9 +20,11 @@ final class AlpineJs
     public static function eventBlade(string|JsEvent $event, ?string $name = null, ?string $call = null): string
     {
         $event = is_string($event) ? $event : $event->value;
+        $name ??= 'default';
+        $call = $call ? "='$call'" : '';
 
-        return "@$event" . self::EVENT_SEPARATOR . ($name ?? 'default') . '.window'
-            . ($call ? "='$call'" : '');
+
+        return "@" . self::event($event, $name) . '.window' . $call;
     }
 
     public static function eventBladeWhen(mixed $condition, string|JsEvent $event, ?string $name = null, ?string $call = null): string
