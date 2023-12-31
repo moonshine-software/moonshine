@@ -20,7 +20,7 @@ final class Template extends Field implements HasFields
             $this->getFields()->wrapNames($this->column()),
             fn () => $this->getFields()
                 ->onlyFields()
-                ->map(fn (Field $field): Field => $field->setParent($this))
+                ->map(fn (Field $field): Field => $field->setParent($this)->formName($this->getFormName()))
         );
     }
 

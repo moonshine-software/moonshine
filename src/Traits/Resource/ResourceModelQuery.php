@@ -45,10 +45,7 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
-        return request(
-            'resourceItem',
-            request()->route('resourceItem')
-        );
+        return moonshineRequest()->getItemID();
     }
 
     protected function itemOr(Closure $closure): ?Model

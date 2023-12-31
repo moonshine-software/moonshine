@@ -20,7 +20,7 @@ import navTooltip from './alpine/navTooltip'
 import popovers from './alpine/popovers'
 import pivot from './alpine/pivot'
 import asyncSearch from './alpine/asyncSearch'
-import asyncData from './alpine/asyncData'
+import interactsWithAsync from './alpine/interactsWithAsync'
 import tinymce from './alpine/tinymce'
 import range from './alpine/range'
 import code from './alpine/code'
@@ -53,7 +53,7 @@ Alpine.data('navTooltip', navTooltip)
 Alpine.data('popover', popovers)
 Alpine.data('pivot', pivot)
 Alpine.data('asyncSearch', asyncSearch)
-Alpine.data('asyncData', asyncData)
+Alpine.data('interactsWithAsync', interactsWithAsync)
 Alpine.data('tinymce', tinymce)
 Alpine.data('range', range)
 Alpine.data('code', code)

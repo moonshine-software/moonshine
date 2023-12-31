@@ -1,4 +1,5 @@
 import Sortable from 'sortablejs'
+import {filterAttributeStartsWith} from './formFunctions.js'
 
 export default (url = null, group = null, element = null, events = null, attributes = null) => ({
   init(onSort = null) {
@@ -11,7 +12,7 @@ export default (url = null, group = null, element = null, events = null, attribu
             name: group,
           }
         : null,
-      ...data,
+      ...filterAttributeStartsWith(data, 'async'),
       onSort: async function (evt) {
         if (url) {
           let formData = new FormData()

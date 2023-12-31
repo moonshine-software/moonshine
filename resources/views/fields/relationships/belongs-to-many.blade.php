@@ -9,10 +9,10 @@
         <div x-data="fragment('{{ to_page(
             page: moonshineRequest()->getPage(),
             resource: moonshineRequest()->getResource(),
-            params: ['resourceItem' => moonshineRequest()->getResource()?->getItemID()],
+            params: ['resourceItem' => moonshineRequest()->getItemID()],
             fragment: $element->getRelationName()
         ) }}')"
-            @@fragment-updated-{{ $element->getRelationName() }}.window="fragmentUpdate"
+             @defineEvent('fragment-updated', $element->getRelationName(), 'fragmentUpdate')
         >
     @endif
             @if($element->isSelectMode())

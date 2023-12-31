@@ -1,8 +1,4 @@
 {
-  "resources/fonts/Gilroy-Medium.woff2": {
-    "file": "fonts/Gilroy-Medium.woff2",
-    "src": "resources/fonts/Gilroy-Medium.woff2"
-  },
   "resources/fonts/Gilroy-SemiBold.woff2": {
     "file": "fonts/Gilroy-SemiBold.woff2",
     "src": "resources/fonts/Gilroy-SemiBold.woff2"
@@ -11,13 +7,17 @@
     "file": "fonts/Gilroy-Regular.woff2",
     "src": "resources/fonts/Gilroy-Regular.woff2"
   },
-  "resources/fonts/Gilroy-Bold.woff2": {
-    "file": "fonts/Gilroy-Bold.woff2",
-    "src": "resources/fonts/Gilroy-Bold.woff2"
+  "resources/fonts/Gilroy-Medium.woff2": {
+    "file": "fonts/Gilroy-Medium.woff2",
+    "src": "resources/fonts/Gilroy-Medium.woff2"
   },
   "resources/fonts/Gilroy-Black.woff2": {
     "file": "fonts/Gilroy-Black.woff2",
     "src": "resources/fonts/Gilroy-Black.woff2"
+  },
+  "resources/fonts/Gilroy-Bold.woff2": {
+    "file": "fonts/Gilroy-Bold.woff2",
+    "src": "resources/fonts/Gilroy-Bold.woff2"
   },
   "resources/js/app.js": {
     "file": "assets/app.js",

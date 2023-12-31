@@ -58,6 +58,10 @@ class Select extends Field implements
                 ->implode(',');
         }
 
+        if(is_null($value)) {
+            return '';
+        }
+
         return (string) data_get($this->flattenValues(), $value, '');
     }
 }

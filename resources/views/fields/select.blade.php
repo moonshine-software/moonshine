@@ -1,18 +1,11 @@
 <x-moonshine::form.select
-        :attributes="$element->attributes()->except('x-on:change')->merge([
+        :attributes="$element->attributes()->merge([
         'id' => $element->id(),
         'name' => $element->name(),
     ])"
         :nullable="$element->isNullable()"
         :searchable="$element->isSearchable()"
         :asyncRoute="$element->asyncUrl()"
-        :@change="(($updateOnPreview ?? false)
-            ? 'updateColumn(
-                `'.$element->getUpdateOnPreviewUrl().'`,
-                `'.$element->column().'`
-            )'
-            : $element->attributes()->get('x-on:change')
-        )"
         @class(['form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->name())])
 >
     <x-slot:options>

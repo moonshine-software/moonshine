@@ -127,7 +127,7 @@ trait WithAsyncSearch
 
         return moonshineRouter()->toRelation(
             'search',
-            resourceItem: request('resourceItem'),
+            resourceItem: moonshineRequest()->getItemID(),
             relation: $this->getRelationName(),
             resourceUri: $resourceUri,
             parentField: $parentName

@@ -20,6 +20,7 @@ use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Fields;
 use MoonShine\Forms\FiltersForm;
@@ -152,7 +153,7 @@ class IndexPage extends Page
 
     public function listEventName(): string
     {
-        return 'table-updated';
+        return JsEvent::TABLE_UPDATED->value;
     }
 
     protected function itemsComponent(iterable $items, Fields $fields): MoonShineRenderable

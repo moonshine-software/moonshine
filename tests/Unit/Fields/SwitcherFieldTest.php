@@ -32,11 +32,10 @@ it('preview with not auto update', function (): void {
 });
 
 it('preview with auto update', function (): void {
-    expect($this->field->updateOnPreview(url: fn () => '/')->preview())
+    expect((string) $this->field->updateOnPreview(url: fn () => '/')->preview())
         ->toBe(
             view('moonshine::fields.switch', [
                 'element' => $this->field,
-                'updateOnPreview' => true,
             ])->render()
         );
 });

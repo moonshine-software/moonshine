@@ -13,7 +13,9 @@
 ])
 <div x-data="modal(`{{ $open }}`, `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`, `{{ $autoClose }}`)">
     <template x-teleport="body">
-    <div class="modal-template" @modal-toggled-{{ $eventName ?? $name }}.window="toggleModal">
+    <div class="modal-template"
+         @defineEvent('modal-toggled', ($eventName ?? $name), 'toggleModal')
+    >
         <div
             x-show="open"
             x-transition:enter="transition ease-out duration-300"

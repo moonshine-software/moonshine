@@ -9,6 +9,7 @@ use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
@@ -121,15 +122,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): self {
-        $this->url = static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
-            $method,
-            $message,
-            params: array_filter([
-                'resourceItem' => $item?->getKey(),
-                ...value($params, $item),
-            ]),
+        $this->url = moonshineRouter()->asyncMethodClosure(
+            method: $method,
+            message: $message,
+            params: $params,
             page: $page,
-            resource: $resource
+            resource: $resource,
         );
 
         return $this->async(
@@ -154,13 +152,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
         return $this->customAttributes([
             'x-data' => 'actionButton',
-            'data-async-events' => collect($events)
-                ->map(fn ($value): string => (string) str($value)->lower()->squish())
-                ->filter()
-                ->implode(','),
-            'data-async-selector' => $selector,
-            'data-async-callback' => $callback,
-            'data-async-method' => $method,
+            ...AlpineJs::asyncUrlDataAttributes(
+                method: $method,
+                events: $events,
+                selector: $selector,
+                callback: $callback,
+            )
         ])->onClick(fn (): string => 'request', 'prevent');
     }
 

@@ -7,9 +7,11 @@ namespace MoonShine\Buttons;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\BelongsToMany;
+use MoonShine\Support\AlpineJs;
 use Throwable;
 
 final class BelongsToManyButton
@@ -45,7 +47,7 @@ final class BelongsToManyButton
                 content: fn (?Model $data): string => (string) FormBuilder::make($action)
                     ->switchFormMode(
                         true,
-                        'fragment-updated-' . $field->getRelationName()
+                        AlpineJs::event(JsEvent::FRAGMENT_UPDATED, $field->getRelationName())
                     )
                     ->name($field->getRelationName())
                     ->fillCast(

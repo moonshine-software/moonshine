@@ -15,7 +15,7 @@
     '{{ $asyncUrl }}'
 )"
     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
-    @if($async) @cards-updated-{{ $name }}.window="asyncRequest" @endif
+    @defineEventWhen($async, 'cards-updated', $name, 'asyncRequest')
 >
     <x-moonshine::loader x-show="loading" />
     <div x-show="!loading">

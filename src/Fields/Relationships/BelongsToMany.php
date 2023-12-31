@@ -214,6 +214,7 @@ class BelongsToMany extends ModelRelationField implements
                     "{$this->getPivotName()}[\${index0}][{$field->column()}]"
                 )
                 ->setParent($this)
+                ->formName($this->getFormName())
                 ->iterableAttributes()
         );
     }
@@ -258,11 +259,13 @@ class BelongsToMany extends ModelRelationField implements
         $identityField = Checkbox::make('#', $checkedColumn)
             ->setAttribute('class', 'pivotChecker')
             ->setName($checkedColumn)
+            ->formName($this->getFormName())
             ->iterableAttributes();
 
         $fields = $this->preparedFields()
             ->prepend(
                 Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->formattedValueCallback())
+                    ->formName($this->getFormName())
                     ->customAttributes(['class' => 'pivotTitle'])
             )
             ->prepend($identityField);

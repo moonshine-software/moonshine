@@ -3,7 +3,7 @@ import {
   showWhenChange,
   showWhenVisibilityChange,
 } from './showWhenFunctions'
-import {dispatchEvents, responseCallback} from './asyncFunctions'
+import {moonShineRequest} from './asyncFunctions'
 
 export default () => ({
   whenFields: {},
@@ -26,7 +26,8 @@ export default () => ({
       })
     }
   },
-  precognition(form) {
+  precognition() {
+    const form = this.$el
     form.querySelector('.precognition_errors').innerHTML = ''
     const t = this
 
@@ -64,7 +65,8 @@ export default () => ({
     return false
   },
 
-  async(form, events = '', callbackFunction = '') {
+  async(events = '', callbackFunction = '') {
+    const form = this.$el
     submitState(form, true)
     const t = this
     const method = form.getAttribute('method')
@@ -75,73 +77,45 @@ export default () => ({
       action = action + '?' + new URLSearchParams(formData).toString()
     }
 
-    axios({
-      url: action,
-      method: method,
-      data: formData,
-      headers: {
+    t.callback = callbackFunction
+    t.events = events
+
+    t.afterCallback = function(data, type) {
+      if (type !== 'error' && t.inModal && t.autoClose) {
+        t.toggleModal()
+      }
+
+      submitState(form, false, false)
+    }
+
+    t.afterErrorCallback = function() {
+      submitState(form, false)
+    }
+
+    moonShineRequest(
+      t,
+      action,
+      method,
+      formData,
+      {
         Accept: 'application/json',
         ContentType: form.getAttribute('enctype'),
-      },
-    })
-      .then(function (response) {
-        if (callbackFunction) {
-          responseCallback(callbackFunction, response, form, events, t)
-
-          return
-        }
-
-        const data = response.data
-
-        if (data.redirect) {
-          window.location = data.redirect
-        }
-
-        const type = data.messageType ? data.messageType : 'success'
-
-        if (data.message) {
-          t.$dispatch('toast', {
-            type: type,
-            text: data.message,
-          })
-        }
-
-        let isFormReset = false
-
-        if (type !== 'error' && t.inModal && t.autoClose) {
-          t.toggleModal()
-        }
-
-        submitState(form, false, isFormReset)
-
-        dispatchEvents(events, type, t)
-      })
-      .catch(errorResponse => {
-        if (callbackFunction) {
-          responseCallback(callbackFunction, errorResponse.response, form, events, t)
-
-          return
-        }
-
-        if (errorResponse.response.data) {
-          const data = errorResponse.response.data
-
-          t.$dispatch('toast', {type: 'error', text: data.message ?? data})
-        }
-
-        submitState(form, false)
-      })
+      }
+    )
 
     return false
   },
 
-  asyncFilters(form, componentEvent) {
-    this.$el
+  asyncFilters(componentEvent) {
+    const form = this.$el
+    form
       ?.closest('.offcanvas-template')
       ?.querySelector('#async-reset-button')
       ?.removeAttribute('style')
 
-    const queryString = new URLSearchParams(new FormData(form)).toString()
+    const queryString = new URLSearchParams(
+      new FormData(form)
+    ).toString()
 
     this.$dispatch('disable-query-tags')
     this.$dispatch(componentEvent, {filters: queryString})
@@ -167,11 +141,11 @@ export default () => ({
   getInputs,
 })
 
-function submitState(form, loading = true, isFormReset = false) {
+function submitState(form, loading = true, reset = false) {
   if (!loading) {
     form.querySelector('.form_submit_button_loader').style.display = 'none'
     form.querySelector('.form_submit_button').removeAttribute('disabled')
-    if (isFormReset) {
+    if (reset) {
       form.reset()
     }
   } else {

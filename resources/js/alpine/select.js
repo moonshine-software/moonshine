@@ -2,7 +2,7 @@
 
 import Choices from 'choices.js'
 import {createPopper} from '@popperjs/core'
-import {crudFormQuery} from './formFunctions'
+import {crudFormQuery, filterAttributeStartsWith} from './formFunctions'
 import {debounce} from 'lodash'
 
 export default (asyncUrl = '') => ({
@@ -47,7 +47,7 @@ export default (asyncUrl = '') => ({
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
-        ...this.$el.dataset,
+        ...filterAttributeStartsWith(this.$el.dataset, 'async'),
         callbackOnCreateTemplates: function (template) {
           return {
             item: ({classNames}, data) => {
