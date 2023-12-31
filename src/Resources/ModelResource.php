@@ -162,7 +162,7 @@ abstract class ModelResource extends Resource
 
     public function listComponentName(): string
     {
-        return rescue(
+        return (string) rescue(
             fn(): string => $this->indexPage()?->listComponentName(),
             fn(): string => 'index-table',
             false
@@ -173,7 +173,7 @@ abstract class ModelResource extends Resource
     {
         $name ??= $this->listComponentName();
 
-        return rescue(
+        return (string) rescue(
             fn(): string => "{$this->indexPage()?->listEventName()}-$name",
             fn(): string => "table-updated-$name",
             false
