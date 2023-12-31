@@ -25,8 +25,8 @@
     '{{ $asyncUrl }}'
 )"
     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
-    @add-table-row.window="add(true)"
-    @if($async) @table-updated-{{ $name }}.window="asyncRequest" @endif
+    @defineEvent('add', 'table-row', 'add(true)')
+    @defineEventWhen($async, 'table-updated', $name, 'asyncRequest')
 >
     @if($async && $searchable)
         <div class="flex items-center gap-2">

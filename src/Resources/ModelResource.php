@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Enums\ClickAction;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -17,6 +18,7 @@ use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Pages\Page;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Traits\Resource\ResourceModelActions;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
@@ -162,7 +164,7 @@ abstract class ModelResource extends Resource
 
     public function listComponentName(): string
     {
-        return rescue(
+        return (string) rescue(
             fn(): string => $this->indexPage()?->listComponentName(),
             fn(): string => 'index-table',
             false
@@ -173,9 +175,9 @@ abstract class ModelResource extends Resource
     {
         $name ??= $this->listComponentName();
 
-        return rescue(
-            fn(): string => "{$this->indexPage()?->listEventName()}-$name",
-            fn(): string => "table-updated-$name",
+        return (string) rescue(
+            fn(): string => AlpineJs::event($this->indexPage()?->listEventName() ?? '', $name),
+            fn(): string => AlpineJs::event(JsEvent::TABLE_UPDATED, $name),
             false
         );
     }

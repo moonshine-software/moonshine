@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Traits\Macroable;
 use MoonShine\Components\Badge;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
@@ -25,6 +26,7 @@ use MoonShine\Traits\WithLabel;
  */
 abstract class Field extends FormElement
 {
+    use Macroable;
     use WithLabel;
     use WithSorts;
     use WithHint;
@@ -300,7 +302,7 @@ abstract class Field extends FormElement
 
     public function isPreviewMode(): bool
     {
-        return $this->previewMode;
+        return $this->isForcePreview() || $this->previewMode;
     }
 
     public function forcePreview(): static

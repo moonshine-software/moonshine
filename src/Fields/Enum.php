@@ -40,6 +40,10 @@ class Enum extends Select implements DefaultCanBeEnum
             );
         }
 
+        if(is_null($value)) {
+            return '';
+        }
+
         if(method_exists($value, 'getColor')) {
             $this->badge($value->getColor());
         }

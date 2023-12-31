@@ -8,10 +8,12 @@ use Closure;
 use Illuminate\View\ComponentAttributeBag;
 use JsonException;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Traits\Fields\WithAdditionalFields;
 use MoonShine\Traits\HasAsync;
 use Throwable;
@@ -275,15 +277,15 @@ final class FormBuilder extends RowComponent
 
         if ($this->isPrecognitive()) {
             $this->customAttributes([
-                'x-on:submit.prevent' => 'precognition($event.target)',
+                'x-on:submit.prevent' => 'precognition()',
             ]);
         }
 
         if ($this->isAsync()) {
             $this->customAttributes([
-                'x-on:submit.prevent' => 'async($event.target, `' . $this->asyncEvents(
+                'x-on:submit.prevent' => 'async(`' . $this->asyncEvents(
                 ) . '`, `' . $this->asyncCallback() . '`)',
-                '@form-reset-' . ($this->getName() ?? 'default') . '.window' => 'formReset',
+                AlpineJs::eventBlade(JsEvent::FORM_RESET, $this->getName()) => 'formReset',
             ]);
         }
 

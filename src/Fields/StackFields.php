@@ -34,6 +34,9 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         return $this->withLabels;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function resolveFill(
         array $raw = [],
         mixed $casted = null,

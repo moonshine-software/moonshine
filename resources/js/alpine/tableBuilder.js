@@ -1,6 +1,6 @@
 import {crudFormQuery} from './formFunctions'
 import sortableFunction from './sortable'
-import {asyncCRUDRequest} from './asyncFunctions'
+import {listComponentRequest} from './asyncFunctions'
 
 export default (
   creatable = false,
@@ -125,7 +125,7 @@ export default (
     this.asyncRequest()
   },
   asyncRequest() {
-    asyncCRUDRequest(this)
+    listComponentRequest(this)
   },
   actions(type, id) {
     let all = this.$root.querySelector('.' + id + '-actionsAllChecked')

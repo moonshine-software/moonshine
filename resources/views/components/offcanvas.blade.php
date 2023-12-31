@@ -20,7 +20,9 @@
     @endif
 
     <template x-teleport="body">
-        <div class="offcanvas-template"  @offcanvas-toggled-{{ $eventName ?? $name }}.window="toggleCanvas">
+        <div class="offcanvas-template"
+             @defineEvent('offcanvas-toggled', ($eventName ?? $name), 'toggleCanvas')
+        >
             <div
                 x-show="open"
                 x-bind="dismissCanvas"

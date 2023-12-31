@@ -248,14 +248,15 @@ class HasMany extends ModelRelationField implements HasFields
         $getFields = function () {
             $fields = $this->preparedClonedFields();
 
-            $fields->each(function (Field $field): void {
+            // the onlyFields method is needed to exclude stack fields
+            $fields->onlyFields()->each(function (Field $field): void {
                 if (
                     $field instanceof HasUpdateOnPreview
                     && $field->isUpdateOnPreview()
                     && is_null($field->getUrl())
                 ) {
                     $field->setUpdateOnPreviewUrl(
-                        updateRelationColumnRoute(
+                        moonshineRouter()->updateColumn(
                             $field->getResourceUriForUpdate(),
                             $field->getPageUriForUpdate(),
                             $this->getRelationName(),

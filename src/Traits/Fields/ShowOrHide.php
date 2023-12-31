@@ -9,11 +9,17 @@ use MoonShine\Support\Condition;
 trait ShowOrHide
 {
     public bool $showOnCreateForm = true;
+
     public bool $showOnUpdateForm = true;
+
     public bool $useOnImport = false;
+
     protected bool $showOnIndex = true;
+
     protected bool $showOnExport = false;
+
     protected bool $showOnForm = true;
+
     protected bool $showOnDetail = true;
 
     /**

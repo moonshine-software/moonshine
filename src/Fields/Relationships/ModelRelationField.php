@@ -40,7 +40,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         Closure|string|null $formatted = null,
         ?ModelResource $resource = null,
     ) {
-        if(is_string($formatted)) {
+        if (is_string($formatted)) {
             $formatted = static fn ($item) => data_get($item, $formatted);
         }
 
@@ -92,7 +92,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                 ->value()
         );
 
-        if(is_null($resource) && $this->isMorph()) {
+        if (is_null($resource) && $this->isMorph()) {
             $resource = moonshine()->getResourceFromUriKey(
                 moonshineRequest()->getResourceUri()
             );
@@ -161,7 +161,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
         }
 
-        if($this->toOne()) {
+        if ($this->toOne()) {
             $value = data_get($value, $this->getResource()->column());
         }
 
@@ -220,5 +220,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     {
         return $this->getRelatedModel()
             ?->{$this->getRelationName()}();
+    }
+
+    protected function onChangeCondition(): bool
+    {
+        return ! $this->outsideComponent();
     }
 }

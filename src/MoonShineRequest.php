@@ -32,7 +32,15 @@ class MoonShineRequest extends Request
         return $this->resource?->boot();
     }
 
-    public function getPage(): Page
+    public function getItemID(): int|string|null
+    {
+        return request(
+            'resourceItem',
+            request()->route('resourceItem')
+        );
+    }
+
+    public function findPage(): ?Page
     {
         if ($this->page instanceof Page) {
             return $this->page;
@@ -47,6 +55,13 @@ class MoonShineRequest extends Request
                 $this->getPageUri()
             );
         }
+
+        return $this->page;
+    }
+
+    public function getPage(): Page
+    {
+        $this->page = $this->findPage();
 
         if (is_null($this->page)) {
             oops404();

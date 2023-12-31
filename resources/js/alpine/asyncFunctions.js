@@ -18,7 +18,80 @@ export function dispatchEvents(events, type, component) {
   }
 }
 
-export function asyncCRUDRequest(component) {
+export function moonShineRequest(
+  t,
+  url,
+  method = 'get',
+  body = {},
+  headers = {},
+) {
+  axios({
+    url: url,
+    method: method,
+    data: body,
+    headers: headers
+  })
+  .then(function (response) {
+    const data = response.data
+
+    if(t.beforeCallback !== undefined && typeof t.beforeCallback === 'function') {
+      t.beforeCallback(data)
+    }
+
+    if (t.callback !== undefined && t.callback) {
+      responseCallback(t.callback, data, t.$el, t.events, t)
+
+      return
+    }
+
+    if (t.selector !== undefined && t.selector) {
+      const element = document.querySelector(t.selector)
+      element.innerHTML = data.html ? data.html : data
+    }
+
+    if (data.redirect) {
+      window.location = data.redirect
+    }
+
+    const type = data.messageType ? data.messageType : 'success'
+
+    if (data.message) {
+      t.$dispatch('toast', {
+        type: type,
+        text: data.message,
+      })
+    }
+
+    if(t.afterCallback !== undefined && typeof t.afterCallback === 'function') {
+      t.afterCallback(data, type)
+    }
+
+    if(t.events !== undefined) {
+      dispatchEvents(t.events, type, t)
+    }
+  })
+  .catch(errorResponse => {
+    const data = errorResponse.response.data
+
+    if(t.errorCallback !== undefined && typeof t.errorCallback === 'function') {
+      t.errorCallback(data)
+    }
+
+    if (t.callback !== undefined && t.callback) {
+      responseCallback(t.callback, data, t.$el, t.events, t)
+
+      return
+    }
+
+    if(t.afterErrorCallback !== undefined && typeof t.afterErrorCallback === 'function') {
+      t.afterErrorCallback(data)
+    }
+
+    t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+  })
+}
+
+export function listComponentRequest(component) {
   component.$event.preventDefault()
 
   let url = component.$el.href ? component.$el.href : component.asyncUrl
@@ -26,7 +99,7 @@ export function asyncCRUDRequest(component) {
   component.loading = true
 
   if (component.$event.detail && component.$event.detail.filters) {
-    url = prepareCRUDUrl(url)
+    url = prepareListComponentRequestUrl(url)
 
     const urlWithFilters = new URL(url)
 
@@ -36,7 +109,7 @@ export function asyncCRUDRequest(component) {
   }
 
   if (component.$event.detail && component.$event.detail.queryTag) {
-    url = prepareCRUDUrl(url)
+    url = prepareListComponentRequestUrl(url)
 
     if (component.$event.detail.queryTag !== 'query-tag=null') {
       const urlWithQueryTags = new URL(url)
@@ -65,7 +138,7 @@ export function asyncCRUDRequest(component) {
       component.loading = false
     })
 
-  function prepareCRUDUrl(url) {
+  function prepareListComponentRequestUrl(url) {
     const resultUrl = new URL(url)
 
     if (resultUrl.searchParams.get('query-tag')) {

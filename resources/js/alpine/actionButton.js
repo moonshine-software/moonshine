@@ -1,4 +1,4 @@
-import {dispatchEvents, responseCallback} from './asyncFunctions'
+import {moonShineRequest} from './asyncFunctions'
 
 export default () => ({
   url: '',
@@ -37,53 +37,18 @@ export default () => ({
 
     const t = this
 
-    axios({
-      url: this.url,
-      method: this.method,
-    })
-      .then(function (response) {
-        t.loading = false
+    t.beforeCallback = function() {
+      t.loading = false
+    }
 
-        const data = response.data
+    t.errorCallback = function() {
+      t.loading = false
+    }
 
-        if (t.callback) {
-          responseCallback(t.callback, data, t.$el, t.events, t)
-
-          return
-        }
-
-        if (t.selector) {
-          const element = document.querySelector(t.selector)
-          element.innerHTML = data.html ? data.html : data
-        }
-
-        if (data.redirect) {
-          window.location = data.redirect
-        }
-
-        const type = data.messageType ? data.messageType : 'success'
-
-        if (data.message) {
-          t.$dispatch('toast', {
-            type: type,
-            text: data.message,
-          })
-        }
-
-        dispatchEvents(t.events, type, t)
-      })
-      .catch(errorResponse => {
-        t.loading = false
-
-        const data = errorResponse.response.data
-
-        if (t.callback) {
-          responseCallback(t.callback, data, t.$el, t.events, t)
-
-          return
-        }
-
-        t.$dispatch('toast', {type: 'error', text: data.message ?? data})
-      })
+    moonShineRequest(
+      t,
+      this.url,
+      this.method,
+    )
   },
 })

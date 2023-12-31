@@ -15,8 +15,6 @@ trait UpdateOnPreview
 {
     protected bool $updateOnPreview = false;
 
-    protected mixed $updateOnPreviewData = null;
-
     protected ?Closure $updateOnPreviewUrl = null;
 
     protected ?Closure $url = null;
@@ -25,13 +23,9 @@ trait UpdateOnPreview
 
     protected ?string $updateColumnPageUri = null;
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
-    {
-        $this->updateOnPreviewData = $casted ?? $raw;
-
-        return parent::prepareFill($raw, $casted);
-    }
-
+    /**
+     * @throws FieldException
+     */
     public function readonly(Closure|bool|null $condition = null): static
     {
         $this->updateOnPreview(condition: false);
@@ -39,6 +33,9 @@ trait UpdateOnPreview
         return parent::readonly($condition);
     }
 
+    /**
+     * @throws FieldException
+     */
     public function updateOnPreview(
         ?Closure $url = null,
         ?ResourceContract $resource = null,
@@ -67,13 +64,18 @@ trait UpdateOnPreview
             $this->updateColumnPageUri = $resource->formPage()->uriKey();
         }
 
-        if ($this instanceof Text && ! $this->isNowOnForm()) {
-            $this->locked();
-        }
+        return $this->setUpdateOnPreviewUrl(
+            $this->getUrl() ?? $this->getDefaultUpdateRoute()
+        );
+    }
 
-        $this->updateOnPreviewUrl = $this->getUrl() ?? $this->getDefaultUpdateRoute();
+    public function setUpdateOnPreviewUrl(Closure $url): static
+    {
+        $this->updateOnPreviewUrl = $url;
 
-        return $this;
+        return $this->onChangeUrl(
+            $this->updateOnPreviewUrl
+        );
     }
 
     protected function getDefaultUpdateRoute(): Closure
@@ -86,20 +88,6 @@ trait UpdateOnPreview
     public function isUpdateOnPreview(): bool
     {
         return $this->updateOnPreview;
-    }
-
-    public function getUpdateOnPreviewUrl(): string
-    {
-        return is_closure($this->updateOnPreviewUrl)
-            ? ($this->updateOnPreviewUrl)($this->updateOnPreviewData)
-            : '';
-    }
-
-    public function setUpdateOnPreviewUrl(Closure $url): static
-    {
-        $this->updateOnPreviewUrl = $url;
-
-        return $this;
     }
 
     public function getUrl(): ?Closure
@@ -117,15 +105,27 @@ trait UpdateOnPreview
         return $this->updateColumnPageUri;
     }
 
+    protected function onChangeCondition(): bool
+    {
+        if (! is_null($this->onChangeUrl) && ! $this->isUpdateOnPreview()) {
+            return true;
+        }
+
+        return $this->isUpdateOnPreview() && is_null($this->getFormName());
+    }
+
     public function preview(): View|string
     {
         if (! $this->isUpdateOnPreview() || $this->isRawMode()) {
             return parent::preview();
         }
 
-        return view($this->getView(), [
-            'element' => $this,
-            'updateOnPreview' => $this->isUpdateOnPreview(),
-        ])->render();
+        $this->previewMode = true;
+
+        if ($this instanceof Text) {
+            $this->locked();
+        }
+
+        return $this->forcePreview()->render();
     }
 }

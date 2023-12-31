@@ -10,7 +10,6 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Table\TableContract;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\HasAsync;
@@ -62,12 +61,6 @@ final class TableBuilder extends IterableComponent implements TableContract
             $raw = $this->unCastData($data);
 
             $fields = $this->getFilledFields($raw, $casted, $index, $tableFields);
-
-            if (! is_null($this->getName())) {
-                $fields->each(
-                    fn (Field $field): Field => $field->formName($this->getName())
-                );
-            }
 
             return TableRow::make(
                 $casted,

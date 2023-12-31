@@ -9,11 +9,13 @@ use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Pages\Page;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\WithFormElementAttributes;
 use MoonShine\Traits\HasCanSee;
@@ -25,7 +27,6 @@ use MoonShine\Traits\WithView;
 abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscapedWhenCastToString
 {
     use Makeable;
-    use Macroable;
     use WithFormElementAttributes;
     use WithComponentAttributes;
     use WithView;
@@ -48,6 +49,8 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
     protected ?Closure $beforeRender = null;
 
     protected ?Closure $afterRender = null;
+
+    protected ?Closure $onChangeUrl = null;
 
     private View|string|null $cachedRender = null;
 
@@ -180,7 +183,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return $this->requestKeyPrefix;
     }
 
-    public function formName(string $formName): static
+    public function formName(?string $formName = null): static
     {
         $this->formName = $formName;
 
@@ -220,10 +223,85 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
             : value($this->afterRender, $this);
     }
 
+    public function onChangeMethod(
+        string $method,
+        array|Closure $params = [],
+        ?string $message = null,
+        ?string $selector = null,
+        array $events = [],
+        ?string $callback = null,
+        ?Page $page = null,
+        ?ResourceContract $resource = null,
+    ): static {
+        $url = moonshineRouter()->asyncMethodClosure(
+            method: $method,
+            message: $message,
+            params: $params,
+            page: $page,
+            resource: $resource,
+        );
+
+        return $this->onChangeUrl(
+            url: $url,
+            events: $events,
+            selector: $selector,
+            callback: $callback
+        );
+    }
+
+    public function onChangeUrl(
+        Closure $url,
+        string $method = 'PUT',
+        array $events = [],
+        ?string $selector = null,
+        ?string $callback = null,
+    ): static {
+        $this->onChangeUrl = $url;
+
+        return $this->onChangeAttributes(
+            method: $method,
+            events: $events,
+            selector: $selector,
+            callback: $callback
+        );
+    }
+
+    protected function onChangeAttributes(
+        string $method = 'GET',
+        array $events = [],
+        ?string $selector = null,
+        ?string $callback = null
+    ): static {
+        return $this->customAttributes(
+            AlpineJs::asyncUrlDataAttributes(
+                method: $method,
+                events: $events,
+                selector: $selector,
+                callback: $callback,
+            )
+        );
+    }
+
+    protected function onChangeEventAttributes(?string $url = null): array
+    {
+        return $url ? AlpineJs::requestWithFieldValue($url, $this->column()) : [];
+    }
+
+    protected function onChangeCondition(): bool
+    {
+        return true;
+    }
+
     public function render(): View|Closure|string
     {
         if (! is_null($this->cachedRender)) {
             return $this->cachedRender;
+        }
+
+        if (! is_null($this->onChangeUrl) && $this->onChangeCondition()) {
+            $onChangeUrl = value($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
+
+            $this->customAttributes($this->onChangeEventAttributes($onChangeUrl));
         }
 
         if ($this instanceof Field && $this->getView() === '') {

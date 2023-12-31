@@ -10,6 +10,7 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Traits\Fields\BooleanTrait;
 use MoonShine\Traits\Fields\UpdateOnPreview;
 use MoonShine\Traits\Fields\WithDefaultValue;
@@ -55,5 +56,26 @@ class Checkbox extends Field implements
         return view('moonshine::ui.boolean', [
             'value' => (bool) parent::resolvePreview(),
         ]);
+    }
+
+    protected function onChangeEventAttributes(?string $url = null): array
+    {
+        $additionally = [];
+
+        if($onChange = $this->attributes()->get('x-on:change')) {
+            $this->removeAttribute('x-on:change');
+            $additionally['x-on:change'] = $onChange;
+        }
+
+        if($url) {
+            return AlpineJs::requestWithFieldValue(
+                $url,
+                $this->column(),
+                '$event.target.checked ? `'.$this->getOnValue().'` : `'.$this->getOffValue().'`',
+                $additionally
+            );
+        }
+
+        return $additionally;
     }
 }

@@ -8,9 +8,12 @@ use Exception;
 
 class FieldException extends Exception
 {
-    public static function resourceRequired(string $fieldClass, string $fieldIdentification): self
+    public static function resourceRequired(string $fieldClass, ?string $fieldIdentification = null): self
     {
-        return new self("Resource is required for $fieldClass ($fieldIdentification)");
+        return new self(
+            "Resource is required for $fieldClass"
+            . ($fieldIdentification ? " ($fieldIdentification)" : "")
+        );
     }
 
     public static function notFound(): self

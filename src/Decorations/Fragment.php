@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Decorations;
 
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\DecorationException;
 use MoonShine\Exceptions\PageException;
 use MoonShine\Pages\Page;
+use MoonShine\Support\AlpineJs;
 
 /**
  * @method static static make(array $fields = [])
@@ -78,7 +80,7 @@ class Fragment extends Decoration
         if($this->isUpdateAsync()) {
             $this->customAttributes([
                 'x-data' => 'fragment(`' . $this->updateAsyncUrl() . '`)',
-                '@fragment-updated-' . ($this->getName() ?? 'default') . '.window' => 'fragmentUpdate',
+                AlpineJs::eventBlade(JsEvent::FRAGMENT_UPDATED, $this->getName()) => 'fragmentUpdate',
             ]);
         }
 

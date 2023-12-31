@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits;
 
 use Illuminate\Support\Arr;
+use MoonShine\Support\AlpineJs;
 
 trait HasAsync
 {
@@ -71,18 +72,11 @@ trait HasAsync
 
     public function asyncEvents(): string|array|null
     {
-        if (is_array($this->asyncEvents)) {
-            return collect($this->asyncEvents)
-                ->map(fn ($value): string => (string) str($value)->lower()->squish())
-                ->filter()
-                ->implode(',');
+        if (is_null($this->asyncEvents)) {
+            return $this->asyncEvents;
         }
 
-        if (is_string($this->asyncEvents)) {
-            return strtolower($this->asyncEvents);
-        }
-
-        return $this->asyncEvents;
+        return AlpineJs::prepareEvents($this->asyncEvents);
     }
 
     public function asyncCallback(): ?string

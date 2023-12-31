@@ -116,6 +116,26 @@ class MoonShineServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected function registerBladeDirectives(): self
+    {
+        Blade::directive(
+            'moonShineAssets',
+            static fn (): string => "<?php echo view('moonshine::layouts.shared.assets'); ?>"
+        );
+
+        Blade::directive(
+            'defineEvent',
+            static fn($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"
+        );
+
+        Blade::directive(
+            'defineEventWhen',
+            static fn($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBladeWhen($e); ?>"
+        );
+
+        return $this;
+    }
+
     public function register(): void
     {
         $this->registerBindings();
@@ -159,12 +179,8 @@ class MoonShineServiceProvider extends ServiceProvider
         Blade::withoutDoubleEncoding();
         Blade::componentNamespace('MoonShine\Components', 'moonshine');
 
-        Blade::directive(
-            'moonShineAssets',
-            static fn (): string => "<?php echo view('moonshine::layouts.shared.assets') ?>"
-        );
-
         $this
+            ->registerBladeDirectives()
             ->registerRouteMiddleware()
             ->registerAuthConfig();
     }

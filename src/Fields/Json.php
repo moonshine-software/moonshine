@@ -288,6 +288,7 @@ class Json extends Field implements
 
             return $field
                 ->setName($name)
+                ->formName($this->getFormName())
                 ->iterableAttributes($level)
                 ->setParent($this);
         });

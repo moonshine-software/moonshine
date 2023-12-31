@@ -121,12 +121,6 @@ final class CardsBuilder extends IterableComponent
 
             $fields = $this->getFilledFields($raw, $casted, $index, $fields);
 
-            if (! is_null($this->getName())) {
-                $fields->each(
-                    fn (Field $field): Field => $field->formName($this->getName())
-                );
-            }
-
             if(!is_null($this->customComponent)) {
                 return value($this->customComponent, $data, $index, $this);
             }

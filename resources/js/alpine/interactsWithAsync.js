@@ -1,3 +1,5 @@
+import {moonShineRequest} from './asyncFunctions.js'
+
 export default () => ({
   async load(url, id) {
     const {data, status} = await axios.get(url)
@@ -23,22 +25,34 @@ export default () => ({
     }
   },
 
-  async updateColumn(route, column, value = null) {
+  async requestWithFieldValue(
+    route,
+    column,
+    value = null,
+  ) {
     if (value === null) {
       value = this.$el.value
     }
 
-    const response = await axios.put(route, {
-      value: value,
-      field: column,
-    })
-
-    if (response.status === 204) {
-      //
+    if (value === null && (this.$el.type === 'checkbox' || this.$el.type === 'radio')) {
+      value = this.$el.checked
     }
 
-    if (response.status === 422) {
-      //
-    }
+    const t = this
+
+    t.selector = this.$el?.dataset?.asyncSelector
+    t.method = this.$el?.dataset?.asyncMethod
+    t.events = this.$el?.dataset?.asyncEvents
+    t.callback = this.$el?.dataset?.asyncCallback
+
+    moonShineRequest(
+      t,
+      route,
+      'put',
+      {
+        value: value,
+        field: column,
+      }
+    )
   },
 })

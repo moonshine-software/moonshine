@@ -1,4 +1,4 @@
-import {asyncCRUDRequest} from './asyncFunctions.js'
+import {listComponentRequest} from './asyncFunctions.js'
 
 export default (async = false, asyncUrl = '') => ({
   actionsOpen: false,
@@ -7,6 +7,6 @@ export default (async = false, asyncUrl = '') => ({
   loading: false,
   init() {},
   asyncRequest() {
-    asyncCRUDRequest(this)
+    listComponentRequest(this)
   },
 })

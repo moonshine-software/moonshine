@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
@@ -42,6 +43,26 @@ final class MoonShineRouter
         ]);
     }
 
+    public static function asyncMethodClosure(
+        string $method,
+        ?string $message = null,
+        array $params = [],
+        ?Page $page = null,
+        ?ResourceContract $resource = null
+    ): Closure
+    {
+        return static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
+            $method,
+            $message,
+            params: array_filter([
+                'resourceItem' => $item instanceof Model ? $item->getKey() : null,
+                ...value($params, $item),
+            ]),
+            page: $page,
+            resource: $resource
+        );
+    }
+
     public static function asyncTable(
         string $componentName = 'index-table'
     ): string {
@@ -74,7 +95,7 @@ final class MoonShineRouter
         ?string $pageUri = null,
         ?string $relation = null,
     ): Closure {
-        return static fn ($item): string => self::to(
+        return static fn ($item): ?string => $item->exists ? self::to(
             'column.' . ($relation ? 'relation' : 'resource') . '.update-column',
             array_filter([
                 'resourceItem' => $item->getKey(),
@@ -82,7 +103,7 @@ final class MoonShineRouter
                 'pageUri' => $pageUri,
                 '_relation' => $relation,
             ])
-        );
+        ) : null;
     }
 
     public static function home(): string
