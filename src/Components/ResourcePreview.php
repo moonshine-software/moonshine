@@ -52,6 +52,7 @@ final class ResourcePreview extends MoonShineComponent
             $this->getResource()->getIndexFields(),
             $this->items()
         )
+            ->name(str($this->getResource()->uriKey())->snake())
             ->cast($this->getResource()->getModelCast())
             ->preview()
             ->render();

@@ -176,6 +176,11 @@ class BelongsToMany extends ModelRelationField implements
         return "{$this->getRelationName()}_pivot";
     }
 
+    public function getTableComponentName(): string
+    {
+        return 'belongs_to_many_' . $this->getRelationName();
+    }
+
     public function selectedKeys(): Collection
     {
         return $this->isValueWithModels()
@@ -294,6 +299,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         return TableBuilder::make(items: $values)
+            ->name($this->getTableComponentName())
             ->customAttributes($this->attributes()->jsonSerialize())
             ->fields($fields)
             ->when(

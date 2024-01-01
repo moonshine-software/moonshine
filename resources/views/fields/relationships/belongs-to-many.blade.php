@@ -68,7 +68,11 @@
 
                         <x-moonshine::divider />
 
-                        <div x-data="pivot" x-init="autoCheck" class="pivotTable">
+                        <div x-data="pivot"
+                             x-init="autoCheck"
+                             class="pivotTable"
+                             data-table-name="{{ $element->getTableComponentName() }}"
+                        >
                             <x-moonshine::action-group
                                 class="mb-4"
                                 :actions="$element->getButtons()"

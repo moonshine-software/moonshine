@@ -388,6 +388,7 @@ class Json extends Field implements
         }
 
         return TableBuilder::make($fields, $values)
+            ->name('json_' . $this->column())
             ->customAttributes(
                 $this->attributes()
                     ->except('class')

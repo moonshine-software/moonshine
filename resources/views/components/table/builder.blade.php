@@ -25,7 +25,8 @@
     '{{ $asyncUrl }}'
 )"
     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
-    @defineEvent('add', 'table-row', 'add(true)')
+    @defineEvent('table-row-added', $name, 'add(true)')
+    @defineEvent('table-reindex', $name, 'resolveReindex')
     @defineEventWhen($async, 'table-updated', $name, 'asyncRequest')
 >
     @if($async && $searchable)
@@ -105,7 +106,4 @@
             ) }}
         @endif
     </div>
-
-    <span @click="add(true)" class="hidden tableBuilderAddEvent"></span>
-    <span @click="resolveReindex" class="hidden tableBuilderReIndexEvent"></span>
 </div>

@@ -12,14 +12,13 @@ export default route => ({
     const pivot = this.$root.querySelector('.pivotTable')
 
     if (pivot !== null) {
-      pivot.querySelector('.tableBuilderAddEvent')?.click()
+      this.$dispatch('table-row-added-' + pivot.dataset.tableName)
+      this.$dispatch('table-reindex-' + pivot.dataset.tableName)
 
       this.$nextTick(() => {
         const tr = pivot.querySelector('table > tbody > tr:last-child')
         tr.querySelector('.pivotTitle').innerHTML = item.label
         tr.dataset.key = item.value
-
-        pivot.querySelector('.tableBuilderReIndexEvent')?.click()
       })
     }
   },
