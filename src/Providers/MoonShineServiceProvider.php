@@ -125,12 +125,12 @@ class MoonShineServiceProvider extends ServiceProvider
 
         Blade::directive(
             'defineEvent',
-            static fn($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"
+            static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"
         );
 
         Blade::directive(
             'defineEventWhen',
-            static fn($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBladeWhen($e); ?>"
+            static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBladeWhen($e); ?>"
         );
 
         return $this;

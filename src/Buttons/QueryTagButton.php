@@ -19,7 +19,7 @@ final class QueryTagButton
             ->canSee(fn (): bool => $tag->isSee(moonshineRequest()))
             ->customAttributes([
                 'class' => 'query-tag-button',
-                'x-data' => 'asyncLink(`btn-primary`, `'.$resource->listEventName().'`)',
+                'x-data' => 'asyncLink(`btn-primary`, `' . $resource->listEventName() . '`)',
                 'x-on:disable-query-tags.window' => 'disableQueryTags',
             ])
             ->when(

@@ -165,8 +165,8 @@ abstract class ModelResource extends Resource
     public function listComponentName(): string
     {
         return rescue(
-            fn(): string => $this->indexPage()?->listComponentName(),
-            fn(): string => 'index-table',
+            fn (): string => $this->indexPage()?->listComponentName(),
+            fn (): string => 'index-table',
             false
         );
     }
@@ -176,8 +176,8 @@ abstract class ModelResource extends Resource
         $name ??= $this->listComponentName();
 
         return rescue(
-            fn(): string => AlpineJs::event($this->indexPage()?->listEventName() ?? '', $name),
-            fn(): string => AlpineJs::event(JsEvent::TABLE_UPDATED, $name),
+            fn (): string => AlpineJs::event($this->indexPage()?->listEventName() ?? '', $name),
+            fn (): string => AlpineJs::event(JsEvent::TABLE_UPDATED, $name),
             false
         );
     }

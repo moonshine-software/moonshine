@@ -19,7 +19,7 @@ beforeEach(function () {
                 Text::make('hideOnForm')->hideOnForm(),
                 Text::make('hideOnDetail')->hideOnDetail(),
                 Text::make('hideOnIndex')->hideOnIndex(),
-            ])
+            ]),
         ]);
 });
 

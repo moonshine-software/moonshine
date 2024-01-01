@@ -49,8 +49,7 @@ final class MoonShineRouter
         array $params = [],
         ?Page $page = null,
         ?ResourceContract $resource = null
-    ): Closure
-    {
+    ): Closure {
         return static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
             $method,
             $message,

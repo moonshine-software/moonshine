@@ -27,8 +27,7 @@ final class Card extends MoonShineComponent
         protected Closure|array $values = [],
         protected Closure|string $subtitle = '',
         protected bool $overlay = false,
-    )
-    {
+    ) {
     }
 
     public function content(Closure|string $value): self

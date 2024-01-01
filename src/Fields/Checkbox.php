@@ -71,7 +71,7 @@ class Checkbox extends Field implements
             return AlpineJs::requestWithFieldValue(
                 $url,
                 $this->column(),
-                '$event.target.checked ? `'.$this->getOnValue().'` : `'.$this->getOffValue().'`',
+                '$event.target.checked ? `' . $this->getOnValue() . '` : `' . $this->getOffValue() . '`',
                 $additionally
             );
         }

@@ -157,7 +157,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
                 events: $events,
                 selector: $selector,
                 callback: $callback,
-            )
+            ),
         ])->onClick(fn (): string => 'request', 'prevent');
     }
 

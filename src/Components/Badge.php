@@ -16,14 +16,13 @@ final class Badge extends MoonShineComponent
     public function __construct(
         public string $value = '',
         public string $color = 'purple'
-    )
-    {
+    ) {
     }
 
     protected function viewData(): array
     {
         return [
-            'slot' => new ComponentSlot($this->value)
+            'slot' => new ComponentSlot($this->value),
         ];
     }
 }
