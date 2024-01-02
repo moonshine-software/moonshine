@@ -14,7 +14,6 @@ final class Icon extends MoonShineComponent
         public int $size = 5,
         public string $color = '',
         public string $class = '',
-    )
-    {
+    ) {
     }
 }

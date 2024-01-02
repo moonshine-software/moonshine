@@ -14,8 +14,7 @@ final class ProgressBar extends MoonShineComponent
         public string $size = 'sm',
         public string $color = '',
         public bool $radial = false,
-    )
-    {
+    ) {
     }
 
     public function radial(): self

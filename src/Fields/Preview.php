@@ -55,7 +55,7 @@ class Preview extends Field
             $value = (bool) $value;
 
             return match (true) {
-                $this->hideTrue && $value, $this->hideFalse && !$value => '',
+                $this->hideTrue && $value, $this->hideFalse && ! $value => '',
                 default => (string) Boolean::make($value)->render(),
             };
         }

@@ -14,8 +14,7 @@ final class Spinner extends MoonShineComponent
         public string $color = '',
         public bool $fixed = false,
         public bool $absolute = false,
-    )
-    {
+    ) {
     }
 
     public function fixed(): self

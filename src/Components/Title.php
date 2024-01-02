@@ -15,8 +15,7 @@ final class Title extends MoonShineComponent
     public function __construct(
         protected Closure|string|null $value = null,
         public int $h = 1,
-    )
-    {
+    ) {
     }
 
     protected function viewData(): array

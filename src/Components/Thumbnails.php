@@ -22,12 +22,12 @@ final class Thumbnails extends MoonShineComponent
 
         if(is_string($this->valueOrValues)) {
             return [
-                'value' => $this->valueOrValues
+                'value' => $this->valueOrValues,
             ];
         }
 
         return [
-            'values' => $this->valueOrValues
+            'values' => $this->valueOrValues,
         ];
     }
 }

@@ -13,7 +13,6 @@ final class Rating extends MoonShineComponent
         public int $value,
         public int $min = 1,
         public int $max = 5
-    )
-    {
+    ) {
     }
 }

@@ -15,8 +15,7 @@ final class Url extends MoonShineComponent
         public ?string $icon = 'heroicons.link',
         public bool $withoutIcon = false,
         public bool $blank = false,
-    )
-    {
+    ) {
     }
 
     public function withoutIcon(): self

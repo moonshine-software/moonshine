@@ -25,8 +25,7 @@ final class Dropdown extends MoonShineComponent
         protected Closure|View|string $content = '',
         protected Closure|array $items = [],
         public string $placement = 'bottom-start',
-    )
-    {
+    ) {
     }
 
     public function togglerAttributes(array $attributes): self
@@ -49,7 +48,7 @@ final class Dropdown extends MoonShineComponent
             'toggler' => new ComponentSlot(value($this->toggler, $this), $this->togglerAttributes),
             'slot' => new ComponentSlot(value($this->content, $this)),
             'footer' => new ComponentSlot(value($this->footer, $this)),
-            'items' => value($this->items, $this)
+            'items' => value($this->items, $this),
         ];
     }
 }
