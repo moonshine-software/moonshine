@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\Files;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Traits\Fields\CanBeMultiple;
@@ -47,10 +48,10 @@ class File extends Field implements Fileable, RemovableContract
             return implode(';', array_filter($values));
         }
 
-        return view('moonshine::components.files', [
-            'files' => $values,
-            'download' => $this->canDownload(),
-        ]);
+        return Files::make(
+            $values,
+            download: $this->canDownload()
+        )->render();
     }
 
     protected function resolveAfterDestroy(mixed $data): mixed

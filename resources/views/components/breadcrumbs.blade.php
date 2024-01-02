@@ -12,7 +12,9 @@
                             {{ str($title)->before(':::') }}
                         </span>
                     @else
-                        <a href="{{ $url }}">
+                        <a href="{{ $url }}"
+                           @if(str($title)->contains(':::')) class="flex items-center justify-between gap-2" @endif
+                        >
                             @if(str($title)->contains(':::'))
                                 <x-moonshine::icon
                                     :icon="str($title)->after(':::')->value()"

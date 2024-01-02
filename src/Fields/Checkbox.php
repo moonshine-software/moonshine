@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\View\View;
+use MoonShine\Components\Boolean;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
@@ -53,9 +54,9 @@ class Checkbox extends Field implements
                 : $this->offValue);
         }
 
-        return view('moonshine::ui.boolean', [
-            'value' => (bool) parent::resolvePreview(),
-        ]);
+        return Boolean::make(
+            (bool) parent::resolvePreview()
+        )->render();
     }
 
     protected function onChangeEventAttributes(?string $url = null): array

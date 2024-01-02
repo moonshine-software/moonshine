@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Decorations;
 
 use Illuminate\Support\Collection;
+use MoonShine\Components\FieldsGroup;
 use MoonShine\Exceptions\DecorationException;
 use MoonShine\Fields\Fields;
 use Throwable;
@@ -90,9 +91,9 @@ class Tabs extends Decoration
     public function contentWithHtml(): Collection
     {
         return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [
-            $tab->id() => view('moonshine::components.fields-group', [
-                'components' => $tab->getFields(),
-            ])->render(),
+            $tab->id() => FieldsGroup::make(
+                $tab->getFields()
+            ),
         ]);
     }
 }

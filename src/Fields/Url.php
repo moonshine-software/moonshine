@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\Url as UrlComponent;
 
 class Url extends Text
 {
@@ -22,10 +23,10 @@ class Url extends Text
             return '';
         }
 
-        return view('moonshine::ui.url', [
-            'href' => $value,
-            'value' => $value,
-            'blank' => $this->isLinkBlank(),
-        ]);
+        return UrlComponent::make(
+            $value,
+            $value,
+            blank: $this->isLinkBlank()
+        )->render();
     }
 }
