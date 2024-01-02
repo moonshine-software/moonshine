@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Components\Badge;
+use MoonShine\Components\Url;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
 use MoonShine\Support\FieldEmptyValue;
@@ -352,13 +353,13 @@ abstract class Field extends FormElement
         if ($this->hasLink()) {
             $href = $this->getLinkValue($value);
 
-            $value = view('moonshine::ui.url', [
-                'value' => $this->getLinkName($value) ?: $value,
-                'href' => $href,
-                'blank' => $this->isLinkBlank(),
-                'icon' => $this->getLinkIcon(),
-                'withoutIcon' => $this->isWithoutIcon(),
-            ])->render();
+            $value = (string) Url::make(
+                href: $href,
+                value: $this->getLinkName($value) ?: $value,
+                icon: $this->getLinkIcon(),
+                withoutIcon: $this->isWithoutIcon(),
+                blank: $this->isLinkBlank()
+            )->render();
         }
 
         if ($this->isBadge()) {

@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use MoonShine\Components\Thumbnails;
 
 class Image extends File
 {
@@ -19,11 +20,8 @@ class Image extends File
             return implode(';', array_filter($values));
         }
 
-        return view(
-            'moonshine::ui.image',
-            $this->isMultiple() ? [
-                'values' => $values,
-            ] : ['value' => Arr::first($values)]
-        );
+        return Thumbnails::make(
+            $this->isMultiple() ? $values : Arr::first($values)
+        )->render();
     }
 }

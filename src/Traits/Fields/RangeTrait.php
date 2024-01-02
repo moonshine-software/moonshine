@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Components\Rating;
 
 trait RangeTrait
 {
@@ -97,13 +98,13 @@ trait RangeTrait
         $to = $value[$this->toField];
 
         if ($this->withStars()) {
-            $from = view('moonshine::ui.rating', [
-                'value' => $from,
-            ])->render();
+            $from = Rating::make(
+                (int) $from
+            )->render();
 
-            $to = view('moonshine::ui.rating', [
-                'value' => $to,
-            ])->render();
+            $to = Rating::make(
+                (int) $to
+            )->render();
         }
 
         return "$from - $to";

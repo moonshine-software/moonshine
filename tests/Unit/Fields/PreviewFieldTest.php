@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\Badge;
+use MoonShine\Components\Boolean;
+use MoonShine\Components\Url;
 use MoonShine\Fields\Preview;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -48,26 +50,21 @@ it('boolean value', function (): void {
 
     $this->field->reset()->resolveFill($this->item->toArray(), $this->item);
 
-
     expect($this->field->boolean()->preview())
-        ->toBe(view('moonshine::ui.boolean', [
-            'value' => $this->item->no_input,
-        ])->render())
-    ->and($this->field->reset()->boolean(hideTrue: true)->preview())
-        ->toBeEmpty();
-
-    $this->item->no_input = false;
-
-    expect($this->field->boolean(hideFalse: true)->preview())
+        ->toBe(
+            (string) Boolean::make($this->item->no_input)->render()
+        )
+        ->and($this->field->boolean(hideTrue: true)->preview())
+        ->toBeEmpty()
+        ->and($this->field->setValue(false)->boolean(hideFalse: true)->preview())
         ->toBeEmpty();
 });
 
 it('link value', function (): void {
-    expect($this->field->link('/')->preview())
-        ->toBe(view('moonshine::ui.url', [
-            'value' => $this->item->no_input,
-            'href' => '/',
-        ])->render());
+    expect((string) $this->field->link('/')->preview())
+        ->toBe(
+            (string) Url::make('/', $this->item->no_input)->render()
+        );
 });
 
 it('apply', function (): void {
@@ -88,7 +85,5 @@ it('apply', function (): void {
             $item
         )
     )
-        ->toBe($item)
-    ;
-
+        ->toBe($item);
 });

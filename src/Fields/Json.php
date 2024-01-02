@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\Icon;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -382,7 +383,7 @@ class Json extends Field implements
         if($sortable) {
             $fields->prepend(
                 Preview::make(
-                    formatted: static fn () => view('moonshine::ui.icons.heroicons.outline.bars-4')
+                    formatted: static fn () => Icon::make('heroicons.outline.bars-4')
                 )->customAttributes(['class' => 'handle', 'style' => 'cursor: move'])
             );
         }

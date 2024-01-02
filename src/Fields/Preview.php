@@ -6,6 +6,8 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\Boolean;
+use MoonShine\Components\Thumbnails;
 use MoonShine\Support\Condition;
 
 class Preview extends Field
@@ -50,15 +52,18 @@ class Preview extends Field
         }
 
         if ($this->isBoolean) {
-            return view('moonshine::ui.boolean', [
-                'value' => $value,
-            ]);
+            $value = (bool) $value;
+
+            return match (true) {
+                $this->hideTrue && $value, $this->hideFalse && !$value => '',
+                default => (string) Boolean::make($value)->render(),
+            };
         }
 
         if ($this->isImage) {
-            return view('moonshine::ui.image', [
-                'value' => $value,
-            ]);
+            return Thumbnails::make(
+                $value
+            )->render();
         }
 
         return (string) $value;

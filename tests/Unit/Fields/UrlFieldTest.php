@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Components\Url as UrlComponent;
 use MoonShine\Fields\Text;
 use MoonShine\Fields\Url;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
@@ -28,12 +29,10 @@ it('type', function (): void {
 });
 
 it('index view value', function (): void {
-    expect($this->field->preview())
+    expect((string) $this->field->preview())
         ->toBe(
-            view('moonshine::ui.url', [
-                'href' => 'https://cutcode.dev',
-                'value' => 'https://cutcode.dev',
-            ])->render()
+            (string) UrlComponent::make('https://cutcode.dev', 'https://cutcode.dev')
+                ->render()
         );
 });
 

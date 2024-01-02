@@ -1,4 +1,5 @@
 @props([
+    'items' => null,
     'placement' => 'bottom-start',
     'toggler',
     'title',
@@ -20,6 +21,16 @@
 
         <div class="dropdown-content">
             {{ $slot }}
+
+            @if(!empty($items))
+                <ul class="dropdown-menu">
+                    @foreach($items as $item)
+                        <li class="dropdown-menu-item p-2">
+                            {!! $item !!}
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
 
         @if($footer ?? false)

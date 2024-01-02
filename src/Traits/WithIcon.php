@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits;
 
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\Icon;
 
 trait WithIcon
 {
@@ -26,13 +27,12 @@ trait WithIcon
             return '';
         }
 
-        return view(
-            "moonshine::ui.icons.{$this->iconValue()}",
-            array_merge([
-                'size' => $size,
-                'class' => $class,
-            ], $color ? ['color' => $color] : [])
-        );
+        return Icon::make(
+            $this->iconValue(),
+            $size,
+            $color,
+            $class
+        )->render();
     }
 
     public function iconValue(): string
