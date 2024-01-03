@@ -10,6 +10,7 @@ final class CreateButton
 {
     public static function for(
         ModelResource $resource,
+        ?string $componentName = null,
         bool $isAsync = false,
     ): ActionButton {
         if(! $resource->formPage()) {
@@ -21,7 +22,7 @@ final class CreateButton
         if($isAsync || $resource->isCreateInModal()) {
             $action = $resource->formPageUrl(
                 params: [
-                    '_component_name' => $resource->listComponentName(),
+                    '_component_name' => $componentName ?? $resource->listComponentName(),
                     '_async_form' => $isAsync,
                 ],
                 fragment: 'crud-form'

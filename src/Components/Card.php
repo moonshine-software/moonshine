@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\View\ComponentSlot;
 
 /**
- * @method static static make(Closure|string $title = '', Closure|string $thumbnail = '', Closure|string $url = '#', Closure|array $values = [], Closure|string $subtitle = '')
+ * @method static static make(Closure|string $title = '', Closure|string $thumbnail = '', Closure|string $url = '#', Closure|array $values = [], Closure|string|null $subtitle = null)
  */
 final class Card extends MoonShineComponent
 {
@@ -25,7 +25,7 @@ final class Card extends MoonShineComponent
         protected Closure|string $thumbnail = '',
         protected Closure|string $url = '#',
         protected Closure|array $values = [],
-        protected Closure|string $subtitle = '',
+        protected Closure|string|null $subtitle = null,
         protected bool $overlay = false,
     ) {
     }

@@ -3,7 +3,7 @@
     'placement' => 'bottom-start',
     'toggler',
     'title',
-    'footer'
+    'footer' => null,
 ])
 <div x-data="dropdown"
      @click.outside="closeDropdown"
@@ -33,7 +33,7 @@
             @endif
         </div>
 
-        @if($footer ?? false)
+        @if($footer?->isNotEmpty())
             <div class="dropdown-footer">
                 {{ $footer ?? '' }}
             </div>

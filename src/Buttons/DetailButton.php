@@ -10,7 +10,10 @@ use MoonShine\Resources\ModelResource;
 
 final class DetailButton
 {
-    public static function for(ModelResource $resource, bool $isAsync = false): ActionButton
+    public static function for(
+        ModelResource $resource,
+        bool $isAsync = false
+    ): ActionButton
     {
         if(! $resource->detailPage()) {
             return ActionButton::emptyHidden();
