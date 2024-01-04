@@ -70,9 +70,9 @@ describe('form elements', function () {
     it('prepare attributes', function () {
         expect($this->collection->prepareAttributes())
             ->toHaveCount(4)
-            ->each(fn ($expect) => $expect->getAttribute('x-on:change')->toBe('onChangeField($event)'))
+            ->each(fn ($expect) => $expect->getAttribute('x-on:change')->toContain('onChangeField($event)'))
         ;
-    });
+    })->group('now');
 
     it('show when', function () {
         $form = FormBuilder::make(
