@@ -64,6 +64,13 @@ abstract class ModelResource extends Resource
      */
     protected ?ClickAction $clickAction = null;
 
+    public function flushState(): void
+    {
+        $this->item = null;
+        $this->query = null;
+        $this->pages = null;
+    }
+
     protected function pages(): array
     {
         return [

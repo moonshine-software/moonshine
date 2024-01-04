@@ -14,6 +14,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Laravel\Octane\Events\RequestHandled;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeApplyCommand;
 use MoonShine\Commands\MakeComponentCommand;
@@ -183,5 +184,11 @@ class MoonShineServiceProvider extends ServiceProvider
             ->registerBladeDirectives()
             ->registerRouteMiddleware()
             ->registerAuthConfig();
+
+        tap($this->app['events'], function ($event) {
+            $event->listen(RequestHandled::class, function ($event) {
+                moonshine()->flushState();
+            });
+        });
     }
 }

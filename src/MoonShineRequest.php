@@ -14,6 +14,14 @@ class MoonShineRequest extends Request
 
     protected ?Page $page = null;
 
+    public function flushState(): void
+    {
+        $this->resource = null;
+        $this->page = null;
+
+        $this->flush();
+    }
+
     public function hasResource(): bool
     {
         return ! is_null($this->getResource());

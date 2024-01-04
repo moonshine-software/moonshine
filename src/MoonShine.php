@@ -39,6 +39,21 @@ class MoonShine
 
     protected string|Closure|null $homeClass = null;
 
+    public function flushState(): void
+    {
+        foreach ($this->resources as $index => $resource) {
+            $resource->flushState();
+            $this->resources[$index] = $resource;
+        }
+
+        foreach ($this->pages as $index => $page) {
+            $page->flushState();
+            $this->pages[$index] = $page;
+        }
+
+        moonshineRequest()->flushState();
+    }
+
     public static function path(string $path = ''): string
     {
         return realpath(
