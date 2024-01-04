@@ -72,7 +72,7 @@ describe('form elements', function () {
             ->toHaveCount(4)
             ->each(fn ($expect) => $expect->getAttribute('x-on:change')->toContain('onChangeField($event)'))
         ;
-    })->group('now');
+    });
 
     it('show when', function () {
         $form = FormBuilder::make(
