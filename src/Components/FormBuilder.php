@@ -62,7 +62,6 @@ final class FormBuilder extends RowComponent
             'action' => $this->action,
             'method' => $this->method,
             'enctype' => 'multipart/form-data',
-            'x-data' => 'formBuilder',
         ]);
     }
 
@@ -269,9 +268,15 @@ final class FormBuilder extends RowComponent
 
         $xInit = json_encode([
             'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
+            'reactiveUrl' => moonshineRouter()->reactive()
         ], JSON_THROW_ON_ERROR);
 
+        $reactive = $fields->reactiveFields()
+            ->mapWithKeys(fn(Field $field) => [$field->column() => $field->value()])
+            ->toJson();
+
         $this->customAttributes([
+            'x-data' => "formBuilder(`{$this->getName()}`, $reactive)",
             'x-init' => "init($xInit)",
         ]);
 

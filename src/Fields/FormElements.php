@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Contracts\HasReactivity;
 use MoonShine\Decorations\Decoration;
 use Throwable;
 
@@ -30,7 +31,7 @@ abstract class FormElements extends MoonShineRenderElements
      */
     public function onlyFields(bool $withWrappers = false): Fields
     {
-        if($this->onlyFieldsCalled) {
+        if ($this->onlyFieldsCalled) {
             return Fields::make($this->toArray())
                 ->onlyFieldsCalled();
         }
@@ -112,6 +113,16 @@ abstract class FormElements extends MoonShineRenderElements
             static fn (
                 Field $field
             ): array => $field->showWhenCondition()
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function reactiveFields(): Fields
+    {
+        return $this->onlyFields()->filter(
+            static fn (Field $field): bool => $field instanceof HasReactivity && $field->isReactive()
         );
     }
 }

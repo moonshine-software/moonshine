@@ -1,10 +1,53 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 import {moonShineRequest} from './asyncFunctions'
 
-export default () => ({
+export default (name = '', reactive = {}) => ({
+  name: name,
   whenFields: {},
-  init(initData) {
-    if (initData !== undefined && initData.whenFields !== undefined) {
+  reactive: reactive,
+  init(initData = {}) {
+    const t = this
+
+    this.$watch('reactive', function(value) {
+      let focused = document.activeElement;
+
+      t.afterCallback = function(data) {
+        //t.reactive = data.values
+
+        for (let [column, html] of Object.entries(data.fields)) {
+          if(typeof html === 'string') {
+            const wrapper = document.querySelector('.field-'+column+'-wrapper')
+            const element = wrapper === null
+              ? document.querySelector('.field-'+column+'-element')
+              : wrapper
+
+            element.outerHTML = html
+
+            if (focused && focused !== document.body) {
+              let input = document.getElementById(focused.id)
+              input?.focus()
+              input?.setSelectionRange(input.value.length, input.value.length);
+            }
+          }
+        }
+      }
+
+      moonShineRequest(
+        t,
+        initData.reactiveUrl,
+        'post',
+        {
+          _component_name: t.name,
+          values: value,
+        }
+      )
+    })
+
+    if (initData.whenFields !== undefined) {
       this.whenFields = initData.whenFields
 
       let formId = this.$id('form')
