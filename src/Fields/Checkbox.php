@@ -43,6 +43,11 @@ class Checkbox extends Field implements
             'class' => 'form-group-inline',
         ]);
 
+        $this->customAttributes([
+            'x-on:change' => $this->onChangeEvent(),
+            'x-bind:checked' => '$el.checked',
+        ]);
+
         return parent::resolveValue();
     }
 
@@ -59,6 +64,11 @@ class Checkbox extends Field implements
         )->render();
     }
 
+    protected function onChangeEvent(): string
+    {
+        return '$el.value = $el.checked ? `' . $this->getOnValue() . '` : `' . $this->getOffValue() . '`';
+    }
+
     protected function onChangeEventAttributes(?string $url = null): array
     {
         $additionally = [];
@@ -72,7 +82,7 @@ class Checkbox extends Field implements
             return AlpineJs::requestWithFieldValue(
                 $url,
                 $this->column(),
-                '$event.target.checked ? `' . $this->getOnValue() . '` : `' . $this->getOffValue() . '`',
+                $this->onChangeEvent(),
                 $additionally
             );
         }

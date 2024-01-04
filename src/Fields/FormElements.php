@@ -57,7 +57,7 @@ abstract class FormElements extends MoonShineRenderElements
                         ! $formElement instanceof Fileable,
                         function ($field): void {
                             $field->customAttributes(
-                                ['x-on:change' => 'onChangeField($event)']
+                                ['x-on:change' => 'onChangeField($event);'],
                             );
                         }
                     );

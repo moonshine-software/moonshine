@@ -13,8 +13,6 @@
     <x-moonshine::form.input
         :attributes="$attributes->merge(['class' => 'peer sr-only'])"
         type="checkbox"
-        x-bind:checked="$el.checked"
-        x-on:change="$el.checked ? $el.value = '{{ $onValue }}' : $el.value = '{{ $offValue }}'"
     />
 
     <span class="form-switcher-toggler peer"></span>

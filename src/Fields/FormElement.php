@@ -301,7 +301,9 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         if (! is_null($this->onChangeUrl) && $this->onChangeCondition()) {
             $onChangeUrl = value($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
 
-            $this->customAttributes($this->onChangeEventAttributes($onChangeUrl));
+            $this->customAttributes(
+                $this->onChangeEventAttributes($onChangeUrl),
+            );
         }
 
         if ($this instanceof Field && $this->getView() === '') {
