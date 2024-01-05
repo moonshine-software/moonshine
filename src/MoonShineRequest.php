@@ -18,8 +18,6 @@ class MoonShineRequest extends Request
     {
         $this->resource = null;
         $this->page = null;
-
-        $this->flush();
     }
 
     public function hasResource(): bool
@@ -85,7 +83,7 @@ class MoonShineRequest extends Request
 
     public function getParentResourceId(): ?string
     {
-        return $this->get('_parentId');
+        return request('_parentId');
     }
 
     public function getParentRelationName(): ?string
@@ -116,7 +114,7 @@ class MoonShineRequest extends Request
 
     public function getFragmentLoad(): ?string
     {
-        return $this->get('_fragment-load');
+        return request('_fragment-load');
     }
 
     public function isFragmentLoad(?string $name = null): bool

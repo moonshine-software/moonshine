@@ -52,6 +52,7 @@ class MoonShine
         }
 
         moonshineRequest()->flushState();
+        moonshineCache()->flush();
     }
 
     public static function path(string $path = ''): string

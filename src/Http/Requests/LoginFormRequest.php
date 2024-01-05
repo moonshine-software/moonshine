@@ -45,10 +45,10 @@ class LoginFormRequest extends MoonShineFormRequest
         $this->ensureIsNotRateLimited();
 
         $credentials = [
-            config('moonshine.auth.fields.username', 'email') => $this->get(
+            config('moonshine.auth.fields.username', 'email') => request(
                 'username'
             ),
-            config('moonshine.auth.fields.password', 'password') => $this->get(
+            config('moonshine.auth.fields.password', 'password') => request(
                 'password'
             ),
         ];

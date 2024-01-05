@@ -186,7 +186,7 @@ class MoonShineServiceProvider extends ServiceProvider
             ->registerAuthConfig();
 
         tap($this->app['events'], function ($event) {
-            $event->listen(RequestHandled::class, function ($event) {
+            $event->listen(RequestHandled::class, function (RequestHandled $event) {
                 moonshine()->flushState();
             });
         });
