@@ -266,17 +266,16 @@ final class FormBuilder extends RowComponent
             );
         }
 
+        $reactiveFields = $fields->reactiveFields()
+            ->mapWithKeys(fn(Field $field) => [$field->column() => $field->value()]);
+
         $xInit = json_encode([
             'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
-            'reactiveUrl' => moonshineRouter()->reactive()
+            'reactiveUrl' => $reactiveFields->isNotEmpty() ? moonshineRouter()->reactive() : ''
         ], JSON_THROW_ON_ERROR);
 
-        $reactive = $fields->reactiveFields()
-            ->mapWithKeys(fn(Field $field) => [$field->column() => $field->value()])
-            ->toJson();
-
         $this->customAttributes([
-            'x-data' => "formBuilder(`{$this->getName()}`, $reactive)",
+            'x-data' => "formBuilder(`{$this->getName()}`, {$reactiveFields->toJson()})",
             'x-init' => "init($xInit)",
         ]);
 
