@@ -95,7 +95,7 @@ trait WithRelatedValues
         $formatted = is_closure($this->formattedValueCallback());
 
         // #MongoDB Models fix
-        if(! $formatted && ! str_starts_with($query::class, 'Illuminate\Database')) {
+        if(! $formatted && ! str_starts_with((string) $query::class, 'Illuminate\Database')) {
             $this->setFormattedValueCallback(fn ($data) => data_get($data, $this->getResourceColumn()));
             $formatted = true;
         }
