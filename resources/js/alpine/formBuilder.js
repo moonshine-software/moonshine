@@ -9,42 +9,53 @@ export default (name = '', reactive = {}) => ({
   name: name,
   whenFields: {},
   reactive: reactive,
+  blockWatch: false,
   init(initData = {}) {
     const t = this
 
-    this.$watch('reactive', function(value) {
-      let focused = document.activeElement;
+    this.$watch('reactive', async function(value) {
+      if(!t.blockWatch) {
+        let focused = document.activeElement;
 
-      t.afterCallback = function(data) {
-        //t.reactive = data.values
+        t.afterCallback = function(data) {
+          for (let [column, html] of Object.entries(data.fields)) {
+            if(typeof html === 'string') {
+              const wrapper = document.querySelector('.field-'+column+'-wrapper')
+              const element = wrapper === null
+                ? document.querySelector('.field-'+column+'-element')
+                : wrapper
 
-        for (let [column, html] of Object.entries(data.fields)) {
-          if(typeof html === 'string') {
-            const wrapper = document.querySelector('.field-'+column+'-wrapper')
-            const element = wrapper === null
-              ? document.querySelector('.field-'+column+'-element')
-              : wrapper
+              element.outerHTML = html
 
-            element.outerHTML = html
+              if (focused && focused !== document.body) {
+                let input = document.getElementById(focused.id)
+                input?.focus()
+                input?.setSelectionRange(input.value.length, input.value.length);
 
-            if (focused && focused !== document.body) {
-              let input = document.getElementById(focused.id)
-              input?.focus()
-              input?.setSelectionRange(input.value.length, input.value.length);
+                delete data.values[input.getAttribute('data-column')]
+              }
             }
           }
-        }
-      }
 
-      moonShineRequest(
-        t,
-        initData.reactiveUrl,
-        'post',
-        {
-          _component_name: t.name,
-          values: value,
+          t.blockWatch = true
+
+          for (let [column, value] of Object.entries(data.values)) {
+            t.reactive[column] = value
+          }
+
+          t.$nextTick(() => t.blockWatch = false)
         }
-      )
+
+        moonShineRequest(
+          t,
+          initData.reactiveUrl,
+          'post',
+          {
+            _component_name: t.name,
+            values: value,
+          }
+        )
+      }
     })
 
     if (initData.whenFields !== undefined) {

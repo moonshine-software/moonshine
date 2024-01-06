@@ -64,6 +64,7 @@ trait Reactivity
         return $this->customAttributes([
             $attribute => "reactive.{$this->column()}",
             'class' => "field-{$this->column()}-element",
+            'data-column' => $this->column(),
         ])->customWrapperAttributes([
             'class' => "field-{$this->column()}-wrapper"
         ]);
