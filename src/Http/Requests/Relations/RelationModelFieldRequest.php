@@ -10,15 +10,10 @@ use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Http\Requests\MoonShineFormRequest;
-use MoonShine\Resources\ModelResource;
 use Throwable;
 
 class RelationModelFieldRequest extends MoonShineFormRequest
 {
-    protected ?ModelResource $resource = null;
-
-    protected ?ModelRelationField $field = null;
-
     public function getRelationName(): string
     {
         return request('_relation');
@@ -29,32 +24,28 @@ class RelationModelFieldRequest extends MoonShineFormRequest
      */
     public function getPageField(): ?ModelRelationField
     {
-        if (! is_null($this->field)) {
-            return $this->field;
-        }
+        return memoize(function () {
+            $fields = $this->getPage()->getComponents();
 
-        $fields = $this->getPage()->getComponents();
+            if(request('_parent_field')) {
+                $parent = $fields
+                    ->onlyFields()
+                    ->onlyHasFields()
+                    ->findByColumn(request('_parent_field'));
 
-        if(request('_parent_field')) {
-            $parent = $fields
+                $fields = $parent instanceof ModelRelationField
+                    ? $parent->getResource()?->getFormFields()
+                    : $parent->getFields();
+            }
+
+            if(is_null($fields)) {
+                return null;
+            }
+
+            return $fields
                 ->onlyFields()
-                ->onlyHasFields()
-                ->findByColumn(request('_parent_field'));
-
-            $fields = $parent instanceof ModelRelationField
-                ? $parent->getResource()?->getFormFields()
-                : $parent->getFields();
-        }
-
-        if(is_null($fields)) {
-            return $this->field;
-        }
-
-        $this->field = $fields
-            ->onlyFields()
-            ->findByRelation($this->getRelationName());
-
-        return $this->field;
+                ->findByRelation($this->getRelationName());
+        });
     }
 
     /**
@@ -62,25 +53,21 @@ class RelationModelFieldRequest extends MoonShineFormRequest
      */
     public function getField(): ?ModelRelationField
     {
-        if (! is_null($this->field)) {
-            return $this->field;
-        }
+        return memoize(function () {
+            /* @var ModelResource $resource */
+            $resource = $this->getResource();
 
-        /* @var ModelResource $resource */
-        $resource = $this->getResource();
+            $fields = match ($this->getPage()->pageType()) {
+                PageType::INDEX => $resource->getIndexFields(),
+                PageType::DETAIL => $resource->getDetailFields(withOutside: true),
+                PageType::FORM => $resource->getFormFields(withOutside: true),
+                default => Fields::make($resource->fields())
+            };
 
-        $fields = match ($this->getPage()->pageType()) {
-            PageType::INDEX => $resource->getIndexFields(),
-            PageType::DETAIL => $resource->getDetailFields(withOutside: true),
-            PageType::FORM => $resource->getFormFields(withOutside: true),
-            default => Fields::make($resource->fields())
-        };
-
-        $this->field = $fields
-            ->onlyFields()
-            ->findByRelation($this->getRelationName());
-
-        return $this->field;
+            return $fields
+                ->onlyFields()
+                ->findByRelation($this->getRelationName());
+        });
     }
 
     /**

@@ -17,6 +17,7 @@ use MoonShine\Menu\MenuItem;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Pages\ProfilePage;
+use MoonShine\Support\MemoizeRepository;
 use Throwable;
 
 class MoonShine
@@ -51,8 +52,9 @@ class MoonShine
             $this->pages[$index] = $page;
         }
 
-        moonshineRequest()->flushState();
         moonshineCache()->flush();
+
+        MemoizeRepository::getInstance()->flush();
     }
 
     public static function path(string $path = ''): string
