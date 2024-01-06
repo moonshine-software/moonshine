@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use MoonShine\Exceptions\FieldException;
@@ -94,7 +95,7 @@ trait WithRelatedValues
         $formatted = is_closure($this->formattedValueCallback());
 
         // #MongoDB Models fix
-        if(! $formatted && ! str_starts_with((string) $query::class, 'Illuminate\Database')) {
+        if(! $formatted && ! str_starts_with($query::class, 'Illuminate\Database')) {
             $this->setFormattedValueCallback(fn ($data) => data_get($data, $this->getResourceColumn()));
             $formatted = true;
         }
@@ -127,6 +128,15 @@ trait WithRelatedValues
             $this->memoizeValues = $values;
 
             $values = $values->pluck($this->getResourceColumn(), $related->getKeyName());
+        }
+
+        $value = $this->toValue();
+
+        if($value instanceof Model && $value->exists && $values->isEmpty()) {
+            $values->put(
+                $value->getKey(),
+                data_get($value, $this->getResourceColumn())
+            );
         }
 
         return $values->toArray();
