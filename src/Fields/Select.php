@@ -11,8 +11,10 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Contracts\HasReactivity;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\HasPlaceholder;
+use MoonShine\Traits\Fields\Reactivity;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTrait;
 use MoonShine\Traits\Fields\UpdateOnPreview;
@@ -24,7 +26,8 @@ class Select extends Field implements
     DefaultCanBeArray,
     DefaultCanBeString,
     DefaultCanBeNumeric,
-    HasUpdateOnPreview
+    HasUpdateOnPreview,
+    HasReactivity
 {
     use CanBeMultiple;
     use Searchable;
@@ -33,6 +36,7 @@ class Select extends Field implements
     use HasAsync;
     use UpdateOnPreview;
     use HasPlaceholder;
+    use Reactivity;
 
     protected string $view = 'moonshine::fields.select';
 

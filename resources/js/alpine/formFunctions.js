@@ -4,7 +4,7 @@ export function filterAttributeStartsWith(data, startsWith) {
   const filtered = {}
 
   for (const key in data) {
-    if (!key.startsWith(startsWith)) {
+    if (!key.startsWith(startsWith) && key !== 'column') {
       filtered[key] = data[key]
     }
   }

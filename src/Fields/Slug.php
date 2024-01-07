@@ -23,6 +23,18 @@ class Slug extends Text
         return $this;
     }
 
+    public function live(): static
+    {
+        return $this->reactive(function(Fields $fields): Fields {
+            $title = $fields->findByColumn($this->getFrom());
+
+            return tap($fields, fn ($fields) => $fields
+                ->findByColumn($this->column())
+                ?->setValue(str($title->toValue())->slug()->value())
+            );
+        });
+    }
+
     public function separator(string $separator): static
     {
         $this->separator = $separator;

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Components\FieldsGroup;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -79,6 +80,9 @@ class AsyncController extends MoonShineController
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function reactive(MoonShineRequest $request): JsonResponse
     {
         $page = $request->getPage();
@@ -87,19 +91,28 @@ class AsyncController extends MoonShineController
             $request->get('_component_name')
         );
 
-        $values = $request->get('values', []);
+        if (is_null($form)) {
+            return $this->json();
+        }
+
         $fields = $form
             ->preparedFields()
             ->onlyFields()
             ->reactiveFields();
 
-        $fields->fill($values);
+        $values = $request->collect('values')->map(function ($value, $column) use ($fields) {
+            return $fields->findByColumn($column) instanceof Select
+                ? data_get($value, 'value', $value)
+                : $value;
+        });
+
+        $fields->fill($values->toArray());
 
         foreach ($fields as $field) {
             $fields = $field->reactiveCallback(
                 $fields,
                 data_get($values, $field->column()),
-                $values,
+                $values->toArray(),
             );
         }
 
@@ -110,7 +123,7 @@ class AsyncController extends MoonShineController
             return [$field->column() => (string) FieldsGroup::make([$field])->render()];
         });
 
-        return $this->json('', [
+        return $this->json(data: [
             'form' => $form,
             'fields' => $fields,
             'values' => $values,
