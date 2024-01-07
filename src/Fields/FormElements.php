@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Contracts\HasReactivity;
 use MoonShine\Decorations\Decoration;
 use Throwable;
 
@@ -97,11 +96,9 @@ abstract class FormElements extends MoonShineRenderElements
      */
     public function whenFields(): Fields
     {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field->hasShowWhen()
-            )
-            ->values();
+        return $this->filter(
+            static fn (Field $field): bool => $field->hasShowWhen()
+        )->values();
     }
 
     /**
@@ -113,16 +110,6 @@ abstract class FormElements extends MoonShineRenderElements
             static fn (
                 Field $field
             ): array => $field->showWhenCondition()
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function reactiveFields(): Fields
-    {
-        return $this->onlyFields()->filter(
-            static fn (Field $field): bool => $field instanceof HasReactivity && $field->isReactive()
         );
     }
 }

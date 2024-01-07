@@ -256,8 +256,10 @@ final class FormBuilder extends RowComponent
             $this->getAdditionalFields()->each(fn ($field) => $fields->push($field));
         }
 
+        $onlyFields = $fields->onlyFields();
+
         if (! is_null($this->getName())) {
-            $fields->onlyFields()->each(
+            $onlyFields->each(
                 fn (Field $field): Field => $field->formName($this->getName())
             );
 
@@ -266,11 +268,11 @@ final class FormBuilder extends RowComponent
             );
         }
 
-        $reactiveFields = $fields->reactiveFields()
+        $reactiveFields = $onlyFields->reactiveFields()
             ->mapWithKeys(fn(Field $field) => [$field->column() => $field->value()]);
 
         $xInit = json_encode([
-            'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
+            'whenFields' => array_values($onlyFields->whenFieldsConditions()->toArray()),
             'reactiveUrl' => $reactiveFields->isNotEmpty() ? moonshineRouter()->reactive() : ''
         ], JSON_THROW_ON_ERROR);
 

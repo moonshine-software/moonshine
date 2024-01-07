@@ -58,7 +58,7 @@ class Select extends Field implements
                 ->implode(',');
         }
 
-        if(is_null($value)) {
+        if (is_null($value)) {
             return '';
         }
 

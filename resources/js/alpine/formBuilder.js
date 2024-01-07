@@ -4,6 +4,7 @@ import {
   showWhenVisibilityChange,
 } from './showWhenFunctions'
 import {moonShineRequest} from './asyncFunctions'
+import {containsAttribute, isTextInput} from './supportFunctions.js'
 
 export default (name = '', reactive = {}) => ({
   name: name,
@@ -14,23 +15,28 @@ export default (name = '', reactive = {}) => ({
     const t = this
 
     this.$watch('reactive', async function(value) {
-      if(!t.blockWatch) {
-        let focused = document.activeElement;
+      if (!t.blockWatch) {
+        let focused = document.activeElement
 
         t.afterCallback = function(data) {
           for (let [column, html] of Object.entries(data.fields)) {
-            if(typeof html === 'string') {
-              const wrapper = document.querySelector('.field-'+column+'-wrapper')
+            if (typeof html === 'string') {
+              const wrapper = document.querySelector(
+                '.field-' + column + '-wrapper')
               const element = wrapper === null
-                ? document.querySelector('.field-'+column+'-element')
+                ? document.querySelector('.field-' + column + '-element')
                 : wrapper
 
               element.outerHTML = html
 
-              if (focused && focused !== document.body) {
+              if (focused && focused !== document.body
+                && isTextInput(focused)
+                && !containsAttribute(focused, 'x-model.lazy')
+              ) {
                 let input = document.getElementById(focused.id)
                 input?.focus()
-                input?.setSelectionRange(input.value.length, input.value.length);
+                input?.setSelectionRange(input.value.length,
+                  input.value.length)
 
                 delete data.values[input.getAttribute('data-column')]
               }
@@ -53,7 +59,7 @@ export default (name = '', reactive = {}) => ({
           {
             _component_name: t.name,
             values: value,
-          }
+          },
         )
       }
     })
@@ -83,34 +89,32 @@ export default (name = '', reactive = {}) => ({
 
     submitState(form, true)
 
-    axios
-      .post(form.getAttribute('action'), new FormData(form), {
-        headers: {
-          Precognition: true,
-          Accept: 'application/json',
-          ContentType: form.getAttribute('enctype'),
-        },
-      })
-      .then(function (response) {
-        form.submit()
-      })
-      .catch(errorResponse => {
-        submitState(form, false)
+    axios.post(form.getAttribute('action'), new FormData(form), {
+      headers: {
+        Precognition: true,
+        Accept: 'application/json',
+        ContentType: form.getAttribute('enctype'),
+      },
+    }).then(function(response) {
+      form.submit()
+    }).catch(errorResponse => {
+      submitState(form, false)
 
-        const data = errorResponse.response.data
+      const data = errorResponse.response.data
 
-        let errors = ''
-        let errorsData = data.errors
-        for (const error in errorsData) {
-          errors = errors + '<div class="mt-2 text-secondary">' + errorsData[error] + '</div>'
-        }
+      let errors = ''
+      let errorsData = data.errors
+      for (const error in errorsData) {
+        errors = errors + '<div class="mt-2 text-secondary">' +
+          errorsData[error] + '</div>'
+      }
 
-        if (data?.message) {
-          t.$dispatch('toast', {type: 'error', text: data.message})
-        }
+      if (data?.message) {
+        t.$dispatch('toast', {type: 'error', text: data.message})
+      }
 
-        form.querySelector('.precognition_errors').innerHTML = errors
-      })
+      form.querySelector('.precognition_errors').innerHTML = errors
+    })
 
     return false
   },
@@ -130,7 +134,7 @@ export default (name = '', reactive = {}) => ({
     t.callback = callbackFunction
     t.events = events
 
-    t.afterCallback = function (data, type) {
+    t.afterCallback = function(data, type) {
       if (type !== 'error' && t.inModal && t.autoClose) {
         t.toggleModal()
       }
@@ -138,7 +142,7 @@ export default (name = '', reactive = {}) => ({
       submitState(form, false, false)
     }
 
-    t.afterErrorCallback = function () {
+    t.afterErrorCallback = function() {
       submitState(form, false)
     }
 
@@ -152,10 +156,9 @@ export default (name = '', reactive = {}) => ({
 
   asyncFilters(componentEvent) {
     const form = this.$el
-    form
-      ?.closest('.offcanvas-template')
-      ?.querySelector('#async-reset-button')
-      ?.removeAttribute('style')
+    form?.closest('.offcanvas-template')?.
+      querySelector('#async-reset-button')?.
+      removeAttribute('style')
 
     const queryString = new URLSearchParams(new FormData(form)).toString()
 

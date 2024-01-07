@@ -90,6 +90,7 @@ class AsyncController extends MoonShineController
         $values = $request->get('values', []);
         $fields = $form
             ->preparedFields()
+            ->onlyFields()
             ->reactiveFields();
 
         $fields->fill($values);
