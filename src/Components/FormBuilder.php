@@ -269,7 +269,7 @@ final class FormBuilder extends RowComponent
         }
 
         $reactiveFields = $onlyFields->reactiveFields()
-            ->mapWithKeys(fn(Field $field) => [$field->column() => $field->value()]);
+            ->mapWithKeys(fn(Field $field): array => [$field->column() => $field->value()]);
 
         $xInit = json_encode([
             'whenFields' => array_values($onlyFields->whenFieldsConditions()->toArray()),

@@ -100,11 +100,9 @@ class AsyncController extends MoonShineController
             ->onlyFields()
             ->reactiveFields();
 
-        $values = $request->collect('values')->map(function ($value, $column) use ($fields) {
-            return $fields->findByColumn($column) instanceof Select
-                ? data_get($value, 'value', $value)
-                : $value;
-        });
+        $values = $request->collect('values')->map(fn($value, $column) => $fields->findByColumn($column) instanceof Select
+            ? data_get($value, 'value', $value)
+            : $value);
 
         $fields->fill($values->toArray());
 
@@ -117,11 +115,9 @@ class AsyncController extends MoonShineController
         }
 
         $values = $fields
-            ->mapWithKeys(fn (Field $field) => [$field->column() => $field->value()]);
+            ->mapWithKeys(fn (Field $field): array => [$field->column() => $field->value()]);
 
-        $fields = $fields->mapWithKeys(function (Field $field) {
-            return [$field->column() => (string) FieldsGroup::make([$field])->render()];
-        });
+        $fields = $fields->mapWithKeys(fn(Field $field): array => [$field->column() => (string) FieldsGroup::make([$field])->render()]);
 
         return $this->json(data: [
             'form' => $form,

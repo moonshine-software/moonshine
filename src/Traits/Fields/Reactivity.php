@@ -32,9 +32,6 @@ trait Reactivity
 
     /**
      * @param  ?Closure(Fields, mixed, array): Fields  $callback
-     * @param  bool  $lazy
-     * @param  int  $debounce
-     * @param  int  $throttle
      * @return $this
      */
     public function reactive(
