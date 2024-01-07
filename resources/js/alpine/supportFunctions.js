@@ -19,7 +19,8 @@ export function isTextInput(el) {
       'datetime-local',
       'time',
       'month',
-      'week']
+      'week',
+    ]
 
     return validType.includes(el.type)
   }

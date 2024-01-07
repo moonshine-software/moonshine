@@ -19,7 +19,7 @@ export function dispatchEvents(events, type, component) {
 }
 
 export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}) {
-  if(!url) {
+  if (!url) {
     return
   }
 
@@ -69,7 +69,7 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
       }
     })
     .catch(errorResponse => {
-      if(!errorResponse?.response?.data) {
+      if (!errorResponse?.response?.data) {
         console.error(errorResponse)
 
         return

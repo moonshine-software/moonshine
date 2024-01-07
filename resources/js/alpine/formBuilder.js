@@ -1,8 +1,4 @@
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from './showWhenFunctions'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
 import {moonShineRequest} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
 
@@ -14,26 +10,26 @@ export default (name = '', reactive = {}) => ({
   init(initData = {}) {
     const t = this
 
-    this.$watch('reactive', async function(value) {
+    this.$watch('reactive', async function (value) {
       if (!t.blockWatch) {
         let focused = document.activeElement
 
-        t.afterCallback = function(data) {
+        t.afterCallback = function (data) {
           for (let [column, html] of Object.entries(data.fields)) {
             if (typeof html === 'string') {
-              const wrapper = document.querySelector(
-                '.field-' + column + '-wrapper')
-              const element = wrapper === null
-                ? document.querySelector('.field-' + column + '-element')
-                : wrapper
+              const wrapper = document.querySelector('.field-' + column + '-wrapper')
+              const element =
+                wrapper === null ? document.querySelector('.field-' + column + '-element') : wrapper
 
               element.outerHTML = html
 
-              let input = focused && focused !== document.body
-                && isTextInput(focused)
-                && !containsAttribute(focused, 'x-model.lazy')
-              ? document.getElementById(focused.id)
-              : null
+              let input =
+                focused &&
+                focused !== document.body &&
+                isTextInput(focused) &&
+                !containsAttribute(focused, 'x-model.lazy')
+                  ? document.getElementById(focused.id)
+                  : null
 
               if (input) {
                 input.focus()
@@ -50,18 +46,13 @@ export default (name = '', reactive = {}) => ({
             t.reactive[column] = value
           }
 
-          t.$nextTick(() => t.blockWatch = false)
+          t.$nextTick(() => (t.blockWatch = false))
         }
 
-        moonShineRequest(
-          t,
-          initData.reactiveUrl,
-          'post',
-          {
-            _component_name: t.name,
-            values: value,
-          },
-        )
+        moonShineRequest(t, initData.reactiveUrl, 'post', {
+          _component_name: t.name,
+          values: value,
+        })
       }
     })
 
@@ -90,32 +81,34 @@ export default (name = '', reactive = {}) => ({
 
     submitState(form, true)
 
-    axios.post(form.getAttribute('action'), new FormData(form), {
-      headers: {
-        Precognition: true,
-        Accept: 'application/json',
-        ContentType: form.getAttribute('enctype'),
-      },
-    }).then(function(response) {
-      form.submit()
-    }).catch(errorResponse => {
-      submitState(form, false)
+    axios
+      .post(form.getAttribute('action'), new FormData(form), {
+        headers: {
+          Precognition: true,
+          Accept: 'application/json',
+          ContentType: form.getAttribute('enctype'),
+        },
+      })
+      .then(function (response) {
+        form.submit()
+      })
+      .catch(errorResponse => {
+        submitState(form, false)
 
-      const data = errorResponse.response.data
+        const data = errorResponse.response.data
 
-      let errors = ''
-      let errorsData = data.errors
-      for (const error in errorsData) {
-        errors = errors + '<div class="mt-2 text-secondary">' +
-          errorsData[error] + '</div>'
-      }
+        let errors = ''
+        let errorsData = data.errors
+        for (const error in errorsData) {
+          errors = errors + '<div class="mt-2 text-secondary">' + errorsData[error] + '</div>'
+        }
 
-      if (data?.message) {
-        t.$dispatch('toast', {type: 'error', text: data.message})
-      }
+        if (data?.message) {
+          t.$dispatch('toast', {type: 'error', text: data.message})
+        }
 
-      form.querySelector('.precognition_errors').innerHTML = errors
-    })
+        form.querySelector('.precognition_errors').innerHTML = errors
+      })
 
     return false
   },
@@ -135,7 +128,7 @@ export default (name = '', reactive = {}) => ({
     t.callback = callbackFunction
     t.events = events
 
-    t.afterCallback = function(data, type) {
+    t.afterCallback = function (data, type) {
       if (type !== 'error' && t.inModal && t.autoClose) {
         t.toggleModal()
       }
@@ -143,7 +136,7 @@ export default (name = '', reactive = {}) => ({
       submitState(form, false, false)
     }
 
-    t.afterErrorCallback = function() {
+    t.afterErrorCallback = function () {
       submitState(form, false)
     }
 
@@ -157,9 +150,10 @@ export default (name = '', reactive = {}) => ({
 
   asyncFilters(componentEvent) {
     const form = this.$el
-    form?.closest('.offcanvas-template')?.
-      querySelector('#async-reset-button')?.
-      removeAttribute('style')
+    form
+      ?.closest('.offcanvas-template')
+      ?.querySelector('#async-reset-button')
+      ?.removeAttribute('style')
 
     const queryString = new URLSearchParams(new FormData(form)).toString()
 
