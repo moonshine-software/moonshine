@@ -17,6 +17,7 @@ use MoonShine\Menu\MenuItem;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Pages\ProfilePage;
+use MoonShine\Support\MemoizeRepository;
 use Throwable;
 
 class MoonShine
@@ -38,6 +39,23 @@ class MoonShine
     protected array $authorization = [];
 
     protected string|Closure|null $homeClass = null;
+
+    public function flushState(): void
+    {
+        foreach ($this->resources as $index => $resource) {
+            $resource->flushState();
+            $this->resources[$index] = $resource;
+        }
+
+        foreach ($this->pages as $index => $page) {
+            $page->flushState();
+            $this->pages[$index] = $page;
+        }
+
+        moonshineCache()->flush();
+
+        MemoizeRepository::getInstance()->flush();
+    }
 
     public static function path(string $path = ''): string
     {

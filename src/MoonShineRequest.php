@@ -10,10 +10,6 @@ use MoonShine\Pages\Page;
 
 class MoonShineRequest extends Request
 {
-    protected ?ResourceContract $resource = null;
-
-    protected ?Page $page = null;
-
     public function hasResource(): bool
     {
         return ! is_null($this->getResource());
@@ -21,15 +17,9 @@ class MoonShineRequest extends Request
 
     public function getResource(): ?ResourceContract
     {
-        if ($this->resource instanceof ResourceContract) {
-            return $this->resource;
-        }
-
-        $this->resource = moonshine()->getResourceFromUriKey(
+        return memoize(fn(): ?ResourceContract => moonshine()->getResourceFromUriKey(
             $this->getResourceUri()
-        );
-
-        return $this->resource?->boot();
+        )?->boot());
     }
 
     public function getItemID(): int|string|null
@@ -42,32 +32,28 @@ class MoonShineRequest extends Request
 
     public function findPage(): ?Page
     {
-        if ($this->page instanceof Page) {
-            return $this->page;
-        }
+        return memoize(function (): ?Page {
+            if ($this->hasResource()) {
+                return $this->getResource()
+                    ?->getPages()
+                    ?->findByUri($this->getPageUri());
+            }
 
-        if ($this->hasResource()) {
-            $this->page = $this->getResource()
-                ?->getPages()
-                ?->findByUri($this->getPageUri());
-        } else {
-            $this->page = moonshine()->getPageFromUriKey(
+            return moonshine()->getPageFromUriKey(
                 $this->getPageUri()
             );
-        }
-
-        return $this->page;
+        });
     }
 
     public function getPage(): Page
     {
-        $this->page = $this->findPage();
+        $page = $this->findPage();
 
-        if (is_null($this->page)) {
+        if (is_null($page)) {
             oops404();
         }
 
-        return $this->page;
+        return $page;
     }
 
     public function getResourceUri(): ?string
@@ -77,7 +63,7 @@ class MoonShineRequest extends Request
 
     public function getParentResourceId(): ?string
     {
-        return $this->get('_parentId');
+        return request('_parentId');
     }
 
     public function getParentRelationName(): ?string
@@ -108,7 +94,7 @@ class MoonShineRequest extends Request
 
     public function getFragmentLoad(): ?string
     {
-        return $this->get('_fragment-load');
+        return request('_fragment-load');
     }
 
     public function isFragmentLoad(?string $name = null): bool

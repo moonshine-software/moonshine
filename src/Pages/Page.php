@@ -64,6 +64,15 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     abstract public function components(): array;
 
+    public function flushState(): void
+    {
+        $this->resource = null;
+        $this->parentResource = null;
+        $this->components = null;
+        $this->breadcrumbs = null;
+        $this->layersComponents = [];
+    }
+
     public function beforeRender(): void
     {
         //

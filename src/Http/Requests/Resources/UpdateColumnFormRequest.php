@@ -39,7 +39,7 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
         return $this->getResource()
             ?->getIndexFields()
             ?->withoutWrappers()
-            ?->findByColumn($this->get('field'));
+            ?->findByColumn(request('field'));
     }
 
     /**
@@ -56,7 +56,7 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
     protected function prepareForValidation(): void
     {
         request()->merge([
-            $this->get('field') => $this->get('value'),
+            request('field') => request('value'),
         ]);
     }
 }

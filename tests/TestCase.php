@@ -46,6 +46,8 @@ class TestCase extends Orchestra
             ->resolveSuperUser()
             ->resolveMoonShineUserResource()
             ->registerTestResource();
+
+        moonshine()->flushState();
     }
 
     protected function defineEnvironment($app): void
