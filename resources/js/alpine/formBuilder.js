@@ -29,14 +29,15 @@ export default (name = '', reactive = {}) => ({
 
               element.outerHTML = html
 
-              if (focused && focused !== document.body
+              let input = focused && focused !== document.body
                 && isTextInput(focused)
                 && !containsAttribute(focused, 'x-model.lazy')
-              ) {
-                let input = document.getElementById(focused.id)
-                input?.focus()
-                input?.setSelectionRange(input.value.length,
-                  input.value.length)
+              ? document.getElementById(focused.id)
+              : null
+
+              if (input) {
+                input.focus()
+                input.setSelectionRange(input.value.length, input.value.length)
 
                 delete data.values[input.getAttribute('data-column')]
               }
