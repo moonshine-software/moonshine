@@ -19,7 +19,7 @@ abstract class MoonShineController extends BaseController
     use InteractsWithAuth;
 
     protected function json(
-        string $message,
+        string $message = '',
         array $data = [],
         string $redirect = null,
         string $messageType = 'success'

@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\HasReactivity;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
@@ -176,6 +177,16 @@ final class Fields extends FormElements
     public function importFields(): self
     {
         return $this->filter(static fn (Field $field): bool => $field->isOnImport());
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function reactiveFields(): Fields
+    {
+        return $this->filter(
+            static fn (Field $field): bool => $field instanceof HasReactivity && $field->isReactive()
+        );
     }
 
     /**

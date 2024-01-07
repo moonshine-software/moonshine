@@ -43,6 +43,21 @@ final class MoonShineRouter
         ]);
     }
 
+    public static function reactive(
+        int|string|null $key = null,
+        ?Page $page = null,
+        ?ResourceContract $resource = null
+    ): string {
+        $resource ??= moonshineRequest()->getResource();
+        $page ??= moonshineRequest()->getPage();
+
+        return self::to('async.reactive', [
+            'pageUri' => $page->uriKey(),
+            'resourceUri' => $resource?->uriKey(),
+            'resourceItem' => $key ?? $resource?->getItem()?->getKey(),
+        ]);
+    }
+
     public static function asyncMethodClosure(
         string $method,
         ?string $message = null,

@@ -19,6 +19,10 @@ export function dispatchEvents(events, type, component) {
 }
 
 export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}) {
+  if(!url) {
+    return
+  }
+
   axios({
     url: url,
     method: method,
@@ -65,6 +69,12 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
       }
     })
     .catch(errorResponse => {
+      if(!errorResponse?.response?.data) {
+        console.error(errorResponse)
+
+        return
+      }
+
       const data = errorResponse.response.data
 
       if (t.errorCallback !== undefined && typeof t.errorCallback === 'function') {

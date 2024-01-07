@@ -62,7 +62,6 @@ final class FormBuilder extends RowComponent
             'action' => $this->action,
             'method' => $this->method,
             'enctype' => 'multipart/form-data',
-            'x-data' => 'formBuilder',
         ]);
     }
 
@@ -257,8 +256,10 @@ final class FormBuilder extends RowComponent
             $this->getAdditionalFields()->each(fn ($field) => $fields->push($field));
         }
 
+        $onlyFields = $fields->onlyFields();
+
         if (! is_null($this->getName())) {
-            $fields->onlyFields()->each(
+            $onlyFields->each(
                 fn (Field $field): Field => $field->formName($this->getName())
             );
 
@@ -267,11 +268,16 @@ final class FormBuilder extends RowComponent
             );
         }
 
+        $reactiveFields = $onlyFields->reactiveFields()
+            ->mapWithKeys(fn(Field $field) => [$field->column() => $field->value()]);
+
         $xInit = json_encode([
-            'whenFields' => array_values($fields->whenFieldsConditions()->toArray()),
+            'whenFields' => array_values($onlyFields->whenFieldsConditions()->toArray()),
+            'reactiveUrl' => $reactiveFields->isNotEmpty() ? moonshineRouter()->reactive() : ''
         ], JSON_THROW_ON_ERROR);
 
         $this->customAttributes([
+            'x-data' => "formBuilder(`{$this->getName()}`, {$reactiveFields->toJson()})",
             'x-init' => "init($xInit)",
         ]);
 

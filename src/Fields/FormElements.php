@@ -30,7 +30,7 @@ abstract class FormElements extends MoonShineRenderElements
      */
     public function onlyFields(bool $withWrappers = false): Fields
     {
-        if($this->onlyFieldsCalled) {
+        if ($this->onlyFieldsCalled) {
             return Fields::make($this->toArray())
                 ->onlyFieldsCalled();
         }
@@ -96,11 +96,9 @@ abstract class FormElements extends MoonShineRenderElements
      */
     public function whenFields(): Fields
     {
-        return $this->onlyFields()
-            ->filter(
-                static fn (Field $field): bool => $field->hasShowWhen()
-            )
-            ->values();
+        return $this->filter(
+            static fn (Field $field): bool => $field->hasShowWhen()
+        )->values();
     }
 
     /**

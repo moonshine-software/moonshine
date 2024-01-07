@@ -79,6 +79,8 @@ Route::group(moonshine()->configureRoutes(), static function (): void {
                     ->name('component');
                 Route::any('method/{pageUri}/{resourceUri?}', 'method')
                     ->name('method');
+                Route::post('reactive/{pageUri}/{resourceUri?}/{resourceItem?}', 'reactive')
+                    ->name('reactive');
             });
 
         });

@@ -4,6 +4,9 @@ namespace MoonShine\Http\Controllers;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\FieldsGroup;
+use MoonShine\Fields\Field;
+use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,9 +15,9 @@ use Throwable;
 class AsyncController extends MoonShineController
 {
     /**
-     * @deprecated will be removed in 3.0
-     * @see component
      * @throws Throwable
+     * @see component
+     * @deprecated will be removed in 3.0
      */
     public function table(MoonShineRequest $request): View|Closure|string
     {
@@ -53,7 +56,9 @@ class AsyncController extends MoonShineController
                 : $request->getPage();
 
             $result = $pageOrResource
-                ->{$request->get('method')}($request);
+                ->{$request->get('method')}(
+                    $request
+                );
 
             $toast = $request->session()->get('toast', $toast);
         } catch (Throwable $e) {
@@ -64,7 +69,7 @@ class AsyncController extends MoonShineController
 
         $request->session()->forget('toast');
 
-        if($result instanceof JsonResponse) {
+        if ($result instanceof JsonResponse) {
             return $result;
         }
 
@@ -73,5 +78,55 @@ class AsyncController extends MoonShineController
             redirect: $result instanceof RedirectResponse ? $result->getTargetUrl() : null,
             messageType: $result instanceof Throwable ? 'error' : $toast['type']
         );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function reactive(MoonShineRequest $request): JsonResponse
+    {
+        $page = $request->getPage();
+
+        $form = $page->getComponents()->findForm(
+            $request->get('_component_name')
+        );
+
+        if (is_null($form)) {
+            return $this->json();
+        }
+
+        $fields = $form
+            ->preparedFields()
+            ->onlyFields()
+            ->reactiveFields();
+
+        $values = $request->collect('values')->map(function ($value, $column) use ($fields) {
+            return $fields->findByColumn($column) instanceof Select
+                ? data_get($value, 'value', $value)
+                : $value;
+        });
+
+        $fields->fill($values->toArray());
+
+        foreach ($fields as $field) {
+            $fields = $field->reactiveCallback(
+                $fields,
+                data_get($values, $field->column()),
+                $values->toArray(),
+            );
+        }
+
+        $values = $fields
+            ->mapWithKeys(fn (Field $field) => [$field->column() => $field->value()]);
+
+        $fields = $fields->mapWithKeys(function (Field $field) {
+            return [$field->column() => (string) FieldsGroup::make([$field])->render()];
+        });
+
+        return $this->json(data: [
+            'form' => $form,
+            'fields' => $fields,
+            'values' => $values,
+        ]);
     }
 }

@@ -11,8 +11,10 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Contracts\HasReactivity;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Traits\Fields\BooleanTrait;
+use MoonShine\Traits\Fields\Reactivity;
 use MoonShine\Traits\Fields\UpdateOnPreview;
 use MoonShine\Traits\Fields\WithDefaultValue;
 
@@ -21,11 +23,13 @@ class Checkbox extends Field implements
     DefaultCanBeNumeric,
     DefaultCanBeString,
     DefaultCanBeBool,
-    HasUpdateOnPreview
+    HasUpdateOnPreview,
+    HasReactivity
 {
     use BooleanTrait;
     use WithDefaultValue;
     use UpdateOnPreview;
+    use Reactivity;
 
     protected string $view = 'moonshine::fields.checkbox';
 
