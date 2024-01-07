@@ -108,7 +108,7 @@ final class Modal extends MoonShineComponent implements HasFields
      */
     public function hasFields(): bool
     {
-        return $this->components?->onlyFields()->isNotEmpty();
+        return ! is_null($this->components);
     }
 
     /**
@@ -116,12 +116,12 @@ final class Modal extends MoonShineComponent implements HasFields
      */
     public function getFields(): Fields
     {
-        return $this->components->onlyFields();
+        return Fields::make($this->components?->toArray() ?? []);
     }
 
     public function preparedFields(): Fields
     {
-        return $this->hasFields() ? $this->getFields() : new Fields();
+        return $this->getFields();
     }
 
     public function fields(array|Fields|Closure $fields): static
