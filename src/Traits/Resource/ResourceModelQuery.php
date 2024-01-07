@@ -25,6 +25,8 @@ trait ResourceModelQuery
 
     protected array $with = [];
 
+    protected array $withCount = [];
+
     protected string $sortColumn = '';
 
     protected string $sortDirection = 'DESC';
@@ -189,6 +191,10 @@ trait ResourceModelQuery
 
         if ($this->hasWith()) {
             $this->query->with($this->getWith());
+        }
+
+        if ($this->hasWithCount()) {
+            $this->query->withCount($this->getWithCount());
         }
 
         return $this->query;
@@ -443,6 +449,16 @@ trait ResourceModelQuery
     public function getWith(): array
     {
         return $this->with;
+    }
+
+    public function hasWithCount(): bool
+    {
+        return $this->withCount !== [];
+    }
+
+    public function getWithCount(): array
+    {
+        return $this->withCount;
     }
 
     public function sortColumn(): string
