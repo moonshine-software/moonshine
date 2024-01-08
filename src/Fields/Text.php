@@ -15,7 +15,7 @@ use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Fields\WithInputExtensions;
 use MoonShine\Traits\Fields\WithMask;
 
-class Text extends Field implements HasDefaultValue,DefaultCanBeString, HasUpdateOnPreview, HasReactivity
+class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpdateOnPreview, HasReactivity
 {
     use WithInputExtensions;
     use WithMask;

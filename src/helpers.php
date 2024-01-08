@@ -221,7 +221,8 @@ if (! function_exists('memoize')) {
     function memoize(callable $callback): mixed
     {
         $trace = debug_backtrace(
-            DEBUG_BACKTRACE_PROVIDE_OBJECT, 2
+            DEBUG_BACKTRACE_PROVIDE_OBJECT,
+            2
         );
 
         $backtrace = new Backtrace($trace);

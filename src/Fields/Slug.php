@@ -25,10 +25,12 @@ class Slug extends Text
 
     public function live(): static
     {
-        return $this->reactive(function(Fields $fields): Fields {
+        return $this->reactive(function (Fields $fields): Fields {
             $title = $fields->findByColumn($this->getFrom());
 
-            return tap($fields, fn ($fields) => $fields
+            return tap(
+                $fields,
+                fn ($fields) => $fields
                 ->findByColumn($this->column())
                 ?->setValue(str($title->toValue())->slug()->value())
             );

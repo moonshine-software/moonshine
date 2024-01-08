@@ -15,7 +15,7 @@ class MemoizeRepository implements Countable
 
     public static function getInstance(): static
     {
-        return static::$cache ??= new static;
+        return static::$cache ??= new static();
     }
 
     protected function __construct()

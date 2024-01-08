@@ -98,7 +98,7 @@ final class Modal extends MoonShineComponent implements HasFields
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
-            'slot' => new ComponentSlot(value($this->content, $this).$componentsHtml),
+            'slot' => new ComponentSlot(value($this->content, $this) . $componentsHtml),
             'outerHtml' => new ComponentSlot(value($this->outer, $this), $this->outerAttributes),
         ];
     }

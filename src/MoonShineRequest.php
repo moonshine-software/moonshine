@@ -17,7 +17,7 @@ class MoonShineRequest extends Request
 
     public function getResource(): ?ResourceContract
     {
-        return memoize(fn(): ?ResourceContract => moonshine()->getResourceFromUriKey(
+        return memoize(fn (): ?ResourceContract => moonshine()->getResourceFromUriKey(
             $this->getResourceUri()
         )?->boot());
     }

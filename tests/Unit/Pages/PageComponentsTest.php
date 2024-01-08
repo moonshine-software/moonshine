@@ -52,9 +52,9 @@ beforeEach(function (): void {
             components: PageComponents::make([
                 FormBuilder::make()->fields([
                     Fragment::make([
-                        HasOne::make('HasModal', 'has_modal', resource: new TestResource())
+                        HasOne::make('HasModal', 'has_modal', resource: new TestResource()),
                     ]),
-                ])->name('form-in-modal')
+                ])->name('form-in-modal'),
             ])
         ),
     ])->name('block');
@@ -118,7 +118,8 @@ it('find component in modal', function () {
 });
 
 it('find has field in modal', function () {
-    expect($this->collection
+    expect(
+        $this->collection
         ->onlyFields()
         ->onlyHasFields()
         ->findByColumn('has_modal')
