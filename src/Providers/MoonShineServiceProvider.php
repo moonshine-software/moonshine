@@ -103,7 +103,7 @@ class MoonShineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(MoonShine::class);
 
-        $this->app->singleton(
+        $this->app->{app()->runningUnitTests() ? 'bind' : 'singleton'}(
             MoonShineRequest::class,
             fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );
