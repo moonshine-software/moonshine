@@ -30,9 +30,8 @@ trait WithIcon
         return Icon::make(
             $this->iconValue(),
             $size,
-            $color,
-            $class
-        )->render();
+            $color
+        )->customAttributes(['class' => $class])->render();
     }
 
     public function iconValue(): string
