@@ -21,9 +21,12 @@ class Tabs extends Decoration
 
     protected string $justifyAlign = 'start';
 
-    public function __construct(protected array $tabs = [])
+    /**
+     * @param list<Tab> $tabs
+     */
+    public function __construct(array $tabs = [])
     {
-        parent::__construct(uniqid('', true));
+        parent::__construct(uniqid('', true), $tabs);
     }
 
     public function active(string|int $active): self
@@ -71,7 +74,7 @@ class Tabs extends Decoration
     public function tabs(): Fields
     {
         return tap(
-            Fields::make($this->tabs),
+            Fields::make($this->fields),
             static function (Fields $tabs): void {
                 throw_if(
                     $tabs->every(fn ($tab): bool => ! $tab instanceof Tab),
