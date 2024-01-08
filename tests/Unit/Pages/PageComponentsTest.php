@@ -1,8 +1,10 @@
 <?php
 
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Modal;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
@@ -44,6 +46,17 @@ beforeEach(function (): void {
 
         TableBuilder::make()
             ->name('parent-table'),
+
+        Modal::make(
+            'Test Modal',
+            components: PageComponents::make([
+                FormBuilder::make()->fields([
+                    Fragment::make([
+                        HasOne::make('HasModal', 'has_modal', resource: new TestResource())
+                    ]),
+                ])->name('form-in-modal')
+            ])
+        ),
     ])->name('block');
 
     $this->collection = PageComponents::make([
@@ -60,7 +73,7 @@ it('find table', function () {
 
 it('only forms', function () {
     expect($this->collection->onlyForms())
-        ->toHaveCount(2)
+        ->toHaveCount(3)
         ->each->toBeInstanceOf(FormBuilder::class);
 });
 
@@ -72,7 +85,7 @@ it('only tables', function () {
 
 it('only fields', function () {
     expect($this->collection->onlyFields())
-        ->toHaveCount(4)
+        ->toHaveCount(5)
         ->each->toBeInstanceOf(Field::class);
 });
 
@@ -97,6 +110,23 @@ it('find by name', function () {
         ->toBe('line-break');
 });
 
+it('find component in modal', function () {
+    expect($this->collection->findByName('form-in-modal'))
+        ->toBeInstanceOf(FormBuilder::class)
+        ->getName()
+        ->toBe('form-in-modal');
+});
+
+it('find has field in modal', function () {
+    expect($this->collection
+        ->onlyFields()
+        ->onlyHasFields()
+        ->findByColumn('has_modal')
+    )
+        ->not()
+        ->toBeNull();
+});
+
 it('form fields without outside', function () {
     expect($this->collection->onlyFields()->formFields(withOutside: false)->onlyFields())
         ->toHaveCount(2)
@@ -105,19 +135,19 @@ it('form fields without outside', function () {
 
 it('form fields with outside', function () {
     expect($this->collection->onlyFields()->formFields()->onlyFields())
-        ->toHaveCount(3)
+        ->toHaveCount(4)
         ->each->toBeInstanceOf(Field::class);
 });
 
 it('fields only outside', function () {
     expect($this->collection->onlyFields()->onlyOutside())
-        ->toHaveCount(1)
+        ->toHaveCount(2)
         ->each->toBeInstanceOf(HasOne::class);
 });
 
 it('form fields only outside', function () {
     expect($this->collection->onlyFields()->formFields()->onlyOutside())
-        ->toHaveCount(1)
+        ->toHaveCount(2)
         ->each->toBeInstanceOf(HasOne::class);
 });
 
