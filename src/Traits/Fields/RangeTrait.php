@@ -20,7 +20,9 @@ trait RangeTrait
 
     public function fromAttributes(array $attributes): static
     {
-        $this->fromAttributes = $this->attributes()->merge($attributes);
+        $this->fromAttributes = $this->attributes()
+            ->except(array_keys($attributes))
+            ->merge($attributes);
 
         return $this;
     }
@@ -48,7 +50,9 @@ trait RangeTrait
 
     public function toAttributes(array $attributes): static
     {
-        $this->toAttributes = $this->attributes()->merge($attributes);
+        $this->toAttributes = $this->attributes()
+            ->except(array_keys($attributes))
+            ->merge($attributes);
 
         return $this;
     }
