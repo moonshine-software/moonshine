@@ -7,6 +7,7 @@ namespace MoonShine;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -162,7 +163,9 @@ final class MoonShineRouter
         if (is_null($resource)) {
             $route = moonshine()->getPageFromUriKey(
                 is_string($page) ? self::uriKey($page) : $page->uriKey()
-            )->route($params);
+            )?->route($params);
+
+            throw_if(is_null($route), MoonShineNotFoundException::pageNotFound());
 
             return $redirect
                 ? redirect($route)
@@ -173,16 +176,19 @@ final class MoonShineRouter
             ? $resource
             : new $resource();
 
-        $route = $resource->getPages()
-            ->when(
-                is_null($page),
-                static fn (Pages $pages) => $pages->first(),
-                static fn (Pages $pages): ?Page => $pages->findByUri(
-                    $page instanceof Page
-                        ? $page->uriKey()
-                        : self::uriKey($page)
-                ),
-            )->route($params);
+        $page = $resource->getPages()->when(
+            is_null($page),
+            static fn (Pages $pages) => $pages->first(),
+            static fn (Pages $pages): ?Page => $pages->findByUri(
+                $page instanceof Page
+                    ? $page->uriKey()
+                    : self::uriKey($page)
+            ),
+        );
+
+        throw_if(!$page instanceof Page, MoonShineNotFoundException::pageNotFound());
+
+        $route = $page->route($params);
 
         return $redirect
             ? redirect($route)
