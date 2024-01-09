@@ -186,7 +186,7 @@ final class MoonShineRouter
             ),
         );
 
-        throw_if(!$page instanceof Page, MoonShineNotFoundException::pageNotFound());
+        throw_if(! $page instanceof Page, MoonShineNotFoundException::pageNotFound());
 
         $route = $page->route($params);
 
