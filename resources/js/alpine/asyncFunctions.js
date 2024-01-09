@@ -50,7 +50,7 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
       if (data.fields_values !== undefined) {
         for (let [selector, value] of Object.entries(data.fields_values)) {
           let el = document.querySelector(selector)
-          if(el !== null) {
+          if (el !== null) {
             el.value = value
             el.dispatchEvent(new Event('change'))
           }
