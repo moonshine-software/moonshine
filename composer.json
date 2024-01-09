@@ -29,7 +29,7 @@
     "orchestra/testbench": "^8.14",
     "pestphp/pest-plugin-laravel": "^2.2",
     "pestphp/pest-plugin-mock": "^2.0",
-    "rector/rector": "^0.18",
+    "rector/rector": "^0.19",
     "nunomaduro/larastan": "^2.6"
   },
   "autoload": {
