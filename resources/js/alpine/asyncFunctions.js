@@ -47,6 +47,16 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
         element.innerHTML = data.html ? data.html : data
       }
 
+      if (data.fields_values !== undefined) {
+        for (let [selector, value] of Object.entries(data.fields_values)) {
+          let el = document.querySelector(selector)
+          if(el !== null) {
+            el.value = value
+            el.dispatchEvent(new Event('change'))
+          }
+        }
+      }
+
       if (data.redirect) {
         window.location = data.redirect
       }
