@@ -61,7 +61,7 @@ final class MoonShineRouter
     public static function asyncMethodClosure(
         string $method,
         ?string $message = null,
-        array $params = [],
+        Closure|array $params = [],
         ?Page $page = null,
         ?ResourceContract $resource = null
     ): Closure {

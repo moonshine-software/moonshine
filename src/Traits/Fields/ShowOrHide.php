@@ -39,9 +39,9 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function hideOnIndex(mixed $condition = null): static
+    public function hideOnIndex(mixed $condition = true): static
     {
-        $this->showOnIndex = Condition::boolean($condition, false);
+        $this->showOnIndex = !value($condition);
 
         return $this;
     }
@@ -63,9 +63,9 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function hideOnForm(mixed $condition = null): static
+    public function hideOnForm(mixed $condition = true): static
     {
-        $this->showOnForm = Condition::boolean($condition, false);
+        $this->showOnForm = !value($condition);
 
         return $this;
     }
@@ -87,9 +87,9 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function hideOnDetail(mixed $condition = null): static
+    public function hideOnDetail(mixed $condition = true): static
     {
-        $this->showOnDetail = Condition::boolean($condition, false);
+        $this->showOnDetail = !value($condition);
 
         return $this;
     }
@@ -111,9 +111,9 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function hideOnExport(mixed $condition = null): static
+    public function hideOnExport(mixed $condition = true): static
     {
-        $this->showOnExport = Condition::boolean($condition, false);
+        $this->showOnExport = !value($condition);
 
         return $this;
     }
@@ -136,9 +136,9 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function hideOnCreate(mixed $condition = null): static
+    public function hideOnCreate(mixed $condition = true): static
     {
-        $this->showOnCreateForm = Condition::boolean($condition, false);
+        $this->showOnCreateForm = !value($condition);
         $this->showOnForm = $this->isNowOnUpdateForm() || $this->showOnCreateForm;
 
         return $this;
@@ -162,9 +162,9 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function hideOnUpdate(mixed $condition = null): static
+    public function hideOnUpdate(mixed $condition = true): static
     {
-        $this->showOnUpdateForm = Condition::boolean($condition, false);
+        $this->showOnUpdateForm = !value($condition);
         $this->showOnForm = $this->isNowOnCreateForm() || $this->showOnUpdateForm;
 
         return $this;
