@@ -119,7 +119,7 @@ class HasOne extends ModelRelationField implements HasFields
         );
 
         $redirectAfter = to_page(
-            page: $resource->formPage(),
+            page: $parentResource->formPage(),
             resource: $parentResource,
             params: ['resourceItem' => $parentItem->getKey()]
         );
