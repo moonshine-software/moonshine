@@ -361,7 +361,7 @@ class BelongsToMany extends ModelRelationField implements
                 $value = $this->columnOrFormattedValue($item, data_get($item, $column) ?? false);
 
                 if ($this->inLineBadge) {
-                    return Badge::make($value, 'primary')
+                    return Badge::make((string) $value, 'primary')
                         ->customAttributes(['class' => 'm-1'])
                         ->render();
                 }

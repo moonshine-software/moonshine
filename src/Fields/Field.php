@@ -363,7 +363,7 @@ abstract class Field extends FormElement
         }
 
         if ($this->isBadge()) {
-            return Badge::make($value, $this->badgeColor($this->toValue()))
+            return Badge::make((string) $value, $this->badgeColor($this->toValue()))
                 ->render();
         }
 

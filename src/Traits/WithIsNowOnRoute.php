@@ -94,6 +94,10 @@ trait WithIsNowOnRoute
             return true;
         }
 
+        if(moonshineRequest()->routeIs('moonshine.crud.*')) {
+            return false;
+        }
+
         return is_null(moonshineRequest()->getItemID())
             && moonshineRequest()->findPage()?->pageType() === PageType::FORM;
     }
@@ -110,6 +114,10 @@ trait WithIsNowOnRoute
 
         if(moonshineRequest()->routeIs('moonshine.crud.update')) {
             return true;
+        }
+
+        if(moonshineRequest()->routeIs('moonshine.crud.*')) {
+            return false;
         }
 
         return moonshineRequest()->getItemID()
