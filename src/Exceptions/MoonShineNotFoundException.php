@@ -17,4 +17,9 @@ class MoonShineNotFoundException extends Exception
             'message' => trans('moonshine::ui.404'),
         ])->setStatusCode(Response::HTTP_NOT_FOUND);
     }
+
+    public static function pageNotFound(): self
+    {
+        return new self('Page not found');
+    }
 }
