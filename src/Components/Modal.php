@@ -15,7 +15,7 @@ use MoonShine\Support\Condition;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|View|string $content, Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '')
+ * @method static static make(Closure|string $title, Closure|View|string $content, Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', MoonShineRenderElements|null $components = null)
  */
 final class Modal extends MoonShineComponent implements HasFields
 {

@@ -37,7 +37,7 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
       }
 
       if (t.callback !== undefined && t.callback) {
-        responseCallback(t.callback, response.data, t.$el, t.events, t)
+        responseCallback(t.callback, response, t.$el, t.events, t)
 
         return
       }
