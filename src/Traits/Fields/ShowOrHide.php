@@ -41,7 +41,7 @@ trait ShowOrHide
      */
     public function hideOnIndex(mixed $condition = true): static
     {
-        $this->showOnIndex = !value($condition);
+        $this->showOnIndex = ! value($condition);
 
         return $this;
     }
@@ -65,7 +65,7 @@ trait ShowOrHide
      */
     public function hideOnForm(mixed $condition = true): static
     {
-        $this->showOnForm = !value($condition);
+        $this->showOnForm = ! value($condition);
 
         return $this;
     }
@@ -89,7 +89,7 @@ trait ShowOrHide
      */
     public function hideOnDetail(mixed $condition = true): static
     {
-        $this->showOnDetail = !value($condition);
+        $this->showOnDetail = ! value($condition);
 
         return $this;
     }
@@ -113,7 +113,7 @@ trait ShowOrHide
      */
     public function hideOnExport(mixed $condition = true): static
     {
-        $this->showOnExport = !value($condition);
+        $this->showOnExport = ! value($condition);
 
         return $this;
     }
@@ -138,7 +138,7 @@ trait ShowOrHide
      */
     public function hideOnCreate(mixed $condition = true): static
     {
-        $this->showOnCreateForm = !value($condition);
+        $this->showOnCreateForm = ! value($condition);
         $this->showOnForm = $this->isNowOnUpdateForm() || $this->showOnCreateForm;
 
         return $this;
@@ -164,7 +164,7 @@ trait ShowOrHide
      */
     public function hideOnUpdate(mixed $condition = true): static
     {
-        $this->showOnUpdateForm = !value($condition);
+        $this->showOnUpdateForm = ! value($condition);
         $this->showOnForm = $this->isNowOnCreateForm() || $this->showOnUpdateForm;
 
         return $this;
