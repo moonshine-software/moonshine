@@ -14,7 +14,7 @@ class CoverFactory extends Factory
     public function definition(): array
     {
         return [
-            'image' => '',
+            'image' => fake()->words(5, true),
         ];
     }
 }
