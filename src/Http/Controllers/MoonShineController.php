@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Enums\ToastType;
+use MoonShine\Http\Responses\MoonShineJsonResponse;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\ViewPage;
 use MoonShine\Traits\Controller\InteractsWithAuth;
@@ -22,15 +24,14 @@ abstract class MoonShineController extends BaseController
         string $message = '',
         array $data = [],
         string $redirect = null,
-        string $messageType = 'success'
+        string|ToastType $messageType = 'success'
     ): JsonResponse {
-        $data = ['message' => $message, 'messageType' => $messageType, ...$data];
-
-        if ($redirect) {
-            $data['redirect'] = $redirect;
-        }
-
-        return response()->json($data);
+        return MoonShineJsonResponse::make(data: $data)
+            ->toast($message, $messageType)
+            ->when(
+                $redirect,
+                fn (MoonShineJsonResponse $response) => $response->redirect($redirect)
+            );
     }
 
     protected function view(string $path, array $data = []): Page
