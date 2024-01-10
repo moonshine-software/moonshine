@@ -30,7 +30,7 @@ abstract class MoonShineController extends BaseController
             ->toast($message, $messageType)
             ->when(
                 $redirect,
-                fn (MoonShineJsonResponse $response) => $response->redirect($redirect)
+                fn (MoonShineJsonResponse $response): MoonShineJsonResponse => $response->redirect($redirect)
             );
     }
 

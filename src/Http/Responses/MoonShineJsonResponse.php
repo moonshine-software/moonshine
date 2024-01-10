@@ -55,7 +55,6 @@ final class MoonShineJsonResponse extends JsonResponse
 
     /**
      * @param  array<string, string>  $value
-     * @return self
      */
     public function fieldsValues(array $value): self
     {
