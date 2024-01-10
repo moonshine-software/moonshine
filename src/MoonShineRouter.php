@@ -11,6 +11,7 @@ use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Throwable;
 
 final class MoonShineRouter
 {
@@ -149,6 +150,9 @@ final class MoonShineRouter
         ]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public static function to_page(
         string|Page|null $page = null,
         string|ResourceContract|null $resource = null,

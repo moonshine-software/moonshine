@@ -1,7 +1,7 @@
 @props([
     'icon' => '',
     'size' => 5,
-    'color',
+    'color' => '',
     'class' => $attributes->get('class')
 ])
 
