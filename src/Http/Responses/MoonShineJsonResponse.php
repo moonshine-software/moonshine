@@ -15,9 +15,7 @@ final class MoonShineJsonResponse extends JsonResponse
     use Makeable;
     use Conditionable;
 
-    protected array $jsonData = [
-        'messageType' => 'default'
-    ];
+    protected array $jsonData = [];
 
     public function __construct(array $data = [])
     {
@@ -35,17 +33,13 @@ final class MoonShineJsonResponse extends JsonResponse
         return $this->setData($this->jsonData);
     }
 
-    public function message(string $value): self
-    {
-        return $this->mergeJsonData(['message' => $value]);
-    }
-
-    public function type(string|ToastType $value): self
+    public function toast(string $value, string|ToastType $type = 'default'): self
     {
         return $this->mergeJsonData([
-            'messageType' => is_string($value)
-                ? $value
-                : $value->value
+            'message' => $value,
+            'messageType' => is_string($type)
+                ? $type
+                : $type->value
         ]);
     }
 
