@@ -115,7 +115,7 @@ describe('without special fields', function () {
             ->setTestFields([
                 DateRange::make('Range')
                     ->fromTo('start_date', 'end_date')
-                    ->hideOnCreate()
+                    ->hideOnCreate(),
             ])
         ;
     });
