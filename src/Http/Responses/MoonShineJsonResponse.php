@@ -39,7 +39,7 @@ final class MoonShineJsonResponse extends JsonResponse
             'message' => $value,
             'messageType' => is_string($type)
                 ? $type
-                : $type->value
+                : $type->value,
         ]);
     }
 
