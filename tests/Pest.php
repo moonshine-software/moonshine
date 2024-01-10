@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Text;
@@ -22,12 +23,16 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 uses(TestCase::class)
     ->in(__DIR__);
 
-function fakeRequest(string $url = '/', string $method = 'GET', array $parameters = []): void
+function fakeRequest(string $url = '/', string $method = 'GET', array $parameters = [], bool $dispatchRoute = false): void
 {
     app()->instance(
         'request',
         request()->create($url, $method, $parameters)
     );
+
+    if($dispatchRoute) {
+        Route::dispatchToRoute(app('request'));
+    }
 }
 
 function asAdmin(): TestCase
