@@ -10,6 +10,8 @@ use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Factories\CoverFactory;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('crud-controller');
 
@@ -99,6 +101,23 @@ describe('without special fields', function () {
             $this->itemResource->route('crud.destroy', $item->getKey())
         )
             ->assertRedirect();
+    });
+
+    it('hideOnCreate crud delete', function () {
+
+        $item = storeResource($this->itemResource, $this->storeData);
+
+        $resource = new TestResource();
+
+        fakeRequest($resource->route('crud.destroy', $item->getKey()), 'DELETE', dispatchRoute: true);
+
+        TestResourceBuilder::new(Item::class)
+            ->setTestFields([
+                DateRange::make('Range')
+                    ->fromTo('start_date', 'end_date')
+                    ->hideOnCreate()
+            ])
+        ;
     });
 
     it('crud delete item with null cast value', function () {

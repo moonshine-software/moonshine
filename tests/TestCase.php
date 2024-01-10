@@ -25,6 +25,8 @@ use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestFileResourceWithParent;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\Resources\WithCustomPages\TestCategoryPageResource;
+use MoonShine\Tests\Fixtures\Resources\WithCustomPages\TestCoverPageResource;
 use MoonShine\Tests\Fixtures\TestServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -120,6 +122,9 @@ class TestCase extends Orchestra
             new TestImageResource(),
             new TestFileResource(),
             new TestFileResourceWithParent(),
+
+            new TestCategoryPageResource(),
+            new TestCoverPageResource(),
 
             new MoonShineUserRoleResource(),
         ], newCollection: true)
