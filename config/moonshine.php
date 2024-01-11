@@ -35,6 +35,8 @@ return [
 
     'disk' => 'public',
 
+    'disk_options' => [],
+
     'cache' => 'file',
 
     'forms' => [

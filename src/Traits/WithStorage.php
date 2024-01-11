@@ -10,6 +10,8 @@ trait WithStorage
 {
     protected ?string $disk = null;
 
+    protected ?array $options = null;
+
     protected string $dir = '/';
 
     public function dir(string $dir): static
@@ -36,6 +38,26 @@ trait WithStorage
     public function getDisk(): string
     {
         return $this->disk ?? config('moonshine.disk', 'public');
+    }
+
+    public function options(array $options): static
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options ?? config('moonshine.disk_options', []);
+    }
+
+    public function parseOptions(): array
+    {
+        return [
+            ...$this->getOptions(),
+            'disk' => $this->getDisk()
+        ];
     }
 
     public function getDir(): string

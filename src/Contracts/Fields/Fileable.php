@@ -10,6 +10,10 @@ interface Fileable
 
     public function getDisk(): string;
 
+    public function options(array $options): static;
+
+    public function getOptions(): array;
+
     public function dir(string $dir): static;
 
     public function getDir(): string;
