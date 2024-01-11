@@ -199,7 +199,7 @@ trait TableStates
             'sortable' => $this->isSortable(),
             'simple' => $this->isSimple(),
             'searchable' => $this->isSearchable(),
-            'searchValue' => request('search', '')
+            'searchValue' => request('search', ''),
         ];
     }
 }

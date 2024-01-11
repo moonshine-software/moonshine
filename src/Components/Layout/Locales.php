@@ -19,10 +19,10 @@ final class Locales extends MoonShineComponent
     {
         $this->current = app()->getLocale();
         $this->locales = collect(config('moonshine.locales', []))
-            ->mapWithKeys(static fn($locale): array => [
+            ->mapWithKeys(static fn ($locale): array => [
                 request()->fullUrlWithQuery([
                     'change-moonshine-locale' => $locale,
-                ]) => $locale
+                ]) => $locale,
             ]);
     }
 }

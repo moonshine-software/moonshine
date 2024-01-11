@@ -15,8 +15,7 @@ final class Search extends MoonShineComponent
 
     public function __construct(
         public string $key = 'search'
-    )
-    {
+    ) {
     }
 
     protected function globalSearchEnabled(): bool
@@ -45,7 +44,7 @@ final class Search extends MoonShineComponent
             'isEnabled' => $this->globalSearchEnabled() || $this->resourceSearchEnabled(),
             '_action' => $action,
             'isGlobal' => $this->globalSearchEnabled(),
-            'value' => request($this->key, '')
+            'value' => request($this->key, ''),
         ];
     }
 }
