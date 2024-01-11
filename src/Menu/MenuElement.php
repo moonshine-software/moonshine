@@ -61,25 +61,29 @@ abstract class MenuElement
             return false;
         }
 
-        if ($this->isItem()) {
-            $filler = $this instanceof MenuItem
-                ? $this->getFiller()
-                : null;
-
-            if ($filler instanceof MenuFiller) {
-                return $filler->isActive();
-            }
-
-            $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
-            $host = parse_url($this->url(), PHP_URL_HOST) ?? '';
-
-            if ($path === '/' && request()->host() === $host) {
-                return request()->path() === $path;
-            }
-
-            return request()->fullUrlIs($this->url() . '*');
+        if (!$this->isItem()) {
+            return false;
         }
 
-        return false;
+        $filler = $this instanceof MenuItem
+            ? $this->getFiller()
+            : null;
+
+        if ($filler instanceof MenuFiller) {
+            return $filler->isActive();
+        }
+
+        $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
+        $host = parse_url($this->url(), PHP_URL_HOST) ?? '';
+
+        if ($path === '/' && request()->host() === $host) {
+            return request()->path() === $path;
+        }
+
+        if($this->url() === moonshineRouter()->home()) {
+            return request()->fullUrlIs($this->url());
+        }
+
+        return request()->fullUrlIs($this->url() . '*');
     }
 }
