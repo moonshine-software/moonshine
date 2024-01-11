@@ -220,6 +220,16 @@ class BelongsToMany extends ModelRelationField implements
         );
     }
 
+    public function fragmentUrl(): string
+    {
+        return to_page(
+            page: moonshineRequest()->getPage(),
+            resource: moonshineRequest()->getResource(),
+            params: ['resourceItem' => moonshineRequest()->getItemID()],
+            fragment: $this->getRelationName()
+        );
+    }
+
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
         // if filter data or raw fill logic

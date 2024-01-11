@@ -7,11 +7,17 @@ namespace MoonShine\Components\Layout;
 use MoonShine\Components\MoonShineComponent;
 
 /**
- * @method static static make()
+ * @method static static make(string $key = 'search')
  */
 final class Search extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.search';
+
+    public function __construct(
+        public string $key = 'search'
+    )
+    {
+    }
 
     protected function globalSearchEnabled(): bool
     {
@@ -39,6 +45,7 @@ final class Search extends MoonShineComponent
             'isEnabled' => $this->globalSearchEnabled() || $this->resourceSearchEnabled(),
             '_action' => $action,
             'isGlobal' => $this->globalSearchEnabled(),
+            'value' => request($this->key, '')
         ];
     }
 }

@@ -42,6 +42,8 @@ final class CardsBuilder extends IterableComponent
 
     protected ?Closure $customComponent = null;
 
+    protected array|Closure $componentAttributes = [];
+
     public function __construct(
         Paginator|iterable $items = [],
         Fields|array $fields = [],
@@ -108,6 +110,13 @@ final class CardsBuilder extends IterableComponent
             ->asyncComponent(name: $this->getName());
     }
 
+    public function componentAttributes(array|Closure $attributes): self
+    {
+        $this->componentAttributes = $attributes;
+
+        return $this;
+    }
+
     /**
      * @throws Throwable
      */
@@ -128,6 +137,7 @@ final class CardsBuilder extends IterableComponent
             return Card::make(...$this->getMapper($data, $fields, $index))
                 ->content((string) value($this->content, $data, $index, $this))
                 ->header((string) value($this->header, $data, $index, $this))
+                ->customAttributes(value($this->componentAttributes, $data, $index, $this))
                 ->actions(
                     fn () => ActionGroup::make($this->getButtons($data)->toArray())
                 );

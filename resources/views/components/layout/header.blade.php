@@ -19,8 +19,7 @@
         'moonshine::layouts.shared.notifications'
     )
 
-    @includeWhen(
-        $locales && count(config('moonshine.locales', [])) > 1,
-        'moonshine::layouts.shared.locales'
-    )
+    @if($locales)
+        <x-moonshine::layout.locales />
+    @endif
 </div>

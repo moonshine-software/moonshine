@@ -14,6 +14,7 @@
     'reindex' => false,
     'sortable' => false,
     'searchable' => false,
+    'searchValue' => '',
     'name' => 'default'
 ])
 
@@ -37,7 +38,7 @@
                 <x-moonshine::form.input
                     name="search"
                     type="search"
-                    value="{{ request('search', '') }}"
+                    value="{{ $searchValue }}"
                     placeholder="{{ __('moonshine::ui.search') }}"
                 />
             </form>

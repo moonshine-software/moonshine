@@ -2,7 +2,7 @@
     'enabled' => $isEnabled ?? true,
     'global' => $isGlobal ?? false,
     'action' => $_action ?? '',
-    'key' => 'search',
+    'value' => '',
     'placeholder' => __('moonshine::ui.search') . ' (Ctrl+K)'
 ])
 @if($enabled && !$global)
@@ -20,7 +20,7 @@
                 @keyup.ctrl.period.window="$refs.searchInput.focus()"
                 type="search"
                 class="search-form-field"
-                value="{{ request($key, '') }}"
+                value="{{ $value }}"
                 placeholder="{{ $placeholder }}"
             />
 

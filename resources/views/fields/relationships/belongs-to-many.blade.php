@@ -4,17 +4,11 @@
 
         <x-moonshine::divider />
 
-
-    @fragment($element->getRelationName())
-        <div x-data="fragment('{{ to_page(
-            page: moonshineRequest()->getPage(),
-            resource: moonshineRequest()->getResource(),
-            params: ['resourceItem' => moonshineRequest()->getItemID()],
-            fragment: $element->getRelationName()
-        ) }}')"
-             @defineEvent('fragment-updated', $element->getRelationName(), 'fragmentUpdate')
-        >
-    @endif
+        @fragment($element->getRelationName())
+            <div x-data="fragment('{{ $element->fragmentUrl() }}')"
+                 @defineEvent('fragment-updated', $element->getRelationName(), 'fragmentUpdate')
+            >
+        @endif
             @if($element->isSelectMode())
                 <x-moonshine::form.select
                     :attributes="$element->attributes()->merge([
@@ -92,8 +86,8 @@
                     </div>
                 @endif
             @endif
-    @if($element->isCreatable())
-        </div>
-        @endfragment
-    @endif
+        @if($element->isCreatable())
+            </div>
+            @endfragment
+        @endif
 </div>

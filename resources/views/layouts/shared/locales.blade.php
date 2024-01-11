@@ -1,21 +1,23 @@
-@if(config('moonshine.locales'))
+@props([
+    'current',
+    'locales'
+])
+@if($locales->isNotEmpty())
     <x-moonshine::dropdown
         placement="bottom-end"
     >
         <x-slot:toggler>
-            <a class="dropdown-btn btn">{{ app()->getLocale() }}</a>
+            <a class="dropdown-btn btn">{{ $current }}</a>
         </x-slot:toggler>
 
         <ul class="dropdown-menu">
-            @foreach(config('moonshine.locales') as $lang)
+            @foreach($locales as $href => $locale)
                 <li class="dropdown-menu-item">
                     <a
-                        href="{{ request()->fullUrlWithQuery([
-                            'change-moonshine-locale' => $lang,
-                        ]) }}"
+                        href="{{ $href }}"
                         class="dropdown-menu-link"
                     >
-                        {{ $lang }}
+                        {{ $locale }}
                     </a>
                 </li>
             @endforeach
