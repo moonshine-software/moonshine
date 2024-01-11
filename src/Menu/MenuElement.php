@@ -61,7 +61,7 @@ abstract class MenuElement
             return false;
         }
 
-        if (!$this->isItem()) {
+        if (! $this->isItem()) {
             return false;
         }
 
