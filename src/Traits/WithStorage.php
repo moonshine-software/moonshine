@@ -56,7 +56,7 @@ trait WithStorage
     {
         return [
             ...$this->getOptions(),
-            'disk' => $this->getDisk()
+            'disk' => $this->getDisk(),
         ];
     }
 
