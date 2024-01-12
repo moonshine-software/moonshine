@@ -96,7 +96,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
     {
-        return $asyncUrl ?? fn() => moonshineRouter()->asyncTable($this->getName());
+        return $asyncUrl ?? fn(): string => moonshineRouter()->asyncTable($this->getName());
     }
 
     protected function viewData(): array
