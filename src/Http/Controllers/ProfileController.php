@@ -5,13 +5,25 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
+use MoonShine\Fields\Fields;
+use MoonShine\Fields\Image;
 use MoonShine\Http\Requests\ProfileFormRequest;
+use MoonShine\Pages\Page;
+use MoonShine\Pages\ProfilePage;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends MoonShineController
 {
     public function store(ProfileFormRequest $request): Response
     {
+        /** @var Page $page */
+        $page = new (config('moonshine.pages.profile', ProfilePage::class))();
+        $fields = Fields::make($page->fields());
+
+        $image = $fields
+            ->onlyFields()
+            ->findByClass(Image::class);
+
         $data = $request->validated();
         $resultData = [
             config(
@@ -30,12 +42,11 @@ class ProfileController extends MoonShineController
             unset($data['password']);
         }
 
-        if ($request->hasFile('avatar')) {
+        if ($image && $request->hasFile('avatar')) {
             $resultData[config(
                 'moonshine.auth.fields.avatar',
                 'avatar'
-            )] = $request->file('avatar')
-                ->store('moonshine_users', 'public');
+            )] = $image->store($request->file('avatar'));
         } else {
             $resultData[config(
                 'moonshine.auth.fields.avatar',
@@ -43,7 +54,11 @@ class ProfileController extends MoonShineController
             )] = $request->get('hidden_avatar');
         }
 
-        $resultData = array_filter($resultData, static fn ($key): bool => $key !== 0 && $key !== '', ARRAY_FILTER_USE_KEY);
+        $resultData = array_filter(
+            $resultData,
+            static fn ($key): bool => $key !== 0 && $key !== '',
+            ARRAY_FILTER_USE_KEY
+        );
 
         $request->user()->update($resultData);
 

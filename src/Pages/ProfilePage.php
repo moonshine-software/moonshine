@@ -55,6 +55,7 @@ class ProfilePage extends Page
                             ->setValue(auth()->user()
                                 ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null)
                             ->disk(config('moonshine.disk', 'public'))
+                            ->options(config('moonshine.disk_options', []))
                             ->dir('moonshine_users')
                             ->removable()
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),

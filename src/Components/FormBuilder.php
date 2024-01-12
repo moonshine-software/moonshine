@@ -198,7 +198,9 @@ final class FormBuilder extends RowComponent
         ?Closure $after = null,
         bool $throw = false,
     ): bool {
-        $values = $this->getValues();
+        $values = $this->castData(
+            $this->getValues()
+        );
 
         if (is_null($default)) {
             $default = static fn (Field $field): Closure => static function (mixed $item) use ($field): mixed {
@@ -217,6 +219,7 @@ final class FormBuilder extends RowComponent
         try {
             $fields = $this
                 ->preparedFields()
+                ->onlyFields()
                 ->exceptElements(
                     fn (Field $element): bool => in_array($element->column(), $this->getExcludedFields(), true)
                 );
