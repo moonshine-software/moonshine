@@ -90,7 +90,7 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
-    protected function prepareAsyncUrl(?string $asyncUrl = null): ?string
+    protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
     {
         return $asyncUrl ?? $this->getAction();
     }
