@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use Closure;
 use Illuminate\Support\Arr;
 use MoonShine\Support\AlpineJs;
 
 trait HasAsync
 {
-    protected ?string $asyncUrl = null;
+    protected Closure|string|null $asyncUrl = null;
 
     protected string|array|null $asyncEvents = null;
 
@@ -20,7 +21,7 @@ trait HasAsync
         return ! is_null($this->asyncUrl);
     }
 
-    protected function prepareAsyncUrl(?string $asyncUrl = null): ?string
+    protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
     {
         return $asyncUrl;
     }
@@ -54,7 +55,7 @@ trait HasAsync
     }
 
     public function async(
-        ?string $asyncUrl = null,
+        Closure|string|null $asyncUrl = null,
         string|array|null $asyncEvents = null,
         string $asyncCallback = null
     ): static {
@@ -67,7 +68,7 @@ trait HasAsync
 
     public function asyncUrl(): ?string
     {
-        return $this->asyncUrl;
+        return value($this->asyncUrl);
     }
 
     public function asyncEvents(): string|array|null
