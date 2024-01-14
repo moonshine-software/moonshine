@@ -151,7 +151,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     public function requestValue(string|int|null $index = null): mixed
     {
-        if (!is_null($this->requestValueResolver)) {
+        if (! is_null($this->requestValueResolver)) {
             return value(
                 $this->requestValueResolver,
                 $this->requestNameDot($index),

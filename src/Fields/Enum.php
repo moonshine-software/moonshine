@@ -41,8 +41,8 @@ class Enum extends Select implements DefaultCanBeEnum
             return '';
         }
 
-        if(!$value instanceof $this->attached) {
-            $value = rescue(fn() => $this->attached::tryFrom($value)) ?? $value;
+        if(! $value instanceof $this->attached) {
+            $value = rescue(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
         if(is_scalar($value)) {
