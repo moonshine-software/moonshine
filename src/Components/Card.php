@@ -6,15 +6,16 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Traits\WithSlotContent;
 
 /**
  * @method static static make(Closure|string $title = '', Closure|string $thumbnail = '', Closure|string $url = '#', Closure|array $values = [], Closure|string|null $subtitle = null)
  */
 final class Card extends MoonShineComponent
 {
-    protected string $view = 'moonshine::components.card';
+    use WithSlotContent;
 
-    protected Closure|string $content = '';
+    protected string $view = 'moonshine::components.card';
 
     protected Closure|string $header = '';
 
@@ -28,13 +29,6 @@ final class Card extends MoonShineComponent
         protected Closure|string|null $subtitle = null,
         protected bool $overlay = false,
     ) {
-    }
-
-    public function content(Closure|string $value): self
-    {
-        $this->content = $value;
-
-        return $this;
     }
 
     public function header(Closure|string $value): self
@@ -95,9 +89,7 @@ final class Card extends MoonShineComponent
             'overlay' => $this->overlay,
             'subtitle' => value($this->subtitle, $this),
             'values' => value($this->values, $this),
-            'slot' => new ComponentSlot(
-                value($this->content, $this),
-            ),
+            'slot' => $this->getSlot(),
             'header' => new ComponentSlot(
                 value($this->header, $this),
             ),

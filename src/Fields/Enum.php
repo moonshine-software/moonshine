@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use BackedEnum;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeEnum;
-use UnitEnum;
 
 class Enum extends Select implements DefaultCanBeEnum
 {
+    /** @var class-string<BackedEnum>|null */
+    protected ?string $attached = null;
+
     /**
-     * @param  class-string<UnitEnum>  $class
+     * @param  class-string<BackedEnum>  $class
      * @return $this
      */
     public function attach(string $class): static
     {
+        $this->attached = $class;
+
         $values = collect($class::cases());
 
         $this->options(
@@ -32,16 +37,20 @@ class Enum extends Select implements DefaultCanBeEnum
     {
         $value = $this->toFormattedValue();
 
+        if(is_null($value)) {
+            return '';
+        }
+
+        if(!$value instanceof $this->attached) {
+            $value = rescue(fn() => $this->attached::tryFrom($value)) ?? $value;
+        }
+
         if(is_scalar($value)) {
             return data_get(
                 $this->values(),
                 $value,
                 (string) $value
             );
-        }
-
-        if(is_null($value)) {
-            return '';
         }
 
         if(method_exists($value, 'getColor')) {

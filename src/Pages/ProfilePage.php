@@ -36,7 +36,7 @@ class ProfilePage extends Page
         return [
             Block::make([
                 Tabs::make([
-                    Tab::make('Main', [
+                    Tab::make(__('moonshine::ui.resource.main_information'), [
                         ID::make()
                             ->sortable()
                             ->showOnExport(),
@@ -61,7 +61,7 @@ class ProfilePage extends Page
                     ]),
 
                     Tab::make(trans('moonshine::ui.resource.password'), [
-                        Heading::make('Change password'),
+                        Heading::make(__('moonshine::ui.resource.change_password')),
 
                         Password::make(trans('moonshine::ui.resource.password'), 'password')
                             ->customAttributes(['autocomplete' => 'new-password'])

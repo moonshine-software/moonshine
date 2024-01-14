@@ -40,7 +40,7 @@ class MoonShineUserResource extends ModelResource
         return [
             Block::make([
                 Tabs::make([
-                    Tab::make('Main', [
+                    Tab::make(__('moonshine::ui.resource.main_information'), [
                         ID::make()
                             ->sortable()
                             ->showOnExport(),

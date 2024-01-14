@@ -52,6 +52,8 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     protected ?Closure $onChangeUrl = null;
 
+    protected ?Closure $requestValueResolver = null;
+
     private View|string|null $cachedRender = null;
 
     protected function afterMake(): void
@@ -140,8 +142,24 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return request()->has($this->requestNameDot($index));
     }
 
+    public function requestValueResolver(Closure $resolver): static
+    {
+        $this->requestValueResolver = $resolver;
+
+        return $this;
+    }
+
     public function requestValue(string|int|null $index = null): mixed
     {
+        if (!is_null($this->requestValueResolver)) {
+            return value(
+                $this->requestValueResolver,
+                $this->requestNameDot($index),
+                $this->defaultIfExists(),
+                $this,
+            ) ?? false;
+        }
+
         return request($this->requestNameDot($index), $this->defaultIfExists()) ?? false;
     }
 
