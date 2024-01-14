@@ -13,13 +13,12 @@ export default route => ({
 
     if (pivot !== null) {
       this.$dispatch('table-row-added-' + pivot.dataset.tableName)
-      this.$dispatch('table-reindex-' + pivot.dataset.tableName)
 
-      this.$nextTick(() => {
-        const tr = pivot.querySelector('table > tbody > tr:last-child')
-        tr.querySelector('.pivotTitle').innerHTML = item.label
-        tr.dataset.key = item.value
-      })
+      const tr = pivot.querySelector('table > tbody > tr:last-child')
+      tr.querySelector('.pivotTitle').innerHTML = item.label
+      tr.dataset.key = item.value
+
+      this.$dispatch('table-reindex-' + pivot.dataset.tableName)
     }
   },
   async search() {
