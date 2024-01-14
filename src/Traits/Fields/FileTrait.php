@@ -121,7 +121,7 @@ trait FileTrait
             return $file->storeAs(
                 $this->getDir(),
                 $file->getClientOriginalName(),
-                $this->getDisk()
+                $this->parseOptions()
             );
         }
 
@@ -129,11 +129,11 @@ trait FileTrait
             return $file->storeAs(
                 $this->getDir(),
                 value($this->customName, $file, $this),
-                $this->getDisk()
+                $this->parseOptions()
             );
         }
 
-        return $file->store($this->getDir(), $this->getDisk());
+        return $file->store($this->getDir(), $this->parseOptions());
     }
 
     public function isAllowedExtension(string $extension): bool

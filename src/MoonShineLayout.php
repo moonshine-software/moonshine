@@ -36,7 +36,7 @@ final class MoonShineLayout implements MoonShineLayoutContract
                 ]),
                 Content::make(),
                 Footer::make()->copyright(fn (): string => <<<'HTML'
-                        &copy; 2021-2023 Made with ❤️ by
+                        &copy; 2021-2024 Made with ❤️ by
                         <a href="https://cutcode.dev"
                             class="font-semibold text-primary hover:text-secondary"
                             target="_blank"
