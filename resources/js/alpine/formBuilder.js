@@ -173,7 +173,7 @@ export default (name = '', reactive = {}) => ({
   formReset() {
     this.$el.reset()
 
-    Array.from(this.$el.elements).forEach((element) => {
+    Array.from(this.$el.elements).forEach(element => {
       element.dispatchEvent(new Event('reset'))
     })
   },

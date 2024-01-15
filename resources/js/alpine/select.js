@@ -167,7 +167,7 @@ export default (asyncUrl = '') => ({
       this.$el.addEventListener('reset', () => {
         this.choicesInstance.destroy()
         this.choicesInstance.init()
-      });
+      })
 
       if (asyncUrl) {
         this.searchTerms.addEventListener(
