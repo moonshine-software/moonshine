@@ -7,10 +7,10 @@ export default (name = '', reactive = {}) => ({
   whenFields: {},
   reactive: reactive,
   blockWatch: false,
-  events:'',
-  callback:undefined,
-  afterCallback:undefined,
-  afterErrorCallback:undefined,
+  events: '',
+  callback: undefined,
+  afterCallback: undefined,
+  afterErrorCallback: undefined,
 
   init(initData = {}) {
     const t = this
