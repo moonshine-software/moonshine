@@ -8,8 +8,9 @@ export default () => ({
   callback: '',
   loading: false,
   btnText: '',
-  beforeCallback: undefined,
-  errorCallback: undefined,
+
+  beforeCallback: null,
+  errorCallback: null,
 
   init() {
     this.url = this.$el.href

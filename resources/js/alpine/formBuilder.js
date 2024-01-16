@@ -1,4 +1,8 @@
-import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 import {moonShineRequest} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
 
@@ -8,9 +12,10 @@ export default (name = '', reactive = {}) => ({
   reactive: reactive,
   blockWatch: false,
   events: '',
-  callback: undefined,
-  afterCallback: undefined,
-  afterErrorCallback: undefined,
+
+  callback: null,
+  afterCallback: null,
+  afterErrorCallback: null,
 
   init(initData = {}) {
     const t = this
