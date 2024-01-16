@@ -1,8 +1,4 @@
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from './showWhenFunctions'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from './showWhenFunctions'
 import {moonShineRequest} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
 
