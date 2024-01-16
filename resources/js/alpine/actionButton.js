@@ -8,6 +8,8 @@ export default () => ({
   callback: '',
   loading: false,
   btnText: '',
+  beforeCallback: undefined,
+  errorCallback: undefined,
 
   init() {
     this.url = this.$el.href
@@ -26,6 +28,14 @@ export default () => ({
         ? '<div class="spinner spinner--primary spinner-sm"></div>' + btnText
         : btnText
     })
+
+    this.beforeCallback = function () {
+      this.loading = false
+    }
+
+    this.errorCallback = function () {
+      this.loading = false
+    }
   },
 
   request() {
@@ -35,16 +45,6 @@ export default () => ({
 
     this.loading = true
 
-    const t = this
-
-    t.beforeCallback = function () {
-      t.loading = false
-    }
-
-    t.errorCallback = function () {
-      t.loading = false
-    }
-
-    moonShineRequest(t, this.url, this.method)
+    moonShineRequest(this, this.url, this.method)
   },
 })
