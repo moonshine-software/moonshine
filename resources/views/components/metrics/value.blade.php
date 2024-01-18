@@ -22,6 +22,6 @@
 
     <div class="report-card-body">
         <div class="report-card-value">{{ $simpleValue }}</div>
-        <h5 class="report-card-title">{{ $title }}</h5>
+        <h5 class="report-card-title">{!! $title !!}</h5>
     </div>
 </div>
