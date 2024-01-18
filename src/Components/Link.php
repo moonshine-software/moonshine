@@ -51,7 +51,7 @@ final class Link extends MoonShineComponent
         $tooltip ??= $this->label();
 
         $this->customAttributes([
-            'x-data' => "tooltip(`$tooltip`)"
+            'x-data' => "tooltip(`$tooltip`)",
         ]);
 
         return $this;
