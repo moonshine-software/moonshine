@@ -140,7 +140,7 @@ final class CardsBuilder extends IterableComponent
                 ->customAttributes(value($this->componentAttributes, $data, $index, $this))
                 ->when(
                     $this->getButtons($data)->count(),
-                    fn (Card $card) => $card->actions(
+                    fn (Card $card): Card => $card->actions(
                         fn () => ActionGroup::make($this->getButtons($data)->toArray())
                     )
                 );
