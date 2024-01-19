@@ -138,8 +138,11 @@ final class CardsBuilder extends IterableComponent
                 ->content((string) value($this->content, $data, $index, $this))
                 ->header((string) value($this->header, $data, $index, $this))
                 ->customAttributes(value($this->componentAttributes, $data, $index, $this))
-                ->actions(
-                    fn () => ActionGroup::make($this->getButtons($data)->toArray())
+                ->when(
+                    $this->getButtons($data)->count(),
+                    fn (Card $card) => $card->actions(
+                        fn () => ActionGroup::make($this->getButtons($data)->toArray())
+                    )
                 );
         });
     }
