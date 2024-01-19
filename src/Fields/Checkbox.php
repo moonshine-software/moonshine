@@ -48,9 +48,10 @@ class Checkbox extends Field implements
         ]);
 
         $this->customAttributes([
-            'x-on:change' => $this->onChangeEvent(),
             'x-bind:checked' => '$el.checked',
         ]);
+
+        $this->mergeAttribute('x-on:change', $this->onChangeEvent(), ';');
 
         return parent::resolveValue();
     }

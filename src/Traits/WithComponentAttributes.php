@@ -18,6 +18,24 @@ trait WithComponentAttributes
         return $this->attributes()->get($name);
     }
 
+    public function mergeAttribute(string $name, string $value, string $separator = ' '): static
+    {
+        $this->attributes[$name] = $name;
+        $previous = $this->customAttributes[$name] ?? '';
+
+        if (str_contains($previous, $value)) {
+            return $this;
+        }
+
+        if ($previous) {
+            $value .= $separator . $previous;
+        }
+
+        $this->customAttributes[$name] = $value;
+
+        return $this;
+    }
+
     public function setAttribute(string $name, string|bool $value): static
     {
         $this->attributes[] = $name;
