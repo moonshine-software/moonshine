@@ -1,11 +1,11 @@
 export class MoonShine {
     constructor() {
-        this.successAsyncFunctions = {}
+        this.callbacks = {}
     }
 
-    successAsyncFor(name, successFunction) {
-        if(typeof successFunction === 'function') {
-            this.successAsyncFunctions[name] = successFunction
+    onCallback(name, callback) {
+        if(typeof callback === 'function') {
+            this.callbacks[name] = callback
         }
     }
 }
