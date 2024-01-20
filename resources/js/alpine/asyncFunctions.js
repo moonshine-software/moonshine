@@ -1,5 +1,5 @@
 export function responseCallback(callback, response, element, events, component) {
-  const fn = window[callback]
+  const fn = MoonShine.callbacks[callback]
 
   if (typeof fn !== 'function') {
     component.$dispatch('toast', {type: 'error', text: 'Error'})
