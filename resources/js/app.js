@@ -33,7 +33,7 @@ import numberUpDown from './alpine/numberUpDown'
 import fragment from './alpine/fragment'
 import globalSearch from './alpine/globalSearch'
 
-window.MoonShine = new MoonShine();
+window.MoonShine = new MoonShine()
 document.dispatchEvent(new CustomEvent('moonshine:init'))
 
 const alpineExists = !!window.Alpine
