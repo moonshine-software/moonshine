@@ -2,6 +2,7 @@ import './bootstrap'
 import './layout'
 
 import AlpineMS from 'alpinejs'
+import {MoonShine} from './moonshine.js'
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
 
@@ -31,6 +32,9 @@ import asyncLink from './alpine/asyncLink'
 import numberUpDown from './alpine/numberUpDown'
 import fragment from './alpine/fragment'
 import globalSearch from './alpine/globalSearch'
+
+window.MoonShine = new MoonShine();
+document.dispatchEvent(new CustomEvent('moonshine:init'))
 
 const alpineExists = !!window.Alpine
 
