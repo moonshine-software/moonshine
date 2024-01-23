@@ -274,8 +274,15 @@ final class FormBuilder extends RowComponent
         $reactiveFields = $onlyFields->reactiveFields()
             ->mapWithKeys(fn (Field $field): array => [$field->column() => $field->value()]);
 
+        $whenFields = [];
+        foreach ($onlyFields->whenFieldsConditions() as $whenConditions) {
+            foreach ($whenConditions as $value) {
+                $whenFields[] = $value;
+            }
+        }
+
         $xInit = json_encode([
-            'whenFields' => array_values($onlyFields->whenFieldsConditions()->toArray()),
+            'whenFields' => $whenFields,
             'reactiveUrl' => $reactiveFields->isNotEmpty() ? moonshineRouter()->reactive() : '',
         ], JSON_THROW_ON_ERROR);
 

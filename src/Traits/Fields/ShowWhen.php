@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use InvalidArgumentException;
+use MoonShine\Fields\Date;
 
 trait ShowWhen
 {
@@ -34,12 +35,7 @@ trait ShowWhen
     }
 
     /**
-     * @return array {
-     *               showField: string,
-     *               changeField: string,
-     *               operator: mixed,
-     *               value: mixed,
-     *               }
+     * @return array
      */
     public function showWhenCondition(): array
     {
@@ -55,7 +51,7 @@ trait ShowWhen
 
         $this->showWhenState = true;
 
-        $this->showWhenCondition = [
+        $this->showWhenCondition[] = [
             'showField' => str_replace('[]', '', $this->column()),
             'changeField' => $this->dotNestedToName($column),
             'operator' => $operator,
@@ -63,6 +59,31 @@ trait ShowWhen
         ];
 
         return $this;
+    }
+
+    public function showWhenDate(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null
+    ): static {
+        if(func_num_args() === 2) {
+            $value = $operator;
+        }
+
+        if(is_array($value)) {
+            foreach ($value as $key=>$item) {
+                // Casting to Date type for javascript
+                $value[$key] = strtotime($item) * 1000;
+            }
+        } else {
+            $value = strtotime($value) * 1000;
+        }
+
+        if(func_num_args() === 2) {
+            return $this->showWhen($column, $value);
+        }
+
+        return $this->showWhen($column, $operator, $value);
     }
 
     protected function makeCondition(
