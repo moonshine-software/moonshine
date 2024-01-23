@@ -1,5 +1,3 @@
-import {parseInt} from "lodash/string.js";
-
 export function getInputs(formId) {
     const inputs = {}
     document.querySelectorAll('#' + formId + ' [name]').forEach(element => {
@@ -24,7 +22,7 @@ export function showWhenChange(fieldName, formId) {
     fieldName = inputFieldName(fieldName)
 
     this.whenFields.forEach(field => {
-        if (fieldName != field.changeField) {
+        if (fieldName !== field.changeField) {
             return
         }
 
@@ -33,7 +31,7 @@ export function showWhenChange(fieldName, formId) {
         let showWhenConditions = []
 
         this.whenFields.forEach(item => {
-            if (showField != item.showField) {
+            if (showField !== item.showField) {
                 return
             }
             showWhenConditions.push(item)

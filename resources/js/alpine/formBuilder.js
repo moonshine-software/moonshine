@@ -66,14 +66,17 @@ export default (name = '', reactive = {}) => ({
       this.whenFields = initData.whenFields
       const t = this
 
-      this.$nextTick(function() {
+      this.$nextTick(async function() {
 
         let formId = t.$id('form')
         if (formId === undefined) {
           formId = t.$el.getAttribute('id')
         }
 
+        await t.$nextTick()
+
         const inputs = t.getInputs(formId)
+
         const showWhenConditions = {}
 
         t.whenFields.forEach(field => {
