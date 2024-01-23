@@ -41,7 +41,7 @@ trait ResourceModelCrudRouter
 
         return moonshineRouter()->to(
             $name,
-            $key ? array_merge(['resourceItem' => $key], $query) : $query
+            filled($key) ? array_merge(['resourceItem' => $key], $query) : $query
         );
     }
 
