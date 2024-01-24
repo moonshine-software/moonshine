@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use InvalidArgumentException;
-use MoonShine\Fields\Date;
 
 trait ShowWhen
 {
@@ -34,9 +33,6 @@ trait ShowWhen
         return $this->showWhenState;
     }
 
-    /**
-     * @return array
-     */
     public function showWhenCondition(): array
     {
         return $this->showWhenCondition;
@@ -73,10 +69,10 @@ trait ShowWhen
         if(is_array($value)) {
             foreach ($value as $key=>$item) {
                 // Casting to Date type for javascript
-                $value[$key] = strtotime($item) * 1000;
+                $value[$key] = strtotime((string) $item) * 1000;
             }
         } else {
-            $value = strtotime($value) * 1000;
+            $value = strtotime((string) $value) * 1000;
         }
 
         if(func_num_args() === 2) {
