@@ -1,4 +1,9 @@
-import {getInputs, showWhenChange, isValidateShow, showWhenVisibilityChange} from './showWhenFunctions'
+import {
+  getInputs,
+  showWhenChange,
+  isValidateShow,
+  showWhenVisibilityChange,
+} from './showWhenFunctions'
 import {moonShineRequest} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
 
@@ -66,8 +71,7 @@ export default (name = '', reactive = {}) => ({
       this.whenFields = initData.whenFields
       const t = this
 
-      this.$nextTick(async function() {
-
+      this.$nextTick(async function () {
         let formId = t.$id('form')
         if (formId === undefined) {
           formId = t.$el.getAttribute('id')
@@ -80,16 +84,19 @@ export default (name = '', reactive = {}) => ({
         const showWhenConditions = {}
 
         t.whenFields.forEach(field => {
-          if (inputs[field.changeField] === undefined || inputs[field.changeField].value === undefined) {
+          if (
+            inputs[field.changeField] === undefined ||
+            inputs[field.changeField].value === undefined
+          ) {
             return
           }
-          if(showWhenConditions[field.showField] === undefined) {
+          if (showWhenConditions[field.showField] === undefined) {
             showWhenConditions[field.showField] = []
           }
           showWhenConditions[field.showField].push(field)
         })
 
-        for(let key in showWhenConditions) {
+        for (let key in showWhenConditions) {
           t.showWhenVisibilityChange(showWhenConditions[key], key, inputs, formId)
         }
       })
