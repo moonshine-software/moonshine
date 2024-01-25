@@ -98,10 +98,9 @@ class DetailPage extends Page
 
                 LineBreak::make(),
 
-                Flex::make([
-                    ActionGroup::make($resource->getDetailItemButtons())
-                        ->setItem($item),
-                ])->justifyAlign('end'),
+                ActionGroup::make($resource->getDetailItemButtons())
+                    ->setItem($item)
+                    ->customAttributes(['class' => 'flex-wrap justify-end']),
             ]),
         ];
     }
