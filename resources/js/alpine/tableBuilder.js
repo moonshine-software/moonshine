@@ -136,6 +136,7 @@ export default (
 
     let checkboxes = this.$root.querySelectorAll('.' + id + '-tableActionRow')
     let ids = document.querySelectorAll('.hidden-ids')
+    let bulkButtons = this.$root.querySelectorAll('[data-button-type=bulk-button]')
 
     ids.forEach(function (value) {
       value.innerHTML = ''
@@ -160,6 +161,25 @@ export default (
           `<input type="hidden" name="ids[]" value="${value}"/>`,
         )
       })
+    }
+
+    for (let i = 0, n = bulkButtons.length; i < n; i++) {
+      let url = bulkButtons[i].getAttribute('href')
+      if(! url) {
+        continue
+      }
+
+      const urlObject = new URL(url)
+      let urlSeparator = urlObject.search === '' ? '?' : '&'
+      urlObject.searchParams.delete('ids[]')
+
+      const addIds = []
+      values.forEach(function (value) {
+        addIds.push('ids[]=' + value)
+      })
+
+      url = urlObject.href + urlSeparator + addIds.join('&')
+      bulkButtons[i].setAttribute('href', url)
     }
 
     this.actionsOpen = !!(all.checked || values.length)

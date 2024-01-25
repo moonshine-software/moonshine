@@ -74,6 +74,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     {
         $this->isBulk = true;
 
+        if(is_null($this->modal)) {
+            $this->customAttributes([
+                'data-button-type' => 'bulk-button'
+            ]);
+        }
+
         return $this;
     }
 

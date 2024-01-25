@@ -40,6 +40,8 @@ export default () => ({
   },
 
   request() {
+    this.url = this.$el.href
+
     if (this.loading) {
       return
     }
