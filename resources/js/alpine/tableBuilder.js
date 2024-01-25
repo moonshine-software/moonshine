@@ -135,7 +135,7 @@ export default (
     }
 
     let checkboxes = this.$root.querySelectorAll('.' + id + '-tableActionRow')
-    let ids = document.querySelectorAll('.hidden-ids')
+    let ids = document.querySelectorAll('.hidden-ids[data-for-component=' + this.table.getAttribute('data-name') + ']')
 
     ids.forEach(function (value) {
       value.innerHTML = ''

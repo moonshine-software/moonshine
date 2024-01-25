@@ -13,7 +13,7 @@ final class MassDeleteButton
 {
     public static function for(
         ModelResource $resource,
-        ?string $componentName = null,
+        string $componentName,
         string $redirectAfterDelete = '',
         bool $isAsync = false,
     ): ActionButton {
@@ -29,7 +29,7 @@ final class MassDeleteButton
         )
             ->withConfirm(
                 fields: fn (): array => [
-                    HiddenIds::make(),
+                    HiddenIds::make($componentName),
                 ],
                 method: 'DELETE',
                 formBuilder: fn (FormBuilder $formBuilder) => $formBuilder->when(

@@ -84,14 +84,14 @@ trait ResourceWithButtons
         return [];
     }
 
-    public function getIndexItemButtons(): array
+    public function getIndexItemButtons(string $componentName): array
     {
         return [
             ...$this->getIndexButtons(),
             DetailButton::for($this),
             EditButton::for($this),
             DeleteButton::for($this),
-            MassDeleteButton::for($this),
+            MassDeleteButton::for($this, $componentName),
         ];
     }
 
