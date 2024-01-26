@@ -2,15 +2,12 @@
     'actions',
     'simple' => false
 ])
-<div {{ $attributes->class([
-    'flex',
-    'items-center',
-    'justify-end' => !$simple,
-    'justify-center' => $simple,
-    'gap-2'
-    ]) }}
->
-    <x-moonshine::action-group
-        :actions="$actions"
-    />
-</div>
+
+<x-moonshine::action-group
+    @class([
+        'flex-nowrap',
+        'justify-end' => ! $simple,
+        'justify-center' => $simple,
+    ])
+    :actions="$actions"
+/>

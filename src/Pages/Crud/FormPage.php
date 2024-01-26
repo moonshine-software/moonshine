@@ -7,7 +7,6 @@ use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Divider;
-use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
@@ -81,13 +80,9 @@ class FormPage extends Page
         $item = $this->getResource()->getItem();
 
         if ($item?->exists) {
-            $components[] = Flex::make([
-                ActionGroup::make($this->getResource()->getFormItemButtons())
-                    ->setItem($item)
-                ,
-            ])
-                ->customAttributes(['class' => 'mb-4'])
-                ->justifyAlign('end');
+            $components[] = ActionGroup::make($this->getResource()->getFormItemButtons())
+                ->setItem($item)
+                ->customAttributes(['class' => 'mb-4']);
         }
 
         return $components;
