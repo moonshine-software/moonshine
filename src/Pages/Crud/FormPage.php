@@ -7,7 +7,6 @@ use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Divider;
-use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
