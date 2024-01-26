@@ -67,7 +67,7 @@ trait ShowWhen
         }
 
         if(is_array($value)) {
-            foreach ($value as $key=>$item) {
+            foreach ($value as $key => $item) {
                 // Casting to Date type for javascript
                 $value[$key] = strtotime((string) $item) * 1000;
             }
