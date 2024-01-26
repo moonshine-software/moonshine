@@ -37,7 +37,9 @@
 
         <x-slot name="outerHtml">
             <x-moonshine::link-button
-                :attributes="$attributes"
+                :attributes="$attributes->merge([
+                    '@click.prevent' => 'toggleModal',
+                ])"
                 :icon="$action->iconValue()"
                 :href="$action->url()"
             >
