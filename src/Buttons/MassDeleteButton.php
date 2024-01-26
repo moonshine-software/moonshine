@@ -27,11 +27,8 @@ final class MassDeleteButton
             '',
             url: $action
         )
+            ->bulk($componentName ?? $resource->listComponentName())
             ->withConfirm(
-                //TODO remove fields after up bulk method
-                fields: fn (): array => [
-                    HiddenIds::make($componentName ?? $resource->listComponentName()),
-                ],
                 method: 'DELETE',
                 formBuilder: fn (FormBuilder $formBuilder) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
@@ -46,8 +43,6 @@ final class MassDeleteButton
                 fn (): bool => in_array('massDelete', $resource->getActiveActions())
                     && $resource->can('massDelete')
             )
-            //TODO up bulk before withConfirm and add $forComponent name
-            ->bulk()
             ->secondary()
             ->icon('heroicons.outline.trash')
             ->showInLine();

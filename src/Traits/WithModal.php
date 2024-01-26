@@ -84,8 +84,7 @@ trait WithModal
                         : Hidden::make('_method')->setValue($method),
 
                     $this->isBulk()
-                        //TODO Add $bulkForComponent in make
-                        ? HiddenIds::make()
+                        ? HiddenIds::make($this->bulkForComponent())
                         : null,
 
                     ...(is_null($fields) ? [] : value($fields, $data)),
