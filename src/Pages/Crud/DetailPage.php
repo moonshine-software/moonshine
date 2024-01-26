@@ -99,7 +99,7 @@ class DetailPage extends Page
 
                 ActionGroup::make($resource->getDetailItemButtons())
                     ->setItem($item)
-                    ->customAttributes(['class' => 'flex-wrap justify-end']),
+                    ->customAttributes(['class' => 'justify-end']),
             ]),
         ];
     }

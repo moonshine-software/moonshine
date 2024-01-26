@@ -96,12 +96,10 @@ class IndexPage extends Page
         return [
             Grid::make([
                 Column::make([
-                    Flex::make([
-                        ActionGroup::make([
-                            CreateButton::for($this->getResource()),
-                            ...$this->getResource()->actions(),
-                        ]),
-                    ])->justifyAlign('start'),
+                    ActionGroup::make([
+                        CreateButton::for($this->getResource()),
+                        ...$this->getResource()->actions(),
+                    ]),
 
                     ActionGroup::make()->when(
                         $this->getResource()->filters() !== [],
@@ -141,7 +139,7 @@ class IndexPage extends Page
 
                     return $group;
                 }
-            )->customAttributes(['class' => 'flex-wrap']),
+            ),
             LineBreak::make(),
         ];
     }

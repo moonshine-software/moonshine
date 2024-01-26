@@ -81,13 +81,9 @@ class FormPage extends Page
         $item = $this->getResource()->getItem();
 
         if ($item?->exists) {
-            $components[] = Flex::make([
-                ActionGroup::make($this->getResource()->getFormItemButtons())
-                    ->setItem($item)
-                ,
-            ])
-                ->customAttributes(['class' => 'mb-4'])
-                ->justifyAlign('end');
+            $components[] = ActionGroup::make($this->getResource()->getFormItemButtons())
+                ->setItem($item)
+                ->customAttributes(['class' => 'mb-4']);
         }
 
         return $components;
