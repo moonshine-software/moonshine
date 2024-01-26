@@ -37,7 +37,9 @@
 
         <x-slot name="outerHtml">
             <x-moonshine::link-button
-                :attributes="$attributes"
+                :attributes="$attributes?->merge([
+                    '@click.prevent' => 'toggleModal',
+                ])"
                 :icon="$action->iconValue()"
                 :href="$action->url()"
             >
@@ -58,7 +60,9 @@
         </x-moonshine::link-native>
     @else
         <x-moonshine::link-button
-            :attributes="$attributes"
+            :attributes="$attributes?->merge([
+                '@click.prevent' => 'toggleModal',
+            ])"
             @class(['p-2' => $action->inDropdown()])
             :href="$action->url()"
             :icon="$action->iconValue()"

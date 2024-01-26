@@ -64,9 +64,7 @@
     </template>
 
     @if($outerHtml?->isNotEmpty())
-        <div {{ $outerHtml->attributes?->merge([
-            '@click.prevent' => 'toggleModal',
-        ]) }}>
+        <div {{ $outerHtml->attributes }}>
             {{ $outerHtml ?? '' }}
         </div>
     @endif
