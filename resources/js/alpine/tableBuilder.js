@@ -172,7 +172,7 @@ export default (
 
     for (let i = 0, n = bulkButtons.length; i < n; i++) {
       let url = bulkButtons[i].getAttribute('href')
-      if(! url) {
+      if (!url) {
         continue
       }
 
