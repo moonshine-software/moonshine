@@ -6,7 +6,6 @@ namespace MoonShine\Buttons;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Fields\HiddenIds;
 use MoonShine\Resources\ModelResource;
 
 final class MassDeleteButton

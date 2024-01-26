@@ -54,7 +54,7 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     {
         $attributes = array_filter(
             $this->attributes->toArray(),
-            fn($key) => $key !== $name, ARRAY_FILTER_USE_KEY
+            fn($key): bool => $key !== $name, ARRAY_FILTER_USE_KEY
         );
 
         $this->attributes = $this->newAttributeBag($attributes);
