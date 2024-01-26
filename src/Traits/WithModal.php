@@ -117,7 +117,7 @@ trait WithModal
 
         if($this->isBulk()) {
             $this->attributes()->setAttributes([
-                'data-button-type' => 'modal-button'
+                'data-button-type' => 'modal-button',
             ]);
         }
 
