@@ -10,12 +10,15 @@ class HiddenIds extends Field
 
     protected string $type = 'hidden';
 
+    //TODO Make $forComponent parameter required
     public function __construct(
-        protected string $forComponent
+        protected ?string $forComponent = null
     ) {
-        $this->customAttributes([
-            'data-for-component' => $this->forComponent,
-        ]);
+        if(! empty($this->forComponent)) {
+            $this->customAttributes([
+                'data-for-component' => $this->forComponent,
+            ]);
+        }
 
         parent::__construct();
     }
