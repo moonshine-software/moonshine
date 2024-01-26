@@ -9,6 +9,7 @@ use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Heading;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\HiddenIds;
 use MoonShine\UI\Modal;
 
 trait WithModal
@@ -82,6 +83,11 @@ trait WithModal
                         ? null
                         : Hidden::make('_method')->setValue($method),
 
+                    $this->isBulk()
+                        //TODO Add $bulkForComponent in make
+                        ? HiddenIds::make()
+                        : null,
+
                     ...(is_null($fields) ? [] : value($fields, $data)),
 
                     Heading::make(
@@ -91,13 +97,18 @@ trait WithModal
                     ),
                 ])
             )->when(
-                $async,
+                $async && ! $this->isAsyncMethod(),
                 fn (FormBuilder $form): FormBuilder => $form->async()
             )
             ->when(
                 ! is_null($formBuilder),
                 fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
-            )->submit(
+            )
+            ->when(
+                $this->isAsyncMethod(),
+                fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->asyncMethod())
+            )
+            ->submit(
                 is_null($button)
                     ? __('moonshine::ui.confirm')
                     : value($button, $data),
@@ -109,6 +120,12 @@ trait WithModal
             $this->attributes()->setAttributes([
                 'data-button-type' => 'modal-button'
             ]);
+        }
+
+        // In this case, the form inside the modal works in async mode,
+        // so the async mode is removed from the button.
+        if($this->isAsyncMethod()) {
+            $this->purgeAsync();
         }
 
         return $this;

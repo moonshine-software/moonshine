@@ -31,7 +31,11 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     protected bool $isBulk = false;
 
+    protected ?string $bulkForComponent = null;
+
     protected bool $isAsync = false;
+
+    protected ?string $asyncMethod = null;
 
     public function __construct(
         Closure|string $label,
@@ -70,9 +74,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this;
     }
 
-    public function bulk(): self
+    //TODO Make $forComponent parameter required
+    public function bulk(?string $forComponent = null): self
     {
         $this->isBulk = true;
+
+        $this->bulkForComponent = $forComponent;
 
         if(is_null($this->modal)) {
             $this->customAttributes([
@@ -86,6 +93,11 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     public function isBulk(): bool
     {
         return $this->isBulk;
+    }
+
+    public function bulkForComponent(): ?string
+    {
+        return $this->bulkForComponent;
     }
 
     public function getItem(): mixed
@@ -128,6 +140,8 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): self {
+        $this->asyncMethod = $method;
+
         $this->url = moonshineRouter()->asyncMethodClosure(
             method: $method,
             message: $message,
@@ -148,6 +162,16 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->isAsync;
     }
 
+    public function isAsyncMethod(): bool
+    {
+        return ! is_null($this->asyncMethod);
+    }
+
+    public function asyncMethod(): ?string
+    {
+        return $this->asyncMethod;
+    }
+
     public function async(
         string $method = 'GET',
         ?string $selector = null,
@@ -165,6 +189,28 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
                 callback: $callback,
             ),
         ])->onClick(fn (): string => 'request', 'prevent');
+    }
+
+    public function purgeAsync(): void
+    {
+        $this->isAsync = false;
+
+        $removeAsyncAttr = array_merge(
+            ['x-data'],
+            array_keys(AlpineJs::asyncUrlDataAttributes(
+                events: ['events'],
+                selector: 'selector',
+                callback: 'callback',
+            ))
+        );
+
+        if($this->attributes->get('x-on:click.prevent') === 'request') {
+            $removeAsyncAttr[] = 'x-on:click.prevent';
+        }
+
+        foreach ($removeAsyncAttr as $name) {
+            $this->removeAttribute($name);
+        }
     }
 
     public function url(mixed $data = null): string

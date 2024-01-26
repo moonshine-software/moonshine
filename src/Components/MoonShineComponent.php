@@ -50,6 +50,18 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         return $this;
     }
 
+    public function removeAttribute(string $name): static
+    {
+        $attributes = array_filter(
+            $this->attributes->toArray(),
+            fn($key) => $key !== $name, ARRAY_FILTER_USE_KEY
+        );
+
+        $this->attributes = $this->newAttributeBag($attributes);
+
+        return $this;
+    }
+
     public function attributes(): ComponentAttributeBag
     {
         return $this->attributes ?: $this->newAttributeBag();
