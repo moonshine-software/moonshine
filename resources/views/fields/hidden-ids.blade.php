@@ -1,1 +1,2 @@
-<div class="hidden-ids"></div>
+<div class="hidden-ids" {{ $element->attributes()->only(['data-for-component']) }}>
+</div>
