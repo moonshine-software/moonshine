@@ -8,7 +8,6 @@ use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Block;
-use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
@@ -98,10 +97,9 @@ class DetailPage extends Page
 
                 LineBreak::make(),
 
-                Flex::make([
-                    ActionGroup::make($resource->getDetailItemButtons())
-                        ->setItem($item),
-                ])->justifyAlign('end'),
+                ActionGroup::make($resource->getDetailItemButtons())
+                    ->setItem($item)
+                    ->customAttributes(['class' => 'justify-end']),
             ]),
         ];
     }

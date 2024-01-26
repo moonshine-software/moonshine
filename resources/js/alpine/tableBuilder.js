@@ -135,8 +135,14 @@ export default (
     }
 
     let checkboxes = this.$root.querySelectorAll('.' + id + '-tableActionRow')
-    let ids = document.querySelectorAll('.hidden-ids')
-    let bulkButtons = this.$root.querySelectorAll('[data-button-type=bulk-button]')
+    let ids = document.querySelectorAll(
+      '.hidden-ids[data-for-component=' + this.table.getAttribute('data-name') + ']',
+    )
+
+    //TODO Delete this block after updating the HiddenIds component
+    if (ids.length === 0) {
+      ids = document.querySelectorAll('.hidden-ids:not([data-for-component])')
+    }
 
     ids.forEach(function (value) {
       value.innerHTML = ''

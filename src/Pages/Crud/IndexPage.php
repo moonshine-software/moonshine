@@ -16,7 +16,6 @@ use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
-use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
@@ -96,12 +95,10 @@ class IndexPage extends Page
         return [
             Grid::make([
                 Column::make([
-                    Flex::make([
-                        ActionGroup::make([
-                            CreateButton::for($this->getResource()),
-                            ...$this->getResource()->actions(),
-                        ]),
-                    ])->justifyAlign('start'),
+                    ActionGroup::make([
+                        CreateButton::for($this->getResource()),
+                        ...$this->getResource()->actions(),
+                    ]),
 
                     ActionGroup::make()->when(
                         $this->getResource()->filters() !== [],
@@ -141,7 +138,7 @@ class IndexPage extends Page
 
                     return $group;
                 }
-            )->customAttributes(['class' => 'flex-wrap']),
+            ),
             LineBreak::make(),
         ];
     }
