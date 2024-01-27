@@ -139,7 +139,9 @@ export default (
       '.hidden-ids[data-for-component=' + this.table.getAttribute('data-name') + ']',
     )
     let bulkButtons = document.querySelectorAll(
-        '[data-button-type=bulk-button][data-for-component=' + this.table.getAttribute('data-name') + ']'
+      '[data-button-type=bulk-button][data-for-component=' +
+        this.table.getAttribute('data-name') +
+        ']',
     )
 
     //TODO Delete this block after updating the HiddenIds component
