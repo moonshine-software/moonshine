@@ -127,10 +127,13 @@ class CrudController extends BaseController
             $resource->precognitionMode();
         }
 
+        $metrics = $item->exists ? $resource->metricsOnEdit($item) : $resource->metricsOnCreate();
+
         return $this->viewOrFragment(
             view($resource->baseEditView(), [
                 'resource' => $resource,
                 'item' => $item,
+                'metrics' => $metrics,
             ])
         );
     }
@@ -149,10 +152,14 @@ class CrudController extends BaseController
      */
     public function show(ViewFormRequest $request): string|View|RedirectResponse
     {
+        $resource = $request->getResource();
+        $item = $request->getItem();
+
         return $this->viewOrFragment(
             view($request->getResource()->baseShowView(), [
-                'resource' => $request->getResource(),
-                'item' => $request->getItem(),
+                'resource' => $resource,
+                'item' => $item,
+                'metrics' => $resource->metricsOnShow($item),
             ])
         );
     }
