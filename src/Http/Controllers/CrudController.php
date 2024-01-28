@@ -122,12 +122,11 @@ class CrudController extends BaseController
     {
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
+        $metrics = $item->exists ? $resource->metricsOnEdit($item) : $resource->metricsOnCreate();
 
         if (request()->ajax()) {
             $resource->precognitionMode();
         }
-
-        $metrics = $item->exists ? $resource->metricsOnEdit($item) : $resource->metricsOnCreate();
 
         return $this->viewOrFragment(
             view($resource->baseEditView(), [

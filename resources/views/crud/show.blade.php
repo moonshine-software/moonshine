@@ -16,7 +16,6 @@
 @endsection
 
 @section('content')
-
     <x-moonshine::grid>
         @if(!$resource->isRelatable())
             @if(count($metrics))
