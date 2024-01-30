@@ -32,7 +32,6 @@ use MoonShine\FormActions\FormAction;
 use MoonShine\FormComponents\FormComponent;
 use MoonShine\ItemActions\ItemAction;
 use MoonShine\ItemActions\ItemActions;
-use MoonShine\Metrics\Metric;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Traits\Resource\ResourceCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
