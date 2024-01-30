@@ -35,6 +35,12 @@
             {{ $header ?? '' }}
 
             <h3 class="title"><a href="{{ $url }}">{{ $title }}</a></h3>
+
+            @if($subtitle)
+                <div class="subcategory">
+                    {{ $subtitle }}
+                </div>
+            @endif
         @endif
 
         @if($values)
