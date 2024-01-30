@@ -122,6 +122,7 @@ class CrudController extends BaseController
     {
         $item = $request->getItemOrInstance();
         $resource = $request->getResource();
+        $metrics = $item->exists ? $resource->metricsOnEdit($item) : $resource->metricsOnCreate();
 
         if (request()->ajax()) {
             $resource->precognitionMode();
@@ -131,6 +132,7 @@ class CrudController extends BaseController
             view($resource->baseEditView(), [
                 'resource' => $resource,
                 'item' => $item,
+                'metrics' => $metrics,
             ])
         );
     }
@@ -149,10 +151,14 @@ class CrudController extends BaseController
      */
     public function show(ViewFormRequest $request): string|View|RedirectResponse
     {
+        $resource = $request->getResource();
+        $item = $request->getItem();
+
         return $this->viewOrFragment(
             view($request->getResource()->baseShowView(), [
-                'resource' => $request->getResource(),
-                'item' => $request->getItem(),
+                'resource' => $resource,
+                'item' => $item,
+                'metrics' => $resource->metricsOnShow($item),
             ])
         );
     }

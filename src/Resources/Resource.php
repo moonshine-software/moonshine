@@ -38,6 +38,7 @@ use MoonShine\Traits\Resource\ResourceCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
 use MoonShine\Traits\Resource\ResourceRouter;
+use MoonShine\Traits\Resource\WithMetrics;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithUriKey;
 use Throwable;
@@ -50,6 +51,7 @@ abstract class Resource implements ResourceContract
     use ResourceModelQuery;
     use WithUriKey;
     use WithIsNowOnRoute;
+    use WithMetrics;
 
     public static string $model;
 
@@ -103,16 +105,6 @@ abstract class Resource implements ResourceContract
      * @return Scope[]
      */
     public function scopes(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get an array of metrics which will be displayed on resource index page
-     *
-     * @return Metric[]
-     */
-    public function metrics(): array
     {
         return [];
     }

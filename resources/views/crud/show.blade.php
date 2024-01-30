@@ -16,10 +16,15 @@
 @endsection
 
 @section('content')
+    @if(!$resource->isRelatable())
+        @if(!$resource->isRelatable())
+            @include('moonshine::crud.shared.metrics', compact('metrics'))
+        @endif
+    @endif
     @fragment('crud-detail')
-    @include($resource->detailView(), [
-        'resource' => $resource,
-        'item' => $item
-    ])
+        @include($resource->detailView(), [
+            'resource' => $resource,
+            'item' => $item
+        ])
     @endfragment
 @endsection
