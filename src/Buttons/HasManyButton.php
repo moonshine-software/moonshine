@@ -100,7 +100,7 @@ final class HasManyButton
                                 ...$field->getRelation() instanceof MorphOneOrMany
                                     ? [$field->getRelation()?->getMorphType() => $parent::class]
                                     : [],
-                            ]),
+                            ], static fn($value) => filled($value)),
                             $resource->getModelCast()
                         )
                     )
