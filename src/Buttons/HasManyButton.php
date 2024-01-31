@@ -84,7 +84,7 @@ final class HasManyButton
                         $isAsync,
                         [
                             $resource->listEventName($field->getRelationName()),
-                            AlpineJs::event(JsEvent::FORM_RESET, $field->getRelationName())
+                            AlpineJs::event(JsEvent::FORM_RESET, $field->getRelationName()),
                         ]
                     )
                     ->name($field->getRelationName())
@@ -100,7 +100,7 @@ final class HasManyButton
                                 ...$field->getRelation() instanceof MorphOneOrMany
                                     ? [$field->getRelation()?->getMorphType() => $parent::class]
                                     : [],
-                            ], static fn($value) => filled($value)),
+                            ], static fn ($value) => filled($value)),
                             $resource->getModelCast()
                         )
                     )

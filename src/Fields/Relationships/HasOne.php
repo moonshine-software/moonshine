@@ -154,7 +154,7 @@ class HasOne extends ModelRelationField implements HasFields
                 ...$this->getRelation() instanceof MorphOneOrMany
                     ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()::class]
                     : [],
-            ], static fn($value) => filled($value)),
+            ], static fn ($value) => filled($value)),
                 $resource->getModelCast()
             )
             ->buttons(

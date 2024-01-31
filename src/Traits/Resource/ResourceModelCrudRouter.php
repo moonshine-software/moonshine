@@ -70,7 +70,7 @@ trait ResourceModelCrudRouter
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
-            ], static fn($value) => filled($value)),
+            ], static fn ($value) => filled($value)),
             fragment: $fragment
         );
     }
@@ -85,7 +85,7 @@ trait ResourceModelCrudRouter
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
-            ], static fn($value) => filled($value)),
+            ], static fn ($value) => filled($value)),
             fragment: $fragment
         );
     }
@@ -101,7 +101,7 @@ trait ResourceModelCrudRouter
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
-            ], static fn($value) => filled($value)),
+            ], static fn ($value) => filled($value)),
             fragment: $fragment
         );
     }
