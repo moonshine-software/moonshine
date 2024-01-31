@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Support\AlpineJs;
 use Throwable;
 
 final class HasManyButton
@@ -80,7 +82,10 @@ final class HasManyButton
                 content: fn (?Model $data): string => (string) FormBuilder::make($action($data))
                     ->switchFormMode(
                         $isAsync,
-                        $resource->listEventName($field->getRelationName())
+                        [
+                            $resource->listEventName($field->getRelationName()),
+                            AlpineJs::event(JsEvent::FORM_RESET, $field->getRelationName())
+                        ]
                     )
                     ->name($field->getRelationName())
                     ->when(
