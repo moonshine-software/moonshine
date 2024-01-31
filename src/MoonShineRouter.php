@@ -73,7 +73,7 @@ final class MoonShineRouter
             params: array_filter([
                 'resourceItem' => $item instanceof Model ? $item->getKey() : null,
                 ...value($params, $item),
-            ]),
+            ], static fn($value) => filled($value)),
             page: $page,
             resource: $resource
         );
@@ -118,7 +118,7 @@ final class MoonShineRouter
                 'resourceUri' => $resourceUri,
                 'pageUri' => $pageUri,
                 '_relation' => $relation,
-            ])
+            ], static fn($value) => filled($value))
         ) : null;
     }
 
@@ -146,7 +146,7 @@ final class MoonShineRouter
         return moonshineRouter()->to("relation.$action", [
             'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
             'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
-            ...array_filter($data),
+            ...array_filter($data, static fn($value) => filled($value)),
         ]);
     }
 

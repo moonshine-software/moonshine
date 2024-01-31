@@ -47,7 +47,10 @@ final class BelongsToManyButton
                 content: fn (?Model $data): string => (string) FormBuilder::make($action)
                     ->switchFormMode(
                         true,
-                        AlpineJs::event(JsEvent::FRAGMENT_UPDATED, $field->getRelationName())
+                        [
+                            AlpineJs::event(JsEvent::FRAGMENT_UPDATED, $field->getRelationName()),
+                            AlpineJs::event(JsEvent::FORM_RESET, $field->getRelationName()),
+                        ]
                     )
                     ->name($field->getRelationName())
                     ->fillCast(
