@@ -89,6 +89,12 @@ final class Modal extends MoonShineComponent implements HasFields
         $componentsHtml = $this->components?->isNotEmpty() ?
             Components::make($this->components) : '' ;
 
+        $outer = value($this->outer, $this);
+
+        if($outer instanceof ActionButton) {
+            $outer->toggleModal();
+        }
+
         return [
             'isWide' => $this->wide,
             'isOpen' => $this->open,
@@ -99,7 +105,7 @@ final class Modal extends MoonShineComponent implements HasFields
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
             'slot' => new ComponentSlot(value($this->content, $this) . $componentsHtml),
-            'outerHtml' => new ComponentSlot(value($this->outer, $this), $this->outerAttributes),
+            'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
         ];
     }
 
