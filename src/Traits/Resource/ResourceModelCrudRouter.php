@@ -12,6 +12,7 @@ use MoonShine\Enums\PageType;
 use MoonShine\Pages\Page;
 
 /**
+ * @template TModel of Model
  * @mixin ResourceContract
  */
 trait ResourceModelCrudRouter
@@ -28,6 +29,13 @@ trait ResourceModelCrudRouter
         )->value();
     }
 
+    /**
+     * @param string|null $name
+     * @param TModel|int|string|null $key
+     * @param array $query
+     *
+     * @return string
+     */
     public function route(
         string $name = null,
         Model|int|string|null $key = null,
@@ -60,6 +68,13 @@ trait ResourceModelCrudRouter
         return $this->pageUrl($this->indexPage(), params: $params, fragment: $fragment);
     }
 
+    /**
+     * @param TModel|int|string|null $model
+     * @param array $params
+     * @param string|null $fragment
+     *
+     * @return string
+     */
     public function formPageUrl(
         Model|int|string|null $model = null,
         array $params = [],
@@ -75,6 +90,13 @@ trait ResourceModelCrudRouter
         );
     }
 
+    /**
+     * @param TModel|int|string $model
+     * @param array $params
+     * @param string|null $fragment
+     *
+     * @return string
+     */
     public function detailPageUrl(
         Model|int|string $model,
         array $params = [],
@@ -90,6 +112,14 @@ trait ResourceModelCrudRouter
         );
     }
 
+    /**
+     * @param string $fragment
+     * @param Page $page
+     * @param TModel|int|string|null $model
+     * @param array $params
+     *
+     * @return string
+     */
     public function fragmentLoadUrl(
         string $fragment,
         Page $page,
