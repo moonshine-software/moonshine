@@ -24,7 +24,7 @@ use Throwable;
  */
 trait ResourceModelQuery
 {
-    /** @var TModel|null $item */
+    /** @var TModel|null */
     protected ?Model $item = null;
 
     protected array $with = [];
