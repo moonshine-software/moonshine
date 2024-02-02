@@ -11,7 +11,7 @@ use MoonShine\Fields\Field;
 
 class TextModelApply implements ApplyContract
 {
-    /* @param Text $field */
+    /* @param \MoonShine\Fields\Text $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

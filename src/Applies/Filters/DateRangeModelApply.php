@@ -12,7 +12,7 @@ use MoonShine\Fields\Field;
 
 class DateRangeModelApply implements ApplyContract
 {
-    /* @param DateRange $field */
+    /* @param \MoonShine\Fields\DateRange $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

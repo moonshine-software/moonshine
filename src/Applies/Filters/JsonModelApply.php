@@ -11,7 +11,7 @@ use MoonShine\Fields\Field;
 
 class JsonModelApply implements ApplyContract
 {
-    /* @param  Json  $field */
+    /* @param  \MoonShine\Fields\Json  $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

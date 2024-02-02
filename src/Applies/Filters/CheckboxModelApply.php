@@ -11,7 +11,7 @@ use MoonShine\Fields\Field;
 
 class CheckboxModelApply implements ApplyContract
 {
-    /* @param Checkbox $field */
+    /* @param \MoonShine\Fields\Checkbox $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

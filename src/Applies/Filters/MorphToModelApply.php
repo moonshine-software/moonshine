@@ -8,11 +8,10 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
-use MoonShine\Fields\Relationships\MorphTo;
 
 class MorphToModelApply implements ApplyContract
 {
-    /** @param MorphTo $field */
+    /** @param \MoonShine\Fields\Relationships\MorphTo $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

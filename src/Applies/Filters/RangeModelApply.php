@@ -11,7 +11,7 @@ use MoonShine\Fields\Field;
 
 class RangeModelApply implements ApplyContract
 {
-    /* @param Range $field */
+    /* @param \MoonShine\Fields\Range $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

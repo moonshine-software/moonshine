@@ -11,7 +11,7 @@ use MoonShine\Fields\Field;
 
 class DateModelApply implements ApplyContract
 {
-    /* @param Date $field */
+    /* @param \MoonShine\Fields\Date $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {

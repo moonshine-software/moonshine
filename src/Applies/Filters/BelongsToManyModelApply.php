@@ -12,7 +12,7 @@ use MoonShine\Fields\Relationships\ModelRelationField;
 
 class BelongsToManyModelApply implements ApplyContract
 {
-    /* @param  BelongsToMany  $field */
+    /* @param  \MoonShine\Fields\Relationships\BelongsToMany  $field */
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {
