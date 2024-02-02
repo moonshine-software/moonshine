@@ -138,11 +138,11 @@ trait WithModal
 
     public function toggleModal(string $name = 'default'): static
     {
-        return $this->onClick(fn () => "\$dispatch('" . AlpineJs::event(JsEvent::MODAL_TOGGLED, $name) . "')");
+        return $this->onClick(fn (): string => "\$dispatch('" . AlpineJs::event(JsEvent::MODAL_TOGGLED, $name) . "')");
     }
 
     public function openModal(): static
     {
-        return $this->onClick(fn () => 'toggleModal');
+        return $this->onClick(fn (): string => 'toggleModal');
     }
 }

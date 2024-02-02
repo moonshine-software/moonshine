@@ -77,7 +77,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     {
         $withoutQuery = strtok($this->url(), '?');
 
-        if (trim($withoutQuery, '/') !== trim(request()?->url(), '/')) {
+        if (trim($withoutQuery, '/') !== trim((string) request()?->url(), '/')) {
             oops404();
         }
     }
