@@ -8,8 +8,10 @@ use Closure;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Heading;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\HiddenIds;
+use MoonShine\Support\AlpineJs;
 use MoonShine\UI\Modal;
 
 trait WithModal
@@ -51,10 +53,9 @@ trait WithModal
             ->wide($wide)
             ->autoClose($autoClose)
             ->closeOutside($closeOutside)
-            ->buttons($buttons)
-        ;
+            ->buttons($buttons);
 
-        if($attributes !== []) {
+        if ($attributes !== []) {
             $this->modal->customAttributes($attributes);
         }
 
@@ -99,23 +100,23 @@ trait WithModal
                 $async && ! $this->isAsyncMethod(),
                 fn (FormBuilder $form): FormBuilder => $form->async()
             )
-            ->when(
-                ! is_null($formBuilder),
-                fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
-            )
-            ->when(
-                $this->isAsyncMethod(),
-                fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->asyncMethod())
-            )
-            ->submit(
-                is_null($button)
-                    ? __('moonshine::ui.confirm')
-                    : value($button, $data),
-                ['class' => 'btn-secondary']
-            )
+                ->when(
+                    ! is_null($formBuilder),
+                    fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
+                )
+                ->when(
+                    $this->isAsyncMethod(),
+                    fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->asyncMethod())
+                )
+                ->submit(
+                    is_null($button)
+                        ? __('moonshine::ui.confirm')
+                        : value($button, $data),
+                    ['class' => 'btn-secondary']
+                )
         )->auto();
 
-        if($this->isBulk()) {
+        if ($this->isBulk()) {
             $this->attributes()->setAttributes([
                 'data-button-type' => 'modal-button',
             ]);
@@ -123,7 +124,7 @@ trait WithModal
 
         // In this case, the form inside the modal works in async mode,
         // so the async mode is removed from the button.
-        if($this->isAsyncMethod()) {
+        if ($this->isAsyncMethod()) {
             $this->purgeAsync();
         }
 
@@ -133,5 +134,15 @@ trait WithModal
     public function modal(): ?Modal
     {
         return $this->modal;
+    }
+
+    public function toggleModal(string $name = 'default'): static
+    {
+        return $this->onClick(fn () => "\$dispatch('" . AlpineJs::event(JsEvent::MODAL_TOGGLED, $name) . "')");
+    }
+
+    public function openModal(): static
+    {
+        return $this->onClick(fn () => 'toggleModal');
     }
 }

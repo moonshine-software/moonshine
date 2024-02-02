@@ -75,7 +75,11 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function beforeRender(): void
     {
-        //
+        $withoutQuery = strtok($this->url(), '?');
+
+        if (trim($withoutQuery, '/') !== trim(request()?->url(), '/')) {
+            oops404();
+        }
     }
 
     public function fields(): array
