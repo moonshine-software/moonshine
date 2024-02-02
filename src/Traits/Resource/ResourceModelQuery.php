@@ -53,8 +53,6 @@ trait ResourceModelQuery
     }
 
     /**
-     * @param Closure $closure
-     *
      * @return TModel|null
      */
     protected function itemOr(Closure $closure): ?Model

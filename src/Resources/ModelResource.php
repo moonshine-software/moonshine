@@ -219,7 +219,6 @@ abstract class ModelResource extends Resource
      * @param TModel $item
      * @param Fields|null $fields
      *
-     * @return bool
      * @throws Throwable
      */
     public function delete(Model $item, ?Fields $fields = null): bool

@@ -19,7 +19,6 @@ trait ResourceModelValidation
      *
      * @param TModel $item
      *
-     * @return array
      *
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
@@ -38,7 +37,6 @@ trait ResourceModelValidation
     /**
      * @param TModel $item
      *
-     * @return ValidatorContract
      * @throws Throwable
      */
     public function validate(Model $item): ValidatorContract
