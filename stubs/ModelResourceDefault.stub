@@ -11,6 +11,9 @@ use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
 
+/**
+ * @extends ModelResource<{model}>
+ */
 class DummyResource extends ModelResource
 {
     protected string $model = {model}::class;

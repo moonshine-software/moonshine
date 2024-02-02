@@ -19,8 +19,12 @@ use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Attributes;
 use Throwable;
 
+/**
+ * @template TModel of Model
+ */
 trait ResourceModelQuery
 {
+    /** @var TModel|null $item */
     protected ?Model $item = null;
 
     protected array $with = [];
@@ -48,6 +52,11 @@ trait ResourceModelQuery
         return moonshineRequest()->getItemID();
     }
 
+    /**
+     * @param Closure $closure
+     *
+     * @return TModel|null
+     */
     protected function itemOr(Closure $closure): ?Model
     {
         if (! is_null($this->item)) {
@@ -65,6 +74,9 @@ trait ResourceModelQuery
             ->newQuery();
     }
 
+    /**
+     * @return TModel|null
+     */
     public function getItem(): ?Model
     {
         if (! is_null($this->item)) {
@@ -82,6 +94,11 @@ trait ResourceModelQuery
         );
     }
 
+    /**
+     * @param TModel|null $model
+     *
+     * @return $this
+     */
     public function setItem(?Model $model): static
     {
         $this->item = $model;
@@ -89,6 +106,9 @@ trait ResourceModelQuery
         return $this;
     }
 
+    /**
+     * @return TModel
+     */
     public function getItemOrInstance(): Model
     {
         if (! is_null($this->item)) {
@@ -106,6 +126,9 @@ trait ResourceModelQuery
         );
     }
 
+    /**
+     * @return TModel
+     */
     public function getItemOrFail(): Model
     {
         if (! is_null($this->item)) {

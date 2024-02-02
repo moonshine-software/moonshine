@@ -31,15 +31,22 @@ use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
+/**
+ * @template TModel of Model
+ */
 abstract class ModelResource extends Resource
 {
     use ResourceWithFields;
     use ResourceWithButtons;
+    /** @use ResourceModelValidation<TModel> */
     use ResourceModelValidation;
     use ResourceModelActions;
     use ResourceModelPolicy;
+    /** @use ResourceModelQuery<TModel> */
     use ResourceModelQuery;
+    /** @use ResourceModelCrudRouter<TModel> */
     use ResourceModelCrudRouter;
+    /** @use ResourceModelEvents<TModel> */
     use ResourceModelEvents;
     use WithIsNowOnRoute;
 
@@ -99,6 +106,9 @@ abstract class ModelResource extends Resource
         return $this->getPages()->detailPage();
     }
 
+    /**
+     * @return TModel
+     */
     public function getModel(): Model
     {
         return new $this->model();
@@ -206,6 +216,10 @@ abstract class ModelResource extends Resource
     }
 
     /**
+     * @param TModel $item
+     * @param Fields|null $fields
+     *
+     * @return bool
      * @throws Throwable
      */
     public function delete(Model $item, ?Fields $fields = null): bool
@@ -250,7 +264,12 @@ abstract class ModelResource extends Resource
     }
 
     /**
-     * @throws ResourceException|Throwable
+     * @param TModel $item
+     * @param Fields|null $fields
+     *
+     * @return TModel
+     * @throws ResourceException
+     * @throws Throwable
      */
     public function save(Model $item, ?Fields $fields = null): Model
     {
