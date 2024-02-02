@@ -10,6 +10,9 @@ use {model-namespace};
 use MoonShine\Resources\ModelResource;
 use MoonShine\Fields\ID;
 
+/**
+ * @extends ModelResource<{model}>
+ */
 class DummyResource extends ModelResource
 {
     protected string $model = {model}::class;
