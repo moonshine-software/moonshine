@@ -180,7 +180,7 @@ class HasMany extends ModelRelationField implements HasFields
         $countItems = $this->toValue()->count();
 
         if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
         }
 
         return ActionButton::make(
@@ -223,7 +223,7 @@ class HasMany extends ModelRelationField implements HasFields
     protected function linkValue(): MoonShineRenderable
     {
         if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', moonshineRequest()->getResourceUri());
+            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
         }
 
         return

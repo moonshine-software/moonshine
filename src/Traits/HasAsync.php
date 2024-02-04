@@ -36,7 +36,7 @@ trait HasAsync
 
         $query = parse_url($this->asyncUrl(), PHP_URL_QUERY);
 
-        parse_str($query, $asyncUri);
+        parse_str((string) $query, $asyncUri);
 
         $paginatorUri = $this->getPaginator()
             ?->resolveQueryString() ?? [];
