@@ -6,13 +6,13 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
+use MoonShine\MoonShine;
+use MoonShine\Providers\MoonShineServiceProvider;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
-use MoonShine\MoonShine;
-
-use MoonShine\Providers\MoonShineServiceProvider;
-
+#[AsCommand(name: 'moonshine:install')]
 class InstallCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:install {--u|without-user} {--m|without-migrations}';

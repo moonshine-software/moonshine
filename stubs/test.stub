@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use MoonShine\Models\MoonshineUser;
 use {model-namespace};
 use MoonShine\Resources\ModelResource;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DummyResourceTest extends TestCase
@@ -39,7 +40,8 @@ class DummyResourceTest extends TestCase
         return $this->user;
     }
 
-    public function test_index_page_successful(): void
+    #[Test]
+    public function index_page_successful(): void
     {
         $response = $this->get(
             $this->getResource()->indexPageUrl()
@@ -48,7 +50,8 @@ class DummyResourceTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function test_detail_page_successful(): void
+    #[Test]
+    public function detail_page_successful(): void
     {
         $item = {model}::factory()->create();
 
@@ -59,7 +62,8 @@ class DummyResourceTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function test_create_page_successful(): void
+    #[Test]
+    public function create_page_successful(): void
     {
         $response = $this->get(
             $this->getResource()->formPageUrl()
@@ -68,7 +72,8 @@ class DummyResourceTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function test_edit_page_successful(): void
+    #[Test]
+    public function edit_page_successful(): void
     {
         $item = {model}::factory()->create();
 

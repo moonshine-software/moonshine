@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShine;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\{outro, text};
 
-use MoonShine\MoonShine;
-
+#[AsCommand(name: 'moonshine:type-cast')]
 class MakeTypeCastCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:type-cast {className?}';

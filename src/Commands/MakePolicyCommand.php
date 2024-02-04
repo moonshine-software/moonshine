@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use MoonShine\MoonShineAuth;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Finder\Finder;
 
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\suggest;
 
-use MoonShine\MoonShineAuth;
-use Symfony\Component\Finder\Finder;
-
+#[AsCommand(name: 'moonshine:policy')]
 class MakePolicyCommand extends MoonShineCommand
 {
     protected $signature = 'moonshine:policy {className?}';
