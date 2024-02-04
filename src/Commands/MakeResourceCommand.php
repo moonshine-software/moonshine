@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use MoonShine\MoonShine;
-use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\{info, outro, select, text};
+
+use MoonShine\MoonShine;
+
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:resource')]
 class MakeResourceCommand extends MoonShineCommand
