@@ -35,17 +35,22 @@ final class MoonShineLayout implements MoonShineLayoutContract
                     Search::make(),
                 ]),
                 Content::make(),
-                Footer::make()->copyright(fn (): string => <<<'HTML'
-                        &copy; 2021-2024 Made with ❤️ by
-                        <a href="https://cutcode.dev"
-                            class="font-semibold text-primary hover:text-secondary"
-                            target="_blank"
-                        >
-                            CutCode
-                        </a>
-                    HTML)->menu([
-                    'https://moonshine-laravel.com' => 'Documentation',
-                ]),
+                Footer::make()
+                    ->copyright(fn (): string => sprintf(
+                        <<<'HTML'
+                            &copy; 2021-%d Made with ❤️ by
+                            <a href="https://cutcode.dev"
+                                class="font-semibold text-primary hover:text-secondary"
+                                target="_blank"
+                            >
+                                CutCode
+                            </a>
+                        HTML,
+                        now()->year
+                    ))
+                    ->menu([
+                        'https://moonshine-laravel.com/docs' => 'Documentation',
+                    ]),
             ])->customAttributes(['class' => 'layout-page']),
         ]);
     }
