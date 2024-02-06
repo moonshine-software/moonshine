@@ -26,10 +26,6 @@ use MoonShine\Traits\WithView;
 
 abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscapedWhenCastToString
 {
-    /**
-     * @var bool
-     */
-    public $previewMode;
     use Makeable;
     use WithFormElementAttributes;
     use WithComponentAttributes;
@@ -37,6 +33,10 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
     use WithAssets;
     use HasCanSee;
     use Conditionable;
+    /**
+     * @var bool
+     */
+    public $previewMode;
 
     protected ?FormElement $parent = null;
 
