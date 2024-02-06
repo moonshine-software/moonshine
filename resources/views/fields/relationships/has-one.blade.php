@@ -4,5 +4,5 @@
 >
     <x-moonshine::divider />
 
-    {{ $element->value(withOld: false)->render() }}
+    {{ $form->render() }}
 </div>

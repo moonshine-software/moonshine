@@ -2,6 +2,6 @@
     :attributes="$element->attributes()->merge([
         'id' => $element->id(),
         'name' => $element->name(),
-        'value' => (string) $element->value()
+        'value' => (string) $value
     ])"
 />

@@ -10,5 +10,5 @@
 
     <x-moonshine::divider />
 
-    {{ $element->value(withOld: false)->render() }}
+    {{ $table->render() }}
 </div>

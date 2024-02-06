@@ -335,6 +335,16 @@ class BelongsToMany extends ModelRelationField implements
             ->withNotFound();
     }
 
+    /**
+     * @throws Throwable
+     */
+    protected function viewData(): array
+    {
+        return [
+            'table' => $this->resolveValue(),
+        ];
+    }
+
     protected function columnOrFormattedValue(Model $item, string|int $default): string|int
     {
         if (is_closure($this->formattedValueCallback())) {

@@ -1,3 +1,3 @@
 <div {{ $element->attributes() }}>
-    {!! $element->value() ?? '' !!}
+    {!! $value ?? '' !!}
 </div>

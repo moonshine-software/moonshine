@@ -3,18 +3,5 @@
      {{ $element->attributes()->only('class') }}
      data-field-block="{{ $element->column() }}"
 >
-    {{ $element->value(withOld: false)
-            ->editable()
-            ->reindex()
-            ->when(
-                $element->isCreatable(),
-                fn($table) => $table->creatable(
-                    limit: $element->creatableLimit(),
-                    button: $element->creatableButton()
-                )
-            )
-            ->buttons($element->getButtons())
-            ->simple()
-            ->render()
-    }}
+    {{ $table->render() }}
 </div>

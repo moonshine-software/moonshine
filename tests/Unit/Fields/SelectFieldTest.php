@@ -50,9 +50,7 @@ describe('basic methods', function () {
             ->toBe('2')
             ->and((string) $this->fieldMultiple)
             ->toBe(
-                view('moonshine::fields.select', [
-                    'element' => $this->fieldMultiple,
-                ])->render()
+                view('moonshine::fields.select', $this->fieldMultiple->toArray())->render()
             );
     });
 

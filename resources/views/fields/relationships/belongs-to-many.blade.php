@@ -72,7 +72,7 @@
                                 :actions="$element->getButtons()"
                             />
 
-                            {{ $element->value(withOld: false)->render() }}
+                            {{ $table->render() }}
                         </div>
                     </div>
                 @else
@@ -82,7 +82,7 @@
                             :actions="$element->getButtons()"
                         />
 
-                        {{ $element->value(withOld: false)->render() }}
+                        {{ $table->render() }}
                     </div>
                 @endif
             @endif

@@ -1,8 +1,8 @@
 <div
     data-field-block="{{ $element->column() }}"
     x-data="{
-         range_from_{{ $element->id() }}: '{{ $element->value()[$element->fromField] ?? '' }}',
-         range_to_{{ $element->id() }}: '{{ $element->value()[$element->toField] ?? '' }}'
+         range_from_{{ $element->id() }}: '{{ $value[$element->fromField] ?? '' }}',
+         range_to_{{ $element->id() }}: '{{ $value[$element->toField] ?? '' }}'
      }"
     {{ $element->attributes()
         ->only('class')

@@ -4,7 +4,7 @@
         'name' => $element->name(),
     ])"
     :files="$element->getFullPathValues()"
-    :raw="is_iterable($element->value()) ? $element->value() : [$element->value()]"
+    :raw="is_iterable($value) ? $value : [$value]"
     :removable="$element->isRemovable()"
     :removableAttributes="$element->getRemovableAttributes()"
     :imageable="true"

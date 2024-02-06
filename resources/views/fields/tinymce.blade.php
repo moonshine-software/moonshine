@@ -13,5 +13,5 @@
         :data-tinycomments_author="!empty($element->commentAuthor) ? $element->commentAuthor : null"
         :data-mergetags_list="!empty($element->mergeTags) ? json_encode($element->mergeTags) : null"
         :data-file_manager="config('moonshine.tinymce.file_manager', false) ? config('moonshine.tinymce.file_manager', 'laravel-filemanager') : null"
-    >{!! $element->value() ?? '' !!}</x-moonshine::form.textarea>
+    >{!! $value ?? '' !!}</x-moonshine::form.textarea>
 </div>

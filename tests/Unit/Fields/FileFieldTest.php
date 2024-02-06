@@ -127,16 +127,12 @@ it('correct path with dir', function (): void {
 
 it('preview', function (): void {
     expect((string) $this->field)
-        ->toBe(view('moonshine::fields.file', [
-            'element' => $this->field,
-        ])->render());
+        ->toBe(view('moonshine::fields.file', $this->field->toArray())->render());
 });
 
 it('preview for multiple', function (): void {
     expect((string) $this->fieldMultiple)
-        ->toBe(view('moonshine::fields.file', [
-            'element' => $this->fieldMultiple,
-        ])->render());
+        ->toBe(view('moonshine::fields.file',$this->fieldMultiple->toArray())->render());
 });
 
 it('names single', function (): void {
