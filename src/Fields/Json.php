@@ -424,13 +424,13 @@ class Json extends Field implements
                 ->reindex()
                 ->when(
                     $this->isCreatable(),
-                    fn(TableBuilder $table) => $table->creatable(
+                    fn (TableBuilder $table) => $table->creatable(
                         limit: $this->creatableLimit(),
                         button: $this->creatableButton()
                     )
                 )
                 ->buttons($this->getButtons())
-                ->simple()
+                ->simple(),
         ];
     }
 

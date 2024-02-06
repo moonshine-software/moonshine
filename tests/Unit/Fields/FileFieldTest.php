@@ -132,7 +132,7 @@ it('preview', function (): void {
 
 it('preview for multiple', function (): void {
     expect((string) $this->fieldMultiple)
-        ->toBe(view('moonshine::fields.file',$this->fieldMultiple->toArray())->render());
+        ->toBe(view('moonshine::fields.file', $this->fieldMultiple->toArray())->render());
 });
 
 it('names single', function (): void {
