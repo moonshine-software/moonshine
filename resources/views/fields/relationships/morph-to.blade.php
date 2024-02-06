@@ -19,7 +19,7 @@
             :searchable="true"
             @class(['form-invalid' => $errors->{$element->getFormName()}->has($element->name())])
             x-bind:data-async-extra="morphType"
-            :value="$element->value()"
+            :value="$value"
             :values="$element->values()"
             :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"
         >

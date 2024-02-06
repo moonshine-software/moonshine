@@ -45,9 +45,14 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $isAsync = false;
 
-    public function creatable(Closure|bool|null $condition = null): static
-    {
+    protected ?ActionButton $creatableButton = null;
+
+    public function creatable(
+        Closure|bool|null $condition = null,
+        ?ActionButton $button = null,
+    ): static {
         $this->isCreatable = Condition::boolean($condition, true);
+        $this->creatableButton = $button;
 
         return $this;
     }
@@ -71,6 +76,10 @@ class HasMany extends ModelRelationField implements HasFields
 
     public function createButton(): ?ActionButton
     {
+        if(! is_null($this->creatableButton)) {
+            return $this->creatableButton;
+        }
+
         if (is_null($this->getRelatedModel()?->getKey())) {
             return null;
         }
@@ -163,7 +172,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedClonedFields()
+    public function preparedClonedFields(): Fields
     {
         $fields = $this->preparedFields();
 
@@ -351,6 +360,13 @@ class HasMany extends ModelRelationField implements HasFields
         }
 
         return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            'table' => $this->resolveValue(),
+        ];
     }
 
     protected function resolveOnApply(): ?Closure

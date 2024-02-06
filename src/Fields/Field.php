@@ -224,11 +224,7 @@ abstract class Field extends FormElement
 
     public function value(bool $withOld = true): mixed
     {
-        $this->previewMode = false;
-
-        $old = old($this->nameDot());
-
-        if ($withOld && $old) {
+        if ($withOld && $old = old($this->nameDot())) {
             return $old;
         }
 

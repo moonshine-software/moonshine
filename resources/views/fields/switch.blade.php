@@ -4,6 +4,6 @@
     :name="$element->name()"
     :onValue="$element->getOnValue()"
     :offValue="$element->getOffValue()"
-    :value="($element->getOnValue() == $element->value() ? $element->getOnValue() : $element->getOffValue())"
+    :value="($element->getOnValue() == $value ? $element->getOnValue() : $element->getOffValue())"
     :checked="$element->isChecked()"
 />

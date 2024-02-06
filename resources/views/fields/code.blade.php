@@ -19,6 +19,6 @@
         'class' => 'code-source'
     ])"
         @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
-    >{!! $element->value() ?? '' !!}</x-moonshine::form.textarea>
+    >{!! $value ?? '' !!}</x-moonshine::form.textarea>
 </div>
 

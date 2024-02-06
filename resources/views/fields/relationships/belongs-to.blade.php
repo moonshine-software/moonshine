@@ -6,7 +6,7 @@
     :nullable="$element->isNullable()"
     :searchable="$element->isSearchable()"
     @class(['form-invalid' => $errors->{$element->getFormName()}->has($element->name())])
-    :value="$element->value()"
+    :value="$value"
     :values="$element->values()"
     :customProperties="$element->valuesWithProperties(onlyCustom: true)"
     :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"

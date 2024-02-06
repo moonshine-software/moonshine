@@ -56,17 +56,13 @@ it('view', function (): void {
 it('preview', function (): void {
     expect((string)$this->field)
         ->toBe(
-            view('moonshine::fields.image', [
-                'element' => $this->field,
-            ])->render()
+            view('moonshine::fields.image', $this->field->toArray())->render()
         );
 });
 
 it('preview for multiple', function (): void {
     expect((string)$this->fieldMultiple)
         ->toBe(
-            view('moonshine::fields.image', [
-                'element' => $this->fieldMultiple,
-            ])->render()
+            view('moonshine::fields.image', $this->fieldMultiple->toArray())->render()
         );
 });

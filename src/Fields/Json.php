@@ -416,6 +416,24 @@ class Json extends Field implements
             );
     }
 
+    protected function viewData(): array
+    {
+        return [
+            'table' => $this->resolveValue()
+                ->editable()
+                ->reindex()
+                ->when(
+                    $this->isCreatable(),
+                    fn(TableBuilder $table) => $table->creatable(
+                        limit: $this->creatableLimit(),
+                        button: $this->creatableButton()
+                    )
+                )
+                ->buttons($this->getButtons())
+                ->simple()
+        ];
+    }
+
     /**
      * @throws Throwable
      */
