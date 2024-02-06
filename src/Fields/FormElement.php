@@ -33,6 +33,10 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
     use WithAssets;
     use HasCanSee;
     use Conditionable;
+    /**
+     * @var bool
+     */
+    public $previewMode;
 
     protected ?FormElement $parent = null;
 
