@@ -33,10 +33,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
     use WithAssets;
     use HasCanSee;
     use Conditionable;
-    /**
-     * @var bool
-     */
-    public $previewMode;
 
     protected ?FormElement $parent = null;
 
@@ -321,8 +317,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     public function render(): View|Closure|string
     {
-        $this->previewMode = false;
-
         if (! is_null($this->cachedRender)) {
             return $this->cachedRender;
         }
