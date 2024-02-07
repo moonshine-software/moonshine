@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
-use MoonShine\Resources\ModelResource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
@@ -19,6 +18,7 @@ use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
