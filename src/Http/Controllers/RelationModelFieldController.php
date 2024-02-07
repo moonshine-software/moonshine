@@ -67,7 +67,7 @@ class RelationModelFieldController extends MoonShineController
             $term,
             fn (Builder $q) => $q->where(
                 $searchColumn,
-                DbOperator::getLikeOperator(),
+                DbOperator::getLikeOperator($q->getModel()),
                 "%$term%"
             )
         )

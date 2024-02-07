@@ -309,7 +309,7 @@ trait ResourceModelQuery
                         fn (Builder $query) => $query->orWhereHas(
                             $key,
                             fn (Builder $q) => collect($column)->each(fn ($item) => $q->where(
-                                fn (Builder $qq) => $qq->orWhere($item, DbOperator::getLikeOperator(), "%$terms%")
+                                fn (Builder $qq) => $qq->orWhere($item, DbOperator::getLikeOperator($qq->getModel()), "%$terms%")
                             ))
                         ),
                         fn (Builder $query) => collect($column)->each(fn ($item) => $query->orWhere(
@@ -317,7 +317,7 @@ trait ResourceModelQuery
                         ))
                     );
                 } else {
-                    $builder->orWhere($column, DbOperator::getLikeOperator(), "%$terms%");
+                    $builder->orWhere($column, DbOperator::getLikeOperator($builder->getModel()), "%$terms%");
                 }
             }
         });
