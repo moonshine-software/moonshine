@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use MoonShine\Resources\ModelResource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
@@ -100,7 +101,7 @@ class HasOne extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
-        /** @var \MoonShine\Resources\ModelResource $parentResource */
+        /** @var ModelResource $parentResource */
         $parentResource = moonshineRequest()->getResource();
 
         $item = $this->toValue();
