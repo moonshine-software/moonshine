@@ -123,6 +123,7 @@ class ExportHandler extends Handler
 
             $fields = $resource
                 ->getFields()
+                ->onlyFields()
                 ->exportFields();
 
             $fields->fill($item->toArray(), $item, $index);
