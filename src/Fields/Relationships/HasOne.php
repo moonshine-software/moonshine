@@ -21,6 +21,9 @@ use MoonShine\Fields\Hidden;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
+/**
+ * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasOne>
+ */
 class HasOne extends ModelRelationField implements HasFields
 {
     use WithFields;
@@ -97,6 +100,7 @@ class HasOne extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
+        /** @var \MoonShine\Resources\ModelResource $parentResource */
         $parentResource = moonshineRequest()->getResource();
 
         $item = $this->toValue();
@@ -186,6 +190,9 @@ class HasOne extends ModelRelationField implements HasFields
         ];
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
         $this->getResource()

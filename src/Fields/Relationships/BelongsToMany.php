@@ -33,6 +33,9 @@ use MoonShine\Traits\Fields\WithRelatedValues;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
+/**
+ * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsToMany>
+ */
 class BelongsToMany extends ModelRelationField implements
     HasRelatedValues,
     HasPivot,

@@ -23,6 +23,9 @@ use MoonShine\Support\Condition;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
+/**
+ * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasMany>
+ */
 class HasMany extends ModelRelationField implements HasFields
 {
     use WithFields;
@@ -74,6 +77,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this->isSearchable;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function createButton(): ?ActionButton
     {
         if(! is_null($this->creatableButton)) {
@@ -195,7 +201,7 @@ class HasMany extends ModelRelationField implements HasFields
         return ActionButton::make(
             "($countItems)",
             $this->getResource()->indexPageUrl([
-                '_parentId' => $relationName . '-' . $casted->{$casted->getKeyName()},
+                '_parentId' => $relationName . '-' . $casted?->{$casted?->getKeyName()},
             ])
         )
             ->icon('heroicons.outline.eye')
@@ -244,6 +250,9 @@ class HasMany extends ModelRelationField implements HasFields
             )->primary();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function tableValue(): MoonShineRenderable
     {
         $resource = $this->getResource();
@@ -337,22 +346,28 @@ class HasMany extends ModelRelationField implements HasFields
         return null;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolvePreview(): View|string
     {
         if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
 
-            $this->setValue($casted->{$this->getRelationName()});
+            $this->setValue($casted?->{$this->getRelationName()});
         }
 
         return $this->isOnlyLink() ? $this->linkPreview() : $this->tablePreview();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveValue(): MoonShineRenderable
     {
         if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
-            $relation = $casted->{$this->getRelationName()}();
+            $relation = $casted?->{$this->getRelationName()}();
             $resource = $this->getResource();
             $resource->customBuilder($relation);
 
@@ -362,6 +377,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function viewData(): array
     {
         return [
@@ -374,6 +392,9 @@ class HasMany extends ModelRelationField implements HasFields
         return static fn ($item) => $item;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
         $this->getResource()

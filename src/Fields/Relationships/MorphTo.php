@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use MoonShine\Exceptions\FieldException;
 
+/**
+ * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\MorphTo>
+ */
 class MorphTo extends BelongsTo
 {
     protected string $view = 'moonshine::fields.relationships.morph-to';
@@ -53,6 +56,9 @@ class MorphTo extends BelongsTo
         return $this;
     }
 
+    /**
+     * @throws FieldException
+     */
     public function getTypes(): array
     {
         if ($this->types === []) {
@@ -65,13 +71,13 @@ class MorphTo extends BelongsTo
     public function getMorphType(): string
     {
         return $this->getRelation()
-            ->getMorphType();
+            ?->getMorphType() ?? '';
     }
 
     public function getMorphKey(): string
     {
         return $this->getRelation()
-            ->getForeignKeyName();
+            ?->getForeignKeyName() ?? '';
     }
 
     protected function resolveOnApply(): ?Closure
@@ -139,6 +145,9 @@ class MorphTo extends BelongsTo
             ->value();
     }
 
+    /**
+     * @throws FieldException
+     */
     public function typeValue(): string
     {
         $default = Arr::first(array_keys($this->getTypes()));

@@ -16,6 +16,9 @@ use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Fields\WithRelatedValues;
 
+/**
+ * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsTo>
+ */
 class BelongsTo extends ModelRelationField implements
     HasAsyncSearch,
     HasRelatedValues,

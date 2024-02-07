@@ -18,10 +18,12 @@ use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 /**
+ * @template R of Relation
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, ?ModelResource $resource = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
+    /** @use HasResource<ModelResource, ModelResource> */
     use HasResource;
 
     protected string $relationName;
@@ -34,6 +36,9 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
     protected bool $isMorph = false;
 
+    /**
+     * @throws Throwable
+     */
     public function __construct(
         Closure|string $label,
         ?string $relationName = null,
@@ -69,10 +74,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
 
         if (is_null($resource)) {
-            $resource = $this->findResource();
+            $this->setResource($this->findResource());
+        } else {
+            $this->setResource($resource);
         }
-
-        $this->setResource($resource);
     }
 
     /**
@@ -166,7 +171,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
 
         if ($this->toOne()) {
-            $value = data_get($value, $this->getResource()->column());
+            $value = data_get($value, $this->getResource()?->column());
         }
 
         return $this->formattedValue ?? $value;
@@ -220,6 +225,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->relatedModel;
     }
 
+    /** @return R */
     public function getRelation(): ?Relation
     {
         return $this->getRelatedModel()
