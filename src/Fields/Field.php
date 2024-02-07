@@ -150,7 +150,7 @@ abstract class Field extends FormElement
 
         $this->setValue($this->value ?? $value);
 
-        if(!is_null($this->afterFillCallback)) {
+        if(! is_null($this->afterFillCallback)) {
             return value($this->afterFillCallback, $this);
         }
 
