@@ -122,7 +122,7 @@ class ExportHandler extends Handler
             $row = [];
 
             $fields = $resource
-                ->getIndexFields()
+                ->getFields()
                 ->exportFields();
 
             $fields->fill($item->toArray(), $item, $index);
