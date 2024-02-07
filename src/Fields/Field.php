@@ -54,6 +54,8 @@ abstract class Field extends FormElement
 
     protected ?Closure $fillCallback = null;
 
+    protected ?Closure $afterFillCallback = null;
+
     protected mixed $formattedValue = null;
 
     protected ?Closure $formattedValueCallback = null;
@@ -147,6 +149,10 @@ abstract class Field extends FormElement
         $value = $this->reformatFilledValue($value);
 
         $this->setValue($this->value ?? $value);
+
+        if(!is_null($this->afterFillCallback)) {
+            return value($this->afterFillCallback, $this);
+        }
 
         return $this;
     }
@@ -278,6 +284,13 @@ abstract class Field extends FormElement
     public function changeFill(Closure $closure): static
     {
         $this->fillCallback = $closure;
+
+        return $this;
+    }
+
+    public function afterFill(Closure $closure): static
+    {
+        $this->afterFillCallback = $closure;
 
         return $this;
     }
