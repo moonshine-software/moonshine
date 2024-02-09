@@ -10,6 +10,8 @@ class Collapse extends Decoration
 
     protected bool $show = false;
 
+    protected bool $persist = false;
+
     public function show(bool $show = true): self
     {
         $this->show = $show;
@@ -20,5 +22,17 @@ class Collapse extends Decoration
     public function isShow(): bool
     {
         return $this->show;
+    }
+
+    public function persist(bool $persist = true): self
+    {
+        $this->persist = $persist;
+
+        return $this;
+    }
+
+    public function isPersist(): bool
+    {
+        return $this->persist;
     }
 }

@@ -13,7 +13,7 @@
         @endif
         toggle() {
             this.open = !this.open
-        },
+        }
     }"
 >
     <div
@@ -33,7 +33,7 @@
                 </svg>
             </button>
         </h2>
-        <div x-show="open" class="accordion-body">
+        <div x-cloak x-show="open" class="accordion-body">
             <div class="accordion-content">
                 {{ $slot }}
             </div>

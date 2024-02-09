@@ -1,6 +1,6 @@
 <x-moonshine::collapse :show="$element->isShow()"
                        :title="$element->label()"
-                       :persist="true"
+                       :persist="$element->isPersist()"
                        :attributes="$attributes"
 >
     <x-moonshine::fields-group
