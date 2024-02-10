@@ -22,8 +22,7 @@ final class BelongsToManyButton
     public static function for(
         BelongsToMany $field,
         ?ActionButton $button = null
-    ): ActionButton
-    {
+    ): ActionButton {
         $resource = $field->getResource();
 
         if (! $resource->formPage()) {

@@ -27,8 +27,7 @@ final class HasManyButton
         HasMany $field,
         bool $update = false,
         ?ActionButton $button = null
-    ): ActionButton
-    {
+    ): ActionButton {
         $resource = $field->getResource();
         $parent = $field->getRelatedModel();
         $relation = $parent?->{$field->getRelationName()}();
