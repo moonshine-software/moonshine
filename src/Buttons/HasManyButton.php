@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
+use MoonShine\Resources\ModelResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\ActionButtons\ActionButton;
@@ -28,7 +29,7 @@ final class HasManyButton
         bool $update = false,
         ?ActionButton $button = null
     ): ActionButton {
-        /** @var \MoonShine\Resources\ModelResource $resource */
+        /** @var ModelResource $resource */
         $resource = $field->getResource();
         $parent = $field->getRelatedModel();
         $relation = $parent?->{$field->getRelationName()}();

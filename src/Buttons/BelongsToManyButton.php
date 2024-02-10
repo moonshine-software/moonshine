@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
+use MoonShine\Resources\ModelResource;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
@@ -23,7 +24,7 @@ final class BelongsToManyButton
         BelongsToMany $field,
         ?ActionButton $button = null
     ): ActionButton {
-        /** @var \MoonShine\Resources\ModelResource $resource */
+        /** @var ModelResource $resource */
         $resource = $field->getResource();
 
         if (! $resource->formPage()) {
