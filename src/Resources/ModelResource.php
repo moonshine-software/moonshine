@@ -116,7 +116,7 @@ abstract class ModelResource extends Resource
 
     public function getModelCast(): ModelCast
     {
-        return ModelCast::make($this->model);
+        return ModelCast::make($this->getModel());
     }
 
     public function column(): string
