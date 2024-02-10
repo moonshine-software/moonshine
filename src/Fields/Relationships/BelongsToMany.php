@@ -127,15 +127,11 @@ class BelongsToMany extends ModelRelationField implements
      */
     public function createButton(): ?ActionButton
     {
-        if(! is_null($this->creatableButton)) {
-            return $this->creatableButton;
-        }
-
         if (! $this->isCreatable()) {
             return null;
         }
 
-        $button = BelongsToManyButton::for($this);
+        $button = BelongsToManyButton::for($this, button: $this->creatableButton);
 
         return $button->isSee($this->getRelatedModel())
             ? $button

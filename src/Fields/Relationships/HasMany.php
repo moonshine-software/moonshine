@@ -82,10 +82,6 @@ class HasMany extends ModelRelationField implements HasFields
      */
     public function createButton(): ?ActionButton
     {
-        if(! is_null($this->creatableButton)) {
-            return $this->creatableButton;
-        }
-
         if (is_null($this->getRelatedModel()?->getKey())) {
             return null;
         }
@@ -94,7 +90,7 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        $button = HasManyButton::for($this);
+        $button = HasManyButton::for($this, button: $this->creatableButton);
 
         return $button->isSee($this->getRelatedModel())
             ? $button

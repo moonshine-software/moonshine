@@ -23,11 +23,15 @@ final class HasManyButton
     /**
      * @throws Throwable
      */
-    public static function for(HasMany $field, bool $update = false): ActionButton
+    public static function for(
+        HasMany $field,
+        bool $update = false,
+        ?ActionButton $button = null
+    ): ActionButton
     {
         $resource = $field->getResource();
         $parent = $field->getRelatedModel();
-        $relation = $parent->{$field->getRelationName()}();
+        $relation = $parent?->{$field->getRelationName()}();
 
         if (! $resource->formPage()) {
             return ActionButton::emptyHidden();
@@ -75,7 +79,11 @@ final class HasManyButton
             : fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
             && $resource->can('create');
 
-        return ActionButton::make($update ? '' : __('moonshine::ui.add'), url: $action)
+        $actionButton = $button
+            ? $button->setUrl($action)
+            : ActionButton::make($update ? '' : __('moonshine::ui.add'), url: $action);
+
+        return $actionButton
             ->canSee($authorize)
             ->inModal(
                 title: fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),

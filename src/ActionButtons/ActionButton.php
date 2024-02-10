@@ -45,6 +45,13 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         $this->setLabel($label);
     }
 
+    public function setUrl(Closure|string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
     public static function emptyHidden(): self
     {
         return self::make('')

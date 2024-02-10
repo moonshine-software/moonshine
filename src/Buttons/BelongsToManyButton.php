@@ -19,7 +19,10 @@ final class BelongsToManyButton
     /**
      * @throws Throwable
      */
-    public static function for(BelongsToMany $field): ActionButton
+    public static function for(
+        BelongsToMany $field,
+        ?ActionButton $button = null
+    ): ActionButton
     {
         $resource = $field->getResource();
 
@@ -40,7 +43,11 @@ final class BelongsToManyButton
                 ->toArray();
         };
 
-        return ActionButton::make(__('moonshine::ui.add'), url: $action)
+        $actionButton = $button
+            ? $button->setUrl($action)
+            : ActionButton::make(__('moonshine::ui.add'), url: $action);
+
+        return $actionButton
             ->canSee(fn (): bool => in_array('create', $resource->getActiveActions()) && $resource->can('create'))
             ->inModal(
                 title: fn (): array|string|null => __('moonshine::ui.create'),
