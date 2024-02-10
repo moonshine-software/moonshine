@@ -81,7 +81,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this;
     }
 
-    //TODO Make $forComponent parameter required
+    //TODO 3.0 Make $forComponent argument required
     public function bulk(?string $forComponent = null): self
     {
         $this->isBulk = true;

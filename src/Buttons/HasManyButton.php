@@ -28,6 +28,7 @@ final class HasManyButton
         bool $update = false,
         ?ActionButton $button = null
     ): ActionButton {
+        /** @var \MoonShine\Resources\ModelResource $resource */
         $resource = $field->getResource();
         $parent = $field->getRelatedModel();
         $relation = $parent?->{$field->getRelationName()}();

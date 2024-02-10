@@ -23,6 +23,7 @@ final class BelongsToManyButton
         BelongsToMany $field,
         ?ActionButton $button = null
     ): ActionButton {
+        /** @var \MoonShine\Resources\ModelResource $resource */
         $resource = $field->getResource();
 
         if (! $resource->formPage()) {
