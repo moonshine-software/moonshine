@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
-use MoonShine\Resources\ModelResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\ActionButtons\ActionButton;
@@ -16,6 +15,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
-use MoonShine\Resources\ModelResource;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
@@ -12,6 +11,7 @@ use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\BelongsToMany;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
