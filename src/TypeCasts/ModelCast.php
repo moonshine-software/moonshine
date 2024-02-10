@@ -11,21 +11,21 @@ use MoonShine\Traits\Makeable;
 
 /**
  * @template T of Model
- * @method static static make(string $class)
+ * @method static static make(string|Model $class)
  */
 final class ModelCast implements MoonShineDataCast
 {
     use Makeable;
 
     /**
-     * @param  class-string<T>  $class
+     * @param  class-string<T>|Model  $class
      */
     public function __construct(
-        protected string $class
+        protected string|Model $class
     ) {
     }
 
-    public function getClass(): string
+    public function getClass(): string|Model
     {
         return $this->class;
     }
@@ -36,7 +36,9 @@ final class ModelCast implements MoonShineDataCast
     public function hydrate(array $data): mixed
     {
         /** @var T $value */
-        $value = (new ($this->getClass())());
+        $value = $this->getClass() instanceof Model
+            ? ($this->getClass())
+            : (new ($this->getClass())());
 
         $value
             ->forceFill([
