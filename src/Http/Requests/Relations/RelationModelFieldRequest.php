@@ -53,7 +53,7 @@ class RelationModelFieldRequest extends MoonShineFormRequest
      */
     public function getField(): ?ModelRelationField
     {
-        return memoize(function () {
+        return memoize(function (): ?ModelRelationField {
             /* @var ModelResource $resource */
             $resource = $this->getResource();
 
