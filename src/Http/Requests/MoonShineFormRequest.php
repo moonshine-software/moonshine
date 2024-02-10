@@ -6,8 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use Throwable;
 
+/**
+ * @template T of ModelResource
+ */
 class MoonShineFormRequest extends FormRequest
 {
     protected $errorBag = 'crud';
@@ -25,8 +29,10 @@ class MoonShineFormRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         if ($this->hasResource()) {
-            $this->getResource()->prepareForValidation();
+            $this->getResource()?->prepareForValidation();
         }
+
+        $this->request = moonshineRequest();
     }
 
     public function messages(): array
@@ -48,12 +54,13 @@ class MoonShineFormRequest extends FormRequest
     {
         return $this->hasResource()
             ? $this->getResource()
-                ->getFormFields()
-                ->onlyFields()
-                ->extractLabels()
+                ?->getFormFields()
+                ?->onlyFields()
+                ?->extractLabels()
             : [];
     }
 
+    /** @return T */
     public function getResource(): ?ResourceContract
     {
         return moonshineRequest()->getResource();

@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Requests\Resources;
 
+use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Http\Requests\MoonShineFormRequest;
 use Throwable;
 
 final class UpdateColumnFormRequest extends MoonShineFormRequest
 {
+    /**
+     * @throws Throwable
+     * @throws ResourceException
+     */
     public function authorize(): bool
     {
         $this->beforeResourceAuthorization();
