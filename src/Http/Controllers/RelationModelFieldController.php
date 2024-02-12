@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use MoonShine\Support\DbOperator;
+use MoonShine\Support\DbOperators;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Fields\Relationships\MorphTo;
@@ -67,7 +67,7 @@ class RelationModelFieldController extends MoonShineController
             $term,
             fn (Builder $q) => $q->where(
                 $searchColumn,
-                DbOperator::getLikeOperator($q->getModel()),
+                DbOperators::byModel($q->getModel())->like(),
                 "%$term%"
             )
         )
