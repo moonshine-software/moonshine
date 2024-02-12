@@ -27,7 +27,6 @@ class Collapse extends Decoration
 
     /**
      * @deprecated will be removed in 3.0 (use method isOpen())
-     * @return bool
      */
     public function isShow(): bool
     {
