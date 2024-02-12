@@ -4,29 +4,51 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
+use Closure;
+use MoonShine\Support\Condition;
+
 class Collapse extends Decoration
 {
     protected string $view = 'moonshine::decorations.collapse';
 
-    protected bool $show = false;
+    protected bool $open = false;
 
-    protected bool $persist = false;
+    protected bool $persist = true;
 
-    public function show(bool $show = true): self
+    /**
+     * @deprecated will be removed in 3.0 (use method open())
+     * @param bool $show
+     * @return $this
+     */
+    public function show(Closure|bool|null $condition = null): self
     {
-        $this->show = $show;
+        return $this->open($condition);
+    }
+
+    /**
+     * @deprecated will be removed in 3.0 (use method isOpen())
+     * @return bool
+     */
+    public function isShow(): bool
+    {
+        return $this->isOpen();
+    }
+
+    public function open(Closure|bool|null $condition = null): self
+    {
+        $this->open = Condition::boolean($condition, true);
 
         return $this;
     }
 
-    public function isShow(): bool
+    public function isOpen(): bool
     {
-        return $this->show;
+        return $this->open;
     }
 
-    public function persist(bool $persist = true): self
+    public function persist(Closure|bool|null $condition = null): self
     {
-        $this->persist = $persist;
+        $this->persist = Condition::boolean($condition, true);
 
         return $this;
     }

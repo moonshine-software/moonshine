@@ -1,4 +1,4 @@
-<x-moonshine::collapse :show="$element->isShow()"
+<x-moonshine::collapse :open="$element->isOpen()"
                        :title="$element->label()"
                        :persist="$element->isPersist()"
                        :attributes="$attributes"
