@@ -12,12 +12,12 @@ enum PageType: string
 
     case  DETAIL = 'detail-page';
 
-    public static function getTypeFromUri(string $uri): ?PageType
+    public static function getTypeFromUri(string $uri): ?self
     {
         return match ($uri) {
-            'index-page' => PageType::INDEX,
-            'form-page' => PageType::FORM,
-            'detail-page' => PageType::DETAIL,
+            'index-page' => self::INDEX,
+            'form-page' => self::FORM,
+            'detail-page' => self::DETAIL,
             default => null
         };
     }

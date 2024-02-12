@@ -81,6 +81,9 @@ class RelationModelFieldController extends MoonShineController
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function searchRelations(RelationModelFieldRequest $request): mixed
     {
         /* @var \MoonShine\Resources\ModelResource $parentResource */

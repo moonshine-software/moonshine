@@ -153,9 +153,9 @@ trait FileTrait
             $requestValue = $this->requestValue();
 
             if (
-                ! $this->isMultiple()
+                $requestValue
+                && ! $this->isMultiple()
                 && $this->isDeleteFiles()
-                && $requestValue
                 && $requestValue->hashName()
             ) {
                 $this->checkAndDelete(

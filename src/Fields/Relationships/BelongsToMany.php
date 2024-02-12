@@ -24,17 +24,20 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\HasTreeMode;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
+use MoonShine\Traits\HasResource;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsToMany>
+ * @extends HasResource<ModelResource, ModelResource>
  */
 class BelongsToMany extends ModelRelationField implements
     HasRelatedValues,
@@ -148,7 +151,7 @@ class BelongsToMany extends ModelRelationField implements
     public function withCheckAll(): self
     {
         return $this->buttons([
-            ActionButton::make('', '')
+            ActionButton::make('')
                 ->onClick(fn (): string => 'checkAll', 'prevent')
                 ->primary()
                 ->icon('heroicons.outline.check'),
@@ -475,6 +478,9 @@ class BelongsToMany extends ModelRelationField implements
         return $data;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
         if (! $this->getResource()->deleteRelationships()) {

@@ -12,6 +12,8 @@ use MoonShine\Traits\HasResource;
 use Throwable;
 
 /**
+ * @deprecated will be removed in 3.0
+ * @see \MoonShine\Components\TableBuilder
  * @method static static make(ResourceContract $resource, ?Closure $query = null)
  */
 final class ResourcePreview extends MoonShineComponent

@@ -6,6 +6,7 @@ use Closure;
 use MoonShine\Traits\Makeable;
 
 /**
+ * TODO 3.0 Remove
  * @method static static make(string|Closure|null $title, string|Closure|null $content, bool $isLeft = false)
  */
 class OffCanvas

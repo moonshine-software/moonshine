@@ -11,6 +11,7 @@ use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\BelongsToMany;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
@@ -23,7 +24,7 @@ final class BelongsToManyButton
         BelongsToMany $field,
         ?ActionButton $button = null
     ): ActionButton {
-        /** @var \MoonShine\Resources\ModelResource $resource */
+        /** @var ModelResource $resource */
         $resource = $field->getResource();
 
         if (! $resource->formPage()) {

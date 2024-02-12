@@ -38,9 +38,4 @@ class RelationModelColumnUpdateRequest extends RelationModelFieldRequest
             request('field') => request('value'),
         ]);
     }
-
-    public function rules(): array
-    {
-        return [];
-    }
 }

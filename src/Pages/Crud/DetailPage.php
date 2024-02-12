@@ -11,7 +11,9 @@ use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
+use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
 use Throwable;
@@ -36,6 +38,9 @@ class DetailPage extends Page
         return $breadcrumbs;
     }
 
+    /**
+     * @throws ResourceException
+     */
     public function beforeRender(): void
     {
         abort_if(
@@ -121,6 +126,7 @@ class DetailPage extends Page
         if ($outsideFields->isNotEmpty()) {
             $components[] = LineBreak::make();
 
+            /** @var ModelRelationField $field */
             foreach ($outsideFields as $field) {
                 $field->resolveFill(
                     $item?->attributesToArray() ?? [],

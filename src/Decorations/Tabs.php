@@ -91,6 +91,9 @@ class Tabs extends Decoration
         return $this->tabs();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function contentWithHtml(): Collection
     {
         return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [

@@ -10,6 +10,7 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithComponentAttributes;
 
 /**
+ * TODO 3.0 Remove
  * @method static static make(string|Closure|null $title, string|Closure|null $content, bool $async = false)
  */
 class Modal

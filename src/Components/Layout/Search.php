@@ -37,7 +37,7 @@ final class Search extends MoonShineComponent
         $action = moonshineRouter()->to('global-search');
 
         if (! $this->globalSearchEnabled() && $this->resourceSearchEnabled()) {
-            $action = moonshineRequest()->getResource()->url();
+            $action = moonshineRequest()->getResource()?->url();
         }
 
         return [

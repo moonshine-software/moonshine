@@ -9,6 +9,7 @@ use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\DecorationException;
 use MoonShine\Exceptions\PageException;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 
 /**
@@ -45,6 +46,7 @@ class Fragment extends Decoration
             throw new DecorationException("To use updateAsync you must first give the fragment a name");
         }
 
+        /** @var ModelResource $resource */
         $resource ??= moonshineRequest()->getResource();
 
         $page ??= $resource?->formPage() ?? moonshineRequest()->getPage();

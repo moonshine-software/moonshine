@@ -22,7 +22,7 @@ final class MoonShineNotification
     ): void {
         if (config('moonshine.use_notifications', true)) {
             Notification::sendNow(
-                MoonShineAuth::model()->query()
+                MoonShineAuth::model()?->query()
                     ->when(
                         $ids,
                         fn ($query): Builder => $query->whereIn(

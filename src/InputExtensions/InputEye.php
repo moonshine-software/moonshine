@@ -14,6 +14,11 @@ final class InputEye extends InputExtension
 
     protected array $xData = [
         'isHidden: true',
-        'toggleEye() { this.isHidden = ! this.isHidden; $refs.extensionInput.type = this.isHidden ? `password` : `text`;  }',
+        <<<'HTML'
+          toggleEye() {
+            this.isHidden = ! this.isHidden;
+            $refs.extensionInput.type = this.isHidden ? `password` : `text`;
+          }
+        HTML,
     ];
 }

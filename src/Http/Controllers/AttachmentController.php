@@ -7,6 +7,7 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/** @deprecated Will be removed */
 class AttachmentController extends MoonShineController
 {
     public function __invoke(Request $request): array

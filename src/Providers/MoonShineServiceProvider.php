@@ -13,6 +13,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Octane\Events\RequestHandled;
 use MoonShine\Commands\InstallCommand;
@@ -120,20 +121,22 @@ class MoonShineServiceProvider extends ServiceProvider
 
     protected function registerBladeDirectives(): self
     {
-        Blade::directive(
-            'moonShineAssets',
-            static fn (): string => "<?php echo view('moonshine::layouts.shared.assets'); ?>"
-        );
+        $this->callAfterResolving('blade.compiler', static function (BladeCompiler $blade): void {
+            $blade->directive(
+                'moonShineAssets',
+                static fn (): string => "<?php echo view('moonshine::layouts.shared.assets'); ?>"
+            );
 
-        Blade::directive(
-            'defineEvent',
-            static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"
-        );
+            $blade->directive(
+                'defineEvent',
+                static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"
+            );
 
-        Blade::directive(
-            'defineEventWhen',
-            static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBladeWhen($e); ?>"
-        );
+            $blade->directive(
+                'defineEventWhen',
+                static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBladeWhen($e); ?>"
+            );
+        });
 
         return $this;
     }

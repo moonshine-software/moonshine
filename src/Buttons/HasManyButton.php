@@ -15,6 +15,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
@@ -28,7 +29,7 @@ final class HasManyButton
         bool $update = false,
         ?ActionButton $button = null
     ): ActionButton {
-        /** @var \MoonShine\Resources\ModelResource $resource */
+        /** @var ModelResource $resource */
         $resource = $field->getResource();
         $parent = $field->getRelatedModel();
         $relation = $parent?->{$field->getRelationName()}();

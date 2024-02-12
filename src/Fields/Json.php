@@ -416,6 +416,9 @@ class Json extends Field implements
             );
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function viewData(): array
     {
         return [
@@ -492,6 +495,9 @@ class Json extends Field implements
         };
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveBeforeApply(mixed $data): mixed
     {
         $this->getFields()
@@ -580,6 +586,9 @@ class Json extends Field implements
         return $data;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
         if ($this->isAsRelation() && ! $this->asRelationResource()?->deleteRelationships()) {

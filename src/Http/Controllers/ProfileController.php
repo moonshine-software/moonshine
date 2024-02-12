@@ -11,9 +11,13 @@ use MoonShine\Http\Requests\ProfileFormRequest;
 use MoonShine\Pages\Page;
 use MoonShine\Pages\ProfilePage;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class ProfileController extends MoonShineController
 {
+    /**
+     * @throws Throwable
+     */
     public function store(ProfileFormRequest $request): Response
     {
         /** @var Page $page */

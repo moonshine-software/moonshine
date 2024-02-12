@@ -19,12 +19,15 @@ use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Condition;
+use MoonShine\Traits\HasResource;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasMany>
+ * @extends HasResource<ModelResource, ModelResource>
  */
 class HasMany extends ModelRelationField implements HasFields
 {
