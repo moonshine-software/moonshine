@@ -1,19 +1,19 @@
 @props([
     'persist' => false,
-    'show' => false,
+    'open' => false,
     'title'
 ])
 <div
     {{ $attributes->class(['accordion']) }}
     x-data="{
         @if($persist)
-            open: $persist({{ $show ? 'true' : 'false' }}).as($id('collapse')),
+            open: $persist({{ $open ? 'true' : 'false' }}).as($id('collapse')),
         @else
-            open: {{ $show ? 'true' : 'false' }},
+            open: {{ $open ? 'true' : 'false' }},
         @endif
         toggle() {
             this.open = !this.open
-        },
+        }
     }"
 >
     <div
@@ -33,7 +33,7 @@
                 </svg>
             </button>
         </h2>
-        <div x-show="open" class="accordion-body">
+        <div x-cloak x-show="open" class="accordion-body">
             <div class="accordion-content">
                 {{ $slot }}
             </div>
