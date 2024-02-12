@@ -72,7 +72,7 @@ class IndexPage extends Page
             ...$this->filtersForm(),
             ...$this->actionButtons(),
             ...$this->queryTags(),
-            ...$this->table()
+            ...$this->table(),
         ];
     }
 
