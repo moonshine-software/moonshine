@@ -10,31 +10,43 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Contracts\HasReactivity;
+use MoonShine\Exceptions\PageException;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\Fields\HasPlaceholder;
+use MoonShine\Traits\Fields\Reactivity;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Fields\WithRelatedValues;
+use MoonShine\Traits\HasResource;
+use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsTo>
+ * @extends HasResource<ModelResource, ModelResource>
  */
 class BelongsTo extends ModelRelationField implements
     HasAsyncSearch,
     HasRelatedValues,
     HasDefaultValue,
-    DefaultCanBeObject
+    DefaultCanBeObject,
+    HasReactivity
 {
     use WithRelatedValues;
     use WithAsyncSearch;
     use Searchable;
     use WithDefaultValue;
     use HasPlaceholder;
+    use Reactivity;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to';
 
     protected bool $toOne = true;
 
+    /**
+     * @throws Throwable
+     */
     protected function resolvePreview(): string
     {
         $actions = $this->getResource()->getActiveActions();
@@ -48,6 +60,8 @@ class BelongsTo extends ModelRelationField implements
             $page = in_array('update', $actions, true)
                 ? $this->getResource()->formPage()
                 : $this->getResource()->detailPage();
+
+            throw_if(is_null($page), new PageException('Page is required'));
 
             $this->link(
                 $this->getResource()->pageUrl($page, ['resourceItem' => $this->toValue()->getKey()]),

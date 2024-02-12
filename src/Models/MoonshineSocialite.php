@@ -23,7 +23,7 @@ class MoonshineSocialite extends Model
         return $this->belongsTo(
             $model::class,
             'moonshine_user_id',
-            $model->getKeyName(),
+            $model?->getKeyName() ?? 'id',
         );
     }
 }

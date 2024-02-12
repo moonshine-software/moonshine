@@ -10,6 +10,8 @@ interface ResourceContract
 {
     public function uriKey(): string;
 
+    public function url(): string;
+
     public function title(): string;
 
     public function getPages(): Pages;

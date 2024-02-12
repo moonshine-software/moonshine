@@ -11,6 +11,7 @@ use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\BelongsToMany;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
@@ -19,8 +20,11 @@ final class BelongsToManyButton
     /**
      * @throws Throwable
      */
-    public static function for(BelongsToMany $field): ActionButton
-    {
+    public static function for(
+        BelongsToMany $field,
+        ?ActionButton $button = null
+    ): ActionButton {
+        /** @var ModelResource $resource */
         $resource = $field->getResource();
 
         if (! $resource->formPage()) {
@@ -40,7 +44,11 @@ final class BelongsToManyButton
                 ->toArray();
         };
 
-        return ActionButton::make(__('moonshine::ui.add'), url: $action)
+        $actionButton = $button
+            ? $button->setUrl($action)
+            : ActionButton::make(__('moonshine::ui.add'), url: $action);
+
+        return $actionButton
             ->canSee(fn (): bool => in_array('create', $resource->getActiveActions()) && $resource->can('create'))
             ->inModal(
                 title: fn (): array|string|null => __('moonshine::ui.create'),

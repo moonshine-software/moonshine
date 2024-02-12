@@ -10,7 +10,7 @@ class HiddenIds extends Field
 
     protected string $type = 'hidden';
 
-    //TODO Make $forComponent parameter required
+    //TODO 3.0 Make $forComponent argument required
     public function __construct(
         protected ?string $forComponent = null
     ) {

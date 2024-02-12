@@ -151,7 +151,7 @@ trait ResourceModelCrudRouter
             return $this
                 ->getPages()
                 ->findByType($this->redirectAfterSave)
-                ->route($params);
+                ?->route($params);
         }
 
         return $this->formPageUrl(params: $params);

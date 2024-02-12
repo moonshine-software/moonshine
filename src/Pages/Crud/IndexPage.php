@@ -21,6 +21,7 @@ use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
+use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
@@ -34,6 +35,9 @@ class IndexPage extends Page
 {
     protected ?PageType $pageType = PageType::INDEX;
 
+    /**
+     * @throws ResourceException
+     */
     public function beforeRender(): void
     {
         abort_if(! $this->getResource()->can('viewAny'), 403);
@@ -64,7 +68,12 @@ class IndexPage extends Page
      */
     protected function mainLayer(): array
     {
-        return [...$this->filtersForm(), ...$this->actionButtons(), ...$this->queryTags(), ...$this->table()];
+        return [
+            ...$this->filtersForm(),
+            ...$this->actionButtons(),
+            ...$this->queryTags(),
+            ...$this->table(),
+        ];
     }
 
     protected function metrics(): ?MoonShineComponent

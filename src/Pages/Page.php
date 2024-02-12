@@ -16,6 +16,7 @@ use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithView;
+use Throwable;
 
 /**
  * @method static static make(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
@@ -118,7 +119,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         }
 
         return [
-            $this->getResource()->indexPageUrl() => $this->getResource()->title(),
+            $this->getResource()?->url() => $this->getResource()?->title(),
         ];
     }
 
@@ -244,6 +245,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function fragmentLoadUrl(
         string $fragment,
         array $params = []

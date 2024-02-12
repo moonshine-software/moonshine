@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Fields;
@@ -28,6 +29,7 @@ class RelationModelFieldRequest extends MoonShineFormRequest
             $fields = $this->getPage()->getComponents();
 
             if(request('_parent_field')) {
+                /** @var HasFields $parent */
                 $parent = $fields
                     ->onlyFields()
                     ->onlyHasFields()
@@ -53,8 +55,8 @@ class RelationModelFieldRequest extends MoonShineFormRequest
      */
     public function getField(): ?ModelRelationField
     {
-        return memoize(function () {
-            /* @var ModelResource $resource */
+        return memoize(function (): ?ModelRelationField {
+            /* @var \MoonShine\Resources\ModelResource $resource */
             $resource = $this->getResource();
 
             $fields = match ($this->getPage()->pageType()) {
@@ -79,7 +81,7 @@ class RelationModelFieldRequest extends MoonShineFormRequest
 
         throw_if(is_null($field), FieldException::notFound());
 
-        /* @var ModelResource $resource */
+        /* @var \MoonShine\Resources\ModelResource $resource */
         $resource = $field->getResource();
 
         return $resource

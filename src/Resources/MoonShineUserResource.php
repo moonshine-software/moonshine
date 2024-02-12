@@ -116,6 +116,9 @@ class MoonShineUserResource extends ModelResource
 
     public function search(): array
     {
-        return ['id', 'name'];
+        return [
+            'id',
+            'name',
+        ];
     }
 }

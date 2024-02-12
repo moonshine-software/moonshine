@@ -56,7 +56,7 @@ class AsyncController extends MoonShineController
                 : $request->getPage();
 
             $result = $pageOrResource
-                ->{$request->get('method')}(
+                ?->{$request->get('method')}(
                     $request
                 );
 

@@ -19,11 +19,13 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Traits\HasResource;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasOne>
+ * @extends HasResource<ModelResource, ModelResource>
  */
 class HasOne extends ModelRelationField implements HasFields
 {

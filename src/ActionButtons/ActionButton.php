@@ -45,6 +45,13 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         $this->setLabel($label);
     }
 
+    public function setUrl(Closure|string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
     public static function emptyHidden(): self
     {
         return self::make('')
@@ -74,7 +81,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this;
     }
 
-    //TODO Make $forComponent parameter required
+    //TODO 3.0 Make $forComponent argument required
     public function bulk(?string $forComponent = null): self
     {
         $this->isBulk = true;

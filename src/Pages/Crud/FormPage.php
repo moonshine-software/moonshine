@@ -11,6 +11,7 @@ use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
+use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
@@ -42,6 +43,9 @@ class FormPage extends Page
         return $breadcrumbs;
     }
 
+    /**
+     * @throws ResourceException
+     */
     public function beforeRender(): void
     {
         $ability = $this->getResource()->isNowOnUpdateForm()

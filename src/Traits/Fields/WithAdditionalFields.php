@@ -19,6 +19,9 @@ trait WithAdditionalFields
         return Fields::make($this->additionalFields);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function hasAdditionalFields(): bool
     {
         return $this->getAdditionalFields()->isNotEmpty();

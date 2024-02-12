@@ -20,7 +20,10 @@ trait ResourceWithParent
             return $this->parentId;
         }
 
-        $parentResource = moonshine()->getResourceFromClassName($this->getParentResourceClassName());
+        $parentResource = moonshine()
+            ->getResourceFromClassName(
+                $this->getParentResourceClassName()
+            );
 
         if(is_null($parentResource)) {
             return null;
@@ -42,7 +45,7 @@ trait ResourceWithParent
             return $this->parentId = moonshineRequest()->getParentResourceId();
         }
 
-        $parentKey = $this->getItem()->{$relationName}()->getOwnerKeyName();
+        $parentKey = $this->getItem()?->{$relationName}()->getOwnerKeyName();
 
         return $this->parentId = $this->getItem()?->{$relationName}->{$parentKey};
     }

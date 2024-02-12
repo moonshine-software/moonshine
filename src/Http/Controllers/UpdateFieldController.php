@@ -6,20 +6,28 @@ namespace MoonShine\Http\Controllers;
 
 use Illuminate\Http\Response;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Exceptions\FieldException;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Http\Requests\Relations\RelationModelColumnUpdateRequest;
 use MoonShine\Http\Requests\Resources\UpdateColumnFormRequest;
 use MoonShine\Resources\ModelResource;
+use Throwable;
 
 class UpdateFieldController extends MoonShineController
 {
+    /**
+     * @throws Throwable
+     */
     public function column(UpdateColumnFormRequest $request): Response
     {
         return $this->save($request->getResource(), $request->getField());
     }
 
+    /**
+     * @throws Throwable
+     */
     public function relation(RelationModelColumnUpdateRequest $request): Response
     {
         $relationField = $request->getField();
@@ -34,6 +42,11 @@ class UpdateFieldController extends MoonShineController
             ->getFields()
             ?->onlyFields()
             ?->findByColumn($request->get('field'));
+
+        throw_if(
+            is_null($field) || is_null($resource),
+            new FieldException('Resource and Field is required')
+        );
 
         return $this->save($resource, $field);
     }
