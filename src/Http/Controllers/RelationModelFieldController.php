@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use MoonShine\Support\DBOperators;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
+use MoonShine\Support\DBOperators;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 

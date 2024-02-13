@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Resource;
 
 use Closure;
-use MoonShine\Support\DBOperators;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -18,6 +17,7 @@ use MoonShine\Fields\Field;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Attributes;
+use MoonShine\Support\DBOperators;
 use Throwable;
 
 /**
