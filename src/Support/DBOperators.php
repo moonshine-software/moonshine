@@ -5,11 +5,11 @@ namespace MoonShine\Support;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 
-final class DbOperators
+final class DBOperators
 {
     protected string $driver;
     public function __construct(
-        ?string $driver = 'mysql'
+        ?string $driver = null
     ) {
         $this->driver = $driver ?? self::getDefaultDriver();
     }

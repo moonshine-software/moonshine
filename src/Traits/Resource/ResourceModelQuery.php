@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Resource;
 
 use Closure;
-use MoonShine\Support\DbOperators;
+use MoonShine\Support\DBOperators;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -309,7 +309,7 @@ trait ResourceModelQuery
                         fn (Builder $query) => $query->orWhereHas(
                             $key,
                             fn (Builder $q) => collect($column)->each(fn ($item) => $q->where(
-                                fn (Builder $qq) => $qq->orWhere($item, DbOperators::byModel($qq->getModel())->like(), "%$terms%")
+                                fn (Builder $qq) => $qq->orWhere($item, DBOperators::byModel($qq->getModel())->like(), "%$terms%")
                             ))
                         ),
                         fn (Builder $query) => collect($column)->each(fn ($item) => $query->orWhere(
@@ -317,7 +317,7 @@ trait ResourceModelQuery
                         ))
                     );
                 } else {
-                    $builder->orWhere($column, DbOperators::byModel($builder->getModel())->like(), "%$terms%");
+                    $builder->orWhere($column, DBOperators::byModel($builder->getModel())->like(), "%$terms%");
                 }
             }
         });
