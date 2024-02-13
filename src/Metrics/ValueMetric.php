@@ -34,7 +34,7 @@ class ValueMetric extends Metric
         return $this->simpleValue();
     }
 
-    public function progressValueResult(): float|int
+    protected function progressValueResult(): float|int
     {
         if ($this->target <= 0 || $this->value <= 0) {
             return $this->value;
