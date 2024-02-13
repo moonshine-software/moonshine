@@ -28,7 +28,9 @@ class ValueMetric extends Metric
     public function valueResult(): string|float
     {
         if ($this->isProgress()) {
-            return round(($this->value / $this->target) * 100);
+            return ($this->target <= 0 || $this->value <= 0)
+                ? $this->value
+                : round(($this->value / $this->target) * 100);
         }
 
         return $this->simpleValue();
