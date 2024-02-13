@@ -25,15 +25,22 @@ class ValueMetric extends Metric
         return $this;
     }
 
-    public function valueResult(): string|float
+    public function valueResult(): string|float|int
     {
         if ($this->isProgress()) {
-            return ($this->target <= 0 || $this->value <= 0)
-                ? $this->value
-                : round(($this->value / $this->target) * 100);
+            return $this->progressValueResult();
         }
 
         return $this->simpleValue();
+    }
+
+    public function progressValueResult(): float|int
+    {
+        if ($this->target <= 0 || $this->value <= 0) {
+            return $this->value;
+        }
+
+        return round(($this->value / $this->target) * 100);
     }
 
     public function isProgress(): bool
