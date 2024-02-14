@@ -53,8 +53,8 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     public function removeAttribute(string $name): static
     {
         $attributes = array_filter(
-            $this->attributes->toArray(),
-            fn ($key): bool => $key !== $name,
+            collect($this->attributes)->toArray(),
+            static fn ($key): bool => $key !== $name,
             ARRAY_FILTER_USE_KEY
         );
 
