@@ -28,7 +28,7 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
     if (this.open && this.asyncUrl && !this.asyncLoaded) {
       this.load(asyncUrl, this.id)
 
-      this.asyncLoaded = this.$root.dataset?.singleLoad ?? true
+      this.asyncLoaded = !this.$root.dataset.alwaysLoad;
     }
   },
 })
