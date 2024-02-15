@@ -46,7 +46,7 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     return
   }
 
-  let inputElement = document.querySelector('#' + formId + ' [name=' + fieldName + ']')
+  let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
 
   if (inputElement === null) {
     inputElement = document.querySelector('#' + formId + ' [data-field-block=' + fieldName + ']')
