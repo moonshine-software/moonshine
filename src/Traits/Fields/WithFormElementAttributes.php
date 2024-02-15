@@ -10,6 +10,7 @@ use Illuminate\Support\Stringable;
 use MoonShine\Fields\Field;
 use MoonShine\Support\Condition;
 
+/** @mixin Field */
 trait WithFormElementAttributes
 {
     protected ?string $wrapName = null;
@@ -51,6 +52,17 @@ trait WithFormElementAttributes
     public function wrapName(string $wrapName): static
     {
         $this->wrapName = $wrapName;
+
+        // because showWhen can be declared after
+        if($this->showWhenState) {
+            [$column, $value, $operator] = $this->showWhenData;
+
+            $this->showWhenCondition = collect($this->showWhenCondition)
+                ->reject(fn($data, $index) => $data['object_id'] === spl_object_id($this))
+                ->toArray();
+
+            return $this->showWhen($column, $value, $operator);
+        }
 
         return $this;
     }

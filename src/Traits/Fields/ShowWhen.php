@@ -28,6 +28,8 @@ trait ShowWhen
 
     protected array $showWhenCondition = [];
 
+    protected array $showWhenData = [];
+
     public function hasShowWhen(): bool
     {
         return $this->showWhenState;
@@ -43,12 +45,13 @@ trait ShowWhen
         mixed $operator = null,
         mixed $value = null
     ): static {
-        [$column, $value, $operator] = $this->makeCondition(...func_get_args());
-
+        $this->showWhenData = $this->makeCondition(...func_get_args());
+        [$column, $value, $operator] = $this->showWhenData;
         $this->showWhenState = true;
 
         $this->showWhenCondition[] = [
-            'showField' => str_replace('[]', '', $this->column()),
+            'object_id' => spl_object_id($this),
+            'showField' => str_replace('[]', '', $this->name()),
             'changeField' => $this->dotNestedToName($column),
             'operator' => $operator,
             'value' => $value,
