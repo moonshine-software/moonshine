@@ -58,7 +58,7 @@ trait WithFormElementAttributes
             [$column, $value, $operator] = $this->showWhenData;
 
             $this->showWhenCondition = collect($this->showWhenCondition)
-                ->reject(fn($data, $index) => $data['object_id'] === spl_object_id($this))
+                ->reject(fn($data, $index): bool => $data['object_id'] === spl_object_id($this))
                 ->toArray();
 
             return $this->showWhen($column, $value, $operator);
