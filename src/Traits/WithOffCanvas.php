@@ -19,9 +19,12 @@ trait WithOffCanvas
     public function inOffCanvas(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
-        bool $isLeft = false
+        bool $isLeft = false,
+        bool $async = false,
+        array $attributes = [],
     ): static {
-        $this->offCanvas = OffCanvas::make($title, $content, $isLeft);
+        $this->offCanvas = OffCanvas::make($title, $content, $isLeft, $async)
+            ->customAttributes($attributes);
 
         return $this;
     }

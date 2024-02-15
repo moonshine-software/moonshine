@@ -8,7 +8,12 @@
     'asyncUrl' => '',
     'toggler' => null,
 ])
-<div x-data="offcanvas(`{{ $open }}`, `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`)">
+<div x-data="offcanvas(
+    `{{ $open }}`,
+    `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`
+)"
+    {{ $attributes }}
+>
     @if($toggler?->isNotEmpty())
         <x-moonshine::link-button
             :attributes="$toggler->attributes?->merge([

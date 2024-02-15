@@ -11,7 +11,13 @@
     'title' => '',
     'outerHtml' => null
 ])
-<div x-data="modal(`{{ $open }}`, `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`, `{{ $autoClose }}`)">
+<div x-data="modal(
+    `{{ $open }}`,
+    `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`,
+    `{{ $autoClose }}`
+)"
+    {{ $attributes }}
+>
     <template x-teleport="body">
         <div class="modal-template"
              @defineEvent('modal-toggled', ($eventName ?? $name), 'toggleModal')
