@@ -42,7 +42,7 @@ final class CreateButton
                 )
             )
             ->canSee(
-                fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
+                fn (): bool => in_array('create', $resource->getActiveActions())
                 && $resource->can('create')
             )
             ->primary()
