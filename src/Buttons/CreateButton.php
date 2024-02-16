@@ -2,7 +2,6 @@
 
 namespace MoonShine\Buttons;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
