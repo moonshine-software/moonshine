@@ -99,6 +99,9 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $asyncUrl ?? fn (): string => moonshineRouter()->asyncTable($this->getName());
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function viewData(): array
     {
         if ($this->isAsync() && $this->hasPaginator()) {
@@ -115,6 +118,12 @@ final class TableBuilder extends IterableComponent implements TableContract
                 fn (mixed $data, int $index, ComponentAttributeBag $attr)
                     => $attr->merge(['data-id' => data_get($data, $this->sortableKey ?? 'id', $index)])
             );
+        }
+
+        if ($this->isAsync()) {
+            $this->customAttributes([
+                'data-events' => $this->asyncEvents(),
+            ]);
         }
 
         return [

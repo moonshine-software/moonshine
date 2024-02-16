@@ -14,7 +14,24 @@ export function dispatchEvents(events, type, component) {
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
 
-    allEvents.forEach(event => component.$dispatch(event.replaceAll(/\s/g, '')))
+    allEvents.forEach(function(event) {
+      let parts = event.split(':');
+
+      let eventName = parts[0];
+
+      let attributes = {}
+
+      if (Array.isArray(parts) && parts.length > 1) {
+        let params = parts[1].split(';');
+
+        for (let param of params) {
+          let pair = param.split('=');
+          attributes[pair[0]] = pair[1].replace(/`/g, '').trim();
+        }
+      }
+
+      component.$dispatch(eventName.replaceAll(/\s/g, ''), attributes)
+    })
   }
 }
 
@@ -137,6 +154,14 @@ export function listComponentRequest(component) {
   axios
     .get(url)
     .then(response => {
+      if(component.$root.dataset.events) {
+        dispatchEvents(
+          component.$root.dataset.events,
+          'success',
+          component,
+        )
+      }
+
       if (
         component.$root.getAttribute('data-pushstate') !== null &&
         component.$root.getAttribute('data-pushstate')

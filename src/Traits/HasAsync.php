@@ -71,7 +71,7 @@ trait HasAsync
         return value($this->asyncUrl);
     }
 
-    public function asyncEvents(): string|array|null
+    public function asyncEvents(): string|null
     {
         if (is_null($this->asyncEvents)) {
             return $this->asyncEvents;
