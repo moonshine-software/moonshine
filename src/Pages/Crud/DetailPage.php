@@ -154,6 +154,6 @@ class DetailPage extends Page
             }
         }
 
-        return $components;
+        return array_merge($components, $this->getResource()->getDetailPageComponents());
     }
 }
