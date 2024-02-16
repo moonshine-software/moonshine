@@ -198,6 +198,10 @@ class FormPage extends Page
             }
         }
 
+        foreach ($this->getResource()->getFormPageComponents() as $pageComponent) {
+            $components[] = $pageComponent;
+        }
+
         return $components;
     }
 }

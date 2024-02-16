@@ -209,4 +209,9 @@ class IndexPage extends Page
             ])->name('crud-list'),
         ];
     }
+
+    protected function bottomLayer(): array
+    {
+        return $this->getResource()->getIndexPageComponents();
+    }
 }

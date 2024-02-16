@@ -22,6 +22,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Traits\Resource\ResourceModelActions;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
+use MoonShine\Traits\Resource\ResourceModelPageComponents;
 use MoonShine\Traits\Resource\ResourceModelPolicy;
 use MoonShine\Traits\Resource\ResourceModelQuery;
 use MoonShine\Traits\Resource\ResourceModelValidation;
@@ -49,6 +50,7 @@ abstract class ModelResource extends Resource
     /** @use ResourceModelEvents<TModel> */
     use ResourceModelEvents;
     use WithIsNowOnRoute;
+    use ResourceModelPageComponents;
 
     protected string $model;
 
