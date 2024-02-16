@@ -29,6 +29,7 @@
     @defineEvent('table-row-added', $name, 'add(true)')
     @defineEvent('table-reindex', $name, 'resolveReindex')
     @defineEventWhen($async, 'table-updated', $name, 'asyncRequest')
+    {{ $attributes->only(['data-events'])}}
 >
     @if($async && $searchable)
         <div class="flex items-center gap-2">

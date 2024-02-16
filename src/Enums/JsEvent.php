@@ -17,4 +17,6 @@ enum JsEvent: string
     case MODAL_TOGGLED = 'modal-toggled';
 
     case OFF_CANVAS_TOGGLED = 'offcanvas-toggled';
+
+    case TOAST = 'toast';
 }

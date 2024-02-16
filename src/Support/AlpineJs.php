@@ -10,11 +10,26 @@ final class AlpineJs
 {
     public const EVENT_SEPARATOR = '-';
 
-    public static function event(string|JsEvent $event, string $name): string
+    public const EVENT_PARAMS_SEPARATOR = ':';
+
+    public const EVENT_PARAM_SEPARATOR = ';';
+
+    public static function event(string|JsEvent $event, ?string $name = null, array $params = []): string
     {
         $event = is_string($event) ? $event : $event->value;
 
-        return $event . self::EVENT_SEPARATOR . $name;
+        if(!is_null($name)) {
+            $event .= self::EVENT_SEPARATOR . $name;
+        }
+
+        if($params !== []) {
+            $event .= self::EVENT_PARAMS_SEPARATOR
+                . urldecode(
+                    http_build_query($params, arg_separator: self::EVENT_PARAM_SEPARATOR)
+                );
+        }
+
+        return $event;
     }
 
     public static function eventBlade(string|JsEvent $event, ?string $name = null, ?string $call = null): string

@@ -188,6 +188,12 @@ final class CardsBuilder extends IterableComponent
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
+        if ($this->isAsync()) {
+            $this->customAttributes([
+                'data-events' => $this->asyncEvents(),
+            ]);
+        }
+
         return [
             'components' => $this->components(),
             'name' => $this->getName(),
