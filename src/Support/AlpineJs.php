@@ -18,7 +18,7 @@ final class AlpineJs
     {
         $event = is_string($event) ? $event : $event->value;
 
-        if(!is_null($name)) {
+        if(! is_null($name)) {
             $event .= self::EVENT_SEPARATOR . $name;
         }
 
