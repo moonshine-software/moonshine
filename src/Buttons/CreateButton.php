@@ -2,7 +2,6 @@
 
 namespace MoonShine\Buttons;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
@@ -42,7 +41,7 @@ final class CreateButton
                 )
             )
             ->canSee(
-                fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
+                fn (): bool => in_array('create', $resource->getActiveActions())
                 && $resource->can('create')
             )
             ->primary()
