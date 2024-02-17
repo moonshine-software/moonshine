@@ -154,10 +154,6 @@ export function listComponentRequest(component) {
   axios
     .get(url)
     .then(response => {
-      if (component.$root.dataset.events) {
-        dispatchEvents(component.$root.dataset.events, 'success', component)
-      }
-
       if (
         component.$root.getAttribute('data-pushstate') !== null &&
         component.$root.getAttribute('data-pushstate')
@@ -166,6 +162,11 @@ export function listComponentRequest(component) {
 
         history.pushState({}, '', query ? '?' + query : location.pathname)
       }
+
+      if (component.$root.dataset.events) {
+        dispatchEvents(component.$root.dataset.events, 'success', component)
+      }
+
       component.$root.outerHTML = response.data
       component.loading = false
     })
