@@ -10,7 +10,7 @@ use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Traits\Makeable;
 
 /**
- * @template T of Model
+ * @template-covariant T of Model
  * @method static static make(string $class)
  */
 final class ModelCast implements MoonShineDataCast

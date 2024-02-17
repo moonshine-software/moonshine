@@ -21,7 +21,7 @@ use MoonShine\Support\DBOperators;
 use Throwable;
 
 /**
- * @template TModel of Model
+ * @template-covariant TModel of Model
  */
 trait ResourceModelQuery
 {

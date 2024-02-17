@@ -12,7 +12,7 @@ use MoonShine\Enums\PageType;
 use MoonShine\Pages\Page;
 
 /**
- * @template TModel of Model
+ * @template-covariant TModel of Model
  * @mixin ResourceContract
  */
 trait ResourceModelCrudRouter

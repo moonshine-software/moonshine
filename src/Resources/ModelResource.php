@@ -33,7 +33,7 @@ use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 /**
- * @template TModel of Model
+ * @template-covariant TModel of Model
  */
 abstract class ModelResource extends Resource
 {

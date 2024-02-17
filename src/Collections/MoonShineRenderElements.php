@@ -12,7 +12,7 @@ use MoonShine\Fields\Field;
 use Throwable;
 
 /**
- * @template T
+ * @template-covariant T
  * @template TKey of array-key
  *
  * @extends Collection<TKey, T>

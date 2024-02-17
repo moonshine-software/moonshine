@@ -7,7 +7,7 @@ namespace MoonShine\Traits\Resource;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @template TModel of Model
+ * @template-covariant TModel of Model
  */
 trait ResourceModelEvents
 {

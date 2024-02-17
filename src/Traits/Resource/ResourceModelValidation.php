@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 /**
- * @template TModel of Model
+ * @template-covariant TModel of Model
  */
 trait ResourceModelValidation
 {

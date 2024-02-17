@@ -18,7 +18,7 @@ use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 /**
- * @template R of Relation
+ * @template-covariant R of Relation
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, ?ModelResource $resource = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract

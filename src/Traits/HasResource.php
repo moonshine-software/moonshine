@@ -9,8 +9,8 @@ use MoonShine\Exceptions\ResourceException;
 use Throwable;
 
 /**
- * @template T of ResourceContract
- * @template PT of ResourceContract
+ * @template-covariant T of ResourceContract
+ * @template-covariant PT of ResourceContract
  */
 trait HasResource
 {

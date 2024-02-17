@@ -10,7 +10,7 @@ use MoonShine\Resources\ModelResource;
 use Throwable;
 
 /**
- * @template T of ModelResource
+ * @template-covariant T of ModelResource
  */
 class MoonShineFormRequest extends FormRequest
 {

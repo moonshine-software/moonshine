@@ -215,7 +215,7 @@ if (! function_exists('memoize')) {
     /**
      * @template T
      *
-     * @param (callable(): T) $callback
+     * @param callable(): T $callback
      * @return T
      */
     function memoize(callable $callback): mixed
