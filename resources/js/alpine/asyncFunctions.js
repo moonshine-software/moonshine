@@ -61,7 +61,7 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
 
       if (t.selector !== undefined && t.selector) {
         const elements = document.querySelectorAll(t.selector)
-        elements.forEach((element) => {
+        elements.forEach(element => {
           element.innerHTML = data.html ? data.html : data
         })
       }
