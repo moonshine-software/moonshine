@@ -60,8 +60,10 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
       }
 
       if (t.selector !== undefined && t.selector) {
-        const element = document.querySelector(t.selector)
-        element.innerHTML = data.html ? data.html : data
+        const elements = document.querySelectorAll(t.selector)
+        elements.forEach((element) => {
+          element.innerHTML = data.html ? data.html : data
+        })
       }
 
       if (data.fields_values !== undefined) {
