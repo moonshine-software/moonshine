@@ -37,11 +37,10 @@ export default () => ({
     const t = this
 
     t.selector = this.$el?.dataset?.asyncSelector
-    t.method = this.$el?.dataset?.asyncMethod
     t.events = this.$el?.dataset?.asyncEvents
     t.callback = this.$el?.dataset?.asyncCallback
 
-    moonShineRequest(t, route, 'put', {
+    moonShineRequest(t, route, this.$el?.dataset?.asyncMethod ?? 'put', {
       value: value,
       field: column,
     })
