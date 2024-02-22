@@ -171,6 +171,23 @@ trait ShowOrHide
     }
 
     /**
+     * Hide entity from all pages/forms
+     *
+     * You can use Field::make()->hideFromAll->showOnIndex() for show field only on index page
+     */
+    public function hideFromAll(): static
+    {
+        $this->showOnCreateForm = false;
+        $this->showOnUpdateForm = false;
+        $this->showOnIndex = false;
+        $this->showOnExport = false;
+        $this->showOnForm = false;
+        $this->showOnDetail = false;
+
+        return $this;
+    }
+
+    /**
      * Set field as used on import, based on condition
      *
      * @return $this
