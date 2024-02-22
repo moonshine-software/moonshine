@@ -26,11 +26,19 @@ class MakeUserCommand extends MoonShineCommand
                 'moonshine.auth.fields.username',
                 'email'
             ) . ')',
-            required: true
+            required: true,
+            validate: fn (string $value): ?string => $this->validateUserEmail($value)
         );
 
-        $name = $this->option('name') ?? text('Name', default: $username);
-        $password = $this->option('password') ?? password('Password');
+        $emailError = $this->validateUserEmail($username);
+
+        if ($emailError) {
+            $this->error($emailError);
+            return MoonShineCommand::FAILURE;
+        }
+
+        $name = $this->option('name') ?? text('Name', default: $username, required: true);
+        $password = $this->option('password') ?? password('Password', required: true);
 
         if ($username && $name && $password) {
             MoonShineAuth::model()->query()->create([
@@ -48,5 +56,12 @@ class MakeUserCommand extends MoonShineCommand
         }
 
         return self::SUCCESS;
+    }
+
+    private function validateUserEmail(string $email): string|null
+    {
+        $isAlreadyExist = MoonShineAuth::model()->query()->where(config('moonshine.auth.fields.username', 'email'), $email)->exists();
+
+        return $isAlreadyExist ? "User with email $email already exist" : null;
     }
 }
