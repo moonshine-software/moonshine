@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
-trait WithTag
+trait HasDifferentHtmlTag
 {
     protected string $tag = 'div';
 
