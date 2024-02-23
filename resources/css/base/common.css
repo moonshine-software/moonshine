@@ -80,6 +80,28 @@ body {
   min-width: 320px;
 }
 
+/* Heading */
+.heading {
+  @apply mb-4;
+
+  h1, h2, h3, h4,
+  .h1, .h2, .h3, .h4 {
+    @apply font-medium truncate mb-6;
+  }
+  h1, .h1 {
+    @apply text-md;
+  }
+  h2, .h2 {
+    @apply text-sm;
+  }
+  h3, .h3 {
+    @apply text-xs;
+  }
+  h4, .h4 {
+    @apply text-2xs;
+  }
+}
+
 a {
   @apply inline-block transition-all hover:text-primary dark:hover:text-white;
 }

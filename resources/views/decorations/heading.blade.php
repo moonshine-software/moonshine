@@ -1,7 +1,5 @@
-<div {{ $attributes
-        ->class([
-            'mb-4',
-        ])
-}}>
-    {{ $element->label() }}
+<div class="heading">
+    <{{ $element->getTag() }} {{ $attributes }}>
+        {{ $element->label() }}
+    </{{ $element->getTag() }}>
 </div>
