@@ -9,4 +9,6 @@
     :removableAttributes="$element->getRemovableAttributes()"
     :imageable="false"
     :download="$element->canDownload()"
+    :names="$element->resolveNames()"
+    :itemAttributes="$element->resolveItemAttributes()"
 />
