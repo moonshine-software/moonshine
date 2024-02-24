@@ -27,8 +27,7 @@ trait WithHeadingGradation
 
         if ($asClass) {
             $this->withAttributes(['class' => $this->getH()]);
-        }
-        else {
+        } else {
             $this->tag($this->getH());
         }
 

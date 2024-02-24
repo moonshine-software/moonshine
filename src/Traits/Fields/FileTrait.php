@@ -58,7 +58,7 @@ trait FileTrait
 
     public function resolveItemAttributes(): Closure
     {
-        return function(string $filename, int $index = 0): ComponentAttributeBag {
+        return function (string $filename, int $index = 0): ComponentAttributeBag {
             if(is_null($this->itemAttributes)) {
                 return new ComponentAttributeBag();
             }
