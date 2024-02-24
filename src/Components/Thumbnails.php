@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
+use Illuminate\View\ComponentAttributeBag;
 use Closure;
 
 /** @method static static make(string|array|null $valueOrValues = null, ?Closure $names = null, ?Closure $itemAttributes = null) */
@@ -25,7 +26,7 @@ final class Thumbnails extends MoonShineComponent
         }
 
         if(is_null($this->itemAttributes)) {
-            $this->itemAttributes = fn(string $filename, int $index = 0) => $this->attributes();
+            $this->itemAttributes = fn(string $filename, int $index = 0): ComponentAttributeBag => $this->attributes();
         }
 
         $data = [

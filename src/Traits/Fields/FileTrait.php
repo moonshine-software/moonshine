@@ -40,7 +40,7 @@ trait FileTrait
 
     public function resolveNames(): Closure
     {
-        return function (string $filename, int $index = 0) {
+        return function (string $filename, int $index = 0): string {
             if(is_null($this->names)) {
                 return $filename;
             }
@@ -58,7 +58,7 @@ trait FileTrait
 
     public function resolveItemAttributes(): Closure
     {
-        return function(string $filename, int $index = 0) {
+        return function(string $filename, int $index = 0): ComponentAttributeBag {
             if(is_null($this->itemAttributes)) {
                 return new ComponentAttributeBag();
             }
