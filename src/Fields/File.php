@@ -50,7 +50,9 @@ class File extends Field implements Fileable, RemovableContract
 
         return Files::make(
             $values,
-            download: $this->canDownload()
+            download: $this->canDownload(),
+            names: $this->resolveNames(),
+            itemAttributes: $this->resolveItemAttributes(),
         )->render();
     }
 

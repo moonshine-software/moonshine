@@ -8,6 +8,6 @@
     <a
         @if($download ?? false) download href="{{ $value }}" @endif
     >
-        {{ $value }}
+        {{ $filename ?? $value }}
     </a>
 </h5>

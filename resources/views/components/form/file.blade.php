@@ -4,7 +4,9 @@
     'download' => false,
     'removable' => true,
     'removableAttributes' => null,
-    'imageable' => true
+    'imageable' => true,
+    'names' => null,
+    'itemAttributes' => null,
 ])
 <div class="form-group form-group-dropzone">
     <x-moonshine::form.input
@@ -21,6 +23,8 @@
                 @foreach($files as $index => $file)
                     <x-moonshine::form.file-item
                         :attributes="$attributes"
+                        :itemAttributes="value($itemAttributes, $file, $index)"
+                        :filename="is_null($names) ? $file : value($names, $file, $index)"
                         :raw="$raw[$index]"
                         :file="$file"
                         :download="$download"

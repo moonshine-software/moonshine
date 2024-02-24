@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Stringable;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\WithStorage;
@@ -25,6 +26,48 @@ trait FileTrait
     protected bool $keepOriginalFileName = false;
 
     protected ?Closure $customName = null;
+
+    protected ?Closure $names = null;
+
+    protected ?Closure $itemAttributes = null;
+
+    public function names(Closure $closure): static
+    {
+        $this->names = $closure;
+
+        return $this;
+    }
+
+    public function resolveNames(): Closure
+    {
+        return function (string $filename, int $index = 0) {
+            if(is_null($this->names)) {
+                return $filename;
+            }
+
+            return (string) value($this->names, $filename, $index);
+        };
+    }
+
+    public function itemAttributes(Closure $closure): static
+    {
+        $this->itemAttributes = $closure;
+
+        return $this;
+    }
+
+    public function resolveItemAttributes(): Closure
+    {
+        return function(string $filename, int $index = 0) {
+            if(is_null($this->itemAttributes)) {
+                return new ComponentAttributeBag();
+            }
+
+            return new ComponentAttributeBag(
+                (array) value($this->itemAttributes, $filename, $index)
+            );
+        };
+    }
 
     public function keepOriginalFileName(): static
     {

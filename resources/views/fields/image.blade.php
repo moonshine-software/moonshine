@@ -8,4 +8,6 @@
     :removable="$element->isRemovable()"
     :removableAttributes="$element->getRemovableAttributes()"
     :imageable="true"
+    :names="$element->resolveNames()"
+    :itemAttributes="$element->resolveItemAttributes()"
 />
