@@ -8,7 +8,7 @@ use Closure;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
 
-final class Template extends Field implements HasFields
+class Template extends Field implements HasFields
 {
     use WithFields;
 
