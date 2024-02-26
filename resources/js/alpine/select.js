@@ -126,6 +126,7 @@ export default (asyncUrl = '') => ({
           'change',
           event => {
             this.choicesInstance.clearStore()
+            this.asyncSearch()
           },
           false,
         )
