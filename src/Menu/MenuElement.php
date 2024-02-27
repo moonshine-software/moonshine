@@ -6,6 +6,7 @@ namespace MoonShine\Menu;
 
 use Closure;
 use MoonShine\Contracts\Menu\MenuFiller;
+use MoonShine\Support\Condition;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithIcon;
@@ -21,6 +22,8 @@ abstract class MenuElement
 
     protected Closure|string|null $url = null;
 
+    protected Closure|bool $blank = false;
+
     public function isGroup(): bool
     {
         return $this instanceof MenuGroup;
@@ -31,9 +34,11 @@ abstract class MenuElement
         return $this instanceof MenuItem;
     }
 
-    public function setUrl(string|Closure|null $url): static
+    public function setUrl(string|Closure|null $url, Closure|bool $blank = false): static
     {
         $this->url = $url;
+
+        $this->blank($blank);
 
         return $this;
     }
@@ -85,5 +90,17 @@ abstract class MenuElement
         }
 
         return request()->fullUrlIs($this->url() . '*');
+    }
+
+    public function blank(Closure|bool $blankCondition = true): static
+    {
+        $this->blank = Condition::boolean($blankCondition, true);
+
+        return $this;
+    }
+
+    public function isBlank(): bool
+    {
+        return $this->blank;
     }
 }

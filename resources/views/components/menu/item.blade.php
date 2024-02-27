@@ -8,7 +8,7 @@
     </li>
 @else
     <li class="menu-inner-item {{ $item->isActive() ? '_is-active' : '' }}">
-        <a href="{{ $item->url() }}" class="menu-inner-link" x-data="navTooltip" @mouseenter="toggleTooltip()">
+        <a href="{{ $item->url() }}" {{ $item->isBlank() ? 'target="_blank"' : '' }} class="menu-inner-link" x-data="navTooltip" @mouseenter="toggleTooltip()">
             @if($item->iconValue())
                 {!! $item->getIcon(6) !!}
             @elseif(!$top)
