@@ -10,5 +10,6 @@ export default (config = {}) => ({
     this.flaskInstance = new CodeFlask(this.$el, config)
     this.flaskInstance.onUpdate(code => (input.value = code))
     this.flaskInstance.updateCode(input.value)
+    input.addEventListener('reset', () => this.init())
   },
 })
