@@ -10,7 +10,7 @@ use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Support\Attributes;
 
 /**
- * @method static static make(Closure|string $label, Closure|MenuFiller|string $filler, string $icon = null)
+ * @method static static make(Closure|string $label, Closure|MenuFiller|string $filler, string $icon = null, Closure|bool $blank = false)
  */
 class MenuItem extends MenuElement
 {
@@ -19,7 +19,8 @@ class MenuItem extends MenuElement
     final public function __construct(
         Closure|string $label,
         protected Closure|MenuFiller|string $filler,
-        string $icon = null
+        string $icon = null,
+        Closure|bool $blank = false
     ) {
         $this->setLabel($label);
 
@@ -32,6 +33,8 @@ class MenuItem extends MenuElement
         } else {
             $this->setUrl($filler);
         }
+
+        $this->blank($blank);
     }
 
     protected function resolveMenuFiller(MenuFiller $filler): void
