@@ -13,7 +13,6 @@
     <x-moonshine::form.textarea
         style="display: none;"
         :attributes="$element->attributes()->merge([
-        'id' => $element->id(),
         'aria-label' => $element->label() ?? '',
         'name' => $element->name(),
         'class' => 'code-source'
