@@ -32,7 +32,7 @@ class DummyClass
         return true;
     }
 
-    public function delete(MoonshineUser $user, {model} $item)
+    public function delete({user-model} $user, {model} $item)
     {
         return true;
     }
