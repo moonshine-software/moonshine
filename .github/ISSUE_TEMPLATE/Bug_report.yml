@@ -38,7 +38,7 @@ body:
   - type: textarea
     attributes:
       label: Steps To Reproduce
-      description: Provide detailed steps to reproduce your issue. If necessary, please provide a GitHub repository to demonstrate your issue using `laravel new bug-report --github="--public"`.
+      description: Provide detailed steps to reproduce your issue.
     validations:
       required: true
       
