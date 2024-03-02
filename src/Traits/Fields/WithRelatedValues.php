@@ -116,7 +116,12 @@ trait WithRelatedValues
         } else {
             $table = DB::getTablePrefix() . $related->getTable();
             $key = "$table.{$related->getKeyName()}";
-            $column = "$table.{$this->getResourceColumn()}";
+
+            $column = $key;
+            $resourceColumn = $this->getResourceColumn();
+            if (! $related->hasAppended($resourceColumn)) {
+                $column = "$table.$resourceColumn";
+            }
 
             $values = $this->memoizeValues
                 ?? $this->resolveRelatedQuery(
