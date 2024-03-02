@@ -60,11 +60,12 @@ class MakeUserCommand extends MoonShineCommand
             $exists = MoonShineAuth::model()
                 ->query()
                 ->where(
-                    config('moonshine.auth.fields.username', 'email'), $username,
+                    config('moonshine.auth.fields.username', 'email'),
+                    $username,
                 )
                 ->exists();
 
-            if(!$exists) {
+            if(! $exists) {
                 break;
             }
 
