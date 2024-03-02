@@ -21,13 +21,7 @@ class MakeUserCommand extends MoonShineCommand
 
     public function handle(): int
     {
-        $username = $this->option('username') ?? text(
-            'Username(' . config(
-                'moonshine.auth.fields.username',
-                'email'
-            ) . ')',
-            required: true
-        );
+        $username = $this->uniqueUsername();
 
         $name = $this->option('name') ?? text('Name', default: $username);
         $password = $this->option('password') ?? password('Password');
@@ -48,5 +42,36 @@ class MakeUserCommand extends MoonShineCommand
         }
 
         return self::SUCCESS;
+    }
+
+    private function uniqueUsername(): string
+    {
+        $username = $this->option('username');
+
+        while (true) {
+            $username ??= text(
+                'Username(' . config(
+                    'moonshine.auth.fields.username',
+                    'email'
+                ) . ')',
+                required: true
+            );
+
+            $exists = MoonShineAuth::model()
+                ->query()
+                ->where(
+                    config('moonshine.auth.fields.username', 'email'), $username,
+                )
+                ->exists();
+
+            if(!$exists) {
+                break;
+            }
+
+            $this->components->warn('There is already a username, try another one');
+            $username = null;
+        }
+
+        return $username;
     }
 }
