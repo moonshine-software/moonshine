@@ -27,7 +27,7 @@ trait Reactivity
             return $fields;
         }
 
-        return value($this->reactiveCallback, $fields, $value, $values);
+        return value($this->reactiveCallback, $fields, $value, $this, $values);
     }
 
     /**
