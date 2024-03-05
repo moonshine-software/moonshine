@@ -39,7 +39,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     public function __construct(
         Closure|string $label,
-        protected Closure|string $url = '',
+        protected Closure|string $url = '#',
         protected mixed $item = null
     ) {
         $this->setLabel($label);
@@ -133,6 +133,14 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ]);
 
         return $this;
+    }
+
+    public function dispatchEvent(array|string $events): self
+    {
+        return $this->onClick(
+            fn() => AlpineJs::dispatchEvents($events),
+            'prevent'
+        );
     }
 
     /**

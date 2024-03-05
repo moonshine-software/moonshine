@@ -75,6 +75,16 @@ final class AlpineJs
         ];
     }
 
+    public static function dispatchEvents(string|array $events): string
+    {
+        $events = explode(',', self::prepareEvents($events));
+
+        return implode(
+            ';',
+            array_map(static fn($event) => "\$dispatch('$event')", $events)
+        );
+    }
+
     public static function prepareEvents(string|array $events): string
     {
         if (is_array($events)) {
