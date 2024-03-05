@@ -8,7 +8,11 @@
 @if($value)
     <div class="flex">
         <div
-            {{ value($itemAttributes, $value)->merge(['class' => 'zoom-in h-10 w-10 overflow-hidden rounded-md']) }}
+            @if(is_null($itemAttributes))
+                class="zoom-in h-10 w-10 overflow-hidden rounded-md"
+            @else
+                {{ value($itemAttributes, $value)?->class(['zoom-in h-10 w-10 overflow-hidden rounded-md']) }}
+            @endif
         >
             <img class="h-full w-full object-cover"
                  src="{{ $value }}"
@@ -21,7 +25,11 @@
     <div class="images-row">
         @foreach($values as $index => $value)
             <div
-                {{ value($itemAttributes, $value, $index)->merge(['class' => 'zoom-in images-row-item']) }}
+                @if(is_null($itemAttributes))
+                    class="zoom-in images-row-item"
+                @else
+                    {{ value($itemAttributes, $value, $index)?->class(['zoom-in images-row-item']) }}
+                @endif
             >
                 <img
                     class="h-full w-full object-cover"
@@ -33,4 +41,3 @@
         @endforeach
     </div>
 @endif
-
