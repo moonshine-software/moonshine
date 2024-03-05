@@ -138,7 +138,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     public function dispatchEvent(array|string $events): self
     {
         return $this->onClick(
-            fn() => AlpineJs::dispatchEvents($events),
+            fn(): string => AlpineJs::dispatchEvents($events),
             'prevent'
         );
     }
