@@ -149,7 +149,7 @@ export default (name = '', reactive = {}) => ({
     let action = form.getAttribute('action')
     let formData = new FormData(form)
 
-    if(action === '#') {
+    if (action === '#') {
       action = ''
     }
 
@@ -173,7 +173,7 @@ export default (name = '', reactive = {}) => ({
     }
 
     t.extraAttributes = {
-      queryString: prepareFormQueryString(formData, '_component_name')
+      queryString: prepareFormQueryString(formData, '_component_name'),
     }
 
     moonShineRequest(t, action, method, formData, {
@@ -195,10 +195,10 @@ export default (name = '', reactive = {}) => ({
 
   dispatchEvents(componentEvent, exclude = null) {
     const form = this.$el
-    const formData = new FormData(form);
+    const formData = new FormData(form)
 
     de(componentEvent, '', this, {
-      queryString: prepareFormQueryString(formData, exclude)
+      queryString: prepareFormQueryString(formData, exclude),
     })
   },
 
@@ -227,7 +227,7 @@ export default (name = '', reactive = {}) => ({
 })
 
 function prepareFormQueryString(formData, exclude = null) {
-  if(exclude !== null) {
+  if (exclude !== null) {
     const excludes = exclude.split(',')
 
     excludes.forEach(function (excludeName) {
