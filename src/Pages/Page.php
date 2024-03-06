@@ -61,6 +61,13 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         }
 
         $this->customView('moonshine::page');
+
+        $this->booted();
+    }
+
+    protected function booted(): void
+    {
+        //
     }
 
     abstract public function components(): array;

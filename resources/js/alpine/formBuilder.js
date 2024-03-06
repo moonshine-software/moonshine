@@ -4,7 +4,7 @@ import {
   isValidateShow,
   showWhenVisibilityChange,
 } from './showWhenFunctions'
-import {moonShineRequest} from './asyncFunctions'
+import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
 
 export default (name = '', reactive = {}) => ({
@@ -149,7 +149,11 @@ export default (name = '', reactive = {}) => ({
     let action = form.getAttribute('action')
     let formData = new FormData(form)
 
-    if (method === 'get') {
+    if(action === '#') {
+      action = ''
+    }
+
+    if (method?.toLowerCase() === 'get') {
       action = action + '?' + new URLSearchParams(formData).toString()
     }
 
@@ -168,6 +172,10 @@ export default (name = '', reactive = {}) => ({
       submitState(form, false)
     }
 
+    t.extraAttributes = {
+      queryString: prepareFormQueryString(formData, '_component_name')
+    }
+
     moonShineRequest(t, action, method, formData, {
       Accept: 'application/json',
       ContentType: form.getAttribute('enctype'),
@@ -176,19 +184,22 @@ export default (name = '', reactive = {}) => ({
     return false
   },
 
-  asyncFilters(componentEvent) {
+  showResetButton() {
     const form = this.$el
+
     form
       ?.closest('.offcanvas-template')
       ?.querySelector('#async-reset-button')
       ?.removeAttribute('style')
+  },
 
-    const queryString = new URLSearchParams(new FormData(form)).toString()
+  dispatchEvents(componentEvent, exclude = null) {
+    const form = this.$el
+    const formData = new FormData(form);
 
-    this.$dispatch('disable-query-tags')
-    this.$dispatch(componentEvent, {filters: queryString})
-
-    this.toggleCanvas()
+    de(componentEvent, '', this, {
+      queryString: prepareFormQueryString(formData, exclude)
+    })
   },
 
   onChangeField(event) {
@@ -214,6 +225,18 @@ export default (name = '', reactive = {}) => ({
 
   getInputs,
 })
+
+function prepareFormQueryString(formData, exclude = null) {
+  if(exclude !== null) {
+    const excludes = exclude.split(',')
+
+    excludes.forEach(function (excludeName) {
+      formData.delete(excludeName)
+    })
+  }
+
+  return new URLSearchParams(formData).toString()
+}
 
 function submitState(form, loading = true, reset = false) {
   if (!loading) {
