@@ -61,4 +61,3 @@ class Menu extends MoonShineComponent
         ];
     }
 }
-

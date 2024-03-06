@@ -47,7 +47,7 @@ final class FiltersForm
                     $resource->listEventName(),
                     'disable-query-tags',
                     'show-reset-filters',
-                    AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, 'default')
+                    AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, 'default'),
                 ]);
 
                 $form->buttons([
@@ -60,7 +60,7 @@ final class FiltersForm
                         ->customAttributes([
                             AlpineJs::eventBlade('show-reset', 'filters') => "showResetButton",
                             'style' => 'display: none',
-                            'id' => 'async-reset-button'
+                            'id' => 'async-reset-button',
                         ])
                     ,
                 ]);
