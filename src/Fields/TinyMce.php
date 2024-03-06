@@ -90,7 +90,6 @@ final class TinyMce extends Textarea
             'relative_urls',
             'branding',
             'skin',
-            'content_css',
             'file_picker_callback',
             'language',
             'plugins',
