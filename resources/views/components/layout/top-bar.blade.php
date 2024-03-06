@@ -2,6 +2,8 @@
     'components' => [],
     'actions' => $_actions ?? [],
     'home_route' => null,
+    'hideLogo' => false,
+    'hideSwitcher' => false,
     'logo',
     'profile',
 ])
@@ -9,13 +11,15 @@
 <aside {{ $attributes->merge(['class' => 'layout-menu-horizontal']) }}
        :class="asideMenuOpen && '_is-opened'"
 >
-    <div class="menu-logo">
-        @if($logo ?? false)
-            {{ $logo }}
-        @else
-            @include('moonshine::layouts.shared.logo', ['home_route' => $home_route])
-        @endif
-    </div>
+    @if(!$hideLogo)
+        <div class="menu-logo">
+            @if($logo ?? false)
+                {{ $logo }}
+            @else
+                @include('moonshine::layouts.shared.logo', ['home_route' => $home_route])
+            @endif
+        </div>
+    @endif
 
     <nav class="menu-navigation">
         <x-moonshine::components
@@ -34,7 +38,7 @@
 
         <div class="menu-inner-divider"></div>
 
-        @if(config('moonshine.use_theme_switcher', true))
+        @if(!$hideSwitcher && config('moonshine.use_theme_switcher', true))
             <div class="menu-mode">
                 <x-moonshine::layout.theme-switcher :top="true" />
             </div>

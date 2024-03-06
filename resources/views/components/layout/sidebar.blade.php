@@ -1,6 +1,8 @@
 @props([
     'components' => [],
     'home_route' => null,
+    'hideLogo' => false,
+    'hideSwitcher' => false,
     'logo',
     'profile',
 ])
@@ -8,16 +10,18 @@
        :class="minimizedMenu && '_is-minimized'"
 >
     <div class="menu-heading">
-        <div class="menu-heading-logo">
-            @if($logo ?? false)
-                {{ $logo }}
-            @else
-                @include('moonshine::layouts.shared.logo', ['home_route' => $home_route])
-            @endif
-        </div>
+        @if(!$hideLogo)
+            <div class="menu-heading-logo">
+                @if($logo ?? false)
+                    {{ $logo }}
+                @else
+                    @include('moonshine::layouts.shared.logo', ['home_route' => $home_route])
+                @endif
+            </div>
+        @endif
 
         <div class="menu-heading-actions">
-            @if(config('moonshine.use_theme_switcher', true))
+            @if(!$hideSwitcher && config('moonshine.use_theme_switcher', true))
                 <div class="menu-heading-mode">
                     <x-moonshine::layout.theme-switcher :top="false" />
                 </div>

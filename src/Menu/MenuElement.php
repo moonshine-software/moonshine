@@ -24,6 +24,20 @@ abstract class MenuElement
 
     protected Closure|bool $blank = false;
 
+    protected Closure|bool|null $forceActive = null;
+
+    public function forceActive(Closure|bool $forceActive): static
+    {
+        $this->forceActive = $forceActive;
+
+        return $this;
+    }
+
+    public function isForceActive(): bool
+    {
+        return ! is_null($this->forceActive);
+    }
+
     public function isGroup(): bool
     {
         return $this instanceof MenuGroup;
@@ -48,7 +62,7 @@ abstract class MenuElement
      */
     public function url(): string
     {
-        return value($this->url);
+        return value($this->url) ?? '';
     }
 
     /**
@@ -56,6 +70,10 @@ abstract class MenuElement
      */
     public function isActive(): bool
     {
+        if ($this->isForceActive() && value($this->forceActive) === true) {
+            return true;
+        }
+
         if ($this instanceof MenuGroup) {
             foreach ($this->items() as $item) {
                 if ($item->isActive()) {
@@ -63,6 +81,10 @@ abstract class MenuElement
                 }
             }
 
+            return false;
+        }
+
+        if(moonshineMenu()->hasForceActive()) {
             return false;
         }
 
@@ -85,7 +107,7 @@ abstract class MenuElement
             return request()->path() === $path;
         }
 
-        if($this->url() === moonshineRouter()->home()) {
+        if ($this->url() === moonshineRouter()->home()) {
             return request()->fullUrlIs($this->url());
         }
 
