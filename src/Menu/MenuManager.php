@@ -16,9 +16,29 @@ class MenuManager
         $this->menu = $data;
     }
 
-    public function all(): ?Collection
+    public function all(): Collection
     {
-        return collect(value($this->menu, moonshineRequest()))?->filter(function (MenuElement $item): bool {
+        return $this->prepareMenu(value($this->menu, moonshineRequest()));
+    }
+
+    public function hasForceActive(): bool
+    {
+        return $this->all()->contains(function (MenuElement $item) {
+            if($item->isForceActive()) {
+                return true;
+            }
+
+            if($item instanceof MenuGroup) {
+                return $item->items()->contains(fn (MenuElement $child) => $child->isForceActive());
+            }
+
+            return false;
+        });
+    }
+
+    public function prepareMenu(Collection|array|null $items = []): Collection
+    {
+        return collect($items)->filter(function (MenuElement $item): bool {
             if ($item instanceof MenuGroup) {
                 $item->setItems(
                     $item->items()->filter(
