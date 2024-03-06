@@ -29,13 +29,19 @@
     /* selector :has not supported */
 
     &--top-menu {
-      @apply flex-col gap-y-0 px-3 pb-6 pt-0 transition-none md:px-5;
+      @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
     }
 
     /* selector :has supported */
     @supports selector(:has(*)) {
       &:has(> .layout-menu-horizontal) {
-        @apply flex-col gap-y-0 px-3 pb-6 pt-0 transition-none md:px-5;
+        @apply flex-col gap-y-0 pb-6 pt-0 lg:pt-0 transition-none;
+      }
+    }
+
+    @supports selector(:has(*)) {
+      &:has(> .layout-menu-horizontal):has(> .layout-menu) {
+        @apply pt-16 lg:pt-0;
       }
     }
   }
@@ -59,5 +65,17 @@
 
   &-footer {
     @apply pt-6;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-visible {
+    display: none!important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mobile-hidden {
+    display: none!important;
   }
 }
