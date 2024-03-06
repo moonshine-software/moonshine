@@ -6,9 +6,11 @@ namespace MoonShine\Forms;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Support\AlpineJs;
 use Throwable;
 
 final class FiltersForm
@@ -24,6 +26,7 @@ final class FiltersForm
         $action = $resource->isAsync() ? '#' : $resource->currentRoute();
 
         return FormBuilder::make($action, 'GET')
+            ->name('filters')
             ->fillCast($values, $resource->getModelCast())
             ->fields(
                 $filters
@@ -40,8 +43,11 @@ final class FiltersForm
                     ->toArray()
             )
             ->when($resource->isAsync(), function (FormBuilder $form) use ($resource): void {
-                $form->customAttributes([
-                    'x-on:submit.prevent' => 'asyncFilters(`' . $resource->listEventName() . '`)',
+                $form->dispatchEvent([
+                    $resource->listEventName(),
+                    'disable-query-tags',
+                    'show-reset-filters',
+                    AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, 'default')
                 ]);
 
                 $form->buttons([
@@ -52,8 +58,9 @@ final class FiltersForm
                         ->secondary()
                         ->showInLine()
                         ->customAttributes([
-                            'id' => 'async-reset-button',
+                            AlpineJs::eventBlade('show-reset', 'filters') => "showResetButton",
                             'style' => 'display: none',
+                            'id' => 'async-reset-button'
                         ])
                     ,
                 ]);

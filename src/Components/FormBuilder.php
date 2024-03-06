@@ -144,6 +144,13 @@ final class FormBuilder extends RowComponent
         return $this->method;
     }
 
+    public function dispatchEvent(array|string $events): self
+    {
+        return $this->customAttributes([
+            '@submit.prevent' => "dispatchEvents(`".AlpineJs::prepareEvents($events)."`, `_component_name`)"
+        ]);
+    }
+
     public function submit(string $label, array $attributes = []): self
     {
         $this->submitLabel = $label;

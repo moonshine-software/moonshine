@@ -10,7 +10,7 @@ export function responseCallback(callback, response, element, events, component)
   fn(response, element, events, component)
 }
 
-export function dispatchEvents(events, type, component) {
+export function dispatchEvents(events, type, component, extraAttributes = {}) {
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
 
@@ -19,7 +19,7 @@ export function dispatchEvents(events, type, component) {
 
       let eventName = parts[0]
 
-      let attributes = {}
+      let attributes = extraAttributes
 
       if (Array.isArray(parts) && parts.length > 1) {
         let params = parts[1].split(';')
@@ -94,7 +94,7 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
       }
 
       if (t.events !== undefined) {
-        dispatchEvents(t.events, type, t)
+        dispatchEvents(t.events, type, t, t.extraAttributes ?? {})
       }
     })
     .catch(errorResponse => {
@@ -131,14 +131,14 @@ export function listComponentRequest(component) {
 
   component.loading = true
 
-  if (component.$event.detail && component.$event.detail.filters) {
+  if (component.$event.detail && component.$event.detail.queryString) {
     url = prepareListComponentRequestUrl(url)
 
     const urlWithFilters = new URL(url)
 
     let separator = urlWithFilters.searchParams.size ? '&' : '?'
 
-    url = urlWithFilters.toString() + separator + component.$event.detail.filters
+    url = urlWithFilters.toString() + separator + component.$event.detail.queryString
   }
 
   if (component.$event.detail && component.$event.detail.queryTag) {
