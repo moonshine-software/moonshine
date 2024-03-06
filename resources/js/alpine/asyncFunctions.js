@@ -50,7 +50,7 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
     return
   }
 
-  if(t.beforeFunction !== undefined && t.beforeFunction) {
+  if (t.beforeFunction !== undefined && t.beforeFunction) {
     beforeCallback(t.beforeFunction, t.$el, t)
   }
 
