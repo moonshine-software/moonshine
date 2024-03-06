@@ -35,7 +35,7 @@
     /* selector :has supported */
     @supports selector(:has(*)) {
       &:has(> .layout-menu-horizontal) {
-        @apply flex-col gap-y-0 pb-6 pt-0 lg:pt-0 transition-none;
+        @apply flex-col gap-y-0 pb-6 pt-0 transition-none lg:pt-0;
       }
     }
 
@@ -70,12 +70,12 @@
 
 @media (min-width: 1024px) {
   .mobile-visible {
-    display: none!important;
+    display: none !important;
   }
 }
 
 @media (max-width: 1024px) {
   .mobile-hidden {
-    display: none!important;
+    display: none !important;
   }
 }
