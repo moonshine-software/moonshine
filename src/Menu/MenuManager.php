@@ -29,7 +29,7 @@ class MenuManager
             }
 
             if($item instanceof MenuGroup) {
-                return $item->items()->contains(fn (MenuElement $child) => $child->isForceActive());
+                return $item->items()->contains(fn (MenuElement $child): bool => $child->isForceActive());
             }
 
             return false;
