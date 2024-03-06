@@ -16,6 +16,7 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\AsyncCallback;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\WithFormElementAttributes;
 use MoonShine\Traits\HasCanSee;
@@ -247,7 +248,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         ?string $message = null,
         ?string $selector = null,
         array $events = [],
-        ?string $callback = null,
+        string|AsyncCallback|null $callback = null,
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): static {
@@ -272,7 +273,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         string $method = 'PUT',
         array $events = [],
         ?string $selector = null,
-        ?string $callback = null,
+        string|AsyncCallback|null $callback = null,
     ): static {
         $this->onChangeUrl = $url;
 
@@ -288,7 +289,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         string $method = 'GET',
         array $events = [],
         ?string $selector = null,
-        ?string $callback = null
+        string|AsyncCallback|null $callback = null
     ): static {
         return $this->customAttributes(
             AlpineJs::asyncUrlDataAttributes(

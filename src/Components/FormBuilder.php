@@ -14,6 +14,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\AsyncCallback;
 use MoonShine\Traits\Fields\WithAdditionalFields;
 use MoonShine\Traits\HasAsync;
 use Throwable;
@@ -104,7 +105,7 @@ final class FormBuilder extends RowComponent
         string $method,
         ?string $message = null,
         array $events = [],
-        ?string $callback = null,
+        string|AsyncCallback|null $callback = null,
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): self {
@@ -321,7 +322,7 @@ final class FormBuilder extends RowComponent
         if ($this->isAsync()) {
             $this->customAttributes([
                 'x-on:submit.prevent' => 'async(`' . $this->asyncEvents(
-                ) . '`, `' . $this->asyncCallback() . '`)',
+                ) . '`, `' . $this->asyncCallback() . '`, `' . $this->asyncBeforeCallback() . '`)',
                 AlpineJs::eventBlade(JsEvent::FORM_RESET, $this->getName()) => 'formReset',
             ]);
         }

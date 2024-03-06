@@ -10,6 +10,16 @@ export function responseCallback(callback, response, element, events, component)
   fn(response, element, events, component)
 }
 
+export function beforeCallback(callback, element, component) {
+  const fn = MoonShine.callbacks[callback]
+
+  if (typeof fn !== 'function') {
+    throw new Error(callback + ' is not a function!')
+  }
+
+  fn(element, component)
+}
+
 export function dispatchEvents(events, type, component, extraAttributes = {}) {
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
@@ -38,6 +48,10 @@ export function dispatchEvents(events, type, component, extraAttributes = {}) {
 export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}) {
   if (!url) {
     return
+  }
+
+  if(t.beforeFunction !== undefined && t.beforeFunction) {
+    beforeCallback(t.beforeFunction, t.$el, t)
   }
 
   axios({

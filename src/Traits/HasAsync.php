@@ -7,6 +7,7 @@ namespace MoonShine\Traits;
 use Closure;
 use Illuminate\Support\Arr;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\AsyncCallback;
 
 trait HasAsync
 {
@@ -15,6 +16,8 @@ trait HasAsync
     protected string|array|null $asyncEvents = null;
 
     protected ?string $asyncCallback = null;
+
+    protected ?string $asyncBeforeCallback = null;
 
     public function isAsync(): bool
     {
@@ -57,11 +60,18 @@ trait HasAsync
     public function async(
         Closure|string|null $asyncUrl = null,
         string|array|null $asyncEvents = null,
-        string $asyncCallback = null
+        string|AsyncCallback|null $asyncCallback = null,
     ): static {
         $this->asyncUrl = $this->prepareAsyncUrl($asyncUrl);
         $this->asyncEvents = $asyncEvents;
-        $this->asyncCallback = $asyncCallback;
+
+        //TODO remove $callback string type in future version
+        if($asyncCallback instanceof AsyncCallback) {
+            $this->asyncCallback = $asyncCallback->success();
+            $this->asyncBeforeCallback = $asyncCallback->before();
+        } else {
+            $this->asyncCallback = $asyncCallback;
+        }
 
         return $this;
     }
@@ -83,5 +93,10 @@ trait HasAsync
     public function asyncCallback(): ?string
     {
         return $this->asyncCallback;
+    }
+
+    public function asyncBeforeCallback(): ?string
+    {
+        return $this->asyncBeforeCallback;
     }
 }

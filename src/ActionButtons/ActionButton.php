@@ -10,6 +10,7 @@ use MoonShine\Contracts\Actions\ActionButtonContract;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\AsyncCallback;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
@@ -152,9 +153,9 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ?string $message = null,
         ?string $selector = null,
         array $events = [],
-        ?string $callback = null,
+        string|AsyncCallback|null $callback = null,
         ?Page $page = null,
-        ?ResourceContract $resource = null,
+        ?ResourceContract $resource = null
     ): self {
         $this->asyncMethod = $method;
 
@@ -192,7 +193,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         string $method = 'GET',
         ?string $selector = null,
         array $events = [],
-        ?string $callback = null
+        string|AsyncCallback|null $callback = null
     ): self {
         $this->isAsync = true;
 

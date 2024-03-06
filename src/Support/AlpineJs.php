@@ -53,12 +53,14 @@ final class AlpineJs
         string $method = 'GET',
         string|array $events = [],
         ?string $selector = null,
-        ?string $callback = null,
+        string|AsyncCallback|null $callback = null
     ): array {
         return array_filter([
             'data-async-events' => self::prepareEvents($events),
             'data-async-selector' => $selector,
-            'data-async-callback' => $callback,
+            //TODO remove $callback string type in future version
+            'data-async-callback' => $callback instanceof AsyncCallback ? $callback->success() : $callback,
+            'data-async-before-function' => $callback instanceof AsyncCallback ? $callback->before() : null,
             'data-async-method' => $method,
         ]);
     }

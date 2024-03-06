@@ -11,6 +11,7 @@ export default () => ({
 
   beforeCallback: null,
   errorCallback: null,
+  beforeFunction: null,
 
   init() {
     this.url = this.$el.href
@@ -19,6 +20,7 @@ export default () => ({
     this.method = this.$el?.dataset?.asyncMethod
     this.events = this.$el?.dataset?.asyncEvents
     this.callback = this.$el?.dataset?.asyncCallback
+    this.beforeFunction = this.$el?.dataset?.asyncBeforeFunction
     this.loading = false
     const el = this.$el
     const btnText = this.btnText
