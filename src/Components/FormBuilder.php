@@ -41,6 +41,8 @@ final class FormBuilder extends RowComponent
 
     protected ?string $submitLabel = null;
 
+    protected bool $hideSubmit = false;
+
     protected ComponentAttributeBag $submitAttributes;
 
     protected ?Closure $onBeforeFieldsRender = null;
@@ -149,6 +151,18 @@ final class FormBuilder extends RowComponent
         return $this->customAttributes([
             '@submit.prevent' => "dispatchEvents(`".AlpineJs::prepareEvents($events)."`, `_component_name`)"
         ]);
+    }
+
+    public function hideSubmit(): self
+    {
+        $this->hideSubmit = true;
+
+        return $this;
+    }
+
+    public function isHideSubmit(): bool
+    {
+        return $this->hideSubmit;
     }
 
     public function submit(string $label, array $attributes = []): self
@@ -322,6 +336,7 @@ final class FormBuilder extends RowComponent
             'async' => $this->isAsync(),
             'asyncUrl' => $this->asyncUrl(),
             'buttons' => $this->getButtons(),
+            'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
         ];

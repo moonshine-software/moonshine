@@ -1,11 +1,10 @@
 @props([
     'data' => $_data ?? [],
     'top' => $isTop ?? false,
-    'scrollTo' => $isScrollTo ?? true,
 ])
 @if($data)
     <ul {{ $attributes->class(['menu-inner', 'grow' => !$top]) }}
-        @if(!$top && $isScrollTo)
+        @if(!$top)
             x-init="$nextTick(() => document.querySelector('.menu-inner-item._is-active')?.scrollIntoView())"
         @endif
     >
