@@ -8,6 +8,7 @@
     />
 
     <x-slot:buttons>
+        @if(!($hideSubmit ?? false))
         <x-moonshine::form.button
                 :attributes="$submitAttributes->merge([
                 'class' => 'form_submit_button',
@@ -22,6 +23,7 @@
 
             {{ $submitLabel }}
         </x-moonshine::form.button>
+        @endif
 
         @if($buttons->isNotEmpty())
             <x-moonshine::action-group
