@@ -17,6 +17,7 @@ export default (name = '', reactive = {}) => ({
   callback: null,
   afterCallback: null,
   afterErrorCallback: null,
+  beforeFunction: null,
 
   init(initData = {}) {
     const t = this
@@ -141,7 +142,7 @@ export default (name = '', reactive = {}) => ({
     return false
   },
 
-  async(events = '', callbackFunction = '') {
+  async(events = '', callbackFunction = '', beforeFunction = '') {
     const form = this.$el
     submitState(form, true)
     const t = this
@@ -157,6 +158,7 @@ export default (name = '', reactive = {}) => ({
       action = action + '?' + new URLSearchParams(formData).toString()
     }
 
+    t.beforeFunction = beforeFunction
     t.callback = callbackFunction
     t.events = events
 
