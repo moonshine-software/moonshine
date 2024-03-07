@@ -44,6 +44,8 @@
   }
 
   ._is-opened {
+    @apply flex flex-col;
+
     .menu-inner-item-char {
       @apply !hidden;
     }
@@ -53,6 +55,10 @@
     @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 bg-body px-6 pb-8 pt-14 opacity-0 transition-all lg:pointer-events-auto lg:visible lg:static lg:z-1 lg:mt-0 lg:flex lg:translate-y-0 lg:flex-col lg:bg-transparent lg:py-0 lg:pl-0 lg:pr-4 lg:opacity-100 lg:transition-none xl:pr-5;
     overflow-y: auto;
     overflow-x: clip;
+
+    & > *:first-child {
+      @apply mt-2;
+    }
 
     &._is-opened {
       @apply pointer-events-auto visible translate-y-0 opacity-100;
@@ -85,6 +91,10 @@
     /* Main navigation */
     &-inner {
       @apply flex flex-col gap-y-2;
+
+      &:last-of-type {
+        @apply grow;
+      }
 
       &-item {
         @apply relative rounded-lg text-white transition-all current:bg-menu-current-bg current:font-medium current:text-menu-current-color current:opacity-100 current:transition-none current:dark:font-normal lg:rounded-l-lg lg:rounded-r-none current:lg:bg-slate-50 current:lg:text-black dark:current:lg:bg-dark-700 current:dark:lg:text-white;
@@ -249,6 +259,10 @@
     &-inner {
       @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
 
+      &:last-of-type {
+        @apply grow;
+      }
+
       &-item {
         @apply relative rounded-lg text-white transition-all current:bg-menu-current-bg current:font-medium current:text-menu-current-color current:opacity-100 current:transition-none current:dark:font-normal current:lg:bg-slate-50 current:lg:text-black dark:current:lg:bg-dark-700 current:dark:lg:text-white;
 
@@ -410,7 +424,7 @@
     .menu {
       &-navigation {
         @apply pointer-events-none invisible absolute inset-x-0 top-[4.5rem] -translate-y-2 overflow-x-auto bg-body px-3 pb-8 opacity-0 transition-all md:px-7;
-        height: calc(100vh - 5rem);
+        height: calc(100vh - 4.5rem);
       }
 
       &-inner {
@@ -437,6 +451,191 @@
         }
         .menu-inner-dropdown {
           @apply !static !mt-2 !hidden !transform-none;
+        }
+      }
+    }
+  }
+}
+
+/* Aside navigation mobile */
+.layout-menu-mobile {
+  @apply pointer-events-none w-full transition-all;
+
+  ._is-opened {
+    @apply flex flex-col;
+
+    .menu-inner-item-char {
+      @apply !hidden;
+    }
+  }
+
+  .menu {
+    @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 bg-body px-6 pb-8 pt-14 opacity-0 transition-all;
+    overflow-y: auto;
+    overflow-x: clip;
+
+    &._is-opened {
+      @apply pointer-events-auto visible translate-y-0 opacity-100;
+    }
+
+    /* Heading */
+    &-heading {
+      @apply pointer-events-auto fixed left-0 right-0 top-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 px-6 py-3 backdrop-blur-sm md:px-10;
+
+      &-logo {
+        @apply grow-0;
+      }
+      &-actions {
+        @apply flex items-center justify-end gap-x-3;
+      }
+      &-mode {
+        @apply inline-flex items-center justify-center;
+        &-btn {
+          @apply h-6 w-6 overflow-hidden text-white/30 hover:text-white;
+          > svg {
+            @apply h-6 w-6;
+          }
+        }
+      }
+      &-burger {
+        @apply inline-flex items-center;
+      }
+    }
+
+    /* Main navigation */
+    &-inner {
+      @apply flex flex-col gap-y-2;
+
+      &:last-of-type {
+        @apply grow;
+      }
+
+      &-item {
+        @apply relative rounded-lg text-white transition-all current:bg-menu-current-bg current:font-medium current:text-menu-current-color current:opacity-100 current:transition-none current:dark:font-normal;
+        &._is-active {
+          &::before,
+          &::after {
+            @apply absolute -right-5 z-1 hidden h-4 w-4 bg-slate-50 dark:bg-dark-700;
+            content: '';
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='259.51' height='259.52' viewBox='0 0 259.51 259.52'%3E%3Cpath d='M8659.507,423.965c-.167-2.608.05-5.319-.19-8.211-.084-1.012-.031-2.15-.118-3.12-.113-1.25-.1-2.682-.236-4.061-.172-1.722-.179-3.757-.365-5.394-.328-2.889-.478-5.857-.854-8.61-.509-3.714-.825-7.252-1.38-10.543-.934-5.535-2.009-11.312-3.189-16.692-.855-3.9-1.772-7.416-2.752-11.2-1.1-4.256-2.394-8.149-3.687-12.381-1.1-3.615-2.366-6.893-3.623-10.493-1.3-3.739-2.917-7.26-4.284-10.7-1.708-4.295-3.674-8.078-5.485-12.023-1.145-2.493-2.5-4.932-3.727-7.387-1.318-2.646-2.9-5.214-4.152-7.518-1.716-3.16-3.517-5.946-5.274-8.873-1.692-2.818-3.589-5.645-5.355-8.334-2.326-3.542-4.637-6.581-7.039-9.848-2.064-2.809-4.017-5.255-6.088-7.828-2.394-2.974-4.937-5.936-7.292-8.589-3.027-3.411-6.049-6.744-9.055-9.763-2.4-2.412-4.776-4.822-7.108-6.975-3-2.767-5.836-5.471-8.692-7.854-3.332-2.779-6.657-5.663-9.815-8.028-2.958-2.216-5.784-4.613-8.7-6.6-3.161-2.159-6.251-4.414-9.219-6.254-3.814-2.365-7.533-4.882-11.168-6.89-4.213-2.327-8.513-4.909-12.478-6.834-4.61-2.239-9.234-4.619-13.51-6.416-4.1-1.725-8.11-3.505-11.874-4.888-4.5-1.652-8.506-3.191-12.584-4.47-6.045-1.9-12.071-3.678-17.431-5-9.228-2.284-17.608-3.757-24.951-4.9-7.123-1.112-13.437-1.64-18.271-2.035l-2.405-.2c-1.638-.136-3.508-.237-4.633-.3a115.051,115.051,0,0,0-12.526-.227h259.51Z' transform='translate(-8399.997 -164.445)'/%3E%3C/svg%3E%0A");
+            mask-size: cover;
+          }
+          &::before {
+            @apply bottom-full rotate-180 scale-x-[-1];
+          }
+          &::after {
+            @apply top-full;
+          }
+          .menu-inner-link {
+            @apply text-menu-current-color hover:text-menu-current-color;
+            &::after {
+              @apply hidden;
+            }
+          }
+        }
+      }
+      &-link,
+      &-button {
+        @apply relative flex items-center gap-x-2.5 rounded-lg px-4 py-3 text-xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
+        &._is-active {
+          @apply bg-menu-active-bg text-menu-active-color;
+          .menu-inner-arrow {
+            @apply scale-y-[-1];
+          }
+        }
+        > svg {
+          @apply h-6 w-6;
+        }
+      }
+      &-link {
+        &::after {
+          content: '';
+          @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
+        }
+      }
+      &-button {
+        @apply w-full;
+      }
+      &-text {
+        @apply grow truncate text-left;
+      }
+      &-counter {
+        @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white;
+      }
+      &-arrow {
+        @apply transition-transform;
+        > svg {
+          @apply h-4 w-4;
+        }
+      }
+      &-text,
+      &-arrow {
+        @apply block;
+      }
+
+      /* Dropdown Menu */
+      &-dropdown {
+        @apply mt-2 flex flex-col gap-y-1 rounded-lg bg-menu-dropdown-bg px-1 py-1.5;
+        .menu-inner-item {
+          &::before,
+          &::after {
+            @apply -right-6;
+          }
+        }
+        .menu-inner-link,
+        .menu-inner-button {
+          &::after {
+            @apply -right-6 w-6;
+          }
+          @apply px-3.5 text-2xs;
+          > svg {
+            @apply h-5 w-5;
+          }
+        }
+        .menu-inner-counter {
+          @apply h-5 bg-secondary text-[11px] leading-5;
+        }
+        .menu-inner-divider {
+          @apply -ml-3.5;
+        }
+      }
+
+      /* Divider */
+      &-divider {
+        @apply relative my-2 -ml-4 flex items-center pl-4 pr-0.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:grow before:bg-slate-500;
+        > span {
+          @apply relative z-1 block w-full truncate pl-2.5;
+        }
+      }
+    }
+
+    /* User Profile */
+    &-profile {
+      @apply flex flex-row items-center gap-x-2 gap-y-4 px-2 py-4;
+      &-main {
+        @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
+        &:hover {
+          .menu-profile-info > .name {
+            @apply text-secondary;
+          }
+        }
+      }
+      &-photo {
+        @apply h-10 w-10 shrink-0 overflow-hidden rounded-full;
+      }
+      &-info {
+        @apply block min-w-0 grow;
+        > .name {
+          @apply block truncate font-medium text-white transition-colors;
+        }
+        > .email {
+          @apply block truncate text-3xs text-slate-400;
+        }
+      }
+      &-exit {
+        @apply text-white/30 hover:text-secondary;
+        > svg {
+          @apply h-6 w-6;
         }
       }
     }
