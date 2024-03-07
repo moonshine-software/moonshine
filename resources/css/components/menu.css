@@ -44,6 +44,8 @@
   }
 
   ._is-opened {
+    @apply flex flex-col;
+
     .menu-inner-item-char {
       @apply !hidden;
     }
@@ -53,6 +55,10 @@
     @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 bg-body px-6 pb-8 pt-14 opacity-0 transition-all lg:pointer-events-auto lg:visible lg:static lg:z-1 lg:mt-0 lg:flex lg:translate-y-0 lg:flex-col lg:bg-transparent lg:py-0 lg:pl-0 lg:pr-4 lg:opacity-100 lg:transition-none xl:pr-5;
     overflow-y: auto;
     overflow-x: clip;
+
+    & > *:first-child {
+      @apply mt-2;
+    }
 
     &._is-opened {
       @apply pointer-events-auto visible translate-y-0 opacity-100;
@@ -85,6 +91,10 @@
     /* Main navigation */
     &-inner {
       @apply flex flex-col gap-y-2;
+
+      &:last-of-type {
+        @apply grow;
+      }
 
       &-item {
         @apply relative rounded-lg text-white transition-all current:bg-menu-current-bg current:font-medium current:text-menu-current-color current:opacity-100 current:transition-none current:dark:font-normal lg:rounded-l-lg lg:rounded-r-none current:lg:bg-slate-50 current:lg:text-black dark:current:lg:bg-dark-700 current:dark:lg:text-white;
@@ -249,6 +259,10 @@
     &-inner {
       @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
 
+      &:last-of-type {
+        @apply grow;
+      }
+
       &-item {
         @apply relative rounded-lg text-white transition-all current:bg-menu-current-bg current:font-medium current:text-menu-current-color current:opacity-100 current:transition-none current:dark:font-normal current:lg:bg-slate-50 current:lg:text-black dark:current:lg:bg-dark-700 current:dark:lg:text-white;
 
@@ -410,7 +424,7 @@
     .menu {
       &-navigation {
         @apply pointer-events-none invisible absolute inset-x-0 top-[4.5rem] -translate-y-2 overflow-x-auto bg-body px-3 pb-8 opacity-0 transition-all md:px-7;
-        height: calc(100vh - 5rem);
+        height: calc(100vh - 4.5rem);
       }
 
       &-inner {
@@ -489,16 +503,11 @@
     }
 
     /* Main navigation */
-
-    &-inner:not(:last-of-type) {
-      flex-grow: unset;
-    }
-
     &-inner {
       @apply flex flex-col gap-y-2;
 
-      &:not(:last-of-type) {
-        flex-grow: unset;
+      &:last-of-type {
+        @apply grow;
       }
 
       &-item {

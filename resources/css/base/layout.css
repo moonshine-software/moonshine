@@ -11,12 +11,14 @@
     }
 
     &--mobilebar {
+      @apply gap-0;
       @apply mobile:pt-16 !important;
     }
 
     /* selector :has supported */
     @supports selector(:has(*)) {
       &:has(> .layout-menu-mobile) {
+        @apply gap-0;
         @apply mobile:pt-16 !important;
 
         .layout-menu,

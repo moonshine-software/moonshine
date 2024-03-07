@@ -36,9 +36,9 @@
 
         {{ $profile ?? '' }}
 
-        <div class="menu-inner-divider"></div>
-
         @if(!$hideSwitcher && config('moonshine.use_theme_switcher', true))
+            <div class="menu-inner-divider"></div>
+
             <div class="menu-mode">
                 <x-moonshine::layout.theme-switcher :top="true" />
             </div>

@@ -4,7 +4,7 @@
     'isScrollTo' => $isScrollTo ?? true,
 ])
 @if($data)
-    <ul {{ $attributes->class(['menu-inner', 'grow' => !$top]) }}
+    <ul {{ $attributes->class(['menu-inner']) }}
         @if(!$top && $isScrollTo)
             x-init="$nextTick(() => document.querySelector('.menu-inner-item._is-active')?.scrollIntoView())"
         @endif

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-class Mobilebar extends WithComponents
+class MobileBar extends WithComponents
 {
-    protected string $view = 'moonshine::components.layout.mobilebar';
+    protected string $view = 'moonshine::components.layout.mobile-bar';
 
     protected bool $hideLogo = false;
 
