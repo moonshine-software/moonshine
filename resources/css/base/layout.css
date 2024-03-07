@@ -12,7 +12,6 @@
 
     &--mobilebar {
       @apply mobile:pt-16 !important;
-
     }
 
     /* selector :has supported */

@@ -447,7 +447,6 @@
 .layout-menu-mobile {
   @apply pointer-events-none w-full transition-all;
 
-
   ._is-opened {
     @apply flex flex-col;
 
