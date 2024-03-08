@@ -165,9 +165,9 @@ export default (asyncUrl = '') => ({
         )
       }
 
-      this.$el.addEventListener('reset', () => {
+      this.$el.closest('form').addEventListener('reset', () => {
         this.choicesInstance.destroy()
-        this.choicesInstance.init()
+        this.init()
       })
 
       if (asyncUrl) {
