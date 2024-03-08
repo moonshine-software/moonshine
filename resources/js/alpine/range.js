@@ -15,6 +15,10 @@ export default (from = 0, to = 0) => ({
     this.min = parseInt(this.$el.dataset.min) ?? 0
     this.max = parseInt(this.$el.dataset.max) ?? 1000
     this.step = parseInt(this.$el.dataset.step) ?? 1
+    this.mintrigger()
+    this.maxtrigger()
+
+    this.$el.closest('form').addEventListener('reset', () => this.init())
   },
 
   mintrigger() {
