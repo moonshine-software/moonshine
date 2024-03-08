@@ -14,6 +14,7 @@
         ])"
         x-bind:max="range_to_{{ $element->id() }}"
         x-model="range_from_{{ $element->id() }}"
+        value="{{ $value[$element->fromField] ?? '' }}"
     />
 
     <x-moonshine::form.input
@@ -22,5 +23,6 @@
         ])"
         x-bind:min="range_from_{{ $element->id() }}"
         x-model="range_to_{{ $element->id() }}"
+        value="{{ $value[$element->toField] ?? '' }}"
     />
 </div>
