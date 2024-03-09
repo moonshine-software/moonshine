@@ -62,6 +62,7 @@
                 :attributes="$fromAttributes->merge([
                     'name' => $fromName,
                 ])"
+                value="{{ $fromValue }}"
             />
 
             <x-moonshine::form.input
@@ -75,6 +76,7 @@
                 :attributes="$toAttributes->merge([
                     'name' => $toName,
                 ])"
+                value="{{ $toValue }}"
             />
         </div>
     </div>
