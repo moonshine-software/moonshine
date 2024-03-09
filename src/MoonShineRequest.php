@@ -33,6 +33,10 @@ class MoonShineRequest extends Request
     public function findPage(): ?Page
     {
         return memoize(function (): ?Page {
+            if(is_null($this->getPageUri())) {
+                return null;
+            }
+
             if ($this->hasResource()) {
                 return $this->getResource()
                     ?->getPages()
