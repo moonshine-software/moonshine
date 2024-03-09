@@ -11,6 +11,7 @@ use MoonShine\Applies\Filters\DateRangeModelApply;
 use MoonShine\Applies\Filters\JsonModelApply;
 use MoonShine\Applies\Filters\MorphToModelApply;
 use MoonShine\Applies\Filters\RangeModelApply;
+use MoonShine\Applies\Filters\SelectModelApply;
 use MoonShine\Applies\Filters\TextModelApply;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Date;
@@ -19,6 +20,7 @@ use MoonShine\Fields\Json;
 use MoonShine\Fields\Range;
 use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\Fields\Relationships\MorphTo;
+use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;
 use MoonShine\Fields\Textarea;
 use MoonShine\Resources\ModelResource;
@@ -32,8 +34,8 @@ final class MoonShineRegister
     private array $options = [
         'filters' => [
             ModelResource::class => [
-                Date::class => DateModelApply::class,
-                Range::class => RangeModelApply::class,
+                    Date::class => DateModelApply::class,
+                    Range::class => RangeModelApply::class,
                     DateRange::class => DateRangeModelApply::class,
                     BelongsToMany::class => BelongsToManyModelApply::class,
                     MorphTo::class => MorphToModelApply::class,
@@ -41,6 +43,7 @@ final class MoonShineRegister
                     Text::class => TextModelApply::class,
                     Textarea::class => TextModelApply::class,
                     Checkbox::class => CheckboxModelApply::class,
+                    Select::class => SelectModelApply::class,
                 ],
             ],
             'fields' => [],
