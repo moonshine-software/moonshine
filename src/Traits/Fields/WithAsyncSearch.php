@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
@@ -57,6 +58,10 @@ trait WithAsyncSearch
 
         if (empty($value)) {
             return null;
+        }
+
+        if (is_iterable($value)) {
+            $value = Arr::first($value);
         }
 
         $value = str($value)
