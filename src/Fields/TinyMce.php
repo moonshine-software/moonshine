@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-final class TinyMce extends Textarea
+class TinyMce extends Textarea
 {
     protected string $view = 'moonshine::fields.tinymce';
 
