@@ -176,7 +176,11 @@ trait FileTrait
             );
         }
 
-        return $file->store($this->getDir(), $this->parseOptions());
+        if(!$result = $file->store($this->getDir(), $this->parseOptions())) {
+            throw new FieldException('Failed to save file, check your permissions');
+        }
+
+        return $result;
     }
 
     public function isAllowedExtension(string $extension): bool
