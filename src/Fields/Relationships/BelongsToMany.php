@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
@@ -192,7 +193,13 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function isValueWithModels(): bool
     {
-        return collect($this->toValue())->every(fn ($item): bool => $item instanceof Model);
+        $data = collect($this->toValue());
+
+        if($data->isEmpty()) {
+            return false;
+        }
+
+        return $data->every(fn ($item): bool => $item instanceof Model);
     }
 
     public function columnLabel(string $label): self
@@ -241,6 +248,10 @@ class BelongsToMany extends ModelRelationField implements
             $values = parent::prepareFill($raw);
         }
 
+        if (!$values instanceof EloquentCollection) {
+            $values = EloquentCollection::make($values);
+        }
+
         if ($this->isAsyncSearch()) {
             $this->memoizeValues = $values;
             $this->memoizeAllValues = $values;
@@ -275,16 +286,16 @@ class BelongsToMany extends ModelRelationField implements
         $this->memoizeAllValues = $values;
 
         $values = $values->map(function ($value) use ($checkedColumn) {
-            if ($this->isValueWithModels()) {
-                $checked = $this->toValue()
-                    ->first(fn ($item): bool => $item->getKey() === $value->getKey());
-            } else {
+            if (!$this->isValueWithModels()) {
                 $data = $this->toValue();
 
                 return $value
                     ->setRelations($value->getRelations())
                     ->setAttribute($checkedColumn, isset($data[$value->getKey()]) && $data[$value->getKey()]);
             }
+
+            $checked = $this->toValue()
+                ->first(fn ($item): bool => $item->getKey() === $value->getKey());
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations())
