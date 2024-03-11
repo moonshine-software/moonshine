@@ -6,9 +6,9 @@ namespace MoonShine\Fields\Relationships;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
@@ -248,7 +248,7 @@ class BelongsToMany extends ModelRelationField implements
             $values = parent::prepareFill($raw);
         }
 
-        if (!$values instanceof EloquentCollection) {
+        if (! $values instanceof EloquentCollection) {
             $values = EloquentCollection::make($values);
         }
 
@@ -286,7 +286,7 @@ class BelongsToMany extends ModelRelationField implements
         $this->memoizeAllValues = $values;
 
         $values = $values->map(function ($value) use ($checkedColumn) {
-            if (!$this->isValueWithModels()) {
+            if (! $this->isValueWithModels()) {
                 $data = $this->toValue();
 
                 return $value
