@@ -176,7 +176,7 @@ trait FileTrait
             );
         }
 
-        if(!$result = $file->store($this->getDir(), $this->parseOptions())) {
+        if(! $result = $file->store($this->getDir(), $this->parseOptions())) {
             throw new FieldException('Failed to save file, check your permissions');
         }
 
