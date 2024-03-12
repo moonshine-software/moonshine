@@ -8,6 +8,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\ServiceProvider;
+
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 use MoonShine\MoonShine;
