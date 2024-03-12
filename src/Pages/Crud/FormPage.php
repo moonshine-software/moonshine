@@ -152,8 +152,12 @@ class FormPage extends Page
             $item?->getKey()
         );
 
-        $isForceAsync = request('_async_form', false);
-        $isAsync = $resource->isAsync() || $isForceAsync;
+        // Reset form problem
+        $isAsync = $resource->isAsync() && $resource->isEditInModal();
+
+        if (request('_async_form', false)) {
+            $isAsync = true;
+        }
 
         return [
             Fragment::make([
