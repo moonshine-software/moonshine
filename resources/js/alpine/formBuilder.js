@@ -229,12 +229,12 @@ export default (name = '', reactive = {}) => ({
 })
 
 function prepareFormQueryString(formData, exclude = null) {
-  const maxLength = 50;
+  const maxLength = 50
   const filtered = new FormData()
 
   for (const [key, value] of formData) {
     if (value.length <= maxLength) {
-      filtered.append(key, value);
+      filtered.append(key, value)
     }
   }
 
@@ -246,7 +246,7 @@ function prepareFormQueryString(formData, exclude = null) {
     })
   }
 
-  return new URLSearchParams(filtered).toString();
+  return new URLSearchParams(filtered).toString()
 }
 
 function submitState(form, loading = true, reset = false) {
