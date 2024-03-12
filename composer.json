@@ -20,17 +20,17 @@
     "php": "^8.1|^8.2|^8.3",
     "ext-curl": "*",
     "ext-json": "*",
-    "rap2hpoutre/fast-excel": "^5.0",
+    "rap2hpoutre/fast-excel": "^5.4",
     "lee-to/laravel-package-command": "^0.9"
   },
   "require-dev": {
-    "pestphp/pest": "^2.24.2",
+    "pestphp/pest": "^2.34",
     "mockery/mockery": "^1.6",
-    "orchestra/testbench": "^8.14",
+    "orchestra/testbench": "^8.0|^9.0",
     "pestphp/pest-plugin-laravel": "^2.2",
     "pestphp/pest-plugin-mock": "^2.0",
     "rector/rector": "^1.0",
-    "nunomaduro/larastan": "^2.6"
+    "nunomaduro/larastan": "^2.9"
   },
   "autoload": {
     "psr-4": {

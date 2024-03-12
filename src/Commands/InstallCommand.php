@@ -7,6 +7,7 @@ namespace MoonShine\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 
+use Illuminate\Support\ServiceProvider;
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 use MoonShine\MoonShine;
@@ -103,6 +104,12 @@ class InstallCommand extends MoonShineCommand
 
     protected function registerServiceProvider(): void
     {
+        if (method_exists(ServiceProvider::class, 'addProviderToBootstrapFile')) {
+            ServiceProvider::addProviderToBootstrapFile(\App\Providers\MoonShineServiceProvider::class); // @phpstan-ignore-line
+
+            return;
+        }
+
         $this->installServiceProviderAfter(
             'RouteServiceProvider',
             'MoonShineServiceProvider'
