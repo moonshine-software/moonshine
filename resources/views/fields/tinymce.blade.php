@@ -5,6 +5,7 @@
         ])->except('x-bind:id')"
         ::id="$id('tiny-mce')"
         x-data="tinymce()"
+        data-toolbar_mode="sliding"
         :data-language="!empty($element->locale) ? $element->locale : app()->getLocale()"
         :data-plugins="trim($element->plugins . ' ' . $element->addedPlugins)"
         :data-menubar="trim($element->menubar)"
