@@ -21,6 +21,11 @@ export function beforeCallback(callback, element, component) {
 }
 
 export function dispatchEvents(events, type, component, extraAttributes = {}) {
+  if(events.includes('{row-id}') && component.$el !== undefined) {
+    const tr = component.$el.closest('tr')
+    events = events.replace(/{row-id}/g, tr?.dataset?.rowKey ?? 0)
+  }
+
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
 

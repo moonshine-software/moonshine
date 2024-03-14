@@ -127,6 +127,25 @@ export default (
   asyncRequest() {
     listComponentRequest(this)
   },
+  asyncRowRequest(index) {
+    const t = this
+    const tr = this.table.rows[index + 1]
+
+    const key = tr.dataset.rowKey;
+
+    if(!key) {
+      return
+    }
+
+    axios
+    .get(t.asyncUrl + `&_key=${key}&_index=${index}`)
+    .then(response => {
+      tr.outerHTML = response.data
+    })
+    .catch(error => {
+
+    })
+  },
   actions(type, id) {
     let all = this.$root.querySelector('.' + id + '-actionsAllChecked')
 

@@ -39,7 +39,8 @@ trait UpdateOnPreview
     public function updateOnPreview(
         ?Closure $url = null,
         ?ResourceContract $resource = null,
-        mixed $condition = null
+        mixed $condition = null,
+        array $events = [],
     ): static {
         $this->updateOnPreview = Condition::boolean($condition, true);
 
@@ -65,16 +66,18 @@ trait UpdateOnPreview
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $this->getUrl() ?? $this->getDefaultUpdateRoute()
+            $this->getUrl() ?? $this->getDefaultUpdateRoute(),
+            $events
         );
     }
 
-    public function setUpdateOnPreviewUrl(Closure $url): static
+    public function setUpdateOnPreviewUrl(Closure $url, array $events = []): static
     {
         $this->updateOnPreviewUrl = $url;
 
         return $this->onChangeUrl(
-            $this->updateOnPreviewUrl
+            $this->updateOnPreviewUrl,
+            events: $events
         );
     }
 

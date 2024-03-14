@@ -4,7 +4,9 @@ namespace MoonShine\Http\Controllers;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\FieldsGroup;
+use MoonShine\Components\TableBuilder;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
@@ -25,7 +27,41 @@ class AsyncController extends MoonShineController
 
         $table = $page->getComponents()->findTable(request('_component_name'));
 
-        return $table ? $table->render() : '';
+        if(is_null($table)) {
+            return '';
+        }
+
+        return $this->responseWithTable($table);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function responseWithTable(TableBuilder $table): View|Closure|string
+    {
+        if(!request()->filled('_key')) {
+            return $table->render();
+        }
+
+        $class = $table->hasCast()
+            ? new ($table->getCast()->getClass())
+            : null;
+
+        if($class instanceof Model) {
+            $item = $class::query()->find(request('_key'));
+        } else {
+            $item = $table->rows()->get(request('_index'));
+        }
+
+        return $table
+            ->items([
+                $item,
+            ])
+            ->performBeforeRender()
+            ->rows()
+            ->first()
+            ->mapTableStates($table)
+            ->render();
     }
 
     /**
@@ -35,9 +71,17 @@ class AsyncController extends MoonShineController
     {
         $page = $request->getPage();
 
-        $table = $page->getComponents()->findByName(request('_component_name'));
+        $component = $page->getComponents()->findByName(request('_component_name'));
 
-        return $table ? $table->render() : '';
+        if(is_null($component)) {
+            return '';
+        }
+
+        if($component instanceof TableBuilder) {
+            return $this->responseWithTable($component);
+        }
+
+        return $component->render();
     }
 
     /**
