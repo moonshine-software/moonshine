@@ -77,7 +77,7 @@ class AssetManager
                 fn ($asset): int|bool => str_contains((string) $asset, '.js')
             )
             ->map(
-                fn ($asset): string => "<script defer src='" . asset(
+                fn ($asset): string => "<script defer type='module' src='" . asset(
                     $asset
                 ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
