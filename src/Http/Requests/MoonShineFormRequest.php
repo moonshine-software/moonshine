@@ -32,7 +32,7 @@ class MoonShineFormRequest extends FormRequest
             $this->getResource()?->prepareForValidation();
         }
 
-        $this->request = moonshineRequest();
+        $this->request = request()->getPayload();
     }
 
     public function messages(): array
