@@ -7,8 +7,10 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Text;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Condition;
 
 trait UpdateOnPreview
@@ -31,6 +33,24 @@ trait UpdateOnPreview
         $this->updateOnPreview(condition: false);
 
         return parent::readonly($condition);
+    }
+
+    /**
+     * @throws FieldException
+     */
+    public function withUpdateRow(
+        string $component,
+    ): static {
+        if (is_null($this->updateOnPreviewUrl)) {
+            $this->updateOnPreview();
+        }
+
+        return $this->onChangeUrl(
+            $this->updateOnPreviewUrl,
+            events: [
+                AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "$component-{row-id}"),
+            ]
+        );
     }
 
     /**
