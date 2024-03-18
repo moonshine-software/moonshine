@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Illuminate\Http\Request;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Pages\Page;
 use MoonShine\Traits\Request\HasPageRequest;
 use MoonShine\Traits\Request\HasResourceRequest;
 
