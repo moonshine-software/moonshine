@@ -129,7 +129,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             AlpineJs::eventBlade(
                 JsEvent::TABLE_ROW_UPDATED,
                 "{$this->getName()}-{$row->getKey()}",
-            ) => "asyncRowRequest($index)"
+            ) => "asyncRowRequest({$row->getKey()},$index)"
         ];
 
         if (! is_null($this->sortableUrl) && $this->isSortable()) {

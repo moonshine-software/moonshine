@@ -127,13 +127,11 @@ export default (
   asyncRequest() {
     listComponentRequest(this)
   },
-  asyncRowRequest(index) {
+  asyncRowRequest(key, index) {
     const t = this
-    const tr = this.table.rows[index + 1]
+    const tr = this.table.querySelector('[data-row-key="'+key+'"]')
 
-    const key = tr.dataset.rowKey;
-
-    if(!key) {
+    if(tr === null) {
       return
     }
 
