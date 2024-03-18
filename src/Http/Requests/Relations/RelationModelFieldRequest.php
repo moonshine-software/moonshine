@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace MoonShine\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Http\Requests\MoonShineFormRequest;
+use MoonShine\Traits\Request\HasPageRequest;
+use MoonShine\Traits\Request\HasResourceRequest;
 use Throwable;
 
-class RelationModelFieldRequest extends MoonShineFormRequest
+class RelationModelFieldRequest extends FormRequest
 {
+    use HasResourceRequest, HasPageRequest;
+
     public function getRelationName(): string
     {
         return request('_relation');
