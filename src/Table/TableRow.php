@@ -29,6 +29,8 @@ final class TableRow implements MoonShineRenderable
 
     protected bool $simple = false;
 
+    protected ?int $index = null;
+
     protected bool $hasClickAction = false;
 
     public function __construct(
@@ -51,6 +53,18 @@ final class TableRow implements MoonShineRenderable
             ?->value() ?? '';
     }
 
+    public function setIndex(int $value = 0): self
+    {
+        $this->index = $value;
+
+        return $this;
+    }
+
+    public function getIndex(int $default = 0): int
+    {
+        return $this->index ?? $default;
+    }
+
     /**
      * @throws Throwable
      */
@@ -71,6 +85,8 @@ final class TableRow implements MoonShineRenderable
 
     public function trAttributes(int $row): ComponentAttributeBag
     {
+        $row = $this->getIndex($row);
+
         $attributes = new ComponentAttributeBag();
 
         if (is_null($this->trAttributes)) {
@@ -88,6 +104,8 @@ final class TableRow implements MoonShineRenderable
 
     public function tdAttributes(int $row, int $cell): ComponentAttributeBag
     {
+        $row = $this->getIndex($row);
+
         $attributes = new ComponentAttributeBag();
 
         if (is_null($this->tdAttributes)) {
@@ -130,5 +148,10 @@ final class TableRow implements MoonShineRenderable
     public function __toString(): string
     {
         return (string) $this->render();
+    }
+
+    public function toArray(): array
+    {
+        return (array) $this->data;
     }
 }
