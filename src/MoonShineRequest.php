@@ -7,20 +7,12 @@ namespace MoonShine;
 use Illuminate\Http\Request;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
+use MoonShine\Traits\Request\HasPageRequest;
+use MoonShine\Traits\Request\HasResourceRequest;
 
 class MoonShineRequest extends Request
 {
-    public function hasResource(): bool
-    {
-        return ! is_null($this->getResource());
-    }
-
-    public function getResource(): ?ResourceContract
-    {
-        return memoize(fn (): ?ResourceContract => moonshine()->getResourceFromUriKey(
-            $this->getResourceUri()
-        )?->boot());
-    }
+    use HasResourceRequest, HasPageRequest;
 
     public function getItemID(): int|string|null
     {
@@ -28,41 +20,6 @@ class MoonShineRequest extends Request
             'resourceItem',
             request()->route('resourceItem')
         );
-    }
-
-    public function findPage(): ?Page
-    {
-        return memoize(function (): ?Page {
-            if(is_null($this->getPageUri())) {
-                return null;
-            }
-
-            if ($this->hasResource()) {
-                return $this->getResource()
-                    ?->getPages()
-                    ?->findByUri($this->getPageUri());
-            }
-
-            return moonshine()->getPageFromUriKey(
-                $this->getPageUri()
-            );
-        });
-    }
-
-    public function getPage(): Page
-    {
-        $page = $this->findPage();
-
-        if (is_null($page)) {
-            oops404();
-        }
-
-        return $page;
-    }
-
-    public function getResourceUri(): ?string
-    {
-        return $this->route('resourceUri');
     }
 
     public function getParentResourceId(): ?string
@@ -84,11 +41,6 @@ class MoonShineRequest extends Request
             is_null($parentResource = $this->getParentResourceId())
                 ? null
                 : explode('-', $parentResource)[1] ?? null;
-    }
-
-    public function getPageUri(): ?string
-    {
-        return $this->route('pageUri');
     }
 
     public function onResourceRoute(): bool
