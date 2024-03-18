@@ -10,7 +10,8 @@ use MoonShine\Traits\Request\HasResourceRequest;
 
 class MoonShineRequest extends Request
 {
-    use HasResourceRequest, HasPageRequest;
+    use HasResourceRequest;
+    use HasPageRequest;
 
     public function getItemID(): int|string|null
     {

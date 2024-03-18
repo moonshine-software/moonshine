@@ -17,7 +17,8 @@ use Throwable;
 
 class RelationModelFieldRequest extends FormRequest
 {
-    use HasResourceRequest, HasPageRequest;
+    use HasResourceRequest;
+    use HasPageRequest;
 
     public function getRelationName(): string
     {
