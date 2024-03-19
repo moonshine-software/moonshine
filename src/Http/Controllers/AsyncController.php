@@ -10,6 +10,7 @@ use MoonShine\Components\TableBuilder;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
+use MoonShine\Support\TableRowRenderer;
 use MoonShine\Table\TableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,34 +45,11 @@ class AsyncController extends MoonShineController
             return $table->render();
         }
 
-        $class = $table->hasCast()
-            ? new ($table->getCast()->getClass())
-            : null;
-
-        if ($class instanceof Model) {
-            $item = $class::query()->find(request('_key'));
-        } else {
-            $item = $table->rows()->first(
-                fn (TableRow $row) => $row->getKey() == request('_key')
-            )->toArray() ?? [];
-        }
-
-        if(blank($item)) {
-            return '';
-        }
-
-        return $table
-            ->items(
-                array_filter([
-                    $item,
-                ])
-            )
-            ->performBeforeRender()
-            ->rows()
-            ->first()
-            ->setIndex(request()->integer('_index'))
-            ->mapTableStates($table)
-            ->render();
+        return TableRowRenderer::make(
+            $table,
+            request()->get('_key'),
+            request()->integer('_index'),
+        )->render();
     }
 
     /**
