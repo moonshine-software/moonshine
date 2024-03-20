@@ -43,12 +43,11 @@ return [
         'js' => [
             'script_attributes' => [
                 'defer',
-                'type' => 'module'
             ]
         ],
         'css' => [
             'script_attributes' => [
-                'rel' => 'stylesheet'
+                'rel' => 'stylesheet',
             ]
         ]
     ],
