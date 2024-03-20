@@ -39,6 +39,20 @@ return [
 
     'cache' => 'file',
 
+    'assets' => [
+        'js' => [
+            'script_attributes' => [
+                'defer',
+                'type' => 'module'
+            ]
+        ],
+        'css' => [
+            'script_attributes' => [
+                'rel' => 'stylesheet'
+            ]
+        ]
+    ],
+
     'forms' => [
         'login' => LoginForm::class
     ],
