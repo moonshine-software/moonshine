@@ -7,8 +7,10 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Text;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Condition;
 
 trait UpdateOnPreview
@@ -36,10 +38,29 @@ trait UpdateOnPreview
     /**
      * @throws FieldException
      */
+    public function withUpdateRow(
+        string $component,
+    ): static {
+        if (is_null($this->updateOnPreviewUrl)) {
+            $this->updateOnPreview();
+        }
+
+        return $this->onChangeUrl(
+            $this->updateOnPreviewUrl,
+            events: [
+                AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "$component-{row-id}"),
+            ]
+        );
+    }
+
+    /**
+     * @throws FieldException
+     */
     public function updateOnPreview(
         ?Closure $url = null,
         ?ResourceContract $resource = null,
-        mixed $condition = null
+        mixed $condition = null,
+        array $events = [],
     ): static {
         $this->updateOnPreview = Condition::boolean($condition, true);
 
@@ -65,16 +86,18 @@ trait UpdateOnPreview
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $this->getUrl() ?? $this->getDefaultUpdateRoute()
+            $this->getUrl() ?? $this->getDefaultUpdateRoute(),
+            $events
         );
     }
 
-    public function setUpdateOnPreviewUrl(Closure $url): static
+    public function setUpdateOnPreviewUrl(Closure $url, array $events = []): static
     {
         $this->updateOnPreviewUrl = $url;
 
         return $this->onChangeUrl(
-            $this->updateOnPreviewUrl
+            $this->updateOnPreviewUrl,
+            events: $events
         );
     }
 

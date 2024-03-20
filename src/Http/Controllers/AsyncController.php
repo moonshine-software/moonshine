@@ -4,10 +4,14 @@ namespace MoonShine\Http\Controllers;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\FieldsGroup;
+use MoonShine\Components\TableBuilder;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
+use MoonShine\Support\TableRowRenderer;
+use MoonShine\Table\TableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;
@@ -25,7 +29,27 @@ class AsyncController extends MoonShineController
 
         $table = $page->getComponents()->findTable(request('_component_name'));
 
-        return $table ? $table->render() : '';
+        if (is_null($table)) {
+            return '';
+        }
+
+        return $this->responseWithTable($table);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function responseWithTable(TableBuilder $table): View|Closure|string
+    {
+        if (! request()->filled('_key')) {
+            return $table->render();
+        }
+
+        return TableRowRenderer::make(
+            $table,
+            request()->get('_key'),
+            request()->integer('_index'),
+        )->render();
     }
 
     /**
@@ -35,9 +59,17 @@ class AsyncController extends MoonShineController
     {
         $page = $request->getPage();
 
-        $table = $page->getComponents()->findByName(request('_component_name'));
+        $component = $page->getComponents()->findByName(request('_component_name'));
 
-        return $table ? $table->render() : '';
+        if (is_null($component)) {
+            return '';
+        }
+
+        if ($component instanceof TableBuilder) {
+            return $this->responseWithTable($component);
+        }
+
+        return $component->render();
     }
 
     /**
@@ -100,9 +132,11 @@ class AsyncController extends MoonShineController
             ->onlyFields()
             ->reactiveFields();
 
-        $values = $request->collect('values')->map(fn ($value, $column) => $fields->findByColumn($column) instanceof Select
-            ? data_get($value, 'value', $value)
-            : $value);
+        $values = $request->collect('values')->map(
+            fn ($value, $column) => $fields->findByColumn($column) instanceof Select
+                ? data_get($value, 'value', $value)
+                : $value
+        );
 
         $fields->fill($values->toArray());
 
@@ -117,7 +151,9 @@ class AsyncController extends MoonShineController
         $values = $fields
             ->mapWithKeys(fn (Field $field): array => [$field->column() => $field->value()]);
 
-        $fields = $fields->mapWithKeys(fn (Field $field): array => [$field->column() => (string) FieldsGroup::make([$field])->render()]);
+        $fields = $fields->mapWithKeys(
+            fn (Field $field): array => [$field->column() => (string) FieldsGroup::make([$field])->render()]
+        );
 
         return $this->json(data: [
             'form' => $form,

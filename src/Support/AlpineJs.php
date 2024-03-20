@@ -18,11 +18,11 @@ final class AlpineJs
     {
         $event = is_string($event) ? $event : $event->value;
 
-        if(! is_null($name)) {
+        if (! is_null($name)) {
             $event .= self::EVENT_SEPARATOR . $name;
         }
 
-        if($params !== []) {
+        if ($params !== []) {
             $event .= self::EVENT_PARAMS_SEPARATOR
                 . urldecode(
                     http_build_query($params, arg_separator: self::EVENT_PARAM_SEPARATOR)
@@ -32,18 +32,26 @@ final class AlpineJs
         return $event;
     }
 
-    public static function eventBlade(string|JsEvent $event, ?string $name = null, ?string $call = null): string
-    {
+    public static function eventBlade(
+        string|JsEvent $event,
+        ?string $name = null,
+        ?string $call = null,
+        array $params = []
+    ): string {
         $event = is_string($event) ? $event : $event->value;
         $name ??= 'default';
         $call = $call ? "='$call'" : '';
 
 
-        return "@" . self::event($event, $name) . '.window' . $call;
+        return "@" . self::event($event, $name, $params) . '.window' . $call;
     }
 
-    public static function eventBladeWhen(mixed $condition, string|JsEvent $event, ?string $name = null, ?string $call = null): string
-    {
+    public static function eventBladeWhen(
+        mixed $condition,
+        string|JsEvent $event,
+        ?string $name = null,
+        ?string $call = null
+    ): string {
         return Condition::boolean($condition, false)
             ? self::eventBlade($event, $name, $call)
             : '';

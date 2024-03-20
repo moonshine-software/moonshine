@@ -75,7 +75,7 @@
                         :preview="$preview"
                         :editable="$editable"
                         :simple="$simple"
-                        :actions="$bulkButtons"
+                        :hasActions="$bulkButtons->isNotEmpty()"
                         :has-click-action="$attributes->get('data-click-action') !== null"
                     />
                 </x-slot:tbody>

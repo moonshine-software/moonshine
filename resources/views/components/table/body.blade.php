@@ -1,6 +1,6 @@
 @props([
     'rows',
-    'actions',
+    'hasActions' => false,
     'vertical' => false,
     'editable' => false,
     'preview' => false,
@@ -8,8 +8,8 @@
     'hasClickAction' => false,
 ])
 @foreach($rows as $row)
-    <tr {{ $row->trAttributes($loop->index) }}>
-        @if(!$preview && $actions->isNotEmpty())
+    <tr {{ $row->trAttributes($loop->index) }} data-row-key="{{ $row->getKey() }}">
+        @if(!$preview && $hasActions)
             <td {{ $row->tdAttributes($loop->index, 0)
                 ->merge(['class' => 'w-10 text-center']) }}
                 @if($vertical) width="5%" @endif
@@ -27,7 +27,7 @@
 
         @if($vertical && !$preview)
             <td
-                {{ $row->tdAttributes($vertical ? 0 : $loop->parent->index, 0 + $actions->isNotEmpty())->merge(['class' => 'space-y-3']) }}
+                {{ $row->tdAttributes($vertical ? 0 : $loop->parent->index, 0 + $hasActions)->merge(['class' => 'space-y-3']) }}
             >
                 @foreach($row->getFields() as $index => $field)
                     @if($field->isSee($field->toValue()))
@@ -49,7 +49,7 @@
 
                     <td {{ $vertical
                             ? $row->tdAttributes($index, 1)
-                            : $row->tdAttributes($loop->parent->index, $index + $actions->isNotEmpty()) }}
+                            : $row->tdAttributes($loop->parent->index, $index + $hasActions) }}
                         @if(!$vertical && $hasClickAction)
                             :class="'cursor-pointer'"
                             @click.stop="rowClickAction"
@@ -69,7 +69,7 @@
         @endif
 
         @if(!$preview && $row->getActions()->isNotEmpty())
-            <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + $actions->isNotEmpty()) }}
+            <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + $hasActions) }}
                 @if($vertical) width="5%" @endif
             >
                 <x-moonshine::table.actions

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Support\DBOperators;
+use MoonShine\Support\TableRowRenderer;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -99,6 +101,16 @@ class RelationModelFieldController extends MoonShineController
             $parentItem
         );
 
-        return $field?->value();
+        $value = $field?->value();
+
+        if ($value instanceof TableBuilder && $request->filled('_key')) {
+            return TableRowRenderer::make(
+                $value,
+                $request->get('_key'),
+                $request->integer('_index'),
+            )->render();
+        }
+
+        return $value;
     }
 }

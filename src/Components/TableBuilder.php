@@ -10,7 +10,9 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Table\TableContract;
+use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Table\TableStates;
@@ -50,6 +52,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
+     * @return Collection<int, TableRow>
      * @throws Throwable
      */
     public function rows(): Collection
@@ -80,11 +83,21 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
+    public function getTrAttributes(): ?Closure
+    {
+        return $this->trAttributes;
+    }
+
     protected function systemTrAttributes(Closure $closure): self
     {
         $this->systemTrAttributes = $closure;
 
         return $this;
+    }
+
+    public function getSystemTrAttributes(): ?Closure
+    {
+        return $this->systemTrAttributes;
     }
 
     public function tdAttributes(Closure $closure): self
@@ -94,15 +107,17 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
+    public function getTdAttributes(): ?Closure
+    {
+        return $this->tdAttributes;
+    }
+
     protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
     {
         return $asyncUrl ?? fn (): string => moonshineRouter()->asyncTable($this->getName());
     }
 
-    /**
-     * @throws Throwable
-     */
-    protected function viewData(): array
+    public function performBeforeRender(): self
     {
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->getPaginator()
@@ -110,21 +125,44 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
+        $systemTrEvent = fn(mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => [
+            AlpineJs::eventBlade(
+                JsEvent::TABLE_ROW_UPDATED,
+                "{$this->getName()}-{$row->getKey()}",
+            ) => "asyncRowRequest({$row->getKey()},$index)"
+        ];
+
         if (! is_null($this->sortableUrl) && $this->isSortable()) {
             $this->customAttributes([
                 'data-sortable-url' => $this->sortableUrl,
                 'data-sortable-group' => $this->sortableGroup,
             ])->systemTrAttributes(
-                fn (mixed $data, int $index, ComponentAttributeBag $attr)
-                    => $attr->merge(['data-id' => data_get($data, $this->sortableKey ?? 'id', $index)])
+                fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
+                    'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
+                    ...value($systemTrEvent, $data, $index, $attr, $row)
+                ])
             );
         }
 
         if ($this->isAsync()) {
             $this->customAttributes([
                 'data-events' => $this->asyncEvents(),
-            ]);
+            ])->systemTrAttributes(
+                fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
+                    ...value($systemTrEvent, $data, $index, $attr, $row)
+                ])
+            );
         }
+
+        return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function viewData(): array
+    {
+        $this->performBeforeRender();
 
         return [
                 'rows' => $this->rows(),
