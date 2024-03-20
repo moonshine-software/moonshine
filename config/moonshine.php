@@ -46,7 +46,7 @@ return [
             ]
         ],
         'css' => [
-            'script_attributes' => [
+            'link_attributes' => [
                 'rel' => 'stylesheet',
             ]
         ]

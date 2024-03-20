@@ -90,7 +90,7 @@ class AssetManager
     public function css(): string
     {
         $attributes = $this->parseTagAttributes(
-            config('moonshine.assets.css.script_attributes', ['rel' => 'stylesheet'])
+            config('moonshine.assets.css.link_attributes', ['rel' => 'stylesheet'])
         );
 
         return collect($this->assets)
