@@ -21,7 +21,7 @@ export function beforeCallback(callback, element, component) {
 }
 
 export function dispatchEvents(events, type, component, extraAttributes = {}) {
-  if(events.includes('{row-id}') && component.$el !== undefined) {
+  if (events.includes('{row-id}') && component.$el !== undefined) {
     const tr = component.$el.closest('tr')
     events = events.replace(/{row-id}/g, tr?.dataset?.rowKey ?? 0)
   }

@@ -129,20 +129,18 @@ export default (
   },
   asyncRowRequest(key, index) {
     const t = this
-    const tr = this.table.querySelector('[data-row-key="'+key+'"]')
+    const tr = this.table.querySelector('[data-row-key="' + key + '"]')
 
-    if(tr === null) {
+    if (tr === null) {
       return
     }
 
     axios
-    .get(t.asyncUrl + `&_key=${key}&_index=${index}`)
-    .then(response => {
-      tr.outerHTML = response.data
-    })
-    .catch(error => {
-
-    })
+      .get(t.asyncUrl + `&_key=${key}&_index=${index}`)
+      .then(response => {
+        tr.outerHTML = response.data
+      })
+      .catch(error => {})
   },
   actions(type, id) {
     let all = this.$root.querySelector('.' + id + '-actionsAllChecked')
