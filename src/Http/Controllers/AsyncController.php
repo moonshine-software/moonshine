@@ -4,14 +4,12 @@ namespace MoonShine\Http\Controllers;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\FieldsGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
 use MoonShine\Support\TableRowRenderer;
-use MoonShine\Table\TableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;

@@ -125,7 +125,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
-        $systemTrEvent = fn(mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => [
+        $systemTrEvent = fn(mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row): array => [
             AlpineJs::eventBlade(
                 JsEvent::TABLE_ROW_UPDATED,
                 "{$this->getName()}-{$row->getKey()}",

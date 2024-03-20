@@ -39,7 +39,7 @@ final class TableRowRenderer
             $item = $class::query()->find($this->key);
         } else {
             $item = $this->table->rows()->first(
-                fn (TableRow $row) => $row->getKey() == $this->key
+                fn (TableRow $row): bool => $row->getKey() === $this->key
             )->toArray() ?? [];
         }
 
