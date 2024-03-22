@@ -71,13 +71,17 @@ class AssetManager
 
     public function js(): string
     {
+        $attributes = $this->parseTagAttributes(
+            config('moonshine.assets.js.script_attributes', ['defer'])
+        );
+
         return collect($this->assets)
             ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainJs()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.js')
             )
             ->map(
-                fn ($asset): string => "<script defer src='" . asset(
+                fn ($asset): string => "<script $attributes src='" . asset(
                     $asset
                 ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}'></script>"
             )->implode(PHP_EOL);
@@ -85,16 +89,30 @@ class AssetManager
 
     public function css(): string
     {
+        $attributes = $this->parseTagAttributes(
+            config('moonshine.assets.css.link_attributes', ['rel' => 'stylesheet'])
+        );
+
         return collect($this->assets)
             ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->prepend($this->getMainCss()))
             ->filter(
                 fn ($asset): int|bool => str_contains((string) $asset, '.css')
             )
             ->map(
-                fn ($asset): string => "<link href='" . asset(
+                fn ($asset): string => "<link $attributes href='" . asset(
                     $asset
-                ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}' rel='stylesheet'>"
+                ) . (str_contains((string) $asset, '?') ? '&' : '?') . "v={$this->getVersion()}'>"
             )->implode(PHP_EOL);
+    }
+
+    private function parseTagAttributes(array|string $attributes): string
+    {
+        if(is_array($attributes)) {
+            $attributes = collect($attributes)
+                ->implode(fn($v, $k) => !is_int($k) ? "$k='$v'" : $v, ' ');
+        }
+
+        return $attributes;
     }
 
     private function lazyExtract(): void
