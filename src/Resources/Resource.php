@@ -9,11 +9,13 @@ use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Handlers\Handlers;
 use MoonShine\Pages\Pages;
+use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;
 
 abstract class Resource implements ResourceContract, MenuFiller
 {
     use WithUriKey;
+    use WithAssets;
 
     protected string $title = '';
 

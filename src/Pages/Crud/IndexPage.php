@@ -41,6 +41,8 @@ class IndexPage extends Page
     public function beforeRender(): void
     {
         abort_if(! $this->getResource()->can('viewAny'), 403);
+
+        parent::beforeRender();
     }
 
     /**

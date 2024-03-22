@@ -60,6 +60,8 @@ class FormPage extends Page
             || ! $this->getResource()->can($ability),
             403
         );
+
+        parent::beforeRender();
     }
 
     /**

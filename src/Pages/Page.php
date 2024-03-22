@@ -14,6 +14,7 @@ use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithView;
 use Throwable;
@@ -27,6 +28,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     use HasResource;
     use WithUriKey;
     use WithView;
+    use WithAssets;
 
     protected string $title = '';
 
@@ -45,6 +47,8 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
     protected ?array $breadcrumbs = null;
 
     protected ?PageType $pageType = null;
+
+    protected bool $checkUrl = false;
 
     public function __construct(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
     {
@@ -81,12 +85,37 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         $this->layersComponents = [];
     }
 
+    public function isCheckUrl(): bool
+    {
+        return $this->checkUrl;
+    }
+
+    public function checkUrl(): static
+    {
+        $this->checkUrl = true;
+
+        return $this;
+    }
+
     public function beforeRender(): void
     {
         $withoutQuery = strtok($this->url(), '?');
 
-        if (trim($withoutQuery, '/') !== trim((string) request()?->url(), '/')) {
+        if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim((string) request()?->url(), '/')) {
             oops404();
+        }
+
+        $assets = $this->getAssets() ?? [];
+
+        if($this->hasResource()) {
+            $assets = [
+                ...$assets,
+                ...$this->getResource()?->getAssets() ?? [],
+            ];
+        }
+
+        if($assets !== []) {
+            moonshineAssets()->add($assets);
         }
     }
 
@@ -286,6 +315,8 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         request()
             ?->route()
             ?->setParameter('pageUri', $this->uriKey());
+
+        $this->beforeRender();
 
         return view(
             $this->getView(),

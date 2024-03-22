@@ -48,6 +48,8 @@ class DetailPage extends Page
             || ! $this->getResource()->can('view'),
             403
         );
+
+        parent::beforeRender();
     }
 
     /**
