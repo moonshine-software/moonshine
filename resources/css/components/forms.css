@@ -302,7 +302,11 @@ input[type='number'] {
   }
 }
 .choices select[hidden] {
-  @apply absolute left-0 top-0 !m-0 !block h-full w-full !p-0 opacity-0;
+  @apply absolute left-0 top-0 !m-0 !block h-full w-full !p-0 opacity-0 z-0;
+}
+
+.choices .choices__input--cloned {
+  @apply relative z-1;
 }
 
 .choices__heading {
