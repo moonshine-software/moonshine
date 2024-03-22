@@ -22,8 +22,7 @@ final class TableRowRenderer
         private TableBuilder $table,
         private string|int $key,
         private int $index = 0
-    )
-    {
+    ) {
     }
 
     /**

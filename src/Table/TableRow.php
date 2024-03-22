@@ -90,7 +90,7 @@ final class TableRow implements MoonShineRenderable
         $attributes = new ComponentAttributeBag();
 
         if (is_null($this->trAttributes)) {
-            $this->trAttributes = static fn(): ComponentAttributeBag => new ComponentAttributeBag();
+            $this->trAttributes = static fn (): ComponentAttributeBag => new ComponentAttributeBag();
         }
 
         $attributes = value($this->trAttributes, $this->data, $row, $attributes, $this);
@@ -109,7 +109,7 @@ final class TableRow implements MoonShineRenderable
         $attributes = new ComponentAttributeBag();
 
         if (is_null($this->tdAttributes)) {
-            $this->tdAttributes = static fn(): ComponentAttributeBag => new ComponentAttributeBag();
+            $this->tdAttributes = static fn (): ComponentAttributeBag => new ComponentAttributeBag();
         }
 
         return value($this->tdAttributes, $this->data, $row, $cell, $attributes, $this);
@@ -134,7 +134,7 @@ final class TableRow implements MoonShineRenderable
     {
         return view('moonshine::components.table.body', [
             'rows' => [
-                $this
+                $this,
             ],
             'hasActions' => $this->hasActions,
             'vertical' => $this->vertical,

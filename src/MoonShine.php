@@ -45,8 +45,7 @@ class MoonShine
     public function __construct(
         private AssetManager $assets,
         private ColorManager $colors,
-    )
-    {
+    ) {
     }
 
     public function withAssets(Closure $closure): self

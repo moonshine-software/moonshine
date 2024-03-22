@@ -109,7 +109,7 @@ class AssetManager
     {
         if(is_array($attributes)) {
             $attributes = collect($attributes)
-                ->implode(fn($v, $k) => is_int($k) ? $v : "$k='$v'", ' ');
+                ->implode(fn ($v, $k) => is_int($k) ? $v : "$k='$v'", ' ');
         }
 
         return $attributes;

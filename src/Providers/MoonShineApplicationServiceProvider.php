@@ -30,10 +30,10 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
             ->resources($this->resources())
             ->pages($this->pages())
             ->menu($this->menu())
-            ->withColors(static function (ColorManager $colors) use($theme): void {
+            ->withColors(static function (ColorManager $colors) use ($theme): void {
                 $colors->lazyAssign($theme);
             })
-            ->withAssets(static function (AssetManager $assets) use($theme): void {
+            ->withAssets(static function (AssetManager $assets) use ($theme): void {
                 $assets->lazyAssign($theme);
             });
     }

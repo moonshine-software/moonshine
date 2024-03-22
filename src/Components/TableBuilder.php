@@ -125,11 +125,11 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
-        $systemTrEvent = fn(mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row): array => [
+        $systemTrEvent = fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row): array => [
             AlpineJs::eventBlade(
                 JsEvent::TABLE_ROW_UPDATED,
                 "{$this->getName()}-{$row->getKey()}",
-            ) => "asyncRowRequest({$row->getKey()},$index)"
+            ) => "asyncRowRequest({$row->getKey()},$index)",
         ];
 
         if (! is_null($this->sortableUrl) && $this->isSortable()) {
@@ -139,7 +139,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             ])->systemTrAttributes(
                 fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
                     'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
-                    ...value($systemTrEvent, $data, $index, $attr, $row)
+                    ...value($systemTrEvent, $data, $index, $attr, $row),
                 ])
             );
         }
@@ -149,7 +149,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 'data-events' => $this->asyncEvents(),
             ])->systemTrAttributes(
                 fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
-                    ...value($systemTrEvent, $data, $index, $attr, $row)
+                    ...value($systemTrEvent, $data, $index, $attr, $row),
                 ])
             );
         }
