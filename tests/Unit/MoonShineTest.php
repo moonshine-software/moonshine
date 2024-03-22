@@ -17,7 +17,7 @@ it('find resource by uri key', function (): void {
 });
 
 it('menu', function (): void {
-    moonshine()->init([
+    moonshine()->menu([
         MenuItem::make('Resource', $this->resource),
     ]);
 

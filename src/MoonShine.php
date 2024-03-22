@@ -18,6 +18,8 @@ use MoonShine\Pages\Page;
 use MoonShine\Pages\Pages;
 use MoonShine\Pages\ProfilePage;
 use MoonShine\Support\MemoizeRepository;
+use MoonShine\Theme\AssetManager;
+use MoonShine\Theme\ColorManager;
 use Throwable;
 
 class MoonShine
@@ -39,6 +41,27 @@ class MoonShine
     protected array $authorization = [];
 
     protected string|Closure|null $homeClass = null;
+
+    public function __construct(
+        private AssetManager $assets,
+        private ColorManager $colors,
+    )
+    {
+    }
+
+    public function withAssets(Closure $closure): self
+    {
+        $closure($this->assets);
+
+        return $this;
+    }
+
+    public function withColors(Closure $closure): self
+    {
+        $closure($this->colors);
+
+        return $this;
+    }
 
     public function flushState(): void
     {
@@ -184,7 +207,7 @@ class MoonShine
      *
      * @param  Closure|array<MenuElement>  $data
      */
-    public function init(array|Closure $data, bool $newCollection = false): self
+    public function menu(array|Closure $data, bool $newCollection = false): self
     {
         $this->pages = $this->getPages();
         $this->resources = $this->getResources();
