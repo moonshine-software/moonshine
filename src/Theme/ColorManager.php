@@ -9,6 +9,19 @@ use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
 
+/**
+ * @method primary(string $value, ?int $shade = null, bool $dark = false)
+ * @method secondary(string $value, ?int $shade = null, bool $dark = false)
+ * @method body(string $value, ?int $shade = null, bool $dark = false)
+ * @method successBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method successText(string $value, ?int $shade = null, bool $dark = false)
+ * @method warningBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method warningText(string $value, ?int $shade = null, bool $dark = false)
+ * @method errorBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method errorText(string $value, ?int $shade = null, bool $dark = false)
+ * @method infoBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method infoText(string $value, ?int $shade = null, bool $dark = false)
+ */
 final class ColorManager
 {
     use Conditionable;

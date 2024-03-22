@@ -128,7 +128,7 @@ class TestCase extends Orchestra
 
             new MoonShineUserRoleResource(),
         ], newCollection: true)
-        ->init([
+        ->menu([
             MenuItem::make('Admins', $this->moonShineUserResource()),
         ], newCollection: true);
 

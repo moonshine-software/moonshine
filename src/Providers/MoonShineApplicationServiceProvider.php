@@ -9,6 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Pages\Page;
+use MoonShine\Theme\AssetManager;
+use MoonShine\Theme\ColorManager;
 use Throwable;
 
 class MoonShineApplicationServiceProvider extends ServiceProvider
@@ -20,17 +22,20 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        moonshine()
-            ->resources($this->resources())
-            ->pages($this->pages())
-            ->init($this->menu());
-
         $theme = is_closure($this->theme())
             ? $this->theme()
             : fn (): array|Closure => $this->theme();
 
-        moonshineColors()->lazyAssign($theme);
-        moonshineAssets()->lazyAssign($theme);
+        moonshine()
+            ->resources($this->resources())
+            ->pages($this->pages())
+            ->menu($this->menu())
+            ->withColors(static function (ColorManager $colors) use($theme): void {
+                $colors->lazyAssign($theme);
+            })
+            ->withAssets(static function (AssetManager $assets) use($theme): void {
+                $assets->lazyAssign($theme);
+            });
     }
 
     /**
