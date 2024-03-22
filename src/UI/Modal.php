@@ -19,6 +19,8 @@ class Modal
     use HasAsync;
     use WithComponentAttributes;
 
+    protected string $name = 'default';
+
     protected array $buttons = [];
 
     protected bool $isWide = false;
@@ -37,6 +39,18 @@ class Modal
         if ($async) {
             $this->async('#');
         }
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function name(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function wide(mixed $condition = null): self

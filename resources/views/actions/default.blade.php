@@ -2,6 +2,7 @@
     <x-moonshine::offcanvas
         title="{{ $action->offCanvas()->title($action->getItem()) }}"
         :left="$action->offCanvas()->isLeft()"
+        :eventName="$action->offCanvas()->getName()"
     >
         <x-slot:toggler :class="$attributes->get('class')">
             <x-moonshine::icon
@@ -16,6 +17,7 @@
     </x-moonshine::offcanvas>
 @elseif($action->isInModal())
     <x-moonshine::modal
+        :eventName="$action->modal()->getName()"
         :async="$action->modal()->isAsync()"
         :auto="$action->modal()->isAuto()"
         :autoClose="$action->modal()->isAutoClose()"

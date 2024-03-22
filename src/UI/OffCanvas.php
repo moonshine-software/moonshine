@@ -17,6 +17,8 @@ class OffCanvas
     use WithComponentAttributes;
     use HasAsync;
 
+    protected string $name = 'default';
+
     public function __construct(
         protected string|Closure|null $title,
         protected string|Closure|null $content,
@@ -31,6 +33,18 @@ class OffCanvas
     public function isLeft(): bool
     {
         return $this->isLeft;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function name(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function title(mixed $data = null): ?string

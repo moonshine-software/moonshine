@@ -20,7 +20,8 @@ final class FiltersButton
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
                 fn (): array|string|null => __('moonshine::ui.filters'),
-                fn (): FormBuilder => (new FiltersForm())($resource)
+                fn (): FormBuilder => (new FiltersForm())($resource),
+                name: 'filters-off-canvas'
             )
             ->showInLine();
     }

@@ -16,14 +16,17 @@ trait WithOffCanvas
         return ! is_null($this->offCanvas);
     }
 
+    // TODO Change to component in 3.0 and actions/default.blade will be simple
     public function inOffCanvas(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
         bool $isLeft = false,
         bool $async = false,
         array $attributes = [],
+        string $name = 'default'
     ): static {
         $this->offCanvas = OffCanvas::make($title, $content, $isLeft, $async)
+            ->name($name)
             ->customAttributes($attributes);
 
         return $this;

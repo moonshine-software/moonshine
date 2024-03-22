@@ -26,7 +26,8 @@ final class ImportButton
                     ->fields([
                         File::make(column: $import->getInputName())->required(),
                     ])
-                    ->submit(__('moonshine::ui.confirm'))
+                    ->submit(__('moonshine::ui.confirm')),
+                name: 'import-off-canvas'
             );
     }
 }

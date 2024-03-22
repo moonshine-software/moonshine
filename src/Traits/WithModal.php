@@ -23,6 +23,7 @@ trait WithModal
         return ! is_null($this->modal);
     }
 
+    // TODO Remove in 3.0
     public static function makeModal(
         Closure|string $button,
         Closure|string $title,
@@ -37,6 +38,7 @@ trait WithModal
             ->inModal($title, $component);
     }
 
+    // TODO Change to component in 3.0 and actions/default.blade will be simple
     public function inModal(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
@@ -47,8 +49,10 @@ trait WithModal
         bool $closeOutside = false,
         array $attributes = [],
         bool $autoClose = true,
+        string $name = 'default',
     ): static {
         $this->modal = Modal::make($title, $content, $async)
+            ->name($name)
             ->auto($auto)
             ->wide($wide)
             ->autoClose($autoClose)
@@ -62,6 +66,7 @@ trait WithModal
         return $this;
     }
 
+    // TODO Change to component in 3.0 and actions/default.blade will be simple
     public function withConfirm(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
@@ -69,7 +74,8 @@ trait WithModal
         Closure|array|null $fields = null,
         string $method = 'POST',
         bool $async = false,
-        ?Closure $formBuilder = null
+        ?Closure $formBuilder = null,
+        string $name = 'default',
     ): static {
         $isDefaultMethods = in_array(strtolower($method), ['get', 'post']);
 
@@ -114,7 +120,9 @@ trait WithModal
                         : value($button, $data),
                     ['class' => 'btn-secondary']
                 )
-        )->auto();
+        )
+            ->name($name)
+            ->auto();
 
         if ($this->isBulk()) {
             $this->attributes()->setAttributes([
