@@ -30,3 +30,13 @@ it('find resource', function (): void {
         ->toBe($this->resource->uriKey())
     ;
 });
+
+
+it('onlyLink parameters', function (): void {
+    fakeRequest('/admin/test-comment-resource/index-page?_parentId=test-image-99');
+
+    expect(moonshineRequest()->getParentRelationId())
+        ->toBe('99')
+        ->and(moonshineRequest()->getParentRelationName())
+        ->toBe('testImage');
+});
