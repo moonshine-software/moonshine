@@ -33,7 +33,7 @@ class MoonShineRequest extends Request
         }
 
         return str($parentResource)
-            ->replace('-'.$this->getParentRelationId(), '')
+            ->replace('-' . $this->getParentRelationId(), '')
             ->camel()
             ->value();
     }
