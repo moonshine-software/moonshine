@@ -166,7 +166,7 @@ export default (asyncUrl = '') => ({
       }
 
       const form = this.$el.closest('form')
-      if(form !== null) {
+      if (form !== null) {
         form.addEventListener('reset', () => {
           this.choicesInstance.destroy()
           this.init()
