@@ -165,10 +165,13 @@ export default (asyncUrl = '') => ({
         )
       }
 
-      this.$el.closest('form').addEventListener('reset', () => {
-        this.choicesInstance.destroy()
-        this.init()
-      })
+      const form = this.$el.closest('form')
+      if(form !== null) {
+        form.addEventListener('reset', () => {
+          this.choicesInstance.destroy()
+          this.init()
+        })
+      }
 
       if (asyncUrl) {
         this.searchTerms.addEventListener(
