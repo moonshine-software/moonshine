@@ -23,6 +23,7 @@ use MoonShine\Commands\MakeComponentCommand;
 use MoonShine\Commands\MakeControllerCommand;
 use MoonShine\Commands\MakeFieldCommand;
 use MoonShine\Commands\MakeHandlerCommand;
+use MoonShine\Commands\MakeLayoutCommand;
 use MoonShine\Commands\MakePageCommand;
 use MoonShine\Commands\MakePolicyCommand;
 use MoonShine\Commands\MakeResourceCommand;
@@ -45,6 +46,7 @@ class MoonShineServiceProvider extends ServiceProvider
         MakeControllerCommand::class,
         MakeFieldCommand::class,
         MakePageCommand::class,
+        MakeLayoutCommand::class,
         MakeUserCommand::class,
         MakeComponentCommand::class,
         MakeApplyCommand::class,

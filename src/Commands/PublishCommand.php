@@ -24,7 +24,6 @@ class PublishCommand extends MoonShineCommand
             [
                 'assets' => 'Assets',
                 'assets-template' => 'Assets template',
-                'layout' => 'Layout',
                 'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
             ],
             required: true
@@ -72,24 +71,6 @@ class PublishCommand extends MoonShineCommand
 
             info('App.css, postcss/tailwind.config published');
             info("Don't forget to add to MoonShineServiceProvider `Vite::asset('resources/css/app.css')`");
-        }
-
-        if (in_array('layout', $types, true)) {
-            $this->copyStub(
-                'Layout',
-                MoonShine::dir('/MoonShineLayout.php'),
-                [
-                    '{namespace}' => MoonShine::namespace(),
-                ]
-            );
-
-            $this->replaceInFile(
-                'use MoonShine\MoonShineLayout;',
-                'use App\MoonShine\MoonShineLayout;',
-                config_path('moonshine.php')
-            );
-
-            info('Layout published');
         }
 
         if (in_array('resources', $types, true)) {

@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Layouts;
 
-use App\MoonShine\Resources\ArticleResource;
-use MoonShine\Components\Layout\TopBar;
-use MoonShine\Resources\MoonShineUserResource;
-use MoonShine\Resources\MoonShineUserRoleResource;
 use MoonShine\Components\Breadcrumbs;
 use MoonShine\Components\Components;
 use MoonShine\Components\FlexibleRender;
+use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\Body;
 use MoonShine\Components\Layout\Content;
 use MoonShine\Components\Layout\Flash;
@@ -18,24 +15,23 @@ use MoonShine\Components\Layout\Footer;
 use MoonShine\Components\Layout\Head;
 use MoonShine\Components\Layout\Header;
 use MoonShine\Components\Layout\Html;
-use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\LayoutBuilder;
 use MoonShine\Components\Layout\Locales;
 use MoonShine\Components\Layout\Menu;
 use MoonShine\Components\Layout\Profile;
 use MoonShine\Components\Layout\Search;
 use MoonShine\Components\Layout\Sidebar;
-use MoonShine\Components\Layout\ThemeSwitcher;
+use MoonShine\Components\Layout\TopBar;
 use MoonShine\Components\Layout\Wrapper;
 use MoonShine\Components\Title;
 use MoonShine\Components\When;
-use MoonShine\Decorations\Divider;
-use MoonShine\Decorations\Flex;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\MoonShineLayout;
 use MoonShine\MoonShineRequest;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Resources\MoonShineUserRoleResource;
 use MoonShine\Theme\ColorManager;
 
 final class AppLayout extends MoonShineLayout
@@ -43,8 +39,6 @@ final class AppLayout extends MoonShineLayout
     protected function menu(): array
     {
         return [
-            MenuItem::make('Articles', new ArticleResource()),
-
             MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.admins_title'),
@@ -82,8 +76,7 @@ final class AppLayout extends MoonShineLayout
             ->errorBg('255, 224, 224')
             ->errorText('81, 20, 20')
             ->infoBg('196, 224, 255')
-            ->infoText('34, 65, 124')
-        ;
+            ->infoText('34, 65, 124');
 
         $colorManager
             ->body('27, 37, 59', dark: true)
@@ -104,8 +97,7 @@ final class AppLayout extends MoonShineLayout
             ->errorBg('190, 10, 10', dark: true)
             ->errorText('255, 197, 197', dark: true)
             ->infoBg('38, 93, 205', dark: true)
-            ->infoText('179, 220, 255', dark: true)
-        ;
+            ->infoText('179, 220, 255', dark: true);
     }
 
     public function build(Page $page): LayoutBuilder

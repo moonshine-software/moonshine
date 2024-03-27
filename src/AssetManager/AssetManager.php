@@ -15,13 +15,15 @@ final class AssetManager implements Htmlable
 {
     use Conditionable;
 
+    /**
+     * @var list<AssetElement>
+     */
     private array $assets = [];
 
-    private ?Closure $lazy = null;
-
-    private bool $extracted = false;
-
-    public function add(string|array $assets): void
+    /**
+     * @parent list<AssetElement> $assets
+     */
+    public function add(AssetElement|array $assets): self
     {
         $this->assets = array_unique(
             array_merge(
@@ -29,6 +31,8 @@ final class AssetManager implements Htmlable
                 is_array($assets) ? $assets : [$assets]
             )
         );
+
+        return $this;
     }
 
     public function getAssets(): AssetElements
