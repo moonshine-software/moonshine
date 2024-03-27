@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\Custom;
 
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Preview;
 use MoonShine\Pages\Page;
@@ -16,7 +16,7 @@ class CustomPageDetail extends Page
     public function components(): array
     {
         return [
-            Block::make([
+            Box::make([
                 Preview::make('CustomPageDetail', formatted: fn () => 'CustomPageDetail'),
             ]),
         ];

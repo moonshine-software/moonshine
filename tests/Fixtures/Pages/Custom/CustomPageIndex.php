@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Pages\Custom;
 
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Preview;
 use MoonShine\Pages\Crud\DetailPage;
@@ -19,7 +19,7 @@ class CustomPageIndex extends Page
     public function components(): array
     {
         return [
-            Block::make([
+            Box::make([
                 Preview::make('CustomPageIndex', formatted: fn () => 'CustomPageIndex'),
                 ActionButton::make('To Form', to_page(FormPage::class, $this->getResource())),
                 ActionButton::make('To Detail', to_page(DetailPage::class, $this->getResource())),

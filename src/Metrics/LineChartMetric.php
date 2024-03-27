@@ -6,6 +6,7 @@ namespace MoonShine\Metrics;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\AssetManager\Js;
 
 class LineChartMetric extends Metric
 {
@@ -17,10 +18,13 @@ class LineChartMetric extends Metric
 
     protected bool $withoutSortKeys = false;
 
-    protected array $assets = [
-        'vendor/moonshine/libs/apexcharts/apexcharts.min.js',
-        'vendor/moonshine/libs/apexcharts/apexcharts-config.js',
-    ];
+    public function getAssets(): array
+    {
+        return [
+            Js::make('vendor/moonshine/libs/apexcharts/apexcharts.min.js'),
+            Js::make('vendor/moonshine/libs/apexcharts/apexcharts-config.js'),
+        ];
+    }
 
     public function line(
         array|Closure $line,

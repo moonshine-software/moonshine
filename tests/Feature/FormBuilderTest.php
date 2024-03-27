@@ -2,7 +2,7 @@
 
 use Illuminate\Http\UploadedFile;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Email;
@@ -21,7 +21,7 @@ beforeEach(function () {
     $this->imageDir = 'moonshine_users';
     $this->form = FormBuilder::make()
         ->fields([
-            Block::make([
+            Box::make([
                 Tabs::make([
                     Tab::make([
                         ID::make(),

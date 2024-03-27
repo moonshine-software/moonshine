@@ -10,11 +10,10 @@ use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\ImportButton;
 use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
-use MoonShine\Components\Layout\LayoutBlock;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
@@ -83,7 +82,7 @@ class IndexPage extends Page
         $metrics = $this->getResource()->metrics();
 
         return $metrics
-            ? LayoutBlock::make($metrics)
+            ? Box::make($metrics)
                 ->customAttributes([
                     'class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6',
                 ])
@@ -96,7 +95,7 @@ class IndexPage extends Page
     protected function filtersForm(): array
     {
         return [
-            Block::make([(new FiltersForm())($this->getResource())])
+            Box::make([(new FiltersForm())($this->getResource())])
                 ->customAttributes(['class' => 'hidden']),
         ];
     }

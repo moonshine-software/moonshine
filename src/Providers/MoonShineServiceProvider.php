@@ -16,6 +16,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Octane\Events\RequestHandled;
+use MoonShine\AssetManager\AssetManager;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeApplyCommand;
 use MoonShine\Commands\MakeComponentCommand;
@@ -29,12 +30,11 @@ use MoonShine\Commands\MakeTypeCastCommand;
 use MoonShine\Commands\MakeUserCommand;
 use MoonShine\Commands\PublishCommand;
 use MoonShine\Http\Middleware\ChangeLocale;
-use MoonShine\Menu\MenuManager;
+use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
-use MoonShine\Theme\AssetManager;
 use MoonShine\Theme\ColorManager;
 
 class MoonShineServiceProvider extends ServiceProvider

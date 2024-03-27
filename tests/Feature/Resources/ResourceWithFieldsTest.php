@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -17,7 +17,7 @@ uses()->group('resources-feature');
 beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(Item::class)
         ->setTestFields([
-            Block::make([
+            Box::make([
                 ID::make()->sortable()->useOnImport()->showOnExport(),
                 Text::make('Name title', 'name')
                     ->sortable(),
@@ -44,7 +44,7 @@ beforeEach(function (): void {
 
         ])
         ->setTestFilters([
-            Block::make([
+            Box::make([
                 Text::make('Name title', 'name')
                     ->sortable(),
             ]),
@@ -60,7 +60,7 @@ it('index fields', function () {
 it('form fields with outside', function () {
     expect($this->resource->getFormFields(withOutside: true))
         ->first()
-        ->toBeInstanceOf(Block::class)
+        ->toBeInstanceOf(Box::class)
         ->onlyFields()
         ->toHaveCount(4)
         ->each(fn ($expect) => $expect->isOnForm()->toBeTrue());
@@ -69,7 +69,7 @@ it('form fields with outside', function () {
 it('form fields without outside', function () {
     expect($this->resource->getFormFields())
         ->first()
-        ->toBeInstanceOf(Block::class)
+        ->toBeInstanceOf(Box::class)
         ->onlyFields()
         ->toHaveCount(3)
         ->each(fn ($expect) => $expect->isOnForm()->toBeTrue());
@@ -102,7 +102,7 @@ it('outside fields', function () {
 it('filters fields', function () {
     expect($this->resource->getFilters())
         ->first()
-        ->toBeInstanceOf(Block::class)
+        ->toBeInstanceOf(Box::class)
         ->onlyFields()
         ->toHaveCount(1)
         ->each(fn ($expect) => $expect->name()->toContain('filters'));

@@ -3,7 +3,7 @@
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
@@ -20,7 +20,7 @@ uses()->group('fields');
 uses()->group('core');
 
 beforeEach(function () {
-    $this->data = Block::make([
+    $this->data = Box::make([
         FormBuilder::make()->fields([
             Tabs::make([
                 Tab::make([

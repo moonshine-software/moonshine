@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Metrics;
 
 use Closure;
+use MoonShine\AssetManager\Css;
+use MoonShine\AssetManager\Js;
 
 class DonutChartMetric extends Metric
 {
@@ -12,10 +14,13 @@ class DonutChartMetric extends Metric
 
     protected array $values = [];
 
-    protected array $assets = [
-        'vendor/moonshine/libs/apexcharts/apexcharts.min.js',
-        'vendor/moonshine/libs/apexcharts/apexcharts-config.js',
-    ];
+    public function getAssets(): array
+    {
+        return [
+            Js::make('vendor/moonshine/libs/apexcharts/apexcharts.min.js'),
+            Js::make('vendor/moonshine/libs/apexcharts/apexcharts-config.js'),
+        ];
+    }
 
     /**
      * @param $values array<string, int|float>|Closure

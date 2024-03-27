@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Menu;
+namespace MoonShine\MenuManager;
 
 use Closure;
 use MoonShine\Attributes\Icon;
