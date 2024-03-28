@@ -20,7 +20,7 @@ use MoonShine\TypeCasts\ModelCast;
 
 class LoginPage extends Page
 {
-    protected string $layout = LoginLayout::class;
+    protected ?string $layout = LoginLayout::class;
 
     public function components(): array
     {

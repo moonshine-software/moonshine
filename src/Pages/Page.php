@@ -37,8 +37,8 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller
 
     protected string $subtitle = '';
 
-    /** @var class-string<MoonShineLayout> $layout */
-    protected string $layout = AppLayout::class;
+    /** @var ?class-string<MoonShineLayout> $layout */
+    protected ?string $layout = null;
 
     protected ?PageView $pageView = null;
 
@@ -240,6 +240,10 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller
         return $this->subtitle;
     }
 
+    /**
+     * @param  class-string<MoonShineLayout>  $layout
+     * @return $this
+     */
     public function setLayout(string $layout): static
     {
         $this->layout = $layout;
@@ -249,9 +253,16 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller
 
     public function layout(): MoonShineLayout
     {
+        if(is_null($this->layout)) {
+            $this->setLayout(
+                config('moonshine.layout', AppLayout::class)
+            );
+        }
+
         return app($this->layout);
     }
 
+    // TODO unused
     public function setContentView(string $contentView, Closure|array $data = []): static
     {
         $this->contentView = $contentView;
@@ -260,6 +271,7 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller
         return $this;
     }
 
+    // TODO unused
     public function contentView(): ?string
     {
         return $this->contentView;

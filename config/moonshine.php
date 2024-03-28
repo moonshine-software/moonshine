@@ -40,19 +40,6 @@ return [
 
     'cache' => 'file',
 
-    'assets' => [
-        'js' => [
-            'script_attributes' => [
-                'defer',
-            ]
-        ],
-        'css' => [
-            'link_attributes' => [
-                'rel' => 'stylesheet',
-            ]
-        ]
-    ],
-
     'forms' => [
         'login' => LoginForm::class
     ],
