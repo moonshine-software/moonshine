@@ -13,6 +13,54 @@ export default (asyncUrl = '') => ({
   shouldSort: null,
   associatedWith: null,
   searchTerms: null,
+  customOptions: {},
+  resolvedOptions: [
+    'silent',
+    'items',
+    'choices',
+    'renderChoiceLimit',
+    'maxItemCount',
+    'addItems',
+    'addItemFilter',
+    'removeItems',
+    'removeItemButton',
+    'editItems',
+    'allowHTML',
+    'duplicateItemsAllowed',
+    'delimiter',
+    'paste',
+    'searchEnabled',
+    'searchChoices',
+    'searchFields',
+    'searchFloor',
+    'searchResultLimit',
+    'position',
+    'resetScrollPosition',
+    'addItemFilter',
+    'shouldSort',
+    'shouldSortItems',
+    'sorter',
+    'placeholder',
+    'placeholderValue',
+    'searchPlaceholderValue',
+    'prependValue',
+    'appendValue',
+    'renderSelectedChoices',
+    'loadingText',
+    'noResultsText',
+    'noChoicesText',
+    'itemSelectText',
+    'uniqueItemText',
+    'customAddItemText',
+    'addItemText',
+    'maxItemText',
+    'valueComparer',
+    'labelId',
+    'classNames',
+    'fuseOptions',
+    'callbackOnInit',
+    'callbackOnCreateTemplates',
+  ],
 
   init() {
     this.placeholder = this.$el.getAttribute('placeholder')
@@ -23,6 +71,12 @@ export default (asyncUrl = '') => ({
 
     if (this.associatedWith) {
       this.$el.removeAttribute('data-associated-with')
+    }
+
+    for (const key in this.$el.dataset) {
+      if (this.resolvedOptions.includes(key)) {
+        this.customOptions[key] = this.$el.dataset[key]
+      }
     }
 
     this.$nextTick(() => {
@@ -47,7 +101,6 @@ export default (asyncUrl = '') => ({
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
-        ...filterAttributeStartsWith(this.$el.dataset, 'async'),
         callbackOnCreateTemplates: function (template) {
           return {
             item: ({classNames}, data) => {
@@ -119,6 +172,7 @@ export default (asyncUrl = '') => ({
             this.asyncSearch()
           }
         },
+        ...this.customOptions,
       })
 
       if (this.associatedWith && asyncUrl) {
