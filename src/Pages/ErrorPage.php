@@ -1,10 +1,9 @@
 <?php
 
-namespace MoonShine\Pages\Crud;
+namespace MoonShine\Pages;
 
 use MoonShine\Components\FlexibleRender;
 use MoonShine\Layouts\BlankLayout;
-use MoonShine\Pages\Page;
 
 /**
  * TODO components

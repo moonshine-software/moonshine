@@ -7,7 +7,7 @@ namespace MoonShine\Exceptions;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use MoonShine\Pages\Crud\ErrorPage;
+use MoonShine\Pages\ErrorPage;
 
 class MoonShineNotFoundException extends Exception
 {
