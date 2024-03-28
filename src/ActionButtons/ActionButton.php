@@ -208,6 +208,21 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ])->onClick(fn (): string => 'request', 'prevent');
     }
 
+    /**
+     * @param  array<string, string> $selectors
+     * @return self
+     */
+    public function withParams(array $selectors): self
+    {
+        $this->customAttributes([
+            'data-with-params' => collect($selectors)->map(function ($value, $key) {
+                return is_numeric($key) ? $value : "$value/$key";
+            })->implode(',')
+        ]);
+
+        return $this;
+    }
+
     public function purgeAsync(): void
     {
         $this->isAsync = false;

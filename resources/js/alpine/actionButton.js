@@ -5,6 +5,7 @@ export default () => ({
   selector: null,
   method: 'GET',
   events: '',
+  withParams: '',
   callback: '',
   loading: false,
   btnText: '',
@@ -19,6 +20,7 @@ export default () => ({
     this.selector = this.$el?.dataset?.asyncSelector
     this.method = this.$el?.dataset?.asyncMethod
     this.events = this.$el?.dataset?.asyncEvents
+    this.withParams = this.$el?.dataset?.withParams
     this.callback = this.$el?.dataset?.asyncCallback
     this.beforeFunction = this.$el?.dataset?.asyncBeforeFunction
     this.loading = false
@@ -50,6 +52,24 @@ export default () => ({
 
     this.loading = true
 
-    moonShineRequest(this, this.url, this.method)
+    let body = {}
+
+    if (this.withParams !== undefined && this.withParams) {
+      this.method = this.method.toLowerCase() === 'get' ? 'post' : this.method
+
+      const selectors = this.withParams.split(',')
+      selectors.forEach(function (selector) {
+        let parts = selector.split('/')
+
+        let paramName = parts[1] ?? parts[0]
+
+        const el = document.querySelector(parts[0])
+        if(el != null) {
+          body[paramName] = el.value
+        }
+      })
+    }
+
+    moonShineRequest(this, this.url, this.method, body)
   },
 })
