@@ -57,13 +57,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     private View|string|null $cachedRender = null;
 
-    protected function afterMake(): void
-    {
-        if ($this->getAssets()) {
-            moonshineAssets()->add($this->getAssets());
-        }
-    }
-
     public function parent(): ?FormElement
     {
         return $this->parent;
@@ -322,6 +315,10 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
             return $this->cachedRender;
         }
 
+        if ($this->getAssets()) {
+            moonshineAssets()->add($this->getAssets());
+        }
+
         if (! is_null($this->onChangeUrl) && $this->onChangeCondition()) {
             $onChangeUrl = value($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
 
@@ -330,7 +327,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
             );
         }
 
-        if ($this instanceof Field && $this->getView() === '') {
+        if ($this->getView() === '') {
             return $this->toValue();
         }
 

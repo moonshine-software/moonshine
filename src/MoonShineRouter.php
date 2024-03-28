@@ -165,7 +165,7 @@ final class MoonShineRouter
         }
 
         if (is_null($resource)) {
-            $route = moonshine()->getPageFromUriKey(
+            $route = moonshine()->getPages()->findByUri(
                 is_string($page) ? self::uriKey($page) : $page->uriKey()
             )?->route($params);
 

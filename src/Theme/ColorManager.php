@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace MoonShine\Theme;
 
-use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
 
 /**
- * @method primary(string $value, ?int $shade = null, bool $dark = false)
- * @method secondary(string $value, ?int $shade = null, bool $dark = false)
- * @method body(string $value, ?int $shade = null, bool $dark = false)
- * @method successBg(string $value, ?int $shade = null, bool $dark = false)
- * @method successText(string $value, ?int $shade = null, bool $dark = false)
- * @method warningBg(string $value, ?int $shade = null, bool $dark = false)
- * @method warningText(string $value, ?int $shade = null, bool $dark = false)
- * @method errorBg(string $value, ?int $shade = null, bool $dark = false)
- * @method errorText(string $value, ?int $shade = null, bool $dark = false)
- * @method infoBg(string $value, ?int $shade = null, bool $dark = false)
- * @method infoText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self primary(string $value, ?int $shade = null, bool $dark = false)
+ * @method self secondary(string $value, ?int $shade = null, bool $dark = false)
+ * @method self body(string $value, ?int $shade = null, bool $dark = false)
+ * @method self dark(string $value, int|string|null $shade = null, bool $dark = false)
+ * @method self successBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self successText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self warningBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self warningText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self errorBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self errorText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self infoBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self infoText(string $value, ?int $shade = null, bool $dark = false)
  */
-final class ColorManager
+final class ColorManager implements Htmlable
 {
     use Conditionable;
 
@@ -74,38 +75,30 @@ final class ColorManager
 
     private array $darkColors = self::DARK;
 
-    private ?Closure $lazy = null;
-
-    private bool $extracted = false;
-
     public function background(string $value): self
     {
         return $this
             ->set('body', $value)
             ->set('dark.800', $value)
-            ->set('body', $value, dark: true)
-        ;
+            ->set('body', $value, dark: true);
     }
 
     public function tableRow(string $value): self
     {
         return $this
-            ->set('dark.600', $value)
-        ;
+            ->set('dark.600', $value);
     }
 
     public function borders(string $value): self
     {
         return $this
-            ->set('dark.300', $value)
-        ;
+            ->set('dark.300', $value);
     }
 
     public function dropdowns(string $value): self
     {
         return $this
-            ->set('dark.400', $value)
-        ;
+            ->set('dark.400', $value);
     }
 
     public function buttons(string $value): self
@@ -113,24 +106,21 @@ final class ColorManager
         return $this
             ->set('dark.50', $value)
             ->set('dark.500', $value)
-            ->dropdowns($value)
-        ;
+            ->dropdowns($value);
     }
 
     public function dividers(string $value): self
     {
         return $this
             ->set('dark.100', $value)
-            ->set('dark.200', $value)
-        ;
+            ->set('dark.200', $value);
     }
 
     public function content(string $value): self
     {
         return $this
             ->set('dark.700', $value)
-            ->set('dark.900', $value)
-        ;
+            ->set('dark.900', $value);
     }
 
     public function set(string $name, string|array $value, bool $dark = false): self
@@ -149,31 +139,8 @@ final class ColorManager
         return $this;
     }
 
-    public function lazyAssign(Closure $closure): self
-    {
-        $this->lazy = $closure;
-
-        return $this;
-    }
-
-    private function lazyExtract(): void
-    {
-        if (! $this->extracted) {
-            $this->when(
-                value($this->lazy, moonshineRequest()),
-                fn (self $class, array $data): \MoonShine\Theme\ColorManager => $class
-                    ->bulkAssign(data_get($data, 'colors', []))
-                    ->bulkAssign(data_get($data, 'darkColors', []), dark: true)
-            );
-        }
-
-        $this->extracted = true;
-    }
-
     public function get(string $name, ?int $shade = null, bool $dark = false, bool $hex = true): string
     {
-        $this->lazyExtract();
-
         $data = $dark ? $this->darkColors : $this->colors;
         $value = $data[$name];
         $value = is_null($shade)
@@ -189,8 +156,6 @@ final class ColorManager
 
     public function all(bool $dark = false): array
     {
-        $this->lazyExtract();
-
         $colors = [];
         $data = $dark ? $this->darkColors : $this->colors;
 
@@ -226,5 +191,22 @@ final class ColorManager
         );
 
         return $this;
+    }
+
+    public function toHtml(): string
+    {
+        $values = static fn (array $data) => collect($data)
+            ->implode(fn (string $value, string $name): string => "--$name:$value;", PHP_EOL);
+
+        return <<<HTML
+        <style>
+            :root {
+            {$values($this->all())}
+            }
+            :root.dark {
+            {$values($this->all(dark: true))}
+            }
+        </style>
+        HTML;
     }
 }

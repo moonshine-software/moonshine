@@ -8,7 +8,11 @@ trait HasResourceRequest
 {
     public function getResource(): ?ResourceContract
     {
-        return memoize(fn (): ?ResourceContract => moonshine()->getResourceFromUriKey(
+        if(is_null($this->getResourceUri())) {
+            return null;
+        }
+
+        return memoize(fn (): ?ResourceContract => moonshine()->getResources()->findByUri(
             $this->getResourceUri()
         )?->boot());
     }

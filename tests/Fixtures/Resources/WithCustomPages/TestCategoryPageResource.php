@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
@@ -44,7 +44,7 @@ class TestCategoryPageResource extends ModelResource
     public function fields(): array
     {
         return [
-            Block::make([
+            Box::make([
                 ID::make()->sortable(),
 
                 Text::make('Name title', 'name')

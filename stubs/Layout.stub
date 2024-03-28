@@ -8,18 +8,33 @@ use MoonShine\Components\Layout\{Content,
     Flash,
     Footer,
     Header,
-    LayoutBlock,
+    Block,
     LayoutBuilder,
     Menu,
     Profile,
     Search,
     Sidebar};
 use MoonShine\Components\When;
-use MoonShine\Contracts\MoonShineLayoutContract;
+use MoonShine\MoonShineLayout;
+use MoonShine\Theme\ColorManager;
+use MoonShine\Pages\Page;
+use MoonShine\Components\Title;
+use MoonShine\Components\Breadcrumbs;
+use MoonShine\Components\Components;
 
-final class MoonShineLayout implements MoonShineLayoutContract
+final class DummyLayout extends MoonShineLayout
 {
-    public static function build(): LayoutBuilder
+    protected function menu(): array
+    {
+        return [];
+    }
+
+    protected function colors(ColorManager $colorManager): void
+    {
+        //
+    }
+
+    public function build(Page $page): LayoutBuilder
     {
         return LayoutBuilder::make([
             Sidebar::make([
@@ -29,12 +44,19 @@ final class MoonShineLayout implements MoonShineLayoutContract
                     static fn() => [Profile::make(withBorder: true)]
                 ),
             ]),
-            LayoutBlock::make([
+            Block::make([
                 Flash::make(),
                 Header::make([
+                    Breadcrumbs::make($page->breadcrumbs()),
                     Search::make(),
                 ]),
-                Content::make(),
+                Content::make([
+                    Title::make($page->title()),
+
+                    Components::make(
+                        $page->getComponents()
+                    ),
+                ]),
                 Footer::make()
                     ->copyright(fn(): string => sprintf(
                         <<<'HTML'
@@ -51,7 +73,7 @@ final class MoonShineLayout implements MoonShineLayoutContract
                     ->menu([
                         'https://moonshine-laravel.com/docs' => 'Documentation',
                     ]),
-            ])->customAttributes(['class' => 'layout-page']),
+            ])->class('layout-page'),
         ]);
     }
 }

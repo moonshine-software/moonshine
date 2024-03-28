@@ -1,5 +1,5 @@
 @props([
-    'top' => false
+    'top' => $isTop ?? false,
 ])
 <button @click.prevent="$dispatch('darkMode:toggle')"
         {{ $attributes->class(['menu-heading-mode-btn' => !$top, 'menu-mode-btn' => $top]) }}

@@ -42,7 +42,7 @@ final class MassDeleteButton
                 fn (): bool => in_array('massDelete', $resource->getActiveActions())
                     && $resource->can('massDelete')
             )
-            ->secondary()
+            ->error()
             ->icon('heroicons.outline.trash')
             ->showInLine();
     }

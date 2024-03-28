@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use MoonShine\Attributes\Icon;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUserRole;
@@ -31,7 +31,7 @@ class MoonShineUserRoleResource extends ModelResource
     public function fields(): array
     {
         return [
-            Block::make([
+            Box::make([
                 ID::make()->sortable()->showOnExport(),
                 Text::make(__('moonshine::ui.resource.role_name'), 'name')
                     ->required()

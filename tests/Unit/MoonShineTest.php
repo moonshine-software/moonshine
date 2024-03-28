@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Menu\MenuItem;
+use MoonShine\MenuManager\MenuItem;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('core');
@@ -12,17 +12,17 @@ beforeEach(function (): void {
 });
 
 it('find resource by uri key', function (): void {
-    expect(moonshine()->getResourceFromUriKey($this->resource->uriKey()))
+    expect(moonshine()->getResources()->findByUri($this->resource->uriKey()))
         ->toBe($this->resource);
 });
 
 it('menu', function (): void {
-    moonshine()->menu([
-        MenuItem::make('Resource', $this->resource),
+    moonshineMenu()->add([
+        MenuItem::make('Resource', $this->resource)
     ]);
 
-    expect(moonshine()->getMenu())->toBeCollection()
-        ->and($last = moonshine()->getMenu()->last())
+    expect(moonshineMenu()->all())->toBeCollection()
+        ->and($last = moonshineMenu()->all()->last())
         ->toBeInstanceOf(MenuItem::class)
         ->and($last->label())
         ->toBe('Resource')

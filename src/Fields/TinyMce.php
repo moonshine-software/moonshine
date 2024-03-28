@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use MoonShine\AssetManager\Js;
+
 class TinyMce extends Textarea
 {
     protected string $view = 'moonshine::fields.tinymce';
@@ -26,10 +28,12 @@ class TinyMce extends Textarea
 
     public function getAssets(): array
     {
-        $assets = ["vendor/moonshine/libs/tinymce/tinymce.min.js"];
+        $assets = [
+            Js::make('vendor/moonshine/libs/tinymce/tinymce.min.js')
+        ];
 
         if ($this->token()) {
-            $assets[] = "https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/plugins.min.js";
+            $assets[] = Js::make("https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/plugins.min.js");
         }
 
         return $assets;

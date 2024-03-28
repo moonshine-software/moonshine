@@ -27,13 +27,6 @@ abstract class Metric extends MoonShineComponent implements HasAssets
         $this->setLabel($label);
     }
 
-    protected function afterMake(): void
-    {
-        if ($this->getAssets()) {
-            moonshineAssets()->add($this->getAssets());
-        }
-    }
-
     public function id(string $index = null): string
     {
         return (string) str($this->label())

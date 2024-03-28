@@ -7,7 +7,7 @@ use MoonShine\MoonShineRouter;
 use MoonShine\Resources\MoonShineUserResource;
 
 beforeEach(function () {
-    $this->resource = moonshine()->getResourceFromClassName(MoonShineUserResource::class);
+    $this->resource = moonshine()->getResources()->findByClass(MoonShineUserResource::class);
 
     $this->user = MoonshineUser::query()->find(1);
 });

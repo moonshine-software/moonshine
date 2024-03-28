@@ -4,6 +4,7 @@ use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
+use MoonShine\Layouts\AppLayout;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShineLayout;
 use MoonShine\Pages\ProfilePage;
@@ -31,26 +32,13 @@ return [
     'use_notifications' => true,
     'use_theme_switcher' => true,
 
-    'layout' => MoonShineLayout::class,
+    'layout' => AppLayout::class,
 
     'disk' => 'public',
 
     'disk_options' => [],
 
     'cache' => 'file',
-
-    'assets' => [
-        'js' => [
-            'script_attributes' => [
-                'defer',
-            ]
-        ],
-        'css' => [
-            'link_attributes' => [
-                'rel' => 'stylesheet',
-            ]
-        ]
-    ],
 
     'forms' => [
         'login' => LoginForm::class

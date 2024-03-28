@@ -46,7 +46,7 @@ final class DeleteButton
                 fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
                     && $resource->setItem($item)->can('delete')
             )
-            ->secondary()
+            ->error()
             ->icon('heroicons.outline.trash')
             ->showInLine();
     }

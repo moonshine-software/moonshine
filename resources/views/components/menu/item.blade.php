@@ -2,17 +2,17 @@
     'item',
     'top' => false,
 ])
-@if($item instanceof MoonShine\Menu\MenuDivider)
+@if($item instanceof MoonShine\MenuManager\MenuDivider)
     <li class="menu-inner-divider">
         {!! $item->label() ? "<span>{$item->label()}</span>" : '' !!}
     </li>
 @else
     <li class="menu-inner-item {{ $item->isActive() ? '_is-active' : '' }}">
         <a
-            href="{{ $item->url() }}" {!! $item->isBlank() ? 'target="_blank"' : '' !!}
-            class="menu-inner-link"
-            x-data="navTooltip"
-            @mouseenter="toggleTooltip()"
+                href="{{ $item->url() }}" {!! $item->isBlank() ? 'target="_blank"' : '' !!}
+        class="menu-inner-link"
+                x-data="navTooltip"
+                @mouseenter="toggleTooltip()"
         >
             @if($item->iconValue())
                 {!! $item->getIcon(6) !!}
