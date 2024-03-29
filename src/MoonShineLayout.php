@@ -41,9 +41,7 @@ abstract class MoonShineLayout
     {
         return [
             Js::make('/vendor/moonshine/assets/app.js')->defer(),
-
             Css::make('/vendor/moonshine/assets/main.css')->defer(),
-            Css::make('/vendor/moonshine/assets/minimalistic.css')->defer(),
         ];
     }
 

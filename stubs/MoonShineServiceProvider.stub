@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
+use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Resources\MoonShineUserRoleResource;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
     protected function resources(): array
     {
-        return [];
+        return [
+            MoonShineUserResource::class,
+            MoonShineUserRoleResource::class,
+        ];
     }
 
     protected function pages(): array
     {
-        return [];
+        return [
+            ...config('moonshine.pages', [])
+        ];
     }
 }

@@ -132,6 +132,18 @@ class MoonShine
     }
 
     /**
+     * @param  string  $pageName
+     * @param  class-string<Page>  $default
+     * @return Page
+     */
+    public function getPageFromConfig(string $pageName, string $default): Page
+    {
+        $class = config("moonshine.pages.$pageName", $default);
+
+        return app($class);
+    }
+
+    /**
      * Register moonshine routes and resources routes in the system
      */
     public function resolveRoutes(): self

@@ -24,6 +24,13 @@ use MoonShine\Components\Components;
 
 final class DummyLayout extends MoonShineLayout
 {
+    protected function assets(): array
+    {
+        return [
+            ...parent::assets(),
+        ];
+    }
+
     protected function menu(): array
     {
         return [];
@@ -31,7 +38,7 @@ final class DummyLayout extends MoonShineLayout
 
     protected function colors(ColorManager $colorManager): void
     {
-        //
+        // $colorManager->primary('#00000');
     }
 
     public function build(Page $page): LayoutBuilder

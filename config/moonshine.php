@@ -3,10 +3,10 @@
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Middleware\Authenticate;
-use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
 use MoonShine\Layouts\AppLayout;
+use MoonShine\Layouts\CompactLayout;
 use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShineLayout;
+use MoonShine\Pages\LoginPage;
 use MoonShine\Pages\ProfilePage;
 
 return [
@@ -22,9 +22,7 @@ return [
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
         'single_page_prefix' => 'page',
         'index' => 'moonshine.index',
-        'middlewares' => [
-            SecurityHeadersMiddleware::class,
-        ],
+        'middlewares' => [],
         'notFoundHandler' => MoonShineNotFoundException::class,
     ],
 
@@ -32,7 +30,7 @@ return [
     'use_notifications' => true,
     'use_theme_switcher' => true,
 
-    'layout' => AppLayout::class,
+    'layout' => AppLayout::class, // or CompactLayout::class
 
     'disk' => 'public',
 
@@ -46,7 +44,8 @@ return [
 
     'pages' => [
         'dashboard' => '',
-        'profile' => ProfilePage::class
+        'profile' => ProfilePage::class,
+        'login' => LoginPage::class,
     ],
 
     'model_resources' => [
