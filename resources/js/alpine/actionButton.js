@@ -64,7 +64,7 @@ export default () => ({
         let paramName = parts[1] ?? parts[0]
 
         const el = document.querySelector(parts[0])
-        if(el != null) {
+        if (el != null) {
           body[paramName] = el.value
         }
       })
