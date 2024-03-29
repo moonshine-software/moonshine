@@ -210,14 +210,11 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     /**
      * @param  array<string, string> $selectors
-     * @return self
      */
     public function withParams(array $selectors): self
     {
         $this->customAttributes([
-            'data-with-params' => collect($selectors)->map(function ($value, $key) {
-                return is_numeric($key) ? $value : "$value/$key";
-            })->implode(',')
+            'data-with-params' => collect($selectors)->map(fn($value, $key) => is_numeric($key) ? $value : "$value/$key")->implode(',')
         ]);
 
         return $this;
