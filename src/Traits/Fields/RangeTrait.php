@@ -89,7 +89,7 @@ trait RangeTrait
         }
 
         if(empty($values[$this->fromField]) && empty($values[$this->toField])) {
-            return new FieldEmptyValue;
+            return new FieldEmptyValue();
         }
 
         return $values;
