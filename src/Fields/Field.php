@@ -148,7 +148,7 @@ abstract class Field extends FormElement
 
         $value = $this->reformatFilledValue($value);
 
-        $this->setValue($this->value ?? $value);
+        $this->setValue($value);
 
         if(! is_null($this->afterFillCallback)) {
             return value($this->afterFillCallback, $this);
