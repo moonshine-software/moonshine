@@ -62,23 +62,18 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
     private function extractDates(array $value, string $format): array
     {
         return [
-            $this->fromField => Carbon::parse($value[$this->fromField])->format($format),
-            $this->toField => Carbon::parse($value[$this->toField])->format($format),
+            $this->fromField => isset($value[$this->fromField])
+                ? Carbon::parse($value[$this->fromField])->format($format)
+                : '',
+            $this->toField => isset($value[$this->toField])
+                ? Carbon::parse($value[$this->toField])->format($format)
+                : '',
         ];
-    }
-
-    private function isNullDates(): bool
-    {
-        if (is_array($this->toValue())) {
-            return array_filter($this->toValue()) === [];
-        }
-
-        return true;
     }
 
     protected function resolveValue(): mixed
     {
-        if ($this->isNullDates()) {
+        if ($this->isNullRange()) {
             return [
                 $this->fromField => null,
                 $this->toField => null,
@@ -92,7 +87,7 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
     {
         $value = $this->toFormattedValue();
 
-        if ($this->isNullDates()) {
+        if ($this->isNullRange(formatted: true)) {
             return '';
         }
 

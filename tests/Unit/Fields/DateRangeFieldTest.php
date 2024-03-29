@@ -14,6 +14,60 @@ beforeEach(function (): void {
 });
 
 describe('basic methods', function () {
+    it('change fill', function () {
+        $from = now();
+        $to = now()->addDay();
+        $values = ['start' => $from, 'end' => $to];
+
+        expect($this->field->changeFill(static fn () => $values)->fill([]))
+            ->toValue()
+            ->toBe($values);
+
+        $from = now();
+        $values = ['start' => $from];
+
+        expect($this->field->changeFill(static fn () => $values)->fill([]))
+            ->toValue()
+            ->toBe(['start' => $from, 'end' => '']);
+    });
+
+    it('set value', function () {
+        $from = now();
+        $to = now()->addDay();
+        $values = ['start' => $from, 'end' => $to];
+
+        expect($this->field->setValue($values))
+            ->toValue()
+            ->toBe($values)
+            ->and($this->field->preview())
+            ->toContain($from, $to);
+
+        $from = now();
+        $values = ['start' => $from];
+
+        expect($this->field->setValue($values))
+            ->toValue()
+            ->toBe($values)
+            ->and($this->field->setValue($values)->preview())
+            ->not->toContain($to)
+            ->toContain($from);
+    });
+
+    it('non value', function () {
+        $from = now();
+        $to = now()->addDay();
+        $values = ['start' => $from, 'end' => $to];
+
+        expect($this->field)
+            ->toValue()
+            ->toBeNull()
+            ->and($this->field->preview())
+            ->toBeEmpty()
+            ->and($this->field->default($values)->preview())
+            ->toBeEmpty()
+        ;
+    });
+
     it('change preview', function () {
         expect($this->field->changePreview(static fn () => 'changed'))
             ->preview()
