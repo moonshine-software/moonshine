@@ -28,10 +28,14 @@ class MoonShineRequest extends Request
 
     public function getParentRelationName(): ?string
     {
-        return
-            is_null($parentResource = $this->getParentResourceId())
-                ? null
-                : explode('-', $parentResource)[0] ?? null;
+        if(is_null($parentResource = $this->getParentResourceId())) {
+            return null;
+        }
+
+        return str($parentResource)
+            ->replace('-' . $this->getParentRelationId(), '')
+            ->camel()
+            ->value();
     }
 
     public function getParentRelationId(): int|string|null
@@ -39,7 +43,7 @@ class MoonShineRequest extends Request
         return
             is_null($parentResource = $this->getParentResourceId())
                 ? null
-                : explode('-', $parentResource)[1] ?? null;
+                : str($parentResource)->explode("-")->last();
     }
 
     public function onResourceRoute(): bool

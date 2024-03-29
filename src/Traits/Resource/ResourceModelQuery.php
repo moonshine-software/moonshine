@@ -378,7 +378,7 @@ trait ResourceModelQuery
     {
         $params = $this->getFilterParams();
 
-        if (! request()->filled('filters')) {
+        if (blank(request('filters'))) {
             return $this;
         }
 

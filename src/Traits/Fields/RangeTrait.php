@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\Rating;
+use MoonShine\Support\FieldEmptyValue;
 
 trait RangeTrait
 {
@@ -75,31 +76,60 @@ trait RangeTrait
         return $this->extractFromTo($data);
     }
 
+    protected function prepareFill(array $raw = [], mixed $casted = null, int $index = 0): mixed
+    {
+        $values = parent::prepareFill($raw, $casted);
+
+        // try to get from array
+        if($values instanceof FieldEmptyValue) {
+            $castedValue = $raw[$this->column()] ?? false;
+            $values = is_array($castedValue)
+                ? $castedValue
+                : $raw;
+        }
+
+        if(empty($values[$this->fromField]) && empty($values[$this->toField])) {
+            return new FieldEmptyValue();
+        }
+
+        return $values;
+    }
+
     protected function extractFromTo(array $data): array
     {
         return [
-            $this->fromField => $data[$this->fromField] ?? $this->min,
-            $this->toField => $data[$this->toField] ?? $this->max,
+            $this->fromField => $data[$this->fromField] ?? data_get($this->getDefault(), $this->fromField, $this->min),
+            $this->toField => $data[$this->toField] ?? data_get($this->getDefault(), $this->toField, $this->max),
         ];
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null, int $index = 0): array
+    protected function isNullRange(bool $formatted = false): bool
     {
-        return is_array($raw[$this->column()] ?? false)
-            ? $raw[$this->column()]
-            : $raw;
+        $value = $formatted
+            ? $this->toFormattedValue()
+            : $this->toValue(withDefault: false);
+
+        if (is_array($value)) {
+            return array_filter($value) === [];
+        }
+
+        return true;
     }
 
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();
 
-        if ($this->isRawMode()) {
-            return "{$value[$this->fromField]} - {$value[$this->toField]}";
+        if ($this->isNullRange(formatted: true)) {
+            return '';
         }
 
-        $from = $value[$this->fromField];
-        $to = $value[$this->toField];
+        $from = $value[$this->fromField] ?? $this->min;
+        $to = $value[$this->toField] ?? $this->max;
+
+        if ($this->isRawMode()) {
+            return "$from - $to";
+        }
 
         if ($this->withStars()) {
             $from = Rating::make(
