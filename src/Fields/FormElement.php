@@ -328,8 +328,15 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return [];
     }
 
+    protected function performRender(): void
+    {
+        //
+    }
+
     public function render(): View|Closure|string
     {
+        $this->performRender();
+
         if (! is_null($this->cachedRender)) {
             return $this->cachedRender;
         }
@@ -342,7 +349,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
             );
         }
 
-        if ($this instanceof Field && $this->getView() === '') {
+        if ($this->getView() === '') {
             return $this->toValue();
         }
 

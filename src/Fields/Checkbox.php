@@ -40,7 +40,7 @@ class Checkbox extends Field implements
         return $this->getOnValue() == $this->value();
     }
 
-    protected function resolveValue(): mixed
+    protected function performRender(): void
     {
         $this->beforeLabel();
         $this->customWrapperAttributes([
@@ -52,8 +52,6 @@ class Checkbox extends Field implements
         ]);
 
         $this->mergeAttribute('x-on:change', $this->onChangeEvent(), ';');
-
-        return parent::resolveValue();
     }
 
     protected function resolvePreview(): View|string
