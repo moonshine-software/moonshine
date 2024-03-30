@@ -45,8 +45,8 @@
             <div class="form-range-slider">
                 <div class="form-range-tracker"></div>
                 <div class="form-range-connect" x-bind:style="'right:'+maxthumb+'%; left:'+minthumb+'%'"></div>
-                <div class="form-range-thumb" x-bind:style="'left: '+minthumb+'%'"></div>
-                <div class="form-range-thumb" x-bind:style="'right: '+maxthumb+'%'"></div>
+                <div class="form-range-thumb form-range-thumb-left" x-bind:style="'left: '+minthumb+'%'"></div>
+                <div class="form-range-thumb form-range-thumb-right" x-bind:style="'right: '+maxthumb+'%'"></div>
             </div>
         </div>
 
