@@ -19,7 +19,7 @@ trait WithComponentAttributes
         return $this->attributes()->get($name);
     }
 
-    public function uniqueAttribute(string $old, string $new): string
+    protected function uniqueAttribute(string $old, string $new): string
     {
         return str($old)
             ->append(' ')
