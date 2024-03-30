@@ -107,7 +107,19 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     public function customWrapperAttributes(array $attributes): static
     {
-        $this->wrapperAttributes = [...$attributes, ...$this->wrapperAttributes];
+        if (isset($attributes['class'])) {
+            $this->wrapperAttributes['class'] = $this->uniqueAttribute(
+                old: $this->wrapperAttributes['class'] ?? '',
+                new: $attributes['class']
+            );
+
+            unset($attributes['class']);
+        }
+
+        $this->wrapperAttributes = array_merge(
+            $this->wrapperAttributes,
+            $attributes
+        );
 
         return $this;
     }
