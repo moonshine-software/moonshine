@@ -61,8 +61,6 @@ export function moonShineRequest(
   headers = {},
   componentRequestData = {},
 ) {
-  t.loading = true
-
   if (!url) {
     return
   }
@@ -86,7 +84,7 @@ export function moonShineRequest(
     const data = response.data
 
     if (componentRequestData.hasBeforeCallback()) {
-      componentRequestData.beforeCallback(data)
+      componentRequestData.beforeCallback(data, t)
     }
 
     if (componentRequestData.hasResponseFunction()) {
@@ -132,7 +130,7 @@ export function moonShineRequest(
     }
 
     if (componentRequestData.hasAfterCallback()) {
-      componentRequestData.afterCallback(data, type)
+      componentRequestData.afterCallback(data, type, t)
     }
 
     if (componentRequestData.events) {
@@ -155,7 +153,7 @@ export function moonShineRequest(
     const data = errorResponse.response.data
 
     if (componentRequestData.hasErrorCallback()) {
-      componentRequestData.errorCallback(data)
+      componentRequestData.errorCallback(data, t)
     }
 
     if (componentRequestData.hasResponseFunction()) {
@@ -171,7 +169,7 @@ export function moonShineRequest(
     }
 
     if (componentRequestData.hasAfterCallback()) {
-      componentRequestData.afterErrorCallback(data)
+      componentRequestData.afterErrorCallback(data, t)
     }
 
     t.$dispatch('toast', {type: 'error', text: data.message ?? data})

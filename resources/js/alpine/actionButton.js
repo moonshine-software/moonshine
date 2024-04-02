@@ -54,8 +54,15 @@ export default () => ({
       })
     }
 
+    let stopLoading = function(data, t) {
+      t.loading = false
+    }
+
     let componentRequestData = new ComponentRequestData
-    componentRequestData.fromDataset(this.$el?.dataset ?? {})
+    componentRequestData
+      .fromDataset(this.$el?.dataset ?? {})
+      .withBeforeCallback(stopLoading)
+      .withErrorCallback(stopLoading)
 
     moonShineRequest(this, this.url, this.method, body, {}, componentRequestData)
   },
