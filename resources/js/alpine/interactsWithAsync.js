@@ -1,4 +1,5 @@
 import {moonShineRequest} from './asyncFunctions.js'
+import {ComponentRequestData} from '../moonshine.js'
 
 export default () => ({
   async load(url, id) {
@@ -44,15 +45,12 @@ export default () => ({
       }
     }
 
-    const t = this
+    const componentRequestData = new ComponentRequestData()
+    componentRequestData.fromDataset(this.$el?.dataset ?? {})
 
-    t.selector = this.$el?.dataset?.asyncSelector
-    t.events = this.$el?.dataset?.asyncEvents
-    t.callback = this.$el?.dataset?.asyncCallback
-
-    moonShineRequest(t, route, this.$el?.dataset?.asyncMethod ?? 'put', {
+    moonShineRequest(this, route, this.$el?.dataset?.asyncMethod ?? 'put', {
       value: value,
       field: column,
-    })
+    }, {}, componentRequestData)
   },
 })
