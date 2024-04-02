@@ -224,7 +224,7 @@ export default (asyncUrl = '') => ({
       if (form !== null) {
         form.addEventListener('reset', () => {
           this.choicesInstance.setChoices(items)
-          const activeItem = items.filter((item) => item.selected) ?? items[0]
+          const activeItem = items.filter(item => item.selected) ?? items[0]
           this.choicesInstance.setChoiceByValue(activeItem)
         })
       }
