@@ -7,6 +7,7 @@ namespace MoonShine\Traits\Fields;
 use Closure;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\Rating;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\FieldEmptyValue;
 
 trait RangeTrait
@@ -158,5 +159,26 @@ trait RangeTrait
 
             return $item;
         };
+    }
+
+    protected function onChangeEventAttributes(?string $url = null): array
+    {
+        if($url) {
+            $this->fromAttributes(
+                AlpineJs::requestWithFieldValue(
+                    $url,
+                    $this->fromField,
+                )
+            );
+
+            $this->toAttributes(
+                AlpineJs::requestWithFieldValue(
+                    $url,
+                    $this->toField,
+                )
+            );
+        }
+
+        return [];
     }
 }

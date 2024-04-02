@@ -319,11 +319,14 @@ final class FormBuilder extends RowComponent
             ]);
         }
 
+        $this->customAttributes([
+            AlpineJs::eventBlade(JsEvent::FORM_RESET, $this->getName()) => 'formReset',
+        ]);
+
         if ($this->isAsync()) {
             $this->customAttributes([
                 'x-on:submit.prevent' => 'async(`' . $this->asyncEvents(
                 ) . '`, `' . $this->asyncCallback() . '`, `' . $this->asyncBeforeCallback() . '`)',
-                AlpineJs::eventBlade(JsEvent::FORM_RESET, $this->getName()) => 'formReset',
             ]);
         }
 
