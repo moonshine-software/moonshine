@@ -170,9 +170,6 @@ export default (name = '', reactive = {}) => ({
       .withAfterErrorCallback(function () {
         submitState(form, false)
       })
-      .withExtraAttributes({
-        queryString: prepareFormQueryString(formData, '_component_name,_token,_method'),
-      })
 
     moonShineRequest(t, action, method, formData, {
       Accept: 'application/json',
@@ -191,16 +188,17 @@ export default (name = '', reactive = {}) => ({
       ?.removeAttribute('style')
   },
 
-  dispatchEvents(componentEvent, exclude = null, queryParam = 'queryString') {
+  dispatchEvents(componentEvent, exclude = null, extra = {}) {
+    de(componentEvent, '', this, extra)
+  },
+
+  asyncFilters(componentEvent, exclude = null,) {
     const form = this.$el
     const formData = new FormData(form)
-    const extra = {}
 
-    if(queryParam) {
-      extra[queryParam] = prepareFormQueryString(formData, exclude)
-    }
-
-    de(componentEvent, '', this, extra)
+    this.dispatchEvents(componentEvent, exclude, {
+      filterQuery: prepareFormQueryString(formData, exclude)
+    })
   },
 
   onChangeField(event) {

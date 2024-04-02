@@ -147,13 +147,12 @@ final class FormBuilder extends RowComponent
         return $this->method;
     }
 
-    public function dispatchEvent(array|string $events, string $queryParam = 'queryString'): self
+    public function dispatchEvent(array|string $events): self
     {
         return $this->customAttributes([
             '@submit.prevent' => "dispatchEvents(
                 `" . AlpineJs::prepareEvents($events) . "`,
-                `_component_name,_token,_method`,
-                `$queryParam`
+                `_component_name,_token,_method`
             )",
         ]);
     }

@@ -198,13 +198,7 @@ export function listComponentRequest(component, pushState = false) {
     }
   }
 
-  let requestUrl = url
-
-  if (component.$event.detail && component.$event.detail.queryString) {
-    requestUrl = appendQueryToUrl(requestUrl, component.$event.detail.queryString)
-  }
-
-  axios.get(requestUrl).then(response => {
+  axios.get(url).then(response => {
     if (pushState) {
       const query = url.slice(url.indexOf('?') + 1)
 
