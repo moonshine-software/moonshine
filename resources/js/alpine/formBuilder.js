@@ -191,13 +191,16 @@ export default (name = '', reactive = {}) => ({
       ?.removeAttribute('style')
   },
 
-  dispatchEvents(componentEvent, exclude = null) {
+  dispatchEvents(componentEvent, exclude = null, queryParam = 'queryString') {
     const form = this.$el
     const formData = new FormData(form)
+    const extra = {}
 
-    de(componentEvent, '', this, {
-      queryString: prepareFormQueryString(formData, exclude),
-    })
+    if(queryParam) {
+      extra[queryParam] = prepareFormQueryString(formData, exclude)
+    }
+
+    de(componentEvent, '', this, extra)
   },
 
   onChangeField(event) {

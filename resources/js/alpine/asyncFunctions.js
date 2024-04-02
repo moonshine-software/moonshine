@@ -185,31 +185,26 @@ export function listComponentRequest(component, pushState = false) {
 
   component.loading = true
 
-  if (component.$event.detail && component.$event.detail.queryString) {
+  if (component.$event.detail && component.$event.detail.filterQuery) {
     url = prepareListComponentRequestUrl(url)
-
-    const urlWithFilters = new URL(url)
-
-    let separator = urlWithFilters.searchParams.size ? '&' : '?'
-
-    url = urlWithFilters.toString() + separator +
-      component.$event.detail.queryString
+    url = appendQueryToUrl(url, component.$event.detail.filterQuery)
   }
 
   if (component.$event.detail && component.$event.detail.queryTag) {
     url = prepareListComponentRequestUrl(url)
 
     if (component.$event.detail.queryTag !== 'query-tag=null') {
-      const urlWithQueryTags = new URL(url)
-
-      let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
-
-      url = urlWithQueryTags.toString() + separator +
-        component.$event.detail.queryTag
+      url = appendQueryToUrl(url, component.$event.detail.queryTag)
     }
   }
 
-  axios.get(url).then(response => {
+  let requestUrl = url
+
+  if (component.$event.detail && component.$event.detail.queryString) {
+    requestUrl = appendQueryToUrl(requestUrl, component.$event.detail.queryString)
+  }
+
+  axios.get(requestUrl).then(response => {
     if (pushState) {
       const query = url.slice(url.indexOf('?') + 1)
 
@@ -225,6 +220,14 @@ export function listComponentRequest(component, pushState = false) {
   }).catch(error => {
     component.loading = false
   })
+
+  function appendQueryToUrl(url, append) {
+    const urlObject = new URL(url)
+
+    let separator = urlObject.searchParams.size ? '&' : '?'
+
+    return urlObject.toString() + separator + append
+  }
 
   function prepareListComponentRequestUrl(url) {
     const resultUrl = new URL(url)

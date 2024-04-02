@@ -48,7 +48,7 @@ final class FiltersForm
                     'disable-query-tags',
                     'show-reset-filters',
                     AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, 'filters-off-canvas'),
-                ]);
+                ], 'filterQuery');
 
                 $form->buttons([
                     ActionButton::make(
