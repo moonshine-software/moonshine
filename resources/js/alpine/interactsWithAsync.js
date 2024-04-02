@@ -34,11 +34,11 @@ export default () => ({
       value = this.$el.checked
     }
 
-    if(this.$el.tagName.toLowerCase() === 'select' && this.$el.multiple) {
+    if (this.$el.tagName.toLowerCase() === 'select' && this.$el.multiple) {
       value = []
-      for (let i=0; i < this.$el.options.length; i++) {
-        let option = this.$el.options[i];
-        if(option.selected) {
+      for (let i = 0; i < this.$el.options.length; i++) {
+        let option = this.$el.options[i]
+        if (option.selected) {
           value.push(option.value)
         }
       }
