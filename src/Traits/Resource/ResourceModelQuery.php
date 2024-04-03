@@ -46,6 +46,7 @@ trait ResourceModelQuery
 
     protected array $parentRelations = [];
 
+    // TODO 3.0 rename to saveQueryState
     protected bool $saveFilterState = false;
 
     public function getItemID(): int|string|null
@@ -158,7 +159,7 @@ trait ResourceModelQuery
 
     public function getPaginatorPage(): int
     {
-        if($this->saveFilterState()) {
+        if ($this->saveFilterState() && ! request()->has('reset')) {
             return (int) data_get(
                 moonshineCache()->get($this->queryCacheKey(), []),
                 'page',
@@ -267,7 +268,7 @@ trait ResourceModelQuery
         if ($this->saveFilterState()
             && ! request()->hasAny([
                 ...$this->cachedRequestKeys(),
-                'reset'
+                'reset',
             ])
         ) {
             request()->mergeIfMissing(
