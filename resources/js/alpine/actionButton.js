@@ -54,11 +54,11 @@ export default () => ({
       })
     }
 
-    let stopLoading = function(data, t) {
+    let stopLoading = function (data, t) {
       t.loading = false
     }
 
-    let componentRequestData = new ComponentRequestData
+    let componentRequestData = new ComponentRequestData()
     componentRequestData
       .fromDataset(this.$el?.dataset ?? {})
       .withBeforeCallback(stopLoading)

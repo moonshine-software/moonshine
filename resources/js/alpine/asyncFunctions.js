@@ -1,7 +1,6 @@
 import {ComponentRequestData} from '../moonshine.js'
 
-export function responseCallback(
-  callback, response, element, events, component) {
+export function responseCallback(callback, response, element, events, component) {
   const fn = MoonShine.callbacks[callback]
 
   if (typeof fn !== 'function') {
@@ -32,7 +31,7 @@ export function dispatchEvents(events, type, component, extraAttributes = {}) {
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
 
-    allEvents.forEach(function(event) {
+    allEvents.forEach(function (event) {
       let parts = event.split(':')
 
       let eventName = parts[0]
@@ -65,8 +64,8 @@ export function moonShineRequest(
     return
   }
 
-  if(!componentRequestData instanceof ComponentRequestData) {
-    componentRequestData = new ComponentRequestData
+  if (!componentRequestData instanceof ComponentRequestData) {
+    componentRequestData = new ComponentRequestData()
   }
 
   if (componentRequestData.hasBeforeFunction()) {
@@ -78,102 +77,99 @@ export function moonShineRequest(
     method: method,
     data: body,
     headers: headers,
-  }).then(function(response) {
-    t.loading = false
+  })
+    .then(function (response) {
+      t.loading = false
 
-    const data = response.data
+      const data = response.data
 
-    if (componentRequestData.hasBeforeCallback()) {
-      componentRequestData.beforeCallback(data, t)
-    }
+      if (componentRequestData.hasBeforeCallback()) {
+        componentRequestData.beforeCallback(data, t)
+      }
 
-    if (componentRequestData.hasResponseFunction()) {
-      responseCallback(
-        componentRequestData.responseFunction,
-        response,
-        t.$el,
-        componentRequestData.events,
-        t
-      )
+      if (componentRequestData.hasResponseFunction()) {
+        responseCallback(
+          componentRequestData.responseFunction,
+          response,
+          t.$el,
+          componentRequestData.events,
+          t,
+        )
 
-      return
-    }
+        return
+      }
 
-    if (componentRequestData.selector) {
-      const elements = document.querySelectorAll(componentRequestData.selector)
-      elements.forEach(element => {
-        element.innerHTML = data.html ? data.html : data
-      })
-    }
+      if (componentRequestData.selector) {
+        const elements = document.querySelectorAll(componentRequestData.selector)
+        elements.forEach(element => {
+          element.innerHTML = data.html ? data.html : data
+        })
+      }
 
-    if (data.fields_values !== undefined) {
-      for (let [selector, value] of Object.entries(data.fields_values)) {
-        let el = document.querySelector(selector)
-        if (el !== null) {
-          el.value = value
-          el.dispatchEvent(new Event('change'))
+      if (data.fields_values !== undefined) {
+        for (let [selector, value] of Object.entries(data.fields_values)) {
+          let el = document.querySelector(selector)
+          if (el !== null) {
+            el.value = value
+            el.dispatchEvent(new Event('change'))
+          }
         }
       }
-    }
 
-    if (data.redirect) {
-      window.location = data.redirect
-    }
+      if (data.redirect) {
+        window.location = data.redirect
+      }
 
-    const type = data.messageType ? data.messageType : 'success'
+      const type = data.messageType ? data.messageType : 'success'
 
-    if (data.message) {
-      t.$dispatch('toast', {
-        type: type,
-        text: data.message,
-      })
-    }
+      if (data.message) {
+        t.$dispatch('toast', {
+          type: type,
+          text: data.message,
+        })
+      }
 
-    if (componentRequestData.hasAfterCallback()) {
-      componentRequestData.afterCallback(data, type, t)
-    }
+      if (componentRequestData.hasAfterCallback()) {
+        componentRequestData.afterCallback(data, type, t)
+      }
 
-    if (componentRequestData.events) {
-      dispatchEvents(
-        componentRequestData.events,
-        type,
-        t,
-        componentRequestData.extraAttributes
-      )
-    }
-  }).catch(errorResponse => {
-    t.loading = false
+      if (componentRequestData.events) {
+        dispatchEvents(componentRequestData.events, type, t, componentRequestData.extraAttributes)
+      }
+    })
+    .catch(errorResponse => {
+      t.loading = false
 
-    if (!errorResponse?.response?.data) {
-      console.error(errorResponse)
+      if (!errorResponse?.response?.data) {
+        console.error(errorResponse)
 
-      return
-    }
+        return
+      }
 
-    const data = errorResponse.response.data
+      const data = errorResponse.response.data
 
-    if (componentRequestData.hasErrorCallback()) {
-      componentRequestData.errorCallback(data, t)
-    }
+      if (componentRequestData.hasErrorCallback()) {
+        componentRequestData.errorCallback(data, t)
+      }
 
-    if (componentRequestData.hasResponseFunction()) {
-      responseCallback(
-        componentRequestData.responseFunction,
-        errorResponse.response,
-        t.$el,
-        componentRequestData.events,
-        t
-      )
+      if (componentRequestData.hasResponseFunction()) {
+        responseCallback(
+          componentRequestData.responseFunction,
+          errorResponse.response,
+          t.$el,
+          componentRequestData.events,
+          t,
+        )
 
-      return
-    }
+        return
+      }
 
-    if (componentRequestData.hasAfterCallback()) {
-      componentRequestData.afterErrorCallback(data, t)
-    }
+      if (componentRequestData.hasAfterCallback()) {
+        componentRequestData.afterErrorCallback(data, t)
+      }
 
-    t.$dispatch('toast', {type: 'error', text: data.message ?? data})
-  })
+      t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+    })
 }
 
 export function listComponentRequest(component, pushState = false) {
@@ -196,22 +192,25 @@ export function listComponentRequest(component, pushState = false) {
     }
   }
 
-  axios.get(url).then(response => {
-    if (pushState) {
-      const query = url.slice(url.indexOf('?') + 1)
+  axios
+    .get(url)
+    .then(response => {
+      if (pushState) {
+        const query = url.slice(url.indexOf('?') + 1)
 
-      history.pushState({}, '', query ? '?' + query : location.pathname)
-    }
+        history.pushState({}, '', query ? '?' + query : location.pathname)
+      }
 
-    if (component.$root.dataset.events) {
-      dispatchEvents(component.$root.dataset.events, 'success', component)
-    }
+      if (component.$root.dataset.events) {
+        dispatchEvents(component.$root.dataset.events, 'success', component)
+      }
 
-    component.$root.outerHTML = response.data
-    component.loading = false
-  }).catch(error => {
-    component.loading = false
-  })
+      component.$root.outerHTML = response.data
+      component.loading = false
+    })
+    .catch(error => {
+      component.loading = false
+    })
 
   function appendQueryToUrl(url, append) {
     const urlObject = new URL(url)
@@ -228,7 +227,7 @@ export function listComponentRequest(component, pushState = false) {
       resultUrl.searchParams.delete('query-tag')
     }
 
-    Array.from(resultUrl.searchParams).map(function(values) {
+    Array.from(resultUrl.searchParams).map(function (values) {
       let [index] = values
       if (index.indexOf('filters[') === 0) {
         resultUrl.searchParams.delete(index)

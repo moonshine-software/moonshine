@@ -66,8 +66,7 @@ export class ComponentRequestData {
   }
 
   hasBeforeCallback() {
-    return this._beforeCallback !== null
-      && typeof this._beforeCallback === 'function'
+    return this._beforeCallback !== null && typeof this._beforeCallback === 'function'
   }
 
   withBeforeCallback(value) {
@@ -95,8 +94,7 @@ export class ComponentRequestData {
   }
 
   hasAfterCallback() {
-    return this._afterCallback !== null
-      && typeof this._afterCallback === 'function'
+    return this._afterCallback !== null && typeof this._afterCallback === 'function'
   }
 
   withAfterCallback(value) {
@@ -110,8 +108,7 @@ export class ComponentRequestData {
   }
 
   hasErrorCallback() {
-    return this._errorCallback !== null
-      && typeof this._errorCallback === 'function'
+    return this._errorCallback !== null && typeof this._errorCallback === 'function'
   }
 
   withErrorCallback(value) {
@@ -125,8 +122,7 @@ export class ComponentRequestData {
   }
 
   hasAfterErrorCallback() {
-    return this._afterErrorCallback !== null
-      && typeof this._afterErrorCallback === 'function'
+    return this._afterErrorCallback !== null && typeof this._afterErrorCallback === 'function'
   }
 
   withAfterErrorCallback(value) {
@@ -146,8 +142,7 @@ export class ComponentRequestData {
   }
 
   fromDataset(dataset = {}) {
-    return this
-      .withEvents(dataset.asyncEvents ?? '')
+    return this.withEvents(dataset.asyncEvents ?? '')
       .withSelector(dataset.asyncSelector ?? '')
       .withResponseFunction(dataset.asyncCallback ?? null)
       .withBeforeFunction(dataset.asyncBeforeFunction ?? null)

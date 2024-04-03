@@ -16,7 +16,7 @@ export default (name = '', reactive = {}) => ({
 
   init(initData = {}) {
     const t = this
-    let componentRequestData = new ComponentRequestData
+    let componentRequestData = new ComponentRequestData()
 
     this.$watch('reactive', async function (value) {
       if (!t.blockWatch) {
@@ -57,10 +57,17 @@ export default (name = '', reactive = {}) => ({
           t.$nextTick(() => (t.blockWatch = false))
         })
 
-        moonShineRequest(t, initData.reactiveUrl, 'post', {
-          _component_name: t.name,
-          values: value,
-        }, {}, componentRequestData)
+        moonShineRequest(
+          t,
+          initData.reactiveUrl,
+          'post',
+          {
+            _component_name: t.name,
+            values: value,
+          },
+          {},
+          componentRequestData,
+        )
       }
     })
 
@@ -154,7 +161,7 @@ export default (name = '', reactive = {}) => ({
       action = action + '?' + new URLSearchParams(formData).toString()
     }
 
-    let componentRequestData = new ComponentRequestData
+    let componentRequestData = new ComponentRequestData()
 
     componentRequestData
       .withBeforeFunction(beforeFunction)
@@ -171,10 +178,17 @@ export default (name = '', reactive = {}) => ({
         submitState(form, false)
       })
 
-    moonShineRequest(t, action, method, formData, {
-      Accept: 'application/json',
-      ContentType: form.getAttribute('enctype'),
-    }, componentRequestData)
+    moonShineRequest(
+      t,
+      action,
+      method,
+      formData,
+      {
+        Accept: 'application/json',
+        ContentType: form.getAttribute('enctype'),
+      },
+      componentRequestData,
+    )
 
     return false
   },
@@ -192,12 +206,12 @@ export default (name = '', reactive = {}) => ({
     de(componentEvent, '', this, extra)
   },
 
-  asyncFilters(componentEvent, exclude = null,) {
+  asyncFilters(componentEvent, exclude = null) {
     const form = this.$el
     const formData = new FormData(form)
 
     this.dispatchEvents(componentEvent, exclude, {
-      filterQuery: prepareFormQueryString(formData, exclude)
+      filterQuery: prepareFormQueryString(formData, exclude),
     })
   },
 

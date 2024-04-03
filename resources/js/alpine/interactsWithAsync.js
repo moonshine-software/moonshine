@@ -48,9 +48,16 @@ export default () => ({
     const componentRequestData = new ComponentRequestData()
     componentRequestData.fromDataset(this.$el?.dataset ?? {})
 
-    moonShineRequest(this, route, this.$el?.dataset?.asyncMethod ?? 'put', {
-      value: value,
-      field: column,
-    }, {}, componentRequestData)
+    moonShineRequest(
+      this,
+      route,
+      this.$el?.dataset?.asyncMethod ?? 'put',
+      {
+        value: value,
+        field: column,
+      },
+      {},
+      componentRequestData,
+    )
   },
 })
