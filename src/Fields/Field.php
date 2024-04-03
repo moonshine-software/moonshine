@@ -115,7 +115,7 @@ abstract class Field extends FormElement
             );
         }
 
-        $default = new FieldEmptyValue;
+        $default = new FieldEmptyValue();
 
         $value = data_get($casted ?? $raw, $this->column(), $default);
 

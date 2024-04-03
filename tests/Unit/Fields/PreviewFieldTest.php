@@ -71,7 +71,7 @@ it('set value and fill by form', function (): void {
     $form = FormBuilder::make()
         ->fields([
             Preview::make('NoInput', 'no_input')
-                ->setValue('set value')
+                ->setValue('set value'),
         ])
         ->fill([]);
 
@@ -81,7 +81,7 @@ it('set value and fill by form', function (): void {
     $form = FormBuilder::make()
         ->fields([
             Preview::make('NoInput', 'no_input')
-                ->setValue('set value')
+                ->setValue('set value'),
         ])
         ->fill(['no_input' => 'new value']);
 
