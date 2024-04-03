@@ -156,7 +156,7 @@ trait ResourceModelQuery
         return $this->itemsPerPage;
     }
 
-    public function getNavigationPage(): int
+    public function getPaginatorPage(): int
     {
         if($this->saveFilterState()) {
             return (int) data_get(
@@ -179,11 +179,11 @@ trait ResourceModelQuery
                 $this->isSimplePaginate(),
                 fn (Builder $query): Paginator => $query->simplePaginate(
                     $this->itemsPerPage(),
-                    page: $this->getNavigationPage()
+                    page: $this->getPaginatorPage()
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
                     $this->itemsPerPage(),
-                    page: $this->getNavigationPage()
+                    page: $this->getPaginatorPage()
                 ),
             )
             ->appends(request()->except('page'));
@@ -199,7 +199,9 @@ trait ResourceModelQuery
      */
     public function resolveQuery(): Builder
     {
-        $this->resolveTags()
+        $this
+            ->resolveCache()
+            ->resolveTags()
             ->resolveSearch()
             ->resolveFilters()
             ->resolveParentResource()
@@ -234,6 +236,11 @@ trait ResourceModelQuery
         return $this->saveFilterState;
     }
 
+    protected function cachedRequestKeys(): array
+    {
+        return ['sort', 'filters', 'page', 'query-tag', 'search'];
+    }
+
     protected function cacheQueryParams(): static
     {
         if (! $this->saveFilterState()) {
@@ -244,13 +251,27 @@ trait ResourceModelQuery
             moonshineCache()->forget($this->queryCacheKey());
         }
 
-        $keys = ['sort', 'filters', 'page'];
-
-        if (request()->hasAny($keys)) {
+        if (request()->hasAny($this->cachedRequestKeys())) {
             moonshineCache()->put(
                 $this->queryCacheKey(),
-                request()->only($keys),
+                request()->only($this->cachedRequestKeys()),
                 now()->addHours(2)
+            );
+        }
+
+        return $this;
+    }
+
+    protected function resolveCache(): static
+    {
+        if ($this->saveFilterState()
+            && ! request()->hasAny([
+                ...$this->cachedRequestKeys(),
+                'reset'
+            ])
+        ) {
+            request()->mergeIfMissing(
+                moonshineCache()->get($this->queryCacheKey(), [])
             );
         }
 
@@ -396,15 +417,6 @@ trait ResourceModelQuery
 
         if (blank($params)) {
             return $this;
-        }
-
-        if ($this->saveFilterState()
-            && ! request()->has('filters')
-            && ! request()->has('sort')
-            && ! request()->has('reset')) {
-            request()->mergeIfMissing(
-                moonshineCache()->get($this->queryCacheKey(), [])
-            );
         }
 
         $filters = $this->getFilters()->onlyFields();
