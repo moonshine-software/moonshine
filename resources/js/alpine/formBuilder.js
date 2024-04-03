@@ -6,27 +6,23 @@ import {
 } from './showWhenFunctions'
 import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
+import {ComponentRequestData} from '../moonshine.js'
 
 export default (name = '', reactive = {}) => ({
   name: name,
   whenFields: {},
   reactive: reactive,
   blockWatch: false,
-  events: '',
-
-  callback: null,
-  afterCallback: null,
-  afterErrorCallback: null,
-  beforeFunction: null,
 
   init(initData = {}) {
     const t = this
+    let componentRequestData = new ComponentRequestData
 
     this.$watch('reactive', async function (value) {
       if (!t.blockWatch) {
         let focused = document.activeElement
 
-        t.afterCallback = function (data) {
+        componentRequestData.withAfterCallback(function (data) {
           for (let [column, html] of Object.entries(data.fields)) {
             if (typeof html === 'string') {
               const wrapper = document.querySelector('.field-' + column + '-wrapper')
@@ -59,12 +55,12 @@ export default (name = '', reactive = {}) => ({
           }
 
           t.$nextTick(() => (t.blockWatch = false))
-        }
+        })
 
         moonShineRequest(t, initData.reactiveUrl, 'post', {
           _component_name: t.name,
           values: value,
-        })
+        }, {}, componentRequestData)
       }
     })
 
@@ -158,30 +154,27 @@ export default (name = '', reactive = {}) => ({
       action = action + '?' + new URLSearchParams(formData).toString()
     }
 
-    t.beforeFunction = beforeFunction
-    t.callback = callbackFunction
-    t.events = events
+    let componentRequestData = new ComponentRequestData
 
-    t.afterCallback = function (data, type) {
-      if (type !== 'error' && t.inModal && t.autoClose) {
-        t.toggleModal()
-      }
+    componentRequestData
+      .withBeforeFunction(beforeFunction)
+      .withResponseFunction(callbackFunction)
+      .withEvents(events)
+      .withAfterCallback(function (data, type) {
+        if (type !== 'error' && t.inModal && t.autoClose) {
+          t.toggleModal()
+        }
 
-      submitState(form, false, false)
-    }
-
-    t.afterErrorCallback = function () {
-      submitState(form, false)
-    }
-
-    t.extraAttributes = {
-      queryString: prepareFormQueryString(formData, '_component_name'),
-    }
+        submitState(form, false, false)
+      })
+      .withAfterErrorCallback(function () {
+        submitState(form, false)
+      })
 
     moonShineRequest(t, action, method, formData, {
       Accept: 'application/json',
       ContentType: form.getAttribute('enctype'),
-    })
+    }, componentRequestData)
 
     return false
   },
@@ -195,12 +188,16 @@ export default (name = '', reactive = {}) => ({
       ?.removeAttribute('style')
   },
 
-  dispatchEvents(componentEvent, exclude = null) {
+  dispatchEvents(componentEvent, exclude = null, extra = {}) {
+    de(componentEvent, '', this, extra)
+  },
+
+  asyncFilters(componentEvent, exclude = null,) {
     const form = this.$el
     const formData = new FormData(form)
 
-    de(componentEvent, '', this, {
-      queryString: prepareFormQueryString(formData, exclude),
+    this.dispatchEvents(componentEvent, exclude, {
+      filterQuery: prepareFormQueryString(formData, exclude)
     })
   },
 

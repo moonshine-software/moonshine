@@ -7,6 +7,6 @@ export default (async = false, asyncUrl = '') => ({
   loading: false,
   init() {},
   asyncRequest() {
-    listComponentRequest(this)
+    listComponentRequest(this, this.$root?.dataset?.pushstate)
   },
 })

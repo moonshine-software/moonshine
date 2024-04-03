@@ -125,7 +125,7 @@ export default (
     this.asyncRequest()
   },
   asyncRequest() {
-    listComponentRequest(this)
+    listComponentRequest(this, this.$root?.dataset?.pushstate)
   },
   asyncRowRequest(key, index) {
     const t = this

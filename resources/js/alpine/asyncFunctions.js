@@ -1,4 +1,7 @@
-export function responseCallback(callback, response, element, events, component) {
+import {ComponentRequestData} from '../moonshine.js'
+
+export function responseCallback(
+  callback, response, element, events, component) {
   const fn = MoonShine.callbacks[callback]
 
   if (typeof fn !== 'function') {
@@ -29,7 +32,7 @@ export function dispatchEvents(events, type, component, extraAttributes = {}) {
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
 
-    allEvents.forEach(function (event) {
+    allEvents.forEach(function(event) {
       let parts = event.split(':')
 
       let eventName = parts[0]
@@ -50,13 +53,24 @@ export function dispatchEvents(events, type, component, extraAttributes = {}) {
   }
 }
 
-export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}) {
+export function moonShineRequest(
+  t,
+  url,
+  method = 'get',
+  body = {},
+  headers = {},
+  componentRequestData = {},
+) {
   if (!url) {
     return
   }
 
-  if (t.beforeFunction !== undefined && t.beforeFunction) {
-    beforeCallback(t.beforeFunction, t.$el, t)
+  if(!componentRequestData instanceof ComponentRequestData) {
+    componentRequestData = new ComponentRequestData
+  }
+
+  if (componentRequestData.hasBeforeFunction()) {
+    beforeCallback(componentRequestData.beforeFunction, t.$el, t)
   }
 
   axios({
@@ -64,136 +78,148 @@ export function moonShineRequest(t, url, method = 'get', body = {}, headers = {}
     method: method,
     data: body,
     headers: headers,
-  })
-    .then(function (response) {
-      const data = response.data
+  }).then(function(response) {
+    t.loading = false
 
-      if (t.beforeCallback !== undefined && typeof t.beforeCallback === 'function') {
-        t.beforeCallback(data)
-      }
+    const data = response.data
 
-      if (t.callback !== undefined && t.callback) {
-        responseCallback(t.callback, response, t.$el, t.events, t)
+    if (componentRequestData.hasBeforeCallback()) {
+      componentRequestData.beforeCallback(data, t)
+    }
 
-        return
-      }
+    if (componentRequestData.hasResponseFunction()) {
+      responseCallback(
+        componentRequestData.responseFunction,
+        response,
+        t.$el,
+        componentRequestData.events,
+        t
+      )
 
-      if (t.selector !== undefined && t.selector) {
-        const elements = document.querySelectorAll(t.selector)
-        elements.forEach(element => {
-          element.innerHTML = data.html ? data.html : data
-        })
-      }
+      return
+    }
 
-      if (data.fields_values !== undefined) {
-        for (let [selector, value] of Object.entries(data.fields_values)) {
-          let el = document.querySelector(selector)
-          if (el !== null) {
-            el.value = value
-            el.dispatchEvent(new Event('change'))
-          }
+    if (componentRequestData.selector) {
+      const elements = document.querySelectorAll(componentRequestData.selector)
+      elements.forEach(element => {
+        element.innerHTML = data.html ? data.html : data
+      })
+    }
+
+    if (data.fields_values !== undefined) {
+      for (let [selector, value] of Object.entries(data.fields_values)) {
+        let el = document.querySelector(selector)
+        if (el !== null) {
+          el.value = value
+          el.dispatchEvent(new Event('change'))
         }
       }
+    }
 
-      if (data.redirect) {
-        window.location = data.redirect
-      }
+    if (data.redirect) {
+      window.location = data.redirect
+    }
 
-      const type = data.messageType ? data.messageType : 'success'
+    const type = data.messageType ? data.messageType : 'success'
 
-      if (data.message) {
-        t.$dispatch('toast', {
-          type: type,
-          text: data.message,
-        })
-      }
+    if (data.message) {
+      t.$dispatch('toast', {
+        type: type,
+        text: data.message,
+      })
+    }
 
-      if (t.afterCallback !== undefined && typeof t.afterCallback === 'function') {
-        t.afterCallback(data, type)
-      }
+    if (componentRequestData.hasAfterCallback()) {
+      componentRequestData.afterCallback(data, type, t)
+    }
 
-      if (t.events !== undefined) {
-        dispatchEvents(t.events, type, t, t.extraAttributes ?? {})
-      }
-    })
-    .catch(errorResponse => {
-      if (!errorResponse?.response?.data) {
-        console.error(errorResponse)
+    if (componentRequestData.events) {
+      dispatchEvents(
+        componentRequestData.events,
+        type,
+        t,
+        componentRequestData.extraAttributes
+      )
+    }
+  }).catch(errorResponse => {
+    t.loading = false
 
-        return
-      }
+    if (!errorResponse?.response?.data) {
+      console.error(errorResponse)
 
-      const data = errorResponse.response.data
+      return
+    }
 
-      if (t.errorCallback !== undefined && typeof t.errorCallback === 'function') {
-        t.errorCallback(data)
-      }
+    const data = errorResponse.response.data
 
-      if (t.callback !== undefined && t.callback) {
-        responseCallback(t.callback, errorResponse.response, t.$el, t.events, t)
+    if (componentRequestData.hasErrorCallback()) {
+      componentRequestData.errorCallback(data, t)
+    }
 
-        return
-      }
+    if (componentRequestData.hasResponseFunction()) {
+      responseCallback(
+        componentRequestData.responseFunction,
+        errorResponse.response,
+        t.$el,
+        componentRequestData.events,
+        t
+      )
 
-      if (t.afterErrorCallback !== undefined && typeof t.afterErrorCallback === 'function') {
-        t.afterErrorCallback(data)
-      }
+      return
+    }
 
-      t.$dispatch('toast', {type: 'error', text: data.message ?? data})
-    })
+    if (componentRequestData.hasAfterCallback()) {
+      componentRequestData.afterErrorCallback(data, t)
+    }
+
+    t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+  })
 }
 
-export function listComponentRequest(component) {
+export function listComponentRequest(component, pushState = false) {
   component.$event.preventDefault()
 
   let url = component.$el.href ? component.$el.href : component.asyncUrl
 
   component.loading = true
 
-  if (component.$event.detail && component.$event.detail.queryString) {
+  if (component.$event.detail && component.$event.detail.filterQuery) {
     url = prepareListComponentRequestUrl(url)
-
-    const urlWithFilters = new URL(url)
-
-    let separator = urlWithFilters.searchParams.size ? '&' : '?'
-
-    url = urlWithFilters.toString() + separator + component.$event.detail.queryString
+    url = appendQueryToUrl(url, component.$event.detail.filterQuery)
   }
 
   if (component.$event.detail && component.$event.detail.queryTag) {
     url = prepareListComponentRequestUrl(url)
 
     if (component.$event.detail.queryTag !== 'query-tag=null') {
-      const urlWithQueryTags = new URL(url)
-
-      let separator = urlWithQueryTags.searchParams.size ? '&' : '?'
-
-      url = urlWithQueryTags.toString() + separator + component.$event.detail.queryTag
+      url = appendQueryToUrl(url, component.$event.detail.queryTag)
     }
   }
 
-  axios
-    .get(url)
-    .then(response => {
-      if (
-        component.$root.getAttribute('data-pushstate') !== null &&
-        component.$root.getAttribute('data-pushstate')
-      ) {
-        const query = url.slice(url.indexOf('?') + 1)
+  axios.get(url).then(response => {
+    if (pushState) {
+      const query = url.slice(url.indexOf('?') + 1)
 
-        history.pushState({}, '', query ? '?' + query : location.pathname)
-      }
+      history.pushState({}, '', query ? '?' + query : location.pathname)
+    }
 
-      if (component.$root.dataset.events) {
-        dispatchEvents(component.$root.dataset.events, 'success', component)
-      }
+    if (component.$root.dataset.events) {
+      dispatchEvents(component.$root.dataset.events, 'success', component)
+    }
 
-      component.$root.outerHTML = response.data
-      component.loading = false
-    })
-    .catch(error => {
-      component.loading = false
-    })
+    component.$root.outerHTML = response.data
+    component.loading = false
+  }).catch(error => {
+    component.loading = false
+  })
+
+  function appendQueryToUrl(url, append) {
+    const urlObject = new URL(url)
+
+    let separator = urlObject.searchParams.size ? '&' : '?'
+
+    return urlObject.toString() + separator + append
+  }
 
   function prepareListComponentRequestUrl(url) {
     const resultUrl = new URL(url)
@@ -202,7 +228,7 @@ export function listComponentRequest(component) {
       resultUrl.searchParams.delete('query-tag')
     }
 
-    Array.from(resultUrl.searchParams).map(function (values) {
+    Array.from(resultUrl.searchParams).map(function(values) {
       let [index] = values
       if (index.indexOf('filters[') === 0) {
         resultUrl.searchParams.delete(index)
