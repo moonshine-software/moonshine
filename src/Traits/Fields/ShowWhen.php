@@ -51,7 +51,7 @@ trait ShowWhen
 
         $this->showWhenCondition[] = [
             'object_id' => spl_object_id($this),
-            'showField' => str_replace('[]', '', $this->name()),
+            'showField' => $this->name(),
             'changeField' => $this->dotNestedToName($column),
             'operator' => $operator,
             'value' => $value,

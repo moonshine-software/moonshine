@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Hidden;
 use MoonShine\Support\Condition;
 
 /** @mixin Field */
@@ -27,6 +28,11 @@ trait WithFormElementAttributes
 
     public function id(string $index = null): string
     {
+        // TODO: Html id attribute will be fixed in version 3
+        if($this instanceof Hidden) {
+            return $this->attributes()->get('id', '');
+        }
+
         if ($this->id) {
             return $this->id;
         }

@@ -43,11 +43,18 @@ final class FiltersForm
                     ->toArray()
             )
             ->when($resource->isAsync(), function (FormBuilder $form) use ($resource): void {
-                $form->dispatchEvent([
+                $events = [
                     $resource->listEventName(),
                     'disable-query-tags',
                     'show-reset-filters',
                     AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, 'filters-off-canvas'),
+                ];
+
+                $form->customAttributes([
+                    '@submit.prevent' => "asyncFilters(
+                        `" . AlpineJs::prepareEvents($events) . "`,
+                        `_component_name,_token,_method`
+                    )",
                 ]);
 
                 $form->buttons([

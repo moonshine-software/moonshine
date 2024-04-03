@@ -230,7 +230,10 @@ abstract class Field extends FormElement
 
     public function value(bool $withOld = true): mixed
     {
-        if ($withOld && $old = old($this->nameDot())) {
+        $empty = new FieldEmptyValue();
+        $old = $withOld ? old($this->nameDot(), $empty) : $empty;
+
+        if ($withOld && $old !== $empty) {
             return $old;
         }
 

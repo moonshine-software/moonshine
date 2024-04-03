@@ -7,6 +7,7 @@ namespace MoonShine\Traits;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
 
+// TODO array attributes to ?ComponentAttributeBag
 trait WithComponentAttributes
 {
     protected array $attributes = [];
@@ -16,6 +17,18 @@ trait WithComponentAttributes
     public function getAttribute(string $name): mixed
     {
         return $this->attributes()->get($name);
+    }
+
+    protected function uniqueAttribute(string $old, string $new): string
+    {
+        return str($old)
+            ->append(' ')
+            ->append($new)
+            ->lower()
+            ->trim()
+            ->explode(' ')
+            ->unique()
+            ->implode(' ');
     }
 
     public function mergeAttribute(string $name, string $value, string $separator = ' '): static
@@ -57,6 +70,15 @@ trait WithComponentAttributes
 
     public function customAttributes(array $attributes): static
     {
+        if (isset($attributes['class'])) {
+            $this->customAttributes['class'] = $this->uniqueAttribute(
+                old: $this->customAttributes['class'] ?? '',
+                new: $attributes['class']
+            );
+
+            unset($attributes['class']);
+        }
+
         $this->customAttributes = array_merge(
             $this->customAttributes,
             $attributes

@@ -84,8 +84,9 @@ export default (asyncUrl = '') => ({
 
       Array.from(this.$el.options ?? []).forEach(function (option) {
         items.push({
-          label: option.value,
-          value: option.text,
+          label: option.text,
+          value: option.value,
+          selected: option.selected,
           customProperties: option.dataset?.customProperties
             ? JSON.parse(option.dataset.customProperties)
             : {},
@@ -222,8 +223,10 @@ export default (asyncUrl = '') => ({
       const form = this.$el.closest('form')
       if (form !== null) {
         form.addEventListener('reset', () => {
-          this.choicesInstance.destroy()
-          this.init()
+          this.choicesInstance.clearChoices()
+          this.choicesInstance.setChoices(items)
+          const activeItem = items.filter(item => item.selected) ?? items[0]
+          this.choicesInstance.setChoiceByValue(activeItem)
         })
       }
 
