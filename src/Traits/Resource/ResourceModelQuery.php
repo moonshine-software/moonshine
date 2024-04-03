@@ -94,7 +94,7 @@ trait ResourceModelQuery
     }
 
     /**
-     * @param TModel|null $model
+     * @param  TModel|null  $model
      *
      * @return $this
      */
@@ -156,26 +156,34 @@ trait ResourceModelQuery
         return $this->itemsPerPage;
     }
 
+    public function getNavigationPage(): int
+    {
+        if($this->saveFilterState()) {
+            return (int) data_get(
+                moonshineCache()->get($this->queryCacheKey(), []),
+                'page',
+                request()->integer('page')
+            );
+        }
+
+        return request()->integer('page');
+    }
+
     /**
      * @throws Throwable
      */
     public function paginate(): Paginator
     {
-        $page = data_get(
-            moonshineCache()->get($this->queryCacheKey(), []),
-            'page',
-        );
-
         return $this->resolveQuery()
             ->when(
                 $this->isSimplePaginate(),
                 fn (Builder $query): Paginator => $query->simplePaginate(
                     $this->itemsPerPage(),
-                    page: $page
+                    page: $this->getNavigationPage()
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
                     $this->itemsPerPage(),
-                    page: $page
+                    page: $this->getNavigationPage()
                 ),
             )
             ->appends(request()->except('page'));
@@ -232,13 +240,17 @@ trait ResourceModelQuery
             return $this;
         }
 
-        moonshineCache()->forget($this->queryCacheKey());
+        if (request()->has('reset')) {
+            moonshineCache()->forget($this->queryCacheKey());
+        }
 
-        if (! request()->has('reset')) {
-            moonshineCache()->remember(
+        $keys = ['sort', 'filters', 'page'];
+
+        if (request()->hasAny($keys)) {
+            moonshineCache()->put(
                 $this->queryCacheKey(),
-                now()->addHours(2),
-                static fn () => request()->only(['sort', 'filters', 'page'])
+                request()->only($keys),
+                now()->addHours(2)
             );
         }
 
@@ -309,7 +321,11 @@ trait ResourceModelQuery
                         fn (Builder $query) => $query->orWhereHas(
                             $key,
                             fn (Builder $q) => collect($column)->each(fn ($item) => $q->where(
-                                fn (Builder $qq) => $qq->orWhere($item, DBOperators::byModel($qq->getModel())->like(), "%$terms%")
+                                fn (Builder $qq) => $qq->orWhere(
+                                    $item,
+                                    DBOperators::byModel($qq->getModel())->like(),
+                                    "%$terms%"
+                                )
                             ))
                         ),
                         fn (Builder $query) => collect($column)->each(fn ($item) => $query->orWhere(
@@ -342,11 +358,11 @@ trait ResourceModelQuery
 
         $callback = $field?->sortableCallback();
 
-        if(is_string($callback)) {
+        if (is_string($callback)) {
             $column = value($callback);
         }
 
-        if(is_closure($callback)) {
+        if (is_closure($callback)) {
             $callback($this->getQuery(), $column, $direction);
         } else {
             $this->getQuery()
@@ -358,17 +374,17 @@ trait ResourceModelQuery
 
     public function getFilterParams(): array
     {
-        $params = $this->saveFilterState()
-        && ! request()->has('filters')
-        && ! request()->has('sort')
-        && ! request()->has('reset')
-            ? moonshineCache()->get($this->queryCacheKey(), [])
-            : request('filters', []);
+        $default = request('filters', []);
 
-        return tap(
-            is_array($params) ? $params : [],
-            fn () => request()->merge(isset($params['filters']) ? $params : ['filters' => $params])
-        );
+        if ($this->saveFilterState()) {
+            return data_get(
+                moonshineCache()->get($this->queryCacheKey(), []),
+                'filters',
+                $default
+            );
+        }
+
+        return $default;
     }
 
     /**
@@ -378,8 +394,17 @@ trait ResourceModelQuery
     {
         $params = $this->getFilterParams();
 
-        if (blank(request('filters'))) {
+        if (blank($params)) {
             return $this;
+        }
+
+        if ($this->saveFilterState()
+            && ! request()->has('filters')
+            && ! request()->has('sort')
+            && ! request()->has('reset')) {
+            request()->mergeIfMissing(
+                moonshineCache()->get($this->queryCacheKey(), [])
+            );
         }
 
         $filters = $this->getFilters()->onlyFields();

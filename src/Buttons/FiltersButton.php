@@ -15,7 +15,9 @@ final class FiltersButton
 {
     public static function for(ModelResource $resource): ActionButton
     {
-        return ActionButton::make(self::title(), '#')
+        $title = self::title($resource->getFilterParams());
+
+        return ActionButton::make($title, '#')
             ->secondary()
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
@@ -26,10 +28,9 @@ final class FiltersButton
             ->showInLine();
     }
 
-    private static function title(): string
+    private static function title(array $params = []): string
     {
-        $count = request()
-            ->collect('filters')
+        $count = collect($params)
             ->filter(
                 fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter)
                     : filled($filter)
