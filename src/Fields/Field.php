@@ -68,8 +68,6 @@ abstract class Field extends FormElement
 
     protected bool $isInLabel = false;
 
-    protected bool $canBeEmpty = false;
-
     protected mixed $data = null;
 
     protected int $rowIndex = 0;
@@ -117,7 +115,7 @@ abstract class Field extends FormElement
             );
         }
 
-        $default = $this->isCanBeEmpty() ? null : new FieldEmptyValue();
+        $default = new FieldEmptyValue;
 
         $value = data_get($casted ?? $raw, $this->column(), $default);
 
@@ -402,11 +400,6 @@ abstract class Field extends FormElement
     public function isNullable(): bool
     {
         return $this->nullable;
-    }
-
-    protected function isCanBeEmpty(): bool
-    {
-        return $this->canBeEmpty;
     }
 
     public function inLabel(): static

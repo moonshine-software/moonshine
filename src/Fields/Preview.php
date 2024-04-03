@@ -14,8 +14,6 @@ class Preview extends Field
 {
     protected string $view = 'moonshine::fields.preview';
 
-    protected bool $canBeEmpty = true;
-
     protected bool $isBoolean = false;
 
     protected bool $isImage = false;

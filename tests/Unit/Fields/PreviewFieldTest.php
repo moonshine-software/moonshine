@@ -3,8 +3,11 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ViewErrorBag;
 use MoonShine\Components\Badge;
 use MoonShine\Components\Boolean;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Url;
 use MoonShine\Fields\Preview;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
@@ -43,6 +46,47 @@ it('reformat item value', function (): void {
 it('badge value', function (): void {
     expect((string) $this->field->badge('green')->preview())
         ->toBe((string) Badge::make($this->item->no_input, 'green')->render());
+});
+
+it('set value', function (): void {
+    $field = Preview::make('NoInput', 'no_input')
+        ->setValue('set value');
+
+    expect((string) $field->preview())
+        ->toContain('set value');
+});
+
+it('set value and fill', function (): void {
+    $field = Preview::make('NoInput', 'no_input')
+        ->setValue('set value')
+        ->fill('new value');
+
+    expect((string) $field->preview())
+        ->toContain('new value');
+});
+
+it('set value and fill by form', function (): void {
+    View::share('errors', new ViewErrorBag());
+
+    $form = FormBuilder::make()
+        ->fields([
+            Preview::make('NoInput', 'no_input')
+                ->setValue('set value')
+        ])
+        ->fill([]);
+
+    expect((string) $form->render())
+        ->toContain('set value');
+
+    $form = FormBuilder::make()
+        ->fields([
+            Preview::make('NoInput', 'no_input')
+                ->setValue('set value')
+        ])
+        ->fill(['no_input' => 'new value']);
+
+    expect((string) $form->render())
+        ->toContain('new value');
 });
 
 it('boolean value', function (): void {
