@@ -223,6 +223,7 @@ export default (asyncUrl = '') => ({
       const form = this.$el.closest('form')
       if (form !== null) {
         form.addEventListener('reset', () => {
+          this.choicesInstance.clearChoices()
           this.choicesInstance.setChoices(items)
           const activeItem = items.filter(item => item.selected) ?? items[0]
           this.choicesInstance.setChoiceByValue(activeItem)
