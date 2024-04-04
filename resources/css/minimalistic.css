@@ -1,8 +1,13 @@
 /* Theme: Minimalistic */
 body.theme-minimalistic {
   *, .box-shadow:before {
-    border-radius: 0!important;
+    @apply !rounded-none;
   }
+
+  h1 {
+    @apply text-sm;
+  }
+
 
 	.layout-wrapper {
 		@apply py-0 pr-0 pl-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
@@ -196,7 +201,7 @@ body.theme-minimalistic {
 
 	/* Horizontal menu */
 	.layout-menu-horizontal {
-		@apply h-16 px-4 lg:px-6 bg-gray-50 dark:bg-dark-800 border-b border-dark-200;
+		@apply h-16 px-4 lg:px-6 bg-gray-50 dark:bg-dark-800 border-b lg:border-l border-dark-200;
 
 		.menu-logo {
 			img {
@@ -422,6 +427,9 @@ body.theme-minimalistic {
 		&:not(.form-group-expansion) {
 			@apply gap-1;
 		}
+    +.form-group {
+      @apply my-3;
+    }
 	}
 
 	.form-hint {
