@@ -146,7 +146,7 @@ body.theme-minimalistic {
 
       &-link,
       &-button {
-        @apply gap-x-2 rounded-md bg-transparent px-2 py-1.5 text-2xs text-dark-600 hover:bg-dark-200 hover:text-black current:bg-black current:text-white dark:text-slate-200 dark:hover:text-white dark:current:bg-primary;
+        @apply gap-x-2 rounded-md bg-transparent px-2 py-1.5 text-2xs text-dark-600 hover:bg-dark-200 hover:text-black current:bg-dark-200 dark:text-slate-200 dark:hover:text-white dark:current:bg-primary;
         > svg {
           @apply h-5 w-5;
         }
@@ -230,7 +230,7 @@ body.theme-minimalistic {
 
       &-link,
       &-button {
-        @apply gap-x-2 rounded-md bg-transparent px-2 py-1.5 text-2xs text-dark-600 hover:bg-dark-200 hover:text-black current:bg-black current:text-white dark:text-slate-200 dark:hover:text-white dark:current:bg-primary;
+        @apply gap-x-2 rounded-md bg-transparent px-2 py-1.5 text-2xs text-dark-600 hover:bg-dark-200 hover:text-black current:bg-dark-200 dark:text-slate-200 dark:hover:text-white dark:current:bg-primary;
         > svg {
           @apply h-5 w-5;
         }
