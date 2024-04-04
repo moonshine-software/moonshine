@@ -1,8 +1,9 @@
 @props([
-    'components' => []
+    'components' => [],
+    'bodyClass' => '',
 ])
 <body
-    class="antialiased"
+    class="antialiased {{ $bodyClass ?? '' }}"
     x-cloak
     x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }"
 >
