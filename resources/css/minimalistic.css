@@ -1,6 +1,6 @@
 /* Theme: Minimalistic */
 body.theme-minimalistic {
-  *, .box-shadow:before  {
+  *, .box-shadow:before {
     border-radius: 0!important;
   }
 
@@ -442,6 +442,17 @@ body.theme-minimalistic {
 	.form-checkbox ~ label {
 		@apply font-normal text-3xs;
 	}
+
+  .form-switcher-toggler {
+    height: 1.25rem;
+    width: 2.25rem;
+
+    &::after {
+      border-radius: 0!important;
+      height: 1rem;
+      width: 1rem;
+    }
+  }
 
 	/* Range slider */
 	.form-range-thumb {
