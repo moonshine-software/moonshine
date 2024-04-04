@@ -10,17 +10,18 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\Colors;
 
 /**
- * @method primary(string $value, ?int $shade = null, bool $dark = false)
- * @method secondary(string $value, ?int $shade = null, bool $dark = false)
- * @method body(string $value, ?int $shade = null, bool $dark = false)
- * @method successBg(string $value, ?int $shade = null, bool $dark = false)
- * @method successText(string $value, ?int $shade = null, bool $dark = false)
- * @method warningBg(string $value, ?int $shade = null, bool $dark = false)
- * @method warningText(string $value, ?int $shade = null, bool $dark = false)
- * @method errorBg(string $value, ?int $shade = null, bool $dark = false)
- * @method errorText(string $value, ?int $shade = null, bool $dark = false)
- * @method infoBg(string $value, ?int $shade = null, bool $dark = false)
- * @method infoText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self primary(string $value, ?int $shade = null, bool $dark = false)
+ * @method self secondary(string $value, ?int $shade = null, bool $dark = false)
+ * @method self body(string $value, ?int $shade = null, bool $dark = false)
+ * @method self dark(string $value, int|string|null $shade = null, bool $dark = false)
+ * @method self successBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self successText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self warningBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self warningText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self errorBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self errorText(string $value, ?int $shade = null, bool $dark = false)
+ * @method self infoBg(string $value, ?int $shade = null, bool $dark = false)
+ * @method self infoText(string $value, ?int $shade = null, bool $dark = false)
  */
 final class ColorManager
 {
