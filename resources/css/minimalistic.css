@@ -8,7 +8,9 @@ body.theme-minimalistic {
   h1 {
     @apply text-sm;
   }
-
+  .heading {
+    @apply text-xs;
+  }
   .layout-wrapper {
     @apply py-0 pl-0 pr-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
 
