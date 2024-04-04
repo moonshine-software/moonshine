@@ -159,15 +159,17 @@ trait ResourceModelQuery
 
     public function getPaginatorPage(): int
     {
+        $page = request()->integer('page');
+
         if ($this->saveFilterState() && ! request()->has('reset')) {
             return (int) data_get(
                 moonshineCache()->get($this->queryCacheKey(), []),
                 'page',
-                request()->integer('page')
+                $page
             );
         }
 
-        return request()->integer('page');
+        return $page;
     }
 
     /**
@@ -250,6 +252,8 @@ trait ResourceModelQuery
 
         if (request()->has('reset')) {
             moonshineCache()->forget($this->queryCacheKey());
+
+            return $this;
         }
 
         if (request()->hasAny($this->cachedRequestKeys())) {
@@ -458,6 +462,9 @@ trait ResourceModelQuery
         return $this;
     }
 
+    /**
+     * @throws ResourceException
+     */
     protected function resolveParentResource(): static
     {
         if (
