@@ -9,3 +9,4 @@ app
 reports
 phpunit.xml.dist
 .env
+.phpunit.cache

@@ -15,8 +15,6 @@ use MoonShine\Decorations\Heading;
 use MoonShine\MoonShineLayout;
 use MoonShine\Pages\Page;
 
-use const _PHPStan_8b6260c21\__;
-
 final class LoginLayout extends MoonShineLayout
 {
     public function build(Page $page): LayoutBuilder

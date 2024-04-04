@@ -32,7 +32,6 @@ use MoonShine\MoonShineRequest;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Resources\MoonShineUserRoleResource;
-use MoonShine\Theme\ColorManager;
 
 class AppLayout extends MoonShineLayout
 {
@@ -63,14 +62,6 @@ class AppLayout extends MoonShineLayout
                             Menu::make()->top(),
                         ])->hideLogo()->hideSwitcher(),
                         Sidebar::make([
-                            /*Search::make(),
-                            Locales::make(),
-                            FlexibleRender::make(view('moonshine::layouts.shared.notifications')),
-                            Flex::make([
-                                FlexibleRender::make(view('moonshine::layouts.shared.logo')),
-                                ThemeSwitcher::make(),
-                            ]),
-                            Divider::make(),*/
                             Menu::make(),
                             When::make(
                                 static fn () => config('moonshine.auth.enable', true),
@@ -81,7 +72,7 @@ class AppLayout extends MoonShineLayout
                             Flash::make(),
                             Header::make([
                                 Breadcrumbs::make($page->breadcrumbs())
-                                    ->add(moonshineRouter()->home(), '', 'heroicons.outline.home'),
+                                    ->prepend(moonshineRouter()->home(), icon: 'heroicons.outline.home'),
 
                                 Search::make(),
                                 FlexibleRender::make(view('moonshine::layouts.shared.notifications')),
@@ -89,7 +80,7 @@ class AppLayout extends MoonShineLayout
                             ]),
 
                             Content::make([
-                                Title::make($page->title()),
+                                Title::make($page->title())->class('mb-6'),
 
                                 Components::make(
                                     $page->getComponents()

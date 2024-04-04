@@ -22,9 +22,7 @@ use MoonShine\Components\Layout\Menu;
 use MoonShine\Components\Layout\Profile;
 use MoonShine\Components\Layout\Search;
 use MoonShine\Components\Layout\Sidebar;
-use MoonShine\Components\Layout\TopBar;
 use MoonShine\Components\Layout\Wrapper;
-use MoonShine\Components\Title;
 use MoonShine\Components\When;
 use MoonShine\Pages\Page;
 use MoonShine\Theme\ColorManager;
@@ -43,8 +41,8 @@ final class CompactLayout extends AppLayout
     protected function colors(ColorManager $colorManager): void
     {
         $colorManager
-            ->primary('120, 67, 233')
-            ->secondary('236, 65, 118')
+            ->primary('#1E96FC')
+            ->secondary('#1D8A99')
             ->body('255, 255, 255')
             ->dark('30, 31, 67', 'DEFAULT')
             ->dark('249, 250, 251', 50)
@@ -95,18 +93,7 @@ final class CompactLayout extends AppLayout
                 Head::make(),
                 Body::make([
                     Wrapper::make([
-                        TopBar::make([
-                            Menu::make()->top(),
-                        ])->hideLogo()->hideSwitcher(),
                         Sidebar::make([
-                            /*Search::make(),
-                            Locales::make(),
-                            FlexibleRender::make(view('moonshine::layouts.shared.notifications')),
-                            Flex::make([
-                                FlexibleRender::make(view('moonshine::layouts.shared.logo')),
-                                ThemeSwitcher::make(),
-                            ]),
-                            Divider::make(),*/
                             Menu::make(),
                             When::make(
                                 static fn () => config('moonshine.auth.enable', true),
@@ -117,7 +104,7 @@ final class CompactLayout extends AppLayout
                             Flash::make(),
                             Header::make([
                                 Breadcrumbs::make($page->breadcrumbs())
-                                    ->add(moonshineRouter()->home(), '', 'heroicons.outline.home'),
+                                    ->prepend(moonshineRouter()->home(), icon: 'heroicons.outline.home'),
 
                                 Search::make(),
                                 FlexibleRender::make(view('moonshine::layouts.shared.notifications')),
@@ -125,8 +112,6 @@ final class CompactLayout extends AppLayout
                             ]),
 
                             Content::make([
-                                Title::make($page->title()),
-
                                 Components::make(
                                     $page->getComponents()
                                 ),

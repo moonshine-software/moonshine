@@ -19,11 +19,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.1, 8.2, 8.3]
-        laravel: [10, 11]
-        exclude:
-          - php: 8.1
-            laravel: 11
+        php: [8.2, 8.3]
+        laravel: [11]
 
     steps:
       - uses: shivammathur/setup-php@v2
@@ -50,4 +47,4 @@ jobs:
       - name: Execute tests via PEST(PHPUnit)
         env:
           DB_PASSWORD: root
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/pest --bail
