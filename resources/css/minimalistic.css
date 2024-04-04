@@ -1,0 +1,604 @@
+/* Theme: Minimalistic */
+body.theme-minimalistic {
+	.layout-wrapper {
+		@apply py-0 pr-0 pl-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
+
+		&-short {
+			@apply lg:pl-[3.75rem];
+		}
+
+		&--top-menu {
+			@apply px-0;
+		}
+	}
+
+	.layout-page {
+		@apply pt-2 rounded-none bg-dark-50 dark:bg-dark-800 lg:border-l lg:border-dark-200;
+	}
+
+	.layout-navigation {
+		@apply gap-x-2.5 pb-2;
+
+		.breadcrumbs {
+			&-list {
+				@apply gap-x-0.5;
+			}
+			&-item {
+				@apply gap-x-0.5;
+				> a {
+					@apply text-3xs;
+					> svg {
+						@apply w-4 h-4;
+					}
+				}
+			}
+		}
+
+		.search-form {
+			@apply h-8;
+
+			&-field {
+				@apply rounded-md;
+			}
+			&-icon {
+				@apply right-2 w-4 h-4;
+			}
+		}
+
+		.notifications {
+			&-item {
+				@apply p-2;
+			}
+			&-category {
+				@apply w-8 h-8;
+				> svg {
+					@apply w-4 h-4;
+				}
+			}
+			&-title,
+			&-read {
+				@apply text-3xs;
+			}
+			&-text,
+			&-more,
+			&-time {
+				@apply text-[13px] leading-[1.25];
+			}
+			&-time {
+				@apply mt-1;
+			}
+			&-icon {
+				> span {
+					@apply top-1.5 right-2.5;
+				}
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+		}
+	}
+
+	.layout-content {
+		@apply py-4;
+	}
+
+	/* Sidebar menu */
+	.layout-menu {
+		@apply !w-[3.625rem] xl:!w-[16.75rem] left-2.5 pt-0;
+		height: calc(100vh - 1rem);
+
+		&._is-minimized {
+			@apply lg:!w-[3.625rem];
+
+			.menu-inner-dropdown {
+				.menu-inner-link {
+					@apply lg:!px-1;
+				}
+			}
+		}
+
+		.menu {
+			@apply overflow-y-scroll pl-4 pr-2 md:px-6 lg:pl-0 lg:pr-5;
+		}
+
+		.menu-heading {
+			@apply px-4 md:px-6 lg:py-2.5 lg:px-0;
+
+			&-logo {
+				img {
+					@apply h-8 lg:h-10;
+				}
+			}
+			&-mode-btn {
+				@apply text-dark-600 hover:text-black dark:text-slate-400 dark:hover:text-white;
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+			&-burger > button {
+				@apply text-dark-600 hover:text-black dark:text-slate-400 dark:hover:text-white;
+			}
+		}
+
+		.menu-inner {
+			@apply gap-y-1;
+
+			&-item {
+				@apply rounded-md before:hidden after:hidden;
+				&._is-active {
+					.menu-inner-link,
+					.menu-inner-button {
+						@apply bg-dark-200 text-black dark:text-white;
+					}
+				}
+			}
+
+			&-link,
+			&-button {
+				@apply gap-x-2 py-1.5 px-2 rounded-md bg-transparent hover:bg-dark-200 current:bg-black dark:current:bg-primary text-dark-600 dark:text-slate-200 dark:hover:text-white hover:text-black current:text-white text-2xs;
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+
+			&-link {
+				@apply after:!hidden;
+			}
+
+			&-divider {
+				@apply my-1 text-dark-400 dark:text-slate-500 text-3xs before:bg-dark-200;
+			}
+
+			&-counter {
+				@apply rounded-[0.25rem];
+			}
+
+			&-dropdown {
+				@apply mt-1 bg-dark-50 dark:bg-dark-700 border border-dark-200;
+
+				.menu-inner-divider {
+					@apply before:bg-dark-200;
+				}
+
+				.menu-inner-link,
+				.menu-inner-button {
+					@apply py-1 px-1.5 text-3xs;
+				}
+			}
+		}
+
+		.menu-profile {
+			@apply py-2;
+
+			&-main {
+				@apply gap-x-2.5;
+			}
+			&-photo {
+				@apply w-9 h-9;
+			}
+			&-info {
+				> .name {
+					@apply text-black dark:text-slate-400 dark:hover:text-white text-3xs leading-[1.25];
+				}
+			}
+			&-exit {
+				@apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+		}
+	}
+
+	/* Horizontal menu */
+	.layout-menu-horizontal {
+		@apply h-16 px-4 lg:px-6 bg-gray-50 dark:bg-dark-800 border-b border-dark-200;
+
+		.menu-logo {
+			img {
+				@apply h-8 lg:h-10;
+			}
+		}
+
+		.menu-navigation {
+			@apply px-4 lg:px-0;
+		}
+
+		.menu-inner {
+			@apply gap-y-1;
+
+			&-item {
+				@apply rounded-md before:hidden after:hidden;
+				&._is-active {
+					.menu-inner-link,
+					.menu-inner-button {
+						@apply bg-dark-200 text-black dark:text-white;
+					}
+				}
+			}
+
+			&-link,
+			&-button {
+				@apply gap-x-2 py-1.5 px-2 rounded-md bg-transparent hover:bg-dark-200 current:bg-black dark:current:bg-primary text-dark-600 dark:text-slate-200 dark:hover:text-white hover:text-black current:text-white text-2xs;
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+
+			&-link {
+				@apply after:!hidden;
+			}
+
+			&-divider {
+				@apply m-0 text-dark-200 dark:text-slate-500 text-3xs before:bg-dark-300;
+			}
+
+			&-counter {
+				@apply rounded-[0.25rem];
+			}
+
+			&-dropdown {
+				@apply mt-1 bg-dark-50 dark:bg-dark-700 border border-dark-200 shadow-none;
+
+				.menu-inner-divider {
+					@apply pl-0 before:bg-dark-300 dark:before:bg-dark-200;
+				}
+
+				.menu-inner-link,
+				.menu-inner-button {
+					@apply py-1 px-1.5 text-3xs;
+				}
+			}
+		}
+
+		.menu-profile {
+			@apply py-2;
+
+			&-main {
+				@apply gap-x-2.5;
+			}
+			&-photo {
+				@apply w-9 h-9;
+			}
+			&-info {
+				> .name {
+					@apply text-black dark:text-slate-400 dark:hover:text-white text-3xs leading-[1.25];
+				}
+			}
+			&-exit {
+				@apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+		}
+
+		.menu-mode {
+			&-btn {
+				@apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+		}
+
+		.menu-settings {
+			> a {
+				@apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+				> svg {
+					@apply w-5 h-5;
+				}
+			}
+		}
+
+		.menu-burger {
+			> button {
+				@apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+				> svg {
+					@apply w-7 h-7;
+				}
+			}
+		}
+	}
+
+	/* Box cards */
+	.box {
+		@apply p-3;
+
+		&-title {
+			@apply mb-3 pb-3;
+		}
+	}
+
+	/* Buttons */
+	.btn {
+		@apply h-8 gap-x-1.5 px-2;
+
+		&.btn-lg {
+			@apply h-10 px-3.5;
+		}
+	}
+
+	.btn-close {
+		@apply w-7 h-7;
+	}
+
+	/* Dropdown */
+	.dropdown {
+		&-heading {
+			@apply p-2;
+		}
+		&-footer {
+			@apply p-2;
+		}
+		&-btn {
+			@apply gap-x-1 p-1 min-w-[2rem] h-auto min-h-[2rem];
+		}
+		&-menu {
+			&-link {
+				@apply py-1.5 px-2 text-3xs;
+			}
+		}
+	}
+
+	/* Tables */
+	.table {
+		thead,
+		tbody {
+			th, td {
+				@apply p-1 text-3xs;
+			}
+		}
+	}
+
+	.table-list {
+		@apply border-spacing-y-1;
+		thead,
+		tbody {
+			th, td {
+				@apply py-1.5 px-2 text-3xs;
+			}
+		}
+	}
+
+	/* Alerts */
+	.alert {
+		@apply gap-x-2 p-2 rounded-md;
+		&-icon {
+			> svg {
+				@apply w-5 h-5;
+			}
+		}
+		&-content {
+			@apply text-3xs font-normal;
+		}
+	}
+
+	/* Badges */
+	.badge,
+	a.badge {
+		@apply px-1.5 rounded-[0.25rem] text-[0.825rem] leading-[1.25];
+	}
+
+	/* Poppovers */
+	.tippy-box {
+		@apply dark:bg-dark-900;
+
+		.tippy-arrow {
+			@apply dark:text-dark-900;
+		}
+
+		&[data-theme='ms-light'] {
+			@apply dark:bg-dark-400;
+
+			.tippy-arrow {
+				@apply dark:text-dark-400;
+			}
+		}
+	}
+
+	/* Forms */
+	.form-input,
+	.form-textarea,
+	.form-select,
+	.form-multiselect,
+	.form-file-upload {
+		@apply py-1 px-2 overflow-hidden;
+	}
+
+	.form-file-upload {
+		@apply text-3xs;
+	}
+
+	.form-flex-col {
+		@apply gap-y-3;
+	}
+
+	.form-group {
+		&:not(.form-group-expansion) {
+			@apply gap-1;
+		}
+	}
+
+	.form-hint {
+		@apply text-[0.825rem] leading-[1.25];
+	}
+
+	.form-group-expansion {
+		.expansion,
+		.expansion-custom {
+			@apply py-1 px-2;
+		}
+	}
+
+	/* Checkboxes & Radio buttons */
+	.form-radio ~ span,
+	.form-radio ~ label,
+	.form-checkbox ~ span,
+	.form-checkbox ~ label {
+		@apply font-normal text-3xs;
+	}
+
+	/* Range slider */
+	.form-range-thumb {
+		@apply w-4 h-4 -mt-1;
+	}
+
+	/* Choices */
+	.choices__inner {
+		@apply py-1 min-h-[32px];
+	}
+
+	.choices[data-type*=select-one] .choices__inner {
+		@apply pb-1;
+	}
+
+	.choices[data-type*=select-one] .choices__input {
+		@apply p-2;
+	}
+
+	.choices__list--dropdown .choices__item,
+	.choices__list[aria-expanded] .choices__item {
+		@apply py-1 px-2 text-3xs;
+	}
+
+	.choices .choices__input {
+		@apply mt-0.5;
+	}
+
+	.choices .choices__list--multiple .choices__item {
+		@apply mb-0.5 mr-0.5 py-0.5 px-1.5 rounded-[0.25rem];
+	}
+
+	.choices__list--single {
+		@apply px-0;
+	}
+
+	.choices__list--multiple {
+		.choices__item:last-child {
+			@apply mr-1;
+		}
+	}
+
+	/* Dashboard */
+	.report-card {
+		@apply p-3 -m-3;
+
+		&-value {
+			@apply mt-3 text-md;
+		}
+		&-title {
+			@apply mt-1 text-3xs;
+		}
+	}
+
+	/* Dropzone */
+	.dropzone {
+		&-items {
+			@apply gap-y-1.5;
+		}
+		&-file {
+			&-icon > svg {
+				@apply w-4 h-4;
+			}
+			&-name {
+				@apply text-3xs;
+			}
+		}
+		&-item-file {
+			@apply gap-x-1.5 py-1 px-1.5 rounded-[0.25rem];
+
+			.dropzone-remove {
+				@apply w-4 h-4;
+			}
+		}
+	}
+
+	/* Modal */
+	.modal {
+		&-header {
+			@apply py-2 px-3;
+		}
+		&-body {
+			@apply p-3 text-2xs;
+		}
+		&-backdrop {
+			@apply bg-black/70;
+		}
+		.modal-dialog-auto {
+			.modal-title {
+				@apply text-xs;
+			}
+		}
+	}
+
+	/* Offcanvas */
+	.offcanvas {
+		&-header {
+			@apply py-2 px-3;
+		}
+		&-body {
+			@apply p-3 text-2xs;
+		}
+		&-backdrop {
+			@apply bg-black/70;
+		}
+	}
+
+	/* Accordion */
+	.accordion {
+		&-btn {
+			@apply h-auto py-2;
+		}
+		&-content {
+			@apply p-2;
+		}
+	}
+
+	/* Tabs */
+	.tabs {
+		&-button {
+			@apply h-10;
+		}
+		&-content {
+			@apply mt-2.5;
+		}
+	}
+
+	/* Toast */
+	.toast {
+		&-item {
+			@apply mt-2 p-2;
+		}
+	}
+
+	/* Tree list */
+	.tree-list {
+		@apply space-y-0.5;
+		li {
+			@apply space-y-0.5;
+			ul {
+				@apply ml-4 space-y-0.5;
+			}
+		}
+	}
+
+	/* Category card */
+	.card-category {
+		@apply gap-y-3 p-3;
+
+		.card-body {
+			.title {
+				@apply text-sm;
+			}
+
+			table {
+				@apply text-3xs;
+			}
+		}
+
+		.card-actions {
+			@apply pt-3;
+		}
+	}
+}
