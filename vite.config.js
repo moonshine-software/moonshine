@@ -10,7 +10,7 @@ export default defineConfig(({mode}) => {
     plugins: [
       moonShineBuildPlugin(),
       laravel({
-        input: ['resources/css/main.css', 'resources/js/app.js'],
+        input: ['resources/css/main.css', 'resources/css/minimalistic.css', 'resources/js/app.js'],
         refresh: true,
       }),
     ],
