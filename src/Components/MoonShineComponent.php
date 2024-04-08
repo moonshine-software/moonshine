@@ -25,6 +25,8 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     use WithView;
     use HasCanSee;
 
+    protected ?Closure $onBeforeRenderCallback = null;
+
     public function name(string $name): static
     {
         $this->componentName = $name;
@@ -83,9 +85,20 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         ]);
     }
 
+    public function onBeforeRender(Closure $onBeforeRender): static
+    {
+        $this->onBeforeRenderCallback = $onBeforeRender;
+
+        return $this;
+    }
+
     public function render(): View|Closure|string
     {
         $mergeData = $this->viewData();
+
+        if(!is_null($this->onBeforeRenderCallback)) {
+            value($this->onBeforeRenderCallback, $this);
+        }
 
         return $this->view(
             $this->getView(),

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\View\ComponentSlot;
 
 /**
- * @method static static make(Closure|string $title, Closure|string $toggler = '', Closure|View|string $content = '', Closure|array $items = [], string $placement = 'bottom-start')
+ * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', Closure|array $items = [], string $placement = 'bottom-start')
  */
 final class Dropdown extends MoonShineComponent
 {
@@ -26,6 +26,34 @@ final class Dropdown extends MoonShineComponent
         protected Closure|array $items = [],
         public string $placement = 'bottom-start',
     ) {
+    }
+
+    public function toggler(Closure|string $toggler): self
+    {
+        $this->toggler = $toggler;
+
+        return $this;
+    }
+
+    public function items(Closure|array $items): self
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    public function content(Closure|View|string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function placement(string $placement): self
+    {
+        $this->placement = $placement;
+
+        return $this;
     }
 
     public function togglerAttributes(array $attributes): self

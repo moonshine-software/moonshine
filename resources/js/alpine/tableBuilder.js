@@ -77,26 +77,6 @@ export default (
     }
   },
   resolveReindex() {
-    function reindexLevel(tr, level, prev) {
-      tr.querySelectorAll(`[data-level="${level}"]`).forEach(function (field) {
-        let row = field.closest('tr')
-        let name = field.dataset.name
-        prev['${index' + level + '}'] = row.dataset.key ?? row.rowIndex
-
-        Object.entries(prev).forEach(function ([key, value]) {
-          name = name.replace(key, value)
-        })
-
-        field.setAttribute('name', name)
-
-        if (field.dataset?.incrementPosition) {
-          field.innerHTML = row.rowIndex
-        }
-
-        reindexLevel(row, level + 1, prev)
-      })
-    }
-
     function findRoot(element) {
       let parent = element.parentNode.closest('table')
 
@@ -110,9 +90,11 @@ export default (
     let table = findRoot(this.table)
 
     this.$nextTick(() => {
-      table.querySelectorAll('tbody > tr:not(tr tr)').forEach(function (tr) {
-        reindexLevel(tr, 0, {})
-      })
+      MoonShine.iterable.reindex(
+        table,
+        'tbody > tr:not(tr tr)',
+        'tr'
+      )
     })
   },
   asyncFormRequest() {
