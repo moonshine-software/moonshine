@@ -14,7 +14,7 @@ export class MoonShine {
   }
 
   request(t, url, method = 'get', body = {}, headers = {}, data = {}) {
-    if(!(data instanceof ComponentRequestData)) {
+    if (!(data instanceof ComponentRequestData)) {
       data = new ComponentRequestData().fromObject(data)
     }
 
@@ -162,13 +162,13 @@ export class ComponentRequestData {
 
   fromObject(object = {}) {
     return this.withEvents(object.events ?? '')
-    .withSelector(object.selector ?? '')
-    .withResponseFunction(object.responseFunction ?? null)
-    .withBeforeFunction(object.beforeFunction ?? null)
-    .withBeforeCallback(object.beforeCallback ?? null)
-    .withAfterCallback(object.afterCallback ?? null)
-    .withErrorCallback(object.errorCallback ?? null)
-    .withAfterErrorCallback(object.afterErrorCallback ?? null)
-    .withExtraAttributes(object.extraAttributes ?? null)
+      .withSelector(object.selector ?? '')
+      .withResponseFunction(object.responseFunction ?? null)
+      .withBeforeFunction(object.beforeFunction ?? null)
+      .withBeforeCallback(object.beforeCallback ?? null)
+      .withAfterCallback(object.afterCallback ?? null)
+      .withErrorCallback(object.errorCallback ?? null)
+      .withAfterErrorCallback(object.afterErrorCallback ?? null)
+      .withExtraAttributes(object.extraAttributes ?? null)
   }
 }

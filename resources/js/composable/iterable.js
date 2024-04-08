@@ -2,13 +2,7 @@ import sortableFunction from '../alpine/sortable.js'
 
 export class Iterable {
   sortable(element, url = null, group = null, events = null, attributes = {}, onSort = null) {
-    sortableFunction(
-      url ?? null,
-      group ?? null,
-      element,
-      events ?? null,
-      attributes,
-    ).init(onSort)
+    sortableFunction(url ?? null, group ?? null, element, events ?? null, attributes).init(onSort)
   }
 
   reindex(block, itemSelector, closestSelector = null) {
