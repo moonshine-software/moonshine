@@ -9,7 +9,6 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\Icon;
@@ -259,7 +258,7 @@ class Json extends Field implements
 
     public function preparedFields(): Fields
     {
-        return $this->getFields()->prepareReindex(parent: $this, before: function (Json $parent, Field $field) {
+        return $this->getFields()->prepareReindex(parent: $this, before: function (Json $parent, Field $field): void {
             throw_if(
                 ! $parent->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
