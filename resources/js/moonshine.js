@@ -1,12 +1,24 @@
+import {moonShineRequest} from './alpine/asyncFunctions.js'
+import {Iterable} from './composable/iterable.js'
+
 export class MoonShine {
   constructor() {
     this.callbacks = {}
+    this.iterable = new Iterable()
   }
 
   onCallback(name, callback) {
     if (typeof callback === 'function') {
       this.callbacks[name] = callback
     }
+  }
+
+  request(t, url, method = 'get', body = {}, headers = {}, data = {}) {
+    if(!(data instanceof ComponentRequestData)) {
+      data = new ComponentRequestData().fromObject(data)
+    }
+
+    moonShineRequest(t, url, method, body, headers, data)
   }
 }
 
@@ -146,5 +158,17 @@ export class ComponentRequestData {
       .withSelector(dataset.asyncSelector ?? '')
       .withResponseFunction(dataset.asyncCallback ?? null)
       .withBeforeFunction(dataset.asyncBeforeFunction ?? null)
+  }
+
+  fromObject(object = {}) {
+    return this.withEvents(object.events ?? '')
+    .withSelector(object.selector ?? '')
+    .withResponseFunction(object.responseFunction ?? null)
+    .withBeforeFunction(object.beforeFunction ?? null)
+    .withBeforeCallback(object.beforeCallback ?? null)
+    .withAfterCallback(object.afterCallback ?? null)
+    .withErrorCallback(object.errorCallback ?? null)
+    .withAfterErrorCallback(object.afterErrorCallback ?? null)
+    .withExtraAttributes(object.extraAttributes ?? null)
   }
 }

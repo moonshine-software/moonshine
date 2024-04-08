@@ -160,7 +160,7 @@ class MoonShineServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
-        $this->loadViewsFrom(MoonShine::path('/resources/views'), 'moonshine');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'moonshine');
 
         $this->publishes([
             MoonShine::path('/public') => public_path('vendor/moonshine'),

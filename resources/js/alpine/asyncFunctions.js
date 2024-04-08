@@ -64,7 +64,7 @@ export function moonShineRequest(
     return
   }
 
-  if (!componentRequestData instanceof ComponentRequestData) {
+  if (!(componentRequestData instanceof ComponentRequestData)) {
     componentRequestData = new ComponentRequestData()
   }
 

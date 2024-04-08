@@ -23,10 +23,10 @@ export default (url = null, group = null, element = null, events = null, attribu
           formData.append('data', this.toArray())
 
           await axios.post(url, formData)
+        }
 
-          if (typeof onSort === 'function') {
-            onSort(evt)
-          }
+        if (typeof onSort === 'function') {
+          onSort(evt)
         }
       },
     }

@@ -259,39 +259,13 @@ class Json extends Field implements
 
     public function preparedFields(): Fields
     {
-        return $this->getFields()->prepareAttributes()->map(function (Field $field): Field {
+        return $this->getFields()->prepareReindex(parent: $this, before: function (Json $parent, Field $field) {
             throw_if(
-                ! $this->isAsRelation() && $field instanceof ModelRelationField,
+                ! $parent->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
                     'Relationship fields in JSON field unavailable'
                 )
             );
-
-            $name = str($this->name());
-            $level = $name->substrCount('$');
-
-            if ($field instanceof Json) {
-                $field->setLevel($level);
-            }
-
-            if ($field instanceof ID) {
-                $field->beforeRender(fn (ID $id): View|string => $id->preview());
-            }
-
-            $name = $name
-                ->append('[${index' . $level . '}]')
-                ->append("[{$field->column()}]")
-                ->replace('[]', '')
-                ->when(
-                    $field->getAttribute('multiple') || $field->isGroup(),
-                    static fn (Stringable $str): Stringable => $str->append('[]')
-                )->value();
-
-            return $field
-                ->setName($name)
-                ->formName($this->getFormName())
-                ->iterableAttributes($level)
-                ->setParent($this);
         });
     }
 
