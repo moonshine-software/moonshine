@@ -324,12 +324,11 @@ body.theme-minimalistic {
     }
   }
 
-
   /* Mobile menu */
   .layout-menu-mobile {
     @apply border-b border-dark-200 bg-gray-50 px-4 dark:bg-dark-800;
     .menu-heading {
-      @apply border-b border-dark-200
+      @apply border-b border-dark-200;
     }
 
     .menu-logo {
