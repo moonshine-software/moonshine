@@ -120,7 +120,7 @@ final class Fields extends FormElements
      */
     public function prepareReindex(Field $parent, ?callable $before = null)
     {
-        return $this->prepareAttributes()->map(function (Field $field) use($parent, $before): Field {
+        return $this->prepareAttributes()->map(function (Field $field) use ($parent, $before): Field {
             value($before, $parent, $field);
 
             $name = str($parent->name());
