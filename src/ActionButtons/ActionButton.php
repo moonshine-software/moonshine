@@ -134,7 +134,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     public function setItem(mixed $item): self
     {
-        if(!is_null($this->onBeforeSetCallback)) {
+        if(! is_null($this->onBeforeSetCallback)) {
             $item = value($this->onBeforeSetCallback, $item, $this);
         }
 
