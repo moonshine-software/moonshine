@@ -7,9 +7,9 @@ namespace MoonShine\Layouts;
 use MoonShine\AssetManager\Css;
 use MoonShine\Components\Breadcrumbs;
 use MoonShine\Components\Components;
-use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\Body;
+use MoonShine\Components\Layout\Burger;
 use MoonShine\Components\Layout\Content;
 use MoonShine\Components\Layout\Flash;
 use MoonShine\Components\Layout\Footer;
@@ -18,10 +18,14 @@ use MoonShine\Components\Layout\Header;
 use MoonShine\Components\Layout\Html;
 use MoonShine\Components\Layout\LayoutBuilder;
 use MoonShine\Components\Layout\Locales;
+use MoonShine\Components\Layout\Logo;
 use MoonShine\Components\Layout\Menu;
+use MoonShine\Components\Layout\Notifications;
 use MoonShine\Components\Layout\Profile;
 use MoonShine\Components\Layout\Search;
 use MoonShine\Components\Layout\Sidebar;
+use MoonShine\Components\Layout\ThemeSwitcher;
+use MoonShine\Components\Layout\TopBar;
 use MoonShine\Components\Layout\Wrapper;
 use MoonShine\Components\When;
 use MoonShine\Pages\Page;
@@ -88,18 +92,76 @@ final class CompactLayout extends AppLayout
 
     public function build(Page $page): LayoutBuilder
     {
+        $logo = asset('vendor/moonshine/logo.svg');
+        $logoSmall = asset('vendor/moonshine/logo.svg');
+
         return LayoutBuilder::make([
             Html::make([
                 Head::make(),
                 Body::make([
                     Wrapper::make([
-                        Sidebar::make([
-                            Menu::make(),
-                            When::make(
-                                static fn () => config('moonshine.auth.enable', true),
-                                static fn (): array => [Profile::make(withBorder: true)]
-                            ),
+                        TopBar::make([
+                            Block::make([
+                                Logo::make(
+                                    moonshineRouter()->home(),
+                                    $logo,
+                                    $logoSmall
+                                )->minimized()
+                            ])->class('menu-logo'),
+
+                            Block::make([
+                                Menu::make()->top(),
+                            ])->class('menu-navigation'),
+
+                            Block::make([
+                                When::make(
+                                    static fn () => config('moonshine.auth.enable', true),
+                                    static fn (): array => [Profile::make()]
+                                ),
+
+                                Block::make()->class('menu-inner-divider'),
+                                Block::make([
+                                    ThemeSwitcher::make()->top()
+                                ])->class('menu-mode'),
+
+                                Block::make([
+                                    Burger::make()
+                                ])->class('menu-burger')
+                            ])->class('menu-actions')
                         ]),
+
+                        Sidebar::make([
+                            Block::make([
+                                Block::make([
+                                    Logo::make(
+                                        moonshineRouter()->home(),
+                                        $logo,
+                                        $logoSmall
+                                    )->minimized()
+                                ])->class('menu-heading-logo'),
+
+                                Block::make([
+                                    Block::make([
+                                        ThemeSwitcher::make()
+                                    ])->class('menu-heading-mode'),
+
+                                    Block::make([
+                                        Burger::make()
+                                    ])->class('menu-heading-burger')
+                                ])->class('menu-heading-actions')
+                            ])->class('menu-heading'),
+
+                            Block::make([
+                                Menu::make(),
+                                When::make(
+                                    static fn () => config('moonshine.auth.enable', true),
+                                    static fn (): array => [Profile::make(withBorder: true)]
+                                ),
+                            ])->customAttributes([
+                                'class' => 'menu',
+                                ':class' => "asideMenuOpen && '_is-opened'",
+                            ]),
+                        ])->collapsed(),
                         Block::make([
                             Flash::make(),
                             Header::make([
@@ -107,7 +169,9 @@ final class CompactLayout extends AppLayout
                                     ->prepend(moonshineRouter()->home(), icon: 'heroicons.outline.home'),
 
                                 Search::make(),
-                                FlexibleRender::make(view('moonshine::layouts.shared.notifications')),
+
+                                Notifications::make(),
+
                                 Locales::make(),
                             ]),
 

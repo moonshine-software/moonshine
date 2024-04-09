@@ -6,6 +6,7 @@ use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Layouts\AppLayout;
 use MoonShine\Layouts\CompactLayout;
 use MoonShine\Models\MoonshineUser;
+use MoonShine\Pages\ErrorPage;
 use MoonShine\Pages\LoginPage;
 use MoonShine\Pages\ProfilePage;
 
@@ -14,11 +15,9 @@ return [
     'namespace' => 'App\MoonShine',
 
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
-    'logo' => env('MOONSHINE_LOGO'),
-    'logo_small' => env('MOONSHINE_LOGO_SMALL'),
 
     'route' => [
-        'domain' => env('MOONSHINE_URL', ''),
+        'domain' => env('MOONSHINE_DOMAIN', ''),
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
         'single_page_prefix' => 'page',
         'index' => 'moonshine.index',
@@ -27,8 +26,6 @@ return [
     ],
 
     'use_migrations' => true,
-    'use_notifications' => true,
-    'use_theme_switcher' => true,
 
     'layout' => AppLayout::class, // or CompactLayout::class
 
@@ -46,6 +43,7 @@ return [
         'dashboard' => '',
         'profile' => ProfilePage::class,
         'login' => LoginPage::class,
+        'error' => ErrorPage::class,
     ],
 
     'model_resources' => [
@@ -77,6 +75,7 @@ return [
         ],
         'pipelines' => [],
     ],
+
     'locales' => [
         'en',
         'ru',

@@ -4,34 +4,35 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
+use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Collections\MoonShineRenderElements;
+
 class Sidebar extends WithComponents
 {
     protected string $view = 'moonshine::components.layout.sidebar';
 
-    protected bool $hideLogo = false;
+    public bool $collapse = false;
 
-    protected bool $hideSwitcher = false;
+    public ComponentAttributeBag $collapseAttributes;
 
-    public function hideLogo(): self
+    public function __construct(array|MoonShineRenderElements $components = [])
     {
-        $this->hideLogo = true;
+        parent::__construct($components);
+
+        $this->collapseAttributes = new ComponentAttributeBag();
+    }
+
+    public function collapsed(): self
+    {
+        $this->collapse = true;
 
         return $this;
     }
 
-    public function hideSwitcher(): self
+    public function collapseAttributes(array $attributes): self
     {
-        $this->hideSwitcher = true;
+        $this->collapseAttributes = $this->collapseAttributes->merge($attributes);
 
         return $this;
-    }
-
-    protected function viewData(): array
-    {
-        return [
-            ...parent::viewData(),
-            'hideLogo' => $this->hideLogo,
-            'hideSwitcher' => $this->hideSwitcher,
-        ];
     }
 }

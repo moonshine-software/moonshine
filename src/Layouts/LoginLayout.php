@@ -11,6 +11,8 @@ use MoonShine\Components\Layout\Head;
 use MoonShine\Components\Layout\Html;
 use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\LayoutBuilder;
+use MoonShine\Components\Layout\Logo;
+use MoonShine\Components\SocialAuth;
 use MoonShine\Decorations\Heading;
 use MoonShine\MoonShineLayout;
 use MoonShine\Pages\Page;
@@ -19,7 +21,8 @@ final class LoginLayout extends MoonShineLayout
 {
     public function build(Page $page): LayoutBuilder
     {
-        $logo = asset(config('moonshine.logo') ?? 'vendor/moonshine/logo.svg');
+        $logo = asset('vendor/moonshine/logo.svg');
+
         $title = __('moonshine::ui.login.title', ['moonshine_title' => config('moonshine.title')]);
         $description = __('moonshine::ui.login.description');
 
@@ -29,7 +32,7 @@ final class LoginLayout extends MoonShineLayout
                 Body::make([
                     Block::make([
                         Block::make([
-                            FlexibleRender::make(view('moonshine::layouts.shared.logo'))
+                            Logo::make(href: moonshineRouter()->home(), logo: $logo),
                         ])->class('authentication-logo'),
 
                         Block::make([
@@ -43,7 +46,7 @@ final class LoginLayout extends MoonShineLayout
                             Components::make($page->getComponents()),
                         ])->class('authentication-content'),
 
-
+                        SocialAuth::make(),
                     ])->class('authentication')
                 ])
             ])->withAlpineJs()->withThemes(),

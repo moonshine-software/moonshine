@@ -4,6 +4,7 @@ namespace MoonShine\Pages;
 
 use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\SocialAuth;
 use MoonShine\Decorations\Box;
 use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Tab;
@@ -91,12 +92,7 @@ class ProfilePage extends Page
                     'class' => 'btn-lg btn-primary',
                 ]),
 
-            FlexibleRender::make(
-                view('moonshine::ui.social-auth', [
-                    'title' => trans('moonshine::ui.resource.link_socialite'),
-                    'attached' => true,
-                ])
-            ),
+            SocialAuth::make(profileMode: true),
         ];
     }
 }
