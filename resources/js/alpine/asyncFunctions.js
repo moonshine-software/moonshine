@@ -202,7 +202,7 @@ export function listComponentRequest(component, pushState = false) {
       }
 
       document.querySelectorAll('._change-query').forEach(function (element) {
-        element.setAttribute('href',element.dataset.originalUrl + (query ? '?' + query : ''))
+        element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
       })
 
       if (component.$root.dataset.events) {
