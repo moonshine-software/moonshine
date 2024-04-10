@@ -25,8 +25,6 @@ class ExportHandler extends Handler
 
     protected ?string $icon = 'heroicons.outline.table-cells';
 
-    protected bool $withQuery = true;
-
     protected bool $isCsv = false;
 
     protected string $csvDelimiter = ',';
@@ -54,6 +52,8 @@ class ExportHandler extends Handler
      */
     public function handle(): Response
     {
+        $query = request()->query();
+
         if (! $this->hasResource()) {
             throw ActionException::resourceRequired();
         }
@@ -69,6 +69,7 @@ class ExportHandler extends Handler
             ExportHandlerJob::dispatch(
                 $this->getResource()::class,
                 $path,
+                $query,
                 $this->getDisk(),
                 $this->getDir(),
                 $this->getDelimiter()
@@ -85,6 +86,7 @@ class ExportHandler extends Handler
             self::process(
                 $path,
                 $this->getResource(),
+                $query,
                 $this->getDisk(),
                 $this->getDir(),
                 $this->getDelimiter()
@@ -111,10 +113,16 @@ class ExportHandler extends Handler
     public static function process(
         string $path,
         ResourceContract $resource,
+        array $query,
         string $disk = 'public',
         string $dir = '/',
         string $delimiter = ','
     ): string {
+        // TODO fix it in 3.0
+        if(app()->runningInConsole()) {
+            request()->merge($query);
+        }
+
         $items = $resource->items();
         $data = collect();
 
