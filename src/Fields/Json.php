@@ -64,6 +64,8 @@ class Json extends Field implements
 
     protected ?ModelResource $asRelationResource = null;
 
+    protected bool $asRelationDeleteWhenEmpty = false;
+
     /**
      * @throws Throwable
      */
@@ -208,10 +210,11 @@ class Json extends Field implements
     /**
      * @throws Throwable
      */
-    public function asRelation(ModelResource $resource): self
+    public function asRelation(ModelResource $resource, bool $deleteWhenEmpty = false): self
     {
         $this->asRelation = true;
         $this->asRelationResource = $resource;
+        $this->asRelationDeleteWhenEmpty = $deleteWhenEmpty;
 
         $this->fields(
             $resource->getFormFields()->onlyFields()
@@ -532,7 +535,7 @@ class Json extends Field implements
             $localKey = $data->{$this->column()}()->getLocalKeyName();
 
             $data->{$this->column()}()->when(
-                ! empty($ids),
+                ! empty($ids) || $this->asRelationDeleteWhenEmpty,
                 fn (Builder $q) => $q->whereNotIn(
                     $localKey,
                     $ids
