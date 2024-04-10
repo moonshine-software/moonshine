@@ -50,4 +50,4 @@ jobs:
       - name: Execute tests via PEST(PHPUnit)
         env:
           DB_PASSWORD: root
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/pest --bail

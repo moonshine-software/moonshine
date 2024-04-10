@@ -70,7 +70,7 @@ trait UpdateOnPreview
         mixed $condition = null,
         array $events = [],
     ): static {
-        if ($this->isRawMode() || app()->runningInConsole()) {
+        if ($this->isRawMode() || (app()->runningInConsole() && ! app()->runningUnitTests())) {
             return $this;
         }
 
