@@ -535,11 +535,16 @@ class Json extends Field implements
             $localKey = $data->{$this->column()}()->getLocalKeyName();
 
             $data->{$this->column()}()->when(
-                ! empty($ids) || $this->asRelationDeleteWhenEmpty,
+                ! empty($ids),
                 fn (Builder $q) => $q->whereNotIn(
                     $localKey,
                     $ids
                 )->delete()
+            );
+
+            $data->{$this->column()}()->when(
+                empty($ids) && $this->asRelationDeleteWhenEmpty,
+                fn (Builder $q) => $q->delete()
             );
 
             $items->each(fn ($d) => $data->{$this->column()}()->updateOrCreate(

@@ -52,7 +52,9 @@ class ExportHandler extends Handler
      */
     public function handle(): Response
     {
-        $query = request()->query();
+        $query = collect(
+            request()->query()
+        )->except(['_component_name', 'page'])->toArray();
 
         if (! $this->hasResource()) {
             throw ActionException::resourceRequired();
