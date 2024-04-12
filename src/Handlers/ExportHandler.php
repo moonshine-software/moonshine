@@ -126,8 +126,7 @@ class ExportHandler extends Handler
             request()->merge($query);
         }
 
-        $items = static function (ResourceContract $resource): Generator
-        {
+        $items = static function (ResourceContract $resource): Generator {
             foreach ($resource->resolveQuery()->cursor() as $index => $item) {
                 $row = [];
 

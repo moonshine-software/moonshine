@@ -18,13 +18,13 @@ final class FieldsGroup extends WithComponents
      */
     public function previewMode(): self
     {
-        if(!$this->components instanceof Fields) {
+        if(! $this->components instanceof Fields) {
             $this->components = Fields::make($this->components);
         }
 
         $this->components
             ->onlyFields()
-            ->map(fn(Field $field): Field => $field->forcePreview());
+            ->map(fn (Field $field): Field => $field->forcePreview());
 
         return $this;
     }
