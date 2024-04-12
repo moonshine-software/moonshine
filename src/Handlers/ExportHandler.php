@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
+use Generator;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
@@ -125,29 +126,29 @@ class ExportHandler extends Handler
             request()->merge($query);
         }
 
-        $items = $resource->items();
-        $data = collect();
+        $items = static function (ResourceContract $resource): Generator
+        {
+            foreach ($resource->resolveQuery()->cursor() as $index => $item) {
+                $row = [];
 
-        foreach ($items as $index => $item) {
-            $row = [];
+                $fields = $resource
+                    ->getFields()
+                    ->onlyFields()
+                    ->exportFields();
 
-            $fields = $resource
-                ->getFields()
-                ->onlyFields()
-                ->exportFields();
+                $fields->fill($item->toArray(), $item, $index);
 
-            $fields->fill($item->toArray(), $item, $index);
+                foreach ($fields as $field) {
+                    $row[$field->label()] = $field
+                        ->rawMode()
+                        ->preview();
+                }
 
-            foreach ($fields as $field) {
-                $row[$field->label()] = $field
-                    ->rawMode()
-                    ->preview();
+                yield $row;
             }
+        };
 
-            $data->add($row);
-        }
-
-        $fastExcel = new FastExcel($data);
+        $fastExcel = new FastExcel($items($resource));
 
         if (str($path)->contains('.csv')) {
             $fastExcel->configureCsv($delimiter);
