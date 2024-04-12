@@ -24,7 +24,7 @@ final class FieldsGroup extends WithComponents
 
         $this->components
             ->onlyFields()
-            ->map(fn(Field $field) => $field->forcePreview());
+            ->map(fn(Field $field): Field => $field->forcePreview());
 
         return $this;
     }
