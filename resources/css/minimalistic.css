@@ -12,11 +12,11 @@ body.theme-minimalistic {
     @apply text-xs;
   }
   .layout-wrapper {
-    @apply p-0;
+    @apply lg:p-0;
 
     @supports selector(:has(*)) {
       &:has(> .layout-menu) {
-        @apply py-0 pl-0 pr-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
+        @apply lg:py-0 pl-0 pr-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
       }
 
       &-short:has(> .layout-menu) {
@@ -559,14 +559,18 @@ body.theme-minimalistic {
     @apply text-3xs font-normal;
   }
 
-  .form-switcher-toggler {
-    height: 1.25rem;
-    width: 2.25rem;
+  .form-switcher {
 
-    &::after {
-      border-radius: 0 !important;
-      height: 1rem;
-      width: 1rem;
+    &-toggler {
+      @apply dark:border dark:border-dark-200;
+      height: 1.25rem;
+      width: 2.25rem;
+
+      &::after {
+        border-radius: 0 !important;
+        height: 1rem;
+        width: 1rem;
+      }
     }
   }
 
