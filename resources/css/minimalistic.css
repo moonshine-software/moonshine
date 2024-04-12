@@ -16,7 +16,7 @@ body.theme-minimalistic {
 
     @supports selector(:has(*)) {
       &:has(> .layout-menu) {
-        @apply lg:py-0 pl-0 pr-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
+        @apply pl-0 pr-0 lg:py-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
       }
 
       &-short:has(> .layout-menu) {
@@ -560,7 +560,6 @@ body.theme-minimalistic {
   }
 
   .form-switcher {
-
     &-toggler {
       @apply dark:border dark:border-dark-200;
       height: 1.25rem;
