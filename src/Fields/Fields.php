@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Stringable;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\HasReactivity;
@@ -111,6 +113,42 @@ final class Fields extends FormElements
         return $this->exceptElements(
             fn ($element): bool => $element instanceof ModelRelationField
         );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function prepareReindex(Field $parent, ?callable $before = null)
+    {
+        return $this->prepareAttributes()->map(function (Field $field) use ($parent, $before): Field {
+            value($before, $parent, $field);
+
+            $name = str($parent->name());
+            $level = $name->substrCount('$');
+
+            if ($field instanceof Json) {
+                $field->setLevel($level);
+            }
+
+            if ($field instanceof ID) {
+                $field->beforeRender(fn (ID $id): View|string => $id->preview());
+            }
+
+            $name = $name
+                ->append('[${index' . $level . '}]')
+                ->append("[{$field->column()}]")
+                ->replace('[]', '')
+                ->when(
+                    $field->getAttribute('multiple') || $field->isGroup(),
+                    static fn (Stringable $str): Stringable => $str->append('[]')
+                )->value();
+
+            return $field
+                ->setName($name)
+                ->formName($parent->getFormName())
+                ->iterableAttributes($level)
+                ->setParent($parent);
+        });
     }
 
     /**

@@ -114,7 +114,7 @@ if (! function_exists('table')) {
 if (! function_exists('actionBtn')) {
     function actionBtn(
         Closure|string $label,
-        Closure|string|null $url = null,
+        Closure|string $url = '',
         mixed $item = null
     ): ActionButton {
         return ActionButton::make($label, $url, $item);

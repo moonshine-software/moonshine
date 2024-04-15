@@ -12,10 +12,22 @@ body.theme-minimalistic {
     @apply text-xs;
   }
   .layout-wrapper {
-    @apply py-0 pl-0 pr-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
+    @apply lg:p-0;
 
-    &-short {
-      @apply lg:pl-[3.75rem];
+    @supports selector(:has(*)) {
+      &:has(> .layout-menu) {
+        @apply pl-0 pr-0 lg:py-0 lg:pl-[3.75rem] xl:pl-[16.75rem];
+      }
+
+      &-short:has(> .layout-menu) {
+        @apply lg:pl-[3.75rem];
+      }
+    }
+
+    @supports selector(:has(*)) {
+      &:has(> .layout-menu-mobile) {
+        @apply mobile:pt-14 !important;
+      }
     }
 
     &--top-menu {
@@ -312,6 +324,98 @@ body.theme-minimalistic {
     }
   }
 
+  /* Mobile menu */
+  .layout-menu-mobile {
+    @apply border-b border-dark-200 bg-gray-50 px-4 dark:bg-dark-800;
+    .menu-heading {
+      @apply border-b border-dark-200;
+    }
+
+    .menu-logo {
+      img {
+        @apply h-8 lg:h-10;
+      }
+    }
+
+    .menu-navigation {
+      @apply px-4 lg:px-0;
+    }
+
+    .menu-inner {
+      @apply gap-y-1 pt-4;
+
+      &-item {
+        @apply rounded-md before:hidden after:hidden;
+        &._is-active {
+          .menu-inner-link,
+          .menu-inner-button {
+            @apply bg-dark-200 text-black dark:text-white;
+          }
+        }
+      }
+
+      &-link,
+      &-button {
+        @apply gap-x-2 rounded-md bg-transparent px-2 py-1.5 text-2xs text-dark-600 hover:bg-dark-200 hover:text-black current:bg-dark-200 dark:text-slate-200 dark:hover:text-white dark:current:bg-primary;
+        > svg {
+          @apply h-5 w-5;
+        }
+      }
+
+      &-link {
+        @apply after:!hidden;
+      }
+
+      &-divider {
+        @apply m-0 text-3xs text-dark-200 before:bg-dark-300 dark:text-slate-500;
+      }
+
+      &-counter {
+        @apply rounded-[0.25rem];
+      }
+
+      &-dropdown {
+        @apply mt-1 border border-dark-200 bg-dark-50 shadow-none dark:bg-dark-700;
+
+        .menu-inner-divider {
+          @apply pl-0 before:bg-dark-300 dark:before:bg-dark-200;
+        }
+
+        .menu-inner-link,
+        .menu-inner-button {
+          @apply px-1.5 py-1 text-3xs;
+        }
+      }
+    }
+
+    .menu-heading-mode {
+      &-btn {
+        @apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+        > svg {
+          @apply h-5 w-5;
+        }
+      }
+    }
+
+    .menu-heading-settings {
+      > a {
+        @apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+        > svg {
+          @apply h-5 w-5;
+        }
+      }
+    }
+
+    .menu-heading-burger {
+      > button {
+        @apply text-dark-600 hover:text-secondary dark:text-slate-400 dark:hover:text-white;
+        > svg {
+          @apply h-7 w-7;
+        }
+      }
+    }
+  }
+
   /* Box cards */
   .box {
     @apply p-3;
@@ -455,14 +559,17 @@ body.theme-minimalistic {
     @apply text-3xs font-normal;
   }
 
-  .form-switcher-toggler {
-    height: 1.25rem;
-    width: 2.25rem;
+  .form-switcher {
+    &-toggler {
+      @apply dark:border dark:border-dark-200;
+      height: 1.25rem;
+      width: 2.25rem;
 
-    &::after {
-      border-radius: 0 !important;
-      height: 1rem;
-      width: 1rem;
+      &::after {
+        border-radius: 0 !important;
+        height: 1rem;
+        width: 1rem;
+      }
     }
   }
 

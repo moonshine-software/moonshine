@@ -9,7 +9,6 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\Icon;
@@ -64,6 +63,8 @@ class Json extends Field implements
     protected bool $isFilterMode = false;
 
     protected ?ModelResource $asRelationResource = null;
+
+    protected bool $asRelationDeleteWhenEmpty = false;
 
     /**
      * @throws Throwable
@@ -209,10 +210,11 @@ class Json extends Field implements
     /**
      * @throws Throwable
      */
-    public function asRelation(ModelResource $resource): self
+    public function asRelation(ModelResource $resource, bool $deleteWhenEmpty = false): self
     {
         $this->asRelation = true;
         $this->asRelationResource = $resource;
+        $this->asRelationDeleteWhenEmpty = $deleteWhenEmpty;
 
         $this->fields(
             $resource->getFormFields()->onlyFields()
@@ -259,39 +261,13 @@ class Json extends Field implements
 
     public function preparedFields(): Fields
     {
-        return $this->getFields()->prepareAttributes()->map(function (Field $field): Field {
+        return $this->getFields()->prepareReindex(parent: $this, before: function (Json $parent, Field $field): void {
             throw_if(
-                ! $this->isAsRelation() && $field instanceof ModelRelationField,
+                ! $parent->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
                     'Relationship fields in JSON field unavailable'
                 )
             );
-
-            $name = str($this->name());
-            $level = $name->substrCount('$');
-
-            if ($field instanceof Json) {
-                $field->setLevel($level);
-            }
-
-            if ($field instanceof ID) {
-                $field->beforeRender(fn (ID $id): View|string => $id->preview());
-            }
-
-            $name = $name
-                ->append('[${index' . $level . '}]')
-                ->append("[{$field->column()}]")
-                ->replace('[]', '')
-                ->when(
-                    $field->getAttribute('multiple') || $field->isGroup(),
-                    static fn (Stringable $str): Stringable => $str->append('[]')
-                )->value();
-
-            return $field
-                ->setName($name)
-                ->formName($this->getFormName())
-                ->iterableAttributes($level)
-                ->setParent($this);
         });
     }
 
@@ -392,7 +368,7 @@ class Json extends Field implements
             ->name('json_' . $this->column())
             ->customAttributes(
                 $this->attributes()
-                    ->except('class')
+                    ->except(['class', 'data-name', 'data-column'])
                     ->when(
                         $sortable,
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
@@ -564,6 +540,11 @@ class Json extends Field implements
                     $localKey,
                     $ids
                 )->delete()
+            );
+
+            $data->{$this->column()}()->when(
+                empty($ids) && $this->asRelationDeleteWhenEmpty,
+                fn (Builder $q) => $q->delete()
             );
 
             $items->each(fn ($d) => $data->{$this->column()}()->updateOrCreate(

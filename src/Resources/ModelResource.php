@@ -219,7 +219,6 @@ abstract class ModelResource extends Resource
 
     /**
      * @param TModel $item
-     * @param Fields|null $fields
      *
      * @throws Throwable
      */
@@ -266,7 +265,6 @@ abstract class ModelResource extends Resource
 
     /**
      * @param TModel $item
-     * @param Fields|null $fields
      *
      * @return TModel
      * @throws ResourceException

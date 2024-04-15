@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
+use Generator;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
@@ -24,8 +25,6 @@ class ExportHandler extends Handler
     use WithStorage;
 
     protected ?string $icon = 'heroicons.outline.table-cells';
-
-    protected bool $withQuery = true;
 
     protected bool $isCsv = false;
 
@@ -54,6 +53,10 @@ class ExportHandler extends Handler
      */
     public function handle(): Response
     {
+        $query = collect(
+            request()->query()
+        )->except(['_component_name', 'page'])->toArray();
+
         if (! $this->hasResource()) {
             throw ActionException::resourceRequired();
         }
@@ -69,6 +72,7 @@ class ExportHandler extends Handler
             ExportHandlerJob::dispatch(
                 $this->getResource()::class,
                 $path,
+                $query,
                 $this->getDisk(),
                 $this->getDir(),
                 $this->getDelimiter()
@@ -85,6 +89,7 @@ class ExportHandler extends Handler
             self::process(
                 $path,
                 $this->getResource(),
+                $query,
                 $this->getDisk(),
                 $this->getDir(),
                 $this->getDelimiter()
@@ -111,33 +116,38 @@ class ExportHandler extends Handler
     public static function process(
         string $path,
         ResourceContract $resource,
+        array $query,
         string $disk = 'public',
         string $dir = '/',
         string $delimiter = ','
     ): string {
-        $items = $resource->items();
-        $data = collect();
-
-        foreach ($items as $index => $item) {
-            $row = [];
-
-            $fields = $resource
-                ->getFields()
-                ->onlyFields()
-                ->exportFields();
-
-            $fields->fill($item->toArray(), $item, $index);
-
-            foreach ($fields as $field) {
-                $row[$field->label()] = $field
-                    ->rawMode()
-                    ->preview();
-            }
-
-            $data->add($row);
+        // TODO fix it in 3.0
+        if(app()->runningInConsole()) {
+            request()->merge($query);
         }
 
-        $fastExcel = new FastExcel($data);
+        $items = static function (ResourceContract $resource): Generator {
+            foreach ($resource->resolveQuery()->cursor() as $index => $item) {
+                $row = [];
+
+                $fields = $resource
+                    ->getFields()
+                    ->onlyFields()
+                    ->exportFields();
+
+                $fields->fill($item->toArray(), $item, $index);
+
+                foreach ($fields as $field) {
+                    $row[$field->label()] = $field
+                        ->rawMode()
+                        ->preview();
+                }
+
+                yield $row;
+            }
+        };
+
+        $fastExcel = new FastExcel($items($resource));
 
         if (str($path)->contains('.csv')) {
             $fastExcel->configureCsv($delimiter);

@@ -41,8 +41,16 @@ trait UpdateOnPreview
     public function withUpdateRow(
         string $component,
     ): static {
+        if ($this->isRawMode()) {
+            return $this;
+        }
+
         if (is_null($this->updateOnPreviewUrl)) {
             $this->updateOnPreview();
+        }
+
+        if (is_null($this->updateOnPreviewUrl)) {
+            return $this;
         }
 
         return $this->onChangeUrl(
@@ -62,6 +70,10 @@ trait UpdateOnPreview
         mixed $condition = null,
         array $events = [],
     ): static {
+        if ($this->isRawMode() || (app()->runningInConsole() && ! app()->runningUnitTests())) {
+            return $this;
+        }
+
         $this->updateOnPreview = Condition::boolean($condition, true);
 
         if (! $this->updateOnPreview) {

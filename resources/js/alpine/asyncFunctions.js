@@ -64,7 +64,7 @@ export function moonShineRequest(
     return
   }
 
-  if (!componentRequestData instanceof ComponentRequestData) {
+  if (!(componentRequestData instanceof ComponentRequestData)) {
     componentRequestData = new ComponentRequestData()
   }
 
@@ -195,11 +195,15 @@ export function listComponentRequest(component, pushState = false) {
   axios
     .get(url)
     .then(response => {
-      if (pushState) {
-        const query = url.slice(url.indexOf('?') + 1)
+      const query = url.slice(url.indexOf('?') + 1)
 
+      if (pushState) {
         history.pushState({}, '', query ? '?' + query : location.pathname)
       }
+
+      document.querySelectorAll('._change-query').forEach(function (element) {
+        element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
+      })
 
       if (component.$root.dataset.events) {
         dispatchEvents(component.$root.dataset.events, 'success', component)
