@@ -53,7 +53,7 @@ trait ShowWhen
         $name = $this->name();
 
         if($this instanceof HasFields) {
-            $name = str_replace('[]', '', $name);
+            $name = str_replace('[]', '', (string) $name);
         }
 
         $this->showWhenCondition[] = [
