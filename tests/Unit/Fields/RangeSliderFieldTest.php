@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Components\Rating;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\RangeSlider;
 
@@ -35,13 +36,13 @@ it('view', function (): void {
 });
 
 it('preview with stars', function (): void {
-    $from = view('moonshine::ui.rating', [
-        'value' => $this->item->from,
-    ])->render();
+    $from = (string) Rating::make(
+        $this->item->from
+    )->render();
 
-    $to = view('moonshine::ui.rating', [
-        'value' => $this->item->to,
-    ])->render();
+    $to = (string) Rating::make(
+        $this->item->to
+    )->render();
 
     expect($this->field->stars()->preview())
         ->toBe("$from - $to");

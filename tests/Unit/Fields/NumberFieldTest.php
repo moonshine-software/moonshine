@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Components\Rating;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Text;
 use MoonShine\InputExtensions\InputNumberUpDown;
@@ -63,9 +64,11 @@ it('buttons is up-down extension', function (): void {
 
 it('preview with stars', function (): void {
     expect($this->field->stars()->preview())
-        ->toBe(view('moonshine::ui.rating', [
-            'value' => '3',
-        ])->render());
+        ->toBe(
+            (string) Rating::make(
+                3
+            )->render()
+        );
 });
 
 it('apply', function (): void {

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Components\Boolean;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -26,13 +27,13 @@ describe('basic methods', function () {
     it('preview', function (): void {
         $field = Checkbox::make('Active');
 
-        expect($field->fill(1)->preview())
-            ->toBe(view('moonshine::ui.boolean', ['value' => true])->render());
+        expect((string) $field->fill(1)->preview())
+            ->toBe((string) Boolean::make(true)->render());
 
         $field = Checkbox::make('Active');
 
         expect($field->fill(0)->preview())
-            ->toBe(view('moonshine::ui.boolean', ['value' => false])->render());
+            ->toBe((string) Boolean::make(false)->render());
     });
 
     it('correct is checked value', function (): void {

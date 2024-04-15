@@ -141,7 +141,7 @@ class InstallCommand extends MoonShineCommand
         ]);
 
         $this->replaceInFile(
-            "'dashboard' => ''",
+            "'dashboard' => 'Dashboard::class'",
             "'dashboard' => " . MoonShine::namespace('\Pages\Dashboard') . "::class",
             config_path('moonshine.php')
         );

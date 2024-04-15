@@ -4,9 +4,8 @@ use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Middleware\Authenticate;
 use MoonShine\Layouts\AppLayout;
-use MoonShine\Layouts\CompactLayout;
 use MoonShine\Models\MoonshineUser;
-use MoonShine\Pages\ErrorPage;
+use MoonShine\Pages\Dashboard;
 use MoonShine\Pages\LoginPage;
 use MoonShine\Pages\ProfilePage;
 
@@ -36,14 +35,13 @@ return [
     'cache' => 'file',
 
     'forms' => [
-        'login' => LoginForm::class
+        'login' => LoginForm::class,
     ],
 
     'pages' => [
-        'dashboard' => '',
+        'dashboard' => Dashboard::class,
         'profile' => ProfilePage::class,
         'login' => LoginPage::class,
-        'error' => ErrorPage::class,
     ],
 
     'model_resources' => [

@@ -65,9 +65,7 @@ class TestCase extends Orchestra
             '--without-migrations' => true,
         ]);
 
-        $this->artisan('config:clear');
-        $this->artisan('view:clear');
-        $this->artisan('cache:clear');
+        $this->artisan('optimize:clear');
 
         return $this;
     }
