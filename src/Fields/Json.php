@@ -368,7 +368,7 @@ class Json extends Field implements
             ->name('json_' . $this->column())
             ->customAttributes(
                 $this->attributes()
-                    ->except('class')
+                    ->except(['class', 'data-name', 'data-column'])
                     ->when(
                         $sortable,
                         fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([

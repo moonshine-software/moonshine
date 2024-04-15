@@ -24,7 +24,6 @@ trait WithComponentAttributes
         return str($old)
             ->append(' ')
             ->append($new)
-            ->lower()
             ->trim()
             ->explode(' ')
             ->unique()
