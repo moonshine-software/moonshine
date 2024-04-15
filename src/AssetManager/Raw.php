@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Traits\Makeable;
-use Stringable;
 
 final class Raw implements AssetElement
 {

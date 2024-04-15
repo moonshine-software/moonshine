@@ -2,7 +2,6 @@
 
 namespace MoonShine\Pages;
 
-use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\SocialAuth;
 use MoonShine\Decorations\Box;

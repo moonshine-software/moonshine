@@ -9,7 +9,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Validation\ValidationException;
-use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Requests\LoginFormRequest;
 use MoonShine\Pages\LoginPage;
 

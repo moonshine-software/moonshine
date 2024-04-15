@@ -31,7 +31,7 @@ class ErrorPage extends Page
 
         return [
             FlexibleRender::make(
-                static fn () => <<<HTML
+                static fn (): string => <<<HTML
                 <div
                     class="flex min-h-screen flex-col items-center justify-center gap-x-8 gap-y-8 py-8 px-4 md:flex-row lg:gap-x-12">
                     <div class="shrink-0">

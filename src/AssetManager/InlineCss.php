@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithComponentAttributes;
-use Stringable;
 
 final class InlineCss implements AssetElement
 {

@@ -6,7 +6,6 @@ namespace MoonShine\Layouts;
 
 use MoonShine\Components\Breadcrumbs;
 use MoonShine\Components\Components;
-use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\Body;
 use MoonShine\Components\Layout\Burger;
@@ -25,7 +24,6 @@ use MoonShine\Components\Layout\Profile;
 use MoonShine\Components\Layout\Search;
 use MoonShine\Components\Layout\Sidebar;
 use MoonShine\Components\Layout\ThemeSwitcher;
-use MoonShine\Components\Layout\TopBar;
 use MoonShine\Components\Layout\Wrapper;
 use MoonShine\Components\Title;
 use MoonShine\Components\When;
@@ -51,7 +49,7 @@ class AppLayout extends MoonShineLayout
                     static fn () => __('moonshine::ui.resource.role_title'),
                     new MoonShineUserRoleResource()
                 ),
-            ])->canSee(fn (MoonShineRequest $request) => $request->isMoonShineRequest()),
+            ])->canSee(fn (MoonShineRequest $request): bool => $request->isMoonShineRequest()),
         ];
     }
 

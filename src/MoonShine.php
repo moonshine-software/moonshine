@@ -35,12 +35,12 @@ class MoonShine
 
     public function flushState(): void
     {
-        $this->getResources()->transform(function (ResourceContract $resource) {
+        $this->getResources()->transform(function (ResourceContract $resource): ResourceContract {
             $resource->flushState();
             return $resource;
         });
 
-        $this->getPages()->transform(function (Page $page) {
+        $this->getPages()->transform(function (Page $page): Page {
             $page->flushState();
             return $page;
         });
@@ -132,9 +132,7 @@ class MoonShine
     }
 
     /**
-     * @param  string  $pageName
      * @param  class-string<Page>  $default
-     * @return Page
      */
     public function getPageFromConfig(string $pageName, string $default): Page
     {

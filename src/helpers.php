@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Cache\Repository;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
@@ -19,7 +18,6 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
-use MoonShine\MoonShineLayout;
 use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;

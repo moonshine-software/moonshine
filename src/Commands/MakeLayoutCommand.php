@@ -9,7 +9,6 @@ use MoonShine\MoonShine;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\outro;
-use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
 #[AsCommand(name: 'moonshine:layout')]

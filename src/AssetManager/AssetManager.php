@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use Closure;
 use Composer\InstalledVersions;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Vite;

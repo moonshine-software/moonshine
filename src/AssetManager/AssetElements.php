@@ -43,7 +43,7 @@ final class AssetElements extends Collection implements Htmlable
     public function withVersion(int|string $version): self
     {
         return $this->map(
-            fn(AssetElement $asset) => $asset instanceof HasVersion
+            fn(AssetElement $asset): HasVersion|AssetElement => $asset instanceof HasVersion
                 ? $asset->version($version)
                 : $asset
         );

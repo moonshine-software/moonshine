@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Metrics;
 
 use Closure;
-use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
 
 class DonutChartMetric extends Metric

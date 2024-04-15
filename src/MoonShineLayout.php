@@ -15,9 +15,9 @@ use MoonShine\Theme\ColorManager;
 abstract class MoonShineLayout
 {
     public function __construct(
-        private AssetManager $assetManager,
-        private ColorManager $colorManager,
-        private MenuManager $menuManager,
+        private readonly AssetManager $assetManager,
+        private readonly ColorManager $colorManager,
+        private readonly MenuManager $menuManager,
     ) {
         $this->assetManager->add(
             $this->assets()

@@ -25,7 +25,7 @@ final class Logo extends MoonShineComponent
         public ?string $title = null,
     )
     {
-        $this->title = $this->title ?? config('moonshine.title');
+        $this->title ??= config('moonshine.title');
         $this->logoAttributes = new ComponentAttributeBag();
         $this->logoSmallAttributes = new ComponentAttributeBag();
     }
