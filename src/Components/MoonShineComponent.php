@@ -11,6 +11,7 @@ use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
@@ -24,6 +25,8 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     use Makeable;
     use WithView;
     use HasCanSee;
+
+    protected ?Closure $onBeforeRenderCallback = null;
 
     public function name(string $name): static
     {
@@ -48,6 +51,13 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         }
 
         return $this;
+    }
+
+    public function class(string $class): static
+    {
+        return $this->customAttributes([
+            'class' => $class
+        ]);
     }
 
     public function removeAttribute(string $name): static
@@ -83,9 +93,24 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         ]);
     }
 
+    public function onBeforeRender(Closure $onBeforeRender): static
+    {
+        $this->onBeforeRenderCallback = $onBeforeRender;
+
+        return $this;
+    }
+
     public function render(): View|Closure|string
     {
         $mergeData = $this->viewData();
+
+        if($this instanceof HasAssets) {
+            moonshineAssets()->add($this->getAssets());
+        }
+
+        if(! is_null($this->onBeforeRenderCallback)) {
+            value($this->onBeforeRenderCallback, $this);
+        }
 
         return $this->view(
             $this->getView(),

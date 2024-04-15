@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Components\Boolean;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Switcher;
 
@@ -25,9 +26,7 @@ it('checkbox is parent', function (): void {
 it('preview with not auto update', function (): void {
     expect($this->field->preview())
         ->toBe(
-            view('moonshine::ui.boolean', [
-                'value' => (bool) $this->field->toValue(false),
-            ])->render()
+            (string) Boolean::make((bool) $this->field->toValue(false))->render()
         );
 });
 
@@ -51,9 +50,9 @@ describe('basic methods', function () {
 
     it('preview', function (): void {
         expect($this->field->preview())
-            ->toBe(view('moonshine::ui.boolean', [
-                'value' => true,
-            ])->render());
+            ->toBe(
+                (string) Boolean::make(true)->render()
+            );
     });
 
     it('change preview', function () {

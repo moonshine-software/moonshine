@@ -19,6 +19,7 @@ final class ExportButton
             $url . ($query ? '?' . $query : '')
         )
             ->primary()
+            ->customAttributes(['class' => '_change-query', 'data-original-url' => $url])
             ->icon($export->iconValue());
     }
 }

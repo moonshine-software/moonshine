@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Components\Boolean;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
@@ -22,7 +23,7 @@ it('show field on pages', function () {
         $this->field
     );
 
-    $view = view('moonshine::ui.boolean', ['value' => $this->item->active])->render();
+    $view = Boolean::make($this->item->active)->render();
 
     asAdmin()->get(
         to_page(page: IndexPage::class, resource: $resource)

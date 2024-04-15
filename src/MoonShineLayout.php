@@ -4,54 +4,51 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
-use MoonShine\Components\Layout\{Content,
-    Flash,
-    Footer,
-    Header,
-    LayoutBlock,
-    LayoutBuilder,
-    Menu,
-    Profile,
-    Search,
-    Sidebar};
-use MoonShine\Components\When;
-use MoonShine\Contracts\MoonShineLayoutContract;
+use MoonShine\AssetManager\AssetManager;
+use MoonShine\AssetManager\Css;
+use MoonShine\AssetManager\Js;
+use MoonShine\Components\Layout\{LayoutBuilder};
+use MoonShine\MenuManager\MenuManager;
+use MoonShine\Pages\Page;
+use MoonShine\Theme\ColorManager;
 
-final class MoonShineLayout implements MoonShineLayoutContract
+abstract class MoonShineLayout
 {
-    public static function build(): LayoutBuilder
-    {
-        return LayoutBuilder::make([
-            Sidebar::make([
-                Menu::make()->customAttributes(['class' => 'mt-2']),
-                When::make(
-                    static fn () => config('moonshine.auth.enable', true),
-                    static fn (): array => [Profile::make(withBorder: true)]
-                ),
-            ]),
-            LayoutBlock::make([
-                Flash::make(),
-                Header::make([
-                    Search::make(),
-                ]),
-                Content::make(),
-                Footer::make()
-                    ->copyright(fn (): string => sprintf(
-                        <<<'HTML'
-                            &copy; 2021-%d Made with ❤️ by
-                            <a href="https://cutcode.dev"
-                                class="font-semibold text-primary hover:text-secondary"
-                                target="_blank"
-                            >
-                                CutCode
-                            </a>
-                        HTML,
-                        now()->year
-                    ))
-                    ->menu([
-                        'https://moonshine-laravel.com/docs' => 'Documentation',
-                    ]),
-            ])->customAttributes(['class' => 'layout-page']),
-        ]);
+    public function __construct(
+        private AssetManager $assetManager,
+        private ColorManager $colorManager,
+        private MenuManager $menuManager,
+    ) {
+        $this->assetManager->add(
+            $this->assets()
+        );
+
+        $this->menuManager->add(
+            $this->menu()
+        );
+
+        $this->colors(
+            $this->colorManager
+        );
     }
+
+    protected function colors(ColorManager $colorManager): void
+    {
+        //
+    }
+
+    protected function assets(): array
+    {
+        return [
+            Js::make('/vendor/moonshine/assets/app.js')->defer(),
+            Css::make('/vendor/moonshine/assets/main.css')->defer(),
+        ];
+    }
+
+    protected function menu(): array
+    {
+        return [];
+    }
+
+    abstract public function build(Page $page): LayoutBuilder;
 }

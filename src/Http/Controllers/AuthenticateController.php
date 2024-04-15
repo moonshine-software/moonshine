@@ -11,10 +11,11 @@ use Illuminate\Pipeline\Pipeline;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Forms\LoginForm;
 use MoonShine\Http\Requests\LoginFormRequest;
+use MoonShine\Pages\LoginPage;
 
 class AuthenticateController extends MoonShineController
 {
-    public function login(): View|RedirectResponse
+    public function login(): View|RedirectResponse|string
     {
         if ($this->auth()->check()) {
             return redirect(
@@ -22,11 +23,9 @@ class AuthenticateController extends MoonShineController
             );
         }
 
-        $form = config('moonshine.forms.login', LoginForm::class);
-
-        return view('moonshine::auth.login', [
-            'form' => new $form(),
-        ]);
+        return moonshine()
+            ->getPageFromConfig('login', LoginPage::class)
+            ->render();
     }
 
     /**

@@ -9,7 +9,7 @@ use MoonShine\Components\MoonShineComponent;
 
 final class Locales extends MoonShineComponent
 {
-    protected string $view = 'moonshine::layouts.shared.locales';
+    protected string $view = 'moonshine::components.layout.locales';
 
     public string $current;
 

@@ -3,7 +3,7 @@
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Modal;
 use MoonShine\Components\TableBuilder;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Decorations\Tab;
@@ -19,7 +19,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResource;
 uses()->group('core');
 
 beforeEach(function (): void {
-    $this->data = Block::make([
+    $this->data = Box::make([
         FormBuilder::make()->fields([
             Tabs::make([
                 Tab::make([

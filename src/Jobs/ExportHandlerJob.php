@@ -26,6 +26,7 @@ class ExportHandlerJob implements ShouldQueue
     public function __construct(
         protected string $resource,
         protected string $path,
+        protected array $query,
         protected string $disk,
         protected string $dir,
         protected string $delimiter = ','
@@ -43,6 +44,7 @@ class ExportHandlerJob implements ShouldQueue
         ExportHandler::process(
             $this->path,
             new $this->resource(),
+            $this->query,
             $this->disk,
             $this->dir,
             $this->delimiter

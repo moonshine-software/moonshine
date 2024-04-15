@@ -21,7 +21,7 @@ trait HasPageRequest
                     ?->findByUri($this->getPageUri());
             }
 
-            return moonshine()->getPageFromUriKey(
+            return moonshine()->getPages()->findByUri(
                 $this->getPageUri()
             );
         });

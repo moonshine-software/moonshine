@@ -9,6 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\AssetManager\AssetManager;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
@@ -16,7 +17,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Menu\MenuManager;
+use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineLayout;
 use MoonShine\MoonShineRegister;
@@ -26,7 +27,6 @@ use MoonShine\Pages\Page;
 use MoonShine\Support\Backtrace;
 use MoonShine\Support\MemoizeRepository;
 use MoonShine\Support\SelectOptions;
-use MoonShine\Theme\AssetManager;
 use MoonShine\Theme\ColorManager;
 
 if (! function_exists('moonshine')) {
@@ -78,16 +78,6 @@ if (! function_exists('moonshineRouter')) {
     }
 }
 
-if (! function_exists('moonshineLayout')) {
-    function moonshineLayout(): View
-    {
-        /* @var \MoonShine\Contracts\MoonShineLayoutContract $class */
-        $class = config('moonshine.layout', MoonShineLayout::class);
-
-        return $class::build()->render();
-    }
-}
-
 if (! function_exists('moonshineCache')) {
     function moonshineCache(): Repository
     {
@@ -124,7 +114,7 @@ if (! function_exists('table')) {
 if (! function_exists('actionBtn')) {
     function actionBtn(
         Closure|string $label,
-        Closure|string|null $url = null,
+        Closure|string $url = '',
         mixed $item = null
     ): ActionButton {
         return ActionButton::make($label, $url, $item);

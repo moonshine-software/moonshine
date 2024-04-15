@@ -4,7 +4,8 @@ namespace MoonShine\Pages;
 
 use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Decorations\Block;
+use MoonShine\Components\SocialAuth;
+use MoonShine\Decorations\Box;
 use MoonShine\Decorations\Heading;
 use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
@@ -34,7 +35,7 @@ class ProfilePage extends Page
     public function fields(): array
     {
         return [
-            Block::make([
+            Box::make([
                 Tabs::make([
                     Tab::make(__('moonshine::ui.resource.main_information'), [
                         ID::make()
@@ -91,12 +92,7 @@ class ProfilePage extends Page
                     'class' => 'btn-lg btn-primary',
                 ]),
 
-            FlexibleRender::make(
-                view('moonshine::ui.social-auth', [
-                    'title' => trans('moonshine::ui.resource.link_socialite'),
-                    'attached' => true,
-                ])
-            ),
+            SocialAuth::make(profileMode: true),
         ];
     }
 }

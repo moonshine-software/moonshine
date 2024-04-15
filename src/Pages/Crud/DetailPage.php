@@ -7,7 +7,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Decorations\Block;
+use MoonShine\Decorations\Box;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
@@ -97,7 +97,7 @@ class DetailPage extends Page
         $item = $resource->getItem();
 
         return [
-            Block::make([
+            Box::make([
                 Fragment::make([
                     $this->detailComponent($item, $resource->getDetailFields()),
                 ])->name('crud-detail'),
@@ -147,7 +147,7 @@ class DetailPage extends Page
                         ->forcePreview();
 
                     $blocks = [
-                        Block::make($field->label(), [$field]),
+                        Box::make($field->label(), [$field]),
                     ];
                 }
 

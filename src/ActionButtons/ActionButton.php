@@ -38,6 +38,10 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     protected ?string $asyncMethod = null;
 
+    protected ?Closure $onBeforeSetCallback = null;
+
+    protected ?Closure $onAfterSetCallback = null;
+
     public function __construct(
         Closure|string $label,
         protected Closure|string $url = '#',
@@ -109,6 +113,20 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->bulkForComponent;
     }
 
+    public function onBeforeSet(Closure $onBeforeSet): self
+    {
+        $this->onBeforeSetCallback = $onBeforeSet;
+
+        return $this;
+    }
+
+    public function onAfterSet(Closure $onAfterSet): self
+    {
+        $this->onAfterSetCallback = $onAfterSet;
+
+        return $this;
+    }
+
     public function getItem(): mixed
     {
         return $this->item;
@@ -116,7 +134,13 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     public function setItem(mixed $item): self
     {
+        if(! is_null($this->onBeforeSetCallback)) {
+            $item = value($this->onBeforeSetCallback, $item, $this);
+        }
+
         $this->item = $item;
+
+        value($this->onAfterSetCallback, $item, $this);
 
         return $this;
     }
@@ -206,6 +230,18 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
                 callback: $callback,
             ),
         ])->onClick(fn (): string => 'request', 'prevent');
+    }
+
+    /**
+     * @param  array<string, string> $selectors
+     */
+    public function withParams(array $selectors): self
+    {
+        $this->customAttributes([
+            'data-with-params' => collect($selectors)->map(fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
+        ]);
+
+        return $this;
     }
 
     public function purgeAsync(): void

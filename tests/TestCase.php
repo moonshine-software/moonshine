@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Commands\InstallCommand;
-use MoonShine\Menu\MenuItem;
+use MoonShine\MenuManager\MenuItem;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Providers\MoonShineServiceProvider;
@@ -65,9 +65,7 @@ class TestCase extends Orchestra
             '--without-migrations' => true,
         ]);
 
-        $this->artisan('config:clear');
-        $this->artisan('view:clear');
-        $this->artisan('cache:clear');
+        $this->artisan('optimize:clear');
 
         return $this;
     }
@@ -128,9 +126,10 @@ class TestCase extends Orchestra
 
             new MoonShineUserRoleResource(),
         ], newCollection: true)
-        ->menu([
-            MenuItem::make('Admins', $this->moonShineUserResource()),
-        ], newCollection: true);
+        ->pages([
+            ...config('moonshine.pages')
+        ])
+        ->init();
 
         return $this;
     }

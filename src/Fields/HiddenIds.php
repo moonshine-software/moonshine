@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+/**
+ * @method static static make(?string $forComponent = null)
+ */
 class HiddenIds extends Field
 {
     protected string $view = 'moonshine::fields.hidden-ids';

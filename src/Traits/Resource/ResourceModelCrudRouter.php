@@ -68,7 +68,6 @@ trait ResourceModelCrudRouter
 
     /**
      * @param TModel|int|string|null $model
-     * @param string|null $fragment
      *
      */
     public function formPageUrl(
@@ -88,7 +87,6 @@ trait ResourceModelCrudRouter
 
     /**
      * @param TModel|int|string $model
-     * @param string|null $fragment
      *
      */
     public function detailPageUrl(

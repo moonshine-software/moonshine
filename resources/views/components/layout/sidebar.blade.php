@@ -1,51 +1,19 @@
 @props([
     'components' => [],
-    'home_route' => null,
-    'hideLogo' => false,
-    'hideSwitcher' => false,
-    'logo',
-    'profile',
+    'collapse' => false,
+    'collapseAttributes',
 ])
 <aside {{ $attributes->merge(['class' => 'layout-menu']) }}
        :class="minimizedMenu && '_is-minimized'"
 >
-    <div class="menu-heading">
-        @if(!$hideLogo)
-            <div class="menu-heading-logo">
-                @if($logo ?? false)
-                    {{ $logo }}
-                @else
-                    @include('moonshine::layouts.shared.logo', ['home_route' => $home_route])
-                @endif
-            </div>
-        @endif
+    <x-moonshine::components
+        :components="$components"
+    />
 
-        <div class="menu-heading-actions">
-            @if(!$hideSwitcher && config('moonshine.use_theme_switcher', true))
-                <div class="menu-heading-mode">
-                    <x-moonshine::layout.theme-switcher :top="false" />
-                </div>
-            @endif
+    {{ $slot ?? '' }}
 
-            <div class="menu-heading-burger">
-                @include('moonshine::layouts.shared.burger')
-            </div>
-        </div>
-    </div>
-
-    <nav class="menu" :class="asideMenuOpen && '_is-opened'">
-        <x-moonshine::components
-            :components="$components"
-        />
-
-        {{ $slot ?? '' }}
-
-        <!-- Bottom menu -->
-        <div
-            @if(($profile ?? false) || config('moonshine.auth.enable', true))
-                 class="border-t border-dark-200"
-            @endif
-        >
+    @if($collapse)
+        <div {{ $collapseAttributes->merge(['class' => 'border-t border-dark-200']) }}>
             <ul class="menu-inner mt-2">
                 <li class="menu-inner-item hidden xl:block">
                     <button
@@ -85,11 +53,11 @@
                         </svg>
 
                         <span class="menu-inner-text" x-show="!minimizedMenu">
-                            @lang('moonshine::ui.collapse_menu')
-                        </span>
+                                @lang('moonshine::ui.collapse_menu')
+                            </span>
                     </button>
                 </li>
             </ul>
         </div>
-    </nav>
+    @endif
 </aside>

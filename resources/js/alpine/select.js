@@ -13,6 +13,54 @@ export default (asyncUrl = '') => ({
   shouldSort: null,
   associatedWith: null,
   searchTerms: null,
+  customOptions: {},
+  resolvedOptions: [
+    'silent',
+    'items',
+    'choices',
+    'renderChoiceLimit',
+    'maxItemCount',
+    'addItems',
+    'addItemFilter',
+    'removeItems',
+    'removeItemButton',
+    'editItems',
+    'allowHTML',
+    'duplicateItemsAllowed',
+    'delimiter',
+    'paste',
+    'searchEnabled',
+    'searchChoices',
+    'searchFields',
+    'searchFloor',
+    'searchResultLimit',
+    'position',
+    'resetScrollPosition',
+    'addItemFilter',
+    'shouldSort',
+    'shouldSortItems',
+    'sorter',
+    'placeholder',
+    'placeholderValue',
+    'searchPlaceholderValue',
+    'prependValue',
+    'appendValue',
+    'renderSelectedChoices',
+    'loadingText',
+    'noResultsText',
+    'noChoicesText',
+    'itemSelectText',
+    'uniqueItemText',
+    'customAddItemText',
+    'addItemText',
+    'maxItemText',
+    'valueComparer',
+    'labelId',
+    'classNames',
+    'fuseOptions',
+    'callbackOnInit',
+    'callbackOnCreateTemplates',
+  ],
 
   init() {
     this.placeholder = this.$el.getAttribute('placeholder')
@@ -25,13 +73,20 @@ export default (asyncUrl = '') => ({
       this.$el.removeAttribute('data-associated-with')
     }
 
+    for (const key in this.$el.dataset) {
+      if (this.resolvedOptions.includes(key)) {
+        this.customOptions[key] = this.$el.dataset[key]
+      }
+    }
+
     this.$nextTick(() => {
       const items = []
 
       Array.from(this.$el.options ?? []).forEach(function (option) {
         items.push({
-          label: option.value,
-          value: option.text,
+          label: option.text,
+          value: option.value,
+          selected: option.selected,
           customProperties: option.dataset?.customProperties
             ? JSON.parse(option.dataset.customProperties)
             : {},
@@ -47,7 +102,6 @@ export default (asyncUrl = '') => ({
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
         searchResultLimit: 100,
-        ...filterAttributeStartsWith(this.$el.dataset, 'async'),
         callbackOnCreateTemplates: function (template) {
           return {
             item: ({classNames}, data) => {
@@ -119,6 +173,7 @@ export default (asyncUrl = '') => ({
             this.asyncSearch()
           }
         },
+        ...this.customOptions,
       })
 
       if (this.associatedWith && asyncUrl) {
@@ -168,8 +223,10 @@ export default (asyncUrl = '') => ({
       const form = this.$el.closest('form')
       if (form !== null) {
         form.addEventListener('reset', () => {
-          this.choicesInstance.destroy()
-          this.init()
+          this.choicesInstance.clearChoices()
+          this.choicesInstance.setChoices(items)
+          const activeItem = items.filter(item => item.selected) ?? items[0]
+          this.choicesInstance.setChoiceByValue(activeItem)
         })
       }
 

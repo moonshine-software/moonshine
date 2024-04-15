@@ -16,15 +16,31 @@ final class Breadcrumbs extends MoonShineComponent
     ) {
     }
 
-    public function add(string $link, string $label, ?string $icon = null): self
+    public function prepend(string $link, string $label = '', ?string $icon = null): self
     {
-        $this->items[$link] = str($label)
+        $this->items = collect($this->items)
+            ->prepend($this->addItem($label, $icon), $link)
+            ->toArray();
+
+        return $this;
+    }
+
+    public function add(string $link, string $label = '', ?string $icon = null): self
+    {
+        $this->items = collect($this->items)
+            ->put($link, $this->addItem($label, $icon))
+            ->toArray();
+
+        return $this;
+    }
+
+    private function addItem(string $label, ?string $icon = null): string
+    {
+        return str($label)
             ->when(
                 $icon,
                 fn (Stringable $str) => $str->append(":::$icon")
             )
             ->value();
-
-        return $this;
     }
 }

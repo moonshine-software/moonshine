@@ -1,4 +1,5 @@
 import {moonShineRequest} from './asyncFunctions.js'
+import {ComponentRequestData} from '../moonshine.js'
 
 export default () => ({
   async load(url, id) {
@@ -34,15 +35,29 @@ export default () => ({
       value = this.$el.checked
     }
 
-    const t = this
+    if (this.$el.tagName.toLowerCase() === 'select' && this.$el.multiple) {
+      value = []
+      for (let i = 0; i < this.$el.options.length; i++) {
+        let option = this.$el.options[i]
+        if (option.selected) {
+          value.push(option.value)
+        }
+      }
+    }
 
-    t.selector = this.$el?.dataset?.asyncSelector
-    t.events = this.$el?.dataset?.asyncEvents
-    t.callback = this.$el?.dataset?.asyncCallback
+    const componentRequestData = new ComponentRequestData()
+    componentRequestData.fromDataset(this.$el?.dataset ?? {})
 
-    moonShineRequest(t, route, this.$el?.dataset?.asyncMethod ?? 'put', {
-      value: value,
-      field: column,
-    })
+    moonShineRequest(
+      this,
+      route,
+      this.$el?.dataset?.asyncMethod ?? 'put',
+      {
+        value: value,
+        field: column,
+      },
+      {},
+      componentRequestData,
+    )
   },
 })

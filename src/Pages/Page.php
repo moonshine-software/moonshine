@@ -5,36 +5,42 @@ declare(strict_types=1);
 namespace MoonShine\Pages;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\URL;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\PageView;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
+use MoonShine\Layouts\AppLayout;
+use MoonShine\MoonShineLayout;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;
-use MoonShine\Traits\WithView;
 use Throwable;
 
 /**
  * @method static static make(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
  */
-abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFiller
+abstract class Page implements Renderable, HasResourceContract, MenuFiller
 {
     use Makeable;
     use HasResource;
     use WithUriKey;
-    use WithView;
     use WithAssets;
 
     protected string $title = '';
 
     protected string $subtitle = '';
 
-    protected string $layout = 'moonshine::layouts.app';
+    /** @var ?class-string<MoonShineLayout> $layout */
+    protected ?string $layout = null;
+
+    protected ?PageView $pageView = null;
 
     protected ?string $contentView = null;
 
@@ -63,8 +69,6 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         if (! is_null($resource)) {
             $this->setResource($resource);
         }
-
-        $this->customView('moonshine::page');
 
         $this->booted();
     }
@@ -99,22 +103,26 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function beforeRender(): void
     {
-        $withoutQuery = strtok($this->url(), '?');
+        request()
+            ?->route()
+            ?->setParameter('pageUri', $this->uriKey());
 
-        if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim((string) request()?->url(), '/')) {
+        $withoutQuery = parse_url($this->url(), PHP_URL_PATH);
+
+        if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim((string) request()?->path(), '/')) {
             oops404();
         }
 
         $assets = $this->getAssets() ?? [];
 
-        if($this->hasResource()) {
+        if ($this->hasResource()) {
             $assets = [
                 ...$assets,
                 ...$this->getResource()?->getAssets() ?? [],
             ];
         }
 
-        if($assets !== []) {
+        if ($assets !== []) {
             moonshineAssets()->add($assets);
         }
     }
@@ -168,6 +176,13 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
     public function getComponents(): PageComponents
     {
+        if (! is_null($this->pageView)) {
+            /** @var PageView $pageView */
+            $pageView = app($this->pageView);
+
+            return $pageView->components($this);
+        }
+
         if (! is_null($this->components)) {
             return $this->components;
         }
@@ -225,6 +240,10 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->subtitle;
     }
 
+    /**
+     * @param  class-string<MoonShineLayout>  $layout
+     * @return $this
+     */
     public function setLayout(string $layout): static
     {
         $this->layout = $layout;
@@ -232,11 +251,18 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this;
     }
 
-    public function layout(): string
+    public function layout(): MoonShineLayout
     {
-        return $this->layout;
+        if(is_null($this->layout)) {
+            $this->setLayout(
+                config('moonshine.layout', AppLayout::class)
+            );
+        }
+
+        return app($this->layout);
     }
 
+    // TODO unused
     public function setContentView(string $contentView, Closure|array $data = []): static
     {
         $this->contentView = $contentView;
@@ -245,6 +271,7 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this;
     }
 
+    // TODO unused
     public function contentView(): ?string
     {
         return $this->contentView;
@@ -301,37 +328,13 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
             === $this->uriKey();
     }
 
-    protected function viewData(): array
-    {
-        return [
-            ...value($this->viewData),
-        ];
-    }
-
     public function render(): View|Closure|string
     {
-        $data = $this->viewData();
-
-        request()
-            ?->route()
-            ?->setParameter('pageUri', $this->uriKey());
-
         $this->beforeRender();
 
-        return view(
-            $this->getView(),
-            [
-                'layout' => $this->layout(),
-                'title' => $this->title(),
-                'subtitle' => $this->subtitle(),
-                'resource' => $this->hasResource()
-                    ? $this->getResource()
-                    : null,
-                'breadcrumbs' => $this->breadcrumbs(),
-                'components' => $this->getComponents(),
-                'contentView' => $this->contentView(),
-            ] + $data
-        )
+        return view('moonshine::layouts.app', [
+            'layout' => $this->layout()->build($this),
+        ])
             ->fragmentIf(
                 moonshineRequest()->isFragmentLoad(),
                 moonshineRequest()->getFragmentLoad()
