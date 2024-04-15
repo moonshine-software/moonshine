@@ -56,7 +56,7 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     public function class(string $class): static
     {
         return $this->customAttributes([
-            'class' => $class
+            'class' => $class,
         ]);
     }
 

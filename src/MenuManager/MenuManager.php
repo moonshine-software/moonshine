@@ -16,8 +16,7 @@ final class MenuManager
 
     public function __construct(
         private MoonShineRequest $request
-    )
-    {
+    ) {
     }
 
     public function add(array|MenuElement $data): self
@@ -68,6 +67,6 @@ final class MenuManager
                 return $item->isSee(
                     $this->request
                 );
-        });
+            });
     }
 }

@@ -19,8 +19,7 @@ final class SocialAuth extends MoonShineComponent
 
     public function __construct(
         public bool $profileMode = false
-    )
-    {
+    ) {
         $this->drivers = config('moonshine.socialite');
         $this->attached = auth()->user()?->moonshineSocialites ?? collect();
     }

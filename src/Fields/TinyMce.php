@@ -29,7 +29,7 @@ class TinyMce extends Textarea
     public function getAssets(): array
     {
         $assets = [
-            Js::make('vendor/moonshine/libs/tinymce/tinymce.min.js')
+            Js::make('vendor/moonshine/libs/tinymce/tinymce.min.js'),
         ];
 
         if ($this->token()) {

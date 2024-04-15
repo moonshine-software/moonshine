@@ -21,7 +21,7 @@ final class BlankLayout extends MoonShineLayout
                 Head::make(),
                 Body::make([
                     Components::make($page->getComponents()),
-                ])
+                ]),
             ])->withAlpineJs()->withThemes(),
         ]);
     }

@@ -9,7 +9,7 @@ class Dashboard extends Page
     public function breadcrumbs(): array
     {
         return [
-            '#' => $this->title()
+            '#' => $this->title(),
         ];
     }
 
@@ -19,7 +19,7 @@ class Dashboard extends Page
     }
 
     public function components(): array
-	{
-		return [];
-	}
+    {
+        return [];
+    }
 }

@@ -70,18 +70,18 @@ class AppLayout extends MoonShineLayout
                                         moonshineRouter()->home(),
                                         $logo,
                                         $logoSmall
-                                    )->minimized()
+                                    )->minimized(),
                                 ])->class('menu-heading-logo'),
 
                                 Block::make([
                                     Block::make([
-                                        ThemeSwitcher::make()
+                                        ThemeSwitcher::make(),
                                     ])->class('menu-heading-mode'),
 
                                     Block::make([
-                                        Burger::make()
-                                    ])->class('menu-heading-burger')
-                                ])->class('menu-heading-actions')
+                                        Burger::make(),
+                                    ])->class('menu-heading-burger'),
+                                ])->class('menu-heading-actions'),
                             ])->class('menu-heading'),
 
                             Block::make([

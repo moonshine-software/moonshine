@@ -106,7 +106,7 @@ final class CompactLayout extends AppLayout
                                     moonshineRouter()->home(),
                                     $logo,
                                     $logoSmall
-                                )->minimized()
+                                )->minimized(),
                             ])->class('menu-logo'),
 
                             Block::make([
@@ -121,13 +121,13 @@ final class CompactLayout extends AppLayout
 
                                 Block::make()->class('menu-inner-divider'),
                                 Block::make([
-                                    ThemeSwitcher::make()->top()
+                                    ThemeSwitcher::make()->top(),
                                 ])->class('menu-mode'),
 
                                 Block::make([
-                                    Burger::make()
-                                ])->class('menu-burger')
-                            ])->class('menu-actions')
+                                    Burger::make(),
+                                ])->class('menu-burger'),
+                            ])->class('menu-actions'),
                         ]),
 
                         Sidebar::make([
@@ -137,18 +137,18 @@ final class CompactLayout extends AppLayout
                                         moonshineRouter()->home(),
                                         $logo,
                                         $logoSmall
-                                    )->minimized()
+                                    )->minimized(),
                                 ])->class('menu-heading-logo'),
 
                                 Block::make([
                                     Block::make([
-                                        ThemeSwitcher::make()
+                                        ThemeSwitcher::make(),
                                     ])->class('menu-heading-mode'),
 
                                     Block::make([
-                                        Burger::make()
-                                    ])->class('menu-heading-burger')
-                                ])->class('menu-heading-actions')
+                                        Burger::make(),
+                                    ])->class('menu-heading-burger'),
+                                ])->class('menu-heading-actions'),
                             ])->class('menu-heading'),
 
                             Block::make([

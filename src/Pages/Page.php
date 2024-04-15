@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages;
 
-use Stringable;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
@@ -21,6 +20,7 @@ use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;
+use Stringable;
 use Throwable;
 
 /**
@@ -34,7 +34,7 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
     use WithAssets;
     protected string $title = '';
     protected string $subtitle = '';
-    /** @var ?class-string<MoonShineLayout> $layout */
+    /** @var ?class-string<MoonShineLayout> */
     protected ?string $layout = null;
     protected ?PageView $pageView = null;
     protected ?string $contentView = null;

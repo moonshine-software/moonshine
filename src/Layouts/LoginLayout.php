@@ -6,10 +6,10 @@ namespace MoonShine\Layouts;
 
 use MoonShine\Components\Components;
 use MoonShine\Components\FlexibleRender;
+use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\Body;
 use MoonShine\Components\Layout\Head;
 use MoonShine\Components\Layout\Html;
-use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\LayoutBuilder;
 use MoonShine\Components\Layout\Logo;
 use MoonShine\Components\SocialAuth;
@@ -39,16 +39,16 @@ final class LoginLayout extends MoonShineLayout
                             Block::make([
                                 Heading::make($title),
                                 Block::make([
-                                    FlexibleRender::make($description)
-                                ])->class('description')
+                                    FlexibleRender::make($description),
+                                ])->class('description'),
                             ])->class('authentication-header'),
 
                             Components::make($page->getComponents()),
                         ])->class('authentication-content'),
 
                         SocialAuth::make(),
-                    ])->class('authentication')
-                ])
+                    ])->class('authentication'),
+                ]),
             ])->withAlpineJs()->withThemes(),
         ]);
     }

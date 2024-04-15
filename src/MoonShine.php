@@ -37,11 +37,13 @@ class MoonShine
     {
         $this->getResources()->transform(function (ResourceContract $resource): ResourceContract {
             $resource->flushState();
+
             return $resource;
         });
 
         $this->getPages()->transform(function (Page $page): Page {
             $page->flushState();
+
             return $page;
         });
 

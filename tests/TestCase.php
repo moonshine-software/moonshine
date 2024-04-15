@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Commands\InstallCommand;
-use MoonShine\MenuManager\MenuItem;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 use MoonShine\Providers\MoonShineServiceProvider;
@@ -127,7 +126,7 @@ class TestCase extends Orchestra
             new MoonShineUserRoleResource(),
         ], newCollection: true)
         ->pages([
-            ...config('moonshine.pages')
+            ...config('moonshine.pages'),
         ])
         ->init();
 

@@ -23,8 +23,7 @@ final class Logo extends MoonShineComponent
         public string $logo,
         public ?string $logoSmall = null,
         public ?string $title = null,
-    )
-    {
+    ) {
         $this->title ??= config('moonshine.title');
         $this->logoAttributes = new ComponentAttributeBag();
         $this->logoSmallAttributes = new ComponentAttributeBag();
@@ -47,9 +46,9 @@ final class Logo extends MoonShineComponent
     public function minimized(): self
     {
         return $this->logoAttributes([
-            ':class' => "minimizedMenu && '!hidden'"
+            ':class' => "minimizedMenu && '!hidden'",
         ])->logoSmallAttributes([
-            ':class' => "minimizedMenu && '!block'"
+            ':class' => "minimizedMenu && '!block'",
         ]);
     }
 }

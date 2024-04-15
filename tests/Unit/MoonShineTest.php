@@ -18,7 +18,7 @@ it('find resource by uri key', function (): void {
 
 it('menu', function (): void {
     moonshineMenu()->add([
-        MenuItem::make('Resource', $this->resource)
+        MenuItem::make('Resource', $this->resource),
     ]);
 
     expect(moonshineMenu()->all())->toBeCollection()
