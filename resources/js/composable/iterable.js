@@ -33,7 +33,7 @@ export class Iterable {
       let level = 0
       let prev = {}
 
-      if(block.dataset.level) {
+      if (block.dataset.level) {
         prev['${index' + level + '}'] = block.dataset.rIndex ?? 1
         level = parseInt(block.dataset.level) + 1
       }
