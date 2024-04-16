@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use InvalidArgumentException;
-use MoonShine\Contracts\Fields\HasFields;
 
 trait ShowWhen
 {
