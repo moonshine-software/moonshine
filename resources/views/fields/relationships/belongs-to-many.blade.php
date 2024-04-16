@@ -1,4 +1,7 @@
-<div x-id="['belongs-to-many']" :id="$id('belongs-to-many')" data-field-block="{{ $element->column() }}">
+<div x-id="['belongs-to-many']"
+     :id="$id('belongs-to-many')"
+     data-field-block="{{ $element->name() }}"
+>
     @if($element->isCreatable())
         {!! $element->createButton() !!}
 
