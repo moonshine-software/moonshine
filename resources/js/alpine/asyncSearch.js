@@ -12,13 +12,16 @@ export default route => ({
     const pivot = this.$root.querySelector('.pivotTable')
 
     if (pivot !== null) {
-      this.$dispatch('table-row-added-' + pivot.dataset.tableName)
+      const tableName = pivot.dataset.tableName.toLowerCase()
+
+      this.$dispatch('table-row-added-' + tableName)
 
       const tr = pivot.querySelector('table > tbody > tr:last-child')
       tr.querySelector('.pivotTitle').innerHTML = item.label
       tr.dataset.key = item.value
+      tr.querySelector('.pivotChecker').checked = true
 
-      this.$dispatch('table-reindex-' + pivot.dataset.tableName)
+      this.$dispatch('table-reindex-' + tableName)
     }
   },
   async search() {

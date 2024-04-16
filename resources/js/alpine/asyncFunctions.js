@@ -47,7 +47,7 @@ export function dispatchEvents(events, type, component, extraAttributes = {}) {
         }
       }
 
-      component.$dispatch(eventName.replaceAll(/\s/g, ''), attributes)
+      component.$dispatch(eventName.replaceAll(/\s/g, '').toLowerCase(), attributes)
     })
   }
 }
