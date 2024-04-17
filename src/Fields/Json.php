@@ -210,7 +210,7 @@ class Json extends Field implements
     /**
      * @throws Throwable
      */
-    public function asRelation(ModelResource $resource, bool $deleteWhenEmpty = false): self
+    public function asRelation(ModelResource $resource, bool $deleteWhenEmpty = true): self
     {
         $this->asRelation = true;
         $this->asRelationResource = $resource;

@@ -63,7 +63,7 @@ class HasOne extends ModelRelationField implements HasFields
 
             $this->fields($fields->toArray());
 
-            return Fields::make($this->fields);
+            return $this->getFields();
         }
 
         return $this->getFields()

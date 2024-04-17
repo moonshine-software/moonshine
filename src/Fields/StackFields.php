@@ -126,11 +126,18 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         return $data;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function __clone()
     {
-        foreach ($this->fields as $index => $field) {
-            $this->fields[$index] = clone $field;
+        $fields = [];
+
+        foreach ($this->getRawFields() as $index => $field) {
+            $fields[$index] = clone $field;
         }
+
+        $this->fields($fields);
     }
 
 }
