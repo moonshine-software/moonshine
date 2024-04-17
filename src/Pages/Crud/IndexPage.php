@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\CreateButton;
 use MoonShine\Buttons\ExportButton;
 use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\ImportButton;
@@ -107,7 +106,7 @@ class IndexPage extends Page
             Grid::make([
                 Column::make([
                     ActionGroup::make([
-                        CreateButton::for($this->getResource()),
+                        $this->getResource()->getCreateButton(),
                         ...$this->getResource()->actions(),
                     ]),
 

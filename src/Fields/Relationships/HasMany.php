@@ -9,10 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Buttons\DeleteButton;
-use MoonShine\Buttons\DetailButton;
 use MoonShine\Buttons\HasManyButton;
-use MoonShine\Buttons\MassDeleteButton;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasUpdateOnPreview;
@@ -323,17 +320,15 @@ class HasMany extends ModelRelationField implements HasFields
             )
             ->buttons([
                 ...$resource->getIndexButtons(),
-                DetailButton::for($resource, $this->isAsync()),
+                $resource->getDetailButton(isAsync: $this->isAsync()),
                 HasManyButton::for($this, update: true),
-                DeleteButton::for(
-                    $resource,
-                    $this->getRelationName(),
+                $resource->getDeleteButton(
+                    componentName: $this->getRelationName(),
                     redirectAfterDelete: $redirectAfter,
                     isAsync: $this->isAsync()
                 ),
-                MassDeleteButton::for(
-                    $resource,
-                    $this->getRelationName(),
+                $resource->getMassDeleteButton(
+                    componentName: $this->getRelationName(),
                     redirectAfterDelete: $redirectAfter,
                     isAsync: $this->isAsync()
                 ),
