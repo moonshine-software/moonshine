@@ -1,10 +1,12 @@
 import {moonShineRequest} from './alpine/asyncFunctions.js'
 import {Iterable} from './composable/iterable.js'
+import {UI} from './composable/ui.js'
 
 export class MoonShine {
   constructor() {
     this.callbacks = {}
     this.iterable = new Iterable()
+    this.ui = new UI()
   }
 
   onCallback(name, callback) {

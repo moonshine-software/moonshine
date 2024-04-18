@@ -1,18 +1,23 @@
 export function getInputs(formId) {
   const inputs = {}
   document.querySelectorAll('#' + formId + ' [name]').forEach(element => {
-    inputs[inputFieldName(element.getAttribute('name'))] = {}
+    const value = element.getAttribute('name')
+    const fieldName = inputFieldName(value)
 
-    inputs[inputFieldName(element.getAttribute('name'))].value = inputGeValue(element)
-    inputs[inputFieldName(element.getAttribute('name'))].type = element.getAttribute('type')
+    inputs[fieldName] = {}
+
+    inputs[fieldName].value = inputGeValue(element)
+    inputs[fieldName].type = element.getAttribute('type')
   })
 
   document.querySelectorAll('#' + formId + ' [data-field-block]').forEach(element => {
-    inputs[inputFieldName(element.getAttribute('data-field-block'))] = {}
+    const value = element.getAttribute('data-field-block')
+    const fieldName = inputFieldName(value)
 
-    inputs[inputFieldName(element.getAttribute('data-field-block'))].value =
-      element.getAttribute('data-field-block')
-    inputs[inputFieldName(element.getAttribute('data-field-block'))].type = 'text'
+    inputs[fieldName] = {}
+
+    inputs[fieldName].value = value
+    inputs[fieldName].type = 'text'
   })
 
   return inputs
@@ -49,7 +54,7 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
   let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
 
   if (inputElement === null) {
-    inputElement = document.querySelector('#' + formId + ' [data-field-block=' + fieldName + ']')
+    inputElement = document.querySelector('#' + formId + ' [data-field-block="' + fieldName + '"]')
   }
 
   if (inputElement === null) {

@@ -8,7 +8,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Support\Arr;
-use MoonShine\Buttons\DeleteButton;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
@@ -63,7 +62,7 @@ class HasOne extends ModelRelationField implements HasFields
 
             $this->fields($fields->toArray());
 
-            return Fields::make($this->fields);
+            return $this->getFields();
         }
 
         return $this->getFields()
@@ -168,8 +167,7 @@ class HasOne extends ModelRelationField implements HasFields
                 is_null($item)
                     ? []
                     : [
-                    DeleteButton::for(
-                        $resource,
+                    $resource->getDeleteButton(
                         redirectAfterDelete: $redirectAfter
                     )->customAttributes(['class' => 'btn-lg']),
                 ]

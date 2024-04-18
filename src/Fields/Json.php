@@ -210,7 +210,7 @@ class Json extends Field implements
     /**
      * @throws Throwable
      */
-    public function asRelation(ModelResource $resource, bool $deleteWhenEmpty = false): self
+    public function asRelation(ModelResource $resource, bool $deleteWhenEmpty = true): self
     {
         $this->asRelation = true;
         $this->asRelationResource = $resource;
@@ -344,9 +344,6 @@ class Json extends Field implements
             : [$value ?? $emptyRow];
 
         $values = collect($values)->when(
-            ! $this->isPreviewMode() && $this->isCreatable(),
-            static fn ($values): Collection => $values->push($emptyRow)
-        )->when(
             ! $this->isPreviewMode() && ! $this->isCreatable() && blank($values),
             static fn ($values): Collection => $values->push($emptyRow)
         );

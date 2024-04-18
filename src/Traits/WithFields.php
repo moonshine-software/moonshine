@@ -14,7 +14,7 @@ use Throwable;
  */
 trait WithFields
 {
-    protected array $fields = [];
+    protected array|Closure $fields = [];
 
     /**
      * @throws Throwable
@@ -29,7 +29,14 @@ trait WithFields
      */
     public function getFields(): Fields
     {
-        return Fields::make($this->fields);
+        return Fields::make(
+            $this->getRawFields()
+        );
+    }
+
+    public function getRawFields(): array
+    {
+        return value($this->fields, $this);
     }
 
     /**
@@ -42,10 +49,6 @@ trait WithFields
 
     public function fields(Fields|Closure|array $fields): static
     {
-        if(is_closure($fields)) {
-            $fields = $fields();
-        }
-
         $this->fields = $fields instanceof Fields
             ? $fields->toArray()
             : $fields;
