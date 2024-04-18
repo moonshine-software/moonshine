@@ -1,11 +1,13 @@
 export class UI {
   toast(text, type = 'default') {
-    dispatchEvent(new CustomEvent('toast', {
-      detail: {
-        type: type,
-        text: text
-      }
-    }))
+    dispatchEvent(
+      new CustomEvent('toast', {
+        detail: {
+          type: type,
+          text: text,
+        },
+      }),
+    )
   }
 
   toggleModal(name) {
