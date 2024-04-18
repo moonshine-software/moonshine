@@ -49,6 +49,10 @@ trait WithFields
 
     public function fields(Fields|Closure|array $fields): static
     {
+        if(is_closure($fields)) {
+            $fields = $fields();
+        }
+
         $this->fields = $fields instanceof Fields
             ? $fields->toArray()
             : $fields;

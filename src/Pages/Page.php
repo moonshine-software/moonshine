@@ -8,13 +8,13 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\HasResourceContract;
-use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\PageView;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
 use MoonShine\Layouts\AppLayout;
+use MoonShine\MenuManager\MenuFiller;
 use MoonShine\MoonShineLayout;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
@@ -32,18 +32,30 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
     use HasResource;
     use WithUriKey;
     use WithAssets;
+
     protected string $title = '';
+
     protected string $subtitle = '';
+
     /** @var ?class-string<MoonShineLayout> */
     protected ?string $layout = null;
+
     protected ?PageView $pageView = null;
+
     protected ?string $contentView = null;
+
     protected ?PageComponents $components = null;
+
     protected array $layersComponents = [];
+
     protected Closure|array $viewData = [];
+
     protected ?array $breadcrumbs = null;
+
     protected ?PageType $pageType = null;
+
     protected bool $checkUrl = false;
+
     public function __construct(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
     {
         if (! is_null($title)) {
@@ -60,11 +72,14 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
 
         $this->booted();
     }
+
     protected function booted(): void
     {
         //
     }
+
     abstract public function components(): array;
+
     public function flushState(): void
     {
         $this->resource = null;
@@ -73,16 +88,19 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
         $this->breadcrumbs = null;
         $this->layersComponents = [];
     }
+
     public function isCheckUrl(): bool
     {
         return $this->checkUrl;
     }
+
     public function checkUrl(): static
     {
         $this->checkUrl = true;
 
         return $this;
     }
+
     public function beforeRender(): void
     {
         request()
@@ -108,26 +126,32 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
             moonshineAssets()->add($assets);
         }
     }
+
     public function fields(): array
     {
         return [];
     }
+
     protected function topLayer(): array
     {
         return [];
     }
+
     protected function mainLayer(): array
     {
         return [];
     }
+
     protected function bottomLayer(): array
     {
         return [];
     }
+
     public function pageType(): ?PageType
     {
         return $this->pageType;
     }
+
     public function breadcrumbs(): array
     {
         if (! is_null($this->breadcrumbs)) {
@@ -142,12 +166,14 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
             $this->getResource()?->url() => $this->getResource()?->title(),
         ];
     }
+
     public function setBreadcrumbs(array $breadcrumbs): static
     {
         $this->breadcrumbs = $breadcrumbs;
 
         return $this;
     }
+
     public function getComponents(): PageComponents
     {
         if (! is_null($this->pageView)) {
@@ -165,6 +191,7 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
 
         return $this->components;
     }
+
     public function getLayers(): array
     {
         return [
@@ -173,6 +200,7 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
             ...$this->getLayerComponents(Layer::BOTTOM),
         ];
     }
+
     public function getLayerComponents(Layer $layer): array
     {
         return array_merge(
@@ -180,32 +208,38 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
             $this->layersComponents[$layer->value] ?? []
         );
     }
+
     public function pushToLayer(Layer $layer, MoonShineRenderable $component): static
     {
         $this->layersComponents[$layer->value][] = $component;
 
         return $this;
     }
+
     public function setTitle(string $title): static
     {
         $this->title = $title;
 
         return $this;
     }
+
     public function title(): string
     {
         return $this->title;
     }
+
     public function setSubTitle(string $subtitle): static
     {
         $this->subtitle = $subtitle;
 
         return $this;
     }
+
     public function subtitle(): string
     {
         return $this->subtitle;
     }
+
     /**
      * @param  class-string<MoonShineLayout>  $layout
      * @return $this
@@ -216,9 +250,10 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
 
         return $this;
     }
+
     public function layout(): MoonShineLayout
     {
-        if(is_null($this->layout)) {
+        if (is_null($this->layout)) {
             $this->setLayout(
                 config('moonshine.layout', AppLayout::class)
             );
@@ -226,6 +261,7 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
 
         return app($this->layout);
     }
+
     // TODO unused
     public function setContentView(string $contentView, Closure|array $data = []): static
     {
@@ -234,11 +270,13 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
 
         return $this;
     }
+
     // TODO unused
     public function contentView(): ?string
     {
         return $this->contentView;
     }
+
     public function route(array $params = []): string
     {
         return moonshineRouter()->to(
@@ -249,10 +287,12 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
             ] + $params
         );
     }
+
     public function url(): string
     {
         return $this->route();
     }
+
     public function asyncMethodUrl(
         string $method,
         ?string $message = null,
@@ -267,6 +307,7 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
             resource: $resource
         );
     }
+
     /**
      * @throws Throwable
      */
@@ -280,11 +321,13 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
             fragment: $fragment
         );
     }
+
     public function isActive(): bool
     {
         return moonshineRequest()->getPageUri()
             === $this->uriKey();
     }
+
     public function render(): View|Closure|string
     {
         $this->beforeRender();
@@ -297,6 +340,7 @@ abstract class Page implements Renderable, HasResourceContract, MenuFiller, Stri
                 moonshineRequest()->getFragmentLoad()
             );
     }
+
     public function __toString(): string
     {
         return (string) $this->render();

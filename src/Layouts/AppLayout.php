@@ -49,7 +49,20 @@ class AppLayout extends MoonShineLayout
                     static fn () => __('moonshine::ui.resource.role_title'),
                     new MoonShineUserRoleResource()
                 ),
-            ])->canSee(fn (MoonShineRequest $request): bool => $request->isMoonShineRequest()),
+                MenuGroup::make('Group', [
+                    MenuItem::make(
+                        static fn () => __('moonshine::ui.resource.role_title'),
+                        new MoonShineUserRoleResource()
+                    ),
+
+                    MenuGroup::make('Group 2', [
+                        MenuItem::make(
+                            static fn () => __('moonshine::ui.resource.role_title'),
+                            new MoonShineUserRoleResource()
+                        ),
+                    ])
+                ])
+            ]),
         ];
     }
 
