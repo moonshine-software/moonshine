@@ -27,6 +27,10 @@ trait Applies
 
     public function isCanApply(): bool
     {
+        if(is_null($this->canApply)) {
+            return true;
+        }
+
         return value($this->canApply, $this);
     }
 
