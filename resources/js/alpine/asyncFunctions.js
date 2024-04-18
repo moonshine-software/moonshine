@@ -4,7 +4,7 @@ export function responseCallback(callback, response, element, events, component)
   const fn = MoonShine.callbacks[callback]
 
   if (typeof fn !== 'function') {
-    component.$dispatch('toast', {type: 'error', text: 'Error'})
+    MoonShine.ui.toast('Error', 'error')
 
     throw new Error(callback + ' is not a function!')
   }
@@ -123,10 +123,7 @@ export function moonShineRequest(
       const type = data.messageType ? data.messageType : 'success'
 
       if (data.message) {
-        t.$dispatch('toast', {
-          type: type,
-          text: data.message,
-        })
+        MoonShine.ui.toast(data.message, type)
       }
 
       if (componentRequestData.hasAfterCallback()) {
@@ -168,7 +165,7 @@ export function moonShineRequest(
         componentRequestData.afterErrorCallback(data, t)
       }
 
-      t.$dispatch('toast', {type: 'error', text: data.message ?? data})
+      MoonShine.ui.toast(data.message ?? data, 'error')
     })
 }
 

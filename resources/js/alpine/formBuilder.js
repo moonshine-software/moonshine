@@ -136,7 +136,7 @@ export default (name = '', reactive = {}) => ({
         }
 
         if (data?.message) {
-          t.$dispatch('toast', {type: 'error', text: data.message})
+          MoonShine.ui.toast(data.message, 'error')
         }
 
         form.querySelector('.precognition_errors').innerHTML = errors

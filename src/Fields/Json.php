@@ -344,9 +344,6 @@ class Json extends Field implements
             : [$value ?? $emptyRow];
 
         $values = collect($values)->when(
-            ! $this->isPreviewMode() && $this->isCreatable(),
-            static fn ($values): Collection => $values->push($emptyRow)
-        )->when(
             ! $this->isPreviewMode() && ! $this->isCreatable() && blank($values),
             static fn ($values): Collection => $values->push($emptyRow)
         );

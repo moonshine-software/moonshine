@@ -302,9 +302,9 @@ trait ResourceModelQuery
         return $this;
     }
 
-    protected function resolveSearch(): static
+    protected function resolveSearch($queryKey = 'search'): static
     {
-        if (! empty($this->search()) && request()->filled('search')) {
+        if (! empty($this->search()) && request()->filled($queryKey)) {
             $fullTextColumns = Attributes::for($this)
                 ->attribute(SearchUsingFullText::class)
                 ->method('search')
@@ -312,7 +312,7 @@ trait ResourceModelQuery
                 ->get();
 
             $terms = request()
-                ->str('search')
+                ->str($queryKey)
                 ->squish()
                 ->value();
 
@@ -537,9 +537,11 @@ trait ResourceModelQuery
         return $this->resolveQuery()->get();
     }
 
-    public function customBuilder(Builder $builder): void
+    public function customBuilder(Builder $builder): static
     {
         $this->customBuilder = $builder;
+
+        return $this;
     }
 
     public function isPaginationUsed(): bool
