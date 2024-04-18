@@ -137,23 +137,24 @@ final class TableBuilder extends IterableComponent implements TableContract
             ) => "asyncRowRequest(`{$row->getKey()}`,`$index`)",
         ] : [];
 
+        if ($this->isAsync()) {
+            $this->customAttributes([
+                'data-events' => $this->asyncEvents(),
+            ])->systemTrAttributes(
+                fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
+                    ...value($systemTrEvent, $data, $index, $attr, $row),
+                ])
+            );
+        }
+
         if (! is_null($this->sortableUrl) && $this->isSortable()) {
             $this->customAttributes([
                 'data-sortable-url' => $this->sortableUrl,
                 'data-sortable-group' => $this->sortableGroup,
             ])->systemTrAttributes(
                 fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
+                    // TODO 3.0 remove it and use TableRow->id
                     'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
-                    ...value($systemTrEvent, $data, $index, $attr, $row),
-                ])
-            );
-        }
-
-        if ($this->isAsync()) {
-            $this->customAttributes([
-                'data-events' => $this->asyncEvents(),
-            ])->systemTrAttributes(
-                fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
                     ...value($systemTrEvent, $data, $index, $attr, $row),
                 ])
             );
