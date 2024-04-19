@@ -23,7 +23,7 @@ class Position extends Preview
 
     protected function resolveValue(): mixed
     {
-        return null;
+        return $this->toFormattedValue();
     }
 
     protected function resolvePreview(): View|string
