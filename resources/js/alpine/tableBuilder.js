@@ -77,7 +77,7 @@ export default (
     }
   },
   resolveReindex() {
-    if(!this.table) {
+    if (!this.table) {
       return
     }
 
