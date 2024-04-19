@@ -332,7 +332,7 @@ class BelongsToMany extends ModelRelationField implements
             ->preview()
             ->simple()
             ->editable()
-            ->reindex()
+            ->reindex(prepared: true)
             ->withNotFound();
     }
 

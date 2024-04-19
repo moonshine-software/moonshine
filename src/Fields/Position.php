@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
+use Illuminate\Contracts\View\View;
 
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null)
@@ -18,5 +19,15 @@ class Position extends Preview
         $this->customAttributes([
             'data-increment-position' => true,
         ]);
+    }
+
+    protected function resolveValue(): mixed
+    {
+        return null;
+    }
+
+    protected function resolvePreview(): View|string
+    {
+        return $this->render();
     }
 }

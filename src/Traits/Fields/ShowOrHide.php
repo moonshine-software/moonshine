@@ -175,14 +175,16 @@ trait ShowOrHide
      *
      * You can use Field::make()->hideOnAll()->showOnIndex() for show field only on index page
      */
-    public function hideOnAll(): static
+    public function hideOnAll(mixed $condition = true): static
     {
-        $this->showOnCreateForm = false;
-        $this->showOnUpdateForm = false;
-        $this->showOnIndex = false;
-        $this->showOnExport = false;
-        $this->showOnForm = false;
-        $this->showOnDetail = false;
+        $condition = ! value($condition);
+
+        $this->showOnCreateForm = $condition;
+        $this->showOnUpdateForm = $condition;
+        $this->showOnIndex = $condition;
+        $this->showOnExport = $condition;
+        $this->showOnForm = $condition;
+        $this->showOnDetail = $condition;
 
         return $this;
     }
