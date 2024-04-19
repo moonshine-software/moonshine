@@ -182,6 +182,7 @@ class HasOne extends ModelRelationField implements HasFields
 
     /**
      * @throws FieldException
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

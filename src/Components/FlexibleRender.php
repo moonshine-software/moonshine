@@ -20,6 +20,9 @@ final class FlexibleRender extends MoonShineComponent
     ) {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         if(is_closure($this->content)) {

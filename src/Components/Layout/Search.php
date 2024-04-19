@@ -32,6 +32,9 @@ final class Search extends MoonShineComponent
         return ! is_null($resource) && method_exists($resource, 'search') && $resource->search();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         $action = moonshineRouter()->to('global-search');

@@ -45,6 +45,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     public function components(): array
@@ -54,6 +55,9 @@ class IndexPage extends Page
         return $this->getLayers();
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function topLayer(): array
     {
         $components = [];
@@ -65,6 +69,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -90,6 +95,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function filtersForm(): array
@@ -100,6 +106,9 @@ class IndexPage extends Page
         ];
     }
 
+    /*
+     * @return list<MoonShineComponent>
+     */
     protected function actionButtons(): array
     {
         return [
@@ -134,6 +143,9 @@ class IndexPage extends Page
         ];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function queryTags(): array
     {
         return [
@@ -194,6 +206,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function table(): array
@@ -211,6 +224,9 @@ class IndexPage extends Page
         ];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function bottomLayer(): array
     {
         return $this->getResource()->getIndexPageComponents();

@@ -12,6 +12,9 @@ trait ResourceModelPolicy
 {
     protected bool $withPolicy = false;
 
+    /**
+     * @return string[]
+     */
     public function gateAbilities(): array
     {
         return [

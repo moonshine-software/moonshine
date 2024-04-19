@@ -80,6 +80,9 @@ final class Card extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

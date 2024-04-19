@@ -177,6 +177,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

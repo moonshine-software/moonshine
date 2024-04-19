@@ -30,6 +30,9 @@ final class Profile extends MoonShineComponent
         return $this->withBorder;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         $user = auth()->user();

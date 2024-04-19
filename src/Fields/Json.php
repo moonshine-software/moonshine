@@ -390,6 +390,7 @@ class Json extends Field implements
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

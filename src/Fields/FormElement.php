@@ -323,6 +323,9 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return true;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [];

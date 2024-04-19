@@ -69,6 +69,24 @@ class AssetManager
         return $this->assets;
     }
 
+    private function isJs(string $value): bool
+    {
+        $value = strtolower(
+            strtok($value, '?')
+        );
+
+        return pathinfo($value, PATHINFO_EXTENSION) === 'js';
+    }
+
+    private function isCss(string $value): bool
+    {
+        $value = strtolower(
+            strtok($value, '?')
+        );
+
+        return pathinfo($value, PATHINFO_EXTENSION) === 'css';
+    }
+
     public function js(): string
     {
         $attributes = $this->parseTagAttributes(
@@ -77,9 +95,7 @@ class AssetManager
 
         return collect($this->assets)
             ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->push($this->getMainJs()))
-            ->filter(
-                fn ($asset): int|bool => str_contains((string) $asset, '.js')
-            )
+            ->filter(fn ($asset): bool => $this->isJs((string) $asset))
             ->map(
                 fn ($asset): string => "<script $attributes src='" . asset(
                     $asset
@@ -95,9 +111,7 @@ class AssetManager
 
         return collect($this->assets)
             ->when(! $this->isRunningHot(), fn (Collection $assets) => $assets->prepend($this->getMainCss()))
-            ->filter(
-                fn ($asset): int|bool => str_contains((string) $asset, '.css')
-            )
+            ->filter(fn ($asset): bool => $this->isCss((string) $asset))
             ->map(
                 fn ($asset): string => "<link $attributes href='" . asset(
                     $asset

@@ -35,6 +35,9 @@ class TopBar extends WithComponents
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

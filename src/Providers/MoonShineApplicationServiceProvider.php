@@ -47,7 +47,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return array<ResourceContract>
+     * @return list<ResourceContract>
      */
     protected function resources(): array
     {
@@ -55,7 +55,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return array<Page>
+     * @return list<Page>
      */
     protected function pages(): array
     {
@@ -63,7 +63,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return Closure|array<MenuElement>
+     * @return Closure|list<MenuElement>
      */
     protected function menu(): Closure|array
     {

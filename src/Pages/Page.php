@@ -6,12 +6,14 @@ namespace MoonShine\Pages;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
+use MoonShine\Fields\Field;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
@@ -74,6 +76,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         //
     }
 
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
     abstract public function components(): array;
 
     public function flushState(): void
@@ -119,21 +124,33 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         }
     }
 
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
     public function fields(): array
     {
         return [];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function topLayer(): array
     {
         return [];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function mainLayer(): array
     {
         return [];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function bottomLayer(): array
     {
         return [];
@@ -144,6 +161,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->pageType;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function breadcrumbs(): array
     {
         if (! is_null($this->breadcrumbs)) {
@@ -177,6 +197,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         return $this->components;
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     public function getLayers(): array
     {
         return [
@@ -186,6 +209,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
         ];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     public function getLayerComponents(Layer $layer): array
     {
         return array_merge(
@@ -301,6 +327,9 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
             === $this->uriKey();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

@@ -337,6 +337,7 @@ class BelongsToMany extends ModelRelationField implements
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

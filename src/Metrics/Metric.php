@@ -41,6 +41,9 @@ abstract class Metric extends MoonShineComponent implements HasAssets
             ->when(! is_null($index), fn ($str) => $str->append('_' . $index));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

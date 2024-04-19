@@ -10,6 +10,8 @@ use {model-namespace};
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
+use MoonShine\Fields\Field;
+use MoonShine\Components\MoonShineComponent;
 
 /**
  * @extends ModelResource<{model}>
@@ -20,6 +22,9 @@ class DummyResource extends ModelResource
 
     protected string $title = 'DummyTitle';
 
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
     public function fields(): array
     {
         return [
@@ -29,6 +34,12 @@ class DummyResource extends ModelResource
         ];
     }
 
+    /**
+     * @param {model} $item
+     *
+     * @return array<string, string[]|string>
+     * @see https://laravel.com/docs/validation#available-validation-rules
+     */
     public function rules(Model $item): array
     {
         return [];
