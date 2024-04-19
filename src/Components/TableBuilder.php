@@ -66,8 +66,8 @@ final class TableBuilder extends IterableComponent implements TableContract
             $fields = $this
                 ->getFilledFields($raw, $casted, $index, $tableFields)
                 ->when(
-                    $this->isReindex() && !$this->isPreparedReindex(),
-                    fn(Fields $f): Fields => $f->prepareReindex()
+                    $this->isReindex() && ! $this->isPreparedReindex(),
+                    fn (Fields $f): Fields => $f->prepareReindex()
                 )
             ;
 
@@ -138,11 +138,11 @@ final class TableBuilder extends IterableComponent implements TableContract
                 'data-events' => $this->asyncEvents(),
             ]);
 
-            $systemTrEvents[] = fn(mixed $data, TableRow $row, int $index): array => $row->getKey() ? [
+            $systemTrEvents[] = fn (mixed $data, TableRow $row, int $index): array => $row->getKey() ? [
                 AlpineJs::eventBlade(
                     JsEvent::TABLE_ROW_UPDATED,
                     "{$this->getName()}-{$row->getKey()}",
-                ) => "asyncRowRequest(`{$row->getKey()}`,`$index`)"
+                ) => "asyncRowRequest(`{$row->getKey()}`,`$index`)",
             ] : [];
         }
 
@@ -152,13 +152,13 @@ final class TableBuilder extends IterableComponent implements TableContract
                 'data-sortable-group' => $this->sortableGroup,
             ]);
 
-            $systemTrEvents[] = fn(mixed $data, TableRow $row, int $index): array => [
-                'data-id' => data_get($data, $this->sortableKey ?? 'id', $index)
+            $systemTrEvents[] = fn (mixed $data, TableRow $row, int $index): array => [
+                'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
             ];
         }
 
         $this->systemTrAttributes(
-            function (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) use($systemTrEvents) {
+            function (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) use ($systemTrEvents) {
                 foreach ($systemTrEvents as $systemTrEvent) {
                     $attr = $attr->merge($systemTrEvent($data, $row, $index));
                 }
