@@ -67,7 +67,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ->getFilledFields($raw, $casted, $index, $tableFields)
                 ->when(
                     $this->isReindex() && !$this->isPreparedReindex(),
-                    fn(Fields $f) => $f->prepareReindex()
+                    fn(Fields $f): Fields => $f->prepareReindex()
                 )
             ;
 
