@@ -33,7 +33,7 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
         return $this->customAttributes([
             'x-data' => 'select',
             'data-max-item-count' => $limit,
-            'data-remove-item-button' => true
+            'data-remove-item-button' => true,
         ]);
     }
 }
