@@ -52,7 +52,7 @@ it('add asset with attributes', function (): void {
     $asset = Css::make('app.css')
         ->defer()
         ->customAttributes([
-            'data-var' => 'foo'
+            'data-var' => 'foo',
         ]);
 
     expect($asset->getAttribute('defer'))

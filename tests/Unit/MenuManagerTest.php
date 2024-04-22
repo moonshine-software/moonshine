@@ -19,7 +19,8 @@ it('add menu elements', function (): void {
 
     expect(moonshineMenu()->all())
         ->toHaveCount(1)
-        ->each(fn (Expectation $item) => $item
+        ->each(
+            fn (Expectation $item) => $item
             ->url()
             ->toBe('/')
             ->label()
@@ -36,7 +37,7 @@ it('add before menu elements', function (): void {
 
     $item = MenuItem::make('Item 2_0', '/item2_0');
 
-    moonshineMenu()->addBefore(fn(MenuItem $el) => $el->url() === '/item2', $item);
+    moonshineMenu()->addBefore(fn (MenuItem $el) => $el->url() === '/item2', $item);
 
     $items = moonshineMenu()->all();
 
@@ -53,7 +54,7 @@ it('add after menu elements', function (): void {
 
     $item = MenuItem::make('Item 2_0', '/item2_0');
 
-    moonshineMenu()->addAfter(fn(MenuItem $el) => $el->url() === '/item2', [$item]);
+    moonshineMenu()->addAfter(fn (MenuItem $el) => $el->url() === '/item2', [$item]);
 
     $items = moonshineMenu()->all();
 
@@ -68,7 +69,7 @@ it('remove menu elements', function (): void {
         MenuItem::make('Item 3', '/item3'),
     ]);
 
-    moonshineMenu()->remove(fn(MenuItem $el) => $el->url() === '/item2');
+    moonshineMenu()->remove(fn (MenuItem $el) => $el->url() === '/item2');
 
     $items = moonshineMenu()->all();
 
@@ -93,7 +94,7 @@ it('replace items', function (): void {
 it('only visible items', function (): void {
     moonshineMenu()->add([
         MenuItem::make('Item 1', '/item1'),
-        MenuItem::make('Item 2', '/item2')->canSee(fn() => false),
+        MenuItem::make('Item 2', '/item2')->canSee(fn () => false),
         MenuItem::make('Item 3', '/item3'),
     ]);
 
@@ -124,7 +125,7 @@ it('check active element', function (): void {
         ->toBeTrue();
 
 
-    $item1 = MenuItem::make('Item 1', 'http://localhost/item1')->whenActive(fn() => true);
+    $item1 = MenuItem::make('Item 1', 'http://localhost/item1')->whenActive(fn () => true);
     $item2 = MenuItem::make('Item 2', 'http://localhost/item2');
 
 

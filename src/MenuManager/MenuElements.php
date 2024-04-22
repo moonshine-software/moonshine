@@ -14,7 +14,7 @@ final class MenuElements extends Collection
 {
     public function topMode(?Closure $condition = null): self
     {
-        return $this->transform(function (MenuElement $item) use($condition): MenuElement {
+        return $this->transform(function (MenuElement $item) use ($condition): MenuElement {
             $item = clone $item;
 
             if ($item instanceof MenuGroup) {

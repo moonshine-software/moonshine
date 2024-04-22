@@ -59,8 +59,8 @@ class AppLayout extends MoonShineLayout
                             static fn () => __('moonshine::ui.resource.role_title'),
                             new MoonShineUserRoleResource()
                         ),
-                    ])
-                ])
+                    ]),
+                ]),
             ]),
         ];
     }

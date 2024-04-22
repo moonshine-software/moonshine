@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use Illuminate\Support\Facades\Route;
-use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Handlers\Handlers;
+use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Pages\Pages;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;

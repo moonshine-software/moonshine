@@ -107,7 +107,7 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     {
         $mergeData = [
             ...$this->viewData(),
-            ...$this->getCustomViewData()
+            ...$this->getCustomViewData(),
         ];
 
         if($this instanceof HasAssets) {
