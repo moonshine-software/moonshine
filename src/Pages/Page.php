@@ -9,7 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\HasResourceContract;
-use MoonShine\Contracts\Menu\MenuFiller;
+use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\PageView;
 use MoonShine\Contracts\Resources\ResourceContract;

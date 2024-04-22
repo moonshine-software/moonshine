@@ -48,20 +48,19 @@
     </button>
 
     @if($items)
-        @if(!$top)
+        @if($top)
             <x-moonshine::menu
                 :dropdown="true"
                 :items="$items"
                 class="dropdown-body"
-                x-transition.top=""
-                style="display: none"
-                x-show="dropdown"
             />
         @else
             <x-moonshine::menu
                 :dropdown="true"
                 :items="$items"
-                :class="$top ? 'dropdown-body' : ''"
+                x-transition.top=""
+                style="display: none"
+                x-show="dropdown"
             />
         @endif
     @endif

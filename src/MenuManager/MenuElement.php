@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\MenuManager;
 
+use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\HasCanSee;
@@ -22,12 +23,27 @@ abstract class MenuElement implements MoonShineRenderable
     use WithLabel;
     use WithView;
 
+    private bool $topMode = false;
+
     abstract public function isActive(): bool;
 
     public function viewData(): array
     {
         return [];
     }
+
+    public function topMode(?Closure $condition = null): static
+    {
+        $this->topMode = is_null($condition) || value($condition, $this);
+
+        return $this;
+    }
+
+    public function isTopMode(): bool
+    {
+        return $this->topMode;
+    }
+
 
     public function render(): View
     {
@@ -37,7 +53,7 @@ abstract class MenuElement implements MoonShineRenderable
             'label' => $this->label(),
             'icon' => $this->iconValue() ? $this->getIcon(6) : '',
             'isActive' => $this->isActive(),
-            'top' => false,
+            'top' => $this->isTopMode(),
         ]);
     }
 

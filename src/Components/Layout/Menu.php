@@ -63,6 +63,10 @@ class Menu extends MoonShineComponent
             ]);
         }
 
+        if($this->isTop()) {
+            $this->items->topMode();
+        }
+
         return [];
     }
 }

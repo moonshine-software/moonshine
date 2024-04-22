@@ -21,6 +21,8 @@ final class MenuManager
      */
     private array $conditionItems = [];
 
+    private bool $topMode = false;
+
     public function add(array|MenuElement $data): self
     {
         $this->items = array_merge(
@@ -54,6 +56,13 @@ final class MenuManager
         return $this;
     }
 
+    public function topMode(?Closure $condition = null): self
+    {
+        $this->topMode = is_null($condition) || value($condition, $this);
+
+        return $this;
+    }
+
     public function all(?iterable $items = null): MenuElements
     {
         return MenuElements::make($items ?: $this->items)
@@ -75,6 +84,9 @@ final class MenuManager
 
                     return $elements;
                 }
+            )->when(
+                $this->topMode,
+                fn(MenuElements $elements) => $elements->topMode()
             );
     }
 }

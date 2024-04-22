@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use Illuminate\View\ComponentAttributeBag;
+use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Attributes\Icon;
-use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Support\Attributes;
 use MoonShine\Support\Condition;
 use Throwable;
@@ -27,7 +26,7 @@ class MenuItem extends MenuElement
 
     protected ?Closure $whenActive = null;
 
-    protected ComponentAttributeBag $linkAttributes;
+    protected ActionButton $actionButton;
 
     final public function __construct(
         Closure|string $label,
@@ -49,7 +48,7 @@ class MenuItem extends MenuElement
 
         $this->blank($blank);
 
-        $this->linkAttributes = new ComponentAttributeBag();
+        $this->actionButton = ActionButton::make($label);
     }
 
     protected function resolveFiller(MenuFiller $filler): void
@@ -161,20 +160,36 @@ class MenuItem extends MenuElement
 
     public function viewData(): array
     {
-        if($this->isBlank()) {
-            $this->linkAttributes = $this->linkAttributes->merge([
-                '_target' => '_blank'
+        if ($this->isBlank()) {
+            $this->actionButton = $this->actionButton->customAttributes([
+                '_target' => '_blank',
+            ]);
+        }
+
+        if (! $this->isTopMode()) {
+            $this->actionButton = $this->actionButton->customAttributes([
+                'x-data' => 'navTooltip',
+                '@mouseenter' => 'toggleTooltip',
             ]);
         }
 
         $viewData = [
             'url' => $this->url(),
-            'linkAttributes' => $this->linkAttributes,
         ];
 
-        if($this->hasBadge() && $badge = $this->getBadge()) {
+        if ($this->hasBadge() && $badge = $this->getBadge()) {
             $viewData['badge'] = $badge;
         }
+
+        $viewData['actionButton'] = $this->actionButton
+            ->setUrl($this->url())
+            ->customView('moonshine::components.menu.item-link', [
+                'url' => $this->url(),
+                'label' => $this->label(),
+                'icon' => $this->iconValue() ? $this->getIcon(6) : '',
+                'top' => $this->isTopMode(),
+                'badge' => $viewData['badge'] ?? '',
+            ]);
 
         return $viewData;
     }
