@@ -27,4 +27,13 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
     protected string $view = 'moonshine::fields.input';
 
     protected string $type = 'text';
+
+    public function tags(?int $limit = null): static
+    {
+        return $this->customAttributes([
+            'x-data' => 'select',
+            'data-max-item-count' => $limit,
+            'data-remove-item-button' => true
+        ]);
+    }
 }
