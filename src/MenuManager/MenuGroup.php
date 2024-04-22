@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use Illuminate\Support\Collection;
 
 /**
  * @method static static make(Closure|string $label, iterable $items, string|null $icon = null)

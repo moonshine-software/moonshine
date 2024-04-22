@@ -30,7 +30,6 @@ use MoonShine\Components\When;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\MoonShineLayout;
-use MoonShine\MoonShineRequest;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Resources\MoonShineUserRoleResource;

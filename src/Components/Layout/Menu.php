@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-use Illuminate\Support\Collection;
 use MoonShine\Components\MoonShineComponent;
 
 class Menu extends MoonShineComponent

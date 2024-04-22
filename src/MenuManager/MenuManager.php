@@ -68,10 +68,10 @@ final class MenuManager
         return MenuElements::make($items ?: $this->items)
             ->onlyVisible()
             ->when(
-                !empty($this->conditionItems),
-                function (MenuElements $elements) {
+                $this->conditionItems !== [],
+                function (MenuElements $elements): MenuElements {
                     foreach ($this->conditionItems as $conditionItem) {
-                        $elements->each(function(MenuElement $element, int $index) use($elements, $conditionItem) {
+                        $elements->each(function(MenuElement $element, int $index) use($elements, $conditionItem): void {
                             $elements->when(
                                 $conditionItem->hasBefore() && $conditionItem->isBefore($element),
                                 fn(MenuElements $e) => $e->splice($index, 0, $conditionItem->getData())
@@ -86,7 +86,7 @@ final class MenuManager
                 }
             )->when(
                 $this->topMode,
-                fn(MenuElements $elements) => $elements->topMode()
+                fn(MenuElements $elements): MenuElements => $elements->topMode()
             );
     }
 }
