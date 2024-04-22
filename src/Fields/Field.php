@@ -72,6 +72,8 @@ abstract class Field extends FormElement
 
     protected int $rowIndex = 0;
 
+    protected bool $hasOld = true;
+
     public function __construct(
         Closure|string|null $label = null,
         ?string $column = null,
@@ -107,7 +109,7 @@ abstract class Field extends FormElement
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        if($this->isFillChanged()) {
+        if ($this->isFillChanged()) {
             return value(
                 $this->fillCallback,
                 $casted ?? $raw,
@@ -138,7 +140,7 @@ abstract class Field extends FormElement
 
         $value = $this->prepareFill($raw, $casted);
 
-        if($value instanceof FieldEmptyValue) {
+        if ($value instanceof FieldEmptyValue) {
             return $this;
         }
 
@@ -148,7 +150,7 @@ abstract class Field extends FormElement
 
         $this->setValue($value);
 
-        if(! is_null($this->afterFillCallback)) {
+        if (! is_null($this->afterFillCallback)) {
             return value($this->afterFillCallback, $this);
         }
 
@@ -228,6 +230,10 @@ abstract class Field extends FormElement
 
     public function value(bool $withOld = true): mixed
     {
+        if (! $this->hasOld) {
+            $withOld = false;
+        }
+
         $empty = new FieldEmptyValue();
         $old = $withOld ? old($this->nameDot(), $empty) : $empty;
 

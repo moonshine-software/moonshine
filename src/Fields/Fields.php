@@ -118,12 +118,12 @@ final class Fields extends FormElements
     /**
      * @throws Throwable
      */
-    public function prepareReindex(Field $parent, ?callable $before = null)
+    public function prepareReindex(?Field $parent = null, ?callable $before = null): Fields
     {
-        return $this->prepareAttributes()->map(function (Field $field) use ($parent, $before): Field {
+        return $this->map(function (Field $field) use ($parent, $before): Field {
             value($before, $parent, $field);
 
-            $name = str($parent->name());
+            $name = str($parent ? $parent->name() : $field->name());
             $level = $name->substrCount('$');
 
             if ($field instanceof Json) {
@@ -136,18 +136,23 @@ final class Fields extends FormElements
 
             $name = $name
                 ->append('[${index' . $level . '}]')
-                ->append("[{$field->column()}]")
+                ->append($parent ? "[{$field->column()}]" : '')
                 ->replace('[]', '')
                 ->when(
                     $field->getAttribute('multiple') || $field->isGroup(),
                     static fn (Stringable $str): Stringable => $str->append('[]')
                 )->value();
 
+            if($parent) {
+                $field
+                    ->formName($parent?->getFormName())
+                    ->setParent($parent);
+            }
+
             return $field
                 ->setName($name)
-                ->formName($parent->getFormName())
                 ->iterableAttributes($level)
-                ->setParent($parent);
+            ;
         });
     }
 

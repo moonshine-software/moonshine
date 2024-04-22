@@ -70,6 +70,9 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             : parent::getView();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

@@ -6,17 +6,21 @@ namespace MoonShine\Traits\Resource;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Handlers\ExportHandler;
+use MoonShine\Handlers\Handler;
 use MoonShine\Handlers\ImportHandler;
 
 trait ResourceModelActions
 {
+    /**
+     * @return string[]
+     */
     public function getActiveActions(): array
     {
         return ['create', 'view', 'update', 'delete', 'massDelete'];
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function actions(): array
     {
@@ -42,6 +46,9 @@ trait ResourceModelActions
         return ImportHandler::make(__('moonshine::ui.import'));
     }
 
+    /**
+     * @return list<Handler>
+     */
     protected function handlers(): array
     {
         return array_filter([

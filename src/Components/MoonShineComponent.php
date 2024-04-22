@@ -78,6 +78,9 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         return $this->attributes ?: $this->newAttributeBag();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [];

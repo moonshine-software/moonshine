@@ -332,11 +332,12 @@ class BelongsToMany extends ModelRelationField implements
             ->preview()
             ->simple()
             ->editable()
-            ->reindex()
+            ->reindex(prepared: true)
             ->withNotFound();
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

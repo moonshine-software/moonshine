@@ -14,6 +14,7 @@ use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
+use MoonShine\Metrics\Metric;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
@@ -39,14 +40,18 @@ abstract class ModelResource extends Resource
 {
     use ResourceWithFields;
     use ResourceWithButtons;
+
     /** @use ResourceModelValidation<TModel> */
     use ResourceModelValidation;
     use ResourceModelActions;
     use ResourceModelPolicy;
+
     /** @use ResourceModelQuery<TModel> */
     use ResourceModelQuery;
+
     /** @use ResourceModelCrudRouter<TModel> */
     use ResourceModelCrudRouter;
+
     /** @use ResourceModelEvents<TModel> */
     use ResourceModelEvents;
     use WithIsNowOnRoute;
@@ -80,6 +85,9 @@ abstract class ModelResource extends Resource
         $this->pages = null;
     }
 
+    /**
+     * @return list<Page>
+     */
     protected function pages(): array
     {
         return [
@@ -161,6 +169,9 @@ abstract class ModelResource extends Resource
         return $this->clickAction?->value;
     }
 
+    /**
+     * @return list<Metric>
+     */
     public function metrics(): array
     {
         return [];
@@ -176,6 +187,9 @@ abstract class ModelResource extends Resource
         return fn (mixed $data, int $row, int $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
     }
 
+    /**
+     * @return string[]
+     */
     public function search(): array
     {
         return ['id'];
@@ -218,7 +232,7 @@ abstract class ModelResource extends Resource
     }
 
     /**
-     * @param TModel $item
+     * @param  TModel  $item
      *
      * @throws Throwable
      */
@@ -251,7 +265,7 @@ abstract class ModelResource extends Resource
     public function onSave(Field $field): Closure
     {
         return static function (Model $item) use ($field): Model {
-            if(! $field->hasRequestValue() && ! $field->defaultIfExists()) {
+            if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
                 return $item;
             }
 
@@ -264,7 +278,7 @@ abstract class ModelResource extends Resource
     }
 
     /**
-     * @param TModel $item
+     * @param  TModel  $item
      *
      * @return TModel
      * @throws ResourceException

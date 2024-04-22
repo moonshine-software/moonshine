@@ -77,6 +77,9 @@ class Fragment extends Decoration
         return $this->updateAsyncUrl;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         if($this->isUpdateAsync()) {

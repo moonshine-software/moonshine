@@ -7,9 +7,15 @@ namespace App\Providers;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Resources\MoonShineUserRoleResource;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Pages\Page;
+use Closure;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
+    /**
+     * @return array<class-string<ResourceContract>>
+     */
     protected function resources(): array
     {
         return [
@@ -18,6 +24,9 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
         ];
     }
 
+    /**
+     * @return array<class-string<Page>>
+     */
     protected function pages(): array
     {
         return [

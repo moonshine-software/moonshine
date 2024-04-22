@@ -22,6 +22,8 @@ class Preview extends Field
 
     protected bool $hideFalse = false;
 
+    protected bool $hasOld = false;
+
     public function boolean(
         mixed $hideTrue = null,
         mixed $hideFalse = null

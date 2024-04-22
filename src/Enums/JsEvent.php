@@ -10,6 +10,8 @@ enum JsEvent: string
 
     case TABLE_UPDATED = 'table-updated';
 
+    case TABLE_REINDEX = 'table-reindex';
+
     case TABLE_ROW_UPDATED = 'table-row-updated';
 
     case CARDS_UPDATED = 'cards-updated';

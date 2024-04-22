@@ -261,7 +261,7 @@ class Json extends Field implements
 
     public function preparedFields(): Fields
     {
-        return $this->getFields()->prepareReindex(parent: $this, before: function (Json $parent, Field $field): void {
+        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (Json $parent, Field $field): void {
             throw_if(
                 ! $parent->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
@@ -274,7 +274,7 @@ class Json extends Field implements
     protected function resolvePreview(): View|string
     {
         if ($this->isRawMode()) {
-            return parent::resolvePreview();
+            return (string) parent::resolvePreview();
         }
 
         return $this->resolveValue()
@@ -390,6 +390,7 @@ class Json extends Field implements
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array
@@ -397,7 +398,7 @@ class Json extends Field implements
         return [
             'table' => $this->resolveValue()
                 ->editable()
-                ->reindex()
+                ->reindex(prepared: true)
                 ->when(
                     $this->isCreatable(),
                     fn (TableBuilder $table): TableBuilder => $table->creatable(

@@ -5,14 +5,24 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\Pages\Crud\{extendShort};
+use MoonShine\Components\MoonShineComponent;
+use MoonShine\Fields\Field;
+use Throwable;
 
 class DummyPage extends {extendShort}
 {
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
     public function fields(): array
     {
         return [];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     * @throws Throwable
+     */
     protected function topLayer(): array
     {
         return [
@@ -20,6 +30,10 @@ class DummyPage extends {extendShort}
         ];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     * @throws Throwable
+     */
     protected function mainLayer(): array
     {
         return [
@@ -27,6 +41,10 @@ class DummyPage extends {extendShort}
         ];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     * @throws Throwable
+     */
     protected function bottomLayer(): array
     {
         return [

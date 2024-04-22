@@ -84,6 +84,9 @@ final class Modal extends MoonShineComponent implements HasFields
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         $componentsHtml = $this->components?->isNotEmpty() ?

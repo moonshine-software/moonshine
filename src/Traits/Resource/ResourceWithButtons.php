@@ -15,7 +15,7 @@ use MoonShine\Buttons\MassDeleteButton;
 trait ResourceWithButtons
 {
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function getIndexButtons(): array
     {
@@ -23,7 +23,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function getFormButtons(): array
     {
@@ -31,7 +31,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function getDetailButtons(): array
     {
@@ -39,7 +39,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     protected function withoutBulk(array $buttonsType = []): array
     {
@@ -49,12 +49,11 @@ trait ResourceWithButtons
                 : $buttonsType
         )
             ->withoutBulk()
-            ->toArray()
-        ;
+            ->toArray();
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function buttons(): array
     {
@@ -62,7 +61,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function indexButtons(): array
     {
@@ -70,7 +69,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function formButtons(): array
     {
@@ -78,7 +77,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return array<ActionButton>
+     * @return list<ActionButton>
      */
     public function detailButtons(): array
     {
@@ -111,8 +110,11 @@ trait ResourceWithButtons
         );
     }
 
-    public function getDeleteButton(?string $componentName = null, string $redirectAfterDelete = '', bool $isAsync = false): ActionButton
-    {
+    public function getDeleteButton(
+        ?string $componentName = null,
+        string $redirectAfterDelete = '',
+        bool $isAsync = false
+    ): ActionButton {
         return DeleteButton::for(
             $this,
             componentName: $componentName,
@@ -121,8 +123,11 @@ trait ResourceWithButtons
         );
     }
 
-    public function getMassDeleteButton(?string $componentName = null, string $redirectAfterDelete = '', bool $isAsync = false): ActionButton
-    {
+    public function getMassDeleteButton(
+        ?string $componentName = null,
+        string $redirectAfterDelete = '',
+        bool $isAsync = false
+    ): ActionButton {
         return MassDeleteButton::for(
             $this,
             componentName: $componentName,
@@ -131,6 +136,9 @@ trait ResourceWithButtons
         );
     }
 
+    /**
+     * @return list<ActionButton>
+     */
     public function getIndexItemButtons(): array
     {
         return [
@@ -142,6 +150,9 @@ trait ResourceWithButtons
         ];
     }
 
+    /**
+     * @return list<ActionButton>
+     */
     public function getFormItemButtons(): array
     {
         return [
@@ -153,6 +164,9 @@ trait ResourceWithButtons
         ];
     }
 
+    /**
+     * @return list<ActionButton>
+     */
     public function getDetailItemButtons(): array
     {
         return [

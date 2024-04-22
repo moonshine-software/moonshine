@@ -52,6 +52,9 @@ class Menu extends MoonShineComponent
         return $this->scrollTo;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         if(!$this->isTop() && $this->isScrollTo()) {

@@ -372,6 +372,7 @@ class HasMany extends ModelRelationField implements HasFields
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

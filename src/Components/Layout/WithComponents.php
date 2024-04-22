@@ -17,6 +17,9 @@ abstract class WithComponents extends MoonShineComponent
     ) {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

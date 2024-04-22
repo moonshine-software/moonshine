@@ -51,6 +51,9 @@ final class ActionGroup extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

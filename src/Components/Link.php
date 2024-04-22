@@ -63,6 +63,9 @@ final class Link extends MoonShineComponent
             . ($this->isButton ? 'button' : 'native');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [
