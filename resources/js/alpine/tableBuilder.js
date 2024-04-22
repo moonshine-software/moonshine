@@ -34,11 +34,11 @@ export default (
       tbody?.lastElementChild?.remove()
     }
 
-    if (this.reindex) {
+    if (this.reindex && this.table) {
       this.resolveReindex()
     }
 
-    if (this.sortable) {
+    if (this.sortable && this.table) {
       sortableFunction(
         this.table?.dataset?.sortableUrl ?? null,
         this.table?.dataset?.sortableGroup ?? null,
@@ -77,6 +77,10 @@ export default (
     }
   },
   resolveReindex() {
+    if (!this.table) {
+      return
+    }
+
     function findRoot(element) {
       let parent = element.parentNode.closest('table')
 

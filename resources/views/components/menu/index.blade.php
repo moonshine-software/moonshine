@@ -1,28 +1,12 @@
 @props([
-    'data' => $_data ?? [],
-    'top' => $isTop ?? false,
-    'isScrollTo' => $isScrollTo ?? true,
+    'items' => [],
+    'dropdown' => false
 ])
-@if($data)
-    <ul {{ $attributes->class(['menu-inner']) }}
-        @if(!$top && $isScrollTo)
-            x-init="$nextTick(() => document.querySelector('.menu-inner-item._is-active')?.scrollIntoView())"
-        @endif
-    >
-        @foreach($data as $item)
-            @if($item->isGroup())
-                <x-moonshine::menu.group
-                    :item="$item"
-                    :top="$top"
-                />
-            @else
-                <x-moonshine::menu.item
-                    :item="$item"
-                    :top="$top"
-                />
-            @endif
 
-
+@if($items !== [])
+    <ul {{ $attributes->class(['menu-inner' => !$dropdown, 'menu-inner-dropdown' => $dropdown]) }}>
+        @foreach($items as $item)
+            {!! $item !!}
         @endforeach
     </ul>
 @endif

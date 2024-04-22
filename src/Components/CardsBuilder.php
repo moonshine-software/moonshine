@@ -178,6 +178,7 @@ final class CardsBuilder extends IterableComponent
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

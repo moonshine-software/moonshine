@@ -19,6 +19,9 @@ use MoonShine\TypeCasts\ModelCast;
 
 class ProfilePage extends Page
 {
+    /**
+     * @return array<string, string>
+     */
     public function breadcrumbs(): array
     {
         return [

@@ -8,7 +8,7 @@ use MoonShine\Support\Condition;
 
 trait Applies
 {
-    protected bool $canApply = true;
+    protected ?Closure $canApply = null;
 
     protected ?Closure $onApply = null;
 
@@ -18,16 +18,20 @@ trait Applies
 
     protected ?Closure $onAfterDestroy = null;
 
-    public function canApply(mixed $condition = null): static
+    public function canApply(Closure $canApply): static
     {
-        $this->canApply = Condition::boolean($condition, true);
+        $this->canApply = $canApply;
 
         return $this;
     }
 
     public function isCanApply(): bool
     {
-        return $this->canApply;
+        if(is_null($this->canApply)) {
+            return true;
+        }
+
+        return value($this->canApply, $this);
     }
 
     protected function resolveOnApply(): ?Closure

@@ -17,6 +17,9 @@ class LayoutBuilder extends WithComponents
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

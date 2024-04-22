@@ -19,7 +19,7 @@ trait ResourceModelValidation
      *
      * @param TModel $item
      *
-     *
+     * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
     abstract public function rules(Model $item): array;
@@ -27,7 +27,7 @@ trait ResourceModelValidation
     /**
      * Get custom messages for validator errors
      *
-     * @return array<string, string|array<string, string>>
+     * @return array<string, string[]|string>
      */
     public function validationMessages(): array
     {

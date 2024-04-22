@@ -74,7 +74,7 @@ class Tabs extends Decoration
     public function tabs(): Fields
     {
         return tap(
-            Fields::make($this->fields),
+            Fields::make($this->getRawFields()),
             static function (Fields $tabs): void {
                 throw_if(
                     $tabs->every(fn ($tab): bool => ! $tab instanceof Tab),

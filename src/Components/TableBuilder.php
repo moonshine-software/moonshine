@@ -63,7 +63,13 @@ final class TableBuilder extends IterableComponent implements TableContract
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 
-            $fields = $this->getFilledFields($raw, $casted, $index, $tableFields);
+            $fields = $this
+                ->getFilledFields($raw, $casted, $index, $tableFields)
+                ->when(
+                    $this->isReindex() && ! $this->isPreparedReindex(),
+                    fn (Fields $f): Fields => $f->prepareReindex()
+                )
+            ;
 
             return TableRow::make(
                 $casted,
@@ -125,32 +131,45 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 
-        $systemTrEvent = fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row): array => $row->getKey() ? [
-            AlpineJs::eventBlade(
-                JsEvent::TABLE_ROW_UPDATED,
-                "{$this->getName()}-{$row->getKey()}",
-            ) => "asyncRowRequest(`{$row->getKey()}`,`$index`)",
-        ] : [];
+        $systemTrEvents = [];
+
+        if ($this->isAsync()) {
+            $this->customAttributes([
+                'data-events' => $this->asyncEvents(),
+            ]);
+
+            $systemTrEvents[] = fn (mixed $data, TableRow $row, int $index): array => $row->getKey() ? [
+                AlpineJs::eventBlade(
+                    JsEvent::TABLE_ROW_UPDATED,
+                    "{$this->getName()}-{$row->getKey()}",
+                ) => "asyncRowRequest(`{$row->getKey()}`,`$index`)",
+            ] : [];
+        }
 
         if (! is_null($this->sortableUrl) && $this->isSortable()) {
             $this->customAttributes([
                 'data-sortable-url' => $this->sortableUrl,
                 'data-sortable-group' => $this->sortableGroup,
-            ])->systemTrAttributes(
-                fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
-                    'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
-                    ...value($systemTrEvent, $data, $index, $attr, $row),
-                ])
-            );
+            ]);
+
+            $systemTrEvents[] = fn (mixed $data, TableRow $row, int $index): array => [
+                'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
+            ];
         }
 
-        if ($this->isAsync()) {
-            $this->customAttributes([
-                'data-events' => $this->asyncEvents(),
-            ])->systemTrAttributes(
-                fn (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) => $attr->merge([
-                    ...value($systemTrEvent, $data, $index, $attr, $row),
-                ])
+        $this->systemTrAttributes(
+            function (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) use ($systemTrEvents) {
+                foreach ($systemTrEvents as $systemTrEvent) {
+                    $attr = $attr->merge($systemTrEvent($data, $row, $index));
+                }
+
+                return $attr;
+            }
+        );
+
+        if ($this->isCreatable() && ! $this->isPreview()) {
+            $this->items(
+                $this->getItems()->push([null])
             );
         }
 
@@ -158,6 +177,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

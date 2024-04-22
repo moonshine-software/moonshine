@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use InvalidArgumentException;
-use MoonShine\Contracts\Fields\HasFields;
 
 trait ShowWhen
 {
@@ -50,15 +49,9 @@ trait ShowWhen
         [$column, $value, $operator] = $this->showWhenData;
         $this->showWhenState = true;
 
-        $name = $this->name();
-
-        if($this instanceof HasFields) {
-            $name = str_replace('[]', '', (string) $name);
-        }
-
         $this->showWhenCondition[] = [
             'object_id' => spl_object_id($this),
-            'showField' => $name,
+            'showField' => $this->name(),
             'changeField' => $this->dotNestedToName($column),
             'operator' => $operator,
             'value' => $value,

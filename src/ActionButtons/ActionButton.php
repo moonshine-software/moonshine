@@ -30,6 +30,8 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     use InDropdownOrLine;
     use WithModal;
 
+    protected string $view = 'moonshine::components.action-button';
+
     protected bool $isBulk = false;
 
     protected ?string $bulkForComponent = null;
@@ -63,13 +65,9 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             ->customAttributes(['style' => 'display:none']);
     }
 
-    public function getView(): string
-    {
-        return parent::getView() === ''
-            ? 'moonshine::actions.default'
-            : parent::getView();
-    }
-
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [
@@ -277,7 +275,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             return $this;
         }
 
-        return $this->customAttributes(['class' => 'btn-primary']);
+        return $this->class('btn-primary');
     }
 
     public function secondary(Closure|bool|null $condition = null): self
@@ -286,7 +284,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             return $this;
         }
 
-        return $this->customAttributes(['class' => 'btn-secondary']);
+        return $this->class('btn-secondary');
     }
 
     public function success(Closure|bool|null $condition = null): self
@@ -295,7 +293,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             return $this;
         }
 
-        return $this->customAttributes(['class' => 'btn-success']);
+        return $this->class('btn-success');
     }
 
     public function warning(Closure|bool|null $condition = null): self
@@ -304,7 +302,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             return $this;
         }
 
-        return $this->customAttributes(['class' => 'btn-warning']);
+        return $this->class('btn-warning');
     }
 
     public function error(Closure|bool|null $condition = null): self
@@ -313,6 +311,6 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             return $this;
         }
 
-        return $this->customAttributes(['class' => 'btn-error']);
+        return $this->class('btn-error');
     }
 }

@@ -145,7 +145,7 @@ trait ResourceModelQuery
     /**
      * Get an array of custom form actions
      *
-     * @return array<QueryTag>
+     * @return list<QueryTag>
      */
     public function queryTags(): array
     {
@@ -239,6 +239,9 @@ trait ResourceModelQuery
         return $this->saveFilterState;
     }
 
+    /**
+     * @return string[]
+     */
     protected function cachedRequestKeys(): array
     {
         return ['sort', 'filters', 'page', 'query-tag', 'search'];
@@ -302,9 +305,9 @@ trait ResourceModelQuery
         return $this;
     }
 
-    protected function resolveSearch(): static
+    protected function resolveSearch($queryKey = 'search'): static
     {
-        if (! empty($this->search()) && request()->filled('search')) {
+        if (! empty($this->search()) && request()->filled($queryKey)) {
             $fullTextColumns = Attributes::for($this)
                 ->attribute(SearchUsingFullText::class)
                 ->method('search')
@@ -312,7 +315,7 @@ trait ResourceModelQuery
                 ->get();
 
             $terms = request()
-                ->str('search')
+                ->str($queryKey)
                 ->squish()
                 ->value();
 
@@ -398,6 +401,9 @@ trait ResourceModelQuery
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getFilterParams(): array
     {
         $default = request('filters', []);
@@ -507,6 +513,9 @@ trait ResourceModelQuery
         return $this->with !== [];
     }
 
+    /**
+     * @return string[]
+     */
     public function getWith(): array
     {
         return $this->with;
@@ -537,9 +546,11 @@ trait ResourceModelQuery
         return $this->resolveQuery()->get();
     }
 
-    public function customBuilder(Builder $builder): void
+    public function customBuilder(Builder $builder): static
     {
         $this->customBuilder = $builder;
+
+        return $this;
     }
 
     public function isPaginationUsed(): bool
@@ -547,6 +558,9 @@ trait ResourceModelQuery
         return $this->usePagination;
     }
 
+    /**
+     * @return string[]
+     */
     public function parentRelations(): array
     {
         return $this->parentRelations;

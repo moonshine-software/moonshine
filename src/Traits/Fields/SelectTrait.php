@@ -10,22 +10,20 @@ use MoonShine\Support\SelectOptions;
 
 trait SelectTrait
 {
-    protected array $options = [];
+    protected array|Closure $options = [];
 
     protected array|Closure $optionProperties = [];
 
     public function options(Closure|array $data): static
     {
-        $this->options = is_closure($data)
-            ? $data($this)
-            : $data;
+        $this->options = $data;
 
         return $this;
     }
 
     public function values(): array
     {
-        return $this->options;
+        return value($this->options, $this);
     }
 
     /**

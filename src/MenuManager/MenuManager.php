@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace MoonShine\MenuManager;
 
-use Illuminate\Support\Collection;
+use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\MoonShineRequest;
 
 final class MenuManager
 {
     use Conditionable;
 
+    /**
+     * @var list<MenuElement>
+     */
     private array $items = [];
 
-    public function __construct(
-        private MoonShineRequest $request
-    ) {
-    }
+    /**
+     * @var list<MenuCondition>
+     */
+    private array $conditionItems = [];
+
+    private bool $topMode = false;
 
     public function add(array|MenuElement $data): self
     {
@@ -29,44 +33,60 @@ final class MenuManager
         return $this;
     }
 
-    public function all(): Collection
+    public function remove(Closure $condition): self
     {
-        return $this->prepareMenu($this->items);
+        $this->items = collect($this->items)
+            ->reject($condition)
+            ->toArray();
+
+        return $this;
     }
 
-    public function hasForceActive(): bool
+    public function addBefore(Closure $before, array|MenuElement|Closure $data): self
     {
-        return $this->all()->contains(function (MenuElement $item) {
-            if($item->isForceActive()) {
-                return true;
-            }
+        $this->conditionItems[] = new MenuCondition($data, before: $before);
 
-            if($item instanceof MenuGroup) {
-                return $item->items()->contains(fn (MenuElement $child): bool => $child->isForceActive());
-            }
-
-            return false;
-        });
+        return $this;
     }
 
-    public function prepareMenu(array $items = []): Collection
+    public function addAfter(Closure $after, array|MenuElement|Closure $data): self
     {
-        return collect($items)
-            ->ensure(MenuElement::class)
-            ->filter(function (MenuElement $item): bool {
-                if ($item instanceof MenuGroup) {
-                    $item->setItems(
-                        $item->items()->filter(
-                            fn (MenuElement $child): bool => $child->isSee(
-                                $this->request
-                            )
-                        )
-                    );
+        $this->conditionItems[] = new MenuCondition($data, after: $after);
+
+        return $this;
+    }
+
+    public function topMode(?Closure $condition = null): self
+    {
+        $this->topMode = is_null($condition) || value($condition, $this);
+
+        return $this;
+    }
+
+    public function all(?iterable $items = null): MenuElements
+    {
+        return MenuElements::make($items ?: $this->items)
+            ->onlyVisible()
+            ->when(
+                !empty($this->conditionItems),
+                function (MenuElements $elements) {
+                    foreach ($this->conditionItems as $conditionItem) {
+                        $elements->each(function(MenuElement $element, int $index) use($elements, $conditionItem) {
+                            $elements->when(
+                                $conditionItem->hasBefore() && $conditionItem->isBefore($element),
+                                fn(MenuElements $e) => $e->splice($index, 0, $conditionItem->getData())
+                            )->when(
+                                $conditionItem->hasAfter() && $conditionItem->isAfter($element),
+                                fn(MenuElements $e) => $e->splice($index + 1, 0, $conditionItem->getData())
+                            );
+                        });
+                    }
+
+                    return $elements;
                 }
-
-                return $item->isSee(
-                    $this->request
-                );
-            });
+            )->when(
+                $this->topMode,
+                fn(MenuElements $elements) => $elements->topMode()
+            );
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Collection;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\FilterException;
 use MoonShine\Fields\Field;
@@ -15,6 +16,9 @@ use Throwable;
 
 trait ResourceWithFields
 {
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
     public function fields(): array
     {
         return [];
@@ -25,6 +29,9 @@ trait ResourceWithFields
         return Fields::make($this->fields());
     }
 
+    /**
+     * @return list<Field>
+     */
     public function indexFields(): array
     {
         return [];
@@ -50,6 +57,9 @@ trait ResourceWithFields
             ->indexFields();
     }
 
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
     public function formFields(): array
     {
         return [];
@@ -74,6 +84,9 @@ trait ResourceWithFields
             ->formFields(withOutside: $withOutside);
     }
 
+    /**
+     * @return list<Field>
+     */
     public function detailFields(): array
     {
         return [];
@@ -119,6 +132,9 @@ trait ResourceWithFields
             ->onlyOutside();
     }
 
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
     public function filters(): array
     {
         return [];

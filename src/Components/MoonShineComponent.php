@@ -78,6 +78,9 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         return $this->attributes ?: $this->newAttributeBag();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [];
@@ -102,7 +105,10 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
 
     public function render(): View|Closure|string
     {
-        $mergeData = $this->viewData();
+        $mergeData = [
+            ...$this->viewData(),
+            ...$this->getCustomViewData()
+        ];
 
         if($this instanceof HasAssets) {
             moonshineAssets()->add($this->getAssets());

@@ -12,6 +12,8 @@ use Illuminate\Support\Collection;
  */
 class MenuGroup extends MenuElement
 {
+    protected string $view = 'moonshine::components.menu.group';
+
     public function __construct(
         Closure|string $label,
         protected iterable $items = [],
@@ -31,8 +33,26 @@ class MenuGroup extends MenuElement
         return $this;
     }
 
-    public function items(): Collection
+    public function items(): MenuElements
     {
-        return collect($this->items);
+        return MenuElements::make($this->items);
+    }
+
+    public function isActive(): bool
+    {
+        foreach ($this->items() as $item) {
+            if ($item->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function viewData(): array
+    {
+        return [
+            'items' => $this->items(),
+        ];
     }
 }

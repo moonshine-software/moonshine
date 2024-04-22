@@ -34,6 +34,9 @@ abstract class Decoration extends MoonShineComponent implements FieldsDecoration
         $this->fields($fields);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

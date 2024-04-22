@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use Illuminate\Support\Facades\Route;
-use MoonShine\Contracts\Menu\MenuFiller;
+use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Handlers\Handlers;
 use MoonShine\Pages\Pages;

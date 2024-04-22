@@ -11,6 +11,7 @@ use {form-page-namespace};
 use {detail-page-namespace};
 
 use MoonShine\Resources\ModelResource;
+use MoonShine\Pages\Page;
 
 /**
  * @extends ModelResource<{model}>
@@ -21,6 +22,9 @@ class DummyResource extends ModelResource
 
     protected string $title = 'DummyTitle';
 
+    /**
+     * @return list<Page>
+     */
     public function pages(): array
     {
         return [
@@ -34,6 +38,12 @@ class DummyResource extends ModelResource
         ];
     }
 
+    /**
+     * @param {model} $item
+     *
+     * @return array<string, string[]|string>
+     * @see https://laravel.com/docs/validation#available-validation-rules
+     */
     public function rules(Model $item): array
     {
         return [];

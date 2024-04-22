@@ -274,6 +274,7 @@ final class FormBuilder extends RowComponent
 
     /**
      * @throws Throwable
+     * @return array<string, mixed>
      * @throws JsonException
      */
     protected function viewData(): array

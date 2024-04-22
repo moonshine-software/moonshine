@@ -20,6 +20,8 @@ trait TableStates
 
     protected bool $isReindex = false;
 
+    protected bool $isPreparedReindex = false;
+
     protected bool $isSortable = false;
 
     protected ?string $sortableUrl = null;
@@ -121,9 +123,10 @@ trait TableStates
         return $this->isCreatable;
     }
 
-    public function reindex(): static
+    public function reindex(bool $prepared = false): static
     {
         $this->isReindex = true;
+        $this->isPreparedReindex = $prepared;
 
         return $this;
     }
@@ -131,6 +134,11 @@ trait TableStates
     public function isReindex(): bool
     {
         return $this->isReindex;
+    }
+
+    public function isPreparedReindex(): bool
+    {
+        return $this->isPreparedReindex;
     }
 
     public function sortable(
@@ -177,14 +185,16 @@ trait TableStates
 
     /**
      * @return array{
-     *     vertical: mixed,
-     *     editable: mixed,
-     *     preview: mixed,
-     *     notfound: mixed,
-     *     creatable: mixed,
-     *     reindex: mixed,
-     *     sortable: mixed,
-     *     simple: mixed
+     *     vertical: bool,
+     *     editable: bool,
+     *     preview: bool,
+     *     notfound: bool,
+     *     creatable: bool,
+     *     reindex: bool,
+     *     sortable: bool,
+     *     simple: bool,
+     *     searchable: bool,
+     *     searchValue: string,
      * }
      */
     public function statesToArray(): array

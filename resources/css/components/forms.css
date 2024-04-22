@@ -27,7 +27,7 @@ input[type='number'] {
 }
 
 .form-group {
-  @apply flex w-full flex-col gap-2;
+  @apply flex w-full flex-col gap-2 overflow-hidden;
 
   & + .form-group {
     @apply mb-5 mt-5;

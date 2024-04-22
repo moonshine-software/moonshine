@@ -14,7 +14,7 @@ use Throwable;
  */
 trait WithFields
 {
-    protected array $fields = [];
+    protected array|Closure $fields = [];
 
     /**
      * @throws Throwable
@@ -29,7 +29,14 @@ trait WithFields
      */
     public function getFields(): Fields
     {
-        return Fields::make($this->fields);
+        return Fields::make(
+            $this->getRawFields()
+        );
+    }
+
+    public function getRawFields(): array
+    {
+        return value($this->fields, $this);
     }
 
     /**

@@ -5,124 +5,60 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use MoonShine\Contracts\Menu\MenuFiller;
-use MoonShine\Support\Condition;
+use Illuminate\Contracts\View\View;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
-use Throwable;
+use MoonShine\Traits\WithView;
 
-abstract class MenuElement
+abstract class MenuElement implements MoonShineRenderable
 {
     use Makeable;
+    use WithComponentAttributes;
     use WithIcon;
     use HasCanSee;
     use WithLabel;
+    use WithView;
 
-    protected Closure|string|null $url = null;
+    private bool $topMode = false;
 
-    protected Closure|bool $blank = false;
+    abstract public function isActive(): bool;
 
-    protected Closure|bool|null $forceActive = null;
-
-    public function forceActive(Closure|bool $forceActive): static
+    public function viewData(): array
     {
-        $this->forceActive = $forceActive;
+        return [];
+    }
+
+    public function topMode(?Closure $condition = null): static
+    {
+        $this->topMode = is_null($condition) || value($condition, $this);
 
         return $this;
     }
 
-    public function isForceActive(): bool
+    public function isTopMode(): bool
     {
-        return ! is_null($this->forceActive);
+        return $this->topMode;
     }
 
-    public function isGroup(): bool
+
+    public function render(): View
     {
-        return $this instanceof MenuGroup;
+        return view($this->getView(), [
+            ...$this->viewData(),
+            'attributes' => $this->attributes(),
+            'label' => $this->label(),
+            'icon' => $this->iconValue() ? $this->getIcon(6) : '',
+            'isActive' => $this->isActive(),
+            'top' => $this->isTopMode(),
+        ]);
     }
 
-    public function isItem(): bool
+    public function __toString(): string
     {
-        return $this instanceof MenuItem;
-    }
-
-    public function setUrl(string|Closure|null $url, Closure|bool $blank = false): static
-    {
-        $this->url = $url;
-
-        $this->blank($blank);
-
-        return $this;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function url(): string
-    {
-        return value($this->url) ?? '';
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function isActive(): bool
-    {
-        if ($this->isForceActive() && value($this->forceActive) === true) {
-            return true;
-        }
-
-        if ($this instanceof MenuGroup) {
-            foreach ($this->items() as $item) {
-                if ($item->isActive()) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        if(moonshineMenu()->hasForceActive()) {
-            return false;
-        }
-
-        if (! $this->isItem()) {
-            return false;
-        }
-
-        $filler = $this instanceof MenuItem
-            ? $this->getFiller()
-            : null;
-
-        if ($filler instanceof MenuFiller) {
-            return $filler->isActive();
-        }
-
-        $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
-        $host = parse_url($this->url(), PHP_URL_HOST) ?? '';
-
-        if ($path === '/' && request()->host() === $host) {
-            return request()->path() === $path;
-        }
-
-        if ($this->url() === moonshineRouter()->home()) {
-            return request()->fullUrlIs($this->url());
-        }
-
-        return request()->fullUrlIs($this->url() . '*');
-    }
-
-    public function blank(Closure|bool $blankCondition = true): static
-    {
-        $this->blank = Condition::boolean($blankCondition, true);
-
-        return $this;
-    }
-
-    public function isBlank(): bool
-    {
-        return $this->blank;
+        return (string) $this->render();
     }
 }

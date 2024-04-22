@@ -5,6 +5,7 @@ namespace MoonShine\Pages\Crud;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Fragment;
@@ -26,6 +27,9 @@ class FormPage extends Page
 {
     protected ?PageType $pageType = PageType::FORM;
 
+    /**
+     * @return array<string, string>
+     */
     public function breadcrumbs(): array
     {
         if (! is_null($this->breadcrumbs)) {
@@ -65,6 +69,7 @@ class FormPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     public function components(): array
@@ -82,6 +87,9 @@ class FormPage extends Page
         return $this->getLayers();
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function topLayer(): array
     {
         $components = [];
@@ -142,6 +150,7 @@ class FormPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -176,6 +185,7 @@ class FormPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function bottomLayer(): array

@@ -1,5 +1,4 @@
 <div
-    data-field-block="{{ $element->column() }}"
     x-data="{
          range_from_{{ $element->id() }}: '{{ $value[$element->fromField] ?? '' }}',
          range_to_{{ $element->id() }}: '{{ $value[$element->toField] ?? '' }}'
@@ -7,6 +6,8 @@
     {{ $element->attributes()
         ->only('class')
         ->merge(['class' => 'form-group form-group-inline']) }}
+
+    data-field-block="{{ $element->name() }}"
 >
     <x-moonshine::form.input
         :attributes="$element->getFromAttributes()->merge([

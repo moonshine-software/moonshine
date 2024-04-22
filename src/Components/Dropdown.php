@@ -70,6 +70,9 @@ final class Dropdown extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

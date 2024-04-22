@@ -5,6 +5,7 @@ namespace MoonShine\Pages\Crud;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Box;
@@ -25,6 +26,9 @@ class DetailPage extends Page
 {
     protected ?PageType $pageType = PageType::DETAIL;
 
+    /**
+     * @return array<string, string>
+     */
     public function breadcrumbs(): array
     {
         if (! is_null($this->breadcrumbs)) {
@@ -53,6 +57,7 @@ class DetailPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     public function components(): array
@@ -89,6 +94,7 @@ class DetailPage extends Page
             ));
     }
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -112,6 +118,7 @@ class DetailPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function bottomLayer(): array

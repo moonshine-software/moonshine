@@ -1,17 +1,18 @@
 @props([
-    'item',
+    'label' => '',
+    'icon' => '',
+    'items' => [],
+    'isActive' => false,
     'top' => false,
 ])
-<li
+<li {{ $attributes->class(['menu-inner-item', 'dropdown' => $top]) }}
     @if($top)
-        class="menu-inner-item dropdown"
         x-data="dropdown"
         x-ref="dropdownEl"
         @click.outside="closeDropdown"
         data-dropdown-placement="bottom-start"
     @else
-        class="menu-inner-item"
-        x-data="{ dropdown: {{ $item->isActive() ? 'true' : 'false' }} }"
+        x-data="{ dropdown: {{ $isActive ? 'true' : 'false' }} }"
     @endif
 >
     <button
@@ -20,7 +21,7 @@
             class="menu-inner-button dropdown-btn"
             :class="open && '_is-active'"
         @else
-        x-data="navTooltip"
+            x-data="navTooltip"
             @mouseenter="toggleTooltip()"
             @click.prevent="dropdown = ! dropdown"
             class="menu-inner-button"
@@ -28,15 +29,15 @@
         @endif
         type="button"
     >
-        @if($item->iconValue())
-            {!! $item->getIcon(6) !!}
+        @if($icon)
+            {!! $icon !!}
         @elseif(!$top)
             <span class="menu-inner-item-char">
-                {{ str($item->label())->limit(2) }}
+                {{ str($label)->limit(2) }}
             </span>
         @endif
 
-        <span class="menu-inner-text">{{ $item->label() }}</span>
+        <span class="menu-inner-text">{{ $label }}</span>
         <span class="menu-inner-arrow">
             <x-moonshine::icon
                 icon="heroicons.chevron-down"
@@ -46,22 +47,21 @@
         </span>
     </button>
 
-    @if($item->items())
-        <!-- Dropdown Menu -->
-        <ul
-            @if($top)
-                class="menu-inner-dropdown dropdown-body"
-            @else
-                class="menu-inner-dropdown"
+    @if($items)
+        @if($top)
+            <x-moonshine::menu
+                :dropdown="true"
+                :items="$items"
+                class="dropdown-body"
+            />
+        @else
+            <x-moonshine::menu
+                :dropdown="true"
+                :items="$items"
+                x-transition.top=""
                 style="display: none"
                 x-show="dropdown"
-                x-transition.top
-            @endif
-        >
-            @foreach($item->items() as $child)
-                <x-moonshine::menu.item :item="$child" />
-            @endforeach
-        </ul>
-        <!-- END: Dropdown Menu -->
+            />
+        @endif
     @endif
 </li>

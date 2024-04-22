@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\CreateButton;
 use MoonShine\Buttons\ExportButton;
 use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\ImportButton;
@@ -45,6 +44,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     public function components(): array
@@ -54,6 +54,9 @@ class IndexPage extends Page
         return $this->getLayers();
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function topLayer(): array
     {
         $components = [];
@@ -65,6 +68,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -90,6 +94,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function filtersForm(): array
@@ -100,13 +105,16 @@ class IndexPage extends Page
         ];
     }
 
+    /*
+     * @return list<MoonShineComponent>
+     */
     protected function actionButtons(): array
     {
         return [
             Grid::make([
                 Column::make([
                     ActionGroup::make([
-                        CreateButton::for($this->getResource()),
+                        $this->getResource()->getCreateButton(),
                         ...$this->getResource()->actions(),
                     ]),
 
@@ -134,6 +142,9 @@ class IndexPage extends Page
         ];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function queryTags(): array
     {
         return [
@@ -194,6 +205,7 @@ class IndexPage extends Page
     }
 
     /**
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function table(): array
@@ -211,6 +223,9 @@ class IndexPage extends Page
         ];
     }
 
+    /**
+     * @return list<MoonShineComponent>
+     */
     protected function bottomLayer(): array
     {
         return $this->getResource()->getIndexPageComponents();

@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Menu\MenuFiller;
+use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\InvalidHome;
 use MoonShine\Pages\Page;

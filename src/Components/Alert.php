@@ -20,6 +20,9 @@ final class Alert extends MoonShineComponent
     ) {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [
