@@ -34,6 +34,19 @@ export default () => ({
 
     let editorInstance = null
 
+    const tinyDataset = {}
+    for (let i in this.$el.dataset) {
+      if(this.$el.dataset[i] === 'true') {
+        tinyDataset[i] = true
+        continue
+      }
+      if(this.$el.dataset[i] === 'false') {
+        tinyDataset[i] = false
+        continue
+      }
+      tinyDataset[i] = this.$el.dataset[i]
+    }
+
     const config = darkMode => ({
       selector: '#' + this.$el.getAttribute('id'),
       path_absolute: '/',
@@ -42,7 +55,7 @@ export default () => ({
       branding: false,
       skin: darkMode ? 'oxide-dark' : 'oxide',
       content_css: darkMode ? 'dark' : 'default',
-      ...this.$el.dataset,
+      ...tinyDataset,
       file_picker_callback: this.$el.dataset.file_manager ? fileManager : null,
       init_instance_callback: editor =>
         editor.on('blur', () => (this.$el.innerHTML = editor.getContent())),
