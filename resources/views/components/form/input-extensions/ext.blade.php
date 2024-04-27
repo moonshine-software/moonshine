@@ -1,2 +1,4 @@
-@props(['extension'])
-<span {{ $attributes->class(['expansion']) }}>{{ $extension->getValue() }}</span>
+@props([
+    'value'
+])
+<span {{ $attributes->class(['expansion']) }}>{{ $value }}</span>

@@ -4,84 +4,74 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Fields\Field;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 
-// TODO array attributes to ?ComponentAttributeBag
 trait WithComponentAttributes
 {
-    protected array $attributes = [];
+    /**
+     * The component attributes.
+     *
+     * @var MoonShineComponentAttributeBag
+     */
+    public $attributes;
 
-    protected array $customAttributes = [];
+    protected array $withAttributes = [];
 
-    public function getAttribute(string $name): mixed
+    public function attributes(): MoonShineComponentAttributeBag
     {
-        return $this->attributes()->get($name);
+        return $this->attributes;
     }
 
-    protected function uniqueAttribute(string $old, string $new): string
+    public function getAttribute(string $name, mixed $default = null): mixed
     {
-        return str($old)
-            ->append(' ')
-            ->append($new)
-            ->trim()
-            ->explode(' ')
-            ->unique()
-            ->implode(' ');
+        return $this->attributes->get($name, $default);
     }
 
     public function mergeAttribute(string $name, string $value, string $separator = ' '): static
     {
-        $this->attributes[$name] = $name;
-        $previous = $this->customAttributes[$name] ?? '';
+        $this->attributes->concat($name, $value, $separator);
 
-        if (str_contains($previous, $value)) {
-            return $this;
-        }
+        return $this;
+    }
 
-        if ($previous) {
-            $value .= $separator . $previous;
-        }
+    public function class(string|array $classes): static
+    {
+        $this->attributes = $this->attributes->class($classes);
 
-        $this->customAttributes[$name] = $value;
+        return $this;
+    }
+
+    public function style(string|array $styles): static
+    {
+        $this->attributes = $this->attributes->style($styles);
 
         return $this;
     }
 
     public function setAttribute(string $name, string|bool $value): static
     {
-        $this->attributes[] = $name;
-        $this->customAttributes[$name] = $value;
+        $this->attributes->set($name, $value);
 
         return $this;
     }
 
     public function removeAttribute(string $name): static
     {
-        unset($this->customAttributes[$name]);
-        $this->attributes = array_filter(
-            $this->attributes,
-            static fn ($attr): bool => $attr !== $name
-        );
+        $this->attributes->remove($name);
 
         return $this;
     }
 
-    public function customAttributes(array $attributes): static
+    public function customAttributes(array $attributes, bool $override = false): static
     {
-        if (isset($attributes['class'])) {
-            $this->customAttributes['class'] = $this->uniqueAttribute(
-                old: $this->customAttributes['class'] ?? '',
-                new: $attributes['class']
-            );
-
-            unset($attributes['class']);
+        if($override) {
+            foreach ($attributes as $name => $value) {
+                $this->removeAttribute($name);
+            }
         }
 
-        $this->customAttributes = array_merge(
-            $this->customAttributes,
-            $attributes
-        );
+        $this->attributes = $this->attributes->merge($attributes);
 
         return $this;
     }
@@ -93,25 +83,9 @@ trait WithComponentAttributes
         }
 
         return $this->customAttributes([
-            'data-name' => $this->name(),
-            'data-column' => str($this->column())->explode('.')->last(),
+            'data-name' => $this->getNameAttribute(),
+            'data-column' => str($this->getColumn())->explode('.')->last(),
             'data-level' => $level,
         ]);
-    }
-
-    public function attributes(): ComponentAttributeBag
-    {
-        $resolveAttributes = collect($this->attributes)->mapWithKeys(
-            function ($attr): array {
-                $property = (string) str($attr)->camel();
-
-                return isset($this->{$property}) ? [$attr => $this->{$property}]
-                    : [];
-            }
-        );
-
-        return (new ComponentAttributeBag(
-            $this->customAttributes + $resolveAttributes->toArray()
-        ));
     }
 }

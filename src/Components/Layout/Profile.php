@@ -23,6 +23,7 @@ final class Profile extends MoonShineComponent
         protected ?string $username = null,
         protected bool $withBorder = false,
     ) {
+        parent::__construct();
     }
 
     public function isWithBorder(): bool

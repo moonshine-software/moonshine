@@ -9,8 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\View\ComponentAttributeBag;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\Icon;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
@@ -21,6 +20,7 @@ use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Condition;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Removable;
 use MoonShine\Traits\WithFields;
@@ -262,6 +262,8 @@ class Json extends Field implements
     public function preparedFields(): Fields
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (Json $parent, Field $field): void {
+            $field->withoutWrapper();
+
             throw_if(
                 ! $parent->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
@@ -362,13 +364,13 @@ class Json extends Field implements
         }
 
         return TableBuilder::make($fields, $values)
-            ->name('json_' . $this->column())
+            ->name('json_' . $this->getColumn())
             ->customAttributes(
                 $this->attributes()
                     ->except(['class', 'data-name', 'data-column'])
                     ->when(
                         $sortable,
-                        fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                        fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
                             'data-handle' => '.handle',
                         ])
                     )
@@ -396,7 +398,7 @@ class Json extends Field implements
     protected function viewData(): array
     {
         return [
-            'table' => $this->resolveValue()
+            'component' => $this->resolveValue()
                 ->editable()
                 ->reindex(prepared: true)
                 ->when(
@@ -441,19 +443,19 @@ class Json extends Field implements
             foreach ($requestValues as $index => $values) {
                 foreach ($this->getFields() as $field) {
                     $field->appendRequestKeyPrefix(
-                        "{$this->column()}.$index",
+                        "{$this->getColumn()}.$index",
                         $this->requestKeyPrefix()
                     );
 
                     $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                        fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                         $values
                     );
 
                     data_set(
                         $applyValues[$index],
-                        $field->column(),
-                        data_get($apply, $field->column())
+                        $field->getColumn(),
+                        data_get($apply, $field->getColumn())
                     );
                 }
             }
@@ -463,7 +465,7 @@ class Json extends Field implements
 
             return data_set(
                 $item,
-                str_replace('.', '->', $this->column()),
+                str_replace('.', '->', $this->getColumn()),
                 $values
             );
         };
@@ -478,7 +480,7 @@ class Json extends Field implements
             ->onlyFields()
             ->each(function (Field $field, $index) use ($data): void {
                 $field->appendRequestKeyPrefix(
-                    "{$this->column()}.$index",
+                    "{$this->getColumn()}.$index",
                     $this->requestKeyPrefix()
                 );
 
@@ -504,21 +506,21 @@ class Json extends Field implements
 
                 foreach ($this->getFields() as $field) {
                     $field->appendRequestKeyPrefix(
-                        "{$this->column()}.$index",
+                        "{$this->getColumn()}.$index",
                         $this->requestKeyPrefix()
                     );
 
                     $field->resolveFill($values->toArray(), $values);
 
                     $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                        fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                         $values
                     );
 
                     data_set(
                         $applyValues[$index],
-                        $field->column(),
-                        data_get($apply, $field->column())
+                        $field->getColumn(),
+                        data_get($apply, $field->getColumn())
                     );
                 }
             }
@@ -526,13 +528,13 @@ class Json extends Field implements
             $items = collect($this->prepareOnApply($applyValues));
 
             $ids = $items
-                ->pluck($data->{$this->column()}()->getLocalKeyName())
+                ->pluck($data->{$this->getColumn()}()->getLocalKeyName())
                 ->filter()
                 ->toArray();
 
-            $localKey = $data->{$this->column()}()->getLocalKeyName();
+            $localKey = $data->{$this->getColumn()}()->getLocalKeyName();
 
-            $data->{$this->column()}()->when(
+            $data->{$this->getColumn()}()->when(
                 ! empty($ids),
                 fn (Builder $q) => $q->whereNotIn(
                     $localKey,
@@ -540,12 +542,12 @@ class Json extends Field implements
                 )->delete()
             );
 
-            $data->{$this->column()}()->when(
+            $data->{$this->getColumn()}()->when(
                 empty($ids) && $this->asRelationDeleteWhenEmpty,
                 fn (Builder $q) => $q->delete()
             );
 
-            $items->each(fn ($d) => $data->{$this->column()}()->updateOrCreate(
+            $items->each(fn ($d) => $data->{$this->getColumn()}()->updateOrCreate(
                 [$localKey => $d[$localKey] ?? null],
                 $d
             ));
@@ -555,7 +557,7 @@ class Json extends Field implements
             ->onlyFields()
             ->each(function (Field $field, $index) use ($data): void {
                 $field->appendRequestKeyPrefix(
-                    "{$this->column()}.$index",
+                    "{$this->getColumn()}.$index",
                     $this->requestKeyPrefix()
                 );
 

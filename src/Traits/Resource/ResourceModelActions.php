@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\Handler;
 use MoonShine\Handlers\ImportHandler;

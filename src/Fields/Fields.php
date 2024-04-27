@@ -123,7 +123,7 @@ final class Fields extends FormElements
         return $this->map(function (Field $field) use ($parent, $before): Field {
             value($before, $parent, $field);
 
-            $name = str($parent ? $parent->name() : $field->name());
+            $name = str($parent ? $parent->getNameAttribute() : $field->getNameAttribute());
             $level = $name->substrCount('$');
 
             if ($field instanceof Json) {
@@ -136,7 +136,7 @@ final class Fields extends FormElements
 
             $name = $name
                 ->append('[${index' . $level . '}]')
-                ->append($parent ? "[{$field->column()}]" : '')
+                ->append($parent ? "[{$field->getColumn()}]" : '')
                 ->replace('[]', '')
                 ->when(
                     $field->getAttribute('multiple') || $field->isGroup(),
@@ -150,7 +150,7 @@ final class Fields extends FormElements
             }
 
             return $field
-                ->setName($name)
+                ->setNameAttribute($name)
                 ->iterableAttributes($level)
             ;
         });
@@ -239,7 +239,7 @@ final class Fields extends FormElements
     public function extractLabels(): array
     {
         return $this->flatMap(
-            static fn (Field $field): array => [$field->column() => $field->label()]
+            static fn (Field $field): array => [$field->getColumn() => $field->getLabel()]
         )->toArray();
     }
 
@@ -264,7 +264,7 @@ final class Fields extends FormElements
         Field $default = null
     ): Field|ModelRelationField|null {
         return $this->first(
-            static fn (Field $field): bool => $field->column() === $column,
+            static fn (Field $field): bool => $field->getColumn() === $column,
             $default
         );
     }

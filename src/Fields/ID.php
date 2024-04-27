@@ -16,7 +16,7 @@ class ID extends Hidden
     {
         return function ($item) {
             if ($this->requestValue() !== false) {
-                data_set($item, $this->column(), $this->requestValue());
+                data_set($item, $this->getColumn(), $this->requestValue());
             }
 
             return $item;

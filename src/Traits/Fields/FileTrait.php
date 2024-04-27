@@ -9,9 +9,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Stringable;
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Support\Condition;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\WithStorage;
 use Throwable;
 
@@ -58,12 +58,12 @@ trait FileTrait
 
     public function resolveItemAttributes(): Closure
     {
-        return function (string $filename, int $index = 0): ComponentAttributeBag {
+        return function (string $filename, int $index = 0): MoonShineComponentAttributeBag {
             if(is_null($this->itemAttributes)) {
-                return new ComponentAttributeBag();
+                return new MoonShineComponentAttributeBag();
             }
 
-            return new ComponentAttributeBag(
+            return new MoonShineComponentAttributeBag(
                 (array) value($this->itemAttributes, $filename, $index)
             );
         };
@@ -144,7 +144,7 @@ trait FileTrait
                     $this->requestKeyPrefix() . "."
                 )
             )
-            ->append('hidden_' . $this->column())
+            ->append('hidden_' . $this->getColumn())
             ->value();
     }
 
@@ -214,7 +214,7 @@ trait FileTrait
             $oldValues = request()
                 ->collect($this->hiddenOldValuesKey());
 
-            data_forget($item, 'hidden_' . $this->column());
+            data_forget($item, 'hidden_' . $this->getColumn());
 
             $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
 
@@ -235,7 +235,7 @@ trait FileTrait
                 }
             }
 
-            return data_set($item, $this->column(), $saveValue);
+            return data_set($item, $this->getColumn(), $saveValue);
         };
     }
 

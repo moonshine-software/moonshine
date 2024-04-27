@@ -3,20 +3,20 @@
 namespace MoonShine\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\Layout\Box;
+use MoonShine\Components\Fragment;
+use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Decorations\Box;
-use MoonShine\Decorations\Fragment;
-use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use Throwable;
 
 /**
@@ -45,7 +45,7 @@ class DetailPage extends Page
     /**
      * @throws ResourceException
      */
-    public function beforeRender(): void
+    protected function prepareBeforeRender(): void
     {
         abort_if(
             ! in_array('view', $this->getResource()->getActiveActions())
@@ -53,7 +53,7 @@ class DetailPage extends Page
             403
         );
 
-        parent::beforeRender();
+        parent::prepareBeforeRender();
     }
 
     /**
@@ -84,10 +84,10 @@ class DetailPage extends Page
                 $data,
                 int $row,
                 int $cell,
-                ComponentAttributeBag $attributes
-            ): ComponentAttributeBag => $attributes->when(
+                MoonShineComponentAttributeBag $attributes
+            ): MoonShineComponentAttributeBag => $attributes->when(
                 $cell === 0,
-                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
                     'class' => 'font-semibold',
                     'width' => '20%',
                 ])
@@ -154,7 +154,7 @@ class DetailPage extends Page
                         ->forcePreview();
 
                     $blocks = [
-                        Box::make($field->label(), [$field]),
+                        Box::make($field->getLabel(), [$field]),
                     ];
                 }
 

@@ -22,7 +22,7 @@ class DateRangeModelApply implements ApplyContract
                 $values['from'] ?? null,
                 function ($query, $from) use ($field): void {
                     $query->whereDate(
-                        $field->column(),
+                        $field->getColumn(),
                         '>=',
                         Carbon::parse($from)
                     );
@@ -31,7 +31,7 @@ class DateRangeModelApply implements ApplyContract
                 $values['to'] ?? null,
                 function ($query, $to) use ($field): void {
                     $query->whereDate(
-                        $field->column(),
+                        $field->getColumn(),
                         '<=',
                         Carbon::parse($to)
                     );

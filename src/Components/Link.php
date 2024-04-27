@@ -25,6 +25,8 @@ final class Link extends MoonShineComponent
         protected Closure|string $href,
         Closure|string $label = '',
     ) {
+        parent::__construct();
+
         $this->setLabel($label);
 
         $this->customAttributes([
@@ -48,7 +50,7 @@ final class Link extends MoonShineComponent
 
     public function tooltip(?string $tooltip = null): self
     {
-        $tooltip ??= $this->label();
+        $tooltip ??= $this->getLabel();
 
         $this->customAttributes([
             'x-data' => "tooltip(`$tooltip`)",
@@ -70,7 +72,7 @@ final class Link extends MoonShineComponent
     {
         return [
             'slot' => new ComponentSlot(
-                $this->label()
+                $this->getLabel()
             ),
             'icon' => $this->iconValue(),
             'filled' => $this->isFilled,

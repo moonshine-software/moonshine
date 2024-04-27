@@ -7,6 +7,7 @@ namespace MoonShine\Collections;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Contracts\Components\HasComponents;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Fields\Field;
 use Throwable;
@@ -33,6 +34,8 @@ abstract class MoonShineRenderElements extends Collection
 
             if ($element instanceof HasFields) {
                 $this->extractOnly($element->getFields(), $type, $data);
+            } elseif ($element instanceof HasComponents) {
+                $this->extractOnly($element->getComponents(), $type, $data);
             }
         }
     }
@@ -47,6 +50,8 @@ abstract class MoonShineRenderElements extends Collection
                 $data[] = $element;
             } elseif ($element instanceof HasFields) {
                 $this->extractFields($element->getFields(), $data);
+            } elseif ($element instanceof HasComponents) {
+                $this->extractFields($element->getComponents(), $data);
             }
         }
     }
@@ -61,6 +66,10 @@ abstract class MoonShineRenderElements extends Collection
             if ($element instanceof HasFields) {
                 $element->fields(
                     $element->getFields()->exceptElements($except)->toArray()
+                );
+            } elseif ($element instanceof HasComponents) {
+                $element->components(
+                    $element->getComponents()->exceptElements($except)->toArray()
                 );
             }
 

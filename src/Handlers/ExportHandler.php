@@ -138,7 +138,7 @@ class ExportHandler extends Handler
                 $fields->fill($item->toArray(), $item, $index);
 
                 foreach ($fields as $field) {
-                    $row[$field->label()] = $field
+                    $row[$field->getLabel()] = $field
                         ->rawMode()
                         ->preview();
                 }

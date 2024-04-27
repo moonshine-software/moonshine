@@ -11,14 +11,6 @@ class Password extends Text
 {
     protected string $type = 'password';
 
-    protected array $attributes = [
-        'type',
-        'autocomplete',
-        'disabled',
-        'readonly',
-        'required',
-    ];
-
     protected function resolvePreview(): string
     {
         return '***';
@@ -33,7 +25,7 @@ class Password extends Text
     {
         return function ($item) {
             if ($this->requestValue()) {
-                data_set($item, $this->column(), Hash::make($this->requestValue()));
+                data_set($item, $this->getColumn(), Hash::make($this->requestValue()));
             }
 
             return $item;

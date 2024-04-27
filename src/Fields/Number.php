@@ -16,14 +16,11 @@ class Number extends Text implements DefaultCanBeNumeric
 
     protected string $type = 'number';
 
-    protected array $attributes = [
+    protected array $propertyAttributes = [
         'type',
         'min',
         'max',
         'step',
-        'disabled',
-        'readonly',
-        'required',
     ];
 
     protected bool $stars = false;

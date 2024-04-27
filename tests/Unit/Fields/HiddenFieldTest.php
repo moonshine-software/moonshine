@@ -11,35 +11,35 @@ beforeEach(function (): void {
 });
 
 it('default', function (): void {
-    expect($this->field->label())
+    expect($this->field->getLabel())
         ->toBe('contractId')
-        ->and($this->field->column())
+        ->and($this->field->getColumn())
         ->toBe('contractId');
 
     $field = Hidden::make(column: 'contractId');
 
-    expect($field->label())
+    expect($field->getLabel())
         ->toBe('')
-        ->and($field->column())
+        ->and($field->getColumn())
         ->toBe('contractId');
 
     $field = Hidden::make('Contact id', 'contractid');
 
-    expect($field->label())
+    expect($field->getLabel())
         ->toBe('Contact id')
-        ->and($field->column())
+        ->and($field->getColumn())
         ->toBe('contractid');
 
     $field = Hidden::make('Contact id', 'contractid')->setColumn('new');
 
-    expect($field->label())
+    expect($field->getLabel())
         ->toBe('Contact id')
-        ->and($field->column())
+        ->and($field->getColumn())
         ->toBe('new');
 });
 
 it('type', function (): void {
-    expect($this->field->type())
+    expect($this->field->attributes()->get('type'))
         ->toBe('hidden');
 });
 

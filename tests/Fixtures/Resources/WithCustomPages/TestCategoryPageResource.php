@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Decorations\Box;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;

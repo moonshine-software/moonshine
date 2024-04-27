@@ -36,7 +36,7 @@ beforeEach(function (): void {
 
 describe('basic methods', function () {
     it('type', function (): void {
-        expect($this->field->type())
+        expect($this->field->attributes()->get('type'))
             ->toBeEmpty();
     });
 
@@ -46,9 +46,9 @@ describe('basic methods', function () {
     });
 
     it('preview', function (): void {
-        expect($this->field->preview())
+        expect((string) $this->field->forcePreview())
             ->toBe('2')
-            ->and((string) $this->fieldMultiple)
+            ->and((string) $this->fieldMultiple->withoutWrapper())
             ->toBe(
                 view('moonshine::fields.select', $this->fieldMultiple->toArray())->render()
             );
@@ -118,17 +118,17 @@ describe('basic methods', function () {
 
     it('names single', function (): void {
         expect($this->field)
-            ->name()
+            ->getNameAttribute()
             ->toBe('select')
-            ->name('1')
+            ->getNameAttribute('1')
             ->toBe('select');
     });
 
     it('names multiple', function (): void {
         expect($this->fieldMultiple)
-            ->name()
+            ->getNameAttribute()
             ->toBe('select_multiple[]')
-            ->name('1')
+            ->getNameAttribute('1')
             ->toBe('select_multiple[1]');
     });
 

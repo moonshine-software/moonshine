@@ -2,7 +2,7 @@
 
 namespace MoonShine\Buttons;
 
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
 final class CreateButton
@@ -34,10 +34,9 @@ final class CreateButton
         )
             ->when(
                 $isAsync || $resource->isCreateInModal(),
-                fn (ActionButton $button): ActionButton => $button->inModal(
+                fn (ActionButton $button): ActionButton => $button->async()->inModal(
                     fn (): array|string|null => __('moonshine::ui.create'),
                     fn (): string => '',
-                    async: true
                 )
             )
             ->canSee(

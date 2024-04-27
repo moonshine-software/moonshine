@@ -1,4 +1,5 @@
 @props([
+    'components' => [],
     'persist' => false,
     'open' => false,
     'button' => null,
@@ -40,7 +41,11 @@
         </h2>
         <div x-cloak x-show="open" class="accordion-body">
             <div class="accordion-content">
-                {{ $slot }}
+                <x-moonshine::components
+                    :components="$components"
+                />
+
+                {{ $slot ?? '' }}
             </div>
         </div>
     </div>

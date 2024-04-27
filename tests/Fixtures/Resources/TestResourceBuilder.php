@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\Metrics\Wrapped\DonutChartMetric;
+use MoonShine\Components\Metrics\Wrapped\LineChartMetric;
+use MoonShine\Components\Metrics\Wrapped\ValueMetric;
 use MoonShine\Fields\Email;
 use MoonShine\Fields\Password;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
-use MoonShine\Metrics\DonutChartMetric;
-use MoonShine\Metrics\LineChartMetric;
-use MoonShine\Metrics\ValueMetric;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\QueryTags\QueryTag;
 
@@ -34,7 +34,7 @@ class TestResourceBuilder
     public static function testResourceWithAllFeatures(): TestResource
     {
         return self::new(
-            MoonShineUser::class
+            MoonshineUser::class
         )
             ->setTestFields([
                 Text::make('Name'),

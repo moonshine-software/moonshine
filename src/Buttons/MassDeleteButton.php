@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Resources\ModelResource;
 
@@ -36,7 +36,8 @@ final class MassDeleteButton
                             $componentName ?? $resource->listComponentName()
                         )
                     )
-                )
+                ),
+                name: "mass-delete-modal-" . ($componentName ?? $resource->listComponentName())
             )
             ->canSee(
                 fn (): bool => in_array('massDelete', $resource->getActiveActions())

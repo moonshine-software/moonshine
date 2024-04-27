@@ -3,7 +3,7 @@
 namespace MoonShine\Buttons;
 
 use Illuminate\Support\Arr;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Resources\ModelResource;
 
@@ -15,7 +15,7 @@ final class ExportButton
         $url = $resource->route('handler', query: ['handlerUri' => $export->uriKey()]);
 
         return ActionButton::make(
-            $export->label(),
+            $export->getLabel(),
             $url . ($query ? '?' . $query : '')
         )
             ->primary()

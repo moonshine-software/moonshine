@@ -1,4 +1,6 @@
-@props(['extension'])
+@props([
+    'value'
+])
 <button @click.prevent="toggleLock()"
         {{ $attributes->class(['expansion']) }}
         type="button"

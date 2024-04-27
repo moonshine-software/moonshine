@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use MoonShine\Attributes\Icon;
-use MoonShine\Decorations\Box;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUserRole;

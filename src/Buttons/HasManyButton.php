@@ -6,9 +6,10 @@ namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Collections\MoonShineRenderElements;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Modal;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
@@ -118,7 +119,7 @@ final class HasManyButton
                     ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                         fn (mixed $field): bool => $field instanceof ModelRelationField
                             && $field->toOne()
-                            && $field->column() === $relation->getForeignKeyName()
+                            && $field->getColumn() === $relation->getForeignKeyName()
                     ))
                     ->buttons($resource->getFormButtons())
                     ->redirect(
@@ -128,8 +129,8 @@ final class HasManyButton
                                 ->getResource()
                                 ?->formPageUrl($parent)
                     ),
-                wide: true,
-                closeOutside: false,
+                name: fn(?Model $data) => "modal-has-many-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                builder: fn(Modal $modal) => $modal->wide()->closeOutside(false)
             )
             ->primary()
             ->icon($update ? 'heroicons.outline.pencil' : 'heroicons.outline.plus');

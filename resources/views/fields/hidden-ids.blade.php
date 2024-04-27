@@ -1,2 +1,4 @@
-<div class="hidden-ids" {{ $element->attributes()->only(['data-for-component']) }}>
+<div
+    {{ $attributes->only(['data-for-component'])->merge(['class' => 'hidden-ids']) }}
+>
 </div>

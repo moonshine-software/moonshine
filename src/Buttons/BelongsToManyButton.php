@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Modal;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
@@ -67,8 +68,8 @@ final class BelongsToManyButton
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields),
-                wide: true,
-                closeOutside: false,
+                name: "modal-belongs-to-many-{$field->getRelationName()}",
+                builder: fn(Modal $modal) => $modal->wide()->closeOutside(false)
             )
             ->primary()
             ->icon('heroicons.outline.plus');

@@ -17,7 +17,7 @@ it('password field is parent', function (): void {
 });
 
 it('type', function (): void {
-    expect($this->field->type())
+    expect($this->field->attributes()->get('type'))
         ->toBe('password');
 });
 

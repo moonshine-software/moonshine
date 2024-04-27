@@ -6,7 +6,6 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Traits\WithFields;
@@ -57,7 +56,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
                     $field->apply(
                         static function (mixed $item) use ($field): mixed {
                             if ($field->requestValue() !== false) {
-                                data_set($item, $field->column(), $field->requestValue());
+                                data_set($item, $field->getColumn(), $field->requestValue());
                             }
 
                             return $item;
@@ -69,14 +68,6 @@ class StackFields extends Field implements HasFields, FieldsWrapper
 
             return $item;
         };
-    }
-
-    protected function resolvePreview(): View|string
-    {
-        return view($this->getView(), [
-            'element' => $this,
-            'indexView' => true,
-        ]);
     }
 
     /**
@@ -140,4 +131,13 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         $this->fields($fields);
     }
 
+    /**
+     * @throws Throwable
+     */
+    protected function viewData(): array
+    {
+        return [
+            'fields' => $this->getFields(),
+        ];
+    }
 }

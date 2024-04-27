@@ -6,6 +6,7 @@ namespace MoonShine\QueryTags;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Contracts\Components\HasCanSeeContract;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
@@ -15,7 +16,7 @@ use MoonShine\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $label, Closure $builder)
  */
-final class QueryTag
+final class QueryTag implements HasCanSeeContract
 {
     use Makeable;
     use WithIcon;
@@ -33,7 +34,7 @@ final class QueryTag
 
     public function uri(): string
     {
-        return str($this->label())->slug()->value();
+        return str($this->getLabel())->slug()->value();
     }
 
     public function default(Closure|bool|null $condition = null): self

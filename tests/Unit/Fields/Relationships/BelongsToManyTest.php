@@ -63,9 +63,9 @@ describe('basic methods', function () {
 describe('common field methods', function () {
     it('names', function (): void {
         expect($this->field)
-            ->name()
+            ->getNameAttribute()
             ->toBe('categories[]')
-            ->name('1')
+            ->getNameAttribute('1')
             ->toBe('categories[1]');
     });
 
@@ -78,7 +78,7 @@ describe('common field methods', function () {
     });
 
     it('type', function (): void {
-        expect($this->field->type())
+        expect($this->field->attributes()->get('type'))
             ->toBeEmpty();
     });
 
@@ -119,9 +119,9 @@ describe('unique field methods', function () {
             ->each(function ($field, $key): void {
                 $key++;
                 $field->toBeInstanceOf(Text::class)
-                    ->name()
+                    ->getNameAttribute()
                     ->toBe('pivot_' . $key)
-                    ->id()
+                    ->identity()
                     ->toBe('pivot_' . $key);
             });
     });

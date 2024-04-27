@@ -7,15 +7,26 @@ namespace MoonShine\Components\Layout;
 use MoonShine\Components\MoonShineComponent;
 
 /**
- * @method static static make(string $key = 'search')
+ * @method static static make(string $key = 'search', string $action = '', string $placeholder = '')
  */
 final class Search extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.search';
 
     public function __construct(
-        public string $key = 'search'
+        private readonly string $key = 'search',
+        private string $action = '',
+        private string $placeholder = '',
     ) {
+        parent::__construct();
+
+        if($this->placeholder === '') {
+            $this->placeholder = __('moonshine::ui.search') . ' (Ctrl+K)';
+        }
+
+        if($this->action === '') {
+            $this->action = moonshineRouter()->to('global-search');
+        }
     }
 
     protected function globalSearchEnabled(): bool
@@ -32,22 +43,24 @@ final class Search extends MoonShineComponent
         return ! is_null($resource) && method_exists($resource, 'search') && $resource->search();
     }
 
+    protected function prepareBeforeRender(): void
+    {
+        if (! $this->globalSearchEnabled() && $this->resourceSearchEnabled()) {
+            $this->action = moonshineRequest()->getResource()?->url();
+        }
+    }
+
     /**
      * @return array<string, mixed>
      */
     protected function viewData(): array
     {
-        $action = moonshineRouter()->to('global-search');
-
-        if (! $this->globalSearchEnabled() && $this->resourceSearchEnabled()) {
-            $action = moonshineRequest()->getResource()?->url();
-        }
-
         return [
-            'isEnabled' => $this->globalSearchEnabled() || $this->resourceSearchEnabled(),
-            '_action' => $action,
-            'isGlobal' => $this->globalSearchEnabled(),
+            'action' => $this->action,
             'value' => request($this->key, ''),
+            'placeholder' => $this->placeholder,
+            'isEnabled' => $this->globalSearchEnabled() || $this->resourceSearchEnabled(),
+            'isGlobal' => $this->globalSearchEnabled(),
         ];
     }
 }

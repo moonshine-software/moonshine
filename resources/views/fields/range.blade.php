@@ -1,29 +1,34 @@
+@props([
+    'value' => [],
+    'fromColumn' => 'range_from',
+    'toColumn' => 'range_to',
+    'fromValue' => '',
+    'toValue' => '',
+    'fromAttributes' => null,
+    'toAttributes' => null,
+])
 <div
     x-data="{
-         range_from_{{ $element->id() }}: '{{ $value[$element->fromField] ?? '' }}',
-         range_to_{{ $element->id() }}: '{{ $value[$element->toField] ?? '' }}'
+         {{ $fromColumn }}: '{{ $fromValue ?? '' }}',
+         {{ $toColumn }}: '{{ $toValue ?? '' }}'
      }"
-    {{ $element->attributes()
+    {{ $attributes
         ->only('class')
         ->merge(['class' => 'form-group form-group-inline']) }}
 
-    data-field-block="{{ $element->name() }}"
+    data-field-block="{{ $attributes->get('name') }}"
 >
     <x-moonshine::form.input
-        :attributes="$element->getFromAttributes()->merge([
-            'name' => $element->name($element->fromField),
-        ])"
-        x-bind:max="range_to_{{ $element->id() }}"
-        x-model="range_from_{{ $element->id() }}"
-        value="{{ $value[$element->fromField] ?? '' }}"
+        :attributes="$fromAttributes"
+        x-bind:max="{{ $toColumn }}"
+        x-model="{{ $fromColumn }}"
+        value="{{ $fromValue ?? '' }}"
     />
 
     <x-moonshine::form.input
-        :attributes="$element->getToAttributes()->merge([
-            'name' => $element->name($element->toField)
-        ])"
-        x-bind:min="range_from_{{ $element->id() }}"
-        x-model="range_to_{{ $element->id() }}"
-        value="{{ $value[$element->toField] ?? '' }}"
+        :attributes="$toAttributes"
+        x-bind:min="{{ $fromColumn }}"
+        x-model="{{ $toColumn }}"
+        value="{{ $toValue ?? '' }}"
     />
 </div>

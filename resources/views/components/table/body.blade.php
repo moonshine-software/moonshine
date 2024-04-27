@@ -30,20 +30,14 @@
                 {{ $row->tdAttributes($vertical ? 0 : $loop->parent->index, 0 + $hasActions)->merge(['class' => 'space-y-3']) }}
             >
                 @foreach($row->getFields() as $index => $field)
-                    @if($field->isSee($field->toValue()))
-                        <x-moonshine::field-container :field="$field">
-                            {!! !$field->isForcePreview() && $editable ? $field->getBeforeRender() : '' !!}
-                            {!! $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}() !!}
-                            {!! !$field->isForcePreview() && $editable ? $field->getAfterRender() : '' !!}
-                        </x-moonshine::field-container>
-                    @endif
+                    {!! $field !!}
                 @endforeach
             </td>
         @else
             @foreach($row->getFields() as $index => $field)
                 @if($vertical) <tr {{ $row->trAttributes($index) }}>
                     <td {{ $row->tdAttributes($index, 0) }}>
-                        {{$field->label()}}
+                        {{$field->getLabel()}}
                     </td>
                     @endif
 
@@ -55,11 +49,7 @@
                             @click.stop="rowClickAction"
                         @endif
                     >
-                        @if($field->isSee($field->toValue()))
-                            {!! !$field->isForcePreview() && $editable ? $field->getBeforeRender() : '' !!}
-                            {!! $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}() !!}
-                            {!! !$field->isForcePreview() && $editable ? $field->getAfterRender() : '' !!}
-                        @endif
+                        {!! $field !!}
                     </td>
 
                     @if($vertical)

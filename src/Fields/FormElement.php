@@ -5,32 +5,34 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Closure;
-use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use Illuminate\View\ComponentAttributeBag;
+use Illuminate\Support\ViewErrorBag;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\AsyncCallback;
 use MoonShine\Support\Condition;
-use MoonShine\Traits\Fields\WithFormElementAttributes;
+use MoonShine\Support\MoonShineComponentAttributeBag;
+use MoonShine\Traits\Fields\WithQuickFormElementAttributes;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithComponentAttributes;
-use MoonShine\Traits\WithView;
+use MoonShine\Traits\WithViewRenderer;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscapedWhenCastToString
+abstract class FormElement extends MoonShineComponent implements HasAssets
 {
     use Makeable;
-    use WithFormElementAttributes;
+    use WithQuickFormElementAttributes;
     use WithComponentAttributes;
-    use WithView;
+    use WithViewRenderer;
     use WithAssets;
     use HasCanSee;
     use Conditionable;
@@ -45,17 +47,33 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     protected ?string $formName = null;
 
-    protected array $wrapperAttributes = [];
-
-    protected ?Closure $beforeRender = null;
-
-    protected ?Closure $afterRender = null;
+    protected MoonShineComponentAttributeBag $wrapperAttributes;
 
     protected ?Closure $onChangeUrl = null;
 
     protected ?Closure $requestValueResolver = null;
 
-    private View|string|null $cachedRender = null;
+    protected ?Closure $beforeRender = null;
+
+    protected ?Closure $afterRender = null;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->wrapperAttributes = new MoonShineComponentAttributeBag();
+    }
+
+    public function identity(string $index = null): string
+    {
+        return (string) str($this->getNameAttribute($index))
+            ->replace(['[', ']'], '_')
+            ->replaceMatches('/\${index\d+}/', '')
+            ->replaceMatches('/_{2,}/', '_')
+            ->trim('_')
+            ->snake()
+            ->slug('_');
+    }
 
     public function parent(): ?FormElement
     {
@@ -100,28 +118,14 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     public function customWrapperAttributes(array $attributes): static
     {
-        if (isset($attributes['class'])) {
-            $this->wrapperAttributes['class'] = $this->uniqueAttribute(
-                old: $this->wrapperAttributes['class'] ?? '',
-                new: $attributes['class']
-            );
-
-            unset($attributes['class']);
-        }
-
-        $this->wrapperAttributes = array_merge(
-            $this->wrapperAttributes,
-            $attributes
-        );
+        $this->wrapperAttributes = $this->wrapperAttributes->merge($attributes);
 
         return $this;
     }
 
-    public function wrapperAttributes(): ComponentAttributeBag
+    public function wrapperAttributes(): MoonShineComponentAttributeBag
     {
-        return new ComponentAttributeBag(
-            $this->wrapperAttributes
-        );
+        return $this->wrapperAttributes;
     }
 
     public function setRequestKeyPrefix(?string $key): static
@@ -219,34 +223,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return $this->formName;
     }
 
-    public function beforeRender(Closure $closure): static
-    {
-        $this->beforeRender = $closure;
-
-        return $this;
-    }
-
-    public function afterRender(Closure $closure): static
-    {
-        $this->afterRender = $closure;
-
-        return $this;
-    }
-
-    public function getBeforeRender(): View|string
-    {
-        return is_null($this->beforeRender)
-            ? ''
-            : value($this->beforeRender, $this);
-    }
-
-    public function getAfterRender(): View|string
-    {
-        return is_null($this->afterRender)
-            ? ''
-            : value($this->afterRender, $this);
-    }
-
     public function onChangeMethod(
         string $method,
         array|Closure $params = [],
@@ -308,7 +284,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     protected function onChangeEventAttributes(?string $url = null): array
     {
-        return $url ? AlpineJs::requestWithFieldValue($url, $this->column()) : [];
+        return $url ? AlpineJs::requestWithFieldValue($url, $this->getColumn()) : [];
     }
 
     protected function onChangeCondition(): bool
@@ -316,29 +292,43 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return true;
     }
 
+    public function beforeRender(Closure $closure): static
+    {
+        $this->beforeRender = $closure;
+
+        return $this;
+    }
+
+    public function getBeforeRender(): View|string
+    {
+        return is_null($this->beforeRender)
+            ? ''
+            : value($this->beforeRender, $this);
+    }
+
+    public function afterRender(Closure $closure): static
+    {
+        $this->afterRender = $closure;
+
+        return $this;
+    }
+
+    public function getAfterRender(): View|string
+    {
+        return is_null($this->afterRender)
+            ? ''
+            : value($this->afterRender, $this);
+    }
+
     /**
-     * @return array<string, mixed>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    protected function viewData(): array
+    protected function prepareBeforeRender(): void
     {
-        return [];
-    }
-
-    protected function performRender(): void
-    {
-        //
-    }
-
-    public function render(): View|Closure|string
-    {
-        $this->performRender();
-
-        if (! is_null($this->cachedRender)) {
-            return $this->cachedRender;
-        }
-
-        if ($this->getAssets()) {
-            moonshineAssets()->add($this->getAssets());
+        if(app()->runningInConsole()) {
+            // TODO remove middleware ShareErrorsFromSession and implement logic
+            view()->share('errors', $this->getErrors());
         }
 
         if (! is_null($this->onChangeUrl) && $this->onChangeCondition()) {
@@ -349,32 +339,74 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
             );
         }
 
+        if (! $this->isPreviewMode()) {
+            $id = $this->attributes->get('id');
+
+            $this->customAttributes([
+                $id ? 'id' : ':id' => $id ?? "\$id(`field`)",
+                'name' => $this->getNameAttribute(),
+            ]);
+
+            $this->resolveValidationErrorClasses();
+        }
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function resolveValidationErrorClasses(): void
+    {
+        $this->class([
+            'form-invalid' => formErrors($this->getErrors(), $this->getFormName())
+                ->has($this->getNameAttribute()),
+        ]);
+    }
+
+    protected function getErrors(): ViewErrorBag
+    {
+        return session()->get('errors', new ViewErrorBag);
+    }
+
+    protected function resolveAssets(): void
+    {
+        if (! $this->isPreviewMode()) {
+            moonshineAssets()->add($this->getAssets());
+        }
+    }
+
+    protected function resolveRender(): View|Closure|string
+    {
+        if ($this->isPreviewMode()) {
+            return $this->preview();
+        }
+
         if ($this->getView() === '') {
             return $this->toValue();
         }
 
-        return $this->cachedRender = view(
-            $this->getView(),
-            $this->toArray()
+        return $this->renderView();
+    }
+
+    protected function systemViewData(): array
+    {
+        return [
+            'type' => class_basename($this),
+            'attributes' => $this->attributes(),
+        ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_merge(
+            $this->systemViewData(),
+            $this->viewData(),
+            $this->getCustomViewData(),
         );
     }
 
     public function toArray(): array
     {
-        return [
-            'element' => $this,
-            'value' => $this->value(),
-            ...$this->viewData(),
-        ];
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->render();
-    }
-
-    public function escapeWhenCastingToString($escape = true): self
-    {
-        return $this;
+        return $this->jsonSerialize();
     }
 }

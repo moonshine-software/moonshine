@@ -19,8 +19,17 @@ trait HasCanSee
 
     public function isSee(mixed $data): bool
     {
-        return is_closure($this->canSeeCallback)
-            ? value($this->canSeeCallback, $data, $this)
-            : true;
+        if(is_null($this->canSeeCallback)) {
+            return true;
+        }
+
+        return value($this->canSeeCallback, $data);
+    }
+
+    protected function isSeeParams(): array
+    {
+        return [
+            $this
+        ];
     }
 }

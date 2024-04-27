@@ -50,8 +50,8 @@ trait ShowWhen
         $this->showWhenState = true;
 
         $this->showWhenCondition[] = [
-            'object_id' => spl_object_id($this),
-            'showField' => $this->name(),
+            'object_id' => (string) spl_object_id($this),
+            'showField' => $this->getNameAttribute(),
             'changeField' => $this->dotNestedToName($column),
             'operator' => $operator,
             'value' => $value,

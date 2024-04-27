@@ -1,13 +1,18 @@
+@props([
+    'component',
+    'isCreatable' => false,
+    'createButton' => '',
+])
 <div x-id="['has-many']"
      :id="$id('has-many')"
 >
-    @if($element->isCreatable())
-        <x-moonshine::divider />
+    @if($isCreatable)
+        <x-moonshine::layout.divider />
 
-        {!! $element->createButton() !!}
+        {!! $createButton !!}
     @endif
 
-    <x-moonshine::divider />
+    <x-moonshine::layout.divider />
 
-    {{ $table->render() }}
+    {{ $component->render() }}
 </div>

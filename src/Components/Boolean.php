@@ -11,5 +11,6 @@ final class Boolean extends MoonShineComponent
 
     public function __construct(public bool $value)
     {
+        parent::__construct();
     }
 }

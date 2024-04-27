@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Fields\File;
@@ -71,7 +72,7 @@ it('removable methods', function (): void {
 });
 
 it('type', function (): void {
-    expect($this->field->type())
+    expect($this->field->attributes()->get('type'))
         ->toBe('file');
 });
 
@@ -126,27 +127,27 @@ it('correct path with dir', function (): void {
 });
 
 it('preview', function (): void {
-    expect((string) $this->field)
+    expect((string) $this->field->withoutWrapper())
         ->toBe(view('moonshine::fields.file', $this->field->toArray())->render());
 });
 
 it('preview for multiple', function (): void {
-    expect((string) $this->fieldMultiple)
+    expect((string) $this->fieldMultiple->withoutWrapper())
         ->toBe(view('moonshine::fields.file', $this->fieldMultiple->toArray())->render());
 });
 
 it('names single', function (): void {
     expect($this->field)
-        ->name()
+        ->getNameAttribute()
         ->toBe('file')
-        ->name('1')
+        ->getNameAttribute('1')
         ->toBe('file');
 });
 
 it('names multiple', function (): void {
     expect($this->fieldMultiple)
-        ->name()
+        ->getNameAttribute()
         ->toBe('files[]')
-        ->name('1')
+        ->getNameAttribute('1')
         ->toBe('files[1]');
 });

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\Modal;
 use MoonShine\Resources\ModelResource;
 
 final class DetailButton
@@ -33,11 +34,11 @@ final class DetailButton
         )
             ->when(
                 $isAsync || $resource->isDetailInModal(),
-                fn (ActionButton $button): ActionButton => $button->inModal(
+                fn (ActionButton $button): ActionButton => $button->async()->inModal(
                     title: fn (): array|string|null => __('moonshine::ui.show'),
                     content: fn (): string => '',
-                    async: true,
-                    wide: true,
+                    name: fn (Model $data) => "detail-modal-{$data->getKey()}",
+                    builder: fn(Modal $modal) => $modal->wide()
                 )
             )
             ->canSee(

@@ -1,3 +1,12 @@
+@props([
+    'name' => '',
+    'precognitive' => false,
+    'hideSubmit' => false,
+    'submitLabel' => '',
+    'fields' => [],
+    'buttons' => [],
+    'submitAttributes' => null,
+])
 <x-moonshine::form
     :attributes="$attributes"
     :name="$name"
@@ -10,7 +19,7 @@
     <x-slot:buttons>
         @if(!($hideSubmit ?? false))
         <x-moonshine::form.button
-                :attributes="$submitAttributes->merge([
+                :attributes="$submitAttributes?->merge([
                 'class' => 'form_submit_button',
                 'type' => 'submit'
             ])"

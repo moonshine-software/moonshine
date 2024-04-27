@@ -2,7 +2,7 @@
 
 namespace MoonShine\Buttons;
 
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\QueryTags\QueryTag;
 use MoonShine\Resources\ModelResource;
 
@@ -11,12 +11,12 @@ final class QueryTagButton
     public static function for(ModelResource $resource, QueryTag $tag): ActionButton
     {
         return ActionButton::make(
-            $tag->label(),
+            $tag->getLabel(),
             $resource->indexPageUrl(['query-tag' => $tag->uri()])
         )
             ->showInLine()
             ->icon($tag->iconValue())
-            ->canSee(fn (): bool => $tag->isSee(moonshineRequest()))
+            ->canSee(fn (mixed $data): bool => $tag->isSee($data))
             ->customAttributes([
                 'class' => 'query-tag-button',
                 'x-data' => 'asyncLink(`btn-primary`, `' . $resource->listEventName() . '`)',

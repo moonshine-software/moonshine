@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use Closure;
-use Illuminate\View\ComponentAttributeBag;
 use JsonException;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\JsEvent;
@@ -15,6 +14,7 @@ use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\AsyncCallback;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\WithAdditionalFields;
 use MoonShine\Traits\HasAsync;
 use Throwable;
@@ -25,7 +25,6 @@ use Throwable;
 final class FormBuilder extends RowComponent
 {
     use HasAsync;
-
     use WithAdditionalFields;
 
     protected string $view = 'moonshine::components.form.builder';
@@ -44,7 +43,7 @@ final class FormBuilder extends RowComponent
 
     protected bool $hideSubmit = false;
 
-    protected ComponentAttributeBag $submitAttributes;
+    protected MoonShineComponentAttributeBag $submitAttributes;
 
     protected ?Closure $onBeforeFieldsRender = null;
 
@@ -54,24 +53,26 @@ final class FormBuilder extends RowComponent
         Fields|array $fields = [],
         mixed $values = []
     ) {
+        parent::__construct();
+
         $this->fields($fields);
         $this->fill($values);
 
-        $this->submitAttributes = $this->newAttributeBag([
+        $this->submitAttributes = new MoonShineComponentAttributeBag([
             'type' => 'submit',
         ]);
 
-        $this->withAttributes([
+        $this->customAttributes(array_filter([
             'action' => $this->action,
             'method' => $this->method,
             'enctype' => 'multipart/form-data',
-        ]);
+        ]));
     }
 
     public function action(string $action): self
     {
         $this->action = $action;
-        $this->attributes['action'] = $this->action;
+        $this->attributes->set('action', $action);
 
         return $this;
     }
@@ -127,7 +128,7 @@ final class FormBuilder extends RowComponent
     public function method(string $method): self
     {
         $this->method = $method;
-        $this->attributes['method'] = $this->method;
+        $this->attributes->set('method', $method);
 
         return $this;
     }
@@ -179,7 +180,7 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
-    public function submitAttributes(): ComponentAttributeBag
+    public function submitAttributes(): MoonShineComponentAttributeBag
     {
         return $this->submitAttributes;
     }
@@ -235,7 +236,7 @@ final class FormBuilder extends RowComponent
 
                 $value = $field->requestValue() !== false ? $field->requestValue() : null;
 
-                data_set($item, $field->column(), $value);
+                data_set($item, $field->getColumn(), $value);
 
                 return $item;
             };
@@ -246,7 +247,7 @@ final class FormBuilder extends RowComponent
                 ->preparedFields()
                 ->onlyFields()
                 ->exceptElements(
-                    fn (Field $element): bool => in_array($element->column(), $this->getExcludedFields(), true)
+                    fn (Field $element): bool => in_array($element->getColumn(), $this->getExcludedFields(), true)
                 );
 
             $values = is_null($before) ? $values : $before($values);
@@ -298,7 +299,7 @@ final class FormBuilder extends RowComponent
         }
 
         $reactiveFields = $onlyFields->reactiveFields()
-            ->mapWithKeys(fn (Field $field): array => [$field->column() => $field->value()]);
+            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->value()]);
 
         $whenFields = [];
         foreach ($onlyFields->whenFieldsConditions() as $whenConditions) {

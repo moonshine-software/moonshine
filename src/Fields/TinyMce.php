@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use JsonException;
 use MoonShine\AssetManager\Js;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class TinyMce extends Textarea
 {
@@ -26,27 +29,53 @@ class TinyMce extends Textarea
 
     public string $locale = '';
 
+    public static string $token = '';
+
+    public static string $version = '6';
+
+    public static ?string $fileManagerUrl = null;
+
     public function getAssets(): array
     {
         $assets = [
             Js::make('vendor/moonshine/libs/tinymce/tinymce.min.js'),
         ];
 
-        if ($this->token()) {
-            $assets[] = Js::make("https://cdn.tiny.cloud/1/{$this->token()}/tinymce/{$this->version()}/plugins.min.js");
+        if ($this->getToken()) {
+            $assets[] = Js::make("https://cdn.tiny.cloud/1/{$this->getToken()}/tinymce/{$this->getVersion()}/plugins.min.js");
         }
 
         return $assets;
     }
 
-    protected function token(): string
+    public static function token(string $token): void
     {
-        return config('moonshine.tinymce.token', '');
+        self::$token = $token;
     }
 
-    protected function version(): string
+    protected function getToken(): string
     {
-        return (string) config('moonshine.tinymce.version', 6);
+        return self::$token;
+    }
+
+    public static function version(string $version): void
+    {
+        self::$token = $version;
+    }
+
+    protected function getVersion(): string
+    {
+        return self::$version;
+    }
+
+    public static function fileManager(string $url): void
+    {
+        self::$fileManagerUrl = $url;
+    }
+
+    protected function getFileManagerUrl(): ?string
+    {
+        return self::$fileManagerUrl;
     }
 
     public function mergeTags(array $mergeTags): self
@@ -138,5 +167,29 @@ class TinyMce extends Textarea
             ['&amp;', '&lt;', '&gt;', '&nbsp;', '&quot;'],
             ['&amp;amp;', '&amp;lt;', '&amp;gt;', '&amp;nbsp;', '&amp;quot;']
         )->value();
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws JsonException
+     */
+    protected function prepareBeforeRender(): void
+    {
+        parent::prepareBeforeRender();
+
+        $this->customAttributes([
+            'data-toolbar_mode' => 'sliding',
+            'data-language' => !empty($this->locale) ? $this->locale : app()->getLocale(),
+            'data-plugins' => trim($this->plugins . ' ' . $this->addedPlugins),
+            'data-menubar' => trim($this->menubar),
+            'data-toolbar' => trim($this->toolbar . ' ' . $this->addedToolbar),
+            'data-tinycomments_mode' => !empty($this->commentAuthor) ? 'embedded' : null,
+            'data-tinycomments_author' => !empty($this->commentAuthor) ? $this->commentAuthor : null,
+            'data-mergetags_list' => !empty($this->mergeTags)
+                ? json_encode($this->mergeTags, JSON_THROW_ON_ERROR)
+                : null,
+            'data-file_manager' => $this->getFileManagerUrl(),
+        ]);
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-final class Wrapper extends WithComponents
+use MoonShine\Components\AbstractWithComponents;
+
+final class Wrapper extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.wrapper';
 }

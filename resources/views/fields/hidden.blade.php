@@ -1,7 +1,8 @@
+@props([
+    'value' => '',
+])
 <x-moonshine::form.input
-    :attributes="$element->attributes()->merge([
-        'id' => empty($element->id()) ? null : $element->id(),
-        'name' => $element->name(),
+    :attributes="$attributes->merge([
         'value' => (string) $value
     ])"
 />

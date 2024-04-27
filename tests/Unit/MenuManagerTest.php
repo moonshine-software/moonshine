@@ -23,7 +23,7 @@ it('add menu elements', function (): void {
             fn (Expectation $item) => $item
             ->url()
             ->toBe('/')
-            ->label()
+            ->getLabel()
             ->toBe('Item')
         );
 });

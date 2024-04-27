@@ -44,7 +44,7 @@ it('file is parent', function (): void {
 });
 
 it('type', function (): void {
-    expect($this->field->type())
+    expect($this->field->attributes()->get('type'))
         ->toBe('file');
 });
 
@@ -54,14 +54,14 @@ it('view', function (): void {
 });
 
 it('preview', function (): void {
-    expect((string)$this->field)
+    expect((string)$this->field->withoutWrapper())
         ->toBe(
             view('moonshine::fields.image', $this->field->toArray())->render()
         );
 });
 
 it('preview for multiple', function (): void {
-    expect((string)$this->fieldMultiple)
+    expect((string)$this->fieldMultiple->withoutWrapper())
         ->toBe(
             view('moonshine::fields.image', $this->fieldMultiple->toArray())->render()
         );

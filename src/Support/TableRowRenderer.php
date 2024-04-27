@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Support;
 
+use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithViewRenderer;
 use Throwable;
 
 /**
@@ -17,6 +19,7 @@ use Throwable;
 final class TableRowRenderer
 {
     use Makeable;
+    use WithViewRenderer;
 
     public function __construct(
         private TableBuilder $table,
@@ -28,7 +31,7 @@ final class TableRowRenderer
     /**
      * @throws Throwable
      */
-    public function render(): View|string
+    protected function resolveRender(): View|Closure|string
     {
         $class = $this->table->hasCast()
             ? new ($this->table->getCast()->getClass())

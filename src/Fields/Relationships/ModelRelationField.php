@@ -52,7 +52,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         parent::__construct($label, $relationName, $formatted);
 
         if (is_null($relationName)) {
-            $relationName = str($this->label())
+            $relationName = str($this->getLabel())
                 ->camel()
                 ->when(
                     $this->toOne(),
@@ -141,7 +141,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
 
             $this->setRawValue(
-                $raw[$this->column()] ?? null
+                $raw[$this->getColumn()] ?? null
             );
 
             $this->setFormattedValue(

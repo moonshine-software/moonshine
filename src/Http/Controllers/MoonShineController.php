@@ -36,11 +36,7 @@ abstract class MoonShineController extends BaseController
 
     protected function view(string $path, array $data = []): Page
     {
-        $page = ViewPage::make();
-
-        $page->beforeRender();
-
-        return $page->setContentView($path, $data);
+        return ViewPage::make()->setContentView($path, $data);
     }
 
     /**

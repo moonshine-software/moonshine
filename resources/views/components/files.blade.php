@@ -14,11 +14,11 @@
                     {{ value($itemAttributes, $file, $index)?->class(['dropzone-item dropzone-item-file']) }}
                 @endif
             >
-                @include('moonshine::ui.file', [
-                    'value' => $file,
-                    'filename' => value($names, $file, $index),
-                    'download' => $download
-                ])
+                <x-moonshine::file
+                    :value="$file"
+                    :filename="value($names, $file, $index)"
+                    :download="$download"
+                />
             </div>
         @endforeach
     </div>

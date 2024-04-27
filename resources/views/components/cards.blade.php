@@ -21,21 +21,19 @@
     <x-moonshine::loader x-show="loading" />
     <div x-show="!loading">
         @if($components->isNotEmpty())
-            <x-moonshine::grid>
+            <x-moonshine::layout.grid>
                 @foreach($components as $card)
-                    @continue(!isSeeWhenExists($card))
-
-                    <x-moonshine::column :colSpan="$colSpan" :adaptiveColSpan="$adaptiveColSpan">
+                    <x-moonshine::layout.column :colSpan="$colSpan" :adaptiveColSpan="$adaptiveColSpan">
                         {{ $card->render() }}
-                    </x-moonshine::column>
+                    </x-moonshine::layout.column>
                 @endforeach
-            </x-moonshine::grid>
+            </x-moonshine::layout.grid>
 
             @if($hasPaginator)
                 {{ $paginator->links(
                     $simplePaginate
-                        ? 'moonshine::ui.simple-pagination'
-                        : 'moonshine::ui.pagination',
+                        ? 'moonshine::pagination.simple'
+                        : 'moonshine::pagination.default',
                     ['async' => $async]
                 ) }}
             @endif

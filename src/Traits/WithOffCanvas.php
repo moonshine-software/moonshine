@@ -5,35 +5,65 @@ declare(strict_types=1);
 namespace MoonShine\Traits;
 
 use Closure;
-use MoonShine\UI\OffCanvas;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\OffCanvas;
+use MoonShine\Enums\JsEvent;
+use MoonShine\Support\AlpineJs;
 
 trait WithOffCanvas
 {
-    protected ?OffCanvas $offCanvas = null;
+    protected ?Closure $offCanvas = null;
 
     public function isInOffCanvas(): bool
     {
         return ! is_null($this->offCanvas);
     }
 
-    // TODO Change to component in 3.0 and actions/default.blade will be simple
     public function inOffCanvas(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
-        bool $isLeft = false,
-        bool $async = false,
-        array $attributes = [],
-        string $name = 'default'
+        Closure|string|null $name = null,
+        ?Closure $builder = null,
     ): static {
-        $this->offCanvas = OffCanvas::make($title, $content, $isLeft, $async)
-            ->name($name)
-            ->customAttributes($attributes);
+        if(is_null($name)) {
+            $name = (string) spl_object_id($this);
+        }
 
-        return $this;
+        $async = $this->purgeAsyncTap();
+
+        $this->offCanvas = fn(mixed $data) => OffCanvas::make(
+            title: fn() => value($title, $data, $this) ?? $this->getLabel(),
+            content: fn() => value($content, $data, $this) ?? '',
+            asyncUrl: $async ? $this->url($data) : null
+        )
+            ->name(value($name, $data, $this))
+            ->when(
+                !is_null($builder),
+                fn(OffCanvas $offCanvas) => $builder($offCanvas, $this)
+            );
+
+        return $this->onBeforeRender(
+            static fn(ActionButton $btn) => $btn->toggleOffCanvas(
+                value($name, $btn->getItem(), $btn)
+            )
+        );
     }
 
     public function offCanvas(): ?OffCanvas
     {
-        return $this->offCanvas;
+        return value($this->offCanvas, $this->getItem(), $this);
+    }
+
+    public function toggleOffCanvas(string $name = 'default'): static
+    {
+        return $this->onClick(
+            fn (): string => "\$dispatch('" . AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, $name) . "')",
+            'prevent'
+        );
+    }
+
+    public function openOffCanvas(): static
+    {
+        return $this->onClick(fn (): string => 'toggleCanvas', 'prevent');
     }
 }

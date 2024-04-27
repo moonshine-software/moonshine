@@ -6,14 +6,28 @@ namespace MoonShine\Components\Layout;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Components\AbstractWithComponents;
 
-class Footer extends WithComponents
+class Footer extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.footer';
 
     protected string|Closure $copyright = '';
 
-    protected array $menu = [];
+    public array $menu = [];
+
+    public function __construct(
+        iterable $components = [],
+        // anonymous component variables
+        array $menu = [],
+        string $copyright = ''
+    )
+    {
+        $this->copyright = $copyright;
+        $this->menu = $menu;
+
+        parent::__construct($components);
+    }
 
     public function copyright(string|Closure $text): self
     {
@@ -44,9 +58,8 @@ class Footer extends WithComponents
     protected function viewData(): array
     {
         return [
-            ...parent::viewData(),
-            '_menu' => $this->getMenu(),
-            '_copyright' => $this->getCopyright(),
+            'menu' => $this->getMenu(),
+            'copyright' => $this->getCopyright(),
         ];
     }
 

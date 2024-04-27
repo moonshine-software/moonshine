@@ -17,6 +17,7 @@ final class Badge extends MoonShineComponent
         public string $value = '',
         public string $color = 'purple'
     ) {
+        parent::__construct();
     }
 
     /**

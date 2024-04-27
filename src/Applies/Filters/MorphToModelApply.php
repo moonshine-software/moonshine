@@ -19,7 +19,7 @@ class MorphToModelApply implements ApplyContract
             $query->whereMorphRelation(
                 $field->getRelationName(),
                 [$field->requestTypeValue()],
-                $field->column(),
+                $field->getColumn(),
                 '=',
                 $field->requestValue(),
             );

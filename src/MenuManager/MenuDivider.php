@@ -15,6 +15,8 @@ class MenuDivider extends MenuElement
 
     final public function __construct(Closure|string $label = '')
     {
+        parent::__construct();
+
         $this->setLabel($label);
     }
 
@@ -26,7 +28,7 @@ class MenuDivider extends MenuElement
     public function viewData(): array
     {
         return [
-            'label' => $this->label(),
+            'label' => $this->getLabel(),
         ];
     }
 }

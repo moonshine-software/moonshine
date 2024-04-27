@@ -57,8 +57,7 @@ trait HasTreeMode
                     [
                         'attributes' => $this->attributes()->merge([
                             'type' => 'checkbox',
-                            'id' => $this->id((string) $item->getKey()),
-                            'name' => $this->name((string) $item->getKey()),
+                            'name' => $this->getNameAttribute((string) $item->getKey()),
                             'value' => $item->getKey(),
                             'class' => 'form-group-inline',
                         ]),

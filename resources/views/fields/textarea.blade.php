@@ -1,8 +1,9 @@
+@props([
+    'value' => '',
+    'label' => '',
+])
 <x-moonshine::form.textarea
-    :attributes="$element->attributes()->merge([
-        'id' => $element->id(),
-        'aria-label' => $element->label() ?? '',
-        'name' => $element->name(),
+    :attributes="$attributes->merge([
+        'aria-label' => $label ?? '',
     ])"
-    @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
 >{!! $value ?? '' !!}</x-moonshine::form.textarea>

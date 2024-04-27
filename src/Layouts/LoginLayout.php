@@ -6,6 +6,7 @@ namespace MoonShine\Layouts;
 
 use MoonShine\Components\Components;
 use MoonShine\Components\FlexibleRender;
+use MoonShine\Components\Heading;
 use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\Body;
 use MoonShine\Components\Layout\Head;
@@ -13,7 +14,6 @@ use MoonShine\Components\Layout\Html;
 use MoonShine\Components\Layout\LayoutBuilder;
 use MoonShine\Components\Layout\Logo;
 use MoonShine\Components\SocialAuth;
-use MoonShine\Decorations\Heading;
 use MoonShine\MoonShineLayout;
 use MoonShine\Pages\Page;
 

@@ -26,7 +26,7 @@ it('text field is parent', function (): void {
 });
 
 it('type', function (): void {
-    expect($this->field->type())
+    expect($this->field->attributes()->get('type'))
         ->toBe('number');
 });
 
@@ -38,17 +38,14 @@ it('view', function (): void {
 it('number methods', function (): void {
     expect($this->field)
         ->min(3)
-        ->min->toBe(3)
         ->getAttribute('min')
-        ->toBe(3)
+        ->toBe('3')
         ->max(6)
-        ->max->toBe(6)
         ->getAttribute('max')
-        ->toBe(6)
+        ->toBe('6')
         ->step(2)
-        ->step->toBe(2)
         ->getAttribute('step')
-        ->toBe(2)
+        ->toBe('2')
     ;
 });
 

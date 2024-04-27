@@ -14,7 +14,7 @@ trait WithLabel
 
     protected string $translatableKey = '';
 
-    public function label(): string
+    public function getLabel(): string
     {
         $this->label = value($this->label, $this);
 

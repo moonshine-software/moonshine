@@ -15,7 +15,7 @@ class DateModelApply implements ApplyContract
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            $query->whereDate($field->column(), $field->requestValue());
+            $query->whereDate($field->getColumn(), $field->requestValue());
         };
     }
 }

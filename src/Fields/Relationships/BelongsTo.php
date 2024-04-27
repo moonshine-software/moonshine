@@ -105,4 +105,17 @@ class BelongsTo extends ModelRelationField implements
                 ->associate($value);
         };
     }
+
+    protected function viewData(): array
+    {
+        return [
+            'isSearchable' => $this->isSearchable(),
+            'values' => $this->values(),
+            'isSelected' => fn(string $value) => $this->isSelected($value),
+            'isNullable' => $this->isNullable(),
+            'customProperties' => $this->valuesWithProperties(onlyCustom: true),
+            'isAsyncSearch' => $this->isAsyncSearch(),
+            'asyncSearchUrl' => $this->asyncSearchUrl(),
+        ];
+    }
 }

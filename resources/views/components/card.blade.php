@@ -56,7 +56,7 @@
             </table>
         @endif
 
-        {{ $slot }}
+            {{ $slot ?? '' }}
     </div>
 
     @if($actions?->isNotEmpty())

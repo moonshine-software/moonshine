@@ -7,19 +7,19 @@ namespace MoonShine\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Components\Metrics\Wrapped\Metric;
 use MoonShine\Enums\ClickAction;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Metrics\Metric;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Resource\ResourceModelActions;
 use MoonShine\Traits\Resource\ResourceModelCrudRouter;
 use MoonShine\Traits\Resource\ResourceModelEvents;
@@ -179,12 +179,12 @@ abstract class ModelResource extends Resource
 
     public function trAttributes(): Closure
     {
-        return fn (mixed $data, int $row, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
+        return fn (mixed $data, int $row, MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr;
     }
 
     public function tdAttributes(): Closure
     {
-        return fn (mixed $data, int $row, int $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
+        return fn (mixed $data, int $row, int $cell, MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr;
     }
 
     /**
@@ -271,7 +271,7 @@ abstract class ModelResource extends Resource
 
             $value = $field->requestValue() !== false ? $field->requestValue() : null;
 
-            data_set($item, $field->column(), $value);
+            data_set($item, $field->getColumn(), $value);
 
             return $item;
         };

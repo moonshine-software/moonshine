@@ -21,4 +21,9 @@ class Hidden extends Field implements HasDefaultValue, DefaultCanBeString
     {
         parent::__construct($label, $column ?? $label, $formatted);
     }
+
+    public function hasWrapper(): bool
+    {
+        return false;
+    }
 }

@@ -6,10 +6,10 @@ namespace MoonShine\Resources;
 
 use Illuminate\Validation\Rule;
 use MoonShine\Attributes\Icon;
-use MoonShine\Decorations\Box;
-use MoonShine\Decorations\Heading;
-use MoonShine\Decorations\Tab;
-use MoonShine\Decorations\Tabs;
+use MoonShine\Components\Heading;
+use MoonShine\Components\Layout\Box;
+use MoonShine\Components\Tabs\Tab;
+use MoonShine\Components\Tabs\Tabs;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\Email;
 use MoonShine\Fields\ID;

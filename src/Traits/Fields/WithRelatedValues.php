@@ -113,6 +113,7 @@ trait WithRelatedValues
                     ),
                 ]
             );
+
         } else {
             $table = DB::getTablePrefix() . $related->getTable();
             $key = "$table.{$related->getKeyName()}";
@@ -140,7 +141,9 @@ trait WithRelatedValues
         if($value instanceof Model && $value->exists && $values->isEmpty()) {
             $values->put(
                 $value->getKey(),
-                data_get($value, $this->getResourceColumn())
+                $formatted
+                    ? value($this->formattedValueCallback(), $value, $this)
+                    : data_get($value, $this->getResourceColumn())
             );
         }
 

@@ -14,7 +14,5 @@ interface ActionButtonContract
 
     public function setItem(mixed $item): self;
 
-    public function isSee(mixed $data): bool;
-
     public function inDropdown(): bool;
 }

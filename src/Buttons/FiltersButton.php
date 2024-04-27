@@ -6,7 +6,7 @@ namespace MoonShine\Buttons;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Resources\ModelResource;

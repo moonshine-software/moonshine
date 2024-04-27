@@ -7,7 +7,7 @@ namespace MoonShine\Contracts\Table;
 use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
-use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Components\ActionButtons\ActionButtons;
 
 interface TableContract
 {

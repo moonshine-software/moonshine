@@ -18,6 +18,8 @@ class MenuGroup extends MenuElement
         protected iterable $items = [],
         string $icon = null,
     ) {
+        parent::__construct();
+
         $this->setLabel($label);
 
         if ($icon) {

@@ -7,17 +7,13 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentSlot;
-use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Collections\MoonShineRenderElements;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Fields\Fields;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Support\Condition;
-use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|View|string $content, Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', MoonShineRenderElements|null $components = null)
+ * @method static static make(Closure|string $title, Closure|View|string $content, Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
-final class Modal extends MoonShineComponent implements HasFields
+final class Modal extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.modal';
 
@@ -38,9 +34,13 @@ final class Modal extends MoonShineComponent implements HasFields
         protected Closure|View|string $content = '',
         protected Closure|View|ActionButton|string $outer = '',
         protected Closure|string|null $asyncUrl = null,
-        protected ?MoonShineRenderElements $components = null
+        iterable $components = [],
+        // anonymous component variables
+        string $name = 'default'
     ) {
+        parent::__construct($components);
     }
+
 
     public function open(Closure|bool|null $condition = null): self
     {
@@ -89,12 +89,13 @@ final class Modal extends MoonShineComponent implements HasFields
      */
     protected function viewData(): array
     {
-        $componentsHtml = $this->components?->isNotEmpty() ?
-            Components::make($this->components) : '' ;
+        $componentsHtml = $this->getComponents()->isNotEmpty()
+            ? Components::make($this->getComponents())
+            : '';
 
         $outer = value($this->outer, $this);
 
-        if($outer instanceof ActionButton) {
+        if ($outer instanceof ActionButton) {
             $outer->openModal();
         }
 
@@ -110,31 +111,5 @@ final class Modal extends MoonShineComponent implements HasFields
             'slot' => new ComponentSlot(value($this->content, $this) . $componentsHtml),
             'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
         ];
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function hasFields(): bool
-    {
-        return ! is_null($this->components);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getFields(): Fields
-    {
-        return Fields::make($this->components?->toArray() ?? []);
-    }
-
-    public function preparedFields(): Fields
-    {
-        return $this->getFields();
-    }
-
-    public function fields(array|Fields|Closure $fields): static
-    {
-        return $this;
     }
 }

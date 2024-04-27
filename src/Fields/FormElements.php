@@ -8,33 +8,18 @@ use Illuminate\Support\Collection;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Decorations\Decoration;
 use Throwable;
 
 /**
- * @extends MoonShineRenderElements<int, Field|Decoration>
+ * @extends MoonShineRenderElements<int, Field>
  */
 abstract class FormElements extends MoonShineRenderElements
 {
-    protected bool $onlyFieldsCalled = false;
-
-    public function onlyFieldsCalled(): static
-    {
-        $this->onlyFieldsCalled = true;
-
-        return $this;
-    }
-
     /**
      * @throws Throwable
      */
     public function onlyFields(bool $withWrappers = false): Fields
     {
-        if ($this->onlyFieldsCalled) {
-            return Fields::make($this->toArray())
-                ->onlyFieldsCalled();
-        }
-
         $data = [];
 
         $this->extractFields($this->toArray(), $data);
@@ -42,7 +27,7 @@ abstract class FormElements extends MoonShineRenderElements
         return Fields::make($data)->when(
             ! $withWrappers,
             fn (Fields $fields): Fields|FormElements => $fields->withoutWrappers()
-        )->onlyFieldsCalled();
+        );
     }
 
     /**

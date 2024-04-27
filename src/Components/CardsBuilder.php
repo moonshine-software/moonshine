@@ -48,6 +48,8 @@ final class CardsBuilder extends IterableComponent
         Paginator|iterable $items = [],
         Fields|array $fields = [],
     ) {
+        parent::__construct();
+
         $this->items($items);
         $this->fields($fields);
         $this->columnSpan(4);
@@ -164,7 +166,7 @@ final class CardsBuilder extends IterableComponent
     protected function getMapper(mixed $data, Fields $fields, int $index): array
     {
         $values = $fields->values()
-            ->mapWithKeys(fn (Field $value): array => [$value->label() => (string) $value->preview()])
+            ->mapWithKeys(fn (Field $value): array => [$value->getLabel() => (string) $value->preview()])
             ->toArray();
 
         return [
@@ -177,12 +179,10 @@ final class CardsBuilder extends IterableComponent
         ];
     }
 
-    /**
-     * @return array<string, mixed>
-     * @throws Throwable
-     */
-    protected function viewData(): array
+    protected function prepareBeforeRender(): void
     {
+        parent::prepareBeforeRender();
+
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->getPaginator()
                 ?->appends(request()->except('page'))
@@ -194,7 +194,14 @@ final class CardsBuilder extends IterableComponent
                 'data-events' => $this->asyncEvents(),
             ]);
         }
+    }
 
+    /**
+     * @return array<string, mixed>
+     * @throws Throwable
+     */
+    protected function viewData(): array
+    {
         return [
             'components' => $this->components(),
             'name' => $this->getName(),

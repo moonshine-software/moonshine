@@ -1,3 +1,7 @@
+@props([
+    'label' => '',
+    'beforeLabel' => false,
+])
 <x-moonshine::form.input-wrapper
     :attributes="$attributes"
     :label="$label ?? ''"

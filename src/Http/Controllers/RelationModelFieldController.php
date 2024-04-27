@@ -57,7 +57,7 @@ class RelationModelFieldController extends MoonShineController
         }
 
         $term = $request->get('query');
-        $values = $request->get($field->column(), '') ?? '';
+        $values = $request->get($field->getColumn(), '') ?? '';
 
         $except = is_array($values)
             ? array_keys($values)
@@ -111,6 +111,6 @@ class RelationModelFieldController extends MoonShineController
             )->render();
         }
 
-        return $value;
+        return $value->render();
     }
 }

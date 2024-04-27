@@ -26,6 +26,7 @@ final class Dropdown extends MoonShineComponent
         protected Closure|array $items = [],
         public string $placement = 'bottom-start',
     ) {
+        parent::__construct();
     }
 
     public function toggler(Closure|string $toggler): self

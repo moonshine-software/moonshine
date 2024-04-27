@@ -94,7 +94,7 @@
         </x-moonshine::table>
 
         @if($creatable)
-            <x-moonshine::divider />
+            <x-moonshine::layout.divider />
 
             {!! $createButton !!}
         @endif
@@ -102,8 +102,8 @@
         @if(!$preview && $hasPaginator)
             {{ $paginator->links(
                 $simplePaginate
-                    ? 'moonshine::ui.simple-pagination'
-                    : 'moonshine::ui.pagination',
+                    ? 'moonshine::pagination.simple'
+                    : 'moonshine::pagination.default',
                 ['async' => $async]
             ) }}
         @endif

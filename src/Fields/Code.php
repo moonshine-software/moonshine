@@ -33,4 +33,12 @@ class Code extends Textarea
             ->after('</pre>')
             ->stripTags();
     }
+
+    protected function viewData(): array
+    {
+        return [
+            'lineNumbers' => $this->lineNumbers,
+            'language' => $this->language,
+        ];
+    }
 }

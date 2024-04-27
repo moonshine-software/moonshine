@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace MoonShine\Table;
 
 use Closure;
-use Illuminate\Contracts\View\View;
-use Illuminate\View\ComponentAttributeBag;
-use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Components\ActionButtons\ActionButtons;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithViewRenderer;
 use Throwable;
 
 final class TableRow implements MoonShineRenderable
 {
     use Makeable;
+    use WithViewRenderer;
 
     protected bool $hasActions = false;
 
@@ -83,14 +84,14 @@ final class TableRow implements MoonShineRenderable
         return $this->actions;
     }
 
-    public function trAttributes(int $row): ComponentAttributeBag
+    public function trAttributes(int $row): MoonShineComponentAttributeBag
     {
         $row = $this->getIndex($row);
 
-        $attributes = new ComponentAttributeBag();
+        $attributes = new MoonShineComponentAttributeBag();
 
         if (is_null($this->trAttributes)) {
-            $this->trAttributes = static fn (): ComponentAttributeBag => new ComponentAttributeBag();
+            $this->trAttributes = static fn (): MoonShineComponentAttributeBag => new MoonShineComponentAttributeBag();
         }
 
         $attributes = value($this->trAttributes, $this->data, $row, $attributes, $this);
@@ -102,14 +103,14 @@ final class TableRow implements MoonShineRenderable
         return $attributes;
     }
 
-    public function tdAttributes(int $row, int $cell): ComponentAttributeBag
+    public function tdAttributes(int $row, int $cell): MoonShineComponentAttributeBag
     {
         $row = $this->getIndex($row);
 
-        $attributes = new ComponentAttributeBag();
+        $attributes = new MoonShineComponentAttributeBag();
 
         if (is_null($this->tdAttributes)) {
-            $this->tdAttributes = static fn (): ComponentAttributeBag => new ComponentAttributeBag();
+            $this->tdAttributes = static fn (): MoonShineComponentAttributeBag => new MoonShineComponentAttributeBag();
         }
 
         return value($this->tdAttributes, $this->data, $row, $cell, $attributes, $this);
@@ -130,9 +131,14 @@ final class TableRow implements MoonShineRenderable
         return $this;
     }
 
-    public function render(): View
+    public function getView(): string
     {
-        return view('moonshine::components.table.body', [
+        return 'moonshine::components.table.body';
+    }
+
+    protected function systemViewData(): array
+    {
+        return [
             'rows' => [
                 $this,
             ],
@@ -142,16 +148,16 @@ final class TableRow implements MoonShineRenderable
             'preview' => $this->preview,
             'simple' => $this->simple,
             'hasClickAction' => $this->hasClickAction,
-        ]);
+        ];
     }
 
-    public function __toString(): string
+    public function jsonSerialize(): array
     {
-        return (string) $this->render();
+        return (array) $this->data;
     }
 
     public function toArray(): array
     {
-        return (array) $this->data;
+        return $this->jsonSerialize();
     }
 }

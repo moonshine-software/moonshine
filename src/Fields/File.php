@@ -26,16 +26,15 @@ class File extends Field implements Fileable, RemovableContract
 
     protected string $accept = '*/*';
 
-    protected array $attributes = [
+    protected array $propertyAttributes = [
         'type',
         'accept',
-        'required',
-        'disabled',
     ];
 
     public function accept(string $value): static
     {
         $this->accept = $value;
+        $this->attributes()->set('accept', $value);
 
         return $this;
     }
@@ -68,5 +67,17 @@ class File extends Field implements Fileable, RemovableContract
         $this->deleteDir();
 
         return $data;
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            'fullPathValues' => $this->getFullPathValues(),
+            'isRemovable' => $this->isRemovable(),
+            'removableAttributes' => $this->getRemovableAttributes(),
+            'canDownload' => $this->canDownload(),
+            'names' => $this->resolveNames(),
+            'itemAttributes' => $this->resolveItemAttributes(),
+        ];
     }
 }

@@ -31,7 +31,7 @@ class Slug extends Text
             return tap(
                 $fields,
                 fn ($fields) => $fields
-                ->findByColumn($this->column())
+                ->findByColumn($this->getColumn())
                 ?->setValue(str($title->toValue())->slug()->value())
             );
         });
@@ -54,12 +54,12 @@ class Slug extends Text
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            $item->{$this->column()} = $this->requestValue() !== false
+            $item->{$this->getColumn()} = $this->requestValue() !== false
                 ? $this->requestValue()
                 : $this->generateSlug($item->{$this->getFrom()});
 
             if ($this->isUnique()) {
-                $item->{$this->column()} = $this->makeSlugUnique($item);
+                $item->{$this->getColumn()} = $this->makeSlugUnique($item);
             }
 
             return $item;
@@ -104,11 +104,11 @@ class Slug extends Text
 
     protected function makeSlugUnique(Model $item): string
     {
-        $slug = $item->{$this->column()};
+        $slug = $item->{$this->getColumn()};
         $i = 1;
 
         while (! $this->checkUnique($item, $slug)) {
-            $slug = $item->{$this->column()} . $this->getSeparator() . $i++;
+            $slug = $item->{$this->getColumn()} . $this->getSeparator() . $i++;
         }
 
         return $slug;
@@ -118,7 +118,7 @@ class Slug extends Text
     {
         return ! $item->newModelQuery()
             ->whereNot($item->getKeyName(), $item->getKey())
-            ->where($this->column(), $slug)
+            ->where($this->getColumn(), $slug)
             ->exists();
     }
 

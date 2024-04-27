@@ -26,8 +26,11 @@ final class Offcanvas extends MoonShineComponent
         protected Closure|string $title = '',
         protected Closure|View|string $content = '',
         protected Closure|string $toggler = '',
-        protected Closure|string|null $asyncUrl = null
+        protected Closure|string|null $asyncUrl = null,
+        // anonymous component variables
+        string $name = 'default'
     ) {
+        parent::__construct($name);
     }
 
     public function open(Closure|bool|null $condition = null): self

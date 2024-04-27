@@ -18,6 +18,7 @@ final class Alert extends MoonShineComponent
         public string $type = 'default',
         public bool $removable = false,
     ) {
+        parent::__construct();
     }
 
     /**

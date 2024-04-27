@@ -7,8 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\AssetManager\AssetManager;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\ApplyContract;
@@ -291,21 +291,6 @@ if (! function_exists('is_field')) {
     function is_field(mixed $variable): bool
     {
         return $variable instanceof Field;
-    }
-}
-
-if (! function_exists('isSeeWhenExists')) {
-    function isSeeWhenExists(mixed $component): bool
-    {
-        if(method_exists($component, 'isSee')) {
-            return $component->isSee(
-                $component instanceof Field
-                    ? $component->toValue()
-                    : moonshineRequest()
-            );
-        }
-
-        return true;
     }
 }
 

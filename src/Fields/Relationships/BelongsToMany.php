@@ -9,10 +9,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\View\ComponentAttributeBag;
-use MoonShine\ActionButtons\ActionButton;
-use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Buttons\BelongsToManyButton;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButtons;
 use MoonShine\Components\Badge;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
@@ -27,6 +26,7 @@ use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Condition;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\HasTreeMode;
 use MoonShine\Traits\Fields\Searchable;
@@ -218,14 +218,15 @@ class BelongsToMany extends ModelRelationField implements
     {
         return $this->getFields()->prepareAttributes()->map(
             fn (Field $field): Field => (clone $field)
-                ->setColumn("{$this->getPivotAs()}.{$field->column()}")
+                ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
                 ->setAttribute('class', 'pivotField')
-                ->setName(
-                    "{$this->getPivotName()}[\${index0}][{$field->column()}]"
+                ->setNameAttribute(
+                    "{$this->getPivotName()}[\${index0}][{$field->getColumn()}]"
                 )
                 ->setParent($this)
                 ->formName($this->getFormName())
                 ->iterableAttributes()
+                ->withoutWrapper()
         );
     }
 
@@ -267,10 +268,10 @@ class BelongsToMany extends ModelRelationField implements
     {
         $titleColumn = $this->getResourceColumn();
 
-        $checkedColumn = $this->name('${index0}');
+        $checkedColumn = $this->getNameAttribute('${index0}');
         $identityField = Checkbox::make('#', $checkedColumn)
             ->setAttribute('class', 'pivotChecker')
-            ->setName($checkedColumn)
+            ->setNameAttribute($checkedColumn)
             ->formName($this->getFormName())
             ->iterableAttributes();
 
@@ -324,8 +325,8 @@ class BelongsToMany extends ModelRelationField implements
                 fn (
                     Model $data,
                     int $row,
-                    ComponentAttributeBag $attributes
-                ): ComponentAttributeBag => $attributes->merge([
+                    MoonShineComponentAttributeBag $attributes
+                ): MoonShineComponentAttributeBag => $attributes->merge([
                     'data-key' => $data->getKey(),
                 ])
             )
@@ -343,7 +344,19 @@ class BelongsToMany extends ModelRelationField implements
     protected function viewData(): array
     {
         return [
-            'table' => $this->resolveValue(),
+            'component' => $this->resolveValue(),
+            'buttons' => $this->getButtons(),
+            'values' => $this->values(),
+            'customProperties' => $this->resolvePropertyAttributes(),
+            'selectedKeys' => $this->selectedKeys(),
+            'isSearchable' => $this->isSearchable(),
+            'isAsyncSearch' => $this->isAsyncSearch(),
+            'isSelectMode' => $this->isSelectMode(),
+            'asyncSearchUrl' => $this->asyncSearchUrl(),
+            'isCreatable' => $this->isCreatable(),
+            'createButton' => $this->createButton(),
+            'fragmentUrl' => $this->fragmentUrl(),
+            'relationName' => $this->getRelationName(),
         ];
     }
 
@@ -442,14 +455,14 @@ class BelongsToMany extends ModelRelationField implements
                 $values = request($field->requestKeyPrefix());
 
                 $apply = $field->apply(
-                    fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? null),
+                    fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? null),
                     $values
                 );
 
                 data_set(
                     $applyValues[$key],
-                    $field->column(),
-                    data_get($apply, $field->column())
+                    $field->getColumn(),
+                    data_get($apply, $field->getColumn())
                 );
             }
         }

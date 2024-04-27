@@ -36,4 +36,11 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
             'data-remove-item-button' => true,
         ]);
     }
+
+    protected function viewData(): array
+    {
+        return [
+            'extensions' => $this->getExtensions(),
+        ];
+    }
 }

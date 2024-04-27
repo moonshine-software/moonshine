@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\Custom;
 
-use MoonShine\Decorations\Box;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Preview;
 use MoonShine\Pages\Page;

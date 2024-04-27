@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Traits;
 
 use Closure;
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Support\Condition;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 
 trait Removable
 {
@@ -24,9 +24,9 @@ trait Removable
         return $this;
     }
 
-    public function getRemovableAttributes(): ComponentAttributeBag
+    public function getRemovableAttributes(): MoonShineComponentAttributeBag
     {
-        return new ComponentAttributeBag($this->removableAttributes);
+        return new MoonShineComponentAttributeBag($this->removableAttributes);
     }
 
     public function isRemovable(): bool

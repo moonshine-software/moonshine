@@ -39,7 +39,7 @@ trait WithSorts
     public function sortQuery(?string $url = null): string
     {
         $sortData = [
-            'sort' => ($this->sortActive() && $this->sortDirection('asc') ? '-' : '') . $this->column(),
+            'sort' => ($this->sortActive() && $this->sortDirection('asc') ? '-' : '') . $this->getColumn(),
             'page' => request('page', 1),
         ];
 
@@ -56,7 +56,7 @@ trait WithSorts
 
     public function sortActive(): bool
     {
-        return $this->getSortColumnFromRequest() === $this->column();
+        return $this->getSortColumnFromRequest() === $this->getColumn();
     }
 
     public function sortDirection(string $type): bool

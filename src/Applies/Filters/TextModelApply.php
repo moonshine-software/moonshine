@@ -16,7 +16,7 @@ class TextModelApply implements ApplyContract
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            $query->where($field->column(), DBOperators::byModel($query->getModel())->like(), "%{$field->requestValue()}%");
+            $query->where($field->getColumn(), DBOperators::byModel($query->getModel())->like(), "%{$field->requestValue()}%");
         };
     }
 }

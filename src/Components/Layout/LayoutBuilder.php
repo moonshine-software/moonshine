@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-class LayoutBuilder extends WithComponents
+use MoonShine\Components\AbstractWithComponents;
+
+class LayoutBuilder extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.index';
 

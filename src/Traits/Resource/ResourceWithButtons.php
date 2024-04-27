@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
-use MoonShine\ActionButtons\ActionButton;
-use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Buttons\CreateButton;
 use MoonShine\Buttons\DeleteButton;
 use MoonShine\Buttons\DetailButton;
 use MoonShine\Buttons\EditButton;
 use MoonShine\Buttons\MassDeleteButton;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButtons;
 
 trait ResourceWithButtons
 {

@@ -15,6 +15,8 @@ final class Notifications extends MoonShineComponent
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->notifications = auth()->user()?->unreadNotifications;
     }
 }

@@ -6,30 +6,32 @@ namespace MoonShine\MenuManager;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\Contracts\Components\HasCanSeeContract;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
-use MoonShine\Traits\WithView;
+use MoonShine\Traits\WithViewRenderer;
 
-abstract class MenuElement implements MoonShineRenderable
+abstract class MenuElement implements MoonShineRenderable, HasCanSeeContract
 {
     use Makeable;
     use WithComponentAttributes;
     use WithIcon;
     use HasCanSee;
     use WithLabel;
-    use WithView;
+    use WithViewRenderer;
 
     private bool $topMode = false;
 
     abstract public function isActive(): bool;
 
-    public function viewData(): array
+    public function __construct()
     {
-        return [];
+        $this->attributes = new MoonShineComponentAttributeBag();
     }
 
     public function topMode(?Closure $condition = null): static
@@ -44,21 +46,20 @@ abstract class MenuElement implements MoonShineRenderable
         return $this->topMode;
     }
 
-
-    public function render(): View
+    protected function systemViewData(): array
     {
-        return view($this->getView(), [
-            ...$this->viewData(),
+        return [
+            'type' => class_basename($this),
             'attributes' => $this->attributes(),
-            'label' => $this->label(),
+            'label' => $this->getLabel(),
             'icon' => $this->iconValue() ? $this->getIcon(6) : '',
             'isActive' => $this->isActive(),
             'top' => $this->isTopMode(),
-        ]);
+        ];
     }
 
-    public function __toString(): string
+    public function jsonSerialize(): array
     {
-        return (string) $this->render();
+        return $this->systemViewData();
     }
 }

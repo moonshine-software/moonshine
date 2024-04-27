@@ -121,10 +121,16 @@ describe('basic methods', function () {
 describe('common field methods', function () {
     it('names', function (): void {
         expect($this->field)
-            ->name()
+            ->getNameAttribute()
             ->toBe('range[]')
-            ->name('start')
+            ->getNameAttribute('start')
             ->toBe('range[start]');
+    });
+
+    it('names in render', function (): void {
+        expect((string) $this->field->render())
+            ->toContain('range[start]')
+            ->toContain('range[end]');
     });
 
     it('correct interfaces', function (): void {
@@ -134,7 +140,7 @@ describe('common field methods', function () {
     });
 
     it('type', function (): void {
-        expect($this->field->type())
+        expect($this->field->attributes()->get('type'))
             ->toBe('date');
     });
 
@@ -205,7 +211,7 @@ describe('unique field methods', function () {
             ->fill(['start' => $from, 'end' => $to])
             ->withTime();
 
-        expect($field->type())
+        expect($field->attributes()->get('type'))
             ->toBe('datetime-local')
             ->and($field->preview())
             ->toBe('2020-01-01 00:00:00 - 2020-02-01 00:00:00')

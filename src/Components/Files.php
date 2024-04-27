@@ -17,5 +17,6 @@ final class Files extends MoonShineComponent
         public ?Closure $names = null,
         public ?Closure $itemAttributes = null,
     ) {
+        parent::__construct();
     }
 }

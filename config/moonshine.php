@@ -83,12 +83,6 @@ return [
         // User::class
     ],
 
-    'tinymce' => [
-        'file_manager' => false, // or 'laravel-filemanager' prefix for lfm
-        'token' => env('MOONSHINE_TINYMCE_TOKEN', ''),
-        'version' => env('MOONSHINE_TINYMCE_VERSION', '6'),
-    ],
-
     'socialite' => [
         // 'driver' => 'path_to_image_for_button'
     ],

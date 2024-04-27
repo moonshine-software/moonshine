@@ -16,6 +16,7 @@ final class Title extends MoonShineComponent
         protected Closure|string|null $value = null,
         public int $h = 1,
     ) {
+        parent::__construct();
     }
 
     /**
