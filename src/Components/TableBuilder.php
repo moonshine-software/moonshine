@@ -8,11 +8,12 @@ use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Enums\JsEvent;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\HasAsync;
 use MoonShine\Traits\Table\TableStates;
@@ -41,6 +42,8 @@ final class TableBuilder extends IterableComponent implements TableContract
         Paginator|iterable $items = [],
         ?Paginator $paginator = null
     ) {
+        parent::__construct();
+
         $this->fields($fields);
         $this->items($items);
 
@@ -58,6 +61,16 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function rows(): Collection
     {
         $tableFields = $this->getFields();
+
+        if(!$this->isEditable()) {
+            $tableFields = $tableFields
+                ->onlyFields()
+                ->map(
+                    fn (Field $field): Field => $field
+                        ->withoutWrapper()
+                        ->forcePreview()
+                );
+        }
 
         return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($tableFields): TableRow {
             $casted = $this->castData($data);
@@ -158,7 +171,7 @@ final class TableBuilder extends IterableComponent implements TableContract
         }
 
         $this->systemTrAttributes(
-            function (mixed $data, int $index, ComponentAttributeBag $attr, TableRow $row) use ($systemTrEvents) {
+            function (mixed $data, int $index, MoonShineComponentAttributeBag $attr, TableRow $row) use ($systemTrEvents) {
                 foreach ($systemTrEvents as $systemTrEvent) {
                     $attr = $attr->merge($systemTrEvent($data, $row, $index));
                 }
@@ -176,14 +189,19 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
+    protected function prepareBeforeRender(): void
+    {
+        parent::prepareBeforeRender();
+
+        $this->performBeforeRender();
+    }
+
     /**
      * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array
     {
-        $this->performBeforeRender();
-
         return [
                 'rows' => $this->rows(),
                 'fields' => $this->getFields(),
