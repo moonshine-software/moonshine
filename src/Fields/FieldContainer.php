@@ -35,7 +35,7 @@ final class FieldContainer extends MoonShineComponent
 
     protected function prepareBeforeRender(): void
     {
-        if (!$this->field->isPreviewMode() && $this->field->hasLink()) {
+        if (! $this->field->isPreviewMode() && $this->field->hasLink()) {
             $link = Link::make(
                 $this->field->getLinkValue(),
                 $this->field->getLinkName(),

@@ -365,7 +365,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
 
     protected function getErrors(): ViewErrorBag
     {
-        return session()->get('errors', new ViewErrorBag);
+        return session()->get('errors', new ViewErrorBag());
     }
 
     protected function resolveAssets(): void

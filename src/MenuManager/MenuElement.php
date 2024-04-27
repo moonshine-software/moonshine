@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Components\HasCanSeeContract;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Support\MoonShineComponentAttributeBag;

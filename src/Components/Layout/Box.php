@@ -21,8 +21,7 @@ class Box extends AbstractWithComponents
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
         private bool $dark = false,
-    )
-    {
+    ) {
         if(is_iterable($labelOrComponents)) {
             $components = $labelOrComponents;
         } else {

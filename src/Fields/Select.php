@@ -75,8 +75,8 @@ class Select extends Field implements
             'isSearchable' => $this->isSearchable(),
             'asyncUrl' => $this->asyncUrl(),
             'values' => $this->values(),
-            'isSelected' => fn(string $value) => $this->isSelected($value),
-            'optionProperties' => fn(string $value) => $this->getOptionProperties($value),
+            'isSelected' => fn (string $value) => $this->isSelected($value),
+            'optionProperties' => fn (string $value) => $this->getOptionProperties($value),
             'isNullable' => $this->isNullable(),
         ];
     }

@@ -2,9 +2,9 @@
 
 namespace MoonShine\Pages;
 
-use MoonShine\Components\Layout\Box;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Heading;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\SocialAuth;
 use MoonShine\Components\Tabs\Tab;
 use MoonShine\Components\Tabs\Tabs;

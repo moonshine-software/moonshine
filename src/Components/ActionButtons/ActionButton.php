@@ -268,7 +268,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     public function purgeAsyncTap(): bool
     {
-        return tap($this->isAsync(), fn() => $this->purgeAsync());
+        return tap($this->isAsync(), fn () => $this->purgeAsync());
     }
 
     /*

@@ -17,7 +17,7 @@ trait WithComponents
 
     public function preparedComponents(): ComponentsCollection
     {
-        if(!$this->components instanceof ComponentsCollection) {
+        if(! $this->components instanceof ComponentsCollection) {
             return ComponentsCollection::make($this->components);
         }
 
@@ -44,7 +44,7 @@ trait WithComponents
     {
         if(app()->runningUnitTests()) {
             $components = collect($components)
-                ->map(fn(object $component): object => clone $component)
+                ->map(fn (object $component): object => clone $component)
                 ->toArray();
         }
 

@@ -69,7 +69,7 @@ final class BelongsToManyButton
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields),
                 name: "modal-belongs-to-many-{$field->getRelationName()}",
-                builder: fn(Modal $modal) => $modal->wide()->closeOutside(false)
+                builder: fn (Modal $modal) => $modal->wide()->closeOutside(false)
             )
             ->primary()
             ->icon('heroicons.outline.plus');

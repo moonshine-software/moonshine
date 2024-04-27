@@ -36,8 +36,8 @@ trait WithModal
         $async = $this->purgeAsyncTap();
 
         $this->modal = fn (mixed $data) => Modal::make(
-            title: fn() => value($title, $data, $this) ?? $this->getLabel(),
-            content: fn() => value($content, $data, $this) ?? '',
+            title: fn () => value($title, $data, $this) ?? $this->getLabel(),
+            content: fn () => value($content, $data, $this) ?? '',
             asyncUrl: $async ? $this->url($data) : null,
         )
             ->name(value($name, $data, $this))
@@ -47,7 +47,7 @@ trait WithModal
             );
 
         return $this->onBeforeRender(
-            static fn(ActionButton $btn) => $btn->toggleModal(
+            static fn (ActionButton $btn) => $btn->toggleModal(
                 value($name, $btn->getItem(), $btn)
             )
         );

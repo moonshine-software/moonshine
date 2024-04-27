@@ -1,9 +1,9 @@
 <?php
 
 use MoonShine\Collections\ComponentsCollection;
-use MoonShine\Components\Layout\Box;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Fragment;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\Modal;
 use MoonShine\Components\TableBuilder;

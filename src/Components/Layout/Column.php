@@ -20,8 +20,7 @@ class Column extends AbstractWithComponents
         iterable $components = [],
         int $colSpan = 12,
         int $adaptiveColSpan = 12,
-    )
-    {
+    ) {
         $this->columnSpan($colSpan, $adaptiveColSpan);
 
         parent::__construct($components);

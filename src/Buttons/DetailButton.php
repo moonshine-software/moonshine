@@ -38,7 +38,7 @@ final class DetailButton
                     title: fn (): array|string|null => __('moonshine::ui.show'),
                     content: fn (): string => '',
                     name: fn (Model $data) => "detail-modal-{$data->getKey()}",
-                    builder: fn(Modal $modal) => $modal->wide()
+                    builder: fn (Modal $modal) => $modal->wide()
                 )
             )
             ->canSee(

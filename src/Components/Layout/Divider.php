@@ -22,8 +22,7 @@ class Divider extends MoonShineComponent
     public function __construct(
         Closure|string $label = '',
         bool $centered = false
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->isCentered = $centered;

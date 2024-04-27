@@ -31,21 +31,21 @@ it('show field on pages', function () {
     $this->item->end_date = $to->format('Y-m-d');
     $this->item->save();
 
-/*    asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $resource)
-    )
-        ->assertOk()
-        ->assertSee('Range')
-        ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
-    ;
+    /*    asAdmin()->get(
+            to_page(page: IndexPage::class, resource: $resource)
+        )
+            ->assertOk()
+            ->assertSee('Range')
+            ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
+        ;
 
-    asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
-    )
-        ->assertOk()
-        ->assertSee('Range')
-        ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
-    ;*/
+        asAdmin()->get(
+            to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        )
+            ->assertOk()
+            ->assertSee('Range')
+            ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
+        ;*/
 
     asAdmin()->get(
         to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])

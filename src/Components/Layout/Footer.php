@@ -21,8 +21,7 @@ class Footer extends AbstractWithComponents
         // anonymous component variables
         array $menu = [],
         string $copyright = ''
-    )
-    {
+    ) {
         $this->copyright = $copyright;
         $this->menu = $menu;
 

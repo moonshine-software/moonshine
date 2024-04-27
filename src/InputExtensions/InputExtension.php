@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\InputExtensions;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\WithComponentAttributes;

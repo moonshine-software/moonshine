@@ -29,8 +29,7 @@ class Flex extends AbstractWithComponents
         string $itemsAlign = 'center',
         string $justifyAlign = 'center',
         bool $withoutSpace = false
-    )
-    {
+    ) {
         $this->withoutSpace = $withoutSpace;
 
         $this

@@ -62,7 +62,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     {
         $tableFields = $this->getFields();
 
-        if(!$this->isEditable()) {
+        if(! $this->isEditable()) {
             $tableFields = $tableFields
                 ->onlyFields()
                 ->map(

@@ -26,8 +26,7 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
 
     public function __construct(
         protected string $name = 'default'
-    )
-    {
+    ) {
         $this->attributes = new MoonShineComponentAttributeBag();
     }
 

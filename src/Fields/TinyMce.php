@@ -180,13 +180,13 @@ class TinyMce extends Textarea
 
         $this->customAttributes([
             'data-toolbar_mode' => 'sliding',
-            'data-language' => !empty($this->locale) ? $this->locale : app()->getLocale(),
+            'data-language' => ! empty($this->locale) ? $this->locale : app()->getLocale(),
             'data-plugins' => trim($this->plugins . ' ' . $this->addedPlugins),
             'data-menubar' => trim($this->menubar),
             'data-toolbar' => trim($this->toolbar . ' ' . $this->addedToolbar),
-            'data-tinycomments_mode' => !empty($this->commentAuthor) ? 'embedded' : null,
-            'data-tinycomments_author' => !empty($this->commentAuthor) ? $this->commentAuthor : null,
-            'data-mergetags_list' => !empty($this->mergeTags)
+            'data-tinycomments_mode' => ! empty($this->commentAuthor) ? 'embedded' : null,
+            'data-tinycomments_author' => ! empty($this->commentAuthor) ? $this->commentAuthor : null,
+            'data-mergetags_list' => ! empty($this->mergeTags)
                 ? json_encode($this->mergeTags, JSON_THROW_ON_ERROR)
                 : null,
             'data-file_manager' => $this->getFileManagerUrl(),

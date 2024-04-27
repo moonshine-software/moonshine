@@ -24,8 +24,7 @@ class Collapse extends AbstractWithComponents
     public function __construct(
         Closure|string $label,
         iterable $components = []
-    )
-    {
+    ) {
         $this->setLabel($label);
 
         parent::__construct($components);

@@ -55,7 +55,7 @@ trait WithFields
 
         if(app()->runningUnitTests()) {
             $fields = collect($fields)
-                ->map(fn(object $field): object => clone $field)
+                ->map(fn (object $field): object => clone $field)
                 ->toArray();
         }
 

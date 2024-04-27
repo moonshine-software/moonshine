@@ -1,7 +1,7 @@
 <?php
 
-use MoonShine\Components\Layout\Box;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Components\Tabs\Tab;

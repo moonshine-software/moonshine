@@ -31,19 +31,19 @@ trait WithOffCanvas
 
         $async = $this->purgeAsyncTap();
 
-        $this->offCanvas = fn(mixed $data) => Offcanvas::make(
-            title: fn() => value($title, $data, $this) ?? $this->getLabel(),
-            content: fn() => value($content, $data, $this) ?? '',
+        $this->offCanvas = fn (mixed $data) => Offcanvas::make(
+            title: fn () => value($title, $data, $this) ?? $this->getLabel(),
+            content: fn () => value($content, $data, $this) ?? '',
             asyncUrl: $async ? $this->url($data) : null
         )
             ->name(value($name, $data, $this))
             ->when(
-                !is_null($builder),
-                fn(Offcanvas $offCanvas) => $builder($offCanvas, $this)
+                ! is_null($builder),
+                fn (Offcanvas $offCanvas) => $builder($offCanvas, $this)
             );
 
         return $this->onBeforeRender(
-            static fn(ActionButton $btn) => $btn->toggleOffCanvas(
+            static fn (ActionButton $btn) => $btn->toggleOffCanvas(
                 value($name, $btn->getItem(), $btn)
             )
         );

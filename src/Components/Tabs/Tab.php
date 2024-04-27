@@ -24,8 +24,7 @@ class Tab extends AbstractWithComponents
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
-    )
-    {
+    ) {
         if(is_iterable($labelOrComponents)) {
             $components = $labelOrComponents;
         } else {

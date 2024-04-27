@@ -24,7 +24,8 @@ abstract class AbstractWithComponents extends MoonShineComponent implements
     /**
      * @throws Throwable
      */
-    public function __construct(iterable $components = []) {
+    public function __construct(iterable $components = [])
+    {
         parent::__construct();
 
         $this->components($components);

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Components\HasCanSeeContract;
 use MoonShine\Contracts\Fields\HasAssets;
-use Closure;
-use MoonShine\Fields\File;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
@@ -96,7 +95,7 @@ trait WithViewRenderer
      */
     public function render(): View|Closure|string
     {
-        if(!$this->shouldRender()) {
+        if(! $this->shouldRender()) {
             return '';
         }
 

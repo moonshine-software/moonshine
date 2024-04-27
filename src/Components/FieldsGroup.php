@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Components;
 
 use MoonShine\Fields\Field;
-use MoonShine\Fields\Fields;
 use Throwable;
 
 final class FieldsGroup extends AbstractWithComponents

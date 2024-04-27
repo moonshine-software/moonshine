@@ -9,9 +9,8 @@ use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\ImportButton;
 use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
-use MoonShine\Components\Layout\Block;
-use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Fragment;
+use MoonShine\Components\Layout\Block;
 use MoonShine\Components\Layout\Column;
 use MoonShine\Components\Layout\Grid;
 use MoonShine\Components\Layout\LineBreak;
@@ -25,7 +24,6 @@ use MoonShine\Fields\Fields;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
-use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
 /**

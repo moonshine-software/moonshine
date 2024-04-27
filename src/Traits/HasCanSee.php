@@ -29,7 +29,7 @@ trait HasCanSee
     protected function isSeeParams(): array
     {
         return [
-            $this
+            $this,
         ];
     }
 }

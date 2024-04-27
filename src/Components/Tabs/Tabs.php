@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Components\Tabs;
 
 use Illuminate\Support\Collection;
-use MoonShine\Collections\ComponentsCollection;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\AbstractWithComponents;
 use MoonShine\Components\Components;

@@ -4,8 +4,8 @@ namespace MoonShine\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\ActionGroup;
-use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Fragment;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;

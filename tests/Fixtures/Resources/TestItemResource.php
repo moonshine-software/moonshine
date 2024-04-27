@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\Layout\Box;
 use MoonShine\Fields\Date;
-use MoonShine\Fields\File;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Relationships\BelongsTo;

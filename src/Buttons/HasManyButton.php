@@ -129,8 +129,8 @@ final class HasManyButton
                                 ->getResource()
                                 ?->formPageUrl($parent)
                     ),
-                name: fn(?Model $data) => "modal-has-many-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
-                builder: fn(Modal $modal) => $modal->wide()->closeOutside(false)
+                name: fn (?Model $data) => "modal-has-many-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                builder: fn (Modal $modal) => $modal->wide()->closeOutside(false)
             )
             ->primary()
             ->icon($update ? 'heroicons.outline.pencil' : 'heroicons.outline.plus');
