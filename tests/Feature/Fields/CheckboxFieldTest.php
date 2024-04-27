@@ -29,7 +29,6 @@ it('show field on pages', function () {
     asAdmin()->get(
         to_page(page: IndexPage::class, resource: $resource)
     )
-        ->dd()
         ->assertOk()
         ->assertSee('Active')
         ->assertSee($view, false)

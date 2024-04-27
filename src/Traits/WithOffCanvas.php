@@ -6,7 +6,7 @@ namespace MoonShine\Traits;
 
 use Closure;
 use MoonShine\Components\ActionButtons\ActionButton;
-use MoonShine\Components\OffCanvas;
+use MoonShine\Components\Offcanvas;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Support\AlpineJs;
 
@@ -31,7 +31,7 @@ trait WithOffCanvas
 
         $async = $this->purgeAsyncTap();
 
-        $this->offCanvas = fn(mixed $data) => OffCanvas::make(
+        $this->offCanvas = fn(mixed $data) => Offcanvas::make(
             title: fn() => value($title, $data, $this) ?? $this->getLabel(),
             content: fn() => value($content, $data, $this) ?? '',
             asyncUrl: $async ? $this->url($data) : null
@@ -39,7 +39,7 @@ trait WithOffCanvas
             ->name(value($name, $data, $this))
             ->when(
                 !is_null($builder),
-                fn(OffCanvas $offCanvas) => $builder($offCanvas, $this)
+                fn(Offcanvas $offCanvas) => $builder($offCanvas, $this)
             );
 
         return $this->onBeforeRender(
@@ -49,7 +49,7 @@ trait WithOffCanvas
         );
     }
 
-    public function offCanvas(): ?OffCanvas
+    public function offCanvas(): ?Offcanvas
     {
         return value($this->offCanvas, $this->getItem(), $this);
     }
