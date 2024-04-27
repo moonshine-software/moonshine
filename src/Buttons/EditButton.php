@@ -41,7 +41,7 @@ final class EditButton
                 fn (ActionButton $button): ActionButton => $button->async()->inModal(
                     title: fn (): array|string|null => __('moonshine::ui.edit'),
                     content: fn (): string => '',
-                    name: fn (Model $data) => "edit-modal-{$data->getKey()}"
+                    name: fn (Model $data): string => "edit-modal-{$data->getKey()}"
                 )
             )
             ->primary()

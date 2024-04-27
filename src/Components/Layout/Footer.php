@@ -12,19 +12,12 @@ class Footer extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.footer';
 
-    protected string|Closure $copyright = '';
-
-    public array $menu = [];
-
     public function __construct(
         iterable $components = [],
         // anonymous component variables
-        array $menu = [],
-        string $copyright = ''
+        public array $menu = [],
+        protected string|Closure $copyright = ''
     ) {
-        $this->copyright = $copyright;
-        $this->menu = $menu;
-
         parent::__construct($components);
     }
 

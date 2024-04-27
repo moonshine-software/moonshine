@@ -66,7 +66,7 @@ trait WithComponentAttributes
     public function customAttributes(array $attributes, bool $override = false): static
     {
         if($override) {
-            foreach ($attributes as $name => $value) {
+            foreach (array_keys($attributes) as $name) {
                 $this->removeAttribute($name);
             }
         }

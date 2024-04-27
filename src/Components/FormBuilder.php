@@ -287,16 +287,12 @@ final class FormBuilder extends RowComponent
         }
 
         $onlyFields = $fields->onlyFields();
-
-        if (! is_null($this->getName())) {
-            $onlyFields->each(
-                fn (Field $field): Field => $field->formName($this->getName())
-            );
-
-            $fields->prepend(
-                Hidden::make('_component_name')->setValue($this->getName())
-            );
-        }
+        $onlyFields->each(
+            fn (Field $field): Field => $field->formName($this->getName())
+        );
+        $fields->prepend(
+            Hidden::make('_component_name')->setValue($this->getName())
+        );
 
         $reactiveFields = $onlyFields->reactiveFields()
             ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->value()]);

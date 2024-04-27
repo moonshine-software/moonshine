@@ -41,7 +41,7 @@ final class DeleteButton
                         )
                     )
                 ),
-                name: fn (Model $data) => "delete-modal-{$data->getKey()}"
+                name: fn (Model $data): string => "delete-modal-{$data->getKey()}"
             )
             ->canSee(
                 fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())

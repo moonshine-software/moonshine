@@ -37,8 +37,8 @@ final class DetailButton
                 fn (ActionButton $button): ActionButton => $button->async()->inModal(
                     title: fn (): array|string|null => __('moonshine::ui.show'),
                     content: fn (): string => '',
-                    name: fn (Model $data) => "detail-modal-{$data->getKey()}",
-                    builder: fn (Modal $modal) => $modal->wide()
+                    name: fn (Model $data): string => "detail-modal-{$data->getKey()}",
+                    builder: fn (Modal $modal): Modal => $modal->wide()
                 )
             )
             ->canSee(

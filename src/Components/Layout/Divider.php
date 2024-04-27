@@ -17,15 +17,11 @@ class Divider extends MoonShineComponent
 
     protected string $view = 'moonshine::components.layout.divider';
 
-    protected bool $isCentered = false;
-
     public function __construct(
         Closure|string $label = '',
-        bool $centered = false
+        protected bool $isCentered = false
     ) {
         parent::__construct();
-
-        $this->isCentered = $centered;
 
         $this->setLabel($label);
     }

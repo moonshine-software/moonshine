@@ -47,7 +47,7 @@ trait WithModal
             );
 
         return $this->onBeforeRender(
-            static fn (ActionButton $btn) => $btn->toggleModal(
+            static fn (ActionButton $btn): ActionButton => $btn->toggleModal(
                 value($name, $btn->getItem(), $btn)
             )
         );
@@ -74,7 +74,7 @@ trait WithModal
 
         return $this->inModal(
             fn (mixed $data) => value($title, $data, $this) ?? __('moonshine::ui.confirm'),
-            fn (mixed $data) => (string) FormBuilder::make(
+            fn (mixed $data): string => (string) FormBuilder::make(
                 $this->url($data),
                 $isDefaultMethods ? $method : 'POST'
             )->fields(

@@ -20,18 +20,14 @@ class Flex extends AbstractWithComponents
 
     protected string $justifyAlign = 'center';
 
-    protected bool $withoutSpace = false;
-
     public function __construct(
         iterable $components = [],
         int $colSpan = 12,
         int $adaptiveColSpan = 12,
         string $itemsAlign = 'center',
         string $justifyAlign = 'center',
-        bool $withoutSpace = false
+        protected bool $withoutSpace = false
     ) {
-        $this->withoutSpace = $withoutSpace;
-
         $this
             ->justifyAlign($justifyAlign)
             ->itemsAlign($itemsAlign)

@@ -45,7 +45,7 @@ final class FieldContainer extends MoonShineComponent
                 ])
                 ->when(
                     $icon = $this->field->getLinkIcon(),
-                    fn (Link $link) => $link->icon($icon)
+                    fn (Link $link): Link => $link->icon($icon)
                 );
 
             $this->beforeInner = new ComponentSlot($link);
