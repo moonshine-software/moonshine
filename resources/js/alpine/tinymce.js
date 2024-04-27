@@ -36,11 +36,11 @@ export default () => ({
 
     const tinyDataset = {}
     for (let i in this.$el.dataset) {
-      if(this.$el.dataset[i].toLowerCase() === 'true') {
+      if (this.$el.dataset[i].toLowerCase() === 'true') {
         tinyDataset[i] = true
         continue
       }
-      if(this.$el.dataset[i].toLowerCase() === 'false') {
+      if (this.$el.dataset[i].toLowerCase() === 'false') {
         tinyDataset[i] = false
         continue
       }
