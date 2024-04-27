@@ -149,18 +149,20 @@ trait UpdateOnPreview
         return $this->isUpdateOnPreview() && is_null($this->getFormName());
     }
 
-    public function preview(): View|string
+    protected function resolveRender(): View|Closure|string
     {
         if (! $this->isUpdateOnPreview() || $this->isRawMode()) {
-            return parent::preview();
+            return parent::resolveRender();
         }
 
-        $this->previewMode = true;
-
-        if ($this instanceof Text) {
+        if ($this instanceof Text && $this->isPreviewMode()) {
             $this->locked();
         }
 
-        return $this->forcePreview()->render();
+        if ($this->getView() === '') {
+            return $this->toValue();
+        }
+
+        return $this->renderView();
     }
 }

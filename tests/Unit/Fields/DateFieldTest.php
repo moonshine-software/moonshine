@@ -21,7 +21,7 @@ it('text field is parent', function (): void {
 });
 
 it('type', function (): void {
-    expect($this->field->type())
+    expect($this->field->attributes()->get('type'))
         ->toBe('date');
 });
 
@@ -45,7 +45,7 @@ it('change format', function (): void {
 it('with time', function (): void {
     $this->field->withTime();
 
-    expect($this->field->type())
+    expect($this->field->attributes()->get('type'))
         ->toBe('datetime-local');
 });
 

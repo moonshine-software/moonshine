@@ -1,23 +1,22 @@
 @props([
     'name' => '',
-    'id' => '',
     'label' => '',
     'beforeLabel' => false,
     'inLabel' => false,
     'beforeSlot',
     'afterSlot',
-    'formName' => ''
+    'formName' => '',
 ])
 <div {{ $attributes->merge(['class' => 'form-group moonshine-field'])
-    ->only(['class', 'x-show']) }}
-     x-id="['input-wrapper']" :id="$id('input-wrapper')"
+    ->only(['class', 'x-show', 'style']) }}
+     x-id="['input-wrapper', 'field']" :id="$id('input-wrapper')"
 >
     {{ $beforeLabel && !$inLabel ? $slot : '' }}
 
     @if($label)
         <x-moonshine::form.label
-            for="{{ $attributes->get('id', $id) }}"
-            :attributes="$attributes->only('required')"
+            :attributes="$attributes->only(['required'])"
+            ::for="$id('field')"
         >
             {{ $beforeLabel && $inLabel ? $slot : '' }}
             {!! $label !!}

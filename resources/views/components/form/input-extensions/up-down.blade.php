@@ -1,4 +1,6 @@
-@props(['extension'])
+@props([
+    'value'
+])
 <div class="expansion-custom flex" x-data="numberUpDown">
     <button @click.prevent="toggleDown()" class="px-2" type="button">
         <span>

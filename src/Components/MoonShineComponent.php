@@ -4,137 +4,65 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
-use Closure;
-use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
-use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\Components\HasCanSeeContract;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithView;
-use Throwable;
+use MoonShine\Traits\WithComponentAttributes;
+use MoonShine\Traits\WithViewRenderer;
 
-abstract class MoonShineComponent extends Component implements MoonShineRenderable, CanBeEscapedWhenCastToString
+abstract class MoonShineComponent extends Component implements MoonShineRenderable, HasCanSeeContract
 {
     use Conditionable;
     use Macroable;
     use Makeable;
-    use WithView;
+    use WithViewRenderer;
     use HasCanSee;
+    use WithComponentAttributes;
 
-    protected ?Closure $onBeforeRenderCallback = null;
+    public function __construct(
+        protected string $name = 'default'
+    )
+    {
+        $this->attributes = new MoonShineComponentAttributeBag();
+    }
 
     public function name(string $name): static
     {
-        $this->componentName = $name;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
-        return str_starts_with($this->componentName ?? '', 'moonshine::')
-            ? 'default'
-            : $this->componentName;
-    }
-
-    public function customAttributes(array $attributes): static
-    {
-        if (! $this->attributes instanceof ComponentAttributeBag) {
-            $this->attributes = $this->newAttributeBag($attributes);
-        } else {
-            $this->attributes = $this->attributes->merge($attributes);
-        }
-
-        return $this;
-    }
-
-    public function class(string $class): static
-    {
-        return $this->customAttributes([
-            'class' => $class,
-        ]);
-    }
-
-    public function removeAttribute(string $name): static
-    {
-        $attributes = array_filter(
-            collect($this->attributes)->toArray(),
-            static fn ($key): bool => $key !== $name,
-            ARRAY_FILTER_USE_KEY
-        );
-
-        $this->attributes = $this->newAttributeBag($attributes);
-
-        return $this;
-    }
-
-    public function attributes(): ComponentAttributeBag
-    {
-        return $this->attributes ?: $this->newAttributeBag();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function viewData(): array
-    {
-        return [];
+        return $this->name;
     }
 
     public function data(): array
     {
-        $this->attributes = $this->attributes ?: $this->newAttributeBag();
-
         return array_merge($this->extractPublicProperties(), [
+            'type' => class_basename($this),
             'attributes' => $this->attributes(),
             'name' => $this->getName(),
         ]);
     }
 
-    public function onBeforeRender(Closure $onBeforeRender): static
+    protected function systemViewData(): array
     {
-        $this->onBeforeRenderCallback = $onBeforeRender;
-
-        return $this;
+        return $this->data();
     }
 
-    public function render(): View|Closure|string
+    public function jsonSerialize(): array
     {
-        $mergeData = [
-            ...$this->viewData(),
-            ...$this->getCustomViewData(),
-        ];
-
-        if($this instanceof HasAssets) {
-            moonshineAssets()->add($this->getAssets());
-        }
-
-        if(! is_null($this->onBeforeRenderCallback)) {
-            value($this->onBeforeRenderCallback, $this);
-        }
-
-        return $this->view(
-            $this->getView(),
-            $this->data(),
-            $mergeData,
+        return array_merge(
+            $this->systemViewData(),
+            $this->viewData(),
+            $this->getCustomViewData()
         );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function __toString(): string
-    {
-        return (string) $this->render();
-    }
-
-    public function escapeWhenCastingToString($escape = true): self
-    {
-        return $this;
     }
 }

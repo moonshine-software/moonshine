@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Resources\ModelResource;
 
@@ -40,7 +40,8 @@ final class DeleteButton
                             $componentName ?? $resource->listComponentName()
                         )
                     )
-                )
+                ),
+                name: fn (Model $data) => "delete-modal-{$data->getKey()}"
             )
             ->canSee(
                 fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())

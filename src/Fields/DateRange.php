@@ -23,15 +23,13 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
 
     protected bool $isGroup = true;
 
-    protected array $attributes = [
+    protected array $propertyAttributes = [
         'type',
         'min',
         'max',
         'step',
-        'disabled',
-        'readonly',
-        'required',
     ];
+
     public string $min = '';
 
     public string $max = '';
@@ -41,6 +39,7 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
     public function min(string $min): static
     {
         $this->min = $min;
+        $this->attributes()->set('min', $this->min);
 
         return $this;
     }
@@ -48,6 +47,7 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
     public function max(string $max): static
     {
         $this->max = $max;
+        $this->attributes()->set('max', $this->max);
 
         return $this;
     }
@@ -55,6 +55,7 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
     public function step(int|float|string $step): static
     {
         $this->step = $step;
+        $this->attributes()->set('step', $this->step);
 
         return $this;
     }
@@ -100,5 +101,21 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
         $dates = $this->extractDates($value, $this->getFormat());
 
         return "{$dates[$this->fromField]} - {$dates[$this->toField]}";
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            'fromField' => $this->fromField,
+            'toField' => $this->toField,
+            'min' => $this->min,
+            'max' => $this->max,
+            'fromColumn' => "date_range_from_{$this->identity()}",
+            'toColumn' => "date_range_to_{$this->identity()}",
+            'fromValue' => data_get(parent::viewData(), 'value.' . $this->fromField, $this->min),
+            'toValue' => data_get(parent::viewData(), 'value.' . $this->toField, $this->max),
+            'fromAttributes' => $this->getFromAttributes(),
+            'toAttributes' => $this->getToAttributes(),
+        ];
     }
 }

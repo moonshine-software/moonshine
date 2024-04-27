@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Table;
 
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 
 trait TableStates
 {

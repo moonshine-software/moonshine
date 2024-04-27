@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Forms;
 
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;

@@ -68,4 +68,16 @@ class Select extends Field implements
 
         return (string) data_get($this->flattenValues(), $value, '');
     }
+
+    protected function viewData(): array
+    {
+        return [
+            'isSearchable' => $this->isSearchable(),
+            'asyncUrl' => $this->asyncUrl(),
+            'values' => $this->values(),
+            'isSelected' => fn(string $value) => $this->isSelected($value),
+            'optionProperties' => fn(string $value) => $this->getOptionProperties($value),
+            'isNullable' => $this->isNullable(),
+        ];
+    }
 }

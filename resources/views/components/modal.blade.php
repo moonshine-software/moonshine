@@ -1,5 +1,4 @@
 @props([
-    'eventName' => null,
     'name' => 'default',
     'async' => false,
     'asyncUrl' => '',
@@ -20,7 +19,7 @@
 >
     <template x-teleport="body">
         <div class="modal-template"
-             @defineEvent('modal-toggled', ($eventName ?? $name), 'toggleModal')
+             @defineEvent('modal-toggled', $name, 'toggleModal')
         >
             <div
                 x-show="open"

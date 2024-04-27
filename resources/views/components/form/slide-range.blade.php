@@ -1,5 +1,4 @@
 @props([
-    'uniqueId' => 'slider',
     'fromAttributes' => $attributes,
     'toAttributes' => $attributes,
     'fromName',

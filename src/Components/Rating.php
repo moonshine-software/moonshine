@@ -14,5 +14,6 @@ final class Rating extends MoonShineComponent
         public int $min = 1,
         public int $max = 5
     ) {
+        parent::__construct();
     }
 }

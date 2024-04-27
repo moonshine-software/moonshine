@@ -1,9 +1,16 @@
+@props([
+    'name' => '',
+    'formName' => '',
+    'onValue' => '',
+    'value' => '',
+    'offValue' => '',
+    'isChecked' => false,
+])
 <x-moonshine::form.switcher
-    :attributes="$element->attributes()"
-    :id="$element->id()"
-    :name="$element->name()"
-    :onValue="$element->getOnValue()"
-    :offValue="$element->getOffValue()"
-    :value="($element->getOnValue() == $value ? $element->getOnValue() : $element->getOffValue())"
-    :checked="$element->isChecked()"
+    :attributes="$attributes"
+    :name="$name"
+    :onValue="$onValue"
+    :offValue="$offValue"
+    :value="($onValue == $value ? $onValue : $offValue)"
+    :checked="$isChecked"
 />

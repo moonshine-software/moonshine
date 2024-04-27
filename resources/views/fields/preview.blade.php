@@ -1,3 +1,6 @@
-<div {{ $element->attributes() }}>
+@props([
+    'value' => ''
+])
+<div {{ $attributes }}>
     {!! $value ?? '' !!}
 </div>

@@ -95,9 +95,9 @@ describe('basic methods', function () {
 describe('common field methods', function () {
     it('names', function (): void {
         expect($this->field)
-            ->name()
+            ->getNameAttribute()
             ->toBe('json[]')
-            ->name('1')
+            ->getNameAttribute('1')
             ->toBe('json[1]');
     });
 
@@ -110,7 +110,7 @@ describe('common field methods', function () {
     });
 
     it('type', function (): void {
-        expect($this->field->type())
+        expect($this->field->attributes()->get('type'))
             ->toBeEmpty();
     });
 
@@ -160,9 +160,9 @@ describe('unique field methods', function () {
                 $key++;
 
                 $field->toBeInstanceOf(Text::class)
-                    ->name()
+                    ->getNameAttribute()
                     ->toBe('field' . $key)
-                    ->id()
+                    ->identity()
                     ->toBe('field' . $key);
             });
     });
@@ -177,9 +177,9 @@ describe('unique field methods', function () {
                 $name = $key === 0 ? 'key' : 'value';
 
                 $field->toBeInstanceOf(Text::class)
-                    ->name()
+                    ->getNameAttribute()
                     ->toBe($name)
-                    ->id()
+                    ->identity()
                     ->toBe($name);
             });
     });
@@ -193,9 +193,9 @@ describe('unique field methods', function () {
                 $name = 'value';
 
                 $field->toBeInstanceOf(Text::class)
-                    ->name()
+                    ->getNameAttribute()
                     ->toBe($name)
-                    ->id()
+                    ->identity()
                     ->toBe($name);
             });
     });

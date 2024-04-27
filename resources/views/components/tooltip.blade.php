@@ -5,5 +5,5 @@
 <span {{ $attributes->class(['inline-block']) }}
      x-data="tooltip(`{{ $content }}`, {placement: '{{ $placement }}'})"
 >
-    {{ $slot }}
+    {{ $slot ?? '' }}
 </span>

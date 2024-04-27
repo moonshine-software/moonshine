@@ -1,19 +1,19 @@
 <?php
 
+use MoonShine\Collections\ComponentsCollection;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Fragment;
+use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\Modal;
 use MoonShine\Components\TableBuilder;
-use MoonShine\Decorations\Box;
-use MoonShine\Decorations\Fragment;
-use MoonShine\Decorations\LineBreak;
-use MoonShine\Decorations\Tab;
-use MoonShine\Decorations\Tabs;
+use MoonShine\Components\Tabs\Tab;
+use MoonShine\Components\Tabs\Tabs;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\StackFields;
 use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
-use MoonShine\Pages\PageComponents;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 
 uses()->group('core');
@@ -49,7 +49,7 @@ beforeEach(function (): void {
 
         Modal::make(
             'Test Modal',
-            components: PageComponents::make([
+            components: ComponentsCollection::make([
                 FormBuilder::make()->fields([
                     Fragment::make([
                         HasOne::make('HasModal', 'has_modal', resource: new TestResource()),
@@ -59,7 +59,7 @@ beforeEach(function (): void {
         ),
     ])->name('block');
 
-    $this->collection = PageComponents::make([
+    $this->collection = ComponentsCollection::make([
         $this->data,
     ]);
 });
@@ -99,7 +99,7 @@ it('find form', function () {
 it('find field', function () {
     expect($this->collection->onlyFields()->findByColumn('switcher'))
         ->toBeInstanceOf(Switcher::class)
-        ->name()
+        ->getNameAttribute()
         ->toBe('switcher');
 });
 

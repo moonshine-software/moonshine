@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\MoonShineComponent;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 
 /**
  * @method static static make(string $href,string $logo,?string $logoSmall = null,?string $title = null)
@@ -14,9 +14,9 @@ final class Logo extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.logo';
 
-    public ComponentAttributeBag $logoAttributes;
+    public MoonShineComponentAttributeBag $logoAttributes;
 
-    public ComponentAttributeBag $logoSmallAttributes;
+    public MoonShineComponentAttributeBag $logoSmallAttributes;
 
     public function __construct(
         public string $href,
@@ -24,9 +24,11 @@ final class Logo extends MoonShineComponent
         public ?string $logoSmall = null,
         public ?string $title = null,
     ) {
+        parent::__construct();
+
         $this->title ??= config('moonshine.title');
-        $this->logoAttributes = new ComponentAttributeBag();
-        $this->logoSmallAttributes = new ComponentAttributeBag();
+        $this->logoAttributes = new MoonShineComponentAttributeBag();
+        $this->logoSmallAttributes = new MoonShineComponentAttributeBag();
     }
 
     public function logoAttributes(array $attributes): self

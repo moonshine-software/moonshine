@@ -17,6 +17,8 @@ class Menu extends MoonShineComponent
 
     public function __construct(public ?iterable $items = null)
     {
+        parent::__construct();
+
         $this->items = moonshineMenu()->all($this->items);
     }
 
@@ -51,11 +53,10 @@ class Menu extends MoonShineComponent
         return $this->scrollTo;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function viewData(): array
+    protected function prepareBeforeRender(): void
     {
+        parent::prepareBeforeRender();
+
         if(! $this->isTop() && $this->isScrollTo()) {
             $this->customAttributes([
                 'x-init' => "\$nextTick(() => document.querySelector('.menu-inner-item._is-active')?.scrollIntoView())",
@@ -65,7 +66,5 @@ class Menu extends MoonShineComponent
         if($this->isTop()) {
             $this->items->topMode();
         }
-
-        return [];
     }
 }

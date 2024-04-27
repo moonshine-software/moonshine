@@ -1,36 +1,49 @@
+@props([
+    'component',
+    'buttons' => [],
+    'values' => [],
+    'customProperties' => [],
+    'selectedKeys' => [],
+    'isNullable' => false,
+    'isSearchable' => false,
+    'isAsyncSearch' => false,
+    'isSelectMode' => false,
+    'asyncSearchUrl' => '',
+    'isCreatable' => false,
+    'createButton' => '',
+    'fragmentUrl' => '',
+    'relationName' => '',
+])
 <div x-id="['belongs-to-many']"
      :id="$id('belongs-to-many')"
-     data-field-block="{{ $element->name() }}"
+     data-field-block="{{ $attributes->get('name') }}"
 >
-    @if($element->isCreatable())
-        {!! $element->createButton() !!}
+    @if($isCreatable)
+        {!! $createButton !!}
 
-        <x-moonshine::divider />
+        <x-moonshine::layout.divider />
 
-        @fragment($element->getRelationName())
-            <div x-data="fragment('{{ $element->fragmentUrl() }}')"
-                 @defineEvent('fragment-updated', $element->getRelationName(), 'fragmentUpdate')
+        @fragment($relationName)
+            <div x-data="fragment('{{ $fragmentUrl }}')"
+                 @defineEvent('fragment-updated', $relationName, 'fragmentUpdate')
             >
         @endif
-            @if($element->isSelectMode())
+            @if($isSelectMode)
                 <x-moonshine::form.select
-                    :attributes="$element->attributes()->merge([
-                    'id' => $element->id(),
-                    'name' => $element->name(),
-                    'multiple' => true
-                ])"
-                    :nullable="$element->isNullable()"
+                    :attributes="$attributes->merge([
+                        'multiple' => true
+                    ])"
+                    :nullable="$isNullable"
                     :searchable="true"
-                    @class(['form-invalid' => $errors->{$element->getFormName()}->has($element->name())])
-                    :value="$element->selectedKeys()"
-                    :values="$element->values()"
-                    :customProperties="$element->valuesWithProperties(onlyCustom: true)"
-                    :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"
+                    :value="$selectedKeys"
+                    :values="$values"
+                    :customProperties="$customProperties"
+                    :asyncRoute="$isAsyncSearch ? $asyncSearchUrl : null"
                 >
                 </x-moonshine::form.select>
             @else
-                @if($element->isAsyncSearch())
-                    <div x-data="asyncSearch('{{ $element->asyncSearchUrl() }}')">
+                @if($isAsyncSearch)
+                    <div x-data="asyncSearch('{{ $asyncSearchUrl }}')">
                         <div class="dropdown">
                             <x-moonshine::form.input
                                 x-model="query"
@@ -63,33 +76,33 @@
                             </div>
                         </div>
 
-                        <x-moonshine::divider />
+                        <x-moonshine::layout.divider />
 
                         <div x-data="pivot"
                              x-init="autoCheck"
                              class="pivotTable"
-                             data-table-name="{{ $element->getTableComponentName() }}"
+                             data-table-name="{{ $component->getName() }}"
                         >
                             <x-moonshine::action-group
                                 class="mb-4"
-                                :actions="$element->getButtons()"
+                                :actions="$buttons"
                             />
 
-                            {{ $table->render() }}
+                            {{ $component->render() }}
                         </div>
                     </div>
                 @else
                     <div x-data="pivot" x-init="autoCheck">
                         <x-moonshine::action-group
                             class="mb-4"
-                            :actions="$element->getButtons()"
+                            :actions="$buttons"
                         />
 
-                        {{ $table->render() }}
+                        {{ $component->render() }}
                     </div>
                 @endif
             @endif
-        @if($element->isCreatable())
+        @if($isCreatable)
             </div>
             @endfragment
         @endif

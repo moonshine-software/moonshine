@@ -1,12 +1,12 @@
 <?php
 
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\TableBuilder;
+use MoonShine\Components\Tabs\Tab;
+use MoonShine\Components\Tabs\Tabs;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Decorations\Box;
-use MoonShine\Decorations\LineBreak;
-use MoonShine\Decorations\Tab;
-use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\HasOne;
@@ -117,7 +117,7 @@ describe('fields', function () {
         $this->collection->wrapNames('filters');
 
         expect($this->collection->onlyFields())
-            ->each(fn ($expect) => $expect->name()->toContain('filters'))
+            ->each(fn ($expect) => $expect->getNameAttribute()->toContain('filters'))
         ;
     });
 

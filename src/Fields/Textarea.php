@@ -13,12 +13,4 @@ class Textarea extends Field implements HasDefaultValue, DefaultCanBeString
     use WithDefaultValue;
 
     protected string $view = 'moonshine::fields.textarea';
-
-    protected array $attributes = [
-        'rows',
-        'cols',
-        'disabled',
-        'readonly',
-        'required',
-    ];
 }

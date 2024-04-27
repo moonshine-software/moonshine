@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Attributes\Icon;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Support\Attributes;
 use MoonShine\Support\Condition;
 use Throwable;
@@ -34,6 +34,8 @@ class MenuItem extends MenuElement
         string $icon = null,
         Closure|bool $blank = false
     ) {
+        parent::__construct();
+
         $this->setLabel($label);
 
         if ($icon) {
@@ -158,8 +160,10 @@ class MenuItem extends MenuElement
             : value($this->whenActive, $path, $host, $this);
     }
 
-    public function viewData(): array
+    protected function prepareBeforeRender(): void
     {
+        parent::prepareBeforeRender();
+
         if ($this->isBlank()) {
             $this->actionButton = $this->actionButton->customAttributes([
                 '_target' => '_blank',
@@ -172,7 +176,10 @@ class MenuItem extends MenuElement
                 '@mouseenter' => 'toggleTooltip',
             ]);
         }
+    }
 
+    public function viewData(): array
+    {
         $viewData = [
             'url' => $this->url(),
         ];
@@ -185,7 +192,7 @@ class MenuItem extends MenuElement
             ->setUrl($this->url())
             ->customView('moonshine::components.menu.item-link', [
                 'url' => $this->url(),
-                'label' => $this->label(),
+                'label' => $this->getLabel(),
                 'icon' => $this->iconValue() ? $this->getIcon(6) : '',
                 'top' => $this->isTopMode(),
                 'badge' => $viewData['badge'] ?? '',

@@ -148,7 +148,7 @@ class ImportHandler extends Handler
             $data = collect($line)->mapWithKeys(
                 function ($value, $key) use ($resource): array {
                     $field = $resource->getFields()->onlyFields()->importFields()->first(
-                        fn (Field $field): bool => $field->column() === $key || $field->label() === $key
+                        fn (Field $field): bool => $field->getColumn() === $key || $field->getLabel() === $key
                     );
 
                     if (! $field instanceof Field) {
@@ -165,7 +165,7 @@ class ImportHandler extends Handler
                         ? json_decode($value, null, 512, JSON_THROW_ON_ERROR)
                         : $value;
 
-                    return [$field->column() => $value];
+                    return [$field->getColumn() => $value];
                 }
             )->toArray();
 

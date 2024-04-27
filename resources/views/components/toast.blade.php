@@ -10,7 +10,7 @@
 ></div>
 @else
     <div x-data="{ show(){$dispatch('toast', {type: '{{ $type }}', text: '{{ $content }}'})} }">
-        {{ $slot }}
+        {{ $slot ?? '' }}
     </div>
 @endif
 

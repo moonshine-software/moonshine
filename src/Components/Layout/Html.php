@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-final class Html extends WithComponents
+use MoonShine\Components\AbstractWithComponents;
+
+final class Html extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.html';
 

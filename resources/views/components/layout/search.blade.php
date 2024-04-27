@@ -1,9 +1,9 @@
 @props([
     'enabled' => $isEnabled ?? true,
     'global' => $isGlobal ?? false,
-    'action' => $_action ?? '',
+    'action' => '',
     'value' => '',
-    'placeholder' => __('moonshine::ui.search') . ' (Ctrl+K)'
+    'placeholder' => '',
 ])
 @if($enabled && !$global)
     <div {{ $attributes->class(['search']) }} x-data="{ toggleSearch: false }">
@@ -63,7 +63,7 @@
             />
         </a>
 
-        <x-moonshine::modal eventName="global-search" title="Search" :closeOutside="true">
+        <x-moonshine::modal name="global-search" title="Search" :closeOutside="true">
             <x-moonshine::form name="search">
                 <x-moonshine::form.input
                     class="search-input"

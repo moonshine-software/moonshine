@@ -11,5 +11,6 @@ final class Color extends MoonShineComponent
 
     public function __construct(public string $color)
     {
+        parent::__construct();
     }
 }

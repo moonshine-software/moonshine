@@ -26,11 +26,11 @@
     />
 
     @if(!$imageable)
-        @include('moonshine::ui.file', [
-            'value' => $file,
-            'filename' => $filename ?? $file,
-            'download' => $download
-        ])
+        <x-moonshine::file
+            :value="$file"
+            :filename="$filename ?? $file"
+            :download="$download"
+        />
     @endif
 
     @if($removable)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use MoonShine\Fields\File;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
@@ -51,6 +52,7 @@ it('apply as base', function () {
 
     $files = saveMultipleFiles($resource, $this->item);
 
+
     asAdmin()->get(
         to_page(page: IndexPage::class, resource: $resource)
     )
@@ -75,6 +77,7 @@ it('apply as base', function () {
         ->assertSee('items/' . $files[0]->hashName())
         ->assertSee('items/' . $files[1]->hashName())
     ;
+
 });
 
 it('before apply', function () {

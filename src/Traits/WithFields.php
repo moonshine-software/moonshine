@@ -53,6 +53,12 @@ trait WithFields
             $fields = $fields();
         }
 
+        if(app()->runningUnitTests()) {
+            $fields = collect($fields)
+                ->map(fn(object $field): object => clone $field)
+                ->toArray();
+        }
+
         $this->fields = $fields instanceof Fields
             ? $fields->toArray()
             : $fields;

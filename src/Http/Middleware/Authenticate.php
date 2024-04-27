@@ -18,7 +18,7 @@ class Authenticate extends Middleware
         $guard = MoonShineAuth::guard();
 
         if (! $guard->check()) {
-            $this->unauthenticated($request, $guards);
+            $this->unauthenticated($request, [$guard, ...$guards]);
         }
 
         $this->auth->shouldUse(MoonShineAuth::guardName());

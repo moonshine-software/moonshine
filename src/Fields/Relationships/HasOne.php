@@ -175,7 +175,7 @@ class HasOne extends ModelRelationField implements HasFields
             ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                 fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->toOne()
-                    && $field->column() === $relation->getForeignKeyName()
+                    && $field->getColumn() === $relation->getForeignKeyName()
             ))
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }

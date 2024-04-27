@@ -17,6 +17,8 @@ final class Locales extends MoonShineComponent
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->current = app()->getLocale();
         $this->locales = collect(config('moonshine.locales', []))
             ->mapWithKeys(static fn ($locale): array => [

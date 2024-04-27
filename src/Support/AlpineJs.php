@@ -22,6 +22,8 @@ final class AlpineJs
             $event .= self::EVENT_SEPARATOR . $name;
         }
 
+        $event = self::prepareEvents($event);
+
         if ($params !== []) {
             $event .= self::EVENT_PARAMS_SEPARATOR
                 . urldecode(

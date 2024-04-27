@@ -18,13 +18,13 @@ final class FlexibleRender extends MoonShineComponent
         protected Closure|View|string $content,
         protected Closure|array $additionalData = [],
     ) {
+        parent::__construct();
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function viewData(): array
+    protected function prepareBeforeRender(): void
     {
+        parent::prepareBeforeRender();
+
         if(is_closure($this->content)) {
             $this->content = value($this->content, $this->additionalData, $this);
         }
@@ -34,7 +34,13 @@ final class FlexibleRender extends MoonShineComponent
                 ->with(value($this->additionalData))
                 ->render();
         }
+    }
 
+    /**
+     * @return array<string, mixed>
+     */
+    protected function viewData(): array
+    {
         return [
             'content' => $this->content,
         ];

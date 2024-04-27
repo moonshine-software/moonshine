@@ -1,5 +1,4 @@
 @props([
-    'eventName' => null,
     'name' => 'default',
     'open' => $isOpen ?? false,
     'left' => $isLeft ?? false,
@@ -26,7 +25,7 @@
 
     <template x-teleport="body">
         <div class="offcanvas-template"
-             @defineEvent('offcanvas-toggled', ($eventName ?? $name), 'toggleCanvas')
+             @defineEvent('offcanvas-toggled', $name, 'toggleCanvas')
         >
             <div
                 x-show="open"

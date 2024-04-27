@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
-use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Components\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Fields\Fields;

@@ -94,7 +94,7 @@ class MorphTo extends BelongsTo
     {
         return request(
             (string) str($this->nameDot())->replace(
-                $this->column(),
+                $this->getColumn(),
                 $this->getMorphType()
             ),
             $this->toValue()
@@ -161,5 +161,16 @@ class MorphTo extends BelongsTo
     protected function resolveValue(): string
     {
         return (string) $this->getRelatedModel()->{$this->getMorphKey()};
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            ...parent::viewData(),
+            'typeValue' => $this->typeValue(),
+            'types' => $this->getTypes(),
+            'column' => $this->getColumn(),
+            'morphType' => $this->getMorphType(),
+        ];
     }
 }

@@ -13,16 +13,13 @@ class HiddenIds extends Field
 
     protected string $type = 'hidden';
 
-    //TODO 3.0 Make $forComponent argument required
     public function __construct(
-        protected ?string $forComponent = null
+        protected string $forComponent
     ) {
-        if($this->forComponent !== null && $this->forComponent !== '' && $this->forComponent !== '0') {
-            $this->customAttributes([
-                'data-for-component' => $this->forComponent,
-            ]);
-        }
-
         parent::__construct();
+
+        $this->customAttributes([
+            'data-for-component' => $this->forComponent,
+        ]);
     }
 }

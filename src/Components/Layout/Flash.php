@@ -19,6 +19,7 @@ class Flash extends MoonShineComponent
         protected bool $withToast = true,
         protected bool $removable = true,
     ) {
+        parent::__construct();
     }
 
     /**

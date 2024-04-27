@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithVersion;
@@ -17,6 +18,7 @@ final class InlineJs implements AssetElement
     public function __construct(
         private readonly string $content,
     ) {
+        $this->attributes = new MoonShineComponentAttributeBag();
     }
 
     public function getContent(): string

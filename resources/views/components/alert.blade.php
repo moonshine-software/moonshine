@@ -16,7 +16,7 @@
             size="6"
         />
     </div>
-    <p class="alert-content">{{ $slot }}</p>
+    <p class="alert-content">{{ $slot ?? '' }}</p>
 
     @if($removable)
         <a href="#" @click.prevent="$refs.alert.remove()" class="alert-remove">

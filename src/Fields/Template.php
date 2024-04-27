@@ -17,7 +17,7 @@ class Template extends Field implements HasFields
     public function preparedFields(): Fields
     {
         return tap(
-            $this->getFields()->wrapNames($this->column()),
+            $this->getFields()->wrapNames($this->getColumn()),
             fn () => $this->getFields()
                 ->onlyFields()
                 ->map(fn (Field $field): Field => $field->setParent($this)->formName($this->getFormName()))

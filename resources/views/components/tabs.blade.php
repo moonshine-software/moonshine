@@ -1,10 +1,10 @@
 @props([
-    'tabs',
-    'contents',
-    'active',
+    'tabs' => [],
+    'contents' => [],
+    'active' => null,
     'justifyAlign' => 'start',
 ])
-@if($tabs)
+@if($tabs !== [])
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
          x-data="{ activeTab: '{{ $active ?? array_key_first($tabs) }}'}"

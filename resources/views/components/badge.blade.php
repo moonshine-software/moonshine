@@ -2,5 +2,5 @@
     'color' => null
 ])
 <span {{ $attributes->merge(['class' => 'badge'.($color ? ' badge-'.$color : '')]) }}>
-    {{ $slot }}
+    {{ $slot ?? '' }}
 </span>

@@ -27,7 +27,7 @@ describe('basic methods', function () {
 
         expect($this->field->changeFill(static fn () => $values)->fill([]))
             ->toValue()
-            ->toBe(['start' => $from, 'end' => $this->field->max]);
+            ->toBe(['start' => $from, 'end' => $this->field->getAttribute('max')]);
     });
 
     it('set value', function () {
@@ -49,7 +49,7 @@ describe('basic methods', function () {
             ->toBe($values)
             ->and($this->field->setValue($values)->preview())
             ->not->toContain($to)
-            ->toContain($from, $this->field->max);
+            ->toContain($from, $this->field->getAttribute('max'));
     });
 
     it('non value', function () {
@@ -113,9 +113,9 @@ describe('basic methods', function () {
 describe('common field methods', function () {
     it('names', function (): void {
         expect($this->field)
-            ->name()
+            ->getNameAttribute()
             ->toBe('range[]')
-            ->name('start')
+            ->getNameAttribute('start')
             ->toBe('range[start]');
     });
 
@@ -127,7 +127,7 @@ describe('common field methods', function () {
     });
 
     it('type', function (): void {
-        expect($this->field->type())
+        expect($this->field->attributes()->get('type'))
             ->toBe('number');
     });
 

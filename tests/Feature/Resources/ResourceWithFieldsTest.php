@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Decorations\Box;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Relationships\HasOne;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -105,5 +105,5 @@ it('filters fields', function () {
         ->toBeInstanceOf(Box::class)
         ->onlyFields()
         ->toHaveCount(1)
-        ->each(fn ($expect) => $expect->name()->toContain('filters'));
+        ->each(fn ($expect) => $expect->getNameAttribute()->toContain('filters'));
 });

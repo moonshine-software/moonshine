@@ -15,7 +15,7 @@ beforeEach(function (): void {
 
 describe('basic methods', function () {
     it('type', function (): void {
-        expect($this->field->type())
+        expect($this->field->attributes()->get('type'))
             ->toBe('checkbox');
     });
 

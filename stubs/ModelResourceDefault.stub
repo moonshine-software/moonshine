@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use {model-namespace};
 
 use MoonShine\Resources\ModelResource;
-use MoonShine\Decorations\Box;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Field;
 use MoonShine\Components\MoonShineComponent;

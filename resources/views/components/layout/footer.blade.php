@@ -1,7 +1,7 @@
 @props([
     'components' => [],
-    'copyright' => $_copyright ?? '',
-    'menu' => $_menu ?? []
+    'copyright' => '',
+    'menu' => []
 ])
 <footer {{ $attributes->merge(['class' => 'layout-footer']) }}>
     <div class="flex flex-col flex-wrap items-center justify-between gap-y-4 gap-x-8 md:flex-row">

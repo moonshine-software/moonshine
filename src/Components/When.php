@@ -18,6 +18,7 @@ class When extends MoonShineComponent
         protected Closure $components,
         protected ?Closure $default = null
     ) {
+        parent::__construct();
     }
 
     /**

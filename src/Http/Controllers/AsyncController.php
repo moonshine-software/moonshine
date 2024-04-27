@@ -141,16 +141,16 @@ class AsyncController extends MoonShineController
         foreach ($fields as $field) {
             $fields = $field->reactiveCallback(
                 $fields,
-                data_get($values, $field->column()),
+                data_get($values, $field->getColumn()),
                 $values->toArray(),
             );
         }
 
         $values = $fields
-            ->mapWithKeys(fn (Field $field): array => [$field->column() => $field->value()]);
+            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->value()]);
 
         $fields = $fields->mapWithKeys(
-            fn (Field $field): array => [$field->column() => (string) FieldsGroup::make([$field])->render()]
+            fn (Field $field): array => [$field->getColumn() => (string) FieldsGroup::make([$field])->render()]
         );
 
         return $this->json(data: [

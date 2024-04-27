@@ -449,7 +449,7 @@ trait ResourceModelQuery
             );
 
             $defaultApply = static fn (Builder $query): Builder => $query->where(
-                $filter->column(),
+                $filter->getColumn(),
                 $filter->requestValue()
             );
 

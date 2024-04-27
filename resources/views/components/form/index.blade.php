@@ -5,7 +5,6 @@
     'precognitive' => false,
     'raw' => false
 ])
-
 @if(formErrors($errors, $name)->isNotEmpty())
     <x-moonshine::form.all-errors :errors="formErrors($errors, $name)" />
 @endif
@@ -20,21 +19,21 @@
         @csrf
     @endif
 
-    {{ $slot }}
+        {{ $slot ?? '' }}
 
     @if(!$raw)
-        <x-moonshine::grid>
-            <x-moonshine::column>
+        <x-moonshine::layout.grid>
+            <x-moonshine::layout.column>
                 <div class="mt-3 flex w-full flex-wrap justify-start gap-2">
                     {{ $buttons ?? '' }}
                 </div>
-            </x-moonshine::column>
+            </x-moonshine::layout.column>
 
             @if($precognitive)
-                <x-moonshine::column>
+                <x-moonshine::layout.column>
                     <div class="precognition_errors mb-6"></div>
-                </x-moonshine::column>
+                </x-moonshine::layout.column>
             @endif
-        </x-moonshine::grid>
+        </x-moonshine::layout.grid>
     @endif
 </form>

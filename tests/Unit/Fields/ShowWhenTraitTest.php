@@ -10,12 +10,12 @@ beforeEach(function (): void {
     $this->showWhenTest = new class () {
         use ShowWhen;
 
-        public function name(): string
+        public function getNameAttribute(): string
         {
             return 'field1';
         }
 
-        public function column(): string
+        public function getColumn(): string
         {
             return 'field1';
         }

@@ -1,13 +1,19 @@
+@props([
+    'value' => '',
+    'fullPathValues' => [],
+    'isRemovable' => false,
+    'canDownload' => false,
+    'removableAttributes' => '',
+    'names' => static fn() => '',
+    'itemAttributes' => static fn() => '',
+])
 <x-moonshine::form.file
-    :attributes="$element->attributes()->merge([
-        'id' => $element->id(),
-        'name' => $element->name(),
-    ])"
-    :files="$element->getFullPathValues()"
+    :attributes="$attributes"
+    :files="$fullPathValues"
     :raw="is_iterable($value) ? $value : [$value]"
-    :removable="$element->isRemovable()"
-    :removableAttributes="$element->getRemovableAttributes()"
+    :removable="$isRemovable"
+    :removableAttributes="$removableAttributes"
     :imageable="true"
-    :names="$element->resolveNames()"
-    :itemAttributes="$element->resolveItemAttributes()"
+    :names="$names"
+    :itemAttributes="$itemAttributes"
 />

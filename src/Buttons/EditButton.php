@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Resources\ModelResource;
 
 final class EditButton
@@ -38,10 +38,10 @@ final class EditButton
         )
             ->when(
                 $isAsync || $resource->isEditInModal(),
-                fn (ActionButton $button): ActionButton => $button->inModal(
-                    fn (): array|string|null => __('moonshine::ui.edit'),
-                    fn (): string => '',
-                    async: true
+                fn (ActionButton $button): ActionButton => $button->async()->inModal(
+                    title: fn (): array|string|null => __('moonshine::ui.edit'),
+                    content: fn (): string => '',
+                    name: fn (Model $data) => "edit-modal-{$data->getKey()}"
                 )
             )
             ->primary()

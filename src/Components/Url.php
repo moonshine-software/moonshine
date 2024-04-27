@@ -16,6 +16,7 @@ final class Url extends MoonShineComponent
         public bool $withoutIcon = false,
         public bool $blank = false,
     ) {
+        parent::__construct();
     }
 
     public function withoutIcon(): self

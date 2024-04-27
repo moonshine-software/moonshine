@@ -18,8 +18,8 @@ class SelectModelApply implements ApplyContract
             if (! empty($field->requestValue())) {
                 $query->when(
                     $field->isMultiple(),
-                    static fn (Builder $q) => $q->whereIn($field->column(), $field->requestValue()),
-                    static fn (Builder $q) => $q->where($field->column(), $field->requestValue()),
+                    static fn (Builder $q) => $q->whereIn($field->getColumn(), $field->requestValue()),
+                    static fn (Builder $q) => $q->where($field->getColumn(), $field->requestValue()),
                 );
             }
         };

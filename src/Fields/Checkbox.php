@@ -40,8 +40,10 @@ class Checkbox extends Field implements
         return $this->getOnValue() == $this->value();
     }
 
-    protected function performRender(): void
+    protected function prepareBeforeRender(): void
     {
+        parent::prepareBeforeRender();
+
         $this->beforeLabel();
         $this->customWrapperAttributes([
             'class' => 'form-group-inline',
@@ -84,12 +86,21 @@ class Checkbox extends Field implements
         if($url) {
             return AlpineJs::requestWithFieldValue(
                 $url,
-                $this->column(),
+                $this->getColumn(),
                 $this->onChangeEvent(),
                 $additionally
             );
         }
 
         return $additionally;
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            'onValue' => $this->getOnValue(),
+            'offValue' => $this->getOffValue(),
+            'isChecked' => $this->isChecked(),
+        ];
     }
 }

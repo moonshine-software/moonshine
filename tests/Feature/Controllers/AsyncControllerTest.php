@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+uses()->group('crud-controller');
+
 it('table', function () {
     $item = createItem(3, 2);
 

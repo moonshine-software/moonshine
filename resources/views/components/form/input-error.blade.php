@@ -1,1 +1,1 @@
-<div {{ $attributes->class(['form-error']) }}>{{ $slot }}</div>
+<div {{ $attributes->class(['form-error']) }}>{{ $slot ?? '' }}</div>

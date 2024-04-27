@@ -9,9 +9,12 @@ use MoonShine\Components\MoonShineComponent;
 
 class ThemeSwitcher extends MoonShineComponent
 {
-    protected bool $top = false;
-
     protected string $view = 'moonshine::components.layout.theme-switcher';
+
+    public function __construct(protected bool $top = false)
+    {
+        parent::__construct();
+    }
 
     public function top(): self
     {
@@ -25,10 +28,13 @@ class ThemeSwitcher extends MoonShineComponent
         return $this->top;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [
-            'isTop' => $this->isTop(),
+            'top' => $this->isTop(),
         ];
     }
 }

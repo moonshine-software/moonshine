@@ -5,83 +5,76 @@ declare(strict_types=1);
 namespace MoonShine\Traits;
 
 use Closure;
-use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Decorations\Heading;
+use MoonShine\Components\Heading;
+use MoonShine\Components\Modal;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\HiddenIds;
 use MoonShine\Support\AlpineJs;
-use MoonShine\UI\Modal;
 
 trait WithModal
 {
-    protected ?Modal $modal = null;
+    protected ?Closure $modal = null;
 
     public function isInModal(): bool
     {
         return ! is_null($this->modal);
     }
 
-    // TODO Remove in 3.0
-    public static function makeModal(
-        Closure|string $button,
-        Closure|string $title,
-        string $url,
-        ?Closure $component
-    ): ActionButton {
-        if (! is_closure($title)) {
-            $title = static fn (): Closure|string => $title;
-        }
-
-        return ActionButton::make($button, $url)
-            ->inModal($title, $component);
-    }
-
-    // TODO Change to component in 3.0 and actions/default.blade will be simple
     public function inModal(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
-        array $buttons = [],
-        bool $async = false,
-        bool $wide = false,
-        bool $auto = false,
-        bool $closeOutside = false,
-        array $attributes = [],
-        bool $autoClose = true,
-        string $name = 'default',
+        Closure|string|null $name = null,
+        ?Closure $builder = null,
     ): static {
-        $this->modal = Modal::make($title, $content, $async)
-            ->name($name)
-            ->auto($auto)
-            ->wide($wide)
-            ->autoClose($autoClose)
-            ->closeOutside($closeOutside)
-            ->buttons($buttons);
-
-        if ($attributes !== []) {
-            $this->modal->customAttributes($attributes);
+        if(is_null($name)) {
+            $name = (string) spl_object_id($this);
         }
 
-        return $this;
+        $async = $this->purgeAsyncTap();
+
+        $this->modal = fn (mixed $data) => Modal::make(
+            title: fn() => value($title, $data, $this) ?? $this->getLabel(),
+            content: fn() => value($content, $data, $this) ?? '',
+            asyncUrl: $async ? $this->url($data) : null,
+        )
+            ->name(value($name, $data, $this))
+            ->when(
+                ! is_null($builder),
+                fn (Modal $modal): Modal => $builder($modal, $this)
+            );
+
+        return $this->onBeforeRender(
+            static fn(ActionButton $btn) => $btn->toggleModal(
+                value($name, $btn->getItem(), $btn)
+            )
+        );
     }
 
-    // TODO Change to component in 3.0 and actions/default.blade will be simple
     public function withConfirm(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
         Closure|string|null $button = null,
         Closure|array|null $fields = null,
         string $method = 'POST',
-        bool $async = false,
         ?Closure $formBuilder = null,
-        string $name = 'default',
+        ?Closure $modalBuilder = null,
+        Closure|string|null $name = null,
     ): static {
         $isDefaultMethods = in_array(strtolower($method), ['get', 'post']);
+        $async = $this->purgeAsyncTap();
 
-        $this->modal = Modal::make(
-            title: is_null($title) ? __('moonshine::ui.confirm') : $title,
-            content: fn (mixed $data): string => (string) FormBuilder::make(
+        if ($this->isBulk()) {
+            $this->attributes()->setAttributes([
+                'data-button-type' => 'modal-button',
+            ]);
+        }
+
+        return $this->inModal(
+            fn (mixed $data) => value($title, $data, $this) ?? __('moonshine::ui.confirm'),
+            fn (mixed $data) => (string) FormBuilder::make(
                 $this->url($data),
                 $isDefaultMethods ? $method : 'POST'
             )->fields(
@@ -105,52 +98,38 @@ trait WithModal
             )->when(
                 $async && ! $this->isAsyncMethod(),
                 fn (FormBuilder $form): FormBuilder => $form->async()
-            )
-                ->when(
-                    ! is_null($formBuilder),
-                    fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
-                )
-                ->when(
-                    $this->isAsyncMethod(),
-                    fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->asyncMethod())
-                )
-                ->submit(
-                    is_null($button)
-                        ? __('moonshine::ui.confirm')
-                        : value($button, $data),
-                    ['class' => 'btn-secondary']
-                )
-        )
-            ->name($name)
-            ->auto();
-
-        if ($this->isBulk()) {
-            $this->attributes()->setAttributes([
-                'data-button-type' => 'modal-button',
-            ]);
-        }
-
-        // In this case, the form inside the modal works in async mode,
-        // so the async mode is removed from the button.
-        if ($this->isAsyncMethod()) {
-            $this->purgeAsync();
-        }
-
-        return $this;
+            )->when(
+                $this->isAsyncMethod(),
+                fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->asyncMethod())
+            )->submit(
+                is_null($button)
+                    ? __('moonshine::ui.confirm')
+                    : value($button, $data),
+                ['class' => 'btn-secondary']
+            )->when(
+                ! is_null($formBuilder),
+                fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
+            ),
+            name: $name,
+            builder: $modalBuilder
+        );
     }
 
     public function modal(): ?Modal
     {
-        return $this->modal;
+        return value($this->modal, $this->getItem(), $this);
     }
 
     public function toggleModal(string $name = 'default'): static
     {
-        return $this->onClick(fn (): string => "\$dispatch('" . AlpineJs::event(JsEvent::MODAL_TOGGLED, $name) . "')");
+        return $this->onClick(
+            fn (mixed $data): string => "\$dispatch('" . AlpineJs::event(JsEvent::MODAL_TOGGLED, $name) . "')",
+            'prevent'
+        );
     }
 
     public function openModal(): static
     {
-        return $this->onClick(fn (): string => 'toggleModal');
+        return $this->onClick(fn (): string => 'toggleModal', 'prevent');
     }
 }

@@ -5,11 +5,11 @@ namespace MoonShine\Pages\Crud;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Fragment;
+use MoonShine\Components\Layout\Divider;
+use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Decorations\Divider;
-use MoonShine\Decorations\Fragment;
-use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\ResourceException;
@@ -50,7 +50,7 @@ class FormPage extends Page
     /**
      * @throws ResourceException
      */
-    public function beforeRender(): void
+    protected function prepareBeforeRender(): void
     {
         $ability = $this->getResource()->isNowOnUpdateForm()
             ? 'update'
@@ -65,7 +65,7 @@ class FormPage extends Page
             403
         );
 
-        parent::beforeRender();
+        parent::prepareBeforeRender();
     }
 
     /**

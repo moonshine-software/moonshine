@@ -14,6 +14,7 @@ final class Breadcrumbs extends MoonShineComponent
     public function __construct(
         public array $items = [],
     ) {
+        parent::__construct();
     }
 
     public function prepend(string $link, string $label = '', ?string $icon = null): self

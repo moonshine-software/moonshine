@@ -1,33 +1,38 @@
+@props([
+    'value' => '',
+    'values' => [],
+    'isNullable' => false,
+    'isSearchable' => false,
+    'isSelected' => static fn() => false,
+    'optionProperties' => static fn() => [],
+    'asyncUrl' => '',
+])
 <x-moonshine::form.select
-        :attributes="$element->attributes()->merge([
-        'id' => $element->id(),
-        'name' => $element->name(),
-    ])"
-        :nullable="$element->isNullable()"
-        :searchable="$element->isSearchable()"
-        :asyncRoute="$element->asyncUrl()"
-        @class(['form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->name())])
+        :attributes="$attributes"
+        :nullable="$isNullable"
+        :searchable="$isSearchable"
+        :asyncRoute="$asyncUrl"
 >
     <x-slot:options>
-        @if($element->isNullable())
-            <option value="">{{ $element->attributes()->get('placeholder', '-') }}</option>
+        @if($isNullable)
+            <option value="">{{ $attributes->get('placeholder', '-') }}</option>
         @endif
-        @foreach($element->values() as $optionValue => $optionName)
+        @foreach($values as $optionValue => $optionName)
             @if(is_array($optionName))
                 <optgroup label="{{ $optionValue }}">
                     @foreach($optionName as $oValue => $oName)
-                        <option @selected($element->isSelected($oValue))
+                        <option @selected($isSelected($oValue))
                                 value="{{ $oValue }}"
-                                data-custom-properties='@json($element->getOptionProperties($oValue))'
+                                data-custom-properties='@json($optionProperties($oValue))'
                         >
                             {{ $oName }}
                         </option>
                     @endforeach
                 </optgroup>
             @else
-                <option @selected($element->isSelected($optionValue))
+                <option @selected($isSelected($optionValue))
                         value="{{ $optionValue }}"
-                        data-custom-properties='@json($element->getOptionProperties($optionValue))'
+                        data-custom-properties='@json($optionProperties($optionValue))'
                 >
                     {{ $optionName }}
                 </option>

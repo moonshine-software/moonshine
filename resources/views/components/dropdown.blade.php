@@ -20,7 +20,7 @@
         @endif
 
         <div class="dropdown-content">
-            {{ $slot }}
+            {{ $slot ?? '' }}
 
             @if(!empty($items))
                 <ul class="dropdown-menu">

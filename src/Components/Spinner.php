@@ -15,6 +15,7 @@ final class Spinner extends MoonShineComponent
         public bool $fixed = false,
         public bool $absolute = false,
     ) {
+        parent::__construct();
     }
 
     public function fixed(): self

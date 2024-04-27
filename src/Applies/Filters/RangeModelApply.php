@@ -20,12 +20,12 @@ class RangeModelApply implements ApplyContract
             $query->when(
                 $values['from'] ?? null,
                 function ($query, $from) use ($field): void {
-                    $query->where($field->column(), '>=', $from);
+                    $query->where($field->getColumn(), '>=', $from);
                 }
             )->when(
                 $values['to'] ?? null,
                 function ($query, $to) use ($field): void {
-                    $query->where($field->column(), '<=', $to);
+                    $query->where($field->getColumn(), '<=', $to);
                 }
             );
         };

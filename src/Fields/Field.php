@@ -6,12 +6,14 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Components\Badge;
 use MoonShine\Components\Url;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
 use MoonShine\Support\FieldEmptyValue;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\Applies;
 use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
@@ -62,7 +64,7 @@ abstract class Field extends FormElement
 
     protected bool $nullable = false;
 
-    protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
+    protected array $propertyAttributes = ['type'];
 
     protected bool $isBeforeLabel = false;
 
@@ -79,9 +81,15 @@ abstract class Field extends FormElement
         ?string $column = null,
         ?Closure $formatted = null
     ) {
-        $this->setLabel($label ?? $this->label());
+        parent::__construct();
+
+        $this->attributes = new MoonShineComponentAttributeBag(
+            $this->resolvePropertyAttributes()->toArray()
+        );
+
+        $this->setLabel($label ?? $this->getLabel());
         $this->setColumn(
-            trim($column ?? str($this->label())->lower()->snake()->value())
+            trim($column ?? str($this->getLabel())->lower()->snake()->value())
         );
 
         if (! is_null($formatted)) {
@@ -89,7 +97,20 @@ abstract class Field extends FormElement
         }
     }
 
-    public function column(): string
+    protected function resolvePropertyAttributes(): Collection
+    {
+        return collect($this->propertyAttributes)->mapWithKeys(
+            function ($attr): array {
+                $property = (string) str($attr)->camel();
+
+                return isset($this->{$property})
+                    ? [$attr => $this->{$property}]
+                    : [];
+            }
+        );
+    }
+
+    public function getColumn(): string
     {
         return $this->column;
     }
@@ -119,10 +140,10 @@ abstract class Field extends FormElement
 
         $default = new FieldEmptyValue();
 
-        $value = data_get($casted ?? $raw, $this->column(), $default);
+        $value = data_get($casted ?? $raw, $this->getColumn(), $default);
 
         if (is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
-            $value = data_get($raw, $this->column(), $default);
+            $value = data_get($raw, $this->getColumn(), $default);
         }
 
         return $value;
@@ -160,9 +181,9 @@ abstract class Field extends FormElement
     public function fill(mixed $value, mixed $casted = null): static
     {
         return $this->resolveFill([
-            $this->column() => $value,
+            $this->getColumn() => $value,
         ], [
-            $this->column() => $casted ?? $value,
+            $this->getColumn() => $casted ?? $value,
         ]);
     }
 
@@ -338,8 +359,6 @@ abstract class Field extends FormElement
 
     public function preview(): View|string
     {
-        $this->previewMode = true;
-
         if ($this->isPreviewChanged()) {
             return (string) value(
                 $this->previewCallback,
@@ -430,5 +449,28 @@ abstract class Field extends FormElement
     public function isBeforeLabel(): bool
     {
         return $this->isBeforeLabel;
+    }
+
+    protected function prepareRender(View|Closure|string $view): View|Closure|string
+    {
+        if (! $this->isPreviewMode() && $this->hasWrapper()) {
+            return (new FieldContainer(
+                field: $this,
+                slot: $view,
+            ))->render();
+        }
+
+        return $view;
+    }
+
+    protected function systemViewData(): array
+    {
+        return [
+            ...parent::systemViewData(),
+            'label' => $this->getLabel(),
+            'column' => $this->getColumn(),
+            'value' => $this->value(),
+            'isNullable' => $this->isNullable(),
+        ];
     }
 }

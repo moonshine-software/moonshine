@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
-use MoonShine\ActionButtons\ActionButton;
-use MoonShine\ActionButtons\ActionButtons;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\ActionButtons\ActionButtons;
 
 /**
  * @method static static make(array $actions = [])
@@ -16,6 +16,7 @@ final class ActionGroup extends MoonShineComponent
 
     public function __construct(protected array|ActionButtons $actions = [])
     {
+        parent::__construct();
     }
 
     public function setItem(mixed $item): self

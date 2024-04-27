@@ -6,12 +6,12 @@
          x-init="{!! trim($extensions->implode(fn($extension) => $extension->xInit()->implode(';'), ';'), ';') !!}"
          x-data="{ {!! trim($extensions->implode(fn($extension) => $extension->xData()->implode(','), ','), ',') !!} }"
     >
-        {{ $slot }}
+        {{ $slot ?? '' }}
 
         @foreach($extensions as $extension)
             {{ $extension->render() }}
         @endforeach
     </div>
 @else
-    {{ $slot }}
+    {{ $slot ?? '' }}
 @endif

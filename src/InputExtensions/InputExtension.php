@@ -6,12 +6,13 @@ namespace MoonShine\InputExtensions;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\WithComponentAttributes;
-use MoonShine\Traits\WithView;
+use MoonShine\Traits\WithViewRenderer;
 
 abstract class InputExtension
 {
-    use WithView;
+    use WithViewRenderer;
     use WithComponentAttributes;
 
     protected array $xInit = [];
@@ -20,6 +21,7 @@ abstract class InputExtension
 
     public function __construct(protected mixed $value = null)
     {
+        $this->attributes = new MoonShineComponentAttributeBag();
     }
 
     public function getValue(): mixed
@@ -37,7 +39,7 @@ abstract class InputExtension
         return collect($this->xInit);
     }
 
-    public function render(): View
+    protected function prepareBeforeRender(): void
     {
         $view = str_contains('components.', $this->getView())
             ? $this->getView()
@@ -47,8 +49,14 @@ abstract class InputExtension
                 $this->getView()
             );
 
-        return view($view, [
-            'extension' => $this,
-        ]);
+        $this->customView($view);
+    }
+
+    protected function systemViewData(): array
+    {
+        return [
+            'attributes' => $this->attributes(),
+            'value' => $this->getValue(),
+        ];
     }
 }

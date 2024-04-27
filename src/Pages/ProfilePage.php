@@ -2,12 +2,12 @@
 
 namespace MoonShine\Pages;
 
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Heading;
 use MoonShine\Components\SocialAuth;
-use MoonShine\Decorations\Box;
-use MoonShine\Decorations\Heading;
-use MoonShine\Decorations\Tab;
-use MoonShine\Decorations\Tabs;
+use MoonShine\Components\Tabs\Tab;
+use MoonShine\Components\Tabs\Tabs;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Password;

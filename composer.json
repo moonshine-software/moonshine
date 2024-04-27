@@ -17,7 +17,7 @@
     }
   ],
   "require": {
-    "php": "^8.1|^8.2|^8.3",
+    "php": "^8.2|^8.3",
     "ext-curl": "*",
     "ext-json": "*",
     "rap2hpoutre/fast-excel": "^5.4",
@@ -25,12 +25,9 @@
   },
   "require-dev": {
     "pestphp/pest": "^2.34",
-    "mockery/mockery": "^1.6",
-    "orchestra/testbench": "^8.0|^9.0",
-    "pestphp/pest-plugin-laravel": "^2.2",
-    "pestphp/pest-plugin-mock": "^2.0",
-    "rector/rector": "^1.0",
-    "nunomaduro/larastan": "^2.9"
+    "orchestra/testbench": "^9.0",
+    "pestphp/pest-plugin-laravel": "^2.4",
+    "rector/rector": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -53,7 +50,7 @@
     "unisharp/laravel-filemanager": "Required if you want tinymce file manager"
   },
   "conflict": {
-    "laravel/framework": "<10.20.0"
+    "laravel/framework": "<11.0.0"
   },
   "scripts": {
     "analyse": "vendor/bin/phpstan analyse src --memory-limit=-1",

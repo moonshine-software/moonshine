@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\Rating;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\FieldEmptyValue;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 
 trait RangeTrait
 {
@@ -16,9 +16,9 @@ trait RangeTrait
 
     public string $toField = 'to';
 
-    protected ?ComponentAttributeBag $fromAttributes = null;
+    protected ?MoonShineComponentAttributeBag $fromAttributes = null;
 
-    protected ?ComponentAttributeBag $toAttributes = null;
+    protected ?MoonShineComponentAttributeBag $toAttributes = null;
 
     public function fromAttributes(array $attributes): static
     {
@@ -30,22 +30,22 @@ trait RangeTrait
     }
 
     protected function reformatAttributes(
-        ?ComponentAttributeBag $attributes = null,
+        ?MoonShineComponentAttributeBag $attributes = null,
         string $name = ''
-    ): ComponentAttributeBag {
+    ): MoonShineComponentAttributeBag {
         $dataName = $this->attributes()->get('data-name');
 
         return ($attributes ?? $this->attributes())
             ->except(['data-name'])
             ->when(
                 $dataName,
-                fn (ComponentAttributeBag $attr): ComponentAttributeBag => $attr->merge([
+                fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
                     'data-name' => str($dataName)->replaceLast('[]', "[$name]"),
                 ])
             );
     }
 
-    public function getFromAttributes(): ComponentAttributeBag
+    public function getFromAttributes(): MoonShineComponentAttributeBag
     {
         return $this->reformatAttributes($this->fromAttributes, $this->fromField);
     }
@@ -59,7 +59,7 @@ trait RangeTrait
         return $this;
     }
 
-    public function getToAttributes(): ComponentAttributeBag
+    public function getToAttributes(): MoonShineComponentAttributeBag
     {
         return $this->reformatAttributes($this->toAttributes, $this->toField);
     }
@@ -82,14 +82,14 @@ trait RangeTrait
         $values = parent::prepareFill($raw, $casted);
 
         // try to get from array
-        if($values instanceof FieldEmptyValue) {
-            $castedValue = $raw[$this->column()] ?? false;
+        if ($values instanceof FieldEmptyValue) {
+            $castedValue = $raw[$this->getColumn()] ?? false;
             $values = is_array($castedValue)
                 ? $castedValue
                 : $raw;
         }
 
-        if(empty($values[$this->fromField]) && empty($values[$this->toField])) {
+        if (empty($values[$this->fromField]) && empty($values[$this->toField])) {
             return new FieldEmptyValue();
         }
 
@@ -163,7 +163,7 @@ trait RangeTrait
 
     protected function onChangeEventAttributes(?string $url = null): array
     {
-        if($url) {
+        if ($url) {
             $this->fromAttributes(
                 AlpineJs::requestWithFieldValue(
                     $url,
@@ -180,5 +180,18 @@ trait RangeTrait
         }
 
         return [];
+    }
+
+    protected function prepareBeforeRender(): void
+    {
+        parent::prepareBeforeRender();
+
+        $this
+            ->fromAttributes([
+                'name' => $this->getNameAttribute($this->fromField),
+            ])
+            ->toAttributes([
+                'name' => $this->getNameAttribute($this->toField),
+            ]);
     }
 }

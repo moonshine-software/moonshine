@@ -24,7 +24,7 @@ it('menu', function (): void {
     expect(moonshineMenu()->all())->toBeCollection()
         ->and($last = moonshineMenu()->all()->last())
         ->toBeInstanceOf(MenuItem::class)
-        ->and($last->label())
+        ->and($last->getLabel())
         ->toBe('Resource')
     ;
 });

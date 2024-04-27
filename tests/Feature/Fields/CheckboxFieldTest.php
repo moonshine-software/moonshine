@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Storage;
 use MoonShine\Components\Boolean;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Handlers\ExportHandler;

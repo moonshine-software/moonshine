@@ -8,8 +8,11 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasManyButton;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\FlexibleRender;
+use MoonShine\Components\Layout\Box;
+use MoonShine\Components\Layout\Divider;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasUpdateOnPreview;
@@ -359,6 +362,8 @@ class HasMany extends ModelRelationField implements HasFields
      */
     protected function resolveValue(): MoonShineRenderable
     {
+        parent::resolveValue();
+
         if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
             $relation = $casted?->{$this->getRelationName()}();
@@ -378,7 +383,9 @@ class HasMany extends ModelRelationField implements HasFields
     protected function viewData(): array
     {
         return [
-            'table' => $this->resolveValue(),
+            'component' => $this->resolveValue(),
+            'isCreatable' => $this->isCreatable(),
+            'createButton' => $this->createButton(),
         ];
     }
 

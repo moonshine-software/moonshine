@@ -6,15 +6,16 @@ namespace MoonShine\Traits\Fields;
 
 trait NumberTrait
 {
-    public int|float $min = 0;
+    protected int|float $min = 0;
 
-    public int|float $max = 1e10;
+    protected int|float $max = 1e10;
 
-    public int|float $step = 1;
+    protected int|float $step = 1;
 
     public function min(int|float $min): static
     {
         $this->min = $min;
+        $this->attributes()->set('min', (string) $this->min);
 
         return $this;
     }
@@ -22,6 +23,7 @@ trait NumberTrait
     public function max(int|float $max): static
     {
         $this->max = $max;
+        $this->attributes()->set('max', (string) $this->max);
 
         return $this;
     }
@@ -29,6 +31,7 @@ trait NumberTrait
     public function step(int|float $step): static
     {
         $this->step = $step;
+        $this->attributes()->set('step', (string) $this->step);
 
         return $this;
     }

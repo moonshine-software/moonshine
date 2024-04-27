@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Http\UploadedFile;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Decorations\Box;
-use MoonShine\Decorations\Tab;
-use MoonShine\Decorations\Tabs;
+use MoonShine\Components\Tabs\Tab;
+use MoonShine\Components\Tabs\Tabs;
 use MoonShine\Fields\Email;
+use MoonShine\Fields\Fields;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Password;

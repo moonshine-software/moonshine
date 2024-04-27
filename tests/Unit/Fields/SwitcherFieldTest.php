@@ -31,7 +31,12 @@ it('preview with not auto update', function (): void {
 });
 
 it('preview with auto update', function (): void {
-    expect((string) $this->field->updateOnPreview(url: fn () => '/')->preview())
+    expect(
+        (string) $this->field
+            ->updateOnPreview(url: fn () => '/')
+            ->withoutWrapper()
+            ->render()
+    )
         ->toBe(
             view('moonshine::fields.switch', $this->field->toArray())->render()
         );
@@ -39,7 +44,7 @@ it('preview with auto update', function (): void {
 
 describe('basic methods', function () {
     it('type', function (): void {
-        expect($this->field->type())
+        expect($this->field->attributes()->get('type'))
             ->toBe('checkbox');
     });
 

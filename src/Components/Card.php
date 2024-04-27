@@ -29,6 +29,7 @@ final class Card extends MoonShineComponent
         protected Closure|string|null $subtitle = null,
         protected bool $overlay = false,
     ) {
+        parent::__construct();
     }
 
     public function header(Closure|string $value): self

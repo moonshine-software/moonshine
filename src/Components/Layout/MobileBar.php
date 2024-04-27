@@ -4,37 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-class MobileBar extends WithComponents
+use MoonShine\Components\AbstractWithComponents;
+
+class MobileBar extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.mobile-bar';
-
-    protected bool $hideLogo = false;
-
-    protected bool $hideSwitcher = false;
-
-    public function hideLogo(): self
-    {
-        $this->hideLogo = true;
-
-        return $this;
-    }
-
-    public function hideSwitcher(): self
-    {
-        $this->hideSwitcher = true;
-
-        return $this;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function viewData(): array
-    {
-        return [
-            ...parent::viewData(),
-            'hideLogo' => $this->hideLogo,
-            'hideSwitcher' => $this->hideSwitcher,
-        ];
-    }
 }

@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
-use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Collections\MoonShineRenderElements;
+use MoonShine\Components\AbstractWithComponents;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 
-class Sidebar extends WithComponents
+class Sidebar extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.sidebar';
 
     public bool $collapse = false;
 
-    public ComponentAttributeBag $collapseAttributes;
+    public MoonShineComponentAttributeBag $collapseAttributes;
 
-    public function __construct(array|MoonShineRenderElements $components = [])
+    public function __construct(iterable $components = [])
     {
         parent::__construct($components);
 
-        $this->collapseAttributes = new ComponentAttributeBag();
+        $this->collapseAttributes = new MoonShineComponentAttributeBag();
     }
 
     public function collapsed(): self
