@@ -102,7 +102,7 @@ class IndexPage extends Page
     {
         return [
             Block::make([(new FiltersForm())($this->getResource())])
-                ->customAttributes(['class' => 'hidden']),
+                ->customAttributes(['class' => 'hidden remove-after-init']),
         ];
     }
 

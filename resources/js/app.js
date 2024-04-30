@@ -70,6 +70,8 @@ Alpine.data('globalSearch', globalSearch)
 window.Alpine = Alpine
 
 document.addEventListener('alpine:init', () => {
+  document.querySelectorAll('.remove-after-init').forEach(e => e.parentNode.removeChild(e))
+
   /* Dark mode */
   Alpine.store('darkMode', {
     init() {
