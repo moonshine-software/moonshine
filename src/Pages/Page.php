@@ -182,7 +182,7 @@ abstract class Page implements
 
     public function setComponents(iterable $components): static
     {
-        if(!$components instanceof ComponentsCollection) {
+        if(! $components instanceof ComponentsCollection) {
             $components = ComponentsCollection::make($components);
         }
 

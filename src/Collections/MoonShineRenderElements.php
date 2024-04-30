@@ -81,7 +81,7 @@ abstract class MoonShineRenderElements extends Collection
     public function toStructure(bool $withStates = true): array
     {
         return $this->map(
-            fn(MoonShineRenderable $component): array => $component->toStructure($withStates)
+            fn (MoonShineRenderable $component): array => $component->toStructure($withStates)
         )->toArray();
     }
 }

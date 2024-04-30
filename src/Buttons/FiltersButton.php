@@ -18,7 +18,7 @@ final class FiltersButton
     {
         $title = self::title($resource->getFilterParams());
 
-        $filters = call_user_func(new FiltersForm, $resource);
+        $filters = call_user_func(new FiltersForm(), $resource);
 
         return ActionButton::make($title, '#')
             ->secondary()
@@ -27,7 +27,7 @@ final class FiltersButton
                 fn (): array|string|null => __('moonshine::ui.filters'),
                 fn (): FormBuilder => $filters,
                 name: 'filters-off-canvas',
-                builder: fn(Offcanvas $offCanvas): Offcanvas => $offCanvas->setComponents([$filters])
+                builder: fn (Offcanvas $offCanvas): Offcanvas => $offCanvas->setComponents([$filters])
             )
             ->showInLine();
     }

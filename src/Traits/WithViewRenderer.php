@@ -150,12 +150,12 @@ trait WithViewRenderer
 
         if($this instanceof HasComponents) {
             $components = $this->getComponents()
-                ->map(fn(MoonShineRenderable $component): array => $component->toStructure($withStates));
+                ->map(fn (MoonShineRenderable $component): array => $component->toStructure($withStates));
         }
 
         if($this instanceof HasFields) {
             $components = $this->getFields()
-                ->map(fn(MoonShineRenderable $component): array => $component->toStructure($withStates));
+                ->map(fn (MoonShineRenderable $component): array => $component->toStructure($withStates));
 
             $states['fields'] = $components;
         }
