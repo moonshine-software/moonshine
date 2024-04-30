@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Support\Condition;
+use Throwable;
 
 /**
  * @method static static make(Closure|string $title, Closure|View|string $content, Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
@@ -39,6 +40,8 @@ final class Modal extends AbstractWithComponents
         string $name = 'default'
     ) {
         parent::__construct($components);
+
+        $this->name($name);
     }
 
 
@@ -86,6 +89,7 @@ final class Modal extends AbstractWithComponents
 
     /**
      * @return array<string, mixed>
+     * @throws Throwable
      */
     protected function viewData(): array
     {

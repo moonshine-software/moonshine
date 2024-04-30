@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
 use MoonShine\Collections\ComponentsCollection;
 use MoonShine\Components\MoonShineComponent;
+use MoonShine\Contracts\Components\HasComponents;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\HasResourceContract;
 use MoonShine\Contracts\MoonShineRenderable;
@@ -33,6 +34,7 @@ use Throwable;
  */
 abstract class Page implements
     Renderable,
+    HasComponents,
     HasResourceContract,
     MenuFiller,
     HasAssets,
@@ -169,6 +171,22 @@ abstract class Page implements
     public function setBreadcrumbs(array $breadcrumbs): static
     {
         $this->breadcrumbs = $breadcrumbs;
+
+        return $this;
+    }
+
+    public function hasComponents(): bool
+    {
+        return $this->getComponents()->isNotEmpty();
+    }
+
+    public function setComponents(iterable $components): static
+    {
+        if(!$components instanceof ComponentsCollection) {
+            $components = ComponentsCollection::make($components);
+        }
+
+        $this->components = $components;
 
         return $this;
     }

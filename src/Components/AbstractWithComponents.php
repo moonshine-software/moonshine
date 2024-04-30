@@ -28,7 +28,7 @@ abstract class AbstractWithComponents extends MoonShineComponent implements
     {
         parent::__construct();
 
-        $this->components($components);
+        $this->setComponents($components);
         $this->fields($this->getComponents()->toArray());
     }
 

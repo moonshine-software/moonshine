@@ -346,7 +346,7 @@ class BelongsToMany extends ModelRelationField implements
         return [
             'component' => $this->resolveValue(),
             'buttons' => $this->getButtons(),
-            'values' => $this->values(),
+            'values' => $this->getRelation() ? $this->values() : [],
             'customProperties' => $this->resolvePropertyAttributes(),
             'selectedKeys' => $this->selectedKeys(),
             'isSearchable' => $this->isSearchable(),

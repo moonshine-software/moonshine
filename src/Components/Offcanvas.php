@@ -10,9 +10,9 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Condition;
 
 /**
- * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '')
+ * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
-final class Offcanvas extends MoonShineComponent
+final class Offcanvas extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.offcanvas';
 
@@ -27,10 +27,13 @@ final class Offcanvas extends MoonShineComponent
         protected Closure|View|string $content = '',
         protected Closure|string $toggler = '',
         protected Closure|string|null $asyncUrl = null,
+        iterable $components = [],
         // anonymous component variables
         string $name = 'default'
     ) {
-        parent::__construct($name);
+        parent::__construct($components);
+
+        $this->name($name);
     }
 
     public function open(Closure|bool|null $condition = null): self

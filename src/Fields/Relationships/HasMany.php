@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Buttons\HasManyButton;
 use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasUpdateOnPreview;

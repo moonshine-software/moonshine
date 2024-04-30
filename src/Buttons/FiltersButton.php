@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Components\Offcanvas;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Resources\ModelResource;
 
@@ -17,13 +18,16 @@ final class FiltersButton
     {
         $title = self::title($resource->getFilterParams());
 
+        $filters = call_user_func(new FiltersForm, $resource);
+
         return ActionButton::make($title, '#')
             ->secondary()
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
                 fn (): array|string|null => __('moonshine::ui.filters'),
-                fn (): FormBuilder => (new FiltersForm())($resource),
-                name: 'filters-off-canvas'
+                fn (): FormBuilder => $filters,
+                name: 'filters-off-canvas',
+                builder: fn(Offcanvas $offCanvas) => $offCanvas->setComponents([$filters])
             )
             ->showInLine();
     }

@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Components\HasComponents;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 use Throwable;
 
@@ -68,12 +69,19 @@ abstract class MoonShineRenderElements extends Collection
                     $element->getFields()->exceptElements($except)->toArray()
                 );
             } elseif ($element instanceof HasComponents) {
-                $element->components(
+                $element->setComponents(
                     $element->getComponents()->exceptElements($except)->toArray()
                 );
             }
 
             return true;
         })->filter()->values();
+    }
+
+    public function toStructure(bool $withStates = true): array
+    {
+        return $this->map(
+            fn(MoonShineRenderable $component) => $component->toStructure($withStates)
+        )->toArray();
     }
 }
