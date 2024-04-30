@@ -122,7 +122,7 @@ final class CardsBuilder extends IterableComponent
     /**
      * @throws Throwable
      */
-    public function components(): Collection
+    public function getComponents(): Collection
     {
         $fields = $this->getFields();
 
@@ -203,7 +203,7 @@ final class CardsBuilder extends IterableComponent
     protected function viewData(): array
     {
         return [
-            'components' => $this->components(),
+            'components' => $this->getComponents(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
             'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,

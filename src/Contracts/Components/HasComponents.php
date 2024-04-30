@@ -8,7 +8,7 @@ use MoonShine\Collections\MoonShineRenderElements;
 
 interface HasComponents
 {
-    public function components(iterable $components): static;
+    public function setComponents(iterable $components): static;
 
     public function hasComponents(): bool;
 

@@ -56,9 +56,4 @@ abstract class MenuElement implements MoonShineRenderable, HasCanSeeContract
             'top' => $this->isTopMode(),
         ];
     }
-
-    public function jsonSerialize(): array
-    {
-        return $this->systemViewData();
-    }
 }

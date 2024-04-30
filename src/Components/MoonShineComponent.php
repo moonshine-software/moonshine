@@ -45,7 +45,6 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     public function data(): array
     {
         return array_merge($this->extractPublicProperties(), [
-            'type' => class_basename($this),
             'attributes' => $this->attributes(),
             'name' => $this->getName(),
         ]);
@@ -54,14 +53,5 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     protected function systemViewData(): array
     {
         return $this->data();
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_merge(
-            $this->systemViewData(),
-            $this->viewData(),
-            $this->getCustomViewData()
-        );
     }
 }

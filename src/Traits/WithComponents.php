@@ -40,7 +40,7 @@ trait WithComponents
         return $this->getComponents()->isNotEmpty();
     }
 
-    public function components(iterable $components): static
+    public function setComponents(iterable $components): static
     {
         if(app()->runningUnitTests()) {
             $components = collect($components)

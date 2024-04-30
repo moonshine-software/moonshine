@@ -21,7 +21,6 @@ use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
-use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
 use Throwable;
@@ -74,7 +73,6 @@ class IndexPage extends Page
     protected function mainLayer(): array
     {
         return [
-            ...$this->filtersForm(),
             ...$this->actionButtons(),
             ...$this->queryTags(),
             ...$this->table(),
@@ -91,18 +89,6 @@ class IndexPage extends Page
                     'class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6',
                 ])
             : null;
-    }
-
-    /**
-     * @return list<MoonShineComponent>
-     * @throws Throwable
-     */
-    protected function filtersForm(): array
-    {
-        return [
-            Block::make([(new FiltersForm())($this->getResource())])
-                ->customAttributes(['class' => 'hidden']),
-        ];
     }
 
     /*

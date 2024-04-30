@@ -7,7 +7,10 @@ namespace MoonShine\Traits;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\Components\HasCanSeeContract;
+use MoonShine\Contracts\Components\HasComponents;
 use MoonShine\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\MoonShineRenderable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
@@ -132,9 +135,50 @@ trait WithViewRenderer
     {
         return view(
             $this->getView(),
-            array_merge($this->viewData(), $this->systemViewData()),
-            $this->getCustomViewData()
+            $this->toArray(),
         );
+    }
+
+    public function toStructure(bool $withStates = true): array
+    {
+        $components = [];
+        $states = $withStates ? $this->toArray() : [];
+
+        $states = data_forget($states, 'componentName');
+        $states = data_forget($states, 'components');
+        $states = data_forget($states, 'fields');
+
+        if($this instanceof HasComponents) {
+            $components = $this->getComponents()
+                ->map(fn(MoonShineRenderable $component) => $component->toStructure($withStates));
+        }
+
+        if($this instanceof HasFields) {
+            $components = $this->getFields()
+                ->map(fn(MoonShineRenderable $component) => $component->toStructure($withStates));
+
+            $states['fields'] = $components;
+        }
+
+        return array_filter([
+            'type' => class_basename($this),
+            'components' => $components,
+            'states' => $states,
+        ]);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            ...$this->viewData(),
+            ...$this->getCustomViewData(),
+            ...$this->systemViewData(),
+        ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 
     public function __toString(): string

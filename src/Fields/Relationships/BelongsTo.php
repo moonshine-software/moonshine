@@ -110,7 +110,7 @@ class BelongsTo extends ModelRelationField implements
     {
         return [
             'isSearchable' => $this->isSearchable(),
-            'values' => $this->values(),
+            'values' => $this->getRelation() ? $this->values() : [],
             'isSelected' => fn (string $value): bool => $this->isSelected($value),
             'isNullable' => $this->isNullable(),
             'customProperties' => $this->valuesWithProperties(onlyCustom: true),

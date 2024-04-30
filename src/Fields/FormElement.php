@@ -391,22 +391,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     protected function systemViewData(): array
     {
         return [
-            'type' => class_basename($this),
             'attributes' => $this->attributes(),
         ];
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_merge(
-            $this->systemViewData(),
-            $this->viewData(),
-            $this->getCustomViewData(),
-        );
-    }
-
-    public function toArray(): array
-    {
-        return $this->jsonSerialize();
     }
 }
