@@ -170,7 +170,7 @@ export default (asyncUrl = '') => ({
           this.searchTerms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
 
           if (this.associatedWith && asyncUrl) {
-            this.asyncSearch()
+            this.asyncSearch(true)
           }
         },
         ...this.customOptions,
@@ -275,7 +275,7 @@ export default (asyncUrl = '') => ({
     })
   },
 
-  async asyncSearch() {
+  async asyncSearch(onInit = false) {
     const url = new URL(asyncUrl)
 
     const query = this.searchTerms.value ?? null
@@ -290,6 +290,10 @@ export default (asyncUrl = '') => ({
     const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
 
     this.choicesInstance.setChoices(options, 'value', 'label', true)
+
+    if(!onInit) {
+      this.$el.dispatchEvent(new Event('change'))
+    }
   },
 
   fromUrl(url) {

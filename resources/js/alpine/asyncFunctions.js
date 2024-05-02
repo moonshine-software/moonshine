@@ -161,7 +161,7 @@ export function moonShineRequest(
         return
       }
 
-      if (componentRequestData.hasAfterCallback()) {
+      if (componentRequestData.hasAfterErrorCallback()) {
         componentRequestData.afterErrorCallback(data, t)
       }
 
