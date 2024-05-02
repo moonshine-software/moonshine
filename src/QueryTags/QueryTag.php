@@ -25,6 +25,8 @@ final class QueryTag implements HasCanSeeContract
 
     protected bool $isDefault = false;
 
+    protected ?string $alias = null;
+
     public function __construct(
         Closure|string $label,
         protected Closure $builder,
@@ -32,8 +34,19 @@ final class QueryTag implements HasCanSeeContract
         $this->setLabel($label);
     }
 
+    public function alias(string $alias): self
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
     public function uri(): string
     {
+        if(! is_null($this->alias)) {
+            return $this->alias;
+        }
+
         return str($this->getLabel())->slug()->value();
     }
 
