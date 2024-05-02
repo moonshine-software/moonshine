@@ -140,7 +140,7 @@ class AsyncController extends MoonShineController
 
             if ($field instanceof BelongsTo) {
                 return [
-                    $field->getRelatedModel()?->getKeyName() ?? 'id' => data_get($value, 'value', $value)
+                    $field->getRelatedModel()?->getKeyName() ?? 'id' => data_get($value, 'value', $value),
                 ];
             }
 
