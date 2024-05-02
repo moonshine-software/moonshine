@@ -291,7 +291,7 @@ export default (asyncUrl = '') => ({
 
     this.choicesInstance.setChoices(options, 'value', 'label', true)
 
-    if(!onInit) {
+    if (!onInit) {
       this.$el.dispatchEvent(new Event('change'))
     }
   },
