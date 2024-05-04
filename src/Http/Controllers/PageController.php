@@ -13,7 +13,7 @@ class PageController extends MoonShineController
     {
         $page = $request->getPage()->checkUrl();
 
-        if($request->wantsJson()) {
+        if($request->wantsJson() && $request->hasHeader('X-MS-Structure')) {
             return $this->structureResponse($page, $request);
         }
 

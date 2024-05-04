@@ -36,7 +36,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->item->getKey()])
+        to_page(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->image->getKey()])
     )
         ->assertOk()
         ->assertSee('Imageable')
@@ -45,7 +45,7 @@ it('show field on pages', function () {
 
 
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->item->getKey()])
+        to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->image->getKey()])
     )
         ->assertOk()
         ->assertSee('Imageable')

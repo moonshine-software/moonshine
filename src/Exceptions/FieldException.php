@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Exceptions;
 
-use Exception;
-
-class FieldException extends Exception
+class FieldException extends MoonShineException
 {
     public static function resourceRequired(string $fieldClass, ?string $fieldIdentification = null): self
     {

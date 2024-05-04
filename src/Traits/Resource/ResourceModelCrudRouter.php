@@ -19,33 +19,17 @@ trait ResourceModelCrudRouter
 {
     protected ?PageType $redirectAfterSave = PageType::FORM;
 
-    public function currentRoute(array $query = []): string
-    {
-        return str(request()->url())->when(
-            $query,
-            static fn (Stringable $str): Stringable => $str
-                ->append('?')
-                ->append(Arr::query($query))
-        )->value();
-    }
-
     /**
-     * @param string|null $name
      * @param TModel|int|string|null $key
-     *
      */
     public function route(
         string $name = null,
         Model|int|string|null $key = null,
         array $query = []
     ): string {
-        $query['resourceUri'] = $this->uriKey();
-
-        data_forget($query, ['change-moonshine-locale', 'reset']);
-
         $key = $key instanceof Model ? $key->getKey() : $key;
 
-        return moonshineRouter()->to(
+        return $this->router()->to(
             $name,
             filled($key) ? array_merge(['resourceItem' => $key], $query) : $query
         );
@@ -53,12 +37,7 @@ trait ResourceModelCrudRouter
 
     public function pageUrl(Page $page, array $params = [], ?string $fragment = null): string
     {
-        return moonshineRouter()->to_page(
-            $page,
-            $this,
-            params: $params,
-            fragment: $fragment
-        );
+        return $this->router()->toPage($page, params: $params, fragment: $fragment);
     }
 
     public function indexPageUrl(array $params = [], ?string $fragment = null): string
@@ -130,12 +109,11 @@ trait ResourceModelCrudRouter
         array $params = [],
         ?Page $page = null,
     ): string {
-        return moonshineRouter()->asyncMethod(
+        return $this->router()->asyncMethod(
             $method,
             $message,
             $params,
             page: $page,
-            resource: $this
         );
     }
 

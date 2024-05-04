@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Exceptions;
 
-class AuthException extends MoonShineException
+use Exception;
+
+class MoonShineException extends Exception
 {
 }

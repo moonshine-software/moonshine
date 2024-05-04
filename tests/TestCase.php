@@ -13,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
+use MoonShine\MoonShineRouter;
 use MoonShine\Providers\MoonShineServiceProvider;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Resources\MoonShineUserResource;
@@ -38,6 +39,8 @@ class TestCase extends Orchestra
 
     protected ModelResource $moonShineUserResource;
 
+    protected MoonShineRouter $router;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -47,6 +50,9 @@ class TestCase extends Orchestra
             ->resolveSuperUser()
             ->resolveMoonShineUserResource()
             ->registerTestResource();
+
+        $this->router = app(MoonShineRouter::class);
+        $this->router->flushState();
 
         moonshine()->flushState();
     }
@@ -102,7 +108,7 @@ class TestCase extends Orchestra
 
     protected function resolveMoonShineUserResource(): static
     {
-        $this->moonShineUserResource = new MoonShineUserResource();
+        $this->moonShineUserResource = app(MoonShineUserResource::class);
 
         return $this;
     }
@@ -111,19 +117,19 @@ class TestCase extends Orchestra
     {
         moonshine()->resources([
             $this->moonShineUserResource(),
-            new MoonShineUserRoleResource(),
-            new TestCategoryResource(),
-            new TestCoverResource(),
-            new TestItemResource(),
-            new TestCommentResource(),
-            new TestImageResource(),
-            new TestFileResource(),
-            new TestFileResourceWithParent(),
+            MoonShineUserRoleResource::class,
+            TestCategoryResource::class,
+            TestCoverResource::class,
+            TestItemResource::class,
+            TestCommentResource::class,
+            TestImageResource::class,
+            TestFileResource::class,
+            TestFileResourceWithParent::class,
 
-            new TestCategoryPageResource(),
-            new TestCoverPageResource(),
+            TestCategoryPageResource::class,
+            TestCoverPageResource::class,
 
-            new MoonShineUserRoleResource(),
+            MoonShineUserRoleResource::class,
         ], newCollection: true)
         ->pages([
             ...config('moonshine.pages'),

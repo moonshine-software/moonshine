@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Providers;
 
+use Closure;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Arr;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Inertia\Controller;
 use Laravel\Octane\Events\RequestHandled;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\Commands\InstallCommand;
@@ -114,7 +117,8 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(MenuManager::class);
         $this->app->singleton(AssetManager::class);
         $this->app->singleton(MoonShineRegister::class);
-        $this->app->singleton(MoonShineRouter::class);
+
+        $this->app->bind(MoonShineRouter::class);
 
         $this->app->scoped(ColorManager::class);
 
@@ -143,9 +147,31 @@ class MoonShineServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected function registerRouterMacro(): self
+    {
+        Router::macro(
+            'moonshine',
+            fn (Closure $callback, bool $resource = false) => $this->group(
+                moonshine()->configureRoutes(),
+                function () use ($callback, $resource): void {
+                    Router::group(
+                        $resource ? [
+                            'prefix' => 'resource/{resourceUri}',
+                        ] : [],
+                        fn () => $callback($this)
+                    );
+                }
+            )
+        );
+
+        return $this;
+    }
+
     public function register(): void
     {
-        $this->registerBindings();
+        $this
+            ->registerBindings()
+            ->registerRouterMacro();
     }
 
     public function boot(): void

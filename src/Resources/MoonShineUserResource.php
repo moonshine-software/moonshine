@@ -49,7 +49,7 @@ class MoonShineUserResource extends ModelResource
                             __('moonshine::ui.resource.role'),
                             'moonshineUserRole',
                             static fn (MoonshineUserRole $model) => $model->name,
-                            new MoonShineUserRoleResource(),
+                            MoonShineUserRoleResource::class,
                         )->badge('purple'),
 
                         Text::make(__('moonshine::ui.resource.name'), 'name')

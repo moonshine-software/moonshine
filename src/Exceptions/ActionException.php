@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Exceptions;
 
-use Exception;
-
-class ActionException extends Exception
+class ActionException extends MoonShineException
 {
     public static function resourceRequired(): self
     {

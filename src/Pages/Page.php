@@ -21,6 +21,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Layouts\AppLayout;
 use MoonShine\MenuManager\MenuFiller;
 use MoonShine\MoonShineLayout;
+use MoonShine\MoonShineRouter;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithAssets;
@@ -65,8 +66,11 @@ abstract class Page implements
 
     protected bool $checkUrl = false;
 
-    public function __construct(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
-    {
+    public function __construct(
+        ?string $title = null,
+        ?string $alias = null,
+        ?ResourceContract $resource = null,
+    ) {
         if (! is_null($title)) {
             $this->setTitle($title);
         }
@@ -182,7 +186,7 @@ abstract class Page implements
 
     public function setComponents(iterable $components): static
     {
-        if(! $components instanceof ComponentsCollection) {
+        if (! $components instanceof ComponentsCollection) {
             $components = ComponentsCollection::make($components);
         }
 
@@ -287,12 +291,9 @@ abstract class Page implements
 
     public function route(array $params = []): string
     {
-        return moonshineRouter()->to(
+        return $this->router()->to(
             $this->hasResource() ? 'resource.page' : 'page',
-            [
-                'resourceUri' => $this->getResource()?->uriKey(),
-                'pageUri' => $this->uriKey(),
-            ] + $params
+            $params
         );
     }
 
@@ -301,33 +302,15 @@ abstract class Page implements
         return $this->route();
     }
 
-    public function asyncMethodUrl(
-        string $method,
-        ?string $message = null,
-        array $params = [],
-        ?ResourceContract $resource = null,
-    ): string {
-        return moonshineRouter()->asyncMethod(
-            $method,
-            $message,
-            $params,
-            page: $this,
-            resource: $resource
-        );
-    }
+    public function router(): MoonShineRouter
+    {
+        $router = moonshineRouter();
 
-    /**
-     * @throws Throwable
-     */
-    public function fragmentLoadUrl(
-        string $fragment,
-        array $params = []
-    ): string {
-        return moonshineRouter()->to_page(
-            $this,
-            params: array_filter($params),
-            fragment: $fragment
-        );
+        if($this->hasResource()) {
+            $router = $this->getResource()?->router();
+        }
+
+        return $router->withPage($this);
     }
 
     public function isActive(): bool

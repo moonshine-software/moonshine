@@ -2,9 +2,7 @@
 
 namespace MoonShine\Exceptions;
 
-use Exception;
-
-class InvalidHome extends Exception
+class InvalidHome extends MoonShineException
 {
     public static function create(string $class): self
     {

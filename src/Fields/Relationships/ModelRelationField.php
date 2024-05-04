@@ -19,7 +19,7 @@ use Throwable;
 
 /**
  * @template-covariant R of Relation
- * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, ?ModelResource $resource = null)
+ * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
@@ -43,7 +43,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         Closure|string $label,
         ?string $relationName = null,
         Closure|string|null $formatted = null,
-        ?ModelResource $resource = null,
+        ModelResource|string|null $resource = null,
     ) {
         if (is_string($formatted)) {
             $formatted = static fn ($item) => data_get($item, $formatted);
@@ -71,6 +71,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                     ->append('_id')
                     ->value()
             );
+        }
+
+        if(is_string($resource)) {
+            $resource = app($resource);
         }
 
         if (is_null($resource)) {

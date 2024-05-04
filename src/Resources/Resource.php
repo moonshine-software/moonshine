@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Handlers\Handlers;
 use MoonShine\MenuManager\MenuFiller;
+use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Pages;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;
@@ -72,18 +73,6 @@ abstract class Resource implements ResourceContract, MenuFiller
         }
     }
 
-    public function routes(): void
-    {
-        Route::prefix('resource/{resourceUri}')->group(function (): void {
-            $this->resolveRoutes();
-        });
-    }
-
-    protected function resolveRoutes(): void
-    {
-        //
-    }
-
     protected function handlers(): array
     {
         return [];
@@ -99,12 +88,17 @@ abstract class Resource implements ResourceContract, MenuFiller
         return $this->title;
     }
 
+    public function router(): MoonShineRouter
+    {
+        return moonshineRouter()->withResource($this);
+    }
+
     public function url(): string
     {
-        return $this
-            ->getPages()
-            ->first()
-            ->route();
+        return $this->router()
+            ->withPage($this->getPages()->first())
+            ->to('resource.page')
+        ;
     }
 
     public function isActive(): bool
