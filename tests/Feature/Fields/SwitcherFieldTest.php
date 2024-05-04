@@ -7,7 +7,6 @@ use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Switcher;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Handlers\ImportHandler;
-use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Crud\DetailPage;
 use MoonShine\Pages\Crud\FormPage;
 use MoonShine\Pages\Crud\IndexPage;

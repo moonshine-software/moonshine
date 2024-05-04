@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShineRouter;
 use MoonShine\Resources\MoonShineUserResource;
 
 beforeEach(function () {

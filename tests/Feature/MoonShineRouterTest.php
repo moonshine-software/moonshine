@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use MoonShine\Enums\PageType;
-use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageIndex;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
@@ -32,12 +30,12 @@ it('default name', function (): void {
 
 it('default params', function (): void {
     $this->router->withParams([
-        'foo' => 'var'
+        'foo' => 'var',
     ]);
 
     expect($this->router->getParams())
         ->toBe([
-            'foo' => 'var'
+            'foo' => 'var',
         ])
         ->and($this->router->getParams(['var' => 'bar']))
         ->toBe([
