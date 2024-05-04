@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
-use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Handlers\Handlers;
 use MoonShine\MenuManager\MenuFiller;

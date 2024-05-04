@@ -28,7 +28,6 @@ use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithViewRenderer;
 use Stringable;
-use Throwable;
 
 /**
  * @method static static make(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)

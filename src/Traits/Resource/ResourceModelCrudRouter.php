@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Resource;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\PageType;
 use MoonShine\Pages\Page;
