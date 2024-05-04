@@ -158,6 +158,9 @@ if (! function_exists('formErrors')) {
 }
 
 if (! function_exists('to_page')) {
+    /**
+     * @throws Throwable
+     */
     function to_page(
         string|Page|null $page = null,
         string|ResourceContract|null $resource = null,
@@ -165,36 +168,12 @@ if (! function_exists('to_page')) {
         bool $redirect = false,
         ?string $fragment = null
     ): RedirectResponse|string {
-        return moonshineRouter()->to_page(
+        return moonshineRouter()->toPage(
             page: $page,
             resource: $resource,
             params: $params,
             redirect: $redirect,
             fragment: $fragment
-        );
-    }
-}
-
-if (! function_exists('to_relation_route')) {
-    /**
-     * @deprecated will be removed in 3.0
-     * @see MoonShineRouter::toRelation()
-     */
-    function to_relation_route(
-        string $action,
-        int|string|null $resourceItem = null,
-        ?string $relation = null,
-        ?string $resourceUri = null,
-        ?string $pageUri = null,
-        ?string $parentField = null
-    ): string {
-        return moonshineRouter()->toRelation(
-            $action,
-            $resourceItem,
-            $relation,
-            $resourceUri,
-            $pageUri,
-            $parentField
         );
     }
 }
@@ -243,43 +222,6 @@ if (! function_exists('memoize')) {
     }
 }
 
-if (! function_exists('tableAsyncRoute')) {
-    /**
-     * @deprecated will be removed in 3.0
-     * @see MoonShineRouter::asyncTable()
-     */
-    function tableAsyncRoute(string $componentName = 'index-table'): string
-    {
-        return moonshineRouter()->asyncTable($componentName);
-    }
-}
-
-if (! function_exists('updateRelationColumnRoute')) {
-    /**
-     * @deprecated will be removed in 3.0
-     * @see MoonShineRouter::updateColumn()
-     */
-    function updateRelationColumnRoute(string $resourceUri, string $pageUri, string $relation): Closure
-    {
-        return moonshineRouter()->updateColumn(
-            $resourceUri,
-            $pageUri,
-            $relation
-        );
-    }
-}
-
-if (! function_exists('moonshineIndexRoute')) {
-    /**
-     * @deprecated will be removed in 3.0
-     * @see MoonShineRouter::home()
-     */
-    function moonshineIndexRoute(): string
-    {
-        return moonshineRouter()->home();
-    }
-}
-
 if (! function_exists('is_closure')) {
     function is_closure(mixed $variable): bool
     {
@@ -295,6 +237,9 @@ if (! function_exists('is_field')) {
 }
 
 if (! function_exists('is_selected_option')) {
+    /**
+     * @throws JsonException
+     */
     function is_selected_option(mixed $current, string $value): bool
     {
         return SelectOptions::isSelected($current, $value);

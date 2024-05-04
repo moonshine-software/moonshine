@@ -1,0 +1,79 @@
+{
+    "$schema": "https://laravel-ide.com/schema/laravel-ide-v2.json",
+    "completions": [
+        {
+            "complete": "eloquentFields",
+            "condition": [
+                {
+                    "methodNames": ["make"],
+                    "classFqn": ["MoonShine\\Fields\\Field"],
+                    "parameters": [2]
+                }
+            ],
+            "options": {
+                "eloquentFields": {
+                    "fetch": "classField",
+                    "classField": "model"
+                }
+            }
+        },
+        {
+            "complete": "viewName",
+            "condition": [
+                {
+                    "methodNames": ["customView"],
+                    "classFqn": [
+                        "MoonShine\\Pages\\Page",
+                        "MoonShine\\Fields\\FormElement",
+                        "MoonShine\\Components\\MoonShineComponent"
+                    ],
+                    "parameters": [1]
+                }
+            ]
+        },
+        {
+            "complete": "directoryFiles",
+            "options": {
+                "directory": "resources/views/icons",
+                "suffixToClear": ".blade.php"
+            },
+            "condition": [
+                {
+                    "methodNames": ["icon"],
+                    "classFqn": ["MoonShine\\ActionButtons\\ActionButton"]
+                }
+            ]
+        }
+    ],
+    "codeGenerations": [
+        {
+            "id": "moonshine:resource",
+            "classSuffix": "Resource",
+            "name": "Create Moonshine Resource",
+            "parameters": [
+                {
+                    "id": "moonshine:resource:model",
+                    "name": "Model",
+                    "type": "eloquent_class",
+                    "variable": "MODEL",
+                    "optional": false
+                }
+            ],
+            "files": [
+                {
+                    "appNamespace": "MoonShine\\Resources",
+                    "template": {
+                        "path": "stubs/ModelResourceDefault.stub",
+                        "parameters": {
+                            "{namespace}": "${INPUT_FQN|namespace}",
+                            "{model-namespace}": "${MODEL}",
+                            "{model}": "${MODEL|className}",
+                            "DummyResource": "${INPUT_FQN|className}",
+                            "DummyTitle": "${MODEL|className|plural}"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

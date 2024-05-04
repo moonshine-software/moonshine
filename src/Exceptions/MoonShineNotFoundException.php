@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Exceptions;
 
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use MoonShine\Pages\ErrorPage;
 
-class MoonShineNotFoundException extends Exception
+class MoonShineNotFoundException extends MoonShineException
 {
     public function render(Request $request): Response
     {

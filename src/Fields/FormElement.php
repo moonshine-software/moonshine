@@ -6,6 +6,7 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\ViewErrorBag;
@@ -233,10 +234,13 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = moonshineRouter()->asyncMethodClosure(
+        $url = static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
             method: $method,
             message: $message,
-            params: $params,
+            params: array_filter([
+                'resourceItem' => $item instanceof Model ? $item->getKey() : null,
+                ...value($params, $item),
+            ], static fn ($value) => filled($value)),
             page: $page,
             resource: $resource,
         );

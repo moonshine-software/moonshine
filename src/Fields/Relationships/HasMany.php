@@ -270,10 +270,10 @@ class HasMany extends ModelRelationField implements HasFields
                     && is_null($field->getUrl())
                 ) {
                     $field->setUpdateOnPreviewUrl(
-                        moonshineRouter()->updateColumn(
-                            $field->getResourceUriForUpdate(),
-                            $field->getPageUriForUpdate(),
-                            $this->getRelationName(),
+                        fn() => moonshineRouter()->updateColumn(
+                            resourceUri: $field->getResourceUriForUpdate(),
+                            pageUri: $field->getPageUriForUpdate(),
+                            relation: $this->getRelationName(),
                         )
                     );
                 }

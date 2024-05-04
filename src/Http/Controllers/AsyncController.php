@@ -18,40 +18,6 @@ class AsyncController extends MoonShineController
 {
     /**
      * @throws Throwable
-     * @see component
-     * @deprecated will be removed in 3.0
-     */
-    public function table(MoonShineRequest $request): View|Closure|string
-    {
-        $page = $request->getPage();
-
-        $table = $page->getComponents()->findTable(request('_component_name'));
-
-        if (is_null($table)) {
-            return '';
-        }
-
-        return $this->responseWithTable($table);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    protected function responseWithTable(TableBuilder $table): View|Closure|string
-    {
-        if (! request()->filled('_key')) {
-            return $table->render();
-        }
-
-        return TableRowRenderer::make(
-            $table,
-            request()->get('_key'),
-            request()->integer('_index'),
-        )->render();
-    }
-
-    /**
-     * @throws Throwable
      */
     public function component(MoonShineRequest $request): View|Closure|string
     {
@@ -68,6 +34,22 @@ class AsyncController extends MoonShineController
         }
 
         return $component->render();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function responseWithTable(TableBuilder $table): View|Closure|string
+    {
+        if (! request()->filled('_key')) {
+            return $table->render();
+        }
+
+        return TableRowRenderer::make(
+            $table,
+            request()->get('_key'),
+            request()->integer('_index'),
+        )->render();
     }
 
     /**

@@ -162,7 +162,7 @@ it('resource update column', function () {
         ->toBe(false);
 
     asAdmin()->put(
-        MoonShineRouter::to('column.resource.update-column', [
+        $this->router->to('column.resource.update-column', [
             'resourceItem' => $this->item->getKey(),
             'resourceUri' => $resource->uriKey(),
             'field' => 'active',
@@ -185,7 +185,7 @@ it('relation update column', function () {
         ->toBe(1);
 
     asAdmin()->put(
-        MoonShineRouter::to(
+        $this->router->to(
             'column.relation.update-column',
             [
                 'resourceItem' => $comment->getKey(),
@@ -230,7 +230,7 @@ it('relation update column in resource', function () {
     ]);
 
     asAdmin()->put(
-        MoonShineRouter::to(
+        $this->router->to(
             'column.relation.update-column',
             [
                 'resourceItem' => $comment->getKey(),

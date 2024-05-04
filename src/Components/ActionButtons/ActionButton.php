@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Components\ActionButtons;
 
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -187,10 +188,13 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     ): self {
         $this->asyncMethod = $method;
 
-        $this->url = moonshineRouter()->asyncMethodClosure(
+        $this->url = static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
             method: $method,
             message: $message,
-            params: $params,
+            params: array_filter([
+                'resourceItem' => $item instanceof Model ? $item->getKey() : null,
+                ...value($params, $item),
+            ], static fn ($value) => filled($value)),
             page: $page,
             resource: $resource,
         );

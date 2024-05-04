@@ -38,7 +38,7 @@ class TestItemResource extends ModelResource
 
                 Text::make('Name title', 'name')->sortable(),
 
-                BelongsTo::make('Category title', 'category', 'name', new TestCategoryResource()),
+                BelongsTo::make('Category title', 'category', 'name', TestCategoryResource::class),
 
                 TinyMce::make('Content title', 'content')
                     ->hideOnIndex(),
@@ -47,13 +47,13 @@ class TestItemResource extends ModelResource
                     ->hideOnIndex()
                 ,
 
-                HasMany::make('Comments title', 'comments', resource: new TestCommentResource())->fields([
+                HasMany::make('Comments title', 'comments', resource: TestCommentResource::class)->fields([
                     ID::make()->sortable(),
                     Text::make('Comment title', 'content')->sortable(),
                     Switcher::make('Active title', 'active')->updateOnPreview(resource: $this),
                 ]),
 
-                MorphMany::make('Images title', 'images', resource: new TestImageResource())
+                MorphMany::make('Images title', 'images', resource: TestImageResource::class)
                     ->fields([
                         ID::make()->sortable(),
                         Image::make('Image title', 'name'),
@@ -66,7 +66,7 @@ class TestItemResource extends ModelResource
     {
         return [
             Text::make('Name'),
-            BelongsTo::make('Category', resource: new TestCategoryResource())->nullable(),
+            BelongsTo::make('Category', resource: TestCategoryResource::class)->nullable(),
         ];
     }
 

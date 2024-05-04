@@ -14,7 +14,7 @@ beforeEach(function () {
 
 it('resource update-column', function () {
     asAdmin()->put(
-        MoonShineRouter::to('column.resource.update-column', [
+        $this->router->to('column.resource.update-column', [
             'resourceItem' => $this->user->getKey(),
             'resourceUri' => $this->resource->uriKey(),
             'field' => 'name',

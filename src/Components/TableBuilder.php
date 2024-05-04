@@ -62,7 +62,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     {
         $tableFields = $this->getFields();
 
-        if(! $this->isEditable()) {
+        if (! $this->isEditable()) {
             $tableFields = $tableFields
                 ->onlyFields()
                 ->map(
@@ -81,8 +81,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ->when(
                     $this->isReindex() && ! $this->isPreparedReindex(),
                     fn (Fields $f): Fields => $f->prepareReindex()
-                )
-            ;
+                );
 
             return TableRow::make(
                 $casted,
@@ -133,7 +132,14 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
     {
-        return $asyncUrl ?? fn (): string => moonshineRouter()->asyncTable($this->getName());
+        return $asyncUrl ?? fn (): string => moonshineRouter()->asyncComponent(
+            $this->getName(),
+            additionally: [
+                'filters' => moonshineRequest()->get('filters'),
+                'query-tag' => moonshineRequest()->get('query-tag'),
+                'search' => moonshineRequest()->get('search'),
+            ]
+        );
     }
 
     public function performBeforeRender(): self
@@ -171,7 +177,8 @@ final class TableBuilder extends IterableComponent implements TableContract
         }
 
         $this->systemTrAttributes(
-            function (mixed $data, int $index, MoonShineComponentAttributeBag $attr, TableRow $row) use ($systemTrEvents) {
+            function (mixed $data, int $index, MoonShineComponentAttributeBag $attr, TableRow $row) use ($systemTrEvents
+            ) {
                 foreach ($systemTrEvents as $systemTrEvent) {
                     $attr = $attr->merge($systemTrEvent($data, $row, $index));
                 }
@@ -203,17 +210,18 @@ final class TableBuilder extends IterableComponent implements TableContract
     protected function viewData(): array
     {
         return [
-                'rows' => $this->rows(),
-                'fields' => $this->getFields(),
-                'name' => $this->getName(),
-                'hasPaginator' => $this->hasPaginator(),
-                'simple' => $this->isSimple(),
-                'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
-                'paginator' => $this->getPaginator(),
-                'bulkButtons' => $this->getBulkButtons(),
-                'async' => $this->isAsync(),
-                'asyncUrl' => $this->asyncUrl(),
-                'createButton' => $this->creatableButton,
-            ] + $this->statesToArray();
+            'rows' => $this->rows(),
+            'fields' => $this->getFields(),
+            'name' => $this->getName(),
+            'hasPaginator' => $this->hasPaginator(),
+            'simple' => $this->isSimple(),
+            'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
+            'paginator' => $this->getPaginator(),
+            'bulkButtons' => $this->getBulkButtons(),
+            'async' => $this->isAsync(),
+            'asyncUrl' => $this->asyncUrl(),
+            'createButton' => $this->creatableButton,
+            ...$this->statesToArray(),
+        ];
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits;
 
+use MoonShine\MoonShineRouter;
+
 trait WithUriKey
 {
     protected ?string $alias = null;
@@ -22,6 +24,6 @@ trait WithUriKey
 
     public function uriKey(): string
     {
-        return $this->getAlias() ?? moonshineRouter()->uriKey(static::class);
+        return $this->getAlias() ?? MoonShineRouter::uriKey(static::class);
     }
 }

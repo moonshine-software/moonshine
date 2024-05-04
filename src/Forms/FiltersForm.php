@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Forms;
 
+use Illuminate\Support\Arr;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\JsEvent;
@@ -11,6 +12,7 @@ use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
+use Stringable;
 use Throwable;
 
 final class FiltersForm
@@ -23,7 +25,7 @@ final class FiltersForm
         $values = $resource->getFilterParams();
         $filters = $resource->getFilters();
 
-        $action = $resource->isAsync() ? '#' : $resource->currentRoute();
+        $action = $resource->isAsync() ? '#' : $this->formAction();
 
         return FormBuilder::make($action, 'GET')
             ->name('filters')
@@ -60,7 +62,7 @@ final class FiltersForm
                 $form->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
-                        $resource->currentRoute(query: ['reset' => true])
+                        $this->formAction(query: ['reset' => true])
                     )
                         ->secondary()
                         ->showInLine()
@@ -75,13 +77,23 @@ final class FiltersForm
             ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
                 request('filters'),
-                static fn ($fields): FormBuilder => $fields->buttons([
+                fn ($fields): FormBuilder => $fields->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
-                        $resource->currentRoute(query: ['reset' => true])
+                        $this->formAction(query: ['reset' => true])
                     )->secondary()->showInLine(),
                 ])
             )
         ;
+    }
+
+    private function formAction(array $query = []): string
+    {
+        return str(request()->url())->when(
+            $query,
+            static fn (Stringable $str): Stringable => $str
+                ->append('?')
+                ->append(Arr::query($query))
+        )->value();
     }
 }

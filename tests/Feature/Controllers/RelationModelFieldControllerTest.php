@@ -5,7 +5,6 @@ declare(strict_types=1);
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\Fields\StackFields;
-use MoonShine\MoonShineRouter;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
@@ -22,7 +21,7 @@ it('search relations with pagination', function () {
     $lastComment = $item->comments[count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
-    asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
+    asAdmin()->get($this->router->to('relation.search-relations', [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -46,7 +45,7 @@ it('pagination has many with page', function () {
 
     $comment = $item->comments[3];
 
-    asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
+    asAdmin()->get($this->router->to("relation.search-relations", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -70,7 +69,7 @@ it('pagination has many sort', function () {
     $lastComment = $item->comments[count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
-    asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
+    asAdmin()->get($this->router->to("relation.search-relations", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -92,7 +91,7 @@ it('search relations empty result', function () {
 
     $item = createItem(countComments: 1);
 
-    asAdmin()->get(MoonShineRouter::to("relation.search-relations", [
+    asAdmin()->get($this->router->to("relation.search-relations", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -120,7 +119,7 @@ it('async search', function () {
 
     addFieldsToTestResource($field);
 
-    asAdmin()->get(MoonShineRouter::to("relation.search", [
+    asAdmin()->get($this->router->to("relation.search", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-resource',
         'resourceItem' => $item->id,

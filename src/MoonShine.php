@@ -48,6 +48,7 @@ class MoonShine
         });
 
         moonshineCache()->flush();
+        moonshineRouter()->flushState();
 
         MemoizeRepository::getInstance()->flush();
     }
@@ -130,7 +131,7 @@ class MoonShine
 
     public function init(): self
     {
-        return $this->resolveRoutes();
+        return $this;
     }
 
     /**
@@ -141,22 +142,6 @@ class MoonShine
         $class = config("moonshine.pages.$pageName", $default);
 
         return app($class);
-    }
-
-    /**
-     * Register moonshine routes and resources routes in the system
-     */
-    public function resolveRoutes(): self
-    {
-        Route::group($this->configureRoutes(), function (): void {
-            $this->getResources()->each(
-                static function (ResourceContract $resource): void {
-                    $resource->routes();
-                }
-            );
-        });
-
-        return $this;
     }
 
     public function configureRoutes(): array

@@ -2,8 +2,6 @@
 
 namespace MoonShine\Exceptions;
 
-use Exception;
-
-class PageException extends Exception
+class PageException extends MoonShineException
 {
 }

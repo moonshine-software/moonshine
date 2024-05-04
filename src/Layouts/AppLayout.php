@@ -42,25 +42,12 @@ class AppLayout extends MoonShineLayout
             MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.admins_title'),
-                    new MoonShineUserResource()
+                    app(MoonShineUserResource::class)
                 ),
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.role_title'),
-                    new MoonShineUserRoleResource()
+                    app(MoonShineUserRoleResource::class)
                 ),
-                MenuGroup::make('Group', [
-                    MenuItem::make(
-                        static fn () => __('moonshine::ui.resource.role_title'),
-                        new MoonShineUserRoleResource()
-                    ),
-
-                    MenuGroup::make('Group 2', [
-                        MenuItem::make(
-                            static fn () => __('moonshine::ui.resource.role_title'),
-                            new MoonShineUserRoleResource()
-                        ),
-                    ]),
-                ]),
             ]),
         ];
     }

@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\FieldException;
@@ -115,9 +116,10 @@ trait UpdateOnPreview
 
     protected function getDefaultUpdateRoute(): Closure
     {
-        return moonshineRouter()->updateColumn(
-            $this->getResourceUriForUpdate()
-        );
+        return fn (Model $item): ?string => $item->exists ? moonshineRouter()->updateColumn(
+            resourceUri: $this->getResourceUriForUpdate(),
+            resourceItem: $item->getKey(),
+        ) : null;
     }
 
     public function isUpdateOnPreview(): bool

@@ -27,6 +27,16 @@ final class Pages extends Collection
         return $this->first(fn (Page $page): bool => $page->pageType() === $type, $default);
     }
 
+    public function findByClass(
+        string $class,
+        Page $default = null
+    ): ?Page {
+        return $this->first(
+            fn (Page $page): bool => $page::class === $class,
+            $default
+        );
+    }
+
     public function indexPage(): ?Page
     {
         return $this->findByType(PageType::INDEX);
