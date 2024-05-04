@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\View;
 use MoonShine\Components\FieldsGroup;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
 use MoonShine\Support\TableRowRenderer;
@@ -112,11 +113,21 @@ class AsyncController extends MoonShineController
             ->onlyFields()
             ->reactiveFields();
 
-        $values = $request->collect('values')->map(
-            fn ($value, $column) => $fields->findByColumn($column) instanceof Select
-                ? data_get($value, 'value', $value)
-                : $value
-        );
+        $values = $request->collect('values')->map(function ($value, $column) use ($fields) {
+            $field = $fields->findByColumn($column);
+
+            if ($field instanceof Select) {
+                return data_get($value, 'value', $value);
+            }
+
+            if ($field instanceof BelongsTo) {
+                return [
+                    $field->getRelatedModel()?->getKeyName() ?? 'id' => data_get($value, 'value', $value)
+                ];
+            }
+
+            return $value;
+        });
 
         $fields->fill($values->toArray());
 
