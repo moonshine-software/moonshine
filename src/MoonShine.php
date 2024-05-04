@@ -6,7 +6,6 @@ namespace MoonShine;
 
 use Closure;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\InvalidHome;

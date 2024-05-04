@@ -31,7 +31,7 @@ class ErrorPage extends Page
         return [
             FlexibleRender::make(
                 view('moonshine::errors.404'),
-                compact('code', 'message', 'logo', 'backUrl')
+                ['code' => $code, 'message' => $message, 'logo' => $logo, 'backUrl' => $backUrl]
             ),
         ];
     }

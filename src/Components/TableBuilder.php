@@ -177,7 +177,8 @@ final class TableBuilder extends IterableComponent implements TableContract
         }
 
         $this->systemTrAttributes(
-            function (mixed $data, int $index, MoonShineComponentAttributeBag $attr, TableRow $row) use ($systemTrEvents
+            function (mixed $data, int $index, MoonShineComponentAttributeBag $attr, TableRow $row) use (
+                $systemTrEvents
             ) {
                 foreach ($systemTrEvents as $systemTrEvent) {
                     $attr = $attr->merge($systemTrEvent($data, $row, $index));

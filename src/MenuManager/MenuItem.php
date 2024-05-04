@@ -55,7 +55,7 @@ class MenuItem extends MenuElement
 
     protected function resolveFiller(MenuFiller $filler): void
     {
-        $this->setUrl(fn (): string => (string) $filler->url());
+        $this->setUrl(fn (): string => $filler->url());
 
         $icon = Attributes::for($filler)
             ->attribute(Icon::class)
