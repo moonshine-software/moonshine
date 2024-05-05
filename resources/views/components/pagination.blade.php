@@ -50,7 +50,7 @@
                        title="{!! __('moonshine::pagination.previous') !!}"
                     >
                         <x-moonshine::icon
-                            icon="heroicons.chevron-double-left"
+                            icon="chevron-double-left"
                             size="6"
                         />
                     </a>
@@ -89,7 +89,7 @@
                        title="{!! __('moonshine::pagination.next') !!}"
                     >
                         <x-moonshine::icon
-                            icon="heroicons.chevron-double-right"
+                            icon="chevron-double-right"
                             size="6"
                         />
                     </a>

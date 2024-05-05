@@ -133,6 +133,6 @@ final class HasManyButton
                 builder: fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
             )
             ->primary()
-            ->icon($update ? 'heroicons.outline.pencil' : 'heroicons.outline.plus');
+            ->icon($update ? 'pencil' : 'plus');
     }
 }

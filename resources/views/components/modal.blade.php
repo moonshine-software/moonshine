@@ -47,7 +47,7 @@
                                     aria-label="Close"
                             >
                                 <x-moonshine::icon
-                                    icon="heroicons.x-mark"
+                                    icon="x-mark"
                                     size="6"
                                 />
                             </button>

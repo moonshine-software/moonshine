@@ -14,7 +14,7 @@ use Stringable as NativeStringable;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;
 
-final class MoonShineRouter implements NativeStringable, NativeStringable
+final class MoonShineRouter implements NativeStringable
 {
     use Conditionable;
     public const ROUTE_PREFIX = 'moonshine';

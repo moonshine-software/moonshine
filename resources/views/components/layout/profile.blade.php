@@ -35,7 +35,7 @@
                title="Logout"
             >
                 <x-moonshine::icon
-                    icon="heroicons.power"
+                    icon="power"
                     color="gray"
                     size="6"
                 />

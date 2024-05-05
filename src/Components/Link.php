@@ -74,7 +74,9 @@ final class Link extends MoonShineComponent
             'slot' => new ComponentSlot(
                 $this->getLabel()
             ),
-            'icon' => $this->iconValue(),
+            'icon' => new ComponentSlot(
+                $this->getIcon(4)
+            ),
             'filled' => $this->isFilled,
         ];
     }

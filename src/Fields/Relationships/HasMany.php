@@ -200,7 +200,7 @@ class HasMany extends ModelRelationField implements HasFields
                 '_parentId' => $relationName . '-' . $casted?->{$casted?->getKeyName()},
             ])
         )
-            ->icon('heroicons.outline.eye')
+            ->icon('eye')
             ->render();
     }
 

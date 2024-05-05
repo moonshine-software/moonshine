@@ -155,7 +155,7 @@ class BelongsToMany extends ModelRelationField implements
             ActionButton::make('')
                 ->onClick(fn (): string => 'checkAll', 'prevent')
                 ->primary()
-                ->icon('heroicons.outline.check'),
+                ->icon('check'),
         ]);
     }
 

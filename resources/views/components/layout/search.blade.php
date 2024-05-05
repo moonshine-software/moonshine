@@ -27,7 +27,7 @@
             <x-moonshine::icon
                 @click.prevent="$refs.searchForm.submit()"
                 class="search-form-icon"
-                icon="heroicons.outline.magnifying-glass"
+                icon="magnifying-glass"
                 size="6"
             />
 
@@ -35,7 +35,7 @@
                     class="search-form-close block md:hidden"
                     type="button"
             >
-                <x-moonshine::icon icon="heroicons.outline.x-mark" />
+                <x-moonshine::icon icon="x-mark" />
             </button>
         </form>
 
@@ -44,7 +44,7 @@
                     type="button"
                     class="text-slate-600 hover:text-secondary"
             >
-                <x-moonshine::icon icon="heroicons.outline.magnifying-glass" size="6" />
+                <x-moonshine::icon icon="magnifying-glass" size="6" />
             </button>
         </div>
     </div>
@@ -58,7 +58,7 @@
             @keyup.ctrl.period.window="modal"
         >
             <x-moonshine::icon
-                icon="heroicons.outline.magnifying-glass"
+                icon="magnifying-glass"
                 size="6"
             />
         </a>

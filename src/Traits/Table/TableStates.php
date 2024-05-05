@@ -97,7 +97,7 @@ trait TableStates
 
         $this->creatableButton = $button
             ?: ActionButton::make($label ?? __('moonshine::ui.add'), '#')
-                ->icon($icon ?? 'heroicons.plus-circle')
+                ->icon($icon ?? 'plus-circle')
                 ->customAttributes(
                     array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes)
                 )

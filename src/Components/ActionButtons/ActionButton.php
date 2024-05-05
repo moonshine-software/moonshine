@@ -79,7 +79,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             'component' => $this->hasComponent() ? $this->component() : '',
             'label' => $this->getLabel(),
             'url' => $this->url(),
-            'icon' => $this->iconValue(),
+            'icon' => $this->getIcon(4),
         ];
     }
 

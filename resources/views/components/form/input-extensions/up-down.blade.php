@@ -5,7 +5,7 @@
     <button @click.prevent="toggleDown()" class="px-2" type="button">
         <span>
             <x-moonshine::icon
-                icon="heroicons.minus-small"
+                icon="minus-small"
                 size="4"
             />
         </span>
@@ -14,7 +14,7 @@
     <button @click.prevent="toggleUp()"  class="px-2" type="button">
         <span>
             <x-moonshine::icon
-                icon="heroicons.plus-small"
+                icon="plus-small"
                 size="4"
             />
         </span>

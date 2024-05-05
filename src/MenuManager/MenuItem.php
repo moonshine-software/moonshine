@@ -66,8 +66,8 @@ class MenuItem extends MenuElement
             $this->badge(fn () => $filler->getBadge());
         }
 
-        if (! is_null($icon) && $this->iconValue() === '') {
-            $this->icon($icon);
+        if (! is_null($icon) && $this->getIconValue() === '') {
+            $this->icon($icon, $this->isCustomIcon(), $this->getIconPath());
         }
     }
 
@@ -193,7 +193,7 @@ class MenuItem extends MenuElement
             ->customView('moonshine::components.menu.item-link', [
                 'url' => $this->url(),
                 'label' => $this->getLabel(),
-                'icon' => $this->iconValue() ? $this->getIcon(6) : '',
+                'icon' => $this->getIcon(6),
                 'top' => $this->isTopMode(),
                 'badge' => $viewData['badge'] ?? '',
             ]);

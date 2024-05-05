@@ -10,7 +10,7 @@ use MoonShine\Fields\ID;
 use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUserRole;
 
-#[Icon('heroicons.outline.bookmark')]
+#[Icon('bookmark')]
 class MoonShineUserRoleResource extends ModelResource
 {
     public string $model = MoonshineUserRole::class;

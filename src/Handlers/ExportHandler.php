@@ -24,7 +24,7 @@ class ExportHandler extends Handler
 {
     use WithStorage;
 
-    protected ?string $icon = 'heroicons.outline.table-cells';
+    protected ?string $icon = 'table-cells';
 
     protected bool $isCsv = false;
 

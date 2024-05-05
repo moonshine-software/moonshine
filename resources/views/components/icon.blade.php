@@ -1,12 +1,18 @@
 @props([
+    'path' => '',
     'icon' => '',
     'size' => 5,
     'color' => '',
-    'class' => $attributes->get('class')
 ])
-
-@includeWhen($icon, "moonshine::icons.$icon", array_merge([
-    'size' => $size,
-    'class' => $class,
-    'color' => $color
-]))
+<div {{ $attributes->class([
+    'text-current',
+    'w-' . ($size ?? 5),
+    'h-' . ($size ?? 5),
+    "text-$color" => !empty($color),
+]) }}>
+    @if($slot?->isNotEmpty())
+        {!! $slot !!}
+    @else
+        @includeWhen($icon, "$path.$icon")
+    @endif
+</div>

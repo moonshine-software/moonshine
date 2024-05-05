@@ -7,13 +7,13 @@
 >
     <span x-show="isHidden">
         <x-moonshine::icon
-            icon="heroicons.outline.eye-slash"
+            icon="eye-slash"
             size="4"
         />
     </span>
     <span x-show="!isHidden">
         <x-moonshine::icon
-            icon="heroicons.outline.eye"
+            icon="eye"
             size="4"
         />
     </span>

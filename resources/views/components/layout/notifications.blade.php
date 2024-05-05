@@ -12,7 +12,7 @@
             <x-slot:toggler class="notifications-icon">
                 <span class="absolute top-0 right-1 h-2 w-2 rounded-lg bg-red-500"></span>
                 <x-moonshine::icon
-                    icon="heroicons.outline.bell"
+                    icon="bell"
                     color="gray"
                     size="6"
                 />
@@ -24,11 +24,11 @@
                        class="notifications-remove"
                        title="@lang('moonshine::ui.notifications.mark_as_read')"
                     >
-                        <x-moonshine::icon icon="heroicons.x-mark" />
+                        <x-moonshine::icon icon="x-mark" />
                     </a>
 
                     <div class="notifications-category badge-{{ $notification->data['color'] ?? 'green' }}">
-                        <x-moonshine::icon icon="heroicons.information-circle" />
+                        <x-moonshine::icon icon="information-circle" />
                     </div>
 
                     <div class="notifications-content">

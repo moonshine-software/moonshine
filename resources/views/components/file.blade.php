@@ -5,7 +5,7 @@
 ])
 <span class="dropzone-file-icon">
     <x-moonshine::icon
-        icon="heroicons.document"
+        icon="document"
         size="6"
     />
 </span>

@@ -21,7 +21,7 @@ use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Models\MoonshineUserRole;
 
-#[Icon('heroicons.outline.users')]
+#[Icon('users')]
 class MoonShineUserResource extends ModelResource
 {
     public string $model = MoonshineUser::class;

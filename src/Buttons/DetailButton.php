@@ -45,7 +45,7 @@ final class DetailButton
                 fn (?Model $item): bool => ! is_null($item) && in_array('view', $resource->getActiveActions())
                 && $resource->setItem($item)->can('view')
             )
-            ->icon('heroicons.outline.eye')
+            ->icon('eye')
             ->customAttributes(['class' => 'detail-button'])
             ->showInLine();
     }

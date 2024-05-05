@@ -99,7 +99,7 @@ class AppLayout extends MoonShineLayout
                             Flash::make(),
                             Header::make([
                                 Breadcrumbs::make($page->breadcrumbs())
-                                    ->prepend(moonshineRouter()->home(), icon: 'heroicons.outline.home'),
+                                    ->prepend(moonshineRouter()->home(), icon: 'home'),
 
                                 Search::make(),
                                 Notifications::make(),

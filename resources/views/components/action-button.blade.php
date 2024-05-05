@@ -10,16 +10,18 @@
     <x-moonshine::link-native class="p-2"
         :attributes="$attributes"
         :href="$url"
-        :icon="$icon"
     >
+        <x-slot:icon>{!! $icon !!}</x-slot:icon>
+
         {{ $label }}
     </x-moonshine::link-native>
 @else
     <x-moonshine::link-button
         :attributes="$attributes"
         :href="$url"
-        :icon="$icon"
     >
+        <x-slot:icon>{!! $icon !!}</x-slot:icon>
+
         {{ $label }}
     </x-moonshine::link-button>
 @endif

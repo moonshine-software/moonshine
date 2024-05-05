@@ -7,13 +7,13 @@
 >
     <span x-show="isLock">
         <x-moonshine::icon
-            icon="heroicons.lock-closed"
+            icon="lock-closed"
             size="4"
         />
     </span>
     <span x-show="!isLock">
         <x-moonshine::icon
-            icon="heroicons.lock-open"
+            icon="lock-open"
             size="4"
         />
     </span>

@@ -1,14 +1,8 @@
 @props([
-    'icon' => false,
+    'icon' => null,
     'filled' => false,
 ])
 <a {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
-    @if($icon)
-        <x-moonshine::icon
-            :icon="$icon"
-            size="4"
-        />
-    @endif
-
+    {{ $icon ?? '' }}
     {{ $slot ?? '' }}
 </a>
