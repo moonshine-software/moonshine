@@ -21,7 +21,7 @@ final class Icon extends MoonShineComponent
     ) {
         parent::__construct();
 
-        if(empty($this->path)) {
+        if($this->path === null || $this->path === '' || $this->path === '0') {
             $this->path = 'moonshine::icons';
         }
     }
