@@ -1,5 +1,5 @@
 @props([
-    'icon' => 'heroicons.bell-alert',
+    'icon' => 'bell-alert',
     'type' => 'default',
     'removable' => false
 ])
@@ -21,7 +21,7 @@
     @if($removable)
         <a href="#" @click.prevent="$refs.alert.remove()" class="alert-remove">
             <x-moonshine::icon
-                icon="heroicons.x-mark"
+                icon="x-mark"
                 size="6"
             />
         </a>

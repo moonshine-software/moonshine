@@ -38,7 +38,7 @@
                 ) }}
             @endif
         @else
-            <x-moonshine::alert type="default" class="my-4" icon="heroicons.no-symbol">
+            <x-moonshine::alert type="default" class="my-4" icon="s.no-symbol">
                 {{ trans('moonshine::ui.notfound') }}
             </x-moonshine::alert>
         @endif

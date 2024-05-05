@@ -48,7 +48,7 @@ final class DeleteButton
                     && $resource->setItem($item)->can('delete')
             )
             ->error()
-            ->icon('heroicons.outline.trash')
+            ->icon('trash')
             ->showInLine();
     }
 }

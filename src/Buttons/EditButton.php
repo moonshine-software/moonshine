@@ -45,7 +45,7 @@ final class EditButton
                 )
             )
             ->primary()
-            ->icon('heroicons.outline.pencil')
+            ->icon('pencil')
             ->canSee(
                 fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
                     && $resource->setItem($item)->can('update')

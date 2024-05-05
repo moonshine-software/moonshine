@@ -22,7 +22,7 @@ final class FiltersButton
 
         return ActionButton::make($title, '#')
             ->secondary()
-            ->icon('heroicons.outline.adjustments-horizontal')
+            ->icon('adjustments-horizontal')
             ->inOffCanvas(
                 fn (): array|string|null => __('moonshine::ui.filters'),
                 fn (): FormBuilder => $filters,

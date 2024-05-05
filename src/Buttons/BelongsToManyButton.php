@@ -72,6 +72,6 @@ final class BelongsToManyButton
                 builder: fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
             )
             ->primary()
-            ->icon('heroicons.outline.plus');
+            ->icon('plus');
     }
 }

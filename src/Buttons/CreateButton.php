@@ -44,6 +44,6 @@ final class CreateButton
                 && $resource->can('create')
             )
             ->primary()
-            ->icon('heroicons.outline.plus');
+            ->icon('plus');
     }
 }

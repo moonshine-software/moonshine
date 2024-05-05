@@ -12,7 +12,7 @@ final class Url extends MoonShineComponent
     public function __construct(
         public string $href,
         public string $value,
-        public ?string $icon = 'heroicons.link',
+        public ?string $icon = 'link',
         public bool $withoutIcon = false,
         public bool $blank = false,
     ) {

@@ -11,9 +11,15 @@ trait WithIcon
 {
     protected ?string $icon = null;
 
-    public function icon(string $icon): static
+    protected bool $customIcon = false;
+
+    protected ?string $iconPath = null;
+
+    public function icon(string $icon, bool $custom = false, ?string $path = null): static
     {
         $this->icon = $icon;
+        $this->customIcon = $custom;
+        $this->iconPath = $path;
 
         return $this;
     }
@@ -21,20 +27,41 @@ trait WithIcon
     public function getIcon(
         int $size = 8,
         string $color = '',
-        string $class = ''
+        array $attributes = []
     ): View|string {
-        if ($this->iconValue() === '') {
+        if ($this->getIconValue() === '') {
             return '';
         }
 
-        return Icon::make(
-            $this->iconValue(),
+        $icon = Icon::make(
+            $this->getIconValue(),
             $size,
-            $color
-        )->customAttributes(['class' => $class])->render();
+            $color,
+            $this->getIconPath()
+        )->customAttributes($attributes);
+
+        if($this->isCustomIcon()) {
+            $icon->custom();
+        }
+
+        return rescue(
+            fn() => $icon->render(),
+            rescue: fn() => '',
+            report: false
+        );
     }
 
-    public function iconValue(): string
+    public function isCustomIcon(): bool
+    {
+        return $this->customIcon;
+    }
+
+    public function getIconPath(): ?string
+    {
+        return $this->iconPath;
+    }
+
+    public function getIconValue(): string
     {
         return $this->icon ?? '';
     }

@@ -250,7 +250,7 @@ class Json extends Field implements
 
         if ($this->isRemovable()) {
             $buttons[] = ActionButton::make('', '#')
-                ->icon('heroicons.outline.trash')
+                ->icon('trash')
                 ->onClick(fn ($action): string => 'remove', 'prevent')
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
                 ->showInLine();
@@ -358,7 +358,7 @@ class Json extends Field implements
         if($sortable) {
             $fields->prepend(
                 Preview::make(
-                    formatted: static fn () => Icon::make('heroicons.outline.bars-4')
+                    formatted: static fn () => Icon::make('bars-4')
                 )->customAttributes(['class' => 'handle', 'style' => 'cursor: move'])
             );
         }

@@ -28,7 +28,7 @@ class ImportHandler extends Handler
 
     public string $inputName = 'import_file';
 
-    protected ?string $icon = 'heroicons.outline.paper-clip';
+    protected ?string $icon = 'paper-clip';
 
     protected bool $deleteAfter = false;
 

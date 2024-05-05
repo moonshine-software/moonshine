@@ -3,7 +3,7 @@
     'value' => null,
     'blank' => false,
     'withoutIcon' => false,
-    'icon' => 'heroicons.link',
+    'icon' => 'link',
 ])
 <a href="{{ $href }}"
    {{ $attributes->merge([

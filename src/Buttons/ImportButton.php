@@ -17,7 +17,7 @@ final class ImportButton
             '#'
         )
             ->success()
-            ->icon($import->iconValue())
+            ->icon($import->getIconValue(), $import->isCustomIcon(), $import->getIconPath())
             ->inOffCanvas(
                 fn (): string => $import->getLabel(),
                 fn (): FormBuilder => FormBuilder::make(

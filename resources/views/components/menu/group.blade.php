@@ -40,7 +40,7 @@
         <span class="menu-inner-text">{{ $label }}</span>
         <span class="menu-inner-arrow">
             <x-moonshine::icon
-                icon="heroicons.chevron-down"
+                icon="chevron-down"
                 size="6"
                 color="gray"
             />

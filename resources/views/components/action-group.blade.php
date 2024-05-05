@@ -5,7 +5,7 @@
     @if($actions->inDropdown()->isNotEmpty())
         <x-moonshine::dropdown>
             <x-slot:toggler class="btn">
-                <x-moonshine::icon icon="heroicons.ellipsis-vertical" />
+                <x-moonshine::icon icon="ellipsis-vertical" />
             </x-slot:toggler>
 
             <ul class="dropdown-menu">

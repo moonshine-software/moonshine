@@ -40,7 +40,8 @@
             "condition": [
                 {
                     "methodNames": ["icon"],
-                    "classFqn": ["MoonShine\\ActionButtons\\ActionButton"]
+                    "classFqn": ["MoonShine\\ActionButtons\\ActionButton"],
+                    "parameters": [1]
                 }
             ]
         }

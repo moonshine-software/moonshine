@@ -42,7 +42,7 @@
             ]) }}
         >
             <x-moonshine::icon
-                icon="heroicons.x-mark"
+                icon="x-mark"
             />
         </button>
     @endif

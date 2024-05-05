@@ -44,7 +44,7 @@ final class MassDeleteButton
                     && $resource->can('massDelete')
             )
             ->error()
-            ->icon('heroicons.outline.trash')
+            ->icon('trash')
             ->showInLine();
     }
 }
