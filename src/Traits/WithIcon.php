@@ -45,8 +45,8 @@ trait WithIcon
         }
 
         return rescue(
-            fn() => $icon->render(),
-            rescue: fn(): string => '',
+            fn () => $icon->render(),
+            rescue: fn (): string => '',
             report: false
         );
     }
