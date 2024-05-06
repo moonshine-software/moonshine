@@ -113,7 +113,7 @@ class HasOne extends ModelRelationField implements HasFields
                     && ! $field->hasUpdateOnPreviewCustomUrl()
                 ) {
                     $field->setUpdateOnPreviewUrl(
-                        moonshineRouter()->updateColumn(
+                        fn (): string => moonshineRouter()->updateColumn(
                             $field->getResourceUriForUpdate(),
                             $field->getPageUriForUpdate(),
                             $this->getRelationName(),
