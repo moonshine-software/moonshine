@@ -94,7 +94,6 @@ final class AppliesRegister
     /**
      * @param  class-string<Field>  $fieldClass
      * @param  class-string<ApplyContract>  $applyClass
-     * @return $this
      */
     public function add(string $fieldClass, string $applyClass): AppliesRegister
     {

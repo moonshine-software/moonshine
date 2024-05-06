@@ -15,7 +15,6 @@ use MoonShine\Contracts\ApplyContract;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Field;
 use MoonShine\QueryTags\QueryTag;
-use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Attributes;
 use MoonShine\Support\DBOperators;
 use Throwable;
