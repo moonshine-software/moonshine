@@ -110,7 +110,7 @@ class HasOne extends ModelRelationField implements HasFields
                 if (
                     $field instanceof HasUpdateOnPreview
                     && $field->isUpdateOnPreview()
-                    && !$field->hasUpdateOnPreviewCustomUrl()
+                    && ! $field->hasUpdateOnPreviewCustomUrl()
                 ) {
                     $field->setUpdateOnPreviewUrl(
                         moonshineRouter()->updateColumn(
@@ -168,7 +168,7 @@ class HasOne extends ModelRelationField implements HasFields
 
         return FormBuilder::make($action)
             ->reactiveUrl(
-                fn(): string => moonshineRouter()
+                fn (): string => moonshineRouter()
                     ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
             )
             ->name('crud')

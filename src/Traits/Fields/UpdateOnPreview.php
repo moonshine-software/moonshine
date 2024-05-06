@@ -127,7 +127,7 @@ trait UpdateOnPreview
 
     public function hasUpdateOnPreviewCustomUrl(): bool
     {
-        return !is_null($this->updateOnPreviewCustomUrl);
+        return ! is_null($this->updateOnPreviewCustomUrl);
     }
 
     public function getUpdateOnPreviewCustomUrl(): ?Closure

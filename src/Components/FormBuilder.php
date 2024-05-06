@@ -135,7 +135,7 @@ final class FormBuilder extends RowComponent
 
     private function getReactiveUrl(): string
     {
-        if(!is_null($this->reactiveUrl)) {
+        if(! is_null($this->reactiveUrl)) {
             return value($this->reactiveUrl, $this);
         }
 

@@ -245,7 +245,7 @@ class HasMany extends ModelRelationField implements HasFields
                 if (
                     $field instanceof HasUpdateOnPreview
                     && $field->isUpdateOnPreview()
-                    && !$field->hasUpdateOnPreviewCustomUrl()
+                    && ! $field->hasUpdateOnPreviewCustomUrl()
                 ) {
                     $field->setUpdateOnPreviewUrl(
                         moonshineRouter()->updateColumn(
