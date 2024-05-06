@@ -9,6 +9,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use MoonShine\Applies\AppliesRegister;
 use MoonShine\AssetManager\AssetManager;
+use MoonShine\ColorManager\ColorManager;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
@@ -24,7 +25,6 @@ use MoonShine\Pages\Page;
 use MoonShine\Support\Backtrace;
 use MoonShine\Support\MemoizeRepository;
 use MoonShine\Support\SelectOptions;
-use MoonShine\ColorManager\ColorManager;
 
 if (! function_exists('moonshine')) {
     function moonshine(): MoonShine

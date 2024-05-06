@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Octane\Events\RequestHandled;
 use MoonShine\Applies\AppliesRegister;
 use MoonShine\AssetManager\AssetManager;
+use MoonShine\ColorManager\ColorManager;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeApplyCommand;
 use MoonShine\Commands\MakeComponentCommand;
@@ -38,7 +39,6 @@ use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
-use MoonShine\ColorManager\ColorManager;
 
 class MoonShineServiceProvider extends ServiceProvider
 {

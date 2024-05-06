@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\ApplyContract;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Text;
@@ -23,7 +22,7 @@ it('add new field apply', function (): void {
 
     $this->post('/', ['column' => '!']);
 
-    $data = $field->apply(fn(array $data) => $data, [
+    $data = $field->apply(fn (array $data) => $data, [
         'column' => 'hello',
     ]);
 
@@ -48,7 +47,7 @@ it('add new filter apply', function (): void {
         $field->requestValue()
     );
 
-    if(!is_null($filterApply)) {
+    if(! is_null($filterApply)) {
         $field->onApply($filterApply->apply($field));
     }
 

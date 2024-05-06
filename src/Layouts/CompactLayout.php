@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Layouts;
 
 use MoonShine\AssetManager\Css;
+use MoonShine\ColorManager\ColorManager;
 use MoonShine\Components\Breadcrumbs;
 use MoonShine\Components\Components;
 use MoonShine\Components\Layout\Block;
@@ -29,7 +30,6 @@ use MoonShine\Components\Layout\TopBar;
 use MoonShine\Components\Layout\Wrapper;
 use MoonShine\Components\When;
 use MoonShine\Pages\Page;
-use MoonShine\ColorManager\ColorManager;
 
 final class CompactLayout extends AppLayout
 {

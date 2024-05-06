@@ -7,10 +7,10 @@ namespace MoonShine;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
+use MoonShine\ColorManager\ColorManager;
 use MoonShine\Components\Layout\{LayoutBuilder};
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\Pages\Page;
-use MoonShine\ColorManager\ColorManager;
 
 abstract class MoonShineLayout
 {
