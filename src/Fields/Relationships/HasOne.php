@@ -99,7 +99,6 @@ class HasOne extends ModelRelationField implements HasFields
     /**
      * HasOne/HasMany mapper with updateOnPreview
      * TODO refactor in 3.0
-     * @return Closure
      */
     private function getFieldsOnPreview(): Closure
     {
@@ -169,7 +168,7 @@ class HasOne extends ModelRelationField implements HasFields
 
         return FormBuilder::make($action)
             ->reactiveUrl(
-                fn() => moonshineRouter()
+                fn(): string => moonshineRouter()
                     ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
             )
             ->name('crud')

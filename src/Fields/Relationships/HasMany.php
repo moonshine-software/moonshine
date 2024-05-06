@@ -234,7 +234,6 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * HasOne/HasMany mapper with updateOnPreview
      * TODO refactor in 3.0
-     * @return Closure
      */
     private function getFieldsOnPreview(): Closure
     {

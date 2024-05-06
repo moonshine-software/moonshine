@@ -90,7 +90,7 @@ final class HasManyButton
                 title: fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: fn (?Model $data): string => (string) FormBuilder::make($action($data))
                     ->reactiveUrl(
-                        fn() => moonshineRouter()
+                        fn(): string => moonshineRouter()
                             ->reactive(key: $data?->getKey(), page: $resource->formPage(), resource: $resource)
                     )
                     ->name('crud')
