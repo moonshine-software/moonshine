@@ -19,7 +19,7 @@ trait UpdateOnPreview
 
     protected ?Closure $updateOnPreviewUrl = null;
 
-    protected ?Closure $url = null;
+    protected ?Closure $updateOnPreviewCustomUrl = null;
 
     protected ?string $updateColumnResourceUri = null;
 
@@ -80,7 +80,7 @@ trait UpdateOnPreview
             return $this;
         }
 
-        $this->url = $url;
+        $this->updateOnPreviewCustomUrl = $url;
 
         $resource ??= moonshineRequest()->getResource();
 
@@ -98,7 +98,7 @@ trait UpdateOnPreview
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $this->getUrl() ?? $this->getDefaultUpdateRoute(),
+            $this->getUpdateOnPreviewCustomUrl() ?? $this->getDefaultUpdateRoute(),
             $events
         );
     }
@@ -125,9 +125,14 @@ trait UpdateOnPreview
         return $this->updateOnPreview;
     }
 
-    public function getUrl(): ?Closure
+    public function hasUpdateOnPreviewCustomUrl(): bool
     {
-        return $this->url;
+        return !is_null($this->updateOnPreviewCustomUrl);
+    }
+
+    public function getUpdateOnPreviewCustomUrl(): ?Closure
+    {
+        return $this->updateOnPreviewCustomUrl;
     }
 
     public function getResourceUriForUpdate(): ?string

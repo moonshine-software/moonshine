@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields\Relationships;
 
+use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
@@ -12,6 +13,7 @@ use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Fields\Field;
@@ -86,12 +88,45 @@ class HasOne extends ModelRelationField implements HasFields
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
-            ->fields($this->preparedFields())
+            ->fields($this->getFieldsOnPreview())
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
             ->vertical()
             ->render();
+    }
+
+    /**
+     * HasOne/HasMany mapper with updateOnPreview
+     * TODO refactor in 3.0
+     * @return Closure
+     */
+    private function getFieldsOnPreview(): Closure
+    {
+        return function () {
+            $fields = $this->preparedFields();
+
+            // the onlyFields method is needed to exclude stack fields
+            $fields->onlyFields()->each(function (Field $field): void {
+                if (
+                    $field instanceof HasUpdateOnPreview
+                    && $field->isUpdateOnPreview()
+                    && !$field->hasUpdateOnPreviewCustomUrl()
+                ) {
+                    $field->setUpdateOnPreviewUrl(
+                        moonshineRouter()->updateColumn(
+                            $field->getResourceUriForUpdate(),
+                            $field->getPageUriForUpdate(),
+                            $this->getRelationName(),
+                        )
+                    );
+                }
+
+                $field->setParent($this);
+            });
+
+            return $fields->toArray();
+        };
     }
 
     /**
@@ -133,8 +168,12 @@ class HasOne extends ModelRelationField implements HasFields
         $isAsync = ! is_null($item) && ($this->isAsync() || $resource->isAsync());
 
         return FormBuilder::make($action)
+            ->reactiveUrl(
+                fn() => moonshineRouter()
+                    ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
+            )
+            ->name('crud')
             ->switchFormMode($isAsync)
-            ->name($this->getRelationName())
             ->fields(
                 $fields->when(
                     ! is_null($item),
