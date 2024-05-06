@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Theme;
+namespace MoonShine\ColorManager;
 
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Support\Colors;
 
 /**
  * @method self primary(string $value, ?int $shade = null, bool $dark = false)

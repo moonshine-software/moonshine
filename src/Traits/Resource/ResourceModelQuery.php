@@ -442,11 +442,7 @@ trait ResourceModelQuery
                 return;
             }
 
-            $filterApply = findFieldApply(
-                $filter,
-                'filters',
-                ModelResource::class
-            );
+            $filterApply = appliesRegister()->findByField($filter, 'filters');
 
             $defaultApply = static fn (Builder $query): Builder => $query->where(
                 $filter->getColumn(),

@@ -60,11 +60,7 @@ trait Applies
         }
 
         if (! is_closure($this->onApply)) {
-            $classApply = findFieldApply(
-                $this,
-                'fields',
-                'all',
-            );
+            $classApply = appliesRegister()->findByField($this);
 
             $this->when(
                 ! is_null($classApply),

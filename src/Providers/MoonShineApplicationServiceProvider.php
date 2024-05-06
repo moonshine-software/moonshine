@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use MoonShine\Applies\AppliesRegister;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
 use Throwable;
@@ -22,6 +23,10 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
             ->resources($this->resources())
             ->pages($this->pages())
             ->init();
+
+        $this->appliesRegister(
+            appliesRegister()
+        );
     }
 
     /**
@@ -38,5 +43,10 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     protected function pages(): array
     {
         return [];
+    }
+
+    protected function appliesRegister(AppliesRegister $register): AppliesRegister
+    {
+        return $register;
     }
 }

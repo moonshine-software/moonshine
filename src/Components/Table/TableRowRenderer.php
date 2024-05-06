@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Support;
+namespace MoonShine\Components\Table;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\TableBuilder;
-use MoonShine\Table\TableRow;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithViewRenderer;
 use Throwable;
 
 /**
+ * @internal
  * @method static static make(TableBuilder $table, string|int $key, int $index = 0)
  */
 final class TableRowRenderer
