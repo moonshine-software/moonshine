@@ -111,7 +111,7 @@ final class MoonShineRouter
         ?string $pageUri = null,
         ?string $relation = null,
     ): Closure {
-        return static fn ($item): ?string => $item->exists ? self::to(
+        return static fn ($item): ?string => $item instanceof Model && $item->exists ? self::to(
             'column.' . ($relation ? 'relation' : 'resource') . '.update-column',
             array_filter([
                 'resourceItem' => $item->getKey(),

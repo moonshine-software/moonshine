@@ -10,7 +10,7 @@ interface HasUpdateOnPreview
 {
     public function isUpdateOnPreview(): bool;
 
-    public function getUrl(): ?Closure;
+    public function getUpdateOnPreviewCustomUrl(): ?Closure;
 
     public function getResourceUriForUpdate(): ?string;
 

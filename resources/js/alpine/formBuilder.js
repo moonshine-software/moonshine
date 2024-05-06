@@ -25,9 +25,9 @@ export default (name = '', reactive = {}) => ({
         componentRequestData.withAfterCallback(function (data) {
           for (let [column, html] of Object.entries(data.fields)) {
             if (typeof html === 'string') {
-              const wrapper = document.querySelector('.field-' + column + '-wrapper')
+              const wrapper = t.$root.querySelector('.field-' + column + '-wrapper')
               const element =
-                wrapper === null ? document.querySelector('.field-' + column + '-element') : wrapper
+                wrapper === null ? t.$root.querySelector('.field-' + column + '-element') : wrapper
 
               element.outerHTML = html
 
@@ -36,7 +36,7 @@ export default (name = '', reactive = {}) => ({
                 focused !== document.body &&
                 isTextInput(focused) &&
                 !containsAttribute(focused, 'x-model.lazy')
-                  ? document.getElementById(focused.id)
+                  ? t.$root.querySelector('#' + focused.id)
                   : null
 
               if (input) {

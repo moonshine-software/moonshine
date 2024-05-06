@@ -224,11 +224,44 @@ class HasMany extends ModelRelationField implements HasFields
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
-            ->fields($this->preparedClonedFields()->toArray())
+            ->fields($this->getFieldsOnPreview())
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
             ->render();
+    }
+
+    /**
+     * HasOne/HasMany mapper with updateOnPreview
+     * TODO refactor in 3.0
+     * @return Closure
+     */
+    private function getFieldsOnPreview(): Closure
+    {
+        return function () {
+            $fields = $this->preparedClonedFields();
+
+            // the onlyFields method is needed to exclude stack fields
+            $fields->onlyFields()->each(function (Field $field): void {
+                if (
+                    $field instanceof HasUpdateOnPreview
+                    && $field->isUpdateOnPreview()
+                    && !$field->hasUpdateOnPreviewCustomUrl()
+                ) {
+                    $field->setUpdateOnPreviewUrl(
+                        moonshineRouter()->updateColumn(
+                            $field->getResourceUriForUpdate(),
+                            $field->getPageUriForUpdate(),
+                            $this->getRelationName(),
+                        )
+                    );
+                }
+
+                $field->setParent($this);
+            });
+
+            return $fields->toArray();
+        };
     }
 
     protected function linkValue(): MoonShineRenderable
@@ -259,32 +292,6 @@ class HasMany extends ModelRelationField implements HasFields
             relation: $this->getRelationName()
         );
 
-        $getFields = function () {
-            $fields = $this->preparedClonedFields();
-
-            // the onlyFields method is needed to exclude stack fields
-            $fields->onlyFields()->each(function (Field $field): void {
-                if (
-                    $field instanceof HasUpdateOnPreview
-                    && $field->isUpdateOnPreview()
-                    && is_null($field->getUrl())
-                ) {
-                    $field->setUpdateOnPreviewUrl(
-                        moonshineRouter()->updateColumn(
-                            $field->getResourceUriForUpdate(),
-                            $field->getPageUriForUpdate(),
-                            $this->getRelationName(),
-                        )
-                    );
-                }
-
-                $field->setParent($this);
-            });
-
-            return $fields->toArray();
-        };
-
-
         $parentId = $this->getRelatedModel()?->getKey();
 
         $redirectAfter = $this->isAsync()
@@ -300,7 +307,7 @@ class HasMany extends ModelRelationField implements HasFields
                 fn (TableBuilder $table): TableBuilder => $table->searchable()
             )
             ->name($this->getRelationName())
-            ->fields($getFields)
+            ->fields($this->getFieldsOnPreview())
             ->cast($resource->getModelCast())
             ->when(
                 $this->isNowOnForm(),

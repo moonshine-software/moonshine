@@ -48,6 +48,8 @@ final class FormBuilder extends RowComponent
 
     protected ?Closure $onBeforeFieldsRender = null;
 
+    protected Closure|string|null $reactiveUrl = null;
+
     public function __construct(
         protected string $action = '',
         protected string $method = 'POST',
@@ -122,6 +124,22 @@ final class FormBuilder extends RowComponent
             asyncEvents: $events,
             asyncCallback: $callback
         );
+    }
+
+    public function reactiveUrl(Closure|string $reactiveUrl): self
+    {
+        $this->reactiveUrl = $reactiveUrl;
+
+        return $this;
+    }
+
+    private function getReactiveUrl(): string
+    {
+        if(!is_null($this->reactiveUrl)) {
+            return value($this->reactiveUrl, $this);
+        }
+
+        return moonshineRouter()->reactive();
     }
 
     public function method(string $method): self
@@ -309,7 +327,9 @@ final class FormBuilder extends RowComponent
 
         $xInit = json_encode([
             'whenFields' => $whenFields,
-            'reactiveUrl' => $reactiveFields->isNotEmpty() ? moonshineRouter()->reactive() : '',
+            'reactiveUrl' => $reactiveFields->isNotEmpty()
+                ? $this->getReactiveUrl()
+                : '',
         ], JSON_THROW_ON_ERROR);
 
         $this->customAttributes([
