@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Components\Table\TableRowRenderer;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Support\DBOperators;
-use MoonShine\Support\TableRowRenderer;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 

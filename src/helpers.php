@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
+use MoonShine\Applies\AppliesRegister;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
@@ -18,14 +19,14 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
-use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Backtrace;
 use MoonShine\Support\MemoizeRepository;
 use MoonShine\Support\SelectOptions;
-use MoonShine\Theme\ColorManager;
+use MoonShine\ColorManager\ColorManager;
 
 if (! function_exists('moonshine')) {
     function moonshine(): MoonShine
@@ -34,10 +35,10 @@ if (! function_exists('moonshine')) {
     }
 }
 
-if (! function_exists('moonshineRegister')) {
-    function moonshineRegister(): MoonShineRegister
+if (! function_exists('appliesRegister')) {
+    function appliesRegister(): AppliesRegister
     {
-        return app(MoonShineRegister::class);
+        return app(AppliesRegister::class);
     }
 }
 
@@ -118,27 +119,6 @@ if (! function_exists('actionBtn')) {
         return ActionButton::make($label, $url, $item);
     }
 }
-
-if (! function_exists('findFieldApply')) {
-    function findFieldApply(Field $field, string $type, string $for): ?ApplyContract
-    {
-        if($field->hasOnApply()) {
-            return null;
-        }
-
-        $applyClass = moonshineRegister()
-            ->{$type}()
-            ->for($for)
-            ->get($field::class);
-
-        return
-            ! is_null($applyClass)
-            && class_exists($applyClass)
-                ? new $applyClass()
-                : null;
-    }
-}
-
 
 if (! function_exists('formErrors')) {
     function formErrors(

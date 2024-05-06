@@ -29,7 +29,7 @@ use MoonShine\Components\Layout\TopBar;
 use MoonShine\Components\Layout\Wrapper;
 use MoonShine\Components\When;
 use MoonShine\Pages\Page;
-use MoonShine\Theme\ColorManager;
+use MoonShine\ColorManager\ColorManager;
 
 final class CompactLayout extends AppLayout
 {

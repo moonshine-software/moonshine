@@ -17,22 +17,27 @@ use Throwable;
 final class MoonShineRouter implements NativeStringable
 {
     use Conditionable;
+
     public const ROUTE_PREFIX = 'moonshine';
+
     public function __construct(
         private string $name = '',
         private array $params = [],
     ) {
     }
+
     public function withName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
+
     public function getRawName(): string
     {
         return $this->name;
     }
+
     public function getName(string $name = ''): string
     {
         return str($this->getRawName())
@@ -45,6 +50,7 @@ final class MoonShineRouter implements NativeStringable
             )
             ->value();
     }
+
     public function withParams(array $params): self
     {
         $this->params = array_merge(
@@ -54,6 +60,7 @@ final class MoonShineRouter implements NativeStringable
 
         return $this;
     }
+
     public function withPage(?Page $page = null): self
     {
         if (! is_null($pageUri = $this->extractPageUri($page))) {
@@ -64,12 +71,14 @@ final class MoonShineRouter implements NativeStringable
 
         return $this;
     }
+
     private function extractPageUri(?Page $page = null): ?string
     {
         return $page
             ? $page->uriKey()
             : $this->getParam('pageUri', moonshineRequest()->getPageUri());
     }
+
     public function withResource(?ResourceContract $resource = null): self
     {
         if (! is_null($resourceUri = $this->extractResourceUri($resource))) {
@@ -80,12 +89,14 @@ final class MoonShineRouter implements NativeStringable
 
         return $this;
     }
+
     private function extractResourceUri(?ResourceContract $resource = null): ?string
     {
         return $resource
             ? $resource->uriKey()
             : $this->getParam('resourceUri', moonshineRequest()->getResourceUri());
     }
+
     public function withResourceItem(int|string|null $key = null, ?ResourceContract $resource = null): self
     {
         if (! is_null($key = $this->extractResourceItem($key, $resource))) {
@@ -96,6 +107,7 @@ final class MoonShineRouter implements NativeStringable
 
         return $this;
     }
+
     private function extractResourceItem(
         int|string|null $key = null,
         ?ResourceContract $resource = null
@@ -108,6 +120,7 @@ final class MoonShineRouter implements NativeStringable
 
         return $key;
     }
+
     public function getParams(array $params = []): array
     {
         return array_filter(
@@ -118,21 +131,25 @@ final class MoonShineRouter implements NativeStringable
             static fn ($value) => filled($value)
         );
     }
+
     public function getParam(string $key, mixed $default = null): mixed
     {
         return data_get($this->getParams(), $key, $default);
     }
+
     public function forgetParam(string $key): self
     {
         data_forget($this->params, $key);
 
         return $this;
     }
+
     public function flushState(): void
     {
         $this->params = [];
         $this->name = '';
     }
+
     public function to(string $name = '', array $params = []): string
     {
         return route(
@@ -140,6 +157,7 @@ final class MoonShineRouter implements NativeStringable
             $this->getParams($params)
         );
     }
+
     public function asyncMethod(
         string $method,
         ?string $message = null,
@@ -153,6 +171,7 @@ final class MoonShineRouter implements NativeStringable
             ...$params,
         ]);
     }
+
     public function reactive(
         int|string|null $key = null,
         ?Page $page = null,
@@ -163,6 +182,7 @@ final class MoonShineRouter implements NativeStringable
             ->withResourceItem($key ?? $resource?->getItem()?->getKey())
             ->to('async.reactive');
     }
+
     public function asyncComponent(
         string $name,
         array $additionally = []
@@ -176,6 +196,7 @@ final class MoonShineRouter implements NativeStringable
                 ...$additionally,
             ]);
     }
+
     public function updateColumn(
         string $resourceUri,
         ?string $pageUri = null,
@@ -192,6 +213,7 @@ final class MoonShineRouter implements NativeStringable
             ]
         );
     }
+
     public function toRelation(
         string $action,
         int|string|null $resourceItem = null,
@@ -208,6 +230,7 @@ final class MoonShineRouter implements NativeStringable
             '_relation' => $relation,
         ]);
     }
+
     /**
      * @throws Throwable
      */
@@ -260,12 +283,14 @@ final class MoonShineRouter implements NativeStringable
             ? redirect($targetPage->route($params))
             : $targetPage->route($params);
     }
+
     public function home(): string
     {
         return route(
             config('moonshine.route.index', 'moonshine.index')
         );
     }
+
     /**
      * @param  class-string  $class
      */
@@ -276,10 +301,12 @@ final class MoonShineRouter implements NativeStringable
             ->kebab()
             ->value();
     }
+
     public function toString(): string
     {
         return $this->to();
     }
+
     public function __toString(): string
     {
         return $this->toString();

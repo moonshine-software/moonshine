@@ -10,7 +10,7 @@ use MoonShine\AssetManager\Js;
 use MoonShine\Components\Layout\{LayoutBuilder};
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\Pages\Page;
-use MoonShine\Theme\ColorManager;
+use MoonShine\ColorManager\ColorManager;
 
 abstract class MoonShineLayout
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Table;
+namespace MoonShine\Components\Table;
 
 use Closure;
 use MoonShine\Components\ActionButtons\ActionButtons;
@@ -15,6 +15,9 @@ use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithViewRenderer;
 use Throwable;
 
+/**
+ * @internal
+ */
 final class TableRow implements MoonShineRenderable
 {
     use Makeable;

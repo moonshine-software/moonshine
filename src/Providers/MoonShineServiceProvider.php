@@ -18,6 +18,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Octane\Events\RequestHandled;
+use MoonShine\Applies\AppliesRegister;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\Commands\InstallCommand;
 use MoonShine\Commands\MakeApplyCommand;
@@ -35,10 +36,9 @@ use MoonShine\Commands\PublishCommand;
 use MoonShine\Http\Middleware\ChangeLocale;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
-use MoonShine\MoonShineRegister;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
-use MoonShine\Theme\ColorManager;
+use MoonShine\ColorManager\ColorManager;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -115,7 +115,7 @@ class MoonShineServiceProvider extends ServiceProvider
 
         $this->app->singleton(MenuManager::class);
         $this->app->singleton(AssetManager::class);
-        $this->app->singleton(MoonShineRegister::class);
+        $this->app->singleton(AppliesRegister::class);
 
         $this->app->bind(MoonShineRouter::class);
 
