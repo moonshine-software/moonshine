@@ -50,6 +50,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?ActionButton $creatableButton = null;
 
+    protected ?Closure $modifyBuilder = null;
+
     public function creatable(
         Closure|bool|null $condition = null,
         ?ActionButton $button = null,
@@ -182,6 +184,17 @@ class HasMany extends ModelRelationField implements HasFields
             ? $fields->map(fn (Field $field): Field => (clone $field))
             //If there are no fields, then the resource fields always return new objects
             : $fields;
+    }
+
+    /**
+     * @param Closure $builder
+     * @return $this
+     */
+    public function modifyBuilder(Closure $builder): static
+    {
+        $this->modifyBuilder = $builder;
+
+        return $this;
     }
 
     protected function linkPreview(): View|string
@@ -369,7 +382,10 @@ class HasMany extends ModelRelationField implements HasFields
             $casted = $this->getRelatedModel();
             $relation = $casted?->{$this->getRelationName()}();
             $resource = $this->getResource();
-            $resource->customBuilder($relation);
+
+            $builder = $this->modifyBuilder ? value($this->modifyBuilder, $relation) : $relation;
+
+            $resource->customBuilder($builder);
 
             $this->setValue($resource->paginate());
         }
