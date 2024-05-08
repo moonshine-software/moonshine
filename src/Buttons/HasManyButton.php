@@ -111,7 +111,7 @@ final class HasManyButton
                             array_filter([
                                 $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
                                 ...$field->getRelation() instanceof MorphOneOrMany
-                                    ? [$field->getRelation()?->getMorphType() => $parent::class]
+                                    ? [$field->getRelation()?->getMorphType() => $parent?->getMorphClass()]
                                     : [],
                             ], static fn ($value) => filled($value)),
                             $resource->getModelCast()
