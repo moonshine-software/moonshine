@@ -196,7 +196,7 @@ class HasOne extends ModelRelationField implements HasFields
                 $item?->attributesToArray() ?? array_filter([
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
                 ...$this->getRelation() instanceof MorphOneOrMany
-                    ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()::class]
+                    ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()?->getMorphClass()]
                     : [],
             ], static fn ($value) => filled($value)),
                 $resource->getModelCast()
