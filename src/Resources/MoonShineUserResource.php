@@ -52,7 +52,7 @@ class MoonShineUserResource extends ModelResource
                             formatted: static fn (MoonshineUserRole $model) => $model->name,
                             resource: MoonShineUserRoleResource::class,
                         )
-                            ->valuesQuery(fn(Builder $q) => $q->select(['id', 'name']))
+                            ->valuesQuery(fn (Builder $q) => $q->select(['id', 'name']))
                             ->badge('purple'),
 
                         Text::make(__('moonshine::ui.resource.name'), 'name')
