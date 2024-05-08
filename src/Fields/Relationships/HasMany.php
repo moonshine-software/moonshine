@@ -50,10 +50,13 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?ActionButton $creatableButton = null;
 
+    protected ?Closure $modifyBuilder = null;
+
     public function creatable(
         Closure|bool|null $condition = null,
-        ?ActionButton $button = null,
-    ): static {
+        ?ActionButton     $button = null,
+    ): static
+    {
         $this->isCreatable = Condition::boolean($condition, true);
         $this->creatableButton = $button;
 
@@ -86,7 +89,7 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        if (! $this->isCreatable()) {
+        if (!$this->isCreatable()) {
             return null;
         }
 
@@ -158,7 +161,7 @@ class HasMany extends ModelRelationField implements HasFields
      */
     public function preparedFields(): Fields
     {
-        if (! $this->hasFields()) {
+        if (!$this->hasFields()) {
             $fields = $this->getResource()->getIndexFields();
 
             $this->fields($fields->toArray());
@@ -179,9 +182,16 @@ class HasMany extends ModelRelationField implements HasFields
         $fields = $this->preparedFields();
 
         return $this->hasFields()
-            ? $fields->map(fn (Field $field): Field => (clone $field))
+            ? $fields->map(fn(Field $field): Field => (clone $field))
             //If there are no fields, then the resource fields always return new objects
             : $fields;
+    }
+
+    public function modifyBuilder(Closure $builder): static
+    {
+        $this->modifyBuilder = $builder;
+
+        return $this;
     }
 
     protected function linkPreview(): View|string
@@ -191,7 +201,7 @@ class HasMany extends ModelRelationField implements HasFields
         $countItems = $this->toValue()->count();
 
         if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
+            $relationName = str_replace('-resource', '', (string)moonshineRequest()->getResourceUri());
         }
 
         return ActionButton::make(
@@ -217,7 +227,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         if ($this->isRawMode()) {
             return $items
-                ->map(fn (Model $item) => data_get($item, $this->getResourceColumn()))
+                ->map(fn(Model $item) => data_get($item, $this->getResourceColumn()))
                 ->implode(';');
         }
 
@@ -245,7 +255,7 @@ class HasMany extends ModelRelationField implements HasFields
                 if (
                     $field instanceof HasUpdateOnPreview
                     && $field->isUpdateOnPreview()
-                    && ! $field->hasUpdateOnPreviewCustomUrl()
+                    && !$field->hasUpdateOnPreviewCustomUrl()
                 ) {
                     $field->setUpdateOnPreviewUrl(
                         moonshineRouter()->updateColumn(
@@ -266,7 +276,7 @@ class HasMany extends ModelRelationField implements HasFields
     protected function linkValue(): MoonShineRenderable
     {
         if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
+            $relationName = str_replace('-resource', '', (string)moonshineRequest()->getResourceUri());
         }
 
         return
@@ -296,31 +306,31 @@ class HasMany extends ModelRelationField implements HasFields
         $redirectAfter = $this->isAsync()
             ? ''
             : moonshineRequest()
-                ->getResource()
-                ?->formPageUrl($parentId) ?? '';
+            ->getResource()
+            ?->formPageUrl($parentId) ?? '';
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
             ->when(
-                $this->isSearchable() && ! empty($this->getResource()->search()),
-                fn (TableBuilder $table): TableBuilder => $table->searchable()
+                $this->isSearchable() && !empty($this->getResource()->search()),
+                fn(TableBuilder $table): TableBuilder => $table->searchable()
             )
             ->name($this->getRelationName())
             ->fields($this->getFieldsOnPreview())
             ->cast($resource->getModelCast())
             ->when(
                 $this->isNowOnForm(),
-                fn (TableBuilder $table): TableBuilder => $table->withNotFound()
+                fn(TableBuilder $table): TableBuilder => $table->withNotFound()
             )
             ->when(
-                ! is_null($resource->trAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                !is_null($resource->trAttributes()),
+                fn(TableBuilder $table): TableBuilder => $table->trAttributes(
                     $resource->trAttributes()
                 )
             )
             ->when(
-                ! is_null($resource->tdAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                !is_null($resource->tdAttributes()),
+                fn(TableBuilder $table): TableBuilder => $table->tdAttributes(
                     $resource->tdAttributes()
                 )
             )
@@ -369,7 +379,12 @@ class HasMany extends ModelRelationField implements HasFields
             $casted = $this->getRelatedModel();
             $relation = $casted?->{$this->getRelationName()}();
             $resource = $this->getResource();
-            $resource->customBuilder($relation);
+
+            $resource->customBuilder(
+                is_null($this->modifyBuilder)
+                    ? $relation
+                    : value($this->modifyBuilder, $relation)
+            );
 
             $this->setValue($resource->paginate());
         }
@@ -390,7 +405,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function resolveOnApply(): ?Closure
     {
-        return static fn ($item) => $item;
+        return static fn($item) => $item;
     }
 
     /**
@@ -401,7 +416,7 @@ class HasMany extends ModelRelationField implements HasFields
         $this->getResource()
             ->getFormFields()
             ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->resolveFill($data->toArray(), $data)->afterDestroy($data));
+            ->each(fn(Field $field): mixed => $field->resolveFill($data->toArray(), $data)->afterDestroy($data));
 
         return $data;
     }
