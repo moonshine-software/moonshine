@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use MoonShine\Exceptions\FieldException;
 use Throwable;
 
@@ -90,57 +89,30 @@ trait WithRelatedValues
     public function values(): array
     {
         $query = $this->resolveValuesQuery();
-        $related = $query->getModel();
 
-        $formatted = is_closure($this->formattedValueCallback());
+        $formatted = ! is_null($this->formattedValueCallback());
 
-        // #MongoDB Models fix
-        if(! $formatted && ! str_starts_with((string) $query::class, 'Illuminate\Database')) {
-            $this->setFormattedValueCallback(fn ($data) => data_get($data, $this->getResourceColumn()));
-            $formatted = true;
-        }
+        $values = $this->memoizeValues ?? $this->resolveRelatedQuery($query);
+        $this->memoizeValues = $values;
 
-        if ($formatted) {
-            $values = $this->memoizeValues ?? $this->resolveRelatedQuery($query);
-            $this->memoizeValues = $values;
+        $getValue = fn (Model $item) => $formatted ? value(
+            $this->formattedValueCallback(),
+            $item,
+            $this
+        ) : data_get($item, $this->getResourceColumn());
 
-            $values = $values->mapWithKeys(
-                fn ($item): array => [
-                    $item->getKey() => value(
-                        $this->formattedValueCallback(),
-                        $item,
-                        $this
-                    ),
-                ]
-            );
-        } else {
-            $table = DB::getTablePrefix() . $related->getTable();
-            $key = "$table.{$related->getKeyName()}";
-
-            $column = $key;
-            $resourceColumn = $this->getResourceColumn();
-            if (! $related->hasAppended($resourceColumn)) {
-                $column = "$table.$resourceColumn";
-            }
-
-            $values = $this->memoizeValues
-                ?? $this->resolveRelatedQuery(
-                    $query->selectRaw(
-                        implode(',', [$key, $column, ...$this->relatedColumns])
-                    )
-                );
-
-            $this->memoizeValues = $values;
-
-            $values = $values->pluck($this->getResourceColumn(), $related->getKeyName());
-        }
+        $values = $values->mapWithKeys(
+            fn ($item): array => [
+                $item->getKey() => $getValue($item),
+            ]
+        );
 
         $value = $this->toValue();
 
-        if($value instanceof Model && $value->exists && $values->isEmpty()) {
+        if ($value instanceof Model && $value->exists && $values->isEmpty()) {
             $values->put(
                 $value->getKey(),
-                data_get($value, $this->getResourceColumn())
+                $getValue($value)
             );
         }
 
