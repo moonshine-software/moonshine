@@ -84,7 +84,6 @@ class ProfilePage extends Page
     {
         return [
             FormBuilder::make(action([ProfileController::class, 'store']))
-                ->async()
                 ->customAttributes([
                     'enctype' => 'multipart/form-data',
                 ])
