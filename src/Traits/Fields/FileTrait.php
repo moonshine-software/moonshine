@@ -198,23 +198,10 @@ trait FileTrait
     {
         return function ($item) {
             $requestValue = $this->requestValue();
+            $oldValues = request()->collect($this->hiddenOldValuesKey());
+            $values = collect(data_get($item, $this->getColumn(), []));
 
-            if (
-                $requestValue
-                && ! $this->isMultiple()
-                && $this->isDeleteFiles()
-                && $requestValue->hashName()
-            ) {
-                $this->checkAndDelete(
-                    request()->input($this->hiddenOldValuesKey()),
-                    $requestValue->hashName()
-                );
-            }
-
-            $oldValues = request()
-                ->collect($this->hiddenOldValuesKey());
-
-            data_forget($item, 'hidden_' . $this->getColumn());
+            data_forget($item, $this->hiddenOldValuesKey());
 
             $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
 
@@ -234,6 +221,12 @@ trait FileTrait
                     $saveValue = $this->store($requestValue);
                 }
             }
+
+            $removedValues = $values->diff(
+                $saveValue
+            );
+
+            $removedValues->each(fn (string $file) => $this->deleteFile($file));
 
             return data_set($item, $this->getColumn(), $saveValue);
         };

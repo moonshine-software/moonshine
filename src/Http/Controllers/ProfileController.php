@@ -24,11 +24,13 @@ class ProfileController extends MoonShineController
         $page = new (config('moonshine.pages.profile', ProfilePage::class))();
         $fields = Fields::make($page->fields());
 
+        /** @var Image $image */
         $image = $fields
             ->onlyFields()
             ->findByClass(Image::class);
 
         $data = $request->validated();
+
         $resultData = [
             config(
                 'moonshine.auth.fields.username',
@@ -46,16 +48,9 @@ class ProfileController extends MoonShineController
             unset($data['password']);
         }
 
-        if ($image && $request->hasFile('avatar')) {
-            $resultData[config(
-                'moonshine.auth.fields.avatar',
-                'avatar'
-            )] = $image->store($request->file('avatar'));
-        } else {
-            $resultData[config(
-                'moonshine.auth.fields.avatar',
-                'avatar'
-            )] = $request->get('hidden_avatar');
+
+        if(! is_null($image)) {
+            $this->applyImage($image, $resultData);
         }
 
         $resultData = array_filter(
@@ -76,5 +71,30 @@ class ProfileController extends MoonShineController
         );
 
         return back();
+    }
+
+    private function applyImage(Image $image, array &$result): void
+    {
+        $avatarColumn = config(
+            'moonshine.auth.fields.avatar',
+            'avatar'
+        );
+
+        $avatar = request()->file('avatar');
+        $oldAvatar = request()->get('hidden_avatar', '');
+        $currentAvatar = data_get(request()->user(), $avatarColumn, '');
+
+        if (! is_null($avatar)) {
+            $result[$avatarColumn] = $image->store($avatar);
+            $image->deleteFile($oldAvatar);
+
+            return;
+        }
+
+        $result[$avatarColumn] = $oldAvatar;
+
+        if($oldAvatar !== $currentAvatar) {
+            $image->deleteFile($currentAvatar);
+        }
     }
 }

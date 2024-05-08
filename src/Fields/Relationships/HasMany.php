@@ -50,9 +50,11 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?ActionButton $creatableButton = null;
 
+    protected ?Closure $modifyBuilder = null;
+
     public function creatable(
         Closure|bool|null $condition = null,
-        ?ActionButton $button = null,
+        ?ActionButton     $button = null,
     ): static {
         $this->isCreatable = Condition::boolean($condition, true);
         $this->creatableButton = $button;
@@ -184,6 +186,13 @@ class HasMany extends ModelRelationField implements HasFields
             : $fields;
     }
 
+    public function modifyBuilder(Closure $builder): static
+    {
+        $this->modifyBuilder = $builder;
+
+        return $this;
+    }
+
     protected function linkPreview(): View|string
     {
         $casted = $this->getRelatedModel();
@@ -191,7 +200,7 @@ class HasMany extends ModelRelationField implements HasFields
         $countItems = $this->toValue()->count();
 
         if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
+            $relationName = str_replace('-resource', '', (string)moonshineRequest()->getResourceUri());
         }
 
         return ActionButton::make(
@@ -266,7 +275,7 @@ class HasMany extends ModelRelationField implements HasFields
     protected function linkValue(): MoonShineRenderable
     {
         if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
+            $relationName = str_replace('-resource', '', (string)moonshineRequest()->getResourceUri());
         }
 
         return
@@ -296,8 +305,8 @@ class HasMany extends ModelRelationField implements HasFields
         $redirectAfter = $this->isAsync()
             ? ''
             : moonshineRequest()
-                ->getResource()
-                ?->formPageUrl($parentId) ?? '';
+            ->getResource()
+            ?->formPageUrl($parentId) ?? '';
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
@@ -371,7 +380,12 @@ class HasMany extends ModelRelationField implements HasFields
             $casted = $this->getRelatedModel();
             $relation = $casted?->{$this->getRelationName()}();
             $resource = $this->getResource();
-            $resource->customBuilder($relation);
+
+            $resource->customBuilder(
+                is_null($this->modifyBuilder)
+                    ? $relation
+                    : value($this->modifyBuilder, $relation)
+            );
 
             $this->setValue($resource->paginate());
         }

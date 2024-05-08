@@ -24,19 +24,6 @@ trait FileDeletable
         return $this;
     }
 
-    public function checkAndDelete(
-        ?string $storedValue = null,
-        ?string $inputValue = null,
-    ): void {
-        if (! $storedValue) {
-            return;
-        }
-
-        if ($storedValue !== $inputValue) {
-            $this->deleteFile($storedValue);
-        }
-    }
-
     public function deleteFile(string $fileName): bool
     {
         if (! $this->isDeleteFiles()) {
