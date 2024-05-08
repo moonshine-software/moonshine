@@ -226,7 +226,7 @@ trait FileTrait
                 $saveValue
             );
 
-            $removedValues->each(fn(string $file) => $this->deleteFile($file));
+            $removedValues->each(fn (string $file) => $this->deleteFile($file));
 
             return data_set($item, $this->column(), $saveValue);
         };

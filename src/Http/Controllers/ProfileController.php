@@ -49,7 +49,7 @@ class ProfileController extends MoonShineController
         }
 
 
-        if(!is_null($image)) {
+        if(! is_null($image)) {
             $this->applyImage($image, $resultData);
         }
 
@@ -84,7 +84,7 @@ class ProfileController extends MoonShineController
         $oldAvatar = request()->get('hidden_avatar', '');
         $currentAvatar = data_get(request()->user(), $avatarColumn, '');
 
-        if (!is_null($avatar)) {
+        if (! is_null($avatar)) {
             $result[$avatarColumn] = $image->store($avatar);
             $image->deleteFile($oldAvatar);
 
