@@ -107,8 +107,13 @@ trait WithRelatedValues
             ]
         );
 
+        if ($values->isNotEmpty()) {
+            return $values->toArray();
+        }
+
         $value = $this->toValue();
 
+        // if the values are empty then we add the selected one
         if ($value instanceof Model && $value->exists && $values->isEmpty()) {
             $values->put(
                 $value->getKey(),
