@@ -125,7 +125,7 @@ trait WithAsyncSearch
         $parentName = null;
 
         if ($this->hasParent()) {
-            $parentName = $this->parent()?->getColumn();
+            $parentName = $this->getParent()?->getColumn();
         }
 
         $resourceUri = moonshineRequest()->getResourceUri();

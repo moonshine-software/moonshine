@@ -76,7 +76,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
             ->slug('_');
     }
 
-    public function parent(): ?FormElement
+    public function getParent(): ?FormElement
     {
         return $this->parent;
     }

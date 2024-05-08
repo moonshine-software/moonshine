@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Resources;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use MoonShine\Attributes\Icon;
 use MoonShine\Components\Heading;
@@ -48,9 +49,11 @@ class MoonShineUserResource extends ModelResource
                         BelongsTo::make(
                             __('moonshine::ui.resource.role'),
                             'moonshineUserRole',
-                            static fn (MoonshineUserRole $model) => $model->name,
-                            MoonShineUserRoleResource::class,
-                        )->badge('purple'),
+                            formatted: static fn (MoonshineUserRole $model) => $model->name,
+                            resource: MoonShineUserRoleResource::class,
+                        )
+                            ->valuesQuery(fn(Builder $q) => $q->select(['id', 'name']))
+                            ->badge('purple'),
 
                         Text::make(__('moonshine::ui.resource.name'), 'name')
                             ->required()
