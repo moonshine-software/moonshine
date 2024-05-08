@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Image;
