@@ -33,7 +33,7 @@
         @if($field->getHint())
             <x-slot:afterSlot>
                 <x-moonshine::form.hint>
-                    {{ $field->getHint() }}
+                    {!! $field->getHint() !!}
                 </x-moonshine::form.hint>
             </x-slot:afterSlot>
         @endif
