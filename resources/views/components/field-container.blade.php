@@ -27,7 +27,7 @@
 
     <x-slot:afterSlot>
         <x-moonshine::form.hint>
-            {{ $afterInner }}
+            {!! $afterInner !!}
         </x-moonshine::form.hint>
     </x-slot:afterSlot>
 </x-moonshine::form.input-wrapper>
