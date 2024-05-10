@@ -115,7 +115,7 @@ final class CompactLayout extends AppLayout
 
                             Block::make([
                                 When::make(
-                                    static fn () => moonshineConfig()->isAuthEnabled(),
+                                    static fn (): bool => moonshineConfig()->isAuthEnabled(),
                                     static fn (): array => [Profile::make()]
                                 ),
 
@@ -154,7 +154,7 @@ final class CompactLayout extends AppLayout
                             Block::make([
                                 Menu::make(),
                                 When::make(
-                                    static fn () => moonshineConfig()->isAuthEnabled(),
+                                    static fn (): bool => moonshineConfig()->isAuthEnabled(),
                                     static fn (): array => [Profile::make(withBorder: true)]
                                 ),
                             ])->customAttributes([

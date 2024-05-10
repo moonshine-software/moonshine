@@ -86,7 +86,7 @@ class AppLayout extends MoonShineLayout
                             Block::make([
                                 Menu::make(),
                                 When::make(
-                                    static fn () => moonshineConfig()->isAuthEnabled(),
+                                    static fn (): bool => moonshineConfig()->isAuthEnabled(),
                                     static fn (): array => [Profile::make(withBorder: true)]
                                 ),
                             ])->customAttributes([
@@ -104,7 +104,7 @@ class AppLayout extends MoonShineLayout
                                 Search::make(),
 
                                 When::make(
-                                    static fn () => moonshineConfig()->isAuthEnabled() && moonshineConfig()->isUseNotifications(),
+                                    static fn (): bool => moonshineConfig()->isAuthEnabled() && moonshineConfig()->isUseNotifications(),
                                     static fn (): array => [Notifications::make()]
                                 ),
 

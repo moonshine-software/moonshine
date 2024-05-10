@@ -14,7 +14,6 @@ use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\MenuManager\MenuManager;

@@ -20,7 +20,7 @@ final class MoonShineConfigurator implements ArrayAccess
 {
     private array $items;
 
-    private Collection $authorizationRules;
+    private readonly Collection $authorizationRules;
 
     public function __construct(Repository $repository)
     {
@@ -58,7 +58,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param list<class-string>|Closure  $middlewares
-     * @return self
      */
     public function middlewares(array|Closure $middlewares): self
     {
@@ -85,7 +84,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param string[]|Closure  $locales
-     * @return self
      */
     public function locales(array|Closure $locales): self
     {
@@ -102,7 +100,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param array<string, string>|Closure  $socialite
-     * @return self
      */
     public function socialite(array|Closure $socialite): self
     {
@@ -125,9 +122,7 @@ final class MoonShineConfigurator implements ArrayAccess
     }
 
     /**
-     * @param string|Closure  $disk
      * @param string[]|Closure  $options
-     * @return self
      */
     public function disk(string|Closure $disk, array|Closure $options = []): self
     {
@@ -154,7 +149,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param list<class-string>|Closure $models
-     * @return self
      */
     public function globalSearch(array|Closure $models = []): self
     {
@@ -193,7 +187,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param  class-string<Throwable>|Closure  $exception
-     * @return MoonShineConfigurator
      */
     public function notFoundException(string|Closure $exception): self
     {
@@ -243,7 +236,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param  list<class-string>|Closure  $pipelines
-     * @return self
      */
     public function authPipelines(array|Closure $pipelines): self
     {
@@ -260,7 +252,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param class-string|Closure $middleware
-     * @return self
      */
     public function authMiddleware(string|Closure $middleware): self
     {
@@ -327,7 +318,6 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @param  class-string<MoonShineLayout>|Closure  $layout
-     * @return self
      */
     public function layout(string|Closure $layout): self
     {
@@ -358,12 +348,10 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @template-covariant T of Page
-     * @param  string  $name
      * @param  class-string<T> $default
-     * @param  mixed  ...$parameters
      * @return T
      */
-    public function getPage(string $name, string $default, ...$parameters): Page
+    public function getPage(string $name, string $default, mixed ...$parameters): Page
     {
         $class = $this->get("pages.$name", $default);
 
@@ -380,12 +368,9 @@ final class MoonShineConfigurator implements ArrayAccess
 
     /**
      * @template-covariant T of FormContract
-     * @param  string  $name
      * @param  class-string<T>  $default
-     * @param  mixed  ...$parameters
-     * @return FormBuilder
      */
-    public function getForm(string $name, string $default, ...$parameters): FormBuilder
+    public function getForm(string $name, string $default, mixed ...$parameters): FormBuilder
     {
         $class = $this->get("forms.$name", $default);
 

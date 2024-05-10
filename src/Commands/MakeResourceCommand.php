@@ -6,9 +6,7 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
-use function Laravel\Prompts\{info, outro, select, text};
-
-use MoonShine\MoonShine;
+use function Laravel\Prompts\{info, outro, select, text}
 
 use Symfony\Component\Console\Attribute\AsCommand;
 

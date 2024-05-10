@@ -25,7 +25,6 @@ class MoonShine
     }
 
     /**
-     * @param  string|null  $key
      * @param  mixed|null  $default
      * @return mixed|MoonShineConfigurator
      */

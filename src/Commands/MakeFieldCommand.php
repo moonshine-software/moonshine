@@ -12,8 +12,6 @@ use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
 use MoonShine\Fields\Field;
-
-use MoonShine\MoonShine;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\SplFileInfo;
 

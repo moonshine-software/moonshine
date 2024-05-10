@@ -7,8 +7,6 @@ namespace MoonShine\Components\Layout;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Support\MoonShineComponentAttributeBag;
 
-use function Pest\Laravel\get;
-
 /**
  * @method static static make(string $href,string $logo,?string $logoSmall = null,?string $title = null)
  */

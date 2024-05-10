@@ -7,7 +7,6 @@ namespace MoonShine\Providers;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Applies\AppliesRegister;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShineConfigurator;
 use MoonShine\Pages\Page;
 use Throwable;

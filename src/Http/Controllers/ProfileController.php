@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Image;
 use MoonShine\Http\Requests\ProfileFormRequest;
-use MoonShine\Pages\Page;
 use MoonShine\Pages\ProfilePage;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;

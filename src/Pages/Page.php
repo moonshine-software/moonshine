@@ -18,7 +18,6 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Field;
-use MoonShine\Layouts\AppLayout;
 use MoonShine\MenuManager\MenuFiller;
 use MoonShine\MoonShineLayout;
 use MoonShine\MoonShineRouter;

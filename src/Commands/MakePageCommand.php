@@ -10,8 +10,6 @@ use function Laravel\Prompts\outro;
 use function Laravel\Prompts\select;
 
 use function Laravel\Prompts\text;
-
-use MoonShine\MoonShine;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:page')]
