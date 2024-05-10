@@ -14,7 +14,6 @@ use MoonShine\Contracts\HasReactivity;
 use MoonShine\Exceptions\PageException;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\Fields\HasPlaceholder;
-use MoonShine\Traits\Fields\HasTranslatedChoices;
 use MoonShine\Traits\Fields\Reactivity;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
@@ -40,7 +39,6 @@ class BelongsTo extends ModelRelationField implements
     use WithDefaultValue;
     use HasPlaceholder;
     use Reactivity;
-    use HasTranslatedChoices;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to';
 

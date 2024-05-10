@@ -28,7 +28,6 @@ use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\HasPlaceholder;
-use MoonShine\Traits\Fields\HasTranslatedChoices;
 use MoonShine\Traits\Fields\HasTreeMode;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
@@ -53,7 +52,6 @@ class BelongsToMany extends ModelRelationField implements
     use WithAsyncSearch;
     use HasTreeMode;
     use HasPlaceholder;
-    use HasTranslatedChoices;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 

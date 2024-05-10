@@ -14,7 +14,6 @@ use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Contracts\HasReactivity;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\HasPlaceholder;
-use MoonShine\Traits\Fields\HasTranslatedChoices;
 use MoonShine\Traits\Fields\Reactivity;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\SelectTrait;
@@ -38,7 +37,6 @@ class Select extends Field implements
     use UpdateOnPreview;
     use HasPlaceholder;
     use Reactivity;
-    use HasTranslatedChoices;
 
     protected string $view = 'moonshine::fields.select';
 
