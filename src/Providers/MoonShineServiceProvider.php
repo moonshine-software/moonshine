@@ -76,7 +76,7 @@ class MoonShineServiceProvider extends ServiceProvider
     protected function registerRouteMiddleware(): self
     {
         app('router')->middlewareGroup('moonshine', [
-            ...moonshineConfig()->getMiddlewares()
+            ...moonshineConfig()->getMiddlewares(),
         ]);
 
         return $this;

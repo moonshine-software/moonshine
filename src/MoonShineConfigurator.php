@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use ArrayAccess;
+use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -13,7 +14,6 @@ use MoonShine\Exceptions\MoonShineNotFoundException;
 use MoonShine\Forms\FormContract;
 use MoonShine\Layouts\AppLayout;
 use MoonShine\Pages\Page;
-use Closure;
 use Throwable;
 
 final class MoonShineConfigurator implements ArrayAccess
@@ -180,7 +180,8 @@ final class MoonShineConfigurator implements ArrayAccess
      */
     public function getNotFoundException(): string
     {
-        return $this->get('not_found_exception',
+        return $this->get(
+            'not_found_exception',
             MoonShineNotFoundException::class
         );
     }
