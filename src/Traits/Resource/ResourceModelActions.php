@@ -27,9 +27,9 @@ trait ResourceModelActions
         return [];
     }
 
-    public function export(): ?ExportHandler
+    public function export(): ?Handler
     {
-        if (! config('moonshine.model_resources.default_with_export', true)) {
+        if (! moonshineConfig()->isDefaultWithExport()) {
             return null;
         }
 
@@ -37,9 +37,9 @@ trait ResourceModelActions
             ->csv();
     }
 
-    public function import(): ?ImportHandler
+    public function import(): ?Handler
     {
-        if (! config('moonshine.model_resources.default_with_import', true)) {
+        if (! moonshineConfig()->isDefaultWithImport()) {
             return null;
         }
 

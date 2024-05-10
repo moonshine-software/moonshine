@@ -36,7 +36,7 @@ class MakeTypeCastCommand extends MoonShineCommand
         }
 
         $this->copyStub('TypeCast', $path, [
-            '{namespace}' => MoonShine::namespace('\TypeCasts'),
+            '{namespace}' => moonshineConfig()->getNamespace('\TypeCasts'),
             'DummyCast' => $className,
         ]);
 

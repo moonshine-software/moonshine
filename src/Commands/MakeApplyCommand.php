@@ -36,7 +36,7 @@ class MakeApplyCommand extends MoonShineCommand
         }
 
         $this->copyStub('Apply', $apply, [
-            '{namespace}' => MoonShine::namespace('\Applies'),
+            '{namespace}' => moonshineConfig()->getNamespace('\Applies'),
             'DummyClass' => $className,
         ]);
 

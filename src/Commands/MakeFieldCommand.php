@@ -70,7 +70,7 @@ class MakeFieldCommand extends MoonShineCommand
         }
 
         $this->copyStub('Field', $field, [
-            '{namespace}' => MoonShine::namespace('\Fields'),
+            '{namespace}' => moonshineConfig()->getNamespace('\Fields'),
             '{view}' => $view,
             '{extend}' => $extends,
             '{extendShort}' => class_basename($extends),

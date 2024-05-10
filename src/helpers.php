@@ -19,6 +19,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
+use MoonShine\MoonShineConfigurator;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
@@ -75,6 +76,13 @@ if (! function_exists('moonshineRouter')) {
     }
 }
 
+if (! function_exists('moonshineConfig')) {
+    function moonshineConfig(): MoonShineConfigurator
+    {
+        return app(MoonShineConfigurator::class);
+    }
+}
+
 if (! function_exists('moonshineCache')) {
     function moonshineCache(): Repository
     {
@@ -82,7 +90,7 @@ if (! function_exists('moonshineCache')) {
             ->store(
                 app()->runningUnitTests()
                     ? 'array'
-                    : config('moonshine.cache', 'file')
+                    : moonshineConfig()->getCacheDriver()
             );
     }
 }
@@ -227,10 +235,7 @@ if (! function_exists('is_selected_option')) {
 if (! function_exists('oops404')) {
     function oops404(): never
     {
-        $handler = config(
-            'moonshine.route.notFoundHandler',
-            MoonShineNotFoundException::class
-        );
+        $handler = moonshineConfig()->getNotFoundException();
 
         throw new $handler();
     }

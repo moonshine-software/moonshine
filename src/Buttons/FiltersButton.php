@@ -18,16 +18,16 @@ final class FiltersButton
     {
         $title = self::title($resource->getFilterParams());
 
-        $filters = call_user_func(new FiltersForm(), $resource);
+        $form = moonshineConfig()->getForm('filters', FiltersForm::class, resource: $resource);
 
         return ActionButton::make($title, '#')
             ->secondary()
             ->icon('adjustments-horizontal')
             ->inOffCanvas(
                 fn (): array|string|null => __('moonshine::ui.filters'),
-                fn (): FormBuilder => $filters,
+                fn (): FormBuilder => $form,
                 name: 'filters-off-canvas',
-                builder: fn (Offcanvas $offCanvas): Offcanvas => $offCanvas->setComponents([$filters])
+                builder: fn (Offcanvas $offCanvas): Offcanvas => $offCanvas->setComponents([$form])
             )
             ->showInLine();
     }

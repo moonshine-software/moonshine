@@ -7,6 +7,7 @@ namespace MoonShine\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Exceptions\InvalidHome;
+use MoonShine\Pages\Dashboard;
 use Throwable;
 
 class HomeController extends MoonShineController
@@ -17,13 +18,8 @@ class HomeController extends MoonShineController
      */
     public function __invoke(): RedirectResponse|View|string
     {
-        if ($url = moonshine()->homeUrl()) {
-            return redirect($url);
-        }
-
-        /* @var \MoonShine\Pages\Page $page */
-        $page = new (config('moonshine.pages.dashboard'))();
-
-        return $page->render();
+        return moonshineConfig()
+            ->getPage('dashboard', Dashboard::class)
+            ->render();
     }
 }

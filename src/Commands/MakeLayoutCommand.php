@@ -43,7 +43,7 @@ class MakeLayoutCommand extends MoonShineCommand
         }
 
         $this->copyStub('Layout', $layout, [
-            '{namespace}' => MoonShine::namespace('\\' . str_replace('/', '\\', $dir)),
+            '{namespace}' => moonshineConfig()->getNamespace('\\' . str_replace('/', '\\', $dir)),
             'DummyLayout' => $className,
         ]);
 

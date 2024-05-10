@@ -42,6 +42,11 @@ class HasOne extends ModelRelationField implements HasFields
 
     protected bool $isAsync = false;
 
+    public function hasWrapper(): bool
+    {
+        return false;
+    }
+
     public function async(): static
     {
         $this->isAsync = true;

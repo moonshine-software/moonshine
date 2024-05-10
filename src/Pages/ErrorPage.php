@@ -23,7 +23,8 @@ class ErrorPage extends Page
 
     public function components(): array
     {
-        $logo = asset(config('moonshine.logo') ?? 'vendor/moonshine/logo-small.svg');
+        $logo = asset('vendor/moonshine/logo-small.svg');
+
         $code = $this->code;
         $message = $this->message;
         $backUrl = moonshineRouter()->home();

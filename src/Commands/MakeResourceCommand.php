@@ -58,7 +58,7 @@ class MakeResourceCommand extends MoonShineCommand
         ], 'ModelResourceDefault');
 
         $replaceData = [
-            '{namespace}' => MoonShine::namespace('\Resources'),
+            '{namespace}' => moonshineConfig()->getNamespace('\Resources'),
             '{model-namespace}' => $model,
             '{model}' => class_basename($model),
             'DummyTitle' => $title,
@@ -82,7 +82,7 @@ class MakeResourceCommand extends MoonShineCommand
                 '--crud' => true,
             ]);
 
-            $pageNamespace = static fn (string $name): string => MoonShine::namespace(
+            $pageNamespace = static fn (string $name): string => moonshineConfig()->getNamespace(
                 str_replace('/', '\\', "\\$pageDir\\$dir$name")
             );
 

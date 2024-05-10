@@ -5,6 +5,7 @@ namespace MoonShine\Pages\Crud;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\Fragment;
+use MoonShine\Components\Heading;
 use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\MoonShineComponent;
@@ -145,6 +146,7 @@ class DetailPage extends Page
                 $components[] = LineBreak::make();
 
                 $blocks = [
+                    Heading::make($field->getLabel()),
                     $field,
                 ];
 

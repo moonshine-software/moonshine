@@ -5,18 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Providers;
 
 use Closure;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Router;
-use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Octane\Events\RequestHandled;
 use MoonShine\Applies\AppliesRegister;
 use MoonShine\AssetManager\AssetManager;
@@ -34,9 +27,10 @@ use MoonShine\Commands\MakeResourceCommand;
 use MoonShine\Commands\MakeTypeCastCommand;
 use MoonShine\Commands\MakeUserCommand;
 use MoonShine\Commands\PublishCommand;
-use MoonShine\Http\Middleware\ChangeLocale;
 use MoonShine\MenuManager\MenuManager;
+use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShine;
+use MoonShine\MoonShineConfigurator;
 use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
 
@@ -58,31 +52,20 @@ class MoonShineServiceProvider extends ServiceProvider
         MakePolicyCommand::class,
     ];
 
-    protected array $middlewareGroups = [
-        'moonshine' => [
-            EncryptCookies::class,
-            AddQueuedCookiesToResponse::class,
-            StartSession::class,
-            AuthenticateSession::class,
-            ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
-            SubstituteBindings::class,
-            ChangeLocale::class,
-        ],
-    ];
-
     /**
      * Setup auth configuration.
      */
-    protected function registerAuthConfig(): self
+    protected function registerAuth(): self
     {
-        $authConfig = collect(config('moonshine.auth', []))
-            ->only(['guards', 'providers'])
-            ->toArray();
+        Config::set('auth.guards.moonshine', [
+            'driver' => 'session',
+            'provider' => 'moonshine',
+        ]);
 
-        config(
-            Arr::dot($authConfig, 'auth.')
-        );
+        Config::set('auth.providers.moonshine', [
+            'driver' => 'eloquent',
+            'model' => MoonshineUser::class,
+        ]);
 
         return $this;
     }
@@ -92,14 +75,9 @@ class MoonShineServiceProvider extends ServiceProvider
      */
     protected function registerRouteMiddleware(): self
     {
-        $this->middlewareGroups['moonshine'] = array_merge(
-            $this->middlewareGroups['moonshine'],
-            config('moonshine.route.middlewares', [])
-        );
-
-        foreach ($this->middlewareGroups as $key => $middleware) {
-            app('router')->middlewareGroup($key, $middleware);
-        }
+        app('router')->middlewareGroup('moonshine', [
+            ...moonshineConfig()->getMiddlewares()
+        ]);
 
         return $this;
     }
@@ -116,6 +94,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(MenuManager::class);
         $this->app->singleton(AssetManager::class);
         $this->app->singleton(AppliesRegister::class);
+        $this->app->singleton(MoonShineConfigurator::class);
 
         $this->app->bind(MoonShineRouter::class);
 
@@ -151,7 +130,7 @@ class MoonShineServiceProvider extends ServiceProvider
         Router::macro(
             'moonshine',
             fn (Closure $callback, bool $resource = false) => $this->group(
-                moonshine()->configureRoutes(),
+                moonshineConfig()->getDefaultRouteGroup(),
                 function () use ($callback, $resource): void {
                     Router::group(
                         $resource ? [
@@ -171,11 +150,16 @@ class MoonShineServiceProvider extends ServiceProvider
         $this
             ->registerBindings()
             ->registerRouterMacro();
+
+        $this->mergeConfigFrom(
+            MoonShine::path('/config/moonshine.php'),
+            'moonshine'
+        );
     }
 
     public function boot(): void
     {
-        if (config('moonshine.use_migrations', true)) {
+        if (moonshineConfig()->isUseMigrations()) {
             $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
         }
 
@@ -199,11 +183,6 @@ class MoonShineServiceProvider extends ServiceProvider
             ),
         ]);
 
-        $this->mergeConfigFrom(
-            MoonShine::path('/config/moonshine.php'),
-            'moonshine'
-        );
-
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
         }
@@ -214,7 +193,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this
             ->registerBladeDirectives()
             ->registerRouteMiddleware()
-            ->registerAuthConfig();
+            ->registerAuth();
 
         tap($this->app['events'], function ($event): void {
             $event->listen(RequestHandled::class, function (RequestHandled $event): void {

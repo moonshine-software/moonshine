@@ -142,7 +142,7 @@ class InstallCommand extends MoonShineCommand
 
         $this->replaceInFile(
             "'dashboard' => 'Dashboard::class'",
-            "'dashboard' => " . MoonShine::namespace('\Pages\Dashboard') . "::class",
+            "'dashboard' => " . moonshineConfig()->getNamespace('\Pages\Dashboard') . "::class",
             config_path('moonshine.php')
         );
 
@@ -153,7 +153,7 @@ class InstallCommand extends MoonShineCommand
     {
         $confirm = ! $this->option('without-migrations') && confirm('Install migrations?');
 
-        if (config('moonshine.use_migrations', true) && $confirm) {
+        if (moonshineConfig()->isUseMigrations() && $confirm) {
             $this->call('migrate');
 
             $this->components->task('Tables migrated');

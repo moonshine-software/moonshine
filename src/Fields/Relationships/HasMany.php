@@ -52,6 +52,11 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?Closure $modifyBuilder = null;
 
+    public function hasWrapper(): bool
+    {
+        return false;
+    }
+
     public function creatable(
         Closure|bool|null $condition = null,
         ?ActionButton     $button = null,

@@ -9,6 +9,7 @@ use MoonShine\Resources\MoonShineUserResource;
 use MoonShine\Resources\MoonShineUserRoleResource;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Pages\Page;
+use MoonShine\MoonShineConfigurator;
 use Closure;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
@@ -30,7 +31,12 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     protected function pages(): array
     {
         return [
-            ...config('moonshine.pages', [])
+            ...moonshineConfig()->getPages()
         ];
+    }
+
+    protected function configure(MoonShineConfigurator $config): MoonShineConfigurator
+    {
+        return $config;
     }
 }

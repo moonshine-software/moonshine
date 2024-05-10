@@ -15,13 +15,18 @@ use MoonShine\Support\AlpineJs;
 use Stringable;
 use Throwable;
 
-final class FiltersForm
+final class FiltersForm implements FormContract
 {
+    public function __construct(private ModelResource $resource)
+    {
+    }
+
     /**
      * @throws Throwable
      */
-    public function __invoke(ModelResource $resource): FormBuilder
+    public function __invoke(): FormBuilder
     {
+        $resource = $this->resource;
         $values = $resource->getFilterParams();
         $filters = $resource->getFilters();
 
@@ -83,8 +88,7 @@ final class FiltersForm
                         $this->formAction(query: ['reset' => true])
                     )->secondary()->showInLine(),
                 ])
-            )
-        ;
+            );
     }
 
     private function formAction(array $query = []): string

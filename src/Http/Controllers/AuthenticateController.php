@@ -22,8 +22,8 @@ class AuthenticateController extends MoonShineController
             );
         }
 
-        return moonshine()
-            ->getPageFromConfig('login', LoginPage::class)
+        return moonshineConfig()
+            ->getPage('login', LoginPage::class)
             ->render();
     }
 
@@ -32,9 +32,9 @@ class AuthenticateController extends MoonShineController
      */
     public function authenticate(LoginFormRequest $request): RedirectResponse
     {
-        if (filled(config('moonshine.auth.pipelines', []))) {
+        if (filled(moonshineConfig()->getAuthPipelines())) {
             $request = (new Pipeline(app()))->send($request)->through(array_filter(
-                config('moonshine.auth.pipelines')
+                moonshineConfig()->getAuthPipelines()
             ))->thenReturn();
         }
 

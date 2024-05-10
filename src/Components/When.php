@@ -26,10 +26,10 @@ class When extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        $components = ($this->components)();
+        $components = [];
 
-        if (! ($this->condition)()) {
-            $components = is_null($this->default) ? [] : ($this->default)();
+        if (($this->condition)()) {
+            $components = is_null($this->default) ? ($this->components)() : ($this->default)();
         }
 
         return [

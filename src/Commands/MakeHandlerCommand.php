@@ -36,7 +36,7 @@ class MakeHandlerCommand extends MoonShineCommand
         }
 
         $this->copyStub('Handler', $path, [
-            '{namespace}' => MoonShine::namespace('\Handlers'),
+            '{namespace}' => moonshineConfig()->getNamespace('\Handlers'),
             'DummyHandler' => $className,
         ]);
 

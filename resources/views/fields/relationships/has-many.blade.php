@@ -7,12 +7,10 @@
      :id="$id('has-many')"
 >
     @if($isCreatable)
-        <x-moonshine::layout.divider />
-
         {!! $createButton !!}
     @endif
 
-    <x-moonshine::layout.divider />
+    <x-moonshine::layout.line-break />
 
     {{ $component->render() }}
 </div>

@@ -7,6 +7,8 @@ namespace MoonShine\Providers;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Applies\AppliesRegister;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Models\MoonshineUser;
+use MoonShine\MoonShineConfigurator;
 use MoonShine\Pages\Page;
 use Throwable;
 
@@ -19,10 +21,13 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configure(
+            moonshineConfig()
+        );
+
         moonshine()
             ->resources($this->resources())
-            ->pages($this->pages())
-            ->init();
+            ->pages($this->pages());
 
         $this->appliesRegister(
             appliesRegister()
@@ -42,11 +47,18 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      */
     protected function pages(): array
     {
-        return [];
+        return [
+            ...moonshineConfig()->getPages(),
+        ];
     }
 
     protected function appliesRegister(AppliesRegister $register): AppliesRegister
     {
         return $register;
+    }
+
+    protected function configure(MoonShineConfigurator $config): MoonShineConfigurator
+    {
+        return $config;
     }
 }

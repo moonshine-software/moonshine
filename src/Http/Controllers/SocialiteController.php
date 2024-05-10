@@ -52,7 +52,7 @@ class SocialiteController extends MoonShineController
 
     protected function drivers(): array
     {
-        return config('moonshine.socialite', []);
+        return moonshineConfig()->getSocialite();
     }
 
     /**
@@ -119,7 +119,7 @@ class SocialiteController extends MoonShineController
         }
 
         return to_page(
-            config('moonshine.pages.profile', ProfilePage::class),
+            moonshineConfig()->getPage('profile', ProfilePage::class),
             redirect: true
         );
     }

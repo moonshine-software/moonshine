@@ -20,8 +20,7 @@ class ProfileController extends MoonShineController
      */
     public function store(ProfileFormRequest $request): Response
     {
-        /** @var Page $page */
-        $page = new (config('moonshine.pages.profile', ProfilePage::class))();
+        $page = moonshineConfig()->getPage('profile', ProfilePage::class);
         $fields = Fields::make($page->fields());
 
         /** @var Image $image */
@@ -32,18 +31,15 @@ class ProfileController extends MoonShineController
         $data = $request->validated();
 
         $resultData = [
-            config(
-                'moonshine.auth.fields.username',
+            moonshineConfig()->getUserField(
+                'username',
                 'email'
             ) => $data['username'],
-            config('moonshine.auth.fields.name', 'name') => $data['name'],
+            moonshineConfig()->getUserField('name') => $data['name'],
         ];
 
         if (isset($data['password']) && filled($data['password'])) {
-            $resultData[config(
-                'moonshine.auth.fields.password',
-                'password'
-            )] = Hash::make($data['password']);
+            $resultData[moonshineConfig()->getUserField('password')] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
@@ -75,10 +71,7 @@ class ProfileController extends MoonShineController
 
     private function applyImage(Image $image, array &$result): void
     {
-        $avatarColumn = config(
-            'moonshine.auth.fields.avatar',
-            'avatar'
-        );
+        $avatarColumn = moonshineConfig()->getUserField('avatar');
 
         $avatar = request()->file('avatar');
         $oldAvatar = request()->get('hidden_avatar', '');

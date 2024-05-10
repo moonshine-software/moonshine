@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Fragment;
+use MoonShine\Components\Heading;
 use MoonShine\Components\Layout\Divider;
 use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\MoonShineComponent;
@@ -206,6 +207,8 @@ class FormPage extends Page
                 $components[] = LineBreak::make();
 
                 $components[] = Fragment::make([
+                    Heading::make($field->getLabel()),
+
                     $field->resolveFill(
                         $item?->attributesToArray() ?? [],
                         $item

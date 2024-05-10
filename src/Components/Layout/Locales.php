@@ -6,6 +6,7 @@ namespace MoonShine\Components\Layout;
 
 use Illuminate\Support\Collection;
 use MoonShine\Components\MoonShineComponent;
+use MoonShine\Http\Middleware\ChangeLocale;
 
 final class Locales extends MoonShineComponent
 {
@@ -20,10 +21,10 @@ final class Locales extends MoonShineComponent
         parent::__construct();
 
         $this->current = app()->getLocale();
-        $this->locales = collect(config('moonshine.locales', []))
+        $this->locales = collect(moonshineConfig()->getLocales())
             ->mapWithKeys(static fn ($locale): array => [
                 request()->fullUrlWithQuery([
-                    'change-moonshine-locale' => $locale,
+                    ChangeLocale::KEY => $locale,
                 ]) => $locale,
             ]);
     }

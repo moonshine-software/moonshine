@@ -20,7 +20,7 @@ class GlobalSearchController extends MoonShineController
             return response()->json($data);
         }
 
-        foreach (config('moonshine.global_search', []) as $model) {
+        foreach (moonshineConfig()->getGlobalSearch() as $model) {
             $data += $this->search($model);
         }
 

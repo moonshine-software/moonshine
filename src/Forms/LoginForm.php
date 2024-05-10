@@ -9,7 +9,7 @@ use MoonShine\Fields\Password;
 use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 
-final class LoginForm
+final class LoginForm implements FormContract
 {
     public function __invoke(): FormBuilder
     {

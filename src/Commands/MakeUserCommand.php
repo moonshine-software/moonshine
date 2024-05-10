@@ -28,12 +28,9 @@ class MakeUserCommand extends MoonShineCommand
 
         if ($username && $name && $password) {
             MoonShineAuth::model()->query()->create([
-                config('moonshine.auth.fields.username', 'email') => $username,
-                config('moonshine.auth.fields.name', 'name') => $name,
-                config(
-                    'moonshine.auth.fields.password',
-                    'password'
-                ) => Hash::make($password),
+                moonshineConfig()->getUserField('username', 'email') => $username,
+                moonshineConfig()->getUserField('name') => $name,
+                moonshineConfig()->getUserField('password') => Hash::make($password),
             ]);
 
             info('User is created');
@@ -50,8 +47,8 @@ class MakeUserCommand extends MoonShineCommand
 
         while (true) {
             $username ??= text(
-                'Username(' . config(
-                    'moonshine.auth.fields.username',
+                'Username(' . moonshineConfig()->getUserField(
+                    'username',
                     'email'
                 ) . ')',
                 required: true
@@ -60,7 +57,7 @@ class MakeUserCommand extends MoonShineCommand
             $exists = MoonShineAuth::model()
                 ->query()
                 ->where(
-                    config('moonshine.auth.fields.username', 'email'),
+                    moonshineConfig()->getUserField('username', 'email'),
                     $username,
                 )
                 ->exists();

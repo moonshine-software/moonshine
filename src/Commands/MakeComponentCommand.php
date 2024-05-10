@@ -59,7 +59,7 @@ class MakeComponentCommand extends MoonShineCommand
         $this->copyStub('view', $viewPath);
 
         $this->copyStub('Component', $component, [
-            '{namespace}' => MoonShine::namespace('\Components'),
+            '{namespace}' => moonshineConfig()->getNamespace('\Components'),
             '{view}' => $view,
             'DummyClass' => $className,
         ]);

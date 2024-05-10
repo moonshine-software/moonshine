@@ -32,7 +32,7 @@ final class Search extends MoonShineComponent
     protected function globalSearchEnabled(): bool
     {
         return filled(
-            config('moonshine.global_search', [])
+            moonshineConfig()->getGlobalSearch()
         );
     }
 

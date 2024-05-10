@@ -34,7 +34,7 @@ trait ResourceModelPolicy
      */
     public function can(string $ability): bool
     {
-        if (! config('moonshine.auth.enable', true)) {
+        if (! moonshineConfig()->isAuthEnabled()) {
             return true;
         }
 
@@ -44,7 +44,8 @@ trait ResourceModelPolicy
 
         $user = MoonShineAuth::guard()->user();
 
-        $checkCustomRules = moonshine()->authorizationRules()
+        $checkCustomRules = moonshineConfig()
+            ->getAuthorizationRules()
             ->every(fn ($rule) => $rule($this, $user, $ability, $this->getItem() ?? $this->getModel()));
 
         if (! $checkCustomRules) {

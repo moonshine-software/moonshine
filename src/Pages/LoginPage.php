@@ -11,15 +11,8 @@ class LoginPage extends Page
 
     public function components(): array
     {
-        $form = $this->getForm();
-
         return [
-            $form(),
+            moonshineConfig()->getForm('login', LoginForm::class),
         ];
-    }
-
-    private function getForm(): object
-    {
-        return new (config('moonshine.forms.login', LoginForm::class));
     }
 }
