@@ -12,12 +12,14 @@ class MoonShineNotFoundException extends MoonShineException
 {
     public function render(Request $request): Response
     {
-        return response(
-            ErrorPage::make(
-                Response::HTTP_NOT_FOUND,
-                trans('moonshine::ui.404'),
-            )
-        )->setStatusCode(Response::HTTP_NOT_FOUND);
+        $page = moonshineConfig()->getPage(
+            'error',
+            ErrorPage::class,
+            code: Response::HTTP_NOT_FOUND,
+            message: trans('moonshine::ui.404'),
+        );
+
+        return response($page)->setStatusCode(Response::HTTP_NOT_FOUND);
     }
 
     public static function pageNotFound(): self

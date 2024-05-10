@@ -132,9 +132,8 @@ class TestCase extends Orchestra
             MoonShineUserRoleResource::class,
         ], newCollection: true)
         ->pages([
-            ...config('moonshine.pages'),
-        ])
-        ->init();
+            ...moonshineConfig()->getPages()
+        ]);
 
         return $this;
     }

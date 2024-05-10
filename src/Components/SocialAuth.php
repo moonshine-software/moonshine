@@ -22,7 +22,7 @@ final class SocialAuth extends MoonShineComponent
     ) {
         parent::__construct();
 
-        $this->drivers = config('moonshine.socialite');
+        $this->drivers = moonshineConfig()->getSocialite();
         $this->attached = auth()->user()?->moonshineSocialites ?? collect();
     }
 }

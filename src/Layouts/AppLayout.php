@@ -59,7 +59,7 @@ class AppLayout extends MoonShineLayout
 
         return LayoutBuilder::make([
             Html::make([
-                Head::make(),
+                Head::make()->title($page->title()),
                 Body::make([
                     Wrapper::make([
                         Sidebar::make([
@@ -86,7 +86,7 @@ class AppLayout extends MoonShineLayout
                             Block::make([
                                 Menu::make(),
                                 When::make(
-                                    static fn () => config('moonshine.auth.enable', true),
+                                    static fn () => moonshineConfig()->isAuthEnabled(),
                                     static fn (): array => [Profile::make(withBorder: true)]
                                 ),
                             ])->customAttributes([
@@ -102,7 +102,12 @@ class AppLayout extends MoonShineLayout
                                     ->prepend(moonshineRouter()->home(), icon: 'home'),
 
                                 Search::make(),
-                                Notifications::make(),
+
+                                When::make(
+                                    static fn () => moonshineConfig()->isAuthEnabled() && moonshineConfig()->isUseNotifications(),
+                                    static fn (): array => [Notifications::make()]
+                                ),
+
                                 Locales::make(),
                             ]),
 

@@ -13,6 +13,6 @@ abstract class MoonShineCommand extends Command
 
     protected function getDirectory(): string
     {
-        return MoonShine::dir();
+        return moonshineConfig()->getDir();
     }
 }

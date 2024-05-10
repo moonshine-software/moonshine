@@ -23,7 +23,7 @@ final class LoginLayout extends MoonShineLayout
     {
         $logo = asset('vendor/moonshine/logo.svg');
 
-        $title = __('moonshine::ui.login.title', ['moonshine_title' => config('moonshine.title')]);
+        $title = __('moonshine::ui.login.title', ['moonshine_title' => moonshineConfig()->getTitle()]);
         $description = __('moonshine::ui.login.description');
 
         return LayoutBuilder::make([

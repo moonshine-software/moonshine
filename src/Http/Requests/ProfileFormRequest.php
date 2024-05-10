@@ -31,7 +31,7 @@ class ProfileFormRequest extends MoonShineFormRequest
                 'required',
                 Rule::unique(
                     MoonShineAuth::model()?->getTable(),
-                    config('moonshine.auth.fields.username', 'email')
+                    moonshineConfig()->getUserField('username', 'email')
                 )->ignore(MoonShineAuth::guard()->id()),
             ],
             'avatar' => ['image'],

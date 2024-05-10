@@ -31,6 +31,6 @@ final class MoonShineAuth
 
     public static function guardName(): string
     {
-        return config('moonshine.auth.guard', 'web');
+        return moonshineConfig()->getGuard();
     }
 }

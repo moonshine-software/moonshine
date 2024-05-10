@@ -1,14 +1,15 @@
 @props([
+    'title' => '',
     'components' => []
 ])
 <head {{ $attributes }}
 >
     <meta charset="utf-8" />
 
-    <title>@yield('title', config("moonshine.title"))</title>
+    <title>@yield('title', $title)</title>
 
     <meta name="description"
-          content="{{ config("moonshine.title") }}"
+          content="{{ $title }}"
     />
 
     <meta name="viewport"

@@ -45,10 +45,10 @@ class LoginFormRequest extends MoonShineFormRequest
         $this->ensureIsNotRateLimited();
 
         $credentials = [
-            config('moonshine.auth.fields.username', 'email') => request(
+            moonshineConfig()->getUserField('username', 'email') => request(
                 'username'
             ),
-            config('moonshine.auth.fields.password', 'password') => request(
+            moonshineConfig()->getUserField('password') => request(
                 'password'
             ),
         ];
@@ -109,8 +109,8 @@ class LoginFormRequest extends MoonShineFormRequest
         $this->merge([
             'username' => request()->str('username')
                 ->when(
-                    config(
-                        'moonshine.auth.fields.username',
+                    moonshineConfig()->getUserField(
+                        'username',
                         'email'
                     ) === 'email',
                     fn (Stringable $str): Stringable => $str->lower()

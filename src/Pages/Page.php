@@ -281,7 +281,7 @@ abstract class Page implements
     {
         if (is_null($this->layout)) {
             $this->setLayout(
-                config('moonshine.layout', AppLayout::class)
+                moonshineConfig()->getLayout()
             );
         }
 

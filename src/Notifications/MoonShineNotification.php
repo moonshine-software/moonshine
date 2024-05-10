@@ -20,7 +20,7 @@ final class MoonShineNotification
         array $ids = [],
         ?string $color = null
     ): void {
-        if (config('moonshine.use_notifications', true)) {
+        if (moonshineConfig()->isUseNotifications()) {
             Notification::sendNow(
                 MoonShineAuth::model()?->query()
                     ->when(

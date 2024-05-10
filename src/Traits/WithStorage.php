@@ -37,7 +37,7 @@ trait WithStorage
 
     public function getDisk(): string
     {
-        return $this->disk ?? config('moonshine.disk', 'public');
+        return $this->disk ?? moonshineConfig()->getDisk();
     }
 
     public function options(array $options): static
@@ -49,7 +49,7 @@ trait WithStorage
 
     public function getOptions(): array
     {
-        return $this->options ?? config('moonshine.disk_options', []);
+        return $this->options ?? moonshineConfig()->getDiskOptions();
     }
 
     public function parseOptions(): array

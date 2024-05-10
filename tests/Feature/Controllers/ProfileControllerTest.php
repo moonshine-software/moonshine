@@ -9,7 +9,11 @@ it('index', function () {
     $user = MoonshineUser::query()->find(1);
 
     asAdmin()
-        ->get(to_page(config('moonshine.pages.profile', ProfilePage::class)))
+        ->get(
+            to_page(
+                moonshineConfig()->getPage('profile', ProfilePage::class)
+            )
+        )
         ->assertSee($user->name)
         ->assertSee($user->email)
         ->assertSee('Avatar')

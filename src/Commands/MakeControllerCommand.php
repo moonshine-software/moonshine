@@ -36,7 +36,7 @@ class MakeControllerCommand extends MoonShineCommand
         }
 
         $this->copyStub('Controller', $controller, [
-            '{namespace}' => MoonShine::namespace('\Controllers'),
+            '{namespace}' => moonshineConfig()->getNamespace('\Controllers'),
             'DummyClass' => $className,
         ]);
 

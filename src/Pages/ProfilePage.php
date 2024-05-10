@@ -46,19 +46,19 @@ class ProfilePage extends Page
 
                         Text::make(trans('moonshine::ui.resource.name'), 'name')
                             ->setValue(auth()->user()
-                                ->{config('moonshine.auth.fields.name', 'name')})
+                                ->{moonshineConfig()->getUserField('name')})
                             ->required(),
 
                         Text::make(trans('moonshine::ui.login.username'), 'username')
                             ->setValue(auth()->user()
-                                ->{config('moonshine.auth.fields.username', 'email')})
+                                ->{moonshineConfig()->getUserField('username', 'email')})
                             ->required(),
 
                         Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
                             ->setValue(auth()->user()
-                                ->{config('moonshine.auth.fields.avatar', 'avatar')} ?? null)
-                            ->disk(config('moonshine.disk', 'public'))
-                            ->options(config('moonshine.disk_options', []))
+                                ->{moonshineConfig()->getUserField('avatar')} ?? null)
+                            ->disk(moonshineConfig()->getDisk())
+                            ->options(moonshineConfig()->getDiskOptions())
                             ->dir('moonshine_users')
                             ->removable()
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),

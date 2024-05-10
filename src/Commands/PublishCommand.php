@@ -86,8 +86,8 @@ class PublishCommand extends MoonShineCommand
     private function publishSystemResource(string $name, string $model): void
     {
         $classPath = "/src/Resources/$name.php";
-        $fullClassPath = MoonShine::dir("/Resources/$name.php");
-        $targetNamespace = MoonShine::namespace('\Resources');
+        $fullClassPath = moonshineConfig()->getDir("/Resources/$name.php");
+        $targetNamespace = moonshineConfig()->getNamespace('\Resources');
 
         (new Filesystem())->put(
             $fullClassPath,

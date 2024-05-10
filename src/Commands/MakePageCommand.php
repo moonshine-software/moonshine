@@ -94,7 +94,7 @@ class MakePageCommand extends MoonShineCommand
         }
 
         $this->copyStub($stub, $page, [
-            '{namespace}' => MoonShine::namespace('\\' . str_replace('/', '\\', $dir)),
+            '{namespace}' => moonshineConfig()->getNamespace('\\' . str_replace('/', '\\', $dir)),
             'DummyPage' => $className,
             'DummyTitle' => $className,
             '{extendShort}' => $extends,

@@ -38,17 +38,19 @@ final class Profile extends MoonShineComponent
     {
         $user = auth()->user();
 
-        $avatar = $user?->{config('moonshine.auth.fields.avatar', 'avatar')};
-        $nameOfUser = $user?->{config('moonshine.auth.fields.name', 'name')};
-        $username = $user?->{config('moonshine.auth.fields.username', 'email')};
+        $avatar = $user?->{moonshineConfig()->getUserField('avatar')};
+        $nameOfUser = $user?->{moonshineConfig()->getUserField('name')};
+        $username = $user?->{moonshineConfig()->getUserField('username', 'email')};
 
         $avatar = $avatar
-            ? Storage::disk(config('moonshine.disk', 'public'))
+            ? Storage::disk(moonshineConfig()->getDisk())
                 ->url($avatar)
             : "https://ui-avatars.com/api/?name=$nameOfUser";
 
         return [
-            'route' => $this->route ?? to_page(config('moonshine.pages.profile', ProfilePage::class)),
+            'route' => $this->route ?? to_page(
+                moonshineConfig()->getPage('profile', ProfilePage::class)
+            ),
             'logOutRoute' => $this->logOutRoute ?? moonshineRouter()->to('logout'),
             'avatar' => $this->avatar ?? $avatar,
             'nameOfUser' => $this->nameOfUser ?? $nameOfUser,

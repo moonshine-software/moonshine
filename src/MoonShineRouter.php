@@ -287,7 +287,7 @@ final class MoonShineRouter implements NativeStringable
     public function home(): string
     {
         return route(
-            config('moonshine.route.index', 'moonshine.index')
+            moonshineConfig()->getHomeRoute()
         );
     }
 

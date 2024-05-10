@@ -3,7 +3,6 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Http\Controllers\AsyncController;
-use MoonShine\Http\Controllers\AttachmentController;
 use MoonShine\Http\Controllers\AuthenticateController;
 use MoonShine\Http\Controllers\CrudController;
 use MoonShine\Http\Controllers\GlobalSearchController;
@@ -16,8 +15,12 @@ use MoonShine\Http\Controllers\RelationModelFieldController;
 use MoonShine\Http\Controllers\SocialiteController;
 use MoonShine\Http\Controllers\UpdateFieldController;
 
-Route::moonshine(static function (Router $router): void {
-    $router->middleware(config('moonshine.auth.middleware', []))->group(function (): void {
+$authMiddleware = moonshineConfig()->getAuthMiddleware();
+
+Route::moonshine(static function (Router $router) use($authMiddleware): void {
+    $router->middleware(
+        $authMiddleware
+    )->group(function (): void {
         Route::prefix('resource/{resourceUri}')->group(function (): void {
             Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
 
@@ -37,7 +40,7 @@ Route::moonshine(static function (Router $router): void {
         });
 
         Route::get(
-            config('moonshine.route.single_page_prefix', 'page') . "/{pageUri}",
+            moonshineConfig()->getPagePrefix() . "/{pageUri}",
             PageController::class
         )->name('page');
 
@@ -59,7 +62,6 @@ Route::moonshine(static function (Router $router): void {
         );
 
         Route::get('/', HomeController::class)->name('index');
-        Route::post('/attachments', AttachmentController::class)->name('attachments');
 
         Route::controller(NotificationController::class)
             ->prefix('notifications')
@@ -84,13 +86,12 @@ Route::moonshine(static function (Router $router): void {
             });
     });
 
-    if (config('moonshine.auth.enable', true)) {
-        Route::controller(AuthenticateController::class)
-            ->group(static function (): void {
-                Route::get('/login', 'login')->name('login');
-                Route::post('/authenticate', 'authenticate')->name('authenticate');
-                Route::get('/logout', 'logout')->name('logout');
-            });
+    if (moonshineConfig()->isAuthEnabled()) {
+        Route::controller(AuthenticateController::class)->group(static function (): void {
+            Route::get('/login', 'login')->name('login');
+            Route::post('/authenticate', 'authenticate')->name('authenticate');
+            Route::get('/logout', 'logout')->name('logout');
+        });
 
         Route::controller(SocialiteController::class)
             ->prefix('socialite')
@@ -101,7 +102,9 @@ Route::moonshine(static function (Router $router): void {
             });
 
         Route::post('/profile', [ProfileController::class, 'store'])
-            ->middleware(config('moonshine.auth.middleware', []))
+            ->middleware(
+                $authMiddleware
+            )
             ->name('profile.store');
     }
 
