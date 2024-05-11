@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Handlers;
 
 use Illuminate\Support\Collection;
+use MoonShine\Components\ActionButtons\ActionButtons;
 
 /**
  * @template TKey of array-key
@@ -20,6 +21,13 @@ final class Handlers extends Collection
         return $this->first(
             static fn (Handler $handler): bool => $handler->uriKey() === $uri,
             $default
+        );
+    }
+
+    public function getButtons(): ActionButtons
+    {
+        return ActionButtons::make(
+            $this->map(fn(Handler $handler) => $handler->getButton())
         );
     }
 }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Handlers;
 
 use Generator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Jobs\ExportHandlerJob;
@@ -168,5 +170,26 @@ class ExportHandler extends Handler
         );
 
         return $result;
+    }
+
+    /**
+     * @throws ActionException
+     */
+    public function getButton(): ActionButton
+    {
+        if (! $this->hasResource()) {
+            throw ActionException::resourceRequired();
+        }
+
+        $query = Arr::query(request(['filters', 'sort', 'query-tag'], []));
+        $url = $this->getResource()?->route('handler', query: ['handlerUri' => $this->uriKey()]);
+
+        return ActionButton::make(
+            $this->getLabel(),
+            $url . ($query ? '?' . $query : '')
+        )
+            ->primary()
+            ->customAttributes(['class' => '_change-query', 'data-original-url' => $url])
+            ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath());
     }
 }

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-
-use function Laravel\Prompts\{info, outro, select, text}
-
 use Symfony\Component\Console\Attribute\AsCommand;
+
+use function Laravel\Prompts\{info, outro, select, text};
 
 #[AsCommand(name: 'moonshine:resource')]
 class MakeResourceCommand extends MoonShineCommand
@@ -63,7 +62,7 @@ class MakeResourceCommand extends MoonShineCommand
             'Dummy' => $name,
         ];
 
-        if($this->option('test') || $this->option('pest')) {
+        if ($this->option('test') || $this->option('pest')) {
             $testStub = $this->option('pest') ? 'pest' : 'test';
             $testPath = base_path('tests/Feature/') . $name . 'ResourceTest.php';
 

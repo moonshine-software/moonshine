@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\ServiceProvider;
 
-use function Laravel\Prompts\{confirm, intro, outro, spin, warning}
+use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 use MoonShine\Providers\MoonShineServiceProvider;
 
 use Symfony\Component\Console\Attribute\AsCommand;
