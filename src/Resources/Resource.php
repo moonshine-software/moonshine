@@ -81,7 +81,7 @@ abstract class Resource implements ResourceContract, MenuFiller
     public function getHandlers(): Handlers
     {
         return Handlers::make($this->handlers())
-            ->each(fn(Handler $handler): Handler => $handler->setResource($this));
+            ->each(fn (Handler $handler): Handler => $handler->setResource($this));
     }
 
     public function title(): string

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
-use MoonShine\Components\ActionButtons\ActionButton;
 use Illuminate\Support\Collection;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\ActionButtons\ActionButtons;
 
 /**
@@ -28,7 +28,7 @@ final class Handlers extends Collection
     public function getButtons(): ActionButtons
     {
         return ActionButtons::make(
-            $this->map(fn(Handler $handler): ActionButton => $handler->getButton())
+            $this->map(fn (Handler $handler): ActionButton => $handler->getButton())
         );
     }
 }
