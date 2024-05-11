@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Handlers\Handler;
 use MoonShine\Handlers\Handlers;
 use MoonShine\MenuManager\MenuFiller;
 use MoonShine\MoonShineRouter;
@@ -79,7 +80,8 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     public function getHandlers(): Handlers
     {
-        return Handlers::make($this->handlers());
+        return Handlers::make($this->handlers())
+            ->each(fn(Handler $handler) => $handler->setResource($this));
     }
 
     public function title(): string

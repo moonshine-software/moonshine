@@ -6,6 +6,7 @@ namespace MoonShine\Handlers;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Traits\HasResource;
 use MoonShine\Traits\Makeable;
 use MoonShine\Traits\WithIcon;
@@ -33,4 +34,6 @@ abstract class Handler
     }
 
     abstract public function handle(): Response;
+
+    abstract public function getButton(): ActionButton;
 }

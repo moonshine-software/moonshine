@@ -110,15 +110,10 @@ class IndexPage extends Page
                             FiltersButton::for($this->getResource())
                         )
                     )->when(
-                        ! is_null($export = $this->getResource()->export()),
-                        fn (ActionGroup $group): ActionGroup => $group->add(
-                            ExportButton::for($this->getResource(), $export)
-                        ),
-                    )->when(
-                        ! is_null($import = $this->getResource()->import()),
-                        fn (ActionGroup $group): ActionGroup => $group->add(
-                            ImportButton::for($this->getResource(), $import)
-                        ),
+                        $this->getResource()->getHandlers()->isNotEmpty(),
+                        fn (ActionGroup $group): ActionGroup => $group->addMany(
+                            $this->getResource()->getHandlers()->getButtons()
+                        )
                     ),
                 ])->customAttributes([
                     'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',

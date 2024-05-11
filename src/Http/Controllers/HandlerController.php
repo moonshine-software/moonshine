@@ -27,9 +27,7 @@ final class HandlerController extends MoonShineController
             ?->findByUri($handlerUri);
 
         if (! is_null($handler)) {
-            return $handler
-                ->setResource($request->getResource())
-                ->handle();
+            return $handler->handle();
         }
 
         return redirect(

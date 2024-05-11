@@ -6,10 +6,13 @@ namespace MoonShine\Handlers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Exceptions\ActionException;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\File;
 use MoonShine\Jobs\ImportHandlerJob;
 use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
@@ -42,6 +45,18 @@ class ImportHandler extends Handler
     public function delimiter(string $value): static
     {
         $this->csvDelimiter = $value;
+
+        return $this;
+    }
+
+    public function getDelimiter(): string
+    {
+        return $this->csvDelimiter;
+    }
+
+    public function deleteAfter(): self
+    {
+        $this->deleteAfter = true;
 
         return $this;
     }
@@ -122,11 +137,6 @@ class ImportHandler extends Handler
         return back();
     }
 
-    public function getDelimiter(): string
-    {
-        return $this->csvDelimiter;
-    }
-
     /**
      * @throws IOException
      * @throws UnsupportedTypeException
@@ -199,10 +209,31 @@ class ImportHandler extends Handler
         return $result;
     }
 
-    public function deleteAfter(): self
+    /**
+     * @throws ActionException
+     */
+    public function getButton(): ActionButton
     {
-        $this->deleteAfter = true;
+        if (! $this->hasResource()) {
+            throw ActionException::resourceRequired();
+        }
 
-        return $this;
+        return ActionButton::make(
+            $this->getLabel(),
+            '#'
+        )
+            ->success()
+            ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())
+            ->inOffCanvas(
+                fn (): string => $this->getLabel(),
+                fn (): FormBuilder => FormBuilder::make(
+                    $this->getResource()?->route('handler', query: ['handlerUri' => $this->uriKey()]) ?? ''
+                )
+                    ->fields([
+                        File::make(column: $this->getInputName())->required(),
+                    ])
+                    ->submit(__('moonshine::ui.confirm')),
+                name: 'import-off-canvas'
+            );
     }
 }

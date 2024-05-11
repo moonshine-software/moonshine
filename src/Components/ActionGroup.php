@@ -43,6 +43,15 @@ final class ActionGroup extends MoonShineComponent
         return $this;
     }
 
+    public function addMany(iterable $items): self
+    {
+        foreach ($items as $item) {
+            $this->add($item);
+        }
+
+        return $this;
+    }
+
     public function prepend(ActionButton $item): self
     {
         $this->actions = $this->getActions();
