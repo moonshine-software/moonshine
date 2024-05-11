@@ -6,14 +6,14 @@ namespace MoonShine\Scout;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-final class SearchableResponse implements Arrayable
+final readonly class SearchableResponse implements Arrayable
 {
     public function __construct(
-        protected readonly string $group,
-        protected readonly string $title,
-        protected readonly string $url,
-        protected readonly ?string $preview = null,
-        protected readonly ?string $image = null,
+        protected string $group,
+        protected string $title,
+        protected string $url,
+        protected ?string $preview = null,
+        protected ?string $image = null,
     ) {
     }
 

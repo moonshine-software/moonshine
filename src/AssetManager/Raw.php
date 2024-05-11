@@ -6,12 +6,12 @@ namespace MoonShine\AssetManager;
 
 use MoonShine\Traits\Makeable;
 
-final class Raw implements AssetElement
+final readonly class Raw implements AssetElement
 {
     use Makeable;
 
     public function __construct(
-        private readonly string $content,
+        private string $content,
     ) {
     }
 

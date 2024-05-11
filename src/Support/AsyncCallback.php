@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Support;
 
-final class AsyncCallback
+final readonly class AsyncCallback
 {
     public function __construct(
-        private readonly ?string $success,
-        private readonly ?string $before,
+        private ?string $success,
+        private ?string $before,
     ) {
 
     }
