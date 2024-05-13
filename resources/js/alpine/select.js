@@ -169,6 +169,10 @@ export default (asyncUrl = '') => ({
         callbackOnInit: () => {
           this.searchTerms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
 
+          this.$el.closest('.choices').addEventListener('focus', () => {
+            this.choicesInstance.showDropdown()
+          }, true)
+
           if (this.associatedWith && asyncUrl) {
             this.asyncSearch(true)
           }

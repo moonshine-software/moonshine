@@ -246,6 +246,9 @@ input[type='number'] {
       @apply rounded-b-none rounded-t-md;
     }
   }
+  &.is-focused {
+    @apply border-gray-300 ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
+  }
 
   .choices__input {
     @apply mb-0 mt-[5px] h-full bg-white p-0 text-3xs focus:ring-0 dark:bg-dark-800 dark:placeholder:text-gray-500;
