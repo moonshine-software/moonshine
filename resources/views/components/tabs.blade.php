@@ -3,10 +3,12 @@
     'contents',
     'active',
     'justifyAlign' => 'start',
+    'vertical' => false,
 ])
 @if($tabs)
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
+        :class="{'tabs-vertical': {{ $vertical }}} "
          x-data="{ activeTab: '{{ $active ?? array_key_first($tabs) }}'}"
     >
         <!-- Tabs Buttons -->

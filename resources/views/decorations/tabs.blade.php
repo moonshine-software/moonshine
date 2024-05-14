@@ -3,6 +3,7 @@
         id="tabs_{{ $element->id() }}"
         :attributes="$attributes->class(['mb-4'])"
         :active="$element->getActive()"
+        :vertical="$element->isVertical()"
         :tabs="$element->tabsWithHtml()->toArray()"
         :contents="$element->contentWithHtml()->toArray()"
         :justifyAlign="$element->getJustifyAlign()"

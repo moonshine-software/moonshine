@@ -14,4 +14,17 @@
   &-content {
     @apply mt-6;
   }
+
+  &-vertical {
+    @apply flex gap-2;
+    .tabs-list {
+      @apply flex flex-col border-r;
+    }
+    .tabs-content{
+        @apply grow;
+    }
+    .tabs-button{
+        @apply border-r border-r-transparent;
+    }
+  }
 }
