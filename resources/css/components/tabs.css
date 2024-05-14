@@ -18,13 +18,13 @@
   &-vertical {
     @apply flex gap-2;
     .tabs-list {
-      @apply flex flex-col border-r;
+      @apply flex flex-col border-r border-b-0 max-w-[220px];
     }
     .tabs-content{
         @apply grow;
     }
     .tabs-button{
-        @apply border-r border-r-transparent;
+        @apply w-full border-r border-r-transparent border-b-0;
     }
   }
 }

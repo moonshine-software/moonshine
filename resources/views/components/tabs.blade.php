@@ -8,8 +8,8 @@
 @if($tabs)
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
-        :class="{'tabs-vertical': {{ $vertical }}} "
-         x-data="{ activeTab: '{{ $active ?? array_key_first($tabs) }}'}"
+        :class="{'tabs-vertical': {{ $vertical ? 'true' : 'false'}} }"
+        x-data="{ activeTab: '{{ $active ?? array_key_first($tabs) }}'}"
     >
         <!-- Tabs Buttons -->
         <ul @class(['tabs-list', 'justify-' . $justifyAlign])>
