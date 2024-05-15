@@ -1,7 +1,10 @@
 name: Issue
 description: "Task to be completed"
 body:
-- type: markdown
-  attributes:
-    value: "Description"
+ - type: textarea
+    attributes:
+      label: Description
+      description: Provide a detailed description of the issue you are facing.
+    validations:
+      required: true
       
