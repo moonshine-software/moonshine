@@ -190,6 +190,8 @@ export default (
       bulkButtons[i].setAttribute('href', url)
     }
 
+    all.checked = checkboxes.length === values.length
+
     this.actionsOpen = !!(all.checked || values.length)
   },
   rowClickAction(event) {
