@@ -1,3 +1,7 @@
 name: Issue
 description: "Task to be completed"
+body:
+- type: markdown
+  attributes:
+    value: "Description"
       
