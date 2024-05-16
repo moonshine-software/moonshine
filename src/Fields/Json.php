@@ -488,14 +488,14 @@ class Json extends Field implements
 
     protected function resolveOnApply(): ?Closure
     {
-        return fn($item): mixed => $this->resolveAppliesCallback(
+        return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
-            callback: fn(Field $field, mixed $values): mixed => $field->apply(
+            callback: fn (Field $field, mixed $values): mixed => $field->apply(
                 static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
                 $values
             ),
             response: $this->isAsRelation()
-                ? static fn(array $values, mixed $data): mixed => $data
+                ? static fn (array $values, mixed $data): mixed => $data
                 : null
         );
     }
@@ -507,9 +507,9 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: fn(Field $field, mixed $values): mixed => $field->beforeApply($values),
+            callback: fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
             response: $this->isAsRelation()
-                ? static fn(array $values, mixed $data): mixed => $data
+                ? static fn (array $values, mixed $data): mixed => $data
                 : null
         );
     }
@@ -521,15 +521,15 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: fn(Field $field, mixed $values): mixed => $this->isAsRelation()
+            callback: fn (Field $field, mixed $values): mixed => $this->isAsRelation()
                 ? $field->apply(
                     static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
                     $values
                 )
                 : $field->afterApply($values),
             response: $this->isAsRelation()
-                ? fn(array $values, mixed $data) => $this->saveRelation($values, $data)
-                : static fn(array $values, mixed $data): mixed => $data,
+                ? fn (array $values, mixed $data) => $this->saveRelation($values, $data)
+                : static fn (array $values, mixed $data): mixed => $data,
             fill: $this->isAsRelation(),
         );
     }
