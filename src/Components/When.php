@@ -28,7 +28,7 @@ class When extends MoonShineComponent
         if (($this->condition)()) {
             $components = ($this->components)();
         } else {
-            $components = is_null($this->default) ? []: ($this->default)();
+            $components = is_null($this->default) ? [] : ($this->default)();
         }
 
         return [
