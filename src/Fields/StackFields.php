@@ -7,8 +7,11 @@ namespace MoonShine\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
+use MoonShine\Components\FieldsGroup;
 use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Decorations\Divider;
+use MoonShine\Decorations\LineBreak;
 use MoonShine\Traits\WithFields;
 use Throwable;
 
@@ -73,10 +76,16 @@ class StackFields extends Field implements HasFields, FieldsWrapper
 
     protected function resolvePreview(): View|string
     {
-        return view($this->getView(), [
-            'element' => $this,
-            'indexView' => true,
-        ]);
+        return FieldsGroup::make(
+            $this->getFields()->indexFields()
+        )
+            ->mapFields(function (Field $field) {
+                return $field
+                    ->beforeRender(fn() => $this->hasLabels() ? '' : (string) LineBreak::make())
+                    ->withoutWrapper($this->hasLabels())
+                    ->forcePreview();
+            })
+            ->render();
     }
 
     /**
