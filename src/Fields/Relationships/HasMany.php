@@ -48,16 +48,52 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $isAsync = false;
 
-    protected ?ActionButton $creatableButton = null;
+    protected ?ActionButton $createButton = null;
+
+    protected ?Closure $modifyTable = null;
+
+    protected ?Closure $modifyCreateButton = null;
+
+    protected ?Closure $modifyEditButton = null;
+
+    protected ?Closure $modifyOnlyLinkButton = null;
 
     protected ?Closure $modifyBuilder = null;
 
+    public function modifyCreateButton(Closure $callback): self
+    {
+        $this->modifyCreateButton = $callback;
+
+        return $this;
+    }
+
+    public function modifyOnlyLinkButton(Closure $callback): self
+    {
+        $this->modifyOnlyLinkButton = $callback;
+
+        return $this;
+    }
+
+    public function modifyEditButton(Closure $callback): self
+    {
+        $this->modifyEditButton = $callback;
+
+        return $this;
+    }
+
+    public function modifyTable(Closure $callback): self
+    {
+        $this->modifyTable = $callback;
+
+        return $this;
+    }
+
     public function creatable(
         Closure|bool|null $condition = null,
-        ?ActionButton     $button = null,
+        ?ActionButton $button = null,
     ): static {
         $this->isCreatable = Condition::boolean($condition, true);
-        $this->creatableButton = $button;
+        $this->createButton = $button;
 
         return $this;
     }
@@ -92,7 +128,11 @@ class HasMany extends ModelRelationField implements HasFields
             return null;
         }
 
-        $button = HasManyButton::for($this, button: $this->creatableButton);
+        $button = HasManyButton::for($this, button: $this->createButton);
+
+        if (! is_null($this->modifyCreateButton)) {
+            $button = value($this->modifyCreateButton, $button, $this);
+        }
 
         return $button->isSee($this->getRelatedModel())
             ? $button
@@ -200,7 +240,7 @@ class HasMany extends ModelRelationField implements HasFields
         $countItems = $this->toValue()->count();
 
         if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string)moonshineRequest()->getResourceUri());
+            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
         }
 
         return ActionButton::make(
@@ -210,7 +250,30 @@ class HasMany extends ModelRelationField implements HasFields
             ])
         )
             ->icon('heroicons.outline.eye')
+            ->when(
+                ! is_null($this->modifyOnlyLinkButton),
+                fn (ActionButton $button) => value($this->modifyOnlyLinkButton, $button, preview: true)
+            )
             ->render();
+    }
+
+    protected function linkValue(): MoonShineRenderable
+    {
+        if (is_null($relationName = $this->linkRelation)) {
+            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
+        }
+
+        return ActionButton::make(
+            __('moonshine::ui.show') . " ({$this->toValue()->total()})",
+            $this->getResource()->indexPageUrl([
+                '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
+            ])
+        )
+            ->primary()
+            ->when(
+                ! is_null($this->modifyOnlyLinkButton),
+                fn (ActionButton $button) => value($this->modifyOnlyLinkButton, $button, preview: false)
+            );
     }
 
     /**
@@ -237,6 +300,10 @@ class HasMany extends ModelRelationField implements HasFields
             ->cast($resource->getModelCast())
             ->preview()
             ->simple()
+            ->when(
+                !is_null($this->modifyTable),
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: true)
+            )
             ->render();
     }
 
@@ -272,21 +339,6 @@ class HasMany extends ModelRelationField implements HasFields
         };
     }
 
-    protected function linkValue(): MoonShineRenderable
-    {
-        if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string)moonshineRequest()->getResourceUri());
-        }
-
-        return
-            ActionButton::make(
-                __('moonshine::ui.show') . " ({$this->toValue()->total()})",
-                $this->getResource()->indexPageUrl([
-                    '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
-                ])
-            )->primary();
-    }
-
     /**
      * @throws Throwable
      */
@@ -307,6 +359,12 @@ class HasMany extends ModelRelationField implements HasFields
             : moonshineRequest()
             ->getResource()
             ?->formPageUrl($parentId) ?? '';
+
+        $editButton = HasManyButton::for($this, update: true);
+
+        if (! is_null($this->modifyEditButton)) {
+            $editButton = value($this->modifyEditButton, $editButton, $this);
+        }
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
@@ -336,7 +394,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->buttons([
                 ...$resource->getIndexButtons(),
                 $resource->getDetailButton(isAsync: $this->isAsync()),
-                HasManyButton::for($this, update: true),
+                $editButton,
                 $resource->getDeleteButton(
                     componentName: $this->getRelationName(),
                     redirectAfterDelete: $redirectAfter,
@@ -347,7 +405,10 @@ class HasMany extends ModelRelationField implements HasFields
                     redirectAfterDelete: $redirectAfter,
                     isAsync: $this->isAsync()
                 ),
-            ]);
+            ])->when(
+                !is_null($this->modifyTable),
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
+            );
     }
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
