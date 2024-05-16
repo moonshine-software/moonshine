@@ -464,7 +464,7 @@ class Json extends Field implements
                     $this->requestKeyPrefix()
                 );
 
-                $field->when($fill, fn (Field $f) => $f->resolveFill($values->toArray(), $values));
+                $field->when($fill, fn (Field $f): Field => $f->resolveFill($values->toArray(), $values));
 
                 $apply = $callback($field, $values, $data);
 
@@ -488,20 +488,16 @@ class Json extends Field implements
 
     protected function resolveOnApply(): ?Closure
     {
-        return function ($item) {
-            return $this->resolveAppliesCallback(
-                data: $item,
-                callback: function (Field $field, mixed $values) {
-                    return $field->apply(
-                        static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
-                        $values
-                    );
-                },
-                response: $this->isAsRelation()
-                    ? static fn(array $values, mixed $data) => $data
-                    : null
-            );
-        };
+        return fn($item): mixed => $this->resolveAppliesCallback(
+            data: $item,
+            callback: fn(Field $field, mixed $values): mixed => $field->apply(
+                static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                $values
+            ),
+            response: $this->isAsRelation()
+                ? static fn(array $values, mixed $data): mixed => $data
+                : null
+        );
     }
 
     /**
@@ -511,11 +507,9 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: function (Field $field, mixed $values) {
-                return $field->beforeApply($values);
-            },
+            callback: fn(Field $field, mixed $values): mixed => $field->beforeApply($values),
             response: $this->isAsRelation()
-                ? static fn(array $values, mixed $data) => $data
+                ? static fn(array $values, mixed $data): mixed => $data
                 : null
         );
     }
@@ -527,17 +521,15 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: function (Field $field, mixed $values) {
-                return $this->isAsRelation()
-                    ? $field->apply(
-                        static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
-                        $values
-                    )
-                    : $field->afterApply($values);
-            },
+            callback: fn(Field $field, mixed $values): mixed => $this->isAsRelation()
+                ? $field->apply(
+                    static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                    $values
+                )
+                : $field->afterApply($values),
             response: $this->isAsRelation()
                 ? fn(array $values, mixed $data) => $this->saveRelation($values, $data)
-                : static fn(array $values, mixed $data) => $data,
+                : static fn(array $values, mixed $data): mixed => $data,
             fill: $this->isAsRelation(),
         );
     }
