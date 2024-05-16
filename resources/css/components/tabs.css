@@ -10,21 +10,26 @@
       @apply h-4 w-4 sm:h-5 sm:w-5;
     }
   }
-
   &-content {
-    @apply mt-6;
+    @apply mt-6 overflow-hidden;
   }
-
   &-vertical {
     @apply flex gap-2;
+
     .tabs-list {
-      @apply flex flex-col border-r border-b-0 max-w-[220px];
-    }
-    .tabs-content{
-        @apply grow;
+      @apply flex flex-col border-r border-b-0 min-w-max;
     }
     .tabs-button{
         @apply w-full border-r border-r-transparent border-b-0;
+        &._is-active{
+            @apply border-primary
+        }
+        &:hover{
+            @apply border-gray-300
+        }
+    }
+    .tabs-content{
+        @apply grow;
     }
   }
 }
