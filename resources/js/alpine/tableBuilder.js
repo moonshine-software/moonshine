@@ -81,20 +81,10 @@ export default (
       return
     }
 
-    function findRoot(element) {
-      let parent = element.parentNode.closest('table')
-
-      if (parent) {
-        return findRoot(parent)
-      }
-
-      return element
-    }
-
-    let table = findRoot(this.table)
+    let table = this.table
 
     this.$nextTick(() => {
-      MoonShine.iterable.reindex(table, 'tbody > tr:not(tr tr)', 'tr')
+      MoonShine.iterable.reindex(table, 'tr')
     })
   },
   asyncFormRequest() {

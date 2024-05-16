@@ -71,16 +71,20 @@ class Json extends Field implements
      */
     public function keyValue(
         string $key = 'Key',
-        string $value = 'Value'
+        string $value = 'Value',
+        ?Field $keyField = null,
+        ?Field $valueField = null,
     ): static {
         $this->keyValue = true;
         $this->onlyValue = false;
 
         $this->fields([
-            Text::make($key, 'key')
+            ($keyField ?? Text::make($key, 'key'))
+                ->setColumn('key')
                 ->customAttributes($this->attributes()->getAttributes()),
 
-            Text::make($value, 'value')
+            ($valueField ?? Text::make($value, 'value'))
+                ->setColumn('value')
                 ->customAttributes($this->attributes()->getAttributes()),
         ]);
 
@@ -96,13 +100,15 @@ class Json extends Field implements
      * @throws Throwable
      */
     public function onlyValue(
-        string $value = 'Value'
+        string $value = 'Value',
+        ?Field $valueField = null,
     ): static {
         $this->keyValue = false;
         $this->onlyValue = true;
 
         $this->fields([
-            Text::make($value, 'value')
+            ($valueField ?? Text::make($value, 'value'))
+                ->setColumn('value')
                 ->customAttributes($this->attributes()->getAttributes()),
         ]);
 
@@ -138,7 +144,7 @@ class Json extends Field implements
     ): self {
         $this->isCreatable = Condition::boolean($condition, true);
 
-        if($this->isCreatable()) {
+        if ($this->isCreatable()) {
             $this->creatableLimit = $limit;
             $this->creatableButton = $button?->customAttributes([
                 '@click.prevent' => 'add()',
@@ -261,7 +267,10 @@ class Json extends Field implements
 
     public function preparedFields(): Fields
     {
-        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (Json $parent, Field $field): void {
+        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (
+            Json $parent,
+            Field $field
+        ): void {
             throw_if(
                 ! $parent->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(
@@ -353,7 +362,7 @@ class Json extends Field implements
             && ! $this->isAsRelation()
             && $this->isReorderable();
 
-        if($sortable) {
+        if ($sortable) {
             $fields->prepend(
                 Preview::make(
                     formatted: static fn () => Icon::make('heroicons.outline.bars-4')
@@ -428,43 +437,69 @@ class Json extends Field implements
         )->filter()->toArray();
     }
 
-    protected function resolveOnApply(): ?Closure
-    {
-        if ($this->isAsRelation()) {
-            return static fn ($item) => $item;
-        }
+    /**
+     * @throws Throwable
+     */
+    protected function resolveAppliesCallback(
+        mixed $data,
+        Closure $callback,
+        ?Closure $response = null,
+        bool $fill = false
+    ): mixed {
+        $requestValues = array_filter($this->requestValue() ?: []);
+        $applyValues = [];
 
-        return function ($item) {
-            $requestValues = array_filter($this->requestValue() ?: []);
-            $applyValues = [];
+        foreach ($requestValues as $index => $values) {
+            if ($this->isAsRelation()) {
+                $values = $this->asRelationResource()
+                    ?->getModel()
+                    ?->forceFill($values) ?? $values;
 
-            foreach ($requestValues as $index => $values) {
-                foreach ($this->getFields() as $field) {
-                    $field->appendRequestKeyPrefix(
-                        "{$this->column()}.$index",
-                        $this->requestKeyPrefix()
-                    );
-
-                    $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
-                        $values
-                    );
-
-                    data_set(
-                        $applyValues[$index],
-                        $field->column(),
-                        data_get($apply, $field->column())
-                    );
-                }
+                $requestValues[$index] = $values;
             }
 
-            $preparedValues = $this->prepareOnApply($applyValues);
-            $values = $this->isKeyValue() ? $preparedValues : array_values($preparedValues);
+            foreach ($this->getFields()->onlyFields() as $field) {
+                $field->appendRequestKeyPrefix(
+                    "{$this->column()}.$index",
+                    $this->requestKeyPrefix()
+                );
 
-            return data_set(
-                $item,
-                str_replace('.', '->', $this->column()),
-                $values
+                $field->when($fill, fn (Field $f) => $f->resolveFill($values->toArray(), $values));
+
+                $apply = $callback($field, $values, $data);
+
+                data_set(
+                    $applyValues[$index],
+                    $field->column(),
+                    data_get($apply, $field->column())
+                );
+            }
+        }
+
+        $preparedValues = $this->prepareOnApply($applyValues);
+        $values = $this->isKeyValue() ? $preparedValues : array_values($preparedValues);
+
+        return is_null($response) ? data_set(
+            $data,
+            str_replace('.', '->', $this->column()),
+            $values
+        ) : $response($values, $data);
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return function ($item) {
+            return $this->resolveAppliesCallback(
+                data: $item,
+                callback: function (Field $field, mixed $values) {
+                    return $field->apply(
+                        static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                        $values
+                    );
+                },
+                response: $this->isAsRelation()
+                    ? static fn(array $values, mixed $data) => $data
+                    : null
             );
         };
     }
@@ -474,18 +509,15 @@ class Json extends Field implements
      */
     protected function resolveBeforeApply(mixed $data): mixed
     {
-        $this->getFields()
-            ->onlyFields()
-            ->each(function (Field $field, $index) use ($data): void {
-                $field->appendRequestKeyPrefix(
-                    "{$this->column()}.$index",
-                    $this->requestKeyPrefix()
-                );
-
-                $field->beforeApply($data);
-            });
-
-        return $data;
+        return $this->resolveAppliesCallback(
+            data: $data,
+            callback: function (Field $field, mixed $values) {
+                return $field->beforeApply($values);
+            },
+            response: $this->isAsRelation()
+                ? static fn(array $values, mixed $data) => $data
+                : null
+        );
     }
 
     /**
@@ -493,76 +525,53 @@ class Json extends Field implements
      */
     protected function resolveAfterApply(mixed $data): mixed
     {
-        if ($this->isAsRelation()) {
-            $requestValues = array_filter($this->requestValue() ?: []);
-            $applyValues = [];
-
-            foreach ($requestValues as $index => $values) {
-                $values = $this->asRelationResource()
-                    ?->getModel()
-                    ?->forceFill($values) ?? $values;
-
-                foreach ($this->getFields() as $field) {
-                    $field->appendRequestKeyPrefix(
-                        "{$this->column()}.$index",
-                        $this->requestKeyPrefix()
-                    );
-
-                    $field->resolveFill($values->toArray(), $values);
-
-                    $apply = $field->apply(
-                        fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+        return $this->resolveAppliesCallback(
+            data: $data,
+            callback: function (Field $field, mixed $values) {
+                return $this->isAsRelation()
+                    ? $field->apply(
+                        static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
                         $values
-                    );
+                    )
+                    : $field->afterApply($values);
+            },
+            response: $this->isAsRelation()
+                ? fn(array $values, mixed $data) => $this->saveRelation($values, $data)
+                : static fn(array $values, mixed $data) => $data,
+            fill: $this->isAsRelation(),
+        );
+    }
 
-                    data_set(
-                        $applyValues[$index],
-                        $field->column(),
-                        data_get($apply, $field->column())
-                    );
-                }
-            }
+    private function saveRelation(array $items, mixed $model)
+    {
+        $items = collect($items);
 
-            $items = collect($this->prepareOnApply($applyValues));
+        $ids = $items
+            ->pluck($model->{$this->column()}()->getLocalKeyName())
+            ->filter()
+            ->toArray();
 
-            $ids = $items
-                ->pluck($data->{$this->column()}()->getLocalKeyName())
-                ->filter()
-                ->toArray();
+        $localKeyName = $model->{$this->column()}()->getLocalKeyName();
 
-            $localKey = $data->{$this->column()}()->getLocalKeyName();
+        $model->{$this->column()}()->when(
+            ! empty($ids),
+            fn (Builder $q) => $q->whereNotIn(
+                $localKeyName,
+                $ids
+            )->delete()
+        );
 
-            $data->{$this->column()}()->when(
-                ! empty($ids),
-                fn (Builder $q) => $q->whereNotIn(
-                    $localKey,
-                    $ids
-                )->delete()
-            );
+        $model->{$this->column()}()->when(
+            empty($ids) && $this->asRelationDeleteWhenEmpty,
+            fn (Builder $q) => $q->delete()
+        );
 
-            $data->{$this->column()}()->when(
-                empty($ids) && $this->asRelationDeleteWhenEmpty,
-                fn (Builder $q) => $q->delete()
-            );
+        $items->each(fn ($item) => $model->{$this->column()}()->updateOrCreate(
+            [$localKeyName => $item[$localKeyName] ?? null],
+            $item
+        ));
 
-            $items->each(fn ($d) => $data->{$this->column()}()->updateOrCreate(
-                [$localKey => $d[$localKey] ?? null],
-                $d
-            ));
-        }
-
-        $this->getFields()
-            ->onlyFields()
-            ->each(function (Field $field, $index) use ($data): void {
-                $field->appendRequestKeyPrefix(
-                    "{$this->column()}.$index",
-                    $this->requestKeyPrefix()
-                );
-
-                $field->afterApply($data);
-            });
-
-        return $data;
+        return $model;
     }
 
     /**
