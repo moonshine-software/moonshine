@@ -80,7 +80,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             $fields->each(function ($field, $cellIndex): void {
                 if($field instanceof Td) {
                     $this->tdAttributes(
-                        fn ($data, $row, $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $cellIndex === $cell-1
+                        fn ($data, $row, $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $cellIndex === $cell - 1
                             ? $field->resolveTdAttributes($data, $attr)
                             : $attr
                     );

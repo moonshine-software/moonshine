@@ -104,9 +104,9 @@ class Td extends Template
         return FieldsGroup::make(
             Fields::make($fields)
         )
-            ->mapFields(fn(Field $field): Field => $field
+            ->mapFields(fn (Field $field): Field => $field
                 ->resolveFill($this->toRawValue(), $this->getData())
-                ->beforeRender(fn(): string => $this->hasLabels() ? '' : (string) LineBreak::make())
+                ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->forcePreview())
             ->render();

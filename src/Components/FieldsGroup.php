@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
+use Closure;
 use MoonShine\Components\Layout\WithComponents;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use Closure;
 use Throwable;
 
 final class FieldsGroup extends WithComponents
