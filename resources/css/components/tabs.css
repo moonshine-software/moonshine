@@ -1,11 +1,17 @@
 /* Tabs */
 .tabs {
   &-list {
-    @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-dark-200;
+    @apply flex flex-col gap-2 min-w-max overflow-x-auto border-b border-gray-200 dark:border-dark-200 sm:flex-row;
   }
 
+  &-collapse{
+    @apply sm:hidden;
+  }
+  &-title{
+    @apply flex gap-2 w-full mr-2 text-primary;
+  }
   &-button {
-    @apply flex h-10 items-center gap-1.5 whitespace-nowrap border-b border-b-transparent px-2 text-3xs font-medium text-gray-400 hover:border-gray-300 hover:text-gray-700 current:pointer-events-none current:border-primary current:text-primary dark:text-slate-400 dark:hover:border-gray-500 dark:hover:text-slate-300 dark:current:border-secondary dark:current:text-secondary sm:h-12 sm:text-2xs;
+    @apply flex h-10 items-center gap-1.5 whitespace-nowrap sm:border-b sm:border-b-transparent px-2 text-3xs font-medium text-gray-400 hover:border-gray-300 hover:text-gray-700 current:pointer-events-none current:border-primary current:text-primary dark:text-slate-400 dark:hover:border-gray-500 dark:hover:text-slate-300 dark:current:border-secondary dark:current:text-secondary sm:h-12 sm:text-2xs;
     > svg {
       @apply h-4 w-4 sm:h-5 sm:w-5;
     }
@@ -13,19 +19,20 @@
   &-content {
     @apply mt-6 overflow-hidden;
   }
+
   &-vertical {
-    @apply flex gap-2;
+    @apply flex-col sm:flex-row;
 
     .tabs-list {
-      @apply flex flex-col border-r border-b-0 min-w-max;
+      @apply flex flex-col sm:min-h-max sm:border-r sm:border-b-0 min-w-max;
     }
     .tabs-button{
-        @apply w-full border-r border-r-transparent border-b-0;
+        @apply w-full sm:border-r sm:border-r-transparent sm:border-b-0;
         &._is-active{
-            @apply border-primary
+            @apply sm:border-primary
         }
         &:hover{
-            @apply border-gray-300
+            @apply sm:border-gray-300
         }
     }
     .tabs-content{
