@@ -46,7 +46,7 @@ a.badge {
 
   a {
     @apply hover:underline;
-    color: inherit!important;
+    color: inherit !important;
   }
 }
 
