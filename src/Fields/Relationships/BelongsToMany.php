@@ -13,6 +13,7 @@ use MoonShine\Buttons\BelongsToManyButton;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\ActionButtons\ActionButtons;
 use MoonShine\Components\Badge;
+use MoonShine\Components\Link;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\Fields\HasPivot;
@@ -63,6 +64,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $inLine = false;
 
+    protected ?Closure $inLineLink = null;
+
     protected string $inLineSeparator = '';
 
     protected bool $inLineBadge = false;
@@ -95,11 +98,12 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    public function inLine(string $separator = '', bool $badge = false): static
+    public function inLine(string $separator = '', bool $badge = false, ?Closure $link = null): static
     {
         $this->inLine = true;
         $this->inLineSeparator = $separator;
         $this->inLineBadge = $badge;
+        $this->inLineLink = $link;
 
         return $this;
     }
@@ -195,7 +199,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $data = collect($this->toValue());
 
-        if($data->isEmpty()) {
+        if ($data->isEmpty()) {
             return false;
         }
 
@@ -394,6 +398,17 @@ class BelongsToMany extends ModelRelationField implements
         if ($this->inLine) {
             return $values->implode(function (Model $item) use ($column) {
                 $value = $this->columnOrFormattedValue($item, data_get($item, $column) ?? false);
+
+                if (! is_null($this->inLineLink)) {
+                    $linkValue = value($this->inLineLink, $item, $value, $this);
+
+                    $value = $linkValue instanceof Link
+                        ? $linkValue
+                        : Link::make(
+                            $linkValue,
+                            $value,
+                        );
+                }
 
                 if ($this->inLineBadge) {
                     return Badge::make((string) $value, 'primary')

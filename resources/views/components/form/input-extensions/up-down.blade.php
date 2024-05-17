@@ -1,8 +1,13 @@
 @props([
     'value'
 ])
-<div class="expansion-custom flex" x-data="numberUpDown">
-    <button @click.prevent="toggleDown()" class="px-2" type="button">
+<div class="expansion-custom flex">
+    <button
+        class="px-2"
+        type="button"
+        @click.prevent="$refs.extensionInput.stepDown()"
+        :disabled="$refs.extensionInput.disabled || $refs.extensionInput.readOnly"
+    >
         <span>
             <x-moonshine::icon
                 icon="minus-small"
@@ -11,7 +16,12 @@
         </span>
     </button>
 
-    <button @click.prevent="toggleUp()"  class="px-2" type="button">
+    <button
+        class="px-2"
+        type="button"
+        @click.prevent="$refs.extensionInput.stepUp()"
+        :disabled="$refs.extensionInput.disabled || $refs.extensionInput.readOnly"
+    >
         <span>
             <x-moonshine::icon
                 icon="plus-small"

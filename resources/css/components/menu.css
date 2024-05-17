@@ -19,7 +19,8 @@
       @apply block;
     }
     .menu-inner-text,
-    .menu-inner-arrow {
+    .menu-inner-arrow,
+    .menu-inner-counter {
       @apply lg:pointer-events-none lg:absolute lg:opacity-0;
     }
     .menu-inner-counter {
