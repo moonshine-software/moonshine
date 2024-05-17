@@ -301,7 +301,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->preview()
             ->simple()
             ->when(
-                !is_null($this->modifyTable),
+                ! is_null($this->modifyTable),
                 fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: true)
             )
             ->render();
@@ -406,7 +406,7 @@ class HasMany extends ModelRelationField implements HasFields
                     isAsync: $this->isAsync()
                 ),
             ])->when(
-                !is_null($this->modifyTable),
+                ! is_null($this->modifyTable),
                 fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
             );
     }
