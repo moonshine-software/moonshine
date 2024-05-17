@@ -75,7 +75,7 @@ class Td extends Template
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, ComponentAttributeBag $attributes, $td self): ComponentAttributeBag  $attributes
+     * @param  Closure(mixed $data, ComponentAttributeBag $attributes, $td self): ComponentAttributeBag  $attributes
      * @return self
      */
     public function tdAttributes(Closure $attributes): self
@@ -90,10 +90,10 @@ class Td extends Template
         return ! is_null($this->tdAttributes);
     }
 
-    public function resolveTdAttributes(mixed $data, int $row, ComponentAttributeBag $attributes): ComponentAttributeBag
+    public function resolveTdAttributes(mixed $data, ComponentAttributeBag $attributes): ComponentAttributeBag
     {
         return $this->hasTdAttributes()
-            ? value($this->tdAttributes, $data, $row, $attributes, $this)
+            ? value($this->tdAttributes, $data, $attributes, $this)
             : $attributes;
     }
 

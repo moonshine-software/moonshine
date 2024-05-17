@@ -13,7 +13,6 @@ use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Td;
-use MoonShine\Fields\Tr;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\HasAsync;
@@ -55,21 +54,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function preparedFields(): Fields
     {
-        $fields = $this->getFields();
-
-        foreach ($fields as $field) {
-            if($field instanceof Tr) {
-                $fields = $field->getCells();
-
-                $this->trAttributes(
-                    fn ($data, $row, ComponentAttributeBag $attr) => $field->resolveTrAttributes($data, $row, $attr)
-                );
-
-                return $fields;
-            }
-        }
-
-        return $fields;
+        return $this->getFields()->values();
     }
 
     /**
@@ -96,7 +81,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 if($field instanceof Td) {
                     $this->tdAttributes(
                         fn ($data, $row, $cell, ComponentAttributeBag $attr) => $cellIndex === $cell-1
-                            ? $field->resolveTdAttributes($data, $row, $attr)
+                            ? $field->resolveTdAttributes($data, $attr)
                             : $attr
                     );
                 }
@@ -104,7 +89,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             return TableRow::make(
                 $casted,
-                $fields->values(),
+                $fields,
                 $this->getButtons($casted),
                 $this->trAttributes,
                 $this->tdAttributes,
