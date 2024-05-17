@@ -44,7 +44,6 @@ class Td extends Template
 
     /**
      * @param  ?Closure(mixed $data, $td self): self $fields
-     * @return self
      */
     public function conditionalFields(?Closure $fields = null): self
     {
@@ -76,7 +75,6 @@ class Td extends Template
 
     /**
      * @param  Closure(mixed $data, ComponentAttributeBag $attributes, $td self): ComponentAttributeBag  $attributes
-     * @return self
      */
     public function tdAttributes(Closure $attributes): self
     {
@@ -106,13 +104,11 @@ class Td extends Template
         return FieldsGroup::make(
             Fields::make($fields)
         )
-            ->mapFields(function (Field $field) {
-                return $field
-                    ->resolveFill($this->toRawValue(), $this->getData())
-                    ->beforeRender(fn() => $this->hasLabels() ? '' : (string) LineBreak::make())
-                    ->withoutWrapper($this->hasLabels())
-                    ->forcePreview();
-            })
+            ->mapFields(fn(Field $field): Field => $field
+                ->resolveFill($this->toRawValue(), $this->getData())
+                ->beforeRender(fn(): string => $this->hasLabels() ? '' : (string) LineBreak::make())
+                ->withoutWrapper($this->hasLabels())
+                ->forcePreview())
             ->render();
     }
 }

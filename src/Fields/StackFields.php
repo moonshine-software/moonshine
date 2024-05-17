@@ -10,7 +10,6 @@ use Illuminate\Contracts\View\View;
 use MoonShine\Components\FieldsGroup;
 use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Traits\WithFields;
 use Throwable;
@@ -79,12 +78,10 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         return FieldsGroup::make(
             $this->getFields()->indexFields()
         )
-            ->mapFields(function (Field $field) {
-                return $field
-                    ->beforeRender(fn() => $this->hasLabels() ? '' : (string) LineBreak::make())
-                    ->withoutWrapper($this->hasLabels())
-                    ->forcePreview();
-            })
+            ->mapFields(fn(Field $field): Field => $field
+                ->beforeRender(fn(): string => $this->hasLabels() ? '' : (string) LineBreak::make())
+                ->withoutWrapper($this->hasLabels())
+                ->forcePreview())
             ->render();
     }
 
