@@ -1,0 +1,16 @@
+@import '../../../node_modules/easymde/dist/easymde.min.css';
+
+.easyMde {
+  .prose {
+    @apply max-w-full bg-white p-4
+    dark:bg-dark-800;
+  }
+
+  .CodeMirror {
+    @apply dark:bg-dark-800;
+
+    &-line {
+      @apply dark:text-white;
+    }
+  }
+}
