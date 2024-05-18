@@ -1,16 +1,38 @@
 @import '../../../node_modules/easymde/dist/easymde.min.css';
 
 .easyMde {
+  @apply relative;
+
+  & > textarea {
+    @apply absolute !block w-full opacity-0;
+    height: calc(100% - 34px);
+  }
+
+  .editor-toolbar {
+    @apply rounded-t-md border border-b-0 border-gray-300 dark:border-dark-300 dark:bg-dark-800;
+
+    button:hover {
+      @apply border-gray-300 dark:border-dark-300 bg-transparent;
+    }
+
+    i.separator {
+      @apply border-gray-300 dark:border-dark-300;
+    }
+  }
+
   .prose {
-    @apply max-w-full bg-white p-4
-    dark:bg-dark-800;
+    @apply max-w-full bg-white p-4 dark:bg-dark-800;
   }
 
   .CodeMirror {
-    @apply dark:bg-dark-800;
+    @apply rounded-b-md border border-gray-300 dark:border-dark-300 dark:bg-dark-800;
 
     &-line {
       @apply dark:text-white;
+    }
+
+    &-cursor {
+      @apply dark:border-white;
     }
   }
 }
