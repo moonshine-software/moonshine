@@ -87,7 +87,8 @@ return [
         'item_select' => 'Press to select',
         'unique_item' => 'Only unique values can be added',
         'custom_add_item' => 'Only values matching specific conditions can be added',
-        'add_item' => 'Press Enter to add',
-        'max_item' => 'Only one value can be added|Only :count values can be added',
+        'add_item' => 'Press Enter to add ":value"',
+        'max_item' => 'Only :count values can be added',
+        'remove_item' => 'Remove item',
     ]
 ];

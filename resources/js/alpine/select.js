@@ -101,6 +101,18 @@ export default (asyncUrl = '') => ({
         searchEnabled: this.searchEnabled,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
+        loadingText: translates.loading,
+        noResultsText: translates.choices.no_results,
+        noChoicesText: translates.choices.no_choices,
+        itemSelectText: translates.choices.item_select,
+        uniqueItemText: translates.choices.unique_item,
+        customAddItemText: translates.choices.custom_add_item,
+        addItemText: (value) => {
+          return translates.choices.add_item.replace(':value', `<b>${value}</b>`);
+        },
+        maxItemText: (maxItemCount) => {
+          return translates.choices.max_item.replace(':count', maxItemCount);
+        },
         searchResultLimit: 100,
         callbackOnCreateTemplates: function (template) {
           return {
