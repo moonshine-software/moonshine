@@ -138,7 +138,7 @@ export default (asyncUrl = '') => ({
                           ${data.label}
                           ${
                             this.config.removeItemButton
-                              ? '<button type="button" class="choices__button choices__button--remove" data-button="">Remove item</button>'
+                              ? `<button type="button" class="choices__button choices__button--remove" data-button="">${translates.choices.remove_item}</button>`
                               : ''
                           }
                         </span>
