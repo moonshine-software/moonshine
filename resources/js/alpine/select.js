@@ -107,11 +107,11 @@ export default (asyncUrl = '') => ({
         itemSelectText: translates.choices.item_select,
         uniqueItemText: translates.choices.unique_item,
         customAddItemText: translates.choices.custom_add_item,
-        addItemText: (value) => {
-          return translates.choices.add_item.replace(':value', `<b>${value}</b>`);
+        addItemText: value => {
+          return translates.choices.add_item.replace(':value', `<b>${value}</b>`)
         },
-        maxItemText: (maxItemCount) => {
-          return translates.choices.max_item.replace(':count', maxItemCount);
+        maxItemText: maxItemCount => {
+          return translates.choices.max_item.replace(':count', maxItemCount)
         },
         searchResultLimit: 100,
         callbackOnCreateTemplates: function (template) {
