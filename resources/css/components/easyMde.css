@@ -12,7 +12,7 @@
   }
 
   & > textarea {
-    @apply absolute !block w-full opacity-0;
+    @apply absolute !block w-full h-full opacity-0;
   }
 
   .editor-toolbar {
