@@ -3,9 +3,16 @@
 .easyMde {
   @apply relative;
 
+  &:has(.CodeMirror-focused) {
+    &:before {
+      @apply w-full h-full rounded-md ring ring-gray-200 ring-opacity-70 absolute top-0 left-0
+      dark:ring-dark-100 dark:ring-opacity-30;
+      content: '';
+    }
+  }
+
   & > textarea {
     @apply absolute !block w-full opacity-0;
-    height: calc(100% - 34px);
   }
 
   .editor-toolbar {
