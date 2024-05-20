@@ -4,41 +4,26 @@
     'active',
     'justifyAlign' => 'start',
     'vertical' => false,
+    'activationWidth'
 ])
 @if($tabs)
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
-        :class="{'tabs-vertical': {{ $vertical ? 'true' : 'false'}} }"
-        x-data="tabsCollapse(
+        x-data="tabsModule(
             {{ json_encode($tabs) }},
-            '{{ $active ?? array_key_first($tabs) }}'
+            '{{ $active ?? array_key_first($tabs) }}',
+            {{ json_encode($vertical) }}
         )"
-        x-init="init()"
-    >
-        <!-- Collapse tabs buttons -->
-        <div class="overflow-hidden">
-            <button type="button"
-                @click.prevent="toggle()"
-                :class="{ '_is-active': collapse }"
-                class="accordion-btn btn w-full tabs-collapse"
-                type="button"
-            >
-                <div x-html="activeTitle" class="tabs-title"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </button>
+        x-init="$nextTick(() => { initTabs() })"
 
+    >
         <!-- Tabs Buttons -->
-        <ul x-cloak x-show="collapse"
-            @class(['tabs-list', 'justify-' . $justifyAlign])>
+        <ul @class(['tabs-list', 'justify-' . $justifyAlign])>
             @foreach($tabs as $tabId => $tabContent)
                 <li class="tabs-item">
                     <button
                         @click.prevent="clickingTab('{{ $tabId }}')"
-                        :class="{
-                            '_is-active': activeTab === '{{ $tabId }}',
-                        }"
+                        :class="{ '_is-active': activeTab === '{{ $tabId }}' }"
                         class="tabs-button"
                         type="button"
                     >
@@ -48,7 +33,6 @@
             @endforeach
         </ul>
         <!-- END: Tabs Buttons -->
-        </div>
 
         <!-- Tabs content -->
         <div class="tabs-content">
@@ -64,3 +48,4 @@
     </div>
     <!-- END: Tabs -->
 @endif
+

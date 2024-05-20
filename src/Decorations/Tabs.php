@@ -25,6 +25,8 @@ class Tabs extends Decoration
 
     protected bool $vertical = false;
 
+    protected ?int $activationWidth = null;
+
     /**
      * @param list<Tab> $tabs
      */
@@ -107,15 +109,19 @@ class Tabs extends Decoration
         ]);
     }
 
-    public function vertical(Closure|bool|null $condition = null): self
+    public function vertical(Closure|bool|null $condition = null, ?int $activationWidth = 480): self
     {
         $this->vertical = Condition::boolean($condition, true);
+        $this->activationWidth = $activationWidth;
 
         return $this;
     }
 
-    public function isVertical(): bool
+    public function getVertical(): array
     {
-        return $this->vertical;
+        return [
+            'vertical' => $this->vertical,
+            'activationWidth' => $this->activationWidth,
+        ];
     }
 }

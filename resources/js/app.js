@@ -32,7 +32,7 @@ import asyncLink from './alpine/asyncLink'
 import numberUpDown from './alpine/numberUpDown'
 import fragment from './alpine/fragment'
 import globalSearch from './alpine/globalSearch'
-import tabsCollapse from "./alpine/tabsCollapse.js"
+import tabsModule from "./alpine/tabsModule.js"
 
 window.MoonShine = new MoonShine()
 document.dispatchEvent(new CustomEvent('moonshine:init'))
@@ -67,7 +67,7 @@ Alpine.data('charts', charts)
 Alpine.data('numberUpDown', numberUpDown)
 Alpine.data('fragment', fragment)
 Alpine.data('globalSearch', globalSearch)
-Alpine.data("tabsCollapse", tabsCollapse)
+Alpine.data("tabsModule", tabsModule)
 
 window.Alpine = Alpine
 
