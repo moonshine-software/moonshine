@@ -34,8 +34,8 @@ export default (name = '', reactive = {}) => ({
               let input =
                 focused &&
                 focused !== document.body &&
-                isTextInput(focused)
-                && !containsAttribute(focused, 'x-model.lazy')
+                isTextInput(focused) &&
+                !containsAttribute(focused, 'x-model.lazy')
                   ? t.$root.querySelector('#' + focused.id)
                   : null
 
