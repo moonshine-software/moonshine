@@ -434,7 +434,18 @@ class Json extends Field implements
                     ? [$key => $data['value']]
                     : [$data['key'] => $data['value']]
             )
-        )->filter()->toArray();
+        )->filter(fn ($value) => $this->filterEmpty($value))->toArray();
+    }
+
+    private function filterEmpty(mixed $value): bool
+    {
+        if (is_iterable($value) && filled($value)) {
+            return collect($value)
+                ->filter(fn ($v) => $this->filterEmpty($v))
+                ->isNotEmpty();
+        }
+
+        return ! blank($value);
     }
 
     /**
