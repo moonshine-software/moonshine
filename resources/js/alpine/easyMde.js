@@ -1,8 +1,5 @@
 /* EasyMDE */
 
-import EasyMDE from 'easymde'
-import DOMPurify from 'dompurify'
-
 export default () => ({
   init() {
     new EasyMDE({
