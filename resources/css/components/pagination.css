@@ -7,14 +7,14 @@
   }
 
   &-item {
-    @apply h-8 w-8;
+    @apply h-7 min-w-[theme('spacing[7]')];
   }
 
   &-page,
   &-dots,
   &-first,
   &-last {
-    @apply flex h-full w-full items-center justify-center rounded-md text-center text-3xs font-medium;
+    @apply flex h-full w-full items-center justify-center p-1 rounded-md text-center text-3xs font-medium;
   }
 
   &-first,
