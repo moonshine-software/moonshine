@@ -14,7 +14,7 @@
   }
 
   .editor-toolbar {
-    @apply flex items-center gap-x-px rounded-t-md border border-b-0 border-gray-300
+    @apply flex items-center flex-wrap gap-x-px rounded-t-md border border-b-0 border-gray-300
     dark:border-dark-300 dark:bg-dark-800;
 
     button.active {
