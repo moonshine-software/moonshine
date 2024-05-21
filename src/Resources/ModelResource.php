@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Resources;
 
 use Closure;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use MoonShine\Components\Metrics\Wrapped\Metric;
@@ -326,5 +327,15 @@ abstract class ModelResource extends Resource
         $this->setItem($item);
 
         return $item;
+    }
+
+    public function itemToJson(Model $item): mixed
+    {
+        return $item;
+    }
+
+    public function itemsToJson(LengthAwarePaginator $items): mixed
+    {
+        return $items;
     }
 }

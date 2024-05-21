@@ -53,6 +53,13 @@ class MenuItem extends MenuElement
         $this->actionButton = ActionButton::make($label);
     }
 
+    public function changeButton(Closure $callback): self
+    {
+        $this->actionButton = $callback($this->actionButton);
+
+        return $this;
+    }
+
     protected function resolveFiller(MenuFiller $filler): void
     {
         $this->setUrl(fn (): string => $filler->url());

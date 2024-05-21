@@ -9,6 +9,7 @@ use Illuminate\Support\Stringable;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\HasReactivity;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use Throwable;
 
@@ -30,6 +31,28 @@ final class Fields extends FormElements
             fn (Field $field): Field => (clone $field)
                 ->resolveFill($raw, $casted, $index)
         );
+    }
+
+    public function fillClonedRecursively(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0,
+        ?Fields $preparedFields = null
+    ): self
+    {
+        return ($preparedFields ?? $this)->map(function(MoonShineRenderable $component) use($raw, $casted, $index) {
+            if($component instanceof HasFields) {
+                $component = (clone $component)->fields(
+                    $component->getFields()->fillClonedRecursively($raw, $casted, $index)
+                );
+            }
+
+            if($component instanceof Field) {
+                $component->resolveFill($raw, $casted, $index);
+            }
+
+            return clone $component;
+        });
     }
 
     /**

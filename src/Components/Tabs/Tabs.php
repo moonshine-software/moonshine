@@ -21,6 +21,8 @@ class Tabs extends AbstractWithComponents
 
     protected string $justifyAlign = 'start';
 
+    protected bool $vertical = false;
+
     public function active(string|int $active): self
     {
         $this->active = $active;

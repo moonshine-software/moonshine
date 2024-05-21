@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use MoonShine\Http\Requests\MoonShineFormRequest;
 use MoonShine\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Http\Requests\Resources\UpdateFormRequest;
+use MoonShine\MoonShineRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -20,6 +22,36 @@ final class CrudController extends MoonShineController
     {
         $this->middleware(HandlePrecognitiveRequests::class)
             ->only(['store', 'update']);
+    }
+
+    public function index(MoonShineRequest $request): Jsonable
+    {
+        abort_if(!$request->wantsJson(), 403);
+
+        $resource = $request->getResource();
+
+        if(is_null($resource)) {
+            abort(404, 'Resource not found');
+        }
+
+        return $resource->itemsToJson(
+            $resource->paginate()
+        );
+    }
+
+    public function show(MoonShineRequest $request): Jsonable
+    {
+        abort_if(!$request->wantsJson(), 403);
+
+        $resource = $request->getResource();
+
+        if(is_null($resource)) {
+            abort(404, 'Resource not found');
+        }
+
+        return $resource->itemToJson(
+            $resource->getItem()
+        );
     }
 
     /**
@@ -55,7 +87,7 @@ final class CrudController extends MoonShineController
             return $this->reportAndResponse($request->ajax(), $e, $redirectRoute);
         }
 
-        if ($request->ajax()) {
+        if ($request->ajax() || $request->wantsJson()) {
             return $this->json(
                 message: __('moonshine::ui.deleted'),
                 redirect: $request->get('_redirect')
@@ -83,7 +115,7 @@ final class CrudController extends MoonShineController
             return $this->reportAndResponse($request->ajax(), $e, $redirectRoute);
         }
 
-        if ($request->ajax()) {
+        if ($request->ajax() || $request->wantsJson()) {
             return $this->json(message: __('moonshine::ui.deleted'));
         }
 
@@ -115,7 +147,7 @@ final class CrudController extends MoonShineController
 
         $resource->setItem($item);
 
-        if ($request->ajax()) {
+        if ($request->ajax() || $request->wantsJson()) {
             $forceRedirect = $request->boolean('_force_redirect')
                 ? $redirectRoute($resource)
                 : null;

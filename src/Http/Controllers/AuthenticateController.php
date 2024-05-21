@@ -11,6 +11,7 @@ use Illuminate\Pipeline\Pipeline;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Http\Requests\LoginFormRequest;
 use MoonShine\Pages\LoginPage;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AuthenticateController extends MoonShineController
 {
@@ -30,15 +31,27 @@ class AuthenticateController extends MoonShineController
     /**
      * @throws ValidationException
      */
-    public function authenticate(LoginFormRequest $request): RedirectResponse
+    public function authenticate(LoginFormRequest $request): RedirectResponse|JsonResponse
     {
-        if (filled(moonshineConfig()->getAuthPipelines())) {
-            $request = (new Pipeline(app()))->send($request)->through(array_filter(
-                moonshineConfig()->getAuthPipelines()
-            ))->thenReturn();
+        if ($request->wantsJson()) {
+            $token = $request->tokenAuthenticate();
+
+            return $this->json(
+                data: [
+                    'token' => $token,
+                ]
+            );
         }
 
-        if($request instanceof RedirectResponse) {
+        if (filled(moonshineConfig()->getAuthPipelines())) {
+            $request = (new Pipeline(app()))->send($request)->through(
+                array_filter(
+                    moonshineConfig()->getAuthPipelines()
+                )
+            )->thenReturn();
+        }
+
+        if ($request instanceof RedirectResponse) {
             return $request;
         }
 
