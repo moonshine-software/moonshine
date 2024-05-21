@@ -31,7 +31,7 @@ import sortable from './alpine/sortable'
 import asyncLink from './alpine/asyncLink'
 import fragment from './alpine/fragment'
 import globalSearch from './alpine/globalSearch'
-import tabsModule from './alpine/tabsModule.js'
+import tabs from './alpine/tabs.js'
 import easyMde from './alpine/easyMde'
 
 window.MoonShine = new MoonShine()
@@ -66,7 +66,7 @@ Alpine.data('tree', tree)
 Alpine.data('charts', charts)
 Alpine.data('fragment', fragment)
 Alpine.data('globalSearch', globalSearch)
-Alpine.data('tabsModule', tabsModule)
+Alpine.data('tabs', tabs)
 Alpine.data('easyMde', easyMde)
 
 window.Alpine = Alpine

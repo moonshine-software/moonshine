@@ -9,7 +9,7 @@
 @if($tabs)
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
-        x-data="tabsModule(
+        x-data="tabs(
             '{{ $active ?? array_key_first($tabs) }}',
             {{ $isVertical ? 'true' : 'false' }}
         )"
