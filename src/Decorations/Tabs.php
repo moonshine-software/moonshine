@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Decorations;
 
+use Closure;
+use Throwable;
+use MoonShine\Fields\Fields;
+use MoonShine\Support\Condition;
 use Illuminate\Support\Collection;
 use MoonShine\Components\FieldsGroup;
 use MoonShine\Exceptions\DecorationException;
-use MoonShine\Fields\Fields;
-use Throwable;
 
 /**
  * @method static static make(array $tabs = [])
@@ -20,6 +22,8 @@ class Tabs extends Decoration
     protected string|int|null $active = null;
 
     protected string $justifyAlign = 'start';
+
+    protected bool $vertical = false;
 
     /**
      * @param list<Tab> $tabs
@@ -101,5 +105,17 @@ class Tabs extends Decoration
                 $tab->getFields()
             ),
         ]);
+    }
+
+    public function vertical(Closure|bool|null $condition = null): self
+    {
+        $this->vertical = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isVertical(): bool
+    {
+        return $this->vertical;
     }
 }
