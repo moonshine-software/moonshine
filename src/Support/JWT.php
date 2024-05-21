@@ -14,7 +14,7 @@ use Lcobucci\JWT\Token\Parser;
 use Random\RandomException;
 use Throwable;
 
-final class JWT
+final readonly class JWT
 {
     public function __construct(
         private Encoder $encoder = new JoseEncoder,

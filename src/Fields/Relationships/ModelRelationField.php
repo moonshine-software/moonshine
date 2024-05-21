@@ -84,7 +84,6 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
     /**
      * @param  ?class-string<ResourceContract>  $classString
-     * @return ResourceContract
      * @throws Throwable
      */
     protected function findResource(?string $classString = null): ResourceContract

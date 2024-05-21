@@ -69,7 +69,7 @@ final class MoonShineConfigurator implements ArrayAccess
         $except = is_string($except) ? [$except] : $except;
 
         $middlewares = collect($this->getMiddlewares())
-            ->filter(fn ($class) => ! in_array($class, $except, true))
+            ->filter(fn ($class): bool => ! in_array($class, $except, true))
             ->toArray();
 
         return $this->middlewares($middlewares);
