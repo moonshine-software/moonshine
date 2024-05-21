@@ -4,8 +4,8 @@
   &-list {
     @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-dark-200;
   }
-  &-title{
-    @apply flex gap-2 w-full mr-2 text-primary;
+  &-title {
+    @apply mr-2 flex w-full gap-2 text-primary;
   }
   &-button {
     @apply flex h-10 items-center gap-1.5 whitespace-nowrap border-b border-b-transparent px-2 text-3xs font-medium text-gray-400 hover:border-gray-300 hover:text-gray-700 current:pointer-events-none current:border-primary current:text-primary dark:text-slate-400 dark:hover:border-gray-500 dark:hover:text-slate-300 dark:current:border-secondary dark:current:text-secondary sm:h-12 sm:text-2xs;
@@ -19,19 +19,19 @@
   &-vertical {
     @apply flex gap-3;
     .tabs-list {
-      @apply flex flex-col min-h-max border-r border-b-0 min-w-max;
+      @apply flex min-h-max min-w-max flex-col border-b-0 border-r;
     }
-    .tabs-button{
-        @apply w-full border-r border-r-transparent border-b-0;
-        &._is-active{
-            @apply border-primary
-        }
-        &:hover{
-            @apply border-gray-300
-        }
+    .tabs-button {
+      @apply w-full border-b-0 border-r border-r-transparent;
+      &._is-active {
+        @apply border-primary;
+      }
+      &:hover {
+        @apply border-gray-300;
+      }
     }
-    .tabs-content{
-        @apply grow;
+    .tabs-content {
+      @apply grow;
     }
   }
 }
