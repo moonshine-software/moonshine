@@ -33,6 +33,7 @@
 @import 'components/spinners';
 @import 'components/toasts';
 @import 'components/code';
+@import 'components/easyMde';
 
 /* Tailwind Utilities */
 @import 'tailwindcss/utilities';

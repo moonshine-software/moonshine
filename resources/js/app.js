@@ -29,10 +29,10 @@ import tree from './alpine/tree'
 import charts from './alpine/charts'
 import sortable from './alpine/sortable'
 import asyncLink from './alpine/asyncLink'
-import numberUpDown from './alpine/numberUpDown'
 import fragment from './alpine/fragment'
 import globalSearch from './alpine/globalSearch'
 import tabsModule from "./alpine/tabsModule.js"
+import easyMde from './alpine/easyMde'
 
 window.MoonShine = new MoonShine()
 document.dispatchEvent(new CustomEvent('moonshine:init'))
@@ -64,10 +64,10 @@ Alpine.data('range', range)
 Alpine.data('code', code)
 Alpine.data('tree', tree)
 Alpine.data('charts', charts)
-Alpine.data('numberUpDown', numberUpDown)
 Alpine.data('fragment', fragment)
 Alpine.data('globalSearch', globalSearch)
 Alpine.data("tabsModule", tabsModule)
+Alpine.data('easyMde', easyMde)
 
 window.Alpine = Alpine
 

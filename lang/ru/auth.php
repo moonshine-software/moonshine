@@ -18,6 +18,6 @@ return [
 
     'socialite' => [
         'link_exists' => 'Аккаунт уже привязан',
-        'linked_success' => 'Аккаунт привязан',
+        'link_success' => 'Аккаунт привязан',
     ]
 ];

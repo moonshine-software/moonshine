@@ -12,6 +12,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\Td;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Table\TableRow;
 use MoonShine\Traits\HasAsync;
@@ -51,13 +52,18 @@ final class TableBuilder extends IterableComponent implements TableContract
         $this->withAttributes([]);
     }
 
+    public function preparedFields(): Fields
+    {
+        return $this->getFields()->values();
+    }
+
     /**
      * @return Collection<int, TableRow>
      * @throws Throwable
      */
     public function rows(): Collection
     {
-        $tableFields = $this->getFields();
+        $tableFields = $this->preparedFields();
 
         return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($tableFields): TableRow {
             $casted = $this->castData($data);
@@ -71,9 +77,19 @@ final class TableBuilder extends IterableComponent implements TableContract
                 )
             ;
 
+            $fields->each(function ($field, $cellIndex): void {
+                if($field instanceof Td) {
+                    $this->tdAttributes(
+                        fn ($data, $row, $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $cellIndex === $cell - 1
+                            ? $field->resolveTdAttributes($data, $attr)
+                            : $attr
+                    );
+                }
+            });
+
             return TableRow::make(
                 $casted,
-                $fields->values(),
+                $fields,
                 $this->getButtons($casted),
                 $this->trAttributes,
                 $this->tdAttributes,
@@ -82,6 +98,9 @@ final class TableBuilder extends IterableComponent implements TableContract
         });
     }
 
+    /**
+     * @param  Closure(mixed $data, int $row, ComponentAttributeBag $attributes, $table self): ComponentAttributeBag $closure
+     */
     public function trAttributes(Closure $closure): self
     {
         $this->trAttributes = $closure;
@@ -106,6 +125,9 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this->systemTrAttributes;
     }
 
+    /**
+     * @param  Closure(mixed $data, int $row, int $cell, ComponentAttributeBag $attributes, $table self): ComponentAttributeBag $closure
+     */
     public function tdAttributes(Closure $closure): self
     {
         $this->tdAttributes = $closure;
@@ -186,7 +208,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         return [
                 'rows' => $this->rows(),
-                'fields' => $this->getFields(),
+                'fields' => $this->preparedFields(),
                 'name' => $this->getName(),
                 'hasPaginator' => $this->hasPaginator(),
                 'simple' => $this->isSimple(),
