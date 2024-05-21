@@ -13,6 +13,13 @@ use Throwable;
 
 class MoonShineApplicationServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->configure(
+            moonshineConfig()
+        );
+    }
+
     /**
      * Bootstrap any application services.
      *
@@ -20,10 +27,6 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configure(
-            moonshineConfig()
-        );
-
         moonshine()
             ->resources($this->resources())
             ->pages($this->pages());

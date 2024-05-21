@@ -74,10 +74,8 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
 
         if(is_string($resource)) {
-            $resource = app($resource);
-        }
-
-        if (is_null($resource)) {
+            $this->setResource($this->findResource($resource));
+        } elseif (is_null($resource)) {
             $this->setResource($this->findResource());
         } else {
             $this->setResource($resource);
@@ -85,15 +83,19 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     }
 
     /**
+     * @param  ?class-string<ResourceContract>  $classString
+     * @return ResourceContract
      * @throws Throwable
      */
-    protected function findResource(): ResourceContract
+    protected function findResource(?string $classString = null): ResourceContract
     {
         if ($this->hasResource()) {
             return $this->getResource();
         }
 
-        $resource = moonshine()->getResources()->findByUri(
+        $resource = $classString
+            ? moonshine()->getResources()->findByClass($classString)
+            : moonshine()->getResources()->findByUri(
             str($this->getRelationName())
                 ->singular()
                 ->append('Resource')

@@ -10,6 +10,8 @@ use MoonShine\Components\AbstractWithComponents;
 use MoonShine\Components\Components;
 use MoonShine\Exceptions\MoonShineComponentException;
 use Throwable;
+use Closure;
+use MoonShine\Support\Condition;
 
 class Tabs extends AbstractWithComponents
 {
@@ -19,11 +21,25 @@ class Tabs extends AbstractWithComponents
 
     protected string $justifyAlign = 'start';
 
+    protected bool $vertical = false;
+
     public function active(string|int $active): self
     {
         $this->active = $active;
 
         return $this;
+    }
+
+    public function vertical(Closure|bool|null $condition = null): self
+    {
+        $this->vertical = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function isVertical(): bool
+    {
+        return $this->vertical;
     }
 
     public function justifyAlign(string $justifyAlign): self
@@ -99,6 +115,7 @@ class Tabs extends AbstractWithComponents
             'contents' => $this->getContents()->toArray(),
             'active' => $this->getActive(),
             'justifyAlign' => $this->getJustifyAlign(),
+            'isVertical' => $this->isVertical(),
         ];
     }
 }

@@ -238,13 +238,16 @@ input[type='number'] {
 
 /* Choises (Single/Multiple Select) */
 .choices {
-  @apply !mb-0 w-full text-2xs dark:after:!border-t-dark-50;
+  @apply !mb-0 w-full rounded-md text-2xs dark:after:!border-t-dark-50;
 
   &.is-open {
     @apply dark:after:!border-b-dark-50 dark:after:!border-t-transparent;
     .choices__inner {
       @apply rounded-b-none rounded-t-md;
     }
+  }
+  &.is-focused {
+    @apply border-gray-300 ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
   }
 
   .choices__input {

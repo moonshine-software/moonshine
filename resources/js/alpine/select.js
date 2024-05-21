@@ -101,6 +101,18 @@ export default (asyncUrl = '') => ({
         searchEnabled: this.searchEnabled,
         removeItemButton: this.removeItemButton,
         shouldSort: this.shouldSort,
+        loadingText: translates.loading,
+        noResultsText: translates.choices.no_results,
+        noChoicesText: translates.choices.no_choices,
+        itemSelectText: translates.choices.item_select,
+        uniqueItemText: translates.choices.unique_item,
+        customAddItemText: translates.choices.custom_add_item,
+        addItemText: value => {
+          return translates.choices.add_item.replace(':value', `<b>${value}</b>`)
+        },
+        maxItemText: maxItemCount => {
+          return translates.choices.max_item.replace(':count', maxItemCount)
+        },
         searchResultLimit: 100,
         callbackOnCreateTemplates: function (template) {
           return {
@@ -126,7 +138,7 @@ export default (asyncUrl = '') => ({
                           ${data.label}
                           ${
                             this.config.removeItemButton
-                              ? '<button type="button" class="choices__button choices__button--remove" data-button="">Remove item</button>'
+                              ? `<button type="button" class="choices__button choices__button--remove" data-button="">${translates.choices.remove_item}</button>`
                               : ''
                           }
                         </span>
@@ -168,6 +180,10 @@ export default (asyncUrl = '') => ({
         },
         callbackOnInit: () => {
           this.searchTerms = this.$el.closest('.choices').querySelector('[name="search_terms"]')
+
+          this.$el.closest('.choices').addEventListener('focus', () => {
+            this.choicesInstance.showDropdown()
+          })
 
           if (this.associatedWith && asyncUrl) {
             this.asyncSearch(true)

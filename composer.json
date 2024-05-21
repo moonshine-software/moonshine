@@ -21,7 +21,8 @@
     "ext-curl": "*",
     "ext-json": "*",
     "rap2hpoutre/fast-excel": "^5.4",
-    "lee-to/laravel-package-command": "^0.9"
+    "lee-to/laravel-package-command": "^0.9",
+    "lcobucci/jwt": "^5.3"
   },
   "require-dev": {
     "pestphp/pest": "^2.34",

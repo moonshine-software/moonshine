@@ -25,8 +25,7 @@ Route::moonshine(static function (Router $router) use($authMiddleware): void {
             Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
 
             Route::resource('crud', CrudController::class)
-                ->parameter('crud', 'resourceItem')
-                ->only(['store', 'update', 'destroy']);
+                ->parameter('crud', 'resourceItem');
 
             Route::any('handler/{handlerUri}', HandlerController::class)->name('handler');
             Route::get('{pageUri}', PageController::class)->name('resource.page');

@@ -8,7 +8,7 @@ export class Iterable {
   reindex(block, itemSelector, closestSelector = null) {
     function _reindex(element, level, prev, index = null) {
       element.querySelectorAll(`[data-level="${level}"]`).forEach(function (field) {
-        let parent = field.closest(closestSelector ?? itemSelector)
+        let parent = field.closest('[data-re-index-item-selector]')
         let name = field.dataset.name
         let _key = parent.dataset.key ?? parent.rowIndex ?? index
 
@@ -30,6 +30,8 @@ export class Iterable {
     }
 
     block.querySelectorAll(itemSelector).forEach(function (element, index) {
+      element.setAttribute('data-re-index-item-selector', closestSelector ?? itemSelector)
+
       let level = 0
       let prev = {}
 

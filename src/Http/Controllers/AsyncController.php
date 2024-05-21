@@ -11,8 +11,11 @@ use MoonShine\Fields\Field;
 use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Select;
 use MoonShine\MoonShineRequest;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
 class AsyncController extends MoonShineController
@@ -56,7 +59,7 @@ class AsyncController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function method(MoonShineRequest $request): JsonResponse
+    public function method(MoonShineRequest $request): Response
     {
         $toast = [
             'type' => 'info',
@@ -83,6 +86,10 @@ class AsyncController extends MoonShineController
         $request->session()->forget('toast');
 
         if ($result instanceof JsonResponse) {
+            return $result;
+        }
+
+        if ($result instanceof BinaryFileResponse || $result instanceof StreamedResponse) {
             return $result;
         }
 
