@@ -6,7 +6,7 @@
 @if($data)
     <ul {{ $attributes->class(['menu-inner']) }}
         @if(!$top && $isScrollTo)
-            x-init="$nextTick(() => document.querySelector('.menu-inner-item._is-active')?.scrollIntoView())"
+            x-init="$nextTick(() => $el.querySelector('.menu-inner-item._is-active')?.scrollIntoView())"
         @endif
     >
         @foreach($data as $item)
