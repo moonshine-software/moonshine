@@ -1,0 +1,58 @@
+.easyMde {
+  @apply relative;
+
+  &:has(.CodeMirror-focused) {
+    &:before {
+      @apply absolute left-0 top-0 h-full w-full rounded-md ring ring-gray-200 ring-opacity-70
+      dark:ring-dark-100 dark:ring-opacity-30;
+      content: '';
+    }
+  }
+
+  & > textarea {
+    @apply absolute !block h-full w-full opacity-0;
+  }
+
+  .editor-toolbar {
+    @apply flex flex-wrap items-center gap-x-px rounded-t-md border border-b-0 border-gray-300
+    dark:border-dark-300 dark:bg-dark-800;
+
+    button.active {
+      @apply border-transparent bg-primary text-white
+      hover:border-transparent hover:bg-primary/80
+      dark:hover:border-transparent;
+    }
+
+    button:hover {
+      @apply border-gray-300 bg-transparent
+      dark:border-dark-300;
+    }
+
+    i.separator {
+      @apply border-gray-300
+      dark:border-dark-300;
+    }
+  }
+
+  .prose {
+    @apply max-w-full bg-white p-4
+    dark:bg-dark-800;
+  }
+
+  .CodeMirror {
+    @apply rounded-b-md border border-gray-300
+    dark:border-dark-300 dark:bg-dark-800;
+
+    &-line {
+      @apply dark:text-white;
+    }
+
+    &-cursor {
+      @apply dark:border-white;
+    }
+  }
+
+  .editor-preview-side {
+    @apply dark:border-dark-300;
+  }
+}

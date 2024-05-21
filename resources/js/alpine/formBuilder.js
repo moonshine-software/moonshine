@@ -41,9 +41,11 @@ export default (name = '', reactive = {}) => ({
 
               if (input) {
                 input.focus()
-                input.setSelectionRange(input.value.length, input.value.length)
-
                 delete data.values[input.getAttribute('data-column')]
+                const type = input.type
+                input.type = 'text'
+                input.setSelectionRange(input.value.length, input.value.length)
+                input.type = type
               }
             }
           }

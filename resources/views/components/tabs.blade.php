@@ -3,18 +3,22 @@
     'contents' => [],
     'active' => null,
     'justifyAlign' => 'start',
+    'isVertical' => false,
 ])
 @if($tabs !== [])
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
-         x-data="{ activeTab: '{{ $active ?? array_key_first($tabs) }}'}"
+        x-data="tabs(
+            '{{ $active ?? array_key_first($tabs) }}',
+            {{ $isVertical ? 'true' : 'false' }}
+        )"
     >
         <!-- Tabs Buttons -->
         <ul @class(['tabs-list', 'justify-' . $justifyAlign])>
             @foreach($tabs as $tabId => $tabContent)
                 <li class="tabs-item">
                     <button
-                        @click.prevent="activeTab = '{{ $tabId }}'"
+                        @click.prevent="clickingTab('{{ $tabId }}')"
                         :class="{ '_is-active': activeTab === '{{ $tabId }}' }"
                         class="tabs-button"
                         type="button"
