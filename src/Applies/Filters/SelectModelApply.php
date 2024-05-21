@@ -15,7 +15,7 @@ class SelectModelApply implements ApplyContract
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            if (! empty($field->requestValue())) {
+            if (filled($field->requestValue())) {
                 $query->when(
                     $field->isMultiple(),
                     static fn (Builder $q) => $q->whereIn($field->column(), $field->requestValue()),

@@ -82,6 +82,9 @@ export function moonShineRequest(
       t.loading = false
 
       const data = response.data
+      const contentDisposition = response.headers['content-disposition'];
+
+      console.log(contentDisposition, data)
 
       if (componentRequestData.hasBeforeCallback()) {
         componentRequestData.beforeCallback(data, t)
@@ -118,6 +121,19 @@ export function moonShineRequest(
 
       if (data.redirect) {
         window.location = data.redirect
+      }
+
+      if(contentDisposition.startsWith('attachment')) {
+        let fileName = contentDisposition.split("filename=")[1];
+
+        const url = window.URL.createObjectURL(new Blob([data]));
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
       }
 
       const type = data.messageType ? data.messageType : 'success'
