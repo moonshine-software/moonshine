@@ -9,11 +9,11 @@ export default () => ({
       spellChecker: false,
       status: false,
       renderingConfig: {
-        sanitizerFunction: (renderedHTML) => {
+        sanitizerFunction: renderedHTML => {
           return DOMPurify.sanitize(renderedHTML, {
             USE_PROFILES: {
-              html: true
-            }
+              html: true,
+            },
           })
         },
       },
@@ -41,7 +41,7 @@ export default () => ({
         'fullscreen',
         '|',
         'guide',
-      ]
+      ],
     })
   },
 })

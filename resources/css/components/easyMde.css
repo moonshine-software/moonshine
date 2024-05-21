@@ -3,23 +3,23 @@
 
   &:has(.CodeMirror-focused) {
     &:before {
-      @apply w-full h-full rounded-md ring ring-gray-200 ring-opacity-70 absolute top-0 left-0
+      @apply absolute left-0 top-0 h-full w-full rounded-md ring ring-gray-200 ring-opacity-70
       dark:ring-dark-100 dark:ring-opacity-30;
       content: '';
     }
   }
 
   & > textarea {
-    @apply absolute !block w-full h-full opacity-0;
+    @apply absolute !block h-full w-full opacity-0;
   }
 
   .editor-toolbar {
-    @apply flex items-center flex-wrap gap-x-px rounded-t-md border border-b-0 border-gray-300
+    @apply flex flex-wrap items-center gap-x-px rounded-t-md border border-b-0 border-gray-300
     dark:border-dark-300 dark:bg-dark-800;
 
     button.active {
-      @apply text-white bg-primary border-transparent
-      hover:bg-primary/80 hover:border-transparent
+      @apply border-transparent bg-primary text-white
+      hover:border-transparent hover:bg-primary/80
       dark:hover:border-transparent;
     }
 
