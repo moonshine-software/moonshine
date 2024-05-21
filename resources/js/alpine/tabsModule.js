@@ -5,7 +5,6 @@ export default (
 ) => ({
     tabs: tabs,
     activeTab: activeTab,
-    activeTitle: "",
     isVertical: false,
     activationWidth: activationWidth,
 
@@ -40,6 +39,5 @@ export default (
 
     clickingTab(tabId) {
         this.activeTab = tabId ?? this.activeTab;
-        this.activeTitle = this.tabs[this.activeTab] ?? "";
     },
 });
