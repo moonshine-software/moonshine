@@ -95,12 +95,12 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         $resource = $classString
             ? moonshine()->getResources()->findByClass($classString)
             : moonshine()->getResources()->findByUri(
-            str($this->getRelationName())
+                str($this->getRelationName())
                 ->singular()
                 ->append('Resource')
                 ->kebab()
                 ->value()
-        );
+            );
 
         if (is_null($resource) && $this->isMorph()) {
             $resource = moonshine()->getResources()->findByUri(

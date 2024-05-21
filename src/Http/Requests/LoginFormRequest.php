@@ -60,15 +60,15 @@ class LoginFormRequest extends MoonShineFormRequest
             ->first();
 
         if (is_null($user) || ! Hash::check(
-                request('password'),
-                $user->{moonshineConfig()->getUserField('password')}
-            )) {
+            request('password'),
+            $user->{moonshineConfig()->getUserField('password')}
+        )) {
             RateLimiter::hit($this->throttleKey());
 
             $this->validationException();
         }
 
-        $token = (new JWT)->create((string) $user->getKey());
+        $token = (new JWT())->create((string) $user->getKey());
 
         RateLimiter::clear($this->throttleKey());
 

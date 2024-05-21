@@ -8,9 +8,9 @@ use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use MoonShine\Components\FieldsGroup;
+use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Traits\WithFields;
 use Throwable;
 

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Tabs;
 
+use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\AbstractWithComponents;
 use MoonShine\Components\Components;
 use MoonShine\Exceptions\MoonShineComponentException;
-use Throwable;
-use Closure;
 use MoonShine\Support\Condition;
+use Throwable;
 
 class Tabs extends AbstractWithComponents
 {

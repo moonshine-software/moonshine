@@ -26,7 +26,7 @@ final class CrudController extends MoonShineController
 
     public function index(MoonShineRequest $request): Jsonable
     {
-        abort_if(!$request->wantsJson(), 403);
+        abort_if(! $request->wantsJson(), 403);
 
         $resource = $request->getResource();
 
@@ -41,7 +41,7 @@ final class CrudController extends MoonShineController
 
     public function show(MoonShineRequest $request): Jsonable
     {
-        abort_if(!$request->wantsJson(), 403);
+        abort_if(! $request->wantsJson(), 403);
 
         $resource = $request->getResource();
 

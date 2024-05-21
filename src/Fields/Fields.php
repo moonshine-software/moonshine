@@ -38,9 +38,8 @@ final class Fields extends FormElements
         mixed $casted = null,
         int $index = 0,
         ?Fields $preparedFields = null
-    ): self
-    {
-        return ($preparedFields ?? $this)->map(function(MoonShineRenderable $component) use($raw, $casted, $index) {
+    ): self {
+        return ($preparedFields ?? $this)->map(function (MoonShineRenderable $component) use ($raw, $casted, $index) {
             if($component instanceof HasFields) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)

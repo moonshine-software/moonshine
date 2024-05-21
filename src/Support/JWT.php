@@ -17,9 +17,8 @@ use Throwable;
 final readonly class JWT
 {
     public function __construct(
-        private Encoder $encoder = new JoseEncoder,
-    )
-    {
+        private Encoder $encoder = new JoseEncoder(),
+    ) {
     }
 
     public function parse(string $token): string|false
@@ -57,7 +56,7 @@ final readonly class JWT
             ->issuedAt(now()->toImmutable())
             ->expiresAt(now()->toImmutable()->addHour())
             ->identifiedBy($identifiedBy)
-            ->getToken(new Sha256, InMemory::plainText(random_bytes(32)))
+            ->getToken(new Sha256(), InMemory::plainText(random_bytes(32)))
             ->toString();
     }
 }
