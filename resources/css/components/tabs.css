@@ -31,7 +31,7 @@
       }
     }
     .tabs-content {
-      @apply grow;
+      @apply mt-3 grow;
     }
   }
 }
