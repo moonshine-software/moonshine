@@ -84,8 +84,6 @@ export function moonShineRequest(
       const data = response.data
       const contentDisposition = response.headers['content-disposition']
 
-      console.log(contentDisposition, data)
-
       if (componentRequestData.hasBeforeCallback()) {
         componentRequestData.beforeCallback(data, t)
       }
@@ -123,7 +121,7 @@ export function moonShineRequest(
         window.location = data.redirect
       }
 
-      if (contentDisposition.startsWith('attachment')) {
+      if (contentDisposition?.startsWith('attachment')) {
         let fileName = contentDisposition.split('filename=')[1]
 
         const url = window.URL.createObjectURL(new Blob([data]))
