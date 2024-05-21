@@ -3,19 +3,16 @@
     'contents',
     'active',
     'justifyAlign' => 'start',
-    'vertical' => false,
-    'activationWidth'
+    'isVertical' => false,
 ])
+
 @if($tabs)
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
         x-data="tabsModule(
-            {{ json_encode($tabs) }},
             '{{ $active ?? array_key_first($tabs) }}',
-            {{ json_encode($vertical) }}
+            {{ $isVertical ? 'true' : 'false' }}
         )"
-        x-init="$nextTick(() => { initTabs() })"
-
     >
         <!-- Tabs Buttons -->
         <ul @class(['tabs-list', 'justify-' . $justifyAlign])>
@@ -48,4 +45,3 @@
     </div>
     <!-- END: Tabs -->
 @endif
-

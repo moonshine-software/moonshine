@@ -1,40 +1,29 @@
-export default (
-    tabs = {},
-    activeTab = "",
-    vertical = {}
-) => ({
-    tabs: tabs,
+export default (activeTab = "", isVertical = false) => ({
     activeTab: activeTab,
-    isVertical: false,
-    activationWidth: activationWidth,
+    isVertical: isVertical,
+    activationWidth: 480,
 
-    init() {
-        if (vertical) {
-            this.isVertical = vertical.vertical;
-            this.activationWidth = vertical.activationWidth;
-        }
-        this.clickingTab(this.activeTab);
-    },
+    async init() {
+        await this.$nextTick();
 
-    initTabs() {
         if (this.isVertical) {
-            this.addClassVertical();
+            this.activationWidth =
+                this.$el.dataset.tabs_vertical_min_width ?? 480;
+            this.toggleVerticalClass(true);
             this.checkWidthElement();
             window.addEventListener("resize", () => this.checkWidthElement());
         }
     },
 
-    addClassVertical() {
-        this.$el.classList.add("tabs-vertical");
-    },
-    removeClassVertical() {
-        this.$el.classList.remove("tabs-vertical");
+    toggleVerticalClass(shouldBeVertical) {
+        this.$el.classList[shouldBeVertical ? "add" : "remove"](
+            "tabs-vertical",
+        );
     },
 
     checkWidthElement() {
-        this.$el.offsetWidth < this.activationWidth
-            ? this.removeClassVertical()
-            : this.addClassVertical();
+        const shouldBeVertical = this.$el.offsetWidth >= this.activationWidth;
+        this.toggleVerticalClass(shouldBeVertical);
     },
 
     clickingTab(tabId) {
