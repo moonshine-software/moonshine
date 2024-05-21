@@ -7,8 +7,7 @@ export default (activeTab = "", isVertical = false) => ({
         await this.$nextTick();
 
         if (this.isVertical) {
-            this.activationWidth =
-                this.$el.dataset.tabs_vertical_min_width ?? 480;
+            this.activationWidth = this.$el.dataset.tabsVerticalMinWidth ?? 480;
             this.toggleVerticalClass(true);
             this.checkWidthElement();
             window.addEventListener("resize", () => this.checkWidthElement());
