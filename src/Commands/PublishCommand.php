@@ -6,7 +6,7 @@ namespace MoonShine\Commands;
 
 use Illuminate\Filesystem\Filesystem;
 
-use function Laravel\Prompts\{confirm, info, multiselect};
+use function Laravel\Prompts\{confirm, info, multiselect, note};
 
 use MoonShine\MoonShine;
 
@@ -24,6 +24,7 @@ class PublishCommand extends MoonShineCommand
             [
                 'assets' => 'Assets',
                 'assets-template' => 'Assets template',
+                'favicons' => 'Favicons',
                 'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
             ],
             required: true
@@ -71,6 +72,20 @@ class PublishCommand extends MoonShineCommand
 
             info('App.css, postcss/tailwind.config published');
             info("Don't forget to add to MoonShineServiceProvider `Vite::asset('resources/css/app.css')`");
+        }
+
+        if (in_array('favicons', $types, true)) {
+            $this->copyStub(
+                'favicon',
+                resource_path('views/vendor/moonshine/layouts/shared/favicon.blade.php')
+            );
+
+            info('Favicons published');
+
+            note(sprintf(
+                'Creating file [%s]',
+                resource_path('views/vendor/moonshine/layouts/shared/favicon.blade.php'),
+            ));
         }
 
         if (in_array('resources', $types, true)) {

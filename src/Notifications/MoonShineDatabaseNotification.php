@@ -31,13 +31,14 @@ final class MoonShineDatabaseNotification extends Notification
 
 
     /**
-     * @return array{message: string, button: array}
+     * @return array{message: string, button: array, color: ?string}
      */
     public function toArray($notifiable): array
     {
         return [
             'message' => $this->message,
             'button' => $this->button,
+            'color' => $this->color,
         ];
     }
 }
