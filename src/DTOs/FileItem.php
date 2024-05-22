@@ -14,8 +14,7 @@ final readonly class FileItem implements Arrayable
         private string $rawValue,
         private string $name,
         private MoonShineComponentAttributeBag $attributes = new MoonShineComponentAttributeBag(),
-    )
-    {
+    ) {
     }
 
     public function getFullPath(): string
@@ -44,7 +43,7 @@ final readonly class FileItem implements Arrayable
             'full_path' => $this->getFullPath(),
             'raw_value' => $this->getRawValue(),
             'name' => $this->getName(),
-            'attributes' => $this->getAttributes()
+            'attributes' => $this->getAttributes(),
         ];
     }
 }

@@ -78,7 +78,7 @@ class File extends Field implements Fileable, RemovableContract
                     rawValue: data_get($this->toValue(), $index, $this->toValue()),
                     name: value($this->resolveNames(), $path, $index, $this),
                     attributes: value($this->resolveItemAttributes(), $path, $index, $this),
-                )
+                ),
             ]);
     }
 

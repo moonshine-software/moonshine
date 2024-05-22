@@ -24,7 +24,7 @@ final class Thumbnails extends MoonShineComponent
     {
         if(is_null($this->valueOrValues)) {
             return [
-                'values' => []
+                'values' => [],
             ];
         }
 
@@ -45,7 +45,7 @@ final class Thumbnails extends MoonShineComponent
         return [
             'values' => collect($this->valueOrValues)
                 ->mapWithKeys(
-                    fn(string|array|FileItem $value, int $index): array => [
+                    fn (string|array|FileItem $value, int $index): array => [
                         $index => $value instanceof FileItem
                             ? $value->toArray()
                             : (new FileItem(
@@ -53,7 +53,7 @@ final class Thumbnails extends MoonShineComponent
                                 $value['raw_value'] ?? $value,
                                 $value['name'] ?? $value,
                                 $value['attributes'] ?? $value,
-                            ))->toArray()
+                            ))->toArray(),
                     ]
                 )->toArray(),
         ];
