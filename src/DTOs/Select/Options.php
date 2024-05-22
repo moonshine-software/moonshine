@@ -56,10 +56,6 @@ final readonly class Options implements Arrayable
         return $this->value;
     }
 
-    /**
-     * @param  mixed  $value
-     * @return OptionProperty
-     */
     public function getProperties(string $value): OptionProperty
     {
         $properties = data_get(value($this->properties), $value, []);
