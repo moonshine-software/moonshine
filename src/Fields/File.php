@@ -72,7 +72,7 @@ class File extends Field implements Fileable, RemovableContract
     protected function getFiles(): Collection
     {
         return collect($this->getFullPathValues())
-            ->mapWithKeys(fn (string $path, int $index) => [
+            ->mapWithKeys(fn (string $path, int $index): array => [
                 $index => new FileItem(
                     fullPath: $path,
                     rawValue: data_get($this->toValue(), $index, $this->toValue()),

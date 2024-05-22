@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use MoonShine\Components\Thumbnails;
 
 class Image extends File

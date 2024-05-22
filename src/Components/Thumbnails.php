@@ -45,7 +45,7 @@ final class Thumbnails extends MoonShineComponent
         return [
             'values' => collect($this->valueOrValues)
                 ->mapWithKeys(
-                    fn(string|array|FileItem $value, int $index) => [
+                    fn(string|array|FileItem $value, int $index): array => [
                         $index => $value instanceof FileItem
                             ? $value->toArray()
                             : (new FileItem(
