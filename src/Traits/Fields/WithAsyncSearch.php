@@ -143,6 +143,10 @@ trait WithAsyncSearch
     {
         $searchColumn ??= $this->asyncSearchColumn();
 
+        if(is_null($searchColumn)) {
+            $searchColumn = '';
+        }
+
         return [
             'label' => is_closure($this->asyncSearchValueCallback())
                 ? ($this->asyncSearchValueCallback())($model, $this)
