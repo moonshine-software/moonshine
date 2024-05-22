@@ -150,9 +150,9 @@ trait WithAsyncSearch
         }
 
         return new Option(
-            label: !is_null($this->asyncSearchValueCallback())
-                ? value($this->asyncSearchValueCallback(), $model, $this)
-                : data_get($model, $searchColumn, ''),
+            label: is_null($this->asyncSearchValueCallback())
+                ? data_get($model, $searchColumn, '')
+                : value($this->asyncSearchValueCallback(), $model, $this),
             value: (string) $model->getKey(),
             properties: new OptionProperty($this->getImageUrl($model))
         );

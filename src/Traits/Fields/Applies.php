@@ -68,13 +68,13 @@ trait Applies
             );
         }
 
-        $applyFunction = !is_null($this->onApply)
-            ? $this->onApply
-            : $this->resolveOnApply();
+        $applyFunction = is_null($this->onApply)
+            ? $this->resolveOnApply()
+            : $this->onApply;
 
-        return !is_null($applyFunction)
-            ? $applyFunction($data, $this->requestValue(), $this)
-            : $default($data, $this->requestValue());
+        return is_null($applyFunction)
+            ? $default($data, $this->requestValue())
+            : $applyFunction($data, $this->requestValue(), $this);
     }
 
     public function beforeApply(mixed $data): mixed
@@ -83,9 +83,9 @@ trait Applies
             return $data;
         }
 
-        return !is_null($this->onBeforeApply)
-            ? value($this->onBeforeApply, $data, $this->requestValue(), $this)
-            : $this->resolveBeforeApply($data);
+        return is_null($this->onBeforeApply)
+            ? $this->resolveBeforeApply($data)
+            : value($this->onBeforeApply, $data, $this->requestValue(), $this);
     }
 
     public function afterApply(mixed $data): mixed
@@ -94,16 +94,16 @@ trait Applies
             return $data;
         }
 
-        return !is_null($this->onAfterApply)
-            ? value($this->onAfterApply, $data, $this->requestValue(), $this)
-            : $this->resolveAfterApply($data);
+        return is_null($this->onAfterApply)
+            ? $this->resolveAfterApply($data)
+            : value($this->onAfterApply, $data, $this->requestValue(), $this);
     }
 
     public function afterDestroy(mixed $data): mixed
     {
-        return !is_null($this->onAfterDestroy)
-            ? value($this->onAfterDestroy, $data, $this->requestValue(), $this)
-            : $this->resolveAfterDestroy($data);
+        return is_null($this->onAfterDestroy)
+            ? $this->resolveAfterDestroy($data)
+            : value($this->onAfterDestroy, $data, $this->requestValue(), $this);
     }
 
     /**
