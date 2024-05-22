@@ -31,9 +31,6 @@ final readonly class Option implements Arrayable
         return $this->selected;
     }
 
-    /**
-     * @return ?OptionProperty
-     */
     public function getProperties(): ?OptionProperty
     {
         return $this->properties;

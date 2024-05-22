@@ -22,7 +22,7 @@ final readonly class Options implements Arrayable
     public function getValues(): Collection
     {
         return collect($this->values)
-            ->map(function(array|string|Option $labelOrValues, int|string $valueOrLabel) {
+            ->map(function(array|string|Option $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
                 $toOption = fn(string $label, string $value): Option => new Option(
                     label: $label,
                     value: $value,
@@ -56,10 +56,6 @@ final readonly class Options implements Arrayable
         return $this->value;
     }
 
-    /**
-     * @param  mixed  $value
-     * @return OptionProperty
-     */
     public function getProperties(string $value): OptionProperty
     {
         $properties = data_get(value($this->properties), $value, []);

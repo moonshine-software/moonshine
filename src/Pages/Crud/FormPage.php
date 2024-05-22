@@ -11,7 +11,6 @@ use MoonShine\Components\Layout\Divider;
 use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\MoonShineComponentException;
