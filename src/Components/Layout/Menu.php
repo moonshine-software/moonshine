@@ -59,7 +59,7 @@ class Menu extends MoonShineComponent
 
         if(! $this->isTop() && $this->isScrollTo()) {
             $this->customAttributes([
-                'x-init' => "\$nextTick(() => document.querySelector('.menu-inner-item._is-active')?.scrollIntoView())",
+                'x-init' => "\$nextTick(() => \$el.querySelector('.menu-inner-item._is-active')?.scrollIntoView())",
             ]);
         }
 
