@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use MoonShine\Components\Files;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
+use MoonShine\DTOs\FileItem;
 use MoonShine\Traits\Fields\CanBeMultiple;
 use MoonShine\Traits\Fields\FileDeletable;
 use MoonShine\Traits\Fields\FileTrait;
@@ -48,10 +50,8 @@ class File extends Field implements Fileable, RemovableContract
         }
 
         return Files::make(
-            $values,
+            $this->getFiles()->toArray(),
             download: $this->canDownload(),
-            names: $this->resolveNames(),
-            itemAttributes: $this->resolveItemAttributes(),
         )->render();
     }
 
@@ -69,15 +69,26 @@ class File extends Field implements Fileable, RemovableContract
         return $data;
     }
 
+    protected function getFiles(): Collection
+    {
+        return collect($this->getFullPathValues())
+            ->mapWithKeys(fn (string $path, int $index) => [
+                $index => new FileItem(
+                    fullPath: $path,
+                    rawValue: data_get($this->toValue(), $index, $this->toValue()),
+                    name: value($this->resolveNames(), $path, $index, $this),
+                    attributes: value($this->resolveItemAttributes(), $path, $index, $this),
+                )
+            ]);
+    }
+
     protected function viewData(): array
     {
         return [
-            'fullPathValues' => $this->getFullPathValues(),
+            'files' => $this->getFiles()->toArray(),
             'isRemovable' => $this->isRemovable(),
             'removableAttributes' => $this->getRemovableAttributes(),
             'canDownload' => $this->canDownload(),
-            'names' => $this->resolveNames(),
-            'itemAttributes' => $this->resolveItemAttributes(),
         ];
     }
 }

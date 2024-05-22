@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
-use Closure;
-use MoonShine\Support\MoonShineComponentAttributeBag;
+use MoonShine\DTOs\FileItem;
 
-/** @method static static make(string|array|null $valueOrValues = null, ?Closure $names = null, ?Closure $itemAttributes = null) */
+/** @method static static make(FileItem|array|null $valueOrValues) */
 final class Thumbnails extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.thumbnails';
 
     public function __construct(
-        protected string|array|null $valueOrValues = null,
-        public ?Closure $names = null,
-        public ?Closure $itemAttributes = null,
+        protected FileItem|array|null $valueOrValues,
     ) {
         parent::__construct();
     }
@@ -26,28 +23,39 @@ final class Thumbnails extends MoonShineComponent
     protected function viewData(): array
     {
         if(is_null($this->valueOrValues)) {
-            return [];
+            return [
+                'values' => []
+            ];
         }
-
-        if(is_null($this->itemAttributes)) {
-            $this->itemAttributes = fn (string $filename, int $index = 0): MoonShineComponentAttributeBag => $this->attributes();
-        }
-
-        $data = [
-            'names' => $this->names,
-            'itemAttributes' => $this->itemAttributes,
-        ];
 
         if(is_string($this->valueOrValues)) {
+            $this->valueOrValues = new FileItem(
+                $this->valueOrValues,
+                $this->valueOrValues,
+                $this->valueOrValues
+            );
+        }
+
+        if($this->valueOrValues instanceof FileItem) {
             return [
-                'value' => $this->valueOrValues,
-                ...$data,
+                'value' => $this->valueOrValues->toArray(),
             ];
         }
 
         return [
-            'values' => $this->valueOrValues,
-            ...$data,
+            'values' => collect($this->valueOrValues)
+                ->mapWithKeys(
+                    fn(string|array|FileItem $value, int $index) => [
+                        $index => $value instanceof FileItem
+                            ? $value->toArray()
+                            : (new FileItem(
+                                $value['full_path'] ?? $value,
+                                $value['raw_value'] ?? $value,
+                                $value['name'] ?? $value,
+                                $value['attributes'] ?? $value,
+                            ))->toArray()
+                    ]
+                )->toArray(),
         ];
     }
 }

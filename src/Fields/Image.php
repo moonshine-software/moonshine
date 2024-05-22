@@ -21,9 +21,9 @@ class Image extends File
         }
 
         return Thumbnails::make(
-            $this->isMultiple() ? $values : Arr::first($values),
-            names: $this->resolveNames(),
-            itemAttributes: $this->resolveItemAttributes(),
+            $this->isMultiple()
+                ? $this->getFiles()->toArray()
+                : $this->getFiles()->first(),
         )->render();
     }
 }

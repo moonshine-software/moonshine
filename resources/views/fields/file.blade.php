@@ -1,20 +1,15 @@
 @props([
     'value' => '',
-    'fullPathValues' => [],
+    'files' => [],
     'isRemovable' => false,
     'canDownload' => false,
     'removableAttributes' => '',
-    'names' => static fn() => '',
-    'itemAttributes' => static fn() => '',
 ])
 <x-moonshine::form.file
     :attributes="$attributes"
-    :files="$fullPathValues"
-    :raw="is_iterable($value) ? $value : [$value]"
+    :files="$files"
     :removable="$isRemovable"
     :removableAttributes="$removableAttributes"
     :imageable="false"
     :download="$canDownload"
-    :names="$names"
-    :itemAttributes="$itemAttributes"
 />
