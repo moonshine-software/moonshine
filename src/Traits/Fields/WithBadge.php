@@ -16,7 +16,7 @@ trait WithBadge
 
     public function badge(string|Closure|null $color = null): static
     {
-        if (is_closure($color)) {
+        if ($color instanceof Closure) {
             $this->badgeColorCallback = $color;
         } elseif (! is_null($color)) {
             $this->badgeColor = $color;

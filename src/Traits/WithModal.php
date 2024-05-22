@@ -9,6 +9,7 @@ use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Heading;
 use MoonShine\Components\Modal;
+use MoonShine\Enums\FormMethod;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\HiddenIds;
@@ -76,7 +77,7 @@ trait WithModal
             fn (mixed $data) => value($title, $data, $this) ?? __('moonshine::ui.confirm'),
             fn (mixed $data): string => (string) FormBuilder::make(
                 $this->url($data),
-                $isDefaultMethods ? $method : 'POST'
+                $isDefaultMethods ? FormMethod::from($method) : FormMethod::POST
             )->fields(
                 array_filter([
                     $isDefaultMethods

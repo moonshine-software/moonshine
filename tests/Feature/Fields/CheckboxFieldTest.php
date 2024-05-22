@@ -27,7 +27,7 @@ it('show field on pages', function () {
     $view = Boolean::make($this->item->active)->render();
 
     asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $resource)
+        toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Active')
@@ -35,7 +35,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Active')
@@ -43,7 +43,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('active')

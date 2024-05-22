@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Support;
 
+use MoonShine\DTOs\AsyncCallback;
 use MoonShine\Enums\JsEvent;
 
 final class AlpineJs
 {
-    public const EVENT_SEPARATOR = '-';
+    public const EVENT_SEPARATOR = ':';
 
-    public const EVENT_PARAMS_SEPARATOR = ':';
+    public const EVENT_PARAMS_SEPARATOR = '|';
 
     public const EVENT_PARAM_SEPARATOR = ';';
 
@@ -63,14 +64,13 @@ final class AlpineJs
         string $method = 'GET',
         string|array $events = [],
         ?string $selector = null,
-        string|AsyncCallback|null $callback = null
+        ?AsyncCallback $callback = null
     ): array {
         return array_filter([
             'data-async-events' => self::prepareEvents($events),
             'data-async-selector' => $selector,
-            //TODO remove $callback string type in future version
-            'data-async-callback' => $callback instanceof AsyncCallback ? $callback->success() : $callback,
-            'data-async-before-function' => $callback instanceof AsyncCallback ? $callback->before() : null,
+            'data-async-callback' => $callback?->getSuccess() ,
+            'data-async-before-function' => $callback?->getBefore(),
             'data-async-method' => $method,
         ]);
     }

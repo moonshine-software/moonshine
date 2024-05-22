@@ -48,7 +48,7 @@ final class Profile extends MoonShineComponent
             : "https://ui-avatars.com/api/?name=$nameOfUser";
 
         return [
-            'route' => $this->route ?? to_page(
+            'route' => $this->route ?? toPage(
                 moonshineConfig()->getPage('profile', ProfilePage::class)
             ),
             'logOutRoute' => $this->logOutRoute ?? moonshineRouter()->to('logout'),

@@ -132,7 +132,7 @@ it('async search', function () {
             [
                 'value' => $category->getKey(),
                 'label' => $category->name,
-                'customProperties' => [
+                'properties' => [
                     'image' => null,
                 ],
             ],

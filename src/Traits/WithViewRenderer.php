@@ -22,9 +22,9 @@ trait WithViewRenderer
     protected ?string $customView = null;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, mixed>|Closure
      */
-    protected array $customViewData = [];
+    protected array|Closure $customViewData = [];
 
     protected ?Closure $onBeforeRenderCallback = null;
 
@@ -40,7 +40,7 @@ trait WithViewRenderer
      */
     public function getCustomViewData(): array
     {
-        return $this->customViewData;
+        return value($this->customViewData, $this);
     }
 
     public function customView(string $view, array $data = []): static

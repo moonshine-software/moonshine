@@ -7,6 +7,7 @@ namespace MoonShine\Forms;
 use Illuminate\Support\Arr;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Enums\FormMethod;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
@@ -32,7 +33,7 @@ final class FiltersForm implements FormContract
 
         $action = $resource->isAsync() ? '#' : $this->formAction();
 
-        return FormBuilder::make($action, 'GET')
+        return FormBuilder::make($action, FormMethod::GET)
             ->name('filters')
             ->fillCast($values, $resource->getModelCast())
             ->fields(

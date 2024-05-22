@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\DTOs\Select\Option;
+use MoonShine\DTOs\Select\OptionProperty;
 
 trait WithAsyncSearch
 {
@@ -81,12 +83,12 @@ trait WithAsyncSearch
         }
 
         return $this->getMemoizeValues()->mapWithKeys(function (Model $item) use ($onlyCustom): array {
-            $properties = $this->asyncResponseData($item);
+            $option = $this->getAsyncSearchOption($item);
 
             return [
                 $item->getKey() => $onlyCustom
-                    ? data_get($properties, 'customProperties')
-                    : $properties,
+                    ? $option->getProperties()?->toArray()
+                    : $option->toArray(),
             ];
         });
     }
@@ -139,19 +141,21 @@ trait WithAsyncSearch
         );
     }
 
-    public function asyncResponseData(Model $model, ?string $searchColumn = null): array
+    public function getAsyncSearchOption(Model $model, ?string $searchColumn = null): Option
     {
         $searchColumn ??= $this->asyncSearchColumn();
 
-        return [
-            'label' => is_closure($this->asyncSearchValueCallback())
-                ? ($this->asyncSearchValueCallback())($model, $this)
+        if(is_null($searchColumn)) {
+            $searchColumn = '';
+        }
+
+        return new Option(
+            label: !is_null($this->asyncSearchValueCallback())
+                ? value($this->asyncSearchValueCallback(), $model, $this)
                 : data_get($model, $searchColumn, ''),
-            'value' => $model->getKey(),
-            'customProperties' => [
-                'image' => $this->getImageUrl($model),
-            ],
-        ];
+            value: (string) $model->getKey(),
+            properties: new OptionProperty($this->getImageUrl($model))
+        );
     }
 
     public function asyncSearch(

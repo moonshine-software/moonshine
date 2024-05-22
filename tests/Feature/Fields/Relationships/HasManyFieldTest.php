@@ -26,7 +26,7 @@ it('onlyLink preview', function () {
     ]);
 
     asAdmin()
-        ->get(to_page(page: IndexPage::class, resource: $resource))
+        ->get(toPage(page: IndexPage::class, resource: $resource))
         ->assertOk()
         ->assertSee('(6)')
     ;
@@ -43,7 +43,7 @@ it('onlyLink preview empty', function () {
     ]);
 
     asAdmin()
-        ->get(to_page(page: IndexPage::class, resource: $resource))
+        ->get(toPage(page: IndexPage::class, resource: $resource))
         ->assertOk()
     ;
 });
@@ -59,7 +59,7 @@ it('onlyLink value', function () {
     ]);
 
     asAdmin()
-        ->get(to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
+        ->get(toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertSee('(16)')
         ->assertOk()
     ;
@@ -76,7 +76,7 @@ it('onlyLink value empty', function () {
     ]);
 
     asAdmin()
-        ->get(to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
+        ->get(toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertOk()
     ;
 });
@@ -95,7 +95,7 @@ it('onlyLink preview condition', function () {
     ]);
 
     asAdmin()
-        ->get(to_page(page: IndexPage::class, resource: $resource))
+        ->get(toPage(page: IndexPage::class, resource: $resource))
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments->first()->content)
@@ -117,7 +117,7 @@ it('onlyLink value condition', function () {
     ]);
 
     asAdmin()
-        ->get(to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
+        ->get(toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments[15]->content)

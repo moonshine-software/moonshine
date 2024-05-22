@@ -15,7 +15,7 @@ final class DeleteButton
         ModelResource $resource,
         ?string $componentName = null,
         string $redirectAfterDelete = '',
-        bool $isAsync = false,
+        bool $isAsync = true,
     ): ActionButton {
         $action = static fn (Model $data): string => $resource->route(
             'crud.destroy',

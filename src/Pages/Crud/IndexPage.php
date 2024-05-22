@@ -57,7 +57,7 @@ class IndexPage extends Page
     protected function topLayer(): array
     {
         $components = [];
-        if ($metrics = $this->metrics()) {
+        if ($metrics = $this->getMetrics()) {
             $components[] = $metrics;
         }
 
@@ -71,13 +71,21 @@ class IndexPage extends Page
     protected function mainLayer(): array
     {
         return [
-            ...$this->actionButtons(),
-            ...$this->queryTags(),
-            ...$this->table(),
+            ...$this->getPageButtons(),
+            ...$this->getQueryTags(),
+            ...$this->getItemsComponents(),
         ];
     }
 
-    protected function metrics(): ?MoonShineComponent
+    /**
+     * @return list<MoonShineComponent>
+     */
+    protected function bottomLayer(): array
+    {
+        return $this->getResource()->getIndexPageComponents();
+    }
+
+    protected function getMetrics(): ?MoonShineComponent
     {
         $metrics = $this->getResource()->metrics();
 
@@ -92,7 +100,7 @@ class IndexPage extends Page
     /*
      * @return list<MoonShineComponent>
      */
-    protected function actionButtons(): array
+    protected function getPageButtons(): array
     {
         return [
             Grid::make([
@@ -124,7 +132,7 @@ class IndexPage extends Page
     /**
      * @return list<MoonShineComponent>
      */
-    protected function queryTags(): array
+    protected function getQueryTags(): array
     {
         return [
             ActionGroup::make()->when(
@@ -143,20 +151,20 @@ class IndexPage extends Page
         ];
     }
 
-    public function listComponentName(): string
+    public function getListComponentName(): string
     {
         return 'index-table';
     }
 
-    public function listEventName(): string
+    public function getListEventName(): string
     {
         return JsEvent::TABLE_UPDATED->value;
     }
 
-    protected function itemsComponent(iterable $items, Fields $fields): MoonShineRenderable
+    protected function getItemsComponent(iterable $items, Fields $fields): MoonShineRenderable
     {
         return TableBuilder::make(items: $items)
-            ->name($this->listComponentName())
+            ->name($this->getListComponentName())
             ->fields($fields)
             ->cast($this->getResource()->getModelCast())
             ->withNotFound()
@@ -187,7 +195,7 @@ class IndexPage extends Page
      * @return list<MoonShineComponent>
      * @throws Throwable
      */
-    protected function table(): array
+    protected function getItemsComponents(): array
     {
         $items = $this->getResource()->isPaginationUsed()
             ? $this->getResource()->paginate()
@@ -197,16 +205,8 @@ class IndexPage extends Page
 
         return [
             Fragment::make([
-                $this->itemsComponent($items, $fields),
+                $this->getItemsComponent($items, $fields),
             ])->name('crud-list'),
         ];
-    }
-
-    /**
-     * @return list<MoonShineComponent>
-     */
-    protected function bottomLayer(): array
-    {
-        return $this->getResource()->getIndexPageComponents();
     }
 }

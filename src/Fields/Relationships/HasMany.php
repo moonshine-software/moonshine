@@ -46,7 +46,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $isSearchable = true;
 
-    protected bool $isAsync = false;
+    protected bool $isAsync = true;
 
     protected ?ActionButton $createButton = null;
 
@@ -159,6 +159,13 @@ class HasMany extends ModelRelationField implements HasFields
     public function async(): static
     {
         $this->isAsync = true;
+
+        return $this;
+    }
+
+    public function disableAsync(): static
+    {
+        $this->isAsync = false;
 
         return $this;
     }

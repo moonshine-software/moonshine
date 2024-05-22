@@ -59,7 +59,7 @@ trait Applies
             return $data;
         }
 
-        if (! is_closure($this->onApply)) {
+        if (is_null($this->onApply)) {
             $classApply = appliesRegister()->findByField($this);
 
             $this->when(
@@ -68,11 +68,11 @@ trait Applies
             );
         }
 
-        $applyFunction = is_closure($this->onApply)
+        $applyFunction = !is_null($this->onApply)
             ? $this->onApply
             : $this->resolveOnApply();
 
-        return is_closure($applyFunction)
+        return !is_null($applyFunction)
             ? $applyFunction($data, $this->requestValue(), $this)
             : $default($data, $this->requestValue());
     }
@@ -83,7 +83,7 @@ trait Applies
             return $data;
         }
 
-        return is_closure($this->onBeforeApply)
+        return !is_null($this->onBeforeApply)
             ? value($this->onBeforeApply, $data, $this->requestValue(), $this)
             : $this->resolveBeforeApply($data);
     }
@@ -94,14 +94,14 @@ trait Applies
             return $data;
         }
 
-        return is_closure($this->onAfterApply)
+        return !is_null($this->onAfterApply)
             ? value($this->onAfterApply, $data, $this->requestValue(), $this)
             : $this->resolveAfterApply($data);
     }
 
     public function afterDestroy(mixed $data): mixed
     {
-        return is_closure($this->onAfterDestroy)
+        return !is_null($this->onAfterDestroy)
             ? value($this->onAfterDestroy, $data, $this->requestValue(), $this)
             : $this->resolveAfterDestroy($data);
     }

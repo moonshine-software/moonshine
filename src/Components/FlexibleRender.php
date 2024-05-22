@@ -25,7 +25,7 @@ final class FlexibleRender extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        if(is_closure($this->content)) {
+        if($this->content instanceof Closure) {
             $this->content = value($this->content, $this->additionalData, $this);
         }
 

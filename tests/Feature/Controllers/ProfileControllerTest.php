@@ -10,7 +10,7 @@ it('index', function () {
 
     asAdmin()
         ->get(
-            to_page(
+            toPage(
                 moonshineConfig()->getPage('profile', ProfilePage::class)
             )
         )

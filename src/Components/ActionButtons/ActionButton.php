@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Actions\ActionButtonContract;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\DTOs\AsyncCallback;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
-use MoonShine\Support\AsyncCallback;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
 use MoonShine\Traits\WithIcon;
@@ -37,7 +37,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     protected ?string $bulkForComponent = null;
 
-    protected bool $isAsync = false;
+    protected bool $isAsync = true;
 
     protected ?string $asyncMethod = null;
 
@@ -182,7 +182,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ?string $message = null,
         ?string $selector = null,
         array $events = [],
-        string|AsyncCallback|null $callback = null,
+        ?AsyncCallback $callback = null,
         ?Page $page = null,
         ?ResourceContract $resource = null
     ): self {
@@ -221,11 +221,18 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->asyncMethod;
     }
 
+    public function disableAsync(): static
+    {
+        $this->isAsync = false;
+
+        return $this;
+    }
+
     public function async(
         string $method = 'GET',
         ?string $selector = null,
         array $events = [],
-        string|AsyncCallback|null $callback = null
+        ?AsyncCallback $callback = null
     ): self {
         $this->isAsync = true;
 
@@ -288,7 +295,6 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             array_keys(AlpineJs::asyncUrlDataAttributes(
                 events: ['events'],
                 selector: 'selector',
-                callback: 'callback',
             ))
         );
 

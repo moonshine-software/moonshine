@@ -32,7 +32,7 @@ export function dispatchEvents(events, type, component, extraAttributes = {}) {
     const allEvents = events.split(',')
 
     allEvents.forEach(function (event) {
-      let parts = event.split(':')
+      let parts = event.split('|')
 
       let eventName = parts[0]
 

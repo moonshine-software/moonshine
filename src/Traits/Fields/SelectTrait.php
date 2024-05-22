@@ -5,33 +5,19 @@ declare(strict_types=1);
 namespace MoonShine\Traits\Fields;
 
 use Closure;
-use JsonException;
-use MoonShine\Support\SelectOptions;
+use MoonShine\DTOs\Select\Options;
 
 trait SelectTrait
 {
-    protected array|Closure $options = [];
+    protected array|Closure|Options $options = [];
 
     protected array|Closure $optionProperties = [];
 
-    public function options(Closure|array $data): static
+    public function options(Closure|array|Options $data): static
     {
         $this->options = $data;
 
         return $this;
-    }
-
-    public function values(): array
-    {
-        return value($this->options, $this);
-    }
-
-    /**
-     * @throws JsonException
-     */
-    public function isSelected(string $value): bool
-    {
-        return SelectOptions::isSelected($this->value(), $value);
     }
 
     public function optionProperties(Closure|array $data): static
@@ -41,13 +27,16 @@ trait SelectTrait
         return $this;
     }
 
-    public function getOptionProperties(string $value): array
+    public function getValues(): Options
     {
-        return data_get(value($this->optionProperties), $value, []);
-    }
+        if($this->options instanceof Options) {
+            return $this->options;
+        }
 
-    public function flattenValues(): array
-    {
-        return SelectOptions::flatten($this->values());
+        return new Options(
+            value($this->options, $this),
+            $this->value(),
+            $this->optionProperties
+        );
     }
 }

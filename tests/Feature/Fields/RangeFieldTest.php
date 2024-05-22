@@ -25,7 +25,7 @@ it('show field on pages', function () {
     );
 
     asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $resource)
+        toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Range')
@@ -33,7 +33,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Range')
@@ -41,7 +41,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('range')

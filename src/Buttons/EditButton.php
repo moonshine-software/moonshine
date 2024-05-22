@@ -13,7 +13,7 @@ final class EditButton
     public static function for(
         ModelResource $resource,
         ?string $componentName = null,
-        bool $isAsync = false
+        bool $isAsync = true
     ): ActionButton {
         if (! $resource->formPage()) {
             return ActionButton::emptyHidden();

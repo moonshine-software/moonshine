@@ -12,6 +12,8 @@ use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Enums\PageType;
+use MoonShine\Exceptions\MoonShineComponentException;
+use MoonShine\Exceptions\PageException;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
@@ -73,27 +75,6 @@ class DetailPage extends Page
         return $this->getLayers();
     }
 
-    protected function detailComponent(?Model $item, Fields $fields): MoonShineRenderable
-    {
-        return TableBuilder::make($fields)
-            ->cast($this->getResource()->getModelCast())
-            ->items([$item])
-            ->vertical()
-            ->simple()
-            ->preview()
-            ->tdAttributes(fn (
-                $data,
-                int $row,
-                int $cell,
-                MoonShineComponentAttributeBag $attributes
-            ): MoonShineComponentAttributeBag => $attributes->when(
-                $cell === 0,
-                fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
-                    'class' => 'font-semibold',
-                    'width' => '20%',
-                ])
-            ));
-    }
     /**
      * @return list<MoonShineComponent>
      * @throws Throwable
@@ -105,15 +86,9 @@ class DetailPage extends Page
 
         return [
             Box::make([
-                Fragment::make([
-                    $this->detailComponent($item, $resource->getDetailFields()),
-                ])->name('crud-detail'),
-
+                ...$this->getDetailComponents($item),
                 LineBreak::make(),
-
-                ActionGroup::make($resource->getDetailItemButtons())
-                    ->setItem($item)
-                    ->customAttributes(['class' => 'justify-end']),
+                ...$this->getPageButtons($item),
             ]),
         ];
     }
@@ -166,5 +141,51 @@ class DetailPage extends Page
         }
 
         return array_merge($components, $this->getResource()->getDetailPageComponents());
+    }
+
+    protected function getDetailComponent(?Model $item, Fields $fields): MoonShineRenderable
+    {
+        return TableBuilder::make($fields)
+            ->cast($this->getResource()->getModelCast())
+            ->items([$item])
+            ->vertical()
+            ->simple()
+            ->preview()
+            ->tdAttributes(fn (
+                $data,
+                int $row,
+                int $cell,
+                MoonShineComponentAttributeBag $attributes
+            ): MoonShineComponentAttributeBag => $attributes->when(
+                $cell === 0,
+                fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
+                    'class' => 'font-semibold',
+                    'width' => '20%',
+                ])
+            ));
+    }
+
+    /**
+     * @throws Throwable
+     * @throws MoonShineComponentException
+     * @throws PageException
+     * @return list<MoonShineRenderable>
+     */
+    protected function getDetailComponents(?Model $item): array
+    {
+        return [
+            Fragment::make([
+                $this->getDetailComponent($item, $this->getResource()->getDetailFields()),
+            ])->name('crud-detail'),
+        ];
+    }
+
+    protected function getPageButtons(?Model $item): array
+    {
+        return [
+            ActionGroup::make($this->getResource()->getDetailItemButtons())
+                ->setItem($item)
+                ->customAttributes(['class' => 'justify-end'])
+        ];
     }
 }

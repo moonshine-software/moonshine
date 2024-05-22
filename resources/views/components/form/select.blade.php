@@ -2,10 +2,10 @@
     'searchable' => false,
     'nullable' => false,
     'values' => [],
-    'customProperties' => [],
     'options' => false,
     'asyncRoute' => null
 ])
+
 <select
         {{ $attributes->merge([
             'class' => 'form-select',
@@ -20,24 +20,25 @@
         @if($nullable)
             <option value="">{{ $attributes->get('placeholder', '-') }}</option>
         @endif
-        @foreach($values as $value => $label)
-            @if(is_array($label))
-                <optgroup label="{{ $value }}">
-                    @foreach($label as $oValue => $oName)
-                        <option @selected(is_selected_option($attributes->get('value', ''), $oValue))
-                                value="{{ $oValue }}"
-                                data-custom-properties='@json($customProperties[$oValue] ?? [])'
+
+        @foreach($values as $optionValue)
+            @if(isset($optionValue['values']))
+                <optgroup label="{{ $optionValue['label'] }}">
+                    @foreach($optionValue['values'] as $oValue)
+                        <option @selected($oValue['selected'] || $attributes->get('value', '') == $oValue['value'])
+                                value="{{ $oValue['value'] }}"
+                                data-custom-properties='@json($oValue['properties'])'
                         >
-                            {{ $oName }}
+                            {{ $oValue['label'] }}
                         </option>
                     @endforeach
                 </optgroup>
             @else
-                <option @selected(is_selected_option($attributes->get('value', ''), $value))
-                        value="{{ $value }}"
-                        data-custom-properties='@json($customProperties[$value] ?? [])'
+                <option @selected($optionValue['selected'] || $attributes->get('value', '') == $optionValue['value'])
+                        value="{{ $optionValue['value'] }}"
+                        data-custom-properties='@json($optionValue['properties'])'
                 >
-                    {{ $label }}
+                    {{ $optionValue['label'] }}
                 </option>
             @endif
         @endforeach

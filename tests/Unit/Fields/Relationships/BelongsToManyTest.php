@@ -37,15 +37,15 @@ describe('basic methods', function () {
     });
 
     it('formatted value', function () {
-        $field = BelongsToMany::make('Categories', formatted: static fn () => ['changed'], resource: new TestCategoryResource())
+        $field = BelongsToMany::make('Categories', formatted: static fn () => 'changed', resource: new TestCategoryResource())
             ->fields($this->pivotFields)
             ->resolveFill($this->item->toArray(), $this->item);
 
         expect($field)
             ->toFormattedValue()
             ->toBeCollection()
-            ->values()
-            ->each->toBe(['changed']);
+            ->and($field->getValues()->toArray())
+            ->each->toMatchArray(['label' => 'changed']);
     });
 
     it('default value', function () {

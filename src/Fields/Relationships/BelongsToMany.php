@@ -188,11 +188,13 @@ class BelongsToMany extends ModelRelationField implements
         return 'belongs_to_many_' . $this->getRelationName();
     }
 
-    public function selectedKeys(): Collection
+    public function resolveSelectedValue(): string|array
     {
-        return $this->isValueWithModels()
+        $selected = $this->isValueWithModels()
             ? collect($this->toValue())->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id')
             : collect($this->toValue());
+
+        return $selected->toArray();
     }
 
     protected function isValueWithModels(): bool
@@ -236,7 +238,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function fragmentUrl(): string
     {
-        return to_page(
+        return toPage(
             page: moonshineRequest()->getPage(),
             resource: moonshineRequest()->getResource(),
             params: ['resourceItem' => moonshineRequest()->getItemID()],
@@ -274,6 +276,7 @@ class BelongsToMany extends ModelRelationField implements
 
         $checkedColumn = $this->getNameAttribute('${index0}');
         $identityField = Checkbox::make('#', $checkedColumn)
+            ->withoutWrapper()
             ->setAttribute('class', 'pivotChecker')
             ->setNameAttribute($checkedColumn)
             ->formName($this->getFormName())
@@ -282,6 +285,7 @@ class BelongsToMany extends ModelRelationField implements
         $fields = $this->preparedFields()
             ->prepend(
                 Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->formattedValueCallback())
+                    ->withoutWrapper()
                     ->formName($this->getFormName())
                     ->customAttributes(['class' => 'pivotTitle'])
             )
@@ -341,32 +345,9 @@ class BelongsToMany extends ModelRelationField implements
             ->withNotFound();
     }
 
-    /**
-     * @return array<string, mixed>
-     * @throws Throwable
-     */
-    protected function viewData(): array
-    {
-        return [
-            'component' => $this->resolveValue(),
-            'buttons' => $this->getButtons(),
-            'values' => $this->getRelation() ? $this->values() : [],
-            'customProperties' => $this->resolvePropertyAttributes(),
-            'selectedKeys' => $this->selectedKeys(),
-            'isSearchable' => $this->isSearchable(),
-            'isAsyncSearch' => $this->isAsyncSearch(),
-            'isSelectMode' => $this->isSelectMode(),
-            'asyncSearchUrl' => $this->asyncSearchUrl(),
-            'isCreatable' => $this->isCreatable(),
-            'createButton' => $this->createButton(),
-            'fragmentUrl' => $this->fragmentUrl(),
-            'relationName' => $this->getRelationName(),
-        ];
-    }
-
     protected function columnOrFormattedValue(Model $item, string|int $default): string|int
     {
-        if (is_closure($this->formattedValueCallback())) {
+        if (!is_null($this->formattedValueCallback())) {
             return value(
                 $this->formattedValueCallback(),
                 $item,
@@ -530,5 +511,26 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         return $data;
+    }
+
+    /**
+     * @return array<string, mixed>
+     * @throws Throwable
+     */
+    protected function viewData(): array
+    {
+        return [
+            'component' => $this->resolveValue(),
+            'buttons' => $this->getButtons(),
+            'values' => $this->getRelation() ? $this->getValues()->toArray() : [],
+            'isSearchable' => $this->isSearchable(),
+            'isAsyncSearch' => $this->isAsyncSearch(),
+            'isSelectMode' => $this->isSelectMode(),
+            'asyncSearchUrl' => $this->asyncSearchUrl(),
+            'isCreatable' => $this->isCreatable(),
+            'createButton' => $this->createButton(),
+            'fragmentUrl' => $this->fragmentUrl(),
+            'relationName' => $this->getRelationName(),
+        ];
     }
 }

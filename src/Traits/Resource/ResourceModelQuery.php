@@ -45,8 +45,7 @@ trait ResourceModelQuery
 
     protected array $parentRelations = [];
 
-    // TODO 3.0 rename to saveQueryState
-    protected bool $saveFilterState = false;
+    protected bool $saveQueryState = false;
 
     public function getItemID(): int|string|null
     {
@@ -160,7 +159,7 @@ trait ResourceModelQuery
     {
         $page = request()->integer('page');
 
-        if ($this->saveFilterState() && ! request()->has('reset')) {
+        if ($this->saveQueryState() && ! request()->has('reset')) {
             return (int) data_get(
                 moonshineCache()->get($this->queryCacheKey(), []),
                 'page',
@@ -233,9 +232,9 @@ trait ResourceModelQuery
         return $this->query ?: $this->query();
     }
 
-    public function saveFilterState(): bool
+    public function saveQueryState(): bool
     {
-        return $this->saveFilterState;
+        return $this->saveQueryState;
     }
 
     /**
@@ -248,7 +247,7 @@ trait ResourceModelQuery
 
     protected function cacheQueryParams(): static
     {
-        if (! $this->saveFilterState()) {
+        if (! $this->saveQueryState()) {
             return $this;
         }
 
@@ -271,7 +270,7 @@ trait ResourceModelQuery
 
     protected function resolveCache(): static
     {
-        if ($this->saveFilterState()
+        if ($this->saveQueryState()
             && ! request()->hasAny([
                 ...$this->cachedRequestKeys(),
                 'reset',
@@ -390,7 +389,7 @@ trait ResourceModelQuery
             $column = value($callback);
         }
 
-        if (is_closure($callback)) {
+        if ($callback instanceof Closure) {
             $callback($this->getQuery(), $column, $direction);
         } else {
             $this->getQuery()
@@ -407,7 +406,7 @@ trait ResourceModelQuery
     {
         $default = request('filters', []);
 
-        if ($this->saveFilterState()) {
+        if ($this->saveQueryState()) {
             return data_get(
                 moonshineCache()->get($this->queryCacheKey(), []),
                 'filters',

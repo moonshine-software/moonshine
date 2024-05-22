@@ -30,9 +30,9 @@ class LineChartMetric extends Metric
         array|Closure $line,
         string|array|Closure $color = '#7843E9'
     ): static {
-        $this->lines[] = is_closure($line) ? $line() : $line;
+        $this->lines[] = $line instanceof Closure ? $line() : $line;
 
-        $color = is_closure($color) ? $color() : $color;
+        $color = $color instanceof Closure ? $color() : $color;
 
         if (is_string($color)) {
             $this->colors[] = $color;

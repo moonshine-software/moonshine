@@ -30,7 +30,7 @@ beforeEach(function (): void {
 
 it('fields on index', function () {
     asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $this->resource)
+        toPage(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('table')
@@ -53,7 +53,7 @@ it('simple pagination on index', function () {
     $this->resource->setSimplePaginate();
 
     asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $this->resource)
+        toPage(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('table')
@@ -64,7 +64,7 @@ it('simple pagination on index', function () {
 
 it('fields on form', function () {
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
+        toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
     )
         ->assertOk()
         ->assertSee('Name')
@@ -78,7 +78,7 @@ it('fields on form', function () {
 
 it('fields on show', function () {
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
+        toPage(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
     )
         ->assertOk()
         ->assertSee('Name')

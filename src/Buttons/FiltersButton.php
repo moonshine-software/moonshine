@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
-use MoonShine\Components\Offcanvas;
+use MoonShine\Components\OffCanvas;
 use MoonShine\Forms\FiltersForm;
 use MoonShine\Resources\ModelResource;
 
@@ -27,7 +27,7 @@ final class FiltersButton
                 fn (): array|string|null => __('moonshine::ui.filters'),
                 fn (): FormBuilder => $form,
                 name: 'filters-off-canvas',
-                builder: fn (Offcanvas $offCanvas): Offcanvas => $offCanvas->setComponents([$form])
+                builder: fn (OffCanvas $offCanvas): OffCanvas => $offCanvas->setComponents([$form])
             )
             ->showInLine();
     }

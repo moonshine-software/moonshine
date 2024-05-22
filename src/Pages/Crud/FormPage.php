@@ -11,8 +11,11 @@ use MoonShine\Components\Layout\Divider;
 use MoonShine\Components\Layout\LineBreak;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
+use MoonShine\Exceptions\MoonShineComponentException;
+use MoonShine\Exceptions\PageException;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
@@ -93,23 +96,122 @@ class FormPage extends Page
      */
     protected function topLayer(): array
     {
+        return $this->getPageButtons();
+    }
+
+    /**
+     * @return list<MoonShineComponent>
+     * @throws Throwable
+     */
+    protected function mainLayer(): array
+    {
+        $resource = $this->getResource();
+        $item = $resource->getItem();
+
+        $action = $resource->route(
+            $item?->exists ? 'crud.update' : 'crud.store',
+            $item?->getKey()
+        );
+
+        // Reset form problem
+        $isAsync = $resource->isAsync() && $resource->isEditInModal();
+
+        if (request('_async_form', false)) {
+            $isAsync = true;
+        }
+
+        return $this->getFormComponents($action, $item, $isAsync);
+    }
+
+    /**
+     * @return list<MoonShineComponent>
+     * @throws Throwable
+     */
+    protected function bottomLayer(): array
+    {
         $components = [];
         $item = $this->getResource()->getItem();
 
-        if ($item?->exists) {
-            $components[] = ActionGroup::make($this->getResource()->getFormItemButtons())
-                ->setItem($item)
-                ->customAttributes(['class' => 'mb-4']);
+        if (! $item?->exists) {
+            return $components;
         }
 
-        return $components;
+        $outsideFields = $this->getResource()->getOutsideFields()->formFields();
+
+        if ($outsideFields->isNotEmpty()) {
+            $components[] = Divider::make();
+
+            foreach ($outsideFields as $field) {
+                $components[] = LineBreak::make();
+
+                $components[] = Fragment::make([
+                    Heading::make($field->getLabel()),
+
+                    $field->resolveFill(
+                        $item?->attributesToArray() ?? [],
+                        $item
+                    ),
+                ])->name($field->getRelationName());
+            }
+        }
+
+        return array_merge($components, $this->getResource()->getFormPageComponents());
     }
 
-    protected function formComponent(
+    /*
+     * @return list<MoonShineComponent>
+     */
+    protected function getPageButtons(): array
+    {
+        $item = $this->getResource()->getItem();
+
+        if(!$item?->exists) {
+            return [];
+        }
+
+        return [
+            ActionGroup::make($this->getResource()->getFormItemButtons())
+                ->setItem($this->getResource()->getItem())
+                ->customAttributes(['class' => 'mb-4'])
+        ];
+    }
+
+    /**
+     * @throws Throwable
+     * @throws MoonShineComponentException
+     * @throws PageException
+     * @return list<MoonShineComponent>
+     */
+    protected function getFormComponents(
+        string $action,
+        ?Model $item,
+        bool $isAsync = true,
+    ): array
+    {
+        $resource = $this->getResource();
+
+        return [
+            Fragment::make([
+                $this->getFormComponent(
+                    $action,
+                    $item,
+                    $this->getResource()->getFormFields(),
+                    $isAsync
+                ),
+            ])
+                ->name('crud-form')
+                ->updateWithParams(['resourceItem' => $resource->getItemID()])
+        ];
+    }
+
+    /**
+     * @return list<MoonShineComponent>
+     */
+    protected function getFormComponent(
         string $action,
         ?Model $item,
         Fields $fields,
-        bool $isAsync = false,
+        bool $isAsync = true,
     ): MoonShineRenderable {
         $resource = $this->getResource();
 
@@ -148,75 +250,5 @@ class FormPage extends Page
             )
             ->name('crud')
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
-    }
-
-    /**
-     * @return list<MoonShineComponent>
-     * @throws Throwable
-     */
-    protected function mainLayer(): array
-    {
-        $resource = $this->getResource();
-        $item = $resource->getItem();
-
-        $action = $resource->route(
-            $item?->exists ? 'crud.update' : 'crud.store',
-            $item?->getKey()
-        );
-
-        // Reset form problem
-        $isAsync = $resource->isAsync() && $resource->isEditInModal();
-
-        if (request('_async_form', false)) {
-            $isAsync = true;
-        }
-
-        return [
-            Fragment::make([
-                $this->formComponent(
-                    $action,
-                    $item,
-                    $this->getResource()->getFormFields(),
-                    $isAsync
-                ),
-            ])
-                ->name('crud-form')
-                ->updateAsync(['resourceItem' => $resource->getItemID()]),
-        ];
-    }
-
-    /**
-     * @return list<MoonShineComponent>
-     * @throws Throwable
-     */
-    protected function bottomLayer(): array
-    {
-        $components = [];
-        $item = $this->getResource()->getItem();
-
-        if (! $item?->exists) {
-            return $components;
-        }
-
-        $outsideFields = $this->getResource()->getOutsideFields()->formFields();
-
-        if ($outsideFields->isNotEmpty()) {
-            $components[] = Divider::make();
-
-            foreach ($outsideFields as $field) {
-                $components[] = LineBreak::make();
-
-                $components[] = Fragment::make([
-                    Heading::make($field->getLabel()),
-
-                    $field->resolveFill(
-                        $item?->attributesToArray() ?? [],
-                        $item
-                    ),
-                ])->name($field->getRelationName());
-            }
-        }
-
-        return array_merge($components, $this->getResource()->getFormPageComponents());
     }
 }

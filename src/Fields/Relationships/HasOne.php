@@ -40,7 +40,7 @@ class HasOne extends ModelRelationField implements HasFields
 
     protected bool $outsideComponent = true;
 
-    protected bool $isAsync = false;
+    protected bool $isAsync = true;
 
     public function hasWrapper(): bool
     {
@@ -50,6 +50,13 @@ class HasOne extends ModelRelationField implements HasFields
     public function async(): static
     {
         $this->isAsync = true;
+
+        return $this;
+    }
+
+    public function disableAsync(): static
+    {
+        $this->isAsync = false;
 
         return $this;
     }
@@ -163,7 +170,7 @@ class HasOne extends ModelRelationField implements HasFields
             $item?->getKey()
         );
 
-        $redirectAfter = to_page(
+        $redirectAfter = toPage(
             page: $parentResource->formPage(),
             resource: $parentResource,
             params: ['resourceItem' => $parentItem->getKey()]

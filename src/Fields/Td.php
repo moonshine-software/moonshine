@@ -6,9 +6,9 @@ namespace MoonShine\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\FieldsGroup;
-use MoonShine\Decorations\LineBreak;
+use MoonShine\Components\Layout\LineBreak;
+use MoonShine\Support\MoonShineComponentAttributeBag;
 
 /**
  * @method static static make(Closure|string $label, ?Closure $fields = null)
@@ -74,7 +74,7 @@ class Td extends Template
     }
 
     /**
-     * @param  Closure(mixed $data, ComponentAttributeBag $attributes, $td self): ComponentAttributeBag  $attributes
+     * @param  Closure(mixed $data, MoonShineComponentAttributeBag $attributes, $td self): MoonShineComponentAttributeBag  $attributes
      */
     public function tdAttributes(Closure $attributes): self
     {
@@ -88,7 +88,7 @@ class Td extends Template
         return ! is_null($this->tdAttributes);
     }
 
-    public function resolveTdAttributes(mixed $data, ComponentAttributeBag $attributes): ComponentAttributeBag
+    public function resolveTdAttributes(mixed $data, MoonShineComponentAttributeBag $attributes): MoonShineComponentAttributeBag
     {
         return $this->hasTdAttributes()
             ? value($this->tdAttributes, $data, $attributes, $this)

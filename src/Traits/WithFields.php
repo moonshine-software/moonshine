@@ -49,7 +49,7 @@ trait WithFields
 
     public function fields(Fields|Closure|array $fields): static
     {
-        if(is_closure($fields)) {
+        if($fields instanceof Closure) {
             $fields = $fields();
         }
 

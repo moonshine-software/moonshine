@@ -47,7 +47,7 @@ class Enum extends Select implements DefaultCanBeEnum
 
         if(is_scalar($value)) {
             return data_get(
-                $this->values(),
+                $this->getValues(),
                 $value,
                 (string) $value
             );

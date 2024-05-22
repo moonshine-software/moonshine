@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\DTOs\Select\Options;
 use MoonShine\Exceptions\FieldException;
 use Throwable;
 
@@ -60,7 +61,7 @@ trait WithRelatedValues
         $related = $relation->getRelated();
         $query = $related->newModelQuery();
 
-        if (is_closure($this->valuesQuery)) {
+        if (!is_null($this->valuesQuery)) {
             $query = value($this->valuesQuery, $query, $this);
         }
 
@@ -83,10 +84,15 @@ trait WithRelatedValues
         );
     }
 
+    protected function resolveSelectedValue(): string|array
+    {
+        return (string) $this->value();
+    }
+
     /**
      * @throws Throwable
      */
-    public function values(): array
+    public function getValues(): Options
     {
         $query = $this->resolveValuesQuery();
 
@@ -107,8 +113,16 @@ trait WithRelatedValues
             ]
         );
 
+        $toOptions = fn(array $values) => new Options(
+            $values,
+            $this->resolveSelectedValue(),
+            $this->valuesWithProperties(onlyCustom: true)->toArray()
+        );
+
         if ($values->isNotEmpty()) {
-            return $values->toArray();
+            return $toOptions(
+                $values->toArray()
+            );
         }
 
         $value = $this->toValue();
@@ -121,6 +135,8 @@ trait WithRelatedValues
             );
         }
 
-        return $values->toArray();
+        return $toOptions(
+            $values->toArray(),
+        );
     }
 }

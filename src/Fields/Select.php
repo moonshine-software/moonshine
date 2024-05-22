@@ -56,7 +56,7 @@ class Select extends Field implements
                 ->when(
                     ! $this->isRawMode(),
                     fn ($collect): Collection => $collect->map(
-                        fn ($v): string => (string) data_get($this->flattenValues(), $v, '')
+                        fn ($v): string => (string) data_get($this->getValues()->flatten(), "$v.label", '')
                     )
                 )
                 ->implode(',');
@@ -66,7 +66,7 @@ class Select extends Field implements
             return '';
         }
 
-        return (string) data_get($this->flattenValues(), $value, '');
+        return (string) data_get($this->getValues()->flatten(), "$value.label", '');
     }
 
     protected function viewData(): array
@@ -74,9 +74,7 @@ class Select extends Field implements
         return [
             'isSearchable' => $this->isSearchable(),
             'asyncUrl' => $this->asyncUrl(),
-            'values' => $this->values(),
-            'isSelected' => fn (string $value): bool => $this->isSelected($value),
-            'optionProperties' => fn (string $value): array => $this->getOptionProperties($value),
+            'values' => $this->getValues()->toArray(),
             'isNullable' => $this->isNullable(),
         ];
     }

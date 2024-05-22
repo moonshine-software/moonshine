@@ -7,6 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use MoonShine\DTOs\Select\Options;
 use MoonShine\Exceptions\FieldException;
 
 /**
@@ -28,7 +29,7 @@ class MorphTo extends BelongsTo
     }
 
     /**
-     * @param  array<string, string>  $types
+     * @param  array<class-string<Model>, string>  $types
      * @return $this
      */
     public function types(array $types): self
@@ -59,13 +60,16 @@ class MorphTo extends BelongsTo
     /**
      * @throws FieldException
      */
-    public function getTypes(): array
+    public function getTypes(): Options
     {
         if ($this->types === []) {
             throw new FieldException('Morph types is required');
         }
 
-        return $this->types;
+        return new Options(
+            $this->types,
+            $this->getTypeValue()
+        );
     }
 
     public function getMorphType(): string
@@ -101,16 +105,16 @@ class MorphTo extends BelongsTo
         );
     }
 
-    public function values(): array
+    public function getValues(): Options
     {
         $item = $this->getRelatedModel();
 
         if (empty(data_get($item, $this->getMorphKey()))) {
-            return [];
+            return parent::getValues();
         }
 
         if (is_null($item)) {
-            return [];
+            return parent::getValues();
         }
 
         if (is_null($this->formattedValueCallback())) {
@@ -119,7 +123,7 @@ class MorphTo extends BelongsTo
             );
         }
 
-        return parent::values();
+        return parent::getValues();
     }
 
     protected function resolvePreview(): string
@@ -145,12 +149,9 @@ class MorphTo extends BelongsTo
             ->value();
     }
 
-    /**
-     * @throws FieldException
-     */
-    public function typeValue(): string
+    public function getTypeValue(): string
     {
-        $default = Arr::first(array_keys($this->getTypes()));
+        $default = Arr::first(array_keys($this->types));
 
         return old($this->getMorphType()) ?? addslashes(
             (string) ($this->getRelatedModel()->{$this->getMorphType()}
@@ -167,8 +168,8 @@ class MorphTo extends BelongsTo
     {
         return [
             ...parent::viewData(),
-            'typeValue' => $this->typeValue(),
-            'types' => $this->getTypes(),
+            'types' => $this->getTypes()->toArray(),
+            'typeValue' => $this->getTypeValue(),
             'column' => $this->getColumn(),
             'morphType' => $this->getMorphType(),
         ];

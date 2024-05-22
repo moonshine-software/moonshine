@@ -73,7 +73,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
         }
 
-        if(is_string($resource)) {
+        if (is_string($resource)) {
             $this->setResource($this->findResource($resource));
         } elseif (is_null($resource)) {
             $this->setResource($this->findResource());
@@ -96,10 +96,10 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             ? moonshine()->getResources()->findByClass($classString)
             : moonshine()->getResources()->findByUri(
                 str($this->getRelationName())
-                ->singular()
-                ->append('Resource')
-                ->kebab()
-                ->value()
+                    ->singular()
+                    ->append('Resource')
+                    ->kebab()
+                    ->value()
             );
 
         if (is_null($resource) && $this->isMorph()) {
@@ -154,7 +154,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
         }
 
-        if(! is_null($this->afterFillCallback)) {
+        if (! is_null($this->afterFillCallback)) {
             return value($this->afterFillCallback, $this);
         }
 
@@ -165,7 +165,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     {
         $value = $this->toValue(withDefault: false);
 
-        if ($this->toOne() && is_closure($this->formattedValueCallback())) {
+        if ($this->toOne() && ! is_null($this->formattedValueCallback())) {
             $this->setFormattedValue(
                 value(
                     $this->formattedValueCallback(),

@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 final class DBOperators
 {
     protected string $driver;
+
     public function __construct(
         ?string $driver = null
     ) {

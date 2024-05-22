@@ -34,7 +34,7 @@ beforeEach(function (): void {
 
 it('index page', function () {
     asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $this->resource)
+        toPage(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageIndex')
@@ -45,7 +45,7 @@ it('index page', function () {
 
 it('form page', function () {
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $this->resource)
+        toPage(page: FormPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageForm')
@@ -54,7 +54,7 @@ it('form page', function () {
 
 it('detail page', function () {
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $this->resource)
+        toPage(page: DetailPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageDetail')
@@ -69,6 +69,6 @@ it('no page type resource', function () {
         ])
     ;
 
-    expect(to_page('page-2', resource: $resource))
+    expect(toPage('page-2', resource: $resource))
         ->toContain('page-2');
 });

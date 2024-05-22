@@ -11,32 +11,33 @@ use MoonShine\Exceptions\PageException;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
+use Throwable;
 
 /**
  * @method static static make(array $fields = [])
  */
 class Fragment extends AbstractWithComponents
 {
-    protected bool $isUpdateAsync = false;
-
-    protected string $updateAsyncUrl = '';
+    protected string $url = '';
 
     protected string $view = 'moonshine::components.fragment';
 
     /**
      * @throws MoonShineComponentException
      * @throws PageException
+     * @throws Throwable
      */
     public function name(string $name): static
     {
-        return parent::name($name)->updateAsync();
+        return parent::name($name)->updateWithParams();
     }
 
     /**
      * @throws MoonShineComponentException
      * @throws PageException
+     * @throws Throwable
      */
-    public function updateAsync(
+    public function updateWithParams(
         array $params = [],
         string|ResourceContract|null $resource = null,
         string|Page|null $page = null,
@@ -54,37 +55,28 @@ class Fragment extends AbstractWithComponents
             throw new PageException("Resource or FormPage not found when generating updateAsyncUrl");
         }
 
-        $this->updateAsyncUrl = to_page(
+        $this->url = toPage(
             page: $page,
             resource: $resource,
             params: $params,
             fragment: $this->getName()
         );
 
-        $this->isUpdateAsync = true;
-
         return $this;
     }
 
-    protected function isUpdateAsync(): bool
+    protected function getUrl(): string
     {
-        return $this->isUpdateAsync;
-    }
-
-    protected function updateAsyncUrl(): string
-    {
-        return $this->updateAsyncUrl;
+        return $this->url;
     }
 
     protected function prepareBeforeRender(): void
     {
         parent::prepareBeforeRender();
 
-        if($this->isUpdateAsync()) {
-            $this->customAttributes([
-                'x-data' => 'fragment(`' . $this->updateAsyncUrl() . '`)',
-                AlpineJs::eventBlade(JsEvent::FRAGMENT_UPDATED, $this->getName()) => 'fragmentUpdate',
-            ]);
-        }
+        $this->customAttributes([
+            'x-data' => 'fragment(`' . $this->getUrl() . '`)',
+            AlpineJs::eventBlade(JsEvent::FRAGMENT_UPDATED, $this->getName()) => 'fragmentUpdate',
+        ]);
     }
 }

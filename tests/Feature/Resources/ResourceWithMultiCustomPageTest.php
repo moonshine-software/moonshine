@@ -23,7 +23,7 @@ beforeEach(function (): void {
 
 it('index page', function () {
     asAdmin()->get(
-        to_page(page: 'category-page-index', resource: $this->resource)
+        toPage(page: 'category-page-index', resource: $this->resource)
     )
         ->assertOk()
         ->assertSee($this->category->name)
@@ -32,7 +32,7 @@ it('index page', function () {
 
 it('form add page', function () {
     asAdmin()->get(
-        to_page(page: 'category-page-form', resource: $this->resource)
+        toPage(page: 'category-page-form', resource: $this->resource)
     )
         ->assertOk()
     ;
@@ -40,7 +40,7 @@ it('form add page', function () {
 
 it('form edit page', function () {
     asAdmin()->get(
-        to_page(page: 'category-page-form', resource: $this->resource, params: ['resourceItem' => $this->category->id])
+        toPage(page: 'category-page-form', resource: $this->resource, params: ['resourceItem' => $this->category->id])
     )
         ->assertOk()
         ->assertSee($this->category->name)
@@ -50,7 +50,7 @@ it('form edit page', function () {
 
 it('detail page', function () {
     asAdmin()->get(
-        to_page(page: 'category-page-detail', resource: $this->resource, params: ['resourceItem' => $this->category->id])
+        toPage(page: 'category-page-detail', resource: $this->resource, params: ['resourceItem' => $this->category->id])
     )
         ->assertOk()
         ->assertSee($this->category->name)

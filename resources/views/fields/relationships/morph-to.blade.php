@@ -5,7 +5,6 @@
     'values' => [],
     'column' => '',
     'morphType' => '',
-    'customProperties' => [],
     'isNullable' => false,
     'isSearchable' => false,
     'isAsyncSearch' => false,
@@ -19,7 +18,6 @@
             :name="str($attributes->get('name'))->replace($column, $morphType)"
             x-model="morphType"
             required="required"
-            :value="$typeValue"
             :values="$types"
         />
     </div>

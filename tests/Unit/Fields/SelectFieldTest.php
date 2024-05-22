@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\DTOs\Select\Options;
 use MoonShine\Fields\Select;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -93,19 +94,24 @@ describe('basic methods', function () {
 
     it('options', function (): void {
         expect($this->fieldMultiple)
-            ->values()
-            ->toBe($this->selectOptions);
+            ->getValues()->toArray()
+            ->toBe((new Options(
+                $this->selectOptions,
+                [1]
+            ))->toArray());
     });
 
     it('is selected correctly', function (): void {
         expect($this->fieldMultiple)
+            ->getValues()
             ->isSelected('1')
             ->toBeTrue();
     });
 
     it('is selected invalid', function (): void {
         expect($this->fieldMultiple)
-            ->isSelected($this->item, '2')
+            ->getValues()
+            ->isSelected('2')
             ->toBeFalse();
     });
 

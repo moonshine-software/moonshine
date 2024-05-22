@@ -17,7 +17,7 @@ beforeEach(function () {
 });
 
 it('successful response', function () {
-    asAdmin()->get(to_page($this->page))
+    asAdmin()->get(toPage($this->page))
         ->assertOk()
         ->assertSee($this->user->name)
         ->assertSee($this->user->email);

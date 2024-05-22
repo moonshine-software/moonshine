@@ -92,7 +92,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             $fields->each(function ($field, $cellIndex): void {
                 if($field instanceof Td) {
                     $this->tdAttributes(
-                        fn ($data, $row, $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $cellIndex === $cell - 1
+                        fn ($data, $row, $cell, MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $cellIndex === $cell
                             ? $field->resolveTdAttributes($data, $attr)
                             : $attr
                     );
@@ -111,7 +111,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, ComponentAttributeBag $attributes, $table self): ComponentAttributeBag $closure
+     * @param  Closure(mixed $data, int $row, MoonShineComponentAttributeBag $attributes, $table self): MoonShineComponentAttributeBag $closure
      */
     public function trAttributes(Closure $closure): self
     {
@@ -138,7 +138,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, int $cell, ComponentAttributeBag $attributes, $table self): ComponentAttributeBag $closure
+     * @param  Closure(mixed $data, int $row, int $cell, MoonShineComponentAttributeBag $attributes, $table self): MoonShineComponentAttributeBag $closure
      */
     public function tdAttributes(Closure $closure): self
     {

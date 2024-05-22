@@ -12,9 +12,9 @@ use MoonShine\Support\Condition;
 /**
  * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
-final class Offcanvas extends AbstractWithComponents
+final class OffCanvas extends AbstractWithComponents
 {
-    protected string $view = 'moonshine::components.offcanvas';
+    protected string $view = 'moonshine::components.off-canvas';
 
     protected bool $left = false;
 

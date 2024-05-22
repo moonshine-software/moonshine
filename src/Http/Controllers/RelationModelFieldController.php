@@ -47,7 +47,7 @@ class RelationModelFieldController extends MoonShineController
 
         $query = $model->newModelQuery();
 
-        if (is_closure($field->asyncSearchQuery())) {
+        if (!is_null($field->asyncSearchQuery())) {
             $query = value(
                 $field->asyncSearchQuery(),
                 $query,
@@ -79,7 +79,7 @@ class RelationModelFieldController extends MoonShineController
 
         return response()->json(
             $query->get()->map(
-                fn ($model): array => $field->asyncResponseData($model, $searchColumn)
+                fn ($model): array => $field->getAsyncSearchOption($model, $searchColumn)->toArray()
             )->toArray()
         );
     }

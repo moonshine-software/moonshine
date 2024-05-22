@@ -7,7 +7,7 @@
     'asyncUrl' => '',
     'toggler' => null,
 ])
-<div x-data="offcanvas(
+<div x-data="offCanvas(
     `{{ $open }}`,
     `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`
 )"

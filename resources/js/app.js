@@ -12,7 +12,7 @@ import tableBuilder from './alpine/tableBuilder'
 import cardsBuilder from './alpine/cardsBuilder'
 import dropdown from './alpine/dropdown'
 import modal from './alpine/modal'
-import offcanvas from './alpine/offcanvas'
+import offCanvas from './alpine/offCanvas'
 import actionButton from './alpine/actionButton'
 import select from './alpine/select'
 import toasts from './alpine/toasts'
@@ -50,7 +50,7 @@ Alpine.data('actionButton', actionButton)
 Alpine.data('dropdown', dropdown)
 Alpine.data('modal', modal)
 Alpine.data('sortable', sortable)
-Alpine.data('offcanvas', offcanvas)
+Alpine.data('offCanvas', offCanvas)
 Alpine.data('select', select)
 Alpine.data('toasts', toasts)
 Alpine.data('tooltip', tooltip)

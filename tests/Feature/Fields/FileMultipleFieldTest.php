@@ -26,21 +26,21 @@ it('show field on pages', function () {
     $resource = multipleFileResource();
 
     asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $resource)
+        toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Files')
     ;
 
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Files')
     ;
 
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Files')
@@ -54,7 +54,7 @@ it('apply as base', function () {
 
 
     asAdmin()->get(
-        to_page(page: IndexPage::class, resource: $resource)
+        toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('File')
@@ -63,7 +63,7 @@ it('apply as base', function () {
     ;
 
     asAdmin()->get(
-        to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $files[0]->hashName())
@@ -71,7 +71,7 @@ it('apply as base', function () {
     ;
 
     asAdmin()->get(
-        to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $files[0]->hashName())

@@ -7,20 +7,21 @@ namespace MoonShine\Components;
 use Closure;
 use JsonException;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\DTOs\AsyncCallback;
+use MoonShine\Enums\FormMethod;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
-use MoonShine\Support\AsyncCallback;
 use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\WithAdditionalFields;
 use MoonShine\Traits\HasAsync;
 use Throwable;
 
 /**
- * @method static static make(string $action = '', string $method = 'POST', Fields|array $fields = [], mixed $values = [])
+ * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, Fields|array $fields = [], mixed $values = [])
  */
 final class FormBuilder extends RowComponent
 {
@@ -51,7 +52,7 @@ final class FormBuilder extends RowComponent
 
     public function __construct(
         protected string $action = '',
-        protected string $method = 'POST',
+        protected FormMethod $method = FormMethod::POST,
         Fields|array $fields = [],
         mixed $values = []
     ) {
@@ -66,7 +67,7 @@ final class FormBuilder extends RowComponent
 
         $this->customAttributes(array_filter([
             'action' => $this->action,
-            'method' => $this->method,
+            'method' => $this->getMethod()->toString(),
             'enctype' => 'multipart/form-data',
         ]));
     }
@@ -108,7 +109,7 @@ final class FormBuilder extends RowComponent
         string $method,
         ?string $message = null,
         array $events = [],
-        string|AsyncCallback|null $callback = null,
+        ?AsyncCallback $callback = null,
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): self {
@@ -143,10 +144,10 @@ final class FormBuilder extends RowComponent
         return moonshineRouter()->reactive();
     }
 
-    public function method(string $method): self
+    public function method(FormMethod $method): self
     {
         $this->method = $method;
-        $this->attributes->set('method', $method);
+        $this->attributes->set('method', $method->toString());
 
         return $this;
     }
@@ -161,7 +162,7 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
-    public function getMethod(): string
+    public function getMethod(): FormMethod
     {
         return $this->method;
     }

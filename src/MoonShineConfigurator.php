@@ -371,11 +371,28 @@ final class MoonShineConfigurator implements ArrayAccess
     }
 
     /**
-     * @return list<Page>
+     * @return list<class-string<Page>>
      */
     public function getPages(): array
     {
         return $this->get('pages', []);
+    }
+
+    /**
+     * @param  class-string<Page>  $old
+     * @param  class-string<Page>  $new
+     * @return $this
+     */
+    public function changePage(string $old, string $new): self
+    {
+        $pages = $this->getPages();
+
+        return $this->set(
+            'pages',
+            collect($pages)
+                ->map(fn(string $page) => $page === $old ? $new : $page)
+                ->toArray()
+        );
     }
 
     /**

@@ -25,7 +25,7 @@ export default action => ({
   modal() {
     const t = this
 
-    t.$dispatch('modal-toggled-global-search')
+    t.$dispatch('modal-toggled:global-search')
     t.$nextTick(function () {
       document.querySelector('.search-input').focus()
     })

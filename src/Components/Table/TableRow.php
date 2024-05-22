@@ -57,14 +57,14 @@ final class TableRow implements MoonShineRenderable
             ?->value() ?? '';
     }
 
-    public function setIndex(int $value = 0): self
+    public function setIndex(int $value = 1): self
     {
         $this->index = $value;
 
         return $this;
     }
 
-    public function getIndex(int $default = 0): int
+    public function getIndex(int $default = 1): int
     {
         return $this->index ?? $default;
     }

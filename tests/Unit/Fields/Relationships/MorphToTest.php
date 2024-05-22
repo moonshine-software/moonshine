@@ -6,6 +6,7 @@ use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\DTOs\Select\Options;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Fields\Relationships\MorphTo;
 use MoonShine\Tests\Fixtures\Models\Category;
@@ -63,11 +64,12 @@ describe('unique field methods', function () {
         expect($this->field)
             ->getSearchColumn(Item::class)
             ->toBe('name')
-            ->getTypes()
-            ->toBe([
+            ->and($this->field->getTypes()->toArray())
+            ->toBe((new Options([
                 Item::class => 'Item',
                 Category::class => 'Category',
-            ])
+            ]))->toArray())
+            ->and($this->field)
             ->getMorphType()
             ->toBe('imageable_type')
             ->getMorphKey()

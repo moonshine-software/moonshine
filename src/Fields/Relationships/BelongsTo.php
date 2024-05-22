@@ -106,14 +106,15 @@ class BelongsTo extends ModelRelationField implements
         };
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function viewData(): array
     {
         return [
             'isSearchable' => $this->isSearchable(),
-            'values' => $this->getRelation() ? $this->values() : [],
-            'isSelected' => fn (string $value): bool => $this->isSelected($value),
+            'values' => $this->getRelation() ? $this->getValues()->toArray() : [],
             'isNullable' => $this->isNullable(),
-            'customProperties' => $this->valuesWithProperties(onlyCustom: true),
             'isAsyncSearch' => $this->isAsyncSearch(),
             'asyncSearchUrl' => $this->asyncSearchUrl(),
         ];

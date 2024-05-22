@@ -26,7 +26,7 @@ class DonutChartMetric extends Metric
      */
     public function values(array|Closure $values): self
     {
-        $this->values = is_closure($values)
+        $this->values = $values instanceof Closure
             ? $values()
             : $values;
 

@@ -14,9 +14,9 @@ use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\DTOs\AsyncCallback;
 use MoonShine\Pages\Page;
 use MoonShine\Support\AlpineJs;
-use MoonShine\Support\AsyncCallback;
 use MoonShine\Support\Condition;
 use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\WithQuickFormElementAttributes;
@@ -230,7 +230,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         ?string $message = null,
         ?string $selector = null,
         array $events = [],
-        string|AsyncCallback|null $callback = null,
+        ?AsyncCallback $callback = null,
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): static {
@@ -258,7 +258,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         string $method = 'PUT',
         array $events = [],
         ?string $selector = null,
-        string|AsyncCallback|null $callback = null,
+        ?AsyncCallback $callback = null,
     ): static {
         $this->onChangeUrl = $url;
 
@@ -274,7 +274,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         string $method = 'GET',
         array $events = [],
         ?string $selector = null,
-        string|AsyncCallback|null $callback = null
+        ?AsyncCallback $callback = null
     ): static {
         return $this->customAttributes(
             AlpineJs::asyncUrlDataAttributes(

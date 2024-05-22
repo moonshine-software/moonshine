@@ -14,7 +14,7 @@ use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Fields\Field;
+use MoonShine\Enums\FormMethod;
 use MoonShine\Fields\Fields;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
@@ -24,7 +24,6 @@ use MoonShine\MoonShineRouter;
 use MoonShine\Pages\Page;
 use MoonShine\Support\Backtrace;
 use MoonShine\Support\MemoizeRepository;
-use MoonShine\Support\SelectOptions;
 
 if (! function_exists('moonshine')) {
     function moonshine(): MoonShine
@@ -97,7 +96,7 @@ if (! function_exists('moonshineCache')) {
 if (! function_exists('form')) {
     function form(
         string $action = '',
-        string $method = 'POST',
+        FormMethod $method = FormMethod::POST,
         Fields|array $fields = [],
         array $values = []
     ): FormBuilder {
@@ -142,11 +141,11 @@ if (! function_exists('formErrors')) {
     }
 }
 
-if (! function_exists('to_page')) {
+if (! function_exists('toPage')) {
     /**
      * @throws Throwable
      */
-    function to_page(
+    function toPage(
         string|Page|null $page = null,
         string|ResourceContract|null $resource = null,
         array $params = [],
@@ -204,30 +203,6 @@ if (! function_exists('memoize')) {
         }
 
         return $cache->get($object, $hash);
-    }
-}
-
-if (! function_exists('is_closure')) {
-    function is_closure(mixed $variable): bool
-    {
-        return $variable instanceof Closure;
-    }
-}
-
-if (! function_exists('is_field')) {
-    function is_field(mixed $variable): bool
-    {
-        return $variable instanceof Field;
-    }
-}
-
-if (! function_exists('is_selected_option')) {
-    /**
-     * @throws JsonException
-     */
-    function is_selected_option(mixed $current, string $value): bool
-    {
-        return SelectOptions::isSelected($current, $value);
     }
 }
 

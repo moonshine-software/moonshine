@@ -84,7 +84,7 @@ trait ResourceWithButtons
         return [];
     }
 
-    public function getCreateButton(?string $componentName = null, bool $isAsync = false): ActionButton
+    public function getCreateButton(?string $componentName = null, bool $isAsync = true): ActionButton
     {
         return CreateButton::for(
             $this,
@@ -93,7 +93,7 @@ trait ResourceWithButtons
         );
     }
 
-    public function getEditButton(?string $componentName = null, bool $isAsync = false): ActionButton
+    public function getEditButton(?string $componentName = null, bool $isAsync = true): ActionButton
     {
         return EditButton::for(
             $this,
@@ -102,7 +102,7 @@ trait ResourceWithButtons
         );
     }
 
-    public function getDetailButton(bool $isAsync = false): ActionButton
+    public function getDetailButton(bool $isAsync = true): ActionButton
     {
         return DetailButton::for(
             $this,
@@ -113,7 +113,7 @@ trait ResourceWithButtons
     public function getDeleteButton(
         ?string $componentName = null,
         string $redirectAfterDelete = '',
-        bool $isAsync = false
+        bool $isAsync = true
     ): ActionButton {
         return DeleteButton::for(
             $this,
@@ -126,7 +126,7 @@ trait ResourceWithButtons
     public function getMassDeleteButton(
         ?string $componentName = null,
         string $redirectAfterDelete = '',
-        bool $isAsync = false
+        bool $isAsync = true
     ): ActionButton {
         return MassDeleteButton::for(
             $this,

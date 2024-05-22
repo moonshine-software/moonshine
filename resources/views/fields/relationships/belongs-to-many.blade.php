@@ -2,8 +2,6 @@
     'component',
     'buttons' => [],
     'values' => [],
-    'customProperties' => [],
-    'selectedKeys' => [],
     'isNullable' => false,
     'isSearchable' => false,
     'isAsyncSearch' => false,
@@ -35,9 +33,7 @@
                     ])"
                     :nullable="$isNullable"
                     :searchable="true"
-                    :value="$selectedKeys"
                     :values="$values"
-                    :customProperties="$customProperties"
                     :asyncRoute="$isAsyncSearch ? $asyncSearchUrl : null"
                 >
                 </x-moonshine::form.select>
@@ -59,11 +55,11 @@
                                                    class="dropdown-menu-link flex gap-x-2 items-center"
                                                    @click.prevent="select(item)"
                                                 >
-                                                    <div x-show="item?.customProperties?.image"
+                                                    <div x-show="item?.properties?.image"
                                                          class="zoom-in h-10 w-10 overflow-hidden rounded-md"
                                                     >
                                                         <img class="h-full w-full object-cover"
-                                                              :src="item.customProperties.image"
+                                                              :src="item.properties.image"
                                                               alt=""
                                                         >
                                                     </div>

@@ -12,7 +12,6 @@ use MoonShine\Components\Badge;
 use MoonShine\Components\Url;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
-use MoonShine\Support\FieldEmptyValue;
 use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\Applies;
 use MoonShine\Traits\Fields\ShowOrHide;
@@ -23,6 +22,7 @@ use MoonShine\Traits\Fields\WithSorts;
 use MoonShine\Traits\WithHint;
 use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
+use MoonShine\VO\FieldEmptyValue;
 
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
@@ -296,7 +296,7 @@ abstract class Field extends FormElement
 
     public function toFormattedValue(): mixed
     {
-        if (is_closure($this->formattedValueCallback())) {
+        if (!is_null($this->formattedValueCallback())) {
             $this->setFormattedValue(
                 value(
                     $this->formattedValueCallback(),
