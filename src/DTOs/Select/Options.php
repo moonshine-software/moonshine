@@ -22,8 +22,8 @@ final readonly class Options implements Arrayable
     public function getValues(): Collection
     {
         return collect($this->values)
-            ->map(function(array|string|Option $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
-                $toOption = fn(string $label, string $value): Option => new Option(
+            ->map(function (array|string|Option $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
+                $toOption = fn (string $label, string $value): Option => new Option(
                     label: $label,
                     value: $value,
                     selected: $this->isSelected($value),

@@ -168,7 +168,7 @@ trait FileTrait
             );
         }
 
-        if (!is_null($this->customName)) {
+        if (! is_null($this->customName)) {
             return $file->storeAs(
                 $this->getDir(),
                 value($this->customName, $file, $this),

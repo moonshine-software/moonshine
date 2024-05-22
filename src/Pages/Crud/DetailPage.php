@@ -185,7 +185,7 @@ class DetailPage extends Page
         return [
             ActionGroup::make($this->getResource()->getDetailItemButtons())
                 ->setItem($item)
-                ->customAttributes(['class' => 'justify-end'])
+                ->customAttributes(['class' => 'justify-end']),
         ];
     }
 }

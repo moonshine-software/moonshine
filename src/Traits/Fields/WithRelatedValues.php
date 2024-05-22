@@ -61,7 +61,7 @@ trait WithRelatedValues
         $related = $relation->getRelated();
         $query = $related->newModelQuery();
 
-        if (!is_null($this->valuesQuery)) {
+        if (! is_null($this->valuesQuery)) {
             $query = value($this->valuesQuery, $query, $this);
         }
 
@@ -113,7 +113,7 @@ trait WithRelatedValues
             ]
         );
 
-        $toOptions = fn(array $values): Options => new Options(
+        $toOptions = fn (array $values): Options => new Options(
             $values,
             $this->resolveSelectedValue(),
             $this->valuesWithProperties(onlyCustom: true)->toArray()

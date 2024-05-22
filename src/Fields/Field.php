@@ -296,7 +296,7 @@ abstract class Field extends FormElement
 
     public function toFormattedValue(): mixed
     {
-        if (!is_null($this->formattedValueCallback())) {
+        if (! is_null($this->formattedValueCallback())) {
             $this->setFormattedValue(
                 value(
                     $this->formattedValueCallback(),

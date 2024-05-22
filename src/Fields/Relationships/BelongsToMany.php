@@ -347,7 +347,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function columnOrFormattedValue(Model $item, string|int $default): string|int
     {
-        if (!is_null($this->formattedValueCallback())) {
+        if (! is_null($this->formattedValueCallback())) {
             return value(
                 $this->formattedValueCallback(),
                 $item,

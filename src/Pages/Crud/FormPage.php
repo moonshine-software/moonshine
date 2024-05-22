@@ -164,14 +164,14 @@ class FormPage extends Page
     {
         $item = $this->getResource()->getItem();
 
-        if(!$item?->exists) {
+        if(! $item?->exists) {
             return [];
         }
 
         return [
             ActionGroup::make($this->getResource()->getFormItemButtons())
                 ->setItem($this->getResource()->getItem())
-                ->customAttributes(['class' => 'mb-4'])
+                ->customAttributes(['class' => 'mb-4']),
         ];
     }
 
@@ -185,8 +185,7 @@ class FormPage extends Page
         string $action,
         ?Model $item,
         bool $isAsync = true,
-    ): array
-    {
+    ): array {
         $resource = $this->getResource();
 
         return [
@@ -199,7 +198,7 @@ class FormPage extends Page
                 ),
             ])
                 ->name('crud-form')
-                ->updateWithParams(['resourceItem' => $resource->getItemID()])
+                ->updateWithParams(['resourceItem' => $resource->getItemID()]),
         ];
     }
 

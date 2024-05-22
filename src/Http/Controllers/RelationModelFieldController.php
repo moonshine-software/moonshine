@@ -47,7 +47,7 @@ class RelationModelFieldController extends MoonShineController
 
         $query = $model->newModelQuery();
 
-        if (!is_null($field->asyncSearchQuery())) {
+        if (! is_null($field->asyncSearchQuery())) {
             $query = value(
                 $field->asyncSearchQuery(),
                 $query,
