@@ -390,7 +390,7 @@ final class MoonShineConfigurator implements ArrayAccess
         return $this->set(
             'pages',
             collect($pages)
-                ->map(fn (string $page): string => $page === $old ? $new : $page)
+                ->map(fn(string $page): string => $page === $old ? $new : $page)
                 ->toArray()
         );
     }

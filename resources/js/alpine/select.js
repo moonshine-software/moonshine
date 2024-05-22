@@ -87,9 +87,7 @@ export default (asyncUrl = '') => ({
           label: option.text,
           value: option.value,
           selected: option.selected,
-          customProperties: option.dataset?.properties
-            ? JSON.parse(option.dataset.properties)
-            : {},
+          customProperties: option.dataset?.properties ? JSON.parse(option.dataset.properties) : {},
         })
       })
 
