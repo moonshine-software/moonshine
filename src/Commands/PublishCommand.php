@@ -6,7 +6,7 @@ namespace MoonShine\Commands;
 
 use Illuminate\Filesystem\Filesystem;
 
-use function Laravel\Prompts\{confirm, info, multiselect};
+use function Laravel\Prompts\{confirm, info, multiselect, note};
 
 use MoonShine\MoonShine;
 
@@ -25,6 +25,7 @@ class PublishCommand extends MoonShineCommand
                 'assets' => 'Assets',
                 'assets-template' => 'Assets template',
                 'layout' => 'Layout',
+                'favicons' => 'Favicons',
                 'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
             ],
             required: true
@@ -90,6 +91,20 @@ class PublishCommand extends MoonShineCommand
             );
 
             info('Layout published');
+        }
+
+        if (in_array('favicons', $types, true)) {
+            $this->copyStub(
+                'favicon',
+                resource_path('views/vendor/moonshine/layouts/shared/favicon.blade.php')
+            );
+
+            info('Favicons published');
+
+            note(sprintf(
+                'Creating file [%s]',
+                resource_path('views/vendor/moonshine/layouts/shared/favicon.blade.php'),
+            ));
         }
 
         if (in_array('resources', $types, true)) {
