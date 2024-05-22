@@ -113,7 +113,7 @@ trait WithRelatedValues
             ]
         );
 
-        $toOptions = fn(array $values): Options => new Options(
+        $toOptions = fn (array $values): Options => new Options(
             $values,
             $this->resolveSelectedValue(),
             $this->valuesWithProperties(onlyCustom: true)->toArray()
