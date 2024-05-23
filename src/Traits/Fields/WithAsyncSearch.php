@@ -164,9 +164,6 @@ trait WithAsyncSearch
      * @param  string|null  $column
      * @param  ?Closure(Builder $query, MoonShineRequest $request, Field $field): self  $searchQuery
      * @param  ?Closure(mixed $data, Field $field): self  $formatted
-     * @param  string|null  $associatedWith
-     * @param  int  $limit
-     * @param  string|null  $url
      * @return $this
      */
     public function asyncSearch(
@@ -204,7 +201,6 @@ trait WithAsyncSearch
     }
 
     /**
-     * @param  string  $column
      * @param  ?Closure(Builder $query, MoonShineRequest $request, Field $field): self  $searchQuery
      * @return $this
      */
