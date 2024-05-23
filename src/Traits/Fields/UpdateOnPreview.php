@@ -69,7 +69,7 @@ trait UpdateOnPreview
             return $this;
         }
 
-        if(!is_null($resource)) {
+        if(! is_null($resource)) {
             $this->nowOn(page: $resource->formPage(), resource: $resource);
         }
 
