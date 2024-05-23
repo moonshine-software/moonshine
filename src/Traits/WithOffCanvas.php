@@ -34,7 +34,7 @@ trait WithOffCanvas
         $this->offCanvas = fn (mixed $data) => OffCanvas::make(
             title: fn () => value($title, $data, $this) ?? $this->getLabel(),
             content: fn () => value($content, $data, $this) ?? '',
-            asyncUrl: $async ? $this->url($data) : null
+            asyncUrl: $async ? $this->getUrl($data) : null
         )
             ->name(value($name, $data, $this))
             ->when(

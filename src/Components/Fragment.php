@@ -6,11 +6,11 @@ namespace MoonShine\Components;
 
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\JsEvent;
-use MoonShine\Exceptions\MoonShineComponentException;
-use MoonShine\Exceptions\PageException;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Traits\HasAsync;
+use MoonShine\Traits\NowOn;
 use Throwable;
 
 /**
@@ -18,56 +18,40 @@ use Throwable;
  */
 class Fragment extends AbstractWithComponents
 {
-    protected string $url = '';
+    use HasAsync;
+    use NowOn;
 
     protected string $view = 'moonshine::components.fragment';
 
-    /**
-     * @throws MoonShineComponentException
-     * @throws PageException
-     * @throws Throwable
-     */
-    public function name(string $name): static
+    public function __construct(iterable $components = [])
     {
-        return parent::name($name)->updateWithParams();
+        parent::__construct($components);
+
+        $this->async(fn(Fragment $fragment) => toPage(
+            page: $fragment->getNowOnPage() ?? moonshineRequest()->getPage(),
+            resource: $fragment->getNowOnResource() ?? moonshineRequest()->getResource(),
+            params: $fragment->getNowOnQueryParams(),
+            fragment: $fragment->getName()
+        ));
     }
 
     /**
-     * @throws MoonShineComponentException
-     * @throws PageException
      * @throws Throwable
      */
-    public function updateWithParams(
+    public function updateWith(
         array $params = [],
         string|ResourceContract|null $resource = null,
         string|Page|null $page = null,
     ): static {
-        if(is_null($this->getName())) {
-            throw new MoonShineComponentException("To use updateAsync you must first give the fragment a name");
-        }
-
         /** @var ModelResource $resource */
         $resource ??= moonshineRequest()->getResource();
-
         $page ??= moonshineRequest()->getPage();
 
-        if(is_null($resource) && is_null($page)) {
-            throw new PageException("Resource or FormPage not found when generating updateAsyncUrl");
-        }
-
-        $this->url = toPage(
-            page: $page,
-            resource: $resource,
-            params: $params,
-            fragment: $this->getName()
+        return $this->nowOn(
+            $page,
+            $resource,
+            $params
         );
-
-        return $this;
-    }
-
-    protected function getUrl(): string
-    {
-        return $this->url;
     }
 
     protected function prepareBeforeRender(): void
@@ -75,7 +59,7 @@ class Fragment extends AbstractWithComponents
         parent::prepareBeforeRender();
 
         $this->customAttributes([
-            'x-data' => 'fragment(`' . $this->getUrl() . '`)',
+            'x-data' => 'fragment(`' . $this->getAsyncUrl() . '`)',
             AlpineJs::eventBlade(JsEvent::FRAGMENT_UPDATED, $this->getName()) => 'fragmentUpdate',
         ]);
     }

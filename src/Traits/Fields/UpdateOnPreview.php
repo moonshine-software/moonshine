@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\FieldException;
+use MoonShine\Fields\Field;
 use MoonShine\Fields\Text;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Condition;
@@ -19,12 +20,6 @@ trait UpdateOnPreview
     protected bool $updateOnPreview = false;
 
     protected ?Closure $updateOnPreviewUrl = null;
-
-    protected ?Closure $updateOnPreviewCustomUrl = null;
-
-    protected ?string $updateColumnResourceUri = null;
-
-    protected ?string $updateColumnPageUri = null;
 
     /**
      * @throws FieldException
@@ -54,7 +49,7 @@ trait UpdateOnPreview
             return $this;
         }
 
-        return $this->onChangeUrl(
+        return $this->setUpdateOnPreviewUrl(
             $this->updateOnPreviewUrl,
             events: [
                 AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "$component-{row-id}"),
@@ -62,48 +57,37 @@ trait UpdateOnPreview
         );
     }
 
-    /**
-     * @throws FieldException
-     */
     public function updateOnPreview(
         ?Closure $url = null,
         ?ResourceContract $resource = null,
         mixed $condition = null,
         array $events = [],
     ): static {
-        if ($this->isRawMode() || (app()->runningInConsole() && ! app()->runningUnitTests())) {
-            return $this;
-        }
-
         $this->updateOnPreview = Condition::boolean($condition, true);
 
         if (! $this->updateOnPreview) {
             return $this;
         }
 
-        $this->updateOnPreviewCustomUrl = $url;
-
-        $resource ??= moonshineRequest()->getResource();
-
-        if (is_null($resource) && is_null($url)) {
-            throw new FieldException('updateOnPreview must accept either $resource or $url parameters');
-        }
-
-        if (! is_null($resource)) {
-            if (is_null($resource->formPage())) {
-                throw new FieldException('To use the updateOnPreview method, you must set FormPage to the Resource');
-            }
-
-            $this->updateColumnResourceUri = $resource->uriKey();
-            $this->updateColumnPageUri = $resource->formPage()->uriKey();
+        if(!is_null($resource)) {
+            $this->nowOn(page: $resource->formPage(), resource: $resource);
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $this->getUpdateOnPreviewCustomUrl() ?? $this->getDefaultUpdateRoute(),
+            $url ?? fn (Model $item, mixed $value, Field $field): ?string => $item->exists ? moonshineRouter()->updateColumn(
+                resourceUri: $field->getNowOnResource() ? $field->getNowOnResource()->uriKey() : moonshineRequest()->getResourceUri(),
+                resourceItem: $item->getKey(),
+                relation: data_get($field->getNowOnQueryParams(), 'relation')
+            ) : null,
             $events
         );
     }
 
+    /**
+     * @param  Closure(mixed $data, mixed $value, self $field): string  $url
+     * @param  array  $events
+     * @return $this
+     */
     public function setUpdateOnPreviewUrl(Closure $url, array $events = []): static
     {
         $this->updateOnPreviewUrl = $url;
@@ -114,37 +98,9 @@ trait UpdateOnPreview
         );
     }
 
-    protected function getDefaultUpdateRoute(): Closure
-    {
-        return fn (Model $item): ?string => $item->exists ? moonshineRouter()->updateColumn(
-            resourceUri: $this->getResourceUriForUpdate(),
-            resourceItem: $item->getKey(),
-        ) : null;
-    }
-
     public function isUpdateOnPreview(): bool
     {
         return $this->updateOnPreview;
-    }
-
-    public function hasUpdateOnPreviewCustomUrl(): bool
-    {
-        return ! is_null($this->updateOnPreviewCustomUrl);
-    }
-
-    public function getUpdateOnPreviewCustomUrl(): ?Closure
-    {
-        return $this->updateOnPreviewCustomUrl;
-    }
-
-    public function getResourceUriForUpdate(): ?string
-    {
-        return $this->updateColumnResourceUri;
-    }
-
-    public function getPageUriForUpdate(): ?string
-    {
-        return $this->updateColumnPageUri;
     }
 
     protected function onChangeCondition(): bool

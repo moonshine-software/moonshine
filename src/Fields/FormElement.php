@@ -22,6 +22,7 @@ use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\WithQuickFormElementAttributes;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\NowOn;
 use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithViewRenderer;
@@ -31,6 +32,7 @@ use Psr\Container\NotFoundExceptionInterface;
 abstract class FormElement extends MoonShineComponent implements HasAssets
 {
     use Makeable;
+    use NowOn;
     use WithQuickFormElementAttributes;
     use WithComponentAttributes;
     use WithViewRenderer;
@@ -253,6 +255,14 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         );
     }
 
+    /**
+     * @param  Closure(mixed $data, mixed $value, self $field): string  $url
+     * @param  string  $method
+     * @param  string[]  $events
+     * @param  string|null  $selector
+     * @param  AsyncCallback|null  $callback
+     * @return $this
+     */
     public function onChangeUrl(
         Closure $url,
         string $method = 'PUT',

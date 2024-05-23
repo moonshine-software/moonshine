@@ -110,7 +110,6 @@ class HasOne extends ModelRelationField implements HasFields
 
     /**
      * HasOne/HasMany mapper with updateOnPreview
-     * TODO refactor in 3.0
      */
     private function getFieldsOnPreview(): Closure
     {
@@ -119,18 +118,8 @@ class HasOne extends ModelRelationField implements HasFields
 
             // the onlyFields method is needed to exclude stack fields
             $fields->onlyFields()->each(function (Field $field): void {
-                if (
-                    $field instanceof HasUpdateOnPreview
-                    && $field->isUpdateOnPreview()
-                    && ! $field->hasUpdateOnPreviewCustomUrl()
-                ) {
-                    $field->setUpdateOnPreviewUrl(
-                        fn (): string => moonshineRouter()->updateColumn(
-                            $field->getResourceUriForUpdate(),
-                            $field->getPageUriForUpdate(),
-                            $this->getRelationName(),
-                        )
-                    );
+                if ($field instanceof HasUpdateOnPreview && $field->isUpdateOnPreview()) {
+                    $field->nowOnParams(params: ['relation' => $this->getRelationName()]);
                 }
 
                 $field->setParent($this);

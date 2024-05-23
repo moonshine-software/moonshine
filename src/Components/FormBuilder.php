@@ -348,7 +348,7 @@ final class FormBuilder extends RowComponent
         if ($this->isAsync()) {
             $this->customAttributes([
                 'x-on:submit.prevent' => 'async(`' . $this->asyncEvents(
-                ) . '`, `' . $this->asyncCallback() . '`, `' . $this->asyncBeforeCallback() . '`)',
+                ) . '`, `' . $this->asyncCallback()?->getSuccess() . '`, `' . $this->asyncCallback()?->getBefore() . '`)',
             ]);
         }
 
@@ -360,7 +360,7 @@ final class FormBuilder extends RowComponent
             'fields' => $fields,
             'precognitive' => $this->isPrecognitive(),
             'async' => $this->isAsync(),
-            'asyncUrl' => $this->asyncUrl(),
+            'asyncUrl' => $this->getAsyncUrl(),
             'buttons' => $this->getButtons(),
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),

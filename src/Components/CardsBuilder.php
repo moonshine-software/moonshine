@@ -209,7 +209,7 @@ final class CardsBuilder extends IterableComponent
             'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
             'paginator' => $this->getPaginator(),
             'async' => $this->isAsync(),
-            'asyncUrl' => $this->asyncUrl(),
+            'asyncUrl' => $this->getAsyncUrl(),
             'colSpan' => $this->columnSpanValue(),
             'adaptiveColSpan' => $this->adaptiveColumnSpanValue(),
         ];

@@ -39,7 +39,7 @@ trait WithModal
         $this->modal = fn (mixed $data) => Modal::make(
             title: fn () => value($title, $data, $this) ?? $this->getLabel(),
             content: fn () => value($content, $data, $this) ?? '',
-            asyncUrl: $async ? $this->url($data) : null,
+            asyncUrl: $async ? $this->getUrl($data) : null,
         )
             ->name(value($name, $data, $this))
             ->when(
@@ -76,7 +76,7 @@ trait WithModal
         return $this->inModal(
             fn (mixed $data) => value($title, $data, $this) ?? __('moonshine::ui.confirm'),
             fn (mixed $data): string => (string) FormBuilder::make(
-                $this->url($data),
+                $this->getUrl($data),
                 $isDefaultMethods ? FormMethod::from($method) : FormMethod::POST
             )->fields(
                 array_filter([

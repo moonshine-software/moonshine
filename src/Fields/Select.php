@@ -73,7 +73,7 @@ class Select extends Field implements
     {
         return [
             'isSearchable' => $this->isSearchable(),
-            'asyncUrl' => $this->asyncUrl(),
+            'asyncUrl' => $this->getAsyncUrl(),
             'values' => $this->getValues()->toArray(),
             'isNullable' => $this->isNullable(),
         ];

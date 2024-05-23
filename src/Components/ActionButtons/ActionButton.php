@@ -68,21 +68,6 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             ->customAttributes(['style' => 'display:none']);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function viewData(): array
-    {
-        return [
-            'inDropdown' => $this->inDropdown(),
-            'hasComponent' => $this->hasComponent(),
-            'component' => $this->hasComponent() ? $this->component() : '',
-            'label' => $this->getLabel(),
-            'url' => $this->url(),
-            'icon' => $this->getIcon(4),
-        ];
-    }
-
     public function blank(): self
     {
         $this->customAttributes([
@@ -247,6 +232,18 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ])->onClick(fn (): string => 'request', 'prevent');
     }
 
+    /**
+     * @param  array<string, string> $selectors
+     */
+    public function withSelectorsParams(array $selectors): self
+    {
+        $this->customAttributes([
+            'data-with-params' => collect($selectors)->map(fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
+        ]);
+
+        return $this;
+    }
+
     public function hasComponent(): bool
     {
         return $this->isInOffCanvas() || $this->isInModal();
@@ -263,18 +260,6 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         }
 
         return null;
-    }
-
-    /**
-     * @param  array<string, string> $selectors
-     */
-    public function withParams(array $selectors): self
-    {
-        $this->customAttributes([
-            'data-with-params' => collect($selectors)->map(fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
-        ]);
-
-        return $this;
     }
 
     public function purgeAsyncTap(): bool
@@ -307,7 +292,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         }
     }
 
-    public function url(mixed $data = null): string
+    public function getUrl(mixed $data = null): string
     {
         return value($this->url, $data ?? $this->getItem());
     }
@@ -362,6 +347,21 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return [
             $this->getItem(),
             $this,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function viewData(): array
+    {
+        return [
+            'inDropdown' => $this->inDropdown(),
+            'hasComponent' => $this->hasComponent(),
+            'component' => $this->hasComponent() ? $this->component() : '',
+            'label' => $this->getLabel(),
+            'url' => $this->getUrl(),
+            'icon' => $this->getIcon(4),
         ];
     }
 }

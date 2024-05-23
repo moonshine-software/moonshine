@@ -198,7 +198,7 @@ class FormPage extends Page
                 ),
             ])
                 ->name('crud-form')
-                ->updateWithParams(['resourceItem' => $resource->getItemID()]),
+                ->updateWith(['resourceItem' => $resource->getItemID()]),
         ];
     }
 

@@ -15,9 +15,7 @@ trait HasAsync
 
     protected string|array|null $asyncEvents = null;
 
-    protected ?string $asyncCallback = null;
-
-    protected ?string $asyncBeforeCallback = null;
+    protected ?AsyncCallback $asyncCallback = null;
 
     public function isAsync(): bool
     {
@@ -31,13 +29,13 @@ trait HasAsync
 
     protected function prepareAsyncUrlFromPaginator(): string
     {
-        $withoutQuery = strtok($this->asyncUrl(), '?');
+        $withoutQuery = strtok($this->getAsyncUrl(), '?');
 
         if (! $withoutQuery) {
-            return $this->asyncUrl();
+            return $this->getAsyncUrl();
         }
 
-        $query = parse_url($this->asyncUrl(), PHP_URL_QUERY);
+        $query = parse_url($this->getAsyncUrl(), PHP_URL_QUERY);
 
         parse_str((string) $query, $asyncUri);
 
@@ -78,9 +76,9 @@ trait HasAsync
         return $this;
     }
 
-    public function asyncUrl(): ?string
+    public function getAsyncUrl(): ?string
     {
-        return value($this->asyncUrl);
+        return value($this->asyncUrl, $this);
     }
 
     public function asyncEvents(): string|null
@@ -92,13 +90,8 @@ trait HasAsync
         return AlpineJs::prepareEvents($this->asyncEvents);
     }
 
-    public function asyncCallback(): ?string
+    public function asyncCallback(): ?AsyncCallback
     {
         return $this->asyncCallback;
-    }
-
-    public function asyncBeforeCallback(): ?string
-    {
-        return $this->asyncBeforeCallback;
     }
 }

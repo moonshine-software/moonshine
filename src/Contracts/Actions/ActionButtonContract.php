@@ -6,7 +6,7 @@ namespace MoonShine\Contracts\Actions;
 
 interface ActionButtonContract
 {
-    public function url(mixed $data = null): string;
+    public function getUrl(mixed $data = null): string;
 
     public function isBulk(): bool;
 
