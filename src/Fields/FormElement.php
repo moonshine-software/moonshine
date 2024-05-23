@@ -257,10 +257,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
 
     /**
      * @param  Closure(mixed $data, mixed $value, self $field): string  $url
-     * @param  string  $method
      * @param  string[]  $events
-     * @param  string|null  $selector
-     * @param  AsyncCallback|null  $callback
      * @return $this
      */
     public function onChangeUrl(

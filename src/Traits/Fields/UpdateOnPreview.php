@@ -85,7 +85,6 @@ trait UpdateOnPreview
 
     /**
      * @param  Closure(mixed $data, mixed $value, self $field): string  $url
-     * @param  array  $events
      * @return $this
      */
     public function setUpdateOnPreviewUrl(Closure $url, array $events = []): static

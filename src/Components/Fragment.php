@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Components;
 
+use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Pages\Page;
@@ -27,7 +28,7 @@ class Fragment extends AbstractWithComponents
     {
         parent::__construct($components);
 
-        $this->async(fn(Fragment $fragment) => toPage(
+        $this->async(fn(Fragment $fragment): RedirectResponse|string => toPage(
             page: $fragment->getNowOnPage() ?? moonshineRequest()->getPage(),
             resource: $fragment->getNowOnResource() ?? moonshineRequest()->getResource(),
             params: $fragment->getNowOnQueryParams(),
