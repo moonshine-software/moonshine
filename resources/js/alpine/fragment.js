@@ -29,15 +29,18 @@ export default (asyncUpdateRoute = '') => ({
 
     t.asyncUpdateRoute += t.asyncUpdateRoute.includes('?') ? '&' + query : '?' + query
 
-    let stopLoading = function(data, t) {
+    let stopLoading = function (data, t) {
       t.loading = false
     }
 
     let componentRequestData = new ComponentRequestData()
-    componentRequestData.withAfterCallback(function(data) {
-      t.$root.outerHTML = data
-    }).withBeforeCallback(stopLoading).withErrorCallback(stopLoading)
+    componentRequestData
+      .withAfterCallback(function (data) {
+        t.$root.outerHTML = data
+      })
+      .withBeforeCallback(stopLoading)
+      .withErrorCallback(stopLoading)
 
     moonShineRequest(this, this.asyncUpdateRoute, 'get', body, {}, componentRequestData)
-  }
+  },
 })

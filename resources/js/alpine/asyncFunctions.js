@@ -58,7 +58,7 @@ export function withSelectorsParams(params, root = null) {
   if (params !== undefined && params) {
     const selectors = params.split(',')
 
-    selectors.forEach(function(selector) {
+    selectors.forEach(function (selector) {
       let parts = selector.split('/')
 
       let paramName = parts[1] ?? parts[0]
