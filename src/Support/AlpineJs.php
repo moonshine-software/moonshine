@@ -75,6 +75,16 @@ final class AlpineJs
         ]);
     }
 
+    /**
+     * @param  array<string, string> $selectors
+     */
+    public static function asyncSelectorsParamsAttributes(array $selectors): array
+    {
+        return array_filter([
+            'data-async-with-params' => collect($selectors)->map(fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
+        ]);
+    }
+
     public static function requestWithFieldValue(
         string $url,
         string $column,

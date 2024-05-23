@@ -97,9 +97,9 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
-    protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
+    protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $asyncUrl ?? $this->getAction();
+        return $url ?? $this->getAction();
     }
 
     /**
@@ -123,8 +123,8 @@ final class FormBuilder extends RowComponent
 
         return $this->action($asyncUrl)->async(
             $asyncUrl,
-            asyncEvents: $events,
-            asyncCallback: $callback
+            events: $events,
+            callback: $callback
         );
     }
 
@@ -211,7 +211,7 @@ final class FormBuilder extends RowComponent
 
     public function switchFormMode(bool $isAsync, string|array|null $asyncEvents = ''): self
     {
-        return $isAsync ? $this->async(asyncEvents: $asyncEvents) : $this->precognitive();
+        return $isAsync ? $this->async(events: $asyncEvents) : $this->precognitive();
     }
 
     public function getExcludedFields(): array

@@ -22,9 +22,9 @@ trait HasAsync
         return ! is_null($this->asyncUrl);
     }
 
-    protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
+    protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $asyncUrl;
+        return $url;
     }
 
     protected function prepareAsyncUrlFromPaginator(): string
@@ -65,13 +65,13 @@ trait HasAsync
     }
 
     public function async(
-        Closure|string|null $asyncUrl = null,
-        string|array|null $asyncEvents = null,
-        ?AsyncCallback $asyncCallback = null,
+        Closure|string|null $url = null,
+        string|array|null $events = null,
+        ?AsyncCallback $callback = null,
     ): static {
-        $this->asyncUrl = $this->prepareAsyncUrl($asyncUrl);
-        $this->asyncEvents = $asyncEvents;
-        $this->asyncCallback = $asyncCallback;
+        $this->asyncUrl = $this->prepareAsyncUrl($url);
+        $this->asyncEvents = $events;
+        $this->asyncCallback = $callback;
 
         return $this;
     }

@@ -152,9 +152,9 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this->tdAttributes;
     }
 
-    protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
+    protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $asyncUrl ?? fn (): string => moonshineRouter()->asyncComponent(
+        return $url ?? fn (): string => moonshineRouter()->asyncComponent(
             $this->getName(),
             additionally: [
                 'filters' => moonshineRequest()->get('filters'),

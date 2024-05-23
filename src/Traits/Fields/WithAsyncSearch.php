@@ -13,6 +13,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\DTOs\Select\Option;
 use MoonShine\DTOs\Select\OptionProperty;
+use MoonShine\Fields\Field;
+use MoonShine\MoonShineRequest;
 
 trait WithAsyncSearch
 {
@@ -158,20 +160,29 @@ trait WithAsyncSearch
         );
     }
 
+    /**
+     * @param  string|null  $column
+     * @param  ?Closure(Builder $query, MoonShineRequest $request, Field $field): self  $searchQuery
+     * @param  ?Closure(mixed $data, Field $field): self  $formatted
+     * @param  string|null  $associatedWith
+     * @param  int  $limit
+     * @param  string|null  $url
+     * @return $this
+     */
     public function asyncSearch(
-        string $asyncSearchColumn = null,
-        int $asyncSearchCount = 15,
-        ?Closure $asyncSearchQuery = null,
-        ?Closure $asyncSearchValueCallback = null,
+        string $column = null,
+        ?Closure $searchQuery = null,
+        ?Closure $formatted = null,
         ?string $associatedWith = null,
+        int $limit = 15,
         ?string $url = null,
     ): static {
         $this->asyncSearch = true;
         $this->searchable = true;
-        $this->asyncSearchColumn = $asyncSearchColumn;
-        $this->asyncSearchCount = $asyncSearchCount;
-        $this->asyncSearchQuery = $asyncSearchQuery;
-        $this->asyncSearchValueCallback = $asyncSearchValueCallback ?? $this->formattedValueCallback();
+        $this->asyncSearchColumn = $column;
+        $this->asyncSearchCount = $limit;
+        $this->asyncSearchQuery = $searchQuery;
+        $this->asyncSearchValueCallback = $formatted ?? $this->formattedValueCallback();
         $this->associatedWith = $associatedWith;
         $this->asyncUrl = $url;
 
@@ -192,12 +203,17 @@ trait WithAsyncSearch
         return $this;
     }
 
-    public function associatedWith(string $column, ?Closure $asyncSearchQuery = null): static
+    /**
+     * @param  string  $column
+     * @param  ?Closure(Builder $query, MoonShineRequest $request, Field $field): self  $searchQuery
+     * @return $this
+     */
+    public function associatedWith(string $column, ?Closure $searchQuery = null): static
     {
-        $searchQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->get($column));
+        $defaultQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->get($column));
 
         return $this->asyncSearch(
-            asyncSearchQuery: is_null($asyncSearchQuery) ? $searchQuery : $asyncSearchQuery,
+            searchQuery: is_null($searchQuery) ? $defaultQuery : $searchQuery,
             associatedWith: $column
         );
     }

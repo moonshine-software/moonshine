@@ -36,7 +36,7 @@ final class DeleteButton
                 formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form->async(
-                        asyncEvents: $resource->listEventName(
+                        events: $resource->listEventName(
                             $componentName ?? $resource->listComponentName()
                         )
                     )

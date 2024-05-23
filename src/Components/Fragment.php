@@ -55,6 +55,16 @@ class Fragment extends AbstractWithComponents
         );
     }
 
+    /**
+     * @param  array<string, string> $selectors
+     */
+    public function withSelectorsParams(array $selectors): self
+    {
+        return $this->customAttributes(
+            AlpineJs::asyncSelectorsParamsAttributes($selectors)
+        );
+    }
+
     protected function prepareBeforeRender(): void
     {
         parent::prepareBeforeRender();

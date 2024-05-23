@@ -237,11 +237,9 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
      */
     public function withSelectorsParams(array $selectors): self
     {
-        $this->customAttributes([
-            'data-with-params' => collect($selectors)->map(fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
-        ]);
-
-        return $this;
+        return $this->customAttributes(
+            AlpineJs::asyncSelectorsParamsAttributes($selectors)
+        );
     }
 
     public function hasComponent(): bool

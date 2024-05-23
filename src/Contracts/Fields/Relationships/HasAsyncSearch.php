@@ -19,10 +19,12 @@ interface HasAsyncSearch
     public function asyncSearchValueCallback(): ?Closure;
 
     public function asyncSearch(
-        string $asyncSearchColumn = null,
-        int $asyncSearchCount = 15,
-        ?Closure $asyncSearchQuery = null,
-        ?Closure $asyncSearchValueCallback = null
+        string $column = null,
+        ?Closure $searchQuery = null,
+        ?Closure $formatted = null,
+        ?string $associatedWith = null,
+        int $limit = 15,
+        ?string $url = null,
     ): static;
 
 }
