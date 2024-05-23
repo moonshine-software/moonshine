@@ -520,7 +520,7 @@ body.theme-minimalistic {
   .form-select,
   .form-multiselect,
   .form-file-upload {
-    @apply overflow-hidden px-2 py-1;
+    @apply px-2 py-1;
   }
 
   .form-file-upload {
