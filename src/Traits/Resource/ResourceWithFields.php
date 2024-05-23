@@ -38,7 +38,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Fields>
+     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getIndexFields(): Fields
@@ -66,7 +66,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Fields>
+     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getFormFields(bool $withOutside = false): Fields
@@ -141,7 +141,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Fields>
+     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getFilters(): Fields
