@@ -1,4 +1,4 @@
-import {moonShineRequest} from './asyncFunctions'
+import {moonShineRequest, withSelectorsParams} from './asyncFunctions'
 import {ComponentRequestData} from '../moonshine.js'
 
 export default () => ({
@@ -36,23 +36,7 @@ export default () => ({
 
     this.loading = true
 
-    let body = {}
-
-    if (this.withParams !== undefined && this.withParams) {
-      this.method = this.method.toLowerCase() === 'get' ? 'post' : this.method
-
-      const selectors = this.withParams.split(',')
-      selectors.forEach(function (selector) {
-        let parts = selector.split('/')
-
-        let paramName = parts[1] ?? parts[0]
-
-        const el = document.querySelector(parts[0])
-        if (el != null) {
-          body[paramName] = el.value
-        }
-      })
-    }
+    let body = withSelectorsParams(this.withParams)
 
     let stopLoading = function (data, t) {
       t.loading = false

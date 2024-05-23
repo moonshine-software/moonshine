@@ -78,6 +78,19 @@ class Fragment extends Decoration
     }
 
     /**
+     * @param  array<string, string> $selectors
+     * TODO remove duplicate
+     */
+    public function withParams(array $selectors): self
+    {
+        $this->customAttributes([
+            'data-with-params' => collect($selectors)->map(fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
+        ]);
+
+        return $this;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     protected function viewData(): array
