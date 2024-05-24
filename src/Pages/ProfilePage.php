@@ -40,9 +40,7 @@ class ProfilePage extends Page
             Box::make([
                 Tabs::make([
                     Tab::make(__('moonshine::ui.resource.main_information'), [
-                        ID::make()
-                            ->sortable()
-                            ->showOnExport(),
+                        ID::make()->sortable(),
 
                         Text::make(trans('moonshine::ui.resource.name'), 'name')
                             ->setValue(auth()->user()

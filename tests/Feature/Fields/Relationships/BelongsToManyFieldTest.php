@@ -138,7 +138,8 @@ function belongsToManyExport(Item $item, BelongsToMany $field): ?string
     $item->refresh();
 
     $resource = addFieldsToTestResource(
-        $field->showOnExport()
+        $field,
+        'exportFields'
     );
 
     $export = ExportHandler::make('');
@@ -164,7 +165,8 @@ it('import', function (): void {
     $file = belongsToManyExport($this->item, $this->field);
 
     $resource = addFieldsToTestResource(
-        $this->field->useOnImport()
+        $this->field,
+        'importFields'
     );
 
     $import = ImportHandler::make('');

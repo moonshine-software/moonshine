@@ -176,7 +176,8 @@ function jsonExport(Item $item): ?string
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
-        ])->showOnExport()
+        ]),
+        'exportFields'
     );
 
     $export = ExportHandler::make('');
@@ -208,7 +209,8 @@ it('import', function (): void {
         Json::make('Data')->fields([
             Text::make('Title'),
             Text::make('Value'),
-        ])->useOnImport()
+        ]),
+        'importFields'
     );
 
     $import = ImportHandler::make('');

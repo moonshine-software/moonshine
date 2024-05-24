@@ -6,6 +6,7 @@ namespace MoonShine\Traits\Resource;
 
 use Illuminate\Support\Collection;
 use MoonShine\Components\MoonShineComponent;
+use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\FilterException;
 use MoonShine\Fields\Field;
@@ -17,19 +18,6 @@ use Throwable;
 trait ResourceWithFields
 {
     /**
-     * @return list<MoonShineComponent|Field>
-     */
-    public function fields(): array
-    {
-        return [];
-    }
-
-    public function getFields(): Fields
-    {
-        return Fields::make($this->fields());
-    }
-
-    /**
      * @return list<Field>
      */
     public function indexFields(): array
@@ -38,23 +26,20 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Fields>
+     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getIndexFields(): Fields
     {
         $fields = $this->getPages()
             ->findByType(PageType::INDEX)
-            ?->fields();
+            ?->getFields();
 
-        if (empty($fields)) {
-            $fields = $this->indexFields()
-                ?: $this->fields();
+        if ($fields->isEmpty()) {
+            $fields = Fields::make($this->indexFields());
         }
 
-        return Fields::make($fields)
-            ->onlyFields(withWrappers: true)
-            ->indexFields();
+        return $fields->ensure([Field::class, FieldsWrapper::class]);
     }
 
     /**
@@ -66,22 +51,20 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Fields>
+     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getFormFields(bool $withOutside = false): Fields
     {
         $fields = $this->getPages()
             ->findByType(PageType::FORM)
-            ?->fields();
+            ?->getFields();
 
-        if (empty($fields)) {
-            $fields = $this->formFields()
-                ?: $this->fields();
+        if ($fields->isEmpty()) {
+            $fields = Fields::make($this->formFields());
         }
 
-        return Fields::make($fields)
-            ->formFields(withOutside: $withOutside);
+        return $fields->formFields(withOutside: $withOutside);
     }
 
     /**
@@ -98,17 +81,19 @@ trait ResourceWithFields
      */
     public function getDetailFields(bool $withOutside = false, bool $onlyOutside = false): Fields
     {
+        /**
+         * @var Fields $fields
+         */
         $fields = $this->getPages()
             ->findByType(PageType::DETAIL)
-            ?->fields();
+            ?->getFields();
 
-        if (empty($fields)) {
-            $fields = $this->detailFields()
-                ?: $this->fields();
+        if ($fields->isEmpty()) {
+            $fields = Fields::make($this->detailFields());
         }
 
-        return Fields::make($fields)
-            ->onlyFields(withWrappers: true)
+        return $fields
+            ->ensure([Field::class, ModelRelationField::class, FieldsWrapper::class])
             ->detailFields(withOutside: $withOutside, onlyOutside: $onlyOutside);
     }
 
@@ -120,14 +105,13 @@ trait ResourceWithFields
     {
         $fields = $this->getPages()
             ->findByType(PageType::FORM)
-            ?->fields();
+            ?->getFields();
 
-        if (empty($fields)) {
-            $fields = $this->formFields()
-                ?: $this->fields();
+        if ($fields->isEmpty()) {
+            $fields = Fields::make($this->formFields());
         }
 
-        return Fields::make($fields)
+        return $fields
             ->onlyFields()
             ->onlyOutside();
     }
@@ -141,7 +125,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Fields>
+     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getFilters(): Fields
@@ -157,5 +141,39 @@ trait ResourceWithFields
         });
 
         return $filters;
+    }
+
+    /**
+     * @return list<Field>
+     */
+    public function exportFields(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return Collection<int, Field>
+     * @throws Throwable
+     */
+    public function getExportFields(): Fields
+    {
+        return Fields::make($this->exportFields())->ensure(Field::class);
+    }
+
+    /**
+     * @return list<Field>
+     */
+    public function importFields(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return Collection<int, Field>
+     * @throws Throwable
+     */
+    public function getImportFields(): Fields
+    {
+        return Fields::make($this->importFields())->ensure(Field::class);
     }
 }

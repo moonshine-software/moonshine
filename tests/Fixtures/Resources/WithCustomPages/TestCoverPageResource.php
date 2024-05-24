@@ -36,13 +36,23 @@ class TestCoverPageResource extends ModelResource
         ];
     }
 
-    public function fields(): array
+    public function indexFields(): array
     {
         return [
             ID::make('ID'),
             Image::make('Image title', 'image'),
             BelongsTo::make('Category title', 'category', 'name', new TestCategoryResource()),
         ];
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function formFields(): array
+    {
+        return $this->indexFields();
     }
 
     public function rules(Model $item): array

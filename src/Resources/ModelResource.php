@@ -30,7 +30,6 @@ use MoonShine\Traits\Resource\ResourceModelQuery;
 use MoonShine\Traits\Resource\ResourceModelValidation;
 use MoonShine\Traits\Resource\ResourceWithButtons;
 use MoonShine\Traits\Resource\ResourceWithFields;
-use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\TypeCasts\ModelCast;
 use Throwable;
 
@@ -55,7 +54,6 @@ abstract class ModelResource extends Resource
 
     /** @use ResourceModelEvents<TModel> */
     use ResourceModelEvents;
-    use WithIsNowOnRoute;
     use ResourceModelPageComponents;
 
     protected string $model;
@@ -68,7 +66,7 @@ abstract class ModelResource extends Resource
 
     protected bool $detailInModal = false;
 
-    protected bool $isAsync = false;
+    protected bool $isAsync = true;
 
     protected bool $isPrecognitive = false;
 

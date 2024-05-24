@@ -7,6 +7,7 @@ namespace MoonShine\Pages;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use MoonShine\Collections\ComponentsCollection;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Contracts\Components\HasComponents;
@@ -18,6 +19,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Enums\Layer;
 use MoonShine\Enums\PageType;
 use MoonShine\Fields\Field;
+use MoonShine\Fields\Fields;
 use MoonShine\MenuManager\MenuFiller;
 use MoonShine\MoonShineLayout;
 use MoonShine\MoonShineRouter;
@@ -27,6 +29,7 @@ use MoonShine\Traits\WithAssets;
 use MoonShine\Traits\WithUriKey;
 use MoonShine\Traits\WithViewRenderer;
 use Stringable;
+use Throwable;
 
 /**
  * @method static static make(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
@@ -121,6 +124,15 @@ abstract class Page implements
     public function fields(): array
     {
         return [];
+    }
+
+    /**
+     * @return Collection<int, Field>
+     * @throws Throwable
+     */
+    public function getFields(): Fields
+    {
+        return Fields::make($this->fields());
     }
 
     /**

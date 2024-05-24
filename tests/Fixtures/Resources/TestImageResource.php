@@ -17,16 +17,42 @@ class TestImageResource extends ModelResource
 {
     protected string $model = ImageModel::class;
 
-    public function fields(): array
+    public function indexFields(): array
     {
         return [
-            ID::make()->sortable()->useOnImport()->showOnExport(),
+            ID::make()->sortable(),
             Image::make('', 'name'),
             MorphTo::make('Imageable')->types([
                 Item::class => 'name',
                 Category::class => 'name',
-            ])->showOnExport()->useOnImport(),
+            ]),
         ];
+    }
+
+    public function formFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function exportFields(): array
+    {
+        return [
+            ID::make(),
+            MorphTo::make('Imageable')->types([
+                Item::class => 'name',
+                Category::class => 'name',
+            ])
+        ];
+    }
+
+    public function importFields(): array
+    {
+        return $this->exportFields();
     }
 
     public function rules(Model $item): array

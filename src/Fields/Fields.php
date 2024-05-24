@@ -40,13 +40,13 @@ final class Fields extends FormElements
         ?Fields $preparedFields = null
     ): self {
         return ($preparedFields ?? $this)->map(function (MoonShineRenderable $component) use ($raw, $casted, $index) {
-            if($component instanceof HasFields) {
+            if ($component instanceof HasFields) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)
                 );
             }
 
-            if($component instanceof Field) {
+            if ($component instanceof Field) {
                 $component->resolveFill($raw, $casted, $index);
             }
 
@@ -165,7 +165,7 @@ final class Fields extends FormElements
                     static fn (Stringable $str): Stringable => $str->append('[]')
                 )->value();
 
-            if($parent) {
+            if ($parent) {
                 $field
                     ->formName($parent?->getFormName())
                     ->setParent($parent);
@@ -173,8 +173,7 @@ final class Fields extends FormElements
 
             return $field
                 ->setNameAttribute($name)
-                ->iterableAttributes($level)
-            ;
+                ->iterableAttributes($level);
         });
     }
 
@@ -183,8 +182,7 @@ final class Fields extends FormElements
      */
     public function indexFields(): self
     {
-        return $this
-            ->filter(static fn (Field $field): bool => $field->isOnIndex());
+        return $this->onlyFields(withWrappers: true);
     }
 
     /**
@@ -192,15 +190,12 @@ final class Fields extends FormElements
      */
     public function formFields(bool $withOutside = true): MoonShineRenderElements
     {
-        $closure = static fn ($element): bool => $element instanceof Field && ! $element->isOnForm();
-
-        if ($withOutside === false) {
-            $closure = static fn ($element): bool => ($element instanceof ModelRelationField
-                && $element->outsideComponent())
-                || $closure($element);
-        }
-
-        return $this->exceptElements($closure);
+        return $this->when(
+            ! $withOutside,
+            fn (self $fields): self => $fields->exceptElements(
+                static fn ($element): bool => ($element instanceof ModelRelationField && $element->outsideComponent())
+            )
+        );
     }
 
     /**
@@ -209,39 +204,18 @@ final class Fields extends FormElements
     public function detailFields(bool $withOutside = false, bool $onlyOutside = false): self
     {
         if ($onlyOutside) {
-            return $this
-                ->filter(
-                    static fn (Field $field): bool => $field instanceof ModelRelationField
-                        && $field->outsideComponent()
-                        && $field->isOnDetail()
-                );
-        }
-
-        if($withOutside) {
-            return $this->filter(static fn (Field $field): bool => $field->isOnDetail());
-        }
-
-        return $this
-            ->filter(
-                static fn (Field $field): bool => $field->isOnDetail()
-                && ! ($field instanceof ModelRelationField && $field->outsideComponent())
+            return $this->filter(
+                static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
             );
-    }
+        }
 
-    /**
-     * @throws Throwable
-     */
-    public function exportFields(): self
-    {
-        return $this->filter(static fn (Field $field): bool => $field->isOnExport());
-    }
+        if ($withOutside) {
+            return $this;
+        }
 
-    /**
-     * @throws Throwable
-     */
-    public function importFields(): self
-    {
-        return $this->filter(static fn (Field $field): bool => $field->isOnImport());
+        return $this->filter(
+            static fn (Field $field): bool => ! ($field instanceof ModelRelationField && $field->outsideComponent())
+        );
     }
 
     /**

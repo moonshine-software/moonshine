@@ -118,7 +118,7 @@ trait ResourceWithButtons
         return DeleteButton::for(
             $this,
             componentName: $componentName,
-            redirectAfterDelete: $redirectAfterDelete,
+            redirectAfterDelete: !$isAsync ? $redirectAfterDelete : '',
             isAsync: $isAsync
         );
     }
@@ -131,7 +131,7 @@ trait ResourceWithButtons
         return MassDeleteButton::for(
             $this,
             componentName: $componentName,
-            redirectAfterDelete: $redirectAfterDelete,
+            redirectAfterDelete: !$isAsync ? $redirectAfterDelete : '',
             isAsync: $isAsync
         );
     }
@@ -143,10 +143,20 @@ trait ResourceWithButtons
     {
         return [
             ...$this->getIndexButtons(),
-            $this->getDetailButton(),
-            $this->getEditButton(),
-            $this->getDeleteButton(),
-            $this->getMassDeleteButton(),
+            $this->getDetailButton(
+                isAsync: $this->isAsync()
+            ),
+            $this->getEditButton(
+                isAsync: $this->isAsync()
+            ),
+            $this->getDeleteButton(
+                redirectAfterDelete: $this->redirectAfterDelete(),
+                isAsync: $this->isAsync()
+            ),
+            $this->getMassDeleteButton(
+                redirectAfterDelete: $this->redirectAfterDelete(),
+                isAsync: $this->isAsync()
+            ),
         ];
     }
 
@@ -159,7 +169,8 @@ trait ResourceWithButtons
             ...$this->getFormButtons(),
             $this->getDetailButton(),
             $this->getDeleteButton(
-                redirectAfterDelete: $this->redirectAfterDelete()
+                redirectAfterDelete: $this->redirectAfterDelete(),
+                isAsync: false
             ),
         ];
     }
@@ -171,9 +182,12 @@ trait ResourceWithButtons
     {
         return [
             ...$this->getDetailButtons(),
-            $this->getEditButton(),
+            $this->getEditButton(
+                isAsync: $this->isAsync(),
+            ),
             $this->getDeleteButton(
-                redirectAfterDelete: $this->redirectAfterDelete()
+                redirectAfterDelete: $this->redirectAfterDelete(),
+                isAsync: false
             ),
         ];
     }

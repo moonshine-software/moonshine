@@ -14,6 +14,16 @@ class TestResource extends ModelResource
 
     private array $testFields = [];
 
+    private array $testIndexFields = [];
+
+    private array $testFormFields = [];
+
+    private array $testDetailFields = [];
+
+    private array $testExportFields = [];
+
+    private array $testImportFields = [];
+
     private array $testPages = [];
 
     private array $testValidationMessages = [];
@@ -81,6 +91,41 @@ class TestResource extends ModelResource
     public function setTestFields(array $testFields): static
     {
         $this->testFields = $testFields;
+
+        return $this;
+    }
+
+    public function setTestIndexFields(array $testFields): static
+    {
+        $this->testIndexFields = $testFields;
+
+        return $this;
+    }
+
+    public function setTestFormFields(array $testFields): static
+    {
+        $this->testFormFields = $testFields;
+
+        return $this;
+    }
+
+    public function setTestDetailFields(array $testFields): static
+    {
+        $this->testDetailFields = $testFields;
+
+        return $this;
+    }
+
+    public function setTestExportFields(array $testFields): static
+    {
+        $this->testExportFields = $testFields;
+
+        return $this;
+    }
+
+    public function setTestImportFields(array $testFields): static
+    {
+        $this->testImportFields = $testFields;
 
         return $this;
     }
@@ -153,9 +198,35 @@ class TestResource extends ModelResource
         return $this->testRules;
     }
 
-    public function fields(): array
+    public function formFields(): array
     {
-        return $this->testFields;
+        return $this->testFormFields !== []
+            ? $this->testFormFields
+            : $this->testFields;
+    }
+
+    public function indexFields(): array
+    {
+        return $this->testIndexFields !== []
+            ? $this->testIndexFields
+            : $this->testFields;
+    }
+
+    public function detailFields(): array
+    {
+        return $this->testDetailFields !== []
+            ? $this->testDetailFields
+            : $this->testFields;
+    }
+
+    public function importFields(): array
+    {
+        return $this->testImportFields;
+    }
+
+    public function exportFields(): array
+    {
+        return $this->testExportFields;
     }
 
     public function validationMessages(): array

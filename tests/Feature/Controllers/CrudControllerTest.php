@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Components\When;
 use MoonShine\Fields\DateRange;
 use MoonShine\Fields\File;
 use MoonShine\Fields\Range;
@@ -103,7 +104,7 @@ describe('without special fields', function () {
             ->assertRedirect();
     });
 
-    it('hideOnCreate crud delete', function () {
+    it('when component crud delete', function () {
 
         $item = storeResource($this->itemResource, $this->storeData);
 
@@ -112,10 +113,13 @@ describe('without special fields', function () {
         fakeRequest($resource->route('crud.destroy', $item->getKey()), 'DELETE', dispatchRoute: true);
 
         TestResourceBuilder::new(Item::class)
-            ->setTestFields([
-                DateRange::make('Range')
-                    ->fromTo('start_date', 'end_date')
-                    ->hideOnCreate(),
+            ->setTestFormFields([
+                When::make(
+                    fn() => is_null($item?->getKey()),
+                    fn() => [
+                        DateRange::make('Range')->fromTo('start_date', 'end_date'),
+                    ]
+                )
             ])
         ;
     });

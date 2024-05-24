@@ -12,7 +12,7 @@ use MoonShine\Support\Condition;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|View|string $content, Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title, Closure|View|string $content = '', Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
 final class Modal extends AbstractWithComponents
 {

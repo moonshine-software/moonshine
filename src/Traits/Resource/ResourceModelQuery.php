@@ -379,9 +379,7 @@ trait ResourceModelQuery
             $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         }
 
-        $field = $this->getFields()
-            ->onlyFields()
-            ->findByColumn($column);
+        $field = $this->getIndexFields()->findByColumn($column);
 
         $callback = $field?->sortableCallback();
 

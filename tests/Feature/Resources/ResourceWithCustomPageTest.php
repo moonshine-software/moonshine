@@ -25,8 +25,14 @@ beforeEach(function (): void {
             CustomPageForm::make('CustomPageForm'),
             CustomPageDetail::make('CustomPageDetail'),
         ])
+        ->setTestExportFields([
+            ID::make()
+        ])
+        ->setTestImportFields([
+            ID::make()
+        ])
         ->setTestFields([
-            ID::make()->sortable()->useOnImport()->showOnExport(),
+            ID::make()->sortable(),
             Text::make('Name title', 'name')->sortable(),
         ])
     ;

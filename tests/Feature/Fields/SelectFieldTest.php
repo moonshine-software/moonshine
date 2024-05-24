@@ -23,9 +23,9 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = addFieldsToTestResource(
+    $resource = addFieldsToTestResource([])->setTestFields([
         $this->field
-    );
+    ]);
 
     asAdmin()->get(
         toPage(page: IndexPage::class, resource: $resource)
@@ -149,7 +149,8 @@ function selectExport(Item $item, Select $field, int $value, string $label): ?st
     $item->save();
 
     $resource = addFieldsToTestResource(
-        $field->showOnExport()
+        $field,
+        'exportFields'
     );
 
     $export = ExportHandler::make('');
@@ -176,7 +177,8 @@ it('import', function (): void {
     $file = selectExport($this->item, $this->field, $value, $this->values[$value]);
 
     $resource = addFieldsToTestResource(
-        $this->field->useOnImport()
+        $this->field,
+        'importFields'
     );
 
     $import = ImportHandler::make('');

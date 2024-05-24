@@ -24,8 +24,8 @@ beforeEach(function () {
 
 it('show field on pages', function () {
     $resource = addFieldsToTestResource(
-        [$this->field]
-    );
+        []
+    )->setTestFields([$this->field]);
 
 
     asAdmin()->get(
@@ -148,7 +148,7 @@ it('resource update column', function () {
     $field = Switcher::make('Active')->default(1)->updateOnPreview(resource: $resource);
 
     $resource->setTestFields([
-        ...(new TestItemResource())->fields(),
+        ...(new TestItemResource())->indexFields(),
         ...[$field],
     ]);
 
@@ -260,7 +260,8 @@ function switcherExport(Item $item): ?string
     $item->save();
 
     $resource = addFieldsToTestResource(
-        [Switcher::make('Active')->showOnExport()]
+        [Switcher::make('Active')],
+        'exportFields'
     );
 
     $export = ExportHandler::make('');
@@ -286,7 +287,8 @@ it('import', function (): void {
     $file = switcherExport($this->item);
 
     $resource = addFieldsToTestResource(
-        [Switcher::make('Active')->useOnImport()]
+        [Switcher::make('Active')],
+        'importFields'
     );
 
     $import = ImportHandler::make('');

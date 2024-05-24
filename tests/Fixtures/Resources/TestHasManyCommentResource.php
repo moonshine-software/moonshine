@@ -21,7 +21,7 @@ class TestHasManyCommentResource extends ModelResource
 
     protected int $itemsPerPage = 2;
 
-    public function fields(): array
+    public function indexFields(): array
     {
         return [
             ID::make()->sortable(),
@@ -30,6 +30,16 @@ class TestHasManyCommentResource extends ModelResource
             //A class has been created for this field
             Switcher::make('Active title', 'active')->updateOnPreview(),
         ];
+    }
+
+    public function formFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
     }
 
     public function rules(Model $item): array

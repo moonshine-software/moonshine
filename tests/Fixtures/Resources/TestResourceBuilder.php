@@ -75,7 +75,7 @@ class TestResourceBuilder
                 int $row,
                 ComponentAttributeBag $attr
             ): ComponentAttributeBag {
-                if($row == 1) {
+                if($row === 1) {
                     $attr->setAttributes([
                         'data-test-tr-attr' => 'success',
                     ]);

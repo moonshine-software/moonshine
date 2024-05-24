@@ -70,7 +70,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         if (! $this->isEditable()) {
             $tableFields = $tableFields
-                ->onlyFields()
+                ->onlyFields(withWrappers: true)
                 ->map(
                     fn (Field $field): Field => $field
                         ->withoutWrapper()

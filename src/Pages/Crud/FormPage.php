@@ -55,7 +55,7 @@ class FormPage extends Page
      */
     protected function prepareBeforeRender(): void
     {
-        $ability = $this->getResource()->isNowOnUpdateForm()
+        $ability = $this->getResource()->getItemID()
             ? 'update'
             : 'create';
 
@@ -80,10 +80,7 @@ class FormPage extends Page
         $this->validateResource();
         $item = $this->getResource()->getItem();
 
-        if (
-            ! $item?->exists
-            && $this->getResource()->isNowOnUpdateForm()
-        ) {
+        if (! $item?->exists && $this->getResource()->getItemID()) {
             oops404();
         }
 
@@ -113,7 +110,7 @@ class FormPage extends Page
         );
 
         // Reset form problem
-        $isAsync = $resource->isAsync() && $resource->isEditInModal();
+        $isAsync = $resource->isAsync();
 
         if (request('_async_form', false)) {
             $isAsync = true;
@@ -237,10 +234,12 @@ class FormPage extends Page
             ->when(
                 $isAsync,
                 fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
-                    ->async(events: [
+                    ->async(events: array_filter([
                         $resource->listEventName(request('_component_name', 'default')),
-                        AlpineJs::event(JsEvent::FORM_RESET, 'crud'),
-                    ])
+                        ! $item?->exists && $resource->isCreateInModal()
+                            ? AlpineJs::event(JsEvent::FORM_RESET, 'crud')
+                            : null,
+                    ]))
             )
             ->when(
                 $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),

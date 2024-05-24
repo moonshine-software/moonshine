@@ -30,22 +30,47 @@ class TestItemResource extends ModelResource
 
     public string $column = 'name';
 
-    public function fields(): array
+    public function indexFields(): array
+    {
+        return [
+            ID::make()->sortable(),
+
+            Text::make('Name title', 'name')->sortable(),
+
+            BelongsTo::make('Category title', 'category', 'name', TestCategoryResource::class),
+
+            HasMany::make('Comments title', 'comments', resource: TestCommentResource::class)->fields([
+                ID::make()->sortable(),
+                Text::make('Comment title', 'content')->sortable(),
+                Switcher::make('Active title', 'active')->updateOnPreview(resource: $this),
+            ]),
+
+            MorphMany::make('Images title', 'images', resource: TestImageResource::class)
+                ->fields([
+                    ID::make()->sortable(),
+                    Image::make('Image title', 'name'),
+                ]),
+        ];
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function formFields(): array
     {
         return [
             Box::make([
-                ID::make()->sortable()->useOnImport()->showOnExport(),
+                ID::make(),
 
                 Text::make('Name title', 'name')->sortable(),
 
                 BelongsTo::make('Category title', 'category', 'name', TestCategoryResource::class),
 
-                TinyMce::make('Content title', 'content')
-                    ->hideOnIndex(),
+                TinyMce::make('Content title', 'content'),
 
-                Date::make('Public at title', 'public_at')
-                    ->hideOnIndex()
-                ,
+                Date::make('Public at title', 'public_at'),
 
                 HasMany::make('Comments title', 'comments', resource: TestCommentResource::class)->fields([
                     ID::make()->sortable(),
@@ -60,6 +85,18 @@ class TestItemResource extends ModelResource
                     ]),
             ]),
         ];
+    }
+
+    public function exportFields(): array
+    {
+        return [
+            ID::make(),
+        ];
+    }
+
+    public function importFields(): array
+    {
+        return $this->exportFields();
     }
 
     public function filters(): array

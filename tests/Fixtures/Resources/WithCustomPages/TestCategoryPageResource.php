@@ -41,7 +41,27 @@ class TestCategoryPageResource extends ModelResource
         ];
     }
 
-    public function fields(): array
+    public function indexFields(): array
+    {
+        return [
+            ID::make()->sortable(),
+
+            Text::make('Name title', 'name')
+                ->sortable(),
+
+            HasOne::make('Cover title', 'cover', resource: new TestCoverPageResource())->fields([
+                ID::make(),
+                Image::make('HasOne Image title', 'image'),
+            ]),
+        ];
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function formFields(): array
     {
         return [
             Box::make([
@@ -50,8 +70,7 @@ class TestCategoryPageResource extends ModelResource
                 Text::make('Name title', 'name')
                     ->sortable(),
 
-                TinyMce::make('Content title', 'content')
-                    ->hideOnIndex(),
+                TinyMce::make('Content title', 'content'),
 
                 HasOne::make('Cover title', 'cover', resource: new TestCoverPageResource())->fields([
                     ID::make(),
@@ -59,7 +78,6 @@ class TestCategoryPageResource extends ModelResource
                 ]),
 
                 Date::make('Public at title', 'public_at')
-                    ->hideOnIndex()
                     ->showWhen('is_public', 1)
                     ->withTime(),
             ]),

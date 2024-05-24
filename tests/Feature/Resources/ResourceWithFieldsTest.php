@@ -16,45 +16,44 @@ uses()->group('resources-feature');
 
 beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(Item::class)
-        ->setTestFields([
+        ->setTestImportFields([
+            ID::make(),
+        ])
+        ->setTestExportFields([
+            ID::make(),
+        ])
+        ->setTestIndexFields([
+            ID::make()->sortable(),
+            Text::make('Name title', 'name'),
+            StackFields::make()->fields([
+                Text::make('Index field'),
+            ]),
+        ])
+        ->setTestDetailFields([
+            ID::make(),
+            Text::make('Name title', 'name'),
+            Text::make('Detail field'),
+            HasOne::make('Outside', 'outside', resource: new TestResource()),
+        ])
+        ->setTestFormFields([
             Box::make([
-                ID::make()->sortable()->useOnImport()->showOnExport(),
-                Text::make('Name title', 'name')
-                    ->sortable(),
-
-                Text::make('Form field')
-                    ->hideOnDetail()
-                    ->showOnForm()
-                    ->hideOnIndex(),
-
-                StackFields::make()->fields([
-                    Text::make('Index field')
-                        ->hideOnDetail()
-                        ->hideOnForm()
-                        ->showOnIndex(),
-                ]),
-
-                Text::make('Detail field')
-                    ->hideOnIndex()
-                    ->hideOnForm()
-                    ->showOnDetail(),
-
+                ID::make(),
+                Text::make('Name title', 'name'),
+                Text::make('Form field'),
                 HasOne::make('Outside', 'outside', resource: new TestResource()),
             ]),
 
         ])
         ->setTestFilters([
             Box::make([
-                Text::make('Name title', 'name')
-                    ->sortable(),
+                Text::make('Name title', 'name'),
             ]),
         ]);
 });
 
 it('index fields', function () {
     expect($this->resource->getIndexFields())
-        ->toHaveCount(4)
-        ->each(fn ($expect) => $expect->isOnIndex()->toBeTrue());
+        ->toHaveCount(3);
 });
 
 it('form fields with outside', function () {
@@ -62,8 +61,7 @@ it('form fields with outside', function () {
         ->first()
         ->toBeInstanceOf(Box::class)
         ->onlyFields()
-        ->toHaveCount(4)
-        ->each(fn ($expect) => $expect->isOnForm()->toBeTrue());
+        ->toHaveCount(4);
 });
 
 it('form fields without outside', function () {
@@ -71,26 +69,22 @@ it('form fields without outside', function () {
         ->first()
         ->toBeInstanceOf(Box::class)
         ->onlyFields()
-        ->toHaveCount(3)
-        ->each(fn ($expect) => $expect->isOnForm()->toBeTrue());
+        ->toHaveCount(3);
 });
 
 it('detail fields with outside', function () {
     expect($this->resource->getDetailFields(withOutside: true))
-        ->toHaveCount(5)
-        ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue());
+        ->toHaveCount(4);
 });
 
 it('detail fields without outside', function () {
     expect($this->resource->getDetailFields(withOutside: false))
-        ->toHaveCount(4)
-        ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue());
+        ->toHaveCount(3);
 });
 
 it('detail fields only outside', function () {
     expect($this->resource->getDetailFields(onlyOutside: true))
-        ->toHaveCount(1)
-        ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue());
+        ->toHaveCount(1);
 });
 
 it('outside fields', function () {

@@ -98,7 +98,7 @@ class ImportHandler extends Handler
 
         $this->resolveStorage();
 
-        $path = request()->file($this->getInputName())->storeAs(
+        $path = request()->file($this->getInputName())?->storeAs(
             $this->getDir(),
             str_replace('.txt', '.csv', (string) $requestFile->hashName()),
             $this->getDisk()
@@ -156,8 +156,8 @@ class ImportHandler extends Handler
 
         $result = $fastExcel->import($path, function ($line) use ($resource) {
             $data = collect($line)->mapWithKeys(
-                function ($value, $key) use ($resource): array {
-                    $field = $resource->getFields()->onlyFields()->importFields()->first(
+                function (mixed $value, string $key) use ($resource): array {
+                    $field = $resource->getImportFields()->first(
                         fn (Field $field): bool => $field->getColumn() === $key || $field->getLabel() === $key
                     );
 
@@ -165,10 +165,12 @@ class ImportHandler extends Handler
                         return [];
                     }
 
-                    if (empty($value)) {
-                        $value = $field instanceof HasDefaultValue
-                            ? $field->getDefault()
-                            : ($field->isNullable() ? null : $value);
+                    if (empty($value) && $field instanceof HasDefaultValue) {
+                        $value = $field->getDefault();
+                    }
+
+                    if (empty($value) && $field->isNullable()) {
+                        $value = null;
                     }
 
                     $value = is_string($value) && str($value)->isJson()
