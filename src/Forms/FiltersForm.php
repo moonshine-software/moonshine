@@ -7,8 +7,10 @@ namespace MoonShine\Forms;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\JsEvent;
+use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\Range;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Throwable;
@@ -24,6 +26,14 @@ final class FiltersForm
         $filters = $resource->getFilters();
 
         $action = $resource->isAsync() ? '#' : $resource->currentRoute();
+
+        $filters->fill($values);
+
+        foreach ($filters->onlyFields() as $filter) {
+            if($filter instanceof DateRange || $filter instanceof Range) {
+                data_forget($values, $filter->column());
+            }
+        }
 
         return FormBuilder::make($action, 'GET')
             ->name('filters')
