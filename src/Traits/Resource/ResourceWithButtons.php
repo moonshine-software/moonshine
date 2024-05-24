@@ -118,7 +118,7 @@ trait ResourceWithButtons
         return DeleteButton::for(
             $this,
             componentName: $componentName,
-            redirectAfterDelete: !$isAsync ? $redirectAfterDelete : '',
+            redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
             isAsync: $isAsync
         );
     }
@@ -131,7 +131,7 @@ trait ResourceWithButtons
         return MassDeleteButton::for(
             $this,
             componentName: $componentName,
-            redirectAfterDelete: !$isAsync ? $redirectAfterDelete : '',
+            redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
             isAsync: $isAsync
         );
     }
