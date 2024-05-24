@@ -9,7 +9,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\FieldException;
-use MoonShine\Fields\Fields;
 use MoonShine\Fields\Relationships\ModelRelationField;
 use MoonShine\Traits\Request\HasPageRequest;
 use MoonShine\Traits\Request\HasResourceRequest;

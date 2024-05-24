@@ -19,7 +19,6 @@ use MoonShine\Traits\Fields\WithBadge;
 use MoonShine\Traits\Fields\WithLink;
 use MoonShine\Traits\Fields\WithSorts;
 use MoonShine\Traits\WithHint;
-use MoonShine\Traits\WithIsNowOnRoute;
 use MoonShine\Traits\WithLabel;
 use MoonShine\VO\FieldEmptyValue;
 
