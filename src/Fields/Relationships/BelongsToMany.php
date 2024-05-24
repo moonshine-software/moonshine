@@ -513,6 +513,19 @@ class BelongsToMany extends ModelRelationField implements
         return $data;
     }
 
+    public function getKeys(): array
+    {
+        if(is_null($this->toValue())) {
+            return [];
+        }
+
+        if($this->isValueWithModels()) {
+            return $this->toValue()?->modelKeys();
+        }
+
+        return $this->toValue()->keys()->toArray();
+    }
+
     /**
      * @return array<string, mixed>
      * @throws Throwable
@@ -531,6 +544,7 @@ class BelongsToMany extends ModelRelationField implements
             'createButton' => $this->createButton(),
             'fragmentUrl' => $this->fragmentUrl(),
             'relationName' => $this->getRelationName(),
+            'keys' => $this->getKeys(),
         ];
     }
 }

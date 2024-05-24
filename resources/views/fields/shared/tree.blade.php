@@ -1,3 +1,3 @@
-<div x-data="tree(@json($value?->modelKeys() ?? []))">
+<div x-data="tree(@json($keys))">
     {!! $html !!}
 </div>

@@ -26,19 +26,6 @@ trait HasTreeMode
         return $this->tree;
     }
 
-    public function treeKeys(): array
-    {
-        if(is_null($this->toValue())) {
-            return [];
-        }
-
-        if($this->isValueWithModels()) {
-            return $this->toValue()?->modelKeys();
-        }
-
-        return $this->toValue()->keys()->toArray();
-    }
-
     /**
      * @throws Throwable
      */
