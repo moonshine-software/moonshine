@@ -138,7 +138,9 @@ class FormPage extends Page
                 fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
                     ->async(asyncEvents: [
                         $resource->listEventName(request('_component_name', 'default')),
-                        AlpineJs::event(JsEvent::FORM_RESET, 'crud'),
+                        ! $item?->exists && $resource->isCreateInModal()
+                            ? AlpineJs::event(JsEvent::FORM_RESET, 'crud')
+                            : null,
                     ])
             )
             ->when(
@@ -164,7 +166,7 @@ class FormPage extends Page
         );
 
         // Reset form problem
-        $isAsync = $resource->isAsync() && $resource->isEditInModal();
+        $isAsync = $resource->isAsync();
 
         if (request('_async_form', false)) {
             $isAsync = true;

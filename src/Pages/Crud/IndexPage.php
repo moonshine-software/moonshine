@@ -115,7 +115,9 @@ class IndexPage extends Page
             Grid::make([
                 Column::make([
                     ActionGroup::make([
-                        $this->getResource()->getCreateButton(),
+                        $this->getResource()->getCreateButton(
+                            isAsync: $this->getResource()->isAsync()
+                        ),
                         ...$this->getResource()->actions(),
                     ]),
 

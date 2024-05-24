@@ -206,7 +206,8 @@ class HasOne extends ModelRelationField implements HasFields
                     ? []
                     : [
                     $resource->getDeleteButton(
-                        redirectAfterDelete: $redirectAfter
+                        redirectAfterDelete: $redirectAfter,
+                        isAsync: false
                     )->customAttributes(['class' => 'btn-lg']),
                 ]
             )
