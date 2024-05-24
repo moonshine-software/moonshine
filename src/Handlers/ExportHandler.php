@@ -105,7 +105,7 @@ class ExportHandler extends Handler
 
     public function isFilename(): bool
     {
-        return !is_null($this->filename);
+        return ! is_null($this->filename);
     }
 
     public function isCsv(): bool
