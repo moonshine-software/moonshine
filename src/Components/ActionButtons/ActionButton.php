@@ -37,7 +37,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     protected ?string $bulkForComponent = null;
 
-    protected bool $isAsync = true;
+    protected bool $isAsync = false;
 
     protected ?string $asyncMethod = null;
 

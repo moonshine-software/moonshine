@@ -7,8 +7,10 @@ namespace MoonShine\Pages\Crud;
 use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Fragment;
 use MoonShine\Components\Layout\Block;
+use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Layout\Column;
 use MoonShine\Components\Layout\Grid;
 use MoonShine\Components\Layout\LineBreak;
@@ -19,6 +21,7 @@ use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
 use MoonShine\Exceptions\ResourceException;
 use MoonShine\Fields\Fields;
+use MoonShine\Forms\FiltersForm;
 use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
 use Throwable;
@@ -71,6 +74,7 @@ class IndexPage extends Page
     protected function mainLayer(): array
     {
         return [
+            $this->hiddenFilters(),
             ...$this->getPageButtons(),
             ...$this->getQueryTags(),
             ...$this->getItemsComponents(),
@@ -83,6 +87,17 @@ class IndexPage extends Page
     protected function bottomLayer(): array
     {
         return $this->getResource()->getIndexPageComponents();
+    }
+
+    /**
+     * @return FormBuilder<FiltersForm>
+     * @throws Throwable
+     */
+    protected function hiddenFilters(): FormBuilder
+    {
+        return moonshineConfig()
+            ->getForm('filters', FiltersForm::class, resource: $this->getResource())
+            ->customAttributes(['class' => 'hidden remove-after-init']);
     }
 
     protected function getMetrics(): ?MoonShineComponent
