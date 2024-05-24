@@ -118,7 +118,7 @@ class ExportHandler extends Handler
         return $this->csvDelimiter;
     }
 
-    public function createPath(): string
+    private function generateFilePath(): string
     {
         $dir = $this->getDir();
         $filename = $this->isFilename() ? $this->filename : $this->getResource()->uriKey();
