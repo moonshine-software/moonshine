@@ -18,7 +18,7 @@ final class CreateButton
 
         $action = $resource->formPageUrl();
 
-        if($isAsync || $resource->isCreateInModal()) {
+        if($resource->isCreateInModal()) {
             $action = $resource->formPageUrl(
                 params: [
                     '_component_name' => $componentName ?? $resource->listComponentName(),
@@ -33,7 +33,7 @@ final class CreateButton
             $action
         )
             ->when(
-                $isAsync || $resource->isCreateInModal(),
+                $resource->isCreateInModal(),
                 fn (ActionButton $button): ActionButton => $button->inModal(
                     fn (): array|string|null => __('moonshine::ui.create'),
                     fn (): string => '',

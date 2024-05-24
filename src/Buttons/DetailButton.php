@@ -20,7 +20,7 @@ final class DetailButton
 
         $action = static fn ($data): string => $resource->detailPageUrl($data);
 
-        if($isAsync || $resource->isDetailInModal()) {
+        if($resource->isDetailInModal()) {
             $action = static fn ($data): string => $resource->detailPageUrl(
                 $data,
                 fragment: 'crud-detail'
@@ -32,7 +32,7 @@ final class DetailButton
             $action
         )
             ->when(
-                $isAsync || $resource->isDetailInModal(),
+                $resource->isDetailInModal(),
                 fn (ActionButton $button): ActionButton => $button->inModal(
                     title: fn (): array|string|null => __('moonshine::ui.show'),
                     content: fn (): string => '',

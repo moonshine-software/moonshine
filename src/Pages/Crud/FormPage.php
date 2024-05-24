@@ -138,7 +138,9 @@ class FormPage extends Page
                 fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
                     ->async(asyncEvents: [
                         $resource->listEventName(request('_component_name', 'default')),
-                        AlpineJs::event(JsEvent::FORM_RESET, 'crud'),
+                        ! $item?->exists && $resource->isCreateInModal()
+                            ? AlpineJs::event(JsEvent::FORM_RESET, 'crud')
+                            : null,
                     ])
             )
             ->when(
