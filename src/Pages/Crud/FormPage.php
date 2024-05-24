@@ -166,7 +166,7 @@ class FormPage extends Page
         );
 
         // Reset form problem
-        $isAsync = $resource->isAsync() && $resource->isEditInModal();
+        $isAsync = $resource->isAsync();
 
         if (request('_async_form', false)) {
             $isAsync = true;
