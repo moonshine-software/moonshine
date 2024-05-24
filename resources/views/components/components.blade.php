@@ -2,5 +2,5 @@
     'components' => []
 ])
 @foreach($components as $component)
-    {{ $component->render() }}
+    {!! $component->render() !!}
 @endforeach

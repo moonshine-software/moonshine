@@ -207,7 +207,8 @@ function dateRangeExport(Item $item): ?string
     $item->save();
 
     $resource = addFieldsToTestResource(
-        DateRange::make('Range')->fromTo('start_date', 'end_date')->showOnExport()
+        DateRange::make('Range')->fromTo('start_date', 'end_date'),
+        'exportFields'
     );
 
     $export = ExportHandler::make('');
@@ -233,7 +234,8 @@ it('import', function (): void {
     $file = dateRangeExport($this->item);
 
     $resource = addFieldsToTestResource(
-        $this->field->useOnImport()
+        $this->field,
+        'importFields'
     );
 
     $import = ImportHandler::make('');

@@ -25,17 +25,36 @@ class TestCategoryResource extends ModelResource
 
     public string $column = 'name';
 
-    public function fields(): array
+    public function indexFields(): array
+    {
+        return [
+            ID::make()->sortable(),
+
+            Text::make('Name title', 'name')->sortable(),
+
+            TinyMce::make('Content title', 'content'),
+
+            HasOne::make('Cover title', 'cover', resource: new TestCoverResource())->fields([
+                ID::make(),
+                Image::make('HasOne Image title', 'image'),
+            ]),
+        ];
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function formFields(): array
     {
         return [
             Box::make([
-                ID::make()->sortable(),
+                ID::make(),
 
-                Text::make('Name title', 'name')
-                    ->sortable(),
+                Text::make('Name title', 'name'),
 
-                TinyMce::make('Content title', 'content')
-                    ->hideOnIndex(),
+                TinyMce::make('Content title', 'content'),
 
                 HasOne::make('Cover title', 'cover', resource: new TestCoverResource())->fields([
                     ID::make(),
@@ -43,7 +62,6 @@ class TestCategoryResource extends ModelResource
                 ]),
 
                 Date::make('Public at title', 'public_at')
-                    ->hideOnIndex()
                     ->showWhen('is_public', 1)
                     ->withTime(),
             ]),

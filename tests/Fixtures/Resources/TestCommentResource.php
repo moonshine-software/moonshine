@@ -17,13 +17,23 @@ class TestCommentResource extends ModelResource
 
     protected int $itemsPerPage = 2;
 
-    public function fields(): array
+    public function indexFields(): array
     {
         return [
             ID::make()->sortable(),
             Number::make('User id'),
             Text::make('Comment title', 'content')->sortable(),
         ];
+    }
+
+    public function formFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
     }
 
     public function rules(Model $item): array

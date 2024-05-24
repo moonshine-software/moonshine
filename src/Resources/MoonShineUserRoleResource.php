@@ -17,9 +17,9 @@ class MoonShineUserRoleResource extends ModelResource
 
     public string $column = 'name';
 
-    protected bool $isAsync = true;
-
     protected bool $createInModal = true;
+
+    protected bool $detailInModal = true;
 
     protected bool $editInModal = true;
 
@@ -28,14 +28,26 @@ class MoonShineUserRoleResource extends ModelResource
         return __('moonshine::ui.resource.role');
     }
 
-    public function fields(): array
+    public function indexFields(): array
+    {
+        return [
+            ID::make()->sortable(),
+            Text::make(__('moonshine::ui.resource.role_name'), 'name'),
+        ];
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function formFields(): array
     {
         return [
             Box::make([
-                ID::make()->sortable()->showOnExport(),
+                ID::make()->sortable(),
                 Text::make(__('moonshine::ui.resource.role_name'), 'name')
-                    ->required()
-                    ->showOnExport(),
+                    ->required(),
             ]),
         ];
     }

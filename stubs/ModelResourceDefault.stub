@@ -23,14 +23,34 @@ class DummyResource extends ModelResource
     protected string $title = 'DummyTitle';
 
     /**
+     * @return list<Field>
+     */
+    public function indexFields(): array
+    {
+        return [
+            ID::make()->sortable(),
+        ];
+    }
+
+    /**
      * @return list<MoonShineComponent|Field>
      */
-    public function fields(): array
+    public function formFields(): array
     {
         return [
             Box::make([
-                ID::make()->sortable(),
-            ]),
+                ID::make(),
+            ])
+        ];
+    }
+
+    /**
+     * @return list<Field>
+     */
+    public function detailFields(): array
+    {
+        return [
+            ID::make(),
         ];
     }
 

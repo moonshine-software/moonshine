@@ -116,7 +116,10 @@ final class CrudController extends MoonShineController
         }
 
         if ($request->ajax() || $request->wantsJson()) {
-            return $this->json(message: __('moonshine::ui.deleted'));
+            return $this->json(
+                message: __('moonshine::ui.deleted'),
+                redirect: $request->get('_redirect')
+            );
         }
 
         $this->toast(

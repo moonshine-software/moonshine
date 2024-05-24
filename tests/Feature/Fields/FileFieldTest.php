@@ -20,10 +20,13 @@ uses()->group('file-field');
 
 beforeEach(function () {
     $this->item = createItem(countComments: 0);
+    $this->field = File::make('File')->dir('items');
 });
 
 it('show field on pages', function () {
-    $resource = fileResource();
+    $resource = fileResource()->setTestFields([
+        $this->field
+    ]);
 
     asAdmin()->get(
         toPage(page: IndexPage::class, resource: $resource)
@@ -48,7 +51,10 @@ it('show field on pages', function () {
 });
 
 it('apply as base', function () {
-    $resource = fileResource();
+    $resource = fileResource()
+        ->setTestFields([
+            $this->field
+        ]);
 
     $file = saveFile($resource, $this->item);
 
@@ -137,7 +143,7 @@ it('after destroy', function () {
 it('after destroy disableDeleteFiles', function () {
     $resource = TestResourceBuilder::new(Item::class)
         ->setTestFields([
-            ...(new TestItemResource())->fields(),
+            ...(new TestItemResource())->formFields(),
             File::make('File')
                 ->disableDeleteFiles()
                 ->dir('items'),
@@ -156,7 +162,7 @@ it('after destroy disableDeleteFiles', function () {
 function fileResource(): TestResource
 {
     return addFieldsToTestResource(
-        File::make('File')->dir('items')
+        File::make('File')->dir('items'),
     );
 }
 

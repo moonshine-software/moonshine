@@ -15,13 +15,23 @@ class TestFileResource extends ModelResource
 
     protected array $with = ['item'];
 
-    public function fields(): array
+    public function indexFields(): array
     {
         return [
             ID::make()->sortable(),
             File::make('File', 'path'),
             BelongsTo::make('Item', resource: new TestItemResource()),
         ];
+    }
+
+    public function formFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
     }
 
     public function rules(Model $item): array

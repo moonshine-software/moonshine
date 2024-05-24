@@ -376,10 +376,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->name($this->getRelationName())
             ->fields($this->getFieldsOnPreview())
             ->cast($resource->getModelCast())
-            ->when(
-                $this->isNowOnForm(),
-                fn (TableBuilder $table): TableBuilder => $table->withNotFound()
-            )
+            ->withNotFound()
             ->when(
                 ! is_null($resource->trAttributes()),
                 fn (TableBuilder $table): TableBuilder => $table->trAttributes(
@@ -394,7 +391,9 @@ class HasMany extends ModelRelationField implements HasFields
             )
             ->buttons([
                 ...$resource->getIndexButtons(),
-                $resource->getDetailButton(isAsync: $this->isAsync()),
+                $resource->getDetailButton(
+                    isAsync: $this->isAsync()
+                ),
                 $editButton,
                 $resource->getDeleteButton(
                     componentName: $this->getRelationName(),

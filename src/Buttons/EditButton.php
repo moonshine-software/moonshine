@@ -21,7 +21,7 @@ final class EditButton
 
         $action = static fn ($data): string => $resource->formPageUrl($data);
 
-        if ($isAsync || $resource->isEditInModal()) {
+        if ($resource->isEditInModal()) {
             $action = static fn ($data): string => $resource->formPageUrl(
                 $data,
                 params: [
@@ -37,7 +37,7 @@ final class EditButton
             url: $action
         )
             ->when(
-                $isAsync || $resource->isEditInModal(),
+                $resource->isEditInModal(),
                 fn (ActionButton $button): ActionButton => $button->async()->inModal(
                     title: fn (): array|string|null => __('moonshine::ui.edit'),
                     content: fn (): string => '',

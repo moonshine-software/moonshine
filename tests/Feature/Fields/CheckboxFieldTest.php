@@ -21,8 +21,8 @@ beforeEach(function () {
 
 it('show field on pages', function () {
     $resource = addFieldsToTestResource(
-        $this->field
-    );
+        $this->field,
+    )->setTestFields([$this->field]);
 
     $view = Boolean::make($this->item->active)->render();
 
@@ -41,6 +41,11 @@ it('show field on pages', function () {
         ->assertSee('Active')
         ->assertSee($view, false)
     ;
+
+    $resource = addFieldsToTestResource(
+        $this->field,
+        'formFields'
+    );
 
     asAdmin()->get(
         toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
@@ -147,7 +152,8 @@ function checkboxExport(Item $item): ?string
     $item->save();
 
     $resource = addFieldsToTestResource(
-        Checkbox::make('Active')->showOnExport()
+        Checkbox::make('Active'),
+        'exportFields'
     );
 
     $export = ExportHandler::make('');
@@ -173,7 +179,8 @@ it('import', function (): void {
     $file = checkboxExport($this->item);
 
     $resource = addFieldsToTestResource(
-        Checkbox::make('Active')->useOnImport()
+        Checkbox::make('Active'),
+        'importFields'
     );
 
     $import = ImportHandler::make('');

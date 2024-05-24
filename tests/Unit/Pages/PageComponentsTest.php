@@ -27,7 +27,7 @@ beforeEach(function (): void {
                     FormBuilder::make()->name('inner-form')->fields([
                         Switcher::make('Switcher'),
                         StackFields::make()->fields([
-                            Text::make('Text')->hideOnForm(),
+                            Text::make('Text'),
                             Text::make('Email'),
                         ]),
                         HasOne::make('HasOne', resource: new TestResource()),
@@ -130,13 +130,13 @@ it('find has field in modal', function () {
 
 it('form fields without outside', function () {
     expect($this->collection->onlyFields()->formFields(withOutside: false)->onlyFields())
-        ->toHaveCount(2)
+        ->toHaveCount(3)
         ->each->toBeInstanceOf(Field::class);
 });
 
 it('form fields with outside', function () {
     expect($this->collection->onlyFields()->formFields()->onlyFields())
-        ->toHaveCount(4)
+        ->toHaveCount(5)
         ->each->toBeInstanceOf(Field::class);
 });
 

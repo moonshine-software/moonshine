@@ -50,7 +50,6 @@ class MakeResourceCommand extends MoonShineCommand
 
         $stub = select('Resource type', [
             'ModelResourceDefault' => 'Default model resource',
-            'ModelResourceSeparate' => 'Separate model resource',
             'ModelResourceWithPages' => 'Model resource with pages',
             'Resource' => 'Empty resource',
         ], 'ModelResourceDefault');

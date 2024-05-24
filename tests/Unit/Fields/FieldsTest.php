@@ -26,9 +26,9 @@ beforeEach(function () {
                 Tab::make([
                     LineBreak::make()->name('line-break'),
                     FormBuilder::make()->name('inner-form')->fields([
-                        Switcher::make('Switcher')->useOnImport(),
+                        Switcher::make('Switcher'),
                         StackFields::make()->fields([
-                            Text::make('Text')->hideOnForm()->sortable(),
+                            Text::make('Text')->sortable(),
                             Text::make('Email')->showWhen('column', '=', 'value'),
                         ]),
                         HasOne::make('HasOne', 'hasone', resource: new TestResource()),
@@ -175,36 +175,6 @@ describe('fields', function () {
         expect($this->collection->onlyFields()->onlyRelationFields())
             ->toHaveCount(1)
             ->each->toBeInstanceOf(HasOne::class)
-        ;
-    });
-
-    it('index fields', function () {
-        expect($this->collection->onlyFields()->indexFields())
-            ->each(fn ($expect) => $expect->isOnIndex()->toBeTrue())
-        ;
-    });
-
-    it('form fields', function () {
-        expect($this->collection->onlyFields()->formFields())
-            ->each(fn ($expect) => $expect->isOnForm()->toBeTrue())
-        ;
-    });
-
-    it('detail fields', function () {
-        expect($this->collection->onlyFields()->detailFields())
-            ->each(fn ($expect) => $expect->isOnDetail()->toBeTrue())
-        ;
-    });
-
-    it('export fields', function () {
-        expect($this->collection->onlyFields()->exportFields())
-            ->each(fn ($expect) => $expect->isOnExport()->toBeTrue())
-        ;
-    });
-
-    it('import fields', function () {
-        expect($this->collection->onlyFields()->importFields())
-            ->each(fn ($expect) => $expect->isOnImport()->toBeTrue())
         ;
     });
 

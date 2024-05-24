@@ -36,15 +36,43 @@ class MoonShineUserResource extends ModelResource
         return __('moonshine::ui.resource.admins_title');
     }
 
-    public function fields(): array
+    public function indexFields(): array
+    {
+        return [
+            ID::make()->sortable(),
+
+            BelongsTo::make(
+                __('moonshine::ui.resource.role'),
+                'moonshineUserRole',
+                formatted: static fn (MoonshineUserRole $model) => $model->name,
+                resource: MoonShineUserRoleResource::class,
+            )->badge('purple'),
+
+            Text::make(__('moonshine::ui.resource.name'), 'name'),
+
+            Image::make(__('moonshine::ui.resource.avatar'), 'avatar'),
+
+            Date::make(__('moonshine::ui.resource.created_at'), 'created_at')
+                ->format("d.m.Y")
+                ->sortable(),
+
+            Email::make(__('moonshine::ui.resource.email'), 'email')
+                ->sortable(),
+        ];
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function formFields(): array
     {
         return [
             Box::make([
                 Tabs::make([
                     Tab::make(__('moonshine::ui.resource.main_information'), [
-                        ID::make()
-                            ->sortable()
-                            ->showOnExport(),
+                        ID::make()->sortable(),
 
                         BelongsTo::make(
                             __('moonshine::ui.resource.role'),
@@ -52,29 +80,21 @@ class MoonShineUserResource extends ModelResource
                             formatted: static fn (MoonshineUserRole $model) => $model->name,
                             resource: MoonShineUserRoleResource::class,
                         )
-                            ->valuesQuery(fn (Builder $q) => $q->select(['id', 'name']))
-                            ->badge('purple'),
+                            ->valuesQuery(fn (Builder $q) => $q->select(['id', 'name'])),
 
                         Text::make(__('moonshine::ui.resource.name'), 'name')
-                            ->required()
-                            ->showOnExport(),
+                            ->required(),
 
                         Image::make(__('moonshine::ui.resource.avatar'), 'avatar')
-                            ->showOnExport()
                             ->disk(moonshineConfig()->getDisk())
                             ->dir('moonshine_users')
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
                         Date::make(__('moonshine::ui.resource.created_at'), 'created_at')
                             ->format("d.m.Y")
-                            ->default(now()->toDateTimeString())
-                            ->sortable()
-                            ->hideOnForm()
-                            ->showOnExport(),
+                            ->default(now()->toDateTimeString()),
 
                         Email::make(__('moonshine::ui.resource.email'), 'email')
-                            ->sortable()
-                            ->showOnExport()
                             ->required(),
                     ]),
 
@@ -83,12 +103,10 @@ class MoonShineUserResource extends ModelResource
 
                         Password::make(__('moonshine::ui.resource.password'), 'password')
                             ->customAttributes(['autocomplete' => 'new-password'])
-                            ->hideOnIndex()
                             ->eye(),
 
                         PasswordRepeat::make(__('moonshine::ui.resource.repeat_password'), 'password_repeat')
                             ->customAttributes(['autocomplete' => 'confirm-password'])
-                            ->hideOnIndex()
                             ->eye(),
                     ]),
                 ]),
@@ -97,7 +115,7 @@ class MoonShineUserResource extends ModelResource
     }
 
     /**
-     * @return array{name: string, moonshine_user_role_id: string, email: mixed[], password: string}
+     * @return array{name: string, moonshine_user_role_id: string, email: array, password: string}
      */
     public function rules($item): array
     {

@@ -29,7 +29,9 @@ beforeEach(function (): void {
 });
 
 it('show field on pages', function () {
-    $resource = belongsToResource();
+    $resource = belongsToResource()->setTestFields([
+        BelongsTo::make('User', resource: new MoonShineUserResource())
+    ]);
 
     asAdmin()->get(
         toPage(page: IndexPage::class, resource: $resource)
@@ -129,7 +131,9 @@ it('belongs to valuesQuery', function () {
 });
 
 it('apply as base', function () {
-    $resource = belongsToResource();
+    $resource = belongsToResource()->setTestFields([
+        BelongsTo::make('User', resource: new MoonShineUserResource())
+    ]);
 
     saveMoonShineUser($resource, $this->item);
 
@@ -207,7 +211,8 @@ it('import', function (): void {
     $file = belongsToExport($this->item, $id);
 
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())->useOnImport()
+        BelongsTo::make('User', resource: new MoonShineUserResource()),
+        'importFields'
     );
 
     $import = ImportHandler::make('');
@@ -233,7 +238,8 @@ function belongsToExport(Item $item, int $newId): ?string
     $item->save();
 
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())->showOnExport()
+        BelongsTo::make('User', resource: new MoonShineUserResource()),
+        'exportFields'
     );
 
     $export = ExportHandler::make('');

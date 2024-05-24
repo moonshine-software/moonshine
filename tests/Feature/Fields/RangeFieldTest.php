@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Storage;
 use MoonShine\Applies\Filters\RangeModelApply;
 use MoonShine\Fields\Range;
 use MoonShine\Handlers\ExportHandler;
@@ -20,9 +21,8 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = addFieldsToTestResource(
-        Range::make('Range')->fromTo('start_point', 'end_point')
-    );
+    $resource = addFieldsToTestResource([])
+        ->setTestFields([Range::make('Range')->fromTo('start_point', 'end_point')]);
 
     asAdmin()->get(
         toPage(page: IndexPage::class, resource: $resource)
@@ -176,7 +176,8 @@ function rangeExport(Item $item): ?string
     $item->save();
 
     $resource = addFieldsToTestResource(
-        Range::make('Range')->fromTo('start_point', 'end_point')->showOnExport()
+        Range::make('Range')->fromTo('start_point', 'end_point'),
+        'exportFields'
     );
 
     $export = ExportHandler::make('');
@@ -202,7 +203,8 @@ it('import', function (): void {
     $file = rangeExport($this->item);
 
     $resource = addFieldsToTestResource(
-        Range::make('Range')->fromTo('start_point', 'end_point')->useOnImport()
+        Range::make('Range')->fromTo('start_point', 'end_point'),
+        'importFields'
     );
 
     $import = ImportHandler::make('');

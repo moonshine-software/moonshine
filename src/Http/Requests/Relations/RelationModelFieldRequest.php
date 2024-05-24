@@ -68,7 +68,7 @@ class RelationModelFieldRequest extends FormRequest
                 PageType::INDEX => $resource->getIndexFields(),
                 PageType::DETAIL => $resource->getDetailFields(withOutside: true),
                 PageType::FORM => $resource->getFormFields(withOutside: true),
-                default => Fields::make($resource->fields())
+                default => $resource->getFormFields()
             };
 
             return $fields

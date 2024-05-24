@@ -14,7 +14,6 @@ use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Support\Condition;
 use MoonShine\Support\MoonShineComponentAttributeBag;
 use MoonShine\Traits\Fields\Applies;
-use MoonShine\Traits\Fields\ShowOrHide;
 use MoonShine\Traits\Fields\ShowWhen;
 use MoonShine\Traits\Fields\WithBadge;
 use MoonShine\Traits\Fields\WithLink;
@@ -34,10 +33,8 @@ abstract class Field extends FormElement
     use WithSorts;
     use WithHint;
     use ShowWhen;
-    use ShowOrHide;
     use WithLink;
     use WithBadge;
-    use WithIsNowOnRoute;
     use Applies;
 
     protected string $column;

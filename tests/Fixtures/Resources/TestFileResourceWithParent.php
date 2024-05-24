@@ -11,7 +11,7 @@ class TestFileResourceWithParent extends TestFileResource
 {
     use ResourceWithParent;
 
-    public function fields(): array
+    public function indexFields(): array
     {
         $parentId = $this->getParentId();
 
@@ -20,6 +20,16 @@ class TestFileResourceWithParent extends TestFileResource
             File::make('File', 'path')->dir('item_files/' . $parentId),
             BelongsTo::make('Item', resource: new TestItemResource()),
         ];
+    }
+
+    public function formFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function detailFields(): array
+    {
+        return $this->indexFields();
     }
 
     protected function getParentResourceClassName(): string
