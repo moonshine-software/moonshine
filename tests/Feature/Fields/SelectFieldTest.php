@@ -24,7 +24,7 @@ beforeEach(function () {
 
 it('show field on pages', function () {
     $resource = addFieldsToTestResource([])->setTestFields([
-        $this->field
+        $this->field,
     ]);
 
     asAdmin()->get(

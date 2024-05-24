@@ -27,7 +27,7 @@ beforeEach(function () {
 
 it('show field on pages', function () {
     $resource = multipleFileResource()->setTestFields([
-        $this->field
+        $this->field,
     ]);
 
     asAdmin()->get(
@@ -54,8 +54,9 @@ it('show field on pages', function () {
 
 it('apply as base', function () {
     $resource = multipleFileResource()->setTestFields([
-        $this->field
-    ]);;
+        $this->field,
+    ]);
+    ;
 
     $files = saveMultipleFiles($resource, $this->item);
 

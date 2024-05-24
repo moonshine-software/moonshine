@@ -46,7 +46,7 @@ class TestImageResource extends ModelResource
             MorphTo::make('Imageable')->types([
                 Item::class => 'name',
                 Category::class => 'name',
-            ])
+            ]),
         ];
     }
 

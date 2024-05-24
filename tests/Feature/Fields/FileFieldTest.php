@@ -25,7 +25,7 @@ beforeEach(function () {
 
 it('show field on pages', function () {
     $resource = fileResource()->setTestFields([
-        $this->field
+        $this->field,
     ]);
 
     asAdmin()->get(
@@ -53,7 +53,7 @@ it('show field on pages', function () {
 it('apply as base', function () {
     $resource = fileResource()
         ->setTestFields([
-            $this->field
+            $this->field,
         ]);
 
     $file = saveFile($resource, $this->item);

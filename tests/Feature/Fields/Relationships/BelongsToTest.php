@@ -30,7 +30,7 @@ beforeEach(function (): void {
 
 it('show field on pages', function () {
     $resource = belongsToResource()->setTestFields([
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: new MoonShineUserResource()),
     ]);
 
     asAdmin()->get(
@@ -132,7 +132,7 @@ it('belongs to valuesQuery', function () {
 
 it('apply as base', function () {
     $resource = belongsToResource()->setTestFields([
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: new MoonShineUserResource()),
     ]);
 
     saveMoonShineUser($resource, $this->item);

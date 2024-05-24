@@ -26,10 +26,10 @@ beforeEach(function (): void {
             CustomPageDetail::make('CustomPageDetail'),
         ])
         ->setTestExportFields([
-            ID::make()
+            ID::make(),
         ])
         ->setTestImportFields([
-            ID::make()
+            ID::make(),
         ])
         ->setTestFields([
             ID::make()->sortable(),
