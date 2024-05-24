@@ -10,7 +10,6 @@ use MoonShine\Components\ActionGroup;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Fragment;
 use MoonShine\Components\Layout\Block;
-use MoonShine\Components\Layout\Box;
 use MoonShine\Components\Layout\Column;
 use MoonShine\Components\Layout\Grid;
 use MoonShine\Components\Layout\LineBreak;
