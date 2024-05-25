@@ -7,11 +7,12 @@ namespace MoonShine\Fields;
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\RangeField;
 use MoonShine\Traits\Fields\DateTrait;
 use MoonShine\Traits\Fields\RangeTrait;
 use MoonShine\Traits\Fields\WithDefaultValue;
 
-class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray
+class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray, RangeField
 {
     use RangeTrait;
     use DateTrait;

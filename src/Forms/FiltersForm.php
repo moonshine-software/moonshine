@@ -6,8 +6,8 @@ namespace MoonShine\Forms;
 
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
+use MoonShine\Contracts\Fields\RangeField;
 use MoonShine\Enums\JsEvent;
-use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
 use MoonShine\Resources\ModelResource;
@@ -29,7 +29,7 @@ final class FiltersForm
         $filters->fill($values);
 
         foreach ($filters->onlyFields() as $filter) {
-            if($filter instanceof DateRange) {
+            if($filter instanceof RangeField) {
                 data_forget($values, $filter->column());
             }
         }
