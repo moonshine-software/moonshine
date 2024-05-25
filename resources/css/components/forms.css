@@ -140,7 +140,7 @@ input[type='number'] {
 
 /* File upload */
 .form-file-upload {
-  @apply cursor-pointer bg-clip-padding overflow-hidden file:-m-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-slate-100 file:p-3 file:transition file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-primary dark:file:text-white dark:file:hover:bg-secondary;
+  @apply cursor-pointer overflow-hidden bg-clip-padding file:-m-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-slate-100 file:p-3 file:transition file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-primary dark:file:text-white dark:file:hover:bg-secondary;
 }
 
 .form-input,
@@ -251,17 +251,17 @@ input[type='number'] {
   }
 
   .choices__input {
-    @apply bg-white p-0 text-3xs focus:ring-0 dark:bg-dark-800 dark:placeholder:text-gray-500 m-0 leading-6 w-[1px];
+    @apply m-0 w-[1px] bg-white p-0 text-3xs leading-6 focus:ring-0 dark:bg-dark-800 dark:placeholder:text-gray-500;
   }
 
   .choices__inner {
-    @apply rounded-md border-gray-300 !leading-6 !py-2 text-2xs bg-white leading-tight transition-colors duration-200 dark:border-dark-300 dark:bg-dark-800 min-h-[42px];
+    @apply min-h-[42px] rounded-md border-gray-300 bg-white !py-2 text-2xs !leading-6 leading-tight transition-colors duration-200 dark:border-dark-300 dark:bg-dark-800;
 
     .choices__list--single {
       @apply py-0;
     }
     .choices__list--multiple .choices__item {
-      @apply py-0 border-0 text-3xs -mb-1 -mt-2;
+      @apply -mb-1 -mt-2 border-0 py-0 text-3xs;
     }
   }
 

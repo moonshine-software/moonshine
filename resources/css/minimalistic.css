@@ -427,7 +427,7 @@ body.theme-minimalistic {
 
   /* Buttons */
   .btn {
-    @apply h-8 gap-x-1.5 px-2 min-h-[34px];
+    @apply h-8 min-h-[34px] gap-x-1.5 px-2;
 
     &.btn-lg {
       @apply h-10 px-3.5;
@@ -520,7 +520,7 @@ body.theme-minimalistic {
   .form-select,
   .form-multiselect,
   .form-file-upload {
-    @apply px-2 py-1 min-h-[34px];
+    @apply min-h-[34px] px-2 py-1;
   }
 
   .form-file-upload {
@@ -597,7 +597,7 @@ body.theme-minimalistic {
   }
 
   .choices .choices__list--multiple .choices__item {
-    @apply mr-1 rounded-[0.25rem] px-1.5 py-0 -mb-0.5 -mt-1;
+    @apply -mb-0.5 -mt-1 mr-1 rounded-[0.25rem] px-1.5 py-0;
   }
 
   .choices__list--single {
