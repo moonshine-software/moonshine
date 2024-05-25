@@ -57,10 +57,10 @@ final class BelongsToManyButton
                         true,
                         [
                             AlpineJs::event(JsEvent::FRAGMENT_UPDATED, $field->getRelationName()),
-                            AlpineJs::event(JsEvent::FORM_RESET, $field->getRelationName()),
+                            AlpineJs::event(JsEvent::FORM_RESET, $resource->uriKey()),
                         ]
                     )
-                    ->name($field->getRelationName())
+                    ->name($resource->uriKey())
                     ->fillCast(
                         [],
                         $resource->getModelCast()
