@@ -72,7 +72,7 @@ class ExportHandler extends Handler
 
         $this->resolveStorage();
 
-        $path = Storage::disk($this->getDisk())->path($this->createPath());
+        $path = Storage::disk($this->getDisk())->path($this->generateFilePath());
 
         if ($this->isQueue()) {
             ExportHandlerJob::dispatch(
