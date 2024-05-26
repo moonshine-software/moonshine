@@ -103,7 +103,7 @@ class ExportHandler extends Handler
         );
     }
 
-    public function isFilename(): bool
+    public function hasFilename(): bool
     {
         return ! is_null($this->filename);
     }
@@ -121,7 +121,7 @@ class ExportHandler extends Handler
     private function generateFilePath(): string
     {
         $dir = $this->getDir();
-        $filename = $this->isFilename() ? $this->filename : $this->getResource()->uriKey();
+        $filename = $this->hasFilename() ? $this->filename : $this->getResource()->uriKey();
         $ext = $this->isCsv() ? 'csv' : 'xlsx';
 
         return sprintf('%s/%s.%s', $dir, $filename, $ext);
