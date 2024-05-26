@@ -8,10 +8,10 @@ use Illuminate\Support\Arr;
 use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\FormMethod;
+use MoonShine\Contracts\Fields\RangeField;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
-use MoonShine\Fields\Range;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Stringable;
@@ -37,7 +37,7 @@ final class FiltersForm implements FormContract
         $filters->fill($values);
 
         foreach ($filters->onlyFields() as $filter) {
-            if($filter instanceof Range) {
+            if($filter instanceof RangeField) {
                 data_forget($values, $filter->getColumn());
             }
         }

@@ -32,6 +32,8 @@ class ExportHandler extends Handler
 
     protected string $csvDelimiter = ',';
 
+    protected ?string $filename = null;
+
     public function csv(): static
     {
         $this->isCsv = true;
@@ -42,6 +44,13 @@ class ExportHandler extends Handler
     public function delimiter(string $value): static
     {
         $this->csvDelimiter = $value;
+
+        return $this;
+    }
+
+    public function filename(string $filename): static
+    {
+        $this->filename = $filename;
 
         return $this;
     }
@@ -65,10 +74,7 @@ class ExportHandler extends Handler
 
         $this->resolveStorage();
 
-        $path = Storage::disk($this->getDisk())
-            ->path(
-                "{$this->getDir()}/{$this->getResource()->uriKey()}." . ($this->isCsv() ? 'csv' : 'xlsx')
-            );
+        $path = Storage::disk($this->getDisk())->path($this->generateFilePath());
 
         if ($this->isQueue()) {
             ExportHandlerJob::dispatch(
@@ -99,6 +105,11 @@ class ExportHandler extends Handler
         );
     }
 
+    public function hasFilename(): bool
+    {
+        return ! is_null($this->filename);
+    }
+
     public function isCsv(): bool
     {
         return $this->isCsv;
@@ -107,6 +118,15 @@ class ExportHandler extends Handler
     public function getDelimiter(): string
     {
         return $this->csvDelimiter;
+    }
+
+    private function generateFilePath(): string
+    {
+        $dir = $this->getDir();
+        $filename = $this->hasFilename() ? $this->filename : $this->getResource()->uriKey();
+        $ext = $this->isCsv() ? 'csv' : 'xlsx';
+
+        return sprintf('%s/%s.%s', $dir, $filename, $ext);
     }
 
     /**
