@@ -38,7 +38,7 @@ class IndexPage extends Page
      */
     public function beforeRender(): void
     {
-        abort_if(!$this->getResource()->can('viewAny'), 403);
+        abort_if(! $this->getResource()->can('viewAny'), 403);
 
         parent::beforeRender();
     }
@@ -118,17 +118,17 @@ class IndexPage extends Page
 
         $filtersButtons = ActionGroup::make()->when(
             $this->getResource()->filters() !== [],
-            fn(ActionGroup $group): ActionGroup => $group->add(
+            fn (ActionGroup $group): ActionGroup => $group->add(
                 FiltersButton::for($this->getResource())
             )
         )->when(
-            !is_null($export = $this->getResource()->export()),
-            fn(ActionGroup $group): ActionGroup => $group->add(
+            ! is_null($export = $this->getResource()->export()),
+            fn (ActionGroup $group): ActionGroup => $group->add(
                 ExportButton::for($this->getResource(), $export)
             ),
         )->when(
-            !is_null($import = $this->getResource()->import()),
-            fn(ActionGroup $group): ActionGroup => $group->add(
+            ! is_null($import = $this->getResource()->import()),
+            fn (ActionGroup $group): ActionGroup => $group->add(
                 ImportButton::for($this->getResource(), $import)
             ),
         );
@@ -200,14 +200,14 @@ class IndexPage extends Page
             ->cast($this->getResource()->getModelCast())
             ->withNotFound()
             ->when(
-                !is_null($this->getResource()->trAttributes()),
-                fn(TableBuilder $table): TableBuilder => $table->trAttributes(
+                ! is_null($this->getResource()->trAttributes()),
+                fn (TableBuilder $table): TableBuilder => $table->trAttributes(
                     $this->getResource()->trAttributes()
                 )
             )
             ->when(
-                !is_null($this->getResource()->tdAttributes()),
-                fn(TableBuilder $table): TableBuilder => $table->tdAttributes(
+                ! is_null($this->getResource()->tdAttributes()),
+                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
                     $this->getResource()->tdAttributes()
                 )
             )
