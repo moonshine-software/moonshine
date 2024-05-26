@@ -93,12 +93,12 @@ final class HasManyButton
                         fn (): string => moonshineRouter()
                             ->reactive(key: $data?->getKey(), page: $resource->formPage(), resource: $resource)
                     )
-                    ->name('crud')
+                    ->name($resource->uriKey())
                     ->switchFormMode(
                         $isAsync,
                         [
                             $resource->listEventName($field->getRelationName()),
-                            AlpineJs::event(JsEvent::FORM_RESET, $field->getRelationName()),
+                            AlpineJs::event(JsEvent::FORM_RESET, $resource->uriKey()),
                         ]
                     )
                     ->when(

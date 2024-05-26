@@ -124,7 +124,7 @@ it('async search', function () {
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-resource',
         'resourceItem' => $item->id,
-        '_component_name' => 'crud',
+        '_component_name' => 'test-resource',
         '_relation' => 'categories',
         'query' => 'test',
     ]))

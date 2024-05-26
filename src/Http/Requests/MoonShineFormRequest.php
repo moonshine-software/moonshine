@@ -14,8 +14,6 @@ use Throwable;
  */
 class MoonShineFormRequest extends FormRequest
 {
-    protected $errorBag = 'crud';
-
     public function authorize(): bool
     {
         return true;
@@ -29,6 +27,7 @@ class MoonShineFormRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         if ($this->hasResource()) {
+            $this->errorBag = $this->getResource()?->uriKey();
             $this->getResource()?->prepareForValidation();
         }
 

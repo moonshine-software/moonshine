@@ -32,7 +32,7 @@ it('validation error', function () {
         action([ProfileController::class, 'store']),
         $data
     )
-        ->assertSessionHasErrorsIn('crud', ['username']);
+        ->assertSessionHasErrors(['username']);
 });
 
 it('successful save', function () {

@@ -171,7 +171,7 @@ class HasOne extends ModelRelationField implements HasFields
                 fn (): string => moonshineRouter()
                     ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
             )
-            ->name('crud')
+            ->name($resource->uriKey())
             ->switchFormMode($isAsync)
             ->fields(
                 $fields->when(
