@@ -9,14 +9,13 @@ use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\ImportButton;
 use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\FlexibleRender;
 use MoonShine\Components\Layout\LayoutBlock;
 use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Decorations\Block;
-use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Fragment;
-use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\PageType;
@@ -39,7 +38,7 @@ class IndexPage extends Page
      */
     public function beforeRender(): void
     {
-        abort_if(! $this->getResource()->can('viewAny'), 403);
+        abort_if(!$this->getResource()->can('viewAny'), 403);
 
         parent::beforeRender();
     }
@@ -77,7 +76,6 @@ class IndexPage extends Page
         return [
             ...$this->filtersForm(),
             ...$this->actionButtons(),
-            ...$this->queryTags(),
             ...$this->table(),
         ];
     }
@@ -111,36 +109,53 @@ class IndexPage extends Page
      */
     protected function actionButtons(): array
     {
-        return [
-            Grid::make([
-                Column::make([
-                    ActionGroup::make([
-                        $this->getResource()->getCreateButton(
-                            isAsync: $this->getResource()->isAsync()
-                        ),
-                        ...$this->getResource()->actions(),
-                    ]),
+        $actionsButtons = ActionGroup::make([
+            $this->getResource()->getCreateButton(
+                isAsync: $this->getResource()->isAsync()
+            ),
+            ...$this->getResource()->actions(),
+        ]);
 
-                    ActionGroup::make()->when(
-                        $this->getResource()->filters() !== [],
-                        fn (ActionGroup $group): ActionGroup => $group->add(
-                            FiltersButton::for($this->getResource())
-                        )
-                    )->when(
-                        ! is_null($export = $this->getResource()->export()),
-                        fn (ActionGroup $group): ActionGroup => $group->add(
-                            ExportButton::for($this->getResource(), $export)
-                        ),
-                    )->when(
-                        ! is_null($import = $this->getResource()->import()),
-                        fn (ActionGroup $group): ActionGroup => $group->add(
-                            ImportButton::for($this->getResource(), $import)
-                        ),
-                    ),
-                ])->customAttributes([
-                    'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
-                ]),
-            ]),
+        $filtersButtons = ActionGroup::make()->when(
+            $this->getResource()->filters() !== [],
+            fn(ActionGroup $group): ActionGroup => $group->add(
+                FiltersButton::for($this->getResource())
+            )
+        )->when(
+            !is_null($export = $this->getResource()->export()),
+            fn(ActionGroup $group): ActionGroup => $group->add(
+                ExportButton::for($this->getResource(), $export)
+            ),
+        )->when(
+            !is_null($import = $this->getResource()->import()),
+            fn(ActionGroup $group): ActionGroup => $group->add(
+                ImportButton::for($this->getResource(), $import)
+            ),
+        );
+
+        $tagsButtons = ActionGroup::make()->when(
+            $this->getResource()->queryTags() !== [],
+            function (ActionGroup $group): ActionGroup {
+                foreach ($this->getResource()->queryTags() as $tag) {
+                    $group->add(
+                        QueryTagButton::for($this->getResource(), $tag)
+                    );
+                }
+
+                return $group;
+            }
+        );
+
+        return [
+            FlexibleRender::make(
+                view('moonshine::layouts.shared.action-buttons'),
+                [
+                    'actionsButtons' => $actionsButtons,
+                    'filtersButtons' => $filtersButtons,
+                    'tagsButtons' => $tagsButtons,
+                ]
+            ),
+
             LineBreak::make(),
         ];
     }
@@ -185,14 +200,14 @@ class IndexPage extends Page
             ->cast($this->getResource()->getModelCast())
             ->withNotFound()
             ->when(
-                ! is_null($this->getResource()->trAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                !is_null($this->getResource()->trAttributes()),
+                fn(TableBuilder $table): TableBuilder => $table->trAttributes(
                     $this->getResource()->trAttributes()
                 )
             )
             ->when(
-                ! is_null($this->getResource()->tdAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                !is_null($this->getResource()->tdAttributes()),
+                fn(TableBuilder $table): TableBuilder => $table->tdAttributes(
                     $this->getResource()->tdAttributes()
                 )
             )
