@@ -12,6 +12,14 @@ const vendorSafeList = [
     variants: isDevelopment() ? [] : ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
   },
   {
+    // usage: flex align items
+    pattern: /items-(start|end|center|baseline|stretch)/,
+  },
+  {
+    // usage: flex justify content
+    pattern: /justify-(normal|start|end|center|between|around|evenly|stretch)/,
+  },
+  {
     // usage: icons
     pattern: /(w-|h-)[1-9]/,
   },
