@@ -58,7 +58,7 @@ body.theme-minimalistic {
     }
 
     .search-form {
-      @apply h-8;
+      @apply h-[34px];
 
       &-field {
         @apply rounded-md;
@@ -447,7 +447,7 @@ body.theme-minimalistic {
       @apply p-2;
     }
     &-btn {
-      @apply h-auto min-h-[2rem] min-w-[2rem] gap-x-1 p-1;
+      @apply h-auto min-h-[34px] min-w-[34px] gap-x-1 p-1;
     }
     &-menu {
       &-link {

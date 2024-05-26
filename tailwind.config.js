@@ -16,8 +16,8 @@ const vendorSafeList = [
     pattern: /items-(start|end|center|baseline|stretch)/,
   },
   {
-    // usage: flex justify items
-    pattern: /justify-(start|end|center|stretch)/,
+    // usage: flex justify content
+    pattern: /justify-(normal|start|end|center|between|around|evenly|stretch)/,
   },
   {
     // usage: icons
