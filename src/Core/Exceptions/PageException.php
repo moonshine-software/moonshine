@@ -2,6 +2,10 @@
 
 namespace MoonShine\Core\Exceptions;
 
-class PageException extends MoonShineException
+final class PageException extends MoonShineException
 {
+    public static function required(): self
+    {
+        return new self('Page is required');
+    }
 }

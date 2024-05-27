@@ -6,12 +6,12 @@ namespace MoonShine\UI\Fields;
 
 use Illuminate\Support\Collection;
 use JsonException;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\Core\Contracts\Fields\HasDefaultValue;
-use MoonShine\Core\Contracts\Fields\HasReactivity;
-use MoonShine\Core\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\HasReactivity;
+use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;

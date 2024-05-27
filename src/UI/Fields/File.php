@@ -6,8 +6,8 @@ namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\Fields\Fileable;
-use MoonShine\Core\Contracts\Fields\RemovableContract;
+use MoonShine\Contracts\Fields\Fileable;
+use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Support\DTOs\FileItem;
 use MoonShine\UI\Components\Files;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;

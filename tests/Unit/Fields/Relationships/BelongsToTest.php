@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\Core\Contracts\Fields\HasDefaultValue;
-use MoonShine\Core\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Core\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
+use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Models\MoonshineUser;

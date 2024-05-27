@@ -3,22 +3,22 @@
 namespace MoonShine\Laravel\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Core\Contracts\MoonShineRenderable;
-use MoonShine\Core\Exceptions\MoonShineComponentException;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Fragment;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
 
 /**

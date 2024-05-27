@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use BackedEnum;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeEnum;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeEnum;
 
 class Enum extends Select implements DefaultCanBeEnum
 {

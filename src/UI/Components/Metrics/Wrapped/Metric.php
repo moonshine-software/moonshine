@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Metrics\Wrapped;
 
 use Closure;
-use MoonShine\Core\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;

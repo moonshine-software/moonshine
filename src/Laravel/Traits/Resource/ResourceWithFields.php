@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\Fields\FieldsWrapper;
+use MoonShine\Contracts\Fields\FieldsWrapper;
 use MoonShine\Laravel\Applies\FieldsWithoutFilters;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Exceptions\FilterException;

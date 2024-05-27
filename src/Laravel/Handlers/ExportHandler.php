@@ -7,13 +7,14 @@ namespace MoonShine\Laravel\Handlers;
 use Generator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
-use MoonShine\Core\Exceptions\ActionException;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Handlers\Handler;
 use MoonShine\Laravel\Jobs\ExportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\Support\Traits\WithStorage;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Exceptions\ActionButtonException;
 use OpenSpout\Common\Exception\InvalidArgumentException;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
@@ -56,7 +57,7 @@ class ExportHandler extends Handler
     }
 
     /**
-     * @throws ActionException
+     * @throws ActionButtonException
      * @throws IOException
      * @throws WriterNotOpenedException
      * @throws UnsupportedTypeException
@@ -69,7 +70,7 @@ class ExportHandler extends Handler
         )->except(['_component_name', 'page'])->toArray();
 
         if (! $this->hasResource()) {
-            throw ActionException::resourceRequired();
+            throw ActionButtonException::resourceRequired();
         }
 
         $this->resolveStorage();
@@ -187,12 +188,12 @@ class ExportHandler extends Handler
     }
 
     /**
-     * @throws ActionException
+     * @throws ActionButtonException
      */
     public function getButton(): ActionButton
     {
         if (! $this->hasResource()) {
-            throw ActionException::resourceRequired();
+            throw ActionButtonException::resourceRequired();
         }
 
         $query = Arr::query(request(['filters', 'sort', 'query-tag'], []));

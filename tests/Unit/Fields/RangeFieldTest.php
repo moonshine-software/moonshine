@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\UI\Fields\Range;
 
 uses()->group('fields');

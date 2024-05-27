@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\Core\Contracts\Fields\HasDefaultValue;
-use MoonShine\Core\Contracts\Fields\HasReactivity;
-use MoonShine\Core\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\HasReactivity;
+use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Core\Contracts\Fields\RangeField;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\RangeField;
 use MoonShine\UI\Traits\Fields\RangeTrait;
 
 class Range extends Number implements DefaultCanBeArray, RangeField

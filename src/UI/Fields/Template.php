@@ -6,7 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use MoonShine\Core\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Traits\WithFields;
 

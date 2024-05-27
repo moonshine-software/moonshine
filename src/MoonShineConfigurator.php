@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\Forms\FormContract;
+use MoonShine\Contracts\Forms\FormContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Layouts\AppLayout;

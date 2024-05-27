@@ -7,8 +7,8 @@ namespace MoonShine\UI\Traits\Fields;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\WithStorage;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 
 trait FileTrait
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use MoonShine\Core\Handlers\Handler;
 use MoonShine\Laravel\Handlers\ExportHandler;
-use MoonShine\Laravel\Handlers\Handler;
 use MoonShine\Laravel\Handlers\ImportHandler;
 
 trait ResourceModelActions

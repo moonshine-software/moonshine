@@ -6,7 +6,7 @@ namespace MoonShine\UI\Components;
 
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Traits\HasDataCast;
 use MoonShine\UI\Traits\WithFields;

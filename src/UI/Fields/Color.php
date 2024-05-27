@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\View\View;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\Core\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Components\Color as ColorComponent;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 

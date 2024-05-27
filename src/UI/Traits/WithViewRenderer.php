@@ -6,11 +6,11 @@ namespace MoonShine\UI\Traits;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use MoonShine\Core\Contracts\Components\HasCanSeeContract;
-use MoonShine\Core\Contracts\Components\HasComponents;
-use MoonShine\Core\Contracts\Fields\HasAssets;
-use MoonShine\Core\Contracts\Fields\HasFields;
-use MoonShine\Core\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Components\HasCanSeeContract;
+use MoonShine\Contracts\Components\HasComponents;
+use MoonShine\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\Fields\HasFields;
+use MoonShine\Contracts\MoonShineRenderable;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 
 /**
  * @method static static make(string $href,string $logo,?string $logoSmall = null,?string $title = null)

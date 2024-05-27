@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\TypeCasts;
 
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
-use MoonShine\Core\Contracts\MoonShineDataCast;
+use MoonShine\Contracts\MoonShineDataCast;
 use MoonShine\Support\Traits\Makeable;
 
 /**

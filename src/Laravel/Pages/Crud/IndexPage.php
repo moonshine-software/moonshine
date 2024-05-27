@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Core\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Buttons\FiltersButton;

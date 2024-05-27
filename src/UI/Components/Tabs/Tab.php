@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
-use MoonShine\Core\Exceptions\MoonShineComponentException;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Components\AbstractWithComponents;
+use MoonShine\UI\Exceptions\MoonShineComponentException;
 
 /**
  * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
@@ -38,9 +38,7 @@ class Tab extends AbstractWithComponents
      */
     public function getView(): string
     {
-        throw new MoonShineComponentException(
-            'You need to use ' . Tabs::class . ' class'
-        );
+        throw MoonShineComponentException::tabsAreNotRendering();
     }
 
     public function active(Closure|bool|null $condition = null): self

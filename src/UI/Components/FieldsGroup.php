@@ -36,6 +36,9 @@ final class FieldsGroup extends AbstractWithComponents
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function mapFields(Closure $callback): self
     {
         $this->getComponents()

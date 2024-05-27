@@ -7,13 +7,13 @@ namespace MoonShine\Core\Pages;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
-use MoonShine\Core\Contracts\Collections\FieldsCollection;
-use MoonShine\Core\Contracts\Components\HasComponents;
-use MoonShine\Core\Contracts\Fields\HasAssets;
-use MoonShine\Core\Contracts\HasResourceContract;
-use MoonShine\Core\Contracts\MoonShineRenderable;
-use MoonShine\Core\Contracts\PageView;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Collections\FieldsCollection;
+use MoonShine\Contracts\Components\HasComponents;
+use MoonShine\Contracts\Fields\HasAssets;
+use MoonShine\Contracts\HasResourceContract;
+use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\PageView;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\MenuManager\MenuFiller;
 use MoonShine\MoonShineRouter;
 use MoonShine\Support\Enums\Layer;
@@ -129,7 +129,7 @@ abstract class Page implements
      */
     public function getFields(): FieldsCollection
     {
-        return fields($this->fields());
+        return fieldsCollection($this->fields());
     }
 
     /**
@@ -343,13 +343,9 @@ abstract class Page implements
 
     protected function prepareBeforeRender(): void
     {
-        // TODO @isolate
-        request()
-            ?->route()
-            ?->setParameter('pageUri', $this->uriKey());
-
         $withoutQuery = parse_url($this->url(), PHP_URL_PATH);
 
+        // @isolate(request)
         if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim((string) request()?->path(), '/')) {
             oops404();
         }

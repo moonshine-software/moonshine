@@ -6,8 +6,8 @@ namespace MoonShine;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Core\Contracts\MoonShineRenderable;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Resources\Resources;

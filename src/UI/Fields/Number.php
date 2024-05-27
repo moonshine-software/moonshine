@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\View\View;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\UI\Components\Rating;
 use MoonShine\UI\InputExtensions\InputNumberUpDown;
 use MoonShine\UI\Traits\Fields\NumberTrait;

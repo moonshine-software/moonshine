@@ -26,11 +26,11 @@ use MoonShine\Laravel\Traits\Resource\ResourceWithButtons;
 use MoonShine\Laravel\Traits\Resource\ResourceWithFields;
 use MoonShine\Laravel\TypeCasts\ModelCast;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\ClickAction;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Fields\Field;
 use Throwable;
 

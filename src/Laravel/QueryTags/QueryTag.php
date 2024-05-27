@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\QueryTags;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use MoonShine\Core\Contracts\Components\HasCanSeeContract;
+use MoonShine\Contracts\Components\HasCanSeeContract;
 use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithIcon;

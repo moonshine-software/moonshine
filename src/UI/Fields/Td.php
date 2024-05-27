@@ -6,10 +6,9 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use MoonShine\UI\Collections\Fields;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
@@ -110,10 +109,7 @@ class Td extends Template
             ? $this->getConditionalFields()
             : $this->getFields();
 
-        return FieldsGroup::make(
-            // TODO make generic
-            fields($fields)
-        )
+        return FieldsGroup::make(fieldsCollection($fields))
             ->mapFields(fn (Field $field): Field => $field
                 ->resolveFill($this->toRawValue(), $this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())

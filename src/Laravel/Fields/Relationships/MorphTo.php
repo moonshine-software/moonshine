@@ -7,8 +7,8 @@ namespace MoonShine\Laravel\Fields\Relationships;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use MoonShine\Core\Exceptions\FieldException;
 use MoonShine\Support\DTOs\Select\Options;
+use MoonShine\UI\Exceptions\FieldException;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\MorphTo>

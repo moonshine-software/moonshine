@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Resources;
 
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Handlers\Handler;
+use MoonShine\Core\Handlers\Handlers;
 use MoonShine\Core\Pages\Pages;
-use MoonShine\Laravel\Handlers\Handler;
-use MoonShine\Laravel\Handlers\Handlers;
 use MoonShine\MenuManager\MenuFiller;
 use MoonShine\MoonShineRouter;
 use MoonShine\Support\Traits\WithAssets;

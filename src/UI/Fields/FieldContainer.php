@@ -7,9 +7,9 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 
 /**
  * @internal

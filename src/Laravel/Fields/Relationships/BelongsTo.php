@@ -6,11 +6,11 @@ namespace MoonShine\Laravel\Fields\Relationships;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\Core\Contracts\Fields\HasDefaultValue;
-use MoonShine\Core\Contracts\Fields\HasReactivity;
-use MoonShine\Core\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Core\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
+use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\HasReactivity;
+use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Traits\HasResource;
@@ -61,7 +61,7 @@ class BelongsTo extends ModelRelationField implements
                 ? $this->getResource()->formPage()
                 : $this->getResource()->detailPage();
 
-            throw_if(is_null($page), new PageException('Page is required'));
+            throw_if(is_null($page), PageException::required());
 
             $this->link(
                 $this->getResource()->pageUrl($page, ['resourceItem' => $this->toValue()->getKey()]),

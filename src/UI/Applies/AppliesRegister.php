@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Applies;
 
-use MoonShine\Core\Contracts\ApplyContract;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Contracts\ApplyContract;
+use MoonShine\Core\Resources\Resource;
 use MoonShine\UI\Fields\Field;
 
 final class AppliesRegister
 {
     private string $type = 'fields';
 
-    private string $for = ModelResource::class;
+    private ?string $for = null;
+
+    private string $defaultFor = Resource::class;
 
     private array $applies = [
         'filters' => [],
@@ -26,11 +28,40 @@ final class AppliesRegister
         return $this;
     }
 
+    /**
+     * @param  class-string  $for
+     */
     public function for(string $for): AppliesRegister
     {
         $this->for = $for;
 
         return $this;
+    }
+
+    /**
+     * @return class-string
+     */
+    public function getFor(): string
+    {
+        return $this->for ?? $this->getDefaultFor();
+    }
+
+    /**
+     * @param  class-string  $for
+     */
+    public function defaultFor(string $for): AppliesRegister
+    {
+        $this->defaultFor = $for;
+
+        return $this;
+    }
+
+    /**
+     * @return class-string
+     */
+    public function getDefaultFor(): string
+    {
+        return $this->defaultFor;
     }
 
     public function filters(): AppliesRegister
@@ -50,7 +81,7 @@ final class AppliesRegister
     public function findByField(
         Field $field,
         string $type = 'fields',
-        string $for = ModelResource::class
+        ?string $for = null
     ): ?ApplyContract {
         if ($field->hasOnApply()) {
             return null;
@@ -58,7 +89,7 @@ final class AppliesRegister
 
         return appliesRegister()
             ->type($type)
-            ->for($for)
+            ->for($for ?? $this->getDefaultFor())
             ->get($field::class);
     }
 
@@ -68,7 +99,7 @@ final class AppliesRegister
      */
     public function add(string $fieldClass, string $applyClass): AppliesRegister
     {
-        $this->applies[$this->type][$this->for][$fieldClass] = $applyClass;
+        $this->applies[$this->type][$this->getFor()][$fieldClass] = $applyClass;
 
         return $this;
     }
@@ -78,8 +109,8 @@ final class AppliesRegister
      */
     public function push(array $data): AppliesRegister
     {
-        $this->applies[$this->type][$this->for] = array_merge(
-            $this->applies[$this->type][$this->for] ?? [],
+        $this->applies[$this->type][$this->getFor()] = array_merge(
+            $this->applies[$this->type][$this->getFor()] ?? [],
             $data,
         );
 
@@ -91,10 +122,10 @@ final class AppliesRegister
      */
     public function get(string $fieldClass, ?ApplyContract $default = null): ?ApplyContract
     {
-        $apply = $this->applies[$this->type][$this->for][$fieldClass] ?? null;
+        $apply = $this->applies[$this->type][$this->getFor()][$fieldClass] ?? null;
 
         if (is_null($apply)) {
-            foreach ($this->applies[$this->type][$this->for] ?? [] as $fieldApply => $applyClass) {
+            foreach ($this->applies[$this->type][$this->getFor()] ?? [] as $fieldApply => $applyClass) {
                 if (is_subclass_of($fieldClass, $fieldApply)) {
                     $apply = $applyClass;
 

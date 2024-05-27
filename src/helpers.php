@@ -9,8 +9,8 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Core\Contracts\Collections\FieldsCollection;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Collections\FieldsCollection;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\MenuManager\MenuManager;
@@ -40,10 +40,17 @@ if (! function_exists('appliesRegister')) {
     }
 }
 
-if (! function_exists('fields')) {
-    function fields(array $items = []): FieldsCollection
+if (! function_exists('fieldsCollection')) {
+    /**
+     * @template-covariant T of FieldsCollection
+     * @param  array  $items
+     * @param  class-string<T>  $default
+     * @return T|Fields
+     */
+    function fieldsCollection(array $items = [], string $default = Fields::class): FieldsCollection
     {
-        return moonshine()->getContainer(FieldsCollection::class, items: $items);
+        return moonshine()
+            ->getContainer(FieldsCollection::class, items: $items) ?? $default::make($items);
     }
 }
 

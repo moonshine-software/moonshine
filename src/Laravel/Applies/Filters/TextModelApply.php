@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Applies\Filters;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use MoonShine\Core\Contracts\ApplyContract;
+use MoonShine\Contracts\ApplyContract;
 use MoonShine\Laravel\Support\DBOperators;
 use MoonShine\UI\Fields\Field;
 

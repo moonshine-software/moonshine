@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 
 trait Removable
 {

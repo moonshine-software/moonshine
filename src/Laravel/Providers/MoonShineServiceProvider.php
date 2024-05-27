@@ -13,7 +13,7 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Laravel\Octane\Events\RequestHandled;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Core\Contracts\Collections\FieldsCollection;
+use MoonShine\Contracts\Collections\FieldsCollection;
 use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
 use MoonShine\Laravel\Applies\Filters\CheckboxModelApply;
@@ -189,6 +189,8 @@ class MoonShineServiceProvider extends ServiceProvider
 
     protected function registerApplies(): self
     {
+        appliesRegister()->defaultFor(ModelResource::class);
+
         appliesRegister()->for(ModelResource::class)->fields()->push([
             File::class => FileModelApply::class,
         ]);

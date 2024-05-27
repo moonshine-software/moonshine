@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Builder;
-use MoonShine\Core\Contracts\ApplyContract;
+use MoonShine\Contracts\ApplyContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\UI\Fields\Field;

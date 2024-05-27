@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\UI\Fields\DateRange;
 
 uses()->group('fields');

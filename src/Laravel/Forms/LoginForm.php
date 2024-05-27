@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Forms;
 
-use MoonShine\Core\Contracts\Forms\FormContract;
+use MoonShine\Contracts\Forms\FormContract;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\Switcher;

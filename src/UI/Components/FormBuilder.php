@@ -6,9 +6,10 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use JsonException;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;

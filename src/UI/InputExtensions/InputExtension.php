@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\InputExtensions;
 
 use Illuminate\Support\Collection;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
-use MoonShine\UI\Traits\Components\WithComponentAttributes;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Traits\WithViewRenderer;
 
 abstract class InputExtension

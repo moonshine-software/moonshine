@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
-use MoonShine\Core\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\UI\Collections\Fields;
 use Throwable;
 
@@ -26,11 +26,10 @@ trait WithFields
 
     /**
      * @throws Throwable
-     * // TODO make generic
      */
     public function getFields(): Fields
     {
-        return fields(
+        return fieldsCollection(
             $this->getRawFields()
         );
     }

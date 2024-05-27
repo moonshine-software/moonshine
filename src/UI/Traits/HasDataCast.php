@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits;
 
-use MoonShine\Core\Contracts\MoonShineDataCast;
+use MoonShine\Contracts\MoonShineDataCast;
 
 trait HasDataCast
 {

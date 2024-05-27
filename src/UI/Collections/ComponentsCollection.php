@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Collections;
 
+use MoonShine\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Components\TableBuilder;
 use Throwable;
 
 /**
+ * @template-covariant F of FieldsCollection
  * @extends MoonShineRenderElements<int, MoonShineComponent>
  */
 final class ComponentsCollection extends MoonShineRenderElements
@@ -52,11 +54,11 @@ final class ComponentsCollection extends MoonShineRenderElements
 
     /**
      * @throws Throwable
-     * // TODO make generic
+     * @return F
      */
-    public function onlyFields(bool $withWrappers = false): Fields
+    public function onlyFields(bool $withWrappers = false): FieldsCollection
     {
-        return fields($this->toArray())
+        return fieldsCollection($this->toArray())
             ->onlyFields($withWrappers);
     }
 

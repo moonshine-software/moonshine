@@ -8,12 +8,12 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
-use MoonShine\Core\Contracts\HasResourceContract;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
-use MoonShine\Core\Exceptions\FieldException;
+use MoonShine\Contracts\HasResourceContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\TypeCasts\ModelCast;
 use MoonShine\Support\Traits\HasResource;
+use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
 use Throwable;
 

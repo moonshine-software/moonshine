@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\MoonShineConfigurator;
 use MoonShine\UI\Applies\AppliesRegister;
 use Throwable;

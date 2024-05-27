@@ -6,8 +6,8 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Core\Contracts\Actions\ActionButtonContract;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Actions\ActionButtonContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;

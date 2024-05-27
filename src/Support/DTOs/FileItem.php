@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Support\DTOs;
 
 use Illuminate\Contracts\Support\Arrayable;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 
 final readonly class FileItem implements Arrayable
 {

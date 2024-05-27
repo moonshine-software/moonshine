@@ -6,8 +6,8 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\VO\FieldEmptyValue;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\Rating;
 
 trait RangeTrait

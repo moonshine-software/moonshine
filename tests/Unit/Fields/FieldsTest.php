@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Core\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;

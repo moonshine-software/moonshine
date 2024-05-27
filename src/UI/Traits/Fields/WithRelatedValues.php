@@ -8,8 +8,8 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Core\Exceptions\FieldException;
 use MoonShine\Support\DTOs\Select\Options;
+use MoonShine\UI\Exceptions\FieldException;
 use Throwable;
 
 trait WithRelatedValues

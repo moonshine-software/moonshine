@@ -10,9 +10,10 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\ApplyContract;
+use MoonShine\Contracts\ApplyContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\QueryTags\QueryTag;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
 use MoonShine\Support\Attributes;
 use MoonShine\Support\Attributes\SearchUsingFullText;
@@ -481,7 +482,7 @@ trait ResourceModelQuery
                 return;
             }
 
-            $filterApply = appliesRegister()->findByField($filter, 'filters');
+            $filterApply = appliesRegister()->findByField($filter, 'filters', ModelResource::class);
 
             $defaultApply = static fn (Builder $query): Builder => $query->where(
                 $filter->getColumn(),

@@ -12,6 +12,7 @@ use MoonShine\UI\Components\MoonShineComponent;
  * TODO @isolate (storage)
  * @method static static make(?string $route = null, ?string $logOutRoute = null, ?string $avatar = null, ?string $nameOfUser = null, ?string $username = null, bool $withBorder = false)
  */
+// TODO move to Laravel and move view to Laravel
 final class Profile extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.profile';

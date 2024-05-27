@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Core\Contracts\Components\HasComponents;
-use MoonShine\Core\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Components\HasComponents;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Traits\Components\WithComponents;
 use MoonShine\UI\Traits\WithFields;

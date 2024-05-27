@@ -16,6 +16,7 @@ use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionProperty;
 use MoonShine\UI\Fields\Field;
 
+// TODO isolate(MoonShineRequest)
 trait WithAsyncSearch
 {
     protected bool $asyncSearch = false;

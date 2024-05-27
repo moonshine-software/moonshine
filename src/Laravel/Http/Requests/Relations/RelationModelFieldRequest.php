@@ -6,12 +6,12 @@ namespace MoonShine\Laravel\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
-use MoonShine\Core\Contracts\Fields\HasFields;
-use MoonShine\Core\Exceptions\FieldException;
+use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
 use MoonShine\Support\Enums\PageType;
+use MoonShine\UI\Exceptions\FieldException;
 use Throwable;
 
 class RelationModelFieldRequest extends FormRequest

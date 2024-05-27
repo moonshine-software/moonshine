@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\View\View;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\Core\Contracts\Fields\HasDefaultValue;
-use MoonShine\Core\Contracts\Fields\HasReactivity;
-use MoonShine\Core\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\Contracts\Fields\HasReactivity;
+use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\Support\AlpineJs;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Traits\Fields\BooleanTrait;

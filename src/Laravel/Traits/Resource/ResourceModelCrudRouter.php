@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Support\Enums\PageType;
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\AbstractWithComponents;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 
 class Sidebar extends AbstractWithComponents
 {

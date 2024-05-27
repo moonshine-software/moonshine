@@ -7,10 +7,10 @@ namespace MoonShine\UI\Traits\Fields;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
-use MoonShine\Core\Exceptions\FieldException;
+use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Text;
 

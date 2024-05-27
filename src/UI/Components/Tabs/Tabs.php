@@ -6,11 +6,11 @@ namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
 use Illuminate\Support\Collection;
-use MoonShine\Core\Exceptions\MoonShineComponentException;
 use MoonShine\Support\Condition;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;
+use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
 
 class Tabs extends AbstractWithComponents
@@ -96,9 +96,7 @@ class Tabs extends AbstractWithComponents
             static function (MoonShineRenderElements $tabs): void {
                 throw_if(
                     $tabs->every(fn ($tab): bool => ! $tab instanceof Tab),
-                    new MoonShineComponentException(
-                        'Tabs must be a class of ' . Tab::class
-                    )
+                    MoonShineComponentException::onlyTabAllowed()
                 );
             }
         );

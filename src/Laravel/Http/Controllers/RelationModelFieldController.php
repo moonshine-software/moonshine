@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use MoonShine\Core\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Support\DBOperators;

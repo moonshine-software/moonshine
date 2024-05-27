@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Table;
 
 use Closure;
-use MoonShine\Core\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\TableBuilder;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Traits\WithViewRenderer;

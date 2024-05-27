@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Forms;
 
 use Illuminate\Support\Arr;
-use MoonShine\Core\Contracts\Fields\RangeField;
-use MoonShine\Core\Contracts\Forms\FormContract;
+use MoonShine\Contracts\Fields\RangeField;
+use MoonShine\Contracts\Forms\FormContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;

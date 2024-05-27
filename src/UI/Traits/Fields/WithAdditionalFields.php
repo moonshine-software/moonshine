@@ -13,11 +13,10 @@ trait WithAdditionalFields
 
     /**
      * @throws Throwable
-     * // TODO make generic
      */
     public function getAdditionalFields(): Fields
     {
-        return fields($this->additionalFields);
+        return fieldsCollection($this->additionalFields);
     }
 
     /**

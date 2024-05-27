@@ -2,7 +2,7 @@
 
 namespace MoonShine\Laravel\Traits\Request;
 
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Contracts\Resources\ResourceContract;
 
 trait HasResourceRequest
 {
