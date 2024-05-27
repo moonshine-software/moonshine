@@ -36,6 +36,10 @@ export default () => ({
 
     this.loading = true
 
+    if (this.withParams !== undefined && this.withParams) {
+      this.method = this.method.toLowerCase() === 'get' ? 'post' : this.method
+    }
+
     let body = withSelectorsParams(this.withParams)
 
     let stopLoading = function (data, t) {
