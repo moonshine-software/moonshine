@@ -64,8 +64,9 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function rows(): Collection
     {
         $tableFields = $this->preparedFields();
+        $hasBulk = $this->getBulkButtons()->isNotEmpty();
 
-        return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($tableFields): TableRow {
+        return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($tableFields, $hasBulk): TableRow {
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 
@@ -77,12 +78,16 @@ final class TableBuilder extends IterableComponent implements TableContract
                 )
             ;
 
-            $fields->each(function ($field, $cellIndex): void {
-                if($field instanceof Td) {
+            $fields->each(function ($field, $cellIndex) use($hasBulk): void {
+                if($field instanceof Td && $field->hasTdAttributes()) {
                     $this->tdAttributes(
-                        fn ($data, $row, $cell, ComponentAttributeBag $attr): ComponentAttributeBag => $cellIndex === $cell - 1
-                            ? $field->resolveTdAttributes($data, $attr)
-                            : $attr
+                        function ($data, $row, $cell, ComponentAttributeBag $attr) use($field, $cellIndex, $hasBulk): ComponentAttributeBag {
+                            $cell = $hasBulk ? $cell-1 : $cell;
+
+                            return $cellIndex === $cell
+                                ? $field->resolveTdAttributes($data, $attr)
+                                : $attr;
+                        }
                     );
                 }
             });
