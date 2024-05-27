@@ -66,6 +66,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function rows(): Collection
     {
         $tableFields = $this->preparedFields();
+        $hasBulk = $this->getBulkButtons()->isNotEmpty();
 
         if (! $this->isEditable()) {
             $tableFields = $tableFields
@@ -77,7 +78,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 );
         }
 
-        return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($tableFields): TableRow {
+        return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($tableFields, $hasBulk): TableRow {
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 
@@ -88,12 +89,16 @@ final class TableBuilder extends IterableComponent implements TableContract
                     fn (Fields $f): Fields => $f->prepareReindex()
                 );
 
-            $fields->each(function ($field, $cellIndex): void {
-                if($field instanceof Td) {
+            $fields->each(function ($field, $cellIndex) use($hasBulk): void {
+                if($field instanceof Td && $field->hasTdAttributes()) {
                     $this->tdAttributes(
-                        fn ($data, $row, $cell, MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $cellIndex === $cell
-                            ? $field->resolveTdAttributes($data, $attr)
-                            : $attr
+                        function ($data, $row, $cell, MoonShineComponentAttributeBag $attr) use ($field, $cellIndex, $hasBulk): MoonShineComponentAttributeBag {
+                            $cell = $hasBulk ? $cell - 1 : $cell;
+
+                            return $cellIndex === $cell
+                                ? $field->resolveTdAttributes($data, $attr)
+                                : $attr;
+                        }
                     );
                 }
             });
