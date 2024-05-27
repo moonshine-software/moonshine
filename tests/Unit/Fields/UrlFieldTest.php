@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Components\Url as UrlComponent;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\Url;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Components\Url as UrlComponent;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Url;
 
 uses()->group('fields');
 

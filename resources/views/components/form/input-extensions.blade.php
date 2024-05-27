@@ -9,7 +9,7 @@
         {{ $slot ?? '' }}
 
         @foreach($extensions as $extension)
-            {{ $extension->render() }}
+            {!! $extension->render() !!}
         @endforeach
     </div>
 @else

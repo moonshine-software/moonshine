@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\Enum;
-use MoonShine\Fields\Select;
 use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\Enum;
+use MoonShine\UI\Fields\Select;
 
 uses()->group('fields');
 

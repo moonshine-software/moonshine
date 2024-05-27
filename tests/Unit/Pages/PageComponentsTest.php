@@ -1,20 +1,20 @@
 <?php
 
-use MoonShine\Collections\ComponentsCollection;
-use MoonShine\Components\FormBuilder;
-use MoonShine\Components\Fragment;
-use MoonShine\Components\Layout\Box;
-use MoonShine\Components\Layout\LineBreak;
-use MoonShine\Components\Modal;
-use MoonShine\Components\TableBuilder;
-use MoonShine\Components\Tabs\Tab;
-use MoonShine\Components\Tabs\Tabs;
-use MoonShine\Fields\Field;
-use MoonShine\Fields\Relationships\HasOne;
-use MoonShine\Fields\StackFields;
-use MoonShine\Fields\Switcher;
-use MoonShine\Fields\Text;
+use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Collections\ComponentsCollection;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Fragment;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Layout\LineBreak;
+use MoonShine\UI\Components\Modal;
+use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Components\Tabs\Tabs;
+use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Fields\StackFields;
+use MoonShine\UI\Fields\Switcher;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('core');
 

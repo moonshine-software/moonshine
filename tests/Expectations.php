@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Fields\Field;
+use MoonShine\UI\Fields\Field;
 use Pest\Expectation;
 
 expect()->extend('storeAvatarFile', function ($avatar, $field, $item): Expectation {

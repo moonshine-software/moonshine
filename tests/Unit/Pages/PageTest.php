@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use MoonShine\Enums\PageType;
-use MoonShine\Pages\Crud\DetailPage;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\Support\Enums\PageType;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('pages');

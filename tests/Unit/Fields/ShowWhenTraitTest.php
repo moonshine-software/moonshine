@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Traits\Fields\ShowWhen;
+use MoonShine\UI\Traits\Fields\ShowWhen;
 
 uses()->group('fields');
 

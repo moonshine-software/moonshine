@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use MoonShine\Components\Layout\Box;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Relationships\HasOne;
-use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Fields\StackFields;
-use MoonShine\Fields\Text;
+use MoonShine\Laravel\Fields\Relationships\HasOne;
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\StackFields;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('resources-feature');
 

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Relationships\HasOne;
-use MoonShine\Fields\Text;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Resources\ModelResource;
+use MoonShine\Laravel\Fields\Relationships\HasOne;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('resources-feature');
 uses()->group('resources-has-one-file');

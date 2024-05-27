@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-use MoonShine\Components\When;
-use MoonShine\Fields\DateRange;
-use MoonShine\Fields\File;
-use MoonShine\Fields\Range;
-use MoonShine\Resources\ModelResource;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Factories\CoverFactory;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Components\When;
+use MoonShine\UI\Fields\DateRange;
+use MoonShine\UI\Fields\File;
+use MoonShine\UI\Fields\Range;
 
 uses()->group('crud-controller');
 

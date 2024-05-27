@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
-use MoonShine\Fields\Relationships\BelongsTo;
-use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
+use MoonShine\Core\Contracts\Fields\HasDefaultValue;
+use MoonShine\Core\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Core\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Tests\Fixtures\Models\Item;
 
 uses()->group('model-relation-fields');

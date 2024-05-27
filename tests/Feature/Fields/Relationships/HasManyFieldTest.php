@@ -5,15 +5,15 @@ declare(strict_types=1);
 uses()->group('model-relation-fields');
 uses()->group('has-many-field');
 
-use MoonShine\Fields\Field;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Fields\Text;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Text;
 
 it('onlyLink preview', function () {
     createItem(countComments: 6);

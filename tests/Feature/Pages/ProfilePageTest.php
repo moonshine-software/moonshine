@@ -6,10 +6,10 @@ uses()->group('pages-feature');
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Fields\Image;
-use MoonShine\Http\Controllers\ProfileController;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Pages\ProfilePage;
+use MoonShine\Laravel\Http\Controllers\ProfileController;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Pages\ProfilePage;
+use MoonShine\UI\Fields\Image;
 
 beforeEach(function () {
     $this->page = new ProfilePage();
@@ -32,7 +32,7 @@ it('validation error', function () {
         action([ProfileController::class, 'store']),
         $data
     )
-        ->assertSessionHasErrorsIn('crud', ['username']);
+        ->assertSessionHasErrors(['username']);
 });
 
 it('successful save', function () {

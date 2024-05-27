@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Components\Rating;
-use MoonShine\Fields\Number;
-use MoonShine\Fields\Text;
-use MoonShine\InputExtensions\InputNumberUpDown;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Components\Rating;
+use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\InputExtensions\InputNumberUpDown;
 
 uses()->group('fields');
 

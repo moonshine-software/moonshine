@@ -48,6 +48,7 @@ final class AssetManager implements Htmlable
                 fn (AssetElements $assets) => $assets
                     ->push(
                         Raw::make(
+                            // TODO @isolate
                             Vite::useBuildDirectory('vendor/moonshine')
                                 ->useHotFile($this->hotFile())
                                 ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
@@ -61,7 +62,7 @@ final class AssetManager implements Htmlable
 
     private function isRunningHot(): bool
     {
-        return app()->isLocal() && is_file($this->hotFile());
+        return moonshine()->isLocal() && is_file($this->hotFile());
     }
 
     private function hotFile(): string

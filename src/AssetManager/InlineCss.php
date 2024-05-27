@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use MoonShine\Support\MoonShineComponentAttributeBag;
-use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithComponentAttributes;
+use MoonShine\Support\Traits\Makeable;
+use MoonShine\UI\Components\MoonShineComponentAttributeBag;
+use MoonShine\UI\Traits\Components\WithComponentAttributes;
 
 final class InlineCss implements AssetElement
 {

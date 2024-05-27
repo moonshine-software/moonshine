@@ -10,14 +10,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use MoonShine\Commands\InstallCommand;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Models\MoonshineUserRole;
+use MoonShine\Laravel\Commands\InstallCommand;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\Providers\MoonShineServiceProvider;
+use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\MoonShineUserResource;
+use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MoonShineRouter;
-use MoonShine\Providers\MoonShineServiceProvider;
-use MoonShine\Resources\ModelResource;
-use MoonShine\Resources\MoonShineUserResource;
-use MoonShine\Resources\MoonShineUserRoleResource;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestCoverResource;
@@ -51,7 +51,7 @@ class TestCase extends Orchestra
             ->resolveMoonShineUserResource()
             ->registerTestResource();
 
-        $this->router = app(MoonShineRouter::class);
+        $this->router = moonshine()->getContainer(MoonShineRouter::class);
         $this->router->flushState();
 
         moonshine()->flushState();

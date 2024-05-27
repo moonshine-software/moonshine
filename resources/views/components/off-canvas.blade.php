@@ -25,7 +25,7 @@
 
     <template x-teleport="body">
         <div class="offcanvas-template"
-             @defineEvent('off-canvas-toggled', $name, 'toggleCanvas')
+             @defineEvent('off_canvas_toggled', $name, 'toggleCanvas')
         >
             <div
                 x-show="open"

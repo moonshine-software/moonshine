@@ -4,16 +4,27 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
+use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Pages\Page;
-use MoonShine\Pages\Pages;
-use MoonShine\Resources\Resources;
-use MoonShine\Support\MemoizeRepository;
+use MoonShine\Core\Contracts\MoonShineRenderable;
+use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Pages\Page;
+use MoonShine\Core\Pages\Pages;
+use MoonShine\Core\Resources\Resources;
+use MoonShine\Support\Enums\Env;
+use MoonShine\Support\Memoize\MemoizeRepository;
 
 class MoonShine
 {
     use Conditionable;
+
+    private static Closure $renderer;
+
+    private static Closure $container;
+
+    private static Env $env = Env::LOCAL;
+
+    private static Closure $request;
 
     private array $resources = [];
 
@@ -22,6 +33,79 @@ class MoonShine
     public function __construct(
         private MoonShineConfigurator $config
     ) {
+
+    }
+
+    public static function setEnv(Env $env): void
+    {
+        self::$env = $env;
+    }
+
+    public function runningUnitTests(): bool
+    {
+        return  self::$env === Env::TESTING;
+    }
+
+    public function runningInConsole(): bool
+    {
+        return $this->runningUnitTests() ||  self::$env === Env::CONSOLE;
+    }
+
+    public function isLocal(): bool
+    {
+        return  self::$env === Env::LOCAL;
+    }
+
+    public function isProduction(): bool
+    {
+        return  self::$env=== Env::PRODUCTION;
+    }
+
+    /**
+     * @param  Closure(string $view, array $data, MoonShineRenderable $object): string  $renderer
+     * @return void
+     */
+    public static function renderUsing(Closure $renderer): void
+    {
+        self::$renderer = $renderer;
+    }
+
+    public function render(string $view, array $data, object $object): mixed
+    {
+        return value(self::$renderer, $view, $data, $object);
+    }
+
+    /**
+     * @param  Closure(string $id, ...$parameters): mixed  $container
+     * @return void
+     */
+    public static function containerUsing(Closure $container): void
+    {
+        self::$container = $container;
+    }
+
+    public static function getInstance(): self
+    {
+        return value(self::$container, MoonShine::class);
+    }
+
+    public function getContainer(string $id, ...$parameters): mixed
+    {
+        return value(self::$container, $id, $parameters);
+    }
+
+    /**
+     * @param  Closure(string $key, mixed $default): mixed  $request
+     * @return void
+     */
+    public static function requestUsing(Closure $request): void
+    {
+        self::$request = $request;
+    }
+
+    public function getRequest(string $key, mixed $default = null): mixed
+    {
+        return value(self::$request, $key, $default);
     }
 
     /**
@@ -91,7 +175,7 @@ class MoonShine
     public function getResources(): Resources
     {
         return Resources::make($this->resources)
-            ->map(fn (string|ResourceContract $class) => is_string($class) ? app($class) : $class);
+            ->map(fn (string|ResourceContract $class) => is_string($class) ? $this->getContainer($class) : $class);
     }
 
     /**
@@ -120,6 +204,6 @@ class MoonShine
     {
         return Pages::make($this->pages)
             ->except('error')
-            ->map(fn (string|Page $class) => is_string($class) ? app($class) : $class);
+            ->map(fn (string|Page $class) => is_string($class) ? $this->getContainer($class) : $class);
     }
 }

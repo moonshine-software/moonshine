@@ -5,12 +5,12 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
-use MoonShine\Components\Badge;
-use MoonShine\Components\Boolean;
-use MoonShine\Components\FormBuilder;
-use MoonShine\Components\Url;
-use MoonShine\Fields\Preview;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Components\Badge;
+use MoonShine\UI\Components\Boolean;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Url;
+use MoonShine\UI\Fields\Preview;
 
 uses()->group('fields');
 

@@ -19,7 +19,7 @@
 >
     <template x-teleport="body">
         <div class="modal-template"
-             @defineEvent('modal-toggled', $name, 'toggleModal')
+             @defineEvent('modal_toggled', $name, 'toggleModal')
         >
             <div
                 x-show="open"

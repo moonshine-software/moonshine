@@ -9,11 +9,12 @@ use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use MoonShine\Components\FormBuilder;
-use MoonShine\Exceptions\MoonShineNotFoundException;
-use MoonShine\Forms\FormContract;
-use MoonShine\Layouts\AppLayout;
-use MoonShine\Pages\Page;
+use MoonShine\Core\Contracts\Forms\FormContract;
+use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
+use MoonShine\Laravel\Layouts\AppLayout;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\MoonShineLayout;
 use Throwable;
 
 final class MoonShineConfigurator implements ArrayAccess
@@ -99,6 +100,16 @@ final class MoonShineConfigurator implements ArrayAccess
     public function locales(array|Closure $locales): self
     {
         return $this->set('locales', $locales);
+    }
+
+    public function locale(string $locale): self
+    {
+        return $this->set('locale', $locale);
+    }
+
+    public function getLocale(): string
+    {
+        return $this->get('locale', 'en');
     }
 
     /**
@@ -237,7 +248,6 @@ final class MoonShineConfigurator implements ArrayAccess
         return $this->set('auth.enabled', false);
     }
 
-
     /**
      * @return  list<class-string>
      */
@@ -361,13 +371,13 @@ final class MoonShineConfigurator implements ArrayAccess
     /**
      * @template-covariant T of Page
      * @param  class-string<T>  $default
-     * @return T
+     * @return Page
      */
     public function getPage(string $name, string $default, mixed ...$parameters): Page
     {
         $class = $this->get("pages.$name", $default);
 
-        return app($class, $parameters);
+        return moonshine()->getContainer($class, ...$parameters);
     }
 
     /**

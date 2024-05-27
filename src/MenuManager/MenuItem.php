@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use MoonShine\Attributes\Icon;
-use MoonShine\Components\ActionButtons\ActionButton;
 use MoonShine\Support\Attributes;
-use MoonShine\Support\Condition;
+use MoonShine\Support\Attributes\Icon;
+use MoonShine\UI\Components\ActionButton;
 use Throwable;
 
 /**
@@ -126,7 +125,7 @@ class MenuItem extends MenuElement
 
     public function blank(Closure|bool $blankCondition = true): static
     {
-        $this->blank = Condition::boolean($blankCondition, true);
+        $this->blank = value($blankCondition, $this) ?? true;
 
         return $this;
     }

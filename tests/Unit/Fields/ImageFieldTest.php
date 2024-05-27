@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\File;
-use MoonShine\Fields\Image;
+use MoonShine\UI\Fields\File;
+use MoonShine\UI\Fields\Image;
 
 uses()->group('fields');
 uses()->group('file-field');

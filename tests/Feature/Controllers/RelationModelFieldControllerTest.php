@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use MoonShine\Enums\PageType;
-use MoonShine\Fields\Relationships\BelongsToMany;
-use MoonShine\Fields\StackFields;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Support\Enums\PageType;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\UI\Fields\StackFields;
 
 uses()->group('relation-controller');
 
@@ -123,7 +123,7 @@ it('async search', function () {
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-resource',
         'resourceItem' => $item->id,
-        '_component_name' => 'crud',
+        '_component_name' => 'test-resource',
         '_relation' => 'categories',
         'query' => 'test',
     ]))

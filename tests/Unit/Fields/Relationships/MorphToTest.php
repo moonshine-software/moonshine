@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
-use MoonShine\DTOs\Select\Options;
-use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Fields\Relationships\MorphTo;
+use MoonShine\Core\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
+use MoonShine\Core\Contracts\Fields\HasDefaultValue;
+use MoonShine\Core\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Core\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
+use MoonShine\Laravel\Fields\Relationships\MorphTo;
+use MoonShine\Support\DTOs\Select\Options;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\ImageModel;
 use MoonShine\Tests\Fixtures\Models\Item;

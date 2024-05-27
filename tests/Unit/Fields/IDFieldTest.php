@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Fields\Hidden;
-use MoonShine\Fields\ID;
+use MoonShine\UI\Fields\Hidden;
+use MoonShine\UI\Fields\ID;
 
 uses()->group('fields');
 

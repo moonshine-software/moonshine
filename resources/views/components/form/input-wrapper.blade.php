@@ -1,4 +1,5 @@
 @props([
+    'errors' => null,
     'name' => '',
     'label' => '',
     'beforeLabel' => false,

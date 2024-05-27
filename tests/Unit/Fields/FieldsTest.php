@@ -1,20 +1,20 @@
 <?php
 
-use MoonShine\Components\FormBuilder;
-use MoonShine\Components\Layout\Box;
-use MoonShine\Components\Layout\LineBreak;
-use MoonShine\Components\TableBuilder;
-use MoonShine\Components\Tabs\Tab;
-use MoonShine\Components\Tabs\Tabs;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Fields\Field;
-use MoonShine\Fields\Fields;
-use MoonShine\Fields\Relationships\HasOne;
-use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Fields\StackFields;
-use MoonShine\Fields\Switcher;
-use MoonShine\Fields\Text;
+use MoonShine\Core\Contracts\Fields\HasFields;
+use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Fields\Relationships\HasOne;
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Layout\LineBreak;
+use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Components\Tabs\Tabs;
+use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Fields\StackFields;
+use MoonShine\UI\Fields\Switcher;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('fields');
 uses()->group('core');

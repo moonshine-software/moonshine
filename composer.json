@@ -62,7 +62,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "MoonShine\\Providers\\MoonShineServiceProvider"
+        "MoonShine\\Laravel\\Providers\\MoonShineServiceProvider"
       ]
     }
   },

@@ -1,18 +1,18 @@
 <?php
 
 use Illuminate\Http\UploadedFile;
-use MoonShine\Components\FormBuilder;
-use MoonShine\Components\Layout\Box;
-use MoonShine\Components\Tabs\Tab;
-use MoonShine\Components\Tabs\Tabs;
-use MoonShine\Fields\Email;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Image;
-use MoonShine\Fields\Password;
-use MoonShine\Fields\PasswordRepeat;
-use MoonShine\Fields\Text;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\TypeCasts\ModelCast;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Components\Tabs\Tabs;
+use MoonShine\UI\Fields\Email;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Image;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\PasswordRepeat;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('form-builder');
 

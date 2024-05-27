@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Resources\MoonShineUserResource;
 
 beforeEach(function () {
     $this->resource = moonshine()->getResources()->findByClass(MoonShineUserResource::class);

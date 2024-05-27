@@ -6,7 +6,7 @@ namespace MoonShine\Tests\Fixtures\Resources;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Resources\ModelResource;
+use MoonShine\Laravel\Resources\ModelResource;
 
 class TestResource extends ModelResource
 {

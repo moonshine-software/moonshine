@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\Custom;
 
-use MoonShine\Components\Layout\Box;
-use MoonShine\Enums\PageType;
-use MoonShine\Fields\Preview;
-use MoonShine\Pages\Page;
+use MoonShine\Core\Pages\Page;
+use MoonShine\Support\Enums\PageType;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Preview;
 
 class CustomPageDetail extends Page
 {

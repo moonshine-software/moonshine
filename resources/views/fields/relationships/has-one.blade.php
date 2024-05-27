@@ -6,5 +6,5 @@
 >
     <x-moonshine::layout.line-break />
 
-    {{ $form->render() }}
+    {!! $form->render() !!}
 </div>

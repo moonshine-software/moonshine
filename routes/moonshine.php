@@ -2,18 +2,18 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-use MoonShine\Http\Controllers\AsyncController;
-use MoonShine\Http\Controllers\AuthenticateController;
-use MoonShine\Http\Controllers\CrudController;
-use MoonShine\Http\Controllers\GlobalSearchController;
-use MoonShine\Http\Controllers\HandlerController;
-use MoonShine\Http\Controllers\HomeController;
-use MoonShine\Http\Controllers\NotificationController;
-use MoonShine\Http\Controllers\PageController;
-use MoonShine\Http\Controllers\ProfileController;
-use MoonShine\Http\Controllers\RelationModelFieldController;
-use MoonShine\Http\Controllers\SocialiteController;
-use MoonShine\Http\Controllers\UpdateFieldController;
+use MoonShine\Laravel\Http\Controllers\AsyncController;
+use MoonShine\Laravel\Http\Controllers\AuthenticateController;
+use MoonShine\Laravel\Http\Controllers\CrudController;
+use MoonShine\Laravel\Http\Controllers\GlobalSearchController;
+use MoonShine\Laravel\Http\Controllers\HandlerController;
+use MoonShine\Laravel\Http\Controllers\HomeController;
+use MoonShine\Laravel\Http\Controllers\NotificationController;
+use MoonShine\Laravel\Http\Controllers\PageController;
+use MoonShine\Laravel\Http\Controllers\ProfileController;
+use MoonShine\Laravel\Http\Controllers\RelationModelFieldController;
+use MoonShine\Laravel\Http\Controllers\SocialiteController;
+use MoonShine\Laravel\Http\Controllers\UpdateFieldController;
 
 $authMiddleware = moonshineConfig()->getAuthMiddleware();
 

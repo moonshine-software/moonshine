@@ -6,14 +6,15 @@ namespace MoonShine;
 
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Exceptions\MoonShineException;
-use MoonShine\Pages\Page;
-use MoonShine\Pages\Pages;
+use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Exceptions\MoonShineException;
+use MoonShine\Core\Pages\Page;
+use MoonShine\Core\Pages\Pages;
 use Stringable as NativeStringable;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;
 
+// TODO @isolate (route,redirect,request)
 final class MoonShineRouter implements NativeStringable
 {
     use Conditionable;

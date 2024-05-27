@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use MoonShine\Enums\PageType;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShineRequest;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Support\Enums\PageType;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('core');

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\NoType;
 
-use MoonShine\Components\Layout\Box;
-use MoonShine\Fields\Preview;
-use MoonShine\Pages\Page;
+use MoonShine\Core\Pages\Page;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Preview;
 
 class CustomNoTypeIndex extends Page
 {

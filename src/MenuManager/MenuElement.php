@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use MoonShine\Contracts\Components\HasCanSeeContract;
-use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Support\MoonShineComponentAttributeBag;
-use MoonShine\Traits\HasCanSee;
-use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithComponentAttributes;
-use MoonShine\Traits\WithIcon;
-use MoonShine\Traits\WithLabel;
-use MoonShine\Traits\WithViewRenderer;
+use MoonShine\Core\Contracts\Components\HasCanSeeContract;
+use MoonShine\Core\Contracts\MoonShineRenderable;
+use MoonShine\Support\Traits\HasCanSee;
+use MoonShine\Support\Traits\Makeable;
+use MoonShine\Support\Traits\WithIcon;
+use MoonShine\Support\Traits\WithLabel;
+use MoonShine\UI\Components\MoonShineComponentAttributeBag;
+use MoonShine\UI\Traits\Components\WithComponentAttributes;
+use MoonShine\UI\Traits\WithViewRenderer;
 
 abstract class MenuElement implements MoonShineRenderable, HasCanSeeContract
 {

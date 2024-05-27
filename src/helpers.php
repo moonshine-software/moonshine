@@ -7,89 +7,93 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
-use MoonShine\Applies\AppliesRegister;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Components\ActionButtons\ActionButton;
-use MoonShine\Components\FormBuilder;
-use MoonShine\Components\TableBuilder;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Enums\FormMethod;
-use MoonShine\Fields\Fields;
+use MoonShine\Core\Contracts\Collections\FieldsCollection;
+use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\MoonShineConfigurator;
-use MoonShine\MoonShineRequest;
 use MoonShine\MoonShineRouter;
-use MoonShine\Pages\Page;
-use MoonShine\Support\Backtrace;
-use MoonShine\Support\MemoizeRepository;
+use MoonShine\Support\Enums\FormMethod;
+use MoonShine\Support\Memoize\Backtrace;
+use MoonShine\Support\Memoize\MemoizeRepository;
+use MoonShine\UI\Applies\AppliesRegister;
+use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\TableBuilder;
 
 if (! function_exists('moonshine')) {
     function moonshine(): MoonShine
     {
-        return app(MoonShine::class);
+        return MoonShine::getInstance();
     }
 }
 
 if (! function_exists('appliesRegister')) {
     function appliesRegister(): AppliesRegister
     {
-        return app(AppliesRegister::class);
+        return moonshine()->getContainer(AppliesRegister::class);
+    }
+}
+
+if (! function_exists('fields')) {
+    function fields(array $items = []): FieldsCollection
+    {
+        return moonshine()->getContainer(FieldsCollection::class, items: $items);
     }
 }
 
 if (! function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest
     {
-        return app(MoonShineRequest::class);
+        return moonshine()->getContainer(MoonShineRequest::class);
     }
 }
 
 if (! function_exists('moonshineAssets')) {
     function moonshineAssets(): AssetManager
     {
-        return app(AssetManager::class);
+        return moonshine()->getContainer(AssetManager::class);
     }
 }
 
 if (! function_exists('moonshineColors')) {
     function moonshineColors(): ColorManager
     {
-        return app(ColorManager::class);
+        return moonshine()->getContainer(ColorManager::class);
     }
 }
 
 if (! function_exists('moonshineMenu')) {
     function moonshineMenu(): MenuManager
     {
-        return app(MenuManager::class);
+        return moonshine()->getContainer(MenuManager::class);
     }
 }
 
 if (! function_exists('moonshineRouter')) {
     function moonshineRouter(): MoonShineRouter
     {
-        return app(MoonShineRouter::class);
+        return moonshine()->getContainer(MoonShineRouter::class);
     }
 }
 
 if (! function_exists('moonshineConfig')) {
     function moonshineConfig(): MoonShineConfigurator
     {
-        return app(MoonShineConfigurator::class);
+        return moonshine()->getContainer(MoonShineConfigurator::class);
     }
 }
 
 if (! function_exists('moonshineCache')) {
     function moonshineCache(): Repository
     {
-        return app('cache')
-            ->store(
-                app()->runningUnitTests()
-                    ? 'array'
-                    : moonshineConfig()->getCacheDriver()
-            );
+        return moonshine()->getContainer('cache')
+            ->store(moonshineConfig()->getCacheDriver());
     }
 }
 
