@@ -47,6 +47,7 @@ Route::group(moonshine()->configureRoutes(), static function (): void {
 
             Route::prefix('relation/{pageUri}')->controller(RelationModelFieldController::class)->group(
                 function (): void {
+                    Route::get('has-many-form/{resourceUri?}/{resourceItem?}', 'hasManyForm')->name('relation.has-many-form');
                     Route::get('{resourceUri?}/{resourceItem?}', 'search')->name('relation.search');
                 }
             );

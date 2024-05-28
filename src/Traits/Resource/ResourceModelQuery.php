@@ -44,14 +44,23 @@ trait ResourceModelQuery
 
     protected ?Builder $customBuilder = null;
 
+    protected int|string|null $itemID = null;
+
     protected array $parentRelations = [];
 
     // TODO 3.0 rename to saveQueryState
     protected bool $saveFilterState = false;
 
+    public function setItemID(int|string|null $itemID): static
+    {
+        $this->itemID = $itemID;
+
+        return $this;
+    }
+
     public function getItemID(): int|string|null
     {
-        return moonshineRequest()->getItemID();
+        return $this->itemID ?? moonshineRequest()->getItemID();
     }
 
     /**
