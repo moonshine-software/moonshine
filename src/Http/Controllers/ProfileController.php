@@ -32,24 +32,17 @@ class ProfileController extends MoonShineController
         $data = $request->validated();
 
         $resultData = [
-            config(
-                'moonshine.auth.fields.username',
-                'email'
-            ) => $this->escapeValue($data['username']),
-            config('moonshine.auth.fields.name', 'name') => $this->escapeValue($data['name'])
+            config('moonshine.auth.fields.username', 'email') => e($data['username']),
+            config('moonshine.auth.fields.name', 'name') => e($data['name']),
         ];
 
         if (isset($data['password']) && filled($data['password'])) {
-            $resultData[config(
-                'moonshine.auth.fields.password',
-                'password'
-            )] = Hash::make($data['password']);
+            $resultData[config('moonshine.auth.fields.password', 'password')] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
 
-
-        if(! is_null($image)) {
+        if (! is_null($image)) {
             $this->applyImage($image, $resultData);
         }
 
@@ -93,13 +86,8 @@ class ProfileController extends MoonShineController
 
         $result[$avatarColumn] = $oldAvatar;
 
-        if($oldAvatar !== $currentAvatar) {
+        if ($oldAvatar !== $currentAvatar) {
             $image->deleteFile($currentAvatar);
         }
-    }
-
-    private function escapeValue(string $value): string
-    {
-        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }

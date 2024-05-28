@@ -55,7 +55,7 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
     protected function prepareRequestValue(mixed $value): mixed
     {
         if(is_string($value)) {
-            return $this->isUnescape() ? $value : $this->escapeValue($value);
+            return $this->isUnescape() ? $value : e($value);
         }
 
         return $value;
@@ -65,6 +65,6 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
     {
         return $this->isUnescape()
             ? parent::resolvePreview()
-            : $this->escapeValue((string) parent::resolvePreview());
+            : e((string) parent::resolvePreview());
     }
 }

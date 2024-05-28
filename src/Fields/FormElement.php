@@ -162,11 +162,6 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return $this;
     }
 
-    protected function escapeValue(string $value): string
-    {
-        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    }
-
     protected function prepareRequestValue(mixed $value): mixed
     {
         return $value;
