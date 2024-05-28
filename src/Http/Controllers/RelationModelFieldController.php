@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Http\Controllers;
 
-use App\Models\PolyComment;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
-use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\TableBuilder;
@@ -186,19 +182,21 @@ class RelationModelFieldController extends MoonShineController
                 ->toArray();
         };
 
+        $formName = $resource->uriKey() . "-" . ($item?->getKey() ?? 'create');
+
         return (string) FormBuilder::make($action($item))
             ->fields($getFields)
             ->reactiveUrl(
                 fn (): string => moonshineRouter()
                     ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
             )
-            ->name($resource->uriKey())
+            ->name($formName)
             ->switchFormMode(
                 $isAsync,
-                [
+                array_filter([
                     $resource->listEventName($field->getRelationName()),
-                    AlpineJs::event(JsEvent::FORM_RESET, $resource->uriKey()),
-                ]
+                    $update ? null : AlpineJs::event(JsEvent::FORM_RESET, $formName),
+                ])
             )
             ->when(
                 $update,
@@ -224,7 +222,8 @@ class RelationModelFieldController extends MoonShineController
             ))
             ->buttons($resource->getFormButtons())
             ->redirect(
-                $isAsync ?
+                $isAsync
+                    ?
                     null
                     : moonshineRequest()
                     ->getResource()

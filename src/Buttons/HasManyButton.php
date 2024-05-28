@@ -5,20 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\ActionButtons\ActionButton;
-use MoonShine\Collections\MoonShineRenderElements;
-use MoonShine\Components\FormBuilder;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Enums\JsEvent;
-use MoonShine\Fields\Field;
-use MoonShine\Fields\Fields;
-use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Fields\Relationships\ModelRelationField;
-use MoonShine\Pages\Page;
 use MoonShine\Resources\ModelResource;
-use MoonShine\Support\AlpineJs;
 use Throwable;
 
 final class HasManyButton
@@ -40,11 +29,15 @@ final class HasManyButton
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn (?Model $data) => $parentResource->route('relation.has-many-form', moonshineRequest()->getItemID(), [
-            'pageUri' => $parentPage?->uriKey(),
-            '_relation' => $field->getRelationName(),
-            '_key' => $data?->getKey(),
-        ]);
+        $action = static fn (?Model $data) => $parentResource->route(
+            'relation.has-many-form',
+            moonshineRequest()->getItemID(),
+            [
+                'pageUri' => $parentPage?->uriKey(),
+                '_relation' => $field->getRelationName(),
+                '_key' => $data?->getKey(),
+            ]
+        );
 
         $isAsync = $resource->isAsync() || $field->isAsync();
 
