@@ -181,7 +181,6 @@ class MoonShineServiceProvider extends ServiceProvider
             $this->commands($this->commands);
         }
 
-        Blade::withoutDoubleEncoding();
         Blade::componentNamespace('MoonShine\Components', 'moonshine');
 
         $this

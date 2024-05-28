@@ -47,6 +47,19 @@ class Number extends Text implements DefaultCanBeNumeric
         return $this;
     }
 
+    protected function prepareRequestValue(mixed $value): mixed
+    {
+        if($this->isGroup()) {
+            return $value;
+        }
+
+        if(is_float($value)) {
+            return (float) parent::prepareRequestValue($value);
+        }
+
+        return (int) parent::prepareRequestValue($value);
+    }
+
     protected function resolvePreview(): View|string
     {
         if (! $this->isRawMode() && $this->withStars()) {

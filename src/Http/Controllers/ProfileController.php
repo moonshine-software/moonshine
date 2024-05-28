@@ -35,8 +35,8 @@ class ProfileController extends MoonShineController
             config(
                 'moonshine.auth.fields.username',
                 'email'
-            ) => $data['username'],
-            config('moonshine.auth.fields.name', 'name') => $data['name'],
+            ) => $this->escapeValue($data['username']),
+            config('moonshine.auth.fields.name', 'name') => $this->escapeValue($data['name'])
         ];
 
         if (isset($data['password']) && filled($data['password'])) {
@@ -96,5 +96,10 @@ class ProfileController extends MoonShineController
         if($oldAvatar !== $currentAvatar) {
             $image->deleteFile($currentAvatar);
         }
+    }
+
+    private function escapeValue(string $value): string
+    {
+        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }
