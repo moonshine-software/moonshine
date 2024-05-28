@@ -26,20 +26,6 @@ class Number extends Text implements DefaultCanBeNumeric
         'required',
     ];
 
-    protected bool $stars = false;
-
-    public function stars(): static
-    {
-        $this->stars = true;
-
-        return $this;
-    }
-
-    public function withStars(): bool
-    {
-        return $this->stars;
-    }
-
     public function buttons(): static
     {
         $this->extension(new InputNumberUpDown());
@@ -49,8 +35,8 @@ class Number extends Text implements DefaultCanBeNumeric
 
     protected function prepareRequestValue(mixed $value): mixed
     {
-        if($this->isGroup()) {
-            return $value;
+        if(is_null($value)) {
+            return parent::prepareRequestValue($value);
         }
 
         if(is_float($value)) {
