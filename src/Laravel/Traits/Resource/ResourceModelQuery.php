@@ -44,6 +44,8 @@ trait ResourceModelQuery
 
     protected ?Builder $customBuilder = null;
 
+    protected int|string|null $itemID = null;
+
     protected array $parentRelations = [];
 
     protected bool $saveQueryState = false;
@@ -64,6 +66,13 @@ trait ResourceModelQuery
     public function getQueryParams(): Collection
     {
         return collect($this->queryParams);
+    }
+
+    public function setItemID(int|string|null $itemID): static
+    {
+        $this->itemID = $itemID;
+
+        return $this;
     }
 
     public function setItemID(int|string|null $itemID): static

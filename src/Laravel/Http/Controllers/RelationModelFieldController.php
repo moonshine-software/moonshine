@@ -117,4 +117,109 @@ class RelationModelFieldController extends MoonShineController
 
         return $value->render();
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function hasManyForm(RelationModelFieldRequest $request): string
+    {
+        $parent = $request->getResource()?->getItemOrInstance();
+
+        /** @var HasMany $field */
+        $field = $request->getField();
+
+        /** @var ModelResource $resource */
+        $resource = $field->getResource();
+        $item = $field->getResource()
+            ->setItemID($request->get('_key', ''))
+            ->getItemOrInstance();
+        $update = $item->exists;
+        $relation = $parent?->{$field->getRelationName()}();
+
+        $field->resolveFill($parent->toArray(), $parent);
+
+        $action = $update
+            ? static fn (Model $data) => $resource->route('crud.update', $data->getKey())
+            : static fn (?Model $data) => $resource->route('crud.store');
+
+        $isAsync = $resource->isAsync() || $field->isAsync();
+
+        $getFields = function () use ($resource, $field, $isAsync, $parent, $update) {
+            $fields = $resource->getFormFields();
+
+            $fields->onlyFields()
+                ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field))
+                // Uncomment if you need a parent resource
+                //->onlyRelationFields()
+                //->each(fn (ModelRelationField $nestedFields): Field => $nestedFields->setParentResource($resource))
+            ;
+
+            return $fields->when(
+                $field->getRelation() instanceof MorphOneOrMany,
+                fn (Fields $f) => $f->push(
+                    Hidden::make($field->getRelation()?->getMorphType())
+                        ->setValue($parent::class)
+                )
+            )->when(
+                $update,
+                fn (Fields $f) => $f->push(
+                    Hidden::make('_method')->setValue('PUT'),
+                )
+            )
+                ->push(
+                    Hidden::make($field->getRelation()?->getForeignKeyName())
+                        ->setValue($parent->getKey())
+                )
+                ->push(Hidden::make('_async_field')->setValue($isAsync))
+                ->toArray();
+        };
+
+        $formName = $resource->uriKey() . "-" . ($item?->getKey() ?? 'create');
+
+        return (string) FormBuilder::make($action($item))
+            ->fields($getFields)
+            ->reactiveUrl(
+                fn (): string => moonshineRouter()
+                    ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
+            )
+            ->name($formName)
+            ->switchFormMode(
+                $isAsync,
+                array_filter([
+                    $resource->listEventName($field->getRelationName()),
+                    $update ? null : AlpineJs::event(JsEvent::FORM_RESET, $formName),
+                ])
+            )
+            ->when(
+                $update,
+                fn (FormBuilder $form): FormBuilder => $form->fillCast(
+                    $item,
+                    $resource->getModelCast()
+                ),
+                fn (FormBuilder $form): FormBuilder => $form->fillCast(
+                    array_filter([
+                        $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
+                        ...$field->getRelation() instanceof MorphOneOrMany
+                            ? [$field->getRelation()?->getMorphType() => $parent?->getMorphClass()]
+                            : [],
+                    ], static fn ($value) => filled($value)),
+                    $resource->getModelCast()
+                )
+            )
+            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
+            ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
+                fn (mixed $field): bool => $field instanceof ModelRelationField
+                    && $field->toOne()
+                    && $field->column() === $relation->getForeignKeyName()
+            ))
+            ->buttons($resource->getFormButtons())
+            ->redirect(
+                $isAsync
+                    ?
+                    null
+                    : moonshineRequest()
+                    ->getResource()
+                    ?->formPageUrl($parent)
+            );
+    }
 }

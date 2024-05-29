@@ -48,9 +48,10 @@ Route::moonshine(static function (Router $router) use($authMiddleware): void {
             GlobalSearchController::class
         )->name('global-search');
 
-        Route::prefix('relation/{pageUri}')->controller(RelationModelFieldController::class)->group(
+        Route::prefix('relation/{pageUri}/{resourceUri?}/{resourceItem?}')->controller(RelationModelFieldController::class)->group(
             function (): void {
-                Route::get('{resourceUri?}/{resourceItem?}', 'search')->name('relation.search');
+                Route::get('/has-many-form', 'hasManyForm')->name('relation.has-many-form');
+                Route::get('/', 'search')->name('relation.search');
             }
         );
 

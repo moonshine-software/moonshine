@@ -28,6 +28,8 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
 
     protected string $type = 'text';
 
+    protected bool $unescape = false;
+
     public function tags(?int $limit = null): static
     {
         return $this->customAttributes([
@@ -35,6 +37,34 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
             'data-max-item-count' => $limit,
             'data-remove-item-button' => true,
         ]);
+    }
+
+    public function unescape(): static
+    {
+        $this->unescape = true;
+
+        return $this;
+    }
+
+    public function isUnescape(): bool
+    {
+        return $this->unescape;
+    }
+
+    protected function prepareRequestValue(mixed $value): mixed
+    {
+        if(is_string($value)) {
+            return $this->isUnescape() ? $value : e($value);
+        }
+
+        return $value;
+    }
+
+    protected function resolvePreview(): View|string
+    {
+        return $this->isUnescape()
+            ? parent::resolvePreview()
+            : e((string) parent::resolvePreview());
     }
 
     protected function viewData(): array
