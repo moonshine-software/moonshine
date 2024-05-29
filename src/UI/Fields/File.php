@@ -82,6 +82,15 @@ class File extends Field implements Fileable, RemovableContract
             ]);
     }
 
+    public function getRequestValue(int|string|null $index = null): mixed
+    {
+        return $this->prepareRequestValue(
+            moonshine()->getRequest()->getFile(
+                $this->getRequestNameDot($index),
+            ) ?? false
+        );
+    }
+
     protected function viewData(): array
     {
         return [
@@ -90,12 +99,5 @@ class File extends Field implements Fileable, RemovableContract
             'removableAttributes' => $this->getRemovableAttributes(),
             'canDownload' => $this->canDownload(),
         ];
-    }
-
-    public function getRequestValue(int|string|null $index = null): mixed
-    {
-        return moonshine()->getRequest()->getFile(
-            $this->getRequestNameDot($index),
-        ) ?? false;
     }
 }

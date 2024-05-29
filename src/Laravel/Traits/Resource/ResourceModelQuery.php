@@ -50,8 +50,6 @@ trait ResourceModelQuery
 
     protected bool $saveQueryState = false;
 
-    protected int|string|null $itemID = null;
-
     protected ?int $paginatorPage = null;
 
     protected iterable $queryParams = [];
@@ -66,13 +64,6 @@ trait ResourceModelQuery
     public function getQueryParams(): Collection
     {
         return collect($this->queryParams);
-    }
-
-    public function setItemID(int|string|null $itemID): static
-    {
-        $this->itemID = $itemID;
-
-        return $this;
     }
 
     public function setItemID(int|string|null $itemID): static

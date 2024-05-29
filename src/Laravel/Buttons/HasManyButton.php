@@ -66,8 +66,8 @@ final class HasManyButton
             ->inModal(
                 title: fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: '',
-                async: $isAsync,
-                wide: true,
+                name: fn (?Model $data): string => "modal-has-many-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                builder: fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
             )
             ->primary()
             ->icon($update ? 'pencil' : 'plus');

@@ -5,12 +5,24 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
+use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
+use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\JsEvent;
+use MoonShine\UI\Collections\MoonShineRenderElements;
+use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableRowRenderer;
 use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Fields\Hidden;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -147,12 +159,7 @@ class RelationModelFieldController extends MoonShineController
         $getFields = function () use ($resource, $field, $isAsync, $parent, $update) {
             $fields = $resource->getFormFields();
 
-            $fields->onlyFields()
-                ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field))
-                // Uncomment if you need a parent resource
-                //->onlyRelationFields()
-                //->each(fn (ModelRelationField $nestedFields): Field => $nestedFields->setParentResource($resource))
-            ;
+            $fields->onlyFields()->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
 
             return $fields->when(
                 $field->getRelation() instanceof MorphOneOrMany,
@@ -210,7 +217,7 @@ class RelationModelFieldController extends MoonShineController
             ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                 fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->toOne()
-                    && $field->column() === $relation->getForeignKeyName()
+                    && $field->getColumn() === $relation->getForeignKeyName()
             ))
             ->buttons($resource->getFormButtons())
             ->redirect(

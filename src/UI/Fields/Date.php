@@ -44,6 +44,15 @@ class Date extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
         return date($this->getInputFormat(), strtotime((string) $value));
     }
 
+    protected function prepareRequestValue(mixed $value): mixed
+    {
+        if (is_string($value)) {
+            return e($value);
+        }
+
+        return $value;
+    }
+
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();

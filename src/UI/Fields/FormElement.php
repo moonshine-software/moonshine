@@ -159,12 +159,19 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         return moonshine()->getRequest()->has($this->getRequestNameDot($index));
     }
 
+    protected function prepareRequestValue(mixed $value): mixed
+    {
+        return $value;
+    }
+
     public function getRequestValue(string|int|null $index = null): mixed
     {
-        return moonshine()->getRequest()->get(
-            $this->getRequestNameDot($index),
-            $this->defaultIfExists()
-        ) ?? false;
+        return $this->prepareRequestValue(
+            moonshine()->getRequest()->get(
+                $this->getRequestNameDot($index),
+                $this->defaultIfExists()
+            ) ?? false
+        );
     }
 
     public function getRequestNameDot(string|int|null $index = null): string
