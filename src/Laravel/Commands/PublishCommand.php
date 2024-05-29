@@ -73,6 +73,8 @@ class PublishCommand extends MoonShineCommand
         }
 
         if (in_array('favicons', $types, true)) {
+            $this->makeDir(resource_path('views/vendor/moonshine/layouts/shared'));
+
             $this->copyStub(
                 'favicon',
                 resource_path('views/vendor/moonshine/layouts/shared/favicon.blade.php')
