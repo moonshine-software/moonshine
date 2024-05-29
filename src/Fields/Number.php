@@ -18,7 +18,7 @@ use MoonShine\Traits\Fields\UpdateOnPreview;
 use MoonShine\Traits\Fields\WithDefaultValue;
 use MoonShine\Traits\Fields\WithInputExtensions;
 
-class Number  extends Field implements HasDefaultValue, DefaultCanBeNumeric, HasUpdateOnPreview, HasReactivity
+class Number extends Field implements HasDefaultValue, DefaultCanBeNumeric, HasUpdateOnPreview, HasReactivity
 {
     use NumberTrait;
     use WithInputExtensions;

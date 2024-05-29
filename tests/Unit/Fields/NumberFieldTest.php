@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Number;
-use MoonShine\Fields\Text;
 use MoonShine\InputExtensions\InputNumberUpDown;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
