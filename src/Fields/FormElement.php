@@ -162,18 +162,25 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
         return $this;
     }
 
+    protected function prepareRequestValue(mixed $value): mixed
+    {
+        return $value;
+    }
+
     public function requestValue(string|int|null $index = null): mixed
     {
         if (! is_null($this->requestValueResolver)) {
-            return value(
+            $value = value(
                 $this->requestValueResolver,
                 $this->requestNameDot($index),
                 $this->defaultIfExists(),
                 $this,
             ) ?? false;
+        } else {
+            $value = request($this->requestNameDot($index), $this->defaultIfExists()) ?? false;
         }
 
-        return request($this->requestNameDot($index), $this->defaultIfExists()) ?? false;
+        return $this->prepareRequestValue($value);
     }
 
     protected function requestNameDot(string|int|null $index = null): string

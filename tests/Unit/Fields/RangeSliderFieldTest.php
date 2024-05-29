@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Number;
+use MoonShine\Fields\Range;
 use MoonShine\Fields\RangeSlider;
 
 uses()->group('fields');
@@ -26,7 +27,7 @@ it('type', function (): void {
 
 it('number is parent', function (): void {
     expect($this->field)
-        ->toBeInstanceOf(Number::class);
+        ->toBeInstanceOf(Range::class);
 });
 
 it('view', function (): void {
