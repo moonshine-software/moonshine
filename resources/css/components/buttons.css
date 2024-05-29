@@ -35,7 +35,7 @@
 
 /* Button variants */
 .btn-close {
-  @apply h-10 w-10 p-0;
+  @apply h-10 w-10 min-h-[auto] p-0;
   > svg {
     @apply h-5 w-5;
   }
