@@ -16,7 +16,7 @@ class DateRangeModelApply implements ApplyContract
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            $values = $field->requestValue();
+            $values = $field->getRequestValue();
 
             $query->when(
                 $values['from'] ?? null,

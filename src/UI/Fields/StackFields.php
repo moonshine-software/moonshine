@@ -58,8 +58,8 @@ class StackFields extends Field implements HasFields, FieldsWrapper
                 static function (Field $field) use ($item): void {
                     $field->apply(
                         static function (mixed $item) use ($field): mixed {
-                            if ($field->requestValue() !== false) {
-                                data_set($item, $field->getColumn(), $field->requestValue());
+                            if ($field->getRequestValue() !== false) {
+                                data_set($item, $field->getColumn(), $field->getRequestValue());
                             }
 
                             return $item;

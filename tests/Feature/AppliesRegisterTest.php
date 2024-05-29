@@ -44,7 +44,7 @@ it('add new filter apply', function (): void {
 
     $defaultApply = static fn (Builder $query): Builder => $query->where(
         $field->getColumn(),
-        $field->requestValue()
+        $field->getRequestValue()
     );
 
     if(! is_null($filterApply)) {

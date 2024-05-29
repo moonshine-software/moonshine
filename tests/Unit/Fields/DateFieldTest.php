@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Fields\Date;
-use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Field;
 
 uses()->group('fields');
 uses()->group('date-field');
@@ -17,7 +17,7 @@ beforeEach(function (): void {
 
 it('text field is parent', function (): void {
     expect($this->field)
-        ->toBeInstanceOf(Text::class);
+        ->toBeInstanceOf(Field::class);
 });
 
 it('type', function (): void {

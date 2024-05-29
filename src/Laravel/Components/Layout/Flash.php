@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Components\Layout;
+namespace MoonShine\Laravel\Components\Layout;
 
 use MoonShine\UI\Components\MoonShineComponent;
 

@@ -7,9 +7,9 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use Illuminate\Support\ViewErrorBag;
 use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Contracts\Fields\HasDefaultValue;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -57,6 +57,8 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
 
     protected ?Closure $afterRender = null;
 
+    public static ?Closure $errors = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -64,7 +66,12 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
     }
 
-    public function identity(string $index = null): string
+    public static function resolveErrors(Closure $callback): void
+    {
+        self::$errors = $callback;
+    }
+
+    public function getIdentity(string $index = null): string
     {
         return (string) str($this->getNameAttribute($index))
             ->replace(['[', ']'], '_')
@@ -149,20 +156,20 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
 
     public function hasRequestValue(string|int|null $index = null): bool
     {
-        return moonshine()->getRequest($this->requestNameDot($index), $this) !== $this;
+        return moonshine()->getRequest()->has($this->getRequestNameDot($index));
     }
 
-    public function requestValue(string|int|null $index = null): mixed
+    public function getRequestValue(string|int|null $index = null): mixed
     {
-        return moonshine()->getRequest(
-            $this->requestNameDot($index),
+        return moonshine()->getRequest()->get(
+            $this->getRequestNameDot($index),
             $this->defaultIfExists()
         ) ?? false;
     }
 
-    protected function requestNameDot(string|int|null $index = null): string
+    public function getRequestNameDot(string|int|null $index = null): string
     {
-        return str($this->nameDot())
+        return str($this->getNameDot())
             ->when(
                 $this->requestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->prepend(
@@ -175,7 +182,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
             )->value();
     }
 
-    protected function dotNestedToName(string $value): string
+    public function getDotNestedToName(string $value): string
     {
         if (! str_contains($value, '.')) {
             return $value;
@@ -348,15 +355,13 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     protected function resolveValidationErrorClasses(): void
     {
         $this->class([
-            'form-invalid' => formErrors($this->getErrors(), $this->getFormName())
-                ->has($this->getNameAttribute()),
+            'form-invalid' => Arr::has($this->getErrors(), $this->getNameDot()),
         ]);
     }
 
-    public function getErrors(): ViewErrorBag
+    public function getErrors(): mixed
     {
-        // TODO @isolate
-        return session()->get('errors', new ViewErrorBag());
+        return value(self::$errors, $this->getFormName(), $this) ?? [];
     }
 
     protected function resolveAssets(): void
@@ -383,7 +388,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     {
         return [
             'attributes' => $this->attributes(),
-            'errors' => $this->getErrors(),
+            'errors' => data_get($this->getErrors(), $this->getNameDot()),
         ];
     }
 }

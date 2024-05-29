@@ -16,6 +16,8 @@ use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Laravel\Buttons\BelongsToManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
+use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Collections\ActionButtons;
@@ -31,8 +33,6 @@ use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\HasTreeMode;
 use MoonShine\UI\Traits\Fields\Searchable;
-use MoonShine\UI\Traits\Fields\WithAsyncSearch;
-use MoonShine\UI\Traits\Fields\WithRelatedValues;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
@@ -424,7 +424,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         /* @var Model $item */
         $item = $data;
-        $requestValues = array_filter($this->requestValue() ?: []);
+        $requestValues = array_filter($this->getRequestValue() ?: []);
         $applyValues = [];
 
         if ($this->isSelectMode() || $this->isTree()) {
@@ -448,7 +448,7 @@ class BelongsToMany extends ModelRelationField implements
                     $this->requestKeyPrefix()
                 );
 
-                $values = moonshine()->getRequest($field->requestKeyPrefix());
+                $values = request($field->requestKeyPrefix());
 
                 $apply = $field->apply(
                     fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? null),

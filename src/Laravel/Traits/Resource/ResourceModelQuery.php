@@ -478,7 +478,7 @@ trait ResourceModelQuery
         );
 
         $filters->each(function (Field $filter): void {
-            if ($filter->requestValue() === false) {
+            if ($filter->getRequestValue() === false) {
                 return;
             }
 
@@ -486,7 +486,7 @@ trait ResourceModelQuery
 
             $defaultApply = static fn (Builder $query): Builder => $query->where(
                 $filter->getColumn(),
-                $filter->requestValue()
+                $filter->getRequestValue()
             );
 
             if ($filterApply instanceof ApplyContract) {

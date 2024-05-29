@@ -4,13 +4,13 @@ namespace MoonShine\Laravel\Pages;
 
 use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\TypeCasts\ModelCast;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
-use MoonShine\UI\Components\SocialAuth;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Components\Tabs\Tabs;
 use MoonShine\UI\Fields\ID;
@@ -87,7 +87,7 @@ class ProfilePage extends Page
     {
         return [
             FormBuilder::make(action([ProfileController::class, 'store']))
-                ->async()
+                //->async()
                 ->customAttributes([
                     'enctype' => 'multipart/form-data',
                 ])

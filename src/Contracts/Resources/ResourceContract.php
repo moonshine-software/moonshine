@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Resources;
 
+use MoonShine\Core\MoonShineRouter;
 use MoonShine\Core\Pages\Pages;
-use MoonShine\MoonShineRouter;
 
 interface ResourceContract
 {

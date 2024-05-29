@@ -121,7 +121,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe('pivot_' . $key)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe('pivot_' . $key);
             });
     });

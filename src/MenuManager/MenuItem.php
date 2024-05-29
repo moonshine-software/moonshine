@@ -11,6 +11,7 @@ use MoonShine\UI\Components\ActionButton;
 use Throwable;
 
 /**
+ * @isolate(request)
  * @method static static make(Closure|string $label, Closure|MenuFiller|string $filler, string $icon = null, Closure|bool $blank = false)
  */
 class MenuItem extends MenuElement

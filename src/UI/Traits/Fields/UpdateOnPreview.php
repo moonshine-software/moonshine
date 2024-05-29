@@ -74,6 +74,7 @@ trait UpdateOnPreview
 
         return $this->setUpdateOnPreviewUrl(
             $url ?? fn (Model $item, mixed $value, Field $field): ?string => $item->exists ? moonshineRouter()->updateColumn(
+                // TODO @isolate(moonshineRequest)
                 resourceUri: $field->getNowOnResource() ? $field->getNowOnResource()->uriKey() : moonshineRequest()->getResourceUri(),
                 resourceItem: $item->getKey(),
                 relation: data_get($field->getNowOnQueryParams(), 'relation')

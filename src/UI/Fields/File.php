@@ -91,4 +91,11 @@ class File extends Field implements Fileable, RemovableContract
             'canDownload' => $this->canDownload(),
         ];
     }
+
+    public function getRequestValue(int|string|null $index = null): mixed
+    {
+        return moonshine()->getRequest()->getFile(
+            $this->getRequestNameDot($index),
+        ) ?? false;
+    }
 }

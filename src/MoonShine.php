@@ -10,6 +10,7 @@ use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Pages\Pages;
+use MoonShine\Core\Request;
 use MoonShine\Core\Resources\Resources;
 use MoonShine\Support\Enums\Env;
 use MoonShine\Support\Memoize\MemoizeRepository;
@@ -26,15 +27,11 @@ class MoonShine
 
     private static Closure $request;
 
+    private static Closure $flushStates;
+
     private array $resources = [];
 
     private array $pages = [];
-
-    public function __construct(
-        private MoonShineConfigurator $config
-    ) {
-
-    }
 
     public static function setEnv(Env $env): void
     {
@@ -58,7 +55,7 @@ class MoonShine
 
     public function isProduction(): bool
     {
-        return  self::$env=== Env::PRODUCTION;
+        return  self::$env === Env::PRODUCTION;
     }
 
     /**
@@ -89,36 +86,28 @@ class MoonShine
         return value(self::$container, MoonShine::class);
     }
 
-    public function getContainer(string $id, ...$parameters): mixed
+    public function getContainer(string $id, mixed $default = null, ...$parameters): mixed
     {
-        return value(self::$container, $id, $parameters);
+        return value(self::$container, $id, $default, $parameters);
     }
 
     /**
      * @param  Closure(string $key, mixed $default): mixed  $request
      * @return void
      */
-    public static function requestUsing(Closure $request): void
+    public static function requestUsing(mixed $request): void
     {
         self::$request = $request;
     }
 
-    public function getRequest(string $key, mixed $default = null): mixed
+    public function getRequest(): Request
     {
-        return value(self::$request, $key, $default);
+        return value(self::$request);
     }
 
-    /**
-     * @param  mixed|null  $default
-     * @return mixed|MoonShineConfigurator
-     */
-    public function config(?string $key = null, mixed $default = null): mixed
+    public static function flushStates(Closure $flushStates): void
     {
-        if (! is_null($key)) {
-            return $this->config->get($key, $default);
-        }
-
-        return $this->config;
+        self::$flushStates = $flushStates;
     }
 
     public function flushState(): void
@@ -135,10 +124,11 @@ class MoonShine
             return $page;
         });
 
-        moonshineCache()->flush();
         moonshineRouter()->flushState();
 
         MemoizeRepository::getInstance()->flush();
+
+        value(self::$flushStates, $this);
     }
 
     public static function path(string $path = ''): string

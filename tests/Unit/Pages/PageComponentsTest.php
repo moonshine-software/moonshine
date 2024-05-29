@@ -1,10 +1,10 @@
 <?php
 
+use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\UI\Collections\ComponentsCollection;
 use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\Fragment;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\Modal;

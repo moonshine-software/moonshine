@@ -148,7 +148,7 @@ trait RangeTrait
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            $values = $this->requestValue();
+            $values = $this->getRequestValue();
 
             if ($values === false) {
                 return $item;

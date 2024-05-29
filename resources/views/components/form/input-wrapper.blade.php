@@ -1,5 +1,5 @@
 @props([
-    'errors' => null,
+    'errors' => [],
     'name' => '',
     'label' => '',
     'beforeLabel' => false,
@@ -31,9 +31,9 @@
 
     {{ $afterSlot ?? '' }}
 
-    @error($name, $formName)
+    @if(isset($errors[0]))
         <x-moonshine::form.input-error>
-            {{ $message }}
+            {{ $errors[0] }}
         </x-moonshine::form.input-error>
-    @enderror
+    @endif
 </div>

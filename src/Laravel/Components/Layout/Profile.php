@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Components\Layout;
+namespace MoonShine\Laravel\Components\Layout;
 
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Laravel\Pages\ProfilePage;
 use MoonShine\UI\Components\MoonShineComponent;
+use Throwable;
 
 /**
- * TODO @isolate (storage)
  * @method static static make(?string $route = null, ?string $logOutRoute = null, ?string $avatar = null, ?string $nameOfUser = null, ?string $username = null, bool $withBorder = false)
  */
-// TODO move to Laravel and move view to Laravel
 final class Profile extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.profile';
@@ -35,6 +34,7 @@ final class Profile extends MoonShineComponent
 
     /**
      * @return array<string, mixed>
+     * @throws Throwable
      */
     protected function viewData(): array
     {

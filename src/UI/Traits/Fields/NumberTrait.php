@@ -12,6 +12,8 @@ trait NumberTrait
 
     protected int|float $step = 1;
 
+    protected bool $stars = false;
+
     public function min(int|float $min): static
     {
         $this->min = $min;
@@ -34,5 +36,17 @@ trait NumberTrait
         $this->attributes()->set('step', (string) $this->step);
 
         return $this;
+    }
+
+    public function stars(): static
+    {
+        $this->stars = true;
+
+        return $this;
+    }
+
+    public function withStars(): bool
+    {
+        return $this->stars;
     }
 }

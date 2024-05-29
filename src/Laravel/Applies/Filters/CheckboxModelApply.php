@@ -15,8 +15,8 @@ class CheckboxModelApply implements ApplyContract
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            if (! empty($field->requestValue())) {
-                $query->where($field->getColumn(), $field->requestValue());
+            if (! empty($field->getRequestValue())) {
+                $query->where($field->getColumn(), $field->getRequestValue());
             }
         };
     }

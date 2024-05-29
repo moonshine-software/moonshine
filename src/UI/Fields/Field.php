@@ -251,7 +251,9 @@ abstract class Field extends FormElement
         }
 
         $empty = new FieldEmptyValue();
-        $old = $withOld ? old($this->nameDot(), $empty) : $empty;
+        $old = $withOld
+            ? moonshine()->getRequest()->getOld($this->getNameDot(), $empty)
+            : $empty;
 
         if ($withOld && $old !== $empty) {
             return $old;

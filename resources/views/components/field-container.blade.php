@@ -1,5 +1,5 @@
 @props([
-    'errors' => null,
+    'errors' => [],
     'label' => '',
     'name' => '',
     'formName' => '',

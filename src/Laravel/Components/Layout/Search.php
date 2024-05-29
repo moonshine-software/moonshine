@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Components\Layout;
+namespace MoonShine\Laravel\Components\Layout;
 
 use MoonShine\UI\Components\MoonShineComponent;
 
@@ -57,7 +57,7 @@ final class Search extends MoonShineComponent
     {
         return [
             'action' => $this->action,
-            'value' => moonshine()->getRequest($this->key, ''),
+            'value' => moonshine()->getRequest()->get($this->key, ''),
             'placeholder' => $this->placeholder,
             'isEnabled' => $this->globalSearchEnabled() || $this->resourceSearchEnabled(),
             'isGlobal' => $this->globalSearchEnabled(),

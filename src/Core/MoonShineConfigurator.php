@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine;
+namespace MoonShine\Core;
 
 use ArrayAccess;
 use Closure;
@@ -377,7 +377,7 @@ final class MoonShineConfigurator implements ArrayAccess
     {
         $class = $this->get("pages.$name", $default);
 
-        return moonshine()->getContainer($class, ...$parameters);
+        return moonshine()->getContainer($class, null, ...$parameters);
     }
 
     /**

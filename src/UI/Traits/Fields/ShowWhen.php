@@ -52,7 +52,7 @@ trait ShowWhen
         $this->showWhenCondition[] = [
             'object_id' => (string) spl_object_id($this),
             'showField' => $this->getNameAttribute(),
-            'changeField' => $this->dotNestedToName($column),
+            'changeField' => $this->getDotNestedToName($column),
             'operator' => $operator,
             'value' => $value,
         ];

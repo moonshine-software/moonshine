@@ -21,7 +21,7 @@ class MorphToModelApply implements ApplyContract
                 [$field->requestTypeValue()],
                 $field->getColumn(),
                 '=',
-                $field->requestValue(),
+                $field->getRequestValue(),
             );
         };
     }

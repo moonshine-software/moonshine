@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Providers;
 
 use Closure;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
@@ -14,6 +15,10 @@ use Laravel\Octane\Events\RequestHandled;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\Collections\FieldsCollection;
+use MoonShine\Core\MoonShineConfigurator;
+use MoonShine\Core\Request;
+use MoonShine\Core\MoonShineRouter;
+use MoonShine\Core\Storage\StorageContract;
 use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
 use MoonShine\Laravel\Applies\Filters\CheckboxModelApply;
@@ -43,21 +48,22 @@ use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Storage\LaravelStorage;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
-use MoonShine\MoonShineConfigurator;
-use MoonShine\MoonShineRouter;
 use MoonShine\Support\Enums\Env;
 use MoonShine\UI\Applies\AppliesRegister;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\DateRange;
 use MoonShine\UI\Fields\File;
+use MoonShine\UI\Fields\FormElement;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Range;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
+use Psr\Http\Message\ServerRequestInterface;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -123,8 +129,16 @@ class MoonShineServiceProvider extends ServiceProvider
 
         $this->app->bind(MoonShineRouter::class);
         $this->app->bind(FieldsCollection::class, Fields::class);
+        $this->app->bind(StorageContract::class, fn(Application $app, array $parameters) =>  new LaravelStorage(
+            $parameters['disk'] ?? $parameters[0] ?? 'public',
+            $app->get('filesystem')
+        ));
 
         $this->app->scoped(ColorManager::class);
+
+        MoonShine::flushStates(static function () {
+            moonshineCache()->flush();
+        });
 
         MoonShine::setEnv(
             Env::fromString(app()->environment())
@@ -134,13 +148,27 @@ class MoonShineServiceProvider extends ServiceProvider
             return view($view, $data);
         });
 
-        MoonShine::containerUsing(static function (string $id, ...$parameters): mixed {
+        MoonShine::containerUsing(static function (string $id, mixed $default = null, ...$parameters): mixed {
+            if(!is_null($default) && !app()->has($id)) {
+                return $default;
+            }
+
             return app($id, ...$parameters);
         });
 
-        MoonShine::requestUsing(static function (string $key, mixed $default): mixed {
-            return request()->__get($key) ?? $default;
-        });
+        FormElement::resolveErrors(
+            static fn(?string $bag) => app('session')
+                ->get('errors')
+                ?->{$bag}
+                ?->toArray() ?? []
+        );
+
+        MoonShine::requestUsing(static fn() => new Request(
+            request: app(ServerRequestInterface::class),
+            session: fn (string $key, mixed $default) => session($key, $default),
+            file: fn (string $key) => request()->file($key, request()->get($key, false)),
+            old: fn (string $key, mixed $default) => session()->getOldInput($key, $default)
+        ));
 
         return $this;
     }
@@ -253,7 +281,6 @@ class MoonShineServiceProvider extends ServiceProvider
             $this->commands($this->commands);
         }
 
-        Blade::withoutDoubleEncoding();
         Blade::componentNamespace('MoonShine\UI\Components', 'moonshine');
 
         $this

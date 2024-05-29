@@ -1,10 +1,12 @@
 @props([
-    'errors'
+    'errors' => []
 ])
-@if (isset($errors) && $errors->any())
-    @foreach ($errors->all() as $error)
-        <x-moonshine::alert :removable="false" type="error">
-            {{ $error }}
-        </x-moonshine::alert>
+@if ($errors !== [])
+    @foreach ($errors as $error)
+        @foreach($error as $message)
+            <x-moonshine::alert :removable="false" type="error">
+                {{ $message }}
+            </x-moonshine::alert>
+        @endforeach
     @endforeach
 @endif

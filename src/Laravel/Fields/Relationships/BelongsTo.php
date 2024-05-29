@@ -13,13 +13,13 @@ use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
+use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\Searchable;
-use MoonShine\UI\Traits\Fields\WithAsyncSearch;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
-use MoonShine\UI\Traits\Fields\WithRelatedValues;
 use Throwable;
 
 /**
@@ -89,7 +89,7 @@ class BelongsTo extends ModelRelationField implements
     protected function resolveOnApply(): ?Closure
     {
         return function (Model $item) {
-            $value = $this->requestValue();
+            $value = $this->getRequestValue();
 
             if ($value === false && ! $this->isNullable()) {
                 return $item;

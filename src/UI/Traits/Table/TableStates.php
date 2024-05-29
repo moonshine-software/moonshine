@@ -209,7 +209,7 @@ trait TableStates
             'sortable' => $this->isSortable(),
             'simple' => $this->isSimple(),
             'searchable' => $this->isSearchable(),
-            'searchValue' => moonshine()->getRequest('search', ''),
+            'searchValue' => moonshine()->getRequest()->get('search', ''),
         ];
     }
 }

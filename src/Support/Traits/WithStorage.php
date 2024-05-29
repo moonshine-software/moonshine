@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\Traits;
 
-use Illuminate\Support\Facades\Storage;
 
-// TODO @isolate
 trait WithStorage
 {
     protected ?string $disk = null;
@@ -24,8 +22,8 @@ trait WithStorage
 
     protected function resolveStorage(): void
     {
-        if (! Storage::disk($this->getDisk())->exists($this->getDir())) {
-            Storage::disk($this->getDisk())->makeDirectory($this->getDir());
+        if (! moonshineStorage(disk: $this->getDisk())->exists($this->getDir())) {
+            moonshineStorage(disk: $this->getDisk())->makeDirectory($this->getDir());
         }
     }
 
@@ -70,26 +68,26 @@ trait WithStorage
 
     public function getStorageUrl(string $value): string
     {
-        return Storage::disk($this->getDisk())->url($value);
+        return moonshineStorage(disk: $this->getDisk())->url($value);
     }
 
     public function deleteStorageFile(string|array $path): bool
     {
-        return Storage::disk($this->getDisk())->delete($path);
+        return moonshineStorage(disk: $this->getDisk())->delete($path);
     }
 
     public function deleteStorageDirectory(string $dir): bool
     {
-        return Storage::disk($this->getDisk())->deleteDirectory($dir);
+        return moonshineStorage(disk: $this->getDisk())->deleteDirectory($dir);
     }
 
     public function getStorageDirectories(string $dir): array
     {
-        return Storage::disk($this->getDisk())->directories($dir);
+        return moonshineStorage(disk: $this->getDisk())->directories($dir);
     }
 
     public function getStorageFiles(string $dir): array
     {
-        return Storage::disk($this->getDisk())->files($dir);
+        return moonshineStorage(disk: $this->getDisk())->files($dir);
     }
 }

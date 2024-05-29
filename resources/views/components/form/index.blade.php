@@ -1,13 +1,11 @@
 @props([
     'buttons',
     'name' => null,
-    'errors' => false,
+    'errors' => [],
     'precognitive' => false,
     'raw' => false
 ])
-@if(formErrors($errors, $name)->isNotEmpty())
-    <x-moonshine::form.all-errors :errors="formErrors($errors, $name)" />
-@endif
+<x-moonshine::form.all-errors :errors="$errors" />
 
 <form
     {{ $attributes->merge(['class' => 'form', 'method' => 'POST']) }}

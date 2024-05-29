@@ -16,6 +16,7 @@ use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Fields\FormElement;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
 use Throwable;
@@ -253,7 +254,7 @@ final class FormBuilder extends RowComponent
                     return $item;
                 }
 
-                $value = $field->requestValue() !== false ? $field->requestValue() : null;
+                $value = $field->getRequestValue() !== false ? $field->getRequestValue() : null;
 
                 data_set($item, $field->getColumn(), $value);
 
@@ -365,6 +366,7 @@ final class FormBuilder extends RowComponent
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
+            'errors' => value(FormElement::$errors, $this->getName(), $this) ?? []
         ];
     }
 }

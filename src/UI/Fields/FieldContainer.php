@@ -64,7 +64,7 @@ final class FieldContainer extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'errors' => $this->field->getErrors(),
+            'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
             'name' => $this->field->getNameAttribute(),
             'label' => $this->field->getLabel(),
             'formName' => $this->field->getFormName(),

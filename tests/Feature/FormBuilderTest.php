@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\TypeCasts\ModelCast;
 use MoonShine\UI\Components\FormBuilder;

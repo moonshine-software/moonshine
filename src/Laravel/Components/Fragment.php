@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Components;
+namespace MoonShine\Laravel\Components;
 
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -12,12 +12,12 @@ use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Traits\HasAsync;
+use MoonShine\UI\Components\AbstractWithComponents;
 use Throwable;
 
 /**
  * @method static static make(array $fields = [])
  */
-// TODO move to Laravel and move view to Laravel
 class Fragment extends AbstractWithComponents
 {
     use HasAsync;

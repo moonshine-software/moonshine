@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Traits\Fields;
+namespace MoonShine\Laravel\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -10,13 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionProperty;
 use MoonShine\UI\Fields\Field;
 
-// TODO isolate(MoonShineRequest)
 trait WithAsyncSearch
 {
     protected bool $asyncSearch = false;
@@ -75,8 +73,7 @@ trait WithAsyncSearch
             ->prepend($this->withImage['dir'] . '/')
             ->value();
 
-        // TODO @isolate (storage)
-        return Storage::disk($this->withImage['disk'])->url($value);
+        return moonshineStorage(disk: $this->withImage['disk'])->url($value);
     }
 
     public function valuesWithProperties(bool $onlyCustom = false): Collection
@@ -186,7 +183,7 @@ trait WithAsyncSearch
 
         if ($this->associatedWith) {
             $this->customAttributes([
-                'data-associated-with' => $this->dotNestedToName($this->associatedWith),
+                'data-associated-with' => $this->getDotNestedToName($this->associatedWith),
             ]);
         }
 

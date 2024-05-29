@@ -162,9 +162,9 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $url ?? fn (): string => moonshineRouter()->asyncComponent(
             $this->getName(),
             additionally: [
-                'filters' => moonshine()->getRequest('filters'),
-                'query-tag' => moonshine()->getRequest('query-tag'),
-                'search' => moonshine()->getRequest('search'),
+                'filters' => moonshine()->getRequest()->get('filters'),
+                'query-tag' => moonshine()->getRequest()->get('query-tag'),
+                'search' => moonshine()->getRequest()->get('search'),
             ]
         );
     }
@@ -173,7 +173,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     {
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->getPaginator()
-                ?->appends(request()->except('page'))
+                ?->appends(moonshine()->getRequest()->getExcept('page'))
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 

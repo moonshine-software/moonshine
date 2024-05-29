@@ -19,7 +19,8 @@ final class FileModelApply implements ApplyContract
     public function apply(Field $field): Closure
     {
         return function (Model $item) use ($field): Model {
-            $requestValue = $field->requestValue();
+            $requestValue = $field->getRequestValue();
+
             $oldValues = request()->collect($field->hiddenOldValuesKey());
             $values = collect(data_get($item, $field->getColumn(), []));
 

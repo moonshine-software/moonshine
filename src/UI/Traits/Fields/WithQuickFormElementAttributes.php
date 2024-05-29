@@ -85,7 +85,7 @@ trait WithQuickFormElementAttributes
             );
     }
 
-    protected function nameDot(): string
+    public function getNameDot(): string
     {
         $name = (string) str($this->getNameAttribute())->replace('[]', '');
 

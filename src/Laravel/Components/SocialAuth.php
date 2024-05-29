@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Components;
+namespace MoonShine\Laravel\Components;
 
 use Illuminate\Support\Collection;
+use MoonShine\UI\Components\MoonShineComponent;
 
 /**
  * @method static static make(bool $profileMode = false)

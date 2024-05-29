@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine;
+namespace MoonShine\Core;
 
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;

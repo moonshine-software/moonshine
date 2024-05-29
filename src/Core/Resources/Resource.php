@@ -7,9 +7,9 @@ namespace MoonShine\Core\Resources;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Core\Handlers\Handler;
 use MoonShine\Core\Handlers\Handlers;
+use MoonShine\Core\MoonShineRouter;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\MenuManager\MenuFiller;
-use MoonShine\MoonShineRouter;
 use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithUriKey;
 

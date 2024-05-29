@@ -378,7 +378,7 @@ class Json extends Field implements
         ?Closure $response = null,
         bool $fill = false
     ): mixed {
-        $requestValues = array_filter($this->requestValue() ?: []);
+        $requestValues = array_filter($this->getRequestValue() ?: []);
         $applyValues = [];
 
         foreach ($requestValues as $index => $values) {

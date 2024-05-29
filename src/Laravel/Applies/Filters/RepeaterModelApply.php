@@ -15,7 +15,7 @@ class RepeaterModelApply implements ApplyContract
     public function apply(Field $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            $values = collect($field->requestValue())
+            $values = collect($field->getRequestValue())
                 ->filter();
 
             if ($values->isNotEmpty()) {

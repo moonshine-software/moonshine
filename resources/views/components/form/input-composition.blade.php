@@ -1,6 +1,6 @@
 @props([
     'label' => '',
-    'errors' => null,
+    'errors' => [],
     'beforeLabel' => false,
 ])
 <x-moonshine::form.input-wrapper

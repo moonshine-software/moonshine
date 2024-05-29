@@ -108,8 +108,7 @@ final class CardsBuilder extends IterableComponent
 
     protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $url ?? fn (): string => moonshineRouter()
-            ->asyncComponent(name: $this->getName());
+        return $url ?? fn (): string => moonshineRouter()->asyncComponent(name: $this->getName());
     }
 
     public function componentAttributes(array|Closure $attributes): self
@@ -185,7 +184,7 @@ final class CardsBuilder extends IterableComponent
 
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->getPaginator()
-                ?->appends(request()->except('page'))
+                ?->appends(moonshine()->getRequest()->getExcept('page'))
                 ?->setPath($this->prepareAsyncUrlFromPaginator());
         }
 

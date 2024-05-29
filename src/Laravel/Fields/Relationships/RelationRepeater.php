@@ -212,7 +212,7 @@ class RelationRepeater extends ModelRelationField implements
         ?Closure $response = null,
         bool $fill = false
     ): mixed {
-        $requestValues = array_filter($this->requestValue() ?: []);
+        $requestValues = array_filter($this->getRequestValue() ?: []);
 
         $applyValues = [];
 

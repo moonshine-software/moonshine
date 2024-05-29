@@ -88,7 +88,7 @@ class MorphTo extends BelongsTo
     {
         return function (Model $item): Model {
             $item->{$this->getMorphType()} = $this->requestTypeValue();
-            $item->{$this->getMorphKey()} = $this->requestValue();
+            $item->{$this->getMorphKey()} = $this->getRequestValue();
 
             return $item;
         };
@@ -96,8 +96,8 @@ class MorphTo extends BelongsTo
 
     public function requestTypeValue(): string
     {
-        return moonshine()->getRequest(
-            (string) str($this->nameDot())->replace(
+        return request(
+            (string) str($this->getNameDot())->replace(
                 $this->getColumn(),
                 $this->getMorphType()
             ),

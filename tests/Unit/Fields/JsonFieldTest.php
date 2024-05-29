@@ -162,7 +162,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe('field' . $key)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe('field' . $key);
             });
     });
@@ -179,7 +179,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe($name)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe($name);
             });
     });
@@ -195,7 +195,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe($name)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe($name);
             });
     });
