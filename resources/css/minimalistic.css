@@ -435,7 +435,7 @@ body.theme-minimalistic {
   }
 
   .btn-close {
-    @apply h-7 w-7;
+    @apply h-7 min-h-[auto] w-7;
   }
 
   /* Dropdown */
