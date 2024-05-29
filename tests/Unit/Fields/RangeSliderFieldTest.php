@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\Number;
 use MoonShine\Fields\Range;
 use MoonShine\Fields\RangeSlider;
 

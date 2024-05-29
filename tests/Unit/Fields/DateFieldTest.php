@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\Field;
-use MoonShine\Fields\Text;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
