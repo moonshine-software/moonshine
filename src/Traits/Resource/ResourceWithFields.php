@@ -145,17 +145,17 @@ trait ResourceWithFields
     {
         $fields = $this->exportFields();
 
-        if ($fields === []) {
-            $fields = $this->fields()
-                ?: $this->indexFields();
-
+        if ($fields !== []) {
             return Fields::make($fields)
-                ->onlyFields()
-                ->exportFields();
+                ->ensure(Field::class);
         }
 
+        $fields = $this->fields()
+            ?: $this->indexFields();
+
         return Fields::make($fields)
-            ->ensure(Field::class);
+            ->onlyFields()
+            ->exportFields();
     }
 
     public function importFields(): array
@@ -171,17 +171,17 @@ trait ResourceWithFields
     {
         $fields = $this->importFields();
 
-        if ($fields === []) {
-            $fields = $this->fields()
-                ?: $this->indexFields();
-
+        if ($fields !== []) {
             return Fields::make($fields)
-                ->onlyFields()
-                ->importFields();
+                ->ensure(Field::class);
         }
 
+        $fields = $this->fields()
+            ?: $this->indexFields();
+
         return Fields::make($fields)
-            ->ensure(Field::class);
+            ->onlyFields()
+            ->importFields();
     }
 
     /**
