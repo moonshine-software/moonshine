@@ -154,7 +154,8 @@ trait ResourceWithFields
                 ->exportFields();
         }
 
-        return Fields::make($fields);
+        return Fields::make($fields)
+            ->ensure(Field::class);
     }
 
     public function importFields(): array
@@ -179,7 +180,8 @@ trait ResourceWithFields
                 ->importFields();
         }
 
-        return Fields::make($fields);
+        return Fields::make($fields)
+            ->ensure(Field::class);
     }
 
     /**
