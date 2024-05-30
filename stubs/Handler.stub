@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\Exceptions\ActionException;
-use MoonShine\MoonShineUI;
+use MoonShine\Laravel\MoonShineUI;
 use Symfony\Component\HttpFoundation\Response;
-use MoonShine\Handlers\Handler;
+use MoonShine\Core\Handlers\Handler;
 
 class DummyHandler extends Handler
 {

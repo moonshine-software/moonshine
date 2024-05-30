@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Models\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use MoonShine\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUser;
 
 trait UserBelongsToTrait
 {

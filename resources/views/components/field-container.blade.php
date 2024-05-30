@@ -1,4 +1,5 @@
 @props([
+    'errors' => [],
     'label' => '',
     'name' => '',
     'formName' => '',
@@ -18,6 +19,7 @@
     :formName="$formName"
     :beforeLabel="$labelBefore"
     :inLabel="$inLabel"
+    :errors="$errors"
 >
     <x-slot:beforeSlot>
         {!! $beforeInner !!}

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use MoonShine\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Models\Category;
 
 return new class () extends Migration {

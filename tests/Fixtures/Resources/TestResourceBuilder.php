@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\View\ComponentAttributeBag;
-use MoonShine\Components\ActionButtons\ActionButton;
-use MoonShine\Components\Metrics\Wrapped\DonutChartMetric;
-use MoonShine\Components\Metrics\Wrapped\LineChartMetric;
-use MoonShine\Components\Metrics\Wrapped\ValueMetric;
-use MoonShine\Fields\Email;
-use MoonShine\Fields\Password;
-use MoonShine\Fields\Preview;
-use MoonShine\Fields\Text;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\QueryTags\QueryTag;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\QueryTags\QueryTag;
+use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\Metrics\Wrapped\DonutChartMetric;
+use MoonShine\UI\Components\Metrics\Wrapped\LineChartMetric;
+use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
+use MoonShine\UI\Fields\Email;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\Preview;
+use MoonShine\UI\Fields\Text;
 
 class TestResourceBuilder
 {

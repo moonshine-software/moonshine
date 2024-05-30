@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-use MoonShine\Applies\Filters\DateRangeModelApply;
-use MoonShine\Fields\DateRange;
-use MoonShine\Handlers\ExportHandler;
-use MoonShine\Handlers\ImportHandler;
-use MoonShine\Pages\Crud\DetailPage;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Laravel\Applies\Filters\DateRangeModelApply;
+use MoonShine\Laravel\Handlers\ExportHandler;
+use MoonShine\Laravel\Handlers\ImportHandler;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\UI\Fields\DateRange;
 
 use function Pest\Laravel\get;
 
@@ -22,7 +23,8 @@ beforeEach(function () {
 });
 
 it('show field on pages', function () {
-    $resource = addFieldsToTestResource($this->field->format('d.m.Y'));
+    $resource = addFieldsToTestResource($this->field->format('d.m.Y'))
+        ->setTestFields([$this->field->format('d.m.Y')]);
 
     $from = now();
     $to = now()->addMonth();
@@ -31,21 +33,19 @@ it('show field on pages', function () {
     $this->item->end_date = $to->format('Y-m-d');
     $this->item->save();
 
-    /*    asAdmin()->get(
-            to_page(page: IndexPage::class, resource: $resource)
-        )
-            ->assertOk()
-            ->assertSee('Range')
-            ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
-        ;
+    asAdmin()->get(
+        toPage(page: IndexPage::class, resource: $resource)
+    )
+        ->assertOk()
+        ->assertSee('Range')
+        ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'));
 
-        asAdmin()->get(
-            to_page(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
-        )
-            ->assertOk()
-            ->assertSee('Range')
-            ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'))
-        ;*/
+    asAdmin()->get(
+        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+    )
+        ->assertOk()
+        ->assertSee('Range')
+        ->assertSee($from->format('d.m.Y') . ' - ' . $to->format('d.m.Y'));
 
     asAdmin()->get(
         toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
@@ -53,8 +53,7 @@ it('show field on pages', function () {
         ->assertOk()
         ->assertSee('range')
         ->assertSee('start_date')
-        ->assertSee('end_date')
-    ;
+        ->assertSee('end_date');
 });
 
 it('apply as base', function () {
@@ -75,8 +74,7 @@ it('apply as base', function () {
     expect($this->item->start_date)
         ->toBe($from->format('Y-m-d'))
         ->and($this->item->end_date)
-        ->toBe($to->format('Y-m-d'))
-    ;
+        ->toBe($to->format('Y-m-d'));
 });
 
 it('before apply', function () {
@@ -101,8 +99,7 @@ it('before apply', function () {
     $this->item->refresh();
 
     expect($this->item->name)
-        ->toBe($from . ' - ' . $to)
-    ;
+        ->toBe($from . ' - ' . $to);
 });
 
 it('after apply', function () {
@@ -128,8 +125,7 @@ it('after apply', function () {
     expect($this->item->start_date)
         ->toBe('2020-01-01')
         ->and($this->item->end_date)
-        ->toBe('2020-01-02')
-    ;
+        ->toBe('2020-01-02');
 });
 
 it('apply as base with default', function () {
@@ -151,8 +147,7 @@ it('apply as base with default', function () {
     expect($this->item->start_date)
         ->toBe($from->format('Y-m-d'))
         ->and($this->item->end_date)
-        ->toBe($to->format('Y-m-d'))
-    ;
+        ->toBe($to->format('Y-m-d'));
 });
 
 it('apply as base with null', function () {
@@ -172,8 +167,7 @@ it('apply as base with null', function () {
     expect($this->item->start_date)
         ->toBeNull()
         ->and($this->item->end_date)
-        ->toBeNull()
-    ;
+        ->toBeNull();
 });
 
 it('apply as filter', function (): void {
@@ -189,12 +183,10 @@ it('apply as filter', function (): void {
         ->apply(
             static fn (Builder $query) => $query,
             $query
-        )
-    ;
+        );
 
     expect($query->toRawSql())
-        ->toContain('range', '2020-01-01', '2020-01-02')
-    ;
+        ->toContain('range', '2020-01-01', '2020-01-02');
 });
 
 function dateRangeExport(Item $item): ?string
@@ -230,7 +222,6 @@ it('export', function (): void {
 });
 
 it('import', function (): void {
-
     $file = dateRangeExport($this->item);
 
     $resource = addFieldsToTestResource(
@@ -250,6 +241,5 @@ it('import', function (): void {
     expect($this->item->start_date)
         ->toBe('2020-01-01')
         ->and($this->item->end_date)
-        ->toBe('2020-01-02')
-    ;
+        ->toBe('2020-01-02');
 });

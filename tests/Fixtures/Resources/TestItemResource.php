@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Components\Layout\Box;
-use MoonShine\Fields\Date;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Image;
-use MoonShine\Fields\Relationships\BelongsTo;
-use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Fields\Relationships\MorphMany;
-use MoonShine\Fields\Switcher;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\TinyMce;
-use MoonShine\QueryTags\QueryTag;
-use MoonShine\Resources\ModelResource;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Fields\Relationships\MorphMany;
+use MoonShine\Laravel\QueryTags\QueryTag;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Date;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Image;
+use MoonShine\UI\Fields\Switcher;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\TinyMce;
 
 class TestItemResource extends ModelResource
 {

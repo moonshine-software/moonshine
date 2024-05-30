@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Support;
 
-use MoonShine\DTOs\AsyncCallback;
-use MoonShine\Enums\JsEvent;
+use MoonShine\Support\DTOs\AsyncCallback;
+use MoonShine\Support\Enums\JsEvent;
 
 final class AlpineJs
 {
@@ -55,7 +55,7 @@ final class AlpineJs
         ?string $name = null,
         ?string $call = null
     ): string {
-        return Condition::boolean($condition, false)
+        return value($condition) ?? false
             ? self::eventBlade($event, $name, $call)
             : '';
     }

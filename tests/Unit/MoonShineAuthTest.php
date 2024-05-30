@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Contracts\Auth\Guard;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShineAuth;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\MoonShineAuth;
 
 uses()->group('core');
 

@@ -3,14 +3,15 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Applies\Filters\JsonModelApply;
-use MoonShine\Fields\Json;
-use MoonShine\Fields\Text;
-use MoonShine\Handlers\ExportHandler;
-use MoonShine\Handlers\ImportHandler;
+use MoonShine\Laravel\Applies\Filters\RepeaterModelApply;
+use MoonShine\Laravel\Fields\Relationships\RelationRepeater;
+use MoonShine\Laravel\Handlers\ExportHandler;
+use MoonShine\Laravel\Handlers\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Fields\Json;
+use MoonShine\UI\Fields\Text;
 
 use function Pest\Laravel\get;
 
@@ -104,7 +105,7 @@ it('apply as only value', function () {
 
 it('apply as relation', function () {
     $resource = addFieldsToTestResource(
-        Json::make('Comments')->asRelation(new TestCommentResource())
+        RelationRepeater::make('Comments', resource: TestCommentResource::class)
     );
 
     $data = [
@@ -152,7 +153,7 @@ it('apply as filter', function (): void {
     get('/?filters[json][0][title]=test');
 
     $field
-        ->onApply((new JsonModelApply())->apply($field))
+        ->onApply((new RepeaterModelApply())->apply($field))
         ->apply(
             static fn (Builder $query) => $query,
             $query

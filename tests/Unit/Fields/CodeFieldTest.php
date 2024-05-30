@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\Code;
-use MoonShine\Fields\Textarea;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\Code;
+use MoonShine\UI\Fields\Textarea;
 
 uses()->group('fields');
 

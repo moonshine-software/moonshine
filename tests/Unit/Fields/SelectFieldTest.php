@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\DTOs\Select\Options;
-use MoonShine\Fields\Select;
+use MoonShine\Support\DTOs\Select\Options;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\Select;
 
 uses()->group('fields');
 

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Fields\Range;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\UI\Fields\Range;
 
 uses()->group('fields');
 
@@ -121,7 +120,6 @@ describe('common field methods', function () {
 
     it('correct interfaces', function (): void {
         expect($this->field)
-            ->toBeInstanceOf(DefaultCanBeNumeric::class)
             ->toBeInstanceOf(DefaultCanBeArray::class)
         ;
     });

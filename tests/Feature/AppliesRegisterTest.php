@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Builder;
-use MoonShine\Contracts\ApplyContract;
-use MoonShine\Fields\Field;
-use MoonShine\Fields\Text;
-use MoonShine\Resources\ModelResource;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\UI\Contracts\ApplyContract;
+use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('core');
 uses()->group('applies');
@@ -44,7 +44,7 @@ it('add new filter apply', function (): void {
 
     $defaultApply = static fn (Builder $query): Builder => $query->where(
         $field->getColumn(),
-        $field->requestValue()
+        $field->getRequestValue()
     );
 
     if(! is_null($filterApply)) {

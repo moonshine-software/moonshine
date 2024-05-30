@@ -4,8 +4,8 @@ namespace MoonShine\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Models\MoonshineUserRole;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUserRole;
 
 class MoonshineUserFactory extends Factory
 {

@@ -4,37 +4,110 @@ declare(strict_types=1);
 
 namespace MoonShine;
 
+use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Pages\Page;
-use MoonShine\Pages\Pages;
-use MoonShine\Resources\Resources;
-use MoonShine\Support\MemoizeRepository;
+use MoonShine\Core\Contracts\PageContract;
+use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Core\Pages\Pages;
+use MoonShine\Core\Request;
+use MoonShine\Core\Resources\Resources;
+use MoonShine\Support\Enums\Env;
+use MoonShine\Support\Memoize\MemoizeRepository;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 
 class MoonShine
 {
     use Conditionable;
 
+    private static Closure $renderer;
+
+    private static Closure $container;
+
+    private static Env $env = Env::LOCAL;
+
+    private static Closure $request;
+
+    private static Closure $flushStates;
+
     private array $resources = [];
 
     private array $pages = [];
 
-    public function __construct(
-        private MoonShineConfigurator $config
-    ) {
+    public static function setEnv(Env $env): void
+    {
+        self::$env = $env;
+    }
+
+    public function runningUnitTests(): bool
+    {
+        return  self::$env === Env::TESTING;
+    }
+
+    public function runningInConsole(): bool
+    {
+        return $this->runningUnitTests() ||  self::$env === Env::CONSOLE;
+    }
+
+    public function isLocal(): bool
+    {
+        return  self::$env === Env::LOCAL;
+    }
+
+    public function isProduction(): bool
+    {
+        return  self::$env === Env::PRODUCTION;
     }
 
     /**
-     * @param  mixed|null  $default
-     * @return mixed|MoonShineConfigurator
+     * @param  Closure(string $view, array $data, MoonShineRenderable $object): string  $renderer
+     * @return void
      */
-    public function config(?string $key = null, mixed $default = null): mixed
+    public static function renderUsing(Closure $renderer): void
     {
-        if (! is_null($key)) {
-            return $this->config->get($key, $default);
-        }
+        self::$renderer = $renderer;
+    }
 
-        return $this->config;
+    public function render(string $view, array $data, object $object): mixed
+    {
+        return value(self::$renderer, $view, $data, $object);
+    }
+
+    /**
+     * @param  Closure(string $id, ...$parameters): mixed  $container
+     * @return void
+     */
+    public static function containerUsing(Closure $container): void
+    {
+        self::$container = $container;
+    }
+
+    public static function getInstance(): self
+    {
+        return value(self::$container, MoonShine::class);
+    }
+
+    public function getContainer(string $id, mixed $default = null, ...$parameters): mixed
+    {
+        return value(self::$container, $id, $default, $parameters);
+    }
+
+    /**
+     * @param  Closure(string $key, mixed $default): mixed  $request
+     * @return void
+     */
+    public static function requestUsing(mixed $request): void
+    {
+        self::$request = $request;
+    }
+
+    public function getRequest(): Request
+    {
+        return value(self::$request);
+    }
+
+    public static function flushStates(Closure $flushStates): void
+    {
+        self::$flushStates = $flushStates;
     }
 
     public function flushState(): void
@@ -45,16 +118,17 @@ class MoonShine
             return $resource;
         });
 
-        $this->getPages()->transform(function (Page $page): Page {
+        $this->getPages()->transform(function (PageContract $page): PageContract {
             $page->flushState();
 
             return $page;
         });
 
-        moonshineCache()->flush();
         moonshineRouter()->flushState();
 
         MemoizeRepository::getInstance()->flush();
+
+        value(self::$flushStates, $this);
     }
 
     public static function path(string $path = ''): string
@@ -91,13 +165,13 @@ class MoonShine
     public function getResources(): Resources
     {
         return Resources::make($this->resources)
-            ->map(fn (string|ResourceContract $class) => is_string($class) ? app($class) : $class);
+            ->map(fn (string|ResourceContract $class) => is_string($class) ? $this->getContainer($class) : $class);
     }
 
     /**
      * Register pages in the system
      *
-     * @param  list<class-string<Page>>  $data
+     * @param  list<class-string<PageContract>>  $data
      */
     public function pages(array $data, bool $newCollection = false): self
     {
@@ -120,6 +194,6 @@ class MoonShine
     {
         return Pages::make($this->pages)
             ->except('error')
-            ->map(fn (string|Page $class) => is_string($class) ? app($class) : $class);
+            ->map(fn (string|PageContract $class) => is_string($class) ? $this->getContainer($class) : $class);
     }
 }

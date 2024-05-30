@@ -58,7 +58,7 @@ body.theme-minimalistic {
     }
 
     .search-form {
-      @apply h-8;
+      @apply h-[34px];
 
       &-field {
         @apply rounded-md;
@@ -427,7 +427,7 @@ body.theme-minimalistic {
 
   /* Buttons */
   .btn {
-    @apply h-8 gap-x-1.5 px-2;
+    @apply h-8 min-h-[34px] gap-x-1.5 px-2;
 
     &.btn-lg {
       @apply h-10 px-3.5;
@@ -435,7 +435,7 @@ body.theme-minimalistic {
   }
 
   .btn-close {
-    @apply h-7 w-7;
+    @apply h-7 min-h-[auto] w-7;
   }
 
   /* Dropdown */
@@ -447,7 +447,7 @@ body.theme-minimalistic {
       @apply p-2;
     }
     &-btn {
-      @apply h-auto min-h-[2rem] min-w-[2rem] gap-x-1 p-1;
+      @apply h-auto min-h-[34px] min-w-[34px] gap-x-1 p-1;
     }
     &-menu {
       &-link {
@@ -520,7 +520,7 @@ body.theme-minimalistic {
   .form-select,
   .form-multiselect,
   .form-file-upload {
-    @apply px-2 py-1;
+    @apply min-h-[34px] px-2 py-1;
   }
 
   .form-file-upload {
@@ -580,7 +580,7 @@ body.theme-minimalistic {
 
   /* Choices */
   .choices__inner {
-    @apply min-h-[32px] py-1;
+    @apply min-h-[34px] !py-1;
   }
 
   .choices[data-type*='select-one'] .choices__inner {
@@ -588,7 +588,7 @@ body.theme-minimalistic {
   }
 
   .choices[data-type*='select-one'] .choices__input {
-    @apply p-2;
+    @apply px-2 py-1;
   }
 
   .choices__list--dropdown .choices__item,
@@ -596,12 +596,8 @@ body.theme-minimalistic {
     @apply px-2 py-1 text-3xs;
   }
 
-  .choices .choices__input {
-    @apply mt-0.5;
-  }
-
   .choices .choices__list--multiple .choices__item {
-    @apply mb-0.5 mr-0.5 rounded-[0.25rem] px-1.5 py-0.5;
+    @apply -mb-0.5 -mt-1 mr-1 rounded-[0.25rem] px-1.5 py-0;
   }
 
   .choices__list--single {

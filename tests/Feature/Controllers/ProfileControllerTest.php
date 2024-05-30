@@ -1,9 +1,9 @@
 <?php
 
 
-use MoonShine\Http\Controllers\ProfileController;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Pages\ProfilePage;
+use MoonShine\Laravel\Http\Controllers\ProfileController;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Pages\ProfilePage;
 
 it('index', function () {
     $user = MoonshineUser::query()->find(1);

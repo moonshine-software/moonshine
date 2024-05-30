@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use MoonShine\Attributes\Icon;
-use MoonShine\Components\ActionButtons\ActionButton;
+use MoonShine\Core\Contracts\MenuFiller;
 use MoonShine\Support\Attributes;
-use MoonShine\Support\Condition;
+use MoonShine\Support\Attributes\Icon;
+use MoonShine\UI\Components\ActionButton;
 use Throwable;
 
 /**
@@ -126,7 +126,7 @@ class MenuItem extends MenuElement
 
     public function blank(Closure|bool $blankCondition = true): static
     {
-        $this->blank = Condition::boolean($blankCondition, true);
+        $this->blank = value($blankCondition, $this) ?? true;
 
         return $this;
     }
@@ -151,15 +151,15 @@ class MenuItem extends MenuElement
         $host = parse_url($this->url(), PHP_URL_HOST) ?? '';
 
         $isActive = function ($path, $host) {
-            if ($path === '/' && request()->host() === $host) {
-                return request()->path() === $path;
+            if ($path === '/' && moonshine()->getRequest()->getHost() === $host) {
+                return moonshine()->getRequest()->getPath() === $path;
             }
 
-            if ($this->url() === moonshineRouter()->home()) {
-                return request()->fullUrlIs($this->url());
+            if ($this->url() === moonshineRouter()->getEndpoints()->home()) {
+                return moonshine()->getRequest()->urlIs($this->url());
             }
 
-            return request()->fullUrlIs('*' . $this->url() . '*');
+            return moonshine()->getRequest()->urlIs('*' . $this->url() . '*');
         };
 
         return is_null($this->whenActive)

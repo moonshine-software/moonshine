@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use MoonShine\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Models\Comment;
 
 class CommentFactory extends Factory

@@ -6,5 +6,5 @@
      {{ $attributes->only('class') }}
      data-field-block="{{ $attributes->get('name') }}"
 >
-    {{ $component->render() }}
+    {!! $component->render() !!}
 </div>

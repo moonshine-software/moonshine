@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\CoverResource;
 
-use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 
 class CoverPageIndex extends IndexPage
 {

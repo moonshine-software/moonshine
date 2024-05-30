@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasPivot;
-use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
-use MoonShine\Fields\Relationships\BelongsToMany;
-use MoonShine\Fields\Text;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
+use MoonShine\Laravel\Contracts\Fields\HasPivot;
+use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
+use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('model-relation-fields');
 uses()->group('belongs-to-many-field');
@@ -121,7 +121,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe('pivot_' . $key)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe('pivot_' . $key);
             });
     });

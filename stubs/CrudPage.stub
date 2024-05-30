@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\Pages\Crud\{extendShort};
-use MoonShine\Components\MoonShineComponent;
-use MoonShine\Fields\Field;
+use MoonShine\Laravel\Pages\Crud\{extendShort};
+use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Fields\Field;
 use Throwable;
 
 class DummyPage extends {extendShort}

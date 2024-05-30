@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MoonShine\Fields\Hidden;
+use MoonShine\UI\Fields\Hidden;
 
 uses()->group('fields');
 

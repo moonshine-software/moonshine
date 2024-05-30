@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Applies\Filters\RangeModelApply;
-use MoonShine\Fields\Range;
-use MoonShine\Handlers\ExportHandler;
-use MoonShine\Handlers\ImportHandler;
-use MoonShine\Pages\Crud\DetailPage;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Applies\Filters\RangeModelApply;
+use MoonShine\Laravel\Handlers\ExportHandler;
+use MoonShine\Laravel\Handlers\ImportHandler;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\UI\Fields\Range;
 
 use function Pest\Laravel\get;
 

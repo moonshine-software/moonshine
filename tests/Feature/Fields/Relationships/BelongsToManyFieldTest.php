@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Applies\Filters\BelongsToManyModelApply;
-use MoonShine\Fields\Relationships\BelongsToMany;
-use MoonShine\Fields\Text;
-use MoonShine\Handlers\ExportHandler;
-use MoonShine\Handlers\ImportHandler;
+use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\Handlers\ExportHandler;
+use MoonShine\Laravel\Handlers\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Fields\Text;
 
 use function Pest\Laravel\get;
 

@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\RemovableContract;
-use MoonShine\Fields\Json;
-use MoonShine\Fields\Text;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\Fields\RemovableContract;
+use MoonShine\UI\Fields\Json;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('fields');
 uses()->group('json-field');
@@ -162,7 +162,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe('field' . $key)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe('field' . $key);
             });
     });
@@ -179,7 +179,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe($name)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe($name);
             });
     });
@@ -195,7 +195,7 @@ describe('unique field methods', function () {
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()
                     ->toBe($name)
-                    ->identity()
+                    ->getIdentity()
                     ->toBe($name);
             });
     });

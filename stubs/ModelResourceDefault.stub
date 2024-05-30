@@ -7,11 +7,11 @@ namespace {namespace};
 use Illuminate\Database\Eloquent\Model;
 use {model-namespace};
 
-use MoonShine\Resources\ModelResource;
-use MoonShine\Components\Layout\Box;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Field;
-use MoonShine\Components\MoonShineComponent;
+use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Components\MoonShineComponent;
 
 /**
  * @extends ModelResource<{model}>

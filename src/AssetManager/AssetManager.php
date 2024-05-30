@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
+use Closure;
 use Composer\InstalledVersions;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\AssetManager\Contracts\AssetElement;
 use MoonShine\MoonShine;
 
 final class AssetManager implements Htmlable
@@ -18,6 +19,47 @@ final class AssetManager implements Htmlable
      * @var list<AssetElement>
      */
     private array $assets = [];
+
+    private static ?Closure $assetUsing = null;
+
+    private static ?Closure $viteDevUsing = null;
+
+    /**
+     * @param  Closure(string $path): void  $callback
+     * @return void
+     */
+    public static function assetUsing(Closure $callback): void
+    {
+        self::$assetUsing = $callback;
+    }
+
+    public function asset(string $path): string
+    {
+        if(is_null(self::$assetUsing)) {
+            return $path;
+        }
+
+        return value(self::$assetUsing, $path);
+    }
+
+    /**
+     * @param  Closure(string $path): void  $callback
+     * @return void
+     */
+    public static function viteDevUsing(Closure $callback): void
+    {
+        self::$viteDevUsing = $callback;
+    }
+
+    public function hasViteDevMode(): bool
+    {
+        return !is_null(self::$viteDevUsing);
+    }
+
+    public function viteDev(string $path): string
+    {
+        return value(self::$viteDevUsing, $path);
+    }
 
     /**
      * @parent list<AssetElement> $assets
@@ -44,15 +86,10 @@ final class AssetManager implements Htmlable
         return $this->getAssets()
             ->ensure(AssetElement::class)
             ->when(
-                $this->isRunningHot(),
+                $this->isRunningHot() && $this->hasViteDevMode(),
                 fn (AssetElements $assets) => $assets
                     ->push(
-                        Raw::make(
-                            Vite::useBuildDirectory('vendor/moonshine')
-                                ->useHotFile($this->hotFile())
-                                ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
-                                ->toHtml()
-                        )
+                        Raw::make($this->viteDev($this->hotFile()))
                     ),
             )
             ->withVersion($this->getVersion())
@@ -61,7 +98,7 @@ final class AssetManager implements Htmlable
 
     private function isRunningHot(): bool
     {
-        return app()->isLocal() && is_file($this->hotFile());
+        return moonshine()->isLocal() && is_file($this->hotFile());
     }
 
     private function hotFile(): string

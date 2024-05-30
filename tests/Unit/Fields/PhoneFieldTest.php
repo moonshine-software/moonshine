@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\Phone;
-use MoonShine\Fields\Text;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\Phone;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('fields');
 

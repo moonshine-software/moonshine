@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use MoonShine\Traits\Fields\ShowWhen;
+use MoonShine\UI\Traits\Fields\ShowWhen;
 
 uses()->group('fields');
+uses()->group('show-when');
 
 beforeEach(function (): void {
     $this->showWhenTest = new class () {
@@ -20,7 +21,7 @@ beforeEach(function (): void {
             return 'field1';
         }
 
-        protected function dotNestedToName(string $value): string
+        protected function getDotNestedToName(string $value): string
         {
             return $value;
         }

@@ -5,12 +5,14 @@
     'submitLabel' => '',
     'fields' => [],
     'buttons' => [],
+    'errors' => [],
     'submitAttributes' => null,
 ])
 <x-moonshine::form
     :attributes="$attributes"
     :name="$name"
     :precognitive="$precognitive"
+    :errors="$errors"
 >
     <x-moonshine::fields-group
         :components="$fields"

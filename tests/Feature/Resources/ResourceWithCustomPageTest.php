@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Text;
-use MoonShine\Pages\Crud\DetailPage;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageDetail;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageForm;
@@ -14,6 +12,8 @@ use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageIndex;
 use MoonShine\Tests\Fixtures\Pages\NoType\CustomNoTypeForm;
 use MoonShine\Tests\Fixtures\Pages\NoType\CustomNoTypeIndex;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('resources-feature');
 uses()->group('pages-custom');

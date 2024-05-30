@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Fields\Switcher;
-use MoonShine\Handlers\ExportHandler;
-use MoonShine\Handlers\ImportHandler;
-use MoonShine\Pages\Crud\DetailPage;
-use MoonShine\Pages\Crud\FormPage;
-use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Handlers\ExportHandler;
+use MoonShine\Laravel\Handlers\ImportHandler;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestHasManyCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Switcher;
 
 uses()->group('fields');
 

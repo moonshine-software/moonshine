@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use MoonShine\Enums\PageType;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShineRequest;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Support\Enums\PageType;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('core');
@@ -12,6 +12,27 @@ uses()->group('core');
 beforeEach(function (): void {
     $this->item = MoonshineUser::factory()->create();
     $this->resource = TestResourceBuilder::new(MoonshineUser::class);
+});
+
+it('interacts with request methods', function () {
+    $this->get($this->resource->route('resource.page', query: [
+        'pageUri' => PageType::INDEX->value,
+        'foo' => 'var'
+    ]));
+
+    expect(moonshine()->getRequest()->getPath())
+        ->toBe(request()->path())
+        ->and(moonshine()->getRequest()->getHost())
+        ->toBe(request()->host())
+        ->and(moonshine()->getRequest()->urlIs('*resource*'))
+        ->toBeTrue()
+        ->and(request()->fullUrlIs('*resource*'))
+        ->toBeTrue()
+        ->and(moonshine()->getRequest()->getUrlWithQuery(['bar' => 2]))
+        ->toBe(request()->fullUrlWithQuery(['bar' => 2]))
+        ->and(moonshine()->getRequest()->getUrl())
+        ->toBe(request()->url())
+    ;
 });
 
 it('find resource', function (): void {

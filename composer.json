@@ -22,7 +22,9 @@
     "ext-json": "*",
     "rap2hpoutre/fast-excel": "^5.4",
     "lee-to/laravel-package-command": "^0.9",
-    "lcobucci/jwt": "^5.3"
+    "lcobucci/jwt": "^5.3",
+    "symfony/psr-http-message-bridge": "^7",
+    "nyholm/psr7": "^1"
   },
   "require-dev": {
     "pestphp/pest": "^2.34",
@@ -36,7 +38,13 @@
       "MoonShine\\Database\\Factories\\": "database/factories/"
     },
     "files": [
-      "src/helpers.php"
+      "src/Core/helpers.php",
+      "src/Support/helpers.php",
+      "src/MenuManager/helpers.php",
+      "src/AssetManager/helpers.php",
+      "src/ColorManager/helpers.php",
+      "src/UI/helpers.php",
+      "src/Laravel/helpers.php"
     ]
   },
   "autoload-dev": {
@@ -62,7 +70,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "MoonShine\\Providers\\MoonShineServiceProvider"
+        "MoonShine\\Laravel\\Providers\\MoonShineServiceProvider"
       ]
     }
   },

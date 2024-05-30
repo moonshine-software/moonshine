@@ -149,7 +149,7 @@ final class ColorManager implements Htmlable
         $hexValue = is_array($value) ? $value['DEFAULT'] : $value;
 
         return $hex ?
-            Colors::toHEX($hexValue)
+            ColorMutator::toHEX($hexValue)
             : $value;
     }
 
@@ -160,10 +160,10 @@ final class ColorManager implements Htmlable
 
         foreach ($data as $name => $shades) {
             if (! is_array($shades)) {
-                $colors[$name] = Colors::toRGB($shades);
+                $colors[$name] = ColorMutator::toRGB($shades);
             } else {
                 foreach ($shades as $shade => $color) {
-                    $colors["$name-$shade"] = Colors::toRGB($color);
+                    $colors["$name-$shade"] = ColorMutator::toRGB($color);
                 }
             }
         }

@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Components\Layout\Box;
-use MoonShine\Fields\Date;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Image;
-use MoonShine\Fields\Relationships\HasOne;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\TinyMce;
-use MoonShine\Resources\ModelResource;
+use MoonShine\Laravel\Fields\Relationships\HasOne;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageDetail;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageForm;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageIndex;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Date;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Image;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\TinyMce;
 
 class TestCategoryPageResource extends ModelResource
 {

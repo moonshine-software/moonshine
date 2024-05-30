@@ -2,10 +2,10 @@
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
-use MoonShine\Fields\File;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Relationships\BelongsTo;
-use MoonShine\Traits\Resource\ResourceWithParent;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Traits\Resource\ResourceWithParent;
+use MoonShine\UI\Fields\File;
+use MoonShine\UI\Fields\ID;
 
 class TestFileResourceWithParent extends TestFileResource
 {

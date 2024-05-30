@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Components\Boolean;
-use MoonShine\Fields\Checkbox;
-use MoonShine\Fields\Switcher;
+use MoonShine\UI\Components\Boolean;
+use MoonShine\UI\Fields\Checkbox;
+use MoonShine\UI\Fields\Switcher;
 
 uses()->group('fields');
 

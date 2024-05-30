@@ -2,7 +2,7 @@
 
 use {namespace}\DummyResource;
 use {model-namespace};
-use MoonShine\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUser;
 use function Pest\Laravel\actingAs;
 
 uses()->group('moonshine');

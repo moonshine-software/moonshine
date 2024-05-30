@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Enums\PageType;
-use MoonShine\MoonShineRequest;
+use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Support\Enums\PageType;
 
 uses()->group('core');
 

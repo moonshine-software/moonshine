@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\CoverResource;
 
-use MoonShine\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
 
 class CoverPageDetail extends DetailPage
 {

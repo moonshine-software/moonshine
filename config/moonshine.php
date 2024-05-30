@@ -7,17 +7,17 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use MoonShine\Exceptions\MoonShineNotFoundException;
-use MoonShine\Forms\FiltersForm;
-use MoonShine\Forms\LoginForm;
-use MoonShine\Http\Middleware\Authenticate;
-use MoonShine\Http\Middleware\ChangeLocale;
-use MoonShine\Layouts\AppLayout;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\Pages\Dashboard;
-use MoonShine\Pages\ErrorPage;
-use MoonShine\Pages\LoginPage;
-use MoonShine\Pages\ProfilePage;
+use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
+use MoonShine\Laravel\Forms\FiltersForm;
+use MoonShine\Laravel\Forms\LoginForm;
+use MoonShine\Laravel\Http\Middleware\Authenticate;
+use MoonShine\Laravel\Http\Middleware\ChangeLocale;
+use MoonShine\Laravel\Layouts\AppLayout;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Pages\Dashboard;
+use MoonShine\Laravel\Pages\ErrorPage;
+use MoonShine\Laravel\Pages\LoginPage;
+use MoonShine\Laravel\Pages\ProfilePage;
 
 return [
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
@@ -85,6 +85,7 @@ return [
         // User::class
     ],
 
+    'locale' => 'en',
     'locales' => [
         // en
     ],

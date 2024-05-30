@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\CoverResource;
 
-use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
 
 class CoverPageForm extends FormPage
 {

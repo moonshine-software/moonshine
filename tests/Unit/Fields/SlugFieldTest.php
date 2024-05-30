@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\Slug;
-use MoonShine\Fields\Text;
+use MoonShine\UI\Fields\Slug;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('fields');
 

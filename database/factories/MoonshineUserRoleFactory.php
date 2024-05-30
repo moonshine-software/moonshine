@@ -3,7 +3,7 @@
 namespace MoonShine\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use MoonShine\Models\MoonshineUserRole;
+use MoonShine\Laravel\Models\MoonshineUserRole;
 
 class MoonshineUserRoleFactory extends Factory
 {

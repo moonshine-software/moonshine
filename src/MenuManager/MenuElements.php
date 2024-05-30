@@ -36,7 +36,9 @@ final class MenuElements extends Collection
                 );
             }
 
-            return $item->isSee(moonshineRequest());
+            return $item->isSee(
+                moonshine()->getRequest()
+            );
         });
     }
 }

@@ -84,7 +84,7 @@
                                 :actions="$buttons"
                             />
 
-                            {{ $component->render() }}
+                            {!! $component->render() !!}
                         </div>
                     </div>
                 @else
@@ -94,7 +94,7 @@
                             :actions="$buttons"
                         />
 
-                        {{ $component->render() }}
+                        {!! $component->render() !!}
                     </div>
                 @endif
             @endif

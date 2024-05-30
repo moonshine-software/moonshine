@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Contracts\Fields\RemovableContract;
-use MoonShine\Fields\File;
+use MoonShine\UI\Contracts\Fields\Fileable;
+use MoonShine\UI\Contracts\Fields\RemovableContract;
+use MoonShine\UI\Fields\File;
 
 uses()->group('fields');
 uses()->group('file-field');

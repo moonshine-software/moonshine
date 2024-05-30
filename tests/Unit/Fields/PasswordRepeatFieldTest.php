@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Fields\Password;
-use MoonShine\Fields\PasswordRepeat;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\PasswordRepeat;
 
 uses()->group('fields');
 

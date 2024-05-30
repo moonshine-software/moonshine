@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Fields\Color;
-use MoonShine\Fields\Field;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\Color;
+use MoonShine\UI\Fields\Field;
 
 uses()->group('fields');
 

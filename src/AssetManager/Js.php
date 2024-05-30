@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use MoonShine\Support\MoonShineComponentAttributeBag;
-use MoonShine\Traits\Makeable;
-use MoonShine\Traits\WithComponentAttributes;
-use MoonShine\Traits\WithVersion;
+use MoonShine\AssetManager\Contracts\AssetElement;
+use MoonShine\AssetManager\Contracts\HasVersion;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\Traits\Makeable;
+use MoonShine\Support\Traits\WithComponentAttributes;
+use MoonShine\Support\Traits\WithVersion;
 
 final class Js implements AssetElement, HasVersion
 {
@@ -35,10 +37,10 @@ final class Js implements AssetElement, HasVersion
     public function getLink(): string
     {
         if (! is_null($this->getVersion())) {
-            return asset($this->link) . "v={$this->getVersion()}";
+            return moonshineAssets()->asset($this->link) . "v={$this->getVersion()}";
         }
 
-        return asset($this->link);
+        return moonshineAssets()->asset($this->link);
     }
 
     public function toHtml(): string

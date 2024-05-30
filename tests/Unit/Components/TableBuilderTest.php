@@ -1,10 +1,10 @@
 <?php
 
-use MoonShine\Components\TableBuilder;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Text;
+use MoonShine\Laravel\TypeCasts\ModelCast;
 use MoonShine\Tests\Fixtures\Models\Item;
-use MoonShine\TypeCasts\ModelCast;
+use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('table-builder');
 
