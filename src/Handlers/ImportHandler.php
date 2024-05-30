@@ -147,7 +147,7 @@ class ImportHandler extends Handler
         $result = $fastExcel->import($path, function ($line) use ($resource) {
             $data = collect($line)->mapWithKeys(
                 function ($value, $key) use ($resource): array {
-                    $field = $resource->getFields()->onlyFields()->importFields()->first(
+                    $field = $resource->getImportFields()->first(
                         fn (Field $field): bool => $field->column() === $key || $field->label() === $key
                     );
 

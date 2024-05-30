@@ -150,10 +150,7 @@ class ExportHandler extends Handler
             foreach ($resource->resolveQuery()->cursor() as $index => $item) {
                 $row = [];
 
-                $fields = $resource
-                    ->getFields()
-                    ->onlyFields()
-                    ->exportFields();
+                $fields = $resource->getExportFields();
 
                 $fields->fill($item->toArray(), $item, $index);
 
