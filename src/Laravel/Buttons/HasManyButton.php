@@ -40,7 +40,7 @@ final class HasManyButton
             ]
         );
 
-        if (!$resource->isAsync()) {
+        if (! $resource->isAsync()) {
             $field->isAsync();
         }
 

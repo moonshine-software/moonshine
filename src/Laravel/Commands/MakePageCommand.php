@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\outro;
+
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
+
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:page')]
 class MakePageCommand extends MoonShineCommand

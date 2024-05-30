@@ -17,8 +17,7 @@ final readonly class LaravelEndpoints implements MoonShineEndpoints
 {
     public function __construct(
         private MoonShineRouter $router
-    )
-    {
+    ) {
     }
 
     public function asyncMethod(
@@ -35,7 +34,7 @@ final readonly class LaravelEndpoints implements MoonShineEndpoints
             ...[
                 'pageUri' => $this->router->getParam('pageUri', $this->router->extractPageUri($page)),
                 'resourceUri' => $this->router->getParam('resourceUri', $this->router->extractResourceUri($resource)),
-            ]
+            ],
         ]);
     }
 
@@ -64,7 +63,7 @@ final readonly class LaravelEndpoints implements MoonShineEndpoints
                 ...[
                     'pageUri' => $this->router->extractPageUri(),
                     'resourceUri' => $this->router->extractResourceUri(),
-                ]
+                ],
             ]);
     }
 

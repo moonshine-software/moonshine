@@ -72,7 +72,7 @@ class ProfileController extends MoonShineController
         $currentAvatar = data_get(request()->user(), $avatarColumn, '');
 
         if (! is_null($avatar)) {
-            $user = $image->apply(fn($data) => $data, auth()->user());
+            $user = $image->apply(fn ($data) => $data, auth()->user());
 
             $result[$avatarColumn] = $user->{$avatarColumn};
             $image->deleteFile($oldAvatar);

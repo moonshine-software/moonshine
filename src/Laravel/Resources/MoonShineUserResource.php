@@ -146,7 +146,7 @@ class MoonShineUserResource extends ModelResource
     public function filters(): array
     {
         return [
-            Email::make('E-mail', 'email')
+            Email::make('E-mail', 'email'),
         ];
     }
 }

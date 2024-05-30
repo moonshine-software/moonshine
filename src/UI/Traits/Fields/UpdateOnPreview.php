@@ -77,7 +77,7 @@ trait UpdateOnPreview
                 resource: $field->getNowOnResource(),
                 extra: [
                     'resourceItem' => $item->getKey(),
-                    'relation' => data_get($field->getNowOnQueryParams(), 'relation')
+                    'relation' => data_get($field->getNowOnQueryParams(), 'relation'),
                 ],
             ) : null,
             $events

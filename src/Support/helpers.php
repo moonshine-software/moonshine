@@ -48,5 +48,3 @@ if (! function_exists('memoize')) {
         return $cache->get($object, $hash);
     }
 }
-
-

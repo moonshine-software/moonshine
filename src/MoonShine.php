@@ -45,7 +45,7 @@ class MoonShine
 
     public function runningInConsole(): bool
     {
-        return $this->runningUnitTests() ||  self::$env === Env::CONSOLE;
+        return $this->runningUnitTests() || self::$env === Env::CONSOLE;
     }
 
     public function isLocal(): bool

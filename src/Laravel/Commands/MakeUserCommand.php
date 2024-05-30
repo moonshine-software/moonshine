@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Support\Facades\Hash;
-use MoonShine\Laravel\MoonShineAuth;
-use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\{error, info, password, text};
+
+use MoonShine\Laravel\MoonShineAuth;
+
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:user')]
 class MakeUserCommand extends MoonShineCommand

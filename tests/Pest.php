@@ -15,9 +15,10 @@ use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Text;
 use Pest\Expectation;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 use function Pest\Laravel\actingAs;
+
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 uses(TestCase::class)
     ->in(__DIR__);

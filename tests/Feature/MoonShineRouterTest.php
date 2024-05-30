@@ -128,7 +128,7 @@ it('default update column', function (): void {
         ->toContain("/admin/column/resource/{$this->resource->uriKey()}/3?pageUri={$this->page->uriKey()}")
         ->and($this->router->getEndpoints()->updateColumn($this->resource, $this->page, extra: [
             'resourceItem' => 3,
-            'relation' => 'relation-name'
+            'relation' => 'relation-name',
         ]))
         ->toContain("/admin/column/relation/{$this->resource->uriKey()}/{$this->page->uriKey()}/3")
     ;

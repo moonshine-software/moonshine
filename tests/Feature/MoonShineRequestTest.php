@@ -17,7 +17,7 @@ beforeEach(function (): void {
 it('interacts with request methods', function () {
     $this->get($this->resource->route('resource.page', query: [
         'pageUri' => PageType::INDEX->value,
-        'foo' => 'var'
+        'foo' => 'var',
     ]));
 
     expect(moonshine()->getRequest()->getPath())

@@ -136,7 +136,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(MoonShineEndpoints::class, LaravelEndpoints::class);
 
         $this->app->bind(FieldsCollection::class, Fields::class);
-        $this->app->bind(StorageContract::class, fn(Application $app, array $parameters): LaravelStorage =>  new LaravelStorage(
+        $this->app->bind(StorageContract::class, fn (Application $app, array $parameters): LaravelStorage => new LaravelStorage(
             $parameters['disk'] ?? $parameters[0] ?? 'public',
             $app->get('filesystem')
         ));
@@ -151,10 +151,10 @@ class MoonShineServiceProvider extends ServiceProvider
             Env::fromString(app()->environment())
         );
 
-        MoonShine::renderUsing(static fn(string $view, array $data) => view($view, $data));
+        MoonShine::renderUsing(static fn (string $view, array $data) => view($view, $data));
 
         MoonShine::containerUsing(static function (string $id, mixed $default = null, ...$parameters): mixed {
-            if(!is_null($default) && !app()->has($id)) {
+            if(! is_null($default) && ! app()->has($id)) {
                 return $default;
             }
 
@@ -162,19 +162,19 @@ class MoonShineServiceProvider extends ServiceProvider
         });
 
         FormElement::errorsUsing(
-            static fn(?string $bag) => app('session')
+            static fn (?string $bag) => app('session')
                 ->get('errors')
                 ?->{$bag}
                 ?->toArray() ?? []
         );
 
-        AssetManager::assetUsing(static fn(string $path): string => asset($path));
-        AssetManager::viteDevUsing(static fn(string $path): string => Vite::useBuildDirectory('vendor/moonshine')
+        AssetManager::assetUsing(static fn (string $path): string => asset($path));
+        AssetManager::viteDevUsing(static fn (string $path): string => Vite::useBuildDirectory('vendor/moonshine')
             ->useHotFile($path)
             ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
             ->toHtml());
 
-        MoonShine::requestUsing(static fn(): Request => new Request(
+        MoonShine::requestUsing(static fn (): Request => new Request(
             request: app(ServerRequestInterface::class),
             session: fn (string $key, mixed $default) => session($key, $default),
             file: fn (string $key) => request()->file($key, request()->get($key, false)),

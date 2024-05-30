@@ -51,7 +51,7 @@ final class AssetManager implements Htmlable
 
     public function hasViteDevMode(): bool
     {
-        return !is_null(self::$viteDevUsing);
+        return ! is_null(self::$viteDevUsing);
     }
 
     public function viteDev(string $path): string

@@ -6,8 +6,8 @@ namespace MoonShine\Laravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\MoonShineConfigurator;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\UI\Applies\AppliesRegister;
 use Throwable;
 

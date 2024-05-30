@@ -90,7 +90,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                     fn (Fields $f): Fields => $f->prepareReindex()
                 );
 
-            $fields->each(function ($field, $cellIndex) use($hasBulk): void {
+            $fields->each(function ($field, $cellIndex) use ($hasBulk): void {
                 if($field instanceof Td && $field->hasTdAttributes()) {
                     $this->tdAttributes(
                         function ($data, $row, $cell, MoonShineComponentAttributeBag $attr) use ($field, $cellIndex, $hasBulk): MoonShineComponentAttributeBag {

@@ -6,13 +6,14 @@ namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
-use MoonShine\UI\Fields\Field;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Finder\SplFileInfo;
 
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
+
+use MoonShine\UI\Fields\Field;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Finder\SplFileInfo;
 
 #[AsCommand(name: 'moonshine:field')]
 class MakeFieldCommand extends MoonShineCommand

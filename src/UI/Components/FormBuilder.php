@@ -366,7 +366,7 @@ final class FormBuilder extends RowComponent
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
-            'errors' => FormElement::resolveErrors($this->getName(), $this) ?? []
+            'errors' => FormElement::resolveErrors($this->getName(), $this) ?? [],
         ];
     }
 }

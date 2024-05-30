@@ -2,9 +2,9 @@
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Core\Pages\ViewPage;
 use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Laravel\Pages\Page;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PageController extends MoonShineController

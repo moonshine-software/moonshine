@@ -304,7 +304,7 @@ trait ResourceModelQuery
         ) {
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
-                    collect(moonshineCache()->get($this->queryCacheKey(), []))->filter(fn($value, $key): bool => ! $this->getQueryParams()->has($key))->toArray()
+                    collect(moonshineCache()->get($this->queryCacheKey(), []))->filter(fn ($value, $key): bool => ! $this->getQueryParams()->has($key))->toArray()
                 )
             );
         }

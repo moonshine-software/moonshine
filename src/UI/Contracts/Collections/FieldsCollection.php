@@ -6,5 +6,4 @@ namespace MoonShine\UI\Contracts\Collections;
 
 interface FieldsCollection
 {
-
 }
