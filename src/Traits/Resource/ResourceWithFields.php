@@ -132,6 +132,58 @@ trait ResourceWithFields
             ->onlyOutside();
     }
 
+    public function exportFields(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return Collection<int, Field>
+     * @throws Throwable
+     */
+    public function getExportFields(): Fields
+    {
+        $fields = $this->exportFields();
+
+        if ($fields !== []) {
+            return Fields::make($fields)
+                ->ensure(Field::class);
+        }
+
+        $fields = $this->fields()
+            ?: $this->indexFields();
+
+        return Fields::make($fields)
+            ->onlyFields()
+            ->exportFields();
+    }
+
+    public function importFields(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return Collection<int, Field>
+     * @throws Throwable
+     */
+    public function getImportFields(): Fields
+    {
+        $fields = $this->importFields();
+
+        if ($fields !== []) {
+            return Fields::make($fields)
+                ->ensure(Field::class);
+        }
+
+        $fields = $this->fields()
+            ?: $this->indexFields();
+
+        return Fields::make($fields)
+            ->onlyFields()
+            ->importFields();
+    }
+
     /**
      * @return list<MoonShineComponent|Field>
      */
