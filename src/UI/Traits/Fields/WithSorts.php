@@ -44,7 +44,7 @@ trait WithSorts
         ];
 
         if (is_null($url)) {
-            return request()->fullUrlWithQuery($sortData);
+            return moonshine()->getRequest()->getUrlWithQuery($sortData);
         }
 
         $urlParse = parse_url($url);

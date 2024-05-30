@@ -6,13 +6,13 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Actions\ActionButtonContract;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
+use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
@@ -171,7 +171,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     ): self {
         $this->asyncMethod = $method;
 
-        $this->url = static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
+        $this->url = static fn (mixed $item): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([

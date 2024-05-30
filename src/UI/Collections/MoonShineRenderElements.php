@@ -7,9 +7,9 @@ namespace MoonShine\UI\Collections;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Components\HasComponents;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\MoonShineRenderable;
+use MoonShine\UI\Contracts\Components\HasComponents;
+use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Fields\Field;
 use Throwable;
 

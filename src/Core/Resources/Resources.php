@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Core\Resources;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 
 /**
  * @template TKey of array-key

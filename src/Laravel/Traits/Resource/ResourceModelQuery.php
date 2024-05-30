@@ -10,13 +10,13 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\ApplyContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
 use MoonShine\Support\Attributes;
 use MoonShine\Support\Attributes\SearchUsingFullText;
+use MoonShine\UI\Contracts\ApplyContract;
 use MoonShine\UI\Fields\Field;
 use Throwable;
 

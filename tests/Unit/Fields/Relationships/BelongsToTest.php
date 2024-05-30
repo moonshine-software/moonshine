@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
-use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
+use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 
 uses()->group('model-relation-fields');
 uses()->group('belongs-to-field');

@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use MoonShine\Core\MoonShineRouter;
 use MoonShine\Laravel\Commands\InstallCommand;
+use MoonShine\Laravel\LaravelMoonShineRouter;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
@@ -39,7 +39,7 @@ class TestCase extends Orchestra
 
     protected ModelResource $moonShineUserResource;
 
-    protected MoonShineRouter $router;
+    protected LaravelMoonShineRouter $router;
 
     protected function setUp(): void
     {
@@ -51,7 +51,7 @@ class TestCase extends Orchestra
             ->resolveMoonShineUserResource()
             ->registerTestResource();
 
-        $this->router = moonshine()->getContainer(MoonShineRouter::class);
+        $this->router = moonshineRouter();
         $this->router->flushState();
 
         moonshine()->flushState();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\Traits;
 
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use Throwable;
 

@@ -6,10 +6,13 @@ namespace MoonShine\Core;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Core\Traits\InteractsWithRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class Request
 {
+    use InteractsWithRequest;
+
     public function __construct(
         protected ServerRequestInterface $request,
         protected ?Closure $session = null,

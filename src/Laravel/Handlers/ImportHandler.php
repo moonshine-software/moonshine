@@ -6,8 +6,7 @@ namespace MoonShine\Laravel\Handlers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Handlers\Handler;
 use MoonShine\Laravel\Jobs\ImportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
@@ -15,6 +14,7 @@ use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\Support\Traits\WithStorage;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\File;

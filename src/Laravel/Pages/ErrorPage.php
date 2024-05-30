@@ -28,7 +28,7 @@ class ErrorPage extends Page
 
         $code = $this->code;
         $message = $this->message;
-        $backUrl = moonshineRouter()->home();
+        $backUrl = moonshineRouter()->getEndpoints()->home();
 
         return [
             FlexibleRender::make(

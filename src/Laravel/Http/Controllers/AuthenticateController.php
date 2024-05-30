@@ -19,7 +19,7 @@ class AuthenticateController extends MoonShineController
     {
         if ($this->auth()->check()) {
             return redirect(
-                moonshineRouter()->home()
+                moonshineRouter()->getEndpoints()->home()
             );
         }
 
@@ -58,7 +58,7 @@ class AuthenticateController extends MoonShineController
         $request->authenticate();
 
         return redirect()->intended(
-            moonshineRouter()->home()
+            moonshineRouter()->getEndpoints()->home()
         );
     }
 

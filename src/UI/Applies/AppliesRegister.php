@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Applies;
 
-use MoonShine\Contracts\ApplyContract;
 use MoonShine\Core\Resources\Resource;
+use MoonShine\UI\Contracts\ApplyContract;
 use MoonShine\UI\Fields\Field;
 
 final class AppliesRegister

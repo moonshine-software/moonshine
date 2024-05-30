@@ -66,7 +66,7 @@ class AppLayout extends MoonShineLayout
                             Block::make([
                                 Block::make([
                                     Logo::make(
-                                        moonshineRouter()->home(),
+                                        moonshineRouter()->getEndpoints()->home(),
                                         $logo,
                                         $logoSmall
                                     )->minimized(),
@@ -99,7 +99,7 @@ class AppLayout extends MoonShineLayout
                             Flash::make(),
                             Header::make([
                                 Breadcrumbs::make($page->breadcrumbs())
-                                    ->prepend(moonshineRouter()->home(), icon: 'home'),
+                                    ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
                                 Search::make(),
 

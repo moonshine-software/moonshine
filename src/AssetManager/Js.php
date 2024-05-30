@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
+use MoonShine\AssetManager\Contracts\AssetElement;
+use MoonShine\AssetManager\Contracts\HasVersion;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;

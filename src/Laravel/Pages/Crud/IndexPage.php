@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Buttons\FiltersButton;
@@ -23,6 +22,7 @@ use MoonShine\UI\Components\Layout\Grid;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use Throwable;
 
 /**

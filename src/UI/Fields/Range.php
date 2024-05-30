@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\RangeField;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\Fields\RangeField;
 use MoonShine\UI\Traits\Fields\NumberTrait;
 use MoonShine\UI\Traits\Fields\RangeTrait;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;

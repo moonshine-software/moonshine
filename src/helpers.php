@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-use Illuminate\Http\RedirectResponse;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Core\MoonShineConfigurator;
+use MoonShine\Core\Contracts\ConfiguratorContract;
+use MoonShine\Core\Contracts\StorageContract;
 use MoonShine\Core\MoonShineRouter;
-use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Storage\FileStorage;
-use MoonShine\Core\Storage\StorageContract;
+use MoonShine\Laravel\MoonShineConfigurator;
 use MoonShine\MoonShine;
 
 if (! function_exists('moonshine')) {
@@ -26,9 +24,9 @@ if (! function_exists('moonshineRouter')) {
 }
 
 if (! function_exists('moonshineConfig')) {
-    function moonshineConfig(): MoonShineConfigurator
+    function moonshineConfig(): ConfiguratorContract
     {
-        return moonshine()->getContainer(MoonShineConfigurator::class);
+        return moonshine()->getContainer(ConfiguratorContract::class);
     }
 }
 
@@ -36,26 +34,5 @@ if (! function_exists('moonshineStorage')) {
     function moonshineStorage(...$parameters): StorageContract
     {
         return moonshine()->getContainer(StorageContract::class, new FileStorage(), ...$parameters);
-    }
-}
-
-if (! function_exists('toPage')) {
-    /**
-     * @throws Throwable
-     */
-    function toPage(
-        string|Page|null $page = null,
-        string|ResourceContract|null $resource = null,
-        array $params = [],
-        bool $redirect = false,
-        ?string $fragment = null
-    ): RedirectResponse|string {
-        return moonshineRouter()->toPage(
-            page: $page,
-            resource: $resource,
-            params: $params,
-            redirect: $redirect,
-            fragment: $fragment
-        );
     }
 }

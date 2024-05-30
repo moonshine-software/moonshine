@@ -3,7 +3,7 @@
 namespace MoonShine\Laravel\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;

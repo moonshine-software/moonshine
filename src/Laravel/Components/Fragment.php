@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Components;
 
 use Illuminate\Http\RedirectResponse;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Laravel\Resources\ModelResource;

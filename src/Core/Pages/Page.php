@@ -7,15 +7,11 @@ namespace MoonShine\Core\Pages;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
-use MoonShine\Contracts\Collections\FieldsCollection;
-use MoonShine\Contracts\Components\HasComponents;
-use MoonShine\Contracts\Fields\HasAssets;
-use MoonShine\Contracts\HasResourceContract;
-use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Contracts\PageView;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\HasResourceContract;
+use MoonShine\Core\Contracts\MenuFiller;
+use MoonShine\Core\Contracts\PageView;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\MoonShineRouter;
-use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Support\Enums\Layer;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\Support\Traits\HasResource;
@@ -24,6 +20,10 @@ use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithUriKey;
 use MoonShine\UI\Collections\ComponentsCollection;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
+use MoonShine\UI\Contracts\Components\HasComponents;
+use MoonShine\UI\Contracts\Fields\HasAssets;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\MoonShineLayout;
 use MoonShine\UI\Traits\WithViewRenderer;
 use Stringable;
@@ -322,8 +322,7 @@ abstract class Page implements
 
     public function isActive(): bool
     {
-        return moonshineRequest()->getPageUri()
-            === $this->uriKey();
+        return moonshineRouter()->extractPageUri() === $this->uriKey();
     }
 
     /**
@@ -345,8 +344,7 @@ abstract class Page implements
     {
         $withoutQuery = parse_url($this->url(), PHP_URL_PATH);
 
-        // @isolate(request)
-        if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim((string) request()?->path(), '/')) {
+        if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim(moonshine()->getRequest()->getPath(), '/')) {
             oops404();
         }
     }

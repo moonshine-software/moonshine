@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Collections;
 
-use MoonShine\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use Throwable;
 
 /**

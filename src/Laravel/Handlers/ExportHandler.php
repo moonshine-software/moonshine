@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\Handlers;
 use Generator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Handlers\Handler;
 use MoonShine\Laravel\Jobs\ExportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;

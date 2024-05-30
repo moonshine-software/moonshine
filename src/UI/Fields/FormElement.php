@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Fields\HasAssets;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Support\AlpineJs;
@@ -23,6 +21,8 @@ use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Contracts\Fields\HasAssets;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Traits\Fields\WithQuickFormElementAttributes;
 use MoonShine\UI\Traits\WithViewRenderer;
 use Psr\Container\ContainerExceptionInterface;
@@ -234,7 +234,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = static fn (mixed $item): ?string => moonshineRouter()->asyncMethod(
+        $url = static fn (mixed $item): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([

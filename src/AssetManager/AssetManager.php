@@ -8,6 +8,7 @@ use Composer\InstalledVersions;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\AssetManager\Contracts\AssetElement;
 use MoonShine\MoonShine;
 
 final class AssetManager implements Htmlable

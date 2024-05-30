@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Pagination\LengthAwarePaginator;
-use MoonShine\Contracts\Collections\FieldsCollection;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Applies\AppliesRegister;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 
 if (! function_exists('appliesRegister')) {
     function appliesRegister(): AppliesRegister

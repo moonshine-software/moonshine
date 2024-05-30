@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\Applies\Filters;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
-use MoonShine\Contracts\ApplyContract;
+use MoonShine\UI\Contracts\ApplyContract;
 use MoonShine\UI\Fields\Field;
 
 class DateRangeModelApply implements ApplyContract

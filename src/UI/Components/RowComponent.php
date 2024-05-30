@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\MoonShineDataCast;
+use MoonShine\Core\Contracts\MoonShineDataCast;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\HasDataCast;
 use MoonShine\UI\Traits\WithFields;
 

@@ -6,7 +6,7 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use JsonException;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -114,7 +114,7 @@ final class FormBuilder extends RowComponent
         ?Page $page = null,
         ?ResourceContract $resource = null,
     ): self {
-        $asyncUrl = moonshineRouter()->asyncMethod(
+        $asyncUrl = moonshineRouter()->getEndpoints()->asyncMethod(
             $method,
             $message,
             params: ['resourceItem' => $resource?->getItemID()],
@@ -142,7 +142,7 @@ final class FormBuilder extends RowComponent
             return value($this->reactiveUrl, $this);
         }
 
-        return moonshineRouter()->reactive();
+        return moonshineRouter()->getEndpoints()->reactive();
     }
 
     public function method(FormMethod $method): self

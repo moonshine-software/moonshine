@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Core;
 
-use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Core\Exceptions\MoonShineException;
+use MoonShine\Core\Contracts\MoonShineEndpoints;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Pages\Page;
-use MoonShine\Core\Pages\Pages;
-use Stringable as NativeStringable;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Throwable;
+use Stringable;
 
-// TODO @isolate (route,redirect,request)
-final class MoonShineRouter implements NativeStringable
+abstract class MoonShineRouter implements Stringable
 {
     use Conditionable;
 
@@ -25,6 +20,13 @@ final class MoonShineRouter implements NativeStringable
         private string $name = '',
         private array $params = [],
     ) {
+    }
+
+    abstract public function to(string $name = '', array $params = []): string;
+
+    public function getEndpoints(): MoonShineEndpoints
+    {
+        return moonshine()->getContainer(MoonShineEndpoints::class, null, $this);
     }
 
     public function withName(string $name): self
@@ -73,13 +75,6 @@ final class MoonShineRouter implements NativeStringable
         return $this;
     }
 
-    private function extractPageUri(?Page $page = null): ?string
-    {
-        return $page
-            ? $page->uriKey()
-            : $this->getParam('pageUri', moonshineRequest()->getPageUri());
-    }
-
     public function withResource(?ResourceContract $resource = null): self
     {
         if (! is_null($resourceUri = $this->extractResourceUri($resource))) {
@@ -89,37 +84,6 @@ final class MoonShineRouter implements NativeStringable
         }
 
         return $this;
-    }
-
-    private function extractResourceUri(?ResourceContract $resource = null): ?string
-    {
-        return $resource
-            ? $resource->uriKey()
-            : $this->getParam('resourceUri', moonshineRequest()->getResourceUri());
-    }
-
-    public function withResourceItem(int|string|null $key = null, ?ResourceContract $resource = null): self
-    {
-        if (! is_null($key = $this->extractResourceItem($key, $resource))) {
-            return $this->withParams([
-                'resourceItem' => $key,
-            ]);
-        }
-
-        return $this;
-    }
-
-    private function extractResourceItem(
-        int|string|null $key = null,
-        ?ResourceContract $resource = null
-    ): string|int|null {
-        if (is_null($key)) {
-            $key = $resource
-                ? $resource->getItem()?->getKey()
-                : $this->getParam('resourceItem', moonshineRequest()->getResource()?->getItemID());
-        }
-
-        return $key;
     }
 
     public function getParams(array $params = []): array
@@ -151,145 +115,14 @@ final class MoonShineRouter implements NativeStringable
         $this->name = '';
     }
 
-    public function to(string $name = '', array $params = []): string
+    public function extractPageUri(?Page $page = null): ?string
     {
-        return route(
-            $this->getName($name),
-            $this->getParams($params)
-        );
+        return null;
     }
 
-    public function asyncMethod(
-        string $method,
-        ?string $message = null,
-        array $params = [],
-        ?Page $page = null,
-        ?ResourceContract $resource = null
-    ): string {
-        return $this->withPage($page)->withResource($resource)->to('async.method', [
-            'method' => $method,
-            'message' => $message,
-            ...$params,
-        ]);
-    }
-
-    public function reactive(
-        int|string|null $key = null,
-        ?Page $page = null,
-        ?ResourceContract $resource = null
-    ): string {
-        return $this->withPage($page)
-            ->withResource($resource)
-            ->withResourceItem($key ?? $resource?->getItem()?->getKey())
-            ->to('async.reactive');
-    }
-
-    public function asyncComponent(
-        string $name,
-        array $additionally = []
-    ): string {
-        return $this
-            ->withPage()
-            ->withResource()
-            ->to('async.component', [
-                '_component_name' => $name,
-                '_parentId' => moonshineRequest()->getParentResourceId(),
-                ...$additionally,
-            ]);
-    }
-
-    public function updateColumn(
-        string $resourceUri,
-        ?string $pageUri = null,
-        int|string|null $resourceItem = null,
-        ?string $relation = null,
-    ): string {
-        return $this->to(
-            'column.' . ($relation ? 'relation' : 'resource') . '.update-column',
-            [
-                'resourceUri' => $resourceUri,
-                'pageUri' => $pageUri ?? $this->extractPageUri(),
-                'resourceItem' => $this->extractResourceItem($resourceItem),
-                '_relation' => $relation,
-            ]
-        );
-    }
-
-    public function toRelation(
-        string $action,
-        int|string|null $resourceItem = null,
-        ?string $relation = null,
-        ?string $resourceUri = null,
-        ?string $pageUri = null,
-        ?string $parentField = null,
-    ): string {
-        return $this->to("relation.$action", [
-            'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
-            'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
-            'resourceItem' => $resourceItem,
-            '_parent_field' => $parentField,
-            '_relation' => $relation,
-        ]);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function toPage(
-        string|Page|null $page = null,
-        string|ResourceContract|null $resource = null,
-        array $params = [],
-        bool $redirect = false,
-        ?string $fragment = null,
-    ): RedirectResponse|string {
-        $targetPage = null;
-
-        if ($fragment !== null && $fragment !== '') {
-            $params += ['_fragment-load' => $fragment];
-        }
-
-        throw_if(
-            is_null($page) && is_null($resource),
-            new MoonShineException('Page or resource must not be null')
-        );
-
-        if (! is_null($resource)) {
-            $targetResource = $resource instanceof ResourceContract
-                ? $resource
-                : moonshine()->getResources()->findByClass($resource);
-
-            $targetPage = $targetResource?->getPages()->when(
-                is_null($page),
-                static fn (Pages $pages) => $pages->first(),
-                static fn (Pages $pages): ?Page => $pages->findByUri(
-                    $page instanceof Page
-                        ? $page->uriKey()
-                        : MoonShineRouter::uriKey($page)
-                ),
-            );
-        }
-
-        if (is_null($resource)) {
-            $targetPage = $page instanceof Page
-                ? $page
-                : moonshine()->getPages()->findByClass($page);
-        }
-
-        throw_if(
-            is_null($targetPage),
-            new MoonShineException('Page not exists')
-        );
-
-        return $redirect
-            ? redirect($targetPage->route($params))
-            : $targetPage->route($params);
-    }
-
-    public function home(): string
+    public function extractResourceUri(?ResourceContract $resource = null): ?string
     {
-        return route(
-            moonshineConfig()->getHomeRoute()
-        );
+        return null;
     }
 
     /**
@@ -303,13 +136,8 @@ final class MoonShineRouter implements NativeStringable
             ->value();
     }
 
-    public function toString(): string
-    {
-        return $this->to();
-    }
-
     public function __toString(): string
     {
-        return $this->toString();
+        return $this->to();
     }
 }

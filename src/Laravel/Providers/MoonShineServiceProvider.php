@@ -14,11 +14,11 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Laravel\Octane\Events\RequestHandled;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Contracts\Collections\FieldsCollection;
-use MoonShine\Core\MoonShineConfigurator;
-use MoonShine\Core\Request;
+use MoonShine\Core\Contracts\ConfiguratorContract;
+use MoonShine\Core\Contracts\MoonShineEndpoints;
+use MoonShine\Core\Contracts\StorageContract;
 use MoonShine\Core\MoonShineRouter;
-use MoonShine\Core\Storage\StorageContract;
+use MoonShine\Core\Request;
 use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
 use MoonShine\Laravel\Applies\Filters\CheckboxModelApply;
@@ -45,7 +45,10 @@ use MoonShine\Laravel\Commands\MakeUserCommand;
 use MoonShine\Laravel\Commands\PublishCommand;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
+use MoonShine\Laravel\LaravelEndpoints;
+use MoonShine\Laravel\LaravelMoonShineRouter;
 use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\MoonShineConfigurator;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
@@ -53,6 +56,7 @@ use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\Support\Enums\Env;
 use MoonShine\UI\Applies\AppliesRegister;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\DateRange;
@@ -125,9 +129,11 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(MenuManager::class);
         $this->app->singleton(AssetManager::class);
         $this->app->singleton(AppliesRegister::class);
-        $this->app->singleton(MoonShineConfigurator::class);
+        $this->app->singleton(ConfiguratorContract::class, MoonShineConfigurator::class);
 
-        $this->app->bind(MoonShineRouter::class);
+        $this->app->bind(MoonShineRouter::class, LaravelMoonShineRouter::class);
+        $this->app->bind(MoonShineEndpoints::class, LaravelEndpoints::class);
+
         $this->app->bind(FieldsCollection::class, Fields::class);
         $this->app->bind(StorageContract::class, fn(Application $app, array $parameters) =>  new LaravelStorage(
             $parameters['disk'] ?? $parameters[0] ?? 'public',

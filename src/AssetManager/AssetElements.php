@@ -6,6 +6,8 @@ namespace MoonShine\AssetManager;
 
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
+use MoonShine\AssetManager\Contracts\AssetElement;
+use MoonShine\AssetManager\Contracts\HasVersion;
 
 /**
  * @extends Collection<int, AssetElement>

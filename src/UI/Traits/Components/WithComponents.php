@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Components;
 
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\UI\Collections\ComponentsCollection;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use Throwable;
 
 /**

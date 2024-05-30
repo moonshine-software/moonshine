@@ -7,7 +7,7 @@ namespace MoonShine\UI\Traits\Fields;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Exceptions\FieldException;
@@ -73,11 +73,12 @@ trait UpdateOnPreview
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $url ?? fn (Model $item, mixed $value, Field $field): ?string => $item->exists ? moonshineRouter()->updateColumn(
-                // TODO @isolate(moonshineRequest)
-                resourceUri: $field->getNowOnResource() ? $field->getNowOnResource()->uriKey() : moonshineRequest()->getResourceUri(),
-                resourceItem: $item->getKey(),
-                relation: data_get($field->getNowOnQueryParams(), 'relation')
+            $url ?? fn (Model $item, mixed $value, Field $field): ?string => $item->exists ? moonshineRouter()->getEndpoints()->updateColumn(
+                resource: $field->getNowOnResource(),
+                extra: [
+                    'resourceItem' => $item->getKey(),
+                    'relation' => data_get($field->getNowOnQueryParams(), 'relation')
+                ],
             ) : null,
             $events
         );

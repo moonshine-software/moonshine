@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use Throwable;
 
 /**

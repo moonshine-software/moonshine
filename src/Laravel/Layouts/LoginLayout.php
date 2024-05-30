@@ -32,7 +32,7 @@ final class LoginLayout extends MoonShineLayout
                 Body::make([
                     Block::make([
                         Block::make([
-                            Logo::make(href: moonshineRouter()->home(), logo: $logo),
+                            Logo::make(href: moonshineRouter()->getEndpoints()->home(), logo: $logo),
                         ])->class('authentication-logo'),
 
                         Block::make([

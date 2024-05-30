@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultMustBeNull;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultMustBeNull;
 use UnitEnum;
 
 trait WithDefaultValue

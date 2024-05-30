@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Resources;
 
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\MenuFiller;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Handlers\Handler;
 use MoonShine\Core\Handlers\Handlers;
 use MoonShine\Core\MoonShineRouter;
 use MoonShine\Core\Pages\Pages;
-use MoonShine\MenuManager\MenuFiller;
 use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithUriKey;
 
@@ -104,7 +104,7 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     public function isActive(): bool
     {
-        return moonshineRequest()->getResourceUri()
+        return moonshineRouter()->extractResourceUri()
             === $this->uriKey();
     }
 }

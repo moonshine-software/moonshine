@@ -8,13 +8,13 @@ use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\Table\TableRow;
+use MoonShine\UI\Contracts\Table\TableContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Td;
 use MoonShine\UI\Traits\Table\TableStates;
@@ -116,7 +116,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, MoonShineComponentAttributeBag $attributes, $table self): MoonShineComponentAttributeBag $closure
+     * @param  Closure(mixed $data, int $row, MoonShineComponentAttributeBag $attributes, self $table): MoonShineComponentAttributeBag $closure
      */
     public function trAttributes(Closure $closure): self
     {
@@ -143,7 +143,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, int $cell, MoonShineComponentAttributeBag $attributes, $table self): MoonShineComponentAttributeBag $closure
+     * @param  Closure(mixed $data, int $row, int $cell, MoonShineComponentAttributeBag $attributes, self $table): MoonShineComponentAttributeBag $closure
      */
     public function tdAttributes(Closure $closure): self
     {
@@ -159,7 +159,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $url ?? fn (): string => moonshineRouter()->asyncComponent(
+        return $url ?? fn (): string => moonshineRouter()->getEndpoints()->asyncComponent(
             $this->getName(),
             additionally: [
                 'filters' => moonshine()->getRequest()->get('filters'),

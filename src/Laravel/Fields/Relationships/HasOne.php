@@ -9,15 +9,15 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Support\Arr;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasUpdateOnPreview;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
@@ -170,7 +170,8 @@ class HasOne extends ModelRelationField implements HasFields
         return FormBuilder::make($action)
             ->reactiveUrl(
                 fn (): string => moonshineRouter()
-                    ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
+                    ->getEndpoints()
+                    ->reactive(page: $resource->formPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
             ->name($resource->uriKey())
             ->switchFormMode($isAsync)

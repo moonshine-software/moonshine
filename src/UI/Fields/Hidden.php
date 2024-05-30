@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 
 class Hidden extends Field implements HasDefaultValue, DefaultCanBeString

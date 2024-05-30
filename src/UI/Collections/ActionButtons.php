@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Actions\ActionButtonContract;
+use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 
 /**
  * @template TKey of array-key

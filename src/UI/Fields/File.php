@@ -6,10 +6,10 @@ namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Fields\Fileable;
-use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Support\DTOs\FileItem;
 use MoonShine\UI\Components\Files;
+use MoonShine\UI\Contracts\Fields\Fileable;
+use MoonShine\UI\Contracts\Fields\RemovableContract;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;
 use MoonShine\UI\Traits\Fields\FileDeletable;
 use MoonShine\UI\Traits\Fields\FileTrait;

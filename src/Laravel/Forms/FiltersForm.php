@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Forms;
 
 use Illuminate\Support\Arr;
-use MoonShine\Contracts\Fields\RangeField;
-use MoonShine\Contracts\Forms\FormContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
@@ -14,6 +12,8 @@ use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Contracts\Fields\RangeField;
+use MoonShine\UI\Contracts\Forms\FormContract;
 use MoonShine\UI\Fields\Hidden;
 use Stringable;
 use Throwable;

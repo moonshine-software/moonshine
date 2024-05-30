@@ -7,10 +7,10 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
-use MoonShine\Contracts\Fields\FieldsWrapper;
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
+use MoonShine\UI\Contracts\Fields\FieldsWrapper;
+use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 

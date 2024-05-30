@@ -8,15 +8,15 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\HasUpdateOnPreview;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
@@ -346,7 +346,7 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
-        $asyncUrl = moonshineRouter()->toRelation(
+        $asyncUrl = moonshineRouter()->getEndpoints()->toRelation(
             'search-relations',
             resourceItem: $this->getRelatedModel()?->getKey(),
             relation: $this->getRelationName()

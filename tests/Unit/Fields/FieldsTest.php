@@ -1,6 +1,5 @@
 <?php
 
-use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
@@ -11,6 +10,7 @@ use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\TableBuilder;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Components\Tabs\Tabs;
+use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\StackFields;
 use MoonShine\UI\Fields\Switcher;

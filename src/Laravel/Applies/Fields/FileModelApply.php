@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\Applies\Fields;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use MoonShine\Contracts\ApplyContract;
+use MoonShine\UI\Contracts\ApplyContract;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\File;

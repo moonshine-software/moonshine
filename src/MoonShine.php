@@ -6,14 +6,14 @@ namespace MoonShine;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\MoonShineRenderable;
-use MoonShine\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Request;
 use MoonShine\Core\Resources\Resources;
 use MoonShine\Support\Enums\Env;
 use MoonShine\Support\Memoize\MemoizeRepository;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 
 class MoonShine
 {

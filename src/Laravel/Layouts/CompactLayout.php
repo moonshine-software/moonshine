@@ -103,7 +103,7 @@ final class CompactLayout extends AppLayout
                         TopBar::make([
                             Block::make([
                                 Logo::make(
-                                    moonshineRouter()->home(),
+                                    moonshineRouter()->getEndpoints()->home(),
                                     $logo,
                                     $logoSmall
                                 )->minimized(),
@@ -134,7 +134,7 @@ final class CompactLayout extends AppLayout
                             Block::make([
                                 Block::make([
                                     Logo::make(
-                                        moonshineRouter()->home(),
+                                        moonshineRouter()->getEndpoints()->home(),
                                         $logo,
                                         $logoSmall
                                     )->minimized(),
@@ -166,7 +166,7 @@ final class CompactLayout extends AppLayout
                             Flash::make(),
                             Header::make([
                                 Breadcrumbs::make($page->breadcrumbs())
-                                    ->prepend(moonshineRouter()->home(), icon: 'home'),
+                                    ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
                                 Search::make(),
 

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Metrics\Wrapped;
 
 use Closure;
-use MoonShine\Contracts\Fields\HasAssets;
 use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Contracts\Fields\HasAssets;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 
 /**

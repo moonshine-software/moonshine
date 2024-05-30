@@ -132,7 +132,7 @@ trait WithAsyncSearch
 
         $resourceUri = moonshineRequest()->getResourceUri();
 
-        return moonshineRouter()->toRelation(
+        return moonshineRouter()->getEndpoints()->toRelation(
             'search',
             resourceItem: moonshineRequest()->getItemID(),
             relation: $this->getRelationName(),

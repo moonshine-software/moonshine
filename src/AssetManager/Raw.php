@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
+use MoonShine\AssetManager\Contracts\AssetElement;
 use MoonShine\Support\Traits\Makeable;
 
 final readonly class Raw implements AssetElement

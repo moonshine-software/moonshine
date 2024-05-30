@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Builder;
-use MoonShine\Contracts\ApplyContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\UI\Contracts\ApplyContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Text;
 

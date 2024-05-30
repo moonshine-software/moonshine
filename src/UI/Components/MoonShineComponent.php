@@ -7,12 +7,12 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
-use MoonShine\Contracts\Components\HasCanSeeContract;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
+use MoonShine\UI\Contracts\Components\HasCanSeeContract;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Traits\WithViewRenderer;
 
 abstract class MoonShineComponent extends Component implements MoonShineRenderable, HasCanSeeContract

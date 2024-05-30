@@ -3,7 +3,6 @@
 namespace MoonShine\Laravel\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Pages\Page;
@@ -19,6 +18,7 @@ use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Divider;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use MoonShine\UI\Fields\Hidden;
 use Throwable;

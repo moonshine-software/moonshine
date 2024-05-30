@@ -6,11 +6,11 @@ namespace MoonShine\Laravel\QueryTags;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use MoonShine\Contracts\Components\HasCanSeeContract;
 use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
+use MoonShine\UI\Contracts\Components\HasCanSeeContract;
 
 /**
  * @method static static make(Closure|string $label, Closure $builder)

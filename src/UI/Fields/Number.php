@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\View\View;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\HasReactivity;
-use MoonShine\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\UI\Components\Rating;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\Fields\HasReactivity;
+use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\UI\InputExtensions\InputNumberUpDown;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\NumberTrait;

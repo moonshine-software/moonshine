@@ -7,8 +7,8 @@ namespace MoonShine\Laravel\Http\Controllers;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
-use MoonShine\Contracts\Fields\Relationships\HasAsyncSearch;
 use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
@@ -187,7 +187,8 @@ class RelationModelFieldController extends MoonShineController
             ->fields($getFields)
             ->reactiveUrl(
                 fn (): string => moonshineRouter()
-                    ->reactive(key: $item?->getKey(), page: $resource->formPage(), resource: $resource)
+                    ->getEndpoints()
+                    ->reactive(page: $resource->formPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
             ->name($formName)
             ->switchFormMode(

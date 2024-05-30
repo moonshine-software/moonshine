@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\Contracts\Fields\HasDefaultValue;
-use MoonShine\Contracts\Fields\HasFields;
-use MoonShine\Contracts\Fields\RemovableContract;
+use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
+use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\Fields\RemovableContract;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Text;
 

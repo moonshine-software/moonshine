@@ -14,6 +14,27 @@ beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(MoonshineUser::class);
 });
 
+it('interacts with request methods', function () {
+    $this->get($this->resource->route('resource.page', query: [
+        'pageUri' => PageType::INDEX->value,
+        'foo' => 'var'
+    ]));
+
+    expect(moonshine()->getRequest()->getPath())
+        ->toBe(request()->path())
+        ->and(moonshine()->getRequest()->getHost())
+        ->toBe(request()->host())
+        ->and(moonshine()->getRequest()->urlIs('*resource*'))
+        ->toBeTrue()
+        ->and(request()->fullUrlIs('*resource*'))
+        ->toBeTrue()
+        ->and(moonshine()->getRequest()->getUrlWithQuery(['bar' => 2]))
+        ->toBe(request()->fullUrlWithQuery(['bar' => 2]))
+        ->and(moonshine()->getRequest()->getUrl())
+        ->toBe(request()->url())
+    ;
+})->group('now');
+
 it('find resource', function (): void {
     asAdmin()
         ->get($this->resource->route('resource.page', query: ['pageUri' => PageType::INDEX->value]))
