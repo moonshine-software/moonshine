@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\Resources\Resource;
-use MoonShine\Pages\Page;
+use MoonShine\Core\Resources\Resource;
+use MoonShine\Laravel\Pages\Page;
 
 class DummyResource extends Resource
 {

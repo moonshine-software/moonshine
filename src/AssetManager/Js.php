@@ -37,10 +37,10 @@ final class Js implements AssetElement, HasVersion
     public function getLink(): string
     {
         if (! is_null($this->getVersion())) {
-            return asset($this->link) . "v={$this->getVersion()}";
+            return moonshineAssets()->asset($this->link) . "v={$this->getVersion()}";
         }
 
-        return asset($this->link);
+        return moonshineAssets()->asset($this->link);
     }
 
     public function toHtml(): string

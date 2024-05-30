@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
 use MoonShine\Core\Contracts\HasResourceContract;
 use MoonShine\Core\Contracts\MenuFiller;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\PageView;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\MoonShineRouter;
@@ -33,6 +34,7 @@ use Stringable;
  * @template-covariant F of FieldsCollection
  */
 abstract class Page implements
+    PageContract,
     Renderable,
     HasComponents,
     HasResourceContract,
@@ -367,9 +369,6 @@ abstract class Page implements
 
     protected function prepareRender(View|Closure|string $view): View|Closure|string
     {
-        return $view->fragmentIf(
-            moonshineRequest()->isFragmentLoad(),
-            moonshineRequest()->getFragmentLoad()
-        );
+        return $view;
     }
 }

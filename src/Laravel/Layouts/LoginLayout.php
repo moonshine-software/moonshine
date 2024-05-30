@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
-use MoonShine\Core\Pages\Page;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\FlexibleRender;
@@ -19,9 +19,9 @@ use MoonShine\UI\MoonShineLayout;
 
 final class LoginLayout extends MoonShineLayout
 {
-    public function build(Page $page): LayoutBuilder
+    public function build(PageContract $page): LayoutBuilder
     {
-        $logo = asset('vendor/moonshine/logo.svg');
+        $logo = moonshineAssets()->asset('vendor/moonshine/logo.svg');
 
         $title = __('moonshine::ui.login.title', ['moonshine_title' => moonshineConfig()->getTitle()]);
         $description = __('moonshine::ui.login.description');

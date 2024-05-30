@@ -6,8 +6,8 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Pages\Page;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Traits\WithIcon;
@@ -166,7 +166,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         ?string $selector = null,
         array $events = [],
         ?AsyncCallback $callback = null,
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null
     ): self {
         $this->asyncMethod = $method;

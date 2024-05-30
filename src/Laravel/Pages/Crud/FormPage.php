@@ -5,7 +5,7 @@ namespace MoonShine\Laravel\Pages\Crud;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Resources\ModelResource;

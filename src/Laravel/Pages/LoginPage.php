@@ -2,7 +2,6 @@
 
 namespace MoonShine\Laravel\Pages;
 
-use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Forms\LoginForm;
 use MoonShine\Laravel\Layouts\LoginLayout;
 

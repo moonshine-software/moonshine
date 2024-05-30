@@ -6,8 +6,8 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use JsonException;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Pages\Page;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -111,7 +111,7 @@ final class FormBuilder extends RowComponent
         ?string $message = null,
         array $events = [],
         ?AsyncCallback $callback = null,
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): self {
         $asyncUrl = moonshineRouter()->getEndpoints()->asyncMethod(
@@ -366,7 +366,7 @@ final class FormBuilder extends RowComponent
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
-            'errors' => value(FormElement::$errors, $this->getName(), $this) ?? []
+            'errors' => FormElement::resolveErrors($this->getName(), $this) ?? []
         ];
     }
 }

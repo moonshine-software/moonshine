@@ -2,7 +2,6 @@
 
 namespace MoonShine\Laravel\Pages;
 
-use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\Laravel\Http\Controllers\ProfileController;

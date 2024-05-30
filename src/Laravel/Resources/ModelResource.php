@@ -9,7 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Core\Resources\Resource;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Crud\DetailPage;

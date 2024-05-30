@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
-use MoonShine\Core\Pages\Page;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Laravel\Components\Layout\Flash;
 use MoonShine\Laravel\Components\Layout\Locales;
 use MoonShine\Laravel\Components\Layout\Notifications;
@@ -52,10 +52,10 @@ class AppLayout extends MoonShineLayout
         ];
     }
 
-    public function build(Page $page): LayoutBuilder
+    public function build(PageContract $page): LayoutBuilder
     {
-        $logo = asset('vendor/moonshine/logo.svg');
-        $logoSmall = asset('vendor/moonshine/logo.svg');
+        $logo = moonshineAssets()->asset('vendor/moonshine/logo.svg');
+        $logoSmall = moonshineAssets()->asset('vendor/moonshine/logo.svg');
 
         return LayoutBuilder::make([
             Html::make([

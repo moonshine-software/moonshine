@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Request;
 
-use MoonShine\Core\Pages\Page;
+use MoonShine\Core\Contracts\PageContract;
 
 trait HasPageRequest
 {
-    public function findPage(): ?Page
+    public function findPage(): ?PageContract
     {
-        return memoize(function (): ?Page {
+        return memoize(function (): ?PageContract {
             if(is_null($this->getPageUri())) {
                 return null;
             }
@@ -27,7 +27,7 @@ trait HasPageRequest
         });
     }
 
-    public function getPage(): Page
+    public function getPage(): PageContract
     {
         $page = $this->findPage();
 

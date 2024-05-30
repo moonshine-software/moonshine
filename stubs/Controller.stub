@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\MoonShineRequest;
-use MoonShine\Http\Controllers\MoonShineController;
+use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Laravel\Http\Controllers\MoonShineController;
 use Symfony\Component\HttpFoundation\Response;
 
 final class DummyClass extends MoonShineController

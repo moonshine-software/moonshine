@@ -9,6 +9,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Laravel\Octane\Events\RequestHandled;
@@ -162,12 +163,18 @@ class MoonShineServiceProvider extends ServiceProvider
             return app($id, ...$parameters);
         });
 
-        FormElement::resolveErrors(
+        FormElement::errorsUsing(
             static fn(?string $bag) => app('session')
                 ->get('errors')
                 ?->{$bag}
                 ?->toArray() ?? []
         );
+
+        AssetManager::assetUsing(static fn(string $path): string => asset($path));
+        AssetManager::viteDevUsing(static fn(string $path): string => Vite::useBuildDirectory('vendor/moonshine')
+            ->useHotFile($path)
+            ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
+            ->toHtml());
 
         MoonShine::requestUsing(static fn() => new Request(
             request: app(ServerRequestInterface::class),
@@ -182,11 +189,6 @@ class MoonShineServiceProvider extends ServiceProvider
     protected function registerBladeDirectives(): self
     {
         $this->callAfterResolving('blade.compiler', static function (BladeCompiler $blade): void {
-            $blade->directive(
-                'moonShineAssets',
-                static fn (): string => "<?php echo view('moonshine::layouts.shared.assets'); ?>"
-            );
-
             $blade->directive(
                 'defineEvent',
                 static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"

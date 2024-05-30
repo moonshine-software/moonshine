@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages;
 
-use MoonShine\Core\Pages\Page;
-
 class Dashboard extends Page
 {
     public function breadcrumbs(): array

@@ -10,8 +10,8 @@ use {index-page-namespace};
 use {form-page-namespace};
 use {detail-page-namespace};
 
-use MoonShine\Resources\ModelResource;
-use MoonShine\Pages\Page;
+use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Pages\Page;
 
 /**
  * @extends ModelResource<{model}>

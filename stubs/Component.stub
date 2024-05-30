@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace {namespace};
 
 use Closure;
-use Illuminate\Contracts\View\View;
-use MoonShine\Components\MoonShineComponent;
+use MoonShine\UI\Components\MoonShineComponent;
 
 /**
  * @method static static make()

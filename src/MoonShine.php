@@ -6,8 +6,8 @@ namespace MoonShine;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Request;
 use MoonShine\Core\Resources\Resources;
@@ -118,7 +118,7 @@ class MoonShine
             return $resource;
         });
 
-        $this->getPages()->transform(function (Page $page): Page {
+        $this->getPages()->transform(function (PageContract $page): PageContract {
             $page->flushState();
 
             return $page;
@@ -171,7 +171,7 @@ class MoonShine
     /**
      * Register pages in the system
      *
-     * @param  list<class-string<Page>>  $data
+     * @param  list<class-string<PageContract>>  $data
      */
     public function pages(array $data, bool $newCollection = false): self
     {
@@ -194,6 +194,6 @@ class MoonShine
     {
         return Pages::make($this->pages)
             ->except('error')
-            ->map(fn (string|Page $class) => is_string($class) ? $this->getContainer($class) : $class);
+            ->map(fn (string|PageContract $class) => is_string($class) ? $this->getContainer($class) : $class);
     }
 }

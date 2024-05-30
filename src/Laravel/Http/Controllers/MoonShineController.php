@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Core\Pages\ViewPage;
 use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;

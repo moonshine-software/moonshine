@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Contracts;
 
-use MoonShine\Core\Pages\Page;
-
 interface MoonShineEndpoints
 {
     public function toPage(
-        string|Page|null $page = null,
+        string|PageContract|null $page = null,
         string|ResourceContract|null $resource = null,
         array $params = [],
         array $extra = [],
@@ -17,7 +15,7 @@ interface MoonShineEndpoints
 
     public function updateColumn(
         ?ResourceContract $resource = null,
-        ?Page $page = null,
+        ?PageContract $page = null,
         array $extra = []
     ): string;
 
@@ -25,7 +23,7 @@ interface MoonShineEndpoints
         string $method,
         ?string $message = null,
         array $params = [],
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null
     ): string;
 
@@ -35,7 +33,7 @@ interface MoonShineEndpoints
     ): string;
 
     public function reactive(
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null,
         array $extra = []
     ): string;

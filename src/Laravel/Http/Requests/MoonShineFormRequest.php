@@ -5,7 +5,7 @@ namespace MoonShine\Laravel\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
 use Throwable;
 

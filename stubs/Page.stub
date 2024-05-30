@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\Pages\Page;
-use MoonShine\Components\MoonShineComponent;
+use MoonShine\Laravel\Pages\Page;
+use MoonShine\UI\Components\MoonShineComponent;
 
 class DummyPage extends Page
 {

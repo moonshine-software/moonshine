@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Pages\Custom;
 
-use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Support\Enums\PageType;

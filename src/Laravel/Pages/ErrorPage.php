@@ -2,7 +2,6 @@
 
 namespace MoonShine\Laravel\Pages;
 
-use MoonShine\Core\Pages\Page;
 use MoonShine\Laravel\Layouts\BlankLayout;
 use MoonShine\UI\Components\FlexibleRender;
 
@@ -24,7 +23,7 @@ class ErrorPage extends Page
 
     public function components(): array
     {
-        $logo = asset('vendor/moonshine/logo-small.svg');
+        $logo = moonshineAssets()->asset('vendor/moonshine/logo-small.svg');
 
         $code = $this->code;
         $message = $this->message;

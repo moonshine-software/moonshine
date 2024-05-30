@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -66,7 +66,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
     }
 
-    public static function resolveErrors(Closure $callback): void
+    public static function errorsUsing(Closure $callback): void
     {
         self::$errors = $callback;
     }
@@ -231,7 +231,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         ?string $selector = null,
         array $events = [],
         ?AsyncCallback $callback = null,
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
         $url = static fn (mixed $item): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
@@ -366,9 +366,14 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         ]);
     }
 
+    public static function resolveErrors(?string $formName, object $context): mixed
+    {
+        return value(self::$errors, $formName, $context) ?? [];
+    }
+
     public function getErrors(): mixed
     {
-        return value(self::$errors, $this->getFormName(), $this) ?? [];
+        return self::resolveErrors($this->getFormName(), $this) ?? [];
     }
 
     protected function resolveAssets(): void

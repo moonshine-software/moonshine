@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel;
 
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\MoonShineRouter;
-use MoonShine\Core\Pages\Page;
 
 final class LaravelMoonShineRouter extends MoonShineRouter
 {
@@ -29,7 +29,7 @@ final class LaravelMoonShineRouter extends MoonShineRouter
         return $this;
     }
 
-    public function extractPageUri(?Page $page = null): ?string
+    public function extractPageUri(?PageContract $page = null): ?string
     {
         return $page
             ? $page->uriKey()

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace {namespace};
 
 use Closure;
-use MoonShine\Contracts\ApplyContract;
-use MoonShine\Fields\Field;
+use MoonShine\UI\Contracts\ApplyContract;
+use MoonShine\UI\Fields\Field;
 
 class DummyClass implements ApplyContract
 {

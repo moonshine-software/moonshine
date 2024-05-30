@@ -8,7 +8,7 @@ use MoonShine\AssetManager\AssetManager;
 use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Core\Pages\Page;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\UI\Components\Layout\{LayoutBuilder};
 
@@ -50,5 +50,5 @@ abstract class MoonShineLayout
         return [];
     }
 
-    abstract public function build(Page $page): LayoutBuilder;
+    abstract public function build(PageContract $page): LayoutBuilder;
 }

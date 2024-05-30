@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Core\Contracts;
 
 use ArrayAccess;
-use MoonShine\Core\Pages\Page;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Contracts\Forms\FormContract;
 use MoonShine\UI\MoonShineLayout;
@@ -26,11 +25,11 @@ interface ConfiguratorContract extends ArrayAccess
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilder;
 
     /**
-     * @template-covariant T of Page
+     * @template-covariant T of PageContract
      * @param  class-string<T>  $default
-     * @return Page
+     * @return PageContract
      */
-    public function getPage(string $name, string $default, mixed ...$parameters): Page;
+    public function getPage(string $name, string $default, mixed ...$parameters): PageContract;
 
     /**
      * @return string[]

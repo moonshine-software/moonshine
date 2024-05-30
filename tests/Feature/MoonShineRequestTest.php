@@ -33,7 +33,7 @@ it('interacts with request methods', function () {
         ->and(moonshine()->getRequest()->getUrl())
         ->toBe(request()->url())
     ;
-})->group('now');
+});
 
 it('find resource', function (): void {
     asAdmin()

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Traits;
 
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Pages\Page;
 
 trait NowOn
 {
     private ?ResourceContract $nowOnResource = null;
 
-    private ?Page $nowOnPage = null;
+    private ?PageContract $nowOnPage = null;
 
     private array $nowOnQueryParams = [];
 
     public function nowOn(
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null,
         array $params = []
     ): static {
@@ -27,7 +27,7 @@ trait NowOn
         return $this;
     }
 
-    public function nowOnPage(Page $page): static
+    public function nowOnPage(PageContract $page): static
     {
         $this->nowOnPage = $page;
 
@@ -53,7 +53,7 @@ trait NowOn
         return $this->nowOnResource;
     }
 
-    public function getNowOnPage(): ?Page
+    public function getNowOnPage(): ?PageContract
     {
         return $this->nowOnPage;
     }

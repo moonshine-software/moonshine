@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Illuminate\Cache\Repository;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Pages\Page;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\MoonShineRequest;
 
 if (! function_exists('moonshineRequest')) {

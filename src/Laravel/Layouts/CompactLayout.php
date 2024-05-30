@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\AssetManager\Css;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Core\Pages\Page;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Laravel\Components\Layout\Flash;
 use MoonShine\Laravel\Components\Layout\Locales;
 use MoonShine\Laravel\Components\Layout\Notifications;
@@ -90,10 +90,10 @@ final class CompactLayout extends AppLayout
             ->infoText('179, 220, 255', dark: true);
     }
 
-    public function build(Page $page): LayoutBuilder
+    public function build(PageContract $page): LayoutBuilder
     {
-        $logo = asset('vendor/moonshine/logo.svg');
-        $logoSmall = asset('vendor/moonshine/logo.svg');
+        $logo = moonshineAssets()->asset('vendor/moonshine/logo.svg');
+        $logoSmall = moonshineAssets()->asset('vendor/moonshine/logo.svg');
 
         return LayoutBuilder::make([
             Html::make([

@@ -38,7 +38,7 @@
       "MoonShine\\Database\\Factories\\": "database/factories/"
     },
     "files": [
-      "src/helpers.php",
+      "src/Core/helpers.php",
       "src/Support/helpers.php",
       "src/MenuManager/helpers.php",
       "src/AssetManager/helpers.php",

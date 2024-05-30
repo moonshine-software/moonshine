@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Laravel;
 
 use MoonShine\Core\Contracts\MoonShineEndpoints;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Exceptions\MoonShineException;
 use MoonShine\Core\MoonShineRouter;
-use MoonShine\Core\Pages\Page;
 use MoonShine\Core\Pages\Pages;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;
@@ -25,7 +25,7 @@ final class LaravelEndpoints implements MoonShineEndpoints
         string $method,
         ?string $message = null,
         array $params = [],
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null
     ): string {
         return $this->router->to('async.method', [
@@ -40,7 +40,7 @@ final class LaravelEndpoints implements MoonShineEndpoints
     }
 
     public function reactive(
-        ?Page $page = null,
+        ?PageContract $page = null,
         ?ResourceContract $resource = null,
         array $extra = []
     ): string {
@@ -70,7 +70,7 @@ final class LaravelEndpoints implements MoonShineEndpoints
 
     public function updateColumn(
         ?ResourceContract $resource = null,
-        ?Page $page = null,
+        ?PageContract $page = null,
         array $extra = [],
     ): string {
         $relation = $extra['relation'] ?? null;
@@ -108,7 +108,7 @@ final class LaravelEndpoints implements MoonShineEndpoints
      * @throws Throwable
      */
     public function toPage(
-        string|Page|null $page = null,
+        string|PageContract|null $page = null,
         string|ResourceContract|null $resource = null,
         array $params = [],
         array $extra = [],
@@ -135,8 +135,8 @@ final class LaravelEndpoints implements MoonShineEndpoints
             $targetPage = $targetResource?->getPages()->when(
                 is_null($page),
                 static fn (Pages $pages) => $pages->first(),
-                static fn (Pages $pages): ?Page => $pages->findByUri(
-                    $page instanceof Page
+                static fn (Pages $pages): ?PageContract => $pages->findByUri(
+                    $page instanceof PageContract
                         ? $page->uriKey()
                         : LaravelMoonShineRouter::uriKey($page)
                 ),
@@ -144,7 +144,7 @@ final class LaravelEndpoints implements MoonShineEndpoints
         }
 
         if (is_null($resource)) {
-            $targetPage = $page instanceof Page
+            $targetPage = $page instanceof PageContract
                 ? $page
                 : moonshine()->getPages()->findByClass($page);
         }

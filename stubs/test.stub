@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use {namespace}\DummyResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Contracts\Auth\Authenticatable;
-use MoonShine\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUser;
 use {model-namespace};
-use MoonShine\Resources\ModelResource;
+use MoonShine\Laravel\Resources\ModelResource;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

@@ -6,7 +6,6 @@ use MoonShine\Core\Contracts\ConfiguratorContract;
 use MoonShine\Core\Contracts\StorageContract;
 use MoonShine\Core\MoonShineRouter;
 use MoonShine\Core\Storage\FileStorage;
-use MoonShine\Laravel\MoonShineConfigurator;
 use MoonShine\MoonShine;
 
 if (! function_exists('moonshine')) {

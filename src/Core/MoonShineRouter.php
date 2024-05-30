@@ -6,8 +6,8 @@ namespace MoonShine\Core;
 
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Core\Contracts\MoonShineEndpoints;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Pages\Page;
 use Stringable;
 
 abstract class MoonShineRouter implements Stringable
@@ -64,7 +64,7 @@ abstract class MoonShineRouter implements Stringable
         return $this;
     }
 
-    public function withPage(?Page $page = null): self
+    public function withPage(?PageContract $page = null): self
     {
         if (! is_null($pageUri = $this->extractPageUri($page))) {
             return $this->withParams([
@@ -115,7 +115,7 @@ abstract class MoonShineRouter implements Stringable
         $this->name = '';
     }
 
-    public function extractPageUri(?Page $page = null): ?string
+    public function extractPageUri(?PageContract $page = null): ?string
     {
         return null;
     }
