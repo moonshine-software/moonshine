@@ -8,7 +8,7 @@ use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use MoonShine\Core\Contracts\StorageContract;
 
-final class LaravelStorage implements StorageContract
+final readonly class LaravelStorage implements StorageContract
 {
     private Filesystem $filesystem;
 

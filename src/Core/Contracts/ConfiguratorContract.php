@@ -27,7 +27,6 @@ interface ConfiguratorContract extends ArrayAccess
     /**
      * @template-covariant T of PageContract
      * @param  class-string<T>  $default
-     * @return PageContract
      */
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract;
 

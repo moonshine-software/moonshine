@@ -21,7 +21,6 @@ if (! function_exists('appliesRegister')) {
 if (! function_exists('fieldsCollection')) {
     /**
      * @template-covariant T of FieldsCollection
-     * @param  array  $items
      * @param  class-string<T>  $default
      * @return T|Fields
      */

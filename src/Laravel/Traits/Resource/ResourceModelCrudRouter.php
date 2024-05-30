@@ -17,9 +17,6 @@ trait ResourceModelCrudRouter
 {
     protected ?PageType $redirectAfterSave = PageType::FORM;
 
-    /**
-     * @param Model|int|string|null $key
-     */
     public function route(
         string $name = null,
         Model|int|string|null $key = null,
@@ -45,10 +42,7 @@ trait ResourceModelCrudRouter
         return $this->pageUrl($this->indexPage(), params: $params, fragment: $fragment);
     }
 
-    /**
-     * @param Model|int|string|null $model
-     *
-     */
+    
     public function formPageUrl(
         Model|int|string|null $model = null,
         array $params = [],
@@ -64,10 +58,7 @@ trait ResourceModelCrudRouter
         );
     }
 
-    /**
-     * @param Model|int|string $model
-     *
-     */
+    
     public function detailPageUrl(
         Model|int|string $model,
         array $params = [],
@@ -83,10 +74,7 @@ trait ResourceModelCrudRouter
         );
     }
 
-    /**
-     * @param Model|int|string|null $model
-     *
-     */
+    
     public function fragmentLoadUrl(
         string $fragment,
         Page $page,

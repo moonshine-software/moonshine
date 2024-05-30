@@ -13,7 +13,7 @@ use MoonShine\Core\Pages\Pages;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;
 
-final class LaravelEndpoints implements MoonShineEndpoints
+final readonly class LaravelEndpoints implements MoonShineEndpoints
 {
     public function __construct(
         private MoonShineRouter $router

@@ -371,7 +371,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
     /**
      * @template-covariant T of Page
      * @param  class-string<T>  $default
-     * @return Page
      */
     public function getPage(string $name, string $default, mixed ...$parameters): Page
     {

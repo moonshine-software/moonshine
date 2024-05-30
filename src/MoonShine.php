@@ -60,7 +60,6 @@ class MoonShine
 
     /**
      * @param  Closure(string $view, array $data, MoonShineRenderable $object): string  $renderer
-     * @return void
      */
     public static function renderUsing(Closure $renderer): void
     {
@@ -74,7 +73,6 @@ class MoonShine
 
     /**
      * @param  Closure(string $id, ...$parameters): mixed  $container
-     * @return void
      */
     public static function containerUsing(Closure $container): void
     {
@@ -93,7 +91,6 @@ class MoonShine
 
     /**
      * @param  Closure(string $key, mixed $default): mixed  $request
-     * @return void
      */
     public static function requestUsing(mixed $request): void
     {
@@ -165,7 +162,7 @@ class MoonShine
     public function getResources(): Resources
     {
         return Resources::make($this->resources)
-            ->map(fn (string|ResourceContract $class) => is_string($class) ? $this->getContainer($class) : $class);
+            ->map(fn (string|ResourceContract $class): mixed => is_string($class) ? $this->getContainer($class) : $class);
     }
 
     /**
@@ -194,6 +191,6 @@ class MoonShine
     {
         return Pages::make($this->pages)
             ->except('error')
-            ->map(fn (string|PageContract $class) => is_string($class) ? $this->getContainer($class) : $class);
+            ->map(fn (string|PageContract $class): mixed => is_string($class) ? $this->getContainer($class) : $class);
     }
 }

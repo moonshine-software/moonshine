@@ -116,9 +116,6 @@ abstract class ModelResource extends Resource
         return $this->getPages()->detailPage();
     }
 
-    /**
-     * @return Model
-     */
     public function getModel(): Model
     {
         return new $this->model();
@@ -232,8 +229,6 @@ abstract class ModelResource extends Resource
     }
 
     /**
-     * @param  Model  $item
-     *
      * @throws Throwable
      */
     public function delete(Model $item, ?Fields $fields = null): bool
@@ -278,9 +273,7 @@ abstract class ModelResource extends Resource
     }
 
     /**
-     * @param  Model  $item
      *
-     * @return Model
      * @throws ResourceException
      * @throws Throwable
      */

@@ -104,9 +104,6 @@ final class AppliesRegister
         return $this;
     }
 
-    /**
-     * @param  list<class-string<Field>, class-string<ApplyContract>>  $data
-     */
     public function push(array $data): AppliesRegister
     {
         $this->applies[$this->type][$this->getFor()] = array_merge(

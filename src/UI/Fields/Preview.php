@@ -6,7 +6,6 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use MoonShine\Support\Condition;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Components\Thumbnails;
 

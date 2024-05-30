@@ -25,7 +25,6 @@ trait HasResource
     }
 
     /**
-     * @param  ResourceContract  $resource
      * @return ResourceContract
      */
     public function setParentResource(ResourceContract $resource): static
@@ -36,7 +35,6 @@ trait HasResource
     }
 
     /**
-     * @param  ResourceContract  $resource
      * @return ResourceContract
      */
     public function setResource(ResourceContract $resource): static

@@ -136,14 +136,14 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(MoonShineEndpoints::class, LaravelEndpoints::class);
 
         $this->app->bind(FieldsCollection::class, Fields::class);
-        $this->app->bind(StorageContract::class, fn(Application $app, array $parameters) =>  new LaravelStorage(
+        $this->app->bind(StorageContract::class, fn(Application $app, array $parameters): LaravelStorage =>  new LaravelStorage(
             $parameters['disk'] ?? $parameters[0] ?? 'public',
             $app->get('filesystem')
         ));
 
         $this->app->scoped(ColorManager::class);
 
-        MoonShine::flushStates(static function () {
+        MoonShine::flushStates(static function (): void {
             moonshineCache()->flush();
         });
 
@@ -151,9 +151,7 @@ class MoonShineServiceProvider extends ServiceProvider
             Env::fromString(app()->environment())
         );
 
-        MoonShine::renderUsing(static function (string $view, array $data) {
-            return view($view, $data);
-        });
+        MoonShine::renderUsing(static fn(string $view, array $data) => view($view, $data));
 
         MoonShine::containerUsing(static function (string $id, mixed $default = null, ...$parameters): mixed {
             if(!is_null($default) && !app()->has($id)) {
@@ -176,7 +174,7 @@ class MoonShineServiceProvider extends ServiceProvider
             ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
             ->toHtml());
 
-        MoonShine::requestUsing(static fn() => new Request(
+        MoonShine::requestUsing(static fn(): Request => new Request(
             request: app(ServerRequestInterface::class),
             session: fn (string $key, mixed $default) => session($key, $default),
             file: fn (string $key) => request()->file($key, request()->get($key, false)),

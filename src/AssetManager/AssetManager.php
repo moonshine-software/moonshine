@@ -26,7 +26,6 @@ final class AssetManager implements Htmlable
 
     /**
      * @param  Closure(string $path): void  $callback
-     * @return void
      */
     public static function assetUsing(Closure $callback): void
     {
@@ -44,7 +43,6 @@ final class AssetManager implements Htmlable
 
     /**
      * @param  Closure(string $path): void  $callback
-     * @return void
      */
     public static function viteDevUsing(Closure $callback): void
     {

@@ -6,7 +6,6 @@ namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
 use Illuminate\Support\Collection;
-use MoonShine\Support\Condition;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;

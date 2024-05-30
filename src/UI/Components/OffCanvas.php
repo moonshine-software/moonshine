@@ -7,7 +7,6 @@ namespace MoonShine\UI\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentSlot;
-use MoonShine\Support\Condition;
 
 /**
  * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])

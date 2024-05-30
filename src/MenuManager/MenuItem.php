@@ -150,7 +150,7 @@ class MenuItem extends MenuElement
         $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
         $host = parse_url($this->url(), PHP_URL_HOST) ?? '';
 
-        $isActive = function ($path, $host) {
+        $isActive = function ($path, $host): bool {
             if ($path === '/' && moonshine()->getRequest()->getHost() === $host) {
                 return moonshine()->getRequest()->getPath() === $path;
             }

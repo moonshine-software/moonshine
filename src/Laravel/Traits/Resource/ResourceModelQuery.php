@@ -25,7 +25,6 @@ use Throwable;
  */
 trait ResourceModelQuery
 {
-    /** @var Model|null */
     protected ?Model $item = null;
 
     protected array $with = [];
@@ -78,9 +77,6 @@ trait ResourceModelQuery
         return $this->itemID ?? moonshineRequest()->getItemID();
     }
 
-    /**
-     * @return Model|null
-     */
     protected function itemOr(Closure $closure): ?Model
     {
         if (! is_null($this->item)) {
@@ -98,9 +94,6 @@ trait ResourceModelQuery
             ->newQuery();
     }
 
-    /**
-     * @return Model|null
-     */
     public function getItem(): ?Model
     {
         if (! is_null($this->item)) {
@@ -119,8 +112,6 @@ trait ResourceModelQuery
     }
 
     /**
-     * @param  Model|null  $model
-     *
      * @return $this
      */
     public function setItem(?Model $model): static
@@ -130,9 +121,6 @@ trait ResourceModelQuery
         return $this;
     }
 
-    /**
-     * @return Model
-     */
     public function getItemOrInstance(): Model
     {
         if (! is_null($this->item)) {
@@ -150,9 +138,6 @@ trait ResourceModelQuery
         );
     }
 
-    /**
-     * @return Model
-     */
     public function getItemOrFail(): Model
     {
         if (! is_null($this->item)) {
@@ -319,9 +304,7 @@ trait ResourceModelQuery
         ) {
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
-                    collect(moonshineCache()->get($this->queryCacheKey(), []))->filter(function ($value, $key) {
-                        return ! $this->getQueryParams()->has($key);
-                    })->toArray()
+                    collect(moonshineCache()->get($this->queryCacheKey(), []))->filter(fn($value, $key): bool => ! $this->getQueryParams()->has($key))->toArray()
                 )
             );
         }

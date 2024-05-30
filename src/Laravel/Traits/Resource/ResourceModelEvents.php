@@ -11,61 +11,37 @@ use Illuminate\Database\Eloquent\Model;
  */
 trait ResourceModelEvents
 {
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function beforeCreating(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function afterCreated(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function beforeUpdating(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function afterUpdated(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function beforeDeleting(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function afterDeleted(Model $item): Model
     {
         return $item;
@@ -81,41 +57,25 @@ trait ResourceModelEvents
         // Logic here
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function beforeForceDeleting(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function afterForceDeleted(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function beforeRestoring(Model $item): Model
     {
         return $item;
     }
 
-    /**
-     * @param Model  $item
-     *
-     * @return Model
-     */
+    
     protected function afterRestored(Model $item): Model
     {
         return $item;
