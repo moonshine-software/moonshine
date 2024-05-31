@@ -2,11 +2,14 @@
     'title' => '',
     'values' => [],
     'labels' => [],
+    'colors' => [],
 ])
+
 <div
     {{ $attributes->merge(['class' => 'chart']) }}
     x-data="charts({
                 series: {{ json_encode($values) }},
+                colors: {{ json_encode($colors) }},
                 tooltip: {
                     y: {
                         formatter: function (val) {
@@ -25,7 +28,7 @@
                     type: 'donut',
                 },
                 stroke: {
-                    colors: 'transparent',
+                    colors: ['transparent'],
                 },
                 plotOptions: {
                     pie: {
