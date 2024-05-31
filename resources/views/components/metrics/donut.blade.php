@@ -25,7 +25,7 @@
                     type: 'donut',
                 },
                 stroke: {
-                    colors: 'transparent',
+                    colors: ['transparent'],
                 },
                 plotOptions: {
                     pie: {
