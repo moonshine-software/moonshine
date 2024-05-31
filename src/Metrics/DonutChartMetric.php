@@ -40,7 +40,7 @@ class DonutChartMetric extends Metric
     }
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function getColors(): array
     {
@@ -48,7 +48,7 @@ class DonutChartMetric extends Metric
     }
 
     /**
-     * @param $values array<string>|Closure
+     * @param $values string[]|Closure
      */
     public function colors(array|Closure $colors): self
     {
