@@ -12,6 +12,8 @@ class DonutChartMetric extends Metric
 
     protected array $values = [];
 
+    protected array $colors = [];
+
     protected array $assets = [
         'vendor/moonshine/libs/apexcharts/apexcharts.min.js',
         'vendor/moonshine/libs/apexcharts/apexcharts-config.js',
@@ -35,6 +37,26 @@ class DonutChartMetric extends Metric
     public function getValues(): array
     {
         return array_values($this->values);
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getColors(): array
+    {
+        return $this->colors;
+    }
+
+    /**
+     * @param $values array<string>|Closure
+     */
+    public function colors(array|Closure $colors): self
+    {
+        $this->colors = is_closure($colors)
+            ? $colors()
+            : $colors;
+
+        return $this;
     }
 
     public function labels(): array

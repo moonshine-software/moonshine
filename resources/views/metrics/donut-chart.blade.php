@@ -6,6 +6,7 @@
         <x-moonshine::metrics.donut
             :attributes="$attributes->merge(['id' => $element->id()])"
             :values="$element->getValues()"
+            :colors="$element->getColors()"
             :labels="$element->labels()"
             :title="$element->label()"
         />
