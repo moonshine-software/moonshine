@@ -71,7 +71,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     public function getRedirectAfter(Model|int|null|string $parentId): string
     {
-        if(!is_null($this->redirectAfter)) {
+        if(! is_null($this->redirectAfter)) {
             return value($this->redirectAfter, $parentId, $this);
         }
 
