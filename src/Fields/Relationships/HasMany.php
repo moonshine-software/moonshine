@@ -60,6 +60,26 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?Closure $modifyBuilder = null;
 
+    protected ?Closure $redirectAfter = null;
+
+    public function redirectAfter(Closure $callback): self
+    {
+        $this->redirectAfter = $callback;
+
+        return $this;
+    }
+
+    public function getRedirectAfter(Model|int|null|string $parentId): string
+    {
+        if(! is_null($this->redirectAfter)) {
+            return value($this->redirectAfter, $parentId, $this);
+        }
+
+        return moonshineRequest()
+            ->getResource()
+            ?->formPageUrl($parentId) ?? '';
+    }
+
     public function modifyCreateButton(Closure $callback): self
     {
         $this->modifyCreateButton = $callback;
@@ -352,13 +372,11 @@ class HasMany extends ModelRelationField implements HasFields
             relation: $this->getRelationName()
         );
 
-        $parentId = $this->getRelatedModel()?->getKey();
-
         $redirectAfter = $this->isAsync()
             ? ''
-            : moonshineRequest()
-            ->getResource()
-            ?->formPageUrl($parentId) ?? '';
+            : $this->getRedirectAfter(
+                $this->getRelatedModel()?->getKey()
+            );
 
         $editButton = HasManyButton::for($this, update: true);
 
