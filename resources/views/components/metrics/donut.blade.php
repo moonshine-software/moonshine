@@ -39,7 +39,12 @@
                                 total: {
                                     label: '{{ $title }}',
                                     showAlways: false,
-                                    show: true
+                                    show: true,
+                                    formatter: function (w) {
+                                    return w.globals.seriesTotals.reduce((a, b) => {
+                                      return Number((a + b).toFixed(10))
+                                    }, 0)
+                                  }
                                 }
                             }
                         }
