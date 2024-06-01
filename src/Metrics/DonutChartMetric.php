@@ -20,13 +20,11 @@ class DonutChartMetric extends Metric
     ];
 
     /**
-     * @param $values array<string, int|float>|Closure
+     * @param array<string, int|float>|Closure $values
      */
     public function values(array|Closure $values): self
     {
-        $this->values = is_closure($values)
-            ? $values()
-            : $values;
+        $this->values = value($values);
 
         return $this;
     }
@@ -48,13 +46,11 @@ class DonutChartMetric extends Metric
     }
 
     /**
-     * @param $values string[]|Closure
+     * @param string[]|Closure $colors
      */
     public function colors(array|Closure $colors): self
     {
-        $this->colors = is_closure($colors)
-            ? $colors()
-            : $colors;
+        $this->colors = value($colors);
 
         return $this;
     }
