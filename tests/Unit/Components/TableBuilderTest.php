@@ -2,7 +2,7 @@
 
 use MoonShine\Laravel\TypeCasts\ModelCast;
 use MoonShine\Tests\Fixtures\Models\Item;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 

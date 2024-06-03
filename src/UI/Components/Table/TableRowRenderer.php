@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Support\Traits\Makeable;
-use MoonShine\UI\Components\TableBuilder;
 use MoonShine\UI\Traits\WithViewRenderer;
 use Throwable;
 

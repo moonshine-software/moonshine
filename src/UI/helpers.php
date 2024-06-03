@@ -8,7 +8,7 @@ use MoonShine\UI\Applies\AppliesRegister;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 
 if (! function_exists('appliesRegister')) {

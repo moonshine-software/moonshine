@@ -11,7 +11,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Icon;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Contracts\Fields\HasFields;

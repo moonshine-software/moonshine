@@ -40,10 +40,6 @@ final class HasManyButton
             ]
         );
 
-        if (! $resource->isAsync()) {
-            $field->isAsync();
-        }
-
         $authorize = $update
             ? fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
                 && $resource->setItem($item)->can('update')
@@ -56,6 +52,7 @@ final class HasManyButton
 
         return $actionButton
             ->canSee($authorize)
+            ->async()
             ->inModal(
                 title: fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: '',

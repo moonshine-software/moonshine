@@ -8,7 +8,7 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\Modal;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Components\Tabs\Tabs;
 use MoonShine\UI\Fields\Field;

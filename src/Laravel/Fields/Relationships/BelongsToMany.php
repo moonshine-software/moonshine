@@ -23,7 +23,7 @@ use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;

@@ -19,8 +19,8 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Table\TableRowRenderer;
-use MoonShine\UI\Components\TableBuilder;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
 use Symfony\Component\HttpFoundation\Response;
@@ -142,9 +142,11 @@ class RelationModelFieldController extends MoonShineController
 
         /** @var ModelResource $resource */
         $resource = $field->getResource();
-        $item = $field->getResource()
-            ->setItemID($request->get('_key', ''))
+
+        $item = $resource
+            ->setItemID($request->get('_key', false))
             ->getItemOrInstance();
+
         $update = $item->exists;
         $relation = $parent?->{$field->getRelationName()}();
 
@@ -154,7 +156,7 @@ class RelationModelFieldController extends MoonShineController
             ? static fn (Model $data) => $resource->route('crud.update', $data->getKey())
             : static fn (?Model $data) => $resource->route('crud.store');
 
-        $isAsync = $resource->isAsync() || $field->isAsync();
+        $isAsync = $field->isAsync();
 
         $getFields = function () use ($resource, $field, $isAsync, $parent, $update) {
             $fields = $resource->getFormFields();
@@ -221,13 +223,6 @@ class RelationModelFieldController extends MoonShineController
                     && $field->getColumn() === $relation->getForeignKeyName()
             ))
             ->buttons($resource->getFormButtons())
-            ->redirect(
-                $isAsync
-                    ?
-                    null
-                    : moonshineRequest()
-                    ->getResource()
-                    ?->formPageUrl($parent)
-            );
+            ->redirect(!$isAsync ? $field->getRedirectAfter($parent) : null);
     }
 }

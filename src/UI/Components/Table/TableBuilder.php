@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Components;
+namespace MoonShine\UI\Components\Table;
 
 use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -13,7 +13,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Components\Table\TableRow;
+use MoonShine\UI\Components\IterableComponent;
 use MoonShine\UI\Contracts\Table\TableContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Td;

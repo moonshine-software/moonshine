@@ -20,7 +20,7 @@ use MoonShine\UI\Components\Layout\Block;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\MoonShineRenderable;
 use Throwable;
 

@@ -81,6 +81,7 @@ abstract class ModelResource extends Resource
     public function flushState(): void
     {
         $this->item = null;
+        $this->itemID = null;
         $this->query = null;
         $this->pages = null;
     }
@@ -298,25 +299,34 @@ abstract class ModelResource extends Resource
                 ->each(fn (Field $field): mixed => $field->apply($this->onSave($field), $item));
 
             if ($item->save()) {
-                $wasRecentlyCreated = $item->wasRecentlyCreated;
-
-                $fields->each(fn (Field $field): mixed => $field->afterApply($item));
-
-                $item->save();
-
-                if ($wasRecentlyCreated) {
-                    $item = $this->afterCreated($item);
-                }
-
-                if (! $wasRecentlyCreated) {
-                    $item = $this->afterUpdated($item);
-                }
+                $item = $this->afterSave($item, $fields);
             }
         } catch (QueryException $queryException) {
             throw new ResourceException($queryException->getMessage());
         }
 
         $this->setItem($item);
+
+        return $item;
+    }
+
+    private function afterSave(Model $item, Fields $fields): Model
+    {
+        $wasRecentlyCreated = $item->wasRecentlyCreated;
+
+        $fields->each(fn (Field $field): mixed => $field->afterApply($item));
+
+        if ($item->isDirty()) {
+            $item->save();
+        }
+
+        if ($wasRecentlyCreated) {
+            $item = $this->afterCreated($item);
+        }
+
+        if (! $wasRecentlyCreated) {
+            $item = $this->afterUpdated($item);
+        }
 
         return $item;
     }

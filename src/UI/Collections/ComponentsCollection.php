@@ -6,7 +6,7 @@ namespace MoonShine\UI\Collections;
 
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use Throwable;
 

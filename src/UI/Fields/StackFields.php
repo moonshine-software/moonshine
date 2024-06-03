@@ -51,6 +51,18 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         return $this;
     }
 
+    protected function resolvePreview(): View|string
+    {
+        return FieldsGroup::make(
+            $this->getFields()->indexFields()
+        )
+            ->mapFields(fn (Field $field): Field => $field
+                ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
+                ->withoutWrapper($this->hasLabels())
+                ->forcePreview())
+            ->render();
+    }
+
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
@@ -71,18 +83,6 @@ class StackFields extends Field implements HasFields, FieldsWrapper
 
             return $item;
         };
-    }
-
-    protected function resolvePreview(): View|string
-    {
-        return FieldsGroup::make(
-            $this->getFields()->indexFields()
-        )
-            ->mapFields(fn (Field $field): Field => $field
-                ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
-                ->withoutWrapper($this->hasLabels())
-                ->forcePreview())
-            ->render();
     }
 
     /**

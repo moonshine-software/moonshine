@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
@@ -294,28 +294,33 @@ class RelationRepeater extends ModelRelationField implements
     {
         $items = collect($items);
 
+        $relationName = $this->getColumn();
+
+        $related = $model->{$relationName}()->getRelated();
+
+        $relatedKeyName = $related->getKeyName();
+        $relatedQualifiedKeyName = $related->getQualifiedKeyName();
+
         $ids = $items
-            ->pluck($model->{$this->getColumn()}()->getLocalKeyName())
+            ->pluck($relatedKeyName)
             ->filter()
             ->toArray();
 
-        $localKeyName = $model->{$this->getColumn()}()->getLocalKeyName();
-
-        $model->{$this->getColumn()}()->when(
+        $model->{$relationName}()->when(
             ! empty($ids),
             fn (Builder $q) => $q->whereNotIn(
-                $localKeyName,
+                $relatedQualifiedKeyName,
                 $ids
             )->delete()
         );
 
-        $model->{$this->getColumn()}()->when(
+        $model->{$relationName}()->when(
             empty($ids) && $this->deleteWhenEmpty,
             fn (Builder $q) => $q->delete()
         );
 
-        $items->each(fn ($item) => $model->{$this->getColumn()}()->updateOrCreate(
-            [$localKeyName => $item[$localKeyName] ?? null],
+        $items->each(fn ($item) => $model->{$relationName}()->updateOrCreate(
+            [$relatedQualifiedKeyName => $item[$relatedKeyName] ?? null],
             $item
         ));
 

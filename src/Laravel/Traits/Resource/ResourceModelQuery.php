@@ -43,7 +43,7 @@ trait ResourceModelQuery
 
     protected ?Builder $customBuilder = null;
 
-    protected int|string|null $itemID = null;
+    protected int|string|false|null $itemID = null;
 
     protected array $parentRelations = [];
 
@@ -65,7 +65,7 @@ trait ResourceModelQuery
         return collect($this->queryParams);
     }
 
-    public function setItemID(int|string|null $itemID): static
+    public function setItemID(int|string|false|null $itemID): static
     {
         $this->itemID = $itemID;
 
@@ -74,6 +74,10 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
+        if($this->itemID === false) {
+            return null;
+        }
+
         return $this->itemID ?? moonshineRequest()->getItemID();
     }
 

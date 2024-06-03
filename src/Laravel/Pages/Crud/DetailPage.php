@@ -16,7 +16,7 @@ use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;
-use MoonShine\UI\Components\TableBuilder;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
