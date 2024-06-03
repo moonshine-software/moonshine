@@ -127,12 +127,12 @@ class IndexPage extends Page
 
                 ActionGroup::make()->when(
                     $this->getResource()->filters() !== [],
-                    fn(ActionGroup $group): ActionGroup => $group->add(
+                    fn (ActionGroup $group): ActionGroup => $group->add(
                         FiltersButton::for($this->getResource())
                     )
                 )->when(
                     $this->getResource()->getHandlers()->isNotEmpty(),
-                    fn(ActionGroup $group): ActionGroup => $group->addMany(
+                    fn (ActionGroup $group): ActionGroup => $group->addMany(
                         $this->getResource()->getHandlers()->getButtons()
                     )
                 ),
