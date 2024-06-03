@@ -59,7 +59,7 @@ abstract class MoonShineController extends BaseController
 
         $this->toast(
             moonshine()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage(),
-            'error'
+            ToastType::ERROR
         );
 
         return redirect($redirectRoute)->withInput();

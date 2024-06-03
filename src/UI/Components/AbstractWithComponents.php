@@ -6,7 +6,9 @@ namespace MoonShine\UI\Components;
 
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Contracts\Components\HasComponents;
+use MoonShine\UI\Contracts\Fields\HasAssets;
 use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Traits\Components\WithComponents;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;

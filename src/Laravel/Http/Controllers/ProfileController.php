@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use MoonShine\Laravel\Http\Requests\ProfileFormRequest;
 use MoonShine\Laravel\Pages\ProfilePage;
+use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Fields\Image;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -57,7 +58,7 @@ class ProfileController extends MoonShineController
 
         $this->toast(
             __('moonshine::ui.saved'),
-            'success'
+            ToastType::SUCCESS
         );
 
         return back();

@@ -13,6 +13,7 @@ use MoonShine\Laravel\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateFormRequest;
 use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Support\Enums\ToastType;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -100,7 +101,7 @@ final class CrudController extends MoonShineController
 
         $this->toast(
             __('moonshine::ui.deleted'),
-            'success'
+            ToastType::SUCCESS
         );
 
         return redirect($redirectRoute);
@@ -128,7 +129,7 @@ final class CrudController extends MoonShineController
 
         $this->toast(
             __('moonshine::ui.deleted'),
-            'success'
+            ToastType::SUCCESS
         );
 
         return redirect($redirectRoute);
@@ -167,7 +168,7 @@ final class CrudController extends MoonShineController
 
         $this->toast(
             __('moonshine::ui.saved'),
-            'success'
+            ToastType::SUCCESS
         );
 
         return redirect(

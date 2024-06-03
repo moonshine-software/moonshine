@@ -108,10 +108,6 @@ trait WithViewRenderer
 
         $this->prepareBeforeRender();
 
-        if ($this instanceof HasAssets && $this->getAssets()) {
-            $this->resolveAssets();
-        }
-
         if(! is_null($this->onBeforeRenderCallback)) {
             value($this->onBeforeRenderCallback, $this);
         }

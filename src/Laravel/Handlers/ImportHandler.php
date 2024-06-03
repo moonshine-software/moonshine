@@ -11,6 +11,7 @@ use MoonShine\Core\Handlers\Handler;
 use MoonShine\Laravel\Jobs\ImportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
+use MoonShine\Support\Enums\ToastType;
 use MoonShine\Support\Traits\WithStorage;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
@@ -73,7 +74,7 @@ class ImportHandler extends Handler
         if (! request()->hasFile($this->getInputName())) {
             MoonShineUI::toast(
                 __('moonshine::ui.resource.import.file_required'),
-                'error'
+                ToastType::ERROR
             );
 
             return back();
@@ -87,7 +88,7 @@ class ImportHandler extends Handler
         )) {
             MoonShineUI::toast(
                 __('moonshine::ui.resource.import.extension_not_supported'),
-                'error'
+                ToastType::ERROR
             );
 
             return back();
@@ -132,7 +133,7 @@ class ImportHandler extends Handler
 
         MoonShineUI::toast(
             __('moonshine::ui.resource.import.imported'),
-            'success'
+            ToastType::SUCCESS
         );
 
         return back();

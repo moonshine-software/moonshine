@@ -6,10 +6,11 @@ namespace MoonShine\Laravel\Traits\Controller;
 
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
+use MoonShine\Support\Enums\ToastType;
 
 trait InteractsWithUI
 {
-    public function toast(string $message, string $type = 'info'): void
+    public function toast(string $message, ToastType $type = ToastType::INFO): void
     {
         MoonShineUI::toast($message, $type);
     }

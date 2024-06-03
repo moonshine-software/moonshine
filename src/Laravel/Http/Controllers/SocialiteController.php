@@ -11,6 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 use MoonShine\Laravel\Exceptions\AuthException;
 use MoonShine\Laravel\Models\MoonshineSocialite;
 use MoonShine\Laravel\Pages\ProfilePage;
+use MoonShine\Support\Enums\ToastType;
 use RuntimeException;
 
 class SocialiteController extends MoonShineController
@@ -81,7 +82,7 @@ class SocialiteController extends MoonShineController
         if (! $account) {
             $this->toast(
                 __('moonshine::auth.failed'),
-                'error'
+                ToastType::ERROR
             );
 
             return redirect(moonshineRouter()->to('login'))->withErrors([
@@ -114,7 +115,7 @@ class SocialiteController extends MoonShineController
 
             $this->toast(
                 __('moonshine::auth.socialite.link_success'),
-                'success'
+                ToastType::SUCCESS
             );
         }
 
