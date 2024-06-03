@@ -76,6 +76,10 @@
     @apply relative flex w-full grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
   }
 
+  &-metrics {
+    @apply mb-6 flex flex-col gap-x-6 gap-y-8 sm:grid sm:grid-cols-12 lg:gap-y-10;
+  }
+
   &-navigation {
     @apply relative flex items-center gap-x-4 border-b border-gray-200 pb-4 dark:border-dark-200;
   }

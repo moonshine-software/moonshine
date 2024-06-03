@@ -17,8 +17,7 @@ use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Block;
-use MoonShine\UI\Components\Layout\Column;
-use MoonShine\UI\Components\Layout\Grid;
+use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Components\TableBuilder;
@@ -107,7 +106,7 @@ class IndexPage extends Page
         return $metrics
             ? Block::make($metrics)
                 ->customAttributes([
-                    'class' => 'flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6',
+                    'class' => 'layout-metrics',
                 ])
             : null;
     }
@@ -118,30 +117,28 @@ class IndexPage extends Page
     protected function getPageButtons(): array
     {
         return [
-            Grid::make([
-                Column::make([
-                    ActionGroup::make([
-                        $this->getResource()->getCreateButton(
-                            isAsync: $this->getResource()->isAsync()
-                        ),
-                        ...$this->getResource()->actions(),
-                    ]),
-
-                    ActionGroup::make()->when(
-                        $this->getResource()->filters() !== [],
-                        fn (ActionGroup $group): ActionGroup => $group->add(
-                            FiltersButton::for($this->getResource())
-                        )
-                    )->when(
-                        $this->getResource()->getHandlers()->isNotEmpty(),
-                        fn (ActionGroup $group): ActionGroup => $group->addMany(
-                            $this->getResource()->getHandlers()->getButtons()
-                        )
+            Flex::make([
+                ActionGroup::make([
+                    $this->getResource()->getCreateButton(
+                        isAsync: $this->getResource()->isAsync()
                     ),
-                ])->customAttributes([
-                    'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
+                    ...$this->getResource()->actions(),
                 ]),
-            ]),
+
+                ActionGroup::make()->when(
+                    $this->getResource()->filters() !== [],
+                    fn(ActionGroup $group): ActionGroup => $group->add(
+                        FiltersButton::for($this->getResource())
+                    )
+                )->when(
+                    $this->getResource()->getHandlers()->isNotEmpty(),
+                    fn(ActionGroup $group): ActionGroup => $group->addMany(
+                        $this->getResource()->getHandlers()->getButtons()
+                    )
+                ),
+            ])
+                ->justifyAlign('between')
+                ->itemsAlign('start'),
             LineBreak::make(),
         ];
     }
