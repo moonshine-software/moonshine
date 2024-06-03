@@ -138,6 +138,7 @@ class RelationModelFieldController extends MoonShineController
 
         /** @var ModelResource $resource */
         $resource = $field->getResource();
+
         $item = $resource
             ->setItemID($request->get('_key', ''))
             ->getItemOrInstance();
