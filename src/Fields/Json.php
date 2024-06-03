@@ -549,28 +549,33 @@ class Json extends Field implements
     {
         $items = collect($items);
 
+        $relationName = $this->column();
+
+        $related = $model->{$relationName}()->getRelated();
+
+        $relatedKeyName = $related->getKeyName();
+        $relatedQualifiedKeyName = $related->getQualifiedKeyName();
+
         $ids = $items
-            ->pluck($model->{$this->column()}()->getLocalKeyName())
+            ->pluck($relatedKeyName)
             ->filter()
             ->toArray();
 
-        $localKeyName = $model->{$this->column()}()->getLocalKeyName();
-
-        $model->{$this->column()}()->when(
+        $model->{$relationName}()->when(
             ! empty($ids),
             fn (Builder $q) => $q->whereNotIn(
-                $localKeyName,
+                $relatedQualifiedKeyName,
                 $ids
             )->delete()
         );
 
-        $model->{$this->column()}()->when(
+        $model->{$relationName}()->when(
             empty($ids) && $this->asRelationDeleteWhenEmpty,
             fn (Builder $q) => $q->delete()
         );
 
-        $items->each(fn ($item) => $model->{$this->column()}()->updateOrCreate(
-            [$localKeyName => $item[$localKeyName] ?? null],
+        $items->each(fn ($item) => $model->{$relationName}()->updateOrCreate(
+            [$relatedQualifiedKeyName => $item[$relatedKeyName] ?? null],
             $item
         ));
 
