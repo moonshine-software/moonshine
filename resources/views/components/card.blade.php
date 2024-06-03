@@ -2,7 +2,7 @@
     'url' => '#',
     'title' => '',
     'subtitle' => '',
-    'thumbnail' => '',
+    'thumbnail',
     'overlay' => false,
     'values' => [],
     'header' => null,
@@ -25,8 +25,30 @@
                     @endif
                 </div>
             @endif
-
-            <img src="{{ $thumbnail }}" alt="{{ $title }}" />
+            @if(gettype($thumbnail) === 'string')
+                <img src="{{ $thumbnail }}" alt="{{ $title }}" />
+            @else
+                <div class="card-photo-carousel" x-data='carousel(
+                   @json($thumbnail)
+                )' >
+                    <template x-for="(slide, index) in slides">
+                        <carousel-slide class="card-photo-carousel-slide" :class="(activeSlide === index) ? 'active' : ''">
+                            <img :src="slide" alt="{{ $title }}">
+                        </carousel-slide>
+                    </template>
+                    <div class="card-photo-carousel-navigation">
+                        <a @click.prevent="previous" href="#" class="card-photo-carousel-navigation-next">
+                            <x-moonshine::icon icon="heroicons.chevron-left" size="10"/>
+                        </a>
+                        <a @click.prevent="next" href="#" class="card-photo-carousel-navigation-prev">
+                            <x-moonshine::icon icon="heroicons.chevron-right" size="10"/>
+                        </a>
+                    </div>
+                    <div class="card-photo-carousel-slide-count">
+                        <span x-text="activeSlide+1"></span> / {{count($thumbnail)}}
+                    </div>
+                </div>
+            @endif
         </div>
     @endif
 
@@ -45,14 +67,14 @@
 
         @if($values)
             <table>
-            <tbody>
+                <tbody>
                 @foreach($values as $label => $value)
                     <tr>
                         <th width="40%">{{ $label }}:</th>
                         <td width="60%">{!! $value !!}</td>
                     </tr>
                 @endforeach
-            </tbody>
+                </tbody>
             </table>
         @endif
 

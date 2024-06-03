@@ -10,6 +10,39 @@
     .badge {
       @apply absolute left-4 top-4 z-2;
     }
+    &-carousel{
+      @apply relative h-full;
+
+      carousel-slide{
+        @apply inline-block h-full opacity-0 transition-all;
+        &.active{
+          @apply opacity-100;
+        }
+        img{
+          @apply absolute top-0;
+        }
+      }
+      &-navigation{
+        @apply absolute top-1/2 w-full;
+        a{
+          @apply bg-white dark:bg-dark-600 bg-opacity-50 dark:bg-opacity-50 rounded-full transition-all absolute -translate-y-1/2;
+          &:hover,
+          &:focus{
+            @apply bg-opacity-80 dark:bg-opacity-80
+          }
+        }
+        &-next{
+          @apply left-1;
+        }
+        &-prev{
+          @apply right-1;
+        }
+      }
+      &-slide-count{
+        @apply absolute bottom-0 w-full text-center bg-white bg-opacity-50 dark:bg-opacity-50 dark:bg-dark-600;
+      }
+    }
+
     &-content {
       @apply absolute inset-0 z-2 flex flex-col justify-end gap-y-1 p-4 before:absolute before:inset-x-0 before:bottom-0 before:-z-1 before:h-1/2 before:bg-gradient-to-t before:from-black before:to-transparent;
       .title {
