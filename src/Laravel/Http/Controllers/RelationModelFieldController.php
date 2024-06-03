@@ -223,6 +223,6 @@ class RelationModelFieldController extends MoonShineController
                     && $field->getColumn() === $relation->getForeignKeyName()
             ))
             ->buttons($resource->getFormButtons())
-            ->redirect(!$isAsync ? $field->getRedirectAfter($parent) : null);
+            ->redirect($isAsync ? null : $field->getRedirectAfter($parent));
     }
 }
