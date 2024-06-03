@@ -81,6 +81,7 @@ abstract class ModelResource extends Resource
     public function flushState(): void
     {
         $this->item = null;
+        $this->itemID = null;
         $this->query = null;
         $this->pages = null;
     }

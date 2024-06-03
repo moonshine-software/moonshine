@@ -138,9 +138,10 @@ class RelationModelFieldController extends MoonShineController
 
         /** @var ModelResource $resource */
         $resource = $field->getResource();
-        $item = $field->getResource()
+        $item = $resource
             ->setItemID($request->get('_key', ''))
             ->getItemOrInstance();
+
         $update = $item->exists;
         $relation = $parent?->{$field->getRelationName()}();
 
@@ -225,9 +226,7 @@ class RelationModelFieldController extends MoonShineController
                 $isAsync
                     ?
                     null
-                    : moonshineRequest()
-                    ->getResource()
-                    ?->formPageUrl($parent)
+                    : $field->getRedirectAfter($parent)
             );
     }
 }

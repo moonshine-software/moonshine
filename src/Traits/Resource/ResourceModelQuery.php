@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use MoonShine\Attributes\SearchUsingFullText;
 use MoonShine\Contracts\ApplyContract;
@@ -60,6 +61,10 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
+        if($this->itemID === '') {
+            return null;
+        }
+
         return $this->itemID ?? moonshineRequest()->getItemID();
     }
 
@@ -92,7 +97,7 @@ trait ResourceModelQuery
             return $this->item;
         }
 
-        if (is_null($this->getItemID())) {
+        if (blank($this->getItemID())) {
             return null;
         }
 
@@ -124,7 +129,7 @@ trait ResourceModelQuery
             return $this->item;
         }
 
-        if (is_null($this->getItemID())) {
+        if (blank($this->getItemID())) {
             return $this->getModel();
         }
 
@@ -142,6 +147,12 @@ trait ResourceModelQuery
     {
         if (! is_null($this->item)) {
             return $this->item;
+        }
+
+        if(blank($this->getItemID())) {
+            throw (new ModelNotFoundException)->setModel(
+                $this->model
+            );
         }
 
         return $this->itemOr(
