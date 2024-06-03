@@ -77,7 +77,7 @@
   }
 
   &-metrics {
-    @apply flex flex-col gap-y-8 gap-x-6 sm:grid sm:grid-cols-12 lg:gap-y-10 mb-6;
+    @apply mb-6 flex flex-col gap-x-6 gap-y-8 sm:grid sm:grid-cols-12 lg:gap-y-10;
   }
 
   &-navigation {
