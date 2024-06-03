@@ -150,7 +150,7 @@ trait ResourceModelQuery
         }
 
         if(blank($this->getItemID())) {
-            throw (new ModelNotFoundException)->setModel(
+            throw (new ModelNotFoundException())->setModel(
                 $this->model
             );
         }
