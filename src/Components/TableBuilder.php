@@ -104,7 +104,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, ComponentAttributeBag $attributes, $table self): ComponentAttributeBag $closure
+     * @param  Closure(mixed $data, int $row, ComponentAttributeBag $attributes, self $table): ComponentAttributeBag $closure
      */
     public function trAttributes(Closure $closure): self
     {
@@ -131,7 +131,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, int $cell, ComponentAttributeBag $attributes, $table self): ComponentAttributeBag $closure
+     * @param  Closure(mixed $data, int $row, int $cell, ComponentAttributeBag $attributes, self $table): ComponentAttributeBag $closure
      */
     public function tdAttributes(Closure $closure): self
     {

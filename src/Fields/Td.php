@@ -43,7 +43,7 @@ class Td extends Template
     }
 
     /**
-     * @param  ?Closure(mixed $data, $td self): self $fields
+     * @param  ?Closure(mixed $data, self $td): self $fields
      */
     public function conditionalFields(?Closure $fields = null): self
     {
@@ -74,7 +74,7 @@ class Td extends Template
     }
 
     /**
-     * @param  Closure(mixed $data, ComponentAttributeBag $attributes, $td self): ComponentAttributeBag  $attributes
+     * @param  Closure(mixed $data, ComponentAttributeBag $attributes, self $td): ComponentAttributeBag  $attributes
      */
     public function tdAttributes(Closure $attributes): self
     {
