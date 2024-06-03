@@ -7,7 +7,7 @@
 <div
     {{ $attributes
         ->class([
-            'sm:flex',
+            'flex flex-col sm:flex-row',
             'gap-4' => !$isWithoutSpace,
             'items-' . $itemsAlign,
             'justify-' . $justifyAlign
