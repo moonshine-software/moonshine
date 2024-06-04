@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine;
 
 use Illuminate\Http\Request;
+use MoonShine\Http\Controllers\RelationModelFieldController;
 use MoonShine\Traits\Request\HasPageRequest;
 use MoonShine\Traits\Request\HasResourceRequest;
 
@@ -28,13 +29,24 @@ class MoonShineRequest extends Request
 
     public function getParentRelationName(): ?string
     {
-        if(is_null($parentResource = $this->getParentResourceId())) {
+        if (is_null($parentResource = $this->getParentResourceId())) {
             return null;
         }
 
         return str($parentResource)
             ->replace('-' . $this->getParentRelationId(), '')
             ->camel()
+            ->value();
+    }
+
+    public function getComponentName(): string
+    {
+        return request()
+            ->str('_component_name')
+            /**
+             * @see RelationModelFieldController::hasManyForm() Unique formName
+             */
+            ->before('-unique-')
             ->value();
     }
 
