@@ -7,7 +7,7 @@
             :attributes="$attributes->merge(['id' => $element->id()])"
             :values="$element->getValues()"
             :colors="$element->getColors()"
-            :decimal="$element->getDecimal()"
+            :decimals="$element->getDecimals()"
             :labels="$element->labels()"
             :title="$element->label()"
         />

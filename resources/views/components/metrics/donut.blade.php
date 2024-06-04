@@ -3,7 +3,7 @@
     'values' => [],
     'labels' => [],
     'colors' => [],
-    'decimal' => 3,
+    'decimals' => 3,
 ])
 
 <div
@@ -44,7 +44,7 @@
                             formatter: function (w) {
                             return Number(w.globals.seriesTotals.reduce((a, b) => {
                               return a + b
-                            }, 0).toFixed({{ $decimal }}))
+                            }, 0).toFixed({{ $decimals }}))
                           }
                         }
                     }
