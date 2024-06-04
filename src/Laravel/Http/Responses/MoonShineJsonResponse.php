@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Responses;
 
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\Support\Traits\Makeable;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,6 +45,11 @@ final class MoonShineJsonResponse extends JsonResponse
     public function redirect(string $value): self
     {
         return $this->mergeJsonData(['redirect' => $value]);
+    }
+
+    public function events(array $events): self
+    {
+        return $this->mergeJsonData(['events' => AlpineJs::prepareEvents($events)]);
     }
 
     public function html(string $value): self

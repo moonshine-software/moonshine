@@ -165,8 +165,10 @@ export function moonShineRequest(
         componentRequestData.afterCallback(data, type, t)
       }
 
-      if (componentRequestData.events) {
-        dispatchEvents(componentRequestData.events, type, t, componentRequestData.extraAttributes)
+      const events = data.events ?? componentRequestData.events
+
+      if (events) {
+        dispatchEvents(events, type, t, componentRequestData.extraAttributes)
       }
     })
     .catch(errorResponse => {
