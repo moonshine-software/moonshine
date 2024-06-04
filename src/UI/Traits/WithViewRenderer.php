@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\UI\Contracts\Components\HasCanSeeContract;
 use MoonShine\UI\Contracts\Components\HasComponents;
-use MoonShine\UI\Contracts\Fields\HasAssets;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Contracts\MoonShineRenderable;
 use Psr\Container\ContainerExceptionInterface;
