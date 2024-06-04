@@ -14,6 +14,8 @@ class DonutChartMetric extends Metric
 
     protected array $colors = [];
 
+    protected int $decimal = 3;
+
     protected array $assets = [
         'vendor/moonshine/libs/apexcharts/apexcharts.min.js',
         'vendor/moonshine/libs/apexcharts/apexcharts-config.js',
@@ -55,6 +57,26 @@ class DonutChartMetric extends Metric
         $this->colors = is_closure($colors)
             ? $colors()
             : $colors;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDecimal(): int
+    {
+        return $this->decimal;
+    }
+
+    /**
+     * @param int $decimal
+     */
+    public function decimal(int $decimal): self
+    {
+        if (in_array($decimal, range(0, 100))) {
+            $this->decimal = $decimal;
+        }
 
         return $this;
     }
