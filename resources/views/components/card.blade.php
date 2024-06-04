@@ -2,7 +2,7 @@
     'url' => '#',
     'title' => '',
     'subtitle' => '',
-    'thumbnail',
+    'thumbnail' => '',
     'overlay' => false,
     'values' => [],
     'header' => null,
