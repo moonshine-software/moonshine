@@ -25,7 +25,7 @@
                     @endif
                 </div>
             @endif
-            @if(gettype($thumbnail) === 'string')
+            @if(!is_array($thumbnail))
                 <img src="{{ $thumbnail }}" alt="{{ $title }}" />
             @else
                 <div class="card-photo-carousel" x-data='carousel(
