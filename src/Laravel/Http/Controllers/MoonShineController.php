@@ -24,7 +24,7 @@ abstract class MoonShineController extends BaseController
         string $message = '',
         array $data = [],
         string $redirect = null,
-        string|ToastType $messageType = 'success'
+        ToastType $messageType = ToastType::SUCCESS
     ): JsonResponse {
         return MoonShineJsonResponse::make(data: $data)
             ->toast($message, $messageType)
@@ -44,23 +44,18 @@ abstract class MoonShineController extends BaseController
      */
     protected function reportAndResponse(bool $isAjax, Throwable $e, string $redirectRoute): Response
     {
-        if ($isAjax) {
-            report($e);
+        report_if(moonshine()->isProduction(), $e);
 
-            return $this->json(
-                message: moonshine()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage(),
-                messageType: 'error'
-            );
+        $message = moonshine()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage();
+        $type = ToastType::ERROR;
+
+        if ($isAjax) {
+            return $this->json(message: $message, messageType: $type);
         }
 
         throw_if(! moonshine()->isProduction(), $e);
 
-        report_if(moonshine()->isProduction(), $e);
-
-        $this->toast(
-            moonshine()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage(),
-            ToastType::ERROR
-        );
+        $this->toast($message, $type);
 
         return redirect($redirectRoute)->withInput();
     }

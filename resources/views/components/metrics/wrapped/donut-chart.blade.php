@@ -3,6 +3,7 @@
     'labels' => [],
     'values' => [],
     'colors' => [],
+    'decimals' => 3,
     'columnSpanValue' => 12,
     'adaptiveColumnSpanValue' => 12,
 ])
@@ -16,6 +17,7 @@
             :values="$values"
             :labels="$labels"
             :colors="$colors"
+            :decimals="$decimals"
             :title="$label"
         />
     </x-moonshine::layout.box>

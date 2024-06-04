@@ -15,12 +15,28 @@ class DonutChartMetric extends Metric
 
     protected array $colors = [];
 
+    protected int $decimals = 3;
+
     public function getAssets(): array
     {
         return [
             Js::make('vendor/moonshine/libs/apexcharts/apexcharts.min.js'),
             Js::make('vendor/moonshine/libs/apexcharts/apexcharts-config.js'),
         ];
+    }
+
+    public function getDecimals(): int
+    {
+        return $this->decimals;
+    }
+
+    public function decimals(int $decimals): self
+    {
+        if (in_array($decimals, range(0, 100), true)) {
+            $this->decimals = $decimals;
+        }
+
+        return $this;
     }
 
     /**
@@ -77,6 +93,7 @@ class DonutChartMetric extends Metric
             'labels' => $this->labels(),
             'values' => $this->getValues(),
             'colors' => $this->getColors(),
+            'decimals' => $this->getDecimals(),
         ];
     }
 }

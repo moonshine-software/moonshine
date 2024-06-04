@@ -33,13 +33,11 @@ final class MoonShineJsonResponse extends JsonResponse
         return $this->setData($this->jsonData);
     }
 
-    public function toast(string $value, string|ToastType $type = 'default'): self
+    public function toast(string $value, ToastType $type = ToastType::DEFAULT): self
     {
         return $this->mergeJsonData([
             'message' => $value,
-            'messageType' => is_string($type)
-                ? $type
-                : $type->value,
+            'messageType' => $type->value,
         ]);
     }
 

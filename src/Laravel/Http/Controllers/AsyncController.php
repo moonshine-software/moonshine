@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Table\TableRowRenderer;
@@ -96,7 +97,7 @@ class AsyncController extends MoonShineController
         return $this->json(
             message: $result instanceof Throwable ? $result->getMessage() : $toast['message'],
             redirect: $result instanceof RedirectResponse ? $result->getTargetUrl() : null,
-            messageType: $result instanceof Throwable ? 'error' : $toast['type']
+            messageType: $result instanceof Throwable ? ToastType::ERROR : ToastType::from($toast['type'])
         );
     }
 
