@@ -23,7 +23,7 @@
         }
       }
       &-navigation{
-        @apply absolute top-1/2 w-full;
+        @apply absolute top-1/2 w-full z-10;
         a{
           @apply bg-white dark:bg-dark-600 bg-opacity-50 dark:bg-opacity-50 rounded-full transition-all absolute -translate-y-1/2;
           &:hover,
@@ -32,14 +32,14 @@
           }
         }
         &-next{
-          @apply left-1;
+          @apply left-2;
         }
         &-prev{
-          @apply right-1;
+          @apply right-2;
         }
       }
       &-slide-count{
-        @apply absolute bottom-0 w-full text-center bg-white bg-opacity-50 dark:bg-opacity-50 dark:bg-dark-600;
+        @apply absolute bottom-0 w-full text-center bg-white bg-opacity-50 dark:bg-opacity-50 dark:bg-dark-600 text-[.75rem] z-10;
       }
     }
 

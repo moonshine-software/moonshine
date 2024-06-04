@@ -38,10 +38,10 @@
                     </template>
                     <div class="card-photo-carousel-navigation">
                         <a @click.prevent="previous" href="#" class="card-photo-carousel-navigation-next">
-                            <x-moonshine::icon icon="heroicons.chevron-left" size="10"/>
+                            <x-moonshine::icon icon="heroicons.chevron-left" size="7"/>
                         </a>
                         <a @click.prevent="next" href="#" class="card-photo-carousel-navigation-prev">
-                            <x-moonshine::icon icon="heroicons.chevron-right" size="10"/>
+                            <x-moonshine::icon icon="heroicons.chevron-right" size="7"/>
                         </a>
                     </div>
                     <div class="card-photo-carousel-slide-count">
