@@ -38,6 +38,10 @@ final class FieldsGroup extends WithComponents
         );
     }
 
+    /**
+     * @param  Closure(Field $field): Field  $callback
+     * @throws Throwable
+     */
     public function mapFields(Closure $callback): self
     {
         if(! $this->components instanceof Fields) {

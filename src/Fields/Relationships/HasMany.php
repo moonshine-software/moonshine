@@ -7,6 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasManyButton;
@@ -62,6 +63,9 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?Closure $redirectAfter = null;
 
+    /**
+     * @param  Closure(int $parentId, self $field): string  $callback
+     */
     public function redirectAfter(Closure $callback): self
     {
         $this->redirectAfter = $callback;
@@ -80,6 +84,9 @@ class HasMany extends ModelRelationField implements HasFields
             ?->formPageUrl($parentId) ?? '';
     }
 
+    /**
+     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     */
     public function modifyCreateButton(Closure $callback): self
     {
         $this->modifyCreateButton = $callback;
@@ -87,6 +94,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
+    /**
+     * @param  Closure(ActionButton $button, bool $preview, self $field): ActionButton  $callback
+     */
     public function modifyOnlyLinkButton(Closure $callback): self
     {
         $this->modifyOnlyLinkButton = $callback;
@@ -94,6 +104,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
+    /**
+     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     */
     public function modifyEditButton(Closure $callback): self
     {
         $this->modifyEditButton = $callback;
@@ -101,6 +114,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
+    /**
+     * @param  Closure(TableBuilder $table, bool $preview, self $field): TableBuilder  $callback
+     */
     public function modifyTable(Closure $callback): self
     {
         $this->modifyTable = $callback;
@@ -246,6 +262,9 @@ class HasMany extends ModelRelationField implements HasFields
             : $fields;
     }
 
+    /**
+     * @param  Closure(Relation $relation, self $field): Relation  $builder
+     */
     public function modifyBuilder(Closure $builder): static
     {
         $this->modifyBuilder = $builder;

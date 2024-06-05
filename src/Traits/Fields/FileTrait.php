@@ -194,16 +194,22 @@ trait FileTrait
         return $this->allowedExtensions;
     }
 
+    public function getRemainingValues(): Collection
+    {
+        return request()->collect(
+            $this->hiddenOldValuesKey()
+        );
+    }
+
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
             $requestValue = $this->requestValue();
-            $oldValues = request()->collect($this->hiddenOldValuesKey());
-            $values = collect(data_get($item, $this->column(), []));
+            $remainingValues = $this->getRemainingValues();
 
             data_forget($item, $this->hiddenOldValuesKey());
 
-            $saveValue = $this->isMultiple() ? $oldValues : $oldValues->first();
+            $newValue = $this->isMultiple() ? $remainingValues : $remainingValues->first();
 
             if ($requestValue !== false) {
                 if ($this->isMultiple()) {
@@ -213,23 +219,28 @@ trait FileTrait
                         $paths[] = $this->store($file);
                     }
 
-                    $saveValue = $saveValue->merge($paths)
+                    $newValue = $newValue->merge($paths)
                         ->values()
                         ->unique()
                         ->toArray();
                 } else {
-                    $saveValue = $this->store($requestValue);
+                    $newValue = $this->store($requestValue);
                 }
             }
 
-            $removedValues = $values->diff(
-                $saveValue
-            );
+            $this->removeExcludedFiles();
 
-            $removedValues->each(fn (string $file) => $this->deleteFile($file));
-
-            return data_set($item, $this->column(), $saveValue);
+            return data_set($item, $this->column(), $newValue);
         };
+    }
+
+    public function removeExcludedFiles(): void
+    {
+        $values = collect(
+            $this->toValue(withDefault: false)
+        );
+
+        $values->diff($this->getRemainingValues())->each(fn (string $file) => $this->deleteFile($file));
     }
 
     protected function resolveValue(): mixed
