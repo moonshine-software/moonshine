@@ -6,6 +6,12 @@
     @apply lg:hidden;
   }
 
+  :where(.menu-inner-dropdown) {
+    .menu-inner-dropdown {
+      @apply !px-0;
+    }
+  }
+
   .menu-inner-item-char {
     @apply xl:hidden;
   }
