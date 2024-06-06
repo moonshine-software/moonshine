@@ -59,7 +59,11 @@
             @endif
         >
             @foreach($item->items() as $child)
-                <x-moonshine::menu.item :item="$child" />
+                @if($child->isGroup())
+                    <x-moonshine::menu.group :item="$child"/>
+                @else
+                    <x-moonshine::menu.item :item="$child"/>
+                @endif
             @endforeach
         </ul>
         <!-- END: Dropdown Menu -->
