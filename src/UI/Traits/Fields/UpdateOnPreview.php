@@ -9,16 +9,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\AlpineJs;
-use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\Layout\Flex;
-use MoonShine\UI\Components\Link;
-use MoonShine\UI\Components\Popover;
-use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
-use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Sets\UpdateOnPreviewPopover;
 
