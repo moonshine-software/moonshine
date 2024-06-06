@@ -15,7 +15,7 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\Text;
 
-final class UpdateOnPreviewPopover
+final readonly class UpdateOnPreviewPopover
 {
     public function __construct(private Field $field, private string $component)
     {
@@ -34,8 +34,7 @@ final class UpdateOnPreviewPopover
         )
             ->name($name)
             ->showOnClick()
-            ->content(
-                fn () => (string) FormBuilder::make()
+            ->content(fn (): string => (string) FormBuilder::make()
                 ->method(FormMethod::POST)
                 ->action(
                     moonshineRouter()->getEndpoints()->updateColumn(
