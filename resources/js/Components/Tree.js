@@ -1,5 +1,3 @@
-/* Tree */
-
 export default (checked = {}) => ({
   init() {
     checked.forEach(value => {

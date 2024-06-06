@@ -1,4 +1,4 @@
-/* Tinymce */
+import typedDataset from '../Support/TypedDataset.js'
 
 export default () => ({
   async init() {
@@ -34,18 +34,7 @@ export default () => ({
 
     let editorInstance = null
 
-    const tinyDataset = {}
-    for (let i in this.$el.dataset) {
-      if (this.$el.dataset[i].toLowerCase() === 'true') {
-        tinyDataset[i] = true
-        continue
-      }
-      if (this.$el.dataset[i].toLowerCase() === 'false') {
-        tinyDataset[i] = false
-        continue
-      }
-      tinyDataset[i] = this.$el.dataset[i]
-    }
+    const tinyDataset = typedDataset(this.$el.dataset)
 
     const config = darkMode => ({
       selector: '#' + this.$el.getAttribute('id'),

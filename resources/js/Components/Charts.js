@@ -1,5 +1,3 @@
-/* Charts */
-
 const darkModeOptions = {
   chart: {
     foreColor: '#6a778f',

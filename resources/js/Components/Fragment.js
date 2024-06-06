@@ -1,5 +1,6 @@
-import {moonShineRequest, withSelectorsParams} from './asyncFunctions.js'
-import {ComponentRequestData} from '../moonshine.js'
+import selectorsParams from '../Support/SelectorsParams.js'
+import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
+import request from '../Request/Core.js'
 
 export default (asyncUpdateRoute = '') => ({
   asyncUpdateRoute: asyncUpdateRoute,
@@ -21,7 +22,7 @@ export default (asyncUpdateRoute = '') => ({
 
     this.loading = true
 
-    let body = withSelectorsParams(this.withParams)
+    let body = selectorsParams(this.withParams)
 
     const t = this
 
@@ -41,6 +42,6 @@ export default (asyncUpdateRoute = '') => ({
       .withBeforeCallback(stopLoading)
       .withErrorCallback(stopLoading)
 
-    moonShineRequest(this, this.asyncUpdateRoute, 'get', body, {}, componentRequestData)
+    request(this, this.asyncUpdateRoute, 'get', body, {}, componentRequestData)
   },
 })

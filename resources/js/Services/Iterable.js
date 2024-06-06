@@ -1,4 +1,4 @@
-import sortableFunction from '../alpine/sortable.js'
+import sortableFunction from '../Components/Sortable.js'
 
 export class Iterable {
   sortable(element, url = null, group = null, events = null, attributes = {}, onSort = null) {

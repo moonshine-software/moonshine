@@ -1,5 +1,3 @@
-/* Pivot */
-
 export default () => ({
   checkAll() {
     this.$root.querySelectorAll('.pivotChecker')?.forEach(function (el) {

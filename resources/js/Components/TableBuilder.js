@@ -1,6 +1,6 @@
-import {crudFormQuery} from './formFunctions'
-import sortableFunction from './sortable'
-import {listComponentRequest} from './asyncFunctions'
+import {crudFormQuery} from '../Support/Forms.js'
+import sortableFunction from './Sortable.js'
+import {listComponentRequest} from '../Request/Sets.js'
 
 export default (
   creatable = false,

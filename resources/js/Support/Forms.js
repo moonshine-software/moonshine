@@ -1,4 +1,4 @@
-import {inputFieldName, inputGeValue} from './showWhenFunctions'
+import {inputFieldName, inputGeValue} from './ShowWhen.js'
 
 export function filterAttributeStartsWith(data, startsWith) {
   const filtered = {}
@@ -10,6 +10,36 @@ export function filterAttributeStartsWith(data, startsWith) {
   }
 
   return filtered
+}
+
+export function containsAttribute(el, attr) {
+  return el?.outerHTML?.includes(attr)
+}
+
+export function isTextInput(el) {
+  let tagName = el?.tagName
+
+  if (tagName === 'INPUT') {
+    let validType = [
+      'text',
+      'password',
+      'number',
+      'email',
+      'tel',
+      'url',
+      'search',
+      'date',
+      'datetime',
+      'datetime-local',
+      'time',
+      'month',
+      'week',
+    ]
+
+    return validType.includes(el.type)
+  }
+
+  return false
 }
 
 export function crudFormQuery(formElements = null) {
@@ -32,6 +62,6 @@ export function crudFormQuery(formElements = null) {
   })
 
   return Object.entries(values)
-    .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
-    .join('&')
+  .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+  .join('&')
 }

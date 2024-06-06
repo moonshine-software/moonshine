@@ -1,4 +1,4 @@
-import {listComponentRequest} from './asyncFunctions.js'
+import {listComponentRequest} from '../Request/Sets.js'
 
 export default (async = false, asyncUrl = '') => ({
   actionsOpen: false,

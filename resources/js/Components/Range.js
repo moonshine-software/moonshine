@@ -1,5 +1,3 @@
-/* Range */
-
 export default (from = 0, to = 0) => ({
   minValue: 0,
   maxValue: 0,

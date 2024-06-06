@@ -1,9 +1,7 @@
-/* Select */
-
 import Choices from 'choices.js'
 import {createPopper} from '@popperjs/core'
-import {crudFormQuery, filterAttributeStartsWith} from './formFunctions'
-import {debounce} from 'lodash'
+import debounce from '../Support/Debounce.js'
+import {crudFormQuery} from '../Support/Forms.js'
 
 export default (asyncUrl = '') => ({
   choicesInstance: null,

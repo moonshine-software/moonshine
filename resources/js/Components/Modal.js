@@ -1,29 +1,26 @@
-/* Offcanvas */
-
-export default (open = false, asyncUrl = '') => ({
+export default (open = false, asyncUrl = '', autoClose = true) => ({
   open: open,
   id: '',
   asyncUrl: asyncUrl,
+  inModal: true,
   asyncLoaded: false,
+  autoClose: autoClose,
 
   init() {
-    this.id = this.$id('offcanvas-content')
+    this.id = this.$id('modal-content')
 
     if (this.open && this.asyncUrl) {
       this.load(asyncUrl, this.id)
     }
 
-    Alpine.bind('dismissCanvas', () => ({
-      '@click.outside'() {
-        this.open = false
-      },
+    Alpine.bind('dismissModal', () => ({
       '@keydown.escape.window'() {
         this.open = false
       },
     }))
   },
 
-  toggleCanvas() {
+  toggleModal() {
     this.open = !this.open
 
     if (this.open && this.asyncUrl && !this.asyncLoaded) {

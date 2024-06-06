@@ -1,6 +1,3 @@
-import {moonShineRequest} from './asyncFunctions.js'
-import {ComponentRequestData} from '../moonshine.js'
-
 export default () => ({
   async load(url, id) {
     const {data, status} = await axios.get(url)

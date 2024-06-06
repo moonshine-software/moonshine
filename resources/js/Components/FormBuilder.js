@@ -1,12 +1,13 @@
+import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
+import {containsAttribute, isTextInput} from '../Support/Forms.js'
+import request from '../Request/Core.js'
+import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import {
   getInputs,
-  showWhenChange,
   isValidateShow,
+  showWhenChange,
   showWhenVisibilityChange,
-} from './showWhenFunctions'
-import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
-import {containsAttribute, isTextInput} from './supportFunctions.js'
-import {ComponentRequestData} from '../moonshine.js'
+} from '../Support/ShowWhen.js'
 
 export default (name = '', reactive = {}) => ({
   name: name,
@@ -59,7 +60,7 @@ export default (name = '', reactive = {}) => ({
           t.$nextTick(() => (t.blockWatch = false))
         })
 
-        moonShineRequest(
+        request(
           t,
           initData.reactiveUrl,
           'post',
@@ -180,7 +181,7 @@ export default (name = '', reactive = {}) => ({
         submitState(form, false)
       })
 
-    moonShineRequest(
+    request(
       t,
       action,
       method,

@@ -1,5 +1,4 @@
-/* Search */
-import {crudFormQuery} from './formFunctions'
+import {crudFormQuery} from '../Support/Forms.js'
 
 export default route => ({
   items: [],

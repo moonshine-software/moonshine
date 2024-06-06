@@ -1,5 +1,3 @@
-/* Offcanvas */
-
 export default (open = false, asyncUrl = '') => ({
   open: open,
   id: '',

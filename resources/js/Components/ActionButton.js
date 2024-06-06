@@ -1,5 +1,6 @@
-import {moonShineRequest, withSelectorsParams} from './asyncFunctions'
-import {ComponentRequestData} from '../moonshine.js'
+import selectorsParams from '../Support/SelectorsParams.js'
+import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
+import request from '../Request/Core.js'
 
 export default () => ({
   url: '',
@@ -40,7 +41,7 @@ export default () => ({
       this.method = this.method.toLowerCase() === 'get' ? 'post' : this.method
     }
 
-    let body = withSelectorsParams(this.withParams)
+    let body = selectorsParams(this.withParams)
 
     let stopLoading = function (data, t) {
       t.loading = false
@@ -52,6 +53,6 @@ export default () => ({
       .withBeforeCallback(stopLoading)
       .withErrorCallback(stopLoading)
 
-    moonShineRequest(this, this.url, this.method, body, {}, componentRequestData)
+    request(this, this.url, this.method, body, {}, componentRequestData)
   },
 })
