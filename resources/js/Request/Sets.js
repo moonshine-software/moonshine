@@ -23,28 +23,28 @@ export function listComponentRequest(component, pushState = false) {
 
   // todo change to Request
   axios
-  .get(url)
-  .then(response => {
-    const query = url.slice(url.indexOf('?') + 1)
+    .get(url)
+    .then(response => {
+      const query = url.slice(url.indexOf('?') + 1)
 
-    if (pushState) {
-      history.pushState({}, '', query ? '?' + query : location.pathname)
-    }
+      if (pushState) {
+        history.pushState({}, '', query ? '?' + query : location.pathname)
+      }
 
-    document.querySelectorAll('._change-query').forEach(function (element) {
-      element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
+      document.querySelectorAll('._change-query').forEach(function (element) {
+        element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
+      })
+
+      if (component.$root.dataset.events) {
+        dispatchEvents(component.$root.dataset.events, 'success', component)
+      }
+
+      component.$root.outerHTML = response.data
+      component.loading = false
     })
-
-    if (component.$root.dataset.events) {
-      dispatchEvents(component.$root.dataset.events, 'success', component)
-    }
-
-    component.$root.outerHTML = response.data
-    component.loading = false
-  })
-  .catch(error => {
-    component.loading = false
-  })
+    .catch(error => {
+      component.loading = false
+    })
 
   function prepareListComponentRequestUrl(url) {
     const resultUrl = new URL(url)

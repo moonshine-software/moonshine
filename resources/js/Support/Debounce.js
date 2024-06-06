@@ -1,12 +1,9 @@
 export default function debounce(callback, delay, options) {
-  let timeoutId;
+  let timeoutId
 
   return () => {
     clearTimeout(timeoutId)
 
-    timeoutId = setTimeout(
-      () => callback.apply(this, options),
-      delay
-    );
+    timeoutId = setTimeout(() => callback.apply(this, options), delay)
   }
 }

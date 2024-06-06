@@ -131,20 +131,20 @@ export class ComponentRequestData {
 
   fromDataset(dataset = {}) {
     return this.withEvents(dataset.asyncEvents ?? '')
-    .withSelector(dataset.asyncSelector ?? '')
-    .withResponseFunction(dataset.asyncCallback ?? null)
-    .withBeforeFunction(dataset.asyncBeforeFunction ?? null)
+      .withSelector(dataset.asyncSelector ?? '')
+      .withResponseFunction(dataset.asyncCallback ?? null)
+      .withBeforeFunction(dataset.asyncBeforeFunction ?? null)
   }
 
   fromObject(object = {}) {
     return this.withEvents(object.events ?? '')
-    .withSelector(object.selector ?? '')
-    .withResponseFunction(object.responseFunction ?? null)
-    .withBeforeFunction(object.beforeFunction ?? null)
-    .withBeforeCallback(object.beforeCallback ?? null)
-    .withAfterCallback(object.afterCallback ?? null)
-    .withErrorCallback(object.errorCallback ?? null)
-    .withAfterErrorCallback(object.afterErrorCallback ?? null)
-    .withExtraAttributes(object.extraAttributes ?? null)
+      .withSelector(object.selector ?? '')
+      .withResponseFunction(object.responseFunction ?? null)
+      .withBeforeFunction(object.beforeFunction ?? null)
+      .withBeforeCallback(object.beforeCallback ?? null)
+      .withAfterCallback(object.afterCallback ?? null)
+      .withErrorCallback(object.errorCallback ?? null)
+      .withAfterErrorCallback(object.afterErrorCallback ?? null)
+      .withExtraAttributes(object.extraAttributes ?? null)
   }
 }

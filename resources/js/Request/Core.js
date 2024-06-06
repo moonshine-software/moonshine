@@ -27,104 +27,104 @@ export default function request(
     data: body,
     headers: headers,
   })
-  .then(function (response) {
-    t.loading = false
+    .then(function (response) {
+      t.loading = false
 
-    const data = response.data
-    const contentDisposition = response.headers['content-disposition']
+      const data = response.data
+      const contentDisposition = response.headers['content-disposition']
 
-    if (componentRequestData.hasBeforeCallback()) {
-      componentRequestData.beforeCallback(data, t)
-    }
+      if (componentRequestData.hasBeforeCallback()) {
+        componentRequestData.beforeCallback(data, t)
+      }
 
-    if (componentRequestData.hasResponseFunction()) {
-      responseCallback(
-        componentRequestData.responseFunction,
-        response,
-        t.$el,
-        componentRequestData.events,
-        t,
-      )
+      if (componentRequestData.hasResponseFunction()) {
+        responseCallback(
+          componentRequestData.responseFunction,
+          response,
+          t.$el,
+          componentRequestData.events,
+          t,
+        )
 
-      return
-    }
+        return
+      }
 
-    if (componentRequestData.selector) {
-      const elements = document.querySelectorAll(componentRequestData.selector)
-      elements.forEach(element => {
-        element.innerHTML = data.html ? data.html : data
-      })
-    }
+      if (componentRequestData.selector) {
+        const elements = document.querySelectorAll(componentRequestData.selector)
+        elements.forEach(element => {
+          element.innerHTML = data.html ? data.html : data
+        })
+      }
 
-    if (data.fields_values !== undefined) {
-      for (let [selector, value] of Object.entries(data.fields_values)) {
-        let el = document.querySelector(selector)
-        if (el !== null) {
-          el.value = value
-          el.dispatchEvent(new Event('change'))
+      if (data.fields_values !== undefined) {
+        for (let [selector, value] of Object.entries(data.fields_values)) {
+          let el = document.querySelector(selector)
+          if (el !== null) {
+            el.value = value
+            el.dispatchEvent(new Event('change'))
+          }
         }
       }
-    }
 
-    if (data.redirect) {
-      window.location = data.redirect
-    }
+      if (data.redirect) {
+        window.location = data.redirect
+      }
 
-    if (contentDisposition?.startsWith('attachment')) {
-      let fileName = contentDisposition.split('filename=')[1]
+      if (contentDisposition?.startsWith('attachment')) {
+        let fileName = contentDisposition.split('filename=')[1]
 
-      downloadFile(fileName, data)
-    }
+        downloadFile(fileName, data)
+      }
 
-    const type = data.messageType ? data.messageType : 'success'
+      const type = data.messageType ? data.messageType : 'success'
 
-    if (data.message) {
-      MoonShine.ui.toast(data.message, type)
-    }
+      if (data.message) {
+        MoonShine.ui.toast(data.message, type)
+      }
 
-    if (componentRequestData.hasAfterCallback()) {
-      componentRequestData.afterCallback(data, type, t)
-    }
+      if (componentRequestData.hasAfterCallback()) {
+        componentRequestData.afterCallback(data, type, t)
+      }
 
-    const events = data.events ?? componentRequestData.events
+      const events = data.events ?? componentRequestData.events
 
-    if (events) {
-      dispatchEvents(events, type, t, componentRequestData.extraAttributes)
-    }
-  })
-  .catch(errorResponse => {
-    t.loading = false
+      if (events) {
+        dispatchEvents(events, type, t, componentRequestData.extraAttributes)
+      }
+    })
+    .catch(errorResponse => {
+      t.loading = false
 
-    if (!errorResponse?.response?.data) {
-      console.error(errorResponse)
+      if (!errorResponse?.response?.data) {
+        console.error(errorResponse)
 
-      return
-    }
+        return
+      }
 
-    const data = errorResponse.response.data
+      const data = errorResponse.response.data
 
-    if (componentRequestData.hasErrorCallback()) {
-      componentRequestData.errorCallback(data, t)
-    }
+      if (componentRequestData.hasErrorCallback()) {
+        componentRequestData.errorCallback(data, t)
+      }
 
-    if (componentRequestData.hasResponseFunction()) {
-      responseCallback(
-        componentRequestData.responseFunction,
-        errorResponse.response,
-        t.$el,
-        componentRequestData.events,
-        t,
-      )
+      if (componentRequestData.hasResponseFunction()) {
+        responseCallback(
+          componentRequestData.responseFunction,
+          errorResponse.response,
+          t.$el,
+          componentRequestData.events,
+          t,
+        )
 
-      return
-    }
+        return
+      }
 
-    if (componentRequestData.hasAfterErrorCallback()) {
-      componentRequestData.afterErrorCallback(data, t)
-    }
+      if (componentRequestData.hasAfterErrorCallback()) {
+        componentRequestData.afterErrorCallback(data, t)
+      }
 
-    MoonShine.ui.toast(data.message ?? data, 'error')
-  })
+      MoonShine.ui.toast(data.message ?? data, 'error')
+    })
 }
 
 export function urlWithQuery(url, append) {

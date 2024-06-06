@@ -62,6 +62,6 @@ export function crudFormQuery(formElements = null) {
   })
 
   return Object.entries(values)
-  .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
-  .join('&')
+    .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+    .join('&')
 }

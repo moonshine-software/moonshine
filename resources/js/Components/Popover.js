@@ -19,11 +19,11 @@ export default (config = {}) => ({
   init() {
     this.popoverInstance = tippy(this.$el, {
       ...this.config,
-      ...typedDataset(this.$el.dataset)
+      ...typedDataset(this.$el.dataset),
     })
   },
   toggle() {
-    if(this.popoverInstance.state.isShown) {
+    if (this.popoverInstance.state.isShown) {
       this.popoverInstance.hide()
     } else {
       this.popoverInstance.show()
@@ -37,5 +37,5 @@ export default (config = {}) => ({
   },
   hideAll() {
     hideAll()
-  }
+  },
 })

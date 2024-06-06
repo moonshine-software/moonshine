@@ -24,5 +24,3 @@ export class MoonShine {
     request(t, url, method, body, headers, data)
   }
 }
-
-
