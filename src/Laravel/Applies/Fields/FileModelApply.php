@@ -20,13 +20,11 @@ final class FileModelApply implements ApplyContract
     {
         return function (Model $item) use ($field): Model {
             $requestValue = $field->getRequestValue();
+            $remainingValues = $field->getRemainingValues();
 
-            $oldValues = request()->collect($field->hiddenOldValuesKey());
-            $values = collect(data_get($item, $field->getColumn(), []));
+            data_forget($item, $field->hiddenRemainingValuesKey());
 
-            data_forget($item, $field->hiddenOldValuesKey());
-
-            $saveValue = $field->isMultiple() ? $oldValues : $oldValues->first();
+            $newValue = $field->isMultiple() ? $remainingValues : $remainingValues->first();
 
             if ($requestValue !== false) {
                 if ($field->isMultiple()) {
@@ -36,22 +34,18 @@ final class FileModelApply implements ApplyContract
                         $paths[] = $this->store($field, $file);
                     }
 
-                    $saveValue = $saveValue->merge($paths)
+                    $newValue = $newValue->merge($paths)
                         ->values()
                         ->unique()
                         ->toArray();
                 } else {
-                    $saveValue = $this->store($field, $requestValue);
+                    $newValue = $this->store($field, $requestValue);
                 }
             }
 
-            $removedValues = $values->diff(
-                $saveValue
-            );
+            $field->removeExcludedFiles();
 
-            $removedValues->each(fn (string $file) => $field->deleteFile($file));
-
-            return data_set($item, $field->getColumn(), $saveValue);
+            return data_set($item, $field->getColumn(), $newValue);
         };
     }
 

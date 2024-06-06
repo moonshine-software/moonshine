@@ -9,20 +9,29 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Layout\Flex;
+use MoonShine\UI\Components\Link;
+use MoonShine\UI\Components\Popover;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Sets\UpdateOnPreviewPopover;
 
 trait UpdateOnPreview
 {
     protected bool $updateOnPreview = false;
 
+    protected bool $updateOnPreviewPopover = true;
+
+    protected ?string $updateOnPreviewParentComponent = null;
+
     protected ?Closure $updateOnPreviewUrl = null;
 
-    /**
-     * @throws FieldException
-     */
     public function readonly(Closure|bool|null $condition = null): static
     {
         $this->updateOnPreview(condition: false);
@@ -30,9 +39,6 @@ trait UpdateOnPreview
         return parent::readonly($condition);
     }
 
-    /**
-     * @throws FieldException
-     */
     public function withUpdateRow(
         string $component,
     ): static {
@@ -47,6 +53,35 @@ trait UpdateOnPreview
         if (is_null($this->updateOnPreviewUrl)) {
             return $this;
         }
+
+        $this->updateOnPreviewParentComponent = $component;
+
+        return $this->setUpdateOnPreviewUrl(
+            $this->updateOnPreviewUrl,
+            events: [
+                AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "$component-{row-id}"),
+            ]
+        );
+    }
+
+    public function updateInPopover(
+        string $component
+    ): static
+    {
+        if ($this->isRawMode()) {
+            return $this;
+        }
+
+        if (is_null($this->updateOnPreviewUrl)) {
+            $this->updateOnPreview();
+        }
+
+        if (is_null($this->updateOnPreviewUrl)) {
+            return $this;
+        }
+
+        $this->updateOnPreviewParentComponent = $component;
+        $this->updateOnPreviewPopover = true;
 
         return $this->setUpdateOnPreviewUrl(
             $this->updateOnPreviewUrl,
@@ -73,7 +108,7 @@ trait UpdateOnPreview
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $url ?? fn (Model $item, mixed $value, Field $field): ?string => $item->exists ? moonshineRouter()->getEndpoints()->updateColumn(
+            $url ?? static fn (Model $item, mixed $value, Field $field): ?string => $item->exists ? moonshineRouter()->getEndpoints()->updateColumn(
                 resource: $field->getNowOnResource(),
                 extra: [
                     'resourceItem' => $item->getKey(),
@@ -86,7 +121,6 @@ trait UpdateOnPreview
 
     /**
      * @param  Closure(mixed $data, mixed $value, self $field): string  $url
-     * @return $this
      */
     public function setUpdateOnPreviewUrl(Closure $url, array $events = []): static
     {
@@ -116,6 +150,12 @@ trait UpdateOnPreview
     {
         if (! $this->isUpdateOnPreview() || $this->isRawMode()) {
             return parent::resolveRender();
+        }
+
+        if($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
+            return (string) call_user_func(
+                new UpdateOnPreviewPopover(field: $this, component: $this->updateOnPreviewParentComponent)
+            );
         }
 
         if ($this instanceof Text && $this->isPreviewMode()) {

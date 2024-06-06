@@ -41,7 +41,7 @@ final class TableRowRenderer
         } else {
             $item = $this->table->rows()->first(
                 fn (TableRow $row): bool => $row->getKey() === $this->key
-            )?->toArray() ?? [];
+            )?->getData() ?? [];
         }
 
         if (blank($item)) {

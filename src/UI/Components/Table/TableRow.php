@@ -153,7 +153,7 @@ final class TableRow implements MoonShineRenderable
         ];
     }
 
-    public function toArray(): array
+    public function getData(): array
     {
         return (array) $this->data;
     }
