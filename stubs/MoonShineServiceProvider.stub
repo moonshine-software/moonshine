@@ -50,8 +50,9 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 ),
             ]),
 
-            MenuItem::make('Documentation', 'https://moonshine-laravel.com')
-                ->badge(fn() => 'Check'),
+            MenuItem::make('Documentation', 'https://moonshine-laravel.com/docs')
+                ->badge(fn() => 'Check')
+                ->blank(),
         ];
     }
 
