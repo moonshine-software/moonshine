@@ -3,8 +3,14 @@
     'placement' => 'right',
     'trigger',
 ])
-<span {{ $attributes }} title="{{ $title }}" data-content="{!! $slot !!}"
-     x-data="popover({placement: '{{ $placement }}'})"
+<span
+    {{ $attributes }}
+    title="{{ $title }}"
+    x-data="popover({placement: '{{ $placement }}'})"
 >
-    {{ $trigger }}
+    {!! $trigger !!}
+
+    <div class="hidden popover-content">
+        {!! $slot !!}
+    </div>
 </span>

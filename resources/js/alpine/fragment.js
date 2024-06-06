@@ -8,7 +8,7 @@ export default (asyncUpdateRoute = '') => ({
 
   init() {
     this.loading = false
-    this.withParams = this.$el?.dataset?.withParams
+    this.withParams = this.$el?.dataset?.asyncWithParams
   },
   fragmentUpdate() {
     if (this.asyncUpdateRoute === '') {

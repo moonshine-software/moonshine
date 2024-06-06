@@ -13,7 +13,7 @@ export default () => ({
     this.btnText = this.$el.innerHTML
     this.method = this.$el?.dataset?.asyncMethod
 
-    this.withParams = this.$el?.dataset?.withParams
+    this.withParams = this.$el?.dataset?.asyncWithParams
 
     this.loading = false
     const el = this.$el

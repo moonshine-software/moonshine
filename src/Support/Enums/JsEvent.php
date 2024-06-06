@@ -22,5 +22,7 @@ enum JsEvent: string
 
     case OFF_CANVAS_TOGGLED = 'off_canvas_toggled';
 
+    case POPOVER_TOGGLED = 'popover_toggled';
+
     case TOAST = 'toast';
 }

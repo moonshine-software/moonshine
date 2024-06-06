@@ -46,6 +46,17 @@ class MoonShineRequest extends Request
                 : str($parentResource)->explode("-")->last();
     }
 
+    public function getComponentName(): string
+    {
+        return request()
+            ->str('_component_name')
+            /**
+             * @see RelationModelFieldController::hasManyForm() Unique formName
+             */
+            ->before('-unique-')
+            ->value();
+    }
+
     public function onResourceRoute(): bool
     {
         return str($this->url())->contains('resource/');

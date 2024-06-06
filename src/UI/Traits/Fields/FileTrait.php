@@ -26,6 +26,9 @@ trait FileTrait
 
     protected ?Closure $itemAttributes = null;
 
+    /**
+     * @param  Closure(string $filename, int $index): string  $closure
+     */
     public function names(Closure $closure): static
     {
         $this->names = $closure;
@@ -44,6 +47,9 @@ trait FileTrait
         };
     }
 
+    /**
+     * @param  Closure(string $filename, int $index): string  $closure
+     */
     public function itemAttributes(Closure $closure): static
     {
         $this->itemAttributes = $closure;
@@ -140,7 +146,7 @@ trait FileTrait
             ->value();
     }
 
-    public function hiddenOldValuesKey(): string
+    public function hiddenRemainingValuesKey(): string
     {
         return str('')
             ->when(
@@ -151,6 +157,15 @@ trait FileTrait
             )
             ->append('hidden_' . $this->getColumn())
             ->value();
+    }
+
+    public function getRemainingValues(): Collection
+    {
+        return collect(
+            moonshine()->getRequest()->get(
+                $this->hiddenRemainingValuesKey()
+            )
+        );
     }
 
     public function isAllowedExtension(string $extension): bool
@@ -186,5 +201,14 @@ trait FileTrait
                 ->map(fn ($value): string => $this->pathWithDir($value))
                 ->toArray()
             : [$this->pathWithDir($values)];
+    }
+
+    public function removeExcludedFiles(): void
+    {
+        $values = collect(
+            $this->toValue(withDefault: false)
+        );
+
+        $values->diff($this->getRemainingValues())->each(fn (string $file) => $this->deleteFile($file));
     }
 }

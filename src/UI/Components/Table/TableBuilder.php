@@ -130,6 +130,9 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this->trAttributes;
     }
 
+    /**
+     * @param  Closure(mixed $data, int $row, MoonShineComponentAttributeBag $attributes, self $table): MoonShineComponentAttributeBag $closure
+     */
     protected function systemTrAttributes(Closure $closure): self
     {
         $this->systemTrAttributes = $closure;

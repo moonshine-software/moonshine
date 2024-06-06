@@ -1,10 +1,10 @@
 /* Popovers */
 
-import tippy from 'tippy.js'
+import tippy, {hideAll} from 'tippy.js'
 
 export default (config = {}) => ({
   popoverInstance: null,
-  tippyConfig: {
+  config: {
     theme: 'ms-light',
     appendTo: document.body,
     allowHTML: true,
@@ -13,11 +13,30 @@ export default (config = {}) => ({
       const tooltipTitle = reference.getAttribute('title')
       return `<div class="popover-body">${
         tooltipTitle ? `<h5 class="title">${tooltipTitle}</h5>` : ''
-      } ${reference.getAttribute('data-content')}</div>`
+      } ${reference.querySelector('.popover-content').innerHTML}</div>`
     },
     ...config,
   },
   init() {
-    this.popoverInstance = tippy(this.$el, this.tippyConfig)
+    this.popoverInstance = tippy(this.$el, {
+      ...this.config,
+      ...this.$el.dataset ?? {}
+    })
   },
+  toggle() {
+    if(this.popoverInstance.state.isShown) {
+      this.popoverInstance.hide()
+    } else {
+      this.popoverInstance.show()
+    }
+  },
+  show() {
+    this.popoverInstance.show()
+  },
+  hide() {
+    this.popoverInstance.hide()
+  },
+  hideAll() {
+    hideAll()
+  }
 })

@@ -306,6 +306,9 @@ abstract class Field extends FormElement
         return $this->formattedValue ?? $this->toValue(withDefault: false);
     }
 
+    /**
+     * @param  Closure(mixed $data, self $field): mixed  $closure
+     */
     public function changeFill(Closure $closure): static
     {
         $this->fillCallback = $closure;
@@ -313,6 +316,9 @@ abstract class Field extends FormElement
         return $this;
     }
 
+    /**
+     * @param  Closure(self $field): self  $closure
+     */
     public function afterFill(Closure $closure): static
     {
         $this->afterFillCallback = $closure;
@@ -325,6 +331,9 @@ abstract class Field extends FormElement
         return ! is_null($this->fillCallback);
     }
 
+    /**
+     * @param  Closure(mixed $value, self $field): mixed  $closure
+     */
     public function changePreview(Closure $closure): static
     {
         $this->previewCallback = $closure;

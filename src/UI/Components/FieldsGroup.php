@@ -37,6 +37,7 @@ final class FieldsGroup extends AbstractWithComponents
     }
 
     /**
+     * @param  Closure(Field $field): Field  $callback
      * @throws Throwable
      */
     public function mapFields(Closure $callback): self

@@ -49,6 +49,12 @@ abstract class MoonShineController extends BaseController
         $message = moonshine()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage();
         $type = ToastType::ERROR;
 
+        if($flash = session()->get('toast')) {
+            session()->forget(['toast', '_flash.old', '_flash.new']);
+
+            $message = $flash['message'] ?? $message;
+        }
+
         if ($isAjax) {
             return $this->json(message: $message, messageType: $type);
         }
