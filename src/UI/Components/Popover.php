@@ -19,8 +19,7 @@ final class Popover extends MoonShineComponent
         public string $title,
         public string $trigger = '',
         public string $placement = 'right',
-    )
-    {
+    ) {
         parent::__construct();
 
         if($this->trigger === '') {
