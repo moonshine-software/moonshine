@@ -22,6 +22,15 @@ export default (name = '', initData = {}, reactive = {}) => ({
     t.reactiveUrl = t.initData.reactiveUrl
     let componentRequestData = new ComponentRequestData()
 
+    const requiredFields = this.$el.querySelectorAll('input[required]')
+
+    for (const field of requiredFields) {
+      field.addEventListener('invalid', function(e){
+        e.target.focus()
+        getAncestorsUntil(e.target, t);
+      })
+    }
+
     this.$watch('reactive', async function (value) {
       if (!t.blockWatch) {
         let focused = document.activeElement
@@ -274,4 +283,22 @@ function submitState(form, loading = true, reset = false) {
     form.querySelector('.form_submit_button').setAttribute('disabled', 'true')
     form.querySelector('.form_submit_button_loader').style.display = 'block'
   }
+}
+
+function getAncestorsUntil(element, stopElement) {
+  var ancestors = [];
+  var currentElement = element.parentNode;
+
+  while (currentElement && currentElement !== stopElement) {
+    ancestors.push(currentElement);
+    currentElement = currentElement.parentNode;
+
+    if (currentElement &&  currentElement.classList && currentElement.classList.contains('tabs-body')) {
+      let tab = currentElement.dataset.tab
+      document.querySelector('button[data-tab-button="' + tab +'"]').click()
+      currentElement.parentNode.setAttribute('style', 'display:block')
+    }
+  }
+
+  return ancestors;
 }

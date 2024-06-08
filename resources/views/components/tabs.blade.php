@@ -23,6 +23,7 @@
                         :class="{ '_is-active': activeTab === '{{ $tabId }}' }"
                         class="tabs-button"
                         type="button"
+                        data-tab-button="{{ $tabId }}"
                     >
                         {!! $tabContent !!}
                     </button>
@@ -35,7 +36,7 @@
         <div class="tabs-content">
             @foreach($contents as $tabId => $tabContent)
                 <div x-show="activeTab === '{{ $tabId }}'" class="tab-panel" style="display: none">
-                    <div class="tabs-body">
+                    <div class="tabs-body" data-tab="{{ $tabId }}">
                         {!! $tabContent !!}
                     </div>
                 </div>
