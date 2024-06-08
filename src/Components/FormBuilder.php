@@ -325,7 +325,7 @@ final class FormBuilder extends RowComponent
             }
         }
 
-        $xInit = json_encode([
+        $dataInit = json_encode([
             'whenFields' => $whenFields,
             'reactiveUrl' => $reactiveFields->isNotEmpty()
                 ? $this->getReactiveUrl()
@@ -333,8 +333,7 @@ final class FormBuilder extends RowComponent
         ], JSON_THROW_ON_ERROR);
 
         $this->customAttributes([
-            'x-data' => "formBuilder(`{$this->getName()}`, {$reactiveFields->toJson()})",
-            'x-init' => "initForm($xInit)",
+            'x-data' => "formBuilder(`{$this->getName()}`, $dataInit, {$reactiveFields->toJson()})",
         ]);
 
         if ($this->isPrecognitive()) {
