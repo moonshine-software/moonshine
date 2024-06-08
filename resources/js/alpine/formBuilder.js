@@ -14,7 +14,7 @@ export default (name = '', reactive = {}) => ({
   reactive: reactive,
   blockWatch: false,
 
-  init(initData = {}) {
+  initForm(initData = {}) {
     const t = this
     let componentRequestData = new ComponentRequestData()
 

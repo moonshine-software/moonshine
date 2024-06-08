@@ -334,7 +334,7 @@ final class FormBuilder extends RowComponent
 
         $this->customAttributes([
             'x-data' => "formBuilder(`{$this->getName()}`, {$reactiveFields->toJson()})",
-            'x-init' => "init($xInit)",
+            'x-init' => "initForm($xInit)",
         ]);
 
         if ($this->isPrecognitive()) {
