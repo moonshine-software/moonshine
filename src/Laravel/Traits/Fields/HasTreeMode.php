@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Traits\Fields;
+namespace MoonShine\Laravel\Traits\Fields;
 
 use Illuminate\Support\Collection;
 use Throwable;

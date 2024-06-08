@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 
 /**
@@ -14,10 +15,10 @@ use MoonShine\UI\Contracts\Actions\ActionButtonContract;
  */
 final class ActionButtons extends Collection
 {
-    public function fillItem(mixed $item): self
+    public function fill(?CastedData $item): self
     {
         return $this->map(
-            fn (ActionButtonContract $action): ActionButtonContract => (clone $action)->setItem($item)
+            fn (ActionButtonContract $action): ActionButtonContract => (clone $action)->setData($item)
         );
     }
 
@@ -56,7 +57,7 @@ final class ActionButtons extends Collection
     public function onlyVisible(mixed $item = null): self
     {
         return $this->filter(
-            fn (ActionButtonContract $action): bool => $action->isSee($item ?? $action->getItem())
+            fn (ActionButtonContract $action): bool => $action->isSee($item ?? $action->getData()?->getOriginal())
         );
     }
 

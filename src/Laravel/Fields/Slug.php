@@ -1,11 +1,12 @@
 <?php
 
-namespace MoonShine\UI\Fields;
+namespace MoonShine\Laravel\Fields;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Fields\Text;
 
 class Slug extends Text
 {

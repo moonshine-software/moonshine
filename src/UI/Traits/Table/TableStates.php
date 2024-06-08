@@ -185,8 +185,6 @@ trait TableStates
 
     /**
      * @return array{
-     *     vertical: bool,
-     *     editable: bool,
      *     preview: bool,
      *     notfound: bool,
      *     creatable: bool,
@@ -200,8 +198,6 @@ trait TableStates
     public function statesToArray(): array
     {
         return [
-            'vertical' => $this->isVertical(),
-            'editable' => $this->isEditable(),
             'preview' => $this->isPreview(),
             'notfound' => $this->hasNotFound(),
             'creatable' => $this->isCreatable(),

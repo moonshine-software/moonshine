@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use MoonShine\Support\Traits\HasAsync;
@@ -15,7 +14,7 @@ use MoonShine\UI\Traits\Components\WithColumnSpan;
 use Throwable;
 
 /**
- * @method static static make(Paginator|iterable $items = [], Fields|array $fields = [])
+ * @method static static make(iterable $items = [], Fields|array $fields = [])
  */
 final class CardsBuilder extends IterableComponent
 {
@@ -205,7 +204,7 @@ final class CardsBuilder extends IterableComponent
             'components' => $this->getComponents(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
-            'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
+            'simplePaginate' => $this->isSimplePaginator(),
             'paginator' => $this->getPaginator(),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),

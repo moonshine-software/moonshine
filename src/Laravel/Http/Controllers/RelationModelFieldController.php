@@ -47,7 +47,7 @@ class RelationModelFieldController extends MoonShineController
         $searchColumn = $field->asyncSearchColumn() ?? $resource->column();
 
         if ($field instanceof MorphTo) {
-            $field->resolveFill([], $model);
+            $field->resolveFill([], $resource->getModelCast()->cast($model));
 
             $morphClass = $field->getWrapName()
                 ? data_get($request->get($field->getWrapName(), []), $field->getMorphType())
@@ -114,17 +114,13 @@ class RelationModelFieldController extends MoonShineController
 
         $field?->resolveFill(
             $parentItem->toArray(),
-            $parentItem
+            $parentResource->getModelCast()->cast($parentItem)
         );
 
         $value = $field?->value();
 
         if ($value instanceof TableBuilder && $request->filled('_key')) {
-            return TableRowRenderer::make(
-                $value,
-                $request->get('_key'),
-                $request->integer('_index'),
-            )->render();
+            return $this->responseWithTable($value);
         }
 
         return $value->render();
@@ -150,7 +146,7 @@ class RelationModelFieldController extends MoonShineController
         $update = $item->exists;
         $relation = $parent?->{$field->getRelationName()}();
 
-        $field->resolveFill($parent->toArray(), $parent);
+        $field->resolveFill($parent->toArray(), $request->getResource()?->getModelCast()?->cast($parent));
 
         $action = $update
             ? static fn (Model $data) => $resource->route('crud.update', $data->getKey())

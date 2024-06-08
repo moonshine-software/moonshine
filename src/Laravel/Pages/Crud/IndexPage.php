@@ -43,7 +43,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     public function components(): array
@@ -54,7 +54,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     protected function topLayer(): array
     {
@@ -67,7 +67,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -81,7 +81,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     protected function bottomLayer(): array
     {
@@ -111,7 +111,7 @@ class IndexPage extends Page
             : null;
     }
 
-    /*
+    /**
      * @return list<MoonShineComponent>
      */
     protected function getPageButtons(): array
@@ -144,7 +144,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     protected function getQueryTags(): array
     {
@@ -206,7 +206,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function getItemsComponents(): array

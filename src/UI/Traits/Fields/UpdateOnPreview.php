@@ -6,7 +6,7 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
@@ -99,10 +99,10 @@ trait UpdateOnPreview
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $url ?? static fn (Model $item, mixed $value, Field $field): ?string => $item->exists ? moonshineRouter()->getEndpoints()->updateColumn(
+            $url ?? static fn (?CastedData $data, mixed $value, Field $field): ?string => $data->getKey() ? moonshineRouter()->getEndpoints()->updateColumn(
                 resource: $field->getNowOnResource(),
                 extra: [
-                    'resourceItem' => $item->getKey(),
+                    'resourceItem' => $data->getKey(),
                     'relation' => data_get($field->getNowOnQueryParams(), 'relation'),
                 ],
             ) : null,

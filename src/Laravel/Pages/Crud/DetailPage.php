@@ -10,6 +10,7 @@ use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
@@ -60,7 +61,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return MoonShineRenderable
+     * @return list<MoonShineRenderable>
      * @throws Throwable
      */
     public function components(): array
@@ -76,7 +77,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return MoonShineRenderable
+     * @return list<MoonShineRenderable>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -88,13 +89,13 @@ class DetailPage extends Page
             Box::make([
                 ...$this->getDetailComponents($item),
                 LineBreak::make(),
-                ...$this->getPageButtons($item),
+                ...$this->getPageButtons(),
             ]),
         ];
     }
 
     /**
-     * @return MoonShineRenderable
+     * @return list<MoonShineRenderable>
      * @throws Throwable
      */
     protected function bottomLayer(): array
@@ -115,7 +116,7 @@ class DetailPage extends Page
             foreach ($outsideFields as $field) {
                 $field->resolveFill(
                     $item?->attributesToArray() ?? [],
-                    $item
+                    $field->getResource()->getModelCast()->cast($item)
                 );
 
                 $components[] = LineBreak::make();
@@ -150,24 +151,12 @@ class DetailPage extends Page
             ->items([$item])
             ->vertical()
             ->simple()
-            ->preview()
-            ->tdAttributes(fn (
-                $data,
-                int $row,
-                int $cell,
-                MoonShineComponentAttributeBag $attributes
-            ): MoonShineComponentAttributeBag => $attributes->when(
-                $cell === 0,
-                fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
-                    'class' => 'font-semibold',
-                    'width' => '20%',
-                ])
-            ));
+            ->preview();
     }
 
     /**
-     * @return MoonShineRenderable
-     *@throws MoonShineComponentException
+     * @return list<MoonShineRenderable>
+     * @throws MoonShineComponentException
      * @throws PageException
      * @throws Throwable
      */
@@ -180,11 +169,11 @@ class DetailPage extends Page
         ];
     }
 
-    protected function getPageButtons(?Model $item): array
+    protected function getPageButtons(): array
     {
         return [
             ActionGroup::make($this->getResource()->getDetailItemButtons())
-                ->setItem($item)
+                ->fill($this->getResource()->getCastedItem())
                 ->customAttributes(['class' => 'justify-end']),
         ];
     }

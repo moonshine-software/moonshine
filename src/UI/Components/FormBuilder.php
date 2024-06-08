@@ -246,7 +246,7 @@ final class FormBuilder extends RowComponent
     ): bool {
         $values = $this->castData(
             $this->getValues()
-        );
+        )->getOriginal();
 
         if (is_null($default)) {
             $default = static fn (Field $field): Closure => static function (mixed $item) use ($field): mixed {

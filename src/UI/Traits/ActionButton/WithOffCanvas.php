@@ -44,14 +44,14 @@ trait WithOffCanvas
 
         return $this->onBeforeRender(
             static fn (ActionButton $btn): ActionButton => $btn->toggleOffCanvas(
-                value($name, $btn->getItem(), $btn)
+                value($name, $btn->getData()?->getOriginal(), $btn)
             )
         );
     }
 
     public function offCanvas(): ?OffCanvas
     {
-        return value($this->offCanvas, $this->getItem(), $this);
+        return value($this->offCanvas, $this->getData()?->getOriginal(), $this);
     }
 
     public function toggleOffCanvas(string $name = 'default'): static

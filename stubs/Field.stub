@@ -6,6 +6,7 @@ namespace {namespace};
 
 use {extend};
 use Closure;
+use MoonShine\Core\Contracts\CastedData;
 
 class DummyField extends {extendShort}
 {
@@ -16,7 +17,7 @@ class DummyField extends {extendShort}
         return parent::reformatFilledValue($data);
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedData $casted = null): mixed
     {
         return parent::prepareFill($raw, $casted);
     }

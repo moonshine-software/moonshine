@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\UI\Contracts\Fields\Fileable;
 use MoonShine\UI\Contracts\Fields\RemovableContract;
 use MoonShine\UI\Fields\File;
@@ -28,14 +29,12 @@ beforeEach(function (): void {
         protected $casts = ['files' => 'collection'];
     };
 
-    $this->field->resolveFill(
+    $this->field->fill(
         ['file' => 'files/file.pdf'],
-        $this->item
     );
 
-    $this->fieldMultiple->resolveFill(
+    $this->fieldMultiple->fill(
         ['files' => ["files/file1.pdf", "files/file2.pdf"]],
-        $this->item
     );
 });
 

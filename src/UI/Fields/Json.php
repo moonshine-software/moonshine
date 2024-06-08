@@ -12,6 +12,7 @@ use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Icon;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Contracts\Fields\HasFields;
@@ -207,7 +208,7 @@ class Json extends Field implements
         return $buttons;
     }
 
-    public function preparedFields(): Fields
+    public function preparedFields(): FieldsCollection
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (self $parent, Field $field): void {
             $field->withoutWrapper();

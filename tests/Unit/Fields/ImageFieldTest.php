@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Image;
 
@@ -26,14 +27,12 @@ beforeEach(function (): void {
         protected $casts = ['images' => 'collection'];
     };
 
-    $this->field->resolveFill(
+    $this->field->fill(
         ['image' => 'images/image.png'],
-        $this->item
     );
 
-    $this->fieldMultiple->resolveFill(
+    $this->fieldMultiple->fill(
         ['images' => ["images/image1.png", "images/image2.png"]],
-        $this->item
     );
 });
 

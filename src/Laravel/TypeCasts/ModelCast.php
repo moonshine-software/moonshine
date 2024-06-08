@@ -5,67 +5,37 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\TypeCasts;
 
 use Illuminate\Database\Eloquent\Model;
-use InvalidArgumentException;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Core\Contracts\MoonShineDataCast;
-use MoonShine\Support\Traits\Makeable;
 
 /**
  * @template-covariant T of Model
- * @method static static make(string $class)
  */
-final class ModelCast implements MoonShineDataCast
+final readonly class ModelCast implements MoonShineDataCast
 {
-    use Makeable;
-
-    /**
-     * @param  class-string<T>  $class
-     */
     public function __construct(
-        protected string $class
+        /** @var class-string<T> $class */
+        private string $class
     ) {
     }
 
+    /** @return class-string<T> $class */
     public function getClass(): string
     {
         return $this->class;
     }
 
     /**
-     * @return Model
+     * @return CastedData<T>
      */
-    public function hydrate(array $data): mixed
+    public function cast(mixed $data): CastedData
     {
-        /** @var Model $value */
-        $value = (new ($this->getClass())());
-
-        $value
-            ->forceFill([
-                $value->getKeyName() => $data[$value->getKeyName()] ?? null,
-                ...collect($data)->filter(fn ($item): bool => is_scalar($item))->toArray(),
-            ])
-            ->fill(
-                collect($data)
-                    ->except([$value->getKeyName(), $value->getUpdatedAtColumn(), $value->getCreatedAtColumn()])
-                    ->toArray()
-            )
-            ->setRelations($data['_relations'] ?? []);
-
-        $value->exists = ! empty($value->getKey());
-
-        return $value;
-    }
-
-    /**
-     * @param  Model  $data
-     */
-    public function dehydrate(mixed $data): array
-    {
-        if(! $data instanceof Model) {
-            throw new InvalidArgumentException('Model is required');
+        if(is_array($data)) {
+            /** @var T $model */
+            $model = new ($this->getClass());
+            $data = $model->forceFill($data);
         }
 
-        return $data->attributesToArray() + [
-            '_relations' => $data->getRelations(),
-        ];
+        return new ModelCastedData($data);
     }
 }

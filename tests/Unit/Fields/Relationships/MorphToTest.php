@@ -6,6 +6,7 @@ use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\DTOs\Select\Options;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\ImageModel;
@@ -24,7 +25,7 @@ beforeEach(function (): void {
     ]);
 
     $this->field = MorphTo::make('Imageable', resource: new TestImageResource())
-        ->resolveFill($this->item->toArray(), $this->item)
+        ->fill($this->item)
         ->types([
             Item::class => 'name',
             Category::class => 'name',
@@ -86,7 +87,7 @@ describe('basic methods', function () {
 
     it('formatted value', function () {
         $field = MorphTo::make('Imageable', formatted: static fn () => ['changed'], resource: new TestImageResource())
-            ->resolveFill($this->item->toArray(), $this->item);
+            ->fill($this->item);
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);

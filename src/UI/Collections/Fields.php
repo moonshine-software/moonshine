@@ -7,6 +7,7 @@ namespace MoonShine\UI\Collections;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\FieldsWrapper;
 use MoonShine\UI\Contracts\Fields\Fileable;
@@ -108,7 +109,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
      */
     public function fillCloned(
         array $raw = [],
-        mixed $casted = null,
+        ?CastedData $casted = null,
         int $index = 0,
         ?Fields $preparedFields = null
     ): static {
@@ -120,7 +121,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
 
     public function fillClonedRecursively(
         array $raw = [],
-        mixed $casted = null,
+        ?CastedData $casted = null,
         int $index = 0,
         ?Fields $preparedFields = null
     ): static {
@@ -142,7 +143,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     /**
      * @throws Throwable
      */
-    public function fill(array $raw = [], mixed $casted = null, int $index = 0): void
+    public function fill(array $raw = [], ?CastedData $casted = null, int $index = 0): void
     {
         $this->onlyFields()->map(
             fn (Field $field): Field => $field
@@ -194,7 +195,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
             $level = $name->substrCount('$');
 
             if ($field instanceof ID) {
-                $field->beforeRender(fn (ID $id): View|string => $id->preview());
+                $field->showValue();
             }
 
             $name = $name

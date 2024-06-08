@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Collections\ActionButtons;
 
 /**
@@ -18,10 +19,9 @@ final class ActionGroup extends MoonShineComponent
         parent::__construct();
     }
 
-    public function setItem(mixed $item): self
+    public function fill(?CastedData $data = null): self
     {
-        $this->getActions()
-            ->each(fn (ActionButton $button): ActionButton => $button->setItem($item));
+        $this->getActions()->fill($data);
 
         return $this;
     }

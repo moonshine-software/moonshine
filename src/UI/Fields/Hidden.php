@@ -17,6 +17,8 @@ class Hidden extends Field implements HasDefaultValue, DefaultCanBeString
 
     protected string $type = 'hidden';
 
+    protected bool $showValue = false;
+
     public function __construct(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
     {
         parent::__construct($label, $column ?? $label, $formatted);
@@ -25,5 +27,25 @@ class Hidden extends Field implements HasDefaultValue, DefaultCanBeString
     public function hasWrapper(): bool
     {
         return false;
+    }
+
+    public function showValue(): static
+    {
+        $this->showValue = true;
+
+        return $this;
+    }
+
+    public function isShowValue(): bool
+    {
+        return $this->showValue;
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            ...parent::viewData(),
+            'isShowValue' => $this->isShowValue()
+        ];
     }
 }

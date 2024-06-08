@@ -17,7 +17,7 @@ beforeEach(function () {
             Text::make('Name'),
         ])
         ->items(Item::query()->get())
-        ->cast(ModelCast::make(Item::class))
+        ->cast(new ModelCast(Item::class))
     ;
 });
 

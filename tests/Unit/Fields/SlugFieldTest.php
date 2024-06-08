@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\UI\Fields\Slug;
+use MoonShine\Laravel\Fields\Slug;
 use MoonShine\UI\Fields\Text;
 
 uses()->group('fields');

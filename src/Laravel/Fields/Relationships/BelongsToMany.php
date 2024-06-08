@@ -9,21 +9,23 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Laravel\Buttons\BelongsToManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Contracts\Fields\HasPivot;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
@@ -31,7 +33,6 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
-use MoonShine\UI\Traits\Fields\HasTreeMode;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
@@ -219,9 +220,9 @@ class BelongsToMany extends ModelRelationField implements
         return $this->columnLabel ?? $this->getResource()->title();
     }
 
-    public function preparedFields(): Fields
+    public function preparedFields(): FieldsCollection
     {
-        // TODO use prepareReindex
+        // TODO(3.0) use prepareReindex
         return $this->getFields()->prepareAttributes()->map(
             fn (Field $field): Field => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
@@ -328,17 +329,7 @@ class BelongsToMany extends ModelRelationField implements
                     'data-remove-after-clone' => 1,
                 ])
             )
-            ->cast($this->getModelCast())
-            ->trAttributes(
-                fn (
-                    Model $data,
-                    int $row,
-                    MoonShineComponentAttributeBag $attributes
-                ): MoonShineComponentAttributeBag => $attributes->merge([
-                    'data-key' => $data->getKey(),
-                ])
-            )
-            ->preview()
+            ->cast($this->getResource()->getModelCast())
             ->simple()
             ->editable()
             ->reindex(prepared: true)
@@ -408,7 +399,7 @@ class BelongsToMany extends ModelRelationField implements
         return TableBuilder::make($fields, $values)
             ->preview()
             ->simple()
-            ->cast($this->getModelCast())
+            ->cast($this->getResource()->getModelCast())
             ->render();
     }
 

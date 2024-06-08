@@ -17,7 +17,7 @@ beforeEach(function (): void {
         public int $to = 20;
     };
 
-    $this->field->resolveFill(['slide' => ['from' => 10, 'to' => 20]]);
+    $this->field->fill(['slide' => ['from' => 10, 'to' => 20]]);
 });
 
 it('type', function (): void {

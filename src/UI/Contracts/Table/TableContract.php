@@ -11,7 +11,7 @@ use MoonShine\UI\Collections\ActionButtons;
 
 interface TableContract
 {
-    public function rows(): Collection;
+    public function getRows(): Collection;
 
     public function getPaginator(): ?Paginator;
 

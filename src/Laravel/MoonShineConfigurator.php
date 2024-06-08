@@ -9,6 +9,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\Core\Contracts\ConfiguratorContract;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Layouts\AppLayout;
 use MoonShine\Laravel\Pages\Page;
@@ -369,10 +370,10 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @template-covariant T of Page
+     * @template-covariant T of PageContract
      * @param  class-string<T>  $default
      */
-    public function getPage(string $name, string $default, mixed ...$parameters): Page
+    public function getPage(string $name, string $default, mixed ...$parameters): PageContract
     {
         $class = $this->get("pages.$name", $default);
 
@@ -380,7 +381,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @return list<class-string<Page>>
+     * @return list<class-string<PageContract>>
      */
     public function getPages(): array
     {
@@ -388,8 +389,8 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @param  class-string<Page>  $old
-     * @param  class-string<Page>  $new
+     * @param  class-string<PageContract>  $old
+     * @param  class-string<PageContract>  $new
      * @return $this
      */
     public function changePage(string $old, string $new): self

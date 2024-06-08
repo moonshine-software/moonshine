@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Components;
 
 use Illuminate\Http\RedirectResponse;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Laravel\Pages\Page;
@@ -43,7 +44,7 @@ class Fragment extends AbstractWithComponents
     public function updateWith(
         array $params = [],
         string|ResourceContract|null $resource = null,
-        string|Page|null $page = null,
+        string|PageContract|null $page = null,
     ): static {
         /** @var ModelResource $resource */
         $resource ??= moonshineRequest()->getResource();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Boolean;
@@ -37,7 +38,7 @@ it('default item value', function (): void {
 it('reformat item value', function (): void {
     $this->field = Preview::make('NoInput', 'no_input', fn (): string => 'Testing');
 
-    $this->field->resolveFill($this->item->toArray(), $this->item);
+    $this->field->fill($this->item);
 
     expect($this->field->preview())
         ->toBe('Testing');
@@ -59,7 +60,7 @@ it('set value', function (): void {
 it('set value and fill', function (): void {
     $field = Preview::make('NoInput', 'no_input')
         ->setValue('set value')
-        ->fill('new value');
+        ->fillValue('new value');
 
     expect((string) $field->preview())
         ->toContain('new value');
@@ -92,7 +93,7 @@ it('set value and fill by form', function (): void {
 it('boolean value', function (): void {
     $this->item->no_input = true;
 
-    $this->field->reset()->resolveFill($this->item->toArray(), $this->item);
+    $this->field->reset()->fill($this->item);
 
     expect($this->field->boolean()->preview())
         ->toBe(

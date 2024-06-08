@@ -35,14 +35,36 @@ class Checkbox extends Field implements
 
     protected string $type = 'checkbox';
 
+    protected bool $simpleMode = false;
+
     public function isChecked(): bool
     {
+        if($this->isSimpleMode()) {
+            return false;
+        }
+
         return $this->getOnValue() == $this->value();
+    }
+
+    public function simpleMode(): static
+    {
+        $this->simpleMode = true;
+
+        return $this;
+    }
+
+    public function isSimpleMode(): bool
+    {
+        return $this->simpleMode;
     }
 
     protected function prepareBeforeRender(): void
     {
         parent::prepareBeforeRender();
+
+        if($this->isSimpleMode()) {
+            return;
+        }
 
         $this->beforeLabel();
         $this->customWrapperAttributes([
@@ -101,6 +123,7 @@ class Checkbox extends Field implements
             'onValue' => $this->getOnValue(),
             'offValue' => $this->getOffValue(),
             'isChecked' => $this->isChecked(),
+            'isSimpleMode' => $this->isSimpleMode(),
         ];
     }
 }

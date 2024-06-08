@@ -115,16 +115,18 @@ export default (
       .catch(error => {})
   },
   actions(type, id) {
-    let all = this.$root.querySelector('.' + id + '-actionsAllChecked')
+    let all = this.$root.querySelector(`.${id}-actionsAllChecked`)
 
     if (all === null) {
       return
     }
 
-    let checkboxes = this.$root.querySelectorAll('.' + id + '-tableActionRow')
+    let checkboxes = this.$root.querySelectorAll(`.${id}-tableActionRow`)
+
     let ids = document.querySelectorAll(
       '.hidden-ids[data-for-component=' + this.table.getAttribute('data-name') + ']',
     )
+
     let bulkButtons = document.querySelectorAll(
       '[data-button-type=bulk-button][data-for-component=' +
         this.table.getAttribute('data-name') +

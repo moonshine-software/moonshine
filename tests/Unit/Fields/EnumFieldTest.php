@@ -12,7 +12,7 @@ uses()->group('fields');
 
 beforeEach(function (): void {
     $this->field = Enum::make('Enum')
-        ->fill(TestEnumColor::Red)
+        ->fillValue(TestEnumColor::Red)
         ->attach(TestEnumColor::class);
 });
 

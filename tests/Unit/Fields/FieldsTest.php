@@ -77,7 +77,9 @@ describe('form elements', function () {
     it('show when', function () {
         $form = FormBuilder::make(
             '/',
-            fields: $this->collection->onlyFields()
+            fields: $this->collection
+                ->withoutOutside()
+                ->onlyFields()
         );
 
         expect(data_get($form->render()->getData(), 'attributes')->get('x-init'))

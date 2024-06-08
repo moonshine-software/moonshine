@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Forms;
 use Illuminate\Support\Arr;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
@@ -38,6 +39,7 @@ final class FiltersForm implements FormContract
         $values = $resource->getFilterParams();
         $filters = $resource->getFilters();
 
+
         $action = $resource->isAsync() ? '#' : $this->formAction();
 
         $filters->fill($values);
@@ -48,9 +50,11 @@ final class FiltersForm implements FormContract
             }
         }
 
+        $data = $resource->getModel()->newInstance($values);
+
         return FormBuilder::make($action, FormMethod::GET)
             ->name('filters')
-            ->fillCast($values, $resource->getModelCast())
+            ->fillCast($data, $resource->getModelCast())
             ->fields(
                 $filters
                     ->when(

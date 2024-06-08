@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
-use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\MoonShineRenderable;
 use Throwable;
 
@@ -19,7 +19,7 @@ trait WithFields
     /**
      * @throws Throwable
      */
-    public function preparedFields(): Fields
+    public function preparedFields(): FieldsCollection
     {
         return $this->getFields();
     }
@@ -27,7 +27,7 @@ trait WithFields
     /**
      * @throws Throwable
      */
-    public function getFields(): Fields
+    public function getFields(): FieldsCollection
     {
         return fieldsCollection(
             $this->getRawFields()
@@ -47,7 +47,7 @@ trait WithFields
         return $this->getFields()->isNotEmpty();
     }
 
-    public function fields(Fields|Closure|array $fields): static
+    public function fields(FieldsCollection|Closure|array $fields): static
     {
         if($fields instanceof Closure) {
             $fields = $fields();
@@ -59,7 +59,7 @@ trait WithFields
                 ->toArray();
         }
 
-        $this->fields = $fields instanceof Fields
+        $this->fields = $fields instanceof FieldsCollection
             ? $fields->toArray()
             : $fields;
 
@@ -73,8 +73,8 @@ trait WithFields
         array $raw = [],
         mixed $casted = null,
         int $index = 0,
-        ?Fields $preparedFields = null
-    ): Fields {
+        ?FieldsCollection $preparedFields = null
+    ): FieldsCollection {
         $fields = $preparedFields ?? $this->getFields();
 
         return $fields->fillCloned($raw, $casted, $index, $fields);

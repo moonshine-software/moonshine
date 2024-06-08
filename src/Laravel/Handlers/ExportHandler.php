@@ -152,7 +152,11 @@ class ExportHandler extends Handler
 
                 $fields = $resource->getExportFields();
 
-                $fields->fill($item->toArray(), $item, $index);
+                $fields->fill(
+                    $item->toArray(),
+                    $resource->getModelCast()->cast($item),
+                    $index
+                );
 
                 foreach ($fields as $field) {
                     $row[$field->getLabel()] = $field

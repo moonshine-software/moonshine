@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+// todo(isolate): paginator
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\HasDataCast;
@@ -24,7 +27,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
 
     public function items(iterable $items = []): static
     {
-        if($items instanceof Paginator) {
+        if ($items instanceof Paginator) {
             $this->items = $items->items();
             $this->paginator($items);
         } else {
@@ -56,6 +59,11 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
         return ! is_null($this->paginator);
     }
 
+    public function isSimplePaginator(): bool
+    {
+        return ! $this->getPaginator() instanceof LengthAwarePaginator;
+    }
+
     public function buttons(array $buttons = []): static
     {
         $this->buttons = $buttons;
@@ -63,10 +71,15 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
         return $this;
     }
 
-    public function getButtons(mixed $data): ActionButtons
+    public function hasButtons(): bool
+    {
+        return $this->buttons !== [];
+    }
+
+    public function getButtons(CastedData $data): ActionButtons
     {
         return ActionButtons::make($this->buttons)
-            ->fillItem($this->castData($data))
+            ->fill($data)
             ->onlyVisible()
             ->withoutBulk();
     }

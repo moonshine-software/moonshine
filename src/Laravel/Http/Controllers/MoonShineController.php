@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller as BaseController;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Pages\ViewPage;
 use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
 use MoonShine\Support\Enums\ToastType;
+use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Components\Table\TableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -34,7 +40,7 @@ abstract class MoonShineController extends BaseController
             );
     }
 
-    protected function view(string $path, array $data = []): Page
+    protected function view(string $path, array $data = []): PageContract
     {
         return ViewPage::make()->setContentView($path, $data);
     }
@@ -64,5 +70,35 @@ abstract class MoonShineController extends BaseController
         $this->toast($message, $type);
 
         return redirect($redirectRoute)->withInput();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function responseWithTable(TableBuilder $table): TableBuilder|TableRow|string
+    {
+        if (! request()->filled('_key')) {
+            return $table;
+        }
+
+        $class = $table->hasCast()
+            ? new ($table->getCast()->getClass())
+            : null;
+
+        if(!$class instanceof Model) {
+            return $table->getRows()->first(
+                fn (TableRow $row): bool => $row->getKey() === request()->get('_key'),
+            );
+        }
+
+        $item = $class::query()->find(request()->get('_key'));
+
+        if (blank($item)) {
+            return '';
+        }
+
+        return $table->items([
+            $item
+        ])->getRows()->first();
     }
 }

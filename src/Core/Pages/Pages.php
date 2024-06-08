@@ -5,59 +5,60 @@ declare(strict_types=1);
 namespace MoonShine\Core\Pages;
 
 use Illuminate\Support\Collection;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\Enums\PageType;
 
 /**
  * @template TKey of array-key
  *
- * @extends Collection<TKey, Page>
+ * @extends Collection<TKey, PageContract>
  */
 final class Pages extends Collection
 {
     public function setResource(ResourceContract $resource): Pages
     {
-        return $this->each(fn (Page $page): Page => $page->setResource($resource));
+        return $this->each(fn (PageContract $page): PageContract => $page->setResource($resource));
     }
 
     public function findByType(
         PageType $type,
-        Page $default = null
-    ): ?Page {
-        return $this->first(fn (Page $page): bool => $page->pageType() === $type, $default);
+        PageContract $default = null
+    ): ?PageContract {
+        return $this->first(fn (PageContract $page): bool => $page->pageType() === $type, $default);
     }
 
     public function findByClass(
         string $class,
-        Page $default = null
-    ): ?Page {
+        PageContract $default = null
+    ): ?PageContract {
         return $this->first(
-            fn (Page $page): bool => $page::class === $class,
+            fn (PageContract $page): bool => $page::class === $class,
             $default
         );
     }
 
-    public function indexPage(): ?Page
+    public function indexPage(): ?PageContract
     {
         return $this->findByType(PageType::INDEX);
     }
 
-    public function formPage(): ?Page
+    public function formPage(): ?PageContract
     {
         return $this->findByType(PageType::FORM);
     }
 
-    public function detailPage(): ?Page
+    public function detailPage(): ?PageContract
     {
         return $this->findByType(PageType::DETAIL);
     }
 
     public function findByUri(
         string $uri,
-        Page $default = null
-    ): ?Page {
+        PageContract $default = null
+    ): ?PageContract {
         return $this->first(
-            function (Page $page) use ($uri): bool {
+            function (PageContract $page) use ($uri): bool {
                 if($page->uriKey() === $uri) {
                     return true;
                 }

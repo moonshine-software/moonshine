@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Support\Facades\View;
+use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentSlot;
 
 /**

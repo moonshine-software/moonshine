@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
+use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Core\TypeCasts\DefaultCastedData;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\WithLabel;
 use MoonShine\Support\VO\FieldEmptyValue;
@@ -123,19 +125,19 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedData $casted = null): mixed
     {
         if ($this->isFillChanged()) {
             return value(
                 $this->fillCallback,
-                $casted ?? $raw,
+                !is_null($casted) ? $casted->getOriginal() : $raw,
                 $this
             );
         }
 
         $default = new FieldEmptyValue();
 
-        $value = data_get($casted ?? $raw, $this->getColumn(), $default);
+        $value = data_get(!is_null($casted) ? $casted->getOriginal() : $raw, $this->getColumn(), $default);
 
         if (is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
             $value = data_get($raw, $this->getColumn(), $default);
@@ -149,9 +151,9 @@ abstract class Field extends FormElement
         return $data;
     }
 
-    public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): static
+    public function resolveFill(array $raw = [], ?CastedData $casted = null, int $index = 0): static
     {
-        $this->setData($casted ?? $raw);
+        $this->setData($casted);
         $this->setRowIndex($index);
 
         $value = $this->prepareFill($raw, $casted);
@@ -173,13 +175,30 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    public function fill(mixed $value, mixed $casted = null): static
+    public function fill(mixed $value): static
+    {
+        $casted = $value instanceof CastedData
+            ? $value
+            : new DefaultCastedData($value);
+
+        return $this->resolveFill(
+            $casted->toArray(),
+            $casted,
+        );
+    }
+
+    public function fillValue(mixed $value = null, ?CastedData $casted = null): static
     {
         return $this->resolveFill([
             $this->getColumn() => $value,
-        ], [
-            $this->getColumn() => $casted ?? $value,
-        ]);
+        ], $casted);
+    }
+
+    public function setValue(mixed $value = null): static
+    {
+        $this->value = $value;
+
+        return $this;
     }
 
     public function rawMode(Closure|bool|null $condition = null): static
@@ -206,14 +225,14 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    protected function setData(mixed $data = null): static
+    protected function setData(?CastedData $data = null): static
     {
         $this->data = $data;
 
         return $this;
     }
 
-    public function getData(): mixed
+    public function getData(): ?CastedData
     {
         return $this->data;
     }
@@ -262,13 +281,6 @@ abstract class Field extends FormElement
         return $this->resolveValue();
     }
 
-    public function setValue(mixed $value = null): static
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
     protected function resolveValue(): mixed
     {
         return $this->toValue();
@@ -297,7 +309,7 @@ abstract class Field extends FormElement
             $this->setFormattedValue(
                 value(
                     $this->formattedValueCallback(),
-                    $this->getData(),
+                    $this->getData()?->getOriginal(),
                     $this->getRowIndex()
                 )
             );

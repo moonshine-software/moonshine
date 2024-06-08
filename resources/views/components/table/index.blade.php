@@ -7,27 +7,20 @@
     'thead',
     'tbody',
     'tfoot',
+    'headAttributes' => '',
+    'bodyAttributes' => '',
+    'footAttributes' => '',
 ])
 @if(isset($tbody) || (is_iterable($values) && count($values)))
     <!-- Table -->
     <div @if ($responsive) class="table-responsive" @endif>
-        <table {{ $attributes
-                ->merge(['class' => 'table' . (!$simple ? '-list' : '')])
-        }} x-id="['table-component']" :id="$id('table-component')">
-            <thead {{ $thead->attributes ?? '' }}>
-            <tr>
-                @if(is_array($columns))
-                    @foreach($columns as $name => $label)
-                        <th>
-                            {{ $label }}
-                        </th>
-                    @endforeach
-                @endif
-
-                {{ $thead ?? '' }}
-            </tr>
+        <table {{ $attributes->merge(['class' => 'table' . (!$simple ? '-list' : '')]) }}
+               x-id="['table-component']" :id="$id('table-component')"
+        >
+            <thead {{ $headAttributes ??  $thead->attributes ?? '' }}>
+            {{ $thead ?? '' }}
             </thead>
-            <tbody  {{ $tbody->attributes ?? '' }}>
+            <tbody  {{ $bodyAttributes ?? $tbody->attributes ?? '' }}>
             @if(is_iterable($values))
                 @foreach($values as $index => $data)
                     <tr>
@@ -44,10 +37,8 @@
             </tbody>
 
             @if($tfoot ?? false)
-                <tfoot {{ $tfoot->attributes }}>
-                    <tr>
-                        {{ $tfoot }}
-                    </tr>
+                <tfoot {{ $footAttributes ?? $tfoot->attributes ?? '' }}>
+                {{ $tfoot }}
                 </tfoot>
             @endif
         </table>
