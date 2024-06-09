@@ -23,6 +23,7 @@ use MoonShine\UI\Contracts\Table\TableContract;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Td;
 use MoonShine\UI\Traits\Table\TableStates;
 use Throwable;
 
@@ -36,13 +37,11 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected string $view = 'moonshine::components.table.builder';
 
-    protected ?TableRows $rows = null;
+    protected Closure|TableRows|null $rows = null;
 
-    protected ?TableRows $headRows = null;
+    protected Closure|TableRows|null $headRows = null;
 
-    protected ?TableRows $bodyRows = null;
-
-    protected ?TableRows $footRows = null;
+    protected Closure|TableRows|null $footRows = null;
 
     protected array $trAttributes = [];
 
@@ -77,7 +76,21 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function preparedFields(): FieldsCollection
     {
-        return $this->getFields()->values();
+        return memoize(function () {
+            $fields = $this->getFields();
+
+            if (! $this->isEditable()) {
+                $fields = $fields
+                    ->onlyFields(withWrappers: true)
+                    ->map(
+                        fn (Field $field): Field => $field
+                            ->withoutWrapper()
+                            ->forcePreview()
+                    );
+            }
+
+            return $fields->values();
+        });
     }
 
     /**
@@ -147,50 +160,54 @@ final class TableBuilder extends IterableComponent implements TableContract
         return $this;
     }
 
-    public function rows(TableRows $rows): self
+    /**
+     * @param  TableRows|Closure(TableRow $default): TableRows  $rows
+     */
+    public function rows(TableRows|Closure $rows): self
     {
         $this->rows = $rows;
 
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getRows(): TableRows
     {
-        if(!is_null($this->rows)) {
+        if ($this->rows instanceof TableRows) {
             return $this->rows;
         }
 
-        $tableFields = $this->preparedFields();
-        $hasBulk = $this->getBulkButtons()->isNotEmpty();
-
-        if (! $this->isEditable()) {
-            $tableFields = $tableFields
-                ->onlyFields(withWrappers: true)
-                ->map(
-                    fn (Field $field): Field => $field
-                        ->withoutWrapper()
-                        ->forcePreview()
-                );
+        if (! is_null($this->rows)) {
+            return $this->rows = value($this->rows, $this->resolveRows(), $this);
         }
+
+        return $this->rows = $this->resolveRows();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function resolveRows(): TableRows
+    {
+        $tableFields = $this->preparedFields();
 
         $rows = TableRows::make();
 
-        if($this->isAsync()) {
-            $this->trAttributes(fn (?CastedData $data, int $index): array => $data?->getKey() ? [
-                AlpineJs::eventBlade(
-                    JsEvent::TABLE_ROW_UPDATED,
-                    "{$this->getName()}-{$data->getKey()}",
-                ) => "asyncRowRequest(`{$data->getKey()}`,`$index`)",
-            ] : []);
+        if ($this->isAsync()) {
+            $this->trAttributes(
+                $this->getRowAsyncAttributes()
+            );
         }
 
-        if(! is_null($this->sortableUrl) && $this->isSortable()) {
-            $this->trAttributes(fn (mixed $data, int $index): array => [
-                'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
-            ]);
+        if (! is_null($this->sortableUrl) && $this->isSortable()) {
+            $this->trAttributes(
+                $this->getRowReorderAttributes()
+            );
         }
 
-        foreach ($this->getItems()->filter() as $index => $data) {
+        foreach ($this->getItems() as $index => $data) {
             $casted = $this->castData($data);
             $cells = TableCells::make();
 
@@ -206,12 +223,20 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             if ($this->isVertical()) {
                 foreach ($fields as $cellIndex => $field) {
+                    $builder = null;
+
+                    if($field instanceof Td && $field->hasTdAttributes()) {
+                        $builder = static fn(TableTd $td) => $td->customAttributes(
+                            $field->resolveTdAttributes($field->getData())
+                        );
+                    }
+
                     $cells = TableCells::make()
                         ->pushCell($field->getLabel(), builder: fn (TableTd $td) => $td->customAttributes([
                             'width' => '20%',
                             'class' => 'font-semibold',
                         ]))
-                        ->pushCell((string) $field);
+                        ->pushCell((string) $field, builder: $builder);
 
                     $rows->pushRow($cells, $cellIndex);
                 }
@@ -219,20 +244,12 @@ final class TableBuilder extends IterableComponent implements TableContract
                 continue;
             }
 
+            $buttons = $this->getButtons($casted);
+
             $cells
                 ->pushCellWhen(
-                    !$this->isPreview() && $hasBulk,
-                    fn() => (string) Checkbox::make('')
-                        ->setValue($key)
-                        ->setNameAttribute("items[{$key}]")
-                        ->withoutWrapper()
-                        ->simpleMode()
-                        ->customAttributes([
-                            'autocomplete' => 'off',
-                            '@change' => "actions('row', \$id('table-component'))",
-                            ':class' => "\$id('table-component') + '-tableActionRow'",
-                            'class' => 'tableActionRow',
-                        ])
+                    ! $this->isPreview() && $this->getBulkButtons()->isNotEmpty(),
+                    fn () => (string) $this->getRowCheckbox($key)
                 )
                 ->pushFields(
                     $fields,
@@ -240,9 +257,10 @@ final class TableBuilder extends IterableComponent implements TableContract
                         $this->getTdAttributes($casted, $index, $td->getIndex())
                     )
                 )
-                ->pushCell(
-                    (string) Flex::make([
-                        ActionGroup::make($this->getButtons($casted)->toArray()),
+                ->pushCellWhen(
+                    $buttons->isNotEmpty(),
+                    fn() => (string) Flex::make([
+                        ActionGroup::make($buttons->toArray()),
                     ])->justifyAlign('end')
                 );
 
@@ -253,49 +271,92 @@ final class TableBuilder extends IterableComponent implements TableContract
             );
         }
 
-        return $this->rows = $rows->when(
+        return $rows->when(
             $this->isVertical(),
             fn (TableRows $rows) => $rows->flatten()
         );
     }
 
-    public function headRows(TableRows $rows): self
+    public function getRowCheckbox(int|string|null $key): Checkbox
+    {
+        return Checkbox::make('')
+            ->setValue($key)
+            ->setNameAttribute("items[$key]")
+            ->withoutWrapper()
+            ->simpleMode()
+            ->customAttributes([
+                'autocomplete' => 'off',
+                '@change' => "actions('row', \$id('table-component'))",
+                ':class' => "\$id('table-component') + '-tableActionRow'",
+                'class' => 'tableActionRow',
+            ]);
+    }
+
+    public function getRowAsyncAttributes(): Closure
+    {
+        return fn (?CastedData $data, int $index): array => is_null($data)
+            ? []
+            : [
+                AlpineJs::eventBlade(
+                    JsEvent::TABLE_ROW_UPDATED,
+                    "{$this->getName()}-{$data->getKey()}",
+                ) => "asyncRowRequest(`{$data->getKey()}`,`$index`)",
+            ];
+    }
+
+    public function getRowReorderAttributes(): Closure
+    {
+        return fn (mixed $data, int $index): array => [
+            'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
+        ];
+    }
+
+    /**
+     * @param  TableRows|Closure(TableRow $default): TableRows  $rows
+     */
+    public function headRows(TableRows|Closure $rows): self
     {
         $this->headRows = $rows;
 
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function getHeadRows(): TableRows
     {
-        if(!is_null($this->headRows)) {
+        if ($this->headRows instanceof TableRows) {
             return $this->headRows;
         }
 
-        $tableFields = $this->preparedFields();
+        if (! is_null($this->headRows)) {
+            return $this->headRows = value($this->headRows, $this->resolveHeadRow(), $this);
+        }
 
+        return $this->headRows = TableRows::make([
+            $this->resolveHeadRow(),
+        ]);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function resolveHeadRow(): TableRow
+    {
         $cells = TableCells::make();
-        $rows = TableRows::make();
 
         if (! $this->isVertical()) {
             $cells->pushWhen(
-                !$this->isPreview() && $this->getBulkButtons()->isNotEmpty(),
-                fn() => TableTh::make(
-                    (string) Checkbox::make('')
-                        ->withoutWrapper()
-                        ->simpleMode()
-                        ->customAttributes([
-                            'autocomplete' => 'off',
-                            '@change' => "actions('all', \$id('table-component'))",
-                            ':class' => "\$id('table-component') + '-actionsAllChecked'",
-                        ])
-                        ->class('actionsAllChecked')
+                ! $this->isPreview() && $this->getBulkButtons()->isNotEmpty(),
+                fn () => TableTh::make(
+                    (string) $this->getRowBulkCheckbox()
                 )->class('w-10 text-center')
             );
 
-            foreach ($tableFields as $field) {
+            foreach ($this->preparedFields() as $field) {
                 $cells->push(
-                    $field->isSortable() && !$this->isPreview()
+                    $field->isSortable() && ! $this->isPreview()
                         ?
                         TableTh::make(
                             (string) Link::make(
@@ -316,17 +377,30 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             $cells->pushWhen(
                 $this->hasButtons(),
-                static fn() => TableTh::make('')
+                static fn () => TableTh::make('')
             );
         }
 
-        return $this->headRows = $rows->pushRow(
-            $cells,
-            0
-        );
+        return TableRow::make($cells);
     }
 
-    public function footRows(TableRows $rows): self
+    public function getRowBulkCheckbox(): Checkbox
+    {
+        return Checkbox::make('')
+            ->withoutWrapper()
+            ->simpleMode()
+            ->customAttributes([
+                'autocomplete' => 'off',
+                '@change' => "actions('all', \$id('table-component'))",
+                ':class' => "\$id('table-component') + '-actionsAllChecked'",
+            ])
+            ->class('actionsAllChecked');
+    }
+
+    /**
+     * @param  TableRows|Closure(TableRow $default): TableRows  $rows
+     */
+    public function footRows(TableRows|Closure $rows): self
     {
         $this->footRows = $rows;
 
@@ -335,27 +409,39 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function getFootRows(): TableRows
     {
-        if(!is_null($this->footRows)) {
+        if ($this->footRows instanceof TableRows) {
             return $this->footRows;
         }
 
-        $cells = TableCells::make();
+        if (! is_null($this->footRows)) {
+            return $this->footRows = value($this->footRows, $this->resolveFootRow(), $this);
+        }
 
-        $cells->pushWhen(
-            !$this->isPreview(),
-            fn() => TableTd::make(
-                (string) Flex::make([
-                    ActionGroup::make($this->getBulkButtons()->toArray()),
-                ])->justifyAlign('start')
-            )->customAttributes([
+        return $this->footRows = TableRows::make([
+            $this->resolveFootRow(),
+        ]);
+    }
+
+    private function resolveFootRow(): TableRow
+    {
+        $cells = TableCells::make()->pushCellWhen(
+            ! $this->isPreview(),
+            fn () => (string) Flex::make([
+                ActionGroup::make($this->getBulkButtons()->toArray()),
+            ])->justifyAlign('start'),
+            builder: fn (TableTd $td) => $td->customAttributes([
                 'colspan' => 6,
                 ':class' => "\$id('table-component') + '-bulkActions'",
             ])
         );
 
-        return $this->footRows = TableRows::make([
-            TableRow::make($cells),
-        ]);
+        if ($this->getBulkButtons()->isNotEmpty()) {
+            $this->footAttributes([
+                ':class' => "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'",
+            ]);
+        }
+
+        return TableRow::make($cells);
     }
 
     protected function prepareBeforeRender(): void
@@ -391,10 +477,6 @@ final class TableBuilder extends IterableComponent implements TableContract
                 $this->getItems()->push([null])
             );
         }
-
-        $this->footAttributes([
-            ':class' => "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
-        ]);
 
         return $this;
     }

@@ -32,6 +32,7 @@ class Td extends Template
         parent::__construct($label);
 
         $this->conditionalFields($fields);
+        $this->forcePreview();
     }
 
     public function withLabels(): static
@@ -78,7 +79,7 @@ class Td extends Template
     }
 
     /**
-     * @param  Closure(mixed $data, MoonShineComponentAttributeBag $attributes, self $td): MoonShineComponentAttributeBag  $attributes
+     * @param  Closure(mixed $data, self $td): array  $attributes
      */
     public function tdAttributes(Closure $attributes): self
     {
@@ -117,5 +118,10 @@ class Td extends Template
                 ->withoutWrapper($this->hasLabels())
                 ->forcePreview())
             ->render();
+    }
+
+    public function render(): string
+    {
+        return $this->preview();
     }
 }

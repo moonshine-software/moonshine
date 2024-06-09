@@ -62,12 +62,12 @@ abstract class MoonShineController extends BaseController
         }
 
         if ($isAjax) {
-            return $this->json(message: $message, messageType: $type);
+            return $this->json(message: __($message), messageType: $type);
         }
 
         throw_if(! moonshine()->isProduction(), $e);
 
-        $this->toast($message, $type);
+        $this->toast(__($message), $type);
 
         return redirect($redirectRoute)->withInput();
     }

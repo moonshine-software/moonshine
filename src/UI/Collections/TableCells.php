@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\UI\Components\Table\TableTd;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
+use MoonShine\UI\Fields\Td;
 
 /**
  * @template TKey of array-key
@@ -18,12 +19,22 @@ final class TableCells extends Collection
 {
     public function pushFields(FieldsCollection $fields, ?Closure $builder = null): self
     {
+        $initializedBuilder = $builder;
+
         foreach ($fields as $index => $field) {
+            if($field instanceof Td && $field->hasTdAttributes()) {
+                $builder = static fn(TableTd $td) => $td->customAttributes(
+                    $field->resolveTdAttributes($field->getData())
+                );
+            }
+
             $this->pushCell(
                 (string) $field,
                 $index,
-                $builder
+                $builder ?? $initializedBuilder
             );
+
+            $builder = null;
         }
 
         return $this;

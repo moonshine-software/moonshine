@@ -39,7 +39,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
 
     public function getItems(): Collection
     {
-        return collect($this->items);
+        return collect($this->items)->filter();
     }
 
     public function paginator(Paginator $paginator): static

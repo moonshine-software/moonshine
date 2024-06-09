@@ -9,15 +9,20 @@ import {
   showWhenVisibilityChange,
 } from '../Support/ShowWhen.js'
 
-export default (name = '', reactive = {}) => ({
+export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
+  initData: initData,
   whenFields: {},
+  reactiveUrl: '',
   reactive: reactive,
   blockWatch: false,
 
-  init(initData = {}) {
+  init() {
     const t = this
     let componentRequestData = new ComponentRequestData()
+
+    t.whenFields = t.initData.whenFields
+    t.reactiveUrl = t.initData.reactiveUrl
 
     this.$watch('reactive', async function (value) {
       if (!t.blockWatch) {
@@ -62,7 +67,7 @@ export default (name = '', reactive = {}) => ({
 
         request(
           t,
-          initData.reactiveUrl,
+          t.reactiveUrl,
           'post',
           {
             _component_name: t.name,
@@ -74,8 +79,7 @@ export default (name = '', reactive = {}) => ({
       }
     })
 
-    if (initData.whenFields !== undefined) {
-      this.whenFields = initData.whenFields
+    if (t.whenFields !== undefined) {
       const t = this
 
       this.$nextTick(async function () {
