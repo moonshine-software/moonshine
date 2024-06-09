@@ -271,6 +271,8 @@ class Json extends Field implements
             Json $parent,
             Field $field
         ): void {
+            $field->disableSortable();
+
             throw_if(
                 ! $parent->isAsRelation() && $field instanceof ModelRelationField,
                 new FieldException(

@@ -49,6 +49,7 @@ abstract class MoonShineController extends BaseController
     protected function reportAndResponse(bool $isAjax, Throwable $e, string $redirectRoute): Response
     {
         $message = app()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage();
+        $type = 'error';
 
         if($flash = session()->get('toast')) {
             session()->forget(['toast', '_flash.old', '_flash.new']);
@@ -60,16 +61,16 @@ abstract class MoonShineController extends BaseController
 
         if ($isAjax) {
             return $this->json(
-                message: $message,
-                messageType: 'error'
+                message: __($message),
+                messageType: $type
             );
         }
 
         throw_if(! app()->isProduction(), $e);
 
         $this->toast(
-            $message,
-            'error'
+            __($message),
+            $type
         );
 
         return redirect($redirectRoute)->withInput();
