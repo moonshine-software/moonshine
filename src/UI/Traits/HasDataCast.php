@@ -36,8 +36,8 @@ trait HasDataCast
 
     public function castData(mixed $data): CastedData
     {
-        if(!$this->hasCast()) {
-            $this->cast(new DefaultDataCast);
+        if(! $this->hasCast()) {
+            $this->cast(new DefaultDataCast());
         }
 
         return $this->getCast()->cast($data);

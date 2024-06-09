@@ -45,7 +45,7 @@ class Hidden extends Field implements HasDefaultValue, DefaultCanBeString
     {
         return [
             ...parent::viewData(),
-            'isShowValue' => $this->isShowValue()
+            'isShowValue' => $this->isShowValue(),
         ];
     }
 }

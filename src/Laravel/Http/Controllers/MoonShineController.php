@@ -82,7 +82,7 @@ abstract class MoonShineController extends BaseController
             ? new ($table->getCast()->getClass())
             : null;
 
-        if(!$class instanceof Model) {
+        if(! $class instanceof Model) {
             return $table->getRows()->first(
                 fn (TableRow $row): bool => $row->getKey() === request()->get('_key'),
             );
@@ -95,7 +95,7 @@ abstract class MoonShineController extends BaseController
         }
 
         return $table->items([
-            $item
+            $item,
         ])->getRows()->first();
     }
 }

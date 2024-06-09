@@ -23,7 +23,7 @@ final class TableCells extends Collection
 
         foreach ($fields as $index => $field) {
             if($field instanceof Td && $field->hasTdAttributes()) {
-                $builder = static fn(TableTd $td): TableTd => $td->customAttributes(
+                $builder = static fn (TableTd $td): TableTd => $td->customAttributes(
                     $field->resolveTdAttributes($field->getData())
                 );
             }
@@ -44,8 +44,8 @@ final class TableCells extends Collection
     {
         return $this->push(
             TableTd::make($content, $index)->when(
-                !is_null($builder),
-                fn(TableTd $td) => $builder($td)
+                ! is_null($builder),
+                fn (TableTd $td) => $builder($td)
             )
         );
     }

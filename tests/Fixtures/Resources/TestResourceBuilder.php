@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\UI\Components\ActionButton;
