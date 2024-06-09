@@ -43,7 +43,7 @@ function asAdmin(): TestCase
 
 function fillFromModel(Field $field, Model $model)
 {
-    $field->fill($model);
+    $field->fillData($model);
 }
 
 function createItem(int $countItems = 1, int $countComments = 3)

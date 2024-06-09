@@ -27,7 +27,7 @@ beforeEach(function (): void {
 
     $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
         ->fields($this->pivotFields)
-        ->fill($this->item);
+        ->fillData($this->item);
 });
 
 describe('basic methods', function () {
@@ -40,7 +40,7 @@ describe('basic methods', function () {
     it('formatted value', function () {
         $field = BelongsToMany::make('Categories', formatted: static fn () => 'changed', resource: new TestCategoryResource())
             ->fields($this->pivotFields)
-            ->fill($this->item);
+            ->fillData($this->item);
 
         expect($field)
             ->toFormattedValue()

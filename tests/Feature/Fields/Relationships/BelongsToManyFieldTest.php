@@ -29,7 +29,7 @@ beforeEach(function () {
 
     $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
         ->fields($this->pivotFields)
-        ->fill($this->item)
+        ->fillData($this->item)
     ;
 
     expect($this->item->data)

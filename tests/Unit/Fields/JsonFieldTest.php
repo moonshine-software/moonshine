@@ -39,13 +39,13 @@ beforeEach(function (): void {
         ];
     };
 
-    $this->field->fillValue($this->item->json);
+    $this->field->fill($this->item->json);
 
-    $this->fieldKeyValue->fillValue(
+    $this->fieldKeyValue->fill(
         $this->item->key_value
     );
 
-    $this->fieldOnlyValue->fillValue(
+    $this->fieldOnlyValue->fill(
         $this->item->only_value
     );
 });
@@ -60,7 +60,7 @@ describe('basic methods', function () {
     it('formatted value', function () {
         $field = Json::make('Json', formatted: static fn () => ['changed'])
             ->fields(exampleFields()->toArray())
-            ->fillValue([]);
+            ->fill([]);
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);
@@ -77,7 +77,7 @@ describe('basic methods', function () {
         $field = Json::make('Json')
             ->fields(exampleFields()->toArray())
             ->default(['default'])
-            ->fillValue(['value']);
+            ->fill(['value']);
 
         expect($field->toValue())
             ->toBe(['value']);

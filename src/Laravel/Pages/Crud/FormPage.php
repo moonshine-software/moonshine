@@ -147,9 +147,9 @@ class FormPage extends Page
                 $components[] = Fragment::make([
                     Heading::make($field->getLabel()),
 
-                    $field->resolveFill(
-                        $item?->attributesToArray() ?? [],
-                        $field->getResource()->getModelCast()->cast($item)
+                    $field->fillCast(
+                        $item,
+                        $field->getResource()?->getModelCast()
                     ),
                 ])->name($field->getRelationName());
             }

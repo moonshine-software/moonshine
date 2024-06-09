@@ -52,7 +52,7 @@ it('with time', function (): void {
 it('preview', function (): void {
     $item = MoonshineUser::factory()->create();
 
-    $this->field->fill($item);
+    $this->field->fillData($item);
 
     expect($this->field->preview())
         ->toBe($item->created_at->format('Y-m-d H:i:s'))
@@ -66,7 +66,7 @@ it('preview', function (): void {
 it('value', function (): void {
     $item = MoonshineUser::factory()->create();
 
-    $this->field->fill($item);
+    $this->field->fillData($item);
 
     $itemDateNull = MoonshineUser::factory()->create([
         'created_at' => null,
@@ -76,7 +76,7 @@ it('value', function (): void {
         ->toBe($item->created_at->format('Y-m-d'))
         ->and($this->field->nullable())
         ->reset()
-        ->fill($itemDateNull)
+        ->fillData($itemDateNull)
         ->value()
         ->toBeEmpty()
         ->and($this->field->reset())
@@ -84,7 +84,7 @@ it('value', function (): void {
         ->value()
         ->toBe('2000-01-12')
         ->and($this->field->reset())
-        ->fill($item)
+        ->fillData($item)
         ->withTime()
         ->value()
         ->toBe($item->created_at->format('Y-m-d\TH:i'))

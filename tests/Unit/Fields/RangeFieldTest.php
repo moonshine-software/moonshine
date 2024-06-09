@@ -17,14 +17,14 @@ describe('basic methods', function () {
         $to = 20;
         $values = ['start' => $from, 'end' => $to];
 
-        expect($this->field->changeFill(static fn () => $values)->fillValue([]))
+        expect($this->field->changeFill(static fn () => $values)->fill([]))
             ->toValue()
             ->toBe($values);
 
         $from = now();
         $values = ['start' => $from];
 
-        expect($this->field->changeFill(static fn () => $values)->fillValue([]))
+        expect($this->field->changeFill(static fn () => $values)->fill([]))
             ->toValue()
             ->toBe(['start' => $from, 'end' => $this->field->getAttribute('max')]);
     });
@@ -75,7 +75,7 @@ describe('basic methods', function () {
     it('formatted value', function () {
         $field = Range::make('Range', formatted: static fn () => ['changed'])
             ->fromTo('start', 'end')
-            ->fillValue([]);
+            ->fill([]);
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);
@@ -92,7 +92,7 @@ describe('basic methods', function () {
         $field = Range::make('Range')
             ->fromTo('start', 'end')
             ->default([0, 100])
-            ->fillValue(['start' => 10, 'end' => 90])
+            ->fill(['start' => 10, 'end' => 90])
         ;
 
         expect($field->toValue())
@@ -135,7 +135,7 @@ describe('common field methods', function () {
     });
 
     it('preview', function (): void {
-        expect($this->field->fillValue(['start' => 0, 'end' => 100])->preview())
+        expect($this->field->fill(['start' => 0, 'end' => 100])->preview())
             ->toBe('0 - 100');
     });
 

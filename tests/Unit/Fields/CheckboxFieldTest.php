@@ -27,44 +27,44 @@ describe('basic methods', function () {
     it('preview', function (): void {
         $field = Checkbox::make('Active');
 
-        expect((string) $field->fillValue(1)->preview())
+        expect((string) $field->fill(1)->preview())
             ->toBe((string) Boolean::make(true)->render());
 
         $field = Checkbox::make('Active');
 
-        expect($field->fillValue(0)->preview())
+        expect($field->fill(0)->preview())
             ->toBe((string) Boolean::make(false)->render());
     });
 
     it('correct is checked value', function (): void {
         $field = Checkbox::make('Active')
-            ->fillValue(true);
+            ->fill(true);
 
         expect($field->isChecked())
             ->toBeTrue();
 
         $field = Checkbox::make('Active')
-            ->fillValue(1);
+            ->fill(1);
 
         expect($field->isChecked())
             ->toBeTrue();
 
         $field = Checkbox::make('Active')
-            ->fillValue(0);
+            ->fill(0);
 
         expect($field->isChecked())
             ->toBeFalse();
 
         $field = Checkbox::make('Active')
             ->onValue('yes')
-            ->fillValue('yes');
+            ->fill('yes');
 
         expect($field->isChecked())
             ->toBeTrue();
 
         $field = Checkbox::make('Active')
             ->onValue('yes')
-            ->fillValue('no');
+            ->fill('no');
 
         expect($field->isChecked())
             ->toBeFalse();
@@ -79,7 +79,7 @@ describe('basic methods', function () {
     it('formatted value', function () {
         $field = Checkbox::make('Range', formatted: static fn () => 'yes')
             ->onValue('yes')
-            ->fillValue(false);
+            ->fill(false);
 
         expect($field->toFormattedValue())
             ->toBe('yes');

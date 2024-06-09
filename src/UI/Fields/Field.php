@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Core\Contracts\MoonShineDataCast;
 use MoonShine\Core\TypeCasts\DefaultCastedData;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\WithLabel;
@@ -151,7 +152,7 @@ abstract class Field extends FormElement
         return $data;
     }
 
-    public function resolveFill(array $raw = [], ?CastedData $casted = null, int $index = 0): static
+    protected function resolveFill(array $raw = [], ?CastedData $casted = null, int $index = 0): static
     {
         $this->setData($casted);
         $this->setRowIndex($index);
@@ -175,7 +176,7 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    public function fill(mixed $value): static
+    public function fillData(mixed $value, int $index = 0): static
     {
         $casted = $value instanceof CastedData
             ? $value
@@ -184,21 +185,22 @@ abstract class Field extends FormElement
         return $this->resolveFill(
             $casted->toArray(),
             $casted,
+            $index
         );
     }
 
-    public function fillValue(mixed $value = null, ?CastedData $casted = null): static
+    public function fillCast(mixed $value, ?MoonShineDataCast $cast = null, int $index = 0): static
+    {
+        $casted = $cast ? $cast->cast($value) : new DefaultCastedData($value);
+
+        return $this->fillData($casted, $index);
+    }
+
+    public function fill(mixed $value = null, ?CastedData $casted = null, int $index = 0): static
     {
         return $this->resolveFill([
             $this->getColumn() => $value,
-        ], $casted);
-    }
-
-    public function setValue(mixed $value = null): static
-    {
-        $this->value = $value;
-
-        return $this;
+        ], $casted, $index);
     }
 
     public function rawMode(Closure|bool|null $condition = null): static
@@ -221,6 +223,13 @@ abstract class Field extends FormElement
     protected function setRawValue(mixed $value = null): static
     {
         $this->rawValue = $value;
+
+        return $this;
+    }
+
+    public function setValue(mixed $value = null): static
+    {
+        $this->value = $value;
 
         return $this;
     }

@@ -389,7 +389,7 @@ class Json extends Field implements
                     $this->requestKeyPrefix()
                 );
 
-                $field->when($fill, fn (Field $f): Field => $f->resolveFill($values->toArray(), $values));
+                $field->when($fill, fn (Field $f): Field => $f->fillData($values));
 
                 $apply = $callback($field, $values, $data);
 
@@ -458,10 +458,7 @@ class Json extends Field implements
                     ->onlyFields()
                     ->each(
                         fn (Field $field): mixed => $field
-                            ->when(
-                                is_array($value),
-                                fn (Field $f): Field => $f->resolveFill($value)
-                            )
+                            ->fillData($value)
                             ->afterDestroy($value)
                     );
             }

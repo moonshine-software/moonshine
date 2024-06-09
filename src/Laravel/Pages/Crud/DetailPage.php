@@ -114,9 +114,9 @@ class DetailPage extends Page
 
             /** @var ModelRelationField $field */
             foreach ($outsideFields as $field) {
-                $field->resolveFill(
-                    $item?->attributesToArray() ?? [],
-                    $field->getResource()->getModelCast()->cast($item)
+                $field->fillCast(
+                    $item,
+                    $field->getResource()?->getModelCast()
                 );
 
                 $components[] = LineBreak::make();

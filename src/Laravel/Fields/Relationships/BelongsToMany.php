@@ -495,7 +495,7 @@ class BelongsToMany extends ModelRelationField implements
                     ->onlyFields()
                     ->each(
                         fn (Field $field): mixed => $field
-                            ->resolveFill($value->toArray(), $value)
+                            ->fillData($value)
                             ->afterDestroy($value)
                     );
             }

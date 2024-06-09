@@ -29,11 +29,11 @@ beforeEach(function (): void {
         protected $casts = ['files' => 'collection'];
     };
 
-    $this->field->fill(
+    $this->field->fillData(
         ['file' => 'files/file.pdf'],
     );
 
-    $this->fieldMultiple->fill(
+    $this->fieldMultiple->fillData(
         ['files' => ["files/file1.pdf", "files/file2.pdf"]],
     );
 });

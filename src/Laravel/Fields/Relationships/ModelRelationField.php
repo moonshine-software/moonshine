@@ -13,6 +13,7 @@ use MoonShine\Core\Contracts\HasResourceContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
@@ -128,7 +129,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     /**
      * @throws Throwable
      */
-    public function resolveFill(array $raw = [], ?CastedData $casted = null, int $index = 0): static
+    protected function resolveFill(array $raw = [], ?CastedData $casted = null, int $index = 0): static
     {
         if ($casted?->getOriginal() instanceof Model) {
             $this->setRelatedModel($casted?->getOriginal());

@@ -115,7 +115,7 @@ it('async search', function () {
 
     $field = StackFields::make()->fields([
         BelongsToMany::make('Categories', resource: $resource)
-            ->fill($item),
+            ->fillData($item),
     ]);
 
     addFieldsToTestResource($field);

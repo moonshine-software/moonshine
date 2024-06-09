@@ -115,7 +115,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     ): static {
         return ($preparedFields ?? $this->onlyFields())->map(
             fn (Field $field): Field => (clone $field)
-                ->resolveFill($raw, $casted, $index)
+                ->fillData(!is_null($casted) ? $casted : $raw, $index)
         );
     }
 
@@ -133,7 +133,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
             }
 
             if ($component instanceof Field) {
-                $component->resolveFill($raw, $casted, $index);
+                $component->fillData(!is_null($casted) ? $casted : $raw, $index);
             }
 
             return clone $component;
@@ -147,7 +147,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     {
         $this->onlyFields()->map(
             fn (Field $field): Field => $field
-                ->resolveFill($raw, $casted, $index)
+                ->fillData(!is_null($casted) ? $casted : $raw, $index)
         );
     }
 

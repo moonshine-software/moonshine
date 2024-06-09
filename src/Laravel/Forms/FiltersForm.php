@@ -39,10 +39,7 @@ final class FiltersForm implements FormContract
         $values = $resource->getFilterParams();
         $filters = $resource->getFilters();
 
-
         $action = $resource->isAsync() ? '#' : $this->formAction();
-
-        $filters->fill($values);
 
         foreach ($filters->onlyFields() as $filter) {
             if($filter instanceof RangeField) {
@@ -50,11 +47,9 @@ final class FiltersForm implements FormContract
             }
         }
 
-        $data = $resource->getModel()->newInstance($values);
-
         return FormBuilder::make($action, FormMethod::GET)
             ->name('filters')
-            ->fillCast($data, $resource->getModelCast())
+            ->fillCast($values, $resource->getModelCast())
             ->fields(
                 $filters
                     ->when(

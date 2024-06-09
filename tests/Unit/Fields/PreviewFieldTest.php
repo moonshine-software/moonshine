@@ -38,7 +38,7 @@ it('default item value', function (): void {
 it('reformat item value', function (): void {
     $this->field = Preview::make('NoInput', 'no_input', fn (): string => 'Testing');
 
-    $this->field->fill($this->item);
+    $this->field->fillData($this->item);
 
     expect($this->field->preview())
         ->toBe('Testing');
@@ -60,7 +60,7 @@ it('set value', function (): void {
 it('set value and fill', function (): void {
     $field = Preview::make('NoInput', 'no_input')
         ->setValue('set value')
-        ->fillValue('new value');
+        ->fill('new value');
 
     expect((string) $field->preview())
         ->toContain('new value');
@@ -93,7 +93,7 @@ it('set value and fill by form', function (): void {
 it('boolean value', function (): void {
     $this->item->no_input = true;
 
-    $this->field->reset()->fill($this->item);
+    $this->field->reset()->fillData($this->item);
 
     expect($this->field->boolean()->preview())
         ->toBe(

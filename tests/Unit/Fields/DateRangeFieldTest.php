@@ -19,14 +19,14 @@ describe('basic methods', function () {
         $to = now()->addDay();
         $values = ['start' => $from, 'end' => $to];
 
-        expect($this->field->changeFill(static fn () => $values)->fillValue([]))
+        expect($this->field->changeFill(static fn () => $values)->fill([]))
             ->toValue()
             ->toBe($values);
 
         $from = now();
         $values = ['start' => $from];
 
-        expect($this->field->changeFill(static fn () => $values)->fillValue([]))
+        expect($this->field->changeFill(static fn () => $values)->fill([]))
             ->toValue()
             ->toBe(['start' => $from, 'end' => '']);
     });
@@ -77,7 +77,7 @@ describe('basic methods', function () {
     it('formatted value', function () {
         $field = DateRange::make('Range', formatted: static fn () => ['changed'])
             ->fromTo('start', 'end')
-            ->fillValue([]);
+            ->fill([]);
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);
@@ -100,7 +100,7 @@ describe('basic methods', function () {
         $field = DateRange::make('Range')
             ->fromTo('start', 'end')
             ->default([$from, $to])
-            ->fillValue(['start' => $fromFilled, 'end' => $toFilled])
+            ->fill(['start' => $fromFilled, 'end' => $toFilled])
         ;
 
         expect($field->toValue())
@@ -153,7 +153,7 @@ describe('common field methods', function () {
         $from = now();
         $to = now()->addMonth();
 
-        expect($this->field->fillValue(['start' => $from, 'end' => $to])->preview())
+        expect($this->field->fill(['start' => $from, 'end' => $to])->preview())
             ->toBe($from . ' - ' . $to);
     });
 
@@ -174,7 +174,7 @@ describe('unique field methods', function () {
         $to = now()->addMonth();
 
         $field = $this->field
-            ->fillValue(['start' => $from, 'end' => $to])
+            ->fill(['start' => $from, 'end' => $to])
             ->format('d.m');
 
         expect($field->preview())
@@ -191,7 +191,7 @@ describe('unique field methods', function () {
         $to = '2020-02-01';
 
         $field = $this->field
-            ->fillValue(['start' => $from, 'end' => $to])
+            ->fill(['start' => $from, 'end' => $to])
             ->format('d.m');
 
         expect($field->preview())
@@ -208,7 +208,7 @@ describe('unique field methods', function () {
         $to = '2020-02-01';
 
         $field = $this->field
-            ->fillValue(['start' => $from, 'end' => $to])
+            ->fill(['start' => $from, 'end' => $to])
             ->withTime();
 
         expect($field->attributes()->get('type'))

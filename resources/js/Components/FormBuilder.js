@@ -80,8 +80,6 @@ export default (name = '', initData = {}, reactive = {}) => ({
     })
 
     if (t.whenFields !== undefined) {
-      const t = this
-
       this.$nextTick(async function () {
         let formId = t.$id('form')
         if (formId === undefined) {

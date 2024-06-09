@@ -522,7 +522,7 @@ class HasMany extends ModelRelationField implements HasFields
         $this->getResource()
             ->getFormFields()
             ->onlyFields()
-            ->each(static fn (Field $field): mixed => $field->fill($data)->afterDestroy($data));
+            ->each(static fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
 
         return $data;
     }

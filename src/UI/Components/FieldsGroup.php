@@ -22,17 +22,23 @@ final class FieldsGroup extends AbstractWithComponents
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function fill(array $raw = [], mixed $casted = null, int $index = 0): self
     {
         return $this->mapFields(
-            fn (Field $field): Field => $field->resolveFill($raw, $casted ?? $raw, $index)
+            static fn (Field $field): Field => $field->fillData(!is_null($casted) ? $casted : $raw, $index)
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function withoutWrappers(): self
     {
         return $this->mapFields(
-            fn (Field $field): Field => $field->withoutWrapper()
+            static fn (Field $field): Field => $field->withoutWrapper()
         );
     }
 

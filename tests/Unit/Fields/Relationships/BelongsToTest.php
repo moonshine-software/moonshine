@@ -66,7 +66,7 @@ describe('basic methods', function () {
 
     it('formatted value', function () {
         $field = BelongsTo::make('User', formatted: static fn () => ['changed'], resource: new MoonShineUserResource())
-            ->fill($this->item);
+            ->fillData($this->item);
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);

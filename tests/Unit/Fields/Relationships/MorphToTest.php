@@ -25,7 +25,7 @@ beforeEach(function (): void {
     ]);
 
     $this->field = MorphTo::make('Imageable', resource: new TestImageResource())
-        ->fill($this->item)
+        ->fillData($this->item)
         ->types([
             Item::class => 'name',
             Category::class => 'name',
@@ -87,7 +87,7 @@ describe('basic methods', function () {
 
     it('formatted value', function () {
         $field = MorphTo::make('Imageable', formatted: static fn () => ['changed'], resource: new TestImageResource())
-            ->fill($this->item);
+            ->fillData($this->item);
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);

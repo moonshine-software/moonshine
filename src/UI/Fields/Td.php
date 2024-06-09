@@ -67,7 +67,7 @@ class Td extends Template
         return value($this->conditionalFields, $this->getData()?->getOriginal(), $this);
     }
 
-    public function resolveFill(
+    protected function resolveFill(
         array $raw = [],
         ?CastedData $casted = null,
         int $index = 0
@@ -113,7 +113,7 @@ class Td extends Template
 
         return FieldsGroup::make(fieldsCollection($fields))
             ->mapFields(fn (Field $field): Field => $field
-                ->resolveFill($this->getData()?->toArray() ?? [], $this->getData())
+                ->fillData($this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->forcePreview())

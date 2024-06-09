@@ -27,11 +27,11 @@ beforeEach(function (): void {
         protected $casts = ['images' => 'collection'];
     };
 
-    $this->field->fill(
+    $this->field->fillData(
         ['image' => 'images/image.png'],
     );
 
-    $this->fieldMultiple->fill(
+    $this->fieldMultiple->fillData(
         ['images' => ["images/image1.png", "images/image2.png"]],
     );
 });

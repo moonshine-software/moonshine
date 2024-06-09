@@ -233,9 +233,9 @@ class RelationRepeater extends ModelRelationField implements
                     $this->requestKeyPrefix()
                 );
 
-                $field->when($fill, fn (Field $f): Field => $f->resolveFill(
-                    $values->toArray(),
-                    $this->getResource()->getModelCast()->cast($values)
+                $field->when($fill, fn (Field $f): Field => $f->fillCast(
+                    $values,
+                    $this->getResource()->getModelCast()
                 ));
 
                 $apply = $callback($field, $values, $data);
@@ -351,14 +351,7 @@ class RelationRepeater extends ModelRelationField implements
                     ->onlyFields()
                     ->each(
                         fn (Field $field): mixed => $field
-                            ->when(
-                                $value instanceof Arrayable,
-                                fn (Field $f): Field => $f->resolveFill($value->toArray(), $value)
-                            )
-                            ->when(
-                                is_array($value),
-                                fn (Field $f): Field => $f->resolveFill($value)
-                            )
+                            ->fillData($value)
                             ->afterDestroy($value)
                     );
             }
