@@ -1,4 +1,5 @@
 import {inputFieldName, inputGeValue} from './showWhenFunctions'
+import {getAncestorsUntil} from "./supportFunctions.js";
 
 export function filterAttributeStartsWith(data, startsWith) {
   const filtered = {}
@@ -34,4 +35,30 @@ export function crudFormQuery(formElements = null) {
   return Object.entries(values)
     .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
     .join('&')
+}
+
+export function clientSideValidationInHideBlocks() {
+  const fields = document.querySelectorAll('input, select, textarea')
+
+  for (const field of fields) {
+    field.addEventListener('invalid', function(event){
+      const element = event.target
+      const form = event.target.closest('form')
+
+      for (const ancestor of getAncestorsUntil(element, form)) {
+        if (ancestor instanceof Element) {
+          switch (true) {
+            case ancestor.classList.contains('tab-panel'):
+              ancestor.dispatchEvent(new Event('set-active-tab'))
+              break;
+            case ancestor.classList.contains('accordion'):
+              ancestor.dispatchEvent(new Event('collapse-open'))
+              break;
+          }
+        }
+      }
+
+      element.focus()
+    })
+  }
 }

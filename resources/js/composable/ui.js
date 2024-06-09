@@ -13,4 +13,8 @@ export class UI {
   toggleModal(name) {
     dispatchEvent(new CustomEvent(`modal-toggled-${name}`))
   }
+
+  openCollepse(name) {
+    dispatchEvent(new CustomEvent(`collapse-open-${name}`))
+  }
 }
