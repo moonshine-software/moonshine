@@ -521,7 +521,7 @@ class Json extends Field implements
 
     protected function resolveOnApply(): ?Closure
     {
-        if (!$this->parent() instanceof self && $this->isAsRelation()) {
+        if (! $this->parent() instanceof self && $this->isAsRelation()) {
             return static fn (mixed $item): mixed => $item;
         }
 
@@ -589,7 +589,7 @@ class Json extends Field implements
                 $item
             );
 
-            if(!empty($this->subRelations[$relationName])) {
+            if(! empty($this->subRelations[$relationName])) {
                 foreach ($this->subRelations[$relationName] as $subRelation) {
                     $this->saveRelation(
                         $item[$subRelation] ?? [],
