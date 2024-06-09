@@ -8,14 +8,18 @@ import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
 
-export default (name = '', reactive = {}) => ({
+export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
+  initData: initData,
   whenFields: {},
+  reactiveUrl: '',
   reactive: reactive,
   blockWatch: false,
 
-  init(initData = {}) {
+  init() {
     const t = this
+    t.whenFields = t.initData.whenFields
+    t.reactiveUrl = t.initData.reactiveUrl
     let componentRequestData = new ComponentRequestData()
 
     this.$watch('reactive', async function (value) {
@@ -61,7 +65,7 @@ export default (name = '', reactive = {}) => ({
 
         moonShineRequest(
           t,
-          initData.reactiveUrl,
+          t.reactiveUrl,
           'post',
           {
             _component_name: t.name,
@@ -73,10 +77,7 @@ export default (name = '', reactive = {}) => ({
       }
     })
 
-    if (initData.whenFields !== undefined) {
-      this.whenFields = initData.whenFields
-      const t = this
-
+    if (t.whenFields !== undefined) {
       this.$nextTick(async function () {
         let formId = t.$id('form')
         if (formId === undefined) {
