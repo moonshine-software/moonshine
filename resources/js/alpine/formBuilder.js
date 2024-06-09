@@ -12,11 +12,14 @@ export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
   initData: initData,
   whenFields: {},
+  reactiveUrl: '',
   reactive: reactive,
   blockWatch: false,
 
   init() {
     const t = this
+    t.whenFields = t.initData.whenFields
+    t.reactiveUrl = t.initData.reactiveUrl
     let componentRequestData = new ComponentRequestData()
 
     this.$watch('reactive', async function (value) {
@@ -62,7 +65,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
         moonShineRequest(
           t,
-          t.initData.reactiveUrl,
+          t.reactiveUrl,
           'post',
           {
             _component_name: t.name,
@@ -74,8 +77,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
       }
     })
 
-    if (this.initData.whenFields !== undefined) {
-      this.whenFields = this.initData.whenFields
+    if (t.whenFields !== undefined) {
       const t = this
 
       this.$nextTick(async function () {
