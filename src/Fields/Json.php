@@ -66,6 +66,8 @@ class Json extends Field implements
 
     protected bool $asRelationDeleteWhenEmpty = false;
 
+    protected array $subRelations = [];
+
     /**
      * @throws Throwable
      */
@@ -479,6 +481,8 @@ class Json extends Field implements
 
                 $field->when($fill, fn (Field $f): Field => $f->resolveFill($values->toArray(), $values));
 
+                $field->setParent($this);
+
                 $apply = $callback($field, $values, $data);
 
                 data_set(
@@ -486,6 +490,10 @@ class Json extends Field implements
                     $field->column(),
                     data_get($apply, $field->column())
                 );
+
+                if ($field instanceof self && $field->isAsRelation()) {
+                    $this->subRelations[$this->column()][$field->column()] = $field->column();
+                }
             }
         }
 
@@ -499,20 +507,6 @@ class Json extends Field implements
         ) : $response($values, $data);
     }
 
-    protected function resolveOnApply(): ?Closure
-    {
-        return fn ($item): mixed => $this->resolveAppliesCallback(
-            data: $item,
-            callback: fn (Field $field, mixed $values): mixed => $field->apply(
-                static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
-                $values
-            ),
-            response: $this->isAsRelation()
-                ? static fn (array $values, mixed $data): mixed => $data
-                : null
-        );
-    }
-
     /**
      * @throws Throwable
      */
@@ -521,9 +515,22 @@ class Json extends Field implements
         return $this->resolveAppliesCallback(
             data: $data,
             callback: fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
-            response: $this->isAsRelation()
-                ? static fn (array $values, mixed $data): mixed => $data
-                : null
+            response: static fn (array $values, mixed $data): mixed => $data
+        );
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        if (!$this->parent() instanceof self && $this->isAsRelation()) {
+            return static fn (mixed $item) => $item;
+        }
+
+        return fn ($item): mixed => $this->resolveAppliesCallback(
+            data: $item,
+            callback: fn (Field $field, mixed $values): mixed => $field->apply(
+                static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                $values
+            ),
         );
     }
 
@@ -547,11 +554,11 @@ class Json extends Field implements
         );
     }
 
-    private function saveRelation(array $items, mixed $model)
+    private function saveRelation(array $items, mixed $model, string $relationName = null)
     {
         $items = collect($items);
 
-        $relationName = $this->column();
+        $relationName = $relationName ?? $this->column();
 
         $related = $model->{$relationName}()->getRelated();
 
@@ -576,10 +583,22 @@ class Json extends Field implements
             fn (Builder $q) => $q->delete()
         );
 
-        $items->each(fn ($item) => $model->{$relationName}()->updateOrCreate(
-            [$relatedQualifiedKeyName => $item[$relatedKeyName] ?? null],
-            $item
-        ));
+        foreach ($items as $item) {
+            $parent = $model->{$relationName}()->updateOrCreate(
+                [$relatedQualifiedKeyName => $item[$relatedKeyName] ?? null],
+                $item
+            );
+
+            if(!empty($this->subRelations[$relationName])) {
+                foreach ($this->subRelations[$relationName] as $subRelation) {
+                    $this->saveRelation(
+                        $item[$subRelation] ?? [],
+                        $parent,
+                        $subRelation
+                    );
+                }
+            }
+        }
 
         return $model;
     }
