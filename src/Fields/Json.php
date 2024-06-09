@@ -522,7 +522,7 @@ class Json extends Field implements
     protected function resolveOnApply(): ?Closure
     {
         if (!$this->parent() instanceof self && $this->isAsRelation()) {
-            return static fn (mixed $item) => $item;
+            return static fn (mixed $item): mixed => $item;
         }
 
         return fn ($item): mixed => $this->resolveAppliesCallback(
@@ -558,7 +558,7 @@ class Json extends Field implements
     {
         $items = collect($items);
 
-        $relationName = $relationName ?? $this->column();
+        $relationName ??= $this->column();
 
         $related = $model->{$relationName}()->getRelated();
 
