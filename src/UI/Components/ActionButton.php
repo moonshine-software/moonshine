@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\AlpineJs;
@@ -19,7 +19,7 @@ use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $label, Closure|string $url = '', mixed $item = null)
+ * @method static static make(Closure|string $label, Closure|string $url = '', ?CastedData $data = null)
  */
 class ActionButton extends MoonShineComponent implements ActionButtonContract
 {
@@ -46,7 +46,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     public function __construct(
         Closure|string $label,
         protected Closure|string $url = '#',
-        protected mixed $item = null
+        protected ?CastedData $data = null
     ) {
         parent::__construct();
 
@@ -75,7 +75,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this;
     }
 
-    //TODO 3.0 Make $forComponent argument required
+    // TODO(3.0) Make $forComponent argument required
     public function bulk(?string $forComponent = null): self
     {
         $this->isBulk = true;
@@ -115,20 +115,20 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this;
     }
 
-    public function getItem(): mixed
+    public function getData(): ?CastedData
     {
-        return $this->item;
+        return $this->data;
     }
 
-    public function setItem(mixed $item): self
+    public function setData(?CastedData $data = null): self
     {
         if(! is_null($this->onBeforeSetCallback)) {
-            $item = value($this->onBeforeSetCallback, $item, $this);
+            $data = value($this->onBeforeSetCallback, $data, $this);
         }
 
-        $this->item = $item;
+        $this->data = $data;
 
-        value($this->onAfterSetCallback, $item, $this);
+        value($this->onAfterSetCallback, $data, $this);
 
         return $this;
     }
@@ -142,7 +142,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         }
 
         $this->customAttributes([
-            $event => $onClick($this->getItem()),
+            $event => $onClick($this->getData()?->getOriginal()),
         ]);
 
         return $this;
@@ -171,12 +171,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     ): self {
         $this->asyncMethod = $method;
 
-        $this->url = static fn (mixed $item): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
+        $this->url = static fn (?CastedData $data): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([
-                'resourceItem' => $item instanceof Model ? $item->getKey() : null,
-                ...value($params, $item),
+                'resourceItem' => $data?->getKey(),
+                ...value($params, $data?->getOriginal()),
             ], static fn ($value) => filled($value)),
             page: $page,
             resource: $resource,
@@ -290,7 +290,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     public function getUrl(mixed $data = null): string
     {
-        return value($this->url, $data ?? $this->getItem());
+        return value($this->url, $data ?? $this->getData()?->getOriginal());
     }
 
     public function primary(Closure|bool|null $condition = null): self
@@ -341,7 +341,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     protected function isSeeParams(): array
     {
         return [
-            $this->getItem(),
+            $this->getData()?->getOriginal(),
             $this,
         ];
     }

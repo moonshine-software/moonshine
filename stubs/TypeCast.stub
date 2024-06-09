@@ -5,42 +5,18 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\Core\Contracts\MoonShineDataCast;
-use MoonShine\Support\Traits\Makeable;
+use MoonShine\Core\Contracts\CastedData;
 
 /**
  * @template T
- * @method static static make(string $class)
  */
 final class DummyCast implements MoonShineDataCast
 {
-    use Makeable;
-
     /**
-     * @param  class-string<T>  $class
+     * @return CastedData<T>
      */
-    public function __construct(
-        protected string $class
-    ) {
-    }
-
-    public function getClass(): string
+    public function cast(mixed $data): CastedData
     {
-        return $this->class;
-    }
-
-    /**
-     * @return T
-     */
-    public function hydrate(array $data): mixed
-    {
-        return $data;
-    }
-
-    /**
-     * @param  T  $data
-     */
-    public function dehydrate(mixed $data): array
-    {
-        return [];
+        //
     }
 }

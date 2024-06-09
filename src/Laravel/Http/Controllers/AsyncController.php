@@ -7,9 +7,9 @@ use Illuminate\Contracts\View\View;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
+use MoonShine\UI\Collections\TableCells;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Components\Table\TableRowRenderer;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Select;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -41,22 +41,6 @@ class AsyncController extends MoonShineController
         }
 
         return $component->render();
-    }
-
-    /**
-     * @throws Throwable
-     */
-    protected function responseWithTable(TableBuilder $table): View|Closure|string
-    {
-        if (! request()->filled('_key')) {
-            return $table->render();
-        }
-
-        return TableRowRenderer::make(
-            $table,
-            request()->get('_key'),
-            request()->integer('_index'),
-        )->render();
     }
 
     /**

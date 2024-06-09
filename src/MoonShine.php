@@ -33,6 +33,13 @@ class MoonShine
 
     private array $pages = [];
 
+    public static function path(string $path = ''): string
+    {
+        $path = $path ? DIRECTORY_SEPARATOR . $path : $path;
+
+        return realpath(dirname(__DIR__) . $path);
+    }
+
     public static function setEnv(Env $env): void
     {
         self::$env = $env;
@@ -109,13 +116,13 @@ class MoonShine
 
     public function flushState(): void
     {
-        $this->getResources()->transform(function (ResourceContract $resource): ResourceContract {
+        $this->getResources()->transform(static function (ResourceContract $resource): ResourceContract {
             $resource->flushState();
 
             return $resource;
         });
 
-        $this->getPages()->transform(function (PageContract $page): PageContract {
+        $this->getPages()->transform(static function (PageContract $page): PageContract {
             $page->flushState();
 
             return $page;
@@ -126,13 +133,6 @@ class MoonShine
         MemoizeRepository::getInstance()->flush();
 
         value(self::$flushStates, $this);
-    }
-
-    public static function path(string $path = ''): string
-    {
-        return realpath(
-            dirname(__DIR__) . ($path ? DIRECTORY_SEPARATOR . $path : $path)
-        );
     }
 
     /**

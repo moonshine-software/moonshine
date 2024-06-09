@@ -26,6 +26,13 @@ trait WithSorts
         return $this;
     }
 
+    public function disableSortable(): static
+    {
+        $this->sortable = false;
+
+        return $this;
+    }
+
     public function sortableCallback(): Closure|string|null
     {
         return $this->sortableCallback;

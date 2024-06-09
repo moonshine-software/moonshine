@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Cache\Repository;
 use Illuminate\Http\RedirectResponse;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Pages\Page;
@@ -28,7 +29,7 @@ if (! function_exists('toPage')) {
      * @throws Throwable
      */
     function toPage(
-        string|Page|null $page = null,
+        string|PageContract|null $page = null,
         string|ResourceContract|null $resource = null,
         array $params = [],
         bool $redirect = false,

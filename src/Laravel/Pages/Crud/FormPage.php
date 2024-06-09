@@ -7,8 +7,10 @@ use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
@@ -73,7 +75,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     public function components(): array
@@ -89,7 +91,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     protected function topLayer(): array
     {
@@ -97,7 +99,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -121,7 +123,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      * @throws Throwable
      */
     protected function bottomLayer(): array
@@ -138,15 +140,16 @@ class FormPage extends Page
         if ($outsideFields->isNotEmpty()) {
             $components[] = Divider::make();
 
+            /** @var ModelRelationField $field */
             foreach ($outsideFields as $field) {
                 $components[] = LineBreak::make();
 
                 $components[] = Fragment::make([
                     Heading::make($field->getLabel()),
 
-                    $field->resolveFill(
-                        $item?->attributesToArray() ?? [],
-                        $item
+                    $field->fillCast(
+                        $item,
+                        $field->getResource()?->getModelCast()
                     ),
                 ])->name($field->getRelationName());
             }
@@ -155,7 +158,7 @@ class FormPage extends Page
         return array_merge($components, $this->getResource()->getFormPageComponents());
     }
 
-    /*
+    /**
      * @return list<MoonShineComponent>
      */
     protected function getPageButtons(): array
@@ -168,16 +171,14 @@ class FormPage extends Page
 
         return [
             ActionGroup::make($this->getResource()->getFormItemButtons())
-                ->setItem($this->getResource()->getItem())
+                ->fill($this->getResource()->getCastedItem())
                 ->customAttributes(['class' => 'mb-4']),
         ];
     }
 
     /**
-     * @return MoonShineComponent
-     *@throws MoonShineComponentException
-     * @throws PageException
      * @throws Throwable
+     * @return list<MoonShineComponent>
      */
     protected function getFormComponents(
         string $action,

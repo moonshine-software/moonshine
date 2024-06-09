@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Forms;
 use Illuminate\Support\Arr;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
@@ -39,8 +40,6 @@ final class FiltersForm implements FormContract
         $filters = $resource->getFilters();
 
         $action = $resource->isAsync() ? '#' : $this->formAction();
-
-        $filters->fill($values);
 
         foreach ($filters->onlyFields() as $filter) {
             if($filter instanceof RangeField) {

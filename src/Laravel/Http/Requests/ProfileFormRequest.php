@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Requests;
 
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Unique;
 use MoonShine\Laravel\MoonShineAuth;
 
 class ProfileFormRequest extends MoonShineFormRequest
@@ -18,24 +17,19 @@ class ProfileFormRequest extends MoonShineFormRequest
         return MoonShineAuth::guard()->check();
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array{name: string[], username: Unique[]|string[], avatar: string[], password: string}
-     */
     public function rules(): array
     {
         return [
-            'name' => ['required'],
-            'username' => [
+            moonshineConfig()->getUserField('name') => ['required'],
+            moonshineConfig()->getUserField('username') => [
                 'required',
                 Rule::unique(
                     MoonShineAuth::model()?->getTable(),
-                    moonshineConfig()->getUserField('username', 'email')
+                    moonshineConfig()->getUserField('username')
                 )->ignore(MoonShineAuth::guard()->id()),
             ],
-            'avatar' => ['image'],
-            'password' => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
+            moonshineConfig()->getUserField('avatar') => ['image'],
+            moonshineConfig()->getUserField('password') => 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat',
         ];
     }
 }

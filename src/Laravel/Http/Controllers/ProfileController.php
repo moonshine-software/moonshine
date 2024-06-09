@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Http\Requests\ProfileFormRequest;
 use MoonShine\Laravel\Pages\ProfilePage;
 use MoonShine\Support\Enums\ToastType;
-use MoonShine\UI\Fields\Image;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -20,71 +19,24 @@ class ProfileController extends MoonShineController
     public function store(ProfileFormRequest $request): Response
     {
         $page = moonshineConfig()->getPage('profile', ProfilePage::class);
-        $fields = $page->getFields();
+        $form = $page->getForm();
 
-        /** @var Image $image */
-        $image = $fields
-            ->onlyFields()
-            ->findByClass(Image::class);
-
-        $data = $request->validated();
-
-        $resultData = [
-            moonshineConfig()->getUserField('username', 'email') => e($data['username']),
-            moonshineConfig()->getUserField('name') => e($data['name']),
-        ];
-
-        if (isset($data['password']) && filled($data['password'])) {
-            $resultData[moonshineConfig()->getUserField('password')] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
-        }
-
-        if (! is_null($image)) {
-            $this->applyImage($image, $resultData);
-        }
-
-        $resultData = array_filter(
-            $resultData,
-            static fn ($key): bool => $key !== 0 && $key !== '',
-            ARRAY_FILTER_USE_KEY
+        $success = $form->apply(
+            static fn (Model $item) => $item->save(),
         );
 
-        $request->user()->update($resultData);
+        $message = $success ? __('moonshine::ui.saved') : __('moonshine::ui.saved_error');
+        $type = $success ? ToastType::SUCCESS : ToastType::ERROR;
 
         if ($request->ajax()) {
-            return $this->json(message: __('moonshine::ui.saved'));
+            return $this->json(message: $message, messageType: $type);
         }
 
         $this->toast(
             __('moonshine::ui.saved'),
-            ToastType::SUCCESS
+            $type
         );
 
         return back();
-    }
-
-    private function applyImage(Image $image, array &$result): void
-    {
-        $avatarColumn = moonshineConfig()->getUserField('avatar');
-
-        $avatar = request()->file('avatar');
-        $oldAvatar = request()->get('hidden_avatar', '');
-        $currentAvatar = data_get(request()->user(), $avatarColumn, '');
-
-        if (! is_null($avatar)) {
-            $user = $image->apply(fn ($data) => $data, auth()->user());
-
-            $result[$avatarColumn] = $user->{$avatarColumn};
-            $image->deleteFile($oldAvatar);
-
-            return;
-        }
-
-        $result[$avatarColumn] = $oldAvatar;
-
-        if ($oldAvatar !== $currentAvatar) {
-            $image->deleteFile($currentAvatar);
-        }
     }
 }

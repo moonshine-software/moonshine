@@ -1,23 +1,22 @@
 @props([
-    'rows',
-    'fields',
-    'bulkButtons',
+    'name' => 'default',
+    'rows' => [],
+    'headRows' => [],
+    'footRows' => [],
+    'headAttributes',
+    'bodyAttributes',
+    'footAttributes',
     'asyncUrl',
     'async' => false,
-    'preview' => false,
     'simple' => false,
     'simplePaginate' => false,
-    'editable' => false,
     'notfound' => false,
-    'vertical' => false,
     'creatable' => false,
     'reindex' => false,
     'sortable' => false,
     'searchable' => false,
     'searchValue' => '',
-    'name' => 'default'
 ])
-
 <div x-data="tableBuilder(
     {{ (int) $creatable }},
     {{ (int) $sortable }},
@@ -25,10 +24,10 @@
     {{ (int) $async }},
     '{{ $asyncUrl }}'
 )"
-    data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
-    @defineEvent('table_row_added', $name, 'add(true)')
-    @defineEvent('table_reindex', $name, 'resolveReindex')
-    @defineEventWhen($async, 'table_updated', $name, 'asyncRequest')
+     data-pushstate="{{ $attributes->get('data-pushstate', false)}}"
+    @defineEvent('table-row-added', $name, 'add(true)')
+    @defineEvent('table-reindex', $name, 'resolveReindex')
+    @defineEventWhen($async, 'table-updated', $name, 'asyncRequest')
     {{ $attributes->only(['data-events'])}}
 >
     @if($async && $searchable)
@@ -47,49 +46,39 @@
     @endif
 
     <x-moonshine::loader x-show="loading" />
-        <div x-show="!loading">
+    <div x-show="!loading">
         <x-moonshine::table
-                :simple="$simple"
-                :notfound="$notfound"
-                :attributes="$attributes"
-                :creatable="$creatable"
-                data-name="{{ $name }}"
+            :simple="$simple"
+            :notfound="$notfound"
+            :attributes="$attributes"
+            :headAttributes="$headAttributes"
+            :bodyAttributes="$bodyAttributes"
+            :footAttributes="$footAttributes"
+            :creatable="$creatable"
+            data-name="{{ $name }}"
         >
-            @if(!$vertical)
+            @if($headRows->isNotEmpty())
                 <x-slot:thead>
-                    <x-moonshine::table.head
-                        :rows="$rows"
-                        :fields="$fields"
-                        :actions="$bulkButtons"
-                        :asyncUrl="$asyncUrl"
-                        :preview="$preview"
-                    />
+                    @foreach($headRows as $row)
+                        {!! $row->render() !!}
+                    @endforeach
                 </x-slot:thead>
             @endif
 
             @if($rows->isNotEmpty())
                 <x-slot:tbody>
-                    <x-moonshine::table.body
-                        :rows="$rows"
-                        :vertical="$vertical"
-                        :preview="$preview"
-                        :editable="$editable"
-                        :simple="$simple"
-                        :hasActions="$bulkButtons->isNotEmpty()"
-                        :has-click-action="$attributes->get('data-click-action') !== null"
-                    />
+                    @foreach($rows as $row)
+                        {!! $row->render() !!}
+                    @endforeach
                 </x-slot:tbody>
             @endif
 
-            @if(!$preview)
-            <x-slot:tfoot
-                ::class="actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
-            >
-                <x-moonshine::table.foot
-                    :rows="$rows"
-                    :actions="$bulkButtons"
-                />
-            </x-slot:tfoot>
+            @if($footRows->isNotEmpty())
+                <x-slot:tfoot>
+                    @foreach($footRows as $row)
+                        {!! $row->render() !!}
+                    @endforeach
+                </x-slot:tfoot>
             @endif
         </x-moonshine::table>
 
@@ -99,7 +88,7 @@
             {!! $createButton !!}
         @endif
 
-        @if(!$preview && $hasPaginator)
+        @if($hasPaginator)
             {{ $paginator->links(
                 $simplePaginate
                     ? 'moonshine::pagination.simple'

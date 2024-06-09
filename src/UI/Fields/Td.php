@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
@@ -31,6 +32,7 @@ class Td extends Template
         parent::__construct($label);
 
         $this->conditionalFields($fields);
+        $this->forcePreview();
     }
 
     public function withLabels(): static
@@ -62,22 +64,22 @@ class Td extends Template
 
     public function getConditionalFields(): array
     {
-        return value($this->conditionalFields, $this->getData(), $this);
+        return value($this->conditionalFields, $this->getData()?->getOriginal(), $this);
     }
 
-    public function resolveFill(
+    protected function resolveFill(
         array $raw = [],
-        mixed $casted = null,
+        ?CastedData $casted = null,
         int $index = 0
     ): static {
         return $this
             ->setRawValue($raw)
-            ->setData($casted ?? $raw)
+            ->setData($casted)
             ->setRowIndex($index);
     }
 
     /**
-     * @param  Closure(mixed $data, MoonShineComponentAttributeBag $attributes, self $td): MoonShineComponentAttributeBag  $attributes
+     * @param  Closure(mixed $data, self $td): array  $attributes
      */
     public function tdAttributes(Closure $attributes): self
     {
@@ -91,11 +93,11 @@ class Td extends Template
         return ! is_null($this->tdAttributes);
     }
 
-    public function resolveTdAttributes(mixed $data, MoonShineComponentAttributeBag $attributes): MoonShineComponentAttributeBag
+    public function resolveTdAttributes(mixed $data): array
     {
         return $this->hasTdAttributes()
-            ? value($this->tdAttributes, $data, $attributes, $this)
-            : $attributes;
+            ? value($this->tdAttributes, $data, $this)
+            : [];
     }
 
     /**
@@ -111,10 +113,15 @@ class Td extends Template
 
         return FieldsGroup::make(fieldsCollection($fields))
             ->mapFields(fn (Field $field): Field => $field
-                ->resolveFill($this->toRawValue(), $this->getData())
+                ->fillData($this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->forcePreview())
             ->render();
+    }
+
+    public function render(): string
+    {
+        return $this->preview();
     }
 }

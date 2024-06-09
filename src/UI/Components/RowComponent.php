@@ -7,6 +7,7 @@ namespace MoonShine\UI\Components;
 use MoonShine\Core\Contracts\MoonShineDataCast;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\HasDataCast;
 use MoonShine\UI\Traits\WithFields;
@@ -46,13 +47,14 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
         return $this;
     }
 
-    public function preparedFields(): Fields
+    public function preparedFields(): FieldsCollection
     {
         $fields = $this->getFields();
+        $casted = $this->castData($this->getValues());
 
         $fields->fill(
-            $this->unCastData($this->getValues()),
-            $this->castData($this->getValues())
+            $casted->toArray(),
+            $casted
         );
 
         $fields->prepareAttributes();
@@ -63,7 +65,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
     public function getButtons(): ActionButtons
     {
         return ActionButtons::make($this->buttons)
-            ->fillItem($this->castData($this->getValues()))
+            ->fill($this->castData($this->getValues()))
             ->onlyVisible()
             ->withoutBulk();
     }

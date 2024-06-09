@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Support\Facades\Hash;
 
 class Password extends Text
 {
@@ -25,7 +24,13 @@ class Password extends Text
     {
         return function ($item) {
             if ($this->getRequestValue()) {
-                data_set($item, $this->getColumn(), Hash::make($this->getRequestValue()));
+                data_set(
+                    $item,
+                    $this->getColumn(),
+                    moonshine()->getContainer('hash')->make(
+                        $this->getRequestValue()
+                    )
+                );
             }
 
             return $item;

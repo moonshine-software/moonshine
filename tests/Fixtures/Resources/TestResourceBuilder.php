@@ -56,33 +56,26 @@ class TestResourceBuilder
             ])
             ->setTestMetrics([
                 ValueMetric::make('TestValueMetric')->value(MoonshineUser::query()->count()),
-                LineChartMetric::make('TestLineChartMetric')->line(['Line' => [ 1 => 100, 2 => 200, 3 => 300]]),
+                LineChartMetric::make('TestLineChartMetric')->line(['Line' => [1 => 100, 2 => 200, 3 => 300]]),
                 DonutChartMetric::make('TestDonutChartMetric')->values(['CutCode' => 10000, 'Apple' => 9999]),
             ])
-            ->setTestTdAttributes(function (
+            ->setTestTdAttributes(fn (
                 mixed $data,
                 int $row,
                 int $cell,
-                ComponentAttributeBag $attr
-            ): ComponentAttributeBag {
-                $attr->setAttributes([
-                    'data-test-td-attr' => 'success',
-                ]);
-
-                return $attr;
-            })->setTestTrAttributes(function (
+            ) => [
+                'data-test-td-attr' => 'success',
+            ])->setTestTrAttributes(function (
                 mixed $data,
                 int $row,
-                ComponentAttributeBag $attr
-            ): ComponentAttributeBag {
-                if($row === 1) {
-                    $attr->setAttributes([
+            ): array {
+                if ($row === 1) {
+                    return [
                         'data-test-tr-attr' => 'success',
-                    ]);
+                    ];
                 }
 
-                return $attr;
-            })
-        ;
+                return [];
+            });
     }
 }

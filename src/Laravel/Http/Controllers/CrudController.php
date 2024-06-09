@@ -86,6 +86,7 @@ final class CrudController extends MoonShineController
 
         $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
 
+
         try {
             $resource->delete($resource->getItemOrFail());
         } catch (Throwable $e) {

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits;
 
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Core\Contracts\MoonShineDataCast;
+use MoonShine\Core\TypeCasts\DefaultDataCast;
 
 trait HasDataCast
 {
@@ -27,29 +29,17 @@ trait HasDataCast
         return $this->cast;
     }
 
-    public function unCastData(mixed $data): mixed
+    public function unCastData(CastedData $data): array
     {
-        if($this->hasCast()) {
-            $class = $this->getCast()->getClass();
-
-            return $data instanceof $class
-                ? $this->getCast()->dehydrate($data)
-                : $data;
-        }
-
-        return $data;
+        return $data->toArray();
     }
 
-    public function castData(mixed $data): mixed
+    public function castData(mixed $data): CastedData
     {
-        if($this->hasCast()) {
-            $class = $this->getCast()->getClass();
-
-            return $data instanceof $class
-                ? $data
-                : $this->getCast()->hydrate($data);
+        if(!$this->hasCast()) {
+            $this->cast(new DefaultDataCast);
         }
 
-        return $data;
+        return $this->getCast()->cast($data);
     }
 }

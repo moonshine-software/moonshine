@@ -6,9 +6,10 @@ namespace MoonShine\Core\Contracts;
 
 interface MoonShineDataCast
 {
-    public function getClass(): string;
-
-    public function hydrate(array $data): mixed;
-
-    public function dehydrate(mixed $data): array;
+    /**
+     * @template-covariant T
+     * @param T $data
+     * @return CastedData<T>
+     */
+    public function cast(mixed $data): CastedData;
 }

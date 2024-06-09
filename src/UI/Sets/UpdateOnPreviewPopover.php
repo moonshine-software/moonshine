@@ -39,13 +39,13 @@ final readonly class UpdateOnPreviewPopover
                 ->action(
                     moonshineRouter()->getEndpoints()->updateColumn(
                         extra: [
-                            'resourceItem' => $this->field->getData()->getKey(),
+                            'resourceItem' => $this->field->getData()?->getKey(),
                         ]
                     )
                 )
                 ->async(events: [
                     AlpineJs::event(JsEvent::POPOVER_TOGGLED, $name),
-                    AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, $this->component . "-" . $this->field->getData()->getKey()),
+                    AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, $this->component . "-" . $this->field->getData()?->getKey()),
                 ])
                 ->fields([
                     Flex::make([

@@ -49,7 +49,7 @@ trait WithModal
 
         return $this->onBeforeRender(
             static fn (ActionButton $btn): ActionButton => $btn->toggleModal(
-                value($name, $btn->getItem(), $btn)
+                value($name, $btn->getData()?->getOriginal(), $btn)
             )
         );
     }
@@ -118,7 +118,7 @@ trait WithModal
 
     public function modal(): ?Modal
     {
-        return value($this->modal, $this->getItem(), $this);
+        return value($this->modal, $this->getData()?->getOriginal(), $this);
     }
 
     public function toggleModal(string $name = 'default'): static

@@ -15,6 +15,7 @@ use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\UI\Contracts\MoonShineRenderable;
@@ -255,7 +256,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedFields(): Fields
+    public function preparedFields(): FieldsCollection
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getIndexFields();
@@ -521,7 +522,7 @@ class HasMany extends ModelRelationField implements HasFields
         $this->getResource()
             ->getFormFields()
             ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->resolveFill($data->toArray(), $data)->afterDestroy($data));
+            ->each(static fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
 
         return $data;
     }

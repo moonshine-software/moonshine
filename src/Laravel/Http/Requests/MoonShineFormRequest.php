@@ -3,6 +3,7 @@
 namespace MoonShine\Laravel\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Pages\Page;
@@ -81,7 +82,7 @@ class MoonShineFormRequest extends FormRequest
         );
     }
 
-    public function getPage(): Page
+    public function getPage(): PageContract
     {
         return moonshineRequest()->getPage();
     }

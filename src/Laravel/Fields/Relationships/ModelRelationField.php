@@ -8,10 +8,12 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Core\Contracts\HasResourceContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
@@ -119,21 +121,21 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         );
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedData $casted = null): mixed
     {
-        return data_get($casted ?? $raw, $this->getRelationName());
+        return $casted?->getOriginal()?->{$this->getRelationName()};
     }
 
     /**
      * @throws Throwable
      */
-    public function resolveFill(array $raw = [], mixed $casted = null, int $index = 0): static
+    protected function resolveFill(array $raw = [], ?CastedData $casted = null, int $index = 0): static
     {
-        if ($casted instanceof Model) {
-            $this->setRelatedModel($casted);
+        if ($casted?->getOriginal() instanceof Model) {
+            $this->setRelatedModel($casted?->getOriginal());
         }
 
-        $this->setData($raw ?? $casted);
+        $this->setData($casted);
 
         $data = $this->prepareFill($raw, $casted);
 
@@ -210,11 +212,6 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected function setRelatedModel(?Model $model = null): void
     {
         $this->relatedModel = $model;
-    }
-
-    protected function getModelCast(): ModelCast
-    {
-        return ModelCast::make($this->getRelation()?->getRelated()::class);
     }
 
     /**

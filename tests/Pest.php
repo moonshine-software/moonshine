@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -42,7 +43,7 @@ function asAdmin(): TestCase
 
 function fillFromModel(Field $field, Model $model)
 {
-    $field->resolveFill($model->toArray(), $model);
+    $field->fillData($model);
 }
 
 function createItem(int $countItems = 1, int $countComments = 3)

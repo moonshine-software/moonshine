@@ -39,18 +39,21 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     /**
      * @throws Throwable
      */
-    public function resolveFill(
+    protected function resolveFill(
         array $raw = [],
         mixed $casted = null,
         int $index = 0
     ): static {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field): Field => $field->resolveFill($raw, $casted, $index));
+            ->each(fn (Field $field): Field => $field->fillData(!is_null($casted) ? $casted : $raw, $index));
 
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolvePreview(): View|string
     {
         return FieldsGroup::make(
@@ -92,7 +95,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->beforeApply($data));
+            ->each(static fn (Field $field): mixed => $field->beforeApply($data));
 
         return $data;
     }
@@ -104,7 +107,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->afterApply($data));
+            ->each(static fn (Field $field): mixed => $field->afterApply($data));
 
         return $data;
     }
@@ -117,15 +120,8 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         $this->getFields()
             ->onlyFields()
             ->each(
-                fn (Field $field): mixed => $field
-                ->when(
-                    $data instanceof Arrayable,
-                    fn (Field $f): Field => $f->resolveFill($data->toArray(), $data)
-                )
-                ->when(
-                    is_array($data),
-                    fn (Field $f): Field => $f->resolveFill($data)
-                )
+                static fn (Field $field): mixed => $field
+                ->fillData($data)
                 ->afterDestroy($data)
             );
 

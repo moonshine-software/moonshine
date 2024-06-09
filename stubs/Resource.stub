@@ -9,7 +9,6 @@ use MoonShine\Laravel\Pages\Page;
 
 class DummyResource extends Resource
 {
-
     /**
      * @return list<Page>
      */
@@ -18,10 +17,5 @@ class DummyResource extends Resource
         return [
             //
         ];
-    }
-
-    protected function resolveRoutes(): void
-    {
-        parent::resolveRoutes();
     }
 }

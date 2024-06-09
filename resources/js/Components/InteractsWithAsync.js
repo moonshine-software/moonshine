@@ -1,3 +1,6 @@
+import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
+import request from '../Request/Core.js'
+
 export default () => ({
   async load(url, id) {
     const {data, status} = await axios.get(url)
@@ -45,7 +48,7 @@ export default () => ({
     const componentRequestData = new ComponentRequestData()
     componentRequestData.fromDataset(this.$el?.dataset ?? {})
 
-    moonShineRequest(
+    request(
       this,
       route,
       this.$el?.dataset?.asyncMethod ?? 'put',

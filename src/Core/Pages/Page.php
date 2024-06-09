@@ -84,7 +84,7 @@ abstract class Page implements
             $this->setResource($resource);
         }
 
-        // TODO move to another layer
+        // TODO(assets) move to another layer
         $this->resolveAssets();
 
         $this->booted();

@@ -38,7 +38,7 @@ beforeEach(function () {
                 ]),
             ]),
         ])
-        ->fillCast($this->user, ModelCast::make(MoonshineUser::class));
+        ->fillCast($this->user, new ModelCast(MoonshineUser::class));
 });
 
 it('apply', function () {

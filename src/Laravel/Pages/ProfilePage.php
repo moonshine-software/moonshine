@@ -2,6 +2,7 @@
 
 namespace MoonShine\Laravel\Pages;
 
+use MoonShine\Core\Exceptions\MoonShineException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
@@ -46,19 +47,13 @@ class ProfilePage extends Page
                     Tab::make(__('moonshine::ui.resource.main_information'), [
                         ID::make()->sortable(),
 
-                        Text::make(trans('moonshine::ui.resource.name'), 'name')
-                            ->setValue(auth()->user()
-                                ->{moonshineConfig()->getUserField('name')})
+                        Text::make(trans('moonshine::ui.resource.name'), moonshineConfig()->getUserField('name'))
                             ->required(),
 
-                        Text::make(trans('moonshine::ui.login.username'), 'username')
-                            ->setValue(auth()->user()
-                                ->{moonshineConfig()->getUserField('username', 'email')})
+                        Text::make(trans('moonshine::ui.login.username'), moonshineConfig()->getUserField('username'))
                             ->required(),
 
-                        Image::make(trans('moonshine::ui.resource.avatar'), 'avatar')
-                            ->setValue(auth()->user()
-                                ->{moonshineConfig()->getUserField('avatar')} ?? null)
+                        Image::make(trans('moonshine::ui.resource.avatar'), moonshineConfig()->getUserField('avatar'))
                             ->disk(moonshineConfig()->getDisk())
                             ->options(moonshineConfig()->getDiskOptions())
                             ->dir('moonshine_users')
@@ -69,7 +64,7 @@ class ProfilePage extends Page
                     Tab::make(trans('moonshine::ui.resource.password'), [
                         Heading::make(__('moonshine::ui.resource.change_password')),
 
-                        Password::make(trans('moonshine::ui.resource.password'), 'password')
+                        Password::make(trans('moonshine::ui.resource.password'), moonshineConfig()->getUserField('password'))
                             ->customAttributes(['autocomplete' => 'new-password'])
                             ->eye(),
 
@@ -85,18 +80,28 @@ class ProfilePage extends Page
     public function components(): array
     {
         return [
-            FormBuilder::make(action([ProfileController::class, 'store']))
-                //->async()
-                ->customAttributes([
-                    'enctype' => 'multipart/form-data',
-                ])
-                ->fields($this->fields())
-                ->cast(ModelCast::make(MoonShineAuth::model()::class))
-                ->submit(__('moonshine::ui.save'), [
-                    'class' => 'btn-lg btn-primary',
-                ]),
-
+            $this->getForm(),
             SocialAuth::make(profileMode: true),
         ];
+    }
+
+    /**
+     * @throws MoonShineException
+     */
+    public function getForm(): FormBuilder
+    {
+        $user = MoonShineAuth::guard()->user() ?? MoonShineAuth::model();
+
+        if(is_null($user)) {
+            throw new MoonShineException('Model is required');
+        }
+
+        return FormBuilder::make(action([ProfileController::class, 'store']))
+            ->async()
+            ->fields($this->fields())
+            ->fillCast($user, new ModelCast(get_class($user)))
+            ->submit(__('moonshine::ui.save'), [
+                'class' => 'btn-lg btn-primary',
+            ]);
     }
 }

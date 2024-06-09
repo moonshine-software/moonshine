@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\UI\Contracts\Fields;
 
 use Closure;
-use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 
 interface HasFields
 {
-    public function fields(Fields|Closure|array $fields): static;
+    public function fields(FieldsCollection|Closure|array $fields): static;
 
     public function hasFields(): bool;
 
-    public function getFields(): Fields;
+    public function getFields(): FieldsCollection;
 
-    public function preparedFields(): Fields;
+    public function preparedFields(): FieldsCollection;
 }

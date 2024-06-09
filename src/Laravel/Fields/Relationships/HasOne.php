@@ -15,6 +15,7 @@ use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
 use MoonShine\UI\Contracts\MoonShineRenderable;
@@ -69,7 +70,7 @@ class HasOne extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedFields(): Fields
+    public function preparedFields(): FieldsCollection
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getDetailFields();
@@ -195,7 +196,7 @@ class HasOne extends ModelRelationField implements HasFields
             )
             ->redirect($isAsync ? null : $redirectAfter)
             ->fillCast(
-                $item?->attributesToArray() ?? array_filter([
+                $item?->toArray() ?? array_filter([
                 $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
                 ...$this->getRelation() instanceof MorphOneOrMany
                     ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()?->getMorphClass()]
@@ -241,7 +242,7 @@ class HasOne extends ModelRelationField implements HasFields
         $this->getResource()
             ->getFormFields()
             ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->resolveFill($data->toArray(), $data)->afterDestroy($data));
+            ->each(fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
 
         return $data;
     }

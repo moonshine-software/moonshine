@@ -26,14 +26,15 @@ it('index', function () {
 
 it('store', function () {
     $data = [
-        'name' => 'Test name',
-        'username' => 'new@mail.ru',
-        'password' => '123456',
+        moonshineConfig()->getUserField('name') => 'Test name',
+        moonshineConfig()->getUserField('username') => 'new@mail.ru',
+        moonshineConfig()->getUserField('password') => '123456',
         'password_repeat' => '123456',
     ];
 
     asAdmin()
         ->post(action([ProfileController::class, 'store']), $data)
+        ->assertSessionHasNoErrors()
         ->assertRedirect();
 
     $user = MoonshineUser::query()->find(1);

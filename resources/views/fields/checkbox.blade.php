@@ -3,17 +3,20 @@
     'offValue' => '',
     'value' => '',
     'isChecked' => false,
+    'isSimpleMode' => false,
 ])
-<div x-data>
-    <x-moonshine::form.input
-        type="hidden"
-        :attributes="$attributes->except(['class', 'id', 'type', 'checked', 'value'])"
-        value="{{ $offValue }}"
-    />
+<div @if(!$isSimpleMode) x-data @endif>
+    @if(!$isSimpleMode)
+        <x-moonshine::form.input
+            type="hidden"
+            :attributes="$attributes->except(['class', 'id', 'type', 'checked', 'value'])"
+            value="{{ $offValue }}"
+        />
+    @endif
 
     <x-moonshine::form.input
         :attributes="$attributes->merge([
-            'value' => $onValue,
+            'value' => $isSimpleMode ? $value : $onValue,
             'checked' => $isChecked
         ])"
     />

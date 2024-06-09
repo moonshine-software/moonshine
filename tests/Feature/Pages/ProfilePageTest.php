@@ -25,22 +25,24 @@ it('successful response', function () {
 
 it('validation error', function () {
     $data = [
-        'name' => 'New name',
+        moonshineConfig()->getUserField('name') => 'New name',
     ];
 
     asAdmin()->post(
         action([ProfileController::class, 'store']),
         $data
     )
-        ->assertSessionHasErrors(['username']);
+        ->assertSessionHasErrors([
+            moonshineConfig()->getUserField('username')
+        ]);
 });
 
 it('successful save', function () {
     $avatar = UploadedFile::fake()->create('avatar.png');
     $data = [
-        'avatar' => $avatar,
-        'username' => $this->user->email,
-        'name' => 'New name',
+        moonshineConfig()->getUserField('avatar') => $avatar,
+        moonshineConfig()->getUserField('username') => $this->user->email,
+        moonshineConfig()->getUserField('name') => 'New name',
     ];
 
     asAdmin()->post(

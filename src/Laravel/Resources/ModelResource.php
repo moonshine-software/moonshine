@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Resources;
 
 use Closure;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Resources\Resource;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
@@ -25,6 +27,7 @@ use MoonShine\Laravel\Traits\Resource\ResourceModelValidation;
 use MoonShine\Laravel\Traits\Resource\ResourceWithButtons;
 use MoonShine\Laravel\Traits\Resource\ResourceWithFields;
 use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\ClickAction;
@@ -102,17 +105,17 @@ abstract class ModelResource extends Resource
         ];
     }
 
-    public function indexPage(): ?Page
+    public function indexPage(): ?PageContract
     {
         return $this->getPages()->indexPage();
     }
 
-    public function formPage(): ?Page
+    public function formPage(): ?PageContract
     {
         return $this->getPages()->formPage();
     }
 
-    public function detailPage(): ?Page
+    public function detailPage(): ?PageContract
     {
         return $this->getPages()->detailPage();
     }
@@ -124,7 +127,16 @@ abstract class ModelResource extends Resource
 
     public function getModelCast(): ModelCast
     {
-        return ModelCast::make($this->model);
+        return new ModelCast($this->model);
+    }
+
+    public function getCastedItem(): ?CastedData
+    {
+        if(is_null($this->getItem())) {
+            return null;
+        }
+
+        return $this->getModelCast()->cast($this->getItem());
     }
 
     public function column(): string
@@ -177,12 +189,12 @@ abstract class ModelResource extends Resource
 
     public function trAttributes(): Closure
     {
-        return fn (mixed $data, int $row, MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr;
+        return static fn (mixed $data, int $row): array => [];
     }
 
     public function tdAttributes(): Closure
     {
-        return fn (mixed $data, int $row, int $cell, MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr;
+        return static fn (mixed $data, int $row, int $cell): array => [];
     }
 
     /**
@@ -238,7 +250,7 @@ abstract class ModelResource extends Resource
 
         $fields ??= $this->getFormFields()->onlyFields();
 
-        $fields->fill($item->toArray(), $item);
+        $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
 
         $fields->each(fn (Field $field): mixed => $field->afterDestroy($item));
 
@@ -249,8 +261,7 @@ abstract class ModelResource extends Resource
                 ! $field->toOne() ?: $relationItems = collect([$relationItems]);
 
                 $relationItems->each(
-                    fn ($relationItem): mixed => $field->resolveFill($relationItem->toArray())
-                        ->afterDestroy($relationItem)
+                    static fn (Model $relationItem): mixed => $field->afterDestroy($relationItem)
                 );
             });
         }
@@ -282,7 +293,7 @@ abstract class ModelResource extends Resource
     {
         $fields ??= $this->getFormFields()->onlyFields();
 
-        $fields->fill($item->toArray(), $item);
+        $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
 
         try {
             $fields->each(fn (Field $field): mixed => $field->beforeApply($item));
@@ -336,7 +347,7 @@ abstract class ModelResource extends Resource
         return $item;
     }
 
-    public function itemsToJson(LengthAwarePaginator $items): mixed
+    public function itemsToJson(Paginator $items): mixed
     {
         return $items;
     }

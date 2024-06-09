@@ -6,6 +6,7 @@ use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Contracts\Fields\HasPivot;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\UI\Contracts\Fields\HasFields;
@@ -26,7 +27,7 @@ beforeEach(function (): void {
 
     $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
         ->fields($this->pivotFields)
-        ->resolveFill($this->item->toArray(), $this->item);
+        ->fillData($this->item);
 });
 
 describe('basic methods', function () {
@@ -39,7 +40,7 @@ describe('basic methods', function () {
     it('formatted value', function () {
         $field = BelongsToMany::make('Categories', formatted: static fn () => 'changed', resource: new TestCategoryResource())
             ->fields($this->pivotFields)
-            ->resolveFill($this->item->toArray(), $this->item);
+            ->fillData($this->item);
 
         expect($field)
             ->toFormattedValue()

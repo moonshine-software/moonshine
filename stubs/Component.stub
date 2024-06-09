@@ -16,6 +16,8 @@ final class DummyClass extends MoonShineComponent
 
     public function __construct()
     {
+        parent::__construct();
+
         //
     }
 

@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 use Throwable;
 
 /**
- * @method static static make(Paginator|iterable $items = [], Fields|array $fields = [])
+ * @method static static make(iterable $items = [], Fields|array $fields = [])
  */
 final class CardsBuilder extends IterableComponent
 {
@@ -123,13 +123,12 @@ final class CardsBuilder extends IterableComponent
      */
     public function getComponents(): Collection
     {
-        $fields = $this->getFields();
+        $fields = $this->preparedFields();
 
-        return $this->getItems()->filter()->map(function (mixed $data, int $index) use ($fields) {
+        return $this->getItems()->map(function (mixed $data, int $index) use ($fields) {
             $casted = $this->castData($data);
-            $raw = $this->unCastData($data);
 
-            $fields = $this->getFilledFields($raw, $casted, $index, $fields);
+            $fields = $this->getFilledFields($casted->toArray(), $casted, $index, $fields);
 
             if(! is_null($this->customComponent)) {
                 return value($this->customComponent, $data, $index, $this);
@@ -162,7 +161,7 @@ final class CardsBuilder extends IterableComponent
             : value($this->{$column}, $data, $index, $this);
     }
 
-    protected function getMapper(mixed $data, Fields $fields, int $index): array
+    protected function getMapper(mixed $data, FieldsCollection $fields, int $index): array
     {
         $values = $fields->values()
             ->mapWithKeys(fn (Field $value): array => [$value->getLabel() => (string) $value->preview()])
@@ -205,7 +204,7 @@ final class CardsBuilder extends IterableComponent
             'components' => $this->getComponents(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
-            'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
+            'simplePaginate' => $this->isSimplePaginator(),
             'paginator' => $this->getPaginator(),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),

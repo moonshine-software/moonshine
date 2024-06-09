@@ -18,6 +18,7 @@ use MoonShine\UI\Fields\Text;
 
 uses()->group('fields');
 uses()->group('core');
+uses()->group('now');
 
 beforeEach(function () {
     $this->data = Box::make([
@@ -77,10 +78,12 @@ describe('form elements', function () {
     it('show when', function () {
         $form = FormBuilder::make(
             '/',
-            fields: $this->collection->onlyFields()
+            fields: $this->collection
+                ->withoutOutside()
+                ->onlyFields()
         );
 
-        expect(data_get($form->render()->getData(), 'attributes')->get('x-init'))
+        expect(data_get($form->render()->getData(), 'attributes')->get('x-data'))
             ->toContain('whenFields', 'column', '=', 'value')
         ;
     });
@@ -94,7 +97,7 @@ describe('fields', function () {
             'email' => 'value',
         ];
 
-        expect($this->collection->fillCloned($values)->withoutOutside())
+        expect($this->collection->withoutOutside()->fillCloned($values))
             ->each(fn ($expect) => $expect->toValue()->toBe('value'))
         ;
     });
@@ -106,9 +109,9 @@ describe('fields', function () {
             'email' => 'value',
         ];
 
-        $this->collection->fill($values);
+        $this->collection->withoutOutside()->fill($values);
 
-        expect($this->collection->onlyFields()->withoutOutside())
+        expect($this->collection->onlyFields())
             ->each(fn ($expect) => $expect->toValue()->toBe('value'))
         ;
     });
@@ -128,10 +131,10 @@ describe('fields', function () {
             'email' => 'value',
         ];
 
-        $this->collection->fill($values);
+        $this->collection->withoutOutside()->fill($values);
         $this->collection->reset();
 
-        expect($this->collection->onlyFields()->withoutOutside())
+        expect($this->collection->onlyFields())
             ->each(fn ($expect) => $expect->toValue()->toBe(null))
         ;
     });
