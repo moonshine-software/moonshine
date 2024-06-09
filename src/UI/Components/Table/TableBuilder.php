@@ -226,13 +226,13 @@ final class TableBuilder extends IterableComponent implements TableContract
                     $builder = null;
 
                     if($field instanceof Td && $field->hasTdAttributes()) {
-                        $builder = static fn(TableTd $td) => $td->customAttributes(
+                        $builder = static fn(TableTd $td): TableTd => $td->customAttributes(
                             $field->resolveTdAttributes($field->getData())
                         );
                     }
 
                     $cells = TableCells::make()
-                        ->pushCell($field->getLabel(), builder: fn (TableTd $td) => $td->customAttributes([
+                        ->pushCell($field->getLabel(), builder: fn (TableTd $td): TableTd => $td->customAttributes([
                             'width' => '20%',
                             'class' => 'font-semibold',
                         ]))
@@ -249,17 +249,17 @@ final class TableBuilder extends IterableComponent implements TableContract
             $cells
                 ->pushCellWhen(
                     ! $this->isPreview() && $this->getBulkButtons()->isNotEmpty(),
-                    fn () => (string) $this->getRowCheckbox($key)
+                    fn (): string => (string) $this->getRowCheckbox($key)
                 )
                 ->pushFields(
                     $fields,
-                    builder: fn (TableTd $td) => $td->customAttributes(
+                    builder: fn (TableTd $td): TableTd => $td->customAttributes(
                         $this->getTdAttributes($casted, $index, $td->getIndex())
                     )
                 )
                 ->pushCellWhen(
                     $buttons->isNotEmpty(),
-                    fn() => (string) Flex::make([
+                    fn(): string => (string) Flex::make([
                         ActionGroup::make($buttons->toArray()),
                     ])->justifyAlign('end')
                 );
@@ -267,7 +267,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             $rows->pushRow(
                 $cells,
                 $key,
-                builder: fn (TableRow $tr) => $tr->customAttributes($this->getTrAttributes($casted, $index))
+                builder: fn (TableRow $tr): TableRow => $tr->customAttributes($this->getTrAttributes($casted, $index))
             );
         }
 
@@ -426,10 +426,10 @@ final class TableBuilder extends IterableComponent implements TableContract
     {
         $cells = TableCells::make()->pushCellWhen(
             ! $this->isPreview(),
-            fn () => (string) Flex::make([
+            fn (): string => (string) Flex::make([
                 ActionGroup::make($this->getBulkButtons()->toArray()),
             ])->justifyAlign('start'),
-            builder: fn (TableTd $td) => $td->customAttributes([
+            builder: fn (TableTd $td): TableTd => $td->customAttributes([
                 'colspan' => 6,
                 ':class' => "\$id('table-component') + '-bulkActions'",
             ])

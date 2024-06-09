@@ -7,7 +7,6 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\View\View;
 use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
 use Psr\Container\ContainerExceptionInterface;

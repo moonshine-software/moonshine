@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
@@ -46,7 +45,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     ): static {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field): Field => $field->fillData(!is_null($casted) ? $casted : $raw, $index));
+            ->each(fn (Field $field): Field => $field->fillData(is_null($casted) ? $raw : $casted, $index));
 
         return $this;
     }

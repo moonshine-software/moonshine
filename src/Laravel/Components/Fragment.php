@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Traits\NowOn;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;

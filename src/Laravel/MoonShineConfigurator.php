@@ -12,7 +12,6 @@ use MoonShine\Core\Contracts\ConfiguratorContract;
 use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Layouts\AppLayout;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Contracts\Forms\FormContract;
 use MoonShine\UI\MoonShineLayout;

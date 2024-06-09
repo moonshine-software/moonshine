@@ -6,10 +6,8 @@ namespace MoonShine\Laravel\Fields\Relationships;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;

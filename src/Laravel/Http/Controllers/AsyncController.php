@@ -7,7 +7,6 @@ use Illuminate\Contracts\View\View;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
-use MoonShine\UI\Collections\TableCells;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Field;

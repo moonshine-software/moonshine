@@ -20,7 +20,6 @@ use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Components\Table\TableRowRenderer;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
 use Symfony\Component\HttpFoundation\Response;

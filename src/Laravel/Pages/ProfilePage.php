@@ -99,7 +99,7 @@ class ProfilePage extends Page
         return FormBuilder::make(action([ProfileController::class, 'store']))
             ->async()
             ->fields($this->fields())
-            ->fillCast($user, new ModelCast(get_class($user)))
+            ->fillCast($user, new ModelCast($user::class))
             ->submit(__('moonshine::ui.save'), [
                 'class' => 'btn-lg btn-primary',
             ]);
