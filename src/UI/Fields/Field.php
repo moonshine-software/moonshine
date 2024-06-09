@@ -131,14 +131,14 @@ abstract class Field extends FormElement
         if ($this->isFillChanged()) {
             return value(
                 $this->fillCallback,
-                ! is_null($casted) ? $casted->getOriginal() : $raw,
+                is_null($casted) ? $raw : $casted->getOriginal(),
                 $this
             );
         }
 
         $default = new FieldEmptyValue();
 
-        $value = data_get(! is_null($casted) ? $casted->getOriginal() : $raw, $this->getColumn(), $default);
+        $value = data_get(is_null($casted) ? $raw : $casted->getOriginal(), $this->getColumn(), $default);
 
         if (is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
             $value = data_get($raw, $this->getColumn(), $default);

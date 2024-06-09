@@ -23,7 +23,7 @@ final class TableCells extends Collection
 
         foreach ($fields as $index => $field) {
             if($field instanceof Td && $field->hasTdAttributes()) {
-                $builder = static fn (TableTd $td) => $td->customAttributes(
+                $builder = static fn (TableTd $td): TableTd => $td->customAttributes(
                     $field->resolveTdAttributes($field->getData())
                 );
             }
