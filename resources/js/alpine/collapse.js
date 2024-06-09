@@ -4,7 +4,7 @@ export default (open = false) => ({
   init() {
     const t = this
 
-    this.$el.addEventListener('collapse-open', function(event) {
+    this.$el.addEventListener('collapse-open', function (event) {
       t.open = true
     })
   },
