@@ -6,7 +6,6 @@ namespace MoonShine\UI\Components;
 
 use MoonShine\Core\Contracts\MoonShineDataCast;
 use MoonShine\UI\Collections\ActionButtons;
-use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\HasDataCast;

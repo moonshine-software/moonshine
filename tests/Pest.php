@@ -4,7 +4,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Laravel\Models\MoonshineUser;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\Fixtures\Models\Item;

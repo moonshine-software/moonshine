@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
 use Throwable;
 

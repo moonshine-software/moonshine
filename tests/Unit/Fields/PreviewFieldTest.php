@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Boolean;

@@ -28,7 +28,7 @@ final class FieldsGroup extends AbstractWithComponents
     public function fill(array $raw = [], mixed $casted = null, int $index = 0): self
     {
         return $this->mapFields(
-            static fn (Field $field): Field => $field->fillData(!is_null($casted) ? $casted : $raw, $index)
+            static fn (Field $field): Field => $field->fillData(! is_null($casted) ? $casted : $raw, $index)
         );
     }
 

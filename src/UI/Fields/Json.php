@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Icon;
 use MoonShine\UI\Components\Table\TableBuilder;

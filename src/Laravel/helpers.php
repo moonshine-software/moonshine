@@ -7,7 +7,6 @@ use Illuminate\Http\RedirectResponse;
 use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\MoonShineRequest;
-use MoonShine\Laravel\Pages\Page;
 
 if (! function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest

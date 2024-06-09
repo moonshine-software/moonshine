@@ -8,7 +8,6 @@ use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;

@@ -12,8 +12,6 @@ use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Core\Contracts\HasResourceContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Laravel\TypeCasts\ModelCast;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;

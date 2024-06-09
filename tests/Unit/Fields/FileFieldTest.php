@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\UI\Contracts\Fields\Fileable;
 use MoonShine\UI\Contracts\Fields\RemovableContract;
 use MoonShine\UI\Fields\File;

@@ -7,7 +7,6 @@ use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Handlers\ExportHandler;
 use MoonShine\Laravel\Handlers\ImportHandler;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;

@@ -33,7 +33,7 @@ it('validation error', function () {
         $data
     )
         ->assertSessionHasErrors([
-            moonshineConfig()->getUserField('username')
+            moonshineConfig()->getUserField('username'),
         ]);
 });
 

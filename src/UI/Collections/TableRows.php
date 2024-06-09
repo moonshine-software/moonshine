@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Collections;
 
+use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\UI\Components\Table\TableRow;
-use Closure;
 
 /**
  * @template TKey of array-key
@@ -22,8 +22,8 @@ final class TableRows extends Collection
                 $cells,
                 $index
             )->when(
-                !is_null($builder),
-                fn(TableRow $tr) => $builder($tr)
+                ! is_null($builder),
+                fn (TableRow $tr) => $builder($tr)
             )
         );
     }

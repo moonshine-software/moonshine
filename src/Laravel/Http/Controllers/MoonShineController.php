@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Pages\ViewPage;
 use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
 use MoonShine\Support\Enums\ToastType;
@@ -85,7 +82,7 @@ abstract class MoonShineController extends BaseController
             ? new ($table->getCast()->getClass())
             : null;
 
-        if(!$class instanceof Model) {
+        if(! $class instanceof Model) {
             return $table->getRows()->first(
                 fn (TableRow $row): bool => $row->getKey() === request()->get('_key'),
             );
@@ -98,7 +95,7 @@ abstract class MoonShineController extends BaseController
         }
 
         return $table->items([
-            $item
+            $item,
         ])->getRows()->first();
     }
 }

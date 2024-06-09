@@ -6,7 +6,6 @@ use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
 use MoonShine\Support\DTOs\Select\Options;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\ImageModel;

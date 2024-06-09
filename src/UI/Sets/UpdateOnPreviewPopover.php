@@ -34,7 +34,8 @@ final readonly class UpdateOnPreviewPopover
         )
             ->name($name)
             ->showOnClick()
-            ->content(fn (): string => (string) FormBuilder::make()
+            ->content(
+                fn (): string => (string) FormBuilder::make()
                 ->method(FormMethod::POST)
                 ->action(
                     moonshineRouter()->getEndpoints()->updateColumn(

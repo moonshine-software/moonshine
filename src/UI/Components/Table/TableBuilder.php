@@ -226,7 +226,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                     $builder = null;
 
                     if($field instanceof Td && $field->hasTdAttributes()) {
-                        $builder = static fn(TableTd $td) => $td->customAttributes(
+                        $builder = static fn (TableTd $td) => $td->customAttributes(
                             $field->resolveTdAttributes($field->getData())
                         );
                     }
@@ -259,7 +259,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 )
                 ->pushCellWhen(
                     $buttons->isNotEmpty(),
-                    fn() => (string) Flex::make([
+                    fn () => (string) Flex::make([
                         ActionGroup::make($buttons->toArray()),
                     ])->justifyAlign('end')
                 );
