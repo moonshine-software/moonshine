@@ -17,7 +17,7 @@ use Throwable;
 trait ResourceWithFields
 {
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function indexFields(): array
     {
@@ -25,7 +25,6 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getIndexFields(): Fields
@@ -42,7 +41,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function formFields(): array
     {
@@ -50,7 +49,6 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getFormFields(bool $withOutside = false): Fields
@@ -67,7 +65,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function detailFields(): array
     {
@@ -75,7 +73,6 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getDetailFields(bool $withOutside = false, bool $onlyOutside = false): Fields
@@ -97,7 +94,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, ModelRelationField>
+     * @return Fields<int, ModelRelationField>
      * @throws Throwable
      */
     public function getOutsideFields(): Fields
@@ -116,7 +113,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function filters(): array
     {
@@ -124,7 +121,6 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getFilters(): Fields
@@ -143,7 +139,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function exportFields(): array
     {
@@ -151,7 +147,6 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getExportFields(): Fields
@@ -160,7 +155,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function importFields(): array
     {
@@ -168,7 +163,6 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Collection<int, Field>
      * @throws Throwable
      */
     public function getImportFields(): Fields
