@@ -5,8 +5,9 @@ import {
   showWhenVisibilityChange,
 } from './showWhenFunctions'
 import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
-import {containsAttribute, isTextInput} from './supportFunctions.js'
+import {containsAttribute, getAncestorsUntil, isTextInput} from './supportFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
+import {addValidationListener} from "./formFunctions.js";
 
 export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
@@ -50,6 +51,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
                 input.type = 'text'
                 input.setSelectionRange(input.value.length, input.value.length)
                 input.type = type
+
+                addValidationListener(input)
               }
             }
           }
