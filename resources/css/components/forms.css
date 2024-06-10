@@ -311,7 +311,7 @@ input[type='number'] {
     }
   }
 }
-.choices select[hidden] {
+.choices [hidden] {
   @apply absolute left-0 top-0 z-0 !m-0 !block h-full w-full !p-0 opacity-0;
 }
 
