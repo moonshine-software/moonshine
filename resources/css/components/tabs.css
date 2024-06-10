@@ -13,7 +13,7 @@
     }
   }
   &-content {
-    @apply -mx-1 mt-6 overflow-hidden overflow-y-clip px-1;
+    @apply -mx-1 mt-6 overflow-x-clip px-1;
   }
   &-vertical {
     @apply flex gap-3;
