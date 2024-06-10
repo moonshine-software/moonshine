@@ -165,7 +165,8 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
-    public function changeEditButton(?ActionButton $button = null): static {
+    public function changeEditButton(?ActionButton $button = null): static
+    {
         $this->editButton = $button;
 
         return $this;
