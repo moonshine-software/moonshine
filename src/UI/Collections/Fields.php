@@ -185,10 +185,14 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     /**
      * @throws Throwable
      */
-    public function prepareReindex(?Field $parent = null, ?callable $before = null): static
+    public function prepareReindex(?Field $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
-        return $this->map(function (Field $field) use ($parent, $before): Field {
-            value($before, $parent, $field);
+        return $this->map(function (Field $field) use ($parent, $before, $performName): Field {
+            $modifyField = value($before, $parent, $field);
+
+            if($modifyField instanceof Field) {
+                $field = $modifyField;
+            }
 
             $name = str($parent ? $parent->getNameAttribute() : $field->getNameAttribute());
             $level = $name->substrCount('$');
@@ -213,7 +217,9 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
             }
 
             return $field
-                ->setNameAttribute($name)
+                ->setNameAttribute(
+                    value($performName, $name, $parent, $field)
+                )
                 ->iterableAttributes($level);
         });
     }

@@ -40,6 +40,10 @@ final class HasManyButton
             ]
         );
 
+        if($field->isWithoutModals()) {
+            $action = static fn (?Model $data) => $resource->formPageUrl($data);
+        }
+
         $authorize = $update
             ? fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
                 && $resource->setItem($item)->can('update')
@@ -50,16 +54,21 @@ final class HasManyButton
             ? $button->setUrl($action)
             : ActionButton::make($update ? '' : __('moonshine::ui.add'), url: $action);
 
-        return $actionButton
+        $actionButton = $actionButton
             ->canSee($authorize)
             ->async()
-            ->inModal(
+            ->primary()
+            ->icon($update ? 'pencil' : 'plus');
+
+        if(!$field->isWithoutModals()) {
+            $actionButton = $actionButton->inModal(
                 title: fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: '',
                 name: fn (?Model $data): string => "modal-has-many-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
                 builder: fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
-            )
-            ->primary()
-            ->icon($update ? 'pencil' : 'plus');
+            );
+        }
+
+        return $actionButton;
     }
 }

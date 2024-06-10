@@ -63,6 +63,8 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     {
         parent::__construct();
 
+        $this->resolveAssets();
+
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
     }
 

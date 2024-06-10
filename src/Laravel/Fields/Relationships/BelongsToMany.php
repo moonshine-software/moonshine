@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Laravel\Buttons\BelongsToManyButton;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Contracts\Fields\HasPivot;
@@ -220,18 +221,18 @@ class BelongsToMany extends ModelRelationField implements
 
     public function preparedFields(): FieldsCollection
     {
-        // TODO(3.0) use prepareReindex
-        return $this->getFields()->prepareAttributes()->map(
-            fn (Field $field): Field => (clone $field)
-                ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
-                ->setAttribute('class', 'pivotField')
-                ->setNameAttribute(
-                    "{$this->getPivotName()}[\${index0}][{$field->getColumn()}]"
-                )
-                ->setParent($this)
-                ->formName($this->getFormName())
-                ->iterableAttributes()
-                ->withoutWrapper()
+        return $this->getFields()->prepareAttributes()->prepareReindex(
+            parent: $this,
+            before: function (self $parent, Field $field) {
+                $parent->setNameAttribute($this->getPivotName());
+
+                return (clone $field)
+                    ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
+                    ->setNameAttribute($field->getColumn())
+                    ->setAttribute('class', 'pivotField')
+                    ->withoutWrapper();
+            },
+            performName: fn (string $name): string => str_replace("{$this->getPivotAs()}.", '', $name)
         );
     }
 
@@ -326,6 +327,14 @@ class BelongsToMany extends ModelRelationField implements
                 fn (TableBuilder $table): TableBuilder => $table->customAttributes([
                     'data-remove-after-clone' => 1,
                 ])
+            )
+            ->trAttributes(
+                fn (
+                    ?CastedData $data,
+                    int $row,
+                ): array => [
+                    'data-key' => $data?->getKey(),
+                ]
             )
             ->cast($this->getResource()->getModelCast())
             ->simple()
@@ -504,11 +513,11 @@ class BelongsToMany extends ModelRelationField implements
 
     public function getKeys(): array
     {
-        if(is_null($this->toValue())) {
+        if (is_null($this->toValue())) {
             return [];
         }
 
-        if($this->isValueWithModels()) {
+        if ($this->isValueWithModels()) {
             return $this->toValue()?->modelKeys();
         }
 

@@ -149,7 +149,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
     return false
   },
-
+  submit() {
+    this.$el.dispatchEvent(new Event('submit'))
+  },
   async(events = '', callbackFunction = '', beforeFunction = '') {
     const form = this.$el
     submitState(form, true)

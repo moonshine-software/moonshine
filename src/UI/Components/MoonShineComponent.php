@@ -31,7 +31,6 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
         $this->attributes = new MoonShineComponentAttributeBag();
 
         if($this instanceof HasAssets) {
-            // todo(assets) move to another layer
             $this->resolveAssets();
         }
 
