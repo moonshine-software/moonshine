@@ -285,10 +285,10 @@ class Json extends Field implements
         );
 
         $fields = $this->preparedFields();
-        $sortable = ! $this->isPreviewMode()
+        $reorderable = ! $this->isPreviewMode()
             && $this->isReorderable();
 
-        if ($sortable) {
+        if ($reorderable) {
             $fields->prepend(
                 Preview::make(
                     formatted: static fn () => Icon::make('bars-4')
@@ -302,7 +302,7 @@ class Json extends Field implements
                 $this->attributes()
                     ->except(['class', 'data-name', 'data-column'])
                     ->when(
-                        $sortable,
+                        $reorderable,
                         fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
                             'data-handle' => '.handle',
                         ])
@@ -310,8 +310,8 @@ class Json extends Field implements
                     ->jsonSerialize()
             )
             ->when(
-                $sortable,
-                fn (TableBuilder $table): TableBuilder => $table->sortable()
+                $reorderable,
+                fn (TableBuilder $table): TableBuilder => $table->reorderable()
             )
             ->when(
                 $this->isVertical(),

@@ -4,7 +4,7 @@ import {listComponentRequest} from '../Request/Sets.js'
 
 export default (
   creatable = false,
-  sortable = false,
+  reorderable = false,
   reindex = false,
   async = false,
   asyncUrl = '',
@@ -14,7 +14,7 @@ export default (
   table: null,
   async: async,
   asyncUrl: asyncUrl,
-  sortable: sortable,
+  reorderable: reorderable,
   creatable: creatable,
   reindex: reindex,
   loading: false,
@@ -38,7 +38,7 @@ export default (
       this.resolveReindex()
     }
 
-    if (this.sortable && this.table) {
+    if (this.reorderable && this.table) {
       sortableFunction(
         this.table?.dataset?.sortableUrl ?? null,
         this.table?.dataset?.sortableGroup ?? null,

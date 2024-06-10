@@ -28,7 +28,7 @@ use MoonShine\UI\Traits\Table\TableStates;
 use Throwable;
 
 /**
- * @method static static make(Fields|array $fields = [], iterable $items = [], ?Paginator $paginator = null)
+ * @method static static make(FieldsCollection|array $fields = [], iterable $items = [], ?Paginator $paginator = null)
  */
 final class TableBuilder extends IterableComponent implements TableContract
 {
@@ -54,7 +54,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     protected MoonShineComponentAttributeBag $footAttributes;
 
     public function __construct(
-        Fields|array $fields = [],
+        FieldsCollection|array $fields = [],
         iterable $items = [],
         ?Paginator $paginator = null
     ) {
@@ -201,7 +201,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             );
         }
 
-        if (! is_null($this->sortableUrl) && $this->isSortable()) {
+        if (! is_null($this->reorderableUrl) && $this->isReorderable()) {
             $this->trAttributes(
                 $this->getRowReorderAttributes()
             );
@@ -307,7 +307,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function getRowReorderAttributes(): Closure
     {
         return fn (mixed $data, int $index): array => [
-            'data-id' => data_get($data, $this->sortableKey ?? 'id', $index),
+            'data-id' => data_get($data, $this->reorderableKey ?? 'id', $index),
         ];
     }
 
@@ -465,10 +465,10 @@ final class TableBuilder extends IterableComponent implements TableContract
             ]);
         }
 
-        if (! is_null($this->sortableUrl) && $this->isSortable()) {
+        if (! is_null($this->reorderableUrl) && $this->isReorderable()) {
             $this->customAttributes([
-                'data-sortable-url' => $this->sortableUrl,
-                'data-sortable-group' => $this->sortableGroup,
+                'data-sortable-url' => $this->reorderableUrl,
+                'data-sortable-group' => $this->reorderableGroup,
             ]);
         }
 

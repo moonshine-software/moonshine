@@ -24,6 +24,13 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     protected bool $booted = false;
 
+    protected bool $loaded = false;
+
+    public function __construct()
+    {
+        $this->booted();
+    }
+
     abstract protected function pages(): array;
 
     public function getPages(): Pages
@@ -40,9 +47,10 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     protected function onBoot(): void
     {
+        //
     }
 
-    public function boot(): static
+    public function booted(): static
     {
         if ($this->booted) {
             return $this;
@@ -52,6 +60,24 @@ abstract class Resource implements ResourceContract, MenuFiller
         $this->onBoot();
 
         $this->booted = true;
+
+        return $this;
+    }
+
+    protected function onLoad(): void
+    {
+        //
+    }
+
+    public function loaded(): static
+    {
+        if ($this->loaded) {
+            return $this;
+        }
+
+        $this->onLoad();
+
+        $this->loaded = true;
 
         return $this;
     }

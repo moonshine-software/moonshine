@@ -22,13 +22,13 @@ trait TableStates
 
     protected bool $isPreparedReindex = false;
 
-    protected bool $isSortable = false;
+    protected bool $isReorderable = false;
 
-    protected ?string $sortableUrl = null;
+    protected ?string $reorderableUrl = null;
 
-    protected string $sortableKey = 'id';
+    protected string $reorderableKey = 'id';
 
-    protected ?string $sortableGroup = null;
+    protected ?string $reorderableGroup = null;
 
     protected bool $withNotFound = false;
 
@@ -141,22 +141,22 @@ trait TableStates
         return $this->isPreparedReindex;
     }
 
-    public function sortable(
+    public function reorderable(
         ?string $url = null,
         string $key = 'id',
         ?string $group = null
     ): static {
-        $this->isSortable = true;
-        $this->sortableUrl = $url;
-        $this->sortableKey = $key;
-        $this->sortableGroup = $group;
+        $this->isReorderable = true;
+        $this->reorderableUrl = $url;
+        $this->reorderableKey = $key;
+        $this->reorderableGroup = $group;
 
         return $this;
     }
 
-    public function isSortable(): bool
+    public function isReorderable(): bool
     {
-        return $this->isSortable;
+        return $this->isReorderable;
     }
 
     public function simple(): static
@@ -189,7 +189,7 @@ trait TableStates
      *     notfound: bool,
      *     creatable: bool,
      *     reindex: bool,
-     *     sortable: bool,
+     *     reorderable: bool,
      *     simple: bool,
      *     searchable: bool,
      *     searchValue: string,
@@ -202,7 +202,7 @@ trait TableStates
             'notfound' => $this->hasNotFound(),
             'creatable' => $this->isCreatable(),
             'reindex' => $this->isReindex(),
-            'sortable' => $this->isSortable(),
+            'reorderable' => $this->isReorderable(),
             'simple' => $this->isSimple(),
             'searchable' => $this->isSearchable(),
             'searchValue' => moonshine()->getRequest()->get('search', ''),

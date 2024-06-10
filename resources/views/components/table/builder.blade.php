@@ -13,13 +13,13 @@
     'notfound' => false,
     'creatable' => false,
     'reindex' => false,
-    'sortable' => false,
+    'reorderable' => false,
     'searchable' => false,
     'searchValue' => '',
 ])
 <div x-data="tableBuilder(
     {{ (int) $creatable }},
-    {{ (int) $sortable }},
+    {{ (int) $reorderable }},
     {{ (int) $reindex }},
     {{ (int) $async }},
     '{{ $asyncUrl }}'

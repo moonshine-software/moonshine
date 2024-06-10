@@ -19,5 +19,7 @@ interface ResourceContract
 
     public function title(): string;
 
-    public function boot(): static;
+    public function booted(): static;
+
+    public function loaded(): static;
 }

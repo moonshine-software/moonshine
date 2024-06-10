@@ -95,7 +95,7 @@ abstract class Page implements
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     abstract public function components(): array;
 
