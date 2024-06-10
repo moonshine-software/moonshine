@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 
@@ -32,7 +33,7 @@ final class DeleteButton
             url: $action
         )
             ->withConfirm(
-                method: 'DELETE',
+                method: HttpMethod::DELETE,
                 formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form->async(

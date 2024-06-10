@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Support;
 
 use MoonShine\Support\DTOs\AsyncCallback;
+use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\JsEvent;
 
 final class AlpineJs
@@ -61,7 +62,7 @@ final class AlpineJs
     }
 
     public static function asyncUrlDataAttributes(
-        string $method = 'GET',
+        HttpMethod $method = HttpMethod::GET,
         string|array $events = [],
         ?string $selector = null,
         ?AsyncCallback $callback = null
@@ -71,7 +72,7 @@ final class AlpineJs
             'data-async-selector' => $selector,
             'data-async-callback' => $callback?->getSuccess() ,
             'data-async-before-function' => $callback?->getBefore(),
-            'data-async-method' => $method,
+            'data-async-method' => $method->value,
         ]);
     }
 

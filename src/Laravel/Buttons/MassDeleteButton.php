@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 
@@ -28,7 +29,7 @@ final class MassDeleteButton
         )
             ->bulk($componentName ?? $resource->listComponentName())
             ->withConfirm(
-                method: 'DELETE',
+                method: HttpMethod::DELETE,
                 formBuilder: fn (FormBuilder $formBuilder) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form->async(

@@ -10,6 +10,7 @@ use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
+use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Contracts\Actions\ActionButtonContract;
@@ -212,7 +213,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     }
 
     public function async(
-        string $method = 'GET',
+        HttpMethod $method = HttpMethod::GET,
         ?string $selector = null,
         array $events = [],
         ?AsyncCallback $callback = null

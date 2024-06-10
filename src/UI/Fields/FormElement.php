@@ -16,6 +16,7 @@ use MoonShine\Core\Traits\NowOn;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
+use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithAssets;
@@ -262,7 +263,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
      */
     public function onChangeUrl(
         Closure $url,
-        string $method = 'PUT',
+        HttpMethod $method = HttpMethod::GET,
         array $events = [],
         ?string $selector = null,
         ?AsyncCallback $callback = null,
@@ -278,7 +279,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     }
 
     protected function onChangeAttributes(
-        string $method = 'GET',
+        HttpMethod $method = HttpMethod::GET,
         array $events = [],
         ?string $selector = null,
         ?AsyncCallback $callback = null

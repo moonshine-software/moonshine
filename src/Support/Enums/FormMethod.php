@@ -6,7 +6,7 @@ namespace MoonShine\Support\Enums;
 
 enum FormMethod: string
 {
-    case POST = 'POST';
+    case POST = 'post';
 
     case GET = 'get';
 

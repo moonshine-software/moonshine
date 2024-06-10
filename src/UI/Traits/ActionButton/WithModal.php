@@ -7,6 +7,7 @@ namespace MoonShine\UI\Traits\ActionButton;
 use Closure;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
+use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
@@ -59,12 +60,12 @@ trait WithModal
         Closure|string|null $content = null,
         Closure|string|null $button = null,
         Closure|array|null $fields = null,
-        string $method = 'POST',
+        HttpMethod $method = HttpMethod::POST,
         ?Closure $formBuilder = null,
         ?Closure $modalBuilder = null,
         Closure|string|null $name = null,
     ): static {
-        $isDefaultMethods = in_array(strtolower($method), ['get', 'post']);
+        $isDefaultMethods = in_array($method, [HttpMethod::GET, HttpMethod::POST], true);
         $async = $this->purgeAsyncTap();
 
         if ($this->isBulk()) {
@@ -77,12 +78,12 @@ trait WithModal
             fn (mixed $data) => value($title, $data, $this) ?? __('moonshine::ui.confirm'),
             fn (mixed $data): string => (string) FormBuilder::make(
                 $this->getUrl($data),
-                $isDefaultMethods ? FormMethod::from($method) : FormMethod::POST
+                $isDefaultMethods ? FormMethod::from($method->value) : FormMethod::POST
             )->fields(
                 array_filter([
                     $isDefaultMethods
                         ? null
-                        : Hidden::make('_method')->setValue($method),
+                        : Hidden::make('_method')->setValue($method->value),
 
                     $this->isBulk()
                         ? HiddenIds::make($this->bulkForComponent())
