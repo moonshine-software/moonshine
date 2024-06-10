@@ -41,11 +41,11 @@ export function clientSideValidationInHideBlocks() {
   const fields = document.querySelectorAll('input, select, textarea')
 
   for (const field of fields) {
-    addValidationListener(field)
+    addInvalidListener(field)
   }
 }
 
-export function addValidationListener(field) {
+export function addInvalidListener(field) {
   field.addEventListener('invalid', function (event) {
     const element = event.target
     const form = event.target.closest('form')
@@ -62,7 +62,5 @@ export function addValidationListener(field) {
         }
       }
     }
-
-    element.focus()
   })
 }

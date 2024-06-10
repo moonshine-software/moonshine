@@ -7,7 +7,7 @@ import {
 import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
 import {containsAttribute, getAncestorsUntil, isTextInput} from './supportFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
-import {addValidationListener} from './formFunctions.js'
+import {addInvalidListener} from "./formFunctions.js";
 
 export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
@@ -36,6 +36,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
               element.outerHTML = html
 
+              addInvalidListener(t.$root.querySelector('.field-' + column + '-element'))
+
               let input =
                 focused &&
                 focused !== document.body &&
@@ -51,8 +53,6 @@ export default (name = '', initData = {}, reactive = {}) => ({
                 input.type = 'text'
                 input.setSelectionRange(input.value.length, input.value.length)
                 input.type = type
-
-                addValidationListener(input)
               }
             }
           }
