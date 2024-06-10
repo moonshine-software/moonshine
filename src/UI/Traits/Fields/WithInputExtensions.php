@@ -50,7 +50,7 @@ trait WithInputExtensions
         return $this;
     }
 
-    public function expansion(string $ext): static
+    public function suffix(string $ext): static
     {
         $this->extension(new InputExt($ext));
 
