@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use MoonShine\UI\Fields\FormElement;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -223,7 +224,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(
             parent: $this,
-            before: function (self $parent, Field $field) {
+            before: function (self $parent, Field $field): FormElement {
                 $parent->setNameAttribute($this->getPivotName());
 
                 return (clone $field)
