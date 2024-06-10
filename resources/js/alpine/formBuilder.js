@@ -7,7 +7,7 @@ import {
 import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
 import {containsAttribute, getAncestorsUntil, isTextInput} from './supportFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
-import {addInvalidListener} from "./formFunctions.js";
+import {addInvalidListener} from './formFunctions.js'
 
 export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
