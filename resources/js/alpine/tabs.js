@@ -3,7 +3,9 @@ export default (activeTab = '', isVertical = false) => ({
   isVertical: isVertical,
   activationVerticalWidth: 480,
 
-  init() {
+  async init() {
+    await this.$nextTick()
+
     if (this.isVertical) {
       this.activationVerticalWidth = this.$el.dataset.tabsVerticalMinWidth ?? 480
       this.toggleVerticalClass(true)
