@@ -18,6 +18,8 @@ enum JsEvent: string
 
     case FORM_RESET = 'form-reset';
 
+    case FORM_SUBMIT = 'form-submit';
+
     case MODAL_TOGGLED = 'modal-toggled';
 
     case OFF_CANVAS_TOGGLED = 'offcanvas-toggled';

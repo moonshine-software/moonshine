@@ -224,7 +224,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
       event.target.closest('form').getAttribute('id'),
     )
   },
-
+  submit() {
+    this.$el.dispatchEvent(new Event('submit'))
+  },
   formReset() {
     this.$el.reset()
 
