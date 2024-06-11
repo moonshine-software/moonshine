@@ -329,14 +329,6 @@ class BelongsToMany extends ModelRelationField implements
                     'data-remove-after-clone' => 1,
                 ])
             )
-            ->trAttributes(
-                fn (
-                    ?CastedData $data,
-                    int $row,
-                ): array => [
-                    'data-key' => $data?->getKey(),
-                ]
-            )
             ->cast($this->getResource()->getModelCast())
             ->simple()
             ->editable()

@@ -218,7 +218,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
 
             return $field
                 ->setNameAttribute(
-                    value($performName, $name, $parent, $field)
+                    !is_null($performName) ? value($performName, $name, $parent, $field) : $name
                 )
                 ->iterableAttributes($level);
         });

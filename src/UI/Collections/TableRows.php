@@ -15,12 +15,12 @@ use MoonShine\UI\Components\Table\TableRow;
  */
 final class TableRows extends Collection
 {
-    public function pushRow(TableCells $cells, ?int $index, ?Closure $builder = null): self
+    public function pushRow(TableCells $cells, ?int $key, ?Closure $builder = null): self
     {
         return $this->push(
             TableRow::make(
                 $cells,
-                $index
+                $key
             )->when(
                 ! is_null($builder),
                 fn (TableRow $tr) => $builder($tr)

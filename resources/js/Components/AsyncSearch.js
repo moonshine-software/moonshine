@@ -17,7 +17,7 @@ export default route => ({
 
       const tr = pivot.querySelector('table > tbody > tr:last-child')
       tr.querySelector('.pivotTitle').innerHTML = item.label
-      tr.dataset.key = item.value
+      tr.dataset.rowKey = item.value
       tr.querySelector('.pivotChecker').checked = true
 
       this.$dispatch('table_reindex:' + tableName)

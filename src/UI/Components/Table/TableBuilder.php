@@ -22,7 +22,6 @@ use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Table\TableContract;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
-use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Td;
 use MoonShine\UI\Traits\Table\TableStates;
 use Throwable;
@@ -218,8 +217,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                     fn (Fields $f): Fields => $f->prepareReindex()
                 );
 
-            $id = $fields->findByClass(ID::class);
-            $key = $id?->value();
+            $key = $casted->getKey();
 
             if ($this->isVertical()) {
                 foreach ($fields as $cellIndex => $field) {
@@ -238,7 +236,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                         ]))
                         ->pushCell((string) $field, builder: $builder);
 
-                    $rows->pushRow($cells, $cellIndex);
+                    $rows->pushRow($cells, $key ?? $cellIndex);
                 }
 
                 continue;

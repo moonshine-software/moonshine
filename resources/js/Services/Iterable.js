@@ -10,7 +10,7 @@ export class Iterable {
       element.querySelectorAll(`[data-level="${level}"]`).forEach(function (field) {
         let parent = field.closest('[data-re-index-item-selector]')
         let name = field.dataset.name
-        let _key = parent.dataset.key ?? parent.rowIndex ?? index
+        let _key = parent.dataset.rowKey ?? parent.rowIndex ?? index
 
         prev['${index' + level + '}'] = _key
 

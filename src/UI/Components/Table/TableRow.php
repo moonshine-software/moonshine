@@ -8,7 +8,7 @@ use MoonShine\UI\Collections\TableCells;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
- * @method static static make(TableCells $cells, ?int $index = null)
+ * @method static static make(TableCells $cells, ?int $key = null)
  */
 final class TableRow extends MoonShineComponent
 {
