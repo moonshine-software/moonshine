@@ -12,6 +12,46 @@ export function filterAttributeStartsWith(data, startsWith) {
   return filtered
 }
 
+export function validationInHiddenBlocks() {
+  const fields = document.querySelectorAll('input, select, textarea')
+
+  for (const field of fields) {
+    addInvalidListener(field)
+  }
+}
+
+export function addInvalidListener(field) {
+  field.addEventListener('invalid', function (event) {
+    const element = event.target
+    const form = event.target.closest('form')
+
+    for (const ancestor of getAncestorsUntil(element, form)) {
+      if (ancestor instanceof Element) {
+        switch (true) {
+          case ancestor.classList.contains('tab-panel'):
+            ancestor.dispatchEvent(new Event('set-active-tab'))
+            break
+          case ancestor.classList.contains('accordion'):
+            ancestor.dispatchEvent(new Event('collapse-open'))
+            break
+        }
+      }
+    }
+  })
+}
+
+export function getAncestorsUntil(element, stopElement) {
+  const ancestors = []
+  let currentElement = element.parentNode
+
+  while (currentElement && currentElement !== stopElement) {
+    ancestors.push(currentElement)
+    currentElement = currentElement.parentNode
+  }
+
+  return ancestors
+}
+
 export function containsAttribute(el, attr) {
   return el?.outerHTML?.includes(attr)
 }

@@ -7,16 +7,13 @@
 ])
 <div
     {{ $attributes->class(['accordion']) }}
-    x-data="{
+    x-data="
         @if($persist)
-            open: $persist({{ $open ? 'true' : 'false' }}).as($id('collapse')),
+            collapse($persist({{ $open ? 'true' : 'false' }}).as($id('collapse')))
         @else
-            open: {{ $open ? 'true' : 'false' }},
+            collapse({{ $open ? 'true' : 'false' }})
         @endif
-        toggle() {
-            this.open = !this.open
-        }
-    }"
+    "
 >
     <div
         class="accordion-item"
@@ -39,7 +36,10 @@
                 @endif
             </button>
         </h2>
-        <div x-cloak x-show="open" class="accordion-body">
+        <div x-cloak
+             :class="open ? 'block' : 'hidden'"
+             class="accordion-body"
+        >
             <div class="accordion-content">
                 <x-moonshine::components
                     :components="$components"

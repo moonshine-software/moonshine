@@ -1,5 +1,9 @@
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
-import {containsAttribute, isTextInput} from '../Support/Forms.js'
+import {
+  addInvalidListener,
+  containsAttribute,
+  isTextInput,
+} from '../Support/Forms.js'
 import request from '../Request/Core.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import {
@@ -30,12 +34,16 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
         componentRequestData.withAfterCallback(function (data) {
           for (let [column, html] of Object.entries(data.fields)) {
+            let selector = '.field-' + column + '-wrapper'
+
             if (typeof html === 'string') {
-              const wrapper = t.$root.querySelector('.field-' + column + '-wrapper')
+              const wrapper = t.$root.querySelector(selector)
               const element =
-                wrapper === null ? t.$root.querySelector('.field-' + column + '-element') : wrapper
+                wrapper === null ? t.$root.querySelector(selector) : wrapper
 
               element.outerHTML = html
+
+              addInvalidListener(t.$root.querySelector(selector))
 
               let input =
                 focused &&
