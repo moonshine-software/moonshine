@@ -1,9 +1,5 @@
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
-import {
-  addInvalidListener,
-  containsAttribute,
-  isTextInput,
-} from '../Support/Forms.js'
+import {addInvalidListener, containsAttribute, isTextInput} from '../Support/Forms.js'
 import request from '../Request/Core.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import {
@@ -38,8 +34,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
             if (typeof html === 'string') {
               const wrapper = t.$root.querySelector(selector)
-              const element =
-                wrapper === null ? t.$root.querySelector(selector) : wrapper
+              const element = wrapper === null ? t.$root.querySelector(selector) : wrapper
 
               element.outerHTML = html
 
