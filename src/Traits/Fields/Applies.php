@@ -103,7 +103,7 @@ trait Applies
     public function afterDestroy(mixed $data): mixed
     {
         return is_closure($this->onAfterDestroy)
-            ? value($this->onAfterDestroy, $data, $this->requestValue(), $this)
+            ? value($this->onAfterDestroy, $data, $this->toValue(), $this)
             : $this->resolveAfterDestroy($data);
     }
 
@@ -123,6 +123,10 @@ trait Applies
         return ! is_null($this->onApply);
     }
 
+    /**
+     * @param  Closure(mixed, mixed, Field): static  $onBeforeApply
+     * @return $this
+     */
     public function onBeforeApply(Closure $onBeforeApply): static
     {
         $this->onBeforeApply = $onBeforeApply;
@@ -130,6 +134,10 @@ trait Applies
         return $this;
     }
 
+    /**
+     * @param  Closure(mixed, mixed, Field): static  $onAfterApply
+     * @return $this
+     */
     public function onAfterApply(Closure $onAfterApply): static
     {
         $this->onAfterApply = $onAfterApply;
@@ -137,6 +145,10 @@ trait Applies
         return $this;
     }
 
+    /**
+     * @param  Closure(mixed, mixed, Field): static  $onAfterDestroy
+     * @return $this
+     */
     public function onAfterDestroy(Closure $onAfterDestroy): static
     {
         $this->onAfterDestroy = $onAfterDestroy;

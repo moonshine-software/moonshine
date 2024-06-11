@@ -6,7 +6,7 @@ export default () => ({
   tooltipInstance: null,
   init() {
     this.tooltipInstance = tippy(this.$el, {
-      placement: 'right',
+      placement: 'auto',
       offset: [0, 30],
       trigger: 'mouseenter',
       content: () => this.$el.querySelector('.menu-inner-text').textContent,

@@ -28,13 +28,24 @@ class MoonShineRequest extends Request
 
     public function getParentRelationName(): ?string
     {
-        if(is_null($parentResource = $this->getParentResourceId())) {
+        if (is_null($parentResource = $this->getParentResourceId())) {
             return null;
         }
 
         return str($parentResource)
             ->replace('-' . $this->getParentRelationId(), '')
             ->camel()
+            ->value();
+    }
+
+    public function getComponentName(): string
+    {
+        return request()
+            ->str('_component_name')
+            /**
+             * @see RelationModelFieldController::hasManyForm() Unique formName
+             */
+            ->before('-unique-')
             ->value();
     }
 

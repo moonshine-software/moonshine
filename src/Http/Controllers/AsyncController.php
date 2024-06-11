@@ -29,7 +29,9 @@ class AsyncController extends MoonShineController
     {
         $page = $request->getPage();
 
-        $table = $page->getComponents()->findTable(request('_component_name'));
+        $table = $page->getComponents()->findTable(
+            $request->getComponentName()
+        );
 
         if (is_null($table)) {
             return '';
@@ -61,7 +63,9 @@ class AsyncController extends MoonShineController
     {
         $page = $request->getPage();
 
-        $component = $page->getComponents()->findByName(request('_component_name'));
+        $component = $page->getComponents()->findByName(
+            $request->getComponentName()
+        );
 
         if (is_null($component)) {
             return '';
@@ -126,7 +130,7 @@ class AsyncController extends MoonShineController
         $page = $request->getPage();
 
         $form = $page->getComponents()->findForm(
-            $request->get('_component_name')
+            $request->getComponentName()
         );
 
         if (is_null($form)) {

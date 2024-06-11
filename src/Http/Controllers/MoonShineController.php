@@ -48,22 +48,29 @@ abstract class MoonShineController extends BaseController
      */
     protected function reportAndResponse(bool $isAjax, Throwable $e, string $redirectRoute): Response
     {
-        if ($isAjax) {
-            report($e);
+        $message = app()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage();
+        $type = 'error';
 
+        if($flash = session()->get('toast')) {
+            session()->forget(['toast', '_flash.old', '_flash.new']);
+
+            $message = $flash['message'] ?? $message;
+        }
+
+        report_if(app()->isProduction(), $e);
+
+        if ($isAjax) {
             return $this->json(
-                message: app()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage(),
-                messageType: 'error'
+                message: __($message),
+                messageType: $type
             );
         }
 
         throw_if(! app()->isProduction(), $e);
 
-        report_if(app()->isProduction(), $e);
-
         $this->toast(
-            app()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage(),
-            'error'
+            __($message),
+            $type
         );
 
         return redirect($redirectRoute)->withInput();

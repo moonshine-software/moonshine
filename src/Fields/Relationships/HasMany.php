@@ -7,6 +7,7 @@ namespace MoonShine\Fields\Relationships;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasManyButton;
@@ -50,6 +51,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?ActionButton $createButton = null;
 
+    protected ?ActionButton $editButton = null;
+
     protected ?Closure $modifyTable = null;
 
     protected ?Closure $modifyCreateButton = null;
@@ -62,6 +65,23 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?Closure $redirectAfter = null;
 
+    protected bool $withoutModals = false;
+
+    public function withoutModals(): self
+    {
+        $this->withoutModals = true;
+
+        return $this;
+    }
+
+    public function isWithoutModals(): bool
+    {
+        return $this->withoutModals;
+    }
+
+    /**
+     * @param  Closure(int $parentId, self $field): string  $callback
+     */
     public function redirectAfter(Closure $callback): self
     {
         $this->redirectAfter = $callback;
@@ -80,6 +100,9 @@ class HasMany extends ModelRelationField implements HasFields
             ?->formPageUrl($parentId) ?? '';
     }
 
+    /**
+     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     */
     public function modifyCreateButton(Closure $callback): self
     {
         $this->modifyCreateButton = $callback;
@@ -87,6 +110,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
+    /**
+     * @param  Closure(ActionButton $button, bool $preview, self $field): ActionButton  $callback
+     */
     public function modifyOnlyLinkButton(Closure $callback): self
     {
         $this->modifyOnlyLinkButton = $callback;
@@ -94,6 +120,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
+    /**
+     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     */
     public function modifyEditButton(Closure $callback): self
     {
         $this->modifyEditButton = $callback;
@@ -101,6 +130,9 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
+    /**
+     * @param  Closure(TableBuilder $table, bool $preview, self $field): TableBuilder  $callback
+     */
     public function modifyTable(Closure $callback): self
     {
         $this->modifyTable = $callback;
@@ -114,6 +146,13 @@ class HasMany extends ModelRelationField implements HasFields
     ): static {
         $this->isCreatable = Condition::boolean($condition, true);
         $this->createButton = $button;
+
+        return $this;
+    }
+
+    public function changeEditButton(?ActionButton $button = null): static
+    {
+        $this->editButton = $button;
 
         return $this;
     }
@@ -246,6 +285,9 @@ class HasMany extends ModelRelationField implements HasFields
             : $fields;
     }
 
+    /**
+     * @param  Closure(Relation $relation, self $field): Relation  $builder
+     */
     public function modifyBuilder(Closure $builder): static
     {
         $this->modifyBuilder = $builder;
@@ -366,6 +408,9 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
+        // Need for assets
+        $resource->getFormFields();
+
         $asyncUrl = moonshineRouter()->toRelation(
             'search-relations',
             resourceItem: $this->getRelatedModel()?->getKey(),
@@ -378,7 +423,7 @@ class HasMany extends ModelRelationField implements HasFields
                 $this->getRelatedModel()?->getKey()
             );
 
-        $editButton = HasManyButton::for($this, update: true);
+        $editButton = $this->editButton ?? HasManyButton::for($this, update: true);
 
         if (! is_null($this->modifyEditButton)) {
             $editButton = value($this->modifyEditButton, $editButton, $this);

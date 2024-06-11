@@ -110,6 +110,12 @@ body.theme-minimalistic {
     @apply left-2.5 !w-[3.625rem] pt-0 xl:!w-[16.75rem];
     height: calc(100vh - 1rem);
 
+    :where(.menu-inner-dropdown) {
+      .menu-inner-dropdown {
+        @apply !border-l-0 !border-r-0;
+      }
+    }
+
     &._is-minimized {
       @apply lg:!w-[3.625rem];
 
@@ -185,7 +191,7 @@ body.theme-minimalistic {
 
         .menu-inner-link,
         .menu-inner-button {
-          @apply px-1.5 py-1 text-3xs;
+          @apply px-1 py-1 text-3xs;
         }
       }
     }

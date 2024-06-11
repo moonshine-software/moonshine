@@ -80,7 +80,7 @@ describe('form elements', function () {
             fields: $this->collection->onlyFields()
         );
 
-        expect(data_get($form->render()->getData(), 'attributes')->get('x-init'))
+        expect(data_get($form->render()->getData(), 'attributes')->get('x-data'))
             ->toContain('whenFields', 'column', '=', 'value')
         ;
     });

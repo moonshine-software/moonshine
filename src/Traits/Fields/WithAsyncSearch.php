@@ -158,6 +158,10 @@ trait WithAsyncSearch
         ];
     }
 
+    /**
+     * @param  ?Closure(Builder $query, mixed $value, self $field): Builder  $asyncSearchQuery
+     * @param  ?Closure(Model $data, self $field): Builder  $asyncSearchValueCallback
+     */
     public function asyncSearch(
         string $asyncSearchColumn = null,
         int $asyncSearchCount = 15,
@@ -192,6 +196,9 @@ trait WithAsyncSearch
         return $this;
     }
 
+    /**
+     * @param  ?Closure(Builder $query, mixed $value, self $field): Builder  $asyncSearchQuery
+     */
     public function associatedWith(string $column, ?Closure $asyncSearchQuery = null): static
     {
         $searchQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->get($column));
