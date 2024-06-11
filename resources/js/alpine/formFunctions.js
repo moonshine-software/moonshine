@@ -37,7 +37,7 @@ export function crudFormQuery(formElements = null) {
     .join('&')
 }
 
-export function clientSideValidationInHideBlocks() {
+export function validationInHiddenBlocks() {
   const fields = document.querySelectorAll('input, select, textarea')
 
   for (const field of fields) {

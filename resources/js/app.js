@@ -5,7 +5,7 @@ import AlpineMS from 'alpinejs'
 import {MoonShine} from './moonshine.js'
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
-import {clientSideValidationInHideBlocks} from './alpine/formFunctions'
+import {validationInHiddenBlocks} from './alpine/formFunctions'
 
 // Alpine components
 import actionButton from './alpine/actionButton'
@@ -77,7 +77,7 @@ window.Alpine = Alpine
 document.addEventListener('alpine:init', () => {
   document.querySelectorAll('.remove-after-init').forEach(e => e.parentNode.removeChild(e))
 
-  clientSideValidationInHideBlocks()
+  validationInHiddenBlocks()
 
   /* Dark mode */
   Alpine.store('darkMode', {
