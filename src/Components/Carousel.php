@@ -7,7 +7,7 @@ namespace MoonShine\Components;
 use Closure;
 
 /**
- * @method static static make(Closure|string $title = '', Closure|string|array $items = '', Closure|bool $album = false)
+ * @method static static make(Closure|string $alt = '', Closure|string|array $items = '', Closure|bool $portrait = false)
  */
 final class Carousel extends MoonShineComponent
 {
@@ -15,9 +15,9 @@ final class Carousel extends MoonShineComponent
     protected string $view = 'moonshine::components.carousel';
 
     public function __construct(
-        protected Closure|string       $title = '',
+        protected Closure|string       $alt = '',
         protected Closure|string|array $items = '',
-        protected Closure|bool         $album = false,
+        protected Closure|bool         $portrait = false,
     ) {
     }
 
@@ -35,9 +35,9 @@ final class Carousel extends MoonShineComponent
     {
         $items = value($this->items, $this);
         return [
-            'title' => value($this->title, $this),
+            'alt' => value($this->alt, $this),
             'items' => is_array($items) ? $items : [$items],
-            'album' => value($this->album, $this),
+            'portrait' => value($this->portrait, $this),
         ];
     }
 }

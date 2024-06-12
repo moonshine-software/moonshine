@@ -27,7 +27,7 @@
                 </div>
             @endif
                 @if($thumbnails)
-                    <x-moonshine::carousel :items="$thumbnails" :title="$title"></x-moonshine::carousel>
+                    <x-moonshine::carousel :items="$thumbnails" :alt="$title"></x-moonshine::carousel>
                 @else
                     <img src="{{ $thumbnail }}" alt="{{ $title }}" />
                 @endif
