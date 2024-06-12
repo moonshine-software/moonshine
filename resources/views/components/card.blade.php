@@ -25,30 +25,7 @@
                     @endif
                 </div>
             @endif
-            @if(!is_array($thumbnail))
-                <img src="{{ $thumbnail }}" alt="{{ $title }}" />
-            @else
-                <div class="card-photo-carousel" x-data='carousel(
-                   @json($thumbnail)
-                )' >
-                    <template x-for="(slide, index) in slides">
-                        <carousel-slide class="card-photo-carousel-slide" :class="(activeSlide === index) ? 'active' : ''">
-                            <img :src="slide" alt="{{ $title }}">
-                        </carousel-slide>
-                    </template>
-                    <div class="card-photo-carousel-navigation">
-                        <a @click.prevent="previous" href="#" class="card-photo-carousel-navigation-next">
-                            <x-moonshine::icon icon="heroicons.chevron-left" size="7"/>
-                        </a>
-                        <a @click.prevent="next" href="#" class="card-photo-carousel-navigation-prev">
-                            <x-moonshine::icon icon="heroicons.chevron-right" size="7"/>
-                        </a>
-                    </div>
-                    <div class="card-photo-carousel-slide-count">
-                        <span x-text="activeSlide+1"></span> / {{count($thumbnail)}}
-                    </div>
-                </div>
-            @endif
+            <x-moonshine::carousel :thumbnail="$thumbnail" :title="$title"></x-moonshine::carousel>
         </div>
     @endif
 

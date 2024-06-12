@@ -1,46 +1,12 @@
 /* Cateogory card */
 .card-category {
-  @apply relative flex h-full flex-col gap-y-6 rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
+  @apply relative flex flex-col gap-y-6 rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
 
   .card-photo {
-    @apply relative h-52 w-full overflow-hidden rounded-lg;
-    img {
-      @apply h-full w-full select-none object-cover;
-    }
+    @apply relative w-full overflow-hidden rounded-lg;
+
     .badge {
       @apply absolute left-4 top-4 z-2;
-    }
-    &-carousel{
-      @apply relative h-full;
-
-      carousel-slide{
-        @apply inline-block h-full opacity-0 transition-all;
-        &.active{
-          @apply opacity-100;
-        }
-        img{
-          @apply absolute top-0;
-        }
-      }
-      &-navigation{
-        @apply absolute top-1/2 w-full z-10;
-        a{
-          @apply bg-white dark:bg-dark-600 bg-opacity-50 dark:bg-opacity-50 rounded-full transition-all absolute -translate-y-1/2;
-          &:hover,
-          &:focus{
-            @apply bg-opacity-80 dark:bg-opacity-80
-          }
-        }
-        &-next{
-          @apply left-2;
-        }
-        &-prev{
-          @apply right-2;
-        }
-      }
-      &-slide-count{
-        @apply absolute bottom-0 w-full text-center bg-white bg-opacity-50 dark:bg-opacity-50 dark:bg-dark-600 text-[.75rem] z-10;
-      }
     }
 
     &-content {
