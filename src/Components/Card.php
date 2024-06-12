@@ -69,7 +69,7 @@ final class Card extends MoonShineComponent
 
     public function thumbnails(Closure|string|array $value): self
     {
-        $this->thumbnail = $value;
+        $this->thumbnails = $value;
 
         return $this;
     }
