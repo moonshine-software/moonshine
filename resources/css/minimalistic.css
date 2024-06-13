@@ -67,38 +67,6 @@ body.theme-minimalistic {
         @apply right-2 h-4 w-4;
       }
     }
-
-    .notifications {
-      &-item {
-        @apply p-2;
-      }
-      &-category {
-        @apply h-8 w-8;
-        > svg {
-          @apply h-4 w-4;
-        }
-      }
-      &-title,
-      &-read {
-        @apply text-3xs;
-      }
-      &-text,
-      &-more,
-      &-time {
-        @apply text-[13px] leading-[1.25];
-      }
-      &-time {
-        @apply mt-1;
-      }
-      &-icon {
-        > span {
-          @apply right-2.5 top-1.5;
-        }
-        > svg {
-          @apply h-5 w-5;
-        }
-      }
-    }
   }
 
   .layout-content {
@@ -418,6 +386,39 @@ body.theme-minimalistic {
         > svg {
           @apply h-7 w-7;
         }
+      }
+    }
+  }
+
+  /* Notifications */
+  .notifications {
+    &-item {
+      @apply p-2;
+    }
+    &-category {
+      @apply h-8 w-8;
+      > svg {
+        @apply h-4 w-4;
+      }
+    }
+    &-title,
+    &-read {
+      @apply text-3xs;
+    }
+    &-text,
+    &-more,
+    &-time {
+      @apply text-[13px] leading-[1.25];
+    }
+    &-time {
+      @apply mt-1;
+    }
+    &-icon {
+      > span {
+        @apply right-2.5 top-1.5;
+      }
+      > svg {
+        @apply h-5 w-5;
       }
     }
   }
