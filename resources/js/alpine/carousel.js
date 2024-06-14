@@ -1,4 +1,4 @@
-export default (slides = []) =>({
+export default (slides = []) => ({
   activeSlide: 0,
   slides: [],
   init() {
@@ -6,14 +6,12 @@ export default (slides = []) =>({
   },
   next() {
     if (this.activeSlide < this.slides.length - 1) {
-      this.activeSlide++;
-
+      this.activeSlide++
     }
   },
   previous() {
     if (this.activeSlide !== 0) {
-      this.activeSlide--;
+      this.activeSlide--
     }
-  }
+  },
 })
-

@@ -1,35 +1,35 @@
-.carousel{
-  @apply relative overflow-hidden aspect-[16/9] flex justify-center items-center;
-  &.portrait{
+.carousel {
+  @apply relative flex aspect-[16/9] items-center justify-center overflow-hidden;
+  &.portrait {
     @apply aspect-[4/5];
   }
 
-  carousel-slide{
-    @apply inline-block opacity-0 transition-all w-full h-full absolute left-0;
-    &.active{
+  carousel-slide {
+    @apply absolute left-0 inline-block h-full w-full opacity-0 transition-all;
+    &.active {
       @apply opacity-100;
     }
-    img{
-      @apply absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full;
+    img {
+      @apply absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2;
     }
   }
-  &-navigation{
-    @apply absolute top-1/2 w-full z-10;
-    a{
-      @apply bg-white dark:bg-dark-600 bg-opacity-50 dark:bg-opacity-50 rounded-full transition-all absolute -translate-y-1/2;
+  &-navigation {
+    @apply absolute top-1/2 z-10 w-full;
+    a {
+      @apply absolute -translate-y-1/2 rounded-full bg-white bg-opacity-50 transition-all dark:bg-dark-600 dark:bg-opacity-50;
       &:hover,
-      &:focus{
-        @apply bg-opacity-80 dark:bg-opacity-80
+      &:focus {
+        @apply bg-opacity-80 dark:bg-opacity-80;
       }
     }
-    &-next{
+    &-next {
       @apply left-2;
     }
-    &-prev{
+    &-prev {
       @apply right-2;
     }
   }
-  &-slide-count{
-    @apply absolute bottom-0 w-full text-center bg-white bg-opacity-50 dark:bg-opacity-50 dark:bg-dark-600 text-[.75rem] z-10;
+  &-slide-count {
+    @apply absolute bottom-0 z-10 w-full bg-white bg-opacity-50 text-center text-[.75rem] dark:bg-dark-600 dark:bg-opacity-50;
   }
 }

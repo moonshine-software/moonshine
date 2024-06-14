@@ -1,6 +1,6 @@
 /* Cateogory card */
 .card-category {
-  @apply relative flex flex-col gap-y-6 rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5 h-full;
+  @apply relative flex h-full flex-col gap-y-6 rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
 
   .card-photo {
     @apply relative h-52 w-full overflow-hidden rounded-lg;
@@ -44,7 +44,6 @@
       }
     }
   }
-
 
   .card-body {
     @apply grow overflow-hidden;
