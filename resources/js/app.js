@@ -33,6 +33,7 @@ import fragment from './alpine/fragment'
 import globalSearch from './alpine/globalSearch'
 import tabs from './alpine/tabs.js'
 import easyMde from './alpine/easyMde'
+import carousel from './alpine/carousel.js'
 
 window.MoonShine = new MoonShine()
 document.dispatchEvent(new CustomEvent('moonshine:init'))
@@ -68,6 +69,7 @@ Alpine.data('fragment', fragment)
 Alpine.data('globalSearch', globalSearch)
 Alpine.data('tabs', tabs)
 Alpine.data('easyMde', easyMde)
+Alpine.data('carousel', carousel)
 
 window.Alpine = Alpine
 
