@@ -38,37 +38,19 @@
         @endif
 
         <x-slot name="outerHtml">
-            <x-moonshine::link-button
+            <x-moonshine::action-link
+                :action="$action"
                 :attributes="$attributes->merge([
                     '@click.prevent' => 'toggleModal',
                 ])"
-                :icon="$action->iconValue()"
-                :href="$action->url()"
-            >
-                {{ $action->label() }}
-            </x-moonshine::link-button>
+            />
         </x-slot>
 
     </x-moonshine::modal>
 @else
-    @if($action->inDropdown())
-        <x-moonshine::link-native
-            :attributes="$attributes"
-            @class(['p-2' => $action->inDropdown()])
-            :href="$action->url()"
-            :icon="$action->iconValue()"
-        >
-            {{ $action->label() }}
-        </x-moonshine::link-native>
-    @else
-        <x-moonshine::link-button
-            :attributes="$attributes"
-            @class(['p-2' => $action->inDropdown()])
-            :href="$action->url()"
-            :icon="$action->iconValue()"
-        >
-            {{ $action->label() }}
-        </x-moonshine::link-button>
-    @endif
+    <x-moonshine::action-link
+        :action="$action"
+        :attributes="$attributes"
+    />
 @endif
 
