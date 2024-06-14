@@ -1,0 +1,35 @@
+.carousel {
+  @apply relative flex aspect-[16/9] items-center justify-center overflow-hidden;
+  &.portrait {
+    @apply aspect-[4/5];
+  }
+
+  carousel-slide {
+    @apply absolute left-0 inline-block h-full w-full opacity-0 transition-all;
+    &.active {
+      @apply opacity-100;
+    }
+    img {
+      @apply absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2;
+    }
+  }
+  &-navigation {
+    @apply absolute top-1/2 z-10 w-full;
+    a {
+      @apply absolute -translate-y-1/2 rounded-full bg-white bg-opacity-50 transition-all dark:bg-dark-600 dark:bg-opacity-50;
+      &:hover,
+      &:focus {
+        @apply bg-opacity-80 dark:bg-opacity-80;
+      }
+    }
+    &-next {
+      @apply left-2;
+    }
+    &-prev {
+      @apply right-2;
+    }
+  }
+  &-slide-count {
+    @apply absolute bottom-0 z-10 w-full bg-white bg-opacity-50 text-center text-[.75rem] dark:bg-dark-600 dark:bg-opacity-50;
+  }
+}

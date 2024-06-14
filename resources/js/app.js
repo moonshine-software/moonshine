@@ -12,6 +12,7 @@ import actionButton from './alpine/actionButton'
 import asyncLink from './alpine/asyncLink'
 import asyncSearch from './alpine/asyncSearch'
 import cardsBuilder from './alpine/cardsBuilder'
+import carousel from './alpine/carousel.js'
 import charts from './alpine/charts'
 import code from './alpine/code'
 import collapse from './alpine/collapse'
@@ -48,6 +49,7 @@ Alpine.data('actionButton', actionButton)
 Alpine.data('asyncLink', asyncLink)
 Alpine.data('asyncSearch', asyncSearch)
 Alpine.data('cardsBuilder', cardsBuilder)
+Alpine.data('carousel', carousel)
 Alpine.data('charts', charts)
 Alpine.data('code', code)
 Alpine.data('collapse', collapse)

@@ -51,6 +51,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?ActionButton $createButton = null;
 
+    protected ?ActionButton $editButton = null;
+
     protected ?Closure $modifyTable = null;
 
     protected ?Closure $modifyCreateButton = null;
@@ -62,6 +64,20 @@ class HasMany extends ModelRelationField implements HasFields
     protected ?Closure $modifyBuilder = null;
 
     protected ?Closure $redirectAfter = null;
+
+    protected bool $withoutModals = false;
+
+    public function withoutModals(): self
+    {
+        $this->withoutModals = true;
+
+        return $this;
+    }
+
+    public function isWithoutModals(): bool
+    {
+        return $this->withoutModals;
+    }
 
     /**
      * @param  Closure(int $parentId, self $field): string  $callback
@@ -130,6 +146,13 @@ class HasMany extends ModelRelationField implements HasFields
     ): static {
         $this->isCreatable = Condition::boolean($condition, true);
         $this->createButton = $button;
+
+        return $this;
+    }
+
+    public function changeEditButton(?ActionButton $button = null): static
+    {
+        $this->editButton = $button;
 
         return $this;
     }
@@ -385,6 +408,9 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
+        // Need for assets
+        $resource->getFormFields();
+
         $asyncUrl = moonshineRouter()->toRelation(
             'search-relations',
             resourceItem: $this->getRelatedModel()?->getKey(),
@@ -397,7 +423,7 @@ class HasMany extends ModelRelationField implements HasFields
                 $this->getRelatedModel()?->getKey()
             );
 
-        $editButton = HasManyButton::for($this, update: true);
+        $editButton = $this->editButton ?? HasManyButton::for($this, update: true);
 
         if (! is_null($this->modifyEditButton)) {
             $editButton = value($this->modifyEditButton, $editButton, $this);

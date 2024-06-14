@@ -24,6 +24,27 @@
     }
   }
 
+  .card-carousel {
+    @apply relative w-full overflow-hidden rounded-lg;
+
+    .badge {
+      @apply absolute left-4 top-4 z-2;
+    }
+
+    &-content {
+      @apply absolute inset-0 z-2 flex flex-col justify-end gap-y-1 p-4 before:absolute before:inset-x-0 before:bottom-0 before:-z-1 before:h-1/2 before:bg-gradient-to-t before:from-black before:to-transparent;
+      .title {
+        @apply text-sm font-semibold text-white md:text-md;
+      }
+      .subcategory {
+        @apply text-2xs text-slate-300;
+      }
+      a {
+        @apply hover:text-white;
+      }
+    }
+  }
+
   .card-body {
     @apply grow overflow-hidden;
 
