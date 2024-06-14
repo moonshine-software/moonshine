@@ -23,7 +23,7 @@ export default (activeTab = '', isVertical = false) => ({
     this.toggleVerticalClass(shouldBeVertical)
   },
 
-  clickingTab(tabId) {
+  setActiveTab(tabId) {
     this.activeTab = tabId ?? this.activeTab
   },
 })

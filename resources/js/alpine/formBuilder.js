@@ -5,8 +5,9 @@ import {
   showWhenVisibilityChange,
 } from './showWhenFunctions'
 import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
-import {containsAttribute, isTextInput} from './supportFunctions.js'
+import {containsAttribute, getAncestorsUntil, isTextInput} from './supportFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
+import {addInvalidListener} from './formFunctions.js'
 
 export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
@@ -34,6 +35,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
                 wrapper === null ? t.$root.querySelector('.field-' + column + '-element') : wrapper
 
               element.outerHTML = html
+
+              addInvalidListener(t.$root.querySelector('.field-' + column + '-element'))
 
               let input =
                 focused &&
