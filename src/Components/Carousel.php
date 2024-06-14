@@ -11,7 +11,6 @@ use Closure;
  */
 final class Carousel extends MoonShineComponent
 {
-
     protected string $view = 'moonshine::components.carousel';
 
     public function __construct(
@@ -34,6 +33,7 @@ final class Carousel extends MoonShineComponent
     protected function viewData(): array
     {
         $items = value($this->items, $this);
+
         return [
             'alt' => value($this->alt, $this),
             'items' => is_array($items) ? $items : [$items],
