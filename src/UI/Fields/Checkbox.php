@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 use MoonShine\Support\AlpineJs;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;

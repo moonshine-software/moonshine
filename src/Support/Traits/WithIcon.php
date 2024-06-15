@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\Traits;
 
-use Illuminate\Contracts\View\View;
 use MoonShine\UI\Components\Icon;
 
 trait WithIcon
@@ -28,7 +27,7 @@ trait WithIcon
         int $size = 8,
         string $color = '',
         array $attributes = []
-    ): View|string {
+    ): string {
         if ($this->getIconValue() === '') {
             return '';
         }
@@ -44,7 +43,7 @@ trait WithIcon
             $icon->custom();
         }
 
-        return rescue(
+        return (string) rescue(
             fn () => $icon->render(),
             rescue: fn (): string => '',
             report: false

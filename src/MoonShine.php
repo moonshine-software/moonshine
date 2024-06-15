@@ -81,14 +81,14 @@ class MoonShine
     /**
      * @param  Closure(string $id, ...$parameters): mixed  $container
      */
-    public static function containerUsing(Closure $container): void
+    public static function containerResolver(Closure $container): void
     {
         self::$container = $container;
     }
 
     public static function getInstance(): self
     {
-        return value(self::$container, MoonShine::class);
+        return value(self::$container, __CLASS__);
     }
 
     public function getContainer(string $id, mixed $default = null, ...$parameters): mixed
@@ -99,7 +99,7 @@ class MoonShine
     /**
      * @param  Closure(string $key, mixed $default): mixed  $request
      */
-    public static function requestUsing(mixed $request): void
+    public static function requestResolver(mixed $request): void
     {
         self::$request = $request;
     }

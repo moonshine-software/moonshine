@@ -153,7 +153,7 @@ class MoonShineServiceProvider extends ServiceProvider
 
         MoonShine::renderUsing(static fn (string $view, array $data) => view($view, $data));
 
-        MoonShine::containerUsing(static function (string $id, mixed $default = null, ...$parameters): mixed {
+        MoonShine::containerResolver(static function (string $id, mixed $default = null, ...$parameters): mixed {
             if(! is_null($default) && ! app()->has($id)) {
                 return $default;
             }
@@ -161,7 +161,7 @@ class MoonShineServiceProvider extends ServiceProvider
             return app($id, ...$parameters);
         });
 
-        FormElement::errorsUsing(
+        FormElement::errorsResolver(
             static fn (?string $bag) => app('session')
                 ->get('errors')
                 ?->{$bag}
@@ -174,7 +174,7 @@ class MoonShineServiceProvider extends ServiceProvider
             ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
             ->toHtml());
 
-        MoonShine::requestUsing(static fn (): Request => new Request(
+        MoonShine::requestResolver(static fn (): Request => new Request(
             request: app(ServerRequestInterface::class),
             session: fn (string $key, mixed $default) => session($key, $default),
             file: fn (string $key) => request()->file($key, request()->get($key, false)),
@@ -295,6 +295,7 @@ class MoonShineServiceProvider extends ServiceProvider
             ->registerAuth()
             ->registerApplies();
 
+        // Octane events
         tap($this->app['events'], function ($event): void {
             $event->listen(RequestHandled::class, function (RequestHandled $event): void {
                 moonshine()->flushState();

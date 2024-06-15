@@ -69,7 +69,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
     }
 
-    public static function errorsUsing(Closure $callback): void
+    public static function errorsResolver(Closure $callback): void
     {
         self::$errors = $callback;
     }
