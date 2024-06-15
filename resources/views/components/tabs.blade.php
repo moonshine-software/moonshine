@@ -19,7 +19,7 @@
             @foreach($tabs as $tabId => $tabContent)
                 <li class="tabs-item">
                     <button
-                        @click.prevent="clickingTab('{{ $tabId }}')"
+                        @click.prevent="setActiveTab(`{{ $tabId }}`)"
                         :class="{ '_is-active': activeTab === '{{ $tabId }}' }"
                         class="tabs-button"
                         type="button"
@@ -34,7 +34,11 @@
         <!-- Tabs content -->
         <div class="tabs-content">
             @foreach($contents as $tabId => $tabContent)
-                <div x-show="activeTab === '{{ $tabId }}'" class="tab-panel" style="display: none">
+                <div
+                    :class="activeTab === '{{ $tabId }}' ? 'block' : 'hidden'"
+                    class="tab-panel"
+                    @set-active-tab="setActiveTab(`{{ $tabId }}`)"
+                >
                     <div class="tabs-body">
                         {!! $tabContent !!}
                     </div>

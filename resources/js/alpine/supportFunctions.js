@@ -27,3 +27,15 @@ export function isTextInput(el) {
 
   return false
 }
+
+export function getAncestorsUntil(element, stopElement) {
+  const ancestors = []
+  let currentElement = element.parentNode
+
+  while (currentElement && currentElement !== stopElement) {
+    ancestors.push(currentElement)
+    currentElement = currentElement.parentNode
+  }
+
+  return ancestors
+}
