@@ -154,7 +154,7 @@ final class CardsBuilder extends IterableComponent
         return $this;
     }
 
-    protected function getMapperValue(string $column, mixed $data, int $index): string
+    protected function getMapperValue(string $column, mixed $data, int $index): string|array
     {
         return is_string($this->{$column})
             ? data_get($data, $this->{$column}, '')
