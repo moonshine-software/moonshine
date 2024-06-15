@@ -28,7 +28,7 @@ final class ActionButtons extends Collection
             static fn (
                 ActionButtonContract $action
             ): bool => $action->isBulk()
-        )->map(static fn(ActionButtonContract $action) => $action->bulk($forComponent));
+        )->map(static fn (ActionButtonContract $action) => $action->bulk($forComponent));
     }
 
     public function withoutBulk(): self
