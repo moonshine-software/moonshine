@@ -74,7 +74,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
     public function getBulkButtons(): ActionButtons
     {
         return ActionButtons::make($this->buttons)
-            ->bulk()
+            ->bulk($this->getName())
             ->onlyVisible();
     }
 }
