@@ -10,6 +10,11 @@ use Illuminate\Http\Response;
 
 class MoonShineNotFoundException extends Exception
 {
+    public function report(): bool
+    {
+        return false;
+    }
+
     public function render(Request $request): Response
     {
         return response()->view('moonshine::errors.404', [
