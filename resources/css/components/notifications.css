@@ -1,0 +1,45 @@
+/* Notifications */
+.notifications {
+  .dropdown-content {
+    @apply w-full;
+  }
+  &-icon {
+    @apply relative block text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white;
+  }
+  &-item {
+    @apply relative flex gap-x-3 p-3;
+  }
+  &-remove {
+    @apply absolute right-3 top-1/2 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
+    > svg {
+      @apply h-4 w-4;
+    }
+  }
+  &-category {
+    @apply inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full;
+    & > svg {
+      @apply h-5 w-5;
+    }
+  }
+  &-content {
+    @apply flex grow flex-col gap-y-0.5 pr-4;
+  }
+  &-title {
+    @apply text-2xs font-medium;
+  }
+  &-text {
+    @apply text-3xs text-gray-500 dark:text-gray-400;
+  }
+  &-more {
+    @apply text-3xs font-medium;
+    > a {
+      @apply text-secondary hover:text-primary dark:hover:text-slate-200;
+    }
+  }
+  &-time {
+    @apply text-[13px] text-gray-400 dark:text-gray-500;
+  }
+  &-read {
+    @apply block text-center text-2xs font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
+  }
+}
