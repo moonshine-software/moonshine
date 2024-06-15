@@ -29,13 +29,12 @@ final class Paginator implements PaginatorContract
         private readonly ?string $prevPageUrl = null,
         private readonly ?string $lastPageUrl = null,
         private readonly ?string $nextPageUrl = null,
-    )
-    {
+    ) {
     }
 
     public function getLinks(): PaginatorLinksContract
     {
-        return PaginatorLinks::make($this->links)->reject(fn(array $link): bool => $link['url'] === '' || str($link['label'])->contains(['prev', 'next'], true));
+        return PaginatorLinks::make($this->links)->reject(fn (array $link): bool => $link['url'] === '' || str($link['label'])->contains(['prev', 'next'], true));
     }
 
     public function getData(): Collection
@@ -47,7 +46,7 @@ final class Paginator implements PaginatorContract
     {
         if($this->path !== $path) {
             $this->links = collect($this->links)
-                ->map(function(array $link) use($path): array {
+                ->map(function (array $link) use ($path): array {
                     $current = strtok($this->path, '?');
                     $new = strtok($path, '?');
                     $query = (string) str($path)->after('?');
@@ -145,7 +144,7 @@ final class Paginator implements PaginatorContract
 
     public function hasPages(): bool
     {
-       return $this->getCurrentPage() !== 1 || ($this->getCurrentPage() < $this->getLastPage());
+        return $this->getCurrentPage() !== 1 || ($this->getCurrentPage() < $this->getLastPage());
     }
 
     public function getView(): string

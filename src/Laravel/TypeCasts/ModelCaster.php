@@ -48,7 +48,7 @@ final readonly class ModelCaster implements MoonShineDataCaster
      */
     public function paginatorCast(mixed $data): ?PaginatorContract
     {
-        if(!$data instanceof Paginator) {
+        if(! $data instanceof Paginator) {
             return null;
         }
 

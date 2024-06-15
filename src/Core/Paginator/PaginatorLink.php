@@ -10,8 +10,7 @@ final readonly class PaginatorLink implements PaginatorLinkContract
         private string $url,
         private string $label,
         private bool $active = false,
-    )
-    {
+    ) {
     }
 
     public function getUrl(): string

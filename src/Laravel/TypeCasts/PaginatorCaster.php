@@ -18,11 +18,11 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
     {
         $data = collect($this->data)
             ->mapWithKeys(
-                fn(mixed $value, string $key): array => [(string) str($key)->camel() => $value]
+                fn (mixed $value, string $key): array => [(string) str($key)->camel() => $value]
             )
             ->toArray();
 
-        if(!isset($data['links'])) {
+        if(! isset($data['links'])) {
             $data['links'] = [];
             $data['simple'] = true;
         }

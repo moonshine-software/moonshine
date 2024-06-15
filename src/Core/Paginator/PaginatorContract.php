@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Paginator;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Collection;
-use JsonSerializable;
 use ArrayAccess;
 use Countable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use IteratorAggregate;
+use JsonSerializable;
 use Stringable;
 
 interface PaginatorContract extends
