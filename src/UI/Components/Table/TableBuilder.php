@@ -491,7 +491,6 @@ final class TableBuilder extends IterableComponent implements TableContract
             'paginator' => $this->getPaginator(
                 $this->isAsync()
             ),
-            'bulkButtons' => $this->getBulkButtons(),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),
             'createButton' => $this->creatableButton,

@@ -6,7 +6,7 @@
             "condition": [
                 {
                     "methodNames": ["make"],
-                    "classFqn": ["MoonShine\\Fields\\Field"],
+                    "classFqn": ["MoonShine\\UI\\Fields\\Field"],
                     "parameters": [2]
                 }
             ],
@@ -23,9 +23,9 @@
                 {
                     "methodNames": ["customView"],
                     "classFqn": [
-                        "MoonShine\\Pages\\Page",
-                        "MoonShine\\Fields\\FormElement",
-                        "MoonShine\\Components\\MoonShineComponent"
+                        "MoonShine\\Core\\Pages\\Page",
+                        "MoonShine\\UI\\Fields\\Field",
+                        "MoonShine\\UI\\Components\\MoonShineComponent"
                     ],
                     "parameters": [1]
                 }
@@ -40,7 +40,7 @@
             "condition": [
                 {
                     "methodNames": ["icon"],
-                    "classFqn": ["MoonShine\\ActionButtons\\ActionButton"],
+                    "classFqn": ["MoonShine\\UI\\Components\\ActionButton"],
                     "parameters": [1]
                 }
             ]
