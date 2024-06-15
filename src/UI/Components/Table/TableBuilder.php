@@ -6,7 +6,6 @@ namespace MoonShine\UI\Components\Table;
 
 use Closure;
 use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Paginator\PaginatorContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;

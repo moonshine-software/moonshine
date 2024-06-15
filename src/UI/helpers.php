@@ -1,8 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
-use MoonShine\Core\Paginator\PaginatorContract;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Applies\AppliesRegister;
 use MoonShine\UI\Collections\Fields;
