@@ -9,7 +9,6 @@
     'asyncUrl',
     'async' => false,
     'simple' => false,
-    'simplePaginate' => false,
     'notfound' => false,
     'creatable' => false,
     'reindex' => false,
@@ -89,12 +88,7 @@
         @endif
 
         @if($hasPaginator)
-            {{ $paginator->links(
-                $simplePaginate
-                    ? 'moonshine::pagination.simple'
-                    : 'moonshine::pagination.default',
-                ['async' => $async]
-            ) }}
+            {!! $paginator !!}
         @endif
     </div>
 </div>

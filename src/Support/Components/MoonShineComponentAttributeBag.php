@@ -24,7 +24,7 @@ final class MoonShineComponentAttributeBag extends ComponentAttributeBag
     public function remove(string $name): void
     {
         $this->attributes = $this
-            ->filter(fn (string $value, string $attrName): bool => $attrName !== $name)
+            ->filter(fn (mixed $value, string $attrName): bool => $attrName !== $name)
             ->getAttributes();
     }
 

@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\MoonShineDataCast;
+use MoonShine\Core\Contracts\MoonShineDataCaster;
 use MoonShine\Core\TypeCasts\DefaultDataCast;
 
 trait HasDataCast
 {
-    protected ?MoonShineDataCast $cast = null;
+    protected ?MoonShineDataCaster $cast = null;
 
     public function hasCast(): bool
     {
         return ! is_null($this->cast);
     }
 
-    public function cast(MoonShineDataCast $cast): static
+    public function cast(MoonShineDataCaster $cast): static
     {
         $this->cast = $cast;
 
         return $this;
     }
 
-    public function getCast(): MoonShineDataCast
+    public function getCast(): MoonShineDataCaster
     {
         return $this->cast;
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Core\Contracts\MoonShineDataCast;
+use MoonShine\Core\Contracts\MoonShineDataCaster;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
@@ -27,7 +27,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
         return $this;
     }
 
-    public function fillCast(mixed $values, MoonShineDataCast $cast): static
+    public function fillCast(mixed $values, MoonShineDataCaster $cast): static
     {
         return $this
             ->cast($cast)

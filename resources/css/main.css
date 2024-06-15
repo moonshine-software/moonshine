@@ -34,6 +34,8 @@
 @import 'components/toasts';
 @import 'components/code';
 @import 'components/easyMde';
+@import 'components/notifications';
+@import 'components/carousel';
 
 /* Tailwind Utilities */
 @import 'tailwindcss/utilities';

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Collections\Fields;
@@ -28,7 +27,7 @@ final class CardsBuilder extends IterableComponent
 
     protected Closure|string $title = '';
 
-    protected Closure|string $subtitle = '';
+    protected Closure|array|string $subtitle = '';
 
     protected Closure|string $thumbnail = '';
 
@@ -45,7 +44,7 @@ final class CardsBuilder extends IterableComponent
     protected array|Closure $componentAttributes = [];
 
     public function __construct(
-        Paginator|iterable $items = [],
+        iterable $items = [],
         Fields|array $fields = [],
     ) {
         parent::__construct();
@@ -134,14 +133,16 @@ final class CardsBuilder extends IterableComponent
                 return value($this->customComponent, $data, $index, $this);
             }
 
+            $buttons = $this->getButtons($casted);
+
             return Card::make(...$this->getMapper($data, $fields, $index))
                 ->content((string) value($this->content, $data, $index, $this))
                 ->header((string) value($this->header, $data, $index, $this))
                 ->customAttributes(value($this->componentAttributes, $data, $index, $this))
                 ->when(
-                    $this->getButtons($data)->count(),
+                    $buttons->isNotEmpty(),
                     fn (Card $card): Card => $card->actions(
-                        fn () => ActionGroup::make($this->getButtons($data)->toArray())
+                        fn () => ActionGroup::make($buttons->toArray())
                     )
                 );
         });
@@ -154,7 +155,7 @@ final class CardsBuilder extends IterableComponent
         return $this;
     }
 
-    protected function getMapperValue(string $column, mixed $data, int $index): string
+    protected function getMapperValue(string $column, mixed $data, int $index): string|array
     {
         return is_string($this->{$column})
             ? data_get($data, $this->{$column}, '')
@@ -181,10 +182,13 @@ final class CardsBuilder extends IterableComponent
     {
         parent::prepareBeforeRender();
 
+        $this->resolvePaginator();
+
         if ($this->isAsync() && $this->hasPaginator()) {
-            $this->getPaginator()
-                ?->appends(moonshine()->getRequest()->getExcept('page'))
-                ?->setPath($this->prepareAsyncUrlFromPaginator());
+            $this->paginator(
+                $this->getPaginator()
+                    ?->setPath($this->prepareAsyncUrlFromPaginator())
+            );
         }
 
         if ($this->isAsync()) {
@@ -204,8 +208,9 @@ final class CardsBuilder extends IterableComponent
             'components' => $this->getComponents(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
-            'simplePaginate' => $this->isSimplePaginator(),
-            'paginator' => $this->getPaginator(),
+            'paginator' => $this->getPaginator(
+                $this->isAsync()
+            ),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),
             'colSpan' => $this->columnSpanValue(),

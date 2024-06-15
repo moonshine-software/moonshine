@@ -6,6 +6,7 @@ namespace {namespace};
 
 use MoonShine\Core\Contracts\MoonShineDataCast;
 use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Core\Paginator\PaginatorContract;
 
 /**
  * @template T
@@ -16,6 +17,11 @@ final class DummyCast implements MoonShineDataCast
      * @return CastedData<T>
      */
     public function cast(mixed $data): CastedData
+    {
+        //
+    }
+
+    public function paginatorCast(mixed $data): ?PaginatorContract
     {
         //
     }

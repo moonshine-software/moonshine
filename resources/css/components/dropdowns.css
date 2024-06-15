@@ -24,11 +24,15 @@
   /* Dropdown menu */
   &-menu {
     @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
-    &-link {
-      @apply flex items-center gap-x-2 px-2 py-2.5 text-3xs hover:bg-gray-100 hover:text-black dark:hover:bg-dark-400 xs:px-4 lg:text-2xs;
+    &-link,
+    .btn {
+      @apply flex items-center justify-start gap-x-2 px-2 py-2.5 text-3xs hover:bg-gray-100 hover:text-black dark:hover:bg-dark-400 dark:hover:text-white xs:px-4 lg:text-2xs;
       > svg {
         @apply h-4 w-4;
       }
+    }
+    .btn {
+      @apply rounded-none border-0 focus:ring-0;
     }
   }
 }

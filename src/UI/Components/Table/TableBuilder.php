@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Table;
 
 use Closure;
-use Illuminate\Contracts\Pagination\Paginator;
 use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Core\Paginator\PaginatorContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
@@ -27,7 +27,7 @@ use MoonShine\UI\Traits\Table\TableStates;
 use Throwable;
 
 /**
- * @method static static make(FieldsCollection|array $fields = [], iterable $items = [], ?Paginator $paginator = null)
+ * @method static static make(FieldsCollection|array $fields = [], iterable $items = [])
  */
 final class TableBuilder extends IterableComponent implements TableContract
 {
@@ -55,16 +55,11 @@ final class TableBuilder extends IterableComponent implements TableContract
     public function __construct(
         FieldsCollection|array $fields = [],
         iterable $items = [],
-        ?Paginator $paginator = null
     ) {
         parent::__construct();
 
         $this->fields($fields);
         $this->items($items);
-
-        if (! is_null($paginator)) {
-            $this->paginator($paginator);
-        }
 
         $this->withAttributes([]);
 
@@ -451,10 +446,12 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function performBeforeRender(): self
     {
+        $this->resolvePaginator();
+
         if ($this->isAsync() && $this->hasPaginator()) {
-            $this->getPaginator()
-                ?->appends(moonshine()->getRequest()->getExcept('page'))
-                ?->setPath($this->prepareAsyncUrlFromPaginator());
+            $this->paginator(
+                $this->getPaginator()?->setPath($this->prepareAsyncUrlFromPaginator())
+            );
         }
 
         if ($this->isAsync()) {
@@ -492,8 +489,9 @@ final class TableBuilder extends IterableComponent implements TableContract
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
             'simple' => $this->isSimple(),
-            'simplePaginate' => $this->isSimplePaginator(),
-            'paginator' => $this->getPaginator(),
+            'paginator' => $this->getPaginator(
+                $this->isAsync()
+            ),
             'bulkButtons' => $this->getBulkButtons(),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),

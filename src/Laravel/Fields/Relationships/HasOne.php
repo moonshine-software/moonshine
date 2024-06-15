@@ -90,7 +90,7 @@ class HasOne extends ModelRelationField implements HasFields
      */
     protected function resolvePreview(): View|string
     {
-        $items = Arr::wrap($this->toValue());
+        $items = [$this->toValue()];
 
         if ($this->isRawMode()) {
             return collect($items)
@@ -142,6 +142,7 @@ class HasOne extends ModelRelationField implements HasFields
         $parentResource = moonshineRequest()->getResource();
 
         $item = $this->toValue();
+
         // When need lazy load
         // $item->load($resource->getWith());
 

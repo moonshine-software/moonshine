@@ -22,13 +22,13 @@ final class ActionButtons extends Collection
         );
     }
 
-    public function bulk(): self
+    public function bulk(?string $forComponent = null): self
     {
         return $this->filter(
             static fn (
                 ActionButtonContract $action
             ): bool => $action->isBulk()
-        );
+        )->map(static fn(ActionButtonContract $action) => $action->bulk($forComponent));
     }
 
     public function withoutBulk(): self
@@ -66,14 +66,14 @@ final class ActionButtons extends Collection
         return $this->filter(
             static fn (
                 ActionButtonContract $action
-            ): bool => ! $action->inDropdown()
+            ): bool => ! $action->isInDropdown()
         );
     }
 
     public function inDropdown(): self
     {
         return $this->filter(
-            static fn (ActionButtonContract $action): bool => $action->inDropdown()
+            static fn (ActionButtonContract $action): bool => $action->isInDropdown()
         );
     }
 }

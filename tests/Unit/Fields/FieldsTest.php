@@ -18,7 +18,6 @@ use MoonShine\UI\Fields\Text;
 
 uses()->group('fields');
 uses()->group('core');
-uses()->group('now');
 
 beforeEach(function () {
     $this->data = Box::make([

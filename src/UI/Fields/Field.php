@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\MoonShineDataCast;
+use MoonShine\Core\Contracts\MoonShineDataCaster;
 use MoonShine\Core\TypeCasts\DefaultCastedData;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\WithLabel;
@@ -189,7 +189,7 @@ abstract class Field extends FormElement
         );
     }
 
-    public function fillCast(mixed $value, ?MoonShineDataCast $cast = null, int $index = 0): static
+    public function fillCast(mixed $value, ?MoonShineDataCaster $cast = null, int $index = 0): static
     {
         $casted = $cast ? $cast->cast($value) : new DefaultCastedData($value);
 

@@ -1,6 +1,6 @@
 <?php
 
-use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\ID;
@@ -17,7 +17,7 @@ beforeEach(function () {
             Text::make('Name'),
         ])
         ->items(Item::query()->get())
-        ->cast(new ModelCast(Item::class))
+        ->cast(new ModelCaster(Item::class))
     ;
 });
 

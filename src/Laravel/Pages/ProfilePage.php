@@ -7,7 +7,7 @@ use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\MoonShineAuth;
-use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
@@ -99,7 +99,7 @@ class ProfilePage extends Page
         return FormBuilder::make(action([ProfileController::class, 'store']))
             ->async()
             ->fields($this->fields())
-            ->fillCast($user, new ModelCast($user::class))
+            ->fillCast($user, new ModelCaster($user::class))
             ->submit(__('moonshine::ui.save'), [
                 'class' => 'btn-lg btn-primary',
             ]);

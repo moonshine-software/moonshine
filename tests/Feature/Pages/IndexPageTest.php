@@ -51,7 +51,7 @@ it('query tags', function () {
             ]
         )
     )
-        ->assertSee($item->name)
         ->assertOk()
+        ->assertSee($item->name)
     ;
 });

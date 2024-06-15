@@ -3,7 +3,6 @@
     'bulkButtons',
     'asyncUrl',
     'async' => false,
-    'simplePaginate' => false,
     'notfound' => false,
     'colSpan' => 12,
     'adaptiveColSpan' => 12,
@@ -30,12 +29,7 @@
             </x-moonshine::layout.grid>
 
             @if($hasPaginator)
-                {{ $paginator->links(
-                    $simplePaginate
-                        ? 'moonshine::pagination.simple'
-                        : 'moonshine::pagination.default',
-                    ['async' => $async]
-                ) }}
+                {!! $paginator !!}
             @endif
         @else
             <x-moonshine::alert type="default" class="my-4" icon="s.no-symbol">

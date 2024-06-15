@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Resources;
 
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Attributes\Icon;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
@@ -68,5 +69,20 @@ class MoonShineUserRoleResource extends ModelResource
             'id',
             'name',
         ];
+    }
+
+    public function indexButtons(): array
+    {
+        return [
+            ActionButton::make('Button 1')
+                ->bulk()
+                ->withConfirm()
+                ->showInDropdown(),
+        ];
+    }
+
+    public function test()
+    {
+
     }
 }

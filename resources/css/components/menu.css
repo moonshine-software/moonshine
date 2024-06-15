@@ -6,6 +6,20 @@
     @apply lg:hidden;
   }
 
+  :where(.menu-inner-dropdown) {
+    .menu-inner-dropdown {
+      @apply !rounded-b-none border-b border-body border-dark-200 bg-body/80 !px-0;
+    }
+
+    .menu-inner-item {
+      &:last-child {
+        > .menu-inner-dropdown {
+          @apply border-b-0;
+        }
+      }
+    }
+  }
+
   .menu-inner-item-char {
     @apply xl:hidden;
   }

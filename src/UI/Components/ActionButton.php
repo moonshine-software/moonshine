@@ -76,7 +76,6 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this;
     }
 
-    // TODO(3.0) Make $forComponent argument required
     public function bulk(?string $forComponent = null): self
     {
         $this->isBulk = true;
@@ -353,7 +352,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     protected function viewData(): array
     {
         return [
-            'inDropdown' => $this->inDropdown(),
+            'inDropdown' => $this->isInDropdown(),
             'hasComponent' => $this->hasComponent(),
             'component' => $this->hasComponent() ? $this->component() : '',
             'label' => $this->getLabel(),

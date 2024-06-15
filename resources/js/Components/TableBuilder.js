@@ -133,11 +133,6 @@ export default (
         ']',
     )
 
-    //TODO Delete this block after updating the HiddenIds component
-    if (ids.length === 0) {
-      ids = document.querySelectorAll('.hidden-ids:not([data-for-component])')
-    }
-
     ids.forEach(function (value) {
       value.innerHTML = ''
     })

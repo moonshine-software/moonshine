@@ -3,7 +3,7 @@
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Laravel\Models\MoonshineUser;
-use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Tabs\Tab;
@@ -38,7 +38,7 @@ beforeEach(function () {
                 ]),
             ]),
         ])
-        ->fillCast($this->user, new ModelCast(MoonshineUser::class));
+        ->fillCast($this->user, new ModelCaster(MoonshineUser::class));
 });
 
 it('apply', function () {

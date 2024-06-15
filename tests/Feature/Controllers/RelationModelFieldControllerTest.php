@@ -91,7 +91,7 @@ it('search relations empty result', function () {
 
     $item = createItem(countComments: 1);
 
-    asAdmin()->get($this->router->to("relation.search-relations", [
+    asAdmin()->get($this->router->to('relation.search-relations', [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,

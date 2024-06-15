@@ -8,7 +8,7 @@ trait InDropdownOrLine
 {
     protected bool $inDropdown = false;
 
-    public function inDropdown(): bool
+    public function isInDropdown(): bool
     {
         return $this->inDropdown;
     }

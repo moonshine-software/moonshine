@@ -64,7 +64,7 @@ class BelongsTo extends ModelRelationField implements
             throw_if(is_null($page), PageException::required());
 
             $this->link(
-                $this->getResource()->pageUrl($page, ['resourceItem' => $this->toValue()->getKey()]),
+                $this->getResource()->pageUrl($page, ['resourceItem' => $this->getData()?->getKey()]),
                 withoutIcon: true
             );
         }

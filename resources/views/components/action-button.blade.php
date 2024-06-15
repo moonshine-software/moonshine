@@ -6,25 +6,14 @@
     'label' => '',
     'component' => null
 ])
-@if($inDropdown)
-    <x-moonshine::link-native class="p-2"
-        :attributes="$attributes"
-        :href="$url"
-    >
-        <x-slot:icon>{!! $icon !!}</x-slot:icon>
+<x-moonshine::link-button
+    :attributes="$attributes"
+    :href="$url"
+>
+    <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        {{ $label }}
-    </x-moonshine::link-native>
-@else
-    <x-moonshine::link-button
-        :attributes="$attributes"
-        :href="$url"
-    >
-        <x-slot:icon>{!! $icon !!}</x-slot:icon>
-
-        {{ $label }}
-    </x-moonshine::link-button>
-@endif
+    {{ $label }}
+</x-moonshine::link-button>
 
 @if($hasComponent)
     {!! $component !!}

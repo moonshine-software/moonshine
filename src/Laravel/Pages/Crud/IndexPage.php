@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Pages\Crud;
 
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\TypeCasts\PaginatorCaster;
 use MoonShine\Laravel\Buttons\FiltersButton;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
@@ -198,6 +199,14 @@ class IndexPage extends Page
             ->customAttributes([
                 'data-click-action' => $this->getResource()->getClickAction(),
             ])
+            ->when(
+                ! is_null($this->getResource()->getClickAction()),
+                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                    fn() => [
+                        '@click.stop' => 'rowClickAction',
+                    ]
+                )
+            )
             ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
                 $table->async()->customAttributes([
                     'data-pushstate' => 'true',

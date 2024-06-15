@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Illuminate\Contracts\Pagination\Paginator;
+use MoonShine\Core\Paginator\PaginatorContract;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Applies\AppliesRegister;
 use MoonShine\UI\Collections\Fields;
@@ -46,9 +46,8 @@ if (! function_exists('table')) {
     function table(
         Fields|array $fields = [],
         iterable $items = [],
-        ?Paginator $paginator = null
     ): TableBuilder {
-        return TableBuilder::make($fields, $items, $paginator);
+        return TableBuilder::make($fields, $items);
     }
 }
 

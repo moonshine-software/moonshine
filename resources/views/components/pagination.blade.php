@@ -1,19 +1,28 @@
 @props([
     'simple' => false,
     'async' => false,
-    'paginator',
-    'elements' => []
+    'has_pages' => false,
+    'current_page' => 0,
+    'last_page' => 0,
+    'per_page' => 0,
+    'first_page_url' => '',
+    'next_page_url' => '',
+    'prev_page_url' => '',
+    'to' => 0,
+    'from' => 0,
+    'total' => 0,
+    'links' => []
 ])
 @if($simple)
     <ul class="pagination-list simple">
         {{-- Previous Page Link --}}
         <li>
-            @if ($paginator->onFirstPage())
+            @if ($current_page <= 1)
                 <span class="pagination-simple disabled">
                     {!! __('moonshine::pagination.previous') !!}
                 </span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}"
+                <a href="{{ $first_page_url }}"
                    @if($async) @click.prevent="asyncRequest" @endif
                    class="pagination-simple"
                 >
@@ -24,8 +33,8 @@
 
         {{-- Next Page Link --}}
         <li>
-            @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}"
+            @if ($next_page_url)
+                <a href="{{ $next_page_url }}"
                    @if($async) @click.prevent="asyncRequest" @endif
                    class="pagination-simple"
                 >
@@ -38,13 +47,13 @@
             @endif
         </li>
     </ul>
-@elseif ($paginator->hasPages())
+@elseif ($has_pages)
     <!-- Pagination -->
     <div class="pagination">
         <ul class="pagination-list">
-            @if (!$paginator->onFirstPage())
+            @if ($current_page > 1)
                 <li class="pagination-item">
-                    <a href="{{ $paginator->previousPageUrl() }}"
+                    <a href="{{ $prev_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
                        class="pagination-first"
                        title="{!! __('moonshine::pagination.previous') !!}"
@@ -57,33 +66,30 @@
                 </li>
             @endif
 
-            @foreach ($elements as $element)
+            @foreach ($links as $link)
                 {{-- "Three Dots" Separator --}}
-                @if (is_string($element))
+                @if (is_string($link))
                     <li class="pagination-item">
-                        <span class="pagination-dots">{{ $element }}</span>
+                        <span class="pagination-dots">{{ $link }}</span>
                     </li>
                 @endif
 
-                {{-- Array Of Links --}}
-                @if (is_array($element))
-                    @foreach ($element as $page => $url)
-                        <li class="pagination-item">
-                            <a href="{{ $url }}"
-                               @if($async) @click.prevent="asyncRequest" @endif
-                               class="pagination-page
-                               @if ($page == $paginator->currentPage()) _is-active @endif"
-                            >
-                                {{ $page }}
-                            </a>
-                        </li>
-                    @endforeach
+                @if($link['url'])
+                <li class="pagination-item">
+                    <a href="{{ $link['url'] }}"
+                       @if($async) @click.prevent="asyncRequest" @endif
+                       class="pagination-page
+                       @if ($link['active']) _is-active @endif"
+                    >
+                        {!! $link['label'] !!}
+                    </a>
+                </li>
                 @endif
             @endforeach
 
-            @if ($paginator->hasMorePages())
+            @if ($current_page < $last_page)
                 <li class="pagination-item">
-                    <a href="{{ $paginator->nextPageUrl() }}"
+                    <a href="{{ $next_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
                        class="pagination-last"
                        title="{!! __('moonshine::pagination.next') !!}"
@@ -98,15 +104,15 @@
         </ul>
         <div class="pagination-results">
             {!! __('moonshine::pagination.showing') !!}
-            @if ($paginator->firstItem())
-                {{ $paginator->firstItem() }}
+            @if ($from)
+                {{ $from }}
                 {!! __('moonshine::pagination.to') !!}
-                {{ $paginator->lastItem() }}
+                {{ $to }}
             @else
-                {{ $paginator->count() }}
+                {{ $per_page }}
             @endif
             {!! __('moonshine::pagination.of') !!}
-            {{ $paginator->total() }}
+            {{ $total }}
             {!! __('moonshine::pagination.results') !!}
         </div>
     </div>

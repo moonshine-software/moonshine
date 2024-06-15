@@ -11,7 +11,7 @@
 <!-- Card -->
 <div {{ $attributes->class(['card', 'card-category']) }}>
     @if($thumbnail)
-        <div class="card-photo">
+        <div class="@if(is_array($thumbnail)) card-carousel @else card-photo @endif">
             @if($overlay)
                 {{ $header ?? '' }}
 
@@ -26,7 +26,11 @@
                 </div>
             @endif
 
-            <img src="{{ $thumbnail }}" alt="{{ $title }}" />
+            @if(is_array($thumbnail))
+                <x-moonshine::carousel :items="$thumbnail" :alt="$title"></x-moonshine::carousel>
+            @else
+                <img src="{{ $thumbnail }}" alt="{{ $title }}" />
+            @endif
         </div>
     @endif
 

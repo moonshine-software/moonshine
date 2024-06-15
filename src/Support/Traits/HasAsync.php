@@ -39,12 +39,9 @@ trait HasAsync
 
         parse_str((string) $query, $asyncUri);
 
-        $paginatorUri = $this->getPaginator()
-            ?->resolveQueryString() ?? [];
-
         $asyncUri = array_filter(
             $asyncUri,
-            static fn ($value, $key): bool => ! isset($paginatorUri[$key]),
+            static fn ($value, $key): bool => ! moonshine()->getRequest()->has($key),
             ARRAY_FILTER_USE_BOTH
         );
 

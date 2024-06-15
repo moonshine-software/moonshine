@@ -16,5 +16,5 @@ interface ActionButtonContract
 
     public function setData(?CastedData $data = null): self;
 
-    public function inDropdown(): bool;
+    public function isInDropdown(): bool;
 }

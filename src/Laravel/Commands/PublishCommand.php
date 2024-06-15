@@ -15,11 +15,11 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:publish')]
 class PublishCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:publish';
+    protected $signature = 'moonshine:publish {type?}';
 
     public function handle(): int
     {
-        $types = multiselect(
+        $types = $this->argument('type') ? [$this->argument('type')] : multiselect(
             'Types',
             [
                 'assets' => 'Assets',

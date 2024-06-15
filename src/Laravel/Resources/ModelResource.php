@@ -25,7 +25,7 @@ use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
 use MoonShine\Laravel\Traits\Resource\ResourceModelValidation;
 use MoonShine\Laravel\Traits\Resource\ResourceWithButtons;
 use MoonShine\Laravel\Traits\Resource\ResourceWithFields;
-use MoonShine\Laravel\TypeCasts\ModelCast;
+use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ClickAction;
 use MoonShine\Support\Enums\JsEvent;
@@ -122,9 +122,9 @@ abstract class ModelResource extends Resource
         return new $this->model();
     }
 
-    public function getModelCast(): ModelCast
+    public function getModelCast(): ModelCaster
     {
-        return new ModelCast($this->model);
+        return new ModelCaster($this->model);
     }
 
     public function getCastedItem(): ?CastedData
@@ -177,7 +177,7 @@ abstract class ModelResource extends Resource
     }
 
     /**
-     * @return Metric
+     * @return list<Metric>
      */
     public function metrics(): array
     {
