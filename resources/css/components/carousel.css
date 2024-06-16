@@ -16,7 +16,7 @@
   &-navigation {
     @apply absolute top-1/2 z-10 w-full;
     a {
-      @apply absolute -translate-y-1/2 rounded-full bg-white bg-opacity-50 transition-all dark:bg-dark-600 dark:bg-opacity-50 p-1;
+      @apply absolute -translate-y-1/2 rounded-full bg-white bg-opacity-50 p-1 transition-all dark:bg-dark-600 dark:bg-opacity-50;
       &:hover,
       &:focus {
         @apply bg-opacity-80 dark:bg-opacity-80;
