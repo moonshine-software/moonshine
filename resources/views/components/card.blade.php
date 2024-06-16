@@ -11,7 +11,7 @@
 <!-- Card -->
 <div {{ $attributes->class(['card', 'card-category']) }}>
     @if($thumbnail)
-        <div class="@if(is_array($thumbnail)) card-carousel @else card-photo @endif">
+        <div class="card-photo">
             @if($overlay)
                 {{ $header ?? '' }}
 
