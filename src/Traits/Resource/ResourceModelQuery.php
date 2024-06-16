@@ -10,6 +10,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use MoonShine\Attributes\SearchUsingFullText;
 use MoonShine\Contracts\ApplyContract;
@@ -493,39 +494,45 @@ trait ResourceModelQuery
      */
     protected function resolveParentResource(): static
     {
-        if (
-            is_null($relation = moonshineRequest()->getParentRelationName())
-            || is_null($parentId = moonshineRequest()->getParentRelationId())
-        ) {
+        $relationName = moonshineRequest()->getParentRelationName();
+        $parentId = moonshineRequest()->getParentRelationId();
+
+        if (is_null($relationName) || is_null($parentId)) {
             return $this;
         }
 
+        if (!method_exists($this->getModel(), $relationName)) {
+            throw new ResourceException("Relation $relationName not found for current resource");
+        }
+
+        $relation = $this->getModel()->{$relationName}();
+
+        $resolveParentRelationQuery = fn() => $this->getQuery()->when(
+            $relation instanceof BelongsToMany,
+            fn(Builder $q) => $q->whereRelation(
+                $relationName,
+                $relation->getQualifiedRelatedKeyName(),
+                $parentId
+            ),
+            fn(Builder $q) => $q->where(
+                $relation->getForeignKeyName(),
+                $parentId
+            )
+        );
+
         if (! empty($this->parentRelations())) {
-            foreach ($this->parentRelations() as $relationName) {
-                if ($relation === $relationName) {
-                    $this->getQuery()->where(
-                        $this->getModel()->{$relation}()->getForeignKeyName(),
-                        $parentId
-                    );
+            foreach ($this->parentRelations() as $parentRelationName) {
+                if ($relationName === $parentRelationName) {
+                    $resolveParentRelationQuery();
 
                     return $this;
                 }
             }
         }
 
-        if (
-            method_exists($this->getModel(), $relation)
-            && method_exists($this->getModel()->{$relation}(), 'getForeignKeyName')
-        ) {
-            $this->getQuery()->where(
-                $this->getModel()->{$relation}()->getForeignKeyName(),
-                $parentId
-            );
+        $resolveParentRelationQuery();
 
-            return $this;
-        }
-
-        throw new ResourceException("Relation $relation not found for current resource");
+        return $this;
     }
 
     public function hasWith(): bool
