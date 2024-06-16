@@ -30,6 +30,7 @@ use MoonShine\Resources\ModelResource;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\HasTreeMode;
+use MoonShine\Traits\Fields\OnlyLink;
 use MoonShine\Traits\Fields\Searchable;
 use MoonShine\Traits\Fields\WithAsyncSearch;
 use MoonShine\Traits\Fields\WithRelatedValues;
@@ -53,6 +54,7 @@ class BelongsToMany extends ModelRelationField implements
     use WithAsyncSearch;
     use HasTreeMode;
     use HasPlaceholder;
+    use OnlyLink;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
@@ -269,6 +271,10 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolveValue(): mixed
     {
+        if($this->isOnlyLink() && $this->isOnlyLinkOnForm()) {
+            return $this->getOnlyLinkButton();
+        }
+
         $titleColumn = $this->getResourceColumn();
 
         $checkedColumn = $this->name('${index0}');
@@ -376,6 +382,10 @@ class BelongsToMany extends ModelRelationField implements
             return $values
                 ->map(fn (Model $item) => $item->getKey())
                 ->toJson();
+        }
+
+        if($this->isOnlyLink()) {
+            return $this->getOnlyLinkButton(preview: true)->render();
         }
 
         if ($this->onlyCount) {
