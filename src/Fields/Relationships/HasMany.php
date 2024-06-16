@@ -9,7 +9,6 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Collection;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\HasManyButton;
 use MoonShine\Components\TableBuilder;
