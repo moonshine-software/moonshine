@@ -22,7 +22,7 @@ it('onlyLink preview', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
-            ->onlyLink(),
+            ->countLinkMode(),
     ]);
 
     asAdmin()
@@ -39,7 +39,7 @@ it('onlyLink preview empty', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
-            ->onlyLink(),
+            ->countLinkMode(),
     ]);
 
     asAdmin()
@@ -55,7 +55,7 @@ it('onlyLink value', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
-            ->onlyLink(),
+            ->countLinkMode(),
     ]);
 
     asAdmin()
@@ -72,7 +72,7 @@ it('onlyLink value empty', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
-            ->onlyLink(),
+            ->countLinkMode(),
     ]);
 
     asAdmin()
@@ -88,7 +88,7 @@ it('onlyLink preview condition', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
-            ->onlyLink(condition: function (int $count): bool {
+            ->countLinkMode(condition: function (int $count): bool {
                 return $count > 10;
             })
         ,
@@ -110,7 +110,7 @@ it('onlyLink value condition', function () {
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
-            ->onlyLink(condition: function (int $count, Field $field): bool {
+            ->countLinkMode(condition: function (int $count, Field $field): bool {
                 return $field->toValue()->total() > 20;
             })
         ,
