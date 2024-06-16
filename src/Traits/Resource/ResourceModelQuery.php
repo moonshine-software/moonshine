@@ -501,20 +501,20 @@ trait ResourceModelQuery
             return $this;
         }
 
-        if (!method_exists($this->getModel(), $relationName)) {
+        if (! method_exists($this->getModel(), $relationName)) {
             throw new ResourceException("Relation $relationName not found for current resource");
         }
 
         $relation = $this->getModel()->{$relationName}();
 
-        $resolveParentRelationQuery = fn() => $this->getQuery()->when(
+        $resolveParentRelationQuery = fn () => $this->getQuery()->when(
             $relation instanceof BelongsToMany,
-            fn(Builder $q) => $q->whereRelation(
+            fn (Builder $q) => $q->whereRelation(
                 $relationName,
                 $relation->getQualifiedRelatedKeyName(),
                 $parentId
             ),
-            fn(Builder $q) => $q->where(
+            fn (Builder $q) => $q->where(
                 $relation->getForeignKeyName(),
                 $parentId
             )
