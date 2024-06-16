@@ -88,7 +88,7 @@ class MoonShine
 
     public static function getInstance(): self
     {
-        return value(self::$container, __CLASS__);
+        return value(self::$container, self::class);
     }
 
     public function getContainer(string $id, mixed $default = null, ...$parameters): mixed
