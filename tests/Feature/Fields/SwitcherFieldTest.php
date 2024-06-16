@@ -163,7 +163,7 @@ it('resource update column', function () {
     asAdmin()->put(
         $this->router->to('column.resource.update-column', [
             'resourceItem' => $this->item->getKey(),
-            'resourceUri' => $resource->uriKey(),
+            'resourceUri' => $resource->getUriKey(),
             'field' => 'active',
             'value' => 1,
         ])
@@ -188,8 +188,8 @@ it('relation update column', function () {
             'column.relation.update-column',
             [
                 'resourceItem' => $comment->getKey(),
-                'resourceUri' => $resource->uriKey(),
-                'pageUri' => $resource->formPage()->uriKey(),
+                'resourceUri' => $resource->getUriKey(),
+                'pageUri' => $resource->formPage()->getUriKey(),
                 '_relation' => 'comments',
                 'field' => 'active',
                 'value' => 0,
@@ -216,7 +216,7 @@ it('relation update column in resource', function () {
     $resource = TestResourceBuilder::new(Item::class);
 
     fakeRequest(toPage(
-        $resource->formPage()->uriKey(),
+        $resource->formPage()->getUriKey(),
         $resource,
         [
             'resourceItem' => $this->item->getKey(),
@@ -233,8 +233,8 @@ it('relation update column in resource', function () {
             'column.relation.update-column',
             [
                 'resourceItem' => $comment->getKey(),
-                'resourceUri' => $resource->uriKey(),
-                'pageUri' => $resource->formPage()->uriKey(),
+                'resourceUri' => $resource->getUriKey(),
+                'pageUri' => $resource->formPage()->getUriKey(),
                 '_relation' => 'comments',
                 'field' => 'active',
                 'value' => 0,
@@ -267,7 +267,7 @@ function switcherExport(Item $item): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+        $resource->route('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -294,7 +294,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->uriKey()]),
+        $resource->route('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

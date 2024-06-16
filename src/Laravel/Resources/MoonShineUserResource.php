@@ -31,7 +31,7 @@ class MoonShineUserResource extends ModelResource
 
     public array $with = ['moonshineUserRole'];
 
-    public function title(): string
+    public function getTitle(): string
     {
         return __('moonshine::ui.resource.admins_title');
     }

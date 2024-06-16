@@ -46,7 +46,7 @@ final class Search extends MoonShineComponent
     protected function prepareBeforeRender(): void
     {
         if (! $this->globalSearchEnabled() && $this->resourceSearchEnabled()) {
-            $this->action = moonshineRequest()->getResource()?->url();
+            $this->action = moonshineRequest()->getResource()?->getUrl();
         }
     }
 

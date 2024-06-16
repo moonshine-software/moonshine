@@ -92,7 +92,7 @@ abstract class ModelResource extends Resource
     protected function pages(): array
     {
         return [
-            IndexPage::make($this->title()),
+            IndexPage::make($this->getTitle()),
             FormPage::make(
                 $this->getItemID()
                     ? __('moonshine::ui.edit')

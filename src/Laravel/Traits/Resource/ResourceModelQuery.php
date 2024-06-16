@@ -558,7 +558,7 @@ trait ResourceModelQuery
 
     protected function queryCacheKey(): string
     {
-        return "moonshine_query_{$this->uriKey()}";
+        return "moonshine_query_{$this->getUriKey()}";
     }
 
     /**

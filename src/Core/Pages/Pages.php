@@ -25,7 +25,7 @@ final class Pages extends Collection
         PageType $type,
         PageContract $default = null
     ): ?PageContract {
-        return $this->first(fn (PageContract $page): bool => $page->pageType() === $type, $default);
+        return $this->first(fn (PageContract $page): bool => $page->getPageType() === $type, $default);
     }
 
     public function findByClass(
@@ -59,13 +59,13 @@ final class Pages extends Collection
     ): ?PageContract {
         return $this->first(
             function (PageContract $page) use ($uri): bool {
-                if($page->uriKey() === $uri) {
+                if($page->getUriKey() === $uri) {
                     return true;
                 }
 
                 return
                     ! is_null($pageTypeUri = PageType::getTypeFromUri($uri))
-                    && $page->pageType() === $pageTypeUri
+                    && $page->getPageType() === $pageTypeUri
                 ;
             },
             $default

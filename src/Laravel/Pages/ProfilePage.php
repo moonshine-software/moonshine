@@ -27,14 +27,14 @@ class ProfilePage extends Page
     /**
      * @return array<string, string>
      */
-    public function breadcrumbs(): array
+    public function getBreadcrumbs(): array
     {
         return [
             '#' => $this->title(),
         ];
     }
 
-    public function title(): string
+    public function getTitle(): string
     {
         return __('moonshine::ui.profile');
     }

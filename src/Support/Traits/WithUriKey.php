@@ -22,7 +22,7 @@ trait WithUriKey
         return $this->alias;
     }
 
-    public function uriKey(): string
+    public function getUriKey(): string
     {
         return $this->getAlias() ?? MoonShineRouter::uriKey(static::class);
     }

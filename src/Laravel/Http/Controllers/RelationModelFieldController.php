@@ -178,7 +178,7 @@ class RelationModelFieldController extends MoonShineController
                 ->toArray();
         };
 
-        $formName = "{$resource->uriKey()}-unique-" . ($item?->getKey() ?? "create");
+        $formName = "{$resource->getUriKey()}-unique-" . ($item?->getKey() ?? "create");
 
         return (string) FormBuilder::make($action($item))
             ->fields($getFields)

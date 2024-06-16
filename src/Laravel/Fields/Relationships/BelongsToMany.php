@@ -216,7 +216,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function getResourceColumnLabel(): string
     {
-        return $this->columnLabel ?? $this->getResource()->title();
+        return $this->columnLabel ?? $this->getResource()->getTitle();
     }
 
     public function preparedFields(): FieldsCollection

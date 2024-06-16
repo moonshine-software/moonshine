@@ -63,7 +63,7 @@ class RelationModelFieldRequest extends FormRequest
             /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
             $resource = $this->getResource();
 
-            $fields = match ($this->getPage()->pageType()) {
+            $fields = match ($this->getPage()->getPageType()) {
                 PageType::INDEX => $resource->getIndexFields(),
                 PageType::DETAIL => $resource->getDetailFields(withOutside: true),
                 PageType::FORM => $resource->getFormFields(withOutside: true),

@@ -48,7 +48,7 @@ it('find resource', function (): void {
         ->and($request->hasResource())
         ->toBeTrue()
         ->and($request->getResourceUri())
-        ->toBe($this->resource->uriKey())
+        ->toBe($this->resource->getUriKey())
     ;
 });
 

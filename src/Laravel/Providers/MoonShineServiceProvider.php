@@ -169,7 +169,7 @@ class MoonShineServiceProvider extends ServiceProvider
         );
 
         AssetManager::assetUsing(static fn (string $path): string => asset($path));
-        AssetManager::viteDevUsing(static fn (string $path): string => Vite::useBuildDirectory('vendor/moonshine')
+        AssetManager::viteDevResolver(static fn (string $path): string => Vite::useBuildDirectory('vendor/moonshine')
             ->useHotFile($path)
             ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
             ->toHtml());

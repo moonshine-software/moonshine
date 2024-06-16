@@ -26,7 +26,7 @@ class TestCoverPageResource extends ModelResource
     public function pages(): array
     {
         return [
-            CoverPageIndex::make($this->title()),
+            CoverPageIndex::make($this->getTitle()),
             CoverPageForm::make(
                 $this->getItemID()
                     ? __('moonshine::ui.edit')

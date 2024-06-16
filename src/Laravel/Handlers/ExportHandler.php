@@ -124,7 +124,7 @@ class ExportHandler extends Handler
     private function generateFilePath(): string
     {
         $dir = $this->getDir();
-        $filename = $this->hasFilename() ? $this->filename : $this->getResource()->uriKey();
+        $filename = $this->hasFilename() ? $this->filename : $this->getResource()->getUriKey();
         $ext = $this->isCsv() ? 'csv' : 'xlsx';
 
         return sprintf('%s/%s.%s', $dir, $filename, $ext);
@@ -201,7 +201,7 @@ class ExportHandler extends Handler
         }
 
         $query = Arr::query(request(['filters', 'sort', 'query-tag'], []));
-        $url = $this->getResource()?->route('handler', query: ['handlerUri' => $this->uriKey()]);
+        $url = $this->getResource()?->route('handler', query: ['handlerUri' => $this->getUriKey()]);
 
         return ActionButton::make(
             $this->getLabel(),

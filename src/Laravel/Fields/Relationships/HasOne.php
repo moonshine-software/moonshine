@@ -174,7 +174,7 @@ class HasOne extends ModelRelationField implements HasFields
                     ->getEndpoints()
                     ->reactive(page: $resource->formPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
-            ->name($resource->uriKey())
+            ->name($resource->getUriKey())
             ->switchFormMode($isAsync)
             ->fields(
                 $fields->when(

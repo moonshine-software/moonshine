@@ -184,7 +184,7 @@ function jsonExport(Item $item): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+        $resource->route('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -217,7 +217,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->uriKey()]),
+        $resource->route('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

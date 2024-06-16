@@ -31,7 +31,7 @@ trait ResourceWithParent
 
         $relationName = $this->getParentRelationName();
 
-        if(moonshineRequest()->getResourceUri() === $parentResource->uriKey()) {
+        if(moonshineRequest()->getResourceUri() === $parentResource->getUriKey()) {
             return $this->parentId = $this->getItemID();
         }
 

@@ -78,7 +78,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $this->resource->route('handler', query: ['handlerUri' => $import->uriKey()]),
+        $this->resource->route('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 
@@ -100,7 +100,7 @@ function morphToExport(ImageModel $item, int $newId): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+        $resource->route('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-image-resource.csv');

@@ -24,7 +24,7 @@ trait ResourceModelCrudRouter
     ): string {
         $key = $key instanceof Model ? $key->getKey() : $key;
 
-        return $this->router()->to(
+        return $this->getRouter()->to(
             $name,
             filled($key) ? array_merge(['resourceItem' => $key], $query) : $query
         );
@@ -32,7 +32,7 @@ trait ResourceModelCrudRouter
 
     public function pageUrl(Page $page, array $params = [], ?string $fragment = null): string
     {
-        return $this->router()->getEndpoints()->toPage($page, params: $params, extra: [
+        return $this->getRouter()->getEndpoints()->toPage($page, params: $params, extra: [
             'fragment' => $fragment,
         ]);
     }
@@ -97,7 +97,7 @@ trait ResourceModelCrudRouter
         array $params = [],
         ?Page $page = null,
     ): string {
-        return $this->router()->getEndpoints()->asyncMethod(
+        return $this->getRouter()->getEndpoints()->asyncMethod(
             $method,
             $message,
             $params,
@@ -115,7 +115,7 @@ trait ResourceModelCrudRouter
             return $this
                 ->getPages()
                 ->findByType($this->redirectAfterSave)
-                ?->route($params);
+                ?->getRoute($params);
         }
 
         return $this->formPageUrl(params: $params);

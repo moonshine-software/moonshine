@@ -110,17 +110,17 @@ abstract class Resource implements ResourceContract, MenuFiller
             ->each(fn (Handler $handler): Handler => $handler->setResource($this));
     }
 
-    public function title(): string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function router(): MoonShineRouter
+    public function getRouter(): MoonShineRouter
     {
         return moonshineRouter()->withResource($this);
     }
 
-    public function url(): string
+    public function getUrl(): string
     {
         return $this->router()
             ->withPage($this->getPages()->first())

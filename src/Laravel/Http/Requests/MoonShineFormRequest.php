@@ -27,7 +27,7 @@ class MoonShineFormRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         if ($this->hasResource()) {
-            $this->errorBag = $this->getResource()?->uriKey();
+            $this->errorBag = $this->getResource()?->getUriKey();
             $this->getResource()?->prepareForValidation();
         }
 

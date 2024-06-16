@@ -62,19 +62,19 @@ it('default sugar params', function (): void {
     $this->router->withPage($this->page);
 
     expect($this->router->getParams())
-        ->toBe(['pageUri' => $this->page->uriKey()]);
+        ->toBe(['pageUri' => $this->page->getUriKey()]);
 
     $this->router->withResource($this->resource);
 
     expect($this->router->getParams())
-        ->toBe(['resourceUri' => $this->resource->uriKey(), 'pageUri' => $this->page->uriKey()]);
+        ->toBe(['resourceUri' => $this->resource->getUriKey(), 'pageUri' => $this->page->getUriKey()]);
 
     $this->router->withResourceItem(3);
 
     expect($this->router->getParams())
-        ->toBe(['resourceItem' => 3, 'resourceUri' => $this->resource->uriKey(), 'pageUri' => $this->page->uriKey()])
+        ->toBe(['resourceItem' => 3, 'resourceUri' => $this->resource->getUriKey(), 'pageUri' => $this->page->getUriKey()])
         ->and($this->router->getParams(['new' => 'new']))
-        ->toBe(['resourceItem' => 3, 'resourceUri' => $this->resource->uriKey(), 'pageUri' => $this->page->uriKey(), 'new' => 'new', ]);
+        ->toBe(['resourceItem' => 3, 'resourceUri' => $this->resource->getUriKey(), 'pageUri' => $this->page->getUriKey(), 'new' => 'new', ]);
 });
 
 it('default to', function (): void {
@@ -97,27 +97,27 @@ it('default to', function (): void {
 
 it('default async method', function (): void {
     expect($this->router->getEndpoints()->asyncMethod('someMethod', page: $this->page))
-        ->toContain("/admin/async/method/{$this->page->uriKey()}?method=someMethod")
+        ->toContain("/admin/async/method/{$this->page->getUriKey()}?method=someMethod")
     ;
 
-    $this->get($this->page->url());
+    $this->get($this->page->getUrl());
 
     expect($this->router->getEndpoints()->asyncMethod('someMethod'))
-        ->toContain("/admin/async/method/{$this->page->uriKey()}?method=someMethod")
+        ->toContain("/admin/async/method/{$this->page->getUriKey()}?method=someMethod")
     ;
 });
 
 it('default reactive', function (): void {
     expect($this->router->getEndpoints()->reactive(page: $this->page, resource: $this->resource, extra: ['key' => 3]))
-        ->toContain("/admin/async/reactive/{$this->page->uriKey()}/{$this->resource->uriKey()}/3")
+        ->toContain("/admin/async/reactive/{$this->page->getUriKey()}/{$this->resource->getUriKey()}/3")
     ;
 });
 
 it('default async component', function (): void {
-    $this->get($this->page->url());
+    $this->get($this->page->getUrl());
 
     expect($this->router->getEndpoints()->asyncComponent('index-table'))
-        ->toContain("/admin/async/component/{$this->page->uriKey()}?_component_name=index-table")
+        ->toContain("/admin/async/component/{$this->page->getUriKey()}?_component_name=index-table")
     ;
 });
 
@@ -125,29 +125,29 @@ it('default update column', function (): void {
     expect($this->router->getEndpoints()->updateColumn($this->resource, $this->page, extra: [
         'resourceItem' => 3,
     ]))
-        ->toContain("/admin/column/resource/{$this->resource->uriKey()}/3?pageUri={$this->page->uriKey()}")
+        ->toContain("/admin/column/resource/{$this->resource->getUriKey()}/3?pageUri={$this->page->getUriKey()}")
         ->and($this->router->getEndpoints()->updateColumn($this->resource, $this->page, extra: [
             'resourceItem' => 3,
             'relation' => 'relation-name',
         ]))
-        ->toContain("/admin/column/relation/{$this->resource->uriKey()}/{$this->page->uriKey()}/3")
+        ->toContain("/admin/column/relation/{$this->resource->getUriKey()}/{$this->page->getUriKey()}/3")
     ;
 });
 
 
 it('default to relation', function (): void {
-    expect($this->router->getEndpoints()->toRelation('search', pageUri: $this->page->uriKey()))
-        ->toContain("/admin/relation/{$this->page->uriKey()}")
-        ->and($this->router->getEndpoints()->toRelation('search-relations', pageUri: $this->page->uriKey()))
-        ->toContain("/admin/relations/{$this->page->uriKey()}")
+    expect($this->router->getEndpoints()->toRelation('search', pageUri: $this->page->getUriKey()))
+        ->toContain("/admin/relation/{$this->page->getUriKey()}")
+        ->and($this->router->getEndpoints()->toRelation('search-relations', pageUri: $this->page->getUriKey()))
+        ->toContain("/admin/relations/{$this->page->getUriKey()}")
     ;
 });
 
 it('default to page', function (): void {
     expect($this->router->getEndpoints()->toPage($this->page))
-        ->toContain("/admin/page/{$this->page->uriKey()}")
+        ->toContain("/admin/page/{$this->page->getUriKey()}")
         ->and($this->router->getEndpoints()->toPage($this->page, extra: ['fragment' => 'index-table']))
-        ->toContain("/admin/page/{$this->page->uriKey()}?_fragment-load=index-table")
+        ->toContain("/admin/page/{$this->page->getUriKey()}?_fragment-load=index-table")
         ->and($this->router->getEndpoints()->toPage($this->page, extra: ['redirect' => true]))
         ->toBeInstanceOf(RedirectResponse::class)
     ;

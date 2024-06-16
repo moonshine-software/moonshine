@@ -19,7 +19,7 @@ final class Resources extends Collection
         ResourceContract $default = null
     ): ?ResourceContract {
         return $this->first(
-            fn (ResourceContract $resource): bool => $resource->uriKey() === $uri,
+            fn (ResourceContract $resource): bool => $resource->getUriKey() === $uri,
             $default
         );
     }

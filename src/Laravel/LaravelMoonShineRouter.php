@@ -32,14 +32,14 @@ final class LaravelMoonShineRouter extends MoonShineRouter
     public function extractPageUri(?PageContract $page = null): ?string
     {
         return $page
-            ? $page->uriKey()
+            ? $page->getUriKey()
             : $this->getParam('pageUri', moonshineRequest()->getPageUri());
     }
 
     public function extractResourceUri(?ResourceContract $resource = null): ?string
     {
         return $resource
-            ? $resource->uriKey()
+            ? $resource->getUriKey()
             : $this->getParam('resourceUri', moonshineRequest()->getResourceUri());
     }
 

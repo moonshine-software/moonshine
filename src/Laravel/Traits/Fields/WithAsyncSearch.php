@@ -73,7 +73,7 @@ trait WithAsyncSearch
             ->prepend($this->withImage['dir'] . '/')
             ->value();
 
-        return moonshineStorage(disk: $this->withImage['disk'])->url($value);
+        return moonshineStorage(disk: $this->withImage['disk'])->getUrl($value);
     }
 
     public function valuesWithProperties(bool $onlyCustom = false): Collection

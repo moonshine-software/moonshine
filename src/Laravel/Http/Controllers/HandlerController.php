@@ -31,7 +31,7 @@ final class HandlerController extends MoonShineController
         }
 
         return redirect(
-            $request->getResource()?->url() ?? moonshineRouter()->getEndpoints()->home()
+            $request->getResource()?->getUrl() ?? moonshineRouter()->getEndpoints()->home()
         );
     }
 }

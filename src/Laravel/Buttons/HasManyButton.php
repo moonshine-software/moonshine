@@ -34,7 +34,7 @@ final class HasManyButton
             'relation.has-many-form',
             moonshineRequest()->getItemID(),
             [
-                'pageUri' => $parentPage?->uriKey(),
+                'pageUri' => $parentPage?->getUriKey(),
                 '_relation' => $field->getRelationName(),
                 '_key' => $data?->getKey(),
             ]

@@ -78,8 +78,8 @@ final readonly class LaravelEndpoints implements MoonShineEndpoints
         return $this->router->to(
             'column.' . ($relation ? 'relation' : 'resource') . '.update-column',
             [
-                'resourceUri' => $resource ? $resource->uriKey() : $this->router->extractResourceUri(),
-                'pageUri' => $page ? $page->uriKey() : $this->router->extractPageUri(),
+                'resourceUri' => $resource ? $resource->getUriKey() : $this->router->extractResourceUri(),
+                'pageUri' => $page ? $page->getUriKey() : $this->router->extractPageUri(),
                 'resourceItem' => $this->router->extractResourceItem($resourceItem),
                 '_relation' => $relation,
             ]
@@ -136,7 +136,7 @@ final readonly class LaravelEndpoints implements MoonShineEndpoints
                 static fn (Pages $pages) => $pages->first(),
                 static fn (Pages $pages): ?PageContract => $pages->findByUri(
                     $page instanceof PageContract
-                        ? $page->uriKey()
+                        ? $page->getUriKey()
                         : LaravelMoonShineRouter::uriKey($page)
                 ),
             );
@@ -154,8 +154,8 @@ final readonly class LaravelEndpoints implements MoonShineEndpoints
         );
 
         return $redirect
-            ? redirect($targetPage->route($params))
-            : $targetPage->route($params);
+            ? redirect($targetPage->getRoute($params))
+            : $targetPage->getRoute($params);
     }
 
     public function home(): string

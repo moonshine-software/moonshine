@@ -33,18 +33,18 @@ class FormPage extends Page
     /**
      * @return array<string, string>
      */
-    public function breadcrumbs(): array
+    public function getBreadcrumbs(): array
     {
         if (! is_null($this->breadcrumbs)) {
             return $this->breadcrumbs;
         }
 
-        $breadcrumbs = parent::breadcrumbs();
+        $breadcrumbs = parent::getBreadcrumbs();
 
         if ($this->getResource()->getItemID()) {
-            $breadcrumbs[$this->route()] = data_get($this->getResource()->getItem(), $this->getResource()->column());
+            $breadcrumbs[$this->getRoute()] = data_get($this->getResource()->getItem(), $this->getResource()->column());
         } else {
-            $breadcrumbs[$this->route()] = __('moonshine::ui.add');
+            $breadcrumbs[$this->getRoute()] = __('moonshine::ui.add');
         }
 
         return $breadcrumbs;
@@ -236,7 +236,7 @@ class FormPage extends Page
                     ->async(events: array_filter([
                         $resource->listEventName(request('_component_name', 'default')),
                         ! $item?->exists && $resource->isCreateInModal()
-                            ? AlpineJs::event(JsEvent::FORM_RESET, $resource->uriKey())
+                            ? AlpineJs::event(JsEvent::FORM_RESET, $resource->getUriKey())
                             : null,
                     ]))
             )
@@ -244,7 +244,7 @@ class FormPage extends Page
                 $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),
                 fn (FormBuilder $form): FormBuilder => $form->precognitive()
             )
-            ->name($resource->uriKey())
+            ->name($resource->getUriKey())
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }
 }
