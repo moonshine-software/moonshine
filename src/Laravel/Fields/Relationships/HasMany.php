@@ -8,10 +8,10 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Collection;
 use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Traits\Fields\WithParentRelationLink;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;
@@ -30,6 +30,7 @@ use Throwable;
 class HasMany extends ModelRelationField implements HasFields
 {
     use WithFields;
+    use WithParentRelationLink;
 
     protected string $view = 'moonshine::fields.relationships.has-many';
 
@@ -38,10 +39,6 @@ class HasMany extends ModelRelationField implements HasFields
     protected bool $outsideComponent = true;
 
     protected int $limit = 15;
-
-    protected Closure|bool $onlyLink = false;
-
-    protected ?string $linkRelation = null;
 
     protected bool $isCreatable = false;
 
@@ -58,8 +55,6 @@ class HasMany extends ModelRelationField implements HasFields
     protected ?Closure $modifyCreateButton = null;
 
     protected ?Closure $modifyEditButton = null;
-
-    protected ?Closure $modifyOnlyLinkButton = null;
 
     protected ?Closure $modifyBuilder = null;
 
@@ -106,16 +101,6 @@ class HasMany extends ModelRelationField implements HasFields
     public function modifyCreateButton(Closure $callback): self
     {
         $this->modifyCreateButton = $callback;
-
-        return $this;
-    }
-
-    /**
-     * @param  Closure(ActionButton $button, bool $preview, self $field): ActionButton  $callback
-     */
-    public function modifyOnlyLinkButton(Closure $callback): self
-    {
-        $this->modifyOnlyLinkButton = $callback;
 
         return $this;
     }
@@ -244,38 +229,6 @@ class HasMany extends ModelRelationField implements HasFields
         return $this->isAsync;
     }
 
-    public function onlyLink(?string $linkRelation = null, Closure|bool|null $condition = null): static
-    {
-        $this->linkRelation = $linkRelation;
-
-        if (is_null($condition)) {
-            $this->onlyLink = true;
-
-            return $this;
-        }
-
-        $this->onlyLink = $condition;
-
-        return $this;
-    }
-
-    public function isOnlyLink(): bool
-    {
-        if (is_callable($this->onlyLink) && is_null($this->toValue())) {
-            return value($this->onlyLink, 0, $this);
-        }
-
-        if (is_callable($this->onlyLink)) {
-            $count = $this->toValue() instanceof Collection
-                ? $this->toValue()->count()
-                : $this->toValue()->total();
-
-            return value($this->onlyLink, $count, $this);
-        }
-
-        return $this->onlyLink;
-    }
-
     /**
      * @throws Throwable
      */
@@ -307,53 +260,10 @@ class HasMany extends ModelRelationField implements HasFields
             : $fields;
     }
 
-    protected function linkPreview(): View|string
-    {
-        $casted = $this->getRelatedModel();
-
-        $countItems = $this->toValue()->count();
-
-        if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
-        }
-
-        return ActionButton::make(
-            "($countItems)",
-            $this->getResource()->indexPageUrl([
-                '_parentId' => $relationName . '-' . $casted?->{$casted?->getKeyName()},
-            ])
-        )
-            ->icon('eye')
-            ->when(
-                ! is_null($this->modifyOnlyLinkButton),
-                fn (ActionButton $button) => value($this->modifyOnlyLinkButton, $button, preview: true)
-            )
-            ->render();
-    }
-
-    protected function linkValue(): MoonShineRenderable
-    {
-        if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
-        }
-
-        return ActionButton::make(
-            __('moonshine::ui.show') . " ({$this->toValue()->total()})",
-            $this->getResource()->indexPageUrl([
-                '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
-            ])
-        )
-            ->primary()
-            ->when(
-                ! is_null($this->modifyOnlyLinkButton),
-                fn (ActionButton $button) => value($this->modifyOnlyLinkButton, $button, preview: false)
-            );
-    }
-
     /**
      * @throws Throwable
      */
-    protected function tablePreview(): View|string
+    protected function tablePreview(): TableBuilder
     {
         $items = $this->toValue();
 
@@ -377,8 +287,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->when(
                 ! is_null($this->modifyTable),
                 fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: true)
-            )
-            ->render();
+            );
     }
 
     /**
@@ -490,7 +399,9 @@ class HasMany extends ModelRelationField implements HasFields
             $this->setValue($casted?->{$this->getRelationName()});
         }
 
-        return $this->isOnlyLink() ? $this->linkPreview() : $this->tablePreview();
+        return $this->isParentRelationLink()
+            ? $this->getParentRelationLinkButton()->render()
+            : $this->tablePreview()->render();
     }
 
     /**
@@ -519,7 +430,9 @@ class HasMany extends ModelRelationField implements HasFields
             $this->setValue($resource->paginate());
         }
 
-        return $this->isOnlyLink() ? $this->linkValue() : $this->tableValue();
+        return $this->isParentRelationLink()
+            ? $this->getParentRelationLinkButton()
+            : $this->tableValue();
     }
 
     /**
