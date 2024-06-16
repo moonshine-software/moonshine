@@ -9,7 +9,7 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\Traits\WithSlotContent;
 
 /**
- * @method static static make(Closure|string $title = '', Closure|string $thumbnail = '', Closure|array|string $thumbnails = '', Closure|string $url = '#', Closure|array $values = [], Closure|string|null $subtitle = null)
+ * @method static static make(Closure|string $title = '', Closure|array|string $thumbnail = '', Closure|string $url = '#', Closure|array $values = [], Closure|string|null $subtitle = null)
  */
 final class Card extends MoonShineComponent
 {
@@ -23,8 +23,7 @@ final class Card extends MoonShineComponent
 
     public function __construct(
         protected Closure|string $title = '',
-        protected Closure|string $thumbnail = '',
-        protected Closure|string|array $thumbnails = '',
+        protected Closure|array|string $thumbnail = '',
         protected Closure|string $url = '#',
         protected Closure|array $values = [],
         protected Closure|string|null $subtitle = null,
@@ -60,16 +59,9 @@ final class Card extends MoonShineComponent
         return $this;
     }
 
-    public function thumbnail(Closure|string $value): self
+    public function thumbnail(Closure|array|string $value): self
     {
         $this->thumbnail = $value;
-
-        return $this;
-    }
-
-    public function thumbnails(Closure|string|array $value): self
-    {
-        $this->thumbnails = $value;
 
         return $this;
     }
@@ -97,7 +89,6 @@ final class Card extends MoonShineComponent
             'title' => value($this->title, $this),
             'url' => value($this->url, $this),
             'thumbnail' => value($this->thumbnail, $this),
-            'thumbnails' => value($this->thumbnails, $this),
             'overlay' => $this->overlay,
             'subtitle' => value($this->subtitle, $this),
             'values' => value($this->values, $this),

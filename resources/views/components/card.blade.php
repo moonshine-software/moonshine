@@ -3,7 +3,6 @@
     'title' => '',
     'subtitle' => '',
     'thumbnail' => '',
-    'thumbnails' => null,
     'overlay' => false,
     'values' => [],
     'header' => null,
@@ -11,8 +10,8 @@
 ])
 <!-- Card -->
 <div {{ $attributes->class(['card', 'card-category']) }}>
-    @if($thumbnail || $thumbnails)
-        <div class="@if($thumbnails) card-carousel @else card-photo @endif">
+    @if($thumbnail)
+        <div class="card-photo">
             @if($overlay)
                 {{ $header ?? '' }}
 
@@ -26,11 +25,12 @@
                     @endif
                 </div>
             @endif
-                @if($thumbnails)
-                    <x-moonshine::carousel :items="$thumbnails" :alt="$title"></x-moonshine::carousel>
-                @else
-                    <img src="{{ $thumbnail }}" alt="{{ $title }}" />
-                @endif
+
+            @if(is_array($thumbnail))
+                <x-moonshine::carousel :items="$thumbnail" :alt="$title"></x-moonshine::carousel>
+            @else
+                <img src="{{ $thumbnail }}" alt="{{ $title }}" />
+            @endif
         </div>
     @endif
 

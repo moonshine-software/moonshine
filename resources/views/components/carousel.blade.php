@@ -1,9 +1,11 @@
 @props([
-    'alt' => '',
     'items' => [],
-    'portrait' => true
+    'portrait' => true,
+    'alt' => '',
 ])
-<div class=" carousel @if($portrait) portrait @endif " x-data='carousel( @json($items) )'>
+<div {{ $attributes->class(['carousel', 'portrait' => $portrait]) }}
+     x-data='carousel(@json($items))'
+>
     <template x-for="(slide, index) in slides">
         <carousel-slide class="carousel-slide" :class="(activeSlide === index) ? 'active' : ''">
             <img :src="slide" alt="{{ $alt }}">
