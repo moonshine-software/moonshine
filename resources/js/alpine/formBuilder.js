@@ -228,7 +228,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
     )
   },
   submit() {
-    if (this.$el.getAttribute('x-on:submit.prevent')) {
+    const hasSubmitAttribute = this.$el.getAttributeNames().some(attr => attr.startsWith('x-on:submit'));
+
+    if (hasSubmitAttribute) {
       this.$el.dispatchEvent(new Event('submit'))
     } else {
       this.$el.submit()
