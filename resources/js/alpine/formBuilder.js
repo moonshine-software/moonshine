@@ -228,7 +228,11 @@ export default (name = '', initData = {}, reactive = {}) => ({
     )
   },
   submit() {
-    this.$el.dispatchEvent(new Event('submit'))
+    if (this.$el.getAttribute('x-on:submit.prevent')) {
+      this.$el.dispatchEvent(new Event('submit'))
+    } else {
+      this.$el.submit()
+    }
   },
   formReset() {
     this.$el.reset()
