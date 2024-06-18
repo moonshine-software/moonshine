@@ -58,7 +58,7 @@ it('apply as base', function () {
     $data = ['start_point' => 10, 'end_point' => 90];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         ['range' => $data]
     )
         ->assertRedirect();
@@ -85,7 +85,7 @@ it('before apply', function () {
     $data = ['start_point' => 10, 'end_point' => 90];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         ['range' => $data]
     )
         ->assertRedirect();
@@ -111,7 +111,7 @@ it('after apply', function () {
     $data = ['start_point' => 10, 'end_point' => 90];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         ['range' => $data]
     )
         ->assertRedirect();
@@ -133,7 +133,7 @@ it('apply as base with default', function () {
     );
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey())
+        $resource->getRoute('crud.update', $this->item->getKey())
     )->assertRedirect();
 
     $this->item->refresh();
@@ -183,7 +183,7 @@ function rangeExport(Item $item): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->getUriKey()])
+        $resource->getRoute('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -210,7 +210,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->getUriKey()]),
+        $resource->getRoute('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

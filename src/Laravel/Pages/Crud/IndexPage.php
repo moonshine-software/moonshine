@@ -73,7 +73,7 @@ class IndexPage extends Page
     protected function mainLayer(): array
     {
         return [
-            $this->hiddenFilters(),
+            $this->getHiddenFilters(),
             ...$this->getPageButtons(),
             ...$this->getQueryTags(),
             ...$this->getItemsComponents(),
@@ -92,7 +92,7 @@ class IndexPage extends Page
      * @return FormBuilder<FiltersForm>
      * @throws Throwable
      */
-    protected function hiddenFilters(): FormBuilder
+    protected function getHiddenFilters(): FormBuilder
     {
         return moonshineConfig()
             ->getForm('filters', FiltersForm::class, resource: $this->getResource())
@@ -225,7 +225,7 @@ class IndexPage extends Page
 
         $items = $this->getResource()->isPaginationUsed()
             ? $this->getResource()->paginate()
-            : $this->getResource()->items();
+            : $this->getResource()->getItems();
 
         $fields = $this->getResource()->getIndexFields();
 

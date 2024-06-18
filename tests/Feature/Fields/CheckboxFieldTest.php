@@ -63,7 +63,7 @@ it('apply as base', function () {
     $data = ['active' => 1];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -88,7 +88,7 @@ it('before apply', function () {
     $data = ['active' => 0];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -113,7 +113,7 @@ it('after apply', function () {
     $data = ['active' => 1];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -133,7 +133,7 @@ it('apply as base with default', function () {
     );
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey())
+        $resource->getRoute('crud.update', $this->item->getKey())
     )->assertRedirect();
 
     $this->item->refresh();
@@ -159,7 +159,7 @@ function checkboxExport(Item $item): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->getUriKey()])
+        $resource->getRoute('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -186,7 +186,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->getUriKey()]),
+        $resource->getRoute('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

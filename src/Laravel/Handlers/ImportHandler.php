@@ -231,7 +231,7 @@ class ImportHandler extends Handler
             ->inOffCanvas(
                 fn (): string => $this->getLabel(),
                 fn (): FormBuilder => FormBuilder::make(
-                    $this->getResource()?->route('handler', query: ['handlerUri' => $this->getUriKey()]) ?? ''
+                    $this->getResource()?->getRoute('handler', query: ['handlerUri' => $this->getUriKey()]) ?? ''
                 )
                     ->fields([
                         File::make(column: $this->getInputName())->required(),

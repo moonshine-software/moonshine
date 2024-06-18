@@ -21,7 +21,7 @@ final class AppliesRegister
         'fields' => [],
     ];
 
-    public function type(string $type): AppliesRegister
+    public function type(string $type): self
     {
         $this->type = $type;
 
@@ -31,7 +31,7 @@ final class AppliesRegister
     /**
      * @param  class-string  $for
      */
-    public function for(string $for): AppliesRegister
+    public function for(string $for): self
     {
         $this->for = $for;
 
@@ -49,7 +49,7 @@ final class AppliesRegister
     /**
      * @param  class-string  $for
      */
-    public function defaultFor(string $for): AppliesRegister
+    public function defaultFor(string $for): self
     {
         $this->defaultFor = $for;
 
@@ -64,14 +64,14 @@ final class AppliesRegister
         return $this->defaultFor;
     }
 
-    public function filters(): AppliesRegister
+    public function filters(): self
     {
         $this->type('filters');
 
         return $this;
     }
 
-    public function fields(): AppliesRegister
+    public function fields(): self
     {
         $this->type('fields');
 
@@ -97,14 +97,14 @@ final class AppliesRegister
      * @param  class-string<Field>  $fieldClass
      * @param  class-string<ApplyContract>  $applyClass
      */
-    public function add(string $fieldClass, string $applyClass): AppliesRegister
+    public function add(string $fieldClass, string $applyClass): self
     {
         $this->applies[$this->type][$this->getFor()][$fieldClass] = $applyClass;
 
         return $this;
     }
 
-    public function push(array $data): AppliesRegister
+    public function push(array $data): self
     {
         $this->applies[$this->type][$this->getFor()] = array_merge(
             $this->applies[$this->type][$this->getFor()] ?? [],

@@ -12,16 +12,16 @@ final class CreateButton
         ?string $componentName = null,
         bool $isAsync = true,
     ): ActionButton {
-        if(! $resource->formPage()) {
+        if(! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = $resource->formPageUrl();
+        $action = $resource->getFormPageUrl();
 
         if($resource->isCreateInModal()) {
-            $action = $resource->formPageUrl(
+            $action = $resource->getFormPageUrl(
                 params: [
-                    '_component_name' => $componentName ?? $resource->listComponentName(),
+                    '_component_name' => $componentName ?? $resource->getListComponentName(),
                     '_async_form' => $isAsync,
                 ],
                 fragment: 'crud-form'

@@ -16,7 +16,7 @@ class Template extends Field implements HasFields
 
     protected ?Closure $renderCallback = null;
 
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         return tap(
             $this->getFields()->wrapNames($this->getColumn()),

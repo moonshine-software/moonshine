@@ -122,7 +122,7 @@ final class CardsBuilder extends IterableComponent
      */
     public function getComponents(): Collection
     {
-        $fields = $this->preparedFields();
+        $fields = $this->getPreparedFields();
 
         return $this->getItems()->map(function (mixed $data, int $index) use ($fields) {
             $casted = $this->castData($data);
@@ -193,7 +193,7 @@ final class CardsBuilder extends IterableComponent
 
         if ($this->isAsync()) {
             $this->customAttributes([
-                'data-events' => $this->asyncEvents(),
+                'data-events' => $this->getAsyncEvents(),
             ]);
         }
     }
@@ -213,8 +213,8 @@ final class CardsBuilder extends IterableComponent
             ),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),
-            'colSpan' => $this->columnSpanValue(),
-            'adaptiveColSpan' => $this->adaptiveColumnSpanValue(),
+            'colSpan' => $this->getColumnSpanValue(),
+            'adaptiveColSpan' => $this->getAdaptiveColumnSpanValue(),
         ];
     }
 }

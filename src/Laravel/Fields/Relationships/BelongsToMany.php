@@ -109,7 +109,7 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    public function selectMode(): self
+    public function selectMode(): static
     {
         $this->selectMode = true;
 
@@ -134,7 +134,7 @@ class BelongsToMany extends ModelRelationField implements
     /**
      * @throws Throwable
      */
-    public function createButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButton
     {
         if (! $this->isCreatable()) {
             return null;
@@ -147,14 +147,14 @@ class BelongsToMany extends ModelRelationField implements
             : null;
     }
 
-    public function buttons(array $buttons): self
+    public function buttons(array $buttons): static
     {
         $this->buttons = $buttons;
 
         return $this;
     }
 
-    public function withCheckAll(): self
+    public function withCheckAll(): static
     {
         return $this->buttons([
             ActionButton::make('')
@@ -189,7 +189,7 @@ class BelongsToMany extends ModelRelationField implements
         return 'belongs_to_many_' . $this->getRelationName();
     }
 
-    public function resolveSelectedValue(): string|array
+    public function getSelectedValue(): string|array
     {
         $selected = $this->isValueWithModels()
             ? collect($this->toValue())->pluck($this->getRelation()?->getRelated()?->getKeyName() ?? 'id')
@@ -209,7 +209,7 @@ class BelongsToMany extends ModelRelationField implements
         return $data->every(fn ($item): bool => $item instanceof Model);
     }
 
-    public function columnLabel(string $label): self
+    public function columnLabel(string $label): static
     {
         $this->columnLabel = $label;
 
@@ -221,7 +221,7 @@ class BelongsToMany extends ModelRelationField implements
         return $this->columnLabel ?? $this->getResource()->getTitle();
     }
 
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(
             parent: $this,
@@ -238,7 +238,7 @@ class BelongsToMany extends ModelRelationField implements
         );
     }
 
-    public function fragmentUrl(): string
+    public function getFragmentUrl(): string
     {
         return toPage(
             page: moonshineRequest()->getPage(),
@@ -288,9 +288,9 @@ class BelongsToMany extends ModelRelationField implements
             ->formName($this->getFormName())
             ->iterableAttributes();
 
-        $fields = $this->preparedFields()
+        $fields = $this->getPreparedFields()
             ->prepend(
-                Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->formattedValueCallback())
+                Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->getFormattedValueCallback())
                     ->withoutWrapper()
                     ->formName($this->getFormName())
                     ->customAttributes(['class' => 'pivotTitle'])
@@ -341,11 +341,11 @@ class BelongsToMany extends ModelRelationField implements
             ->withNotFound();
     }
 
-    protected function columnOrFormattedValue(Model $item, string|int $default): string|int
+    protected function getColumnOrFormattedValue(Model $item, string|int $default): string|int
     {
-        if (! is_null($this->formattedValueCallback())) {
+        if (! is_null($this->getFormattedValueCallback())) {
             return value(
-                $this->formattedValueCallback(),
+                $this->getFormattedValueCallback(),
                 $item,
                 $this
             );
@@ -378,7 +378,7 @@ class BelongsToMany extends ModelRelationField implements
 
         if ($this->inLine) {
             return $values->implode(function (Model $item) use ($column) {
-                $value = $this->columnOrFormattedValue($item, data_get($item, $column) ?? false);
+                $value = $this->getColumnOrFormattedValue($item, data_get($item, $column) ?? false);
 
                 if (! is_null($this->inLineLink)) {
                     $linkValue = value($this->inLineLink, $item, $value, $this);
@@ -401,8 +401,8 @@ class BelongsToMany extends ModelRelationField implements
             }, $this->inLineSeparator) ?? '';
         }
 
-        $fields = $this->preparedFields()
-            ->prepend(Text::make($this->getResourceColumnLabel(), $column, $this->formattedValueCallback()))
+        $fields = $this->getPreparedFields()
+            ->prepend(Text::make($this->getResourceColumnLabel(), $column, $this->getFormattedValueCallback()))
             ->prepend(ID::make());
 
         return TableBuilder::make($fields, $values)
@@ -445,10 +445,10 @@ class BelongsToMany extends ModelRelationField implements
             foreach ($this->getFields() as $field) {
                 $field->appendRequestKeyPrefix(
                     "{$this->getPivotName()}.$key",
-                    $this->requestKeyPrefix()
+                    $this->getRequestKeyPrefix()
                 );
 
-                $values = request($field->requestKeyPrefix());
+                $values = request()->input($field->getRequestKeyPrefix());
 
                 $apply = $field->apply(
                     fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? null),
@@ -478,7 +478,7 @@ class BelongsToMany extends ModelRelationField implements
             ->each(function (Field $field, $index) use ($data): void {
                 $field->appendRequestKeyPrefix(
                     "{$this->getPivotName()}.$index",
-                    $this->requestKeyPrefix()
+                    $this->getRequestKeyPrefix()
                 );
 
                 $field->beforeApply($data);
@@ -492,7 +492,7 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
-        if (! $this->getResource()->deleteRelationships()) {
+        if (! $this->getResource()->isDeleteRelationships()) {
             return $data;
         }
 
@@ -539,10 +539,10 @@ class BelongsToMany extends ModelRelationField implements
             'isSearchable' => $this->isSearchable(),
             'isAsyncSearch' => $this->isAsyncSearch(),
             'isSelectMode' => $this->isSelectMode(),
-            'asyncSearchUrl' => $this->asyncSearchUrl(),
+            'asyncSearchUrl' => $this->getAsyncSearchUrl(),
             'isCreatable' => $this->isCreatable(),
-            'createButton' => $this->createButton(),
-            'fragmentUrl' => $this->fragmentUrl(),
+            'createButton' => $this->getCreateButton(),
+            'fragmentUrl' => $this->getFragmentUrl(),
             'relationName' => $this->getRelationName(),
             'keys' => $this->getKeys(),
         ];

@@ -35,7 +35,7 @@ trait SelectTrait
 
         return new Options(
             value($this->options, $this),
-            $this->value(),
+            $this->getValue(),
             $this->optionProperties
         );
     }

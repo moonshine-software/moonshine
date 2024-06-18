@@ -58,16 +58,16 @@ class Tabs extends AbstractWithComponents
      */
     public function getActive(): string|int|null
     {
-        return $this->tabs()->firstWhere('active', true)?->id();
+        return $this->getTabs()->firstWhere('active', true)?->getId();
     }
 
     /**
      * @throws Throwable
      */
-    public function getTabs(): Collection
+    public function getTabsLabels(): Collection
     {
-        return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [
-            $tab->id() => $tab->getIcon(6, 'secondary')
+        return $this->getTabs()->mapWithKeys(fn (Tab $tab): array => [
+            $tab->getId() => $tab->getIcon(6, 'secondary')
                 . PHP_EOL . $tab->getLabel(),
         ]);
     }
@@ -77,8 +77,8 @@ class Tabs extends AbstractWithComponents
      */
     public function getContents(): Collection
     {
-        return $this->tabs()->mapWithKeys(fn (Tab $tab): array => [
-            $tab->id() => Components::make(
+        return $this->getTabs()->mapWithKeys(fn (Tab $tab): array => [
+            $tab->getId() => Components::make(
                 $tab->getComponents()
             ),
         ]);
@@ -88,7 +88,7 @@ class Tabs extends AbstractWithComponents
      * @return MoonShineRenderElements<int, Tab>
      * @throws Throwable
      */
-    public function tabs(): MoonShineRenderElements
+    public function getTabs(): MoonShineRenderElements
     {
         return tap(
             $this->getComponents(),
@@ -108,7 +108,7 @@ class Tabs extends AbstractWithComponents
     protected function viewData(): array
     {
         return [
-            'tabs' => $this->getTabs()->toArray(),
+            'tabs' => $this->getTabsLabels()->toArray(),
             'contents' => $this->getContents()->toArray(),
             'active' => $this->getActive(),
             'justifyAlign' => $this->getJustifyAlign(),

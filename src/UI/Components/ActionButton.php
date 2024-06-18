@@ -84,7 +84,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         if(is_null($this->modal)) {
             $this->customAttributes(array_filter([
                 'data-button-type' => 'bulk-button',
-                'data-for-component' => $this->bulkForComponent(),
+                'data-for-component' => $this->getBulkForComponent(),
             ]));
         }
 
@@ -96,7 +96,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->isBulk;
     }
 
-    public function bulkForComponent(): ?string
+    public function getBulkForComponent(): ?string
     {
         return $this->bulkForComponent;
     }
@@ -171,12 +171,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     ): self {
         $this->asyncMethod = $method;
 
-        $this->url = static fn (?CastedData $data): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
+        $this->url = static fn (mixed $data, ?CastedData $casted): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([
-                'resourceItem' => $data?->getKey(),
-                ...value($params, $data?->getOriginal()),
+                'resourceItem' => $casted?->getKey(),
+                ...value($params, $casted?->getOriginal()),
             ], static fn ($value) => filled($value)),
             page: $page,
             resource: $resource,
@@ -199,7 +199,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return ! is_null($this->asyncMethod);
     }
 
-    public function asyncMethod(): ?string
+    public function getAsyncMethod(): ?string
     {
         return $this->asyncMethod;
     }
@@ -245,14 +245,14 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->isInOffCanvas() || $this->isInModal();
     }
 
-    public function component(): ?MoonShineComponent
+    public function getComponent(): ?MoonShineComponent
     {
         if($this->isInModal()) {
-            return $this->modal();
+            return $this->getModal();
         }
 
         if($this->isInOffCanvas()) {
-            return $this->offCanvas();
+            return $this->getOffCanvas();
         }
 
         return null;
@@ -290,7 +290,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
 
     public function getUrl(mixed $data = null): string
     {
-        return value($this->url, $data ?? $this->getData()?->getOriginal());
+        return value($this->url, $data ?? $this->getData()?->getOriginal(), $this->getData());
     }
 
     public function primary(Closure|bool|null $condition = null): self
@@ -354,7 +354,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return [
             'inDropdown' => $this->isInDropdown(),
             'hasComponent' => $this->hasComponent(),
-            'component' => $this->hasComponent() ? $this->component() : '',
+            'component' => $this->hasComponent() ? $this->getComponent() : '',
             'label' => $this->getLabel(),
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(4),

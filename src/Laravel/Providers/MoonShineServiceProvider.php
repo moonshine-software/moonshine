@@ -177,7 +177,7 @@ class MoonShineServiceProvider extends ServiceProvider
         MoonShine::requestResolver(static fn (): Request => new Request(
             request: app(ServerRequestInterface::class),
             session: fn (string $key, mixed $default) => session($key, $default),
-            file: fn (string $key) => request()->file($key, request()->get($key, false)),
+            file: fn (string $key) => request()->file($key, request()->input($key, false)),
             old: fn (string $key, mixed $default) => session()->getOldInput($key, $default)
         ));
 

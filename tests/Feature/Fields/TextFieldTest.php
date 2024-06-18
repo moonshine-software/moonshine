@@ -18,7 +18,7 @@ it('empty value save', function () {
     ];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();

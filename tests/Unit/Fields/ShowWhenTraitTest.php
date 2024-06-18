@@ -31,7 +31,7 @@ beforeEach(function (): void {
 it('default operator', function (): void {
     $this->showWhenTest->showWhen('field2', 1);
 
-    $condition = $this->showWhenTest->showWhenCondition()[0];
+    $condition = $this->showWhenTest->getShowWhenCondition()[0];
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')
         ->and($condition['operator'])->toBe('=')
@@ -42,7 +42,7 @@ it('default operator', function (): void {
 it('operator >', function (): void {
     $this->showWhenTest->showWhen('field2', '>', 1);
 
-    $condition = $this->showWhenTest->showWhenCondition()[0];
+    $condition = $this->showWhenTest->getShowWhenCondition()[0];
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')
         ->and($condition['operator'])->toBe('>')
@@ -53,7 +53,7 @@ it('operator >', function (): void {
 it('operator in', function (): void {
     $this->showWhenTest->showWhen('field2', 'in', [1,2]);
 
-    $condition = $this->showWhenTest->showWhenCondition()[0];
+    $condition = $this->showWhenTest->getShowWhenCondition()[0];
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')
         ->and($condition['operator'])->toBe('in')
@@ -64,7 +64,7 @@ it('operator in', function (): void {
 it('error operator', function (): void {
     $this->showWhenTest->showWhen('field2', '%', 1);
 
-    $condition = $this->showWhenTest->showWhenCondition()[0];
+    $condition = $this->showWhenTest->getShowWhenCondition()[0];
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')
         ->and($condition['operator'])->toBe('=')

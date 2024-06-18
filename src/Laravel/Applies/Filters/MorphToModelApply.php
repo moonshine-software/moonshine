@@ -18,7 +18,7 @@ class MorphToModelApply implements ApplyContract
         return static function (Builder $query) use ($field): void {
             $query->whereMorphRelation(
                 $field->getRelationName(),
-                [$field->requestTypeValue()],
+                [$field->getRequestTypeValue()],
                 $field->getColumn(),
                 '=',
                 $field->getRequestValue(),

@@ -45,7 +45,7 @@ trait NumberTrait
         return $this;
     }
 
-    public function withStars(): bool
+    public function isWithStars(): bool
     {
         return $this->stars;
     }

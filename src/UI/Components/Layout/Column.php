@@ -30,8 +30,8 @@ class Column extends AbstractWithComponents
     {
         return [
             ...parent::viewData(),
-            'colSpan' => $this->columnSpanValue(),
-            'adaptiveColSpan' => $this->adaptiveColumnSpanValue(),
+            'colSpan' => $this->getColumnSpanValue(),
+            'adaptiveColSpan' => $this->getAdaptiveColumnSpanValue(),
         ];
     }
 }

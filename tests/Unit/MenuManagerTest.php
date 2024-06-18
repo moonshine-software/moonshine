@@ -21,7 +21,7 @@ it('add menu elements', function (): void {
         ->toHaveCount(1)
         ->each(
             fn (Expectation $item) => $item
-            ->url()
+            ->getUrl()
             ->toBe('/')
             ->getLabel()
             ->toBe('Item')
@@ -37,7 +37,7 @@ it('add before menu elements', function (): void {
 
     $item = MenuItem::make('Item 2_0', '/item2_0');
 
-    moonshineMenu()->addBefore(fn (MenuItem $el) => $el->url() === '/item2', $item);
+    moonshineMenu()->addBefore(fn (MenuItem $el) => $el->getUrl() === '/item2', $item);
 
     $items = moonshineMenu()->all();
 
@@ -54,7 +54,7 @@ it('add after menu elements', function (): void {
 
     $item = MenuItem::make('Item 2_0', '/item2_0');
 
-    moonshineMenu()->addAfter(fn (MenuItem $el) => $el->url() === '/item2', [$item]);
+    moonshineMenu()->addAfter(fn (MenuItem $el) => $el->getUrl() === '/item2', [$item]);
 
     $items = moonshineMenu()->all();
 
@@ -69,7 +69,7 @@ it('remove menu elements', function (): void {
         MenuItem::make('Item 3', '/item3'),
     ]);
 
-    moonshineMenu()->remove(fn (MenuItem $el) => $el->url() === '/item2');
+    moonshineMenu()->remove(fn (MenuItem $el) => $el->getUrl() === '/item2');
 
     $items = moonshineMenu()->all();
 

@@ -16,7 +16,7 @@ final class FiltersButton
 {
     public static function for(ModelResource $resource): ActionButton
     {
-        $title = self::title($resource->getFilterParams());
+        $title = self::getTitle($resource->getFilterParams());
 
         $form = moonshineConfig()->getForm('filters', FiltersForm::class, resource: $resource);
 
@@ -32,7 +32,7 @@ final class FiltersButton
             ->showInLine();
     }
 
-    private static function title(array $params = []): string
+    private static function getTitle(array $params = []): string
     {
         $count = collect($params)
             ->filter(

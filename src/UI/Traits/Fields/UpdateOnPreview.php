@@ -95,7 +95,7 @@ trait UpdateOnPreview
         }
 
         if(! is_null($resource)) {
-            $this->nowOn(page: $resource->formPage(), resource: $resource);
+            $this->nowOn(page: $resource->getFormPage(), resource: $resource);
         }
 
         return $this->setUpdateOnPreviewUrl(
@@ -128,7 +128,7 @@ trait UpdateOnPreview
         return $this->updateOnPreview;
     }
 
-    protected function onChangeCondition(): bool
+    protected function isOnChangeCondition(): bool
     {
         if (! is_null($this->onChangeUrl) && ! $this->isUpdateOnPreview()) {
             return true;

@@ -98,7 +98,7 @@ it('before apply', function () {
     $data = ['files' => [$file3], 'hidden_files' => ['items/' . $files[0]->hashName(), 'items/' . $files[1]->hashName()]];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -126,7 +126,7 @@ it('after destroy', function () {
     $files = saveMultipleFiles($resource, $this->item);
 
     asAdmin()->delete(
-        $resource->route('crud.destroy', $this->item->getKey()),
+        $resource->getRoute('crud.destroy', $this->item->getKey()),
     )
         ->assertRedirect();
 
@@ -148,7 +148,7 @@ it('after destroy disableDeleteFiles', function () {
     $files = saveMultipleFiles($resource, $this->item);
 
     asAdmin()->delete(
-        $resource->route('crud.destroy', $this->item->getKey()),
+        $resource->getRoute('crud.destroy', $this->item->getKey()),
     )
         ->assertRedirect();
 
@@ -174,7 +174,7 @@ function saveMultipleFiles(ModelResource $resource, Model $item): array
     $data = ['files' => [$file1, $file2]];
 
     asAdmin()->put(
-        $resource->route('crud.update', $item->getKey()),
+        $resource->getRoute('crud.update', $item->getKey()),
         $data
     )
         ->assertRedirect();

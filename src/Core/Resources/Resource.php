@@ -122,7 +122,7 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     public function getUrl(): string
     {
-        return $this->router()
+        return $this->getRouter()
             ->withPage($this->getPages()->first())
             ->to('resource.page')
         ;
@@ -131,6 +131,6 @@ abstract class Resource implements ResourceContract, MenuFiller
     public function isActive(): bool
     {
         return moonshineRouter()->extractResourceUri()
-            === $this->uriKey();
+            === $this->getUriKey();
     }
 }

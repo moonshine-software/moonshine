@@ -200,12 +200,12 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
-    public function submitAttributes(): MoonShineComponentAttributeBag
+    public function getSubmitAttributes(): MoonShineComponentAttributeBag
     {
         return $this->submitAttributes;
     }
 
-    public function submitLabel(): string
+    public function getSubmitLabel(): string
     {
         return $this->submitLabel ?? __('moonshine::ui.save');
     }
@@ -250,7 +250,7 @@ final class FormBuilder extends RowComponent
 
         if (is_null($default)) {
             $default = static fn (Field $field): Closure => static function (mixed $item) use ($field): mixed {
-                if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
+                if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
                     return $item;
                 }
 
@@ -264,7 +264,7 @@ final class FormBuilder extends RowComponent
 
         try {
             $fields = $this
-                ->preparedFields()
+                ->getPreparedFields()
                 ->onlyFields()
                 ->exceptElements(
                     fn (Field $element): bool => in_array($element->getColumn(), $this->getExcludedFields(), true)
@@ -300,7 +300,7 @@ final class FormBuilder extends RowComponent
      */
     protected function viewData(): array
     {
-        $fields = $this->preparedFields();
+        $fields = $this->getPreparedFields();
 
         if ($this->hasAdditionalFields()) {
             $this->getAdditionalFields()->each(fn ($field) => $fields->push($field));
@@ -315,7 +315,7 @@ final class FormBuilder extends RowComponent
         );
 
         $reactiveFields = $onlyFields->reactiveFields()
-            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->value()]);
+            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
 
         $whenFields = [];
         foreach ($onlyFields->whenFieldsConditions() as $whenConditions) {
@@ -348,8 +348,8 @@ final class FormBuilder extends RowComponent
 
         if ($this->isAsync()) {
             $this->customAttributes([
-                'x-on:submit.prevent' => 'async(`' . $this->asyncEvents(
-                ) . '`, `' . $this->asyncCallback()?->getSuccess() . '`, `' . $this->asyncCallback()?->getBefore() . '`)',
+                'x-on:submit.prevent' => 'async(`' . $this->getAsyncEvents(
+                ) . '`, `' . $this->getAsyncCallback()?->getSuccess() . '`, `' . $this->getAsyncCallback()?->getBefore() . '`)',
             ]);
         }
 
@@ -364,8 +364,8 @@ final class FormBuilder extends RowComponent
             'asyncUrl' => $this->getAsyncUrl(),
             'buttons' => $this->getButtons(),
             'hideSubmit' => $this->isHideSubmit(),
-            'submitLabel' => $this->submitLabel(),
-            'submitAttributes' => $this->submitAttributes(),
+            'submitLabel' => $this->getSubmitLabel(),
+            'submitAttributes' => $this->getSubmitAttributes(),
             'errors' => FormElement::resolveErrors($this->getName(), $this) ?? [],
         ];
     }

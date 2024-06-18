@@ -26,11 +26,11 @@ final class HasManyButton
         $parentResource = moonshineRequest()->getResource();
         $parentPage = moonshineRequest()->getPage();
 
-        if (! $resource->formPage()) {
+        if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn (?Model $data) => $parentResource->route(
+        $action = static fn (?Model $data) => $parentResource->getRoute(
             'relation.has-many-form',
             moonshineRequest()->getItemID(),
             [
@@ -41,7 +41,7 @@ final class HasManyButton
         );
 
         if($field->isWithoutModals()) {
-            $action = static fn (?Model $data) => $resource->formPageUrl($data);
+            $action = static fn (?Model $data) => $resource->getFormPageUrl($data);
         }
 
         $authorize = $update

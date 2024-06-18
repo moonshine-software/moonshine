@@ -15,14 +15,14 @@ final class DetailButton
         ModelResource $resource,
         bool $isAsync = true
     ): ActionButton {
-        if(! $resource->detailPage()) {
+        if(! $resource->getDetailPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn ($data): string => $resource->detailPageUrl($data);
+        $action = static fn ($data): string => $resource->getDetailPageUrl($data);
 
         if($resource->isDetailInModal()) {
-            $action = static fn ($data): string => $resource->detailPageUrl(
+            $action = static fn ($data): string => $resource->getDetailPageUrl(
                 $data,
                 fragment: 'crud-detail'
             );

@@ -28,12 +28,12 @@ abstract class InputExtension
         return $this->value;
     }
 
-    public function xData(): Collection
+    public function getXData(): Collection
     {
         return collect($this->xData);
     }
 
-    public function xInit(): Collection
+    public function getXInit(): Collection
     {
         return collect($this->xInit);
     }

@@ -99,7 +99,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
         return $this->whenFields()->map(
             static fn (
                 Field $field
-            ): array => $field->showWhenCondition()
+            ): array => $field->getShowWhenCondition()
         );
     }
 

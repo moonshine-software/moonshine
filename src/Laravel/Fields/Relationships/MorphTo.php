@@ -32,7 +32,7 @@ class MorphTo extends BelongsTo
      * @param  array<class-string<Model>, string>  $types
      * @return $this
      */
-    public function types(array $types): self
+    public function types(array $types): static
     {
         $this->asyncSearch();
 
@@ -87,14 +87,14 @@ class MorphTo extends BelongsTo
     protected function resolveOnApply(): ?Closure
     {
         return function (Model $item): Model {
-            $item->{$this->getMorphType()} = $this->requestTypeValue();
+            $item->{$this->getMorphType()} = $this->getRequestTypeValue();
             $item->{$this->getMorphKey()} = $this->getRequestValue();
 
             return $item;
         };
     }
 
-    public function requestTypeValue(): string
+    public function getRequestTypeValue(): string
     {
         return request(
             (string) str($this->getNameDot())->replace(
@@ -117,7 +117,7 @@ class MorphTo extends BelongsTo
             return parent::getValues();
         }
 
-        if (is_null($this->formattedValueCallback())) {
+        if (is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValueCallback(
                 fn ($v) => $v->{$this->getSearchColumn($v::class)}
             );

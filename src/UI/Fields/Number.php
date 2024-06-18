@@ -47,7 +47,7 @@ class Number extends Field implements HasDefaultValue, DefaultCanBeNumeric, HasU
 
     protected function resolvePreview(): View|string
     {
-        if (! $this->isRawMode() && $this->withStars()) {
+        if (! $this->isRawMode() && $this->isWithStars()) {
             return Rating::make(
                 (int) parent::resolvePreview()
             )->render();

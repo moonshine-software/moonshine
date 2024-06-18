@@ -43,14 +43,14 @@ class RelationModelFieldController extends MoonShineController
 
         $model = $resource->getModel();
 
-        $searchColumn = $field->asyncSearchColumn() ?? $resource->column();
+        $searchColumn = $field->getAsyncSearchColumn() ?? $resource->getColumn();
 
         if ($field instanceof MorphTo) {
             $field->fillCast([], $resource->getModelCast());
 
             $morphClass = $field->getWrapName()
-                ? data_get($request->get($field->getWrapName(), []), $field->getMorphType())
-                : $request->get($field->getMorphType());
+                ? data_get($request->input($field->getWrapName(), []), $field->getMorphType())
+                : $request->input($field->getMorphType());
 
             $model = new $morphClass();
             $searchColumn = $field->getSearchColumn($morphClass);
@@ -58,23 +58,23 @@ class RelationModelFieldController extends MoonShineController
 
         $query = $resource->resolveQuery();
 
-        if (! is_null($field->asyncSearchQuery())) {
+        if (! is_null($field->getAsyncSearchQuery())) {
             $query = value(
-                $field->asyncSearchQuery(),
+                $field->getAsyncSearchQuery(),
                 $query,
                 $request,
                 $field
             );
         }
 
-        $term = $request->get('query');
-        $values = $request->get($field->getColumn(), '') ?? '';
+        $term = $request->input('query');
+        $values = $request->input($field->getColumn(), '') ?? '';
 
         $except = is_array($values)
             ? array_keys($values)
             : array_filter(explode(',', (string) $values));
 
-        $offset = $request->get('offset', 0);
+        $offset = $request->input('offset', 0);
 
         $query->when(
             $term,
@@ -86,7 +86,7 @@ class RelationModelFieldController extends MoonShineController
         )
             ->whereNotIn($model->getKeyName(), $except)
             ->offset($offset)
-            ->limit($field->asyncSearchCount());
+            ->limit($field->getAsyncSearchCount());
 
         return response()->json(
             $query->get()->map(
@@ -116,7 +116,7 @@ class RelationModelFieldController extends MoonShineController
             $parentResource->getModelCast()
         );
 
-        $value = $field?->value();
+        $value = $field?->getValue();
 
         if ($value instanceof TableBuilder && $request->filled('_key')) {
             return $this->responseWithTable($value);
@@ -139,7 +139,7 @@ class RelationModelFieldController extends MoonShineController
         $resource = $field->getResource();
 
         $item = $resource
-            ->setItemID($request->get('_key', false))
+            ->setItemID($request->input('_key', false))
             ->getItemOrInstance();
 
         $update = $item->exists;
@@ -148,8 +148,8 @@ class RelationModelFieldController extends MoonShineController
         $field->fillCast($parent, $request->getResource()?->getModelCast());
 
         $action = $update
-            ? static fn (Model $data) => $resource->route('crud.update', $data->getKey())
-            : static fn (?Model $data) => $resource->route('crud.store');
+            ? static fn (Model $data) => $resource->getRoute('crud.update', $data->getKey())
+            : static fn (?Model $data) => $resource->getRoute('crud.store');
 
         $isAsync = $field->isAsync();
 
@@ -185,13 +185,13 @@ class RelationModelFieldController extends MoonShineController
             ->reactiveUrl(
                 fn (): string => moonshineRouter()
                     ->getEndpoints()
-                    ->reactive(page: $resource->formPage(), resource: $resource, extra: ['key' => $item?->getKey()])
+                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
             ->name($formName)
             ->switchFormMode(
                 $isAsync,
                 array_filter([
-                    $resource->listEventName($field->getRelationName()),
+                    $resource->getListEventName($field->getRelationName()),
                     $update ? null : AlpineJs::event(JsEvent::FORM_RESET, $formName),
                 ])
             )
@@ -214,7 +214,7 @@ class RelationModelFieldController extends MoonShineController
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
             ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                 fn (mixed $field): bool => $field instanceof ModelRelationField
-                    && $field->toOne()
+                    && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()
             ))
             ->buttons($resource->getFormButtons())

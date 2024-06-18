@@ -63,7 +63,7 @@ class RelationRepeater extends ModelRelationField implements
         );
     }
 
-    public function vertical(Closure|bool|null $condition = null): self
+    public function vertical(Closure|bool|null $condition = null): static
     {
         $this->isVertical = value($condition, $this) ?? true;
 
@@ -79,7 +79,7 @@ class RelationRepeater extends ModelRelationField implements
         Closure|bool|null $condition = null,
         ?int $limit = null,
         ?ActionButton $button = null
-    ): self {
+    ): static {
         $this->isCreatable = value($condition, $this) ?? true;
 
         if ($this->isCreatable()) {
@@ -92,7 +92,7 @@ class RelationRepeater extends ModelRelationField implements
         return $this;
     }
 
-    public function creatableButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButton
     {
         return $this->creatableButton;
     }
@@ -102,12 +102,12 @@ class RelationRepeater extends ModelRelationField implements
         return $this->isCreatable;
     }
 
-    public function creatableLimit(): ?int
+    public function getCreateLimit(): ?int
     {
         return $this->creatableLimit;
     }
 
-    public function buttons(array $buttons): self
+    public function buttons(array $buttons): static
     {
         $this->buttons = $buttons;
 
@@ -133,7 +133,7 @@ class RelationRepeater extends ModelRelationField implements
         return $buttons;
     }
 
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (self $parent, Field $field): void {
             $field
@@ -189,7 +189,7 @@ class RelationRepeater extends ModelRelationField implements
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
-        $fields = $this->preparedFields();
+        $fields = $this->getPreparedFields();
 
         return TableBuilder::make($fields, $values)
             ->name('relation_repeater_' . $this->getColumn())
@@ -228,7 +228,7 @@ class RelationRepeater extends ModelRelationField implements
             foreach ($this->getFields()->onlyFields() as $field) {
                 $field->appendRequestKeyPrefix(
                     "{$this->getColumn()}.$index",
-                    $this->requestKeyPrefix()
+                    $this->getRequestKeyPrefix()
                 );
 
                 $field->when($fill, fn (Field $f): Field => $f->fillCast(
@@ -337,7 +337,7 @@ class RelationRepeater extends ModelRelationField implements
      */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
-        if (! $this->getResource()?->deleteRelationships()) {
+        if (! $this->getResource()?->isDeleteRelationships()) {
             return $data;
         }
 
@@ -371,8 +371,8 @@ class RelationRepeater extends ModelRelationField implements
                 ->when(
                     $this->isCreatable(),
                     fn (TableBuilder $table): TableBuilder => $table->creatable(
-                        limit: $this->creatableLimit(),
-                        button: $this->creatableButton()
+                        limit: $this->getCreateLimit(),
+                        button: $this->getCreateButton()
                     )
                 )
                 ->buttons($this->getButtons())

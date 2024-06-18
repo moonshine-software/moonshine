@@ -111,16 +111,16 @@ it('can download', function (): void {
 });
 
 it('correct path', function (): void {
-    expect($this->field->path(''))
+    expect($this->field->getPath(''))
         ->toBe(Storage::disk($this->field->getDisk())->url(''))
-        ->and($this->field->path('file.png'))
+        ->and($this->field->getPath('file.png'))
         ->toBe(Storage::disk($this->field->getDisk())->url('file.png'));
 });
 
 it('correct path with dir', function (): void {
-    expect($this->field->pathWithDir(''))
+    expect($this->field->getPathWithDir(''))
         ->toBe(Storage::disk($this->field->getDisk())->url($this->field->getDir() . '/'))
-        ->and($this->field->dir('')->pathWithDir('/'))
+        ->and($this->field->dir('')->getPathWithDir('/'))
         ->toBe(Storage::disk($this->field->getDisk())->url('/'));
 });
 

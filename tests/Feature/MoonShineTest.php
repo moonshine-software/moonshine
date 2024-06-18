@@ -12,7 +12,7 @@ it('recognizes internal request as MoonShine request', function (): void {
     $resource = $this->moonShineUserResource();
 
     asAdmin()
-        ->get($resource->route('resource.page', query: ['pageUri' => PageType::INDEX->value]))
+        ->get($resource->getRoute('resource.page', query: ['pageUri' => PageType::INDEX->value]))
         ->assertOk();
 
     expect(app(MoonShineRequest::class)->isMoonShineRequest())

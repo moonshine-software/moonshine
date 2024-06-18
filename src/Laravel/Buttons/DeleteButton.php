@@ -18,7 +18,7 @@ final class DeleteButton
         string $redirectAfterDelete = '',
         bool $isAsync = true,
     ): ActionButton {
-        $action = static fn (Model $data): string => $resource->route(
+        $action = static fn (Model $data): string => $resource->getRoute(
             'crud.destroy',
             $data->getKey(),
             array_filter([
@@ -37,8 +37,8 @@ final class DeleteButton
                 formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form->async(
-                        events: $resource->listEventName(
-                            $componentName ?? $resource->listComponentName()
+                        events: $resource->getListEventName(
+                            $componentName ?? $resource->getListComponentName()
                         )
                     )
                 ),

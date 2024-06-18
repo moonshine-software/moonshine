@@ -45,8 +45,8 @@ abstract class Metric extends MoonShineComponent implements HasAssets
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
             'icon' => $this->getIcon(6, 'secondary'),
-            'columnSpanValue' => $this->columnSpanValue(),
-            'adaptiveColumnSpanValue' => $this->adaptiveColumnSpanValue(),
+            'columnSpanValue' => $this->getColumnSpanValue(),
+            'adaptiveColumnSpanValue' => $this->getAdaptiveColumnSpanValue(),
         ];
     }
 }

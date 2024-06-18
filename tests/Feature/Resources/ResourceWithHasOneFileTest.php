@@ -68,7 +68,7 @@ function addHasOneFile(ModelResource $resource, Model $item)
     ];
 
     asAdmin()->post(
-        $resource->route('crud.store', $item->getKey()),
+        $resource->getRoute('crud.store', $item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -89,7 +89,7 @@ function addHasOneFile(ModelResource $resource, Model $item)
 function deleteItemWithHasOne(ModelResource $resource, int $itemId): void
 {
     asAdmin()->delete(
-        $resource->route('crud.destroy', $itemId),
+        $resource->getRoute('crud.destroy', $itemId),
     )
         ->assertRedirect()
     ;

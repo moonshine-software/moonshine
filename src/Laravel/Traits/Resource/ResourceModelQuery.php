@@ -11,6 +11,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
@@ -165,7 +166,7 @@ trait ResourceModelQuery
         return [];
     }
 
-    protected function itemsPerPage(): int
+    protected function getItemsPerPage(): int
     {
         return $this->itemsPerPage;
     }
@@ -181,9 +182,9 @@ trait ResourceModelQuery
     {
         $page = $this->paginatorPage ?? (int) $this->getQueryParams()->get('page');
 
-        if ($this->saveQueryState() && ! $this->getQueryParams()->has('reset')) {
+        if ($this->isSaveQueryState() && ! $this->getQueryParams()->has('reset')) {
             return (int) data_get(
-                moonshineCache()->get($this->queryCacheKey(), []),
+                moonshineCache()->get($this->getQueryCacheKey(), []),
                 'page',
                 $page
             );
@@ -201,11 +202,11 @@ trait ResourceModelQuery
             ->when(
                 $this->isSimplePaginate(),
                 fn (Builder $query): Paginator => $query->simplePaginate(
-                    $this->itemsPerPage(),
+                    $this->getItemsPerPage(),
                     page: $this->getPaginatorPage()
                 ),
                 fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    $this->itemsPerPage(),
+                    $this->getItemsPerPage(),
                     page: $this->getPaginatorPage()
                 ),
             )
@@ -254,7 +255,7 @@ trait ResourceModelQuery
         return $this->query ?: $this->query();
     }
 
-    public function saveQueryState(): bool
+    public function isSaveQueryState(): bool
     {
         return $this->saveQueryState;
     }
@@ -270,27 +271,27 @@ trait ResourceModelQuery
     /**
      * @return string[]
      */
-    protected function cachedRequestKeys(): array
+    protected function getCachedRequestKeys(): array
     {
         return $this->getQueryParamsKeys();
     }
 
     protected function cacheQueryParams(): static
     {
-        if (! $this->saveQueryState()) {
+        if (! $this->isSaveQueryState()) {
             return $this;
         }
 
         if ($this->getQueryParams()->has('reset')) {
-            moonshineCache()->forget($this->queryCacheKey());
+            moonshineCache()->forget($this->getQueryCacheKey());
 
             return $this;
         }
 
-        if ($this->getQueryParams()->hasAny($this->cachedRequestKeys())) {
+        if ($this->getQueryParams()->hasAny($this->getCachedRequestKeys())) {
             moonshineCache()->put(
-                $this->queryCacheKey(),
-                $this->getQueryParams()->only($this->cachedRequestKeys()),
+                $this->getQueryCacheKey(),
+                $this->getQueryParams()->only($this->getCachedRequestKeys()),
                 now()->addHours(2)
             );
         }
@@ -300,15 +301,15 @@ trait ResourceModelQuery
 
     protected function resolveCache(): static
     {
-        if ($this->saveQueryState()
+        if ($this->isSaveQueryState()
             && ! $this->getQueryParams()->hasAny([
-                ...$this->cachedRequestKeys(),
+                ...$this->getCachedRequestKeys(),
                 'reset',
             ])
         ) {
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
-                    collect(moonshineCache()->get($this->queryCacheKey(), []))->filter(fn ($value, $key): bool => ! $this->getQueryParams()->has($key))->toArray()
+                    collect(moonshineCache()->get($this->getQueryCacheKey(), []))->filter(fn ($value, $key): bool => ! $this->getQueryParams()->has($key))->toArray()
                 )
             );
         }
@@ -402,8 +403,8 @@ trait ResourceModelQuery
      */
     protected function resolveOrder(): static
     {
-        $column = $this->sortColumn();
-        $direction = $this->sortDirection();
+        $column = $this->getSortColumn();
+        $direction = $this->getSortDirection();
 
         if (($sort = $this->getQueryParams()->get('sort')) && is_string($sort)) {
             $column = ltrim($sort, '-');
@@ -412,7 +413,7 @@ trait ResourceModelQuery
 
         $field = $this->getIndexFields()->findByColumn($column);
 
-        $callback = $field?->sortableCallback();
+        $callback = $field?->getSortableCallback();
 
         if (is_string($callback)) {
             $column = value($callback);
@@ -435,9 +436,9 @@ trait ResourceModelQuery
     {
         $default = $this->getQueryParams()->get('filters', []);
 
-        if ($this->saveQueryState()) {
+        if ($this->isSaveQueryState()) {
             return data_get(
-                moonshineCache()->get($this->queryCacheKey(), []),
+                moonshineCache()->get($this->getQueryCacheKey(), []),
                 'filters',
                 $default
             );
@@ -496,39 +497,33 @@ trait ResourceModelQuery
      */
     protected function resolveParentResource(): static
     {
-        if (
-            is_null($relation = moonshineRequest()->getParentRelationName())
-            || is_null($parentId = moonshineRequest()->getParentRelationId())
-        ) {
+        $relationName = moonshineRequest()->getParentRelationName();
+        $parentId = moonshineRequest()->getParentRelationId();
+
+        if (is_null($relationName) || is_null($parentId)) {
             return $this;
         }
 
-        if (! empty($this->parentRelations())) {
-            foreach ($this->parentRelations() as $relationName) {
-                if ($relation === $relationName) {
-                    $this->getQuery()->where(
-                        $this->getModel()->{$relation}()->getForeignKeyName(),
-                        $parentId
-                    );
-
-                    return $this;
-                }
-            }
+        if (! method_exists($this->getModel(), $relationName)) {
+            throw new ResourceException("Relation $relationName not found for current resource");
         }
 
-        if (
-            method_exists($this->getModel(), $relation)
-            && method_exists($this->getModel()->{$relation}(), 'getForeignKeyName')
-        ) {
-            $this->getQuery()->where(
-                $this->getModel()->{$relation}()->getForeignKeyName(),
+        $relation = $this->getModel()->{$relationName}();
+
+        $this->getQuery()->when(
+            $relation instanceof BelongsToMany,
+            fn (Builder $q) => $q->whereRelation(
+                $relationName,
+                $relation->getQualifiedRelatedKeyName(),
                 $parentId
-            );
+            ),
+            fn (Builder $q) => $q->where(
+                $relation->getForeignKeyName(),
+                $parentId
+            )
+        );
 
-            return $this;
-        }
-
-        throw new ResourceException("Relation $relation not found for current resource");
+        return $this;
     }
 
     public function hasWith(): bool
@@ -544,19 +539,19 @@ trait ResourceModelQuery
         return $this->with;
     }
 
-    public function sortColumn(): string
+    public function getSortColumn(): string
     {
         return $this->sortColumn ?: $this->getModel()->getKeyName();
     }
 
-    public function sortDirection(): string
+    public function getSortDirection(): string
     {
         return in_array(strtolower($this->sortDirection), ['asc', 'desc'])
             ? $this->sortDirection
             : 'DESC';
     }
 
-    protected function queryCacheKey(): string
+    protected function getQueryCacheKey(): string
     {
         return "moonshine_query_{$this->getUriKey()}";
     }
@@ -564,7 +559,7 @@ trait ResourceModelQuery
     /**
      * @throws Throwable
      */
-    public function items(): Collection
+    public function getItems(): Collection
     {
         return $this->resolveQuery()->get();
     }
@@ -584,7 +579,7 @@ trait ResourceModelQuery
     /**
      * @return string[]
      */
-    public function parentRelations(): array
+    public function getParentRelations(): array
     {
         return $this->parentRelations;
     }

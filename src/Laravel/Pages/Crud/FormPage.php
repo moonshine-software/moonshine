@@ -42,7 +42,7 @@ class FormPage extends Page
         $breadcrumbs = parent::getBreadcrumbs();
 
         if ($this->getResource()->getItemID()) {
-            $breadcrumbs[$this->getRoute()] = data_get($this->getResource()->getItem(), $this->getResource()->column());
+            $breadcrumbs[$this->getRoute()] = data_get($this->getResource()->getItem(), $this->getResource()->getColumn());
         } else {
             $breadcrumbs[$this->getRoute()] = __('moonshine::ui.add');
         }
@@ -104,7 +104,7 @@ class FormPage extends Page
         $resource = $this->getResource();
         $item = $resource->getItem();
 
-        $action = $resource->route(
+        $action = $resource->getRoute(
             $item?->exists ? 'crud.update' : 'crud.store',
             $item?->getKey()
         );
@@ -112,7 +112,7 @@ class FormPage extends Page
         // Reset form problem
         $isAsync = $resource->isAsync();
 
-        if (request('_async_form', false)) {
+        if (request()->boolean('_async_form')) {
             $isAsync = true;
         }
 
@@ -234,7 +234,9 @@ class FormPage extends Page
                 $isAsync,
                 fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
                     ->async(events: array_filter([
-                        $resource->listEventName(request('_component_name', 'default')),
+                        $resource->getListEventName(
+                            request()->input('_component_name', 'default')
+                        ),
                         ! $item?->exists && $resource->isCreateInModal()
                             ? AlpineJs::event(JsEvent::FORM_RESET, $resource->getUriKey())
                             : null,

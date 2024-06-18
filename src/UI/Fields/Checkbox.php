@@ -43,7 +43,7 @@ class Checkbox extends Field implements
             return false;
         }
 
-        return $this->getOnValue() == $this->value();
+        return $this->getOnValue() == $this->getValue();
     }
 
     public function simpleMode(): static
@@ -75,7 +75,7 @@ class Checkbox extends Field implements
             'x-bind:checked' => '$el.checked',
         ]);
 
-        $this->mergeAttribute('x-on:change', $this->onChangeEvent(), ';');
+        $this->mergeAttribute('x-on:change', $this->getOnChangeEvent(), ';');
     }
 
     protected function resolvePreview(): View|string
@@ -91,12 +91,12 @@ class Checkbox extends Field implements
         )->render();
     }
 
-    protected function onChangeEvent(): string
+    protected function getOnChangeEvent(): string
     {
         return '$el.value = $el.checked ? `' . $this->getOnValue() . '` : `' . $this->getOffValue() . '`';
     }
 
-    protected function onChangeEventAttributes(?string $url = null): array
+    protected function getOnChangeEventAttributes(?string $url = null): array
     {
         $additionally = [];
 
@@ -109,7 +109,7 @@ class Checkbox extends Field implements
             return AlpineJs::requestWithFieldValue(
                 $url,
                 $this->getColumn(),
-                $this->onChangeEvent(),
+                $this->getOnChangeEvent(),
                 $additionally
             );
         }

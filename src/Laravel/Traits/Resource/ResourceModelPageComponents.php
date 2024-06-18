@@ -9,7 +9,7 @@ use MoonShine\UI\Fields\Field;
 trait ResourceModelPageComponents
 {
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function getIndexPageComponents(): array
     {
@@ -17,7 +17,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function getFormPageComponents(): array
     {
@@ -25,7 +25,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function getDetailPageComponents(): array
     {
@@ -33,7 +33,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function indexPageComponents(): array
     {
@@ -41,7 +41,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function formPageComponents(): array
     {
@@ -49,7 +49,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function detailPageComponents(): array
     {
@@ -57,7 +57,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return Field
+     * @return list<Field>
      */
     public function pageComponents(): array
     {

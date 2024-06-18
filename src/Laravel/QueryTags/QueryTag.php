@@ -40,7 +40,7 @@ final class QueryTag implements HasCanSeeContract
         return $this;
     }
 
-    public function uri(): string
+    public function getUri(): string
     {
         if(! is_null($this->alias)) {
             return $this->alias;
@@ -62,7 +62,7 @@ final class QueryTag implements HasCanSeeContract
             return true;
         }
 
-        return request('query-tag') === $this->uri();
+        return request()->input('query-tag') === $this->getUri();
     }
 
     public function apply(Builder $builder): Builder

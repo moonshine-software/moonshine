@@ -21,7 +21,7 @@ trait Reactivity
         return $this->isReactive;
     }
 
-    public function reactiveCallback(Fields $fields, mixed $value, array $values): Fields
+    public function getReactiveCallback(Fields $fields, mixed $value, array $values): Fields
     {
         if(is_null($this->reactiveCallback) || ! $this->isReactive()) {
             return $fields;

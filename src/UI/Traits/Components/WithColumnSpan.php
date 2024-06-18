@@ -28,12 +28,12 @@ trait WithColumnSpan
         return $this;
     }
 
-    public function columnSpanValue(): int
+    public function getColumnSpanValue(): int
     {
         return $this->columnSpan;
     }
 
-    public function adaptiveColumnSpanValue(): int
+    public function getAdaptiveColumnSpanValue(): int
     {
         return $this->adaptiveColumnSpan;
     }

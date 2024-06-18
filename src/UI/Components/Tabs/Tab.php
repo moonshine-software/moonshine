@@ -48,7 +48,7 @@ class Tab extends AbstractWithComponents
         return $this;
     }
 
-    public function id(): string
+    public function getId(): string
     {
         return (string) spl_object_id($this);
     }

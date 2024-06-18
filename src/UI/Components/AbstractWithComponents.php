@@ -38,7 +38,7 @@ abstract class AbstractWithComponents extends MoonShineComponent implements
             return $this->getFields();
         }
 
-        return $this->preparedComponents();
+        return $this->getPreparedComponents();
     }
 
     /**

@@ -10,13 +10,13 @@ interface HasAsyncSearch
 {
     public function isAsyncSearch(): bool;
 
-    public function asyncSearchColumn(): ?string;
+    public function getAsyncSearchColumn(): ?string;
 
-    public function asyncSearchQuery(): ?Closure;
+    public function getAsyncSearchQuery(): ?Closure;
 
-    public function asyncSearchCount(): int;
+    public function getAsyncSearchCount(): int;
 
-    public function asyncSearchValueCallback(): ?Closure;
+    public function getAsyncSearchValueCallback(): ?Closure;
 
     public function asyncSearch(
         string $column = null,

@@ -43,19 +43,19 @@ class LineChartMetric extends Metric
         return $this;
     }
 
-    public function color(int $index): string
+    public function getColor(int $index): string
     {
         return $this->colors[$index];
     }
 
-    public function colors(): array
+    public function getColors(): array
     {
         return $this->colors;
     }
 
-    public function labels(): array
+    public function getLabels(): array
     {
-        return collect($this->lines())
+        return collect($this->getLines())
             ->collapse()
             ->mapWithKeys(fn ($item): mixed => $item)
             ->when(! $this->isWithoutSortKeys(), fn ($items): Collection => $items->sortKeys())
@@ -63,7 +63,7 @@ class LineChartMetric extends Metric
             ->toArray();
     }
 
-    public function lines(): array
+    public function getLines(): array
     {
         return $this->lines;
     }
@@ -86,9 +86,9 @@ class LineChartMetric extends Metric
     protected function viewData(): array
     {
         return [
-            'labels' => $this->labels(),
-            'lines' => $this->lines(),
-            'colors' => $this->colors(),
+            'labels' => $this->getLabels(),
+            'lines' => $this->getLines(),
+            'colors' => $this->getColors(),
         ];
     }
 }

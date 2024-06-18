@@ -102,17 +102,17 @@ abstract class ModelResource extends Resource
         ];
     }
 
-    public function indexPage(): ?PageContract
+    public function getIndexPage(): ?PageContract
     {
         return $this->getPages()->indexPage();
     }
 
-    public function formPage(): ?PageContract
+    public function getFormPage(): ?PageContract
     {
         return $this->getPages()->formPage();
     }
 
-    public function detailPage(): ?PageContract
+    public function getDetailPage(): ?PageContract
     {
         return $this->getPages()->detailPage();
     }
@@ -136,7 +136,7 @@ abstract class ModelResource extends Resource
         return $this->getModelCast()->cast($this->getItem());
     }
 
-    public function column(): string
+    public function getColumn(): string
     {
         return $this->column;
     }
@@ -166,7 +166,7 @@ abstract class ModelResource extends Resource
         return $this->isPrecognitive;
     }
 
-    public function deleteRelationships(): bool
+    public function isDeleteRelationships(): bool
     {
         return $this->deleteRelationships;
     }
@@ -202,21 +202,21 @@ abstract class ModelResource extends Resource
         return ['id'];
     }
 
-    public function listComponentName(): string
+    public function getListComponentName(): string
     {
         return rescue(
-            fn (): string => $this->indexPage()?->getListComponentName(),
+            fn (): string => $this->getIndexPage()?->getListComponentName(),
             'index-table',
             false
         );
     }
 
-    public function listEventName(?string $name = null): string
+    public function getListEventName(?string $name = null): string
     {
-        $name ??= $this->listComponentName();
+        $name ??= $this->getListComponentName();
 
         return rescue(
-            fn (): string => AlpineJs::event($this->indexPage()?->getListEventName() ?? '', $name),
+            fn (): string => AlpineJs::event($this->getIndexPage()?->getListEventName() ?? '', $name),
             AlpineJs::event(JsEvent::TABLE_UPDATED, $name),
             false
         );
@@ -251,11 +251,11 @@ abstract class ModelResource extends Resource
 
         $fields->each(fn (Field $field): mixed => $field->afterDestroy($item));
 
-        if ($this->deleteRelationships()) {
+        if ($this->isDeleteRelationships()) {
             $this->getOutsideFields()->each(function (ModelRelationField $field) use ($item): void {
                 $relationItems = $item->{$field->getRelationName()};
 
-                ! $field->toOne() ?: $relationItems = collect([$relationItems]);
+                ! $field->isToOne() ?: $relationItems = collect([$relationItems]);
 
                 $relationItems->each(
                     static fn (Model $relationItem): mixed => $field->afterDestroy($relationItem)
@@ -269,7 +269,7 @@ abstract class ModelResource extends Resource
     public function onSave(Field $field): Closure
     {
         return static function (Model $item) use ($field): Model {
-            if (! $field->hasRequestValue() && ! $field->defaultIfExists()) {
+            if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
                 return $item;
             }
 
@@ -339,12 +339,12 @@ abstract class ModelResource extends Resource
         return $item;
     }
 
-    public function itemToJson(Model $item): mixed
+    public function prepareJsonResponse(Model $item): mixed
     {
         return $item;
     }
 
-    public function itemsToJson(Paginator $items): mixed
+    public function prepareCollectionJsonResponse(Paginator $items): mixed
     {
         return $items;
     }

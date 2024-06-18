@@ -12,14 +12,14 @@ final class QueryTagButton
     {
         return ActionButton::make(
             $tag->getLabel(),
-            $resource->indexPageUrl(['query-tag' => $tag->uri()])
+            $resource->getIndexPageUrl(['query-tag' => $tag->getUri()])
         )
             ->showInLine()
             ->icon($tag->getIconValue(), $tag->isCustomIcon(), $tag->getIconPath())
             ->canSee(fn (mixed $data): bool => $tag->isSee($data))
             ->customAttributes([
                 'class' => 'query-tag-button',
-                'x-data' => 'asyncLink(`btn-primary`, `' . $resource->listEventName() . '`)',
+                'x-data' => 'asyncLink(`btn-primary`, `' . $resource->getListEventName() . '`)',
                 'x-on:disable-query-tags.window' => 'disableQueryTags',
             ])
             ->when(
@@ -28,14 +28,14 @@ final class QueryTagButton
                     ->primary()
                     ->customAttributes([
                         'class' => 'active-query-tag',
-                        'href' => $resource->indexPageUrl(),
+                        'href' => $resource->getIndexPageUrl(),
                     ])
             )
             ->when(
                 $resource->isAsync(),
                 fn (ActionButton $btn): ActionButton => $btn
                     ->onClick(
-                        fn ($action): string => "queryTagRequest(`{$tag->uri()}`)",
+                        fn ($action): string => "queryTagRequest(`{$tag->getUri()}`)",
                         'prevent'
                     )
             );

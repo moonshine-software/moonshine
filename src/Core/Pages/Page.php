@@ -302,7 +302,7 @@ abstract class Page implements
 
     public function getRoute(array $params = []): string
     {
-        return $this->router()->to(
+        return $this->getRouter()->to(
             $this->hasResource() ? 'resource.page' : 'page',
             $params
         );
@@ -326,7 +326,7 @@ abstract class Page implements
 
     public function isActive(): bool
     {
-        return moonshineRouter()->extractPageUri() === $this->uriKey();
+        return moonshineRouter()->extractPageUri() === $this->getUriKey();
     }
 
     /**
@@ -346,7 +346,7 @@ abstract class Page implements
 
     protected function prepareBeforeRender(): void
     {
-        $withoutQuery = parse_url($this->url(), PHP_URL_PATH);
+        $withoutQuery = parse_url($this->getUrl(), PHP_URL_PATH);
 
         if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim(moonshine()->getRequest()->getPath(), '/')) {
             oops404();

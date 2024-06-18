@@ -201,7 +201,7 @@ class ExportHandler extends Handler
         }
 
         $query = Arr::query(request(['filters', 'sort', 'query-tag'], []));
-        $url = $this->getResource()?->route('handler', query: ['handlerUri' => $this->getUriKey()]);
+        $url = $this->getResource()?->getRoute('handler', query: ['handlerUri' => $this->getUriKey()]);
 
         return ActionButton::make(
             $this->getLabel(),

@@ -15,7 +15,7 @@ trait HasMoonShineSocialite
         return $this->hasMany(
             MoonshineSocialite::class,
             'moonshine_user_id',
-            MoonShineAuth::model()?->getKeyName() ?? 'id'
+            MoonShineAuth::getModel()?->getKeyName() ?? 'id'
         );
     }
 }

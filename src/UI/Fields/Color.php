@@ -24,7 +24,7 @@ class Color extends Field implements HasDefaultValue, DefaultCanBeString
             return $this->toValue();
         }
 
-        return ColorComponent::make($this->value())
+        return ColorComponent::make($this->getValue())
             ->render();
     }
 }

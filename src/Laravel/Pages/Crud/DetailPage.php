@@ -39,7 +39,7 @@ class DetailPage extends Page
 
         $breadcrumbs = parent::getBreadcrumbs();
 
-        $breadcrumbs[$this->getRoute()] = data_get($this->getResource()->getItem(), $this->getResource()->column());
+        $breadcrumbs[$this->getRoute()] = data_get($this->getResource()->getItem(), $this->getResource()->getColumn());
 
         return $breadcrumbs;
     }
@@ -124,7 +124,7 @@ class DetailPage extends Page
                     $field,
                 ];
 
-                if ($field->toOne()) {
+                if ($field->isToOne()) {
                     $field
                         ->withoutWrapper()
                         ->forcePreview();

@@ -132,7 +132,7 @@ trait RangeTrait
             return "$from - $to";
         }
 
-        if ($this->withStars()) {
+        if ($this->isWithStars()) {
             $from = Rating::make(
                 (int) $from
             )->render();
@@ -161,7 +161,7 @@ trait RangeTrait
         };
     }
 
-    protected function onChangeEventAttributes(?string $url = null): array
+    protected function getOnChangeEventAttributes(?string $url = null): array
     {
         if ($url) {
             $this->fromAttributes(

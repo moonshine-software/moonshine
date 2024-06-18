@@ -29,7 +29,7 @@ trait FileDeletable
         }
 
         return $this->deleteStorageFile(
-            $this->prependDir($fileName)
+            $this->getPrependedDir($fileName)
         );
     }
 

@@ -47,13 +47,8 @@ trait WithStorage
 
     public function getOptions(): array
     {
-        return $this->options ?? moonshineConfig()->getDiskOptions();
-    }
-
-    public function parseOptions(): array
-    {
         return [
-            ...$this->getOptions(),
+            ...$this->options ?? moonshineConfig()->getDiskOptions(),
             'disk' => $this->getDisk(),
         ];
     }

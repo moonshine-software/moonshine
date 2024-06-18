@@ -30,7 +30,7 @@ class ProfilePage extends Page
     public function getBreadcrumbs(): array
     {
         return [
-            '#' => $this->title(),
+            '#' => $this->getTitle(),
         ];
     }
 
@@ -90,7 +90,7 @@ class ProfilePage extends Page
      */
     public function getForm(): FormBuilder
     {
-        $user = MoonShineAuth::guard()->user() ?? MoonShineAuth::model();
+        $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 
         if(is_null($user)) {
             throw new MoonShineException('Model is required');

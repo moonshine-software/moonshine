@@ -17,7 +17,7 @@ final class Fields extends ParentFields
     public function onlyOutside(): self
     {
         return $this->filter(
-            static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
+            static fn (Field $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
         );
     }
 
@@ -27,7 +27,7 @@ final class Fields extends ParentFields
     public function withoutOutside(): self
     {
         return $this->exceptElements(
-            fn ($element): bool => $element instanceof ModelRelationField && $element->outsideComponent()
+            fn ($element): bool => $element instanceof ModelRelationField && $element->isOutsideComponent()
         );
     }
 
@@ -67,7 +67,7 @@ final class Fields extends ParentFields
         return $this->when(
             ! $withOutside,
             fn (self $fields): self => $fields->exceptElements(
-                static fn ($element): bool => ($element instanceof ModelRelationField && $element->outsideComponent())
+                static fn ($element): bool => ($element instanceof ModelRelationField && $element->isOutsideComponent())
             )
         );
     }
@@ -79,7 +79,7 @@ final class Fields extends ParentFields
     {
         if ($onlyOutside) {
             return $this->filter(
-                static fn (Field $field): bool => $field instanceof ModelRelationField && $field->outsideComponent()
+                static fn (Field $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
             );
         }
 
@@ -88,7 +88,7 @@ final class Fields extends ParentFields
         }
 
         return $this->filter(
-            static fn (Field $field): bool => ! ($field instanceof ModelRelationField && $field->outsideComponent())
+            static fn (Field $field): bool => ! ($field instanceof ModelRelationField && $field->isOutsideComponent())
         );
     }
 

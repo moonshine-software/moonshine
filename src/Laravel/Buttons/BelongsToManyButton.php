@@ -28,11 +28,11 @@ final class BelongsToManyButton
         /** @var ModelResource $resource */
         $resource = $field->getResource();
 
-        if (! $resource->formPage()) {
+        if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = $resource->route('crud.store');
+        $action = $resource->getRoute('crud.store');
 
         $getFields = function () use ($resource, $field) {
             $fields = $resource->getFormFields();

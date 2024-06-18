@@ -92,7 +92,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return moonshineRequest()
             ->getResource()
-            ?->formPageUrl($parentId) ?? '';
+            ?->getFormPageUrl($parentId) ?? '';
     }
 
     /**
@@ -177,7 +177,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function createButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButton
     {
         if (is_null($this->getRelatedModel()?->getKey())) {
             return null;
@@ -232,7 +232,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getIndexFields();
@@ -252,7 +252,7 @@ class HasMany extends ModelRelationField implements HasFields
      */
     public function preparedClonedFields(): Fields
     {
-        $fields = $this->preparedFields();
+        $fields = $this->getPreparedFields();
 
         return $this->hasFields()
             ? $fields->map(fn (Field $field): Field => (clone $field))
@@ -263,7 +263,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function tablePreview(): TableBuilder
+    protected function getTablePreview(): TableBuilder
     {
         $items = $this->toValue();
 
@@ -314,7 +314,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function tableValue(): MoonShineRenderable
+    protected function getTableValue(): MoonShineRenderable
     {
         $resource = $this->getResource();
 
@@ -401,7 +401,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return $this->isParentRelationLink()
             ? $this->getParentRelationLinkButton()->render()
-            : $this->tablePreview()->render();
+            : $this->getTablePreview()->render();
     }
 
     /**
@@ -432,7 +432,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return $this->isParentRelationLink()
             ? $this->getParentRelationLinkButton()
-            : $this->tableValue();
+            : $this->getTableValue();
     }
 
     /**
@@ -444,7 +444,7 @@ class HasMany extends ModelRelationField implements HasFields
         return [
             'component' => $this->resolveValue(),
             'isCreatable' => $this->isCreatable(),
-            'createButton' => $this->createButton(),
+            'createButton' => $this->getCreateButton(),
         ];
     }
 

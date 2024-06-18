@@ -15,7 +15,7 @@ trait WithComponents
 {
     protected iterable $components = [];
 
-    public function preparedComponents(): ComponentsCollection
+    public function getPreparedComponents(): ComponentsCollection
     {
         if(! $this->components instanceof ComponentsCollection) {
             return ComponentsCollection::make($this->components);
@@ -29,7 +29,7 @@ trait WithComponents
      */
     public function getComponents(): ComponentsCollection
     {
-        return $this->preparedComponents();
+        return $this->getPreparedComponents();
     }
 
     /**

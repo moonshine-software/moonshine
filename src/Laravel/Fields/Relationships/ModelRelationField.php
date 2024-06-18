@@ -55,7 +55,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             $relationName = str($this->getLabel())
                 ->camel()
                 ->when(
-                    $this->toOne(),
+                    $this->isToOne(),
                     fn (Stringable $str): Stringable => $str->singular(),
                     fn (Stringable $str): Stringable => $str->plural(),
                 )->value();
@@ -63,7 +63,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         $this->setRelationName($relationName);
 
-        if ($this->toOne() && ! $this->outsideComponent()) {
+        if ($this->isToOne() && ! $this->isOutsideComponent()) {
             $this->setColumn(
                 str($this->getRelationName())
                     ->singular()
@@ -140,7 +140,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         $this->setValue($data);
         $this->setRowIndex($index);
 
-        if ($this->toOne()) {
+        if ($this->isToOne()) {
             $this->setColumn(
                 $this->getRelation()?->getForeignKeyName() ?? ''
             );
@@ -165,29 +165,29 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     {
         $value = $this->toValue(withDefault: false);
 
-        if ($this->toOne() && ! is_null($this->formattedValueCallback())) {
+        if ($this->isToOne() && ! is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
                 value(
-                    $this->formattedValueCallback(),
+                    $this->getFormattedValueCallback(),
                     $value ?? $this->getRelation()?->getModel(),
                     $this->getRowIndex()
                 )
             );
         }
 
-        if ($this->toOne()) {
-            $value = data_get($value, $this->getResource()?->column());
+        if ($this->isToOne()) {
+            $value = data_get($value, $this->getResource()?->getColumn());
         }
 
         return $this->formattedValue ?? $value;
     }
 
-    public function outsideComponent(): bool
+    public function isOutsideComponent(): bool
     {
         return $this->outsideComponent;
     }
 
-    public function toOne(): bool
+    public function isToOne(): bool
     {
         return $this->toOne;
     }
@@ -217,7 +217,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
      */
     public function getResourceColumn(): string
     {
-        return $this->getResource()?->column() ?? 'id';
+        return $this->getResource()?->getColumn() ?? 'id';
     }
 
     public function getRelatedModel(): ?Model
@@ -232,8 +232,8 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             ?->{$this->getRelationName()}();
     }
 
-    protected function onChangeCondition(): bool
+    protected function isOnChangeCondition(): bool
     {
-        return ! $this->outsideComponent();
+        return ! $this->isOutsideComponent();
     }
 }

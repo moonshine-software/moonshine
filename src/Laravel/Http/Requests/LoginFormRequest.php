@@ -21,7 +21,7 @@ class LoginFormRequest extends MoonShineFormRequest
      */
     public function authorize(): bool
     {
-        return MoonShineAuth::guard()->guest();
+        return MoonShineAuth::getGuard()->guest();
     }
 
     /**
@@ -43,34 +43,36 @@ class LoginFormRequest extends MoonShineFormRequest
             moonshineConfig()->getUserField('username', 'email') => request(
                 'username'
             ),
-            moonshineConfig()->getUserField('password') => request('password'),
+            moonshineConfig()->getUserField('password') => request()->input('password'),
         ];
     }
 
     /**
      * @throws RandomException
      */
-    public function tokenAuthenticate(): string
+    public function getAuthToken(): string
     {
         $this->ensureIsNotRateLimited();
 
-        $user = MoonShineAuth::model()
+        $user = MoonShineAuth::getModel()
             ?->newQuery()
-            ->where(moonshineConfig()->getUserField('username', 'email'), request('username'))
+            ->where(
+                moonshineConfig()->getUserField('username', 'email'), request()->input('username')
+            )
             ->first();
 
         if (is_null($user) || ! Hash::check(
-            request('password'),
+            request()->input('password'),
             $user->{moonshineConfig()->getUserField('password')}
         )) {
-            RateLimiter::hit($this->throttleKey());
+            RateLimiter::hit($this->getThrottleKey());
 
             $this->validationException();
         }
 
         $token = (new JWT())->create((string) $user->getKey());
 
-        RateLimiter::clear($this->throttleKey());
+        RateLimiter::clear($this->getThrottleKey());
 
         return $token;
     }
@@ -92,18 +94,18 @@ class LoginFormRequest extends MoonShineFormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! MoonShineAuth::guard()->attempt(
+        if (! MoonShineAuth::getGuard()->attempt(
             $this->getCredentials(),
             $this->boolean('remember')
         )) {
-            RateLimiter::hit($this->throttleKey());
+            RateLimiter::hit($this->getThrottleKey());
 
             $this->validationException();
         }
 
         session()->regenerate();
 
-        RateLimiter::clear($this->throttleKey());
+        RateLimiter::clear($this->getThrottleKey());
     }
 
     /**
@@ -114,13 +116,13 @@ class LoginFormRequest extends MoonShineFormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->getThrottleKey(), 5)) {
             return;
         }
 
         event(new Lockout($this));
 
-        $seconds = RateLimiter::availableIn($this->throttleKey());
+        $seconds = RateLimiter::availableIn($this->getThrottleKey());
 
         throw ValidationException::withMessages([
             'username' => trans('moonshine::auth.throttle', [
@@ -133,7 +135,7 @@ class LoginFormRequest extends MoonShineFormRequest
     /**
      * Get the rate limiting throttle key for the request.
      */
-    public function throttleKey(): string
+    public function getThrottleKey(): string
     {
         return Str::transliterate(
             str($this->input('username') . '|' . $this->ip())

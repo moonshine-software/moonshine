@@ -87,7 +87,7 @@ it('file exists after save', function () {
     $file = saveFile($resource, $this->item);
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         ['hidden_file' => 'items/' . $file->hashName()]
     )
         ->assertRedirect();
@@ -111,7 +111,7 @@ it('before apply', function () {
     $data = ['file' => $file2];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -133,7 +133,7 @@ it('after destroy', function () {
     $file = saveFile($resource, $this->item);
 
     asAdmin()->delete(
-        $resource->route('crud.destroy', $this->item->getKey()),
+        $resource->getRoute('crud.destroy', $this->item->getKey()),
     )
         ->assertRedirect();
 
@@ -152,7 +152,7 @@ it('after destroy disableDeleteFiles', function () {
     $file = saveFile($resource, $this->item);
 
     asAdmin()->delete(
-        $resource->route('crud.destroy', $this->item->getKey()),
+        $resource->getRoute('crud.destroy', $this->item->getKey()),
     )
         ->assertRedirect();
 
@@ -173,7 +173,7 @@ function saveFile(ModelResource $resource, Model $item)
     $data = ['file' => $file];
 
     asAdmin()->put(
-        $resource->route('crud.update', $item->getKey()),
+        $resource->getRoute('crud.update', $item->getKey()),
         $data
     )
         ->assertRedirect();

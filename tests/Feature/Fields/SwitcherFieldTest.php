@@ -61,7 +61,7 @@ it('apply as base', function () {
     $data = ['active' => 1];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -86,7 +86,7 @@ it('before apply', function () {
     $data = ['active' => 0];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -111,7 +111,7 @@ it('after apply', function () {
     $data = ['active' => 1];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -131,7 +131,7 @@ it('apply as base with default', function () {
     );
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey())
+        $resource->getRoute('crud.update', $this->item->getKey())
     )->assertRedirect();
 
     $this->item->refresh();
@@ -189,7 +189,7 @@ it('relation update column', function () {
             [
                 'resourceItem' => $comment->getKey(),
                 'resourceUri' => $resource->getUriKey(),
-                'pageUri' => $resource->formPage()->getUriKey(),
+                'pageUri' => $resource->getFormPage()->getUriKey(),
                 '_relation' => 'comments',
                 'field' => 'active',
                 'value' => 0,
@@ -216,7 +216,7 @@ it('relation update column in resource', function () {
     $resource = TestResourceBuilder::new(Item::class);
 
     fakeRequest(toPage(
-        $resource->formPage()->getUriKey(),
+        $resource->getFormPage()->getUriKey(),
         $resource,
         [
             'resourceItem' => $this->item->getKey(),
@@ -234,7 +234,7 @@ it('relation update column in resource', function () {
             [
                 'resourceItem' => $comment->getKey(),
                 'resourceUri' => $resource->getUriKey(),
-                'pageUri' => $resource->formPage()->getUriKey(),
+                'pageUri' => $resource->getFormPage()->getUriKey(),
                 '_relation' => 'comments',
                 'field' => 'active',
                 'value' => 0,
@@ -267,7 +267,7 @@ function switcherExport(Item $item): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->getUriKey()])
+        $resource->getRoute('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -294,7 +294,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->getUriKey()]),
+        $resource->getRoute('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

@@ -33,7 +33,7 @@ class UpdateFieldController extends MoonShineController
         $relationField = $request->getField();
 
         if($relationField instanceof HasFields) {
-            $relationField->preparedFields();
+            $relationField->getPreparedFields();
         }
 
         $resource = $relationField->getResource();
@@ -41,7 +41,7 @@ class UpdateFieldController extends MoonShineController
         $field = $relationField
             ->getFields()
             ?->onlyFields()
-            ?->findByColumn($request->get('field'));
+            ?->findByColumn($request->input('field'));
 
         throw_if(
             is_null($field) || is_null($resource),

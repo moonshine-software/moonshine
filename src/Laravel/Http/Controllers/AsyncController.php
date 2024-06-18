@@ -49,7 +49,7 @@ class AsyncController extends MoonShineController
     {
         $toast = [
             'type' => 'info',
-            'message' => $request->get('message', ''),
+            'message' => $request->input('message', ''),
         ];
 
         try {
@@ -58,7 +58,7 @@ class AsyncController extends MoonShineController
                 : $request->getPage();
 
             $result = $pageOrResource
-                ?->{$request->get('method')}(
+                ?->{$request->input('method')}(
                     $request
                 );
 
@@ -133,7 +133,7 @@ class AsyncController extends MoonShineController
         }
 
         $values = $fields
-            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->value()]);
+            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
 
         $fields = $fields->mapWithKeys(
             fn (Field $field): array => [$field->getColumn() => (string) FieldsGroup::make([$field])->render()]

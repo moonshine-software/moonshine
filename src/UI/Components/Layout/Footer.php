@@ -44,6 +44,11 @@ class Footer extends AbstractWithComponents
         return $this;
     }
 
+    public function getMenu(): Collection
+    {
+        return collect($this->menu);
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -53,10 +58,5 @@ class Footer extends AbstractWithComponents
             'menu' => $this->getMenu(),
             'copyright' => $this->getCopyright(),
         ];
-    }
-
-    public function getMenu(): Collection
-    {
-        return collect($this->menu);
     }
 }

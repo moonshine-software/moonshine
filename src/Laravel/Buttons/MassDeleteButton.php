@@ -17,7 +17,7 @@ final class MassDeleteButton
         string $redirectAfterDelete = '',
         bool $isAsync = true,
     ): ActionButton {
-        $action = static fn (): string => $resource->route('crud.massDelete', query: [
+        $action = static fn (): string => $resource->getRoute('crud.massDelete', query: [
             ...$redirectAfterDelete
                 ? ['_redirect' => $redirectAfterDelete]
                 : [],
@@ -27,18 +27,18 @@ final class MassDeleteButton
             '',
             url: $action
         )
-            ->bulk($componentName ?? $resource->listComponentName())
+            ->bulk($componentName ?? $resource->getListComponentName())
             ->withConfirm(
                 method: HttpMethod::DELETE,
                 formBuilder: fn (FormBuilder $formBuilder) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form->async(
-                        events: $resource->listEventName(
-                            $componentName ?? $resource->listComponentName()
+                        events: $resource->getListEventName(
+                            $componentName ?? $resource->getListComponentName()
                         )
                     )
                 ),
-                name: "mass-delete-modal-" . ($componentName ?? $resource->listComponentName())
+                name: "mass-delete-modal-" . ($componentName ?? $resource->getListComponentName())
             )
             ->canSee(
                 fn (): bool => in_array('massDelete', $resource->getActiveActions())

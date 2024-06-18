@@ -86,7 +86,7 @@ trait WithModal
                         : Hidden::make('_method')->setValue($method->value),
 
                     $this->isBulk()
-                        ? HiddenIds::make($this->bulkForComponent())
+                        ? HiddenIds::make($this->getBulkForComponent())
                         : null,
 
                     ...(is_null($fields) ? [] : value($fields, $data)),
@@ -102,7 +102,7 @@ trait WithModal
                 fn (FormBuilder $form): FormBuilder => $form->async()
             )->when(
                 $this->isAsyncMethod(),
-                fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->asyncMethod())
+                fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->getAsyncMethod())
             )->submit(
                 is_null($button)
                     ? __('moonshine::ui.confirm')
@@ -117,7 +117,7 @@ trait WithModal
         );
     }
 
-    public function modal(): ?Modal
+    public function getModal(): ?Modal
     {
         return value($this->modal, $this->getData()?->getOriginal(), $this);
     }

@@ -17,7 +17,7 @@ class AuthenticateApi extends Middleware
             return;
         }
 
-        $guard = MoonShineAuth::guard();
+        $guard = MoonShineAuth::getGuard();
 
         $identity = (new JWT())->parse($request->bearerToken() ?? '');
 
@@ -27,7 +27,7 @@ class AuthenticateApi extends Middleware
 
         $guard->loginUsingId($identity);
 
-        $this->auth->shouldUse(MoonShineAuth::guardName());
+        $this->auth->shouldUse(MoonShineAuth::getGuardName());
     }
 
     protected function unauthenticated($request, array $guards)
