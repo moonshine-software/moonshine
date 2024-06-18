@@ -154,8 +154,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
   },
   submit() {
     const hasSubmitAttribute = this.$el
-    .getAttributeNames()
-    .some(attr => attr.startsWith('x-on:submit'))
+      .getAttributeNames()
+      .some(attr => attr.startsWith('x-on:submit'))
 
     if (hasSubmitAttribute) {
       this.$el.dispatchEvent(new Event('submit'))
