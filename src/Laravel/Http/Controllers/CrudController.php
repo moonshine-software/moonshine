@@ -39,7 +39,7 @@ final class CrudController extends MoonShineController
             request()->only($resource->getQueryParamsKeys())
         );
 
-        return $resource->itemsToJson(
+        return $resource->prepareCollectionJsonResponse(
             $resource->paginate()
         );
     }
@@ -54,7 +54,7 @@ final class CrudController extends MoonShineController
             abort(404, 'Resource not found');
         }
 
-        return $resource->itemToJson(
+        return $resource->prepareJsonResponse(
             $resource->getItem()
         );
     }
@@ -84,7 +84,7 @@ final class CrudController extends MoonShineController
         /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
         $resource = $request->getResource();
 
-        $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
+        $redirectRoute = $request->input('_redirect', $resource->getRedirectAfterDelete());
 
 
         try {
@@ -96,7 +96,7 @@ final class CrudController extends MoonShineController
         if ($request->ajax() || $request->wantsJson()) {
             return $this->json(
                 message: __('moonshine::ui.deleted'),
-                redirect: $request->get('_redirect')
+                redirect: $request->input('_redirect')
             );
         }
 
@@ -113,10 +113,10 @@ final class CrudController extends MoonShineController
         /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
         $resource = $request->getResource();
 
-        $redirectRoute = $request->get('_redirect', $resource->redirectAfterDelete());
+        $redirectRoute = $request->input('_redirect', $resource->getRedirectAfterDelete());
 
         try {
-            $resource->massDelete($request->get('ids', []));
+            $resource->massDelete($request->input('ids', []));
         } catch (Throwable $e) {
             return $this->reportAndResponse($request->ajax(), $e, $redirectRoute);
         }
@@ -124,7 +124,7 @@ final class CrudController extends MoonShineController
         if ($request->ajax() || $request->wantsJson()) {
             return $this->json(
                 message: __('moonshine::ui.deleted'),
-                redirect: $request->get('_redirect')
+                redirect: $request->input('_redirect')
             );
         }
 
@@ -146,7 +146,7 @@ final class CrudController extends MoonShineController
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 
-        $redirectRoute = static fn ($resource): mixed => $request->get('_redirect', $resource->redirectAfterSave());
+        $redirectRoute = static fn ($resource): mixed => $request->input('_redirect', $resource->getRedirectAfterSave());
 
         try {
             $item = $resource->save($item);
@@ -163,7 +163,7 @@ final class CrudController extends MoonShineController
 
             return $this->json(
                 message: __('moonshine::ui.saved'),
-                redirect: $request->get('_redirect', $forceRedirect)
+                redirect: $request->input('_redirect', $forceRedirect)
             );
         }
 

@@ -17,39 +17,39 @@ trait ResourceModelCrudRouter
 {
     protected ?PageType $redirectAfterSave = PageType::FORM;
 
-    public function route(
+    public function getRoute(
         string $name = null,
         Model|int|string|null $key = null,
         array $query = []
     ): string {
         $key = $key instanceof Model ? $key->getKey() : $key;
 
-        return $this->router()->to(
+        return $this->getRouter()->to(
             $name,
             filled($key) ? array_merge(['resourceItem' => $key], $query) : $query
         );
     }
 
-    public function pageUrl(Page $page, array $params = [], ?string $fragment = null): string
+    public function getPageUrl(Page $page, array $params = [], ?string $fragment = null): string
     {
-        return $this->router()->getEndpoints()->toPage($page, params: $params, extra: [
+        return $this->getRouter()->getEndpoints()->toPage($page, params: $params, extra: [
             'fragment' => $fragment,
         ]);
     }
 
-    public function indexPageUrl(array $params = [], ?string $fragment = null): string
+    public function getIndexPageUrl(array $params = [], ?string $fragment = null): string
     {
-        return $this->pageUrl($this->indexPage(), params: $params, fragment: $fragment);
+        return $this->getPageUrl($this->getIndexPage(), params: $params, fragment: $fragment);
     }
 
 
-    public function formPageUrl(
+    public function getFormPageUrl(
         Model|int|string|null $model = null,
         array $params = [],
         ?string $fragment = null
     ): string {
-        return $this->pageUrl(
-            $this->formPage(),
+        return $this->getPageUrl(
+            $this->getFormPage(),
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
@@ -59,13 +59,13 @@ trait ResourceModelCrudRouter
     }
 
 
-    public function detailPageUrl(
+    public function getDetailPageUrl(
         Model|int|string $model,
         array $params = [],
         ?string $fragment = null
     ): string {
-        return $this->pageUrl(
-            $this->detailPage(),
+        return $this->getPageUrl(
+            $this->getDetailPage(),
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
@@ -75,13 +75,13 @@ trait ResourceModelCrudRouter
     }
 
 
-    public function fragmentLoadUrl(
+    public function getFragmentLoadUrl(
         string $fragment,
         Page $page,
         Model|int|string|null $model,
         array $params = []
     ): string {
-        return $this->pageUrl(
+        return $this->getPageUrl(
             $page,
             params: array_filter([
                 ...$params,
@@ -91,13 +91,13 @@ trait ResourceModelCrudRouter
         );
     }
 
-    public function asyncMethodUrl(
+    public function getAsyncMethodUrl(
         string $method,
         ?string $message = null,
         array $params = [],
         ?Page $page = null,
     ): string {
-        return $this->router()->getEndpoints()->asyncMethod(
+        return $this->getRouter()->getEndpoints()->asyncMethod(
             $method,
             $message,
             $params,
@@ -105,7 +105,7 @@ trait ResourceModelCrudRouter
         );
     }
 
-    public function redirectAfterSave(): string
+    public function getRedirectAfterSave(): string
     {
         $params = is_null($this->getItem()) || $this->redirectAfterSave === PageType::INDEX
             ? []
@@ -115,14 +115,14 @@ trait ResourceModelCrudRouter
             return $this
                 ->getPages()
                 ->findByType($this->redirectAfterSave)
-                ?->route($params);
+                ?->getRoute($params);
         }
 
-        return $this->formPageUrl(params: $params);
+        return $this->getFormPageUrl(params: $params);
     }
 
-    public function redirectAfterDelete(): string
+    public function getRedirectAfterDelete(): string
     {
-        return $this->indexPageUrl();
+        return $this->getIndexPageUrl();
     }
 }

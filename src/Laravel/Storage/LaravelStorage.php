@@ -34,12 +34,12 @@ final readonly class LaravelStorage implements StorageContract
         return $this->filesystem->exists($path);
     }
 
-    public function path(string $path): string
+    public function getPath(string $path): string
     {
         return $this->filesystem->path($path);
     }
 
-    public function url(string $path): string
+    public function getUrl(string $path): string
     {
         return $this->filesystem->url($path);
     }
@@ -49,12 +49,12 @@ final readonly class LaravelStorage implements StorageContract
         return $this->filesystem->delete($paths);
     }
 
-    public function files(string $directory, bool $recursive = false): array
+    public function getFiles(string $directory, bool $recursive = false): array
     {
         return $this->filesystem->files($directory, $recursive);
     }
 
-    public function directories(string $directory = null, bool $recursive = false): array
+    public function getDirectories(string $directory = null, bool $recursive = false): array
     {
         return $this->filesystem->directories($directory, $recursive);
     }

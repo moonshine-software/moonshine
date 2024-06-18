@@ -10,19 +10,19 @@ interface StorageContract
 
     public function storeAs(string $path, mixed $file, $name = null, array $options = []): false|string;
 
-    public function exists(string $path): bool;
-
-    public function path(string $path): string;
-
-    public function url(string $path): string;
-
     public function delete(string|array $paths): bool;
-
-    public function files(string $directory, bool $recursive = false): array;
-
-    public function directories(string $directory, bool $recursive = false): array;
 
     public function makeDirectory(string $path): bool;
 
     public function deleteDirectory(string $directory): bool;
+
+    public function exists(string $path): bool;
+
+    public function getPath(string $path): string;
+
+    public function getUrl(string $path): string;
+
+    public function getFiles(string $directory, bool $recursive = false): array;
+
+    public function getDirectories(string $directory, bool $recursive = false): array;
 }

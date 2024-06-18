@@ -19,7 +19,7 @@ trait WithFields
     /**
      * @throws Throwable
      */
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         return $this->getFields();
     }

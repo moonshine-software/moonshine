@@ -62,7 +62,7 @@ class MenuItem extends MenuElement
 
     protected function resolveFiller(MenuFiller $filler): void
     {
-        $this->setUrl(fn (): string => $filler->url());
+        $this->setUrl(fn (): string => $filler->getUrl());
 
         $icon = Attributes::for($filler)
             ->attribute(Icon::class)
@@ -119,7 +119,7 @@ class MenuItem extends MenuElement
     /**
      * @throws Throwable
      */
-    public function url(): string
+    public function getUrl(): string
     {
         return value($this->url) ?? '';
     }
@@ -147,19 +147,19 @@ class MenuItem extends MenuElement
             return $filler->isActive();
         }
 
-        $path = parse_url($this->url(), PHP_URL_PATH) ?? '/';
-        $host = parse_url($this->url(), PHP_URL_HOST) ?? '';
+        $path = parse_url($this->getUrl(), PHP_URL_PATH) ?? '/';
+        $host = parse_url($this->getUrl(), PHP_URL_HOST) ?? '';
 
         $isActive = function ($path, $host): bool {
             if ($path === '/' && moonshine()->getRequest()->getHost() === $host) {
                 return moonshine()->getRequest()->getPath() === $path;
             }
 
-            if ($this->url() === moonshineRouter()->getEndpoints()->home()) {
-                return moonshine()->getRequest()->urlIs($this->url());
+            if ($this->getUrl() === moonshineRouter()->getEndpoints()->home()) {
+                return moonshine()->getRequest()->urlIs($this->getUrl());
             }
 
-            return moonshine()->getRequest()->urlIs('*' . $this->url() . '*');
+            return moonshine()->getRequest()->urlIs('*' . $this->getUrl() . '*');
         };
 
         return is_null($this->whenActive)
@@ -188,7 +188,7 @@ class MenuItem extends MenuElement
     public function viewData(): array
     {
         $viewData = [
-            'url' => $this->url(),
+            'url' => $this->getUrl(),
         ];
 
         if ($this->hasBadge() && $badge = $this->getBadge()) {
@@ -196,9 +196,9 @@ class MenuItem extends MenuElement
         }
 
         $viewData['actionButton'] = $this->actionButton
-            ->setUrl($this->url())
+            ->setUrl($this->getUrl())
             ->customView('moonshine::components.menu.item-link', [
-                'url' => $this->url(),
+                'url' => $this->getUrl(),
                 'label' => $this->getLabel(),
                 'icon' => $this->getIcon(6),
                 'top' => $this->isTopMode(),

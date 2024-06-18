@@ -84,9 +84,9 @@ trait WithRelatedValues
         );
     }
 
-    protected function resolveSelectedValue(): string|array
+    protected function getSelectedValue(): string|array
     {
-        return (string) $this->value();
+        return (string) $this->getValue();
     }
 
     /**
@@ -96,13 +96,13 @@ trait WithRelatedValues
     {
         $query = $this->resolveValuesQuery();
 
-        $formatted = ! is_null($this->formattedValueCallback());
+        $formatted = ! is_null($this->getFormattedValueCallback());
 
         $values = $this->memoizeValues ?? $this->resolveRelatedQuery($query);
         $this->memoizeValues = $values;
 
         $getValue = fn (Model $item) => $formatted ? value(
-            $this->formattedValueCallback(),
+            $this->getFormattedValueCallback(),
             $item,
             $this
         ) : data_get($item, $this->getResourceColumn());
@@ -115,8 +115,8 @@ trait WithRelatedValues
 
         $toOptions = fn (array $values): Options => new Options(
             $values,
-            $this->resolveSelectedValue(),
-            $this->valuesWithProperties(onlyCustom: true)->toArray()
+            $this->getSelectedValue(),
+            $this->getValuesWithProperties(onlyCustom: true)->toArray()
         );
 
         if ($values->isNotEmpty()) {

@@ -64,7 +64,7 @@ it('apply as base', function () {
     $data = ['start_date' => $from, 'end_date' => $to];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         ['range' => $data]
     )
         ->assertRedirect();
@@ -91,7 +91,7 @@ it('before apply', function () {
     $data = ['start_date' => $from, 'end_date' => $to];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         ['range' => $data]
     )
         ->assertRedirect();
@@ -115,7 +115,7 @@ it('after apply', function () {
     $data = ['start_date' => now(), 'end_date' => now()];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         ['range' => $data]
     )
         ->assertRedirect();
@@ -139,7 +139,7 @@ it('apply as base with default', function () {
     );
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey())
+        $resource->getRoute('crud.update', $this->item->getKey())
     )->assertRedirect();
 
     $this->item->refresh();
@@ -158,7 +158,7 @@ it('apply as base with null', function () {
     );
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         $data
     )->assertRedirect();
 
@@ -206,7 +206,7 @@ function dateRangeExport(Item $item): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+        $resource->getRoute('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -232,7 +232,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->uriKey()]),
+        $resource->getRoute('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

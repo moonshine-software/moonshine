@@ -51,7 +51,7 @@ describe('unique field methods', function () {
         expect($this->field->asyncSearch('name'))
             ->isAsyncSearch()
             ->toBeTrue()
-            ->asyncSearchColumn()
+            ->getAsyncSearchColumn()
             ->toBe('name');
     });
 });

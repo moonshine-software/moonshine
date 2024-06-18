@@ -44,7 +44,7 @@ it('asset link', function (): void {
     $asset = Js::make('app.js');
 
     expect($asset->getLink())
-        ->toBe(moonshineAssets()->asset('app.js'))
+        ->toBe(moonshineAssets()->getAsset('app.js'))
     ;
 });
 

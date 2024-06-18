@@ -21,7 +21,7 @@ class RelationModelFieldRequest extends FormRequest
 
     public function getRelationName(): string
     {
-        return request('_relation');
+        return request()->input('_relation');
     }
 
     /**
@@ -32,12 +32,12 @@ class RelationModelFieldRequest extends FormRequest
         return memoize(function () {
             $fields = $this->getPage()->getComponents();
 
-            if(request('_parent_field')) {
+            if($parentField = request()->input('_parent_field')) {
                 /** @var HasFields $parent */
                 $parent = $fields
                     ->onlyFields()
                     ->onlyHasFields()
-                    ->findByColumn(request('_parent_field'));
+                    ->findByColumn($parentField);
 
                 $fields = $parent instanceof ModelRelationField
                     ? $parent->getResource()?->getFormFields()
@@ -63,7 +63,7 @@ class RelationModelFieldRequest extends FormRequest
             /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
             $resource = $this->getResource();
 
-            $fields = match ($this->getPage()->pageType()) {
+            $fields = match ($this->getPage()->getPageType()) {
                 PageType::INDEX => $resource->getIndexFields(),
                 PageType::DETAIL => $resource->getDetailFields(withOutside: true),
                 PageType::FORM => $resource->getFormFields(withOutside: true),

@@ -141,7 +141,7 @@ class Json extends Field implements
         return $this;
     }
 
-    public function creatableButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButton
     {
         return $this->creatableButton;
     }
@@ -151,7 +151,7 @@ class Json extends Field implements
         return $this->isCreatable;
     }
 
-    public function creatableLimit(): ?int
+    public function getCreateLimit(): ?int
     {
         return $this->creatableLimit;
     }
@@ -207,7 +207,7 @@ class Json extends Field implements
         return $buttons;
     }
 
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (self $parent, Field $field): void {
             $field->withoutWrapper();
@@ -284,7 +284,7 @@ class Json extends Field implements
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
-        $fields = $this->preparedFields();
+        $fields = $this->getPreparedFields();
         $reorderable = ! $this->isPreviewMode()
             && $this->isReorderable();
 
@@ -332,8 +332,8 @@ class Json extends Field implements
                 ->when(
                     $this->isCreatable(),
                     fn (TableBuilder $table): TableBuilder => $table->creatable(
-                        limit: $this->creatableLimit(),
-                        button: $this->creatableButton()
+                        limit: $this->getCreateLimit(),
+                        button: $this->getCreateButton()
                     )
                 )
                 ->buttons($this->getButtons())
@@ -385,7 +385,7 @@ class Json extends Field implements
             foreach ($this->getFields()->onlyFields() as $field) {
                 $field->appendRequestKeyPrefix(
                     "{$this->getColumn()}.$index",
-                    $this->requestKeyPrefix()
+                    $this->getRequestKeyPrefix()
                 );
 
                 $field->when($fill, fn (Field $f): Field => $f->fillData($values));

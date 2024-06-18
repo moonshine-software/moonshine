@@ -44,7 +44,7 @@ class DummyResourceTest extends TestCase
     public function index_page_successful(): void
     {
         $response = $this->get(
-            $this->getResource()->indexPageUrl()
+            $this->getResource()->getIndexPageUrl()
         );
 
         $response->assertSuccessful();
@@ -56,7 +56,7 @@ class DummyResourceTest extends TestCase
         $item = {model}::factory()->create();
 
         $response = $this->get(
-            $this->getResource()->detailPageUrl($item)
+            $this->getResource()->getDetailPageUrl($item)
         );
 
         $response->assertSuccessful();
@@ -66,7 +66,7 @@ class DummyResourceTest extends TestCase
     public function create_page_successful(): void
     {
         $response = $this->get(
-            $this->getResource()->formPageUrl()
+            $this->getResource()->getFormPageUrl()
         );
 
         $response->assertSuccessful();
@@ -78,7 +78,7 @@ class DummyResourceTest extends TestCase
         $item = {model}::factory()->create();
 
         $response = $this->get(
-            $this->getResource()->formPageUrl($item)
+            $this->getResource()->getFormPageUrl($item)
         );
 
         $response->assertSuccessful();

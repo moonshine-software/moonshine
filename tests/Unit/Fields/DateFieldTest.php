@@ -72,21 +72,21 @@ it('value', function (): void {
         'created_at' => null,
     ]);
 
-    expect($this->field->value())
+    expect($this->field->getValue())
         ->toBe($item->created_at->format('Y-m-d'))
         ->and($this->field->nullable())
         ->reset()
         ->fillData($itemDateNull)
-        ->value()
+        ->getValue()
         ->toBeEmpty()
         ->and($this->field->reset())
         ->default('2000-01-12')
-        ->value()
+        ->getValue()
         ->toBe('2000-01-12')
         ->and($this->field->reset())
         ->fillData($item)
         ->withTime()
-        ->value()
+        ->getValue()
         ->toBe($item->created_at->format('Y-m-d\TH:i'))
     ;
 });

@@ -15,7 +15,7 @@ it('resource update-column', function () {
     asAdmin()->put(
         $this->router->to('column.resource.update-column', [
             'resourceItem' => $this->user->getKey(),
-            'resourceUri' => $this->resource->uriKey(),
+            'resourceUri' => $this->resource->getUriKey(),
             'field' => 'name',
             'value' => 'New name',
         ])

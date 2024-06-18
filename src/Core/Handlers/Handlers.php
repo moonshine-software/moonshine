@@ -20,7 +20,7 @@ final class Handlers extends Collection
         Handler $default = null
     ): ?Handler {
         return $this->first(
-            static fn (Handler $handler): bool => $handler->uriKey() === $uri,
+            static fn (Handler $handler): bool => $handler->getUriKey() === $uri,
             $default
         );
     }

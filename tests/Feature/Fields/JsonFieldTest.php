@@ -28,7 +28,7 @@ beforeEach(function () {
 function testJsonValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null)
 {
     asAdmin()->put(
-        $resource->route('crud.update', $item->getKey()),
+        $resource->getRoute('crud.update', $item->getKey()),
         [
             'data' => $data,
         ]
@@ -69,7 +69,7 @@ it('apply as base with default', function () {
     );
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey())
+        $resource->getRoute('crud.update', $this->item->getKey())
     )->assertRedirect();
 
     $this->item->refresh();
@@ -113,7 +113,7 @@ it('apply as relation', function () {
     ];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         [
             'comments' => $data,
         ]
@@ -130,7 +130,7 @@ it('apply as relation', function () {
     ];
 
     asAdmin()->put(
-        $resource->route('crud.update', $this->item->getKey()),
+        $resource->getRoute('crud.update', $this->item->getKey()),
         [
             'comments' => $data,
         ]
@@ -184,7 +184,7 @@ function jsonExport(Item $item): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+        $resource->getRoute('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -217,7 +217,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->uriKey()]),
+        $resource->getRoute('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

@@ -113,8 +113,8 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray, Ran
             'max' => $this->max,
             'fromColumn' => "date_range_from_{$this->getIdentity()}",
             'toColumn' => "date_range_to_{$this->getIdentity()}",
-            'fromValue' => data_get($this->value(), $this->fromField, $this->min),
-            'toValue' => data_get($this->value(), $this->toField, $this->max),
+            'fromValue' => data_get($this->getValue(), $this->fromField, $this->min),
+            'toValue' => data_get($this->getValue(), $this->toField, $this->max),
             'fromAttributes' => $this->getFromAttributes(),
             'toAttributes' => $this->getToAttributes(),
         ];

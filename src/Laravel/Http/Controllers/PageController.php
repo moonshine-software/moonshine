@@ -24,7 +24,7 @@ class PageController extends MoonShineController
     {
         $withStates = ! $request->hasHeader('X-MS-Without-States');
 
-        $layout = $page->layout();
+        $layout = $page->getLayout();
         $emptyPage = ViewPage::make();
         $layoutComponents = $layout->build($emptyPage);
 

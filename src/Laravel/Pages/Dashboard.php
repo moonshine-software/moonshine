@@ -6,14 +6,14 @@ namespace MoonShine\Laravel\Pages;
 
 class Dashboard extends Page
 {
-    public function breadcrumbs(): array
+    public function getBreadcrumbs(): array
     {
         return [
-            '#' => $this->title(),
+            '#' => $this->getTitle(),
         ];
     }
 
-    public function title(): string
+    public function getTitle(): string
     {
         return $this->title ?: 'Dashboard';
     }

@@ -34,14 +34,14 @@ class MenuGroup extends MenuElement
         return $this;
     }
 
-    public function items(): MenuElements
+    public function getItems(): MenuElements
     {
         return MenuElements::make($this->items);
     }
 
     public function isActive(): bool
     {
-        foreach ($this->items() as $item) {
+        foreach ($this->getItems() as $item) {
             if ($item->isActive()) {
                 return true;
             }
@@ -53,7 +53,7 @@ class MenuGroup extends MenuElement
     public function viewData(): array
     {
         return [
-            'items' => $this->items(),
+            'items' => $this->getItems(),
         ];
     }
 }

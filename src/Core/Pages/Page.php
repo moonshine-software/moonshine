@@ -73,7 +73,7 @@ abstract class Page implements
         ?ResourceContract $resource = null,
     ) {
         if (! is_null($title)) {
-            $this->setTitle($title);
+            $this->title($title);
         }
 
         if (! is_null($alias)) {
@@ -121,7 +121,7 @@ abstract class Page implements
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     public function fields(): array
     {
@@ -137,7 +137,7 @@ abstract class Page implements
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     protected function topLayer(): array
     {
@@ -145,7 +145,7 @@ abstract class Page implements
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     protected function mainLayer(): array
     {
@@ -153,14 +153,14 @@ abstract class Page implements
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     protected function bottomLayer(): array
     {
         return [];
     }
 
-    public function pageType(): ?PageType
+    public function getPageType(): ?PageType
     {
         return $this->pageType;
     }
@@ -168,7 +168,7 @@ abstract class Page implements
     /**
      * @return array<string, string>
      */
-    public function breadcrumbs(): array
+    public function getBreadcrumbs(): array
     {
         if (! is_null($this->breadcrumbs)) {
             return $this->breadcrumbs;
@@ -179,11 +179,11 @@ abstract class Page implements
         }
 
         return [
-            $this->getResource()?->url() => $this->getResource()?->title(),
+            $this->getResource()?->getUrl() => $this->getResource()?->getTitle(),
         ];
     }
 
-    public function setBreadcrumbs(array $breadcrumbs): static
+    public function breadcrumbs(array $breadcrumbs): static
     {
         $this->breadcrumbs = $breadcrumbs;
 
@@ -225,7 +225,7 @@ abstract class Page implements
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     public function getLayers(): array
     {
@@ -237,7 +237,7 @@ abstract class Page implements
     }
 
     /**
-     * @return MoonShineComponent
+     * @return list<MoonShineComponent>
      */
     public function getLayerComponents(Layer $layer): array
     {
@@ -254,26 +254,26 @@ abstract class Page implements
         return $this;
     }
 
-    public function setTitle(string $title): static
+    public function title(string $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function title(): string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setSubTitle(string $subtitle): static
+    public function subtitle(string $subtitle): static
     {
         $this->subtitle = $subtitle;
 
         return $this;
     }
 
-    public function subtitle(): string
+    public function getSubtitle(): string
     {
         return $this->subtitle;
     }
@@ -289,7 +289,7 @@ abstract class Page implements
         return $this;
     }
 
-    public function layout(): MoonShineLayout
+    public function getLayout(): MoonShineLayout
     {
         if (is_null($this->layout)) {
             $this->setLayout(
@@ -300,25 +300,25 @@ abstract class Page implements
         return moonshine()->getContainer($this->layout);
     }
 
-    public function route(array $params = []): string
+    public function getRoute(array $params = []): string
     {
-        return $this->router()->to(
+        return $this->getRouter()->to(
             $this->hasResource() ? 'resource.page' : 'page',
             $params
         );
     }
 
-    public function url(): string
+    public function getUrl(): string
     {
-        return $this->route();
+        return $this->getRoute();
     }
 
-    public function router(): MoonShineRouter
+    public function getRouter(): MoonShineRouter
     {
         $router = moonshineRouter();
 
         if ($this->hasResource()) {
-            $router = $this->getResource()?->router();
+            $router = $this->getResource()?->getRouter();
         }
 
         return $router->withPage($this);
@@ -326,7 +326,7 @@ abstract class Page implements
 
     public function isActive(): bool
     {
-        return moonshineRouter()->extractPageUri() === $this->uriKey();
+        return moonshineRouter()->extractPageUri() === $this->getUriKey();
     }
 
     /**
@@ -335,7 +335,7 @@ abstract class Page implements
     protected function systemViewData(): array
     {
         return [
-            'layout' => $this->layout()->build($this),
+            'layout' => $this->getLayout()->build($this),
         ];
     }
 
@@ -346,7 +346,7 @@ abstract class Page implements
 
     protected function prepareBeforeRender(): void
     {
-        $withoutQuery = parse_url($this->url(), PHP_URL_PATH);
+        $withoutQuery = parse_url($this->getUrl(), PHP_URL_PATH);
 
         if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim(moonshine()->getRequest()->getPath(), '/')) {
             oops404();

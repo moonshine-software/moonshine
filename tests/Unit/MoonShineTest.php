@@ -12,7 +12,7 @@ beforeEach(function (): void {
 });
 
 it('find resource by uri key', function (): void {
-    expect(moonshine()->getResources()->findByUri($this->resource->uriKey()))
+    expect(moonshine()->getResources()->findByUri($this->resource->getUriKey()))
         ->toBe($this->resource);
 });
 

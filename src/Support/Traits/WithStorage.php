@@ -47,13 +47,8 @@ trait WithStorage
 
     public function getOptions(): array
     {
-        return $this->options ?? moonshineConfig()->getDiskOptions();
-    }
-
-    public function parseOptions(): array
-    {
         return [
-            ...$this->getOptions(),
+            ...$this->options ?? moonshineConfig()->getDiskOptions(),
             'disk' => $this->getDisk(),
         ];
     }
@@ -67,7 +62,7 @@ trait WithStorage
 
     public function getStorageUrl(string $value): string
     {
-        return moonshineStorage(disk: $this->getDisk())->url($value);
+        return moonshineStorage(disk: $this->getDisk())->getUrl($value);
     }
 
     public function deleteStorageFile(string|array $path): bool
@@ -82,11 +77,11 @@ trait WithStorage
 
     public function getStorageDirectories(string $dir): array
     {
-        return moonshineStorage(disk: $this->getDisk())->directories($dir);
+        return moonshineStorage(disk: $this->getDisk())->getDirectories($dir);
     }
 
     public function getStorageFiles(string $dir): array
     {
-        return moonshineStorage(disk: $this->getDisk())->files($dir);
+        return moonshineStorage(disk: $this->getDisk())->getFiles($dir);
     }
 }

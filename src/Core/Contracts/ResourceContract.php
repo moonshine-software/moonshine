@@ -11,13 +11,13 @@ interface ResourceContract
 {
     public function getPages(): Pages;
 
-    public function uriKey(): string;
+    public function getUriKey(): string;
 
-    public function url(): string;
+    public function getUrl(): string;
 
-    public function router(): MoonShineRouter;
+    public function getRouter(): MoonShineRouter;
 
-    public function title(): string;
+    public function getTitle(): string;
 
     public function booted(): static;
 

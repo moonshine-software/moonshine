@@ -55,28 +55,4 @@ trait ResourceModelEvents
     {
         // Logic here
     }
-
-
-    protected function beforeForceDeleting(Model $item): Model
-    {
-        return $item;
-    }
-
-
-    protected function afterForceDeleted(Model $item): Model
-    {
-        return $item;
-    }
-
-
-    protected function beforeRestoring(Model $item): Model
-    {
-        return $item;
-    }
-
-
-    protected function afterRestored(Model $item): Model
-    {
-        return $item;
-    }
 }

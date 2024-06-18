@@ -32,7 +32,7 @@ final class AssetManager implements Htmlable
         self::$assetUsing = $callback;
     }
 
-    public function asset(string $path): string
+    public function getAsset(string $path): string
     {
         if(is_null(self::$assetUsing)) {
             return $path;
@@ -44,7 +44,7 @@ final class AssetManager implements Htmlable
     /**
      * @param  Closure(string $path): void  $callback
      */
-    public static function viteDevUsing(Closure $callback): void
+    public static function viteDevResolver(Closure $callback): void
     {
         self::$viteDevUsing = $callback;
     }
@@ -54,7 +54,7 @@ final class AssetManager implements Htmlable
         return ! is_null(self::$viteDevUsing);
     }
 
-    public function viteDev(string $path): string
+    public function getViteDev(string $path): string
     {
         return value(self::$viteDevUsing, $path);
     }
@@ -87,7 +87,7 @@ final class AssetManager implements Htmlable
                 $this->isRunningHot() && $this->hasViteDevMode(),
                 fn (AssetElements $assets) => $assets
                     ->push(
-                        Raw::make($this->viteDev($this->hotFile()))
+                        Raw::make($this->getViteDev($this->getHotFile()))
                     ),
             )
             ->withVersion($this->getVersion())
@@ -96,10 +96,10 @@ final class AssetManager implements Htmlable
 
     private function isRunningHot(): bool
     {
-        return moonshine()->isLocal() && is_file($this->hotFile());
+        return moonshine()->isLocal() && is_file($this->getHotFile());
     }
 
-    private function hotFile(): string
+    private function getHotFile(): string
     {
         return MoonShine::path('/public') . '/hot';
     }

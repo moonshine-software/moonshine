@@ -15,12 +15,12 @@ final class FileStorage implements StorageContract
         return file_exists($path);
     }
 
-    public function path(string $path): string
+    public function getPath(string $path): string
     {
         return $path;
     }
 
-    public function url(string $path): string
+    public function getUrl(string $path): string
     {
         return $path;
     }
@@ -56,7 +56,7 @@ final class FileStorage implements StorageContract
         return $this->store($path, $file, $options);
     }
 
-    public function files(string $directory = null, bool $recursive = false): array
+    public function getFiles(string $directory = null, bool $recursive = false): array
     {
         return iterator_to_array(
             Finder::create()->files()->in($directory)->depth(0)->sortByName(),
@@ -64,7 +64,7 @@ final class FileStorage implements StorageContract
         );
     }
 
-    public function directories(string $directory = null, bool $recursive = false): array
+    public function getDirectories(string $directory = null, bool $recursive = false): array
     {
         $directories = [];
 

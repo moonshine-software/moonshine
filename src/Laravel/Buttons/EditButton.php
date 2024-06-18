@@ -15,17 +15,17 @@ final class EditButton
         ?string $componentName = null,
         bool $isAsync = true
     ): ActionButton {
-        if (! $resource->formPage()) {
+        if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn ($data): string => $resource->formPageUrl($data);
+        $action = static fn ($data): string => $resource->getFormPageUrl($data);
 
         if ($resource->isEditInModal()) {
-            $action = static fn ($data): string => $resource->formPageUrl(
+            $action = static fn ($data): string => $resource->getFormPageUrl(
                 $data,
                 params: [
-                    '_component_name' => $componentName ?? $resource->listComponentName(),
+                    '_component_name' => $componentName ?? $resource->getListComponentName(),
                     '_async_form' => $isAsync,
                 ],
                 fragment: 'crud-form'

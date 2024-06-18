@@ -84,7 +84,7 @@ describe('without special fields', function () {
         $item = storeResource($this->itemResource, $this->storeData);
 
         asAdmin()->put(
-            $this->itemResource->route('crud.update', $item->getKey()),
+            $this->itemResource->getRoute('crud.update', $item->getKey()),
             ['name' => 'New test name']
         )
             ->assertRedirect();
@@ -99,7 +99,7 @@ describe('without special fields', function () {
         $item = storeResource($this->itemResource, $this->storeData);
 
         asAdmin()->delete(
-            $this->itemResource->route('crud.destroy', $item->getKey())
+            $this->itemResource->getRoute('crud.destroy', $item->getKey())
         )
             ->assertRedirect();
     });
@@ -110,7 +110,7 @@ describe('without special fields', function () {
 
         $resource = new TestResource();
 
-        fakeRequest($resource->route('crud.destroy', $item->getKey()), 'DELETE', dispatchRoute: true);
+        fakeRequest($resource->getRoute('crud.destroy', $item->getKey()), 'DELETE', dispatchRoute: true);
 
         TestResourceBuilder::new(Item::class)
             ->setTestFormFields([
@@ -131,7 +131,7 @@ describe('without special fields', function () {
         $item->save();
 
         asAdmin()->delete(
-            $this->itemResource->route('crud.destroy', $item->getKey())
+            $this->itemResource->getRoute('crud.destroy', $item->getKey())
         )
             ->assertRedirect();
     });
@@ -142,7 +142,7 @@ describe('without special fields', function () {
         $ids = Item::query()->get()->pluck('id')->toArray();
 
         asAdmin()->delete(
-            $this->itemResource->route('crud.massDelete', query: ['ids' => $ids])
+            $this->itemResource->getRoute('crud.massDelete', query: ['ids' => $ids])
         )
             ->assertRedirect();
 
@@ -156,7 +156,7 @@ describe('without special fields', function () {
 function storeResource(ModelResource $resource, $saveData)
 {
     asAdmin()->post(
-        $resource->route('crud.store'),
+        $resource->getRoute('crud.store'),
         $saveData
     )
         ->assertRedirect();

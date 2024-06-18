@@ -153,7 +153,15 @@ export default (name = '', initData = {}, reactive = {}) => ({
     return false
   },
   submit() {
-    this.$el.dispatchEvent(new Event('submit'))
+    const hasSubmitAttribute = this.$el
+    .getAttributeNames()
+    .some(attr => attr.startsWith('x-on:submit'))
+
+    if (hasSubmitAttribute) {
+      this.$el.dispatchEvent(new Event('submit'))
+    } else {
+      this.$el.submit()
+    }
   },
   async(events = '', callbackFunction = '', beforeFunction = '') {
     const form = this.$el

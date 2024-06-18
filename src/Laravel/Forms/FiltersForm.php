@@ -38,7 +38,7 @@ final class FiltersForm implements FormContract
         $values = $resource->getFilterParams();
         $filters = $resource->getFilters();
 
-        $action = $resource->isAsync() ? '#' : $this->formAction();
+        $action = $resource->isAsync() ? '#' : $this->getFormAction();
 
         foreach ($filters->onlyFields() as $filter) {
             if($filter instanceof RangeField) {
@@ -52,20 +52,28 @@ final class FiltersForm implements FormContract
             ->fields(
                 $filters
                     ->when(
-                        request('sort'),
+                        request()->input('sort'),
                         static fn ($fields): Fields => $fields
-                            ->prepend(Hidden::make(column: 'sort')->setValue(request('sort')))
+                            ->prepend(
+                                Hidden::make(column: 'sort')->setValue(
+                                    request()->input('sort')
+                                )
+                            )
                     )
                     ->when(
-                        request('query-tag'),
+                        request()->input('query-tag'),
                         static fn ($fields): Fields => $fields
-                            ->prepend(Hidden::make(column: 'query-tag')->setValue(request('query-tag')))
+                            ->prepend(
+                                Hidden::make(column: 'query-tag')->setValue(
+                                    request()->input('query-tag')
+                                )
+                            )
                     )
                     ->toArray()
             )
             ->when($resource->isAsync(), function (FormBuilder $form) use ($resource): void {
                 $events = [
-                    $resource->listEventName(),
+                    $resource->getListEventName(),
                     'disable-query-tags',
                     'show-reset:filters',
                     AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, 'filters-off-canvas'),
@@ -81,7 +89,7 @@ final class FiltersForm implements FormContract
                 $form->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
-                        $this->formAction(query: ['reset' => true])
+                        $this->getFormAction(query: ['reset' => true])
                     )
                         ->secondary()
                         ->showInLine()
@@ -95,17 +103,17 @@ final class FiltersForm implements FormContract
             })
             ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
-                request('filters'),
+                request()->input('filters'),
                 fn ($fields): FormBuilder => $fields->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
-                        $this->formAction(query: ['reset' => true])
+                        $this->getFormAction(query: ['reset' => true])
                     )->secondary()->showInLine(),
                 ])
             );
     }
 
-    private function formAction(array $query = []): string
+    private function getFormAction(array $query = []): string
     {
         return str(request()->url())->when(
             $query,

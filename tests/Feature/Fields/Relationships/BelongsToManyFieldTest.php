@@ -38,7 +38,7 @@ beforeEach(function () {
 function testBelongsToManyValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null, array $pivotData = [])
 {
     asAdmin()->put(
-        $resource->route('crud.update', $item->getKey()),
+        $resource->getRoute('crud.update', $item->getKey()),
         [
             'categories' => $data,
             'categories_pivot' => $pivotData,
@@ -146,7 +146,7 @@ function belongsToManyExport(Item $item, BelongsToMany $field): ?string
     $export = ExportHandler::make('');
 
     asAdmin()->get(
-        $resource->route('handler', query: ['handlerUri' => $export->uriKey()])
+        $resource->getRoute('handler', query: ['handlerUri' => $export->getUriKey()])
     )->assertDownload();
 
     $file = Storage::disk('public')->get('test-resource.csv');
@@ -173,7 +173,7 @@ it('import', function (): void {
     $import = ImportHandler::make('');
 
     asAdmin()->post(
-        $resource->route('handler', query: ['handlerUri' => $import->uriKey()]),
+        $resource->getRoute('handler', query: ['handlerUri' => $import->getUriKey()]),
         [$import->getInputName() => $file]
     )->assertRedirect();
 

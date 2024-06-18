@@ -73,10 +73,10 @@ trait WithAsyncSearch
             ->prepend($this->withImage['dir'] . '/')
             ->value();
 
-        return moonshineStorage(disk: $this->withImage['disk'])->url($value);
+        return moonshineStorage(disk: $this->withImage['disk'])->getUrl($value);
     }
 
-    public function valuesWithProperties(bool $onlyCustom = false): Collection
+    public function getValuesWithProperties(bool $onlyCustom = false): Collection
     {
         if (! $this->isWithImage()) {
             return collect();
@@ -98,27 +98,27 @@ trait WithAsyncSearch
         return $this->asyncSearch;
     }
 
-    public function asyncSearchColumn(): ?string
+    public function getAsyncSearchColumn(): ?string
     {
         return $this->asyncSearchColumn;
     }
 
-    public function asyncSearchCount(): int
+    public function getAsyncSearchCount(): int
     {
         return $this->asyncSearchCount;
     }
 
-    public function asyncSearchQuery(): ?Closure
+    public function getAsyncSearchQuery(): ?Closure
     {
         return $this->asyncSearchQuery;
     }
 
-    public function asyncSearchValueCallback(): ?Closure
+    public function getAsyncSearchValueCallback(): ?Closure
     {
         return $this->asyncSearchValueCallback;
     }
 
-    public function asyncSearchUrl(): string
+    public function getAsyncSearchUrl(): string
     {
         if (! is_null($this->asyncUrl)) {
             return $this->asyncUrl;
@@ -143,16 +143,16 @@ trait WithAsyncSearch
 
     public function getAsyncSearchOption(Model $model, ?string $searchColumn = null): Option
     {
-        $searchColumn ??= $this->asyncSearchColumn();
+        $searchColumn ??= $this->getAsyncSearchColumn();
 
         if(is_null($searchColumn)) {
             $searchColumn = '';
         }
 
         return new Option(
-            label: is_null($this->asyncSearchValueCallback())
+            label: is_null($this->getAsyncSearchValueCallback())
                 ? data_get($model, $searchColumn, '')
-                : value($this->asyncSearchValueCallback(), $model, $this),
+                : value($this->getAsyncSearchValueCallback(), $model, $this),
             value: (string) $model->getKey(),
             properties: new OptionProperty($this->getImageUrl($model))
         );
@@ -177,7 +177,7 @@ trait WithAsyncSearch
         $this->asyncSearchColumn = $column;
         $this->asyncSearchCount = $limit;
         $this->asyncSearchQuery = $searchQuery;
-        $this->asyncSearchValueCallback = $formatted ?? $this->formattedValueCallback();
+        $this->asyncSearchValueCallback = $formatted ?? $this->getFormattedValueCallback();
         $this->associatedWith = $associatedWith;
         $this->asyncUrl = $url;
 
@@ -204,7 +204,7 @@ trait WithAsyncSearch
      */
     public function associatedWith(string $column, ?Closure $searchQuery = null): static
     {
-        $defaultQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->get($column));
+        $defaultQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->input($column));
 
         return $this->asyncSearch(
             searchQuery: is_null($searchQuery) ? $defaultQuery : $searchQuery,

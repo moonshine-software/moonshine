@@ -133,7 +133,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         return $this;
     }
 
-    public function wrapperAttributes(): MoonShineComponentAttributeBag
+    public function getWrapperAttributes(): MoonShineComponentAttributeBag
     {
         return $this->wrapperAttributes;
     }
@@ -172,7 +172,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         return $this->prepareRequestValue(
             moonshine()->getRequest()->get(
                 $this->getRequestNameDot($index),
-                $this->defaultIfExists()
+                $this->getDefaultIfExists()
             ) ?? false
         );
     }
@@ -181,9 +181,9 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     {
         return str($this->getNameDot())
             ->when(
-                $this->requestKeyPrefix(),
+                $this->getRequestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->prepend(
-                    "{$this->requestKeyPrefix()}."
+                    "{$this->getRequestKeyPrefix()}."
                 )
             )
             ->when(
@@ -203,14 +203,14 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
             ->implode('');
     }
 
-    public function defaultIfExists(): mixed
+    public function getDefaultIfExists(): mixed
     {
         return $this instanceof HasDefaultValue
             ? $this->getDefault()
             : false;
     }
 
-    public function requestKeyPrefix(): ?string
+    public function getRequestKeyPrefix(): ?string
     {
         return $this->requestKeyPrefix;
     }
@@ -294,12 +294,12 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         );
     }
 
-    protected function onChangeEventAttributes(?string $url = null): array
+    protected function getOnChangeEventAttributes(?string $url = null): array
     {
         return $url ? AlpineJs::requestWithFieldValue($url, $this->getColumn()) : [];
     }
 
-    protected function onChangeCondition(): bool
+    protected function isOnChangeCondition(): bool
     {
         return true;
     }
@@ -338,11 +338,11 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
      */
     protected function prepareBeforeRender(): void
     {
-        if (! is_null($this->onChangeUrl) && $this->onChangeCondition()) {
+        if (! is_null($this->onChangeUrl) && $this->isOnChangeCondition()) {
             $onChangeUrl = value($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
 
             $this->customAttributes(
-                $this->onChangeEventAttributes($onChangeUrl),
+                $this->getOnChangeEventAttributes($onChangeUrl),
             );
         }
 

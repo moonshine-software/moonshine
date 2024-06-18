@@ -67,7 +67,7 @@ final class TableBuilder extends IterableComponent implements TableContract
         $this->footAttributes = new MoonShineComponentAttributeBag();
     }
 
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         return memoize(function () {
             $fields = $this->getFields();
@@ -184,7 +184,7 @@ final class TableBuilder extends IterableComponent implements TableContract
      */
     private function resolveRows(): TableRows
     {
-        $tableFields = $this->preparedFields();
+        $tableFields = $this->getPreparedFields();
 
         $rows = TableRows::make();
 
@@ -346,17 +346,17 @@ final class TableBuilder extends IterableComponent implements TableContract
                 )->class('w-10 text-center')
             );
 
-            foreach ($this->preparedFields() as $field) {
+            foreach ($this->getPreparedFields() as $field) {
                 $cells->push(
                     $field->isSortable() && ! $this->isPreview()
                         ?
                         TableTh::make(
                             (string) Link::make(
-                                $field->sortQuery($this->getAsyncUrl()),
+                                $field->getSortQuery($this->getAsyncUrl()),
                                 $field->getLabel()
                             )
                                 ->icon(
-                                    $field->sortActive() && $field->sortDirection('desc') ? 'bars-arrow-down'
+                                    $field->isSortActive() && $field->sortDirectionIs('desc') ? 'bars-arrow-down'
                                         : 'bars-arrow-up'
                                 )
                                 ->customAttributes([
@@ -455,7 +455,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         if ($this->isAsync()) {
             $this->customAttributes([
-                'data-events' => $this->asyncEvents(),
+                'data-events' => $this->getAsyncEvents(),
             ]);
         }
 

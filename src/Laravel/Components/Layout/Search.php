@@ -29,7 +29,7 @@ final class Search extends MoonShineComponent
         }
     }
 
-    protected function globalSearchEnabled(): bool
+    protected function isGlobalSearchEnabled(): bool
     {
         return filled(
             moonshineConfig()->getGlobalSearch()
@@ -45,8 +45,8 @@ final class Search extends MoonShineComponent
 
     protected function prepareBeforeRender(): void
     {
-        if (! $this->globalSearchEnabled() && $this->resourceSearchEnabled()) {
-            $this->action = moonshineRequest()->getResource()?->url();
+        if (! $this->isGlobalSearchEnabled() && $this->resourceSearchEnabled()) {
+            $this->action = moonshineRequest()->getResource()?->getUrl();
         }
     }
 
@@ -59,8 +59,8 @@ final class Search extends MoonShineComponent
             'action' => $this->action,
             'value' => moonshine()->getRequest()->get($this->key, ''),
             'placeholder' => $this->placeholder,
-            'isEnabled' => $this->globalSearchEnabled() || $this->resourceSearchEnabled(),
-            'isGlobal' => $this->globalSearchEnabled(),
+            'isEnabled' => $this->isGlobalSearchEnabled() || $this->resourceSearchEnabled(),
+            'isGlobal' => $this->isGlobalSearchEnabled(),
         ];
     }
 }

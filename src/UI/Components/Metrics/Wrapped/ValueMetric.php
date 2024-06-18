@@ -25,16 +25,16 @@ class ValueMetric extends Metric
         return $this;
     }
 
-    public function valueResult(): string|float|int
+    public function getValueResult(): string|float|int
     {
         if ($this->isProgress()) {
-            return $this->progressValueResult();
+            return $this->getProgressValueResult();
         }
 
-        return $this->simpleValue();
+        return $this->getSimpleValue();
     }
 
-    protected function progressValueResult(): float|int
+    protected function getProgressValueResult(): float|int
     {
         if ($this->target <= 0 || $this->value <= 0) {
             return $this->value;
@@ -48,7 +48,7 @@ class ValueMetric extends Metric
         return $this->progress;
     }
 
-    public function simpleValue(): string|float
+    public function getSimpleValue(): string|float
     {
         return str_replace(
             '{value}',
@@ -83,8 +83,8 @@ class ValueMetric extends Metric
     {
         return [
             'isProgress' => $this->isProgress(),
-            'valueResult' => $this->valueResult(),
-            'simpleValue' => $this->simpleValue(),
+            'valueResult' => $this->getValueResult(),
+            'simpleValue' => $this->getSimpleValue(),
         ];
     }
 }

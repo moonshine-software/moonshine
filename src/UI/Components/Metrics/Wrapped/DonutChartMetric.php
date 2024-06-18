@@ -59,7 +59,7 @@ class DonutChartMetric extends Metric
         return array_values($this->values);
     }
 
-    public function labels(): array
+    public function getLabels(): array
     {
         return array_keys($this->values);
     }
@@ -90,7 +90,7 @@ class DonutChartMetric extends Metric
     protected function viewData(): array
     {
         return [
-            'labels' => $this->labels(),
+            'labels' => $this->getLabels(),
             'values' => $this->getValues(),
             'colors' => $this->getColors(),
             'decimals' => $this->getDecimals(),

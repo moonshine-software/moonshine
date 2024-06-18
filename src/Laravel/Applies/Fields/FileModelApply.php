@@ -22,7 +22,7 @@ final class FileModelApply implements ApplyContract
             $requestValue = $field->getRequestValue();
             $remainingValues = $field->getRemainingValues();
 
-            data_forget($item, $field->hiddenRemainingValuesKey());
+            data_forget($item, $field->getHiddenRemainingValuesKey());
 
             $newValue = $field->isMultiple() ? $remainingValues : $remainingValues->first();
 
@@ -65,7 +65,7 @@ final class FileModelApply implements ApplyContract
             return $file->storeAs(
                 $field->getDir(),
                 $file->getClientOriginalName(),
-                $field->parseOptions()
+                $field->getOptions()
             );
         }
 
@@ -73,11 +73,11 @@ final class FileModelApply implements ApplyContract
             return $file->storeAs(
                 $field->getDir(),
                 value($field->getCustomName(), $file, $this),
-                $field->parseOptions()
+                $field->getOptions()
             );
         }
 
-        if(! $result = $file->store($field->getDir(), $field->parseOptions())) {
+        if(! $result = $file->store($field->getDir(), $field->getOptions())) {
             throw new FieldException('Failed to save file, check your permissions');
         }
 

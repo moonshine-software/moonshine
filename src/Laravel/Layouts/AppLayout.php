@@ -54,12 +54,12 @@ class AppLayout extends MoonShineLayout
 
     public function build(PageContract $page): LayoutBuilder
     {
-        $logo = moonshineAssets()->asset('vendor/moonshine/logo.svg');
-        $logoSmall = moonshineAssets()->asset('vendor/moonshine/logo.svg');
+        $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
+        $logoSmall = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
 
         return LayoutBuilder::make([
             Html::make([
-                Head::make()->title($page->title()),
+                Head::make()->title($page->getTitle()),
                 Body::make([
                     Wrapper::make([
                         Sidebar::make([
@@ -98,7 +98,7 @@ class AppLayout extends MoonShineLayout
                         Block::make([
                             Flash::make(),
                             Header::make([
-                                Breadcrumbs::make($page->breadcrumbs())
+                                Breadcrumbs::make($page->getBreadcrumbs())
                                     ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
                                 Search::make(),
@@ -112,7 +112,7 @@ class AppLayout extends MoonShineLayout
                             ]),
 
                             Content::make([
-                                Title::make($page->title())->class('mb-6'),
+                                Title::make($page->getTitle())->class('mb-6'),
 
                                 Components::make(
                                     $page->getComponents()

@@ -49,8 +49,8 @@ class MakePolicyCommand extends MoonShineCommand
             'DummyClass' => $className,
             '{model-namespace}' => $model,
             '{model}' => class_basename($model),
-            '{user-model-namespace}' => MoonShineAuth::model()::class,
-            '{user-model}' => class_basename(MoonShineAuth::model()),
+            '{user-model-namespace}' => MoonShineAuth::getModel()::class,
+            '{user-model}' => class_basename(MoonShineAuth::getModel()),
         ]);
 
         outro(

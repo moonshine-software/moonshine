@@ -33,7 +33,7 @@ trait WithSorts
         return $this;
     }
 
-    public function sortableCallback(): Closure|string|null
+    public function getSortableCallback(): Closure|string|null
     {
         return $this->sortableCallback;
     }
@@ -43,10 +43,10 @@ trait WithSorts
         return $this->sortable;
     }
 
-    public function sortQuery(?string $url = null): string
+    public function getSortQuery(?string $url = null): string
     {
         $sortData = [
-            'sort' => ($this->sortActive() && $this->sortDirection('asc') ? '-' : '') . $this->getColumn(),
+            'sort' => ($this->isSortActive() && $this->sortDirectionIs('asc') ? '-' : '') . $this->getColumn(),
             'page' => moonshine()->getRequest()->get('page', 1),
         ];
 
@@ -61,12 +61,12 @@ trait WithSorts
         return $url . $separator . Arr::query($sortData);
     }
 
-    public function sortActive(): bool
+    public function isSortActive(): bool
     {
         return $this->getSortColumnFromRequest() === $this->getColumn();
     }
 
-    public function sortDirection(string $type): bool
+    public function sortDirectionIs(string $type): bool
     {
         return $this->getSortDirectionFromRequest() === strtolower($type);
     }

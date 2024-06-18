@@ -258,13 +258,13 @@ class TestResource extends ModelResource
         return $this->testSearch;
     }
 
-    public function uriKey(): string
+    public function getUriKey(): string
     {
         if ($this->testUriKey) {
             return $this->testUriKey;
         }
 
-        return parent::uriKey();
+        return parent::getUriKey();
     }
 
     public function metrics(): array

@@ -92,8 +92,8 @@ final class CompactLayout extends AppLayout
 
     public function build(PageContract $page): LayoutBuilder
     {
-        $logo = moonshineAssets()->asset('vendor/moonshine/logo.svg');
-        $logoSmall = moonshineAssets()->asset('vendor/moonshine/logo.svg');
+        $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
+        $logoSmall = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
 
         return LayoutBuilder::make([
             Html::make([
@@ -165,7 +165,7 @@ final class CompactLayout extends AppLayout
                         Block::make([
                             Flash::make(),
                             Header::make([
-                                Breadcrumbs::make($page->breadcrumbs())
+                                Breadcrumbs::make($page->getBreadcrumbs())
                                     ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
                                 Search::make(),

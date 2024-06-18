@@ -99,13 +99,13 @@ trait FileTrait
         $this->allowedExtensions = $allowedExtensions;
 
         if ($allowedExtensions !== []) {
-            $this->setAttribute('accept', $this->acceptExtension());
+            $this->setAttribute('accept', $this->getAcceptExtension());
         }
 
         return $this;
     }
 
-    public function acceptExtension(): string
+    public function getAcceptExtension(): string
     {
         $extensions = array_map(
             static fn ($val): string => '.' . $val,
@@ -127,17 +127,17 @@ trait FileTrait
         return ! $this->disableDownload;
     }
 
-    public function pathWithDir(string $value): string
+    public function getPathWithDir(string $value): string
     {
-        return $this->path($this->prependDir($value));
+        return $this->getPath($this->getPrependedDir($value));
     }
 
-    public function path(string $value): string
+    public function getPath(string $value): string
     {
         return $this->getStorageUrl($value);
     }
 
-    public function prependDir(string $value): string
+    public function getPrependedDir(string $value): string
     {
         $dir = empty($this->getDir()) ? '' : $this->getDir() . '/';
 
@@ -146,13 +146,13 @@ trait FileTrait
             ->value();
     }
 
-    public function hiddenRemainingValuesKey(): string
+    public function getHiddenRemainingValuesKey(): string
     {
         return str('')
             ->when(
-                $this->requestKeyPrefix(),
+                $this->getRequestKeyPrefix(),
                 fn (Stringable $str): Stringable => $str->append(
-                    $this->requestKeyPrefix() . "."
+                    $this->getRequestKeyPrefix() . "."
                 )
             )
             ->append('hidden_' . $this->getColumn())
@@ -163,7 +163,7 @@ trait FileTrait
     {
         return collect(
             moonshine()->getRequest()->get(
-                $this->hiddenRemainingValuesKey()
+                $this->getHiddenRemainingValuesKey()
             )
         );
     }
@@ -198,9 +198,9 @@ trait FileTrait
 
         return $this->isMultiple()
             ? collect($values)
-                ->map(fn ($value): string => $this->pathWithDir($value))
+                ->map(fn ($value): string => $this->getPathWithDir($value))
                 ->toArray()
-            : [$this->pathWithDir($values)];
+            : [$this->getPathWithDir($values)];
     }
 
     public function removeExcludedFiles(): void

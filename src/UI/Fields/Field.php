@@ -82,7 +82,7 @@ abstract class Field extends FormElement
         parent::__construct();
 
         $this->attributes = new MoonShineComponentAttributeBag(
-            $this->resolvePropertyAttributes()->toArray()
+            $this->getPropertyAttributes()->toArray()
         );
 
         $this->setLabel($label ?? $this->getLabel());
@@ -95,7 +95,7 @@ abstract class Field extends FormElement
         }
     }
 
-    protected function resolvePropertyAttributes(): Collection
+    protected function getPropertyAttributes(): Collection
     {
         return collect($this->propertyAttributes)->mapWithKeys(
             function ($attr): array {
@@ -272,7 +272,7 @@ abstract class Field extends FormElement
         return is_null($this->value);
     }
 
-    public function value(bool $withOld = true): mixed
+    public function getValue(bool $withOld = true): mixed
     {
         if (! $this->hasOld) {
             $withOld = false;
@@ -307,17 +307,17 @@ abstract class Field extends FormElement
         $this->formattedValueCallback = $formattedValueCallback;
     }
 
-    public function formattedValueCallback(): ?Closure
+    public function getFormattedValueCallback(): ?Closure
     {
         return $this->formattedValueCallback;
     }
 
     public function toFormattedValue(): mixed
     {
-        if (! is_null($this->formattedValueCallback())) {
+        if (! is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
                 value(
-                    $this->formattedValueCallback(),
+                    $this->getFormattedValueCallback(),
                     $this->getData()?->getOriginal(),
                     $this->getRowIndex()
                 )
@@ -427,7 +427,7 @@ abstract class Field extends FormElement
         }
 
         if ($this->isBadge()) {
-            return Badge::make((string) $value, $this->badgeColor($this->toValue()))
+            return Badge::make((string) $value, $this->getBadgeColor($this->toValue()))
                 ->render();
         }
 
@@ -496,7 +496,7 @@ abstract class Field extends FormElement
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
             'column' => $this->getColumn(),
-            'value' => $this->value(),
+            'value' => $this->getValue(),
             'isNullable' => $this->isNullable(),
         ];
     }

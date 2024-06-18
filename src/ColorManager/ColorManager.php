@@ -153,7 +153,7 @@ final class ColorManager implements Htmlable
             : $value;
     }
 
-    public function all(bool $dark = false): array
+    public function getAll(bool $dark = false): array
     {
         $colors = [];
         $data = $dark ? $this->darkColors : $this->colors;
@@ -200,10 +200,10 @@ final class ColorManager implements Htmlable
         return <<<HTML
         <style>
             :root {
-            {$values($this->all())}
+            {$values($this->getAll())}
             }
             :root.dark {
-            {$values($this->all(dark: true))}
+            {$values($this->getAll(dark: true))}
             }
         </style>
         HTML;

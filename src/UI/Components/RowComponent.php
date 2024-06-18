@@ -46,7 +46,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
         return $this;
     }
 
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         $fields = $this->getFields();
         $casted = $this->castData($this->getValues());

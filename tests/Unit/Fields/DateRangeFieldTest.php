@@ -179,7 +179,7 @@ describe('unique field methods', function () {
 
         expect($field->preview())
             ->toBe($from->format('d.m') . ' - ' . $to->format('d.m'))
-            ->and($field->value())
+            ->and($field->getValue())
                 ->toBe([
                     $field->fromField => $from->format('Y-m-d'),
                     $field->toField => $to->format('Y-m-d'),
@@ -196,7 +196,7 @@ describe('unique field methods', function () {
 
         expect($field->preview())
             ->toBe('01.01 - 01.02')
-            ->and($field->value())
+            ->and($field->getValue())
             ->toBe([
                 $field->fromField => $from,
                 $field->toField => $to,
@@ -215,7 +215,7 @@ describe('unique field methods', function () {
             ->toBe('datetime-local')
             ->and($field->preview())
             ->toBe('2020-01-01 00:00:00 - 2020-02-01 00:00:00')
-            ->and($field->value())
+            ->and($field->getValue())
             ->toBe([
                 $field->fromField => $from . 'T00:00',
                 $field->toField => $to . 'T00:00',

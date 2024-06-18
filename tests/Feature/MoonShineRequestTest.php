@@ -15,7 +15,7 @@ beforeEach(function (): void {
 });
 
 it('interacts with request methods', function () {
-    $this->get($this->resource->route('resource.page', query: [
+    $this->get($this->resource->getRoute('resource.page', query: [
         'pageUri' => PageType::INDEX->value,
         'foo' => 'var',
     ]));
@@ -37,7 +37,7 @@ it('interacts with request methods', function () {
 
 it('find resource', function (): void {
     asAdmin()
-        ->get($this->resource->route('resource.page', query: ['pageUri' => PageType::INDEX->value]))
+        ->get($this->resource->getRoute('resource.page', query: ['pageUri' => PageType::INDEX->value]))
         ->assertOk();
 
 
@@ -48,7 +48,7 @@ it('find resource', function (): void {
         ->and($request->hasResource())
         ->toBeTrue()
         ->and($request->getResourceUri())
-        ->toBe($this->resource->uriKey())
+        ->toBe($this->resource->getUriKey())
     ;
 });
 

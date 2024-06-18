@@ -13,11 +13,11 @@ beforeEach(function (): void {
 });
 
 it('moonshine guard', function (): void {
-    expect(MoonShineAuth::guard())
+    expect(MoonShineAuth::getGuard())
         ->toBeInstanceOf(Guard::class);
 });
 
 it('moonshine model', function (): void {
-    expect(MoonShineAuth::model())
+    expect(MoonShineAuth::getModel())
         ->toBeInstanceOf(MoonshineUser::class);
 });

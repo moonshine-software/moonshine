@@ -19,7 +19,7 @@ final class MenuElements extends Collection
 
             if ($item instanceof MenuGroup) {
                 $item->setItems(
-                    $item->items()->topMode($condition)
+                    $item->getItems()->topMode($condition)
                 );
             }
 
@@ -32,7 +32,7 @@ final class MenuElements extends Collection
         return $this->filter(function (MenuElement $item): bool {
             if ($item instanceof MenuGroup) {
                 $item->setItems(
-                    $item->items()->onlyVisible()
+                    $item->getItems()->onlyVisible()
                 );
             }
 

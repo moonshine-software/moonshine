@@ -58,13 +58,13 @@ class BelongsTo extends ModelRelationField implements
 
         if (! $this->hasLink() && $this->toValue()) {
             $page = in_array('update', $actions, true)
-                ? $this->getResource()->formPage()
-                : $this->getResource()->detailPage();
+                ? $this->getResource()->getFormPage()
+                : $this->getResource()->getDetailPage();
 
             throw_if(is_null($page), PageException::required());
 
             $this->link(
-                $this->getResource()->pageUrl($page, ['resourceItem' => $this->getData()?->getKey()]),
+                $this->getResource()->getPageUrl($page, ['resourceItem' => $this->getData()?->getKey()]),
                 withoutIcon: true
             );
         }
@@ -116,7 +116,7 @@ class BelongsTo extends ModelRelationField implements
             'values' => $this->getRelation() ? $this->getValues()->toArray() : [],
             'isNullable' => $this->isNullable(),
             'isAsyncSearch' => $this->isAsyncSearch(),
-            'asyncSearchUrl' => $this->asyncSearchUrl(),
+            'asyncSearchUrl' => $this->getAsyncSearchUrl(),
         ];
     }
 }

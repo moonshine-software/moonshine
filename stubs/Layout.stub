@@ -54,11 +54,11 @@ final class DummyLayout extends MoonShineLayout
             Block::make([
                 Flash::make(),
                 Header::make([
-                    Breadcrumbs::make($page->breadcrumbs()),
+                    Breadcrumbs::make($page->getBreadcrumbs()),
                     Search::make(),
                 ]),
                 Content::make([
-                    Title::make($page->title()),
+                    Title::make($page->getTitle()),
 
                     Components::make(
                         $page->getComponents()

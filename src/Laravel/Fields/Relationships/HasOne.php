@@ -69,7 +69,7 @@ class HasOne extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getDetailFields();
@@ -114,7 +114,7 @@ class HasOne extends ModelRelationField implements HasFields
     private function getFieldsOnPreview(): Closure
     {
         return function () {
-            $fields = $this->preparedFields();
+            $fields = $this->getPreparedFields();
 
             // the onlyFields method is needed to exclude stack fields
             $fields->onlyFields()->each(function (Field $field): void {
@@ -155,13 +155,13 @@ class HasOne extends ModelRelationField implements HasFields
         $fields = $resource->getFormFields();
         $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
 
-        $action = $resource->route(
+        $action = $resource->getRoute(
             is_null($item) ? 'crud.store' : 'crud.update',
             $item?->getKey()
         );
 
         $redirectAfter = toPage(
-            page: $parentResource->formPage(),
+            page: $parentResource->getFormPage(),
             resource: $parentResource,
             params: ['resourceItem' => $parentItem->getKey()]
         );
@@ -172,9 +172,9 @@ class HasOne extends ModelRelationField implements HasFields
             ->reactiveUrl(
                 fn (): string => moonshineRouter()
                     ->getEndpoints()
-                    ->reactive(page: $resource->formPage(), resource: $resource, extra: ['key' => $item?->getKey()])
+                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
-            ->name($resource->uriKey())
+            ->name($resource->getUriKey())
             ->switchFormMode($isAsync)
             ->fields(
                 $fields->when(
@@ -216,7 +216,7 @@ class HasOne extends ModelRelationField implements HasFields
             )
             ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
                 fn (mixed $field): bool => $field instanceof ModelRelationField
-                    && $field->toOne()
+                    && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()
             ))
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);

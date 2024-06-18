@@ -34,7 +34,7 @@ class AuthenticateController extends MoonShineController
     public function authenticate(LoginFormRequest $request): RedirectResponse|JsonResponse
     {
         if ($request->wantsJson()) {
-            $token = $request->tokenAuthenticate();
+            $token = $request->getAuthToken();
 
             return $this->json(
                 data: [

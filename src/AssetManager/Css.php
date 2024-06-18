@@ -39,10 +39,10 @@ final class Css implements AssetElement, HasVersion
     public function getLink(): string
     {
         if (! is_null($this->getVersion())) {
-            return moonshineAssets()->asset($this->link) . "v={$this->getVersion()}";
+            return moonshineAssets()->getAsset($this->link) . "v={$this->getVersion()}";
         }
 
-        return moonshineAssets()->asset($this->link);
+        return moonshineAssets()->getAsset($this->link);
     }
 
     public function toHtml(): string

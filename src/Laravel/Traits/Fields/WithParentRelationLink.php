@@ -67,7 +67,7 @@ trait WithParentRelationLink
 
         return ActionButton::make(
             "($count)",
-            $this->getResource()->indexPageUrl([
+            $this->getResource()->getIndexPageUrl([
                 '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
             ])
         )

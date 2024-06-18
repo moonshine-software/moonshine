@@ -12,6 +12,6 @@ trait InteractsWithAuth
 {
     public function auth(): Guard|StatefulGuard
     {
-        return MoonShineAuth::guard();
+        return MoonShineAuth::getGuard();
     }
 }

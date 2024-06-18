@@ -15,7 +15,7 @@ trait ResourceModelPolicy
     /**
      * @return string[]
      */
-    public function gateAbilities(): array
+    public function getGateAbilities(): array
     {
         return [
             'viewAny',
@@ -38,11 +38,11 @@ trait ResourceModelPolicy
             return true;
         }
 
-        if (! in_array($ability, $this->gateAbilities())) {
+        if (! in_array($ability, $this->getGateAbilities())) {
             throw new ResourceException("ability '$ability' not found in the system");
         }
 
-        $user = MoonShineAuth::guard()->user();
+        $user = MoonShineAuth::getGuard()->user();
 
         $checkCustomRules = moonshineConfig()
             ->getAuthorizationRules()

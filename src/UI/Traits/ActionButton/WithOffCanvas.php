@@ -49,7 +49,7 @@ trait WithOffCanvas
         );
     }
 
-    public function offCanvas(): ?OffCanvas
+    public function getOffCanvas(): ?OffCanvas
     {
         return value($this->offCanvas, $this->getData()?->getOriginal(), $this);
     }

@@ -11,7 +11,7 @@ interface HasReactivity
 {
     public function isReactive(): bool;
 
-    public function reactiveCallback(Fields $fields, mixed $value, array $values): Fields;
+    public function getReactiveCallback(Fields $fields, mixed $value, array $values): Fields;
 
     public function reactive(
         ?Closure $callback = null,

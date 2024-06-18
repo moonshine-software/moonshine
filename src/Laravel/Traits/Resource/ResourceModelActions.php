@@ -19,7 +19,7 @@ trait ResourceModelActions
     }
 
     /**
-     * @return Handler
+     * @return list<Handler>
      */
     public function actions(): array
     {
@@ -46,7 +46,7 @@ trait ResourceModelActions
     }
 
     /**
-     * @return Handler
+     * @return list<Handler>
      */
     protected function handlers(): array
     {

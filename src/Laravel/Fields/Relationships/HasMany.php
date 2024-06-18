@@ -56,6 +56,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected ?Closure $modifyEditButton = null;
 
+    protected ?Closure $modifyItemButtons = null;
+
     protected ?Closure $modifyBuilder = null;
 
     protected ?Closure $redirectAfter = null;
@@ -92,7 +94,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return moonshineRequest()
             ->getResource()
-            ?->formPageUrl($parentId) ?? '';
+            ?->getFormPageUrl($parentId) ?? '';
     }
 
     /**
@@ -111,6 +113,16 @@ class HasMany extends ModelRelationField implements HasFields
     public function modifyEditButton(Closure $callback): self
     {
         $this->modifyEditButton = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(ActionButton $detail, ActionButton $edit, ActionButton $delete, ActionButton $massDelete, self $field): array  $callback
+     */
+    public function modifyItemButtons(Closure $callback): self
+    {
+        $this->modifyItemButtons = $callback;
 
         return $this;
     }
@@ -177,7 +189,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function createButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButton
     {
         if (is_null($this->getRelatedModel()?->getKey())) {
             return null;
@@ -232,7 +244,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsCollection
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getIndexFields();
@@ -252,7 +264,7 @@ class HasMany extends ModelRelationField implements HasFields
      */
     public function preparedClonedFields(): Fields
     {
-        $fields = $this->preparedFields();
+        $fields = $this->getPreparedFields();
 
         return $this->hasFields()
             ? $fields->map(fn (Field $field): Field => (clone $field))
@@ -263,7 +275,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function tablePreview(): TableBuilder
+    protected function getTablePreview(): TableBuilder
     {
         $items = $this->toValue();
 
@@ -314,7 +326,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function tableValue(): MoonShineRenderable
+    protected function getTableValue(): MoonShineRenderable
     {
         $resource = $this->getResource();
 
@@ -326,18 +338,6 @@ class HasMany extends ModelRelationField implements HasFields
             resourceItem: $this->getRelatedModel()?->getKey(),
             relation: $this->getRelationName()
         );
-
-        $redirectAfter = $this->isAsync()
-            ? ''
-            : $this->getRedirectAfter(
-                $this->getRelatedModel()?->getKey()
-            );
-
-        $editButton = $this->editButton ?? HasManyButton::for($this, update: true);
-
-        if (! is_null($this->modifyEditButton)) {
-            $editButton = value($this->modifyEditButton, $editButton, $this);
-        }
 
         return TableBuilder::make(items: $this->toValue())
             ->async($asyncUrl)
@@ -361,26 +361,64 @@ class HasMany extends ModelRelationField implements HasFields
                     $resource->tdAttributes()
                 )
             )
-            ->buttons([
-                ...$resource->getIndexButtons(),
-                $resource->getDetailButton(
-                    isAsync: $this->isAsync()
-                ),
-                $editButton,
-                $resource->getDeleteButton(
-                    componentName: $this->getRelationName(),
-                    redirectAfterDelete: $redirectAfter,
-                    isAsync: $this->isAsync()
-                ),
-                $resource->getMassDeleteButton(
-                    componentName: $this->getRelationName(),
-                    redirectAfterDelete: $redirectAfter,
-                    isAsync: $this->isAsync()
-                ),
-            ])->when(
+            ->buttons($this->getItemButtons())->when(
                 ! is_null($this->modifyTable),
                 fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
             );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function getItemButtons(): array
+    {
+        $resource = $this->getResource();
+
+        $redirectAfter = !$this->isAsync()
+            ? $this->getRedirectAfter(
+                $this->getRelatedModel()?->getKey()
+            ) : '';
+
+        $editButton = $this->editButton ?? HasManyButton::for($this, update: true);
+
+        if (! is_null($this->modifyEditButton)) {
+            $editButton = value($this->modifyEditButton, $editButton, $this);
+        }
+
+        $detailButton = $resource->getDetailButton(
+            isAsync: $this->isAsync()
+        );
+
+        $deleteButton = $resource->getDeleteButton(
+            componentName: $this->getRelationName(),
+            redirectAfterDelete: $redirectAfter,
+            isAsync: $this->isAsync()
+        );
+
+        $massDeleteButton = $resource->getMassDeleteButton(
+            componentName: $this->getRelationName(),
+            redirectAfterDelete: $redirectAfter,
+            isAsync: $this->isAsync()
+        );
+
+        if(!is_null($this->modifyItemButtons)) {
+            return value(
+                $this->modifyItemButtons,
+                $detailButton,
+                $editButton,
+                $deleteButton,
+                $massDeleteButton,
+                $this,
+            );
+        }
+
+        return [
+            ...$resource->getIndexButtons(),
+            $detailButton,
+            $editButton,
+            $deleteButton,
+            $massDeleteButton,
+        ];
     }
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
@@ -401,7 +439,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return $this->isParentRelationLink()
             ? $this->getParentRelationLinkButton()->render()
-            : $this->tablePreview()->render();
+            : $this->getTablePreview()->render();
     }
 
     /**
@@ -432,7 +470,7 @@ class HasMany extends ModelRelationField implements HasFields
 
         return $this->isParentRelationLink()
             ? $this->getParentRelationLinkButton()
-            : $this->tableValue();
+            : $this->getTableValue();
     }
 
     /**
@@ -444,7 +482,7 @@ class HasMany extends ModelRelationField implements HasFields
         return [
             'component' => $this->resolveValue(),
             'isCreatable' => $this->isCreatable(),
-            'createButton' => $this->createButton(),
+            'createButton' => $this->getCreateButton(),
         ];
     }
 

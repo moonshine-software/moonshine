@@ -31,15 +31,15 @@ class DetailPage extends Page
     /**
      * @return array<string, string>
      */
-    public function breadcrumbs(): array
+    public function getBreadcrumbs(): array
     {
         if (! is_null($this->breadcrumbs)) {
             return $this->breadcrumbs;
         }
 
-        $breadcrumbs = parent::breadcrumbs();
+        $breadcrumbs = parent::getBreadcrumbs();
 
-        $breadcrumbs[$this->route()] = data_get($this->getResource()->getItem(), $this->getResource()->column());
+        $breadcrumbs[$this->getRoute()] = data_get($this->getResource()->getItem(), $this->getResource()->getColumn());
 
         return $breadcrumbs;
     }
@@ -124,7 +124,7 @@ class DetailPage extends Page
                     $field,
                 ];
 
-                if ($field->toOne()) {
+                if ($field->isToOne()) {
                     $field
                         ->withoutWrapper()
                         ->forcePreview();

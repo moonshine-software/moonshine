@@ -27,14 +27,14 @@ class ProfilePage extends Page
     /**
      * @return array<string, string>
      */
-    public function breadcrumbs(): array
+    public function getBreadcrumbs(): array
     {
         return [
-            '#' => $this->title(),
+            '#' => $this->getTitle(),
         ];
     }
 
-    public function title(): string
+    public function getTitle(): string
     {
         return __('moonshine::ui.profile');
     }
@@ -90,7 +90,7 @@ class ProfilePage extends Page
      */
     public function getForm(): FormBuilder
     {
-        $user = MoonShineAuth::guard()->user() ?? MoonShineAuth::model();
+        $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 
         if(is_null($user)) {
             throw new MoonShineException('Model is required');

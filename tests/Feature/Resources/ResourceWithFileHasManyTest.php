@@ -79,7 +79,7 @@ it('delete a has many file after delete item with parent', function () {
     ];
 
     asAdmin()->post(
-        $fileResource->route('crud.store', $this->item->getKey()),
+        $fileResource->getRoute('crud.store', $this->item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -113,7 +113,7 @@ function addHasManyFile(ModelResource $resource, Model $item)
     ];
 
     asAdmin()->post(
-        $resource->route('crud.store', $item->getKey()),
+        $resource->getRoute('crud.store', $item->getKey()),
         $data
     )
         ->assertRedirect();
@@ -134,7 +134,7 @@ function addHasManyFile(ModelResource $resource, Model $item)
 function deleteItemWithHasMany(ModelResource $resource, int $itemId): void
 {
     asAdmin()->delete(
-        $resource->route('crud.destroy', $itemId),
+        $resource->getRoute('crud.destroy', $itemId),
     )
         ->assertRedirect()
     ;

@@ -31,7 +31,7 @@ class TestCategoryPageResource extends ModelResource
     public function pages(): array
     {
         return [
-            CategoryPageIndex::make($this->title()),
+            CategoryPageIndex::make($this->getTitle()),
             CategoryPageForm::make(
                 $this->getItemID()
                     ? __('moonshine::ui.edit')

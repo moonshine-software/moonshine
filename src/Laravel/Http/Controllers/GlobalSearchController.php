@@ -33,7 +33,9 @@ class GlobalSearchController extends MoonShineController
      */
     protected function search(string $class): array
     {
-        $builder = $class::search(request('query'));
+        $builder = $class::search(
+            request()->input('query')
+        );
 
         return (new $class())
             ->searchableQuery($builder)

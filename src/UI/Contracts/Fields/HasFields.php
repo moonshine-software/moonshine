@@ -15,5 +15,5 @@ interface HasFields
 
     public function getFields(): FieldsCollection;
 
-    public function preparedFields(): FieldsCollection;
+    public function getPreparedFields(): FieldsCollection;
 }

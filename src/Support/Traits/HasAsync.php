@@ -78,7 +78,7 @@ trait HasAsync
         return value($this->asyncUrl, $this);
     }
 
-    public function asyncEvents(): string|null
+    public function getAsyncEvents(): string|null
     {
         if (is_null($this->asyncEvents)) {
             return $this->asyncEvents;
@@ -87,7 +87,7 @@ trait HasAsync
         return AlpineJs::prepareEvents($this->asyncEvents);
     }
 
-    public function asyncCallback(): ?AsyncCallback
+    public function getAsyncCallback(): ?AsyncCallback
     {
         return $this->asyncCallback;
     }

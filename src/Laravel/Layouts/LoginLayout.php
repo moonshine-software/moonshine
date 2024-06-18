@@ -21,7 +21,7 @@ final class LoginLayout extends MoonShineLayout
 {
     public function build(PageContract $page): LayoutBuilder
     {
-        $logo = moonshineAssets()->asset('vendor/moonshine/logo.svg');
+        $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
 
         $title = __('moonshine::ui.login.title', ['moonshine_title' => moonshineConfig()->getTitle()]);
         $description = __('moonshine::ui.login.description');
