@@ -51,7 +51,7 @@ class AsyncController extends MoonShineController
 
         return TableRowRenderer::make(
             $table,
-            request()->get('_key'),
+            request()->input('_key'),
             request()->integer('_index'),
         )->render();
     }
@@ -85,7 +85,7 @@ class AsyncController extends MoonShineController
     {
         $toast = [
             'type' => 'info',
-            'message' => $request->get('message', ''),
+            'message' => $request->input('message', ''),
         ];
 
         try {
@@ -94,7 +94,7 @@ class AsyncController extends MoonShineController
                 : $request->getPage();
 
             $result = $pageOrResource
-                ?->{$request->get('method')}(
+                ?->{$request->input('method')}(
                     $request
                 );
 

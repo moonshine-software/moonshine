@@ -15,15 +15,12 @@ class MoonShineRequest extends Request
 
     public function getItemID(): int|string|null
     {
-        return request(
-            'resourceItem',
-            request()->route('resourceItem')
-        );
+        return request('resourceItem');
     }
 
     public function getParentResourceId(): ?string
     {
-        return request('_parentId');
+        return request()->input('_parentId');
     }
 
     public function getParentRelationName(): ?string
@@ -64,7 +61,7 @@ class MoonShineRequest extends Request
 
     public function getFragmentLoad(): ?string
     {
-        return request('_fragment-load');
+        return request()->input('_fragment-load');
     }
 
     public function isFragmentLoad(?string $name = null): bool

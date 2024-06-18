@@ -35,7 +35,7 @@ class RelationModelColumnUpdateRequest extends RelationModelFieldRequest
     protected function prepareForValidation(): void
     {
         request()->merge([
-            request('field') => request('value'),
+            request()->input('field') => request()->input('value'),
         ]);
     }
 }

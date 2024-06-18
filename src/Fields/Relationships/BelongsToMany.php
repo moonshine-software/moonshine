@@ -464,7 +464,7 @@ class BelongsToMany extends ModelRelationField implements
                     $this->requestKeyPrefix()
                 );
 
-                $values = request($field->requestKeyPrefix());
+                $values = request()->input($field->requestKeyPrefix(), []);
 
                 $apply = $field->apply(
                     fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? null),

@@ -45,12 +45,8 @@ class LoginFormRequest extends MoonShineFormRequest
         $this->ensureIsNotRateLimited();
 
         $credentials = [
-            config('moonshine.auth.fields.username', 'email') => request(
-                'username'
-            ),
-            config('moonshine.auth.fields.password', 'password') => request(
-                'password'
-            ),
+            config('moonshine.auth.fields.username', 'email') => request()->input('username'),
+            config('moonshine.auth.fields.password', 'password') => request()->input('password'),
         ];
 
         if (! MoonShineAuth::guard()->attempt(

@@ -13,7 +13,7 @@ class ChangeLocale
 
     public function handle(Request $request, Closure $next)
     {
-        $local = $request->get(
+        $local = $request->input(
             self::KEY,
             session(self::KEY)
         );

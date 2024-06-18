@@ -40,14 +40,14 @@ final class FiltersForm
             ->fields(
                 $filters
                     ->when(
-                        request('sort'),
+                        request()->input('sort'),
                         static fn ($fields): Fields => $fields
-                            ->prepend(Hidden::make(column: 'sort')->setValue(request('sort')))
+                            ->prepend(Hidden::make(column: 'sort')->setValue(request()->input('sort')))
                     )
                     ->when(
-                        request('query-tag'),
+                        request()->input('query-tag'),
                         static fn ($fields): Fields => $fields
-                            ->prepend(Hidden::make(column: 'query-tag')->setValue(request('query-tag')))
+                            ->prepend(Hidden::make(column: 'query-tag')->setValue(request()->input('query-tag')))
                     )
                     ->toArray()
             )
@@ -83,7 +83,7 @@ final class FiltersForm
             })
             ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
-                request('filters'),
+                request()->input('filters'),
                 static fn ($fields): FormBuilder => $fields->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),

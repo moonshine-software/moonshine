@@ -87,9 +87,9 @@ final class MoonShineRouter
             '_parentId' => moonshineRequest()->getParentResourceId(),
             'resourceUri' => moonshineRequest()->getResourceUri(),
             'pageUri' => moonshineRequest()->getPageUri(),
-            'filters' => moonshineRequest()->get('filters'),
-            'query-tag' => moonshineRequest()->get('query-tag'),
-            'search' => moonshineRequest()->get('search'),
+            'filters' => moonshineRequest()->input('filters'),
+            'query-tag' => moonshineRequest()->input('query-tag'),
+            'search' => moonshineRequest()->input('search'),
         ]);
     }
 

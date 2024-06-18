@@ -397,7 +397,7 @@ trait ResourceModelQuery
         $column = $this->sortColumn();
         $direction = $this->sortDirection();
 
-        if (($sort = request('sort')) && is_string($sort)) {
+        if (($sort = request()->input('sort')) && is_string($sort)) {
             $column = ltrim($sort, '-');
             $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         }
@@ -427,7 +427,7 @@ trait ResourceModelQuery
      */
     public function getFilterParams(): array
     {
-        $default = request('filters', []);
+        $default = request()->input('filters', []);
 
         if ($this->saveFilterState()) {
             return data_get(
@@ -507,7 +507,7 @@ trait ResourceModelQuery
 
         $relation = $this->getModel()->{$relationName}();
 
-        $resolveParentRelationQuery = fn () => $this->getQuery()->when(
+        $this->getQuery()->when(
             $relation instanceof BelongsToMany,
             fn (Builder $q) => $q->whereRelation(
                 $relationName,
@@ -519,18 +519,6 @@ trait ResourceModelQuery
                 $parentId
             )
         );
-
-        if (! empty($this->parentRelations())) {
-            foreach ($this->parentRelations() as $parentRelationName) {
-                if ($relationName === $parentRelationName) {
-                    $resolveParentRelationQuery();
-
-                    return $this;
-                }
-            }
-        }
-
-        $resolveParentRelationQuery();
 
         return $this;
     }

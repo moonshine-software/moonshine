@@ -227,7 +227,10 @@ abstract class ModelResource extends Resource
             ->newModelQuery()
             ->whereIn($this->getModel()->getKeyName(), $ids)
             ->get()
-            ->each(fn (Model $item): ?bool => $item->delete());
+            ->each(function (Model $item): ?bool {
+                $item = $this->beforeDeleting($item);
+                return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
+            });
 
         $this->afterMassDeleted($ids);
     }

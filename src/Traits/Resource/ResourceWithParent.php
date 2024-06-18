@@ -35,10 +35,12 @@ trait ResourceWithParent
             return $this->parentId = $this->getItemID();
         }
 
-        if(request($parentKey = $this->getModel()
+        $parentKey = $this->getModel()
             ?->{$relationName}()
-            ->getForeignKeyName())) {
-            return $this->parentId = request($parentKey);
+            ->getForeignKeyName();
+
+        if(request()->has($parentKey)) {
+            return $this->parentId = request()->input($parentKey);
         }
 
         if(is_null($this->getItem())) {

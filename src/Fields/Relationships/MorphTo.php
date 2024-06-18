@@ -92,7 +92,7 @@ class MorphTo extends BelongsTo
 
     public function requestTypeValue(): string
     {
-        return request(
+        return request()->input(
             (string) str($this->nameDot())->replace(
                 $this->column(),
                 $this->getMorphType()

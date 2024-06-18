@@ -80,44 +80,4 @@ trait ResourceModelEvents
     {
         // Logic here
     }
-
-    /**
-     * @param TModel $item
-     *
-     * @return TModel
-     */
-    protected function beforeForceDeleting(Model $item): Model
-    {
-        return $item;
-    }
-
-    /**
-     * @param TModel $item
-     *
-     * @return TModel
-     */
-    protected function afterForceDeleted(Model $item): Model
-    {
-        return $item;
-    }
-
-    /**
-     * @param TModel $item
-     *
-     * @return TModel
-     */
-    protected function beforeRestoring(Model $item): Model
-    {
-        return $item;
-    }
-
-    /**
-     * @param TModel $item
-     *
-     * @return TModel
-     */
-    protected function afterRestored(Model $item): Model
-    {
-        return $item;
-    }
 }

@@ -137,7 +137,9 @@ class FormPage extends Page
                 $isAsync,
                 fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
                     ->async(asyncEvents: [
-                        $resource->listEventName(request('_component_name', 'default')),
+                        $resource->listEventName(
+                            request()->input('_component_name', 'default')
+                        ),
                         ! $item?->exists && $resource->isCreateInModal()
                             ? AlpineJs::event(JsEvent::FORM_RESET, $resource->uriKey())
                             : null,
@@ -168,7 +170,7 @@ class FormPage extends Page
         // Reset form problem
         $isAsync = $resource->isAsync();
 
-        if (request('_async_form', false)) {
+        if (request()->boolean('_async_form')) {
             $isAsync = true;
         }
 

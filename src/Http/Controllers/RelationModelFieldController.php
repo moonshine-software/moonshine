@@ -50,8 +50,8 @@ class RelationModelFieldController extends MoonShineController
             $field->resolveFill([], $model);
 
             $morphClass = $field->getWrapName()
-                ? data_get($request->get($field->getWrapName(), []), $field->getMorphType())
-                : $request->get($field->getMorphType());
+                ? data_get($request->input($field->getWrapName(), []), $field->getMorphType())
+                : $request->input($field->getMorphType());
 
             $model = new $morphClass();
             $searchColumn = $field->getSearchColumn($morphClass);
@@ -68,14 +68,14 @@ class RelationModelFieldController extends MoonShineController
             );
         }
 
-        $term = $request->get('query');
-        $values = $request->get($field->column(), '') ?? '';
+        $term = $request->input('query');
+        $values = $request->input($field->column(), '') ?? '';
 
         $except = is_array($values)
             ? array_keys($values)
             : array_filter(explode(',', (string) $values));
 
-        $offset = $request->get('offset', 0);
+        $offset = $request->input('offset', 0);
 
         $query->when(
             $term,
@@ -118,7 +118,7 @@ class RelationModelFieldController extends MoonShineController
         if ($value instanceof TableBuilder && $request->filled('_key')) {
             return TableRowRenderer::make(
                 $value,
-                $request->get('_key'),
+                $request->input('_key'),
                 $request->integer('_index'),
             )->render();
         }
@@ -140,7 +140,7 @@ class RelationModelFieldController extends MoonShineController
         $resource = $field->getResource();
 
         $item = $resource
-            ->setItemID($request->get('_key', ''))
+            ->setItemID($request->input('_key', ''))
             ->getItemOrInstance();
 
         $update = $item->exists;

@@ -62,7 +62,7 @@ final class QueryTag
             return true;
         }
 
-        return request('query-tag') === $this->uri();
+        return request()->input('query-tag') === $this->uri();
     }
 
     public function apply(Builder $builder): Builder

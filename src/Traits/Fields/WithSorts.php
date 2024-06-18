@@ -47,7 +47,7 @@ trait WithSorts
     {
         $sortData = [
             'sort' => ($this->sortActive() && $this->sortDirection('asc') ? '-' : '') . $this->column(),
-            'page' => request('page', 1),
+            'page' => request()->integer('page', 1),
         ];
 
         if (is_null($url)) {
@@ -73,7 +73,7 @@ trait WithSorts
 
     protected function getSortColumnFromRequest(): ?string
     {
-        if (($sort = request('sort')) && is_string($sort)) {
+        if (($sort = request()->input('sort')) && is_string($sort)) {
             return ltrim($sort, '-');
         }
 
@@ -82,7 +82,7 @@ trait WithSorts
 
     protected function getSortDirectionFromRequest(): ?string
     {
-        if (($sort = request('sort')) && is_string($sort)) {
+        if (($sort = request()->input('sort')) && is_string($sort)) {
             return str_starts_with($sort, '-') ? 'desc' : 'asc';
         }
 

@@ -47,7 +47,7 @@ final class Search extends MoonShineComponent
             'isEnabled' => $this->globalSearchEnabled() || $this->resourceSearchEnabled(),
             '_action' => $action,
             'isGlobal' => $this->globalSearchEnabled(),
-            'value' => request($this->key, ''),
+            'value' => request()->input($this->key, ''),
         ];
     }
 }

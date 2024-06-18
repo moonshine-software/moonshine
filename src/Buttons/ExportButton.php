@@ -11,7 +11,10 @@ final class ExportButton
 {
     public static function for(ModelResource $resource, ExportHandler $export): ActionButton
     {
-        $query = Arr::query(request(['filters', 'sort', 'query-tag'], []));
+        $query = Arr::query(
+            request()->only(['filters', 'sort', 'query-tag'])
+        );
+
         $url = $resource->route('handler', query: ['handlerUri' => $export->uriKey()]);
 
         return ActionButton::make(

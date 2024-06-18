@@ -74,7 +74,7 @@ class ProfileController extends MoonShineController
         );
 
         $avatar = request()->file('avatar');
-        $oldAvatar = request()->get('hidden_avatar', '');
+        $oldAvatar = request()->input('hidden_avatar', '');
         $currentAvatar = data_get(request()->user(), $avatarColumn, '');
 
         if (! is_null($avatar)) {
