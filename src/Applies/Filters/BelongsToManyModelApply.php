@@ -20,7 +20,11 @@ class BelongsToManyModelApply implements ApplyContract
                 return;
             }
 
-            $values = array_filter($field->requestValue());
+            $value = $field->requestValue();
+
+            $values = array_filter(
+                is_array($value) ? $value : [$value]
+            );
 
             if (is_null($field->getRelation()) || blank($values)) {
                 return;
