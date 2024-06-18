@@ -247,6 +247,7 @@ class FormPage extends Page
                 fn (FormBuilder $form): FormBuilder => $form->precognitive()
             )
             ->name($resource->getUriKey())
-            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
+            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
+            ->buttons($resource->getFormBuilderButtons());
     }
 }
