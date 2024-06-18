@@ -198,9 +198,9 @@ class BelongsToMany extends ModelRelationField implements
         return $selected->toArray();
     }
 
-    protected function isValueWithModels(): bool
+    protected function isValueWithModels(mixed $data = null): bool
     {
-        $data = collect($this->toValue());
+        $data = collect($data ?? $this->toValue());
 
         if ($data->isEmpty()) {
             return false;
@@ -276,6 +276,16 @@ class BelongsToMany extends ModelRelationField implements
     {
         if($this->isParentRelationLink()) {
             return $this->getParentRelationLinkButton();
+        }
+
+        // fix for filters
+        if ($this->isAsyncSearch() && !$this->isValueWithModels($this->memoizeValues) && filled($this->toValue())) {
+            $this->memoizeValues = $this->getRelation()
+                ?->getRelated()
+                ?->newQuery()
+                ?->findMany($this->toValue()) ?? EloquentCollection::make();
+
+            $this->memoizeAllValues = $this->memoizeValues;
         }
 
         $titleColumn = $this->getResourceColumn();
