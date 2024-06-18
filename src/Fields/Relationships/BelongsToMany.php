@@ -272,7 +272,7 @@ class BelongsToMany extends ModelRelationField implements
     protected function resolveValue(): mixed
     {
         // fix for filters
-        if ($this->isAsyncSearch() && !$this->isValueWithModels($this->memoizeValues) && filled($this->toValue())) {
+        if ($this->isAsyncSearch() && ! $this->isValueWithModels($this->memoizeValues) && filled($this->toValue())) {
             $this->memoizeValues = $this->getRelation()
                 ?->getRelated()
                 ?->newQuery()
