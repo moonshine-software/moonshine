@@ -403,7 +403,7 @@ class HasMany extends ModelRelationField implements HasFields
             isAsync: $this->isAsync()
         );
 
-        if(!is_null($this->modifyItemButtons)) {
+        if(! is_null($this->modifyItemButtons)) {
             return value(
                 $this->modifyItemButtons,
                 $detailButton,
