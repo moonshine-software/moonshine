@@ -59,7 +59,7 @@ class Number extends Field implements HasDefaultValue, DefaultCanBeNumeric, HasU
     protected function viewData(): array
     {
         return [
-            'extensions' => $this->getExtensions(),
+            ...$this->getExtensionsViewData(),
         ];
     }
 }

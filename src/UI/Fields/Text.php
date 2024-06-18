@@ -71,7 +71,7 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
     protected function viewData(): array
     {
         return [
-            'extensions' => $this->getExtensions(),
+            ...$this->getExtensionsViewData(),
         ];
     }
 }

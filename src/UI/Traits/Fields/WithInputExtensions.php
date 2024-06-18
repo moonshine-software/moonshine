@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Illuminate\Support\Collection;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\InputExtensions\InputCopy;
 use MoonShine\UI\InputExtensions\InputExt;
 use MoonShine\UI\InputExtensions\InputExtension;
@@ -18,6 +19,26 @@ trait WithInputExtensions
     public function getExtensions(): Collection
     {
         return collect($this->extensions);
+    }
+
+    public function getExtensionsAttributes(): MoonShineComponentAttributeBag
+    {
+        $extensions = $this->getExtensions();
+
+        return new MoonShineComponentAttributeBag([
+            'x-init' => trim($extensions->implode(fn($extension) => $extension->getXInit()->implode(';'), ';'), ';'),
+            'x-data' => str(
+                $extensions->implode(fn($extension) => $extension->getXData()->implode(','), ','),
+            )->trim(',')->wrap('{', '}'),
+        ]);
+    }
+
+    protected function getExtensionsViewData(): array
+    {
+        return [
+            'extensions' => $this->getExtensions(),
+            'extensionsAttributes' => $this->getExtensionsAttributes(),
+        ];
     }
 
     /** Just a sugar methods below */
