@@ -84,6 +84,14 @@ trait ResourceWithButtons
         return [];
     }
 
+    /**
+     * @return list<ActionButton>
+     */
+    public function getFormBuilderButtons(): array
+    {
+        return [];
+    }
+
     public function getCreateButton(?string $componentName = null, bool $isAsync = false): ActionButton
     {
         return CreateButton::for(
