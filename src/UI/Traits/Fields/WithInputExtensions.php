@@ -26,9 +26,9 @@ trait WithInputExtensions
         $extensions = $this->getExtensions();
 
         return new MoonShineComponentAttributeBag([
-            'x-init' => trim($extensions->implode(fn($extension) => $extension->getXInit()->implode(';'), ';'), ';'),
+            'x-init' => trim($extensions->implode(fn ($extension) => $extension->getXInit()->implode(';'), ';'), ';'),
             'x-data' => str(
-                $extensions->implode(fn($extension) => $extension->getXData()->implode(','), ','),
+                $extensions->implode(fn ($extension) => $extension->getXData()->implode(','), ','),
             )->trim(',')->wrap('{', '}'),
         ]);
     }

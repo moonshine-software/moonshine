@@ -279,7 +279,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         // fix for filters
-        if ($this->isAsyncSearch() && !$this->isValueWithModels($this->memoizeValues) && filled($this->toValue())) {
+        if ($this->isAsyncSearch() && ! $this->isValueWithModels($this->memoizeValues) && filled($this->toValue())) {
             $this->memoizeValues = $this->getRelation()
                 ?->getRelated()
                 ?->newQuery()

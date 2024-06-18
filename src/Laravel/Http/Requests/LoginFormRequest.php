@@ -57,7 +57,8 @@ class LoginFormRequest extends MoonShineFormRequest
         $user = MoonShineAuth::getModel()
             ?->newQuery()
             ->where(
-                moonshineConfig()->getUserField('username', 'email'), request()->input('username')
+                moonshineConfig()->getUserField('username', 'email'),
+                request()->input('username')
             )
             ->first();
 
