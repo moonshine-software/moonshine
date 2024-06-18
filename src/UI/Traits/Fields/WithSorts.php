@@ -43,7 +43,7 @@ trait WithSorts
         return $this->sortable;
     }
 
-    public function sortQuery(?string $url = null): string
+    public function getSortQuery(?string $url = null): string
     {
         $sortData = [
             'sort' => ($this->isSortActive() && $this->sortDirectionIs('asc') ? '-' : '') . $this->getColumn(),

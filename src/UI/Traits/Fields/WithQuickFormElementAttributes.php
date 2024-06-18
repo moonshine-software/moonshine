@@ -51,7 +51,7 @@ trait WithQuickFormElementAttributes
         return $this->wrapName;
     }
 
-    protected function nameUnDot(string $name): string
+    protected function getNameUnDot(string $name): string
     {
         $parts = explode('.', $name);
         $count = count($parts);
@@ -72,7 +72,7 @@ trait WithQuickFormElementAttributes
             return $this->nameAttribute;
         }
 
-        return (string) str($this->nameUnDot($this->getColumn()))
+        return (string) str($this->getNameUnDot($this->getColumn()))
             ->when(
                 ! is_null($wrap),
                 fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")

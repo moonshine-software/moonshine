@@ -352,7 +352,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                         ?
                         TableTh::make(
                             (string) Link::make(
-                                $field->sortQuery($this->getAsyncUrl()),
+                                $field->getSortQuery($this->getAsyncUrl()),
                                 $field->getLabel()
                             )
                                 ->icon(

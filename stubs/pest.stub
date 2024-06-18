@@ -15,7 +15,7 @@ beforeEach(function (): void {
 it('index page', function (): void {
     actingAs($this->user, 'moonshine')
         ->get(
-            $this->resource->indexPageUrl()
+            $this->resource->getIndexPageUrl()
         )
         ->assertOk();
 });
@@ -25,7 +25,7 @@ it('detail page', function (): void {
 
     actingAs($this->user, 'moonshine')
         ->get(
-            $this->resource->detailPageUrl($item)
+            $this->resource->getDetailPageUrl($item)
         )
         ->assertOk();
 });
@@ -33,7 +33,7 @@ it('detail page', function (): void {
 it('create page', function (): void {
     actingAs($this->user, 'moonshine')
         ->get(
-            $this->resource->formPageUrl()
+            $this->resource->getFormPageUrl()
         )
         ->assertOk();
 });
@@ -43,7 +43,7 @@ it('edit page', function (): void {
 
     actingAs($this->user, 'moonshine')
         ->get(
-            $this->resource->formPageUrl($item)
+            $this->resource->getFormPageUrl($item)
         )
         ->assertOk();
 });
