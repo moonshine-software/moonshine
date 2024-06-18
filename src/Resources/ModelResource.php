@@ -229,6 +229,7 @@ abstract class ModelResource extends Resource
             ->get()
             ->each(function (Model $item): ?bool {
                 $item = $this->beforeDeleting($item);
+
                 return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
             });
 
