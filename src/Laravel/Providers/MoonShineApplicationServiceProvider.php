@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use MoonShine\Core\Contracts\ConfiguratorContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\MoonShineConfigurator;
 use MoonShine\Laravel\Pages\Page;

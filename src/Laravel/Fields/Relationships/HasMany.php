@@ -374,10 +374,10 @@ class HasMany extends ModelRelationField implements HasFields
     {
         $resource = $this->getResource();
 
-        $redirectAfter = !$this->isAsync()
-            ? $this->getRedirectAfter(
+        $redirectAfter = $this->isAsync()
+            ? '' : $this->getRedirectAfter(
                 $this->getRelatedModel()?->getKey()
-            ) : '';
+            );
 
         $editButton = $this->editButton ?? HasManyButton::for($this, update: true);
 
