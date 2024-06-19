@@ -10,7 +10,7 @@
                 size="6"
             />
 
-            {{ $action->label() }}
+            {!! $action->label() !!}
         </x-slot:toggler>
 
         {!! $action->offCanvas()->content($action->getItem()) !!}

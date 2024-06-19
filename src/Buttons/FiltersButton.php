@@ -25,7 +25,10 @@ final class FiltersButton
                 fn (): FormBuilder => (new FiltersForm())($resource),
                 name: 'filters-off-canvas'
             )
-            ->showInLine();
+            ->showInLine()
+            ->customAttributes([
+                'class' => 'btn-filter',
+            ]);
     }
 
     private static function title(array $params = []): string
@@ -38,7 +41,8 @@ final class FiltersButton
             ->count();
 
         return str(__('moonshine::ui.filters'))
-            ->when($count, fn (Stringable $str): Stringable => $str->append("($count)"))
+            ->when($count, fn (Stringable $str): Stringable => $str->append(" ($count)"))
+            ->wrap('<span>', '</span>')
             ->value();
     }
 }
