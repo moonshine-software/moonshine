@@ -64,7 +64,7 @@ trait Applies
 
             $this->when(
                 ! is_null($classApply),
-                fn (Field $field): Field => $field->onApply($classApply->apply($field))
+                static fn (Field $field): Field => $field->onApply($classApply->apply($field))
             );
         }
 

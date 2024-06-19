@@ -75,7 +75,7 @@ it('apply as base', function () {
 it('before apply', function () {
     $resource = addFieldsToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')
-            ->onBeforeApply(function ($item, $data) {
+            ->onBeforeApply(static function ($item, $data) {
                 $item->name = $data['start_point'] . ' - ' . $data['end_point'];
 
                 return $item;
@@ -100,7 +100,7 @@ it('before apply', function () {
 it('after apply', function () {
     $resource = addFieldsToTestResource(
         Range::make('Range')->fromTo('start_point', 'end_point')
-        ->onAfterApply(function ($item) {
+        ->onAfterApply(static function ($item) {
             $item->start_point = $item->start_point * 1000;
             $item->end_point = $item->end_point * 1000;
 
@@ -145,7 +145,7 @@ it('apply as base with default', function () {
     ;
 });
 
-it('apply as filter', function (): void {
+it('apply as filter', static function (): void {
     $field = Range::make('Range', 'start_point')
         ->wrapName('filters');
 

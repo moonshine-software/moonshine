@@ -52,7 +52,7 @@ it('apply', function () {
     fakeRequest(parameters: $data);
 
     $this->form->apply(
-        fn (MoonshineUser $user) => $user->save(),
+        static fn (MoonshineUser $user) => $user->save(),
         throw: true
     );
 

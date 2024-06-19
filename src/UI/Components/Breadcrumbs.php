@@ -40,7 +40,7 @@ final class Breadcrumbs extends MoonShineComponent
         return str($label)
             ->when(
                 $icon,
-                fn (Stringable $str) => $str->append(":::$icon")
+                static fn (Stringable $str) => $str->append(":::$icon")
             )
             ->value();
     }

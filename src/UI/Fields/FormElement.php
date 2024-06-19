@@ -150,7 +150,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         $this->setRequestKeyPrefix(
             str($value)->when(
                 $prefix,
-                fn ($str) => $str->prepend("$prefix.")
+                static fn ($str) => $str->prepend("$prefix.")
             )->value()
         );
 
@@ -188,7 +188,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
             )
             ->when(
                 ! is_null($index) && $index !== '',
-                fn (Stringable $str): Stringable => $str->append(".$index")
+                static fn (Stringable $str): Stringable => $str->append(".$index")
             )->value();
     }
 
@@ -199,7 +199,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         }
 
         return str($value)->explode('.')
-            ->map(fn ($part, $index) => $index === 0 ? $part : "[$part]")
+            ->map(static fn ($part, $index) => $index === 0 ? $part : "[$part]")
             ->implode('');
     }
 

@@ -322,7 +322,7 @@ trait ResourceModelQuery
         /** @var QueryTag $tag */
         $tag = collect($this->queryTags())
             ->first(
-                fn (QueryTag $tag): bool => $tag->isActive()
+                static fn (QueryTag $tag): bool => $tag->isActive()
             );
 
         if ($tag) {
@@ -377,18 +377,18 @@ trait ResourceModelQuery
                 if (is_array($column)) {
                     $builder->when(
                         method_exists($this->getModel(), $key),
-                        fn (Builder $query) => $query->orWhereHas(
+                        static fn (Builder $query) => $query->orWhereHas(
                             $key,
-                            fn (Builder $q) => collect($column)->each(fn ($item) => $q->where(
-                                fn (Builder $qq) => $qq->orWhere(
+                            static fn (Builder $q) => collect($column)->each(static fn ($item) => $q->where(
+                                static fn (Builder $qq) => $qq->orWhere(
                                     $item,
                                     DBOperators::byModel($qq->getModel())->like(),
                                     "%$terms%"
                                 )
                             ))
                         ),
-                        fn (Builder $query) => collect($column)->each(fn ($item) => $query->orWhere(
-                            fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms])
+                        static fn (Builder $query) => collect($column)->each(static fn ($item) => $query->orWhere(
+                            static fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms])
                         ))
                     );
                 } else {
@@ -512,12 +512,12 @@ trait ResourceModelQuery
 
         $this->getQuery()->when(
             $relation instanceof BelongsToMany,
-            fn (Builder $q) => $q->whereRelation(
+            static fn (Builder $q) => $q->whereRelation(
                 $relationName,
                 $relation->getQualifiedRelatedKeyName(),
                 $parentId
             ),
-            fn (Builder $q) => $q->where(
+            static fn (Builder $q) => $q->where(
                 $relation->getForeignKeyName(),
                 $parentId
             )

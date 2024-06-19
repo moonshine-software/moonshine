@@ -99,7 +99,7 @@ trait WithModal
                 ])
             )->when(
                 $async && ! $this->isAsyncMethod(),
-                fn (FormBuilder $form): FormBuilder => $form->async()
+                static fn (FormBuilder $form): FormBuilder => $form->async()
             )->when(
                 $this->isAsyncMethod(),
                 fn (FormBuilder $form): FormBuilder => $form->asyncMethod($this->getAsyncMethod())
@@ -110,7 +110,7 @@ trait WithModal
                 ['class' => 'btn-secondary']
             )->when(
                 ! is_null($formBuilder),
-                fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
+                static fn (FormBuilder $form): FormBuilder => value($formBuilder, $form, $data)
             ),
             name: $name,
             builder: $modalBuilder
@@ -125,13 +125,13 @@ trait WithModal
     public function toggleModal(string $name = 'default'): static
     {
         return $this->onClick(
-            fn (mixed $data): string => "\$dispatch('" . AlpineJs::event(JsEvent::MODAL_TOGGLED, $name) . "')",
+            static fn (mixed $data): string => "\$dispatch('" . AlpineJs::event(JsEvent::MODAL_TOGGLED, $name) . "')",
             'prevent'
         );
     }
 
     public function openModal(): static
     {
-        return $this->onClick(fn (): string => 'toggleModal', 'prevent');
+        return $this->onClick(static fn (): string => 'toggleModal', 'prevent');
     }
 }

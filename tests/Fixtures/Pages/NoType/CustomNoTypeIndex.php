@@ -14,7 +14,7 @@ class CustomNoTypeIndex extends Page
     {
         return [
             Box::make([
-                Preview::make('CustomNoTypeIndex', formatted: fn () => 'CustomNoTypeIndex'),
+                Preview::make('CustomNoTypeIndex', formatted: static fn () => 'CustomNoTypeIndex'),
             ]),
         ];
     }

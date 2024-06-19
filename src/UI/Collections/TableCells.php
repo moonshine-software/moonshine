@@ -45,7 +45,7 @@ final class TableCells extends Collection
         return $this->push(
             TableTd::make($content, $index)->when(
                 ! is_null($builder),
-                fn (TableTd $td) => $builder($td)
+                static fn (TableTd $td) => $builder($td)
             )
         );
     }

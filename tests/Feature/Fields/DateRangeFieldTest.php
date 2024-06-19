@@ -79,7 +79,7 @@ it('apply as base', function () {
 
 it('before apply', function () {
     $resource = addFieldsToTestResource(
-        $this->field->onBeforeApply(function ($item, $data) {
+        $this->field->onBeforeApply(static function ($item, $data) {
             $item->name = $data['start_date'] . ' - ' . $data['end_date'];
 
             return $item;
@@ -104,7 +104,7 @@ it('before apply', function () {
 
 it('after apply', function () {
     $resource = addFieldsToTestResource(
-        $this->field->onAfterApply(function ($item) {
+        $this->field->onAfterApply(static function ($item) {
             $item->start_date = '2020-01-01';
             $item->end_date = '2020-01-02';
 

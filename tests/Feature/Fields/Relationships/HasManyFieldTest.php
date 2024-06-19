@@ -15,7 +15,7 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 
-it('onlyLink preview', function () {
+it('onlyLink preview', static function () {
     createItem(countComments: 6);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -32,7 +32,7 @@ it('onlyLink preview', function () {
     ;
 });
 
-it('onlyLink preview empty', function () {
+it('onlyLink preview empty', static function () {
     createItem(countComments: 0);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -48,7 +48,7 @@ it('onlyLink preview empty', function () {
     ;
 });
 
-it('onlyLink value', function () {
+it('onlyLink value', static function () {
     $item = createItem(countComments: 16);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -65,7 +65,7 @@ it('onlyLink value', function () {
     ;
 });
 
-it('onlyLink value empty', function () {
+it('onlyLink value empty', static function () {
     $item = createItem(countComments: 0);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -81,14 +81,14 @@ it('onlyLink value empty', function () {
     ;
 });
 
-it('onlyLink preview condition', function () {
+it('onlyLink preview condition', static function () {
     $item = createItem(countComments: 6);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
-            ->countLinkMode(condition: function (int $count): bool {
+            ->countLinkMode(condition: static function (int $count): bool {
                 return $count > 10;
             })
         ,
@@ -103,14 +103,14 @@ it('onlyLink preview condition', function () {
     ;
 });
 
-it('onlyLink value condition', function () {
+it('onlyLink value condition', static function () {
     $item = createItem(countComments: 16);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Имя', 'name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
-            ->countLinkMode(condition: function (int $count, Field $field): bool {
+            ->countLinkMode(condition: static function (int $count, Field $field): bool {
                 return $field->toValue()->total() > 20;
             })
         ,

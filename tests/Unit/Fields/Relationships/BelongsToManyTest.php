@@ -52,7 +52,7 @@ describe('basic methods', function () {
         $this->field->default(['default']);
     })->expectException(BadMethodCallException::class);
 
-    it('applies', function () {
+    it('applies', static function () {
         $field = BelongsToMany::make('Categories', resource: new TestCategoryResource());
 
         expect()
@@ -116,7 +116,7 @@ describe('unique field methods', function () {
     it('has fields', function (): void {
         expect($this->field->getFields())
             ->hasFields($this->pivotFields)
-            ->each(function ($field, $key): void {
+            ->each(static function ($field, $key): void {
                 $key++;
                 $field->toBeInstanceOf(Text::class)
                     ->getNameAttribute()

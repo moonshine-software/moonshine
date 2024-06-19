@@ -33,7 +33,7 @@ abstract class MoonShineController extends BaseController
             ->toast($message, $messageType)
             ->when(
                 $redirect,
-                fn (MoonShineJsonResponse $response): MoonShineJsonResponse => $response->redirect($redirect)
+                static fn (MoonShineJsonResponse $response): MoonShineJsonResponse => $response->redirect($redirect)
             );
     }
 
@@ -84,7 +84,7 @@ abstract class MoonShineController extends BaseController
 
         if(! $class instanceof Model) {
             return $table->getRows()->first(
-                fn (TableRow $row): bool => $row->getKey() === request()->input('_key'),
+                static fn (TableRow $row): bool => $row->getKey() === request()->input('_key'),
             );
         }
 

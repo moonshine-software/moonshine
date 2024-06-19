@@ -19,7 +19,7 @@ uses()->group('fields');
 
 beforeEach(function () {
     $this->item = createItem();
-    $this->field = Switcher::make('Active')->updateOnPreview(url: fn () => '/');
+    $this->field = Switcher::make('Active')->updateOnPreview(url: static fn () => '/');
 });
 
 it('show field on pages', function () {
@@ -76,7 +76,7 @@ it('apply as base', function () {
 it('before apply', function () {
     $resource = addFieldsToTestResource(
         [Switcher::make('Active')
-            ->onBeforeApply(function ($item) {
+            ->onBeforeApply(static function ($item) {
                 $item->name = 'Switcher';
 
                 return $item;
@@ -101,7 +101,7 @@ it('before apply', function () {
 it('after apply', function () {
     $resource = addFieldsToTestResource(
         [Switcher::make('Active')
-            ->onAfterApply(function ($item, $data) {
+            ->onAfterApply(static function ($item, $data) {
                 $item->name = 'Switcher';
 
                 return $item;

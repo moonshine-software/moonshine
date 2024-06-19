@@ -267,7 +267,7 @@ class HasMany extends ModelRelationField implements HasFields
         $fields = $this->getPreparedFields();
 
         return $this->hasFields()
-            ? $fields->map(fn (Field $field): Field => (clone $field))
+            ? $fields->map(static fn (Field $field): Field => (clone $field))
             //If there are no fields, then the resource fields always return new objects
             : $fields;
     }
@@ -343,7 +343,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->async($asyncUrl)
             ->when(
                 $this->isSearchable() && ! empty($this->getResource()->search()),
-                fn (TableBuilder $table): TableBuilder => $table->searchable()
+                static fn (TableBuilder $table): TableBuilder => $table->searchable()
             )
             ->name($this->getRelationName())
             ->fields($this->getFieldsOnPreview())
@@ -351,13 +351,13 @@ class HasMany extends ModelRelationField implements HasFields
             ->withNotFound()
             ->when(
                 ! is_null($resource->trAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                static fn (TableBuilder $table): TableBuilder => $table->trAttributes(
                     $resource->trAttributes()
                 )
             )
             ->when(
                 ! is_null($resource->tdAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                static fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
                     $resource->tdAttributes()
                 )
             )

@@ -18,7 +18,7 @@ final class FieldsGroup extends AbstractWithComponents
     public function previewMode(): self
     {
         return $this->mapFields(
-            fn (Field $field): Field => $field->forcePreview()
+            static fn (Field $field): Field => $field->forcePreview()
         );
     }
 
@@ -50,7 +50,7 @@ final class FieldsGroup extends AbstractWithComponents
     {
         $this->getComponents()
             ->onlyFields()
-            ->map(fn (Field $field): Field => $callback($field));
+            ->map(static fn (Field $field): Field => $callback($field));
 
         return $this;
     }

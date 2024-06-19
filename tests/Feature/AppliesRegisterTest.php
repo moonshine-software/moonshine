@@ -22,7 +22,7 @@ it('add new field apply', function (): void {
 
     $this->post('/', ['column' => '!']);
 
-    $data = $field->apply(fn (array $data) => $data, [
+    $data = $field->apply(static fn (array $data) => $data, [
         'column' => 'hello',
     ]);
 

@@ -126,7 +126,7 @@ function saveImageable(ModelResource $resource, Model $item): void
 
     $item->refresh();
 
-    $resource->getIndexFields()->each(function ($field) {
+    $resource->getIndexFields()->each(static function ($field) {
         $field->reset();
     });
 

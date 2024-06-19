@@ -8,16 +8,16 @@ use MoonShine\Laravel\MoonShineAuth;
 
 uses()->group('core');
 
-beforeEach(function (): void {
+beforeEach(static function (): void {
     //
 });
 
-it('moonshine guard', function (): void {
+it('moonshine guard', static function (): void {
     expect(MoonShineAuth::getGuard())
         ->toBeInstanceOf(Guard::class);
 });
 
-it('moonshine model', function (): void {
+it('moonshine model', static function (): void {
     expect(MoonShineAuth::getModel())
         ->toBeInstanceOf(MoonshineUser::class);
 });

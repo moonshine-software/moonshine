@@ -25,7 +25,7 @@ final class MoonShineNotification
                 MoonShineAuth::getModel()?->query()
                     ->when(
                         $ids,
-                        fn ($query): Builder => $query->whereIn(
+                        static fn ($query): Builder => $query->whereIn(
                             MoonShineAuth::getModel()?->getKeyName() ?? 'id',
                             $ids
                         )

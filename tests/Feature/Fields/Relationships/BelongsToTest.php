@@ -114,11 +114,11 @@ it('belongs to valuesQuery', function () {
 
     $resource = addFieldsToTestResource(
         BelongsTo::make('User', resource: new MoonShineUserResource())
-            ->valuesQuery(fn (Builder $query) => $query->where('id', $id))
+            ->valuesQuery(static fn (Builder $query) => $query->where('id', $id))
     );
 
     $user = $this->users
-            ->filter(fn ($item) => $item->id === $id)->first()
+            ->filter(static fn ($item) => $item->id === $id)->first()
     ;
 
     asAdmin()->get(
@@ -149,7 +149,7 @@ it('apply as base', function () {
 it('before apply', function () {
     $resource = addFieldsToTestResource(
         BelongsTo::make('User', resource: new MoonShineUserResource())
-            ->onBeforeApply(function ($item, $data) {
+            ->onBeforeApply(static function ($item, $data) {
                 $item->name = $item->name . '_' . $data;
 
                 return $item;
@@ -176,7 +176,7 @@ it('before apply', function () {
 it('after apply', function () {
     $resource = addFieldsToTestResource(
         BelongsTo::make('User', resource: new MoonShineUserResource())
-            ->onAfterApply(function ($item) {
+            ->onAfterApply(static function ($item) {
                 $item->name = $item->name . '_' . $item->user->id;
 
                 return $item;
@@ -278,7 +278,7 @@ function saveMoonShineUser(ModelResource $resource, Model $item): void
 
     $item->refresh();
 
-    $resource->getIndexFields()->each(function ($field) {
+    $resource->getIndexFields()->each(static function ($field) {
         $field->reset();
     });
 

@@ -133,10 +133,10 @@ class AsyncController extends MoonShineController
         }
 
         $values = $fields
-            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
+            ->mapWithKeys(static fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
 
         $fields = $fields->mapWithKeys(
-            fn (Field $field): array => [$field->getColumn() => (string) FieldsGroup::make([$field])->render()]
+            static fn (Field $field): array => [$field->getColumn() => (string) FieldsGroup::make([$field])->render()]
         );
 
         return $this->json(data: [

@@ -33,7 +33,7 @@ it('preview with not auto update', function (): void {
 it('preview with auto update', function (): void {
     expect(
         (string) $this->field
-            ->updateOnPreview(url: fn () => '/')
+            ->updateOnPreview(url: static fn () => '/')
             ->withoutWrapper()
             ->render()
     )
@@ -66,7 +66,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('default value', function () {
+    it('default value', static function () {
         $field = Switcher::make('Switcher')
             ->onValue(1)
             ->offValue(0)

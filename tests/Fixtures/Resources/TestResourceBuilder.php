@@ -39,18 +39,18 @@ class TestResourceBuilder
                 Text::make('Name'),
                 Email::make('Email'),
                 Password::make('Password'),
-                Preview::make('Badge')->badge(fn () => 'red'),
+                Preview::make('Badge')->badge(static fn () => 'red'),
             ])
             ->setTestQueryTags([
                 QueryTag::make(
                     'Item #1 Query Tag',
-                    fn ($query) => $query->where('id', 1) // Query builder
+                    static fn ($query) => $query->where('id', 1) // Query builder
                 ),
             ])
             ->setTestButtons([
                 ActionButton::make(
                     'Test button',
-                    url: fn (): string => '/'
+                    url: static fn (): string => '/'
                 )->showInLine(),
             ])
             ->setTestMetrics([
@@ -58,13 +58,13 @@ class TestResourceBuilder
                 LineChartMetric::make('TestLineChartMetric')->line(['Line' => [1 => 100, 2 => 200, 3 => 300]]),
                 DonutChartMetric::make('TestDonutChartMetric')->values(['CutCode' => 10000, 'Apple' => 9999]),
             ])
-            ->setTestTdAttributes(fn (
+            ->setTestTdAttributes(static fn (
                 mixed $data,
                 int $row,
                 int $cell,
             ) => [
                 'data-test-td-attr' => 'success',
-            ])->setTestTrAttributes(function (
+            ])->setTestTrAttributes(static function (
                 mixed $data,
                 int $row,
             ): array {

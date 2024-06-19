@@ -23,7 +23,7 @@ final class TableRows extends Collection
                 $key
             )->when(
                 ! is_null($builder),
-                fn (TableRow $tr) => $builder($tr)
+                static fn (TableRow $tr) => $builder($tr)
             )
         );
     }

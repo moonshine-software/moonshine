@@ -272,15 +272,15 @@ final class FormBuilder extends RowComponent
 
             $values = is_null($before) ? $values : $before($values);
 
-            $fields->each(fn (Field $field): mixed => $field->beforeApply($values));
+            $fields->each(static fn (Field $field): mixed => $field->beforeApply($values));
 
             $fields
                 ->withoutOutside()
-                ->each(fn (Field $field): mixed => $field->apply($default($field), $values));
+                ->each(static fn (Field $field): mixed => $field->apply($default($field), $values));
 
             $apply($values, $fields);
 
-            $fields->each(fn (Field $field): mixed => $field->afterApply($values));
+            $fields->each(static fn (Field $field): mixed => $field->afterApply($values));
 
             value($after, $values);
         } catch (Throwable $e) {
@@ -303,7 +303,7 @@ final class FormBuilder extends RowComponent
         $fields = $this->getPreparedFields();
 
         if ($this->hasAdditionalFields()) {
-            $this->getAdditionalFields()->each(fn ($field) => $fields->push($field));
+            $this->getAdditionalFields()->each(static fn ($field) => $fields->push($field));
         }
 
         $onlyFields = $fields->onlyFields();
@@ -315,7 +315,7 @@ final class FormBuilder extends RowComponent
         );
 
         $reactiveFields = $onlyFields->reactiveFields()
-            ->mapWithKeys(fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
+            ->mapWithKeys(static fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
 
         $whenFields = [];
         foreach ($onlyFields->whenFieldsConditions() as $whenConditions) {

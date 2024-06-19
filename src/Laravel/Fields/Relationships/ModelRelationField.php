@@ -56,8 +56,8 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                 ->camel()
                 ->when(
                     $this->isToOne(),
-                    fn (Stringable $str): Stringable => $str->singular(),
-                    fn (Stringable $str): Stringable => $str->plural(),
+                    static fn (Stringable $str): Stringable => $str->singular(),
+                    static fn (Stringable $str): Stringable => $str->plural(),
                 )->value();
         }
 

@@ -20,7 +20,7 @@ class CustomPageIndex extends Page
     {
         return [
             Box::make([
-                Preview::make('CustomPageIndex', formatted: fn () => 'CustomPageIndex'),
+                Preview::make('CustomPageIndex', formatted: static fn () => 'CustomPageIndex'),
                 ActionButton::make('To Form', toPage(FormPage::class, $this->getResource())),
                 ActionButton::make('To Detail', toPage(DetailPage::class, $this->getResource())),
             ]),

@@ -23,7 +23,7 @@ class Enum extends Select implements DefaultCanBeEnum
         $values = collect($class::cases());
 
         $this->options(
-            $values->mapWithKeys(fn ($value): array => [
+            $values->mapWithKeys(static fn ($value): array => [
                 $value->value => method_exists($value, 'toString')
                     ? $value->toString()
                     : $value->value,

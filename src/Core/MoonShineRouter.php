@@ -47,7 +47,7 @@ abstract class MoonShineRouter implements Stringable
             ->prepend(self::ROUTE_PREFIX . '.')
             ->when(
                 $name,
-                fn (Stringable $str) => $str
+                static fn (Stringable $str) => $str
                     ->trim('.')
                     ->append(".$name")
             )

@@ -170,7 +170,7 @@ class HasOne extends ModelRelationField implements HasFields
 
         return FormBuilder::make($action)
             ->reactiveUrl(
-                fn (): string => moonshineRouter()
+                static fn (): string => moonshineRouter()
                     ->getEndpoints()
                     ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
@@ -179,7 +179,7 @@ class HasOne extends ModelRelationField implements HasFields
             ->fields(
                 $fields->when(
                     ! is_null($item),
-                    fn (Fields $fields): Fields => $fields->push(
+                    static fn (Fields $fields): Fields => $fields->push(
                         Hidden::make('_method')->setValue('PUT'),
                     )
                 )->push(
@@ -214,8 +214,8 @@ class HasOne extends ModelRelationField implements HasFields
                     )->customAttributes(['class' => 'btn-lg']),
                 ]
             )
-            ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
-                fn (mixed $field): bool => $field instanceof ModelRelationField
+            ->onBeforeFieldsRender(static fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
+                static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()
             ))
@@ -242,7 +242,7 @@ class HasOne extends ModelRelationField implements HasFields
         $this->getResource()
             ->getFormFields()
             ->onlyFields()
-            ->each(fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
+            ->each(static fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
 
         return $data;
     }

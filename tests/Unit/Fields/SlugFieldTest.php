@@ -38,10 +38,10 @@ it('view', function (): void {
 it('apply', function (): void {
     $this->item->title = 'Hello world';
 
-    expect($this->field->apply(fn () => null, $this->item))
+    expect($this->field->apply(static fn () => null, $this->item))
         ->slug
         ->toBe('hello-world')
-        ->and($this->field->separator('_')->apply(fn () => null, $this->item))
+        ->and($this->field->separator('_')->apply(static fn () => null, $this->item))
             ->slug
             ->toBe('hello_world')
     ;

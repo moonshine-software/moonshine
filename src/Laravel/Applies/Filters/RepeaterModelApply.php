@@ -30,14 +30,14 @@ class RepeaterModelApply implements ApplyContract
                             )
                             ->when(
                                 $field->isKeyValue(),
-                                fn (Builder $qq) => $qq->where(
+                                static fn (Builder $qq) => $qq->where(
                                     $field->getColumn() . '->' . ($data['key'] ?? '*'),
                                     $data['value'] ?? ''
                                 )
                             )
                             ->when(
                                 $field->isOnlyValue(),
-                                fn (Builder $qq) => $qq->whereJsonContains($field->getColumn(), $data['value'] ?? '')
+                                static fn (Builder $qq) => $qq->whereJsonContains($field->getColumn(), $data['value'] ?? '')
                             );
                     }
                 });

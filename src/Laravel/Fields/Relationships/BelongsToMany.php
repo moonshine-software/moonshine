@@ -158,7 +158,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         return $this->buttons([
             ActionButton::make('')
-                ->onClick(fn (): string => 'checkAll', 'prevent')
+                ->onClick(static fn (): string => 'checkAll', 'prevent')
                 ->primary()
                 ->icon('check'),
         ]);
@@ -206,7 +206,7 @@ class BelongsToMany extends ModelRelationField implements
             return false;
         }
 
-        return $data->every(fn ($item): bool => $item instanceof Model);
+        return $data->every(static fn ($item): bool => $item instanceof Model);
     }
 
     public function columnLabel(string $label): static
@@ -320,7 +320,7 @@ class BelongsToMany extends ModelRelationField implements
             }
 
             $checked = $this->toValue()
-                ->first(fn ($item): bool => $item->getKey() === $value->getKey());
+                ->first(static fn ($item): bool => $item->getKey() === $value->getKey());
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations())
@@ -340,7 +340,7 @@ class BelongsToMany extends ModelRelationField implements
             ->fields($fields)
             ->when(
                 $removeAfterClone,
-                fn (TableBuilder $table): TableBuilder => $table->customAttributes([
+                static fn (TableBuilder $table): TableBuilder => $table->customAttributes([
                     'data-remove-after-clone' => 1,
                 ])
             )
@@ -374,7 +374,7 @@ class BelongsToMany extends ModelRelationField implements
 
         if ($this->isRawMode()) {
             return $values
-                ->map(fn (Model $item) => $item->getKey())
+                ->map(static fn (Model $item) => $item->getKey())
                 ->toJson();
         }
 
@@ -461,7 +461,7 @@ class BelongsToMany extends ModelRelationField implements
                 $values = request()->input($field->getRequestKeyPrefix());
 
                 $apply = $field->apply(
-                    fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? null),
+                    static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? null),
                     $values
                 );
 
@@ -513,7 +513,7 @@ class BelongsToMany extends ModelRelationField implements
                 $this->getFields()
                     ->onlyFields()
                     ->each(
-                        fn (Field $field): mixed => $field
+                        static fn (Field $field): mixed => $field
                             ->fillData($value)
                             ->afterDestroy($value)
                     );

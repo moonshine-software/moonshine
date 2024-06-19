@@ -55,7 +55,7 @@ trait WithFields
 
         if(moonshine()->runningInConsole()) {
             $fields = collect($fields)
-                ->map(fn (object $field): object => clone $field)
+                ->map(static fn (object $field): object => clone $field)
                 ->toArray();
         }
 

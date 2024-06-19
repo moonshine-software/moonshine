@@ -27,7 +27,7 @@ final class Files extends MoonShineComponent
         return [
             'files' => collect($this->files)
                 ->mapWithKeys(
-                    fn (string|FileItem|array $value, int $index): array => [
+                    static fn (string|FileItem|array $value, int $index): array => [
                         $index => $value instanceof FileItem
                             ? $value->toArray()
                             : (new FileItem(

@@ -44,7 +44,7 @@ trait WithComponents
     {
         if(moonshine()->runningInConsole()) {
             $components = collect($components)
-                ->map(fn (object $component): object => clone $component)
+                ->map(static fn (object $component): object => clone $component)
                 ->toArray();
         }
 

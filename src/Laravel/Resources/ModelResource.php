@@ -253,7 +253,7 @@ abstract class ModelResource extends Resource
 
         $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
 
-        $fields->each(fn (Field $field): mixed => $field->afterDestroy($item));
+        $fields->each(static fn (Field $field): mixed => $field->afterDestroy($item));
 
         if ($this->isDeleteRelationships()) {
             $this->getOutsideFields()->each(static function (ModelRelationField $field) use ($item): void {
@@ -297,7 +297,7 @@ abstract class ModelResource extends Resource
         $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
 
         try {
-            $fields->each(fn (Field $field): mixed => $field->beforeApply($item));
+            $fields->each(static fn (Field $field): mixed => $field->beforeApply($item));
 
             if (! $item->exists) {
                 $item = $this->beforeCreating($item);
@@ -326,7 +326,7 @@ abstract class ModelResource extends Resource
     {
         $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-        $fields->each(fn (Field $field): mixed => $field->afterApply($item));
+        $fields->each(static fn (Field $field): mixed => $field->afterApply($item));
 
         if ($item->isDirty()) {
             $item->save();

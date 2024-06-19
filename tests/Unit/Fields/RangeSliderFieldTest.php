@@ -63,7 +63,7 @@ it('apply', function (): void {
 
     expect(
         $this->field->apply(
-            fn () => null,
+            static fn () => null,
             new class () extends Model {
                 protected $fillable = [
                     'from',

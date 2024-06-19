@@ -66,7 +66,7 @@ class Tabs extends AbstractWithComponents
      */
     public function getTabsLabels(): Collection
     {
-        return $this->getTabs()->mapWithKeys(fn (Tab $tab): array => [
+        return $this->getTabs()->mapWithKeys(static fn (Tab $tab): array => [
             $tab->getId() => $tab->getIcon(6, 'secondary')
                 . PHP_EOL . $tab->getLabel(),
         ]);
@@ -77,7 +77,7 @@ class Tabs extends AbstractWithComponents
      */
     public function getContents(): Collection
     {
-        return $this->getTabs()->mapWithKeys(fn (Tab $tab): array => [
+        return $this->getTabs()->mapWithKeys(static fn (Tab $tab): array => [
             $tab->getId() => Components::make(
                 $tab->getComponents()
             ),
@@ -94,7 +94,7 @@ class Tabs extends AbstractWithComponents
             $this->getComponents(),
             static function (MoonShineRenderElements $tabs): void {
                 throw_if(
-                    $tabs->every(fn ($tab): bool => ! $tab instanceof Tab),
+                    $tabs->every(static fn ($tab): bool => ! $tab instanceof Tab),
                     MoonShineComponentException::onlyTabAllowed()
                 );
             }

@@ -38,7 +38,7 @@ trait InteractsWithRequest
     {
         $url = $this->getUrl();
 
-        return collect($patterns)->contains(fn ($pattern) => Str::is($pattern, $url));
+        return collect($patterns)->contains(static fn ($pattern) => Str::is($pattern, $url));
     }
 
     public function getUrlWithQuery(array $query): string

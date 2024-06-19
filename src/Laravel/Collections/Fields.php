@@ -27,7 +27,7 @@ final class Fields extends ParentFields
     public function withoutOutside(): self
     {
         return $this->exceptElements(
-            fn ($element): bool => $element instanceof ModelRelationField && $element->isOutsideComponent()
+            static fn ($element): bool => $element instanceof ModelRelationField && $element->isOutsideComponent()
         );
     }
 
@@ -47,7 +47,7 @@ final class Fields extends ParentFields
     public function withoutRelationFields(): self
     {
         return $this->exceptElements(
-            fn ($element): bool => $element instanceof ModelRelationField
+            static fn ($element): bool => $element instanceof ModelRelationField
         );
     }
 
@@ -66,7 +66,7 @@ final class Fields extends ParentFields
     {
         return $this->when(
             ! $withOutside,
-            fn (self $fields): self => $fields->exceptElements(
+            static fn (self $fields): self => $fields->exceptElements(
                 static fn ($element): bool => ($element instanceof ModelRelationField && $element->isOutsideComponent())
             )
         );

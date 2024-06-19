@@ -18,7 +18,7 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
     {
         $data = collect($this->data)
             ->mapWithKeys(
-                fn (mixed $value, string $key): array => [(string) str($key)->camel() => $value]
+                static fn (mixed $value, string $key): array => [(string) str($key)->camel() => $value]
             )
             ->toArray();
 

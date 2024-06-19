@@ -70,7 +70,7 @@ describe('form elements', function () {
     it('prepare attributes', function () {
         expect($this->collection->prepareAttributes())
             ->toHaveCount(4)
-            ->each(fn ($expect) => $expect->getAttribute('x-on:change')->toContain('onChangeField($event)'))
+            ->each(static fn ($expect) => $expect->getAttribute('x-on:change')->toContain('onChangeField($event)'))
         ;
     });
 
@@ -97,7 +97,7 @@ describe('fields', function () {
         ];
 
         expect($this->collection->withoutOutside()->fillCloned($values))
-            ->each(fn ($expect) => $expect->toValue()->toBe('value'))
+            ->each(static fn ($expect) => $expect->toValue()->toBe('value'))
         ;
     });
 
@@ -111,7 +111,7 @@ describe('fields', function () {
         $this->collection->withoutOutside()->fill($values);
 
         expect($this->collection->onlyFields())
-            ->each(fn ($expect) => $expect->toValue()->toBe('value'))
+            ->each(static fn ($expect) => $expect->toValue()->toBe('value'))
         ;
     });
 
@@ -119,7 +119,7 @@ describe('fields', function () {
         $this->collection->wrapNames('filters');
 
         expect($this->collection->onlyFields())
-            ->each(fn ($expect) => $expect->getNameAttribute()->toContain('filters'))
+            ->each(static fn ($expect) => $expect->getNameAttribute()->toContain('filters'))
         ;
     });
 
@@ -134,7 +134,7 @@ describe('fields', function () {
         $this->collection->reset();
 
         expect($this->collection->onlyFields())
-            ->each(fn ($expect) => $expect->toValue()->toBe(null))
+            ->each(static fn ($expect) => $expect->toValue()->toBe(null))
         ;
     });
 

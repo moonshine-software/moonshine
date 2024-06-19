@@ -2,6 +2,6 @@
 
 uses()->group('home-controller');
 
-it('home page', function () {
+it('home page', static function () {
     asAdmin()->get('/admin')->assertOk();
 });

@@ -115,8 +115,8 @@ describe('without special fields', function () {
         TestResourceBuilder::new(Item::class)
             ->setTestFormFields([
                 When::make(
-                    fn () => is_null($item?->getKey()),
-                    fn () => [
+                    static fn () => is_null($item?->getKey()),
+                    static fn () => [
                         DateRange::make('Range')->fromTo('start_date', 'end_date'),
                     ]
                 ),

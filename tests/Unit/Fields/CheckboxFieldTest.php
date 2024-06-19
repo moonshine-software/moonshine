@@ -24,7 +24,7 @@ describe('basic methods', function () {
             ->toBe('moonshine::fields.checkbox');
     });
 
-    it('preview', function (): void {
+    it('preview', static function (): void {
         $field = Checkbox::make('Active');
 
         expect((string) $field->fill(1)->preview())
@@ -36,7 +36,7 @@ describe('basic methods', function () {
             ->toBe((string) Boolean::make(false)->render());
     });
 
-    it('correct is checked value', function (): void {
+    it('correct is checked value', static function (): void {
         $field = Checkbox::make('Active')
             ->fill(true);
 
@@ -76,7 +76,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('formatted value', function () {
+    it('formatted value', static function () {
         $field = Checkbox::make('Range', formatted: static fn () => 'yes')
             ->onValue('yes')
             ->fill(false);
@@ -85,7 +85,7 @@ describe('basic methods', function () {
             ->toBe('yes');
     });
 
-    it('default value', function () {
+    it('default value', static function () {
         $field = Checkbox::make('Active')
             ->onValue('yes');
 

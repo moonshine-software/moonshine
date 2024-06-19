@@ -3,7 +3,7 @@
 use MoonShine\UI\Fields\Field;
 use Pest\Expectation;
 
-expect()->extend('storeAvatarFile', function ($avatar, $field, $item): Expectation {
+expect()->extend('storeAvatarFile', static function ($avatar, $field, $item): Expectation {
 
     fakeRequest(method: 'POST', parameters: [
         'avatar' => $avatar,
@@ -15,13 +15,13 @@ expect()->extend('storeAvatarFile', function ($avatar, $field, $item): Expectati
         ->toBe('files/' . $avatar->hashName());
 });
 
-expect()->extend('applies', function (Field $field): Expectation {
-    return expect($field->onApply(fn ($data) => ['onApply'])->apply(fn ($data) => $data, []))
+expect()->extend('applies', static function (Field $field): Expectation {
+    return expect($field->onApply(static fn ($data) => ['onApply'])->apply(static fn ($data) => $data, []))
         ->toBe(['onApply'])
-        ->and($field->onBeforeApply(fn ($data) => ['onBeforeApply'])->beforeApply([]))
+        ->and($field->onBeforeApply(static fn ($data) => ['onBeforeApply'])->beforeApply([]))
         ->toBe(['onBeforeApply'])
-        ->and($field->onAfterApply(fn ($data) => ['onAfterApply'])->afterApply([]))
+        ->and($field->onAfterApply(static fn ($data) => ['onAfterApply'])->afterApply([]))
         ->toBe(['onAfterApply'])
-        ->and($field->onAfterDestroy(fn ($data) => ['onAfterDestroy'])->afterDestroy([]))
+        ->and($field->onAfterDestroy(static fn ($data) => ['onAfterDestroy'])->afterDestroy([]))
         ->toBe(['onAfterDestroy']);
 });

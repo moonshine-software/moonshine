@@ -67,7 +67,7 @@ it('detail page', function () {
     ;
 });
 
-it('no page type resource', function () {
+it('no page type resource', static function () {
     $resource = TestResourceBuilder::new(Item::class)
         ->setTestPages([
             CustomNoTypeIndex::make('CustomNoTypeIndex', 'page-1'),

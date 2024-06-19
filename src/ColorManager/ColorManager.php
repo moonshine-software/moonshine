@@ -182,7 +182,7 @@ final class ColorManager implements Htmlable
                 ->kebab()
                 ->when(
                     $shade,
-                    fn (Stringable $str) => $str->append(".$shade")
+                    static fn (Stringable $str) => $str->append(".$shade")
                 )
                 ->value(),
             value: $value,
@@ -195,7 +195,7 @@ final class ColorManager implements Htmlable
     public function toHtml(): string
     {
         $values = static fn (array $data) => collect($data)
-            ->implode(fn (string $value, string $name): string => "--$name:$value;", PHP_EOL);
+            ->implode(static fn (string $value, string $name): string => "--$name:$value;", PHP_EOL);
 
         return <<<HTML
         <style>

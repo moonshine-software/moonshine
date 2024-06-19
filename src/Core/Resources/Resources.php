@@ -19,7 +19,7 @@ final class Resources extends Collection
         ResourceContract $default = null
     ): ?ResourceContract {
         return $this->first(
-            fn (ResourceContract $resource): bool => $resource->getUriKey() === $uri,
+            static fn (ResourceContract $resource): bool => $resource->getUriKey() === $uri,
             $default
         );
     }
@@ -29,7 +29,7 @@ final class Resources extends Collection
         ResourceContract $default = null
     ): ?ResourceContract {
         return $this->first(
-            fn (ResourceContract $resource): bool => $resource::class === $class,
+            static fn (ResourceContract $resource): bool => $resource::class === $class,
             $default
         );
     }

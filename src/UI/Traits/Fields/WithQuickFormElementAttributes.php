@@ -75,11 +75,11 @@ trait WithQuickFormElementAttributes
         return (string) str($this->getNameUnDot($this->getColumn()))
             ->when(
                 ! is_null($wrap),
-                fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")
+                static fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")
             )
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
-                fn (Stringable $str): Stringable => $str->append(
+                static fn (Stringable $str): Stringable => $str->append(
                     "[" . ($index ?? '') . "]"
                 )
             );

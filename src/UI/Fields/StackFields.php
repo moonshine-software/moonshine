@@ -45,7 +45,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     ): static {
         $this->getFields()
             ->onlyFields()
-            ->each(fn (Field $field): Field => $field->fillData(is_null($casted) ? $raw : $casted, $index));
+            ->each(static fn (Field $field): Field => $field->fillData(is_null($casted) ? $raw : $casted, $index));
 
         return $this;
     }

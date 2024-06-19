@@ -78,7 +78,7 @@ it('apply as base', function () {
 it('before apply', function () {
     $resource = addFieldsToTestResource(
         Checkbox::make('Active')
-            ->onBeforeApply(function ($item, $data) {
+            ->onBeforeApply(static function ($item, $data) {
                 $item->name = 'Checkbox';
 
                 return $item;
@@ -103,7 +103,7 @@ it('before apply', function () {
 it('after apply', function () {
     $resource = addFieldsToTestResource(
         Checkbox::make('Active')
-            ->onAfterApply(function ($item, $data) {
+            ->onAfterApply(static function ($item, $data) {
                 $item->name = 'Checkbox';
 
                 return $item;

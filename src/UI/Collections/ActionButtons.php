@@ -18,7 +18,7 @@ final class ActionButtons extends Collection
     public function fill(?CastedData $item): self
     {
         return $this->map(
-            fn (ActionButtonContract $action): ActionButtonContract => (clone $action)->setData($item)
+            static fn (ActionButtonContract $action): ActionButtonContract => (clone $action)->setData($item)
         );
     }
 
@@ -57,7 +57,7 @@ final class ActionButtons extends Collection
     public function onlyVisible(mixed $item = null): self
     {
         return $this->filter(
-            fn (ActionButtonContract $action): bool => $action->isSee($item ?? $action->getData()?->getOriginal())
+            static fn (ActionButtonContract $action): bool => $action->isSee($item ?? $action->getData()?->getOriginal())
         );
     }
 

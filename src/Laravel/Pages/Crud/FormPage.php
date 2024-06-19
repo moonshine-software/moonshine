@@ -218,13 +218,13 @@ class FormPage extends Page
                 $fields
                     ->when(
                         ! is_null($item),
-                        fn (Fields $fields): Fields => $fields->push(
+                        static fn (Fields $fields): Fields => $fields->push(
                             Hidden::make('_method')->setValue('PUT')
                         )
                     )
                     ->when(
                         ! $item?->exists && ! $resource->isCreateInModal(),
-                        fn (Fields $fields): Fields => $fields->push(
+                        static fn (Fields $fields): Fields => $fields->push(
                             Hidden::make('_force_redirect')->setValue(true)
                         )
                     )
@@ -232,7 +232,7 @@ class FormPage extends Page
             )
             ->when(
                 $isAsync,
-                fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
+                static fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
                     ->async(events: array_filter([
                         $resource->getListEventName(
                             request()->input('_component_name', 'default')
@@ -244,7 +244,7 @@ class FormPage extends Page
             )
             ->when(
                 $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),
-                fn (FormBuilder $form): FormBuilder => $form->precognitive()
+                static fn (FormBuilder $form): FormBuilder => $form->precognitive()
             )
             ->name($resource->getUriKey())
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])

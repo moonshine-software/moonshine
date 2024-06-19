@@ -136,7 +136,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(MoonShineEndpoints::class, LaravelEndpoints::class);
 
         $this->app->bind(FieldsCollection::class, Fields::class);
-        $this->app->bind(StorageContract::class, fn (Application $app, array $parameters): LaravelStorage => new LaravelStorage(
+        $this->app->bind(StorageContract::class, static fn (Application $app, array $parameters): LaravelStorage => new LaravelStorage(
             $parameters['disk'] ?? $parameters[0] ?? 'public',
             $app->get('filesystem')
         ));
@@ -176,9 +176,9 @@ class MoonShineServiceProvider extends ServiceProvider
 
         MoonShine::requestResolver(static fn (): Request => new Request(
             request: app(ServerRequestInterface::class),
-            session: fn (string $key, mixed $default) => session($key, $default),
-            file: fn (string $key) => request()->file($key, request()->input($key, false)),
-            old: fn (string $key, mixed $default) => session()->getOldInput($key, $default)
+            session: static fn (string $key, mixed $default) => session($key, $default),
+            file: static fn (string $key) => request()->file($key, request()->input($key, false)),
+            old: static fn (string $key, mixed $default) => session()->getOldInput($key, $default)
         ));
 
         return $this;

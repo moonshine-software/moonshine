@@ -34,7 +34,7 @@ final class Paginator implements PaginatorContract
 
     public function getLinks(): PaginatorLinksContract
     {
-        return PaginatorLinks::make($this->links)->reject(fn (array $link): bool => $link['url'] === '' || str($link['label'])->contains(['prev', 'next'], true));
+        return PaginatorLinks::make($this->links)->reject(static fn (array $link): bool => $link['url'] === '' || str($link['label'])->contains(['prev', 'next'], true));
     }
 
     public function getData(): Collection

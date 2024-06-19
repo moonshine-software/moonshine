@@ -74,7 +74,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('formatted value', function () {
+    it('formatted value', static function () {
         $field = DateRange::make('Range', formatted: static fn () => ['changed'])
             ->fromTo('start', 'end')
             ->fill([]);
@@ -83,7 +83,7 @@ describe('basic methods', function () {
             ->toBe(['changed']);
     });
 
-    it('default value', function () {
+    it('default value', static function () {
         $from = now();
         $to = now()->addMonth();
 
@@ -107,7 +107,7 @@ describe('basic methods', function () {
             ->toBe(['start' => $fromFilled, 'end' => $toFilled]);
     });
 
-    it('applies', function () {
+    it('applies', static function () {
         $field = DateRange::make('Range')
             ->fromTo('start', 'end')
         ;

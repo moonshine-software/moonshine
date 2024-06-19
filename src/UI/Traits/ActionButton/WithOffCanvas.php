@@ -57,13 +57,13 @@ trait WithOffCanvas
     public function toggleOffCanvas(string $name = 'default'): static
     {
         return $this->onClick(
-            fn (): string => "\$dispatch('" . AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, $name) . "')",
+            static fn (): string => "\$dispatch('" . AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, $name) . "')",
             'prevent'
         );
     }
 
     public function openOffCanvas(): static
     {
-        return $this->onClick(fn (): string => 'toggleCanvas', 'prevent');
+        return $this->onClick(static fn (): string => 'toggleCanvas', 'prevent');
     }
 }

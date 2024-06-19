@@ -125,7 +125,7 @@ class RelationRepeater extends ModelRelationField implements
         if ($this->isRemovable()) {
             $buttons[] = ActionButton::make('', '#')
                 ->icon('trash')
-                ->onClick(fn ($action): string => 'remove', 'prevent')
+                ->onClick(static fn ($action): string => 'remove', 'prevent')
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
                 ->showInLine();
         }
@@ -202,7 +202,7 @@ class RelationRepeater extends ModelRelationField implements
             ->cast($this->getResource()?->getModelCast())
             ->when(
                 $this->isVertical(),
-                fn (TableBuilder $table): TableBuilder => $table->vertical()
+                static fn (TableBuilder $table): TableBuilder => $table->vertical()
             );
     }
 
@@ -260,7 +260,7 @@ class RelationRepeater extends ModelRelationField implements
     {
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
-            callback: fn (Field $field, mixed $values): mixed => $field->apply(
+            callback: static fn (Field $field, mixed $values): mixed => $field->apply(
                 static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                 $values
             ),
@@ -275,7 +275,7 @@ class RelationRepeater extends ModelRelationField implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
+            callback: static fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
             response:  static fn (array $values, mixed $data): mixed => $data
         );
     }
@@ -287,7 +287,7 @@ class RelationRepeater extends ModelRelationField implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: fn (Field $field, mixed $values): mixed => $field->apply(
+            callback: static fn (Field $field, mixed $values): mixed => $field->apply(
                 static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                 $values
             ),
@@ -314,7 +314,7 @@ class RelationRepeater extends ModelRelationField implements
 
         $model->{$relationName}()->when(
             ! empty($ids),
-            fn (Builder $q) => $q->whereNotIn(
+            static fn (Builder $q) => $q->whereNotIn(
                 $relatedQualifiedKeyName,
                 $ids
             )->delete()
@@ -322,10 +322,10 @@ class RelationRepeater extends ModelRelationField implements
 
         $model->{$relationName}()->when(
             empty($ids) && $this->deleteWhenEmpty,
-            fn (Builder $q) => $q->delete()
+            static fn (Builder $q) => $q->delete()
         );
 
-        $items->each(fn ($item) => $model->{$relationName}()->updateOrCreate(
+        $items->each(static fn ($item) => $model->{$relationName}()->updateOrCreate(
             [$relatedQualifiedKeyName => $item[$relatedKeyName] ?? null],
             $item
         ));
@@ -349,7 +349,7 @@ class RelationRepeater extends ModelRelationField implements
                 $this->getFields()
                     ->onlyFields()
                     ->each(
-                        fn (Field $field): mixed => $field
+                        static fn (Field $field): mixed => $field
                             ->fillData($value)
                             ->afterDestroy($value)
                     );

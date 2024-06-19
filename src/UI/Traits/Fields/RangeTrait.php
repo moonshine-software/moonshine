@@ -39,7 +39,7 @@ trait RangeTrait
             ->except(['data-name'])
             ->when(
                 $dataName,
-                fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
+                static fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
                     'data-name' => str($dataName)->replaceLast('[]', "[$name]"),
                 ])
             );

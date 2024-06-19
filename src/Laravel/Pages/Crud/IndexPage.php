@@ -200,8 +200,8 @@ class IndexPage extends Page
             ])
             ->when(
                 ! is_null($this->getResource()->getClickAction()),
-                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
-                    fn (): array => [
+                static fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                    static fn (): array => [
                         '@click.stop' => 'rowClickAction',
                     ]
                 )

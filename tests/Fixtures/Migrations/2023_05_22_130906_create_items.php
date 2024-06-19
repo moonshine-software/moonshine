@@ -51,7 +51,7 @@ return new class () extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('category_item', function (Blueprint $table) {
+        Schema::create('category_item', static function (Blueprint $table) {
             $table->id();
 
             $table->foreignIdFor(Category::class)

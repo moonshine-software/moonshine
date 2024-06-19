@@ -141,8 +141,8 @@ final class CardsBuilder extends IterableComponent
                 ->customAttributes(value($this->componentAttributes, $data, $index, $this))
                 ->when(
                     $buttons->isNotEmpty(),
-                    fn (Card $card): Card => $card->actions(
-                        fn () => ActionGroup::make($buttons->toArray())
+                    static fn (Card $card): Card => $card->actions(
+                        static fn () => ActionGroup::make($buttons->toArray())
                     )
                 );
         });
@@ -165,7 +165,7 @@ final class CardsBuilder extends IterableComponent
     protected function getMapper(mixed $data, FieldsCollection $fields, int $index): array
     {
         $values = $fields->values()
-            ->mapWithKeys(fn (Field $value): array => [$value->getLabel() => (string) $value->preview()])
+            ->mapWithKeys(static fn (Field $value): array => [$value->getLabel() => (string) $value->preview()])
             ->toArray();
 
         return [

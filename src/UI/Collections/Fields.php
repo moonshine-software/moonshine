@@ -33,7 +33,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
 
         return static::make($data)->when(
             ! $withWrappers,
-            fn (Fields $fields): static => $fields->withoutWrappers()
+            static fn (Fields $fields): static => $fields->withoutWrappers()
         );
     }
 
@@ -65,7 +65,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
             static function ($element) use ($class, $modified): void {
                 if ($element instanceof $class) {
                     $element->getFields()->each(
-                        fn ($inner): Collection => $modified->push($inner)
+                        static fn ($inner): Collection => $modified->push($inner)
                     );
                 } else {
                     $modified->push($element);
@@ -113,7 +113,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
         ?FieldsCollection $preparedFields = null
     ): static {
         return ($preparedFields ?? $this->onlyFields())->map(
-            fn (Field $field): Field => (clone $field)
+            static fn (Field $field): Field => (clone $field)
                 ->fillData(is_null($casted) ? $raw : $casted, $index)
         );
     }
@@ -145,7 +145,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     public function fill(array $raw = [], ?CastedData $casted = null, int $index = 0): void
     {
         $this->onlyFields()->map(
-            fn (Field $field): Field => $field
+            static fn (Field $field): Field => $field
                 ->fillData(is_null($casted) ? $raw : $casted, $index)
         );
     }
@@ -157,7 +157,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     {
         $this
             ->onlyFields()
-            ->each(fn (Field $field): Field => $field->wrapName($name));
+            ->each(static fn (Field $field): Field => $field->wrapName($name));
 
         return $this;
     }
@@ -168,7 +168,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     public function reset(): void
     {
         $this->onlyFields()->map(
-            fn (Field $field): Field => $field->reset()
+            static fn (Field $field): Field => $field->reset()
         );
     }
 

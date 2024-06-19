@@ -38,7 +38,7 @@ class MorphTo extends BelongsTo
 
         $this->searchColumns = collect($types)
             ->mapWithKeys(
-                fn (
+                static fn (
                     string $searchColumn,
                     string $type
                 ): array => [$type => $searchColumn]
@@ -47,7 +47,7 @@ class MorphTo extends BelongsTo
 
         $this->types = collect($types)
             ->mapWithKeys(
-                fn (
+                static fn (
                     string $searchColumn,
                     string $type
                 ): array => [$type => class_basename($type)]

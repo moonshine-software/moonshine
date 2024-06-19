@@ -80,7 +80,7 @@ it('apply as base with pivot', function () {
 
     testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
 
-    $this->item->categories->each(function ($category) {
+    $this->item->categories->each(static function ($category) {
         expect($category->pivot->pivot_1)
             ->toBe('test 1')
             ->and($category->pivot->pivot_2)

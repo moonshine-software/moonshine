@@ -5,7 +5,7 @@ use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\ProfilePage;
 
-it('index', function () {
+it('index', static function () {
     $user = MoonshineUser::query()->find(1);
 
     asAdmin()
@@ -24,7 +24,7 @@ it('index', function () {
         ->assertOk();
 });
 
-it('store', function () {
+it('store', static function () {
     $data = [
         moonshineConfig()->getUserField('name') => 'Test name',
         moonshineConfig()->getUserField('username') => 'new@mail.ru',

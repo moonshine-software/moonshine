@@ -28,7 +28,7 @@ final class Handlers extends Collection
     public function getButtons(): ActionButtons
     {
         return ActionButtons::make(
-            $this->map(fn (Handler $handler): ActionButton => $handler->getButton())
+            $this->map(static fn (Handler $handler): ActionButton => $handler->getButton())
         );
     }
 }

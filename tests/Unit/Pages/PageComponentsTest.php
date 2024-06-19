@@ -153,7 +153,7 @@ it('form fields only outside', function () {
 });
 
 it('except element', function () {
-    expect($this->collection->exceptElements(fn ($element) => $element instanceof FormBuilder)->first())
+    expect($this->collection->exceptElements(static fn ($element) => $element instanceof FormBuilder)->first())
         ->getFields()->first()
         ->toBeInstanceOf(TableBuilder::class);
 });

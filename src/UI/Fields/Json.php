@@ -199,7 +199,7 @@ class Json extends Field implements
         if ($this->isRemovable()) {
             $buttons[] = ActionButton::make('', '#')
                 ->icon('trash')
-                ->onClick(fn ($action): string => 'remove', 'prevent')
+                ->onClick(static fn ($action): string => 'remove', 'prevent')
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
                 ->showInLine();
         }
@@ -303,7 +303,7 @@ class Json extends Field implements
                     ->except(['class', 'data-name', 'data-column'])
                     ->when(
                         $reorderable,
-                        fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
+                        static fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
                             'data-handle' => '.handle',
                         ])
                     )
@@ -311,11 +311,11 @@ class Json extends Field implements
             )
             ->when(
                 $reorderable,
-                fn (TableBuilder $table): TableBuilder => $table->reorderable()
+                static fn (TableBuilder $table): TableBuilder => $table->reorderable()
             )
             ->when(
                 $this->isVertical(),
-                fn (TableBuilder $table): TableBuilder => $table->vertical()
+                static fn (TableBuilder $table): TableBuilder => $table->vertical()
             );
     }
 
@@ -388,7 +388,7 @@ class Json extends Field implements
                     $this->getRequestKeyPrefix()
                 );
 
-                $field->when($fill, fn (Field $f): Field => $f->fillData($values));
+                $field->when($fill, static fn (Field $f): Field => $f->fillData($values));
 
                 $apply = $callback($field, $values, $data);
 
@@ -414,7 +414,7 @@ class Json extends Field implements
     {
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
-            callback: fn (Field $field, mixed $values): mixed => $field->apply(
+            callback: static fn (Field $field, mixed $values): mixed => $field->apply(
                 static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                 $values
             ),
@@ -428,7 +428,7 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
+            callback: static fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
         );
     }
 
@@ -439,7 +439,7 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: fn (Field $field, mixed $values): mixed => $field->afterApply($values),
+            callback: static fn (Field $field, mixed $values): mixed => $field->afterApply($values),
             response: static fn (array $values, mixed $data): mixed => $data,
         );
     }
@@ -456,7 +456,7 @@ class Json extends Field implements
                 $this->getFields()
                     ->onlyFields()
                     ->each(
-                        fn (Field $field): mixed => $field
+                        static fn (Field $field): mixed => $field
                             ->fillData($value)
                             ->afterDestroy($value)
                     );

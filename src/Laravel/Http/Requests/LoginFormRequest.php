@@ -153,7 +153,7 @@ class LoginFormRequest extends MoonShineFormRequest
                         'username',
                         'email'
                     ) === 'email',
-                    fn (Stringable $str): Stringable => $str->lower()
+                    static fn (Stringable $str): Stringable => $str->lower()
                 )
                 ->squish()
                 ->value(),

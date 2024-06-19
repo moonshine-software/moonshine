@@ -102,7 +102,7 @@ final readonly class Options implements Arrayable
     public function flatten(): array
     {
         return $this->getValues()
-            ->mapWithKeys(fn (OptionGroup|Option $optionOrGroup): array => $optionOrGroup instanceof OptionGroup
+            ->mapWithKeys(static fn (OptionGroup|Option $optionOrGroup): array => $optionOrGroup instanceof OptionGroup
                 ? $optionOrGroup->getValues()->flatten() :
                 [$optionOrGroup->getValue() => $optionOrGroup])
             ->toArray();

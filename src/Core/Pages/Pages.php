@@ -18,14 +18,14 @@ final class Pages extends Collection
 {
     public function setResource(ResourceContract $resource): Pages
     {
-        return $this->each(fn (PageContract $page): PageContract => $page->setResource($resource));
+        return $this->each(static fn (PageContract $page): PageContract => $page->setResource($resource));
     }
 
     public function findByType(
         PageType $type,
         PageContract $default = null
     ): ?PageContract {
-        return $this->first(fn (PageContract $page): bool => $page->getPageType() === $type, $default);
+        return $this->first(static fn (PageContract $page): bool => $page->getPageType() === $type, $default);
     }
 
     public function findByClass(
@@ -33,7 +33,7 @@ final class Pages extends Collection
         PageContract $default = null
     ): ?PageContract {
         return $this->first(
-            fn (PageContract $page): bool => $page::class === $class,
+            static fn (PageContract $page): bool => $page::class === $class,
             $default
         );
     }

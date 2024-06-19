@@ -74,7 +74,7 @@ it('apply as base', function () {
 it('before apply', function () {
     $resource = addFieldsToTestResource(
         $this->field
-            ->onBeforeApply(function ($item, $data) {
+            ->onBeforeApply(static function ($item, $data) {
                 $item->name = 'Select';
 
                 return $item;
@@ -99,7 +99,7 @@ it('before apply', function () {
 it('after apply', function () {
     $resource = addFieldsToTestResource(
         $this->field
-            ->onAfterApply(function ($item, $data) {
+            ->onAfterApply(static function ($item, $data) {
                 $item->name = 'Select';
 
                 return $item;

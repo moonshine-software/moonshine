@@ -14,7 +14,7 @@ class CustomNoTypeForm extends Page
     {
         return [
             Box::make([
-                Preview::make('CustomNoTypeForm', formatted: fn () => 'CustomNoTypeForm'),
+                Preview::make('CustomNoTypeForm', formatted: static fn () => 'CustomNoTypeForm'),
             ]),
         ];
     }

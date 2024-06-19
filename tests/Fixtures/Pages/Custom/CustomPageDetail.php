@@ -17,7 +17,7 @@ class CustomPageDetail extends Page
     {
         return [
             Box::make([
-                Preview::make('CustomPageDetail', formatted: fn () => 'CustomPageDetail'),
+                Preview::make('CustomPageDetail', formatted: static fn () => 'CustomPageDetail'),
             ]),
         ];
     }

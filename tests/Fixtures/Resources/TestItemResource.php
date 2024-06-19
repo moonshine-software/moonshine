@@ -114,7 +114,7 @@ class TestItemResource extends ModelResource
         return [
             QueryTag::make(
                 'Item #1 Query Tag',
-                fn ($query) => $query->where('category_id', $maxId) // Query builder
+                static fn ($query) => $query->where('category_id', $maxId) // Query builder
             ),
         ];
     }

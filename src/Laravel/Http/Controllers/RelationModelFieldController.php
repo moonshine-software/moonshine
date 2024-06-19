@@ -78,7 +78,7 @@ class RelationModelFieldController extends MoonShineController
 
         $query->when(
             $term,
-            fn (Builder $q) => $q->where(
+            static fn (Builder $q) => $q->where(
                 $searchColumn,
                 DBOperators::byModel($q->getModel())->like(),
                 "%$term%"
@@ -90,7 +90,7 @@ class RelationModelFieldController extends MoonShineController
 
         return response()->json(
             $query->get()->map(
-                fn ($model): array => $field->getAsyncSearchOption($model, $searchColumn)->toArray()
+                static fn ($model): array => $field->getAsyncSearchOption($model, $searchColumn)->toArray()
             )->toArray()
         );
     }
@@ -156,17 +156,17 @@ class RelationModelFieldController extends MoonShineController
         $getFields = static function () use ($resource, $field, $isAsync, $parent, $update) {
             $fields = $resource->getFormFields();
 
-            $fields->onlyFields()->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+            $fields->onlyFields()->each(static fn (Field $nestedFields): Field => $nestedFields->setParent($field));
 
             return $fields->when(
                 $field->getRelation() instanceof MorphOneOrMany,
-                fn (Fields $f) => $f->push(
+                static fn (Fields $f) => $f->push(
                     Hidden::make($field->getRelation()?->getMorphType())
                         ->setValue($parent::class)
                 )
             )->when(
                 $update,
-                fn (Fields $f) => $f->push(
+                static fn (Fields $f) => $f->push(
                     Hidden::make('_method')->setValue('PUT'),
                 )
             )
@@ -183,7 +183,7 @@ class RelationModelFieldController extends MoonShineController
         return (string) FormBuilder::make($action($item))
             ->fields($getFields)
             ->reactiveUrl(
-                fn (): string => moonshineRouter()
+                static fn (): string => moonshineRouter()
                     ->getEndpoints()
                     ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
@@ -197,11 +197,11 @@ class RelationModelFieldController extends MoonShineController
             )
             ->when(
                 $update,
-                fn (FormBuilder $form): FormBuilder => $form->fillCast(
+                static fn (FormBuilder $form): FormBuilder => $form->fillCast(
                     $item,
                     $resource->getModelCast()
                 ),
-                fn (FormBuilder $form): FormBuilder => $form->fillCast(
+                static fn (FormBuilder $form): FormBuilder => $form->fillCast(
                     array_filter([
                         $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
                         ...$field->getRelation() instanceof MorphOneOrMany
@@ -212,8 +212,8 @@ class RelationModelFieldController extends MoonShineController
                 )
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
-            ->onBeforeFieldsRender(fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
-                fn (mixed $field): bool => $field instanceof ModelRelationField
+            ->onBeforeFieldsRender(static fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
+                static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()
             ))

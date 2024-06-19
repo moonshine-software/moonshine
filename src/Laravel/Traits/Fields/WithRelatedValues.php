@@ -71,7 +71,7 @@ trait WithRelatedValues
     protected function resolveRelatedQuery(Builder $builder): Collection
     {
         // #MongoDB Models fix
-        $key = rescue(fn () => $builder->toRawSql(), fn (): bool => false, false);
+        $key = rescue(static fn () => $builder->toRawSql(), static fn (): bool => false, false);
 
         if($key === false) {
             return $builder->get();
@@ -80,7 +80,7 @@ trait WithRelatedValues
         return moonshineCache()->remember(
             sha1((string) $key),
             4,
-            fn (): Collection => $builder->get()
+            static fn (): Collection => $builder->get()
         );
     }
 
@@ -108,7 +108,7 @@ trait WithRelatedValues
         ) : data_get($item, $this->getResourceColumn());
 
         $values = $values->mapWithKeys(
-            fn ($item): array => [
+            static fn ($item): array => [
                 $item->getKey() => $getValue($item),
             ]
         );

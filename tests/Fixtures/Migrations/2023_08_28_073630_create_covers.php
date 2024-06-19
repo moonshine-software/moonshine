@@ -10,7 +10,7 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('covers', function (Blueprint $table) {
+        Schema::create('covers', static function (Blueprint $table) {
             $table->id();
             $table->string('image');
             $table->unsignedBigInteger('category_id')->nullable();

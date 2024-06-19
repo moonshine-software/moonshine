@@ -57,7 +57,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('formatted value', function () {
+    it('formatted value', static function () {
         $field = Json::make('Json', formatted: static fn () => ['changed'])
             ->fields(exampleFields()->toArray())
             ->fill([]);
@@ -66,7 +66,7 @@ describe('basic methods', function () {
             ->toBe(['changed']);
     });
 
-    it('default value', function () {
+    it('default value', static function () {
         $field = Json::make('Json')
             ->fields(exampleFields()->toArray())
             ->default(['default']);
@@ -83,7 +83,7 @@ describe('basic methods', function () {
             ->toBe(['value']);
     });
 
-    it('applies', function () {
+    it('applies', static function () {
         $field = Json::make('Json')
             ->fields(exampleFields()->toArray());
 
@@ -156,7 +156,7 @@ describe('unique field methods', function () {
     it('has fields', function (): void {
         expect($this->field->getFields())
             ->hasFields(exampleFields()->toArray())
-            ->each(function ($field, $key): void {
+            ->each(static function ($field, $key): void {
                 $key++;
 
                 $field->toBeInstanceOf(Text::class)
@@ -173,7 +173,7 @@ describe('unique field methods', function () {
                 Text::make('Key2'),
                 Text::make('Value2'),
             ])
-            ->each(function ($field, $key): void {
+            ->each(static function ($field, $key): void {
                 $name = $key === 0 ? 'key' : 'value';
 
                 $field->toBeInstanceOf(Text::class)
@@ -189,7 +189,7 @@ describe('unique field methods', function () {
             ->hasFields([
                 Text::make('Value'),
             ])
-            ->each(function ($field): void {
+            ->each(static function ($field): void {
                 $name = 'value';
 
                 $field->toBeInstanceOf(Text::class)
