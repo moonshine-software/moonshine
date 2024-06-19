@@ -17,35 +17,35 @@ final class AssetElements extends Collection implements Htmlable
     public function js(): self
     {
         return $this->filter(
-            fn (AssetElement $asset): int|bool => $asset instanceof Js
+            static fn (AssetElement $asset): int|bool => $asset instanceof Js
         );
     }
 
     public function css(): self
     {
         return $this->filter(
-            fn (AssetElement $asset): int|bool => $asset instanceof Css
+            static fn (AssetElement $asset): int|bool => $asset instanceof Css
         );
     }
 
     public function inlineCss(): self
     {
         return $this->filter(
-            fn (AssetElement $asset): int|bool => $asset instanceof InlineCss
+            static fn (AssetElement $asset): int|bool => $asset instanceof InlineCss
         );
     }
 
     public function inlineJs(): self
     {
         return $this->filter(
-            fn (AssetElement $asset): int|bool => $asset instanceof InlineJs
+            static fn (AssetElement $asset): int|bool => $asset instanceof InlineJs
         );
     }
 
     public function withVersion(int|string $version): self
     {
         return $this->map(
-            fn (AssetElement $asset): HasVersion|AssetElement => $asset instanceof HasVersion
+            static fn (AssetElement $asset): HasVersion|AssetElement => $asset instanceof HasVersion
                 ? $asset->version($version)
                 : $asset
         );
@@ -54,7 +54,7 @@ final class AssetElements extends Collection implements Htmlable
     public function toHtml(): string
     {
         return $this->implode(
-            fn (AssetElement $asset) => $asset
+            static fn (AssetElement $asset) => $asset
                 ->toHtml(),
             PHP_EOL
         );

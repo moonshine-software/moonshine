@@ -20,7 +20,7 @@ class DateRangeModelApply implements ApplyContract
 
             $query->when(
                 $values['from'] ?? null,
-                function ($query, $from) use ($field): void {
+                static function ($query, $from) use ($field): void {
                     $query->whereDate(
                         $field->getColumn(),
                         '>=',
@@ -29,7 +29,7 @@ class DateRangeModelApply implements ApplyContract
                 }
             )->when(
                 $values['to'] ?? null,
-                function ($query, $to) use ($field): void {
+                static function ($query, $to) use ($field): void {
                     $query->whereDate(
                         $field->getColumn(),
                         '<=',

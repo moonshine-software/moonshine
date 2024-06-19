@@ -24,10 +24,10 @@ final class FiltersButton
             ->secondary()
             ->icon('adjustments-horizontal')
             ->inOffCanvas(
-                fn (): array|string|null => __('moonshine::ui.filters'),
-                fn (): FormBuilder => $form,
+                static fn (): array|string|null => __('moonshine::ui.filters'),
+                static fn (): FormBuilder => $form,
                 name: 'filters-off-canvas',
-                builder: fn (OffCanvas $offCanvas): OffCanvas => $offCanvas->setComponents([$form])
+                builder: static fn (OffCanvas $offCanvas): OffCanvas => $offCanvas->setComponents([$form])
             )
             ->showInLine();
     }
@@ -36,13 +36,13 @@ final class FiltersButton
     {
         $count = collect($params)
             ->filter(
-                fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter)
+                static fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter)
                     : filled($filter)
             )
             ->count();
 
         return str(__('moonshine::ui.filters'))
-            ->when($count, fn (Stringable $str): Stringable => $str->append("($count)"))
+            ->when($count, static fn (Stringable $str): Stringable => $str->append("($count)"))
             ->value();
     }
 }

@@ -206,7 +206,7 @@ class IndexPage extends Page
                     ]
                 )
             )
-            ->when($this->getResource()->isAsync(), function (TableBuilder $table): void {
+            ->when($this->getResource()->isAsync(), static function (TableBuilder $table): void {
                 $table->async()->customAttributes([
                     'data-pushstate' => 'true',
                 ]);

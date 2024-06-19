@@ -62,7 +62,7 @@ class MenuItem extends MenuElement
 
     protected function resolveFiller(MenuFiller $filler): void
     {
-        $this->setUrl(fn (): string => $filler->getUrl());
+        $this->setUrl(static fn (): string => $filler->getUrl());
 
         $icon = Attributes::for($filler)
             ->attribute(Icon::class)
@@ -70,7 +70,7 @@ class MenuItem extends MenuElement
             ->get();
 
         if (method_exists($filler, 'getBadge')) {
-            $this->badge(fn () => $filler->getBadge());
+            $this->badge(static fn () => $filler->getBadge());
         }
 
         if (! is_null($icon) && $this->getIconValue() === '') {
@@ -185,6 +185,9 @@ class MenuItem extends MenuElement
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     public function viewData(): array
     {
         $viewData = [

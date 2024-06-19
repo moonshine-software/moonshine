@@ -34,11 +34,11 @@ final class BelongsToManyButton
 
         $action = $resource->getRoute('crud.store');
 
-        $getFields = function () use ($resource, $field) {
+        $getFields = static function () use ($resource, $field) {
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()
-                ->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+                ->each(static fn (Field $nestedFields): Field => $nestedFields->setParent($field));
 
             return $fields
                 ->push(Hidden::make('_async_field')->setValue(true))
@@ -50,10 +50,10 @@ final class BelongsToManyButton
             : ActionButton::make(__('moonshine::ui.add'), url: $action);
 
         return $actionButton
-            ->canSee(fn (): bool => in_array('create', $resource->getActiveActions()) && $resource->can('create'))
+            ->canSee(static fn (): bool => in_array('create', $resource->getActiveActions()) && $resource->can('create'))
             ->inModal(
-                title: fn (): array|string|null => __('moonshine::ui.create'),
-                content: fn (?Model $data): string => (string) FormBuilder::make($action)
+                title: static fn (): array|string|null => __('moonshine::ui.create'),
+                content: static fn (?Model $data): string => (string) FormBuilder::make($action)
                     ->switchFormMode(
                         true,
                         [
@@ -69,7 +69,7 @@ final class BelongsToManyButton
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields),
                 name: "modal-belongs-to-many-{$field->getRelationName()}",
-                builder: fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
+                builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
             )
             ->primary()
             ->icon('plus');

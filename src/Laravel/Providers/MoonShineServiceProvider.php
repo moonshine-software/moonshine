@@ -124,7 +124,7 @@ class MoonShineServiceProvider extends ServiceProvider
 
         $this->app->{app()->runningUnitTests() ? 'bind' : 'singleton'}(
             MoonShineRequest::class,
-            fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
+            static fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );
 
         $this->app->singleton(MenuManager::class);
@@ -296,8 +296,8 @@ class MoonShineServiceProvider extends ServiceProvider
             ->registerApplies();
 
         // Octane events
-        tap($this->app['events'], function ($event): void {
-            $event->listen(RequestHandled::class, function (RequestHandled $event): void {
+        tap($this->app['events'], static function ($event): void {
+            $event->listen(RequestHandled::class, static function (RequestHandled $event): void {
                 moonshine()->flushState();
             });
         });

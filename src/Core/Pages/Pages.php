@@ -58,7 +58,7 @@ final class Pages extends Collection
         PageContract $default = null
     ): ?PageContract {
         return $this->first(
-            function (PageContract $page) use ($uri): bool {
+            static function (PageContract $page) use ($uri): bool {
                 if($page->getUriKey() === $uri) {
                     return true;
                 }

@@ -77,6 +77,9 @@ class ProfilePage extends Page
         ];
     }
 
+    /**
+     * @throws MoonShineException
+     */
     public function components(): array
     {
         return [

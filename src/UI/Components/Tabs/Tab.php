@@ -25,6 +25,7 @@ class Tab extends AbstractWithComponents
         iterable $components = [],
     ) {
         if(is_iterable($labelOrComponents)) {
+            /** @var iterable $labelOrComponents */
             $components = $labelOrComponents;
         } else {
             $this->setLabel($labelOrComponents);

@@ -106,7 +106,7 @@ class AsyncController extends MoonShineController
             ->onlyFields()
             ->reactiveFields();
 
-        $values = $request->collect('values')->map(function ($value, $column) use ($fields) {
+        $values = $request->collect('values')->map(static function ($value, $column) use ($fields) {
             $field = $fields->findByColumn($column);
 
             if ($field instanceof Select) {

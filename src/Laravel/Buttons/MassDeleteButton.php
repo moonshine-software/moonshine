@@ -30,9 +30,9 @@ final class MassDeleteButton
             ->bulk($componentName ?? $resource->getListComponentName())
             ->withConfirm(
                 method: HttpMethod::DELETE,
-                formBuilder: fn (FormBuilder $formBuilder) => $formBuilder->when(
+                formBuilder: static fn (FormBuilder $formBuilder) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
-                    fn (FormBuilder $form): FormBuilder => $form->async(
+                    static fn (FormBuilder $form): FormBuilder => $form->async(
                         events: $resource->getListEventName(
                             $componentName ?? $resource->getListComponentName()
                         )
@@ -41,7 +41,7 @@ final class MassDeleteButton
                 name: "mass-delete-modal-" . ($componentName ?? $resource->getListComponentName())
             )
             ->canSee(
-                fn (): bool => in_array('massDelete', $resource->getActiveActions())
+                static fn (): bool => in_array('massDelete', $resource->getActiveActions())
                     && $resource->can('massDelete')
             )
             ->error()

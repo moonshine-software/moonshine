@@ -34,18 +34,18 @@ final class DeleteButton
         )
             ->withConfirm(
                 method: HttpMethod::DELETE,
-                formBuilder: fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
+                formBuilder: static fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
-                    fn (FormBuilder $form): FormBuilder => $form->async(
+                    static fn (FormBuilder $form): FormBuilder => $form->async(
                         events: $resource->getListEventName(
                             $componentName ?? $resource->getListComponentName()
                         )
                     )
                 ),
-                name: fn (Model $data): string => "delete-modal-{$data->getKey()}"
+                name: static fn (Model $data): string => "delete-modal-{$data->getKey()}"
             )
             ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
+                static fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
                     && $resource->setItem($item)->can('delete')
             )
             ->error()

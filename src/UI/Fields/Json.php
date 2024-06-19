@@ -209,7 +209,7 @@ class Json extends Field implements
 
     public function getPreparedFields(): FieldsCollection
     {
-        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (self $parent, Field $field): void {
+        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, Field $field): void {
             $field->withoutWrapper();
         });
     }

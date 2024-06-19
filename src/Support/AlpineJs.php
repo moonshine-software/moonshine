@@ -82,7 +82,7 @@ final class AlpineJs
     public static function asyncSelectorsParamsAttributes(array $selectors): array
     {
         return array_filter([
-            'data-async-with-params' => collect($selectors)->map(fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
+            'data-async-with-params' => collect($selectors)->map(static fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
         ]);
     }
 
@@ -112,7 +112,7 @@ final class AlpineJs
     {
         if (is_array($events)) {
             return collect($events)
-                ->map(fn ($value): string => (string) str($value)->lower()->squish())
+                ->map(static fn ($value): string => (string) str($value)->lower()->squish())
                 ->filter()
                 ->implode(',');
         }

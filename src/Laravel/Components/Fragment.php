@@ -29,7 +29,7 @@ class Fragment extends AbstractWithComponents
     {
         parent::__construct($components);
 
-        $this->async(fn (Fragment $fragment): RedirectResponse|string => toPage(
+        $this->async(static fn (Fragment $fragment): RedirectResponse|string => toPage(
             page: $fragment->getNowOnPage() ?? moonshineRequest()->getPage(),
             resource: $fragment->getNowOnResource() ?? moonshineRequest()->getResource(),
             params: $fragment->getNowOnQueryParams(),

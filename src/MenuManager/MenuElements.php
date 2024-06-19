@@ -14,7 +14,7 @@ final class MenuElements extends Collection
 {
     public function topMode(?Closure $condition = null): self
     {
-        return $this->transform(function (MenuElement $item) use ($condition): MenuElement {
+        return $this->transform(static function (MenuElement $item) use ($condition): MenuElement {
             $item = clone $item;
 
             if ($item instanceof MenuGroup) {
@@ -29,7 +29,7 @@ final class MenuElements extends Collection
 
     public function onlyVisible(): self
     {
-        return $this->filter(function (MenuElement $item): bool {
+        return $this->filter(static function (MenuElement $item): bool {
             if ($item instanceof MenuGroup) {
                 $item->setItems(
                     $item->getItems()->onlyVisible()

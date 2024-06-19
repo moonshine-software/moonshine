@@ -153,7 +153,7 @@ class RelationModelFieldController extends MoonShineController
 
         $isAsync = $field->isAsync();
 
-        $getFields = function () use ($resource, $field, $isAsync, $parent, $update) {
+        $getFields = static function () use ($resource, $field, $isAsync, $parent, $update) {
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()->each(fn (Field $nestedFields): Field => $nestedFields->setParent($field));

@@ -23,6 +23,7 @@ class Box extends AbstractWithComponents
         private bool $dark = false,
     ) {
         if(is_iterable($labelOrComponents)) {
+            /** @var iterable $labelOrComponents */
             $components = $labelOrComponents;
         } else {
             $this->setLabel($labelOrComponents);

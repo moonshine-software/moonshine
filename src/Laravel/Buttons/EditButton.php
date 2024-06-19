@@ -38,16 +38,16 @@ final class EditButton
         )
             ->when(
                 $resource->isEditInModal(),
-                fn (ActionButton $button): ActionButton => $button->async()->inModal(
-                    title: fn (): array|string|null => __('moonshine::ui.edit'),
-                    content: fn (): string => '',
-                    name: fn (Model $data): string => "edit-modal-{$data->getKey()}"
+                static fn (ActionButton $button): ActionButton => $button->async()->inModal(
+                    title: static fn (): array|string|null => __('moonshine::ui.edit'),
+                    content: static fn (): string => '',
+                    name: static fn (Model $data): string => "edit-modal-{$data->getKey()}"
                 )
             )
             ->primary()
             ->icon('pencil')
             ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
+                static fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
                     && $resource->setItem($item)->can('update')
             )
             ->customAttributes(['class' => 'edit-button'])

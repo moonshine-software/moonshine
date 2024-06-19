@@ -30,7 +30,7 @@ class AuthenticateApi extends Middleware
         $this->auth->shouldUse(MoonShineAuth::getGuardName());
     }
 
-    protected function unauthenticated($request, array $guards)
+    protected function unauthenticated($request, array $guards): void
     {
         $request->headers->set('accept', 'application/json');
 

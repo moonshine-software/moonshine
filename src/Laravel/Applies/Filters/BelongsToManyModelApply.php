@@ -32,7 +32,7 @@ class BelongsToManyModelApply implements ApplyContract
 
             $query->whereHas(
                 $field->getRelationName(),
-                function (Builder $q) use ($field, $values): Builder {
+                static function (Builder $q) use ($field, $values): Builder {
                     $table = $field->getRelation()?->getTable();
                     $id = $field->getRelation()?->getRelatedPivotKeyName();
 

@@ -34,15 +34,15 @@ final class DetailButton
         )
             ->when(
                 $resource->isDetailInModal(),
-                fn (ActionButton $button): ActionButton => $button->async()->inModal(
-                    title: fn (): array|string|null => __('moonshine::ui.show'),
-                    content: fn (): string => '',
-                    name: fn (Model $data): string => "detail-modal-{$data->getKey()}",
-                    builder: fn (Modal $modal): Modal => $modal->wide()
+                static fn (ActionButton $button): ActionButton => $button->async()->inModal(
+                    title: static fn (): array|string|null => __('moonshine::ui.show'),
+                    content: static fn (): string => '',
+                    name: static fn (Model $data): string => "detail-modal-{$data->getKey()}",
+                    builder: static fn (Modal $modal): Modal => $modal->wide()
                 )
             )
             ->canSee(
-                fn (?Model $item): bool => ! is_null($item) && in_array('view', $resource->getActiveActions())
+                static fn (?Model $item): bool => ! is_null($item) && in_array('view', $resource->getActiveActions())
                 && $resource->setItem($item)->can('view')
             )
             ->icon('eye')

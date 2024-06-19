@@ -18,7 +18,7 @@ use MoonShine\UI\Fields\Hidden;
 use Stringable;
 use Throwable;
 
-final class FiltersForm implements FormContract
+final readonly class FiltersForm implements FormContract
 {
     public function __construct(private ModelResource $resource)
     {

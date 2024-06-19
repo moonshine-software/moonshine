@@ -18,15 +18,12 @@ trait HasResource
 
     protected ?ResourceContract $parentResource = null;
 
-    /** @return ResourceContract */
+    /** @return ?ResourceContract */
     public function getParentResource(): ?ResourceContract
     {
         return $this->parentResource;
     }
 
-    /**
-     * @return ResourceContract
-     */
     public function setParentResource(ResourceContract $resource): static
     {
         $this->parentResource = $resource;
@@ -34,9 +31,6 @@ trait HasResource
         return $this;
     }
 
-    /**
-     * @return ResourceContract
-     */
     public function setResource(ResourceContract $resource): static
     {
         $this->resource = $resource;
@@ -49,7 +43,7 @@ trait HasResource
         return ! is_null($this->resource);
     }
 
-    /** @return ResourceContract */
+    /** @return ?ResourceContract */
     public function getResource(): ?ResourceContract
     {
         return $this->resource;

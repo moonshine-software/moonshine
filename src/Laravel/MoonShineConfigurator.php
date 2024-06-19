@@ -70,7 +70,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
         $except = is_string($except) ? [$except] : $except;
 
         $middlewares = collect($this->getMiddlewares())
-            ->filter(fn ($class): bool => ! in_array($class, $except, true))
+            ->filter(static fn ($class): bool => ! in_array($class, $except, true))
             ->toArray();
 
         return $this->middlewares($middlewares);
@@ -399,7 +399,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->set(
             'pages',
             collect($pages)
-                ->map(fn (string $page): string => $page === $old ? $new : $page)
+                ->map(static fn (string $page): string => $page === $old ? $new : $page)
                 ->toArray()
         );
     }

@@ -16,7 +16,7 @@ final class QueryTagButton
         )
             ->showInLine()
             ->icon($tag->getIconValue(), $tag->isCustomIcon(), $tag->getIconPath())
-            ->canSee(fn (mixed $data): bool => $tag->isSee($data))
+            ->canSee(static fn (mixed $data): bool => $tag->isSee($data))
             ->customAttributes([
                 'class' => 'query-tag-button',
                 'x-data' => 'asyncLink(`btn-primary`, `' . $resource->getListEventName() . '`)',
@@ -24,7 +24,7 @@ final class QueryTagButton
             ])
             ->when(
                 $tag->isActive(),
-                fn (ActionButton $btn): ActionButton => $btn
+                static fn (ActionButton $btn): ActionButton => $btn
                     ->primary()
                     ->customAttributes([
                         'class' => 'active-query-tag',
@@ -33,9 +33,9 @@ final class QueryTagButton
             )
             ->when(
                 $resource->isAsync(),
-                fn (ActionButton $btn): ActionButton => $btn
+                static fn (ActionButton $btn): ActionButton => $btn
                     ->onClick(
-                        fn ($action): string => "queryTagRequest(`{$tag->getUri()}`)",
+                        static fn ($action): string => "queryTagRequest(`{$tag->getUri()}`)",
                         'prevent'
                     )
             );

@@ -156,11 +156,11 @@ class ImportHandler extends Handler
             $fastExcel->configureCsv($delimiter);
         }
 
-        $result = $fastExcel->import($path, function ($line) use ($resource) {
+        $result = $fastExcel->import($path, static function ($line) use ($resource) {
             $data = collect($line)->mapWithKeys(
-                function (mixed $value, string $key) use ($resource): array {
+                static function (mixed $value, string $key) use ($resource): array {
                     $field = $resource->getImportFields()->first(
-                        fn (Field $field): bool => $field->getColumn() === $key || $field->getLabel() === $key
+                        static fn (Field $field): bool => $field->getColumn() === $key || $field->getLabel() === $key
                     );
 
                     if (! $field instanceof Field) {

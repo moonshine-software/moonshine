@@ -135,7 +135,7 @@ class RelationRepeater extends ModelRelationField implements
 
     public function getPreparedFields(): FieldsCollection
     {
-        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: function (self $parent, Field $field): void {
+        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, Field $field): void {
             $field
                 ->disableSortable()
                 ->withoutWrapper()
@@ -149,7 +149,8 @@ class RelationRepeater extends ModelRelationField implements
             return (string) parent::resolvePreview();
         }
 
-        return $this->resolveValue()
+        return $this
+            ->resolveValue()
             ->simple()
             ->preview()
             ->render();

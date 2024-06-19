@@ -159,7 +159,7 @@ trait ResourceModelQuery
     /**
      * Get an array of custom form actions
      *
-     * @return QueryTag
+     * @return list<QueryTag>
      */
     public function queryTags(): array
     {
@@ -366,7 +366,7 @@ trait ResourceModelQuery
                 if (is_string($column) && str($column)->contains('.')) {
                     $column = str($column)
                         ->explode('.')
-                        ->tap(function (Collection $data) use (&$key): void {
+                        ->tap(static function (Collection $data) use (&$key): void {
                             $key = $data->first();
                         })
                         ->slice(-1)

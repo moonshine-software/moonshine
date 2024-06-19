@@ -6,12 +6,13 @@ namespace MoonShine\Laravel\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ChangeLocale
 {
     final public const KEY = '_lang';
 
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $local = $request->input(
             self::KEY,

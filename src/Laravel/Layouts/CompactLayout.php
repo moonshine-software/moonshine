@@ -182,7 +182,7 @@ final class CompactLayout extends AppLayout
                             ]),
 
                             Footer::make()
-                                ->copyright(fn (): string => sprintf(
+                                ->copyright(static fn (): string => sprintf(
                                     <<<'HTML'
                                         &copy; 2021-%d Made with ❤️ by
                                         <a href="https://cutcode.dev"

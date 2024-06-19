@@ -80,7 +80,7 @@ class MoonShineUserResource extends ModelResource
                             formatted: static fn (MoonshineUserRole $model) => $model->name,
                             resource: MoonShineUserRoleResource::class,
                         )
-                            ->valuesQuery(fn (Builder $q) => $q->select(['id', 'name'])),
+                            ->valuesQuery(static fn (Builder $q) => $q->select(['id', 'name'])),
 
                         Text::make(__('moonshine::ui.resource.name'), 'name')
                             ->required(),
@@ -151,7 +151,7 @@ class MoonShineUserResource extends ModelResource
                 'moonshineUserRole',
                 formatted: static fn (MoonshineUserRole $model) => $model->name,
                 resource: MoonShineUserRoleResource::class,
-            )->valuesQuery(fn (Builder $q) => $q->select(['id', 'name'])),
+            )->valuesQuery(static fn (Builder $q) => $q->select(['id', 'name'])),
 
             Email::make('E-mail', 'email'),
         ];

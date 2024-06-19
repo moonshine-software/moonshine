@@ -15,8 +15,11 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        /** @var MoonShineConfigurator $configurator */
+        $configurator = moonshineConfig();
+
         $this->configure(
-            moonshineConfig()
+            $configurator
         );
     }
 

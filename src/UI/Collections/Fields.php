@@ -47,7 +47,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
                 static function (Field $formElement): Field {
                     $formElement->when(
                         ! $formElement instanceof Fileable,
-                        function ($field): void {
+                        static function ($field): void {
                             $field->mergeAttribute('x-on:change', 'onChangeField($event)', ';');
                         }
                     );
@@ -110,7 +110,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
         array $raw = [],
         ?CastedData $casted = null,
         int $index = 0,
-        ?Fields $preparedFields = null
+        ?FieldsCollection $preparedFields = null
     ): static {
         return ($preparedFields ?? $this->onlyFields())->map(
             fn (Field $field): Field => (clone $field)
@@ -124,7 +124,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
         int $index = 0,
         ?Fields $preparedFields = null
     ): static {
-        return ($preparedFields ?? $this)->map(function (MoonShineRenderable $component) use ($raw, $casted, $index) {
+        return ($preparedFields ?? $this)->map(static function (MoonShineRenderable $component) use ($raw, $casted, $index) {
             if ($component instanceof HasFields) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)
@@ -187,7 +187,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
      */
     public function prepareReindex(?Field $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
-        return $this->map(function (Field $field) use ($parent, $before, $performName): Field {
+        return $this->map(static function (Field $field) use ($parent, $before, $performName): Field {
             $modifyField = value($before, $parent, $field);
 
             if($modifyField instanceof Field) {
@@ -212,7 +212,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
 
             if ($parent) {
                 $field
-                    ->formName($parent?->getFormName())
+                    ->formName($parent->getFormName())
                     ->setParent($parent);
             }
 
@@ -262,7 +262,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
      * @template-covariant T of Field
      * @param  class-string<T>  $class
      * @param ?Field  $default
-     * @return Field
+     * @return ?Field
      * @throws Throwable
      */
     public function findByClass(

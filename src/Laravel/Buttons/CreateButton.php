@@ -34,13 +34,13 @@ final class CreateButton
         )
             ->when(
                 $resource->isCreateInModal(),
-                fn (ActionButton $button): ActionButton => $button->async()->inModal(
-                    fn (): array|string|null => __('moonshine::ui.create'),
-                    fn (): string => '',
+                static fn (ActionButton $button): ActionButton => $button->async()->inModal(
+                    static fn (): array|string|null => __('moonshine::ui.create'),
+                    static fn (): string => '',
                 )
             )
             ->canSee(
-                fn (): bool => in_array('create', $resource->getActiveActions())
+                static fn (): bool => in_array('create', $resource->getActiveActions())
                 && $resource->can('create')
             )
             ->primary()

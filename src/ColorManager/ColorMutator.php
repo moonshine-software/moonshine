@@ -16,7 +16,7 @@ final class ColorMutator
 
         return $value
             ->explode(',')
-            ->map(function ($v): string {
+            ->map(static function ($v): string {
                 $v = dechex((int) trim($v));
 
                 if (strlen($v) < 2) {

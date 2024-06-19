@@ -128,7 +128,7 @@ trait ResourceWithFields
             ->withoutOutside()
             ->wrapNames('filters');
 
-        $filters->each(function ($filter): void {
+        $filters->each(static function ($filter): void {
             if (in_array($filter::class, FieldsWithoutFilters::LIST)) {
                 throw new FilterException("You can't use " . $filter::class . " inside filters.");
             }
