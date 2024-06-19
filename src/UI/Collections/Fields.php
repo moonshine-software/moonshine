@@ -262,7 +262,6 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
      * @template-covariant T of Field
      * @param  class-string<T>  $class
      * @param ?Field  $default
-     * @return ?Field
      * @throws Throwable
      */
     public function findByClass(
