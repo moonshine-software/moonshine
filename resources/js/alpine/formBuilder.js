@@ -216,6 +216,10 @@ export default (name = '', initData = {}, reactive = {}) => ({
     const form = this.$el
     const formData = new FormData(form)
 
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    formData.set('query-tag', urlSearchParams.get('query-tag') || '')
+    formData.set('sort', urlSearchParams.get('sort') || '')
+
     this.dispatchEvents(componentEvent, exclude, {
       filterQuery: prepareFormQueryString(formData, exclude),
     })

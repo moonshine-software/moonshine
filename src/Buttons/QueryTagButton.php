@@ -20,7 +20,6 @@ final class QueryTagButton
             ->customAttributes([
                 'class' => 'query-tag-button',
                 'x-data' => 'asyncLink(`btn-primary`, `' . $resource->listEventName() . '`)',
-                'x-on:disable-query-tags.window' => 'disableQueryTags',
             ])
             ->when(
                 $tag->isDefault(),
