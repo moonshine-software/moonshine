@@ -23,11 +23,17 @@ final class QueryTagButton
                 'x-on:disable-query-tags.window' => 'disableQueryTags',
             ])
             ->when(
+                $tag->isDefault(),
+                fn (ActionButton $btn): ActionButton => $btn
+                    ->customAttributes([
+                        'class' => 'query-tag-default',
+                    ])
+            )
+            ->when(
                 $tag->isActive(),
                 fn (ActionButton $btn): ActionButton => $btn
-                    ->primary()
                     ->customAttributes([
-                        'class' => 'active-query-tag',
+                        'class' => 'btn-primary',
                         'href' => $resource->indexPageUrl(),
                     ])
             )

@@ -1,8 +1,9 @@
 export default (activeClass, componentEvent) => ({
   queryTagRequest(data) {
-    if (this.$root.classList.contains('active-query-tag')) {
+    if (this.$root.classList.contains(activeClass)) {
       this.$dispatch(componentEvent.toLowerCase(), {queryTag: 'query-tag=null'})
       this.disableQueryTags()
+      this.activeDefaultQueryTag()
       return
     }
 
@@ -11,12 +12,14 @@ export default (activeClass, componentEvent) => ({
     this.disableQueryTags()
 
     this.$root.classList.add(activeClass)
-    this.$root.classList.add('active-query-tag')
   },
   disableQueryTags() {
     document.querySelectorAll('.query-tag-button').forEach(function (element) {
       element.classList.remove(activeClass)
-      element.classList.remove('active-query-tag')
     })
   },
+  activeDefaultQueryTag() {
+    const element = document.querySelector('.query-tag-default')
+    element.classList.add(activeClass)
+  }
 })
