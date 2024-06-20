@@ -37,7 +37,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
             : $this->items;
 
         if ($items instanceof PaginatorContract) {
-            $this->items = $items->getData();
+            $this->items = $items->getOriginalData();
             $this->paginator($items);
         }
     }

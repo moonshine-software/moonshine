@@ -23,7 +23,7 @@ it('successful response', function () {
         ->assertSee($this->user->email);
 });
 
-it('validation error', static function () {
+it('validation error', function () {
     $data = [
         moonshineConfig()->getUserField('name') => 'New name',
     ];

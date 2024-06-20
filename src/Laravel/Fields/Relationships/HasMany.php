@@ -29,6 +29,7 @@ use Throwable;
  */
 class HasMany extends ModelRelationField implements HasFields
 {
+    /** @use WithFields<Fields> */
     use WithFields;
     use WithParentRelationLink;
 
@@ -262,7 +263,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedClonedFields(): Fields
+    public function preparedClonedFields(): FieldsCollection
     {
         $fields = $this->getPreparedFields();
 

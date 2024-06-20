@@ -48,7 +48,7 @@ it('badge value', function (): void {
         ->toBe((string) Badge::make($this->item->no_input, 'green')->render());
 });
 
-it('set value', static function (): void {
+it('set value', function (): void {
     $field = Preview::make('NoInput', 'no_input')
         ->setValue('set value');
 
@@ -56,7 +56,7 @@ it('set value', static function (): void {
         ->toContain('set value');
 });
 
-it('set value and fill', static function (): void {
+it('set value and fill', function (): void {
     $field = Preview::make('NoInput', 'no_input')
         ->setValue('set value')
         ->fill('new value');
@@ -65,7 +65,7 @@ it('set value and fill', static function (): void {
         ->toContain('new value');
 });
 
-it('set value and fill by form', static function (): void {
+it('set value and fill by form', function (): void {
     View::share('errors', new ViewErrorBag());
 
     $form = FormBuilder::make()

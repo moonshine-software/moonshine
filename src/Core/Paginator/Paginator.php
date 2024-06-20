@@ -18,6 +18,7 @@ final class Paginator implements PaginatorContract
         private string $path,
         private iterable $links,
         private readonly iterable $data,
+        private readonly iterable $originalData,
         private readonly int $currentPage,
         private readonly ?int $from,
         private readonly ?int $to,
@@ -40,6 +41,11 @@ final class Paginator implements PaginatorContract
     public function getData(): Collection
     {
         return collect($this->data);
+    }
+
+    public function getOriginalData(): Collection
+    {
+        return collect($this->originalData);
     }
 
     private function changeLinkUrls(string $path): void

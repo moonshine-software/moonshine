@@ -8,13 +8,13 @@ use MoonShine\AssetManager\Js;
 
 uses()->group('asset-manager');
 
-it('empty asset elements', static function (): void {
+it('empty asset elements', function (): void {
     expect(moonshineAssets()->getAssets())
         ->toBeInstanceOf(AssetElements::class)
         ->toBeEmpty();
 });
 
-it('add asset', static function (): void {
+it('add asset', function (): void {
     moonshineAssets()->add(
         Css::make('app.css')
     );
@@ -24,7 +24,7 @@ it('add asset', static function (): void {
         ->each->toBeInstanceOf(Css::class);
 });
 
-it('add unique asset', static function (): void {
+it('add unique asset', function (): void {
     moonshineAssets()->add(
         Css::make('app.css')
     );
@@ -40,7 +40,7 @@ it('add unique asset', static function (): void {
         ->each->toBeInstanceOf(Css::class);
 });
 
-it('asset link', static function (): void {
+it('asset link', function (): void {
     $asset = Js::make('app.js');
 
     expect($asset->getLink())
@@ -48,7 +48,7 @@ it('asset link', static function (): void {
     ;
 });
 
-it('add asset with attributes', static function (): void {
+it('add asset with attributes', function (): void {
     $asset = Css::make('app.css')
         ->defer()
         ->customAttributes([

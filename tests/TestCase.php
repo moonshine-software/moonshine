@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use MoonShine\Core\MoonShineRouter;
 use MoonShine\Laravel\Commands\InstallCommand;
 use MoonShine\Laravel\LaravelMoonShineRouter;
 use MoonShine\Laravel\Models\MoonshineUser;
@@ -39,7 +40,7 @@ class TestCase extends Orchestra
 
     protected ModelResource $moonShineUserResource;
 
-    protected LaravelMoonShineRouter $router;
+    protected MoonShineRouter $router;
 
     protected function setUp(): void
     {
@@ -77,7 +78,7 @@ class TestCase extends Orchestra
 
     protected function resolveFactories(): static
     {
-        Factory::guessFactoryNamesUsing(static function ($factory): string {
+        Factory::guessFactoryNamesUsing(function ($factory): string {
             $factoryBasename = class_basename($factory);
 
             return "MoonShine\Database\Factories\\$factoryBasename" . 'Factory';

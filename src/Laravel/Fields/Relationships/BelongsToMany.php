@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Laravel\Buttons\BelongsToManyButton;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Contracts\Fields\HasPivot;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
@@ -47,6 +48,7 @@ class BelongsToMany extends ModelRelationField implements
     HasFields,
     HasAsyncSearch
 {
+    /** @use WithFields<Fields> */
     use WithFields;
     use WithRelatedValues;
     use Searchable;

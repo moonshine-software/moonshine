@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;
@@ -30,6 +31,7 @@ class RelationRepeater extends ModelRelationField implements
     DefaultCanBeArray,
     DefaultCanBeObject
 {
+    /** @use WithFields<Fields> */
     use WithFields;
     use Removable;
     use WithDefaultValue;

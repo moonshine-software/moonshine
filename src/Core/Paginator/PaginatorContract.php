@@ -28,6 +28,8 @@ interface PaginatorContract extends
 
     public function getData(): Collection;
 
+    public function getOriginalData(): Collection;
+
     public function isSimple(): bool;
 
     public function getCurrentPage(): int;

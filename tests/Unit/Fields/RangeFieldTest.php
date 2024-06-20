@@ -72,7 +72,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('formatted value', static function () {
+    it('formatted value', function () {
         $field = Range::make('Range', formatted: static fn () => ['changed'])
             ->fromTo('start', 'end')
             ->fill([]);
@@ -81,7 +81,7 @@ describe('basic methods', function () {
             ->toBe(['changed']);
     });
 
-    it('default value', static function () {
+    it('default value', function () {
         $field = Range::make('Range')
             ->fromTo('start', 'end')
             ->default([0, 100]);
@@ -99,7 +99,7 @@ describe('basic methods', function () {
             ->toBe(['start' => 10, 'end' => 90]);
     });
 
-    it('applies', static function () {
+    it('applies', function () {
         $field = Range::make('Range')
             ->fromTo('start', 'end')
         ;

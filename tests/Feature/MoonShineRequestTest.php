@@ -53,7 +53,7 @@ it('find resource', function (): void {
 });
 
 
-it('onlyLink parameters', static function (): void {
+it('onlyLink parameters', function (): void {
     fakeRequest('/admin/test-comment-resource/index-page?_parentId=test-image-99');
 
     expect(moonshineRequest()->getParentRelationId())

@@ -23,7 +23,7 @@
 
         @fragment($relationName)
             <div x-data="fragment('{{ $fragmentUrl }}')"
-                 @defineEvent('fragment-updated', $relationName, 'fragmentUpdate')
+                 @defineEvent('fragment_updated', $relationName, 'fragmentUpdate')
             >
         @endif
             @if($isSelectMode)

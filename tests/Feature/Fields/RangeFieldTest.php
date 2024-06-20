@@ -145,7 +145,7 @@ it('apply as base with default', function () {
     ;
 });
 
-it('apply as filter', static function (): void {
+it('apply as filter', function (): void {
     $field = Range::make('Range', 'start_point')
         ->wrapName('filters');
 

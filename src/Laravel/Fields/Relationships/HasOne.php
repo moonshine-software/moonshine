@@ -30,6 +30,7 @@ use Throwable;
  */
 class HasOne extends ModelRelationField implements HasFields
 {
+    /** @use WithFields<Fields> */
     use WithFields;
 
     protected string $view = 'moonshine::fields.relationships.has-one';

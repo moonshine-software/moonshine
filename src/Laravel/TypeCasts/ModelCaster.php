@@ -55,7 +55,8 @@ final readonly class ModelCaster implements MoonShineDataCaster
         $paginator = new PaginatorCaster(
             $data->appends(
                 moonshine()->getRequest()->getExcept('page')
-            )->toArray()
+            )->toArray(),
+            $data->items()
         );
 
         return $paginator->cast();

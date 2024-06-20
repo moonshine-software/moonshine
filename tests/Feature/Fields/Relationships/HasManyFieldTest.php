@@ -15,7 +15,7 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 
-it('onlyLink preview', static function () {
+it('onlyLink preview', function () {
     createItem(countComments: 6);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -32,7 +32,7 @@ it('onlyLink preview', static function () {
     ;
 });
 
-it('onlyLink preview empty', static function () {
+it('onlyLink preview empty', function () {
     createItem(countComments: 0);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -48,7 +48,7 @@ it('onlyLink preview empty', static function () {
     ;
 });
 
-it('onlyLink value', static function () {
+it('onlyLink value', function () {
     $item = createItem(countComments: 16);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -65,7 +65,7 @@ it('onlyLink value', static function () {
     ;
 });
 
-it('onlyLink value empty', static function () {
+it('onlyLink value empty', function () {
     $item = createItem(countComments: 0);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -81,7 +81,7 @@ it('onlyLink value empty', static function () {
     ;
 });
 
-it('onlyLink preview condition', static function () {
+it('onlyLink preview condition', function () {
     $item = createItem(countComments: 6);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
@@ -103,7 +103,7 @@ it('onlyLink preview condition', static function () {
     ;
 });
 
-it('onlyLink value condition', static function () {
+it('onlyLink value condition', function () {
     $item = createItem(countComments: 16);
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([

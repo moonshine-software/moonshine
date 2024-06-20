@@ -66,7 +66,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('default value', static function () {
+    it('default value', function () {
         $field = Switcher::make('Switcher')
             ->onValue(1)
             ->offValue(0)

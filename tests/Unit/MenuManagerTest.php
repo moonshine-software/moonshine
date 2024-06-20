@@ -8,13 +8,13 @@ use Pest\Expectation;
 
 uses()->group('menu-manager');
 
-it('empty menu elements', static function (): void {
+it('empty menu elements', function (): void {
     expect(moonshineMenu()->all())
         ->toBeInstanceOf(MenuElements::class)
         ->toBeEmpty();
 });
 
-it('add menu elements', static function (): void {
+it('add menu elements', function (): void {
     moonshineMenu()->add(MenuItem::make('Item', '/'));
 
     expect(moonshineMenu()->all())
@@ -28,7 +28,7 @@ it('add menu elements', static function (): void {
         );
 });
 
-it('add before menu elements', static function (): void {
+it('add before menu elements', function (): void {
     moonshineMenu()->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
@@ -45,7 +45,7 @@ it('add before menu elements', static function (): void {
         ->toBe($item);
 });
 
-it('add after menu elements', static function (): void {
+it('add after menu elements', function (): void {
     moonshineMenu()->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
@@ -62,7 +62,7 @@ it('add after menu elements', static function (): void {
         ->toBe($item);
 });
 
-it('remove menu elements', static function (): void {
+it('remove menu elements', function (): void {
     moonshineMenu()->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
@@ -78,7 +78,7 @@ it('remove menu elements', static function (): void {
 });
 
 
-it('replace items', static function (): void {
+it('replace items', function (): void {
     moonshineMenu()->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
@@ -91,7 +91,7 @@ it('replace items', static function (): void {
         ->toHaveCount(1);
 });
 
-it('only visible items', static function (): void {
+it('only visible items', function (): void {
     moonshineMenu()->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2')->canSee(static fn () => false),
@@ -103,7 +103,7 @@ it('only visible items', static function (): void {
 });
 
 
-it('check active element', static function (): void {
+it('check active element', function (): void {
     fakeRequest('/item2');
 
     $item1 = MenuItem::make('Item 1', '/item1');

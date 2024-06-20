@@ -52,7 +52,7 @@ describe('basic methods', function () {
         $this->field->default(['default']);
     })->expectException(BadMethodCallException::class);
 
-    it('applies', static function () {
+    it('applies', function () {
         $field = BelongsToMany::make('Categories', resource: new TestCategoryResource());
 
         expect()

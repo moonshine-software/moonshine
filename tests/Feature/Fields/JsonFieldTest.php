@@ -143,7 +143,7 @@ it('apply as relation', function () {
         ->toBe('Test 2');
 });
 
-it('apply as filter', static function (): void {
+it('apply as filter', function (): void {
     $field = Json::make('Json')
         ->fields(exampleFields()->toArray())
         ->wrapName('filters');

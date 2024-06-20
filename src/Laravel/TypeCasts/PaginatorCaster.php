@@ -10,8 +10,10 @@ use MoonShine\Core\Paginator\PaginatorContract;
 
 final readonly class PaginatorCaster implements PaginatorCasterContract
 {
-    public function __construct(private array $data)
-    {
+    public function __construct(
+        private array $data,
+        private iterable $originalData,
+    ) {
     }
 
     public function cast(): PaginatorContract
@@ -22,7 +24,9 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
             )
             ->toArray();
 
-        if(! isset($data['links'])) {
+        $data['originalData'] = $this->originalData;
+
+        if (! isset($data['links'])) {
             $data['links'] = [];
             $data['simple'] = true;
         }

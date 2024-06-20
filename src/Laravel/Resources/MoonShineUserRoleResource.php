@@ -23,6 +23,8 @@ class MoonShineUserRoleResource extends ModelResource
 
     protected bool $editInModal = true;
 
+    protected bool $simplePaginate = true;
+
     public function getTitle(): string
     {
         return __('moonshine::ui.resource.role');

@@ -61,7 +61,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('default value', static function () {
+    it('default value', function () {
         $field = Select::make('Select')->options([
             1 => 1,
             2 => 2,
@@ -115,7 +115,7 @@ describe('basic methods', function () {
             ->toBeFalse();
     });
 
-    it('is selected grouped correctly', static function (): void {
+    it('is selected grouped correctly', function (): void {
         expect(Select::make('Select')->options(
             ['Group 1' => [1 => 1], 'Group 2' => [2 => 2]]
         )->default(2)->toValue())

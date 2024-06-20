@@ -57,7 +57,7 @@ describe('basic methods', function () {
             ->toBe('changed');
     });
 
-    it('formatted value', static function () {
+    it('formatted value', function () {
         $field = Json::make('Json', formatted: static fn () => ['changed'])
             ->fields(exampleFields()->toArray())
             ->fill([]);
@@ -66,7 +66,7 @@ describe('basic methods', function () {
             ->toBe(['changed']);
     });
 
-    it('default value', static function () {
+    it('default value', function () {
         $field = Json::make('Json')
             ->fields(exampleFields()->toArray())
             ->default(['default']);
@@ -83,7 +83,7 @@ describe('basic methods', function () {
             ->toBe(['value']);
     });
 
-    it('applies', static function () {
+    it('applies', function () {
         $field = Json::make('Json')
             ->fields(exampleFields()->toArray());
 
