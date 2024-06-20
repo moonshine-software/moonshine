@@ -12,7 +12,6 @@ use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Core\MoonShineRouter;
 use MoonShine\Laravel\Commands\InstallCommand;
-use MoonShine\Laravel\LaravelMoonShineRouter;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
