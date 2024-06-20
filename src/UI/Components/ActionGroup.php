@@ -21,7 +21,7 @@ final class ActionGroup extends MoonShineComponent
 
     public function fill(?CastedData $data = null): self
     {
-        $this->getActions()->fill($data);
+        $this->actions = $this->getActions()->fill($data);
 
         return $this;
     }
