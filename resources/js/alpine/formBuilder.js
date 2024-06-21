@@ -257,8 +257,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
     const filledFields = new Set()
 
     for (const [name, value] of formData.entries()) {
-      if (name.startsWith('filters') && value) {
-        filledFields.add(name)
+      if (name.startsWith('filters') && value && value !== '0') {
+        filledFields.add(name.replace(/\[(.*?)]/, '$1'))
       }
     }
 

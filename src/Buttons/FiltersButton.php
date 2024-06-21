@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Stringable;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Forms\FiltersForm;
@@ -15,7 +13,7 @@ final class FiltersButton
 {
     public static function for(ModelResource $resource): ActionButton
     {
-        $title = self::title($resource->getFilterParams());
+        $title = (new self)->getTitle($resource->getFilterParams());
 
         return ActionButton::make($title, '#')
             ->secondary()
@@ -31,17 +29,25 @@ final class FiltersButton
             ]);
     }
 
-    private static function title(array $params = []): string
+    private function getTitle(array $params = []): string
     {
         $count = collect($params)
-            ->filter(
-                fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter)
-                    : filled($filter)
-            )
+            ->filter(fn ($value): bool => $this->withoutEmptyFilter($value))
             ->count();
 
         return str(__('moonshine::ui.filters'))
             ->append('<span class="badge">' . ($count ?: '') . '</span>')
             ->value();
+    }
+
+    private function withoutEmptyFilter(mixed $value): bool
+    {
+        if (is_iterable($value) && filled($value)) {
+            return collect($value)
+                ->filter(fn ($v): bool => $this->withoutEmptyFilter($v))
+                ->isNotEmpty();
+        }
+
+        return ! blank($value) && $value !== "0";
     }
 }
