@@ -13,7 +13,7 @@ final class FiltersButton
 {
     public static function for(ModelResource $resource): ActionButton
     {
-        $title = (new self)->getTitle($resource->getFilterParams());
+        $title = (new self())->getTitle($resource->getFilterParams());
 
         return ActionButton::make($title, '#')
             ->secondary()
