@@ -14,6 +14,6 @@
     {{ $slot }}
 
     @if($badge !== false)
-        <span class="badge">{{ $badge }}</span>
+        <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
     @endif
 </a>
