@@ -24,5 +24,5 @@ export default (activeClass, componentEvent) => ({
   activeDefaultQueryTag() {
     const element = document.querySelector('.query-tag-default')
     element.classList.add(activeClass)
-  }
+  },
 })
