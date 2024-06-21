@@ -353,7 +353,7 @@ abstract class Page implements
     protected function systemViewData(): array
     {
         return [
-            'layout' => $this->getLayout()->build($this),
+            'layout' => $this->getLayout()->build(),
         ];
     }
 

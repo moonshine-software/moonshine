@@ -7,8 +7,6 @@ namespace MoonShine\Laravel\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-
-use Illuminate\Filesystem\Filesystem;
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
