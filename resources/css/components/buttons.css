@@ -12,7 +12,7 @@
     }
   }
   .badge {
-    @apply px-2 py-0 ml-auto text-center border border-gray-300 bg-gray-100 dark:border-dark-200 dark:bg-dark-700;
+    @apply ml-auto border border-gray-300 bg-gray-100 px-2 py-0 text-center dark:border-dark-200 dark:bg-dark-700;
   }
   .badge:empty {
     @apply hidden;
