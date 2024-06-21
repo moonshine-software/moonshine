@@ -12,7 +12,7 @@
     }
   }
   .badge {
-    @apply px-2 py-0 text-center bg-white text-black;
+    @apply bg-white px-2 py-0 text-center text-black;
   }
   .badge:empty {
     @apply hidden;
