@@ -43,6 +43,7 @@
                     '@click.prevent' => 'toggleModal',
                 ])"
                 :icon="$action->iconValue()"
+                :badge="$action->getBadge()"
                 :href="$action->url()"
             >
                 {{ $action->label() }}
@@ -55,6 +56,7 @@
         :attributes="$attributes"
         :href="$action->url()"
         :icon="$action->iconValue()"
+        :badge="$action->getBadge()"
     >
         {{ $action->label() }}
     </x-moonshine::link-button>

@@ -74,11 +74,12 @@ trait OnlyLink
             : $value->count();
 
         return ActionButton::make(
-            "($count)",
-            $this->getResource()->indexPageUrl([
+            '',
+            url: $this->getResource()->indexPageUrl([
                 '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
             ])
         )
+            ->badge($count)
             ->icon('heroicons.outline.eye')
             ->when(
                 ! is_null($this->modifyOnlyLinkButton),

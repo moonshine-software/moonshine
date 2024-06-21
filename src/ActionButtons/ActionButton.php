@@ -13,6 +13,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\AsyncCallback;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\InDropdownOrLine;
+use MoonShine\Traits\WithBadge;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use MoonShine\Traits\WithModal;
@@ -24,6 +25,7 @@ use Throwable;
  */
 class ActionButton extends MoonShineComponent implements ActionButtonContract
 {
+    use WithBadge;
     use WithLabel;
     use WithIcon;
     use WithOffCanvas;
@@ -316,5 +318,13 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         }
 
         return $this->customAttributes(['class' => 'btn-error']);
+    }
+    public function info(Closure|bool|null $condition = null): self
+    {
+        if (! Condition::boolean($condition, true)) {
+            return $this;
+        }
+
+        return $this->customAttributes(['class' => 'btn-info']);
     }
 }

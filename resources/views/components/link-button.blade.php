@@ -1,5 +1,6 @@
 @props([
     'icon' => false,
+    'badge' => false,
     'filled' => false,
 ])
 <a {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
@@ -11,4 +12,8 @@
     @endif
 
     {{ $slot }}
+
+    @if($badge !== false)
+        <span class="badge">{{ $badge }}</span>
+    @endif
 </a>
