@@ -41,8 +41,7 @@ final class FiltersButton
             ->count();
 
         return str(__('moonshine::ui.filters'))
-            ->when($count, fn (Stringable $str): Stringable => $str->append(" ($count)"))
-            ->wrap('<span>', '</span>')
+            ->append('<span class="badge">' . ($count ?: '') . '</span>')
             ->value();
     }
 }

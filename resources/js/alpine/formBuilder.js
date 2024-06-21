@@ -224,17 +224,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
       filterQuery: prepareFormQueryString(formData, exclude),
     })
 
-    let filledFields = new Set()
-    for (const [name, value] of formData.entries()) {
-      if (name.startsWith('filters') && value) {
-        filledFields.add(name)
-      }
-    }
-
-    document.querySelectorAll('.btn-filter span').forEach(function (element) {
-      element.innerHTML =
-        translates.filters + (filledFields.size ? ' (' + filledFields.size + ')' : '')
-    })
+    this.filtersCount()
   },
 
   onChangeField(event) {
@@ -259,6 +249,21 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
     Array.from(this.$el.elements).forEach(element => {
       element.dispatchEvent(new Event('reset'))
+    })
+  },
+  filtersCount() {
+    const form = this.$el
+    const formData = new FormData(form)
+    const filledFields = new Set()
+
+    for (const [name, value] of formData.entries()) {
+      if (name.startsWith('filters') && value) {
+        filledFields.add(name)
+      }
+    }
+
+    document.querySelectorAll('.btn-filter .badge').forEach(function (element) {
+      element.innerHTML = filledFields.size || ''
     })
   },
 

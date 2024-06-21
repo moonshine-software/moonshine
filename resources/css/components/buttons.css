@@ -11,6 +11,12 @@
       @apply h-5 w-5;
     }
   }
+  .badge {
+    @apply px-2 py-0 text-center bg-white text-black;
+  }
+  .badge:empty {
+    @apply hidden;
+  }
 }
 
 /* Button themes */
