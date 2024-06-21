@@ -67,6 +67,8 @@ abstract class Page implements
 
     protected bool $checkUrl = false;
 
+    protected bool $loaded = false;
+
     public function __construct(
         ?string $title = null,
         ?string $alias = null,
@@ -84,14 +86,30 @@ abstract class Page implements
             $this->setResource($resource);
         }
 
-        $this->resolveAssets();
-
         $this->booted();
     }
 
     protected function booted(): void
     {
         //
+    }
+
+    protected function onLoad(): void
+    {
+        $this->resolveAssets();
+    }
+
+    public function loaded(): static
+    {
+        if ($this->loaded) {
+            return $this;
+        }
+
+        $this->onLoad();
+
+        $this->loaded = true;
+
+        return $this;
     }
 
     /**
@@ -297,7 +315,7 @@ abstract class Page implements
             );
         }
 
-        return moonshine()->getContainer($this->layout);
+        return moonshine()->getContainer($this->layout, null, page: $this);
     }
 
     public function getRoute(array $params = []): string

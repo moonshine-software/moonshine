@@ -14,7 +14,7 @@ trait HasResourceRequest
 
         return memoize(fn (): ?ResourceContract => moonshine()->getResources()->findByUri(
             $this->getResourceUri()
-        )?->loaded());
+        ));
     }
 
     public function hasResource(): bool

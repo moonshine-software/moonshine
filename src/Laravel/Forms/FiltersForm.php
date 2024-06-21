@@ -74,7 +74,6 @@ final readonly class FiltersForm implements FormContract
             ->when($resource->isAsync(), function (FormBuilder $form) use ($resource): void {
                 $events = [
                     $resource->getListEventName(),
-                    'disable-query-tags',
                     'show-reset:filters',
                     AlpineJs::event(JsEvent::OFF_CANVAS_TOGGLED, 'filters-off-canvas'),
                 ];

@@ -59,7 +59,7 @@
     "unisharp/laravel-filemanager": "Required if you want tinymce file manager"
   },
   "conflict": {
-    "laravel/framework": "<11.0.0"
+    "laravel/framework": "<10.48.0"
   },
   "scripts": {
     "analyse": "vendor/bin/phpstan analyse src --memory-limit=-1",

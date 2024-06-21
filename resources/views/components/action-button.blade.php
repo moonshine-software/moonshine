@@ -12,7 +12,7 @@
 >
     <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-    {{ $label }}
+    {!! $label !!}
 </x-moonshine::link-button>
 
 @if($hasComponent)

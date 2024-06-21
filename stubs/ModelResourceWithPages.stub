@@ -28,7 +28,7 @@ class DummyResource extends ModelResource
     public function pages(): array
     {
         return [
-            {indexPage}::make($this->title()),
+            {indexPage}::make($this->getTitle()),
             {formPage}::make(
                 $this->getItemID()
                     ? __('moonshine::ui.edit')

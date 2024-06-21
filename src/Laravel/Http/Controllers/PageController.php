@@ -11,7 +11,12 @@ class PageController extends MoonShineController
 {
     public function __invoke(MoonShineRequest $request): Page|JsonResponse
     {
-        $page = $request->getPage()->checkUrl();
+        $page = $request
+            ->getPage()
+            ->checkUrl()
+            ->loaded();
+
+        $request->getResource()?->loaded();
 
         if($request->wantsJson() && $request->hasHeader('X-MS-Structure')) {
             return $this->structureResponse($page, $request);

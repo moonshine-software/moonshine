@@ -15,6 +15,7 @@ use MoonShine\UI\Components\Layout\{LayoutBuilder};
 abstract class MoonShineLayout
 {
     public function __construct(
+        private readonly PageContract $page,
         private readonly AssetManager $assetManager,
         private readonly ColorManager $colorManager,
         private readonly MenuManager $menuManager,
@@ -30,6 +31,11 @@ abstract class MoonShineLayout
         $this->colors(
             $this->colorManager
         );
+    }
+
+    protected function getPage(): PageContract
+    {
+        return $this->page;
     }
 
     protected function colors(ColorManager $colorManager): void
@@ -50,5 +56,5 @@ abstract class MoonShineLayout
         return [];
     }
 
-    abstract public function build(PageContract $page): LayoutBuilder;
+    abstract public function build(): LayoutBuilder;
 }

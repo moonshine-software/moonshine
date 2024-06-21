@@ -228,11 +228,30 @@ export default (name = '', initData = {}, reactive = {}) => ({
     const form = this.$el
     const formData = new FormData(form)
 
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    formData.set('query-tag', urlSearchParams.get('query-tag') || '')
+    formData.set('sort', urlSearchParams.get('sort') || '')
+
     this.dispatchEvents(componentEvent, exclude, {
       filterQuery: prepareFormQueryString(formData, exclude),
     })
-  },
 
+    this.filtersCount()
+  },
+  filtersCount() {
+    let filledFields = new Set()
+
+    for (const [name, value] of formData.entries()) {
+      if (name.startsWith('filters') && value) {
+        filledFields.add(name)
+      }
+    }
+
+    document.querySelectorAll('.btn-filter span').forEach(function (element) {
+      element.innerHTML =
+        translates.filters + (filledFields.size ? ' (' + filledFields.size + ')' : '')
+    })
+  },
   onChangeField(event) {
     this.showWhenChange(
       event.target.getAttribute('name'),

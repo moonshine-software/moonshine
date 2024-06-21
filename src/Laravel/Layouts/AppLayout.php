@@ -4,35 +4,30 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Laravel\Components\Layout\Flash;
-use MoonShine\Laravel\Components\Layout\Locales;
-use MoonShine\Laravel\Components\Layout\Notifications;
-use MoonShine\Laravel\Components\Layout\Profile;
-use MoonShine\Laravel\Components\Layout\Search;
+use MoonShine\UI\MoonShineLayout;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
-use MoonShine\UI\Components\Breadcrumbs;
-use MoonShine\UI\Components\Components;
-use MoonShine\UI\Components\Layout\Block;
-use MoonShine\UI\Components\Layout\Body;
-use MoonShine\UI\Components\Layout\Burger;
-use MoonShine\UI\Components\Layout\Content;
-use MoonShine\UI\Components\Layout\Footer;
-use MoonShine\UI\Components\Layout\Head;
-use MoonShine\UI\Components\Layout\Header;
-use MoonShine\UI\Components\Layout\Html;
-use MoonShine\UI\Components\Layout\LayoutBuilder;
-use MoonShine\UI\Components\Layout\Logo;
-use MoonShine\UI\Components\Layout\Menu;
-use MoonShine\UI\Components\Layout\Sidebar;
-use MoonShine\UI\Components\Layout\ThemeSwitcher;
-use MoonShine\UI\Components\Layout\Wrapper;
-use MoonShine\UI\Components\Title;
-use MoonShine\UI\Components\When;
-use MoonShine\UI\MoonShineLayout;
+use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use MoonShine\UI\Components\{Breadcrumbs,
+    Components,
+    Layout\Block,
+    Layout\Body,
+    Layout\Burger,
+    Layout\Content,
+    Layout\Footer,
+    Layout\Head,
+    Layout\Header,
+    Layout\Html,
+    Layout\LayoutBuilder,
+    Layout\Logo,
+    Layout\Menu,
+    Layout\Sidebar,
+    Layout\ThemeSwitcher,
+    Layout\Wrapper,
+    Title,
+    When};
 
 class AppLayout extends MoonShineLayout
 {
@@ -52,14 +47,14 @@ class AppLayout extends MoonShineLayout
         ];
     }
 
-    public function build(PageContract $page): LayoutBuilder
+    public function build(): LayoutBuilder
     {
         $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
         $logoSmall = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
 
         return LayoutBuilder::make([
             Html::make([
-                Head::make()->title($page->getTitle()),
+                Head::make()->title($this->getPage()->getTitle()),
                 Body::make([
                     Wrapper::make([
                         Sidebar::make([
@@ -98,7 +93,7 @@ class AppLayout extends MoonShineLayout
                         Block::make([
                             Flash::make(),
                             Header::make([
-                                Breadcrumbs::make($page->getBreadcrumbs())
+                                Breadcrumbs::make($this->getPage()->getBreadcrumbs())
                                     ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
                                 Search::make(),
@@ -112,10 +107,10 @@ class AppLayout extends MoonShineLayout
                             ]),
 
                             Content::make([
-                                Title::make($page->getTitle())->class('mb-6'),
+                                Title::make($this->getPage()->getTitle())->class('mb-6'),
 
                                 Components::make(
-                                    $page->getComponents()
+                                    $this->getPage()->getComponents()
                                 ),
                             ]),
 

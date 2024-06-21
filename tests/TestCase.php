@@ -68,6 +68,7 @@ class TestCase extends Orchestra
         $this->artisan(InstallCommand::class, [
             '--without-user' => true,
             '--without-migrations' => true,
+            '--default-layout' => true,
         ]);
 
         $this->artisan('optimize:clear');

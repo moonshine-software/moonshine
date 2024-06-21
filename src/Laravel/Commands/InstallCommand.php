@@ -8,6 +8,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Filesystem\Filesystem;
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
@@ -17,7 +18,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:install')]
 class InstallCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:install {--u|without-user} {--m|without-migrations}';
+    protected $signature = 'moonshine:install {--u|without-user} {--m|without-migrations} {--l|default-layout}';
 
     protected $description = 'Install the moonshine package';
 
@@ -35,6 +36,7 @@ class InstallCommand extends MoonShineCommand
             $this->initDirectories();
             $this->initDashboard();
             $this->initMigrations();
+            $this->initLayout();
         }, 'Installation completed');
 
         $userCreated = false;
@@ -139,7 +141,7 @@ class InstallCommand extends MoonShineCommand
         ]);
 
         $this->replaceInFile(
-            "'dashboard' => 'Dashboard::class'",
+            "'dashboard' => Dashboard::class",
             "'dashboard' => " . moonshineConfig()->getNamespace('\Pages\Dashboard') . "::class",
             config_path('moonshine.php')
         );
@@ -158,5 +160,36 @@ class InstallCommand extends MoonShineCommand
         } else {
             $this->components->task('Installed without default migrations');
         }
+    }
+
+    protected function initLayout(): void
+    {
+        $compact = ! $this->option('default-layout') && confirm('Want to use a minimalist theme?');
+
+        $className = 'MoonShineLayout';
+        $extendClassName = $compact ? 'CompactLayout' : 'AppLayout';
+
+        $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
+
+        if(! is_dir($this->getDirectory() . '/Layouts')) {
+            $this->makeDir($this->getDirectory() . '/Layouts');
+        }
+
+        $layout = $this->getDirectory() . "/Layouts/$className.php";
+
+        $this->copyStub('Layout', $layout, [
+            '{namespace}' => moonshineConfig()->getNamespace('\Layouts'),
+            '{extend}' => $extends,
+            '{extendShort}' => class_basename($extends),
+            'DummyLayout' => $className,
+        ]);
+
+        $this->replaceInFile(
+            "'layout' => AppLayout::class",
+            "'layout' => " . moonshineConfig()->getNamespace('\Layouts\\' . $className) . "::class",
+            config_path('moonshine.php')
+        );
+
+        $this->components->task('Layout published');
     }
 }

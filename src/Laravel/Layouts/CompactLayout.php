@@ -6,32 +6,27 @@ namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\AssetManager\Css;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Laravel\Components\Layout\Flash;
-use MoonShine\Laravel\Components\Layout\Locales;
-use MoonShine\Laravel\Components\Layout\Notifications;
-use MoonShine\Laravel\Components\Layout\Profile;
-use MoonShine\Laravel\Components\Layout\Search;
-use MoonShine\UI\Components\Breadcrumbs;
-use MoonShine\UI\Components\Components;
-use MoonShine\UI\Components\Layout\Block;
-use MoonShine\UI\Components\Layout\Body;
-use MoonShine\UI\Components\Layout\Burger;
-use MoonShine\UI\Components\Layout\Content;
-use MoonShine\UI\Components\Layout\Footer;
-use MoonShine\UI\Components\Layout\Head;
-use MoonShine\UI\Components\Layout\Header;
-use MoonShine\UI\Components\Layout\Html;
-use MoonShine\UI\Components\Layout\LayoutBuilder;
-use MoonShine\UI\Components\Layout\Logo;
-use MoonShine\UI\Components\Layout\Menu;
-use MoonShine\UI\Components\Layout\Sidebar;
-use MoonShine\UI\Components\Layout\ThemeSwitcher;
-use MoonShine\UI\Components\Layout\TopBar;
-use MoonShine\UI\Components\Layout\Wrapper;
-use MoonShine\UI\Components\When;
+use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use MoonShine\UI\Components\{Breadcrumbs,
+    Components,
+    Layout\Block,
+    Layout\Body,
+    Layout\Burger,
+    Layout\Content,
+    Layout\Footer,
+    Layout\Head,
+    Layout\Header,
+    Layout\Html,
+    Layout\LayoutBuilder,
+    Layout\Logo,
+    Layout\Menu,
+    Layout\Sidebar,
+    Layout\ThemeSwitcher,
+    Layout\TopBar,
+    Layout\Wrapper,
+    When};
 
-final class CompactLayout extends AppLayout
+class CompactLayout extends AppLayout
 {
     protected function assets(): array
     {
@@ -90,7 +85,7 @@ final class CompactLayout extends AppLayout
             ->infoText('179, 220, 255', dark: true);
     }
 
-    public function build(PageContract $page): LayoutBuilder
+    public function build(): LayoutBuilder
     {
         $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
         $logoSmall = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
@@ -165,7 +160,7 @@ final class CompactLayout extends AppLayout
                         Block::make([
                             Flash::make(),
                             Header::make([
-                                Breadcrumbs::make($page->getBreadcrumbs())
+                                Breadcrumbs::make($this->getPage()->getBreadcrumbs())
                                     ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
                                 Search::make(),
@@ -177,7 +172,7 @@ final class CompactLayout extends AppLayout
 
                             Content::make([
                                 Components::make(
-                                    $page->getComponents()
+                                    $this->getPage()->getComponents()
                                 ),
                             ]),
 

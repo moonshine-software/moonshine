@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
-use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Laravel\Components\SocialAuth;
+use MoonShine\UI\MoonShineLayout;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Heading;
-use MoonShine\UI\Components\Layout\Block;
-use MoonShine\UI\Components\Layout\Body;
-use MoonShine\UI\Components\Layout\Head;
-use MoonShine\UI\Components\Layout\Html;
-use MoonShine\UI\Components\Layout\LayoutBuilder;
-use MoonShine\UI\Components\Layout\Logo;
-use MoonShine\UI\MoonShineLayout;
+use MoonShine\UI\Components\Layout\{Block, Body, Head, Html, LayoutBuilder, Logo};
 
 final class LoginLayout extends MoonShineLayout
 {
-    public function build(PageContract $page): LayoutBuilder
+    public function build(): LayoutBuilder
     {
         $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
 
@@ -43,7 +37,7 @@ final class LoginLayout extends MoonShineLayout
                                 ])->class('description'),
                             ])->class('authentication-header'),
 
-                            Components::make($page->getComponents()),
+                            Components::make($this->getPage()->getComponents()),
                         ])->class('authentication-content'),
 
                         SocialAuth::make(),

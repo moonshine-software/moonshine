@@ -92,30 +92,56 @@ trait ResourceWithButtons
         return [];
     }
 
+    protected function modifyCreateButton(ActionButton $button): ActionButton
+    {
+        return $button;
+    }
+
     public function getCreateButton(?string $componentName = null, bool $isAsync = true): ActionButton
     {
-        return CreateButton::for(
-            $this,
-            componentName: $componentName,
-            isAsync: $isAsync
+        return $this->modifyCreateButton(
+            CreateButton::for(
+                $this,
+                componentName: $componentName,
+                isAsync: $isAsync
+            )
         );
+    }
+
+    protected function modifyEditButton(ActionButton $button): ActionButton
+    {
+        return $button;
     }
 
     public function getEditButton(?string $componentName = null, bool $isAsync = true): ActionButton
     {
-        return EditButton::for(
-            $this,
-            componentName: $componentName,
-            isAsync: $isAsync
+        return $this->modifyEditButton(
+            EditButton::for(
+                $this,
+                componentName: $componentName,
+                isAsync: $isAsync
+            )
         );
+    }
+
+    protected function modifyDetailButton(ActionButton $button): ActionButton
+    {
+        return $button;
     }
 
     public function getDetailButton(bool $isAsync = true): ActionButton
     {
-        return DetailButton::for(
-            $this,
-            isAsync: $isAsync
+        return $this->modifyDetailButton(
+            DetailButton::for(
+                $this,
+                isAsync: $isAsync
+            )
         );
+    }
+
+    protected function modifyDeleteButton(ActionButton $button): ActionButton
+    {
+        return $button;
     }
 
     public function getDeleteButton(
@@ -123,12 +149,19 @@ trait ResourceWithButtons
         string $redirectAfterDelete = '',
         bool $isAsync = true
     ): ActionButton {
-        return DeleteButton::for(
-            $this,
-            componentName: $componentName,
-            redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
-            isAsync: $isAsync
+        return $this->modifyDeleteButton(
+            DeleteButton::for(
+                $this,
+                componentName: $componentName,
+                redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
+                isAsync: $isAsync
+            )
         );
+    }
+
+    protected function modifyMassDeleteButton(ActionButton $button): ActionButton
+    {
+        return $button;
     }
 
     public function getMassDeleteButton(
@@ -136,11 +169,13 @@ trait ResourceWithButtons
         string $redirectAfterDelete = '',
         bool $isAsync = true
     ): ActionButton {
-        return MassDeleteButton::for(
-            $this,
-            componentName: $componentName,
-            redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
-            isAsync: $isAsync
+        return $this->modifyMassDeleteButton(
+            MassDeleteButton::for(
+                $this,
+                componentName: $componentName,
+                redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
+                isAsync: $isAsync
+            )
         );
     }
 

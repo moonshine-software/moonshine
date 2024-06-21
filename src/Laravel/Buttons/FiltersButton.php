@@ -29,7 +29,8 @@ final class FiltersButton
                 name: 'filters-off-canvas',
                 builder: static fn (OffCanvas $offCanvas): OffCanvas => $offCanvas->setComponents([$form])
             )
-            ->showInLine();
+            ->showInLine()
+            ->class('btn-filter');
     }
 
     private static function getTitle(array $params = []): string
@@ -42,7 +43,8 @@ final class FiltersButton
             ->count();
 
         return str(__('moonshine::ui.filters'))
-            ->when($count, static fn (Stringable $str): Stringable => $str->append("($count)"))
+            ->when($count, static fn (Stringable $str): Stringable => $str->append(" ($count)"))
+            ->wrap('<span>', '</span>')
             ->value();
     }
 }

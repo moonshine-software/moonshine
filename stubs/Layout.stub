@@ -4,25 +4,29 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\UI\Components\Layout\{Content,
-    Footer,
-    Header,
-    Block,
-    LayoutBuilder,
-    Menu,
-    Sidebar};
-use MoonShine\Laravel\Components\Search;
-use MoonShine\Laravel\Components\Profile;
-use MoonShine\Laravel\Components\Flash;
-use MoonShine\UI\Components\When;
-use MoonShine\UI\MoonShineLayout;
-use MoonShine\ColorManager;
-use MoonShine\Laravel\Pages\Page;
-use MoonShine\UI\Components\Title;
-use MoonShine\UI\Components\Breadcrumbs;
-use MoonShine\UI\Components\Components;
+use {extend};
+use MoonShine\ColorManager\ColorManager;
+use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use MoonShine\UI\Components\{Breadcrumbs,
+    Components,
+    Layout\Block,
+    Layout\Body,
+    Layout\Burger,
+    Layout\Content,
+    Layout\Footer,
+    Layout\Head,
+    Layout\Header,
+    Layout\Html,
+    Layout\LayoutBuilder,
+    Layout\Logo,
+    Layout\Menu,
+    Layout\Sidebar,
+    Layout\ThemeSwitcher,
+    Layout\TopBar,
+    Layout\Wrapper,
+    When};
 
-final class DummyLayout extends MoonShineLayout
+final class DummyLayout extends {extendShort}
 {
     protected function assets(): array
     {
@@ -33,54 +37,20 @@ final class DummyLayout extends MoonShineLayout
 
     protected function menu(): array
     {
-        return [];
+        return [
+            ...parent::menu(),
+        ];
     }
 
     protected function colors(ColorManager $colorManager): void
     {
+        parent::colors($colorManager);
+
         // $colorManager->primary('#00000');
     }
 
-    public function build(Page $page): LayoutBuilder
+    public function build(): LayoutBuilder
     {
-        return LayoutBuilder::make([
-            Sidebar::make([
-                Menu::make(),
-                When::make(
-                    static fn() => config('moonshine.auth.enable', true),
-                    static fn() => [Profile::make(withBorder: true)]
-                ),
-            ]),
-            Block::make([
-                Flash::make(),
-                Header::make([
-                    Breadcrumbs::make($page->getBreadcrumbs()),
-                    Search::make(),
-                ]),
-                Content::make([
-                    Title::make($page->getTitle()),
-
-                    Components::make(
-                        $page->getComponents()
-                    ),
-                ]),
-                Footer::make()
-                    ->copyright(static fn(): string => sprintf(
-                        <<<'HTML'
-                            &copy; 2021-%d Made with ❤️ by
-                            <a href="https://cutcode.dev"
-                                class="font-semibold text-primary hover:text-secondary"
-                                target="_blank"
-                            >
-                                CutCode
-                            </a>
-                        HTML,
-                        now()->year
-                    ))
-                    ->menu([
-                        'https://moonshine-laravel.com/docs' => 'Documentation',
-                    ]),
-            ])->class('layout-page'),
-        ]);
+        return parent::build();
     }
 }
