@@ -19,7 +19,7 @@ trait WithBadge
 
     public function hasBadge(): bool
     {
-        return !empty($this->badge);
+        return ! empty($this->badge);
     }
 
     public function getBadge(): mixed
