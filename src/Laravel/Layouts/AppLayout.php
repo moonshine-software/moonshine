@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
-use MoonShine\UI\MoonShineLayout;
+use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
-use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
     Layout\Block,
@@ -28,6 +27,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\Wrapper,
     Title,
     When};
+use MoonShine\UI\MoonShineLayout;
 
 class AppLayout extends MoonShineLayout
 {

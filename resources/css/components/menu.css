@@ -272,7 +272,7 @@
     }
 
     &-inner {
-      @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
+      @apply flex gap-x-0.5 lg:gap-x-1.5;
 
       &:last-of-type {
         @apply grow;

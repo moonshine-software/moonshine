@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\UI\Components\Components;
-use MoonShine\UI\MoonShineLayout;
 use MoonShine\UI\Components\Layout\{Body, Head, Html, LayoutBuilder};
+use MoonShine\UI\MoonShineLayout;
 
 final class BlankLayout extends MoonShineLayout
 {
