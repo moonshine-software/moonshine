@@ -133,8 +133,7 @@ trait ResourceWithButtons
     {
         return $this->modifyDetailButton(
             DetailButton::for(
-                $this,
-                isAsync: $isAsync
+                $this
             )
         );
     }
