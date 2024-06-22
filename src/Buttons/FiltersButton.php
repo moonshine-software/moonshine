@@ -13,9 +13,11 @@ final class FiltersButton
 {
     public static function for(ModelResource $resource): ActionButton
     {
-        $title = (new self())->getTitle($resource->getFilterParams());
+        $count = collect($resource->getFilterParams())
+            ->filter(fn ($value): bool => (new self())->withoutEmptyFilter($value))
+            ->count();
 
-        return ActionButton::make($title, '#')
+        return ActionButton::make(__('moonshine::ui.filters'), '#')
             ->secondary()
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
@@ -26,18 +28,11 @@ final class FiltersButton
             ->showInLine()
             ->customAttributes([
                 'class' => 'btn-filter',
-            ]);
-    }
-
-    private function getTitle(array $params = []): string
-    {
-        $count = collect($params)
-            ->filter(fn ($value): bool => $this->withoutEmptyFilter($value))
-            ->count();
-
-        return str(__('moonshine::ui.filters'))
-            ->append('<span class="badge">' . ($count ?: '') . '</span>')
-            ->value();
+            ])
+            ->when(
+                $resource->isAsync() || $count,
+                fn (ActionButton $action) => $action->badge($count)
+            );
     }
 
     private function withoutEmptyFilter(mixed $value): bool

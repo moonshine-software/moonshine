@@ -10,7 +10,11 @@
                 size="6"
             />
 
-            {!! $action->label() !!}
+            {{ $action->label() }}
+
+            @if($action->hasBadge())
+                <x-moonshine::badge color="">{{ $action->getBadge() }}</x-moonshine::badge>
+            @endif
         </x-slot:toggler>
 
         {!! $action->offCanvas()->content($action->getItem()) !!}
