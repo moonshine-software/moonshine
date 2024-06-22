@@ -19,11 +19,13 @@ trait WithBadge
 
     public function hasBadge(): bool
     {
-        return filled($this->getBadge());
+        return $this->badge !== null;
     }
 
-    public function getBadge(): mixed
+    public function getBadge(): string|int|float|false
     {
-        return value($this->badge, $this);
+        $badge = value($this->badge, $this);
+
+        return filled($badge) ? $badge : false;
     }
 }
