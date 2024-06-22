@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\Laravel\Components\SocialAuth;
-use MoonShine\UI\MoonShineLayout;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\{Block, Body, Head, Html, LayoutBuilder, Logo};
+use MoonShine\UI\MoonShineLayout;
 
 final class LoginLayout extends MoonShineLayout
 {
