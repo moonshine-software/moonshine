@@ -12,8 +12,7 @@ use MoonShine\UI\Components\Modal;
 final class DetailButton
 {
     public static function for(
-        ModelResource $resource,
-        bool $isAsync = true
+        ModelResource $resource
     ): ActionButton {
         if(! $resource->getDetailPage()) {
             return ActionButton::emptyHidden();
