@@ -264,7 +264,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
     }
 
     document.querySelectorAll('.btn-filter .badge').forEach(function (element) {
-      element.innerHTML = filledFields.size || ''
+      element.innerHTML = filledFields.size
     })
   },
 
