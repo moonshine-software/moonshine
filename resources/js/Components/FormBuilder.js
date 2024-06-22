@@ -245,7 +245,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
     for (const [name, value] of formData.entries()) {
       if (name.startsWith('filters') && value && value !== '0') {
-        const match = name.match(/\[(.*?)]/);
+        const match = name.match(/\[(.*?)]/)
         filledFields.add(match ? match[1] : null)
       }
     }
