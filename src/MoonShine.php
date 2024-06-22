@@ -91,6 +91,13 @@ class MoonShine
         return value(self::$container, self::class);
     }
 
+    /**
+     * @template T
+     * @param  class-string<T>  $id
+     * @param  mixed|null  $default
+     * @param ...$parameters
+     * @return T
+     */
     public function getContainer(string $id, mixed $default = null, ...$parameters): mixed
     {
         return value(self::$container, $id, $default, $parameters);

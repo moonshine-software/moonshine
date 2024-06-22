@@ -2,7 +2,7 @@
     'label' => '',
     'url' => '#',
     'icon' => '',
-    'badge' => '',
+    'badge' => false,
     'top' => false,
 ])
 <a
@@ -19,7 +19,7 @@
 
     <span class="menu-inner-text">{{ $label }}</span>
 
-    @if($badge)
+    @if($badge !== false)
         <span class="menu-inner-counter">{{ $badge }}</span>
     @endif
 </a>

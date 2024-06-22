@@ -8,12 +8,14 @@ use Closure;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
+use MoonShine\UI\Traits\WithBadge;
 
 /**
  * @method static static make(Closure|string $href, Closure|string $label = '')
  */
 final class Link extends MoonShineComponent
 {
+    use WithBadge;
     use WithLabel;
     use WithIcon;
 
@@ -78,6 +80,7 @@ final class Link extends MoonShineComponent
                 $this->getIcon(4)
             ),
             'filled' => $this->isFilled,
+            'badge' => $this->hasBadge() ? $this->getBadge() : false,
         ];
     }
 }

@@ -239,17 +239,19 @@ export default (name = '', initData = {}, reactive = {}) => ({
     this.filtersCount()
   },
   filtersCount() {
-    let filledFields = new Set()
+    const form = this.$el
+    const formData = new FormData(form)
+    const filledFields = new Set()
 
     for (const [name, value] of formData.entries()) {
-      if (name.startsWith('filters') && value) {
-        filledFields.add(name)
+      if (name.startsWith('filters') && value && value !== '0') {
+        const match = name.match(/\[(.*?)]/);
+        filledFields.add(match ? match[1] : null)
       }
     }
 
-    document.querySelectorAll('.btn-filter span').forEach(function (element) {
-      element.innerHTML =
-        translates.filters + (filledFields.size ? ' (' + filledFields.size + ')' : '')
+    document.querySelectorAll('.btn-filter .badge').forEach(function (element) {
+      element.innerHTML = filledFields.size
     })
   },
   onChangeField(event) {

@@ -9,6 +9,7 @@ use MoonShine\Core\Contracts\MenuFiller;
 use MoonShine\Support\Attributes;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Traits\WithBadge;
 use Throwable;
 
 /**
@@ -16,9 +17,9 @@ use Throwable;
  */
 class MenuItem extends MenuElement
 {
-    protected string $view = 'moonshine::components.menu.item';
+    use WithBadge;
 
-    protected ?Closure $badge = null;
+    protected string $view = 'moonshine::components.menu.item';
 
     protected Closure|string|null $url = null;
 
@@ -81,23 +82,6 @@ class MenuItem extends MenuElement
     public function getFiller(): MenuFiller|Closure|string
     {
         return $this->filler;
-    }
-
-    public function badge(Closure $callback): static
-    {
-        $this->badge = $callback;
-
-        return $this;
-    }
-
-    public function hasBadge(): bool
-    {
-        return is_callable($this->badge);
-    }
-
-    public function getBadge(): mixed
-    {
-        return value($this->badge);
     }
 
     public function whenActive(Closure $when): static
@@ -194,18 +178,14 @@ class MenuItem extends MenuElement
             'url' => $this->getUrl(),
         ];
 
-        if ($this->hasBadge() && $badge = $this->getBadge()) {
-            $viewData['badge'] = $badge;
-        }
-
-        $viewData['actionButton'] = $this->actionButton
+        $viewData['button'] = (string) $this->actionButton
+            ->badge($this->hasBadge() ? $this->getBadge() : null)
             ->setUrl($this->getUrl())
             ->customView('moonshine::components.menu.item-link', [
                 'url' => $this->getUrl(),
                 'label' => $this->getLabel(),
                 'icon' => $this->getIcon(6),
                 'top' => $this->isTopMode(),
-                'badge' => $viewData['badge'] ?? '',
             ]);
 
         return $viewData;

@@ -4,11 +4,13 @@
     'url' => '#',
     'icon' => '',
     'label' => '',
-    'component' => null
+    'component' => null,
+    'badge' => false,
 ])
 <x-moonshine::link-button
     :attributes="$attributes"
     :href="$url"
+    :badge="$badge"
 >
     <x-slot:icon>{!! $icon !!}</x-slot:icon>
 

@@ -20,7 +20,7 @@ class MoonshineUserFactory extends Factory
     {
         return [
             'moonshine_user_role_id' => MoonshineUserRole::DEFAULT_ROLE_ID,
-            'name' => fake()->name(),
+            'name' => str_replace("'", "", fake()->name()),
             'email' => fake()->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),

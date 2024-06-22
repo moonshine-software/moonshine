@@ -268,7 +268,7 @@
 
     /* Main navigation */
     &-navigation {
-      @apply block lg:grow lg:overflow-x-auto lg:overflow-y-hidden;
+      @apply block lg:grow;
     }
 
     &-inner {

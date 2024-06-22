@@ -15,10 +15,7 @@ export function listComponentRequest(component, pushState = false) {
 
   if (component.$event.detail && component.$event.detail.queryTag) {
     url = prepareListComponentRequestUrl(url)
-
-    if (component.$event.detail.queryTag !== 'query-tag=null') {
-      url = urlWithQuery(url, component.$event.detail.queryTag)
-    }
+    url = urlWithQuery(url, component.$event.detail.queryTag)
   }
 
   // todo change to Request

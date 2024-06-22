@@ -20,14 +20,12 @@ final class QueryTagButton
             ->customAttributes([
                 'class' => 'query-tag-button',
                 'x-data' => 'asyncLink(`btn-primary`, `' . $resource->getListEventName() . '`)',
-                'x-on:disable-query-tags.window' => 'disableQueryTags',
             ])
             ->when(
                 $tag->isActive(),
                 static fn (ActionButton $btn): ActionButton => $btn
                     ->primary()
                     ->customAttributes([
-                        'class' => 'active-query-tag',
                         'href' => $resource->getIndexPageUrl(),
                     ])
             )
@@ -38,6 +36,13 @@ final class QueryTagButton
                         static fn ($action): string => "queryTagRequest(`{$tag->getUri()}`)",
                         'prevent'
                     )
+            )
+            ->when(
+                $tag->isDefault(),
+                fn (ActionButton $btn): ActionButton => $btn
+                    ->customAttributes([
+                        'class' => 'query-tag-default',
+                    ])
             );
     }
 }

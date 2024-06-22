@@ -17,6 +17,7 @@ use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
+use MoonShine\UI\Traits\WithBadge;
 use Throwable;
 
 /**
@@ -24,6 +25,7 @@ use Throwable;
  */
 class ActionButton extends MoonShineComponent implements ActionButtonContract
 {
+    use WithBadge;
     use WithLabel;
     use WithIcon;
     use WithOffCanvas;
@@ -329,6 +331,15 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         return $this->class('btn-warning');
     }
 
+    public function info(Closure|bool|null $condition = null): self
+    {
+        if (! (value($condition, $this) ?? true)) {
+            return $this;
+        }
+
+        return $this->class('btn-info');
+    }
+
     public function error(Closure|bool|null $condition = null): self
     {
         if (! (value($condition, $this) ?? true)) {
@@ -358,6 +369,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             'label' => $this->getLabel(),
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(4),
+            'badge' => $this->hasBadge() ? $this->getBadge() : false,
         ];
     }
 }

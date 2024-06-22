@@ -1,15 +1,14 @@
 @props([
     'label' => '',
     'icon' => '',
-    'badge' => '',
     'url' => '#',
     'items' => [],
     'isActive' => false,
     'top' => false,
-    'actionButton',
+    'button',
 ])
 <li
     {{ $attributes->class(['menu-inner-item', '_is-active' => $isActive]) }}
 >
-    {!! $actionButton !!}
+    {!! $button !!}
 </li>

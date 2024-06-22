@@ -66,11 +66,12 @@ trait WithParentRelationLink
             : $value->count();
 
         return ActionButton::make(
-            "($count)",
-            $this->getResource()->getIndexPageUrl([
+            '',
+            url: $this->getResource()->getIndexPageUrl([
                 '_parentId' => $relationName . '-' . $this->getRelatedModel()?->getKey(),
             ])
         )
+            ->badge($count)
             ->icon('eye')
             ->when(
                 ! is_null($this->modifyParentRelationLinkButton),
