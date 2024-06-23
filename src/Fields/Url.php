@@ -35,9 +35,9 @@ class Url extends Text
 
         return UrlComponent::make(
             href: $value,
-            value: !is_null($this->titleCallback )
-                ? (string) value($this->titleCallback , $value, $this)
-                : $value,
+            value: is_null($this->titleCallback )
+                ? $value
+                : (string) value($this->titleCallback , $value, $this),
             blank: $this->isLinkBlank()
         )->render();
     }
