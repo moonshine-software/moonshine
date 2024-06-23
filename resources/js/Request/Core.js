@@ -128,11 +128,9 @@ export default function request(
 }
 
 export function urlWithQuery(url, append, callback = null) {
-  let urlObject = url.startsWith('/')
-    ? new URL(url, window.location.origin)
-    : new URL(url)
+  let urlObject = url.startsWith('/') ? new URL(url, window.location.origin) : new URL(url)
 
-  if(callback !== null) {
+  if (callback !== null) {
     callback(urlObject)
   }
 

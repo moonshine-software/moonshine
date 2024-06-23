@@ -44,9 +44,7 @@ export function listComponentRequest(component, pushState = false) {
     })
 
   function prepareListComponentRequestUrl(url) {
-    const resultUrl = url.startsWith('/')
-      ? new URL(url, window.location.origin)
-      : new URL(url)
+    const resultUrl = url.startsWith('/') ? new URL(url, window.location.origin) : new URL(url)
 
     if (resultUrl.searchParams.get('query-tag')) {
       resultUrl.searchParams.delete('query-tag')

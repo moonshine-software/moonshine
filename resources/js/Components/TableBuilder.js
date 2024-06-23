@@ -91,7 +91,7 @@ export default (
   asyncFormRequest() {
     this.asyncUrl = urlWithQuery(
       this.$el.getAttribute('action'),
-      crudFormQuery(this.$el.querySelectorAll('[name]'))
+      crudFormQuery(this.$el.querySelectorAll('[name]')),
     )
 
     this.asyncRequest()
@@ -165,9 +165,9 @@ export default (
       }
 
       const addIds = []
-      values.forEach((value) => addIds.push('ids[]=' + value))
+      values.forEach(value => addIds.push('ids[]=' + value))
 
-      url = urlWithQuery(url, addIds.join('&'), (urlObject) => urlObject.searchParams.delete('ids[]'))
+      url = urlWithQuery(url, addIds.join('&'), urlObject => urlObject.searchParams.delete('ids[]'))
       bulkButtons[i].setAttribute('href', url)
     }
 
