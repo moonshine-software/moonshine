@@ -12,42 +12,42 @@ class DummyClass
 {
     use HandlesAuthorization;
 
-    public function viewAny({user-model} $user)
+    public function viewAny({user-model} $user): bool
     {
         return true;
     }
 
-    public function view({user-model} $user, {model} $item)
+    public function view({user-model} $user, {model} $item): bool
     {
         return true;
     }
 
-    public function create({user-model} $user)
+    public function create({user-model} $user): bool
     {
         return true;
     }
 
-    public function update({user-model} $user, {model} $item)
+    public function update({user-model} $user, {model} $item): bool
     {
         return true;
     }
 
-    public function delete({user-model} $user, {model} $item)
+    public function delete({user-model} $user, {model} $item): bool
     {
         return true;
     }
 
-    public function restore({user-model} $user, {model} $item)
+    public function restore({user-model} $user, {model} $item): bool
     {
         return true;
     }
 
-    public function forceDelete({user-model} $user, {model} $item)
+    public function forceDelete({user-model} $user, {model} $item): bool
     {
         return true;
     }
 
-    public function massDelete({user-model} $user)
+    public function massDelete({user-model} $user): bool
     {
         return true;
     }
