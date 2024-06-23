@@ -13,7 +13,7 @@ export default (activeClass, componentEvent) => ({
     }
 
     this.$dispatch(componentEvent.toLowerCase(), {
-      queryTag: this.prepareQueryString(queryParams, '_component_name,_token,_method'),
+      queryTag: this.prepareQueryString(queryParams, '_component_name,_token,_method,page'),
     })
   },
   prepareQueryString(queryParams, exclude = null) {
