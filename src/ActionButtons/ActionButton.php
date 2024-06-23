@@ -79,6 +79,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     {
         return [
             'action' => $this,
+            'badge' => $this->getBadge(),
         ];
     }
 

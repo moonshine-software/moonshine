@@ -1,3 +1,6 @@
+@props([
+    'badge' => false,
+])
 @if($action->isInOffCanvas())
     <x-moonshine::offcanvas
         title="{{ $action->offCanvas()->title($action->getItem()) }}"
@@ -12,8 +15,8 @@
 
             {{ $action->label() }}
 
-            @if($action->hasBadge())
-                <x-moonshine::badge color="">{{ $action->getBadge() }}</x-moonshine::badge>
+            @if($badge !== false)
+                <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
             @endif
         </x-slot:toggler>
 
@@ -47,7 +50,7 @@
                     '@click.prevent' => 'toggleModal',
                 ])"
                 :icon="$action->iconValue()"
-                :badge="$action->getBadge()"
+                :badge="$badge"
                 :href="$action->url()"
             >
                 {{ $action->label() }}
@@ -60,7 +63,7 @@
         :attributes="$attributes"
         :href="$action->url()"
         :icon="$action->iconValue()"
-        :badge="$action->getBadge()"
+        :badge="$badge"
     >
         {{ $action->label() }}
     </x-moonshine::link-button>
