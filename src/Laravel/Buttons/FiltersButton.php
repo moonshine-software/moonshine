@@ -17,7 +17,7 @@ final class FiltersButton
         $form = moonshineConfig()->getForm('filters', FiltersForm::class, resource: $resource);
 
         $count = collect($resource->getFilterParams())
-            ->filter(fn ($value): bool => (new self)->withoutEmptyFilter($value))
+            ->filter(fn ($value): bool => (new self())->withoutEmptyFilter($value))
             ->count();
 
         return ActionButton::make(__('moonshine::ui.filters'), '#')
