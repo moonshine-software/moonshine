@@ -1,6 +1,6 @@
 import {crudFormQuery} from './formFunctions'
 import sortableFunction from './sortable'
-import {listComponentRequest} from './asyncFunctions'
+import {appendQueryToUrl, listComponentRequest} from './asyncFunctions'
 
 export default (
   creatable = false,
@@ -88,11 +88,10 @@ export default (
     })
   },
   asyncFormRequest() {
-    const urlObject = new URL(this.$el.getAttribute('action'))
-    let urlSeparator = urlObject.search === '' ? '?' : '&'
-
-    this.asyncUrl =
-      urlObject.href + urlSeparator + crudFormQuery(this.$el.querySelectorAll('[name]'))
+    this.asyncUrl = appendQueryToUrl(
+      this.$el.getAttribute('action'),
+      crudFormQuery(this.$el.querySelectorAll('[name]'))
+    )
 
     this.asyncRequest()
   },
@@ -167,16 +166,10 @@ export default (
         continue
       }
 
-      const urlObject = new URL(url)
-      let urlSeparator = urlObject.search === '' ? '?' : '&'
-      urlObject.searchParams.delete('ids[]')
-
       const addIds = []
-      values.forEach(function (value) {
-        addIds.push('ids[]=' + value)
-      })
+      values.forEach((value) => addIds.push('ids[]=' + value))
 
-      url = urlObject.href + urlSeparator + addIds.join('&')
+      url = appendQueryToUrl(url, addIds.join('&'), (urlObject) => urlObject.searchParams.delete('ids[]'))
       bulkButtons[i].setAttribute('href', url)
     }
 

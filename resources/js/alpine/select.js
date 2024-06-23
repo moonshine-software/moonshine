@@ -292,7 +292,9 @@ export default (asyncUrl = '') => ({
   },
 
   async asyncSearch(onInit = false) {
-    const url = new URL(asyncUrl)
+    const url = asyncUrl.startsWith('/')
+      ? new URL(asyncUrl, window.location.origin)
+      : new URL(asyncUrl)
 
     const query = this.searchTerms.value ?? null
 
