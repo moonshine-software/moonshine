@@ -127,8 +127,14 @@ export default function request(
     })
 }
 
-export function urlWithQuery(url, append) {
-  const urlObject = new URL(url)
+export function urlWithQuery(url, append, callback = null) {
+  let urlObject = url.startsWith('/')
+    ? new URL(url, window.location.origin)
+    : new URL(url)
+
+  if(callback !== null) {
+    callback(urlObject)
+  }
 
   let separator = urlObject.searchParams.size ? '&' : '?'
 
