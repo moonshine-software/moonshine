@@ -16,7 +16,7 @@ class Url extends Text
 
     public function title(Closure $callback): static
     {
-        $this->titleCallback  = $callback;
+        $this->titleCallback = $callback;
 
         return $this;
     }
@@ -35,9 +35,9 @@ class Url extends Text
 
         return UrlComponent::make(
             href: $value,
-            value: is_null($this->titleCallback )
+            value: is_null($this->titleCallback)
                 ? $value
-                : (string) value($this->titleCallback , $value, $this),
+                : (string) value($this->titleCallback, $value, $this),
             blank: $this->isLinkBlank()
         )->render();
     }
