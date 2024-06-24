@@ -31,7 +31,7 @@ final class FiltersButton
             ])
             ->when(
                 $resource->isAsync() || $count,
-                fn (ActionButton $action) => $action->badge($count)
+                fn (ActionButton $action): ActionButton => $action->badge($count)
             );
     }
 
