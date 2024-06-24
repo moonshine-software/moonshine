@@ -207,11 +207,9 @@ export function moonShineRequest(
 }
 
 export function appendQueryToUrl(url, append, callback = null) {
-  const urlObject = url.startsWith('/')
-    ? new URL(url, window.location.origin)
-    : new URL(url)
+  const urlObject = url.startsWith('/') ? new URL(url, window.location.origin) : new URL(url)
 
-  if(callback !== null) {
+  if (callback !== null) {
     callback(urlObject)
   }
 
@@ -265,9 +263,7 @@ export function listComponentRequest(component, pushState = false) {
     })
 
   function prepareListComponentRequestUrl(url) {
-    const resultUrl = url.startsWith('/')
-      ? new URL(url, window.location.origin)
-      : new URL(url)
+    const resultUrl = url.startsWith('/') ? new URL(url, window.location.origin) : new URL(url)
 
     if (resultUrl.searchParams.get('query-tag')) {
       resultUrl.searchParams.delete('query-tag')
