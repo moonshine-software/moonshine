@@ -206,6 +206,20 @@ export function moonShineRequest(
     })
 }
 
+export function appendQueryToUrl(url, append, callback = null) {
+  const urlObject = url.startsWith('/')
+    ? new URL(url, window.location.origin)
+    : new URL(url)
+
+  if(callback !== null) {
+    callback(urlObject)
+  }
+
+  let separator = urlObject.searchParams.size ? '&' : '?'
+
+  return urlObject.toString() + separator + append
+}
+
 export function listComponentRequest(component, pushState = false) {
   component.$event.preventDefault()
 
@@ -250,16 +264,10 @@ export function listComponentRequest(component, pushState = false) {
       component.loading = false
     })
 
-  function appendQueryToUrl(url, append) {
-    const urlObject = new URL(url)
-
-    let separator = urlObject.searchParams.size ? '&' : '?'
-
-    return urlObject.toString() + separator + append
-  }
-
   function prepareListComponentRequestUrl(url) {
-    const resultUrl = new URL(url)
+    const resultUrl = url.startsWith('/')
+      ? new URL(url, window.location.origin)
+      : new URL(url)
 
     if (resultUrl.searchParams.get('query-tag')) {
       resultUrl.searchParams.delete('query-tag')
