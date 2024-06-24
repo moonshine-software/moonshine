@@ -232,10 +232,7 @@ export function listComponentRequest(component, pushState = false) {
 
   if (component.$event.detail && component.$event.detail.queryTag) {
     url = prepareListComponentRequestUrl(url)
-
-    if (component.$event.detail.queryTag !== 'query-tag=null') {
-      url = appendQueryToUrl(url, component.$event.detail.queryTag)
-    }
+    url = appendQueryToUrl(url, component.$event.detail.queryTag)
   }
 
   axios

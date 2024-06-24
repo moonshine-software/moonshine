@@ -28,7 +28,7 @@ it('onlyLink preview', function () {
     asAdmin()
         ->get(to_page(page: IndexPage::class, resource: $resource))
         ->assertOk()
-        ->assertSee('(6)')
+        ->assertSee('<span class="badge">6</span>', false)
     ;
 });
 
@@ -60,7 +60,7 @@ it('onlyLink value', function () {
 
     asAdmin()
         ->get(to_page(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
-        ->assertSee('(16)')
+        ->assertSee('<span class="badge">16</span>',  false)
         ->assertOk()
     ;
 });
@@ -99,7 +99,7 @@ it('onlyLink preview condition', function () {
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments->first()->content)
-        ->assertDontSee('(6)')
+        ->assertDontSee('<span class="badge">6</span>', false)
     ;
 });
 
@@ -121,6 +121,6 @@ it('onlyLink value condition', function () {
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments[15]->content)
-        ->assertDontSee('(16)')
+        ->assertDontSee('<span class="badge">16</span>', false)
     ;
 });

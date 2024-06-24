@@ -6,6 +6,7 @@ namespace MoonShine\Components;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Traits\WithBadge;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 
@@ -14,6 +15,7 @@ use MoonShine\Traits\WithLabel;
  */
 final class Link extends MoonShineComponent
 {
+    use WithBadge;
     use WithLabel;
     use WithIcon;
 
@@ -73,6 +75,7 @@ final class Link extends MoonShineComponent
                 $this->label()
             ),
             'icon' => $this->iconValue(),
+            'badge' => $this->getBadge(),
             'filled' => $this->isFilled,
         ];
     }

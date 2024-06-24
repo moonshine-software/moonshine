@@ -1,5 +1,6 @@
 @props([
     'icon' => false,
+    'badge' => false,
     'filled' => false,
 ])
 <a {{ $attributes->class(['btn', 'btn-primary' => $filled]) }}>
@@ -11,4 +12,8 @@
     @endif
 
     {{ $slot }}
+
+    @if($badge !== false)
+        <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
+    @endif
 </a>

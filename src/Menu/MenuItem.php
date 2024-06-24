@@ -8,13 +8,14 @@ use Closure;
 use MoonShine\Attributes\Icon;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Support\Attributes;
+use MoonShine\Traits\WithBadge;
 
 /**
  * @method static static make(Closure|string $label, Closure|MenuFiller|string $filler, string $icon = null, Closure|bool $blank = false)
  */
 class MenuItem extends MenuElement
 {
-    protected ?Closure $badge = null;
+    use WithBadge;
 
     final public function __construct(
         Closure|string $label,
@@ -58,22 +59,5 @@ class MenuItem extends MenuElement
     public function getFiller(): MenuFiller|Closure|string
     {
         return $this->filler;
-    }
-
-    public function badge(Closure $callback): static
-    {
-        $this->badge = $callback;
-
-        return $this;
-    }
-
-    public function hasBadge(): bool
-    {
-        return is_callable($this->badge);
-    }
-
-    public function getBadge(): mixed
-    {
-        return value($this->badge);
     }
 }

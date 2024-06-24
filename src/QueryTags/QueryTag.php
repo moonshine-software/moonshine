@@ -56,9 +56,14 @@ final class QueryTag
         return $this;
     }
 
+    public function isDefault(): bool
+    {
+        return $this->isDefault;
+    }
+
     public function isActive(): bool
     {
-        if ($this->isDefault && ! request()->filled('query-tag')) {
+        if ($this->isDefault() && ! request()->filled('query-tag')) {
             return true;
         }
 

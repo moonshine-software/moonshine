@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Buttons;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Stringable;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Forms\FiltersForm;
@@ -15,9 +13,11 @@ final class FiltersButton
 {
     public static function for(ModelResource $resource): ActionButton
     {
-        $title = self::title($resource->getFilterParams());
+        $count = collect($resource->getFilterParams())
+            ->filter(fn ($value): bool => (new self())->withoutEmptyFilter($value))
+            ->count();
 
-        return ActionButton::make($title, '#')
+        return ActionButton::make(__('moonshine::ui.filters'), '#')
             ->secondary()
             ->icon('heroicons.outline.adjustments-horizontal')
             ->inOffCanvas(
@@ -25,20 +25,24 @@ final class FiltersButton
                 fn (): FormBuilder => (new FiltersForm())($resource),
                 name: 'filters-off-canvas'
             )
-            ->showInLine();
+            ->showInLine()
+            ->customAttributes([
+                'class' => 'btn-filter',
+            ])
+            ->when(
+                $resource->isAsync() || $count,
+                fn (ActionButton $action) => $action->badge($count)
+            );
     }
 
-    private static function title(array $params = []): string
+    private function withoutEmptyFilter(mixed $value): bool
     {
-        $count = collect($params)
-            ->filter(
-                fn ($filter) => is_array($filter) ? Arr::whereNotNull($filter)
-                    : filled($filter)
-            )
-            ->count();
+        if (is_iterable($value) && filled($value)) {
+            return collect($value)
+                ->filter(fn ($v): bool => $this->withoutEmptyFilter($v))
+                ->isNotEmpty();
+        }
 
-        return str(__('moonshine::ui.filters'))
-            ->when($count, fn (Stringable $str): Stringable => $str->append("($count)"))
-            ->value();
+        return ! blank($value) && $value !== "0";
     }
 }

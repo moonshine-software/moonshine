@@ -1,6 +1,7 @@
 @props([
     'icon' => false,
-    'filled' => false
+    'badge' => false,
+    'filled' => false,
 ])
 <a {{ $attributes->class(['inline-flex items-center gap-1 text-2xs hover:text-primary', 'text-primary' => $filled]) }}>
     @if($icon)
@@ -11,4 +12,8 @@
     @endif
 
     {{ $slot }}
+
+    @if($badge !== false)
+        <x-moonshine::badge color="primary">{{ $badge }}</x-moonshine::badge>
+    @endif
 </a>

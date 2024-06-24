@@ -1,22 +1,39 @@
 export default (activeClass, componentEvent) => ({
   queryTagRequest(data) {
-    if (this.$root.classList.contains('active-query-tag')) {
-      this.$dispatch(componentEvent.toLowerCase(), {queryTag: 'query-tag=null'})
+    const queryParams = new URLSearchParams(window.location.search)
+
+    if (this.$root.classList.contains(activeClass)) {
+      queryParams.set('query-tag', '')
       this.disableQueryTags()
-      return
+      this.activeDefaultQueryTag()
+    } else {
+      queryParams.set('query-tag', data)
+      this.disableQueryTags()
+      this.$root.classList.add(activeClass)
     }
 
-    this.$dispatch(componentEvent.toLowerCase(), {queryTag: 'query-tag=' + data})
+    this.$dispatch(componentEvent.toLowerCase(), {
+      queryTag: this.prepareQueryString(queryParams, '_component_name,_token,_method,page'),
+    })
+  },
+  prepareQueryString(queryParams, exclude = null) {
+    if (exclude !== null) {
+      const excludes = exclude.split(',')
 
-    this.disableQueryTags()
+      excludes.forEach(function (excludeName) {
+        queryParams.delete(excludeName)
+      })
+    }
 
-    this.$root.classList.add(activeClass)
-    this.$root.classList.add('active-query-tag')
+    return new URLSearchParams(queryParams).toString()
   },
   disableQueryTags() {
     document.querySelectorAll('.query-tag-button').forEach(function (element) {
       element.classList.remove(activeClass)
-      element.classList.remove('active-query-tag')
     })
+  },
+  activeDefaultQueryTag() {
+    const element = document.querySelector('.query-tag-default')
+    element?.classList.add(activeClass)
   },
 })

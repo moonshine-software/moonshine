@@ -11,26 +11,50 @@
       @apply h-5 w-5;
     }
   }
+  .badge {
+    @apply ml-auto border border-gray-300 bg-gray-100 px-2 py-0 text-center dark:border-dark-200 dark:bg-dark-700;
+  }
+  .badge:empty {
+    @apply hidden;
+  }
 }
 
 /* Button themes */
 .btn.btn-primary {
   @apply border-primary bg-primary text-white hover:bg-primary/80 hover:text-white focus:ring-primary focus:ring-opacity-20 dark:focus:ring-opacity-40;
+  .badge {
+    @apply border-0 bg-white text-slate-600;
+  }
 }
 .btn.btn-secondary {
   @apply border-secondary bg-secondary text-white hover:bg-secondary/80 hover:text-white focus:ring-secondary focus:ring-opacity-20 dark:focus:ring-opacity-40;
+  .badge {
+    @apply border-0 bg-white text-slate-600;
+  }
 }
 .btn.btn-success {
   @apply border-success-bg bg-success-bg text-success-text hover:bg-success-bg/80 hover:text-success-text focus:ring-success-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
+  .badge {
+    @apply border-0 bg-white text-slate-600;
+  }
 }
 .btn.btn-warning {
   @apply border-warning-bg bg-warning-bg text-warning-text hover:bg-warning-bg/80 hover:text-warning-text focus:ring-warning-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
+  .badge {
+    @apply border-0 bg-white text-slate-600;
+  }
 }
 .btn.btn-error {
   @apply border-error-bg bg-error-bg text-error-text hover:bg-error-bg/80 hover:text-error-text focus:ring-error-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
+  .badge {
+    @apply border-0 bg-white text-slate-600;
+  }
 }
 .btn.btn-info {
   @apply border-info-bg bg-info-bg text-info-text hover:bg-info-bg/80 hover:text-info-text focus:ring-info-bg focus:ring-opacity-20 dark:focus:ring-opacity-40;
+  .badge {
+    @apply border-0 bg-white text-slate-600;
+  }
 }
 
 /* Button variants */
