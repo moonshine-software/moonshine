@@ -21,7 +21,6 @@ final class FiltersButton
             ->count();
 
         return ActionButton::make(__('moonshine::ui.filters'), '#')
-            ->badge($count)
             ->secondary()
             ->icon('adjustments-horizontal')
             ->inOffCanvas(
@@ -31,7 +30,11 @@ final class FiltersButton
                 builder: static fn (OffCanvas $offCanvas): OffCanvas => $offCanvas->setComponents([$form])
             )
             ->showInLine()
-            ->class('btn-filter');
+            ->class('btn-filter')
+            ->when(
+                $resource->isAsync() || $count,
+                fn (ActionButton $action) => $action->badge($count)
+            );
     }
 
     private function withoutEmptyFilter(mixed $value): bool
@@ -42,6 +45,6 @@ final class FiltersButton
                 ->isNotEmpty();
         }
 
-        return ! blank($value) && $value !== "0";
+        return ! blank($value) && $value !== '0';
     }
 }
