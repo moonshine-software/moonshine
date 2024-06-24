@@ -14,9 +14,18 @@ class Url extends Text
 
     protected ?Closure $titleCallback = null;
 
+    protected bool $blank = false;
+
     public function title(Closure $callback): static
     {
         $this->titleCallback = $callback;
+
+        return $this;
+    }
+
+    public function blank(): static
+    {
+        $this->blank = true;
 
         return $this;
     }
@@ -38,7 +47,7 @@ class Url extends Text
             value: is_null($this->titleCallback)
                 ? $value
                 : (string) value($this->titleCallback, $value, $this),
-            blank: $this->isLinkBlank()
+            blank: $this->blank
         )->render();
     }
 }
