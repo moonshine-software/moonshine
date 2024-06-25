@@ -28,7 +28,7 @@ trait ResourceModelActions
 
     public function hasAction(Action ...$actions): bool
     {
-        return collect($actions)->every(fn(Action $action): bool => in_array($action, $this->getActiveActions()));
+        return collect($actions)->every(fn (Action $action): bool => in_array($action, $this->getActiveActions()));
     }
 
     /**

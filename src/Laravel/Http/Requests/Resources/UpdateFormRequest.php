@@ -20,7 +20,7 @@ final class UpdateFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (!$this->getResource()?->hasAction(Action::UPDATE)) {
+        if (! $this->getResource()?->hasAction(Action::UPDATE)) {
             return false;
         }
 
