@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 
@@ -47,8 +49,8 @@ final class EditButton
             ->primary()
             ->icon('pencil')
             ->canSee(
-                static fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
-                    && $resource->setItem($item)->can('update')
+                static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::UPDATE)
+                    && $resource->setItem($item)->can(Ability::UPDATE)
             )
             ->customAttributes(['class' => 'edit-button'])
             ->showInLine();

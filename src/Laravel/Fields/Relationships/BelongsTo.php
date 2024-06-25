@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
@@ -49,15 +50,12 @@ class BelongsTo extends ModelRelationField implements
      */
     protected function resolvePreview(): string
     {
-        $actions = $this->getResource()->getActiveActions();
-
-        if (! in_array('view', $actions, true)
-            && ! in_array('update', $actions, true)) {
+        if (! $this->getResource()->hasAction(Action::VIEW, Action::UPDATE)) {
             return parent::resolvePreview();
         }
 
         if (! $this->hasLink() && $this->toValue()) {
-            $page = in_array('update', $actions, true)
+            $page = $this->getResource()->hasAction(Action::UPDATE)
                 ? $this->getResource()->getFormPage()
                 : $this->getResource()->getDetailPage();
 

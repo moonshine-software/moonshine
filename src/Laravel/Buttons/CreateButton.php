@@ -2,6 +2,8 @@
 
 namespace MoonShine\Laravel\Buttons;
 
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 
@@ -40,8 +42,8 @@ final class CreateButton
                 )
             )
             ->canSee(
-                static fn (): bool => in_array('create', $resource->getActiveActions())
-                && $resource->can('create')
+                static fn (): bool => $resource->hasAction(Action::CREATE)
+                && $resource->can(Ability::CREATE)
             )
             ->primary()
             ->icon('plus');

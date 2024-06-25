@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
@@ -45,8 +47,8 @@ final class DeleteButton
                 name: static fn (Model $data): string => "delete-modal-{$data->getKey()}"
             )
             ->canSee(
-                static fn (?Model $item): bool => ! is_null($item) && in_array('delete', $resource->getActiveActions())
-                    && $resource->setItem($item)->can('delete')
+                static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::DELETE)
+                    && $resource->setItem($item)->can(Ability::DELETE)
             )
             ->error()
             ->icon('trash')

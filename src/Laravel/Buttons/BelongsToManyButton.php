@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
@@ -50,7 +52,7 @@ final class BelongsToManyButton
             : ActionButton::make(__('moonshine::ui.add'), url: $action);
 
         return $actionButton
-            ->canSee(static fn (): bool => in_array('create', $resource->getActiveActions()) && $resource->can('create'))
+            ->canSee(static fn (): bool => $resource->hasAction(Action::CREATE) && $resource->can(Ability::CREATE))
             ->inModal(
                 title: static fn (): array|string|null => __('moonshine::ui.create'),
                 content: static fn (?Model $data): string => (string) FormBuilder::make($action)

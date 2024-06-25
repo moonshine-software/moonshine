@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Modal;
@@ -41,8 +43,8 @@ final class DetailButton
                 )
             )
             ->canSee(
-                static fn (?Model $item): bool => ! is_null($item) && in_array('view', $resource->getActiveActions())
-                && $resource->setItem($item)->can('view')
+                static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::VIEW)
+                && $resource->setItem($item)->can(Ability::VIEW)
             )
             ->icon('eye')
             ->customAttributes(['class' => 'detail-button'])

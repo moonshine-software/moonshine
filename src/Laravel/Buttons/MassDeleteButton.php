@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Buttons;
 
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
@@ -41,8 +43,8 @@ final class MassDeleteButton
                 name: "mass-delete-modal-" . ($componentName ?? $resource->getListComponentName())
             )
             ->canSee(
-                static fn (): bool => in_array('massDelete', $resource->getActiveActions())
-                    && $resource->can('massDelete')
+                static fn (): bool => $resource->hasAction(Action::MASS_DELETE)
+                    && $resource->can(Ability::MASS_DELETE)
             )
             ->error()
             ->icon('trash')

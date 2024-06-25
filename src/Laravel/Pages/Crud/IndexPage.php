@@ -9,6 +9,7 @@ use MoonShine\Laravel\Buttons\FiltersButton;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Forms\FiltersForm;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -37,7 +38,7 @@ class IndexPage extends Page
      */
     public function prepareBeforeRender(): void
     {
-        abort_if(! $this->getResource()->can('viewAny'), 403);
+        abort_if(! $this->getResource()->can(Ability::VIEW_ANY), 403);
 
         parent::prepareBeforeRender();
     }
@@ -122,7 +123,7 @@ class IndexPage extends Page
                     $this->getResource()->getCreateButton(
                         isAsync: $this->getResource()->isAsync()
                     ),
-                    ...$this->getResource()->actions(),
+                    ...$this->getResource()->topButtons(),
                 ]),
 
                 ActionGroup::make()->when(

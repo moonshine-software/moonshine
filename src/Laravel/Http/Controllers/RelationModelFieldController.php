@@ -57,17 +57,18 @@ class RelationModelFieldController extends MoonShineController
         }
 
         $query = $resource->resolveQuery();
+        $term = $request->input('query');
 
         if (! is_null($field->getAsyncSearchQuery())) {
             $query = value(
                 $field->getAsyncSearchQuery(),
                 $query,
+                $term,
                 $request,
                 $field
             );
         }
 
-        $term = $request->input('query');
         $values = $request->input($field->getColumn(), '') ?? '';
 
         $except = is_array($values)

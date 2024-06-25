@@ -7,6 +7,8 @@ use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -50,8 +52,8 @@ class DetailPage extends Page
     protected function prepareBeforeRender(): void
     {
         abort_if(
-            ! in_array('view', $this->getResource()->getActiveActions())
-            || ! $this->getResource()->can('view'),
+            ! $this->getResource()->hasAction(Action::VIEW)
+            || ! $this->getResource()->can(Ability::VIEW),
             403
         );
 

@@ -6,6 +6,8 @@ namespace MoonShine\Laravel\Traits\Resource;
 
 use Illuminate\Support\Facades\Gate;
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\MoonShineAuth;
 
 trait ResourceModelPolicy
@@ -13,40 +15,42 @@ trait ResourceModelPolicy
     protected bool $withPolicy = false;
 
     /**
-     * @return string[]
+     * @return list<Ability>
      */
     public function getGateAbilities(): array
     {
         return [
-            'viewAny',
-            'view',
-            'create',
-            'update',
-            'delete',
-            'massDelete',
-            'restore',
-            'forceDelete',
+            Ability::VIEW_ANY,
+            Ability::VIEW,
+            Ability::CREATE,
+            Ability::UPDATE,
+            Ability::DELETE,
+            Ability::MASS_DELETE,
+            Ability::RESTORE,
+            Ability::FORCE_DELETE,
         ];
     }
 
     /**
      * @throws ResourceException
      */
-    public function can(string $ability): bool
+    public function can(string|Ability $ability): bool
     {
+        $abilityEnum = !$ability instanceof Ability ? Ability::tryFrom($ability) : $ability;
+
         if (! moonshineConfig()->isAuthEnabled()) {
             return true;
         }
 
-        if (! in_array($ability, $this->getGateAbilities())) {
-            throw new ResourceException("ability '$ability' not found in the system");
+        if (is_null($abilityEnum) || ! in_array($abilityEnum, $this->getGateAbilities(), true)) {
+            throw new ResourceException("ability '$abilityEnum->value' not found in the system");
         }
 
         $user = MoonShineAuth::getGuard()->user();
 
         $checkCustomRules = moonshineConfig()
             ->getAuthorizationRules()
-            ->every(fn ($rule) => $rule($this, $user, $ability, $this->getItem() ?? $this->getModel()));
+            ->every(fn ($rule) => $rule($this, $user, $abilityEnum->value, $this->getItem() ?? $this->getModel()));
 
         if (! $checkCustomRules) {
             return false;
@@ -57,7 +61,7 @@ trait ResourceModelPolicy
         }
 
         return Gate::forUser($user)
-            ->allows($ability, $this->getItem() ?? $this->getModel());
+            ->allows($abilityEnum->value, $this->getItem() ?? $this->getModel());
     }
 
     public function isWithPolicy(): bool

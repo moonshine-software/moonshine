@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Requests\Resources;
 
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
 use Throwable;
 
@@ -18,15 +20,11 @@ final class StoreFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (! in_array(
-            'create',
-            $this->getResource()?->getActiveActions() ?? [],
-            true
-        )) {
+        if (! $this->getResource()?->hasAction(Action::CREATE)) {
             return false;
         }
 
-        return $this->getResource()?->can('create') ?? false;
+        return $this->getResource()?->can(Ability::CREATE) ?? false;
     }
 
     public function rules(): array

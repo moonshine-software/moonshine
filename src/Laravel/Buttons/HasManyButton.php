@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
@@ -45,10 +47,10 @@ final class HasManyButton
         }
 
         $authorize = $update
-            ? static fn (?Model $item): bool => ! is_null($item) && in_array('update', $resource->getActiveActions())
-                && $resource->setItem($item)->can('update')
-            : static fn (?Model $item): bool => in_array('create', $resource->getActiveActions())
-                && $resource->can('create');
+            ? static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::UPDATE)
+                && $resource->setItem($item)->can(Ability::UPDATE)
+            : static fn (?Model $item): bool => $resource->hasAction(Action::CREATE)
+                && $resource->can(Ability::CREATE);
 
         $actionButton = $button
             ? $button->setUrl($action)

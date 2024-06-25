@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Requests\Resources;
 
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
 use MoonShine\UI\Fields\Field;
 use Throwable;
@@ -25,15 +27,11 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
             return false;
         }
 
-        if (! in_array(
-            'update',
-            $resource->getActiveActions(),
-            true
-        )) {
+        if(!$resource->hasAction(Action::UPDATE)) {
             return false;
         }
 
-        return $resource->can('update');
+        return $resource->can(Ability::UPDATE);
     }
 
     /**

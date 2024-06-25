@@ -5,23 +5,36 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use MoonShine\Core\Handlers\Handler;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Handlers\ExportHandler;
 use MoonShine\Laravel\Handlers\ImportHandler;
+use MoonShine\UI\Components\ActionButton;
 
 trait ResourceModelActions
 {
     /**
-     * @return string[]
+     * @return list<Action>
      */
     public function getActiveActions(): array
     {
-        return ['create', 'view', 'update', 'delete', 'massDelete'];
+        return [
+            Action::CREATE,
+            Action::VIEW,
+            Action::UPDATE,
+            Action::DELETE,
+            Action::MASS_DELETE,
+        ];
+    }
+
+    public function hasAction(Action ...$actions): bool
+    {
+        return collect($actions)->every(fn(Action $action) => in_array($action, $this->getActiveActions()));
     }
 
     /**
-     * @return list<Handler>
+     * @return list<ActionButton>
      */
-    public function actions(): array
+    public function topButtons(): array
     {
         return [];
     }

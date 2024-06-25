@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -56,15 +58,15 @@ class FormPage extends Page
     protected function prepareBeforeRender(): void
     {
         $ability = $this->getResource()->getItemID()
-            ? 'update'
-            : 'create';
+            ? Ability::UPDATE
+            : Ability::CREATE;
+
+        $action = $this->getResource()->getItemID()
+            ? Action::UPDATE
+            : Action::CREATE;
 
         abort_if(
-            ! in_array(
-                $ability,
-                $this->getResource()->getActiveActions()
-            )
-            || ! $this->getResource()->can($ability),
+            ! $this->getResource()->hasAction($action) || ! $this->getResource()->can($ability),
             403
         );
 

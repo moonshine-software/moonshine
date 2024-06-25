@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Requests\Resources;
 
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Enums\Ability;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
 use Throwable;
 
@@ -18,14 +20,10 @@ final class ViewFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (! in_array(
-            'view',
-            $this->getResource()?->getActiveActions() ?? [],
-            true
-        )) {
+        if (!$this->getResource()?->hasAction(Action::VIEW)) {
             return false;
         }
 
-        return $this->getResource()?->can('view') ?? false;
+        return $this->getResource()?->can(Ability::VIEW) ?? false;
     }
 }
