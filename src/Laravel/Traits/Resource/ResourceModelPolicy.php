@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Traits\Resource;
 use Illuminate\Support\Facades\Gate;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Enums\Ability;
-use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\MoonShineAuth;
 
 trait ResourceModelPolicy
@@ -36,7 +35,7 @@ trait ResourceModelPolicy
      */
     public function can(string|Ability $ability): bool
     {
-        $abilityEnum = !$ability instanceof Ability ? Ability::tryFrom($ability) : $ability;
+        $abilityEnum = $ability instanceof Ability ? $ability : Ability::tryFrom($ability);
 
         if (! moonshineConfig()->isAuthEnabled()) {
             return true;
