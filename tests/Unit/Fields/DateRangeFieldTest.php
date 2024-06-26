@@ -140,7 +140,7 @@ describe('common field methods', function () {
     });
 
     it('type', function (): void {
-        expect($this->field->attributes()->get('type'))
+        expect($this->field->getAttributes()->get('type'))
             ->toBe('date');
     });
 
@@ -211,7 +211,7 @@ describe('unique field methods', function () {
             ->fill(['start' => $from, 'end' => $to])
             ->withTime();
 
-        expect($field->attributes()->get('type'))
+        expect($field->getAttributes()->get('type'))
             ->toBe('datetime-local')
             ->and($field->preview())
             ->toBe('2020-01-01 00:00:00 - 2020-02-01 00:00:00')

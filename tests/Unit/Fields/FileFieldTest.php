@@ -70,7 +70,7 @@ it('removable methods', function (): void {
 });
 
 it('type', function (): void {
-    expect($this->field->attributes()->get('type'))
+    expect($this->field->getAttributes()->get('type'))
         ->toBe('file');
 });
 

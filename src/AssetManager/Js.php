@@ -46,7 +46,7 @@ final class Js implements AssetElement, HasVersion
     public function toHtml(): string
     {
         return <<<HTML
-            <script {$this->attributes()}></script>
+            <script {$this->getAttributes()}></script>
         HTML;
     }
 

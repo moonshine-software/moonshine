@@ -36,7 +36,7 @@ class File extends Field implements Fileable, RemovableContract
     public function accept(string $value): static
     {
         $this->accept = $value;
-        $this->attributes()->set('accept', $value);
+        $this->getAttributes()->set('accept', $value);
 
         return $this;
     }

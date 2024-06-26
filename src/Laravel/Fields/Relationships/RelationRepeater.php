@@ -197,7 +197,7 @@ class RelationRepeater extends ModelRelationField implements
         return TableBuilder::make($fields, $values)
             ->name('relation_repeater_' . $this->getColumn())
             ->customAttributes(
-                $this->attributes()
+                $this->getAttributes()
                     ->except(['class', 'data-name', 'data-column'])
                     ->jsonSerialize()
             )

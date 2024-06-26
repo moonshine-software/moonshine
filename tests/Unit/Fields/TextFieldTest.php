@@ -23,7 +23,7 @@ it('field and form element is parent', function (): void {
 });
 
 it('type', function (): void {
-    expect($this->field->attributes()->get('type'))
+    expect($this->field->getAttributes()->get('type'))
         ->toBe('text');
 });
 

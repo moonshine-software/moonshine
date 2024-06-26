@@ -18,7 +18,7 @@ trait WithComponentAttributes
 
     protected array $withAttributes = [];
 
-    public function attributes(): MoonShineComponentAttributeBag
+    public function getAttributes(): MoonShineComponentAttributeBag
     {
         return $this->attributes;
     }

@@ -30,7 +30,7 @@ final class InlineJs implements AssetElement
     public function toHtml(): string
     {
         return <<<HTML
-            <script {$this->attributes()}>{$this->getContent()}</script>
+            <script {$this->getAttributes()}>{$this->getContent()}</script>
         HTML;
     }
 

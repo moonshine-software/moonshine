@@ -22,7 +22,7 @@ trait RangeTrait
 
     public function fromAttributes(array $attributes): static
     {
-        $this->fromAttributes = $this->attributes()
+        $this->fromAttributes = $this->getAttributes()
             ->except(array_keys($attributes))
             ->merge($attributes);
 
@@ -33,9 +33,9 @@ trait RangeTrait
         ?MoonShineComponentAttributeBag $attributes = null,
         string $name = ''
     ): MoonShineComponentAttributeBag {
-        $dataName = $this->attributes()->get('data-name');
+        $dataName = $this->getAttributes()->get('data-name');
 
-        return ($attributes ?? $this->attributes())
+        return ($attributes ?? $this->getAttributes())
             ->except(['data-name'])
             ->when(
                 $dataName,
@@ -52,7 +52,7 @@ trait RangeTrait
 
     public function toAttributes(array $attributes): static
     {
-        $this->toAttributes = $this->attributes()
+        $this->toAttributes = $this->getAttributes()
             ->except(array_keys($attributes))
             ->merge($attributes);
 

@@ -30,7 +30,7 @@ final class FieldContainer extends MoonShineComponent
 
         $this->attributes = $this->field
             ->getWrapperAttributes()
-            ->merge(['required' => $this->field->attributes()->get('required')]);
+            ->merge(['required' => $this->field->getAttributes()->get('required')]);
     }
 
     protected function prepareBeforeRender(): void

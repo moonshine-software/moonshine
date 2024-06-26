@@ -40,7 +40,7 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray, Ran
     public function min(string $min): static
     {
         $this->min = $min;
-        $this->attributes()->set('min', $this->min);
+        $this->getAttributes()->set('min', $this->min);
 
         return $this;
     }
@@ -48,7 +48,7 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray, Ran
     public function max(string $max): static
     {
         $this->max = $max;
-        $this->attributes()->set('max', $this->max);
+        $this->getAttributes()->set('max', $this->max);
 
         return $this;
     }
@@ -56,7 +56,7 @@ class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray, Ran
     public function step(int|float|string $step): static
     {
         $this->step = $step;
-        $this->attributes()->set('step', $this->step);
+        $this->getAttributes()->set('step', $this->step);
 
         return $this;
     }

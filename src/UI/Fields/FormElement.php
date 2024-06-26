@@ -402,7 +402,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     protected function systemViewData(): array
     {
         return [
-            'attributes' => $this->attributes(),
+            'attributes' => $this->getAttributes(),
             'errors' => data_get($this->getErrors(), $this->getNameDot()),
         ];
     }

@@ -49,7 +49,7 @@ abstract class MenuElement implements MoonShineRenderable, HasCanSeeContract
     {
         return [
             'type' => class_basename($this),
-            'attributes' => $this->attributes(),
+            'attributes' => $this->getAttributes(),
             'label' => $this->getLabel(),
             'icon' => $this->getIcon(6),
             'isActive' => $this->isActive(),

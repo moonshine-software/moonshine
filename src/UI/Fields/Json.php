@@ -68,11 +68,11 @@ class Json extends Field implements
         $this->fields([
             ($keyField ?? Text::make($key, 'key'))
                 ->setColumn('key')
-                ->customAttributes($this->attributes()->getAttributes()),
+                ->customAttributes($this->getAttributes()->getAttributes()),
 
             ($valueField ?? Text::make($value, 'value'))
                 ->setColumn('value')
-                ->customAttributes($this->attributes()->getAttributes()),
+                ->customAttributes($this->getAttributes()->getAttributes()),
         ]);
 
         return $this;
@@ -96,7 +96,7 @@ class Json extends Field implements
         $this->fields([
             ($valueField ?? Text::make($value, 'value'))
                 ->setColumn('value')
-                ->customAttributes($this->attributes()->getAttributes()),
+                ->customAttributes($this->getAttributes()->getAttributes()),
         ]);
 
         return $this;
@@ -299,7 +299,7 @@ class Json extends Field implements
         return TableBuilder::make($fields, $values)
             ->name('repeater_' . $this->getColumn())
             ->customAttributes(
-                $this->attributes()
+                $this->getAttributes()
                     ->except(['class', 'data-name', 'data-column'])
                     ->when(
                         $reorderable,

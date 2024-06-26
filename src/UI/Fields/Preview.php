@@ -68,6 +68,13 @@ class Preview extends Field
         return (string) $value;
     }
 
+    protected function prepareBeforeRender(): void
+    {
+        parent::prepareBeforeRender();
+
+        $this->customAttributes(['name' => null]);
+    }
+
     protected function resolveValue(): mixed
     {
         return $this->preview();

@@ -17,6 +17,7 @@ use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
+use MoonShine\UI\Traits\Components\WithComponents;
 use MoonShine\UI\Traits\WithBadge;
 use Throwable;
 
@@ -31,6 +32,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     use WithOffCanvas;
     use InDropdownOrLine;
     use WithModal;
+    use WithComponents;
 
     protected string $view = 'moonshine::components.action-button';
 
@@ -281,7 +283,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
             ))
         );
 
-        if($this->attributes()->get('x-on:click.prevent') === 'request') {
+        if($this->getAttributes()->get('x-on:click.prevent') === 'request') {
             $removeAsyncAttr[] = 'x-on:click.prevent';
         }
 

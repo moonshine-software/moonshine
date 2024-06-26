@@ -28,7 +28,7 @@ final class InlineCss implements AssetElement
     public function toHtml(): string
     {
         return <<<HTML
-            <style {$this->attributes()}>{$this->getContent()}</style>
+            <style {$this->getAttributes()}>{$this->getContent()}</style>
         HTML;
     }
 

@@ -54,7 +54,7 @@ abstract class InputExtension
     protected function systemViewData(): array
     {
         return [
-            'attributes' => $this->attributes(),
+            'attributes' => $this->getAttributes(),
             'value' => $this->getValue(),
         ];
     }

@@ -44,7 +44,7 @@ it('preview with auto update', function (): void {
 
 describe('basic methods', function () {
     it('type', function (): void {
-        expect($this->field->attributes()->get('type'))
+        expect($this->field->getAttributes()->get('type'))
             ->toBe('checkbox');
     });
 

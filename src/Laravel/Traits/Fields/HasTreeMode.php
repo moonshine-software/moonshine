@@ -55,7 +55,7 @@ trait HasTreeMode
                 $element = moonshine()->render(
                     'moonshine::components.form.input-composition',
                     [
-                        'attributes' => $this->attributes()->merge([
+                        'attributes' => $this->getAttributes()->merge([
                             'type' => 'checkbox',
                             'name' => $this->getNameAttribute((string) $item->getKey()),
                             'value' => $item->getKey(),

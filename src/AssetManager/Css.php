@@ -48,7 +48,7 @@ final class Css implements AssetElement, HasVersion
     public function toHtml(): string
     {
         return <<<HTML
-            <link {$this->attributes()}>
+            <link {$this->getAttributes()}>
         HTML;
     }
 

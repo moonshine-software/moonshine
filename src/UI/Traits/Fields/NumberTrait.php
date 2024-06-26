@@ -17,7 +17,7 @@ trait NumberTrait
     public function min(int|float $min): static
     {
         $this->min = $min;
-        $this->attributes()->set('min', (string) $this->min);
+        $this->getAttributes()->set('min', (string) $this->min);
 
         return $this;
     }
@@ -25,7 +25,7 @@ trait NumberTrait
     public function max(int|float $max): static
     {
         $this->max = $max;
-        $this->attributes()->set('max', (string) $this->max);
+        $this->getAttributes()->set('max', (string) $this->max);
 
         return $this;
     }
@@ -33,7 +33,7 @@ trait NumberTrait
     public function step(int|float $step): static
     {
         $this->step = $step;
-        $this->attributes()->set('step', (string) $this->step);
+        $this->getAttributes()->set('step', (string) $this->step);
 
         return $this;
     }

@@ -52,7 +52,7 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     public function data(): array
     {
         return array_merge($this->extractPublicProperties(), [
-            'attributes' => $this->attributes(),
+            'attributes' => $this->getAttributes(),
             'name' => $this->getName(),
         ]);
     }
