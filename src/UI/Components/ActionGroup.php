@@ -6,11 +6,14 @@ namespace MoonShine\UI\Components;
 
 use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Collections\ActionButtons;
+use MoonShine\UI\Collections\ComponentsCollection;
+use MoonShine\UI\Collections\MoonShineRenderElements;
+use MoonShine\UI\Contracts\Components\HasComponents;
 
 /**
  * @method static static make(array $actions = [])
  */
-final class ActionGroup extends MoonShineComponent
+final class ActionGroup extends MoonShineComponent implements HasComponents
 {
     protected string $view = 'moonshine::components.action-group';
 
@@ -68,5 +71,22 @@ final class ActionGroup extends MoonShineComponent
         return [
             'actions' => $this->getActions()->onlyVisible(),
         ];
+    }
+
+    public function setComponents(iterable $components): static
+    {
+        $this->actions = $components;
+
+        return $this;
+    }
+
+    public function hasComponents(): bool
+    {
+        return (bool) count($this->actions);
+    }
+
+    public function getComponents(): MoonShineRenderElements
+    {
+        return ComponentsCollection::make($this->actions);
     }
 }

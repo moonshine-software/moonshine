@@ -73,7 +73,6 @@ class IndexPage extends Page
     protected function mainLayer(): array
     {
         return [
-            $this->getHiddenFilters(),
             ...$this->getPageButtons(),
             ...$this->getQueryTags(),
             ...$this->getItemsComponents(),
@@ -86,17 +85,6 @@ class IndexPage extends Page
     protected function bottomLayer(): array
     {
         return $this->getResource()->getIndexPageComponents();
-    }
-
-    /**
-     * @return FormBuilder<FiltersForm>
-     * @throws Throwable
-     */
-    protected function getHiddenFilters(): FormBuilder
-    {
-        return moonshineConfig()
-            ->getForm('filters', FiltersForm::class, resource: $this->getResource())
-            ->customAttributes(['class' => 'hidden remove-after-init']);
     }
 
     protected function getMetrics(): ?MoonShineComponent
