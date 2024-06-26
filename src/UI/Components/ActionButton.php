@@ -13,7 +13,10 @@ use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
+use MoonShine\UI\Collections\ComponentsCollection;
+use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Contracts\Actions\ActionButtonContract;
+use MoonShine\UI\Contracts\Components\HasComponents;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
@@ -24,7 +27,7 @@ use Throwable;
 /**
  * @method static static make(Closure|string $label, Closure|string $url = '', ?CastedData $data = null)
  */
-class ActionButton extends MoonShineComponent implements ActionButtonContract
+class ActionButton extends MoonShineComponent implements ActionButtonContract, HasComponents
 {
     use WithBadge;
     use WithLabel;
@@ -244,22 +247,27 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
         );
     }
 
-    public function hasComponent(): bool
+    public function hasComponents(): bool
     {
         return $this->isInOffCanvas() || $this->isInModal();
     }
 
-    public function getComponent(): ?MoonShineComponent
+    public function getComponents(): MoonShineRenderElements
     {
         if($this->isInModal()) {
-            return $this->getModal();
+            return ComponentsCollection::make([$this->getModal()]);
         }
 
         if($this->isInOffCanvas()) {
-            return $this->getOffCanvas();
+            return ComponentsCollection::make([$this->getOffCanvas()]);
         }
 
-        return null;
+        return new ComponentsCollection();
+    }
+
+    public function setComponents(iterable $components): static
+    {
+        return $this;
     }
 
     public function purgeAsyncTap(): bool
@@ -366,8 +374,8 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract
     {
         return [
             'inDropdown' => $this->isInDropdown(),
-            'hasComponent' => $this->hasComponent(),
-            'component' => $this->hasComponent() ? $this->getComponent() : '',
+            'hasComponent' => $this->hasComponents(),
+            'component' => $this->hasComponents() ? $this->getComponents()->first() : '',
             'label' => $this->getLabel(),
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(4),

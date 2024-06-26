@@ -27,7 +27,7 @@ final class FiltersButton
                 static fn (): array|string|null => __('moonshine::ui.filters'),
                 static fn (): FormBuilder => $form,
                 name: 'filters-off-canvas',
-                builder: static fn (OffCanvas $offCanvas): OffCanvas => $offCanvas->setComponents([$form])
+                components: [$form]
             )
             ->showInLine()
             ->class('btn-filter')

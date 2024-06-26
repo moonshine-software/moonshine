@@ -24,6 +24,7 @@ trait WithOffCanvas
         Closure|string|null $content = null,
         Closure|string|null $name = null,
         ?Closure $builder = null,
+        iterable $components = [],
     ): static {
         if(is_null($name)) {
             $name = (string) spl_object_id($this);
@@ -34,7 +35,8 @@ trait WithOffCanvas
         $this->offCanvas = fn (mixed $data) => OffCanvas::make(
             title: fn () => value($title, $data, $this) ?? $this->getLabel(),
             content: fn () => value($content, $data, $this) ?? '',
-            asyncUrl: $async ? $this->getUrl($data) : null
+            asyncUrl: $async ? $this->getUrl($data) : null,
+            components: $components
         )
             ->name(value($name, $data, $this))
             ->when(
