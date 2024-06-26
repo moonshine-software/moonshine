@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Contracts\Components\HasComponents;
-use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\Components\WithComponents;
-use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
  * @method static static make(iterable $components = [])
  */
-abstract class AbstractWithComponents extends MoonShineComponent implements
-    HasFields,
-    HasComponents
+abstract class AbstractWithComponents extends MoonShineComponent implements HasComponents
 {
-    use WithFields;
     use WithComponents;
 
     /**
@@ -29,21 +23,11 @@ abstract class AbstractWithComponents extends MoonShineComponent implements
         parent::__construct();
 
         $this->setComponents($components);
-        $this->fields($this->getComponents()->toArray());
-    }
-
-    public function getComponents(): MoonShineRenderElements
-    {
-        if($this->getFields()->isNotEmpty()) {
-            return $this->getFields();
-        }
-
-        return $this->getPreparedComponents();
     }
 
     /**
-     * @throws Throwable
      * @return array<string, mixed>
+     * @throws Throwable
      */
     protected function systemViewData(): array
     {

@@ -247,27 +247,37 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         );
     }
 
-    public function hasComponents(): bool
+    public function hasComponent(): bool
     {
         return $this->isInOffCanvas() || $this->isInModal();
     }
 
-    public function getComponents(): MoonShineRenderElements
+    public function getComponent(): ?MoonShineComponent
     {
         if($this->isInModal()) {
-            return ComponentsCollection::make([$this->getModal()]);
+            return $this->getModal();
         }
 
         if($this->isInOffCanvas()) {
-            return ComponentsCollection::make([$this->getOffCanvas()]);
+            return $this->getOffCanvas();
         }
 
-        return new ComponentsCollection();
+        return null;
     }
 
     public function setComponents(iterable $components): static
     {
         return $this;
+    }
+
+    public function hasComponents(): bool
+    {
+        return $this->hasComponent();
+    }
+
+    public function getPreparedComponents(): ComponentsCollection
+    {
+        return ComponentsCollection::make($this->hasComponents() ? [$this->getComponent()] : []);
     }
 
     public function purgeAsyncTap(): bool
@@ -374,8 +384,8 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     {
         return [
             'inDropdown' => $this->isInDropdown(),
-            'hasComponent' => $this->hasComponents(),
-            'component' => $this->hasComponents() ? $this->getComponents()->first() : '',
+            'hasComponent' => $this->hasComponent(),
+            'component' => $this->hasComponent() ? $this->getComponent() : '',
             'label' => $this->getLabel(),
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(4),
