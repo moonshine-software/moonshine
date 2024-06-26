@@ -2,6 +2,7 @@
 
 namespace MoonShine\Laravel\Fields;
 
+use MoonShine\UI\Fields\Field;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -32,7 +33,7 @@ class Slug extends Text
 
             return tap(
                 $fields,
-                fn ($fields) => $fields
+                fn ($fields): ?Field => $fields
                 ->findByColumn($this->getColumn())
                 ?->setValue(str($title->toValue())->slug()->value())
             );
