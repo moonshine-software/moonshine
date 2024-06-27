@@ -96,7 +96,7 @@ table {
   max-height: calc(70dvh);
 
   thead {
-    @apply bg-slate-50 p-4 dark:bg-dark-700 sticky top-0 z-10;
+    @apply sticky top-0 z-10 bg-slate-50 p-4 dark:bg-dark-700;
   }
 }
 
