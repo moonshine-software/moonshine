@@ -14,9 +14,6 @@ use MoonShine\UI\Components\ActionButton;
 
 trait ResourceWithButtons
 {
-    /**
-     * @return ActionButtons
-     */
     public function getIndexButtons(): ActionButtons
     {
         return ActionButtons::make(
@@ -24,26 +21,16 @@ trait ResourceWithButtons
         );
     }
 
-    /**
-     * @return ActionButtons
-     */
     public function getFormButtons(): ActionButtons
     {
         return $this->getWithoutBulkButtons($this->formButtons());
     }
 
-    /**
-     * @return ActionButtons
-     */
     public function getDetailButtons(): ActionButtons
     {
         return $this->getWithoutBulkButtons($this->detailButtons());
     }
 
-    /**
-     * @param  array  $customButtons
-     * @return ActionButtons
-     */
     protected function getWithoutBulkButtons(array $customButtons = []): ActionButtons
     {
         return ActionButtons::make(
@@ -85,9 +72,6 @@ trait ResourceWithButtons
         return [];
     }
 
-    /**
-     * @return ActionButtons
-     */
     public function getFormBuilderButtons(): ActionButtons
     {
         return ActionButtons::make($this->formBuilderButtons());
