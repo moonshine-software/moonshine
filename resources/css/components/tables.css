@@ -91,8 +91,13 @@ table {
 }
 
 .table-responsive {
-  @apply -m-1 overflow-auto p-1;
+  @apply overflow-auto;
   width: calc(100% + 0.5rem);
+  max-height: calc(70dvh);
+
+  thead {
+    @apply bg-slate-50 p-4 dark:bg-dark-700 sticky top-0 z-10;
+  }
 }
 
 .table-zoom-in {
