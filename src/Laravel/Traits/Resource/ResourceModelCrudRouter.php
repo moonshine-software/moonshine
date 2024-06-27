@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Core\Contracts\PageContract;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Support\Enums\PageType;
@@ -77,10 +78,14 @@ trait ResourceModelCrudRouter
 
     public function getFragmentLoadUrl(
         string $fragment,
-        Page $page,
-        Model|int|string|null $model,
+        ?PageContract $page = null,
+        Model|int|string|null $model = null,
         array $params = []
     ): string {
+        if(is_null($page)) {
+            $page = $this->getIndexPage();
+        }
+
         return $this->getPageUrl(
             $page,
             params: array_filter([
