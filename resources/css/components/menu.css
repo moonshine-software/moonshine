@@ -70,6 +70,7 @@
     @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 bg-body px-6 pb-8 pt-14 opacity-0 transition-all lg:pointer-events-auto lg:visible lg:static lg:z-1 lg:mt-0 lg:flex lg:translate-y-0 lg:flex-col lg:bg-transparent lg:py-0 lg:pl-0 lg:pr-4 lg:opacity-100 lg:transition-none xl:pr-5;
     overflow-y: auto;
     overflow-x: clip;
+    scrollbar-width: none;
 
     & > *:first-child {
       @apply mt-2;
