@@ -14,7 +14,6 @@ use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Collections\ComponentsCollection;
-use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use MoonShine\UI\Contracts\Components\HasComponents;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
