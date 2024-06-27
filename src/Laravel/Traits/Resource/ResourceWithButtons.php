@@ -15,41 +15,42 @@ use MoonShine\UI\Components\ActionButton;
 trait ResourceWithButtons
 {
     /**
-     * @return list<ActionButton>
+     * @return ActionButtons
      */
-    public function getIndexButtons(): array
+    public function getIndexButtons(): ActionButtons
     {
-        return empty($this->indexButtons()) ? $this->buttons() : $this->indexButtons();
+        return ActionButtons::make(
+            $this->indexButtons() === [] ? $this->buttons() : $this->indexButtons()
+        );
     }
 
     /**
-     * @return list<ActionButton>
+     * @return ActionButtons
      */
-    public function getFormButtons(): array
+    public function getFormButtons(): ActionButtons
     {
         return $this->getWithoutBulkButtons($this->formButtons());
     }
 
     /**
-     * @return list<ActionButton>
+     * @return ActionButtons
      */
-    public function getDetailButtons(): array
+    public function getDetailButtons(): ActionButtons
     {
         return $this->getWithoutBulkButtons($this->detailButtons());
     }
 
     /**
-     * @return list<ActionButton>
+     * @param  array  $customButtons
+     * @return ActionButtons
      */
-    protected function getWithoutBulkButtons(array $buttonsType = []): array
+    protected function getWithoutBulkButtons(array $customButtons = []): ActionButtons
     {
         return ActionButtons::make(
-            $buttonsType === []
+            $customButtons === []
                 ? $this->buttons()
-                : $buttonsType
-        )
-            ->withoutBulk()
-            ->toArray();
+                : $customButtons
+        )->withoutBulk();
     }
 
     /**
@@ -85,9 +86,17 @@ trait ResourceWithButtons
     }
 
     /**
+     * @return ActionButtons
+     */
+    public function getFormBuilderButtons(): ActionButtons
+    {
+        return ActionButtons::make($this->formBuilderButtons());
+    }
+
+    /**
      * @return list<ActionButton>
      */
-    public function getFormBuilderButtons(): array
+    public function formBuilderButtons(): array
     {
         return [];
     }
@@ -129,7 +138,7 @@ trait ResourceWithButtons
         return $button;
     }
 
-    public function getDetailButton(bool $isAsync = true): ActionButton
+    public function getDetailButton(): ActionButton
     {
         return $this->modifyDetailButton(
             DetailButton::for(
@@ -185,9 +194,7 @@ trait ResourceWithButtons
     {
         return [
             ...$this->getIndexButtons(),
-            $this->getDetailButton(
-                isAsync: $this->isAsync()
-            ),
+            $this->getDetailButton(),
             $this->getEditButton(
                 isAsync: $this->isAsync()
             ),

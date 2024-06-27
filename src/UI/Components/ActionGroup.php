@@ -6,41 +6,31 @@ namespace MoonShine\UI\Components;
 
 use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Collections\ActionButtons;
-use MoonShine\UI\Collections\ComponentsCollection;
-use MoonShine\UI\Collections\MoonShineRenderElements;
-use MoonShine\UI\Contracts\Components\HasComponents;
+use Throwable;
 
 /**
- * @method static static make(array $actions = [])
+ * @method static static make(iterable $actions = [])
  */
-final class ActionGroup extends MoonShineComponent implements HasComponents
+final class ActionGroup extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.action-group';
 
-    public function __construct(protected array|ActionButtons $actions = [])
-    {
-        parent::__construct();
-    }
-
     public function fill(?CastedData $data = null): self
     {
-        $this->actions = $this->getActions()->fill($data);
+        $this->components = $this->getActions()->fill($data);
 
         return $this;
     }
 
     public function getActions(): ActionButtons
     {
-        return is_array($this->actions)
-            ? ActionButtons::make($this->actions)
-            : $this->actions;
+        return ActionButtons::make($this->components)->ensure(ActionButton::class);
     }
 
     public function add(ActionButton $item): self
     {
-        $this->actions = $this->getActions();
-
-        $this->actions->add($item);
+        $this->components = $this->getComponents();
+        $this->components->add($item);
 
         return $this;
     }
@@ -56,9 +46,8 @@ final class ActionGroup extends MoonShineComponent implements HasComponents
 
     public function prepend(ActionButton $item): self
     {
-        $this->actions = $this->getActions();
-
-        $this->actions->prepend($item);
+        $this->components = $this->getComponents();
+        $this->components->prepend($item);
 
         return $this;
     }
@@ -73,20 +62,14 @@ final class ActionGroup extends MoonShineComponent implements HasComponents
         ];
     }
 
-    public function setComponents(iterable $components): static
+    /**
+     * @return array<string, mixed>
+     * @throws Throwable
+     */
+    protected function systemViewData(): array
     {
-        $this->actions = $components;
-
-        return $this;
-    }
-
-    public function hasComponents(): bool
-    {
-        return (bool) count($this->actions);
-    }
-
-    public function getComponents(): MoonShineRenderElements
-    {
-        return ComponentsCollection::make($this->actions);
+        return [
+            ...parent::systemViewData(),
+        ];
     }
 }

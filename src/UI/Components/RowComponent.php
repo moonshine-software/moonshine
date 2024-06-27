@@ -18,7 +18,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
 
     protected mixed $values = [];
 
-    protected array $buttons = [];
+    protected iterable $buttons = [];
 
     public function fill(mixed $values = []): static
     {
@@ -39,7 +39,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
         return $this->values ?? [];
     }
 
-    public function buttons(array $buttons = []): static
+    public function buttons(iterable $buttons = []): static
     {
         $this->buttons = $buttons;
 

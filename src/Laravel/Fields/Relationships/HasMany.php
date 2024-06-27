@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Laravel\Traits\Fields\WithParentRelationLink;
+use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;
@@ -31,7 +31,7 @@ class HasMany extends ModelRelationField implements HasFields
 {
     /** @use WithFields<Fields> */
     use WithFields;
-    use WithParentRelationLink;
+    use WithRelatedLink;
 
     protected string $view = 'moonshine::fields.relationships.has-many';
 
@@ -386,9 +386,7 @@ class HasMany extends ModelRelationField implements HasFields
             $editButton = value($this->modifyEditButton, $editButton, $this);
         }
 
-        $detailButton = $resource->getDetailButton(
-            isAsync: $this->isAsync()
-        );
+        $detailButton = $resource->getDetailButton();
 
         $deleteButton = $resource->getDeleteButton(
             componentName: $this->getRelationName(),
@@ -438,8 +436,8 @@ class HasMany extends ModelRelationField implements HasFields
             $this->setValue($casted?->{$this->getRelationName()});
         }
 
-        return $this->isParentRelationLink()
-            ? $this->getParentRelationLinkButton()->render()
+        return $this->isRelatedLink()
+            ? $this->getRelatedLink()->render()
             : $this->getTablePreview()->render();
     }
 
@@ -469,8 +467,8 @@ class HasMany extends ModelRelationField implements HasFields
             $this->setValue($resource->paginate());
         }
 
-        return $this->isParentRelationLink()
-            ? $this->getParentRelationLinkButton()
+        return $this->isRelatedLink()
+            ? $this->getRelatedLink()
             : $this->getTableValue();
     }
 
