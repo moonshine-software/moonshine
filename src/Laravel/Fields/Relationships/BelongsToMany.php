@@ -17,7 +17,7 @@ use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
-use MoonShine\Laravel\Traits\Fields\WithParentRelationLink;
+use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Collections\ActionButtons;
@@ -55,7 +55,7 @@ class BelongsToMany extends ModelRelationField implements
     use WithAsyncSearch;
     use HasTreeMode;
     use HasPlaceholder;
-    use WithParentRelationLink;
+    use WithRelatedLink;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
@@ -276,8 +276,8 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolveValue(): mixed
     {
-        if($this->isParentRelationLink()) {
-            return $this->getParentRelationLinkButton();
+        if($this->isRelatedLink()) {
+            return $this->getRelatedLink();
         }
 
         // fix for filters
@@ -380,8 +380,8 @@ class BelongsToMany extends ModelRelationField implements
                 ->toJson();
         }
 
-        if ($this->isParentRelationLink()) {
-            return (string) $this->getParentRelationLinkButton(preview: true);
+        if ($this->isRelatedLink()) {
+            return (string) $this->getRelatedLink(preview: true);
         }
 
         if ($this->onlyCount) {

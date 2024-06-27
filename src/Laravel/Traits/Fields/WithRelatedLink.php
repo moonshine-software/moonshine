@@ -10,47 +10,47 @@ use Illuminate\Support\Collection;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\UI\Components\ActionButton;
 
-trait WithParentRelationLink
+trait WithRelatedLink
 {
-    protected Closure|bool $isParentRelationLink = false;
+    protected Closure|bool $isRelatedLink = false;
 
     protected ?string $parentRelationName = null;
 
-    protected ?Closure $modifyParentRelationLinkButton = null;
+    protected ?Closure $modifyRelatedLink = null;
 
-    public function countLinkMode(?string $linkRelation = null, Closure|bool|null $condition = null): static
+    public function relatedLink(?string $linkRelation = null, Closure|bool|null $condition = null): static
     {
         $this->parentRelationName = $linkRelation;
 
         if (is_null($condition)) {
-            $this->isParentRelationLink = true;
+            $this->isRelatedLink = true;
 
             return $this;
         }
 
-        $this->isParentRelationLink = $condition;
+        $this->isRelatedLink = $condition;
 
         return $this;
     }
 
-    protected function isParentRelationLink(): bool
+    protected function isRelatedLink(): bool
     {
-        if (is_callable($this->isParentRelationLink) && is_null($this->toValue())) {
-            return value($this->isParentRelationLink, 0, $this);
+        if (is_callable($this->isRelatedLink) && is_null($this->toValue())) {
+            return value($this->isRelatedLink, 0, $this);
         }
 
-        if (is_callable($this->isParentRelationLink)) {
+        if (is_callable($this->isRelatedLink)) {
             $count = $this->toValue() instanceof Collection
                 ? $this->toValue()->count()
                 : $this->toValue()->total();
 
-            return value($this->isParentRelationLink, $count, $this);
+            return value($this->isRelatedLink, $count, $this);
         }
 
-        return $this->isParentRelationLink;
+        return $this->isRelatedLink;
     }
 
-    protected function getParentRelationLinkButton(bool $preview = false): ActionButton
+    protected function getRelatedLink(bool $preview = false): ActionButton
     {
         if (is_null($relationName = $this->parentRelationName)) {
             $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
@@ -74,17 +74,17 @@ trait WithParentRelationLink
             ->badge($count)
             ->icon('eye')
             ->when(
-                ! is_null($this->modifyParentRelationLinkButton),
-                fn (ActionButton $button) => value($this->modifyParentRelationLinkButton, $button, preview: $preview)
+                ! is_null($this->modifyRelatedLink),
+                fn (ActionButton $button) => value($this->modifyRelatedLink, $button, preview: $preview)
             );
     }
 
     /**
      * @param  Closure(ActionButton $button, bool $preview, self $field): ActionButton  $callback
      */
-    public function modifyParentRelationLinkButton(Closure $callback): self
+    public function modifyRelatedLink(Closure $callback): self
     {
-        $this->modifyParentRelationLinkButton = $callback;
+        $this->modifyRelatedLink = $callback;
 
         return $this;
     }
