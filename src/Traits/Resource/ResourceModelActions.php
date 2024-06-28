@@ -33,8 +33,13 @@ trait ResourceModelActions
             return null;
         }
 
-        return ExportHandler::make(__('moonshine::ui.export'))
-            ->csv();
+        $handler =  ExportHandler::make(__('moonshine::ui.export'));
+
+        if (config('moonshine.export.format') !== 'xlsx') {
+            $handler->csv();
+        }
+
+        return $handler;
     }
 
     public function import(): ?ImportHandler
