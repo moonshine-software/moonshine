@@ -78,6 +78,8 @@ abstract class ModelResource extends Resource
      */
     protected ?ClickAction $clickAction = null;
 
+    protected bool $stickyTable = false;
+
     public function flushState(): void
     {
         $this->item = null;
@@ -168,6 +170,11 @@ abstract class ModelResource extends Resource
     public function getClickAction(): ?string
     {
         return $this->clickAction?->value;
+    }
+
+    public function isStickyTable(): bool
+    {
+        return $this->stickyTable;
     }
 
     /**

@@ -204,6 +204,9 @@ class IndexPage extends Page
                 $table->async()->customAttributes([
                     'data-pushstate' => 'true',
                 ]);
+            })
+            ->when($this->getResource()->isStickyTable(), function (TableBuilder $table): void {
+                $table->sticky();
             });
     }
 

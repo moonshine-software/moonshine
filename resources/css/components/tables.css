@@ -91,12 +91,20 @@ table {
 }
 
 .table-responsive {
-  @apply -m-1 overflow-auto p-1;
+  @apply overflow-auto;
   width: calc(100% + 0.5rem);
 }
 
 .table-zoom-in {
   tbody > tr {
     @apply transition-all will-change-transform hover:scale-[1.015] hover:shadow-md hover:shadow-gray-200;
+  }
+}
+
+.table-sticky {
+  max-height: calc(70dvh);
+
+  & > table > thead {
+    @apply sticky -top-1 z-1 bg-slate-50 dark:bg-dark-800;
   }
 }
