@@ -44,7 +44,7 @@ final class Profile extends MoonShineComponent
         $avatar = $avatar
             ? Storage::disk(config('moonshine.disk', 'public'))
                 ->url($avatar)
-            : "https://ui-avatars.com/api/?name=$nameOfUser";
+            : null;
 
         return [
             'route' => $this->route ?? to_page(config('moonshine.pages.profile', ProfilePage::class)),

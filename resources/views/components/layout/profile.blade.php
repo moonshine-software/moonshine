@@ -19,10 +19,18 @@
                class="menu-profile-main"
             >
                 <div class="menu-profile-photo">
-                    <img class="h-full w-full object-cover"
-                         src="{{ $avatar }}"
-                         alt="{{ $nameOfUser }}"
-                    />
+                    @if($avatar)
+                        <img class="h-full w-full object-cover"
+                             src="{{ $avatar }}"
+                             alt="{{ $nameOfUser }}"
+                        />
+                    @else
+                        <div class="h-full w-full object-cover flex items-center justify-center font-semibold text-xl"
+                             style="background-color: #dddddd; color: #222222;"
+                        >
+                            {{ \MoonShine\Utils::nameToInitials($nameOfUser) }}
+                        </div>
+                    @endif
                 </div>
                 <div class="menu-profile-info">
                     <h5 class="name">{{ $nameOfUser }}</h5>
