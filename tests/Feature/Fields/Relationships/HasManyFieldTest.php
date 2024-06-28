@@ -20,9 +20,8 @@ it('onlyLink preview', function () {
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
-        Text::make('Имя', 'name'),
-        HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
-            ->relatedLink(),
+        Text::make('Name'),
+        HasMany::make('Comments', resource: new TestCommentResource())->relatedLink(),
     ]);
 
     asAdmin()
@@ -37,8 +36,8 @@ it('onlyLink preview empty', function () {
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
-        Text::make('Имя', 'name'),
-        HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
+        Text::make('Name'),
+        HasMany::make('Comments', resource: new TestCommentResource())
             ->relatedLink(),
     ]);
 
@@ -53,8 +52,8 @@ it('onlyLink value', function () {
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
-        Text::make('Имя', 'name'),
-        HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
+        Text::make('Name'),
+        HasMany::make('Comments', resource: new TestCommentResource())
             ->relatedLink(),
     ]);
 
@@ -70,8 +69,8 @@ it('onlyLink value empty', function () {
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
-        Text::make('Имя', 'name'),
-        HasMany::make('Комментарии', 'comments', resource: new TestCommentResource())
+        Text::make('Name'),
+        HasMany::make('Comments', resource: new TestCommentResource())
             ->relatedLink(),
     ]);
 
@@ -86,7 +85,7 @@ it('onlyLink preview condition', function () {
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
-        Text::make('Имя', 'name'),
+        Text::make('Name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
             ->relatedLink(condition: static function (int $count): bool {
                 return $count > 10;
@@ -108,7 +107,7 @@ it('onlyLink value condition', function () {
 
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
-        Text::make('Имя', 'name'),
+        Text::make('Name'),
         HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
             ->relatedLink(condition: static function (int $count, Field $field): bool {
                 return $field->toValue()->total() > 20;

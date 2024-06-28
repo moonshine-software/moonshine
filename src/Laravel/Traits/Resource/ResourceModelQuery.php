@@ -11,7 +11,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;

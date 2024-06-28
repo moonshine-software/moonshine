@@ -18,6 +18,7 @@ use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Contracts\Fields\RemovableContract;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
@@ -41,6 +42,8 @@ class RelationRepeater extends ModelRelationField implements
     protected bool $isGroup = true;
 
     protected bool $hasOld = false;
+
+    protected bool $resolveValueOnce = true;
 
     protected bool $isVertical = false;
 
@@ -154,7 +157,7 @@ class RelationRepeater extends ModelRelationField implements
         }
 
         return $this
-            ->resolveValue()
+            ->getComponent()
             ->simple()
             ->preview()
             ->render();
@@ -189,14 +192,20 @@ class RelationRepeater extends ModelRelationField implements
             ? $value
             : [$value ?? $emptyRow];
 
-        $values = collect($values)->when(
+        return collect($values)->when(
             ! $this->isPreviewMode() && ! $this->isCreatable() && blank($values),
             static fn ($values): Collection => $values->push($emptyRow)
         );
+    }
 
+    /**
+     * @throws Throwable
+     */
+    protected function getComponent(): MoonShineRenderable
+    {
         $fields = $this->getPreparedFields();
 
-        return TableBuilder::make($fields, $values)
+        return TableBuilder::make($fields, $this->getValue())
             ->name('relation_repeater_' . $this->getColumn())
             ->customAttributes(
                 $this->getAttributes()
@@ -370,7 +379,7 @@ class RelationRepeater extends ModelRelationField implements
     protected function viewData(): array
     {
         return [
-            'component' => $this->resolveValue()
+            'component' => $this->getComponent()
                 ->editable()
                 ->reindex(prepared: true)
                 ->when(

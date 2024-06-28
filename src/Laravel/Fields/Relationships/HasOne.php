@@ -41,6 +41,8 @@ class HasOne extends ModelRelationField implements HasFields
 
     protected bool $hasOld = false;
 
+    protected bool $resolveValueOnce = true;
+
     protected bool $outsideComponent = true;
 
     protected bool $isAsync = true;
@@ -132,11 +134,7 @@ class HasOne extends ModelRelationField implements HasFields
         };
     }
 
-    /**
-     * @throws FieldException
-     * @throws Throwable
-     */
-    protected function resolveValue(): MoonShineRenderable
+    protected function getComponent(): MoonShineRenderable
     {
         $resource = $this->getResource();
 
@@ -195,7 +193,7 @@ class HasOne extends ModelRelationField implements HasFields
                             ->setValue($this->getRelatedModel()::class)
                     )
                 )
-                ->toArray()
+                    ->toArray()
             )
             ->redirect($isAsync ? null : $redirectAfter)
             ->fillCast(
@@ -246,7 +244,7 @@ class HasOne extends ModelRelationField implements HasFields
     protected function viewData(): array
     {
         return [
-            'form' => $this->resolveValue(),
+            'component' => $this->getComponent(),
         ];
     }
 }

@@ -39,6 +39,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $hasOld = false;
 
+    protected bool $resolveValueOnce = true;
+
     protected bool $outsideComponent = true;
 
     protected int $limit = 15;
@@ -331,6 +333,7 @@ class HasMany extends ModelRelationField implements HasFields
      */
     protected function getTableValue(): MoonShineRenderable
     {
+        $items = $this->getValue();
         $resource = $this->getResource();
 
         // Need for assets
@@ -342,7 +345,7 @@ class HasMany extends ModelRelationField implements HasFields
             relation: $this->getRelationName()
         );
 
-        return TableBuilder::make(items: $this->toValue())
+        return TableBuilder::make(items: $items)
             ->async($asyncUrl)
             ->when(
                 $this->isSearchable() && ! empty($this->getResource()->search()),
@@ -432,9 +435,9 @@ class HasMany extends ModelRelationField implements HasFields
      */
     protected function resolvePreview(): View|string
     {
-        if (is_null($this->toValue())) {
+        // resolve value before call toValue
+        if(is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
-
             $this->setValue($casted?->{$this->getRelationName()});
         }
 
@@ -446,27 +449,38 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function resolveValue(): MoonShineRenderable
+    protected function resolveValue(): mixed
     {
-        parent::resolveValue();
-
         $resource = $this->getResource();
 
         $resource->setQueryParams(
             request()->only($resource->getQueryParamsKeys())
         );
 
-        if (is_null($this->toValue())) {
-            $casted = $this->getRelatedModel();
-            $relation = $casted?->{$this->getRelationName()}();
+        $casted = $this->getRelatedModel();
+        $relation = $casted?->{$this->getRelationName()}();
 
-            $resource->customBuilder(
-                is_null($this->modifyBuilder)
-                    ? $relation
-                    : value($this->modifyBuilder, $relation)
-            );
+        $resource->customBuilder(
+            is_null($this->modifyBuilder)
+                ? $relation
+                : value($this->modifyBuilder, $relation)
+        );
 
-            $this->setValue($resource->paginate());
+        $items = $resource->paginate();
+
+        $this->setValue($items);
+
+        return $items;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getComponent(): MoonShineRenderable
+    {
+        // resolve value before call toValue
+        if(is_null($this->toValue())) {
+            $this->setValue($this->getValue());
         }
 
         return $this->isRelatedLink()
@@ -499,7 +513,7 @@ class HasMany extends ModelRelationField implements HasFields
     protected function viewData(): array
     {
         return [
-            'component' => $this->resolveValue(),
+            'component' => $this->getComponent(),
             'isCreatable' => $this->isCreatable(),
             'createButton' => $this->getCreateButton(),
         ];

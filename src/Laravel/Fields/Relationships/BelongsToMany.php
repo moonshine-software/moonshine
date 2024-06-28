@@ -27,6 +27,7 @@ use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\FormElement;
@@ -255,10 +256,6 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolveValue(): mixed
     {
-        if($this->isRelatedLink()) {
-            return $this->getRelatedLink();
-        }
-
         // fix for filters
         if ($this->isAsyncSearch() && ! $this->isValueWithModels($this->memoizeValues) && filled($this->toValue())) {
             $this->memoizeValues = $this->getRelation()
@@ -295,9 +292,13 @@ class BelongsToMany extends ModelRelationField implements
         });
     }
 
-    protected function getTableValue(): TableBuilder
+    protected function getComponent(): MoonShineRenderable
     {
         $values = $this->getValue();
+
+        if($this->isRelatedLink()) {
+            return $this->getRelatedLink();
+        }
 
         $removeAfterClone = false;
 
@@ -568,7 +569,7 @@ class BelongsToMany extends ModelRelationField implements
 
         return [
             ...$viewData,
-            'component' => $this->getTableValue(),
+            'component' => $this->getComponent(),
             'buttons' => $this->getButtons(),
         ];
     }

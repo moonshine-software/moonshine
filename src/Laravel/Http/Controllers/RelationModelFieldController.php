@@ -117,7 +117,7 @@ class RelationModelFieldController extends MoonShineController
             $parentResource->getModelCast()
         );
 
-        $value = $field?->getValue();
+        $value = $field?->getComponent();
 
         if ($value instanceof TableBuilder && $request->filled('_key')) {
             return $this->responseWithTable($value);
