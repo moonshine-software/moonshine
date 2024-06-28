@@ -34,7 +34,7 @@ trait Removable
             'name' => 'hidden_' . $this->getAttributes()->get('name'),
             'data-name' => str($this->getAttributes()->get('data-name'))
                 ->replaceLast($this->getAttributes()->get('data-column'), 'hidden_' . $this->getAttributes()->get('data-column'))
-                ->value()
+                ->value(),
         ]);
     }
 
