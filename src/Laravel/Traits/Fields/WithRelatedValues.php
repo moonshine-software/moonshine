@@ -68,22 +68,6 @@ trait WithRelatedValues
         return $query;
     }
 
-    protected function resolveRelatedQuery(Builder $builder): Collection
-    {
-        // #MongoDB Models fix
-        $key = rescue(static fn () => $builder->toRawSql(), static fn (): bool => false, false);
-
-        if($key === false) {
-            return $builder->get();
-        }
-
-        return moonshineCache()->remember(
-            sha1((string) $key),
-            4,
-            static fn (): Collection => $builder->get()
-        );
-    }
-
     protected function getSelectedValue(): string|array
     {
         return (string) $this->getValue();
@@ -94,11 +78,9 @@ trait WithRelatedValues
      */
     public function getValues(): Options
     {
-        $query = $this->resolveValuesQuery();
-
         $formatted = ! is_null($this->getFormattedValueCallback());
 
-        $values = $this->memoizeValues ?? $this->resolveRelatedQuery($query);
+        $values = $this->memoizeValues ?? $this->resolveValuesQuery()->get();
         $this->memoizeValues = $values;
 
         $getValue = fn (Model $item) => $formatted ? value(

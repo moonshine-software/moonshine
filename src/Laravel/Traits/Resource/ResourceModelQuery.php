@@ -75,7 +75,7 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
-        if($this->itemID === false) {
+        if ($this->itemID === false) {
             return null;
         }
 
@@ -309,7 +309,9 @@ trait ResourceModelQuery
         ) {
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
-                    collect(moonshineCache()->get($this->getQueryCacheKey(), []))->filter(fn ($value, $key): bool => ! $this->getQueryParams()->has($key))->toArray()
+                    collect(moonshineCache()->get($this->getQueryCacheKey(), []))->filter(
+                        fn ($value, $key): bool => ! $this->getQueryParams()->has($key)
+                    )->toArray()
                 )
             );
         }

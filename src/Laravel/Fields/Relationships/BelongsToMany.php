@@ -61,6 +61,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $isGroup = true;
 
+    protected bool $hasOld = false;
+
     protected string $treeParentColumn = '';
 
     protected bool $onlyCount = false;
@@ -81,18 +83,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected array $buttons = [];
 
-    protected ?Collection $memoizeAllValues = null;
-
     protected ?string $columnLabel = null;
-
-    public function getView(): string
-    {
-        if ($this->isTree()) {
-            return 'moonshine::fields.shared.tree';
-        }
-
-        return parent::getView();
-    }
 
     public function onlyCount(): static
     {
@@ -116,6 +107,11 @@ class BelongsToMany extends ModelRelationField implements
         $this->selectMode = true;
 
         return $this;
+    }
+
+    public function isSelectMode(): bool
+    {
+        return $this->selectMode;
     }
 
     public function creatable(
@@ -171,19 +167,9 @@ class BelongsToMany extends ModelRelationField implements
         return ActionButtons::make($this->buttons);
     }
 
-    public function isSelectMode(): bool
-    {
-        return $this->selectMode;
-    }
-
     protected function getPivotAs(): string
     {
         return $this->getRelation()?->getPivotAccessor() ?? 'pivot';
-    }
-
-    protected function getPivotName(): string
-    {
-        return "{$this->getRelationName()}_pivot";
     }
 
     public function getTableComponentName(): string
@@ -228,8 +214,6 @@ class BelongsToMany extends ModelRelationField implements
         return $this->getFields()->prepareAttributes()->prepareReindex(
             parent: $this,
             before: function (self $parent, Field $field): FormElement {
-                $parent->setNameAttribute($this->getPivotName());
-
                 return (clone $field)
                     ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
                     ->setNameAttribute($field->getColumn())
@@ -254,18 +238,8 @@ class BelongsToMany extends ModelRelationField implements
     {
         $values = parent::prepareFill($raw, $casted);
 
-        // fix for filters
-        if (blank($values) && filled($raw)) {
-            $values = parent::prepareFill($raw);
-        }
-
         if (! $values instanceof EloquentCollection) {
             $values = EloquentCollection::make($values);
-        }
-
-        if ($this->isAsyncSearch()) {
-            $this->memoizeValues = $values;
-            $this->memoizeAllValues = $values;
         }
 
         return $values;
@@ -286,17 +260,24 @@ class BelongsToMany extends ModelRelationField implements
                 ?->getRelated()
                 ?->newQuery()
                 ?->findMany($this->toValue()) ?? EloquentCollection::make();
+        }
 
-            $this->memoizeAllValues = $this->memoizeValues;
+        if($this->isSelectMode()) {
+            return $this->getValues()->toArray();
+        }
+
+        if($this->isTree()) {
+            return $this->getKeys();
         }
 
         $titleColumn = $this->getResourceColumn();
 
         $checkedColumn = $this->getNameAttribute('${index0}');
-        $identityField = Checkbox::make('#', $checkedColumn)
+
+        $identityField = Checkbox::make('#', '_checked')
             ->withoutWrapper()
             ->setAttribute('class', 'pivotChecker')
-            ->setNameAttribute($checkedColumn)
+            ->setNameAttribute($checkedColumn . "[_checked]")
             ->formName($this->getFormName())
             ->iterableAttributes();
 
@@ -309,16 +290,17 @@ class BelongsToMany extends ModelRelationField implements
             )
             ->prepend($identityField);
 
-        $values = $this->memoizeAllValues ?? $this->resolveValuesQuery()->get();
-        $this->memoizeAllValues = $values;
+        $values = $this->memoizeValues ?? $this->resolveValuesQuery()->get();
 
-        $values = $values->map(function ($value) use ($checkedColumn) {
+        $values = $values->map(function ($value) use ($identityField) {
             if (! $this->isValueWithModels()) {
                 $data = $this->toValue();
 
                 return $value
-                    ->setRelations($value->getRelations())
-                    ->setAttribute($checkedColumn, isset($data[$value->getKey()]) && $data[$value->getKey()]);
+                    ->setRelations([
+                        $this->getPivotAs() => $data[$value->getKey()] ?? []
+                    ])
+                    ->setAttribute($identityField->getColumn(), $data[$value->getKey()][$identityField->getColumn()] ?? false);
             }
 
             $checked = $this->toValue()
@@ -326,7 +308,7 @@ class BelongsToMany extends ModelRelationField implements
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations())
-                ->setAttribute($checkedColumn, ! is_null($checked));
+                ->setAttribute($identityField->getColumn(), ! is_null($checked));
         });
 
         $removeAfterClone = false;
@@ -424,6 +406,19 @@ class BelongsToMany extends ModelRelationField implements
             ->render();
     }
 
+    public function getCheckedKeys(): Collection
+    {
+        $requestValues = collect($this->getRequestValue() ?: []);
+
+        if($this->isSelectMode() || $this->isTree()) {
+            return $requestValues;
+        }
+
+        return $requestValues
+            ->filter(static fn(array $value) => $value['_checked'])
+            ->keys();
+
+    }
     protected function resolveOnApply(): ?Closure
     {
         return static fn ($item) => $item;
@@ -436,27 +431,21 @@ class BelongsToMany extends ModelRelationField implements
     {
         /* @var Model $item */
         $item = $data;
-        $requestValues = array_filter($this->getRequestValue() ?: []);
+
+        $checkedKeys = $this->getCheckedKeys();
+
+        if ($this->isSelectMode() || $this->isTree() || $this->getFields()->isEmpty()) {
+            $item->{$this->getRelationName()}()->sync($checkedKeys);
+
+            return $data;
+        }
+
         $applyValues = [];
 
-        if ($this->isSelectMode() || $this->isTree()) {
-            $item->{$this->getRelationName()}()->sync($requestValues);
-
-            return $data;
-        }
-
-        if ($this->getFields()->isEmpty()) {
-            $item->{$this->getRelationName()}()->sync(
-                array_keys($requestValues)
-            );
-
-            return $data;
-        }
-
-        foreach ($requestValues as $key => $checked) {
+        foreach ($checkedKeys as $key) {
             foreach ($this->getFields() as $field) {
                 $field->appendRequestKeyPrefix(
-                    "{$this->getPivotName()}.$key",
+                    "{$this->getRelationName()}.$key",
                     $this->getRequestKeyPrefix()
                 );
 
@@ -489,7 +478,7 @@ class BelongsToMany extends ModelRelationField implements
             ->onlyFields()
             ->each(function (Field $field, $index) use ($data): void {
                 $field->appendRequestKeyPrefix(
-                    "{$this->getPivotName()}.$index",
+                    "{$this->getRelationName()}.$index",
                     $this->getRequestKeyPrefix()
                 );
 
@@ -544,19 +533,34 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function viewData(): array
     {
-        return [
-            'component' => $this->resolveValue(),
-            'buttons' => $this->getButtons(),
-            'values' => $this->getRelation() ? $this->getValues()->toArray() : [],
-            'isSearchable' => $this->isSearchable(),
-            'isAsyncSearch' => $this->isAsyncSearch(),
+        $viewData = [
+            'isTreeMode' => $this->isTree(),
             'isSelectMode' => $this->isSelectMode(),
+            'isAsyncSearch' => $this->isAsyncSearch(),
             'asyncSearchUrl' => $this->getAsyncSearchUrl(),
             'isCreatable' => $this->isCreatable(),
             'createButton' => $this->getCreateButton(),
             'fragmentUrl' => $this->getFragmentUrl(),
             'relationName' => $this->getRelationName(),
-            'keys' => $this->getKeys(),
+        ];
+
+        if($this->isSelectMode()) {
+            return [
+                ...$viewData,
+                'isSearchable' => $this->isSearchable(),
+            ];
+        }
+
+        if($this->isTree()) {
+            return [
+                ...$viewData,
+                'treeHtml' => $this->toTreeHtml(),
+            ];
+        }
+
+        return [
+            ...$viewData,
+            'buttons' => $this->getButtons(),
         ];
     }
 }

@@ -15,6 +15,11 @@ final class ActionGroup extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.action-group';
 
+    public function __construct(iterable $actions = [])
+    {
+        parent::__construct($actions);
+    }
+
     public function fill(?CastedData $data = null): self
     {
         $this->components = $this->getActions()->fill($data);

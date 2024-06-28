@@ -72,7 +72,7 @@ class Preview extends Field
     {
         parent::prepareBeforeRender();
 
-        $this->customAttributes(['name' => null]);
+        $this->removeAttribute('name');
     }
 
     protected function resolveValue(): mixed

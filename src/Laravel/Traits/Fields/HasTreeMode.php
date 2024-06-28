@@ -52,12 +52,13 @@ trait HasTreeMode
             foreach ($data->get($parentKey) as $item) {
                 $label = $this->getColumnOrFormattedValue($item, data_get($item, $this->getResourceColumn()));
 
+                $this->getAttributes()->set('name', $this->getNameAttribute((string) $item->getKey()));
+
                 $element = moonshine()->render(
                     'moonshine::components.form.input-composition',
                     [
                         'attributes' => $this->getAttributes()->merge([
                             'type' => 'checkbox',
-                            'name' => $this->getNameAttribute((string) $item->getKey()),
                             'value' => $item->getKey(),
                             'class' => 'form-group-inline',
                         ]),

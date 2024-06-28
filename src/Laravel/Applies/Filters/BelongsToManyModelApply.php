@@ -20,29 +20,18 @@ class BelongsToManyModelApply implements ApplyContract
                 return;
             }
 
-            $value = $field->getRequestValue();
+            $checkedKeys = $field->getCheckedKeys();
 
-            $values = array_filter(
-                is_array($value) ? $value : [$value]
-            );
-
-            if (is_null($field->getRelation()) || blank($values)) {
+            if (is_null($field->getRelation()) || blank($checkedKeys)) {
                 return;
             }
 
             $query->whereHas(
                 $field->getRelationName(),
-                static function (Builder $q) use ($field, $values): Builder {
-                    $table = $field->getRelation()?->getTable();
-                    $id = $field->getRelation()?->getRelatedPivotKeyName();
-
-                    return $q->whereIn(
-                        "$table.$id",
-                        $field->isSelectMode()
-                            ? $values
-                            : array_keys($values)
-                    );
-                }
+                static fn (Builder $q) => $q->whereIn(
+                    $field->getRelation()?->getQualifiedRelatedPivotKeyName(),
+                    $checkedKeys
+                )
             );
         };
     }

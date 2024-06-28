@@ -39,6 +39,8 @@ class Json extends Field implements
 
     protected bool $isGroup = true;
 
+    protected bool $hasOld = false;
+
     protected bool $isVertical = false;
 
     protected bool $isCreatable = true;

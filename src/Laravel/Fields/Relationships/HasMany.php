@@ -37,6 +37,8 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $isGroup = true;
 
+    protected bool $hasOld = false;
+
     protected bool $outsideComponent = true;
 
     protected int $limit = 15;

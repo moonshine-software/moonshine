@@ -35,20 +35,42 @@ beforeEach(function () {
         ->toBeEmpty();
 });
 
-function testBelongsToManyValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null, array $pivotData = [])
+function testBelongsToManyValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null, ?array $pivotData = null)
 {
+    $mapper = static function (array $d, array $p = []) {
+        return collect($d)->mapWithKeys(fn($v, $k) => [$k => [
+            '_checked' => 1,
+            ...$p[$k] ?? []
+        ]])->toArray();
+    };
+
+    if(!is_null($pivotData)) {
+        $data = $mapper($data, $pivotData);
+    }
+
     asAdmin()->put(
         $resource->getRoute('crud.update', $item->getKey()),
         [
             'categories' => $data,
-            'categories_pivot' => $pivotData,
         ]
     )->assertRedirect();
 
     $item->refresh();
 
-    expect($item->categories->pluck('id', 'id')->toArray())
-        ->toBe($expectedData ?? $data);
+    $real = $item->categories->pluck('id', 'id')->toArray();
+
+    if(!is_null($pivotData)) {
+        $pivot = $item->categories->mapWithKeys(fn ($c) => [
+            $c->id => array_filter([
+                'pivot_1' => $c->pivot->pivot_1,
+                'pivot_2' => $c->pivot->pivot_2,
+            ])
+        ])->toArray();
+
+        $real = $mapper($real, $pivot);
+    }
+
+    expect($real)->toBe($expectedData ?? $data);
 }
 
 it('apply as base', function () {
@@ -60,7 +82,7 @@ it('apply as base', function () {
 
     $data = $categories->random(3)->pluck('id', 'id')->toArray();
 
-    testBelongsToManyValue($resource, $this->item, $data);
+    testBelongsToManyValue($resource, $this->item, $data, pivotData: []);
 });
 
 it('apply as base with pivot', function () {
@@ -118,7 +140,7 @@ it('apply as filter', function (): void {
 
     $query = Item::query();
 
-    get('/?filters[categories][3]=3');
+    get('/?filters[categories][3][_checked]=1');
 
     $field
         ->onApply((new BelongsToManyModelApply())->apply($field))

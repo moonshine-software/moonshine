@@ -1,11 +1,12 @@
 @props([
-    'component',
+    'value' => null,
     'buttons' => [],
-    'values' => [],
     'isNullable' => false,
     'isSearchable' => false,
     'isAsyncSearch' => false,
     'isSelectMode' => false,
+    'isTreeMode' => false,
+    'treeHtml' => '',
     'asyncSearchUrl' => '',
     'isCreatable' => false,
     'createButton' => '',
@@ -32,11 +33,15 @@
                         'multiple' => true
                     ])"
                     :nullable="$isNullable"
-                    :searchable="true"
-                    :values="$values"
+                    :searchable="$isSearchable"
+                    :values="$value"
                     :asyncRoute="$isAsyncSearch ? $asyncSearchUrl : null"
                 >
                 </x-moonshine::form.select>
+            @elseif($isTreeMode)
+                <div x-data="tree(@json($value))">
+                    {!! $treeHtml !!}
+                </div>
             @else
                 @if($isAsyncSearch)
                     <div x-data="asyncSearch('{{ $asyncSearchUrl }}')">
@@ -77,14 +82,14 @@
                         <div x-data="pivot"
                              x-init="autoCheck"
                              class="pivotTable"
-                             data-table-name="{{ $component->getName() }}"
+                             data-table-name="{{ $value->getName() }}"
                         >
                             <x-moonshine::action-group
                                 class="mb-4"
                                 :actions="$buttons"
                             />
 
-                            {!! $component->render() !!}
+                            {!! $value->render() !!}
                         </div>
                     </div>
                 @else
@@ -94,7 +99,7 @@
                             :actions="$buttons"
                         />
 
-                        {!! $component->render() !!}
+                        {!! $value->render() !!}
                     </div>
                 @endif
             @endif

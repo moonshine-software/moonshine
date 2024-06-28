@@ -102,8 +102,8 @@ final readonly class FiltersForm implements FormContract
             })
             ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
-                request()->input('filters'),
-                fn ($fields): FormBuilder => $fields->buttons([
+                request()->has('filters'),
+                fn (FormBuilder $form): FormBuilder => $form->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
                         $this->getFormAction(query: ['reset' => true])
