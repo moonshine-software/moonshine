@@ -15,6 +15,8 @@ final class Profile extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.profile';
 
+    protected string $defaultAvatar = '';
+
     public function __construct(
         protected ?string $route = null,
         protected ?string $logOutRoute = null,
@@ -23,11 +25,19 @@ final class Profile extends MoonShineComponent
         protected ?string $username = null,
         protected bool $withBorder = false,
     ) {
+        $this->defaultAvatar = asset('vendor/moonshine/avatar.jpg');
     }
 
     public function isWithBorder(): bool
     {
         return $this->withBorder;
+    }
+
+    public function defaultAvatar(string $url): self
+    {
+        $this->defaultAvatar = $url;
+
+        return $this;
     }
 
     /**
@@ -44,7 +54,7 @@ final class Profile extends MoonShineComponent
         $avatar = $avatar
             ? Storage::disk(config('moonshine.disk', 'public'))
                 ->url($avatar)
-            : "https://ui-avatars.com/api/?name=$nameOfUser";
+            : $this->defaultAvatar;
 
         return [
             'route' => $this->route ?? to_page(config('moonshine.pages.profile', ProfilePage::class)),
