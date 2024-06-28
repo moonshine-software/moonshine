@@ -49,7 +49,7 @@ final class Breadcrumbs extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        $this->items = collect($this->items)->mapWithKeys(static fn (string $title, string $url) => [
+        $this->items = collect($this->items)->mapWithKeys(static fn (string $title, string $url): array => [
             $url => [
                 'url' => $url,
                 'title' => str($title)->before(':::'),
