@@ -78,7 +78,7 @@ abstract class ModelResource extends Resource
      */
     protected ?ClickAction $clickAction = null;
 
-    protected bool $stickyIndexTable = false;
+    protected bool $stickyTable = false;
 
     public function flushState(): void
     {
@@ -172,9 +172,9 @@ abstract class ModelResource extends Resource
         return $this->clickAction?->value;
     }
 
-    public function isStickyIndexTable(): bool
+    public function isStickyTable(): bool
     {
-        return $this->stickyIndexTable;
+        return $this->stickyTable;
     }
 
     /**

@@ -205,7 +205,7 @@ class IndexPage extends Page
                     'data-pushstate' => 'true',
                 ]);
             })
-            ->when($this->getResource()->isStickyIndexTable(), function (TableBuilder $table): void {
+            ->when($this->getResource()->isStickyTable(), function (TableBuilder $table): void {
                 $table->sticky();
             });
     }
