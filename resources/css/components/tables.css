@@ -105,6 +105,6 @@ table {
   max-height: calc(70dvh);
 
   & > table > thead {
-    @apply bg-slate-50 dark:bg-dark-800 sticky -top-1 z-1;
+    @apply sticky -top-1 z-1 bg-slate-50 dark:bg-dark-800;
   }
 }
