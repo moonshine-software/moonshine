@@ -38,13 +38,13 @@ beforeEach(function () {
 function testBelongsToManyValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null, ?array $pivotData = null)
 {
     $mapper = static function (array $d, array $p = []) {
-        return collect($d)->mapWithKeys(fn($v, $k) => [$k => [
+        return collect($d)->mapWithKeys(fn ($v, $k) => [$k => [
             '_checked' => 1,
-            ...$p[$k] ?? []
+            ...$p[$k] ?? [],
         ]])->toArray();
     };
 
-    if(!is_null($pivotData)) {
+    if(! is_null($pivotData)) {
         $data = $mapper($data, $pivotData);
     }
 
@@ -59,12 +59,12 @@ function testBelongsToManyValue(TestResource $resource, Item $item, array $data,
 
     $real = $item->categories->pluck('id', 'id')->toArray();
 
-    if(!is_null($pivotData)) {
+    if(! is_null($pivotData)) {
         $pivot = $item->categories->mapWithKeys(fn ($c) => [
             $c->id => array_filter([
                 'pivot_1' => $c->pivot->pivot_1,
                 'pivot_2' => $c->pivot->pivot_2,
-            ])
+            ]),
         ])->toArray();
 
         $real = $mapper($real, $pivot);

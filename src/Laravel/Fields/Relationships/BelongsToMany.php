@@ -213,7 +213,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(
             parent: $this,
-            before: fn(self $parent, Field $field): FormElement => (clone $field)
+            before: fn (self $parent, Field $field): FormElement => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
                 ->setNameAttribute($field->getColumn())
                 ->setAttribute('class', 'pivotField')
@@ -296,7 +296,7 @@ class BelongsToMany extends ModelRelationField implements
 
                 return $value
                     ->setRelations([
-                        $this->getPivotAs() => $data[$value->getKey()] ?? []
+                        $this->getPivotAs() => $data[$value->getKey()] ?? [],
                     ])
                     ->setAttribute($identityField->getColumn(), $data[$value->getKey()][$identityField->getColumn()] ?? false);
             }
@@ -413,7 +413,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         return $requestValues
-            ->filter(static fn(array $value) => $value['_checked'])
+            ->filter(static fn (array $value) => $value['_checked'])
             ->keys();
 
     }
