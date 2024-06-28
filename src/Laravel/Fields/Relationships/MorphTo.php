@@ -172,6 +172,7 @@ class MorphTo extends BelongsTo
             'typeValue' => $this->getTypeValue(),
             'column' => $this->getColumn(),
             'morphType' => $this->getMorphType(),
+            'morphTypeName' => str($this->getNameAttribute())->replace($this->getColumn(), $this->getMorphType()),
         ];
     }
 }

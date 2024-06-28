@@ -44,4 +44,17 @@ final class Breadcrumbs extends MoonShineComponent
             )
             ->value();
     }
+
+    protected function prepareBeforeRender(): void
+    {
+        parent::prepareBeforeRender();
+
+        $this->items = collect($this->items)->mapWithKeys(static fn (string $title, string $url) => [
+            $url => [
+                'url' => $url,
+                'title' => str($title)->before(':::'),
+                'icon' => str($title)->contains(':::') ? str($title)->after(':::')->value() : null,
+            ],
+        ])->toArray();
+    }
 }

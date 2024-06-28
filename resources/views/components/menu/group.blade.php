@@ -1,5 +1,6 @@
 @props([
     'label' => '',
+    'previewLabel' => '',
     'icon' => '',
     'items' => [],
     'isActive' => false,
@@ -33,7 +34,7 @@
             {!! $icon !!}
         @elseif(!$top)
             <span class="menu-inner-item-char">
-                {{ str($label)->limit(2) }}
+                {{ $previewLabel }}
             </span>
         @endif
 

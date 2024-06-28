@@ -5,6 +5,7 @@
     'download' => false,
     'removable' => true,
     'removableAttributes' => null,
+    'hiddenAttributes' => null,
     'imageable' => true,
     'itemAttributes',
 ])
@@ -16,12 +17,7 @@
 >
     <x-moonshine::form.input
         type="hidden"
-        :name="'hidden_' . $attributes->get('name')"
-        :attributes="$attributes->only(['data-level'])->merge([
-            'data-name' => str($attributes->get('data-name'))
-                ->replaceLast($attributes->get('data-column'), 'hidden_' . $attributes->get('data-column'))
-                ->value()
-        ])"
+        :attributes="$hiddenAttributes"
         :value="$raw"
     />
 

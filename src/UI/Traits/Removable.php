@@ -28,6 +28,16 @@ trait Removable
         return new MoonShineComponentAttributeBag($this->removableAttributes);
     }
 
+    public function getHiddenAttributes(): MoonShineComponentAttributeBag
+    {
+        return $this->getAttributes()->only(['data-level'])->merge([
+            'name' => 'hidden_' . $this->getAttributes()->get('name'),
+            'data-name' => str($this->getAttributes()->get('data-name'))
+                ->replaceLast($this->getAttributes()->get('data-column'), 'hidden_' . $this->getAttributes()->get('data-column'))
+                ->value()
+        ]);
+    }
+
     public function isRemovable(): bool
     {
         return $this->removable;

@@ -5,24 +5,24 @@
     <!-- Breadcrumbs -->
     <div {{ $attributes->class(['breadcrumbs', 'grow']) }}>
         <ul class="breadcrumbs-list">
-            @foreach($items as $url => $title)
+            @foreach($items as $url => $data)
                 <li class="breadcrumbs-item">
                     @if($loop->last && count($items) > 1)
                         <span>
-                            {{ str($title)->before(':::') }}
+                            {{ $data['title'] }}
                         </span>
                     @else
                         <a href="{{ $url }}"
-                           @if(str($title)->contains(':::')) class="flex items-center justify-between gap-2" @endif
+                           @if($data['icon']) class="flex items-center justify-between gap-2" @endif
                         >
-                            @if(str($title)->contains(':::'))
+                            @if($data['icon'])
                                 <x-moonshine::icon
-                                    :icon="str($title)->after(':::')->value()"
+                                    :icon="$data['icon']"
                                     size="6"
                                 />
                             @endif
 
-                            {{ str($title)->before(':::') }}
+                            {{ $data['title'] }}
                         </a>
                     @endif
                 </li>

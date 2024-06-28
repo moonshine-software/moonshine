@@ -3,6 +3,7 @@
     'download' => false,
     'removable' => true,
     'removableAttributes' => null,
+    'hiddenAttributes' => null,
     'imageable' => true,
 ])
 <div class="form-group form-group-dropzone">
@@ -27,6 +28,7 @@
                         :download="$download"
                         :removable="$removable"
                         :removableAttributes="$removableAttributes"
+                        :hiddenAttributes="$hiddenAttributes"
                         :imageable="$imageable"
                     />
                 @endforeach

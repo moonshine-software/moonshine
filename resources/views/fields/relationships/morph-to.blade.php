@@ -5,6 +5,7 @@
     'values' => [],
     'column' => '',
     'morphType' => '',
+    'morphTypeName' => '',
     'isNullable' => false,
     'isSearchable' => false,
     'isAsyncSearch' => false,
@@ -15,7 +16,7 @@
 >
     <div class="sm:w-1/4 w-full">
         <x-moonshine::form.select
-            :name="str($attributes->get('name'))->replace($column, $morphType)"
+            :name="$morphTypeName"
             x-model="morphType"
             required="required"
             :values="$types"
