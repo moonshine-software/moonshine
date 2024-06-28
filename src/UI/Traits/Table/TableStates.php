@@ -34,6 +34,8 @@ trait TableStates
 
     protected bool $isSimple = false;
 
+    protected bool $isSticky = false;
+
     protected bool $searchable = false;
 
     public function hasNotFound(): bool
@@ -183,6 +185,18 @@ trait TableStates
         return $this->searchable;
     }
 
+    public function sticky(): static
+    {
+        $this->isSticky = true;
+
+        return $this;
+    }
+
+    public function isSticky(): bool
+    {
+        return $this->isSticky;
+    }
+
     /**
      * @return array{
      *     preview: bool,
@@ -191,6 +205,7 @@ trait TableStates
      *     reindex: bool,
      *     reorderable: bool,
      *     simple: bool,
+     *     sticky: bool,
      *     searchable: bool,
      *     searchValue: string,
      * }
@@ -204,6 +219,7 @@ trait TableStates
             'reindex' => $this->isReindex(),
             'reorderable' => $this->isReorderable(),
             'simple' => $this->isSimple(),
+            'sticky' => $this->isSticky(),
             'searchable' => $this->isSearchable(),
             'searchValue' => moonshine()->getRequest()->get('search', ''),
         ];

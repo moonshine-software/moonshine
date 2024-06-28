@@ -14,6 +14,7 @@
     'reindex' => false,
     'reorderable' => false,
     'searchable' => false,
+    'sticky' => false,
     'searchValue' => '',
 ])
 <div x-data="tableBuilder(
@@ -54,6 +55,7 @@
             :bodyAttributes="$bodyAttributes"
             :footAttributes="$footAttributes"
             :creatable="$creatable"
+            :sticky="$sticky"
             data-name="{{ $name }}"
         >
             @if($headRows->isNotEmpty())
