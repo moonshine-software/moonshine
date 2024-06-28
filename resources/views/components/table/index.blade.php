@@ -4,13 +4,14 @@
     'columns' => false,
     'notfound' => false,
     'responsive' => true,
+    'sticky' => false,
     'thead',
     'tbody',
     'tfoot',
 ])
 @if(isset($tbody) || (is_iterable($values) && count($values)))
     <!-- Table -->
-    <div @if ($responsive) class="table-responsive" @endif>
+    <div @class(['table-responsive' => $responsive, 'table-sticky' => $sticky])>
         <table {{ $attributes
                 ->merge(['class' => 'table' . (!$simple ? '-list' : '')])
         }} x-id="['table-component']" :id="$id('table-component')">

@@ -34,6 +34,8 @@ trait TableStates
 
     protected bool $isSimple = false;
 
+    protected bool $isSticky = false;
+
     protected bool $searchable = false;
 
     public function hasNotFound(): bool
@@ -171,6 +173,18 @@ trait TableStates
         return $this->isSimple;
     }
 
+    public function sticky(): static
+    {
+        $this->isSticky = true;
+
+        return $this;
+    }
+
+    public function isSticky(): bool
+    {
+        return $this->isSticky;
+    }
+
     public function searchable(): static
     {
         $this->searchable = true;
@@ -193,6 +207,7 @@ trait TableStates
      *     reindex: bool,
      *     sortable: bool,
      *     simple: bool,
+     *     sticky: bool,
      *     searchable: bool,
      *     searchValue: string,
      * }
@@ -208,6 +223,7 @@ trait TableStates
             'reindex' => $this->isReindex(),
             'sortable' => $this->isSortable(),
             'simple' => $this->isSimple(),
+            'sticky' => $this->isSticky(),
             'searchable' => $this->isSearchable(),
             'searchValue' => request()->input('search', ''),
         ];

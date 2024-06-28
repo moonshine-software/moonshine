@@ -15,7 +15,8 @@
     'sortable' => false,
     'searchable' => false,
     'searchValue' => '',
-    'name' => 'default'
+    'name' => 'default',
+    'sticky' => false
 ])
 
 <div x-data="tableBuilder(
@@ -50,6 +51,7 @@
         <div x-show="!loading">
         <x-moonshine::table
                 :simple="$simple"
+                :sticky="$sticky"
                 :notfound="$notfound"
                 :attributes="$attributes"
                 :creatable="$creatable"
@@ -75,6 +77,7 @@
                         :preview="$preview"
                         :editable="$editable"
                         :simple="$simple"
+                        :sticky="$sticky"
                         :hasActions="$bulkButtons->isNotEmpty()"
                         :has-click-action="$attributes->get('data-click-action') !== null"
                     />
