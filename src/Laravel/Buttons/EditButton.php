@@ -52,7 +52,7 @@ final class EditButton
                 static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::UPDATE)
                     && $resource->setItem($item)->can(Ability::UPDATE)
             )
-            ->customAttributes(['class' => 'edit-button'])
+            ->class('js-edit-button')
             ->showInLine();
     }
 }

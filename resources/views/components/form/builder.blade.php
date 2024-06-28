@@ -22,13 +22,13 @@
         @if(!($hideSubmit ?? false))
         <x-moonshine::form.button
                 :attributes="$submitAttributes?->merge([
-                'class' => 'form_submit_button',
+                'class' => 'js-form-submit-button',
                 'type' => 'submit'
             ])"
         >
             <x-moonshine::spinner
                     color="secondary"
-                    class="form_submit_button_loader"
+                    class="js-form-submit-button-loader"
                     style="display: none;"
             />
 

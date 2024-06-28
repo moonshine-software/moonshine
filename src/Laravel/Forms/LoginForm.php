@@ -15,9 +15,7 @@ final class LoginForm implements FormContract
     public function __invoke(): FormBuilder
     {
         return FormBuilder::make()
-            ->customAttributes([
-                'class' => 'authentication-form',
-            ])
+            ->class('authentication-form')
             ->action(moonshineRouter()->to('authenticate'))
             ->fields([
                 Text::make(__('moonshine::ui.login.username'), 'username')

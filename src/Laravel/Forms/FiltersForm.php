@@ -92,10 +92,10 @@ final readonly class FiltersForm implements FormContract
                     )
                         ->secondary()
                         ->showInLine()
+                        ->class('js-async-reset-button')
                         ->customAttributes([
                             AlpineJs::eventBlade('show-reset', 'filters') => "showResetButton",
                             'style' => 'display: none',
-                            'id' => 'async-reset-button',
                         ])
                     ,
                 ]);

@@ -216,7 +216,7 @@ class BelongsToMany extends ModelRelationField implements
             before: fn (self $parent, Field $field): FormElement => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
                 ->setNameAttribute($field->getColumn())
-                ->setAttribute('class', 'pivotField')
+                ->class('js-pivot-field')
                 ->withoutWrapper(),
             performName: fn (string $name): string => str_replace("{$this->getPivotAs()}.", '', $name)
         );
@@ -274,7 +274,7 @@ class BelongsToMany extends ModelRelationField implements
 
         $identityField = Checkbox::make('#', '_checked')
             ->withoutWrapper()
-            ->setAttribute('class', 'pivotChecker')
+            ->class('js-pivot-checker')
             ->setNameAttribute($checkedColumn . "[_checked]")
             ->formName($this->getFormName())
             ->iterableAttributes();
@@ -284,7 +284,7 @@ class BelongsToMany extends ModelRelationField implements
                 Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->getFormattedValueCallback())
                     ->withoutWrapper()
                     ->formName($this->getFormName())
-                    ->customAttributes(['class' => 'pivotTitle'])
+                    ->class('js-pivot-title')
             )
             ->prepend($identityField);
 
@@ -385,7 +385,7 @@ class BelongsToMany extends ModelRelationField implements
 
                 if ($this->inLineBadge) {
                     return Badge::make((string) $value, 'primary')
-                        ->customAttributes(['class' => 'm-1'])
+                        ->class('m-1')
                         ->render();
                 }
 

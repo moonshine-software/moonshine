@@ -28,7 +28,7 @@ export function listComponentRequest(component, pushState = false) {
         history.pushState({}, '', query ? '?' + query : location.pathname)
       }
 
-      document.querySelectorAll('._change-query').forEach(function (element) {
+      document.querySelectorAll('.js-change-query').forEach(function (element) {
         element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
       })
 

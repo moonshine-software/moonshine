@@ -171,7 +171,7 @@ class FormPage extends Page
         return [
             ActionGroup::make($this->getResource()->getFormItemButtons())
                 ->fill($this->getResource()->getCastedItem())
-                ->customAttributes(['class' => 'mb-4']),
+                ->class('mb-4'),
         ];
     }
 

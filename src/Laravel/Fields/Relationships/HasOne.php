@@ -214,7 +214,7 @@ class HasOne extends ModelRelationField implements HasFields
                     $resource->getDeleteButton(
                         redirectAfterDelete: $redirectAfter,
                         isAsync: false
-                    )->customAttributes(['class' => 'btn-lg']),
+                    )->class('btn-lg'),
                 ]
             )
             ->onBeforeFieldsRender(static fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(

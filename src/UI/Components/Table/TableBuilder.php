@@ -279,8 +279,8 @@ final class TableBuilder extends IterableComponent implements TableContract
             ->customAttributes([
                 'autocomplete' => 'off',
                 '@change' => "actions('row', \$id('table-component'))",
-                ':class' => "\$id('table-component') + '-tableActionRow'",
-                'class' => 'tableActionRow',
+                ':class' => "\$id('table-component') + '-table-action-row'",
+                'class' => 'js-table-action-row',
             ]);
     }
 
@@ -384,9 +384,9 @@ final class TableBuilder extends IterableComponent implements TableContract
             ->customAttributes([
                 'autocomplete' => 'off',
                 '@change' => "actions('all', \$id('table-component'))",
-                ':class' => "\$id('table-component') + '-actionsAllChecked'",
+                ':class' => "\$id('table-component') + '-actions-all-checked'",
             ])
-            ->class('actionsAllChecked');
+            ->class('js-actions-all-checked');
     }
 
     /**
@@ -423,7 +423,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             ])->justifyAlign('start'),
             builder: static fn (TableTd $td): TableTd => $td->customAttributes([
                 'colspan' => 6,
-                ':class' => "\$id('table-component') + '-bulkActions'",
+                ':class' => "\$id('table-component') + '-bulk-actions'",
             ])
         );
 

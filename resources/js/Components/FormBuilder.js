@@ -116,7 +116,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
   },
   precognition() {
     const form = this.$el
-    form.querySelector('.precognition_errors').innerHTML = ''
+    form.querySelector('.js-precognition-errors').innerHTML = ''
     const t = this
 
     submitState(form, true)
@@ -147,7 +147,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
           MoonShine.ui.toast(data.message, 'error')
         }
 
-        form.querySelector('.precognition_errors').innerHTML = errors
+        form.querySelector('.js-precognition-errors').innerHTML = errors
       })
 
     return false
@@ -216,7 +216,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
     form
       ?.closest('.offcanvas-template')
-      ?.querySelector('#async-reset-button')
+      ?.querySelector('.js-async-reset-button')
       ?.removeAttribute('style')
   },
 
@@ -250,7 +250,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
       }
     }
 
-    document.querySelectorAll('.btn-filter .badge').forEach(function (element) {
+    document.querySelectorAll('.js-filter-button .badge').forEach(function (element) {
       element.innerHTML = filledFields.size
     })
   },
@@ -301,13 +301,13 @@ function prepareFormQueryString(formData, exclude = null) {
 
 function submitState(form, loading = true, reset = false) {
   if (!loading) {
-    form.querySelector('.form_submit_button_loader').style.display = 'none'
-    form.querySelector('.form_submit_button').removeAttribute('disabled')
+    form.querySelector('.js-form-submit-button-loader').style.display = 'none'
+    form.querySelector('.js-form-submit-button').removeAttribute('disabled')
     if (reset) {
       form.reset()
     }
   } else {
-    form.querySelector('.form_submit_button').setAttribute('disabled', 'true')
-    form.querySelector('.form_submit_button_loader').style.display = 'block'
+    form.querySelector('.js-form-submit-button').setAttribute('disabled', 'true')
+    form.querySelector('.js-form-submit-button-loader').style.display = 'block'
   }
 }

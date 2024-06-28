@@ -17,8 +17,8 @@ final class QueryTagButton
             ->showInLine()
             ->icon($tag->getIconValue(), $tag->isCustomIcon(), $tag->getIconPath())
             ->canSee(static fn (mixed $data): bool => $tag->isSee($data))
+            ->class('js-query-tag-button')
             ->customAttributes([
-                'class' => 'query-tag-button',
                 'x-data' => 'asyncLink(`btn-primary`, `' . $resource->getListEventName() . '`)',
             ])
             ->when(
@@ -39,10 +39,7 @@ final class QueryTagButton
             )
             ->when(
                 $tag->isDefault(),
-                fn (ActionButton $btn): ActionButton => $btn
-                    ->customAttributes([
-                        'class' => 'query-tag-default',
-                    ])
+                static fn (ActionButton $btn): ActionButton => $btn->class('js-query-tag-default')
             );
     }
 }

@@ -28,12 +28,12 @@ export default (activeClass, componentEvent) => ({
     return new URLSearchParams(queryParams).toString()
   },
   disableQueryTags() {
-    document.querySelectorAll('.query-tag-button').forEach(function (element) {
+    document.querySelectorAll('.js-query-tag-button').forEach(function (element) {
       element.classList.remove(activeClass)
     })
   },
   activeDefaultQueryTag() {
-    const element = document.querySelector('.query-tag-default')
+    const element = document.querySelector('.js-query-tag-default')
     element?.classList.add(activeClass)
   },
 })

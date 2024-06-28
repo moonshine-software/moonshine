@@ -92,9 +92,7 @@ class IndexPage extends Page
 
         return $metrics
             ? Block::make($metrics)
-                ->customAttributes([
-                    'class' => 'layout-metrics',
-                ])
+                ->class('layout-metrics')
             : null;
     }
 

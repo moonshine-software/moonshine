@@ -81,7 +81,7 @@
 
                         <div x-data="pivot"
                              x-init="autoCheck"
-                             class="pivotTable"
+                             class="js-pivot-table"
                              data-table-name="{{ $value->getName() }}"
                         >
                             <x-moonshine::action-group

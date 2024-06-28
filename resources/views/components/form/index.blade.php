@@ -29,7 +29,7 @@
 
             @if($precognitive)
                 <x-moonshine::layout.column>
-                    <div class="precognition_errors mb-6"></div>
+                    <div class="js-precognition-errors mb-6"></div>
                 </x-moonshine::layout.column>
             @endif
         </x-moonshine::layout.grid>

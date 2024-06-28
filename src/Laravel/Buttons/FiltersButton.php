@@ -29,7 +29,7 @@ final class FiltersButton
                 components: [$form]
             )
             ->showInLine()
-            ->class('btn-filter')
+            ->class('js-filter-button')
             ->when(
                 $resource->isAsync() || $count,
                 fn (ActionButton $action): ActionButton => $action->badge($count)

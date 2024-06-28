@@ -115,13 +115,13 @@ export default (
       .catch(error => {})
   },
   actions(type, id) {
-    let all = this.$root.querySelector(`.${id}-actionsAllChecked`)
+    let all = this.$root.querySelector(`.${id}-actions-all-checked`)
 
     if (all === null) {
       return
     }
 
-    let checkboxes = this.$root.querySelectorAll(`.${id}-tableActionRow`)
+    let checkboxes = this.$root.querySelectorAll(`.${id}-table-action-row`)
 
     let ids = document.querySelectorAll(
       '.hidden-ids[data-for-component=' + this.table.getAttribute('data-name') + ']',
@@ -194,13 +194,13 @@ export default (
 
     switch (this.table.dataset.clickAction) {
       case 'detail':
-        rowElement.querySelector('.detail-button')?.click()
+        rowElement.querySelector('.js-detail-button')?.click()
         break
       case 'edit':
-        rowElement.querySelector('.edit-button')?.click()
+        rowElement.querySelector('.js-edit-button')?.click()
         break
       case 'select':
-        rowElement.querySelector('.tableActionRow[type="checkbox"]')?.click()
+        rowElement.querySelector('.js-table-action-row[type="checkbox"]')?.click()
         break
     }
   },

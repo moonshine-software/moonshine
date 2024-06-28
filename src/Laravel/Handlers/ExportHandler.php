@@ -208,7 +208,8 @@ class ExportHandler extends Handler
             $url . ($query ? '?' . $query : '')
         )
             ->primary()
-            ->customAttributes(['class' => '_change-query', 'data-original-url' => $url])
+            ->class('js-change-query')
+            ->customAttributes(['data-original-url' => $url])
             ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath());
     }
 }
