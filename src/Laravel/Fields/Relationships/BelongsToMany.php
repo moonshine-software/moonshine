@@ -213,13 +213,11 @@ class BelongsToMany extends ModelRelationField implements
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(
             parent: $this,
-            before: function (self $parent, Field $field): FormElement {
-                return (clone $field)
-                    ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
-                    ->setNameAttribute($field->getColumn())
-                    ->setAttribute('class', 'pivotField')
-                    ->withoutWrapper();
-            },
+            before: fn(self $parent, Field $field): FormElement => (clone $field)
+                ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
+                ->setNameAttribute($field->getColumn())
+                ->setAttribute('class', 'pivotField')
+                ->withoutWrapper(),
             performName: fn (string $name): string => str_replace("{$this->getPivotAs()}.", '', $name)
         );
     }
