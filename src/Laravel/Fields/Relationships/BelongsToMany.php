@@ -63,6 +63,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $hasOld = false;
 
+    protected bool $resolveValueOnce = true;
+
     protected string $treeParentColumn = '';
 
     protected bool $onlyCount = false;
@@ -232,6 +234,11 @@ class BelongsToMany extends ModelRelationField implements
         );
     }
 
+    public function getCheckboxKey(): string
+    {
+        return '_checked';
+    }
+
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
         $values = parent::prepareFill($raw, $casted);
@@ -268,14 +275,45 @@ class BelongsToMany extends ModelRelationField implements
             return $this->getKeys();
         }
 
+        return ($this->memoizeValues ?? $this->resolveValuesQuery()->get())->map(function ($value) {
+            if (! $this->isValueWithModels()) {
+                $data = $this->toValue();
+
+                return $value
+                    ->setRelations([
+                        $this->getPivotAs() => $data[$value->getKey()] ?? [],
+                    ])
+                    ->setAttribute($this->getCheckboxKey(), $data[$value->getKey()][$this->getCheckboxKey()] ?? false);
+            }
+
+            $checked = $this->toValue()
+                ->first(static fn ($item): bool => $item->getKey() === $value->getKey());
+
+            return $value
+                ->setRelations($checked?->getRelations() ?? $value->getRelations())
+                ->setAttribute($this->getCheckboxKey(), ! is_null($checked));
+        });
+    }
+
+    protected function getTableValue(): TableBuilder
+    {
+        $values = $this->getValue();
+
+        $removeAfterClone = false;
+
+        if (! $this->isPreviewMode() && $this->isAsyncSearch() && blank($values)) {
+            $values->push($this->getResource()->getModel());
+            $removeAfterClone = true;
+        }
+
         $titleColumn = $this->getResourceColumn();
 
         $checkedColumn = $this->getNameAttribute('${index0}');
 
-        $identityField = Checkbox::make('#', '_checked')
+        $identityField = Checkbox::make('#', $this->getCheckboxKey())
             ->withoutWrapper()
             ->class('js-pivot-checker')
-            ->setNameAttribute($checkedColumn . "[_checked]")
+            ->setNameAttribute($checkedColumn . "[{$this->getCheckboxKey()}]")
             ->formName($this->getFormName())
             ->iterableAttributes();
 
@@ -287,34 +325,6 @@ class BelongsToMany extends ModelRelationField implements
                     ->class('js-pivot-title')
             )
             ->prepend($identityField);
-
-        $values = $this->memoizeValues ?? $this->resolveValuesQuery()->get();
-
-        $values = $values->map(function ($value) use ($identityField) {
-            if (! $this->isValueWithModels()) {
-                $data = $this->toValue();
-
-                return $value
-                    ->setRelations([
-                        $this->getPivotAs() => $data[$value->getKey()] ?? [],
-                    ])
-                    ->setAttribute($identityField->getColumn(), $data[$value->getKey()][$identityField->getColumn()] ?? false);
-            }
-
-            $checked = $this->toValue()
-                ->first(static fn ($item): bool => $item->getKey() === $value->getKey());
-
-            return $value
-                ->setRelations($checked?->getRelations() ?? $value->getRelations())
-                ->setAttribute($identityField->getColumn(), ! is_null($checked));
-        });
-
-        $removeAfterClone = false;
-
-        if (! $this->isPreviewMode() && $this->isAsyncSearch() && blank($values)) {
-            $values->push($this->getResource()->getModel());
-            $removeAfterClone = true;
-        }
 
         return TableBuilder::make(items: $values)
             ->name($this->getTableComponentName())
@@ -558,6 +568,7 @@ class BelongsToMany extends ModelRelationField implements
 
         return [
             ...$viewData,
+            'component' => $this->getTableValue(),
             'buttons' => $this->getButtons(),
         ];
     }

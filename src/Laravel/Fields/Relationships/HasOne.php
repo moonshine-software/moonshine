@@ -226,18 +226,6 @@ class HasOne extends ModelRelationField implements HasFields
     }
 
     /**
-     * @throws FieldException
-     * @return array<string, mixed>
-     * @throws Throwable
-     */
-    protected function viewData(): array
-    {
-        return [
-            'form' => $this->resolveValue(),
-        ];
-    }
-
-    /**
      * @throws Throwable
      */
     protected function resolveAfterDestroy(mixed $data): mixed
@@ -248,5 +236,17 @@ class HasOne extends ModelRelationField implements HasFields
             ->each(static fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
 
         return $data;
+    }
+
+    /**
+     * @throws FieldException
+     * @return array<string, mixed>
+     * @throws Throwable
+     */
+    protected function viewData(): array
+    {
+        return [
+            'form' => $this->resolveValue(),
+        ];
     }
 }

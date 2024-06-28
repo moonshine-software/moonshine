@@ -474,19 +474,6 @@ class HasMany extends ModelRelationField implements HasFields
             : $this->getTableValue();
     }
 
-    /**
-     * @return array<string, mixed>
-     * @throws Throwable
-     */
-    protected function viewData(): array
-    {
-        return [
-            'component' => $this->resolveValue(),
-            'isCreatable' => $this->isCreatable(),
-            'createButton' => $this->getCreateButton(),
-        ];
-    }
-
     protected function resolveOnApply(): ?Closure
     {
         return static fn ($item) => $item;
@@ -503,5 +490,18 @@ class HasMany extends ModelRelationField implements HasFields
             ->each(static fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
 
         return $data;
+    }
+
+    /**
+     * @return array<string, mixed>
+     * @throws Throwable
+     */
+    protected function viewData(): array
+    {
+        return [
+            'component' => $this->resolveValue(),
+            'isCreatable' => $this->isCreatable(),
+            'createButton' => $this->getCreateButton(),
+        ];
     }
 }

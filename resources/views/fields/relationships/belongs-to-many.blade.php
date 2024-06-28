@@ -1,5 +1,6 @@
 @props([
     'value' => null,
+    'component' => null,
     'buttons' => [],
     'isNullable' => false,
     'isSearchable' => false,
@@ -82,14 +83,14 @@
                         <div x-data="pivot"
                              x-init="autoCheck"
                              class="js-pivot-table"
-                             data-table-name="{{ $value->getName() }}"
+                             data-table-name="{{ $component->getName() }}"
                         >
                             <x-moonshine::action-group
                                 class="mb-4"
                                 :actions="$buttons"
                             />
 
-                            {!! $value->render() !!}
+                            {!! $component->render() !!}
                         </div>
                     </div>
                 @else
@@ -99,7 +100,7 @@
                             :actions="$buttons"
                         />
 
-                        {!! $value->render() !!}
+                        {!! $component->render() !!}
                     </div>
                 @endif
             @endif

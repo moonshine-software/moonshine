@@ -42,6 +42,12 @@ abstract class Field extends FormElement
 
     protected mixed $value = null;
 
+    protected mixed $resolvedValue = null;
+
+    protected bool $isValueResolved = false;
+
+    protected bool $resolveValueOnce = false;
+
     protected bool $rawMode = false;
 
     protected mixed $rawValue = null;
@@ -274,6 +280,10 @@ abstract class Field extends FormElement
 
     public function getValue(bool $withOld = true): mixed
     {
+        if ($this->isValueResolved && $this->resolveValueOnce) {
+            return $this->resolvedValue;
+        }
+
         if (! $this->hasOld) {
             $withOld = false;
         }
@@ -287,7 +297,9 @@ abstract class Field extends FormElement
             return $old;
         }
 
-        return $this->resolveValue();
+        $this->isValueResolved = true;
+
+        return $this->resolvedValue = $this->resolveValue();
     }
 
     protected function resolveValue(): mixed
