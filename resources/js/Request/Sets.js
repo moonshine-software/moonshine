@@ -1,5 +1,6 @@
 import {dispatchEvents} from '../Support/DispatchEvents.js'
-import {urlWithQuery} from './Core.js'
+import request, {urlWithQuery} from './Core.js'
+import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 
 export function listComponentRequest(component, pushState = false) {
   component.$event.preventDefault()
@@ -18,30 +19,33 @@ export function listComponentRequest(component, pushState = false) {
     url = urlWithQuery(url, component.$event.detail.queryTag)
   }
 
-  // todo change to Request
-  axios
-    .get(url)
-    .then(response => {
-      const query = url.slice(url.indexOf('?') + 1)
+  let stopLoading = function (data, t) {
+    t.loading = false
+  }
 
-      if (pushState) {
-        history.pushState({}, '', query ? '?' + query : location.pathname)
-      }
+  let componentRequestData = new ComponentRequestData()
+  componentRequestData
+  .withBeforeCallback(function(data, t) {
+    const query = url.slice(url.indexOf('?') + 1)
 
-      document.querySelectorAll('.js-change-query').forEach(function (element) {
-        element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
-      })
+    if (pushState) {
+      history.pushState({}, '', query ? '?' + query : location.pathname)
+    }
 
-      if (component.$root.dataset.events) {
-        dispatchEvents(component.$root.dataset.events, 'success', component)
-      }
-
-      component.$root.outerHTML = response.data
-      component.loading = false
+    document.querySelectorAll('.js-change-query').forEach(function (element) {
+      element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
     })
-    .catch(error => {
-      component.loading = false
-    })
+
+    if (t.$root.dataset.events) {
+      dispatchEvents(t.$root.dataset.events, 'success', t)
+    }
+
+    t.$root.outerHTML = data
+    t.loading = false
+  })
+  .withErrorCallback(stopLoading)
+
+  request(component, url, 'get', {}, {}, componentRequestData)
 
   function prepareListComponentRequestUrl(url) {
     const resultUrl = url.startsWith('/') ? new URL(url, window.location.origin) : new URL(url)
