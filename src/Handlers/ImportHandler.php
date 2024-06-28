@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
+use MoonShine\Fields\Enum;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -153,6 +154,14 @@ class ImportHandler extends Handler
 
                     if (! $field instanceof Field) {
                         return [];
+                    }
+
+                    if ($field instanceof Enum) {
+                        $caseEnum = rescue(fn () => $field->getAttached()::tryFromString($value), report: false);
+
+                        if ($caseEnum && method_exists($caseEnum, 'tryFromString')) {
+                            $value = $caseEnum::tryFromString($value)->value;
+                        }
                     }
 
                     if (empty($value)) {

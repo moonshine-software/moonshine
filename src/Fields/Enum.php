@@ -33,6 +33,11 @@ class Enum extends Select implements DefaultCanBeEnum
         return $this;
     }
 
+    public function getAttached(): ?string
+    {
+        return $this->attached;
+    }
+
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();
