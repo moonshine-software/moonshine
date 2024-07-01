@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
+use Closure;
 use MoonShine\Support\Condition;
 
 trait ShowOrHide
@@ -99,9 +100,13 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function showOnExport(mixed $condition = null): static
+    public function showOnExport(mixed $condition = null, ?Closure $modifyRawValue = null): static
     {
         $this->showOnExport = Condition::boolean($condition, true);
+
+        if(!is_null($modifyRawValue)) {
+            $this->modifyRawValue($modifyRawValue);
+        }
 
         return $this;
     }
@@ -194,9 +199,13 @@ trait ShowOrHide
      *
      * @return $this
      */
-    public function useOnImport(mixed $condition = null): static
+    public function useOnImport(mixed $condition = null, ?Closure $fromRaw = null): static
     {
         $this->useOnImport = Condition::boolean($condition, true);
+
+        if(!is_null($fromRaw)) {
+            $this->fromRaw($fromRaw);
+        }
 
         return $this;
     }

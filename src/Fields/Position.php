@@ -28,6 +28,10 @@ class Position extends Preview
 
     protected function resolvePreview(): View|string
     {
+        if($this->isRawMode()) {
+            return parent::resolvePreview();
+        }
+
         return $this->render();
     }
 }

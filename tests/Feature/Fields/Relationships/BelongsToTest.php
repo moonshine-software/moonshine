@@ -246,7 +246,7 @@ function belongsToExport(Item $item, int $newId): ?string
 
     expect($file)
         ->toContain('User')
-        ->toContain($item->user->name)
+        ->toContain($item->user->getKey())
     ;
 
     return $file;

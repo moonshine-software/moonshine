@@ -97,6 +97,10 @@ class Td extends Template
 
     protected function resolvePreview(): string|View
     {
+        if($this->isRawMode()) {
+            return parent::resolvePreview();
+        }
+
         $fields = $this->hasConditionalFields()
             ? $this->getConditionalFields()
             : $this->getFields();
@@ -105,7 +109,7 @@ class Td extends Template
             Fields::make($fields)
         )
             ->mapFields(fn (Field $field): Field => $field
-                ->resolveFill($this->toRawValue(), $this->getData())
+                ->resolveFill($this->toRawValue(withoutModify: true), $this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->forcePreview())
