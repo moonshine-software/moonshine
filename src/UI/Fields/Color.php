@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\Color as ColorComponent;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
-use Illuminate\Contracts\Support\Renderable;
 
 class Color extends Field implements HasDefaultValue, DefaultCanBeString
 {

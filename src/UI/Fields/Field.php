@@ -399,7 +399,7 @@ abstract class Field extends FormElement
 
     public function isRawValueModified(): bool
     {
-        return !is_null($this->rawValueCallback);
+        return ! is_null($this->rawValueCallback);
     }
 
     /**

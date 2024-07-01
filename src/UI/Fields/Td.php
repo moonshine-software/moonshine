@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Illuminate\Contracts\Support\Renderable;
 use Throwable;
 
 /**

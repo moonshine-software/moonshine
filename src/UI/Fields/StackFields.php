@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Contracts\Fields\FieldsWrapper;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
-use Illuminate\Contracts\Support\Renderable;
 
 class StackFields extends Field implements HasFields, FieldsWrapper
 {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Pages;
 
 use Closure;
-use MoonShine\Core\Pages\Page as CorePage;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Core\Pages\Page as CorePage;
 
 abstract class Page extends CorePage
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Support\AlpineJs;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
@@ -16,7 +17,6 @@ use MoonShine\UI\Traits\Fields\BooleanTrait;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
-use Illuminate\Contracts\Support\Renderable;
 
 class Checkbox extends Field implements
     HasDefaultValue,

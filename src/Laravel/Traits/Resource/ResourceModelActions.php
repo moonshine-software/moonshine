@@ -54,7 +54,7 @@ trait ResourceModelActions
 
         return ExportHandler::make(__('moonshine::ui.export'))->when(
             self::$defaultExportToCsv,
-            static fn(ExportHandler $handler): ExportHandler => $handler->csv()
+            static fn (ExportHandler $handler): ExportHandler => $handler->csv()
         );
     }
 
