@@ -16,7 +16,7 @@
   &-content {
     @apply flex max-h-64 max-w-[280px] flex-col divide-y divide-gray-200 overflow-y-auto dark:divide-dark-200 xs:max-w-[320px] sm:w-max;
 
-    .form-input{
+    .dropdown-input-search{
       @apply mb-0 border-0 rounded-none;
     }
   }

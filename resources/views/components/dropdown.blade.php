@@ -27,7 +27,11 @@
 
             @if(!empty($items))
                 @if($searchable)
-                    <x-moonshine::form.input x-model.debounce.500ms="dropdownSearch" placeholder="{{ $searchPlaceholder }}"></x-moonshine::form.input>
+                    <x-moonshine::form.input
+                        x-model.debounce.500ms="dropdownSearch"
+                        class="dropdown-input-search"
+                        placeholder="{{ $searchPlaceholder }}"
+                    ></x-moonshine::form.input>
                 @endif
                 <ul class="dropdown-menu">
                     @foreach($items as $key =>$item)
