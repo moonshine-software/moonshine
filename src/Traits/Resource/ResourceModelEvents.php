@@ -83,8 +83,6 @@ trait ResourceModelEvents
 
     /**
      * @param TModel $item
-     *
-     * @return array
      */
     public function beforeImportFilling(array $data): array
     {
