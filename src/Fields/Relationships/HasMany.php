@@ -433,6 +433,10 @@ class HasMany extends ModelRelationField implements HasFields
      */
     protected function resolvePreview(): View|string
     {
+        if($this->isRawMode()) {
+            return '';
+        }
+
         if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
 

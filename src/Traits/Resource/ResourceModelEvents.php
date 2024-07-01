@@ -80,4 +80,34 @@ trait ResourceModelEvents
     {
         // Logic here
     }
+
+    /**
+     * @param TModel $item
+     *
+     * @return array
+     */
+    public function beforeImportFilling(array $data): array
+    {
+        return $data;
+    }
+
+    /**
+     * @param TModel $item
+     *
+     * @return TModel
+     */
+    public function beforeImported(Model $item): Model
+    {
+        return $item;
+    }
+
+    /**
+     * @param TModel $item
+     *
+     * @return TModel
+     */
+    public function afterImported(Model $item): Model
+    {
+        return $item;
+    }
 }

@@ -60,6 +60,10 @@ abstract class Field extends FormElement
 
     protected ?Closure $formattedValueCallback = null;
 
+    protected ?Closure $rawValueCallback = null;
+
+    protected ?Closure $fromRaw = null;
+
     protected bool $nullable = false;
 
     protected array $attributes = ['type', 'disabled', 'required', 'readonly'];
@@ -178,14 +182,46 @@ abstract class Field extends FormElement
         return $this->rawMode;
     }
 
-    public function toRawValue(): mixed
+    public function toRawValue(bool $withoutModify = false): mixed
     {
+        if(!$withoutModify && $this->isRawValueModified()) {
+            return value($this->rawValueCallback, $this->rawValue, $this);
+        }
+
         return $this->rawValue;
+    }
+
+    public function fromRaw(Closure $callback): static
+    {
+        $this->fromRaw = $callback;
+
+        return $this;
+    }
+
+    public function getValueFromRaw(mixed $raw): mixed
+    {
+        if(is_null($this->fromRaw)) {
+            return $raw;
+        }
+
+        return value($this->fromRaw, $raw, $this);
     }
 
     protected function setRawValue(mixed $value = null): static
     {
         $this->rawValue = $value;
+
+        return $this;
+    }
+
+    public function isRawValueModified(): bool
+    {
+        return !is_null($this->rawValueCallback);
+    }
+
+    public function modifyRawValue(Closure $callback): static
+    {
+        $this->rawValueCallback = $callback;
 
         return $this;
     }
@@ -348,6 +384,10 @@ abstract class Field extends FormElement
     public function preview(): View|string
     {
         $this->previewMode = true;
+
+        if($this->isRawMode() && $this->isRawValueModified()) {
+            return $this->toRawValue();
+        }
 
         if ($this->isPreviewChanged()) {
             return (string) value(

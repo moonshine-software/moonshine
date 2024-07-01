@@ -13,6 +13,7 @@ use MoonShine\Fields\Field;
 use MoonShine\Jobs\ImportHandlerJob;
 use MoonShine\MoonShineUI;
 use MoonShine\Notifications\MoonShineNotification;
+use MoonShine\Resources\ModelResource;
 use MoonShine\Traits\WithStorage;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
@@ -128,6 +129,7 @@ class ImportHandler extends Handler
     }
 
     /**
+     * @param ModelResource $resource
      * @throws IOException
      * @throws UnsupportedTypeException
      * @throws ReaderNotOpenedException
@@ -155,17 +157,19 @@ class ImportHandler extends Handler
                         return [];
                     }
 
-                    if (empty($value)) {
-                        $value = $field instanceof HasDefaultValue
-                            ? $field->getDefault()
-                            : ($field->isNullable() ? null : $value);
+                    if (empty($value) && $field instanceof HasDefaultValue) {
+                        $value = $field->getDefault();
+                    }
+
+                    if(empty($value) && $field->isNullable()) {
+                        $value = null;
                     }
 
                     $value = is_string($value) && str($value)->isJson()
                         ? json_decode($value, null, 512, JSON_THROW_ON_ERROR)
                         : $value;
 
-                    return [$field->column() => $value];
+                    return [$field->column() => $field->getValueFromRaw($value)];
                 }
             )->toArray();
 
@@ -183,9 +187,17 @@ class ImportHandler extends Handler
                     ->findOrNew($data[$resource->getModel()->getKeyName()])
                 : $resource->getModel();
 
+            if (is_null($item)) {
+                return false;
+            }
+
+            $data = $resource->beforeImportFilling($data);
+
             $item->forceFill($data);
 
-            return $item->save();
+            $item = $resource->beforeImported($item);
+
+            return tap($item->save(), fn() => $resource->afterImported($item));
         });
 
         if ($deleteAfter) {
