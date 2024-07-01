@@ -30,6 +30,9 @@ final class Dropdown extends MoonShineComponent
         protected Closure|string $searchPlaceholder = '',
         public string $placement = 'bottom-start',
     ) {
+        if(empty($this->searchPlaceholder)){
+            $this->searchPlaceholder =  __('moonshine::ui.search');
+        }
     }
 
     public function toggler(Closure|string $toggler): self
