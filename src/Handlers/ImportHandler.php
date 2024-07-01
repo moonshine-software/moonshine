@@ -197,7 +197,7 @@ class ImportHandler extends Handler
 
             $item = $resource->beforeImported($item);
 
-            return tap($item->save(), fn() => $resource->afterImported($item));
+            return tap($item->save(), fn () => $resource->afterImported($item));
         });
 
         if ($deleteAfter) {

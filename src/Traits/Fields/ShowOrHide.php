@@ -104,7 +104,7 @@ trait ShowOrHide
     {
         $this->showOnExport = Condition::boolean($condition, true);
 
-        if(!is_null($modifyRawValue)) {
+        if(! is_null($modifyRawValue)) {
             $this->modifyRawValue($modifyRawValue);
         }
 
@@ -203,7 +203,7 @@ trait ShowOrHide
     {
         $this->useOnImport = Condition::boolean($condition, true);
 
-        if(!is_null($fromRaw)) {
+        if(! is_null($fromRaw)) {
             $this->fromRaw($fromRaw);
         }
 

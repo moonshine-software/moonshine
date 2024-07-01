@@ -184,7 +184,7 @@ abstract class Field extends FormElement
 
     public function toRawValue(bool $withoutModify = false): mixed
     {
-        if(!$withoutModify && $this->isRawValueModified()) {
+        if(! $withoutModify && $this->isRawValueModified()) {
             return value($this->rawValueCallback, $this->rawValue, $this);
         }
 
@@ -220,7 +220,7 @@ abstract class Field extends FormElement
 
     public function isRawValueModified(): bool
     {
-        return !is_null($this->rawValueCallback);
+        return ! is_null($this->rawValueCallback);
     }
 
     /**
