@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Facades\View;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Condition;
+use function Symfony\Component\Translation\t;
 
 /**
  * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', Closure|bool $isSearchable = false, Closure|array $items = [], string $placement = 'bottom-start')
@@ -26,6 +27,7 @@ final class Dropdown extends MoonShineComponent
         protected Closure|View|string $content = '',
         protected Closure|array $items = [],
         protected Closure|bool $isSearchable = false,
+        protected Closure|string $searchPlaceholder = '',
         public string $placement = 'bottom-start',
     ) {
     }
@@ -54,6 +56,13 @@ final class Dropdown extends MoonShineComponent
     public function searchable(Closure|bool|null $condition = null): static
     {
         $this->isSearchable = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function setSearchPlaceholder(Closure|string $placeholder): static
+    {
+        $this->searchPlaceholder = $placeholder;
 
         return $this;
     }
@@ -90,6 +99,7 @@ final class Dropdown extends MoonShineComponent
             'slot' => new ComponentSlot(value($this->content, $this)),
             'footer' => new ComponentSlot(value($this->footer, $this)),
             'searchable' => $this->isSearchable,
+            'searchPlaceholder' => $this->searchPlaceholder,
             'items' => value($this->items, $this),
         ];
     }

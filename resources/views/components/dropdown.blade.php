@@ -4,6 +4,7 @@
     'toggler',
     'title',
     'searchable' => false,
+    'searchPlaceholder' => '',
     'footer' => null,
 ])
 <div x-data="dropdown"
@@ -26,7 +27,7 @@
 
             @if(!empty($items))
                 @if($searchable)
-                    <x-moonshine::form.input x-model.debounce.500ms="dropdownSearch"></x-moonshine::form.input>
+                    <x-moonshine::form.input x-model.debounce.500ms="dropdownSearch" placeholder="{{ $searchPlaceholder }}"></x-moonshine::form.input>
                 @endif
                 <ul class="dropdown-menu">
                     @foreach($items as $key =>$item)
