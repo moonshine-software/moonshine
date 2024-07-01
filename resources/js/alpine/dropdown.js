@@ -43,16 +43,18 @@ export default () => ({
   },
 
   search(searchVal){
-    if(searchVal !== ''){
-      const search = searchVal.toLowerCase();
-      this.dropdownItems.forEach(
-        (item) => {
-          item.innerText.toLowerCase().includes(search) ? item.hidden = false : item.hidden = true
-        }
-      )
-    }else{
+    if(!searchVal || typeof searchVal !== 'string'){
       this.dropdownItems.forEach((item) => item.hidden = false)
+      return;
     }
+
+
+    const search = searchVal.toLowerCase();
+    this.dropdownItems.forEach(
+      (item) => {
+        item.innerText.toLowerCase().includes(search) ? item.hidden = false : item.hidden = true
+      }
+    )
   },
 
   toggleDropdown() {
