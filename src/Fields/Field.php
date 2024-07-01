@@ -191,6 +191,10 @@ abstract class Field extends FormElement
         return $this->rawValue;
     }
 
+    /**
+     * @param  Closure(mixed $raw, static): mixed  $callback
+     * @return $this
+     */
     public function fromRaw(Closure $callback): static
     {
         $this->fromRaw = $callback;
@@ -219,6 +223,10 @@ abstract class Field extends FormElement
         return !is_null($this->rawValueCallback);
     }
 
+    /**
+     * @param  Closure(mixed $raw, static): mixed  $callback
+     * @return $this
+     */
     public function modifyRawValue(Closure $callback): static
     {
         $this->rawValueCallback = $callback;
