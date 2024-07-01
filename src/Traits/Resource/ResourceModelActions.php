@@ -11,6 +11,8 @@ use MoonShine\Handlers\ImportHandler;
 
 trait ResourceModelActions
 {
+    protected static bool $defaultExportToCsv = false;
+
     /**
      * @return string[]
      */
@@ -27,14 +29,21 @@ trait ResourceModelActions
         return [];
     }
 
+    public static function defaultExportToCsv(): void
+    {
+        self::$defaultExportToCsv = true;
+    }
+
     public function export(): ?ExportHandler
     {
         if (! config('moonshine.model_resources.default_with_export', true)) {
             return null;
         }
 
-        return ExportHandler::make(__('moonshine::ui.export'))
-            ->csv();
+        return ExportHandler::make(__('moonshine::ui.export'))->when(
+            self::$defaultExportToCsv,
+            static fn (ExportHandler $handler): ExportHandler => $handler->csv()
+        );
     }
 
     public function import(): ?ImportHandler
