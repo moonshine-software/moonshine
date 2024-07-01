@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Fields\Relationships;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -150,7 +150,7 @@ class RelationRepeater extends ModelRelationField implements
         });
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): string|Renderable
     {
         if ($this->isRawMode()) {
             return (string) parent::resolvePreview();

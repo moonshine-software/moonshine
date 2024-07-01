@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 
 /**
- * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', Closure|array $items = [], string $placement = 'bottom-start')
+ * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|Renderable|string $content = '', Closure|array $items = [], string $placement = 'bottom-start')
  */
 final class Dropdown extends MoonShineComponent
 {
@@ -22,7 +22,7 @@ final class Dropdown extends MoonShineComponent
     public function __construct(
         public ?string $title = null,
         protected Closure|string $toggler = '',
-        protected Closure|View|string $content = '',
+        protected Closure|Renderable|string $content = '',
         protected Closure|array $items = [],
         public string $placement = 'bottom-start',
     ) {
@@ -43,7 +43,7 @@ final class Dropdown extends MoonShineComponent
         return $this;
     }
 
-    public function content(Closure|View|string $content): self
+    public function content(Closure|Renderable|string $content): self
     {
         $this->content = $content;
 

@@ -129,7 +129,7 @@ class DetailPage extends Page
                 if ($field->isToOne()) {
                     $field
                         ->withoutWrapper()
-                        ->forcePreview();
+                        ->previewMode();
 
                     $blocks = [
                         Box::make($field->getLabel(), [$field]),

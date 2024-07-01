@@ -18,7 +18,7 @@ final class FieldsGroup extends AbstractWithComponents
     public function previewMode(): self
     {
         return $this->mapFields(
-            static fn (Field $field): Field => $field->forcePreview()
+            static fn (Field $field): Field => $field->previewMode()
         );
     }
 

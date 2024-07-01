@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Resources;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser;
@@ -52,7 +52,7 @@ class MoonShineUserResource extends ModelResource
 
             Text::make(__('moonshine::ui.resource.name'), 'name'),
 
-            Image::make(__('moonshine::ui.resource.avatar'), 'avatar'),
+            Image::make(__('moonshine::ui.resource.avatar'), 'avatar')->modifyRawValue(fn(string $raw) => $raw),
 
             Date::make(__('moonshine::ui.resource.created_at'), 'created_at')
                 ->format("d.m.Y")
@@ -114,6 +114,16 @@ class MoonShineUserResource extends ModelResource
                 ]),
             ]),
         ];
+    }
+
+    public function exportFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function importFields(): array
+    {
+        return $this->exportFields();
     }
 
     /**

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
@@ -311,7 +311,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         return $this;
     }
 
-    public function getBeforeRender(): View|string
+    public function getBeforeRender(): Renderable|string
     {
         return is_null($this->beforeRender)
             ? ''
@@ -325,7 +325,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         return $this;
     }
 
-    public function getAfterRender(): View|string
+    public function getAfterRender(): Renderable|string
     {
         return is_null($this->afterRender)
             ? ''
@@ -386,7 +386,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         }
     }
 
-    protected function resolveRender(): View|Closure|string
+    protected function resolveRender(): Renderable|Closure|string
     {
         if ($this->isPreviewMode()) {
             return $this->preview();

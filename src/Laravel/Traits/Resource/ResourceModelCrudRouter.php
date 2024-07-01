@@ -17,6 +17,9 @@ trait ResourceModelCrudRouter
 {
     protected ?PageType $redirectAfterSave = PageType::FORM;
 
+    /**
+     * @param TModel|int|string|null $key
+     */
     public function getRoute(
         string $name = null,
         Model|int|string|null $key = null,
@@ -43,6 +46,9 @@ trait ResourceModelCrudRouter
     }
 
 
+    /**
+     * @param TModel|int|string|null $model
+     */
     public function getFormPageUrl(
         Model|int|string|null $model = null,
         array $params = [],
@@ -59,6 +65,9 @@ trait ResourceModelCrudRouter
     }
 
 
+    /**
+     * @param TModel|int|string $model
+     */
     public function getDetailPageUrl(
         Model|int|string $model,
         array $params = [],
@@ -75,6 +84,9 @@ trait ResourceModelCrudRouter
     }
 
 
+    /**
+     * @param TModel|int|string|null $model
+     */
     public function getFragmentLoadUrl(
         string $fragment,
         Page $page,

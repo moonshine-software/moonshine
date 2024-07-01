@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Pipeline;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AuthenticateController extends MoonShineController
 {
-    public function login(): View|RedirectResponse|string
+    public function login(): Renderable|RedirectResponse|string
     {
         if ($this->auth()->check()) {
             return redirect(

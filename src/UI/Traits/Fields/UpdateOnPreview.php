@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Core\Contracts\CastedData;
 use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Support\AlpineJs;
@@ -137,7 +137,7 @@ trait UpdateOnPreview
         return $this->isUpdateOnPreview() && is_null($this->getFormName());
     }
 
-    protected function resolveRender(): View|Closure|string
+    protected function resolveRender(): Renderable|Closure|string
     {
         if (! $this->isUpdateOnPreview() || $this->isRawMode()) {
             return parent::resolveRender();

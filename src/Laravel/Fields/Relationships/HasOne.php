@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Fields\Relationships;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Laravel\Collections\Fields;
@@ -92,7 +92,7 @@ class HasOne extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         $items = [$this->toValue()];
 

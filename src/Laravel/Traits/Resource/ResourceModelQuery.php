@@ -26,6 +26,7 @@ use Throwable;
  */
 trait ResourceModelQuery
 {
+    /** @var ?TModel $item */
     protected ?Model $item = null;
 
     protected array $with = [];
@@ -82,6 +83,9 @@ trait ResourceModelQuery
         return $this->itemID ?? moonshineRequest()->getItemID();
     }
 
+    /**
+     * @return ?TModel
+     */
     protected function itemOr(Closure $closure): ?Model
     {
         if (! is_null($this->item)) {
@@ -99,6 +103,9 @@ trait ResourceModelQuery
             ->newQuery();
     }
 
+    /**
+     * @return ?TModel
+     */
     public function getItem(): ?Model
     {
         if (! is_null($this->item)) {
@@ -117,7 +124,7 @@ trait ResourceModelQuery
     }
 
     /**
-     * @return $this
+     * @param  ?TModel $model
      */
     public function setItem(?Model $model): static
     {
@@ -126,6 +133,9 @@ trait ResourceModelQuery
         return $this;
     }
 
+    /**
+     * @return TModel
+     */
     public function getItemOrInstance(): Model
     {
         if (! is_null($this->item)) {
@@ -143,6 +153,9 @@ trait ResourceModelQuery
         );
     }
 
+    /**
+     * @return TModel
+     */
     public function getItemOrFail(): Model
     {
         if (! is_null($this->item)) {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\WithFields;
@@ -26,7 +26,7 @@ class Template extends Field implements HasFields
         );
     }
 
-    protected function resolvePreview(): string|View
+    protected function resolvePreview(): string|Renderable
     {
         return '';
     }

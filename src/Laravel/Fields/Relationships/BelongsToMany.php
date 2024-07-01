@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Fields\Relationships;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -360,7 +360,7 @@ class BelongsToMany extends ModelRelationField implements
     /**
      * @throws Throwable
      */
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         $values = $this->toValue() ?? collect();
         $column = $this->getResourceColumn();

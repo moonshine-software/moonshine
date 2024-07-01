@@ -119,6 +119,9 @@ abstract class ModelResource extends Resource
         return $this->getPages()->detailPage();
     }
 
+    /**
+     * @return TModel
+     */
     public function getModel(): Model
     {
         return new $this->model();
@@ -250,6 +253,7 @@ abstract class ModelResource extends Resource
     }
 
     /**
+     * @param TModel $item
      * @throws Throwable
      */
     public function delete(Model $item, ?Fields $fields = null): bool
@@ -279,6 +283,10 @@ abstract class ModelResource extends Resource
 
     public function onSave(Field $field): Closure
     {
+        /**
+         * @param TModel $item
+         * @return TModel
+         */
         return static function (Model $item) use ($field): Model {
             if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
                 return $item;
@@ -293,6 +301,8 @@ abstract class ModelResource extends Resource
     }
 
     /**
+     * @param TModel $item
+     * @return TModel
      *
      * @throws ResourceException
      * @throws Throwable
@@ -329,6 +339,10 @@ abstract class ModelResource extends Resource
         return $item;
     }
 
+    /**
+     * @param TModel $item
+     * @return TModel
+     */
     private function afterSave(Model $item, Fields $fields): Model
     {
         $wasRecentlyCreated = $item->wasRecentlyCreated;
@@ -350,11 +364,17 @@ abstract class ModelResource extends Resource
         return $item;
     }
 
+    /**
+     * @param  TModel  $item
+     */
     public function prepareJsonResponse(Model $item): mixed
     {
         return $item;
     }
 
+    /**
+     * @param  iterable<TModel>  $items
+     */
     public function prepareCollectionJsonResponse(Paginator $items): mixed
     {
         return $items;

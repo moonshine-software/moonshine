@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Components\Thumbnails;
 
@@ -42,7 +42,7 @@ class Preview extends Field
         return $this;
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         $value = $this->toFormattedValue();
 

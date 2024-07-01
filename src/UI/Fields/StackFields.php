@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Contracts\Fields\FieldsWrapper;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
+use Illuminate\Contracts\Support\Renderable;
 
 class StackFields extends Field implements HasFields, FieldsWrapper
 {
@@ -53,7 +53,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     /**
      * @throws Throwable
      */
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         return FieldsGroup::make(
             $this->getFields()->indexFields()
@@ -61,7 +61,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
             ->mapFields(fn (Field $field): Field => $field
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
-                ->forcePreview())
+                ->previewMode())
             ->render();
     }
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\Contracts\View\View;
 use MoonShine\UI\Components\Color as ColorComponent;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
+use Illuminate\Contracts\Support\Renderable;
 
 class Color extends Field implements HasDefaultValue, DefaultCanBeString
 {
@@ -18,7 +18,7 @@ class Color extends Field implements HasDefaultValue, DefaultCanBeString
 
     protected string $type = 'color';
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         if($this->isRawMode()) {
             return $this->toValue();

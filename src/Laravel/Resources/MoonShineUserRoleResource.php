@@ -54,6 +54,16 @@ class MoonShineUserRoleResource extends ModelResource
         ];
     }
 
+    public function exportFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    public function importFields(): array
+    {
+        return $this->indexFields();
+    }
+
     /**
      * @return array{name: string}
      */

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 
 /**
- * @method static static make(Closure|string $title, Closure|View|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title, Closure|Renderable|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
 final class OffCanvas extends AbstractWithComponents
 {
@@ -23,7 +23,7 @@ final class OffCanvas extends AbstractWithComponents
 
     public function __construct(
         protected Closure|string $title = '',
-        protected Closure|View|string $content = '',
+        protected Closure|Renderable|string $content = '',
         protected Closure|string $toggler = '',
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],

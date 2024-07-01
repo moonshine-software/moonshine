@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\ActionButton;
@@ -216,7 +216,7 @@ class Json extends Field implements
         });
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         if ($this->isRawMode()) {
             return (string) parent::resolvePreview();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Support\DTOs\FileItem;
 use MoonShine\UI\Components\Files;
@@ -41,7 +41,7 @@ class File extends Field implements Fileable, RemovableContract
         return $this;
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         $values = $this->getFullPathValues();
 

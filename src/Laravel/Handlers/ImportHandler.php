@@ -179,7 +179,7 @@ class ImportHandler extends Handler
                         ? json_decode($value, null, 512, JSON_THROW_ON_ERROR)
                         : $value;
 
-                    return [$field->getColumn() => $value];
+                    return [$field->getColumn() => $field->getValueFromRaw($value)];
                 }
             )->toArray();
 
@@ -197,9 +197,13 @@ class ImportHandler extends Handler
                     ->findOrNew($data[$resource->getModel()->getKeyName()])
                 : $resource->getModel();
 
+            $data = $resource->beforeImportFilling($data);
+
             $item->forceFill($data);
 
-            return $item->save();
+            $item = $resource->beforeImported($item);
+
+            return tap($item->save(), fn() => $resource->afterImported($item));
         });
 
         if ($deleteAfter) {

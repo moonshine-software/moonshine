@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|View|string $content = '', Closure|View|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
 final class Modal extends AbstractWithComponents
 {
@@ -30,8 +30,8 @@ final class Modal extends AbstractWithComponents
 
     public function __construct(
         protected Closure|string $title = '',
-        protected Closure|View|string $content = '',
-        protected Closure|View|ActionButton|string $outer = '',
+        protected Closure|Renderable|string $content = '',
+        protected Closure|Renderable|ActionButton|string $outer = '',
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],
         // anonymous component variables

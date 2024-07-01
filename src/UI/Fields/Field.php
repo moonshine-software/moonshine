@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Core\Contracts\CastedData;
@@ -52,9 +52,11 @@ abstract class Field extends FormElement
 
     protected mixed $rawValue = null;
 
-    protected bool $previewMode = false;
+    protected ?Closure $rawValueCallback = null;
 
-    protected bool $isForcePreview = false;
+    protected ?Closure $fromRaw = null;
+
+    protected bool $previewMode = false;
 
     protected ?Closure $previewCallback = null;
 
@@ -223,6 +225,10 @@ abstract class Field extends FormElement
 
     public function toRawValue(): mixed
     {
+        if($this->isRawValueModified()) {
+            return value($this->rawValueCallback, $this->rawValue, $this);
+        }
+
         return $this->rawValue;
     }
 
@@ -381,23 +387,58 @@ abstract class Field extends FormElement
 
     public function isPreviewMode(): bool
     {
-        return $this->isForcePreview() || $this->previewMode;
+        return $this->previewMode;
     }
 
-    public function forcePreview(): static
+    public function previewMode(): static
     {
-        $this->isForcePreview = true;
+        $this->previewMode = true;
 
         return $this;
     }
 
-    public function isForcePreview(): bool
+    public function isRawValueModified(): bool
     {
-        return $this->isForcePreview;
+        return !is_null($this->rawValueCallback);
     }
 
-    public function preview(): View|string
+    /**
+     * @param  Closure(mixed $raw, static): mixed  $callback
+     * @return $this
+     */
+    public function modifyRawValue(Closure $callback): static
     {
+        $this->rawValueCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(mixed $raw, static): mixed  $callback
+     * @return $this
+     */
+    public function fromRaw(Closure $callback): static
+    {
+        $this->fromRaw = $callback;
+
+        return $this;
+    }
+
+    public function getValueFromRaw(mixed $raw): mixed
+    {
+        if(is_null($this->fromRaw)) {
+            return $raw;
+        }
+
+        return value($this->fromRaw, $raw, $this);
+    }
+
+    public function preview(): Renderable|string
+    {
+        if($this->isRawMode() && $this->isRawValueModified()) {
+            return $this->toRawValue();
+        }
+
         if ($this->isPreviewChanged()) {
             return (string) value(
                 $this->previewCallback,
@@ -415,14 +456,14 @@ abstract class Field extends FormElement
         return $this->previewDecoration($preview);
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         return (string) ($this->toFormattedValue() ?? '');
     }
 
-    private function previewDecoration(View|string $value): View|string
+    private function previewDecoration(Renderable|string $value): Renderable|string
     {
-        if ($value instanceof View) {
+        if ($value instanceof Renderable) {
             return $value->render();
         }
 
@@ -490,7 +531,7 @@ abstract class Field extends FormElement
         return $this->isBeforeLabel;
     }
 
-    protected function prepareRender(View|Closure|string $view): View|Closure|string
+    protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
     {
         if (! $this->isPreviewMode() && $this->hasWrapper()) {
             return (new FieldContainer(

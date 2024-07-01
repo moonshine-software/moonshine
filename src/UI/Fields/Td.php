@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
 use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Illuminate\Contracts\Support\Renderable;
 use Throwable;
 
 /**
@@ -31,7 +31,7 @@ class Td extends Template
         parent::__construct($label);
 
         $this->conditionalFields($fields);
-        $this->forcePreview();
+        $this->previewMode();
     }
 
     public function withLabels(): static
@@ -104,8 +104,12 @@ class Td extends Template
      * @throws NotFoundExceptionInterface
      * @throws Throwable
      */
-    protected function resolvePreview(): string|View
+    protected function resolvePreview(): string|Renderable
     {
+        if($this->isRawMode()) {
+            return '';
+        }
+
         $fields = $this->hasConditionalFields()
             ? $this->getConditionalFields()
             : $this->getFields();
@@ -115,7 +119,7 @@ class Td extends Template
                 ->fillData($this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
-                ->forcePreview())
+                ->previewMode())
             ->render();
     }
 

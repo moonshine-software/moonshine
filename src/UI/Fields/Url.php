@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\Url as UrlComponent;
 
 class Url extends Text
@@ -21,7 +21,7 @@ class Url extends Text
         return $this;
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         $value = parent::resolvePreview();
 

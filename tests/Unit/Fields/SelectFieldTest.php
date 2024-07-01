@@ -47,7 +47,7 @@ describe('basic methods', function () {
     });
 
     it('preview', function (): void {
-        expect((string) $this->field->forcePreview())
+        expect((string) $this->field->previewMode())
             ->toBe('2')
             ->and((string) $this->fieldMultiple->withoutWrapper())
             ->toBe(

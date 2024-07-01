@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\Rating;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
@@ -45,7 +45,7 @@ class Number extends Field implements HasDefaultValue, DefaultCanBeNumeric, HasU
         return $this;
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         if (! $this->isRawMode() && $this->isWithStars()) {
             return Rating::make(

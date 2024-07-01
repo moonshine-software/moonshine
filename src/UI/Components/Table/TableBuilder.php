@@ -78,7 +78,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                     ->map(
                         static fn (Field $field): Field => $field
                             ->withoutWrapper()
-                            ->forcePreview()
+                            ->previewMode()
                     );
             }
 

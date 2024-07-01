@@ -12,6 +12,8 @@ use MoonShine\UI\Components\ActionButton;
 
 trait ResourceModelActions
 {
+    protected static bool $defaultExportToCsv = false;
+
     /**
      * @return list<Action>
      */
@@ -39,14 +41,21 @@ trait ResourceModelActions
         return [];
     }
 
+    public static function defaultExportToCsv(): void
+    {
+        self::$defaultExportToCsv = true;
+    }
+
     public function export(): ?Handler
     {
         if (! moonshineConfig()->isDefaultWithExport()) {
             return null;
         }
 
-        return ExportHandler::make(__('moonshine::ui.export'))
-            ->csv();
+        return ExportHandler::make(__('moonshine::ui.export'))->when(
+            self::$defaultExportToCsv,
+            static fn(ExportHandler $handler) => $handler->csv()
+        );
     }
 
     public function import(): ?Handler

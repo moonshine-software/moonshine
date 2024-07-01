@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Contracts\Fields\HasReactivity;
@@ -61,7 +61,7 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
         return $value;
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         return $this->isUnescape()
             ? parent::resolvePreview()

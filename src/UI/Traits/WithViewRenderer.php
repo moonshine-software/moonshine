@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Contracts\Components\HasCanSeeContract;
 use MoonShine\UI\Contracts\Components\HasComponents;
 use MoonShine\UI\Contracts\Fields\HasFields;
@@ -27,7 +27,7 @@ trait WithViewRenderer
 
     protected ?Closure $onBeforeRenderCallback = null;
 
-    private View|string|null $cachedRender = null;
+    private Renderable|string|null $cachedRender = null;
 
     public function getView(): string
     {
@@ -95,7 +95,7 @@ trait WithViewRenderer
      * @throws NotFoundExceptionInterface
      * @throws Throwable
      */
-    public function render(): View|Closure|string
+    public function render(): Renderable|Closure|string
     {
         if(! $this->shouldRender()) {
             return '';
@@ -116,17 +116,17 @@ trait WithViewRenderer
         return $this->cachedRender = $this->prepareRender($view);
     }
 
-    protected function prepareRender(View|Closure|string $view): View|Closure|string
+    protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
     {
         return $view;
     }
 
-    protected function resolveRender(): View|Closure|string
+    protected function resolveRender(): Renderable|Closure|string
     {
         return $this->renderView();
     }
 
-    protected function renderView(): View|Closure|string
+    protected function renderView(): Renderable|Closure|string
     {
         return moonshine()->render(
             $this->getView(),

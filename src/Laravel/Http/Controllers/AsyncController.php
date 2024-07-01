@@ -3,7 +3,7 @@
 namespace MoonShine\Laravel\Http\Controllers;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
@@ -23,7 +23,7 @@ class AsyncController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function component(MoonShineRequest $request): View|Closure|string
+    public function component(MoonShineRequest $request): Renderable|Closure|string
     {
         $page = $request->getPage();
 

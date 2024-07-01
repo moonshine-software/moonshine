@@ -6,7 +6,6 @@ namespace MoonShine\Core\Pages;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Contracts\View\View;
 use MoonShine\Core\Contracts\HasResourceContract;
 use MoonShine\Core\Contracts\MenuFiller;
 use MoonShine\Core\Contracts\PageContract;
@@ -387,7 +386,7 @@ abstract class Page implements
         }
     }
 
-    protected function prepareRender(View|Closure|string $view): View|Closure|string
+    protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
     {
         return $view;
     }

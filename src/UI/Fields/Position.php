@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null)
@@ -26,8 +26,12 @@ class Position extends Preview
         return $this->toFormattedValue();
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
+        if($this->isRawMode()) {
+            return parent::resolvePreview();
+        }
+
         return $this->render();
     }
 }

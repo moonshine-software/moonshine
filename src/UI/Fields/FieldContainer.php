@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\Link;
@@ -24,7 +24,7 @@ final class FieldContainer extends MoonShineComponent
 
     public function __construct(
         public Field $field,
-        public View|Closure|string $slot = '',
+        public Renderable|Closure|string $slot = '',
     ) {
         parent::__construct();
 

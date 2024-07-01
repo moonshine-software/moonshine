@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\Contracts\View\View;
 use MoonShine\Support\AlpineJs;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
@@ -17,6 +16,7 @@ use MoonShine\UI\Traits\Fields\BooleanTrait;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
+use Illuminate\Contracts\Support\Renderable;
 
 class Checkbox extends Field implements
     HasDefaultValue,
@@ -78,7 +78,7 @@ class Checkbox extends Field implements
         $this->mergeAttribute('x-on:change', $this->getOnChangeEvent(), ';');
     }
 
-    protected function resolvePreview(): View|string
+    protected function resolvePreview(): Renderable|string
     {
         if ($this->isRawMode()) {
             return (string) ($this->toValue(false)
