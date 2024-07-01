@@ -10,7 +10,7 @@ trait HasResourceRequest
     {
         return memoize(fn (): ?ResourceContract => moonshine()->getResourceFromUriKey(
             $this->getResourceUri()
-        )?->boot());
+        ));
     }
 
     public function hasResource(): bool
