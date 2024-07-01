@@ -63,7 +63,7 @@ final class Dropdown extends MoonShineComponent
         return $this;
     }
 
-    public function setSearchPlaceholder(Closure|string $placeholder): static
+    public function searchPlaceholder(Closure|string $placeholder): static
     {
         $this->searchPlaceholder = $placeholder;
 
