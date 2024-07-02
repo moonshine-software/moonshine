@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Pages;
 
-use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Core\Contracts\HasResourceContract;
 use MoonShine\Core\Contracts\MenuFiller;
