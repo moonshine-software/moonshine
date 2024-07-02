@@ -11,7 +11,7 @@ use MoonShine\Support\Condition;
 use function Symfony\Component\Translation\t;
 
 /**
- * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', Closure|bool $isSearchable = false, Closure|array $items = [], string $placement = 'bottom-start')
+ * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', bool $isSearchable = false, Closure|array $items = [], string $placement = 'bottom-start')
  */
 final class Dropdown extends MoonShineComponent
 {
@@ -26,8 +26,8 @@ final class Dropdown extends MoonShineComponent
         protected Closure|string $toggler = '',
         protected Closure|View|string $content = '',
         protected Closure|array $items = [],
-        protected Closure|bool $isSearchable = false,
         protected Closure|string $searchPlaceholder = '',
+        protected bool $isSearchable = false,
         public string $placement = 'bottom-start',
     ) {
         if(empty($this->searchPlaceholder)){
@@ -102,7 +102,7 @@ final class Dropdown extends MoonShineComponent
             'slot' => new ComponentSlot(value($this->content, $this)),
             'footer' => new ComponentSlot(value($this->footer, $this)),
             'searchable' => $this->isSearchable,
-            'searchPlaceholder' => $this->searchPlaceholder,
+            'searchPlaceholder' => value($this->searchPlaceholder, $this),
             'items' => value($this->items, $this),
         ];
     }
