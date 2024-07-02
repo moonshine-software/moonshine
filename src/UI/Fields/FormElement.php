@@ -199,7 +199,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         }
 
         return str($value)->explode('.')
-            ->map(static fn ($part, $index) => $index === 0 ? $part : "[$part]")
+            ->map(static fn ($part, $index): string => $index === 0 ? $part : "[$part]")
             ->implode('');
     }
 
