@@ -7,9 +7,11 @@ namespace MoonShine\Components;
 use Closure;
 use Illuminate\Support\Facades\View;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Support\Condition;
+use function Symfony\Component\Translation\t;
 
 /**
- * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', Closure|array $items = [], string $placement = 'bottom-start')
+ * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', bool $isSearchable = false, Closure|array $items = [], string $placement = 'bottom-start')
  */
 final class Dropdown extends MoonShineComponent
 {
@@ -24,8 +26,13 @@ final class Dropdown extends MoonShineComponent
         protected Closure|string $toggler = '',
         protected Closure|View|string $content = '',
         protected Closure|array $items = [],
+        protected Closure|string $searchPlaceholder = '',
+        protected bool $isSearchable = false,
         public string $placement = 'bottom-start',
     ) {
+        if(empty($this->searchPlaceholder)){
+            $this->searchPlaceholder =  __('moonshine::ui.search');
+        }
     }
 
     public function toggler(Closure|string $toggler): self
@@ -48,6 +55,21 @@ final class Dropdown extends MoonShineComponent
 
         return $this;
     }
+
+    public function searchable(Closure|bool|null $condition = null): static
+    {
+        $this->isSearchable = Condition::boolean($condition, true);
+
+        return $this;
+    }
+
+    public function searchPlaceholder(Closure|string $placeholder): static
+    {
+        $this->searchPlaceholder = $placeholder;
+
+        return $this;
+    }
+
 
     public function placement(string $placement): self
     {
@@ -79,6 +101,8 @@ final class Dropdown extends MoonShineComponent
             'toggler' => new ComponentSlot(value($this->toggler, $this), $this->togglerAttributes),
             'slot' => new ComponentSlot(value($this->content, $this)),
             'footer' => new ComponentSlot(value($this->footer, $this)),
+            'searchable' => $this->isSearchable,
+            'searchPlaceholder' => value($this->searchPlaceholder, $this),
             'items' => value($this->items, $this),
         ];
     }
