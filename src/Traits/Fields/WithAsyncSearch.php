@@ -208,7 +208,7 @@ trait WithAsyncSearch
     /**
      * @param  ?Closure(Builder $query, mixed $value, self $field): Builder  $asyncSearchQuery
      */
-    public function associatedWith(string $column, ?Closure $asyncSearchQuery = null, bool $replaceQuery = false,): static
+    public function associatedWith(string $column, ?Closure $asyncSearchQuery = null, bool $replaceQuery = false): static
     {
         $searchQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->input($column));
 
