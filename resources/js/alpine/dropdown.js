@@ -14,8 +14,8 @@ export default () => ({
   init() {
     this.dropdownBtn = this.$root.querySelector('.dropdown-btn')
     this.dropdownBody = this.$root.querySelector('.dropdown-body')
-    if(this.$root.dataset.searchable) {
-      this.dropdownItems = this.$el.querySelectorAll('.dropdown-menu-item');
+    if (this.$root.dataset.searchable) {
+      this.dropdownItems = this.$el.querySelectorAll('.dropdown-menu-item')
       this.$watch('dropdownSearch', value => this.search(value))
     }
 
@@ -42,19 +42,16 @@ export default () => ({
     })
   },
 
-  search(searchVal){
-    if(!searchVal || typeof searchVal !== 'string'){
-      this.dropdownItems.forEach((item) => item.hidden = false)
-      return;
+  search(searchVal) {
+    if (!searchVal || typeof searchVal !== 'string') {
+      this.dropdownItems.forEach(item => (item.hidden = false))
+      return
     }
 
-
-    const search = searchVal.toLowerCase();
-    this.dropdownItems.forEach(
-      (item) => {
-        item.innerText.toLowerCase().includes(search) ? item.hidden = false : item.hidden = true
-      }
-    )
+    const search = searchVal.toLowerCase()
+    this.dropdownItems.forEach(item => {
+      item.innerText.toLowerCase().includes(search) ? (item.hidden = false) : (item.hidden = true)
+    })
   },
 
   toggleDropdown() {
