@@ -22,4 +22,6 @@ interface ResourceContract
     public function booted(): static;
 
     public function loaded(): static;
+
+    public function flushState(): void;
 }

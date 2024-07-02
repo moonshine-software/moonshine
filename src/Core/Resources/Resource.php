@@ -45,6 +45,11 @@ abstract class Resource implements ResourceContract, MenuFiller
         return $this->pages;
     }
 
+    public function flushState(): void
+    {
+        //
+    }
+
     protected function onBoot(): void
     {
         //
