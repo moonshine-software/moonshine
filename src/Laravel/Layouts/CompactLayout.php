@@ -66,7 +66,7 @@ class CompactLayout extends AppLayout
         $colorManager
             ->body('27, 37, 59', dark: true)
             ->dark('83, 103, 132', 50, dark: true)
-            ->dark('74, 90, 12', 100, dark: true)
+            ->dark('74, 90, 121', 100, dark: true)
             ->dark('65, 81, 114', 200, dark: true)
             ->dark('53, 69, 103', 300, dark: true)
             ->dark('48, 61, 93', 400, dark: true)
