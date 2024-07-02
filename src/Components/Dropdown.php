@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Support\Facades\View;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Condition;
-use function Symfony\Component\Translation\t;
 
 /**
  * @method static static make(?string $title = null, Closure|string $toggler = '', Closure|View|string $content = '', bool $isSearchable = false, Closure|array $items = [], string $placement = 'bottom-start')
