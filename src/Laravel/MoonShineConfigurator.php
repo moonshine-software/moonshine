@@ -76,7 +76,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
         return $this->set('middlewares', [
             ...$this->getMiddlewares(),
-            ...$middlewares
+            ...$middlewares,
         ]);
     }
 
@@ -125,7 +125,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
         return $this->set('locales', [
             ...$this->getLocales(),
-            ...$locales
+            ...$locales,
         ]);
     }
 
