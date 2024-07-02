@@ -58,17 +58,18 @@ class RelationModelFieldController extends MoonShineController
         }
 
         $query = $model->newModelQuery();
+        $term = $request->input('query');
 
         if (is_closure($field->asyncSearchQuery())) {
             $query = value(
                 $field->asyncSearchQuery(),
                 $query,
                 $request,
-                $field
+                $field,
+                $term
             );
         }
 
-        $term = $request->input('query');
         $values = $request->input($field->column(), '') ?? '';
 
         $except = is_array($values)
@@ -78,7 +79,7 @@ class RelationModelFieldController extends MoonShineController
         $offset = $request->input('offset', 0);
 
         $query->when(
-            $term,
+            (is_null($field->asyncSearchQuery()) || $field->isAsyncSearchReplaceQuery() === false) && $term,
             fn (Builder $q) => $q->where(
                 $searchColumn,
                 DBOperators::byModel($q->getModel())->like(),
