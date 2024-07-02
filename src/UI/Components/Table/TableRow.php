@@ -8,7 +8,7 @@ use MoonShine\UI\Collections\TableCells;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
- * @method static static make(TableCells $cells, ?int $key = null)
+ * @method static static make(TableCells $cells, int|string|null $key = null)
  */
 final class TableRow extends MoonShineComponent
 {
@@ -33,7 +33,7 @@ final class TableRow extends MoonShineComponent
         return $this;
     }
 
-    public function getKey(): int
+    public function getKey(): int|string|null
     {
         return $this->key;
     }

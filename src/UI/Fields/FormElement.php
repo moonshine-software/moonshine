@@ -241,8 +241,8 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
             method: $method,
             message: $message,
             params: array_filter([
-                'resourceItem' => $data->getKey(),
-                ...value($params, $data->getOriginal()),
+                'resourceItem' => $data?->getKey(),
+                ...value($params, $data?->getOriginal()),
             ], static fn ($value) => filled($value)),
             page: $page,
             resource: $resource,

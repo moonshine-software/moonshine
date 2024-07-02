@@ -8,6 +8,7 @@ use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Components\FieldsGroup;
+use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Select;
@@ -93,6 +94,7 @@ class AsyncController extends MoonShineController
     {
         $page = $request->getPage();
 
+        /** @var FormBuilder $form */
         $form = $page->getComponents()->findForm(
             $request->getComponentName()
         );
@@ -102,7 +104,7 @@ class AsyncController extends MoonShineController
         }
 
         $fields = $form
-            ->preparedFields()
+            ->getPreparedFields()
             ->onlyFields()
             ->reactiveFields();
 
@@ -125,7 +127,7 @@ class AsyncController extends MoonShineController
         $fields->fill($values->toArray());
 
         foreach ($fields as $field) {
-            $fields = $field->reactiveCallback(
+            $fields = $field->getReactiveCallback(
                 $fields,
                 data_get($values, $field->getColumn()),
                 $values->toArray(),

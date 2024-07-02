@@ -261,6 +261,10 @@ class MoonShineServiceProvider extends ServiceProvider
     {
         if (moonshineConfig()->isUseMigrations()) {
             $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
+
+            $this->publishesMigrations([
+                MoonShine::path('/database/migrations') => database_path('migrations'),
+            ]);
         }
 
         $this->publishes([

@@ -55,6 +55,22 @@ class DummyResource extends ModelResource
     }
 
     /**
+     * @return list<Field>
+     */
+    public function exportFields(): array
+    {
+        return $this->indexFields();
+    }
+
+    /**
+     * @return list<Field>
+     */
+    public function importFields(): array
+    {
+        return $this->exportFields();
+    }
+
+    /**
      * @param {model} $item
      *
      * @return array<string, string[]|string>

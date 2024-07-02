@@ -99,7 +99,7 @@ trait UpdateOnPreview
         }
 
         return $this->setUpdateOnPreviewUrl(
-            $url ?? static fn (?CastedData $data, mixed $value, Field $field): ?string => $data->getKey() ? moonshineRouter()->getEndpoints()->updateColumn(
+            $url ?? static fn (?CastedData $data, mixed $value, Field $field): ?string => $data?->getKey() ? moonshineRouter()->getEndpoints()->updateColumn(
                 resource: $field->getNowOnResource(),
                 extra: [
                     'resourceItem' => $data->getKey(),

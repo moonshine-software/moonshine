@@ -196,12 +196,12 @@ abstract class ModelResource extends Resource
 
     public function trAttributes(): Closure
     {
-        return static fn (mixed $data, int $row): array => [];
+        return static fn (?CastedData $data, int $row): array => [];
     }
 
     public function tdAttributes(): Closure
     {
-        return static fn (mixed $data, int $row, int $cell): array => [];
+        return static fn (?CastedData $data, int $row, int $cell): array => [];
     }
 
     /**

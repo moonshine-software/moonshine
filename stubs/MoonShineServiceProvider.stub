@@ -7,7 +7,7 @@ namespace App\Providers;
 use MoonShine\Laravel\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
-use MoonShine\Core\Contracts\Resources\ResourceContract;
+use MoonShine\Core\Contracts\ResourceContract;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\MoonShineConfigurator;
 use Closure;

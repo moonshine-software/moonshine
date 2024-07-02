@@ -3,11 +3,14 @@
     'placement' => 'bottom-start',
     'toggler',
     'title',
+    'searchable' => false,
+    'searchPlaceholder' => '',
     'footer' => null,
 ])
 <div x-data="dropdown"
      @click.outside="closeDropdown"
      data-dropdown-placement="{{ $placement }}"
+     data-searchable="{{$searchable}}"
      class="dropdown"
 >
     <button type="button" @click.prevent="toggleDropdown" {{ $toggler->attributes->merge(['class' => 'dropdown-btn']) }}>
@@ -23,9 +26,20 @@
             {{ $slot ?? '' }}
 
             @if(!empty($items))
+                @if($searchable)
+                    <x-moonshine::form.input
+                        x-model.debounce.500ms="dropdownSearch"
+                        class="dropdown-input-search"
+                        placeholder="{{ $searchPlaceholder }}"
+                    ></x-moonshine::form.input>
+                @endif
+
                 <ul class="dropdown-menu">
-                    @foreach($items as $item)
-                        <li class="dropdown-menu-item p-2">
+                    @foreach($items as $key =>$item)
+                        <li
+                            class="dropdown-menu-item p-2"
+                            @if($searchable) x-ref="dropdown_{{$key}}" @endif
+                        >
                             {!! $item !!}
                         </li>
                     @endforeach

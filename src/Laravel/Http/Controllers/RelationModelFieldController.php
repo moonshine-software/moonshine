@@ -78,7 +78,7 @@ class RelationModelFieldController extends MoonShineController
         $offset = $request->input('offset', 0);
 
         $query->when(
-            $term,
+            $term && is_null($field->getAsyncSearchQuery()),
             static fn (Builder $q) => $q->where(
                 $searchColumn,
                 DBOperators::byModel($q->getModel())->like(),

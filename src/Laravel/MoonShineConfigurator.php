@@ -65,6 +65,21 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->set('middlewares', $middlewares);
     }
 
+    /**
+     * @param  list<class-string>|class-string  $middlewares
+     */
+    public function addMiddlewares(array|string $middlewares): self
+    {
+        if(is_string($middlewares)) {
+            $middlewares = [$middlewares];
+        }
+
+        return $this->set('middlewares', [
+            ...$this->getMiddlewares(),
+            ...$middlewares
+        ]);
+    }
+
     public function exceptMiddlewares(array|string $except = []): self
     {
         $except = is_string($except) ? [$except] : $except;
@@ -100,6 +115,18 @@ final class MoonShineConfigurator implements ConfiguratorContract
     public function locales(array|Closure $locales): self
     {
         return $this->set('locales', $locales);
+    }
+
+    public function addLocales(array|string $locales): self
+    {
+        if(is_string($locales)) {
+            $locales = [$locales];
+        }
+
+        return $this->set('locales', [
+            ...$this->getLocales(),
+            ...$locales
+        ]);
     }
 
     public function locale(string $locale): self

@@ -30,22 +30,23 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
         componentRequestData.withAfterCallback(function (data) {
           for (let [column, html] of Object.entries(data.fields)) {
-            let selector = '.field-' + column + '-wrapper'
+            let selectorWrapper = '.field-' + column + '-wrapper'
+            let selectorElement = '.field-' + column + '-element'
 
             if (typeof html === 'string') {
-              const wrapper = t.$root.querySelector(selector)
-              const element = wrapper === null ? t.$root.querySelector(selector) : wrapper
+              const wrapper = t.$root.querySelector(selectorWrapper)
+              const element = wrapper === null ? t.$root.querySelector(selectorElement) : wrapper
 
               element.outerHTML = html
 
-              addInvalidListener(t.$root.querySelector(selector))
+              addInvalidListener(element)
 
               let input =
                 focused &&
                 focused !== document.body &&
                 isTextInput(focused) &&
                 !containsAttribute(focused, 'x-model.lazy')
-                  ? t.$root.querySelector(`[x-model='reactive.${column}']`)
+                  ? t.$root.querySelector(`[data-reactive-column='${focused.getAttribute('data-reactive-column')}']`)
                   : null
 
               if (input) {
