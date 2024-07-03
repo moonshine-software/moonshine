@@ -482,6 +482,9 @@ body.theme-minimalistic {
       }
     }
   }
+  .table-sticky > table > thead {
+    @apply dark:bg-dark-800;
+  }
 
   /* Alerts */
   .alert {
