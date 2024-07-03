@@ -32,7 +32,10 @@ class Url extends Text
 
     protected function resolvePreview(): View|string
     {
-        $value = parent::resolvePreview();
+        $value = $this->toFormattedValue() ?? '';
+        $title = $this->isUnescape()
+            ? $value
+            : e($value);
 
         if ($this->isRawMode()) {
             return $value;
@@ -45,8 +48,8 @@ class Url extends Text
         return UrlComponent::make(
             href: $value,
             value: is_null($this->titleCallback)
-                ? $value
-                : (string) value($this->titleCallback, $value, $this),
+                ? $title
+                : (string) value($this->titleCallback, $title, $this),
             blank: $this->blank
         )->render();
     }
