@@ -100,12 +100,13 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    public function inLine(string $separator = '', bool $badge = false, ?Closure $link = null): static
+    public function inLine(string $separator = '', bool $badge = false, ?Closure $link = null, string $badgeColor = 'primary'): static
     {
         $this->inLine = true;
         $this->inLineSeparator = $separator;
         $this->inLineBadge = $badge;
         $this->inLineLink = $link;
+        $this->badgeColor = $badgeColor;
 
         return $this;
     }
@@ -418,7 +419,7 @@ class BelongsToMany extends ModelRelationField implements
                 }
 
                 if ($this->inLineBadge) {
-                    return Badge::make((string) $value, 'primary')
+                    return Badge::make((string) $value, $this->badgeColor)
                         ->customAttributes(['class' => 'm-1'])
                         ->render();
                 }
