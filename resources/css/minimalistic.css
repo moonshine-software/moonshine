@@ -483,6 +483,10 @@ body.theme-minimalistic {
     }
   }
 
+  .table-sticky > table > thead {
+    @apply dark:bg-dark-800;
+  }
+
   /* Alerts */
   .alert {
     @apply gap-x-2 rounded-md p-2;

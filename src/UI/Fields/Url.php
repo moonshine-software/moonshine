@@ -14,6 +14,8 @@ class Url extends Text
 
     protected ?Closure $titleCallback = null;
 
+    protected bool $blank = false;
+
     public function title(Closure $callback): static
     {
         $this->titleCallback = $callback;
@@ -21,9 +23,19 @@ class Url extends Text
         return $this;
     }
 
+    public function blank(): static
+    {
+        $this->blank = true;
+
+        return $this;
+    }
+
     protected function resolvePreview(): Renderable|string
     {
-        $value = parent::resolvePreview();
+        $value = $this->toFormattedValue() ?? '';
+        $title = $this->isUnescape()
+            ? $value
+            : e($value);
 
         if ($this->isRawMode()) {
             return $value;
@@ -36,9 +48,9 @@ class Url extends Text
         return UrlComponent::make(
             href: $value,
             value: is_null($this->titleCallback)
-                ? $value
-                : (string) value($this->titleCallback, $value, $this),
-            blank: $this->isLinkBlank()
+                ? $title
+                : (string) value($this->titleCallback, $title, $this),
+            blank: $this->blank
         )->render();
     }
 }
